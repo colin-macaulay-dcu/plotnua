@@ -3,19 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlotNua</title>
+<title>PlotNua | Discover what your property could become</title>
+<meta name="description" content="PlotNua helps Irish homeowners uncover the hidden potential of their property before they build, renovate or invest — then connects them with trusted suppliers and services.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://plotnua.ie/">
+
+<!-- Favicons — PlotNua Brand Package v1.0 -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1F3B2E">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PlotNua">
+<meta property="og:title" content="PlotNua | Discover what your property could become">
+<meta property="og:description" content="PlotNua helps Irish homeowners uncover the hidden potential of their property before they build, renovate or invest — then connects them with trusted suppliers and services.">
+<meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://plotnua.ie/">
+<meta property="og:locale" content="en_IE">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PlotNua | Discover what your property could become">
+<meta name="twitter:description" content="PlotNua helps Irish homeowners uncover the hidden potential of their property before they build, renovate or invest — then connects them with trusted suppliers and services.">
+<meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:#EFEAE0; --paper:#F7F4EC; --ink:#1F1F1F; --soft:#6E6656;
-    --line:#DCD5C4; --terracotta:#B15B3C; --slate:#41403C; --oak:#8B6F4E;
-    --moss:#3F4E33; --hedge:#2E3A25; --fern:#556B3F; --hydrangea:#5D6A88;
+    /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+
+    /* Site-level roles, mapped onto the brand palette. --cream/--paper
+       are both Warm-Ivory-family light surfaces (kept as two distinct
+       values so cards/overlays still lift gently off the page
+       background, rather than collapsing the whole site to one flat
+       tone). --ink is now Primary Green, the site's principal dark/UI
+       colour. --soft is a desaturated green-grey for long-form body
+       copy — legible at paragraph size, but tuned into the brand's
+       hue family rather than staying a generic warm grey. --accent
+       (was --terracotta) is a deepened Sage, used for kickers/labels/
+       hover states — full-value Sage is too light to read as small
+       uppercase text, so it's darkened toward Primary Green while
+       staying in the approved family. --oak is retained unchanged: a
+       muted, low-chroma neutral consistent with the editorial/craft
+       photography, that doesn't compete with the green identity. */
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{ font-family:'Work Sans',sans-serif; background:var(--cream); color:var(--ink); overflow-x:hidden; }
-  h1,h2,h3{ font-family:'Fraunces',serif; font-weight:500; letter-spacing:-.01em; }
+  h1,h2,h3{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em; }
+  /* Principal display headlines get the approved Fraunces 700 (Bold) weight; h3 and smaller titles keep 600 (SemiBold) as the brand's own secondary tier. */
+  h1,h2{ font-weight:700; }
 
   /* ================= PHOTOGRAPHY BRIEF FRAMES =================
      No generation tool is available in this session, so no image has
@@ -190,7 +239,7 @@
   .cover-frame{ position:relative; overflow:hidden; background:#333; }
   .cover-frame img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
   .story .copy{ display:flex; flex-direction:column; justify-content:center; padding:8vw 6vw; }
-  .story .copy .kicker{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--terracotta); margin-bottom:18px; }
+  .story .copy .kicker{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
   .story .copy h2{ font-size:clamp(26px,3vw,40px); line-height:1.28; color:var(--ink); }
   .story .copy p{ margin-top:20px; color:var(--soft); font-size:16.5px; line-height:1.7; max-width:44ch; }
   .story.reverse{ grid-template-columns:.9fr 1.1fr; }
@@ -223,7 +272,7 @@
   .invite-copy h2{ font-size:clamp(28px,3.4vw,48px); font-weight:500; line-height:1.2; color:var(--ink); max-width:12ch; }
   .invite-copy p{ margin-top:22px; color:var(--soft); font-size:16.5px; line-height:1.7; max-width:28ch; }
   .invite-cta{ margin-top:34px; display:inline-flex; align-items:center; gap:10px; font-family:'Work Sans',sans-serif; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); text-decoration:none; padding-bottom:6px; border-bottom:1px solid rgba(38,34,29,.35); transition:.25s ease; }
-  .invite-cta:hover{ color:var(--terracotta); border-color:var(--terracotta); gap:14px; }
+  .invite-cta:hover{ color:var(--accent); border-color:var(--accent); gap:14px; }
   /* The stage is now always a true 100vh cover-fill, so "stack copy
      below the photo" no longer has anywhere to put the photo's overflow
      — there is no page-flow room left below a full-viewport chapter.
@@ -243,7 +292,7 @@
      it can begin quietly emerging (see the script) while Life is still
      completing its fade, rather than waiting behind a second empty gap. */
   .discover{ background:var(--ink); color:var(--cream); padding:10vh 7vw 24vh; text-align:center; }
-  .discover .lede{ font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--terracotta); }
+  .discover .lede{ font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
   .discover h2{ font-size:clamp(26px,3.4vw,42px); margin:14px auto 14px; max-width:20ch; color:#fff; line-height:1.3; }
   .discover .sub{ color:#9C9587; font-size:14.5px; max-width:44ch; margin:0 auto 90px; line-height:1.6; }
   /* Six real photographs of the same garden room, alternating side to
@@ -281,7 +330,7 @@
      turned page by page rather than scanned as a contact sheet. */
   .library{ padding:22vh 7vw 18vh; }
   .library .head{ max-width:640px; margin:0 auto 20vh; text-align:center; }
-  .library .head .kicker{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--terracotta); margin-bottom:16px; }
+  .library .head .kicker{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
   .library .head h2{ font-size:clamp(28px,3.6vw,44px); line-height:1.25; }
   .lib-grid{ display:flex; flex-direction:column; gap:26vh; max-width:840px; margin:0 auto; }
   .lib-cell{ position:relative; overflow:hidden; }
@@ -293,7 +342,7 @@
 
   /* ---- your plot ---- */
   .plot{ padding:24vh 7vw; background:var(--paper); text-align:center; }
-  .plot .kicker{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--terracotta); margin-bottom:20px; }
+  .plot .kicker{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
   .plot h2{ font-size:clamp(28px,4vw,50px); max-width:16ch; margin:0 auto 22px; line-height:1.25; }
   .plot p{ color:var(--soft); font-size:16.5px; max-width:52ch; margin:0 auto 44px; line-height:1.7; }
   .plot-input{ max-width:460px; margin:0 auto; display:flex; border-bottom:1.5px solid var(--ink); padding-bottom:12px; }
@@ -334,10 +383,56 @@
      last thing the visitor reads sits in the same dark, quiet register
      as the veil, not on a bright website footer bar. */
   footer{ background:linear-gradient(180deg, var(--paper) 0%, var(--ink) 230px, var(--ink) 100%); color:#8b8574; text-align:center; padding:260px 20px 90px; font-size:12.5px; letter-spacing:.04em; line-height:1.75; }
-  footer b{ color:#EFEAE0; font-family:'Fraunces',serif; font-weight:500; }
+  footer b{ color:var(--brand-ivory); font-family:'Fraunces',serif; font-weight:500; }
+
+  /* ---- fixed brand mark ----
+     A single small mark, not a header bar: the approved full-colour
+     lockup (master-artwork SVG, unaltered — Primary Green square with
+     the Ivory "P" and Sage house accent) sitting inside a compact
+     Warm Ivory chip for quiet separation from whatever photography is
+     behind it. No nav links, no bar background across the viewport.
+     Hidden until the hero has settled (see the cinema engine script),
+     then fades in gently over the same easing language as the rest of
+     the page. */
+  .brand-mark{
+    position:fixed; top:22px; left:22px; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    width:46px; height:46px; padding:0;
+    background:var(--brand-ivory);
+    border-radius:12px;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07);
+    opacity:0; transition:opacity 1.6s ease;
+    text-decoration:none;
+  }
+  .brand-mark.in{ opacity:1; }
+  .brand-mark img{ display:block; width:34px; height:34px; border-radius:8px; }
+  @media(max-width:720px){
+    .brand-mark{ top:16px; left:16px; width:40px; height:40px; }
+    .brand-mark img{ width:30px; height:30px; }
+  }
+
+  /* ---- sage accents (sparing, per brand guidelines) ---- */
+  .plot-input{ transition:border-color .3s ease; }
+  .plot-input:focus-within{ border-color:var(--brand-sage); }
+
+  /* ---- footer mark ----
+     Replaces the plain typed "PlotNua" with the approved two-colour
+     transparent icon (Ivory "P" + Sage house accent) beside plain
+     accessible text — not a redrawn logotype. Footer background is
+     already Primary Green (see the footer gradient above), the mark's
+     natural habitat per the brand guidelines. */
+  .footer-mark{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:20px; }
+  .footer-mark img{ display:block; width:40px; height:40px; }
+  .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
+  .footer-rule{ width:34px; height:1px; margin:0 auto 34px; background:rgba(143,175,138,.4); border:none; }
 </style>
 </head>
 <body>
+<div id="top"></div>
+
+<a href="#top" class="brand-mark" id="brandMark" aria-label="PlotNua — Home">
+  <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
+</a>
 
 <!-- ============================================================
      CINEMATIC CHAPTER STAGE
@@ -561,7 +656,11 @@
 </section>
 
 <footer>
-  <b>PlotNua</b><br><br>
+  <hr class="footer-rule">
+  <div class="footer-mark">
+    <img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="40" height="40">
+    <span class="footer-word">PlotNua</span>
+  </div>
   Every plot has another chapter.
 </footer>
 
@@ -658,6 +757,7 @@
         setTimeout(()=>{ if (heroWord) heroWord.style.opacity = '1'; }, 2500);
         setTimeout(()=>{ if (heroTagline) heroTagline.style.opacity = '1'; }, 3600);
         setTimeout(()=>{ heroLoadDone = true; }, 4600);
+        setTimeout(()=>{ const bm=document.getElementById('brandMark'); if (bm) bm.classList.add('in'); }, 4200);
       }
     }
 
