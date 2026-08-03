@@ -289,6 +289,49 @@
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
 
   #top{ position:absolute; top:0; left:0; width:1px; height:1px; }
+
+  /* ---- "Building PlotNua" hero editorial label ---- */
+  @keyframes heroLabelIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+  .hero-copy .hero-label{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    padding:8px 15px;
+    margin-bottom:36px;
+    border-radius:22px;
+    background:rgba(242,239,230,.90);
+    box-shadow:0 3px 14px rgba(31,59,46,.10), 0 0 0 1px rgba(31,59,46,.04);
+    position:relative;
+    top:-80px;
+    opacity:0;
+    animation:heroLabelIn 1.2s ease 1.8s forwards;
+  }
+  .hero-label-eyebrow{
+    font-family:'Work Sans',sans-serif;
+    font-weight:500;
+    font-size:clamp(9.5px,.85vw,10.5px);
+    letter-spacing:.06em;
+    color:var(--brand-green);
+    text-align:center;
+  }
+  .hero-label-sub{
+    font-family:'Work Sans',sans-serif;
+    font-weight:400;
+    font-size:clamp(8.5px,.8vw,9.5px);
+    line-height:1.5;
+    color:var(--soft);
+    max-width:27ch;
+    text-align:center;
+  }
+  .hero-label-sub em{ font-style:italic; color:var(--accent); }
+  @media(max-width:720px){
+    .hero-copy .hero-label{ padding:7px 12px; margin-bottom:28px; border-radius:18px; top:-80px; }
+    .hero-label-sub{ max-width:21ch; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-copy .hero-label{ animation:none; opacity:1; }
+  }
 </style>
 </head>
 <body>
@@ -312,6 +355,10 @@
       <div class="hero-text-scrim"></div>
     </div>
     <div class="hero-copy">
+      <div class="hero-label" role="note" aria-label="Platform status">
+        <p class="hero-label-eyebrow">Building PlotNua</p>
+        <p class="hero-label-sub"><em>Nua</em> Discoveries, trusted partners and practical resources are being added regularly.</p>
+      </div>
       <h1 class="hero-word" id="heroWord">PlotNua</h1>
       <p class="hero-tagline" id="heroTagline">A new way to see what's possible.</p>
       <p class="hero-sub" id="heroSub">Every property holds opportunities waiting to be discovered.</p>
