@@ -1,81 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- LAUNCH-INT-002 — rewritten for the real URL set.
+
+     The previous file listed six Discovery pages that no longer exist and did
+     not mention the application at all. Those six are 301'd to the Discovery
+     Library and are deliberately NOT listed here: a sitemap should describe
+     what a crawler will find, not what it used to.
+
+     your-plot.html is NOT listed. LAUNCH-INT-002 listed it at low priority;
+     LAUNCH-INT-004 measured that the page itself carries
+     <meta name="robots" content="noindex, follow">. A sitemap entry asserts
+     "index this" and the page asserts the opposite, so one of the two had to
+     go. The sitemap entry is the newer claim and is withdrawn, leaving the
+     page's own declaration as the single source of truth.
+
+     If the application should instead be indexable, the change belongs in
+     your-plot.html's robots meta first, and this file second. That is a
+     founder ruling, not a deployment repair. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <url>
-    <loc>https://plotnua.ie/</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://plotnua.ie/</loc><lastmod>2026-08-27</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
 
-  <url>
-    <loc>https://plotnua.ie/about.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://plotnua.ie/discoveries.html</loc><lastmod>2026-08-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
 
-  <url>
-    <loc>https://plotnua.ie/contact.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  <url><loc>https://plotnua.ie/discovery-an-extra-room.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://plotnua.ie/discovery-room-to-grow.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://plotnua.ie/discovery-living-in-the-garden.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://plotnua.ie/discovery-open-your-home-to-art.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://plotnua.ie/discovery-the-borrowed-garden.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
-  <url>
-    <loc>https://plotnua.ie/privacy.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://plotnua.ie/terms.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://plotnua.ie/discovery-artist-studio.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://plotnua.ie/discovery-garden-power.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://plotnua.ie/discovery-garden-retreat.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://plotnua.ie/discovery-home-exchange.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://plotnua.ie/discovery-potential-asset.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://plotnua.ie/discovery-start-something.html</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://plotnua.ie/about.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plotnua.ie/contact.html</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://plotnua.ie/privacy.html</loc><lastmod>2026-08-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://plotnua.ie/terms.html</loc><lastmod>2026-08-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://plotnua.ie/cookie-policy.html</loc><lastmod>2026-08-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 
 </urlset>
