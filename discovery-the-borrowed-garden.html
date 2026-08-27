@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PKKJ0RK6N8');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Your Spare Garden | PlotNua Discoveries</title>
+<meta name="description" content="Sharing a small part of an Irish garden with someone nearby who grows food: what you decide, what to agree, and why keeping your own access keeps it a licence rather than a tenancy.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://plotnua.ie/discovery-the-borrowed-garden.html">
+
+<!-- Favicons — PlotNua Brand Package v1.0 -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1F3B2E">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PlotNua">
+<meta property="og:title" content="Share Your Spare Garden | PlotNua Discoveries">
+<meta property="og:description" content="A corner of lawn nobody uses, and someone nearby with a ten-year wait for an allotment. It stays your garden throughout.">
+<meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://plotnua.ie/discovery-the-borrowed-garden.html">
+<meta property="og:locale" content="en_IE">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Share Your Spare Garden | PlotNua Discoveries">
+<meta name="twitter:description" content="Lending a small part of your garden to a local grower. You choose the corner, the crop, the hours and the terms.">
+<meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ font-family:'Work Sans',sans-serif; background:var(--paper); color:var(--ink); overflow-x:hidden; }
+  h1,h2,h3{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em; }
+  h1,h2{ font-weight:700; }
+
+  .reveal{ opacity:0; transform:translateY(6px); transition:opacity 1.1s ease, transform 1.1s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---- fixed brand mark (unchanged from Brand Integration v1) ---- */
+  .brand-mark{
+    position:fixed; top:22px; left:22px; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    width:46px; height:46px; padding:0;
+    background:var(--brand-ivory);
+    border-radius:12px;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07);
+    opacity:0; transition:opacity 1.6s ease, transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;
+    text-decoration:none;
+  }
+  .brand-mark:hover{ transform:scale(1.06); box-shadow:0 5px 16px rgba(31,59,46,.20), 0 0 0 1px rgba(31,59,46,.09); }
+
+  /* RESULTS-003 PART D — THE FLOATING BACK.
+     Identical to the control on Results and My Plot: same corner, same 44px
+     minimum height, same radius, paper ground, hairline border and shadow,
+     same type. Only the label and destination differ, because they must.
+
+     It does not fight the brand mark. Measured: .brand-mark is fixed at
+     TOP:22px left:22px, this is fixed at BOTTOM:22px left:22px. Opposite
+     ends of the screen at every viewport. (I twice deferred this work on the
+     stated grounds that they shared a corner. They never did.)
+
+     z-index 60 sits above the page and below .am-modal-overlay (200), so an
+     open modal covers it rather than having it float over a dialog. */
+  .pn-return{
+    position:fixed; left:22px; bottom:22px; z-index:60;
+    display:inline-flex; align-items:center; gap:8px;
+    min-height:44px; padding:11px 17px 11px 14px;
+    background:var(--paper, #F8F5EC); color:var(--ink, #1F3B2E);
+    border:1px solid rgba(31,59,46,.16); border-radius:24px;
+    box-shadow:0 2px 10px rgba(31,59,46,.13);
+    font-family:'Work Sans',sans-serif; font-size:14px; font-weight:500;
+    text-decoration:none; cursor:pointer;
+    -webkit-appearance:none; appearance:none;
+  }
+  .pn-return:hover{ border-color:rgba(31,59,46,.3); }
+  .pn-return-arrow{ font-size:15px; line-height:1; }
+  @media (max-width:600px){
+    .pn-return{ left:16px; bottom:16px; padding:10px 15px 10px 12px; font-size:13.5px; }
+  }
+  .brand-mark.in{ opacity:1; }
+  .brand-mark img{ display:block; width:34px; height:34px; border-radius:8px; }
+  @media(max-width:720px){
+    .brand-mark{ top:16px; left:16px; width:40px; height:40px; }
+    .brand-mark img{ width:30px; height:30px; }
+  }
+
+  /* ================= DISCOVERY — HERO =================
+     Same visual grammar as the About page hero: a single still image,
+     bottom-anchored copy, warm ivory serif type. This is the master
+     template every future Discovery reuses, so the hero deliberately
+     stays close to the About page's pattern rather than inventing a
+     new one — consistency here is what makes the site feel like one
+     continuous place, not a stitched-together set of templates. */
+  .d-hero{ position:relative; width:100%; height:88vh; height:88svh; min-height:540px; overflow:hidden; background:var(--ink); }
+  .d-hero img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transform:scale(1.03); opacity:0;
+    transition:opacity 1.8s ease-out, transform 6s cubic-bezier(.22,.61,.36,1);
+  }
+  .d-hero img.on{ opacity:1; transform:scale(1); }
+  .d-hero-scrim{ position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(15,14,10,.14) 0%, rgba(15,14,10,0) 32%, rgba(15,14,10,.10) 60%, rgba(15,14,10,.60) 100%); }
+  .d-hero-copy{ position:absolute; z-index:2; inset:auto 0 0 0; padding:0 8vw 10vh; text-align:center; }
+  /* HERO EYEBROW — ADAPTIVE COLOUR (Master Standard).
+     The eyebrow is an orientation label, not a brand element. On this hero
+     --brand-sage (luminance 0.36) sat inside the luminance range of the
+     plaster wall behind it (0.32-0.49) and washed out; no shadow can
+     separate a colour from a background it matches in lightness.
+     It therefore uses the same --brand-ivory as h1 / .subtitle / .intro,
+     with the same shadow family as .intro. Font, size, weight, tracking
+     and position are unchanged. */
+  .d-hero-copy .eyebrow{ opacity:0; transform:translateY(10px); transition:opacity 1s ease, transform 1s ease;
+    font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--brand-ivory); margin-bottom:20px;
+    text-shadow:0 1px 14px rgba(0,0,0,.28); }
+  .d-hero-copy h1{ opacity:0; transform:translateY(10px); transition:opacity 1s ease .1s, transform 1s ease .1s;
+    color:var(--brand-ivory); font-size:clamp(32px,5vw,58px); line-height:1.14; text-shadow:0 2px 24px rgba(0,0,0,.32); }
+  .d-hero-copy .subtitle{ opacity:0; transform:translateY(10px); transition:opacity 1s ease .18s, transform 1s ease .18s;
+    margin:18px auto 0; max-width:32ch; font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+    color:var(--brand-ivory); font-size:clamp(16px,1.9vw,21px); line-height:1.55; text-shadow:0 1px 16px rgba(0,0,0,.3); }
+  .d-hero-copy .intro{ opacity:0; transform:translateY(10px); transition:opacity 1s ease .26s, transform 1s ease .26s;
+    margin:24px auto 0; max-width:50ch; font-family:'Work Sans',sans-serif; font-weight:300;
+    color:var(--brand-ivory); font-size:clamp(14px,1.4vw,16px); line-height:1.75; text-shadow:0 1px 14px rgba(0,0,0,.28); }
+  .d-hero-copy.in .eyebrow, .d-hero-copy.in h1, .d-hero-copy.in .subtitle{ opacity:1; transform:none; }
+  .d-hero-copy.in .intro{ opacity:.86; transform:none; }
+
+  /* ================= ARTICLE RHYTHM (shared with About) ================= */
+  .article{ max-width:1040px; margin:0 auto; padding:0 7vw; }
+  .article-section{ padding:9.5vh 0; border-bottom:1px solid rgba(31,59,46,.06); }
+  .article-section:last-of-type{ border-bottom:none; }
+  .article-section .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:19px; }
+  .article-section h2{ font-size:clamp(26px,3.4vw,40px); line-height:1.32; max-width:19ch; margin-bottom:26px; }
+  .article-section p{ color:var(--soft); font-size:17px; line-height:1.85; max-width:60ch; }
+  .article-section p + p{ margin-top:20px; }
+
+  /* ---- The Spark — the emotional opening line of every Discovery.
+     Deliberately the quietest, largest moment on the page: one
+     sentence, generous whitespace, nothing else competing with it. ---- */
+  .spark{ position:relative; padding:12vh 7vw; text-align:center; background:var(--paper); overflow:hidden; }
+  .spark::before{ content:''; position:absolute; top:0; left:0; right:0; height:16vh;
+    background:linear-gradient(180deg, rgba(20,26,20,.05) 0%, rgba(20,26,20,0) 100%); pointer-events:none; }
+  .spark p{ position:relative; font-family:'Fraunces',serif; font-style:italic; font-weight:400; color:var(--ink);
+    font-size:clamp(25px,3.6vw,40px); line-height:1.5; max-width:21ch; margin:0 auto; letter-spacing:-.005em; }
+
+  /* ---- Imagine Your Property — a second full-width photograph with
+     minimal text; this is a mood beat, not an information beat. ---- */
+  .imagine-photo{ position:relative; width:100%; height:84vh; height:84svh; min-height:460px; overflow:hidden; background:var(--ink); }
+  .imagine-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .imagine-photo::before, .imagine-photo::after{ content:''; position:absolute; left:0; right:0; height:5vh; z-index:2; pointer-events:none; }
+  .imagine-photo::before{ top:0; background:linear-gradient(180deg, rgba(248,245,236,.5) 0%, rgba(248,245,236,0) 100%); }
+  .imagine-photo::after{ bottom:0; background:linear-gradient(0deg, rgba(242,239,230,.5) 0%, rgba(242,239,230,0) 100%); }
+  .imagine-photo .caption{ position:absolute; z-index:3; left:0; right:0; bottom:0; padding:7vh 8vw;
+    background:linear-gradient(180deg, rgba(15,14,10,0) 0%, rgba(15,14,10,.42) 100%); text-align:center; }
+  .imagine-photo .caption p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+    color:var(--brand-ivory); font-size:clamp(16px,1.85vw,20px); max-width:32ch; margin:0 auto; text-shadow:0 1px 16px rgba(0,0,0,.3); letter-spacing:.01em; }
+   /* must outrank .imagine-photo img{display:block} */
+
+
+  /* hairline: ivory, with the faintest dark edge so it survives both images */
+
+  /* handle: 44px hit box, 26px visible ring, no disc, no shadow */
+
+  /* labels: lower corners, out of the caption's way */
+
+  /* caption sits clear of both labels */  /* above the hairline: no strikethrough at mid positions */
+
+  /* keyboard control: focusable, never captures pointer or touch */
+
+  @media (max-width:720px){
+  }
+  @media (prefers-reduced-motion: reduce){
+  }
+
+  /* ---- Could This Work For You — reflective questions, same
+     fragment-line treatment used across the site for short phrases,
+     given here as questions rather than statements. ---- */
+
+  /* ---- Understanding the Opportunity — practical detail, still
+     presented as prose rather than a spec sheet. Sub-headings stay
+     small and quiet so the page never tips into "brochure." ---- */
+  .practical-group{ margin-top:12px; }
+  .practical-item{ padding:19px 0; border-top:1px solid rgba(31,59,46,.06); }
+  .practical-item:first-child{ border-top:none; padding-top:0; }
+  .practical-item h3{ font-size:clamp(18px,1.9vw,21px); margin-bottom:11px; }
+  .practical-item p{ color:var(--soft); font-size:16px; line-height:1.8; max-width:56ch; }
+
+  /* ---- Things To Consider — balanced points, same quiet list
+     treatment, no warning icons or red text. ---- */
+  .considerations{ margin-top:10px; }
+  .considerations p{ color:var(--soft); font-size:16px; line-height:1.85; max-width:58ch; margin-bottom:16px; }
+  .considerations p:last-child{ margin-bottom:0; }
+
+  /* ---- Trusted Partners — premium placeholder. Reads as a promise,
+     not an empty state; no logos, no "coming soon" badge. ---- */
+  .partners{ position:relative; background:var(--cream); }
+  .partners::before{ content:''; position:absolute; top:0; left:0; right:0; height:10vh;
+    background:linear-gradient(180deg, var(--paper) 0%, rgba(248,245,236,0) 100%); pointer-events:none; }
+  .partners::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:10vh;
+    background:linear-gradient(0deg, var(--paper) 0%, rgba(248,245,236,0) 100%); pointer-events:none; }
+  .partners .article{ position:relative; z-index:1; padding-top:12vh; padding-bottom:12vh; text-align:center; }
+  .partners .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:24px; }
+  .partners h2{ max-width:none; margin:0 auto 20px; font-size:clamp(22px,2.6vw,30px); line-height:1.35; }
+  .partners p{ margin:0 auto; max-width:52ch; }
+  .partners .partner-frame{ margin:48px auto 0; max-width:420px; padding:38px 32px; border:1px solid rgba(31,59,46,.10); border-radius:2px; }
+  .partners .partner-frame p{ font-family:'Fraunces',serif; font-style:italic; color:var(--accent); font-size:16px; line-height:1.75; max-width:none; }
+
+  /* ---- FAQ — elegant native accordion. No JS required for the
+     interaction itself, keeping this section resilient and fast; the
+     .reveal fade-in still applies on scroll like everything else. ---- */
+  .faq-list{ margin-top:8px; }
+  .faq-item{ border-top:1px solid rgba(31,59,46,.06); }
+  .faq-item:last-child{ border-bottom:1px solid rgba(31,59,46,.06); }
+  .faq-item summary{ list-style:none; cursor:pointer; padding:21px 0; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item summary h3{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(17px,1.8vw,19px); font-style:normal; transition:color .3s ease; }
+  .faq-item summary:hover h3{ color:var(--accent); }
+  .faq-item .icon{ flex-shrink:0; width:20px; height:20px; position:relative; }
+  .faq-item .icon::before, .faq-item .icon::after{ content:''; position:absolute; background:var(--accent); opacity:.75; border-radius:2px; transition:transform .35s cubic-bezier(.4,0,.2,1), opacity .35s ease; }
+  .faq-item .icon::before{ left:0; top:9px; width:20px; height:1.5px; }
+  .faq-item .icon::after{ left:9px; top:0; width:1.5px; height:20px; }
+  .faq-item summary:hover .icon::before, .faq-item summary:hover .icon::after{ opacity:1; }
+  .faq-item[open] .icon::after{ transform:rotate(90deg); opacity:0; }
+  .faq-item .faq-a{ padding:0 0 24px; color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch; }
+
+  /* ---- quiet tier — used on FAQ (and shares its language with Partners
+     and Related): muted kicker, smaller heading, so these sections recede
+     rather than compete with the emotional/editorial moments above them. ---- */
+  .quiet-section .kicker{ color:var(--soft); opacity:.8; }
+  .quiet-section h2{ font-size:clamp(22px,2.6vw,30px); line-height:1.35; max-width:22ch; }
+
+  /* ---- Related Discoveries — three cards; kept quiet (photo + tiny
+     kicker + title) so it invites exploration rather than selling. ---- */
+  .related{ background:var(--paper); padding:10vh 7vw; }
+  .related-head{ max-width:1040px; margin:0 auto 48px; text-align:center; }
+  .related-head .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:20px; }
+  .related-head h2{ font-size:clamp(23px,2.8vw,32px); }
+  .related-grid{ max-width:1040px; margin:0 auto; display:grid; grid-template-columns:repeat(3, 1fr); gap:34px; }
+  .related-card{ text-decoration:none; color:inherit; display:block; }
+  .related-card .thumb{ position:relative; width:100%; aspect-ratio:4/5.1; overflow:hidden; border-radius:2px; background:var(--ink);
+    box-shadow:0 1px 2px rgba(31,59,46,.06); transition:box-shadow .5s ease; }
+  .related-card .thumb img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform 1s cubic-bezier(.22,.61,.36,1); }
+  .related-card:hover .thumb{ box-shadow:0 22px 44px -18px rgba(31,59,46,.28); }
+  .related-card:hover .thumb img{ transform:scale(1.05); }
+  .related-card .r-kicker{ margin-top:22px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); }
+  .related-card h3{ margin-top:9px; font-size:clamp(17px,1.7vw,19px); transition:color .3s ease; }
+  .related-card:hover h3{ color:var(--accent); }
+  @media(max-width:820px){
+    .related-grid{ grid-template-columns:1fr; gap:26px; max-width:420px; }
+    .related-card .thumb{ aspect-ratio:3/2; }
+    .related-head{ margin-bottom:40px; }
+  }
+
+  /* ---- closing statement (identical component to Homepage / About) ---- */
+  .closing-line{ padding:21vh 7vw 19vh; text-align:center; background:var(--paper); }
+  .closing-line p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400; font-size:clamp(19px,2.15vw,25px); color:var(--soft); max-width:36ch; margin:0 auto; line-height:1.7; letter-spacing:-.003em; }
+  .closing-line .continue{ margin-top:22px; font-size:13px; font-style:normal; letter-spacing:.03em; }
+  .closing-line .continue a{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); padding-bottom:1px; transition:border-color .35s ease; }
+  .closing-line .continue a:hover{ border-color:var(--accent); }
+
+  /* ---- footer (identical to Homepage / About) ---- */
+  footer{ background:linear-gradient(180deg, var(--paper) 0%, var(--ink) 110px, var(--ink) 100%); color:#B7AF9C; padding:72px 7vw 40px; }
+  footer b{ color:var(--brand-ivory); font-family:'Fraunces',serif; font-weight:500; }
+  .footer-inner{ max-width:1040px; margin:0 auto; }
+  .footer-top{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:64px; }
+  .footer-mark{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:0; }
+  .footer-mark img{ display:block; width:40px; height:40px; }
+  .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
+  .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
+  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col ul{ list-style:none; margin:0; padding:0; }
+  .footer-col li{ margin-bottom:13px; }
+  .footer-col li:last-child{ margin-bottom:0; }
+  .footer-col a{ position:relative; color:#B7AF9C; text-decoration:none; font-size:14px; letter-spacing:.005em; transition:color .3s ease; }
+  .footer-col a::after{ content:''; position:absolute; left:0; bottom:-3px; width:0; height:1px; background:currentColor; transition:width .35s cubic-bezier(.4,0,.2,1); }
+  .footer-col a:hover{ color:var(--brand-ivory); }
+  .footer-col a:hover::after{ width:100%; }
+  .footer-col p{ font-size:14px; color:#B7AF9C; line-height:1.7; }
+  @media(max-width:820px){
+    .footer-cols{ grid-template-columns:repeat(2, minmax(0,1fr)); text-align:center; gap:40px 24px; }
+  }
+  @media(max-width:520px){
+    .footer-cols{ grid-template-columns:1fr; gap:36px; }
+  }
+  .footer-base{ margin-top:64px; text-align:center; font-size:11.5px; letter-spacing:.04em; color:#7C7565; }
+
+  @media(max-width:720px){
+    .d-hero-copy{ padding:0 8vw 8vh; }
+    .article-section{ padding:7.5vh 0; }
+    .spark{ padding:8.5vh 8vw; }
+    .spark::before{ height:10vh; }
+    .imagine-photo{ height:62vh; height:62svh; }
+    .imagine-photo::before, .imagine-photo::after{ height:6vh; }
+    .partners .article{ padding-top:9vh; padding-bottom:9vh; }
+    .related{ padding:8vh 7vw; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .d-hero img, .d-hero-copy .eyebrow, .d-hero-copy h1, .d-hero-copy .subtitle, .d-hero-copy .intro{ transition-duration:.01ms !important; }
+    .d-hero img{ transform:none !important; }
+  }
+  /* ---- EDITOR-001B "What Changed in July 2026".
+     Built from the page's own editorial vocabulary: the .article-section
+     rhythm, the .kicker/h2/p treatment and the quiet rule used elsewhere.
+     Deliberately NOT an alert box, panel or legal notice. ---- */
+  .planning-change .planning-lede{
+    font-family:'Fraunces',serif; font-size:clamp(19px,2.1vw,23px); line-height:1.6;
+    color:var(--ink); max-width:34ch; margin:0 0 24px;
+  }
+  .planning-conditions{ margin:6px 0 0; padding:0; list-style:none; }
+  .planning-conditions li{
+    position:relative; padding-left:26px; margin-bottom:12px;
+    color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch;
+  }
+  .planning-conditions li::before{
+    content:''; position:absolute; left:2px; top:.72em;
+    width:7px; height:7px; border-radius:50%; background:var(--brand-sage);
+  }
+  .planning-conditions strong{ color:var(--ink); font-weight:600; }
+  .planning-sub{
+    font-family:'Fraunces',serif; font-weight:500; font-size:clamp(17px,1.9vw,20px);
+    color:var(--ink); margin:36px 0 12px;
+  }
+  .planning-note{
+    margin-top:44px; padding-top:26px; border-top:1px solid rgba(31,59,46,.10);
+    font-size:15.5px; line-height:1.8; color:var(--soft); max-width:58ch;
+  }
+  @media(max-width:720px){
+    .planning-change .planning-lede{ max-width:none; }
+  }
+
+  /* ============================================================
+     PROPERTY BRAIN PREVIEW — the standard Discovery destination.
+     NOT a new design. Every value below is lifted unchanged from
+     your-plot.html Screen 1 (.pn-wordmark, #screen-entry h1,
+     .entry-subhead, .pn-eircode-field, .btn-primary) so the homeowner
+     meets the same component here that they will meet when the journey
+     opens. Adapt content only — do not restyle.
+     ============================================================ */
+  .pb-preview{ background:var(--cream); padding:12vh 7vw;
+    border-top:1px solid rgba(31,59,46,.08);
+    display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .pn-wordmark{ font-family:'Fraunces',serif; font-weight:600; font-size:15px;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--ink); margin-bottom:36px; }
+  .pb-headline{ font-family:'Fraunces',serif; font-size:clamp(26px,5vw,40px); line-height:1.25;
+    color:var(--ink); max-width:16ch; margin:0 0 12px; font-weight:400; letter-spacing:-.01em; }
+  .pb-subhead{ font-size:16px; color:var(--soft); line-height:1.5; max-width:32ch; margin:0 0 26px; }
+  .pn-eircode-field{ width:100%; max-width:360px; text-align:left; }
+  .pn-eircode-field label{ font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--soft); display:block; margin-bottom:8px; }
+  .pn-eircode-field input{
+    width:100%; padding:15px 16px; font-size:16px; font-family:'Work Sans',sans-serif;
+    letter-spacing:.03em; border:1px solid rgba(31,59,46,.25); border-radius:2px;
+    background:#fff; color:var(--ink);
+  }
+  .pn-eircode-field input:disabled{ opacity:.55; cursor:not-allowed; }
+  .btn-primary{
+    display:inline-block; background:var(--ink); color:var(--brand-ivory); border:none;
+    font-family:'Work Sans',sans-serif; padding:16px 30px; font-size:14px;
+    letter-spacing:.08em; text-transform:uppercase; border-radius:2px; margin-top:24px;
+  }
+  .btn-primary:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
+  .pb-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px;
+    max-width:940px; margin:62px auto 0; text-align:left; }
+  .pb-step .n{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--brand-sage); margin-bottom:11px; }
+  .pb-step p{ color:var(--soft); font-size:15.5px; line-height:1.8; margin:0; }
+  .pb-independence{ margin:52px auto 0; max-width:50ch; color:var(--soft);
+    font-size:15px; line-height:1.75; }
+  .pb-independence strong{ color:var(--ink); font-weight:600; }
+  .pb-note{ margin:22px auto 0; max-width:46ch; font-size:14.5px; line-height:1.75;
+    color:var(--soft); opacity:.85; }
+  @media(max-width:820px){
+    .pb-steps{ grid-template-columns:1fr; gap:26px; margin-top:46px; text-align:center; }
+    .pb-preview{ padding:10vh 7vw; }
+    .pn-eircode-field{ max-width:100%; }
+  }
+
+  /* FOUNDER CORRECTION — the Coming Soon endpoint.
+     Calm text links rather than buttons: the page is telling the homeowner
+     this is not ready, so the way onward should read as a suggestion, not a
+     consolation prize. Generous targets, because on a phone these are the
+     only things on the section a homeowner can actually use. */
+  .cs-exits{
+    display:flex; flex-wrap:wrap; gap:14px 26px; justify-content:center;
+    margin-top:26px;
+  }
+  .cs-exit{
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    letter-spacing:.05em; text-decoration:none; color:var(--ink);
+    border-bottom:1px solid rgba(31,59,46,.35);
+    min-height:44px; display:inline-flex; align-items:center;
+  }
+  .cs-exit:hover{ border-bottom-color:var(--ink); }
+  .cs-exit:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .cs-exit.is-home{ color:var(--soft); border-bottom-color:rgba(85,96,90,.28); font-weight:500; }
+  @media (max-width:640px){
+    .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
+     Goes to the Discovery Library, NOT to the homepage: the brand mark above
+     already goes home, and two fixed controls leading to the same place is
+     the "three routes, three names" problem this codebase has fixed once
+     already. A homeowner reading a Discovery wants the shelf it came off. -->
+<a href="discoveries.html" class="pn-return" id="pnReturn" aria-label="Back">
+  <span class="pn-return-arrow" aria-hidden="true">&larr;</span> Back
+</a>
+
+<a href="index.html" class="brand-mark" id="brandMark" aria-label="PlotNua &mdash; Home">
+  <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
+</a>
+
+<header class="d-hero">
+  <img id="dHeroImg" class="on" src="assets/img/e5ecf61c22bb13db.jpg" alt="An Irish back garden with raised vegetable beds along one side, a grower tending them, and the homeowner reading on the patio by the house.">
+  <div class="d-hero-scrim"></div>
+  <div class="d-hero-copy in" id="dHeroCopy">
+    <div class="eyebrow">A PlotNua Discovery</div>
+    <h1>Share Your Spare Garden</h1>
+    <p class="subtitle">A corner of it grows food. The rest of it is exactly as it was.</p>
+    <p class="intro">Somebody within a few streets of you is on a waiting list for ground like yours.</p>
+  </div>
+</header>
+
+<section class="spark reveal">
+  <p>Most lawns are mown far more often than they are used.</p>
+</section>
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">Why This Discovery?</div>
+    <h2>The demand is real, and it is close by.</h2>
+    <p>Council allotment waiting lists in Ireland run from one to ten years. In Dublin, more than a million people share fewer than four hundred council plots across four local authorities, and several waiting lists have simply stopped taking names.</p>
+    <p>Meanwhile a great deal of good, sheltered, south-facing ground sits behind ordinary houses, cut every fortnight and walked across on the way to the bins.</p>
+  </section>
+
+</main>
+
+<section class="imagine-photo reveal">
+  <img src="assets/img/59d566ff7c3a50e8.jpg" alt="The same Irish back garden before anything is planted: an open lawn running from the patio to the boundary, annotated by PlotNua as a potential asset.">
+  <div class="caption"><p>Cut every fortnight. Used twice a year.</p></div>
+</section>
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">What It Actually Is</div>
+    <h2>A corner of the garden, not the garden.</h2>
+    <p>Someone living nearby grows vegetables on a part of your garden that you agree. You keep the rest, you keep the use of it, and you keep the key to the side gate.</p>
+    <ul class="planning-conditions">
+      <li><strong>You pick the ground.</strong> A strip along one boundary, the far corner, the patch behind the shed. It is a decision, not a negotiation.</li>
+      <li><strong>You keep walking through it.</strong> The garden does not divide.</li>
+      <li><strong>It ends when you decide it ends.</strong> A season, a year, or for as long as it suits you both.</li>
+      <li><strong>Nobody has to be paid.</strong> Money is one option among several.</li>
+    </ul>
+
+    <div class="planning-sub">How involved you want to be</div>
+    <ul class="planning-conditions">
+      <li><strong>Barely at all.</strong> The grower comes at agreed times, does their own work, and you carry on as you were.</li>
+      <li><strong>Or properly.</strong> Plenty of homeowners end up in the beds themselves.</li>
+    </ul>
+    <p>You decide which, and the answer is allowed to change.</p>
+  </section>
+
+</main>
+
+<section class="imagine-photo reveal">
+  <img src="assets/img/faeb58a1d6a8ed1a.jpg" alt="The same garden with raised timber beds, gravel paths, herbs, flowers and vegetables occupying one side, the lawn and patio unchanged.">
+  <div class="caption"><p>The lawn is still there. So is the washing line.</p></div>
+</section>
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">The Arrangement</div>
+    <h2>Six things to settle, and you decide all six.</h2>
+    <div class="practical-group">
+      <div class="practical-item">
+        <h3>Which part, and how big</h3>
+        <p>Mark it out before anyone starts. A bed or two is a real growing space; most people overestimate how much ground a household needs.</p>
+      </div>
+      <div class="practical-item">
+        <h3>What may be grown</h3>
+        <p>Vegetables and herbs are the usual answer. Say early if you would rather not have a polytunnel or anything permanent.</p>
+      </div>
+      <div class="practical-item">
+        <h3>When they come, and how they get in</h3>
+        <p>Set hours and a route. Side access matters more than anything else here; if the only way in is through the kitchen, choose a different corner.</p>
+      </div>
+      <div class="practical-item">
+        <h3>How long, and how it ends</h3>
+        <p>A growing season is the natural unit. Agree the notice either of you gives, and what happens to plants still in the ground.</p>
+      </div>
+      <div class="practical-item">
+        <h3>Water, and small costs</h3>
+        <p>An outside tap or a water butt matters more than it sounds. Agree who provides compost and timber.</p>
+      </div>
+      <div class="practical-item">
+        <h3>Produce, and payment if any</h3>
+        <p>A share of the harvest is commonest. Some hosts take a seasonal payment, some take help with the rest of the garden, some take neither. Any money you receive is income and is taxable in the normal way.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<section class="imagine-photo reveal">
+  <img src="assets/img/75f721f0513e4f37.jpg" alt="A grower crouching beside the raised beds picking tomatoes into a basket, with the homeowner reading on the patio in the background.">
+  <div class="caption"><p>One person, a few hours a week, a basket at the end of it.</p></div>
+</section>
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">Before You Agree</div>
+    <h2>Two things worth understanding first.</h2>
+    <div class="considerations">
+      <p><strong>Keep your access, and you keep your garden.</strong> Irish law distinguishes a lease from a licence by <em>exclusive possession</em>. A lease gives the other party the right to exclude you; a licence is permission to use ground you still share, and shared possession means no tenancy arises. Courts look at how an arrangement works rather than what it is called, so the protection is not a form of words &mdash; it is continuing to use your own garden.</p>
+      <p><strong>Tell your insurer.</strong> Liability to visitors is standard on an Irish household policy, but Allianz states plainly that <em>visitors to your home for business purposes are not covered on a standard home policy</em>. Someone growing food in your garden, particularly if money changes hands, is not an ordinary social visit. One phone call settles it.</p>
+    </div>
+  </section>
+
+</main>
+
+<section class="imagine-photo reveal">
+  <img src="assets/img/ba3fbcc7a04da889.jpg" alt="The same garden in evening light with the beds in full growth and a basket of vegetables on the patio beside the homeowner.">
+  <div class="caption"><p>The garden did not get smaller. It got busier.</p></div>
+</section>
+
+<main class="article">
+
+  <section class="article-section quiet-section reveal" style="border-bottom:none;">
+    <div class="kicker">Frequently Asked Questions</div>
+    <h2>Common questions.</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary><h3>How would I find somebody?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Community gardens, local growing groups and council waiting lists are where people already are. Homegrown.ie, an Irish listings pilot launched in 2026, matches hosts with growers directly &mdash; it is new, and had recorded no completed match at the time of writing.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Do we need something in writing?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Not legally, but write it down anyway. The six things you agreed, on one page, signed by both. It costs nothing, prevents most disagreements, and puts on record that this is permission to use ground rather than a letting.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Will it damage the garden?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Raised beds sit on top of the ground and can be lifted. Ask for beds rather than dug ground if you want the lawn back, and agree who restores the area.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Does anyone need permission for this?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Growing vegetables in a garden is not development, so no planning question arises. Anything built &mdash; a shed, a polytunnel &mdash; is treated the same as if you had put it there yourself.</div>
+      </details>
+    </div>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">What Everyone Gets</div>
+    <h2>Three people are better off.</h2>
+    <ul class="planning-conditions">
+      <li><strong>The grower gets ground now,</strong> rather than in eight years, and within walking distance instead of across the city.</li>
+      <li><strong>You get a garden that is looked after,</strong> more interesting to stand in, and producing something. Most hosts report the vegetables as the smaller half of it.</li>
+      <li><strong>The road gets a bit more food and a few more conversations.</strong> Ground that produces nothing is the only thing anybody loses.</li>
+    </ul>
+    <p>Nothing about this has to continue past one season. But the beds are built by then, the grower knows the ground, and next spring is a much shorter conversation.</p>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Looking Ahead</div>
+    <h2>Where this is going.</h2>
+    <p>Everything above can be arranged today between two people who have found each other. Finding each other is the hard part, and that is where PlotNua is going. None of it exists yet.</p>
+    <ul class="planning-conditions">
+      <li><strong>Knowing who is nearby.</strong> A homeowner has no way of knowing that somebody four streets away has waited six years for a plot. That person has no way of knowing about the lawn.</li>
+      <li><strong>Starting with your Eircode.</strong> Future versions could show you growers looking for space near you, community gardens and food initiatives already running in your area, and the gardening experience sitting on your own road.</li>
+    </ul>
+    <p class="planning-note">This is part of the same long-term idea as our other Discoveries: connecting what a property already has with the people nearby who could use it.</p>
+  </section>
+
+</main>
+
+<section class="pb-preview reveal" id="discover-your-property">
+    <!-- FOUNDER CORRECTION — this was a working journey with everything
+         switched off: a headline inviting the homeowner to start, a subhead
+         telling them to enter an Eircode, a DISABLED Eircode field they could
+         click into and not type in, and three present-tense boxes describing
+         a service this page cannot yet provide.
+         It now says one true thing and offers four ways onward. The disabled
+         input is gone rather than greyed out — a control a homeowner cannot
+         use is worse than no control at all. -->
+    <div class="pn-wordmark">PlotNua</div>
+    <h2 class="pb-headline">This journey is being prepared</h2>
+    <!-- FINAL UX — the founder's approved sentence, used verbatim. It
+         supersedes the Phase A wording, which named the number of questions:
+         accurate, but still a description of the form rather than of the
+         opportunity. This puts the property first and the questionnaire
+         nowhere. "There is plenty to explore" is kept, as it has been
+         throughout. -->
+    <p class="pb-subhead">When this Discovery is ready, you&rsquo;ll be able to explore whether
+      it could work for your property. In the meantime, there is plenty to explore.</p>
+
+    <div class="cs-exits">
+      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore Build a Home in Your Garden &rarr;</a>
+      <a class="cs-exit" href="discovery-an-extra-room.html">Explore Create an Extra Room &rarr;</a>
+      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
+      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
+    </div>
+
+    <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
+  </section>
+
+<section class="related reveal">
+  <div class="related-head">
+    <div class="kicker">Continue Exploring</div>
+    <h2>Related Discoveries</h2>
+  </div>
+  <div class="related-grid">
+    <a class="related-card" href="discovery-room-to-grow.html">
+      <div class="thumb"><img src="assets/img/92c60a78f601cedc.jpg" loading="lazy" decoding="async" alt="An Irish kitchen with the garden doors open, the family table covered in stock boxes, packing materials and a laptop, and a woman standing with a mug "></div>
+      <div class="r-kicker">Before You Choose</div>
+      <h3>Four Ways to Get More Space</h3>
+    </a>
+    <a class="related-card" href="discovery-an-extra-room.html">
+      <div class="thumb"><img src="assets/img/622372950ce70b40.jpg" loading="lazy" decoding="async" alt="An ordinary Irish back garden at dusk, the house lit on one side and a small timber-and-glass room at the far end of the garden, its interior warm but"></div>
+      <div class="r-kicker">Everyday Space</div>
+      <h3>Create an Extra Room</h3>
+    </a>
+    <a class="related-card" href="discovery-living-in-the-garden.html">
+      <div class="thumb"><img src="assets/img/8c60a8f27eb9c697.jpg" loading="lazy" decoding="async" alt="An ordinary Irish back garden behind a suburban house, with a small single-storey home standing at the far end, its door open and a person visible ins"></div>
+      <div class="r-kicker">Room To Build</div>
+      <h3>Build a Home in Your Garden</h3>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-mark">
+        <img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="40" height="40">
+        <span class="footer-word">PlotNua</span>
+      </div>
+    </div>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html#discover">Discoveries</a></li>
+          <li><a href="your-plot.html">Your Plot</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About PlotNua</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Social</h4>
+        <ul>
+          <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://linkedin.com/company/plotnua" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://pinterest.com/plotnua" target="_blank" rel="noopener">Pinterest</a></li>
+          <li><a href="https://tiktok.com/@plotnua" target="_blank" rel="noopener">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
+      </div>
+    </div>
+
+    <div class="footer-base">&copy; PlotNua.</div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const brandMark = document.getElementById('brandMark');
+
+    if (reduceMotion){
+      if (brandMark) brandMark.classList.add('in');
+    } else {
+      setTimeout(()=>{ if (brandMark) brandMark.classList.add('in'); }, 900);
+    }
+
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const io = new IntersectionObserver(es=>{
+        es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, {threshold:.12});
+      io.observe(el);
+    });
+  })();
+</script>
+
+
+<script>
+/* THE FLOATING BACK — a real Back, and it cannot leave PlotNua.
+
+   The href on the control is the no-JavaScript answer and the last-resort
+   answer: the Discovery Library. This script only ever intercepts in order
+   to do something better than that.
+
+   Everything hinges on deciding, BEFORE the homeowner clicks, whether the
+   previous document was ours. history.back() cannot be inspected — you
+   cannot ask where it would go — so it is only ever called after
+   document.referrer has positively confirmed a same-origin previous page.
+   That is what stops this control firing somebody out to Google or a social
+   feed they arrived from. */
+(function(){
+  var btn = document.getElementById('pnReturn');
+  if (!btn) return;
+
+  /* Captured at load, not at click: history.length grows as the homeowner
+     uses in-page anchors, and the difference between then and now is exactly
+     how we know whether one back() step still lands on the previous PAGE. */
+  var startLen = history.length;
+  var prev = '';
+  try {
+    if (document.referrer) {
+      var u = new URL(document.referrer, location.href);
+      var here = location.href.split('#')[0];
+      /* Same origin, and not this page referring to itself — a reload leaves
+         the page as its own referrer, and "back" to yourself is a dead
+         control. */
+      if (u.origin === location.origin && u.href.split('#')[0] !== here) prev = u.href;
+    }
+  } catch (e) { prev = ''; }
+
+  btn.addEventListener('click', function(e){
+    /* No confirmed PlotNua previous page: do nothing, and let the href carry
+       them to the Library. Direct URLs, bookmarks and search arrivals all
+       land here. */
+    if (!prev) return;
+    e.preventDefault();
+    if (history.length === startLen && startLen > 1) {
+      /* The real Back, and the only branch with any chance of restoring
+         state. Hidden Potential links out of your-plot.html, a single-page
+         app; a fresh navigation to the same URL definitely reloads it and
+         throws the journey away, whereas a history traversal MAY be served
+         from bfcache with Results still on screen.
+
+         MEASURED, and not as hoped: under headless Chromium the journey
+         reset to the Eircode entry screen, so bfcache did not restore it
+         here. Headless is not proof either way about a real browser, so
+         this is written as the better bet rather than as a guarantee, and
+         the state loss is reported as an open item rather than claimed
+         fixed. The DESTINATION is correct in every case; it is the SPA's
+         resume behaviour that is unresolved, and that is a separate piece
+         of work from a navigation label. */
+      history.back();
+    } else {
+      /* In-page anchors have pushed entries, so one back() step would land
+         on a hash of this page. Go to the genuine previous page directly. */
+      location.href = prev;
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- LAUNCH-INT-002 — the same consent and analytics every other page carries.
+     This page and your-plot.html were the only two without them. -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PKKJ0RK6N8');
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discovery Library | PlotNua</title>
+<meta name="description" content="Every Discovery PlotNua has researched: 6 ideas for an Irish property, filterable by what they are about.">
+<!-- LAUNCH COMPLETION — this page had a description and nothing else, while
+     all six Discovery pages carry the full set. The Library is a top-level
+     page people will link to, so without a canonical and Open Graph tags a
+     shared link showed no preview card at all. Same block, same order and the
+     same shared OG image as the Discovery pages — nothing new invented. -->
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://plotnua.ie/discoveries.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PlotNua">
+<meta property="og:title" content="Discovery Library | PlotNua">
+<meta property="og:description" content="Every Discovery begins with one question: could your property do this?">
+<meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://plotnua.ie/discoveries.html">
+<meta name="theme-color" content="#1F3B2E">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Discovery Library | PlotNua">
+<meta name="twitter:description" content="Every Discovery begins with one question: could your property do this?">
+<meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" href="assets/brand/plotnua-mark-master.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
+  }
+  *{ box-sizing:border-box; }
+  [hidden]{ display:none !important; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'Work Sans',system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 7vw; }
+
+  .brand-mark{ position:fixed; top:22px; left:22px; z-index:40; display:block;
+    width:44px; height:44px; padding:5px; border-radius:9px;
+    background:var(--paper); box-shadow:0 1px 3px rgba(31,59,46,.14); }
+  .brand-mark img{ display:block; width:100%; height:100%; }
+
+  /* A library opens with what it is and how much of it there is. Nothing else:
+     the point of the page is the grid, and every line above the grid is a line
+     between the visitor and what they came for. */
+  .lib-head{ padding:132px 0 40px; }
+  .lib-kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:16px; }
+  /* ROUND 4 — this heading is the page. It was set at the size of a section
+     title on a page that has no other titles competing with it. */
+  .lib-head h1{ font-family:'Fraunces',Georgia,serif; font-weight:600;
+    font-size:clamp(40px,6.4vw,76px); line-height:1.08; letter-spacing:-.015em;
+    margin:0 0 18px; max-width:14ch; }
+  .lib-count{ margin:0; color:var(--soft); font-size:17px; line-height:1.6;
+    max-width:34ch; }
+
+  .lib-filters{ display:flex; flex-wrap:wrap; gap:10px; padding:6px 0 34px; }
+  .lib-filter{
+    -webkit-appearance:none; appearance:none; cursor:pointer;
+    font-family:'Work Sans',sans-serif; font-size:13px; font-weight:500;
+    letter-spacing:.04em; padding:9px 18px; min-height:40px;
+    border:1px solid rgba(31,59,46,.22); border-radius:22px;
+    background:transparent; color:var(--soft);
+  }
+  .lib-filter:hover{ border-color:var(--ink); color:var(--ink); }
+  .lib-filter.is-on{ background:var(--ink); border-color:var(--ink); color:var(--brand-ivory); }
+  .lib-filter:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+
+  .lib-grid{
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:44px 30px; padding-bottom:96px;
+  }
+  .lib-card{ display:block; text-decoration:none; color:inherit; }
+  .lib-shot{ display:block; overflow:hidden; border-radius:3px; background:var(--paper); }
+  .lib-shot img{
+    display:block; width:100%; height:230px; object-fit:cover;
+    transition:transform 420ms cubic-bezier(.2,.8,.3,1);
+  }
+  .lib-card:hover .lib-shot img{ transform:scale(1.03); }
+  .lib-meta{ display:flex; align-items:center; gap:10px; margin:14px 0 8px; }
+  .lib-cat{
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); font-weight:600;
+  }
+  /* Said plainly, and only where it is true. A visitor who clicks one of these
+     should already know what they are going to find. */
+  .lib-soon{
+    font-size:11px; letter-spacing:.08em; color:var(--soft);
+    border:1px solid rgba(31,59,46,.18); border-radius:20px; padding:3px 10px;
+  }
+  .lib-title{
+    display:block; font-family:'Fraunces',Georgia,serif; font-weight:600;
+    font-size:21px; line-height:1.3; margin-bottom:7px;
+  }
+  .lib-line{ display:block; color:var(--soft); font-size:15px; line-height:1.6; }
+  .lib-card:hover .lib-title{ text-decoration:underline; text-underline-offset:3px; }
+  .lib-empty{ color:var(--soft); font-size:15.5px; padding:10px 0 96px; }
+
+  .lib-foot{ border-top:1px solid rgba(31,59,46,.12); padding:30px 0 70px; }
+  .lib-foot a{ color:var(--soft); font-size:14px; text-decoration:none;
+    border-bottom:1px solid rgba(85,96,90,.3); }
+  .lib-foot a:hover{ color:var(--ink); border-bottom-color:var(--ink); }
+
+  @media (max-width:900px){
+    .lib-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 22px; }
+  }
+  @media (max-width:600px){
+    .lib-head{ padding:104px 0 30px; }
+    .lib-head h1{ max-width:none; }
+    .lib-grid{ grid-template-columns:1fr; gap:34px; }
+    .lib-shot img{ height:200px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="brand-mark" aria-label="PlotNua — home">
+  <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
+</a>
+
+<div class="wrap">
+  <header class="lib-head">
+    <p class="lib-kicker">Discovery Library</p>
+    <h1>Discoveries</h1>
+    <!-- ROUND 5 — this was "6 researched ideas… 3 have a personalised journey
+         ready", which is an inventory count. It reads as a version number, and
+         it goes stale the day either figure changes. What the page is FOR does
+         not go stale. -->
+    <p class="lib-count">Every Discovery begins with one question:
+      could your property do this?</p>
+  </header>
+
+  <div class="lib-filters" role="group" aria-label="Filter Discoveries">
+        <button type="button" class="lib-filter is-on" data-filter="All" aria-pressed="true">All</button>
+        <button type="button" class="lib-filter" data-filter="Space" aria-pressed="false">Space</button>
+        <button type="button" class="lib-filter" data-filter="Garden" aria-pressed="false">Garden</button>
+        <button type="button" class="lib-filter" data-filter="Art" aria-pressed="false">Art</button>
+  </div>
+
+  <main class="lib-grid" id="libGrid">
+      <a class="lib-card" href="discovery-an-extra-room.html" data-cat="Space">
+        <span class="lib-shot"><img src="assets/img/622372950ce70b40.jpg" alt="An Irish back garden at dusk, the house lit on one side and a small timber-and-glass room at the far end." loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="lib-meta">
+          <span class="lib-cat">Space</span>
+        </span>
+        <span class="lib-title">Create an Extra Room</span>
+        <span class="lib-line">New planning rules have made adding an extra room much simpler.</span>
+      </a>
+      <a class="lib-card" href="discovery-room-to-grow.html" data-cat="Space">
+        <span class="lib-shot"><img src="assets/img/92c60a78f601cedc.jpg" alt="An Irish kitchen with the garden doors open and the family table covered in plans." loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="lib-meta">
+          <span class="lib-cat">Space</span>
+        </span>
+        <span class="lib-title">Four Ways to Get More Space</span>
+        <span class="lib-line">Four ways to make more space, set side by side before you commit to one.</span>
+      </a>
+      <a class="lib-card" href="discovery-living-in-the-garden.html" data-cat="Space">
+        <span class="lib-shot"><img src="assets/img/8c60a8f27eb9c697.jpg" alt="An Irish back garden behind a suburban house, with a small single-storey home at the end of it." loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="lib-meta">
+          <span class="lib-cat">Space</span>
+        </span>
+        <span class="lib-title">Build a Home in Your Garden</span>
+        <span class="lib-line">A small home at the far end of the garden, and what the new rules allow.</span>
+      </a>
+      <a class="lib-card" href="discovery-the-borrowed-garden.html" data-cat="Garden">
+        <span class="lib-shot"><img src="assets/img/e5ecf61c22bb13db.jpg" alt="An Irish back garden with raised vegetable beds along one side and a grower tending them." loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="lib-meta">
+          <span class="lib-cat">Garden</span>
+        <span class="lib-soon">Journey coming soon</span>
+        </span>
+        <span class="lib-title">Share Your Spare Garden</span>
+        <span class="lib-line">Let someone nearby grow food on a small part of your garden.</span>
+      </a>
+      <a class="lib-card" href="discovery-a-home-for-art.html" data-cat="Art">
+        <span class="lib-shot"><img src="assets/img/c0f5bfcde033dea3.jpg" alt="A calm Irish living room with a timber ceiling and one large painting on the wall." loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="lib-meta">
+          <span class="lib-cat">Art</span>
+        <span class="lib-soon">Journey coming soon</span>
+        </span>
+        <span class="lib-title">Buy Original Irish Art</span>
+        <span class="lib-line">Discover and buy original artwork from artists across Ireland.</span>
+      </a>
+      <a class="lib-card" href="discovery-open-your-home-to-art.html" data-cat="Art">
+        <span class="lib-shot"><img src="assets/img/933e80e670e95183.jpg" alt="A generous Irish living room with exposed timber beams and oak floors." loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="lib-meta">
+          <span class="lib-cat">Art</span>
+        <span class="lib-soon">Journey coming soon</span>
+        </span>
+        <span class="lib-title">Host an Art Exhibition at Home</span>
+        <span class="lib-line">Open your home for a weekend exhibition and support local artists.</span>
+      </a>
+  </main>
+  <p class="lib-empty" id="libEmpty" hidden>Nothing under that heading yet.</p>
+
+  <footer class="lib-foot">
+    <a href="index.html">Back to the homepage</a>
+  </footer>
+</div>
+
+<script>
+/* The filter. It hides cards; it does not reorder them, and it does not
+   navigate. Everything is in the page already, so there is nothing to wait
+   for and nothing to break if this script never runs — without it the visitor
+   simply sees all six, which is the correct default anyway. */
+(function(){
+  var grid = document.getElementById('libGrid');
+  var empty = document.getElementById('libEmpty');
+  var btns = [].slice.call(document.querySelectorAll('.lib-filter'));
+  if (!grid || !btns.length) return;
+  var cards = [].slice.call(grid.querySelectorAll('.lib-card'));
+
+  function apply(cat){
+    var shown = 0;
+    cards.forEach(function(c){
+      var on = (cat === 'All' || c.getAttribute('data-cat') === cat);
+      c.hidden = !on;
+      if (on) shown++;
+    });
+    empty.hidden = shown > 0;
+    btns.forEach(function(b){
+      var on = b.getAttribute('data-filter') === cat;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){ apply(b.getAttribute('data-filter')); });
+  });
+})();
+</script>
+</body>
+</html>
