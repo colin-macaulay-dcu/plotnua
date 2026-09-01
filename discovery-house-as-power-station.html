@@ -424,6 +424,26 @@
   .related-card .r-kicker{ margin-top:22px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); }
   .related-card h3{ margin-top:9px; font-size:clamp(17px,1.7vw,19px); transition:color .3s ease; }
   .related-card:hover h3{ color:var(--accent); }
+
+  /* ---- The span card. The markup here is kicker / title / line, not a
+     thumbnail and an h3, and the three classes below had no rules at all:
+     every card on every Discovery rendered as one run of inline body text.
+     Values are lifted from .related-card .r-kicker and .related-card h3 above,
+     so this is the existing design expressed for the markup in use. ---- */
+  .related-card .related-kicker{ display:block; font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--brand-sage); }
+  .related-card .related-title{ display:block; margin-top:9px;
+    font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em;
+    font-size:clamp(17px,1.7vw,19px); line-height:1.3; color:var(--ink);
+    transition:color .3s ease; }
+  .related-card:hover .related-title{ color:var(--accent); }
+  .related-card .related-line{ display:block; margin-top:10px; font-size:15px;
+    line-height:1.7; color:var(--soft); }
+  /* .related-head carried the heading's centring, width, size and its 48px of
+     air. This markup has a bare h2, so it inherited none of them and the
+     heading sat on top of the first card. Same four values, applied direct. */
+  .related > h2{ max-width:1040px; margin:0 auto 48px; text-align:center;
+    font-size:clamp(23px,2.8vw,32px); }
   @media(max-width:820px){
     .related-grid{ grid-template-columns:1fr; gap:26px; max-width:420px; }
     .related-card .thumb{ aspect-ratio:3/2; }
