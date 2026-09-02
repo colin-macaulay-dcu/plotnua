@@ -1048,7 +1048,7 @@
      that whole flow is hidden. Requiring the flow container itself to be
      visible avoids the panel widening for the generic flow's "What are
      you imagining?" question, which has no gallery. */
-  #matchInputPanel:has(#matchFlowArtistStudio:not([hidden]) .match-question[data-step="1"].is-active){
+  #matchInputPanel:has(#matchFlowGardenRoom:not([hidden]) .match-question[data-step="1"].is-active){
     max-width:560px;
   }
 
@@ -7280,7 +7280,7 @@
          sprint) now reads `undefined` — an accepted, temporary reduction
          in recommendation differentiation. See buildDecisionProfile() in
          the script and the Sprint 1 completion report. -->
-    <div class="match-flow" id="matchFlowArtistStudio" data-flow="unified">
+    <div class="match-flow" id="matchFlowGardenRoom" data-flow="unified">
       <p class="sr-only" id="matchStepAnnouncer" aria-live="polite" role="status"></p>
       <div class="match-progress-dots" role="group" aria-label="Discovery progress">
         <span class="match-dot is-active" data-step="1" aria-current="step" aria-label="Question 1 of 2"></span>
@@ -7301,6 +7301,12 @@
         <div class="match-options">
           <button type="button" class="match-option" data-field="appearancePreference" data-value="modern" aria-pressed="false">Modern</button>
           <button type="button" class="match-option" data-field="appearancePreference" data-value="traditional" aria-pressed="false">Traditional</button>
+          <!-- ISSUE 004 PIECE 1 — a genuinely neutral answer. 'either' is the
+               value appearanceBand() already treats as no preference: it
+               returns band 1 for every product, so nothing is promoted,
+               nothing is demoted and nothing is removed. Verified in the code
+               rather than assumed. -->
+          <button type="button" class="match-option" data-field="appearancePreference" data-value="either" aria-pressed="false">Not sure / Show me both</button>
         </div>
       </div>
 
@@ -7340,6 +7346,14 @@
           <button type="button" class="match-option" data-field="budgetConstraint" data-value="10k-20k" aria-pressed="false">€10,000 – €20,000</button>
           <button type="button" class="match-option" data-field="budgetConstraint" data-value="20k-30k" aria-pressed="false">€20,000 – €30,000</button>
           <button type="button" class="match-option" data-field="budgetConstraint" data-value="30k-plus" aria-pressed="false">€30,000+</button>
+          <!-- ISSUE 004 PIECE 1 — a genuine no-filter answer. 'not-sure' is
+               absent from AS_BUDGET_BANDS, so rankGardenRoomCandidates leaves
+               `band` null and never filters the pool; and it is absent from
+               AS_BUDGET_LABEL, so every homeowner-facing budget sentence is
+               already guarded on that lookup and stays silent. There was
+               previously no way to decline, so a homeowner who did not know
+               had to guess a band that then filtered the pool. -->
+          <button type="button" class="match-option" data-field="budgetConstraint" data-value="not-sure" aria-pressed="false">Not sure</button>
         </div>
       </div>
     </div>
@@ -8570,7 +8584,7 @@
     // Discovery HTML) — this mapping is removed with it rather than left
     // pointing at a non-existent element, since setActiveFlow() below no
     // longer reads it.
-    matchFlowArtistStudio: document.getElementById('matchFlowArtistStudio'),
+    matchFlowGardenRoom: document.getElementById('matchFlowGardenRoom'),
     matchBackBtn: document.getElementById('matchBackBtn'),
     // PATCH 1B — LAUNCH/UX REVIEW, OBJECTIVE 3: see the markup comment
     // above matchConversationalBackBtn's own <button> for the full
@@ -8771,7 +8785,7 @@
   //   plotnua-myplot-launch-v1.3.html                       → generic route (unchanged)
   //   plotnua-myplot-launch-v1.3.html?discovery=artist-studio → Artist Studio route
   const DISCOVERY_CONTENT = {
-    'artist-studio': {
+    'garden-room': {
       label: 'Garden Room',
       /* FP-1 — the category these Results belong to. Plot Twist excludes it
          before selecting, permanently, so a homeowner researching a garden
@@ -8837,7 +8851,24 @@
   // local dev-review shortcut keeps working unchanged. This is a real
   // implementation decision, not a neutral default — flagged as such in
   // the Sprint 1 completion report.
-  const discoveryContext = 'artist-studio';
+  /* ISSUE 004 PIECE 1 — Artist Studio is retired. Garden Room is the only
+     supported Atlas product context, and the constant is replaced by a real
+     URL contract:
+
+         your-plot.html?discovery=garden-room
+
+     The parameter is read, not ignored — but it is only honoured when it
+     names a context DISCOVERY_CONTENT actually declares. A missing parameter,
+     an unknown one, or a value from an older link all fall back to Garden
+     Room rather than producing an undefined lookup and a broken journey.
+     Exactly one context exists, and this reads as one context rather than
+     implying support PlotNua does not have. */
+  const GARDEN_ROOM_CONTEXT = 'garden-room';
+  const requestedDiscovery = urlParams.get('discovery');
+  const discoveryContext =
+    (requestedDiscovery && DISCOVERY_CONTENT[requestedDiscovery])
+      ? requestedDiscovery
+      : GARDEN_ROOM_CONTEXT;
 
   function applyDiscoveryContextCopy(){
     if (!discoveryContext) return;
@@ -12098,7 +12129,7 @@
   let lastOrderedRows = null;
 
   function rankCandidates(decisionProfile){
-    const ordered = rankArtistStudioCandidates(decisionProfile);
+    const ordered = rankGardenRoomCandidates(decisionProfile);
     const scoredPool = (ordered && ordered.__scored) || [];
     // ordered.__scored is the qualified, ordered pool; ordered[0] is the
     // Best Overall answer. Both are read below without recomputing either.
@@ -12222,7 +12253,7 @@
     return ordered;
   }
 
-  function rankArtistStudioCandidates(decisionProfile){
+  function rankGardenRoomCandidates(decisionProfile){
     /* MATCH-ELIGIBILITY-001 — the gate sits HERE, before the budget band and
        before any scoring. Everything downstream (bands, diversity, carousel,
        views, refinement) operates on an already-eligible pool, so no later
@@ -12529,7 +12560,7 @@
     // patch brief, rather than inventing a replacement question. The
     // generic (non-Artist-Studio) flow's "use" question and its reasoning
     // sentence are untouched.
-    reasons.push(`PlotNua has not yet assessed this specific model against every requirement of your Artist Studio project — worth checking when you enquire.`);
+    reasons.push(`PlotNua has not yet assessed this specific model against every requirement of your garden room project — worth checking when you enquire.`);
 
     return reasons;
   }
@@ -12581,7 +12612,7 @@
     {
       const dp = decisionProfile || buildDecisionProfile(matchState);
       const appearanceWord = { modern: 'Modern', traditional: 'Traditional' }[dp.appearancePreference];
-      fields.push((appearanceWord ? appearanceWord + ' ' : '') + 'Creative Studio');
+      fields.push((appearanceWord ? appearanceWord + ' ' : '') + 'Garden Room');
       /* DISCOVERY v1.0 — the eyebrow used to carry a priority segment
          between the style and the budget: "MODERN CREATIVE STUDIO ·
          QUALITY-FOCUSED · €20,000–€30,000". The homeowner is no longer asked,
@@ -12634,7 +12665,7 @@
     {
       const dp = decisionProfile || buildDecisionProfile(matchState);
       const appearanceWord = { modern: 'Modern', traditional: 'Traditional' }[dp.appearancePreference];
-      bullets.push((appearanceWord ? appearanceWord + ' ' : '') + 'creative studio');
+      bullets.push((appearanceWord ? appearanceWord + ' ' : '') + 'garden room');
       const styleBulletText = {
         modern: 'Modern design',
         traditional: 'Traditional design',
@@ -14609,7 +14640,12 @@
        recommended product's own spaceRole and reported it back as something
        the homeowner had been looking for. */
     const priceStr = pb046Price(product.price); // PB046-S1: was unguarded
-    const isStudio = IS_SINGLE_DISCOVERY_BUILD;
+    /* ISSUE 004 PIECE 1 — was `const isStudio = IS_SINGLE_DISCOVERY_BUILD`,
+       which is always true, so the line below said "creative studio" and its
+       'garden room' alternative had never rendered. The flag gates the
+       preference sentences, not the noun, so it is renamed for what it
+       actually asks. */
+    const hasStatedPreferences = IS_SINGLE_DISCOVERY_BUILD;
     const dp = ctx.decisionProfile || {};
     const trace = ctx.scoreTrace || null;
 
@@ -14617,8 +14653,8 @@
     // language (appearance preference, never reverse-mapped into a
     // retired category), lands on "this is where we'd begin." No budget
     // number here; it belongs in the reasoning sentence below.
-    let opening = `You were looking for a ${isStudio ? 'creative studio' : 'garden room'}`;
-    if (isStudio && dp.appearancePreference && APPEARANCE_FEEL[dp.appearancePreference]) {
+    let opening = `You were looking for a garden room`;
+    if (hasStatedPreferences && dp.appearancePreference && APPEARANCE_FEEL[dp.appearancePreference]) {
       opening += ` with ${APPEARANCE_FEEL[dp.appearancePreference]}`;
     }
     opening += ". This is where we'd begin.";
@@ -14643,12 +14679,18 @@
        left is the price against the stated budget and the appearance
        evidence — two clauses, both answering a question that was asked. */
 
-    if (isStudio && dp.originPreference && dp.originPreference !== 'either' && trace && trace.originScore && trace.originScore.manufactureCountry) {
+    if (hasStatedPreferences && dp.originPreference && dp.originPreference !== 'either' && trace && trace.originScore && trace.originScore.manufactureCountry) {
       reasons.push(`it's genuinely manufactured in ${trace.originScore.manufactureCountryShort || trace.originScore.manufactureCountry}`);
     }
 
-    if (isStudio && dp.appearancePreference && trace && trace.appearanceEvidenceScore && trace.appearanceEvidenceScore.matched) {
-      reasons.push(`the Atlas record itself describes it as ${trace.appearanceEvidenceScore.matchedPhrase}, matching the ${dp.appearancePreference} feel you chose`);
+    if (hasStatedPreferences && dp.appearancePreference && trace && trace.appearanceEvidenceScore && trace.appearanceEvidenceScore.matched) {
+      /* ISSUE 004 PIECE 1 — this said "the Atlas record itself describes
+         it as X". Measured, the evidence behind it is usually a cue found in
+         the product's own name, type or material — 24 of 701 Atlas products
+         carry a curated Design Language, and none of the 47 in the live pool
+         does. The claim is now proportionate to the evidence: PlotNua says
+         what the cues lean towards, not what the Atlas declares. */
+      reasons.push(`its design cues lean ${dp.appearancePreference} — ${trace.appearanceEvidenceScore.matchedPhrase} — which is the feel you chose`);
     }
 
     const reasoning = (product.price == null ? `${PB046_NO_PRICE}. ` : `At ${priceStr}, `) + joinWithAnd(reasons) + '.';
@@ -14657,7 +14699,11 @@
     // only when the homeowner stated an appearance preference but no
     // genuine evidence supports (or refutes) it for this specific product.
     let appearanceFallback = '';
-    if (isStudio && dp.appearancePreference && !(trace && trace.appearanceEvidenceScore && trace.appearanceEvidenceScore.matched)) {
+    /* ISSUE 004 PIECE 1 — 'either' means the homeowner declined to state a
+       preference, so the apology for incomplete appearance evidence is not
+       owed to them: they did not ask the question. */
+    if (hasStatedPreferences && dp.appearancePreference && dp.appearancePreference !== 'either'
+        && !(trace && trace.appearanceEvidenceScore && trace.appearanceEvidenceScore.matched)) {
       appearanceFallback = " We couldn't confidently compare appearance across every product because verified appearance evidence is still incomplete.";
     }
 
@@ -17489,7 +17535,7 @@
       box.appendChild(aaFig('aa-fig aa-fig--big', year, mark));
       cell.appendChild(box);
       cell.appendChild(aaEl('p', 'aa-find-cap',
-        years + ' years building garden studios in Ireland.'));
+        years + ' years building garden rooms in Ireland.'));
       finds.appendChild(cell);
       notes.push([mark, 'Company trading record']);
     }
@@ -19159,7 +19205,9 @@
     const rows = [];
     if (!dp) return rows;
     const appearanceMatched = !!(trace && trace.appearanceEvidenceScore && trace.appearanceEvidenceScore.matched);
-    if (dp.appearancePreference) {
+    /* ISSUE 004 PIECE 1 — same reason: with 'either' this row would have
+       read "We can't promise the either you wanted". */
+    if (dp.appearancePreference && dp.appearancePreference !== 'either') {
       /* RESULTS-UX-007 — "The Atlas record describes it as…" is database
          state read aloud. The homeowner asked for a modern look; the answer is
          whether they are getting one. */
@@ -23891,10 +23939,10 @@
     // array's .length (the auto-advance check, the "return to the last
     // question" handler) is generic, so this line alone is what makes the
     // journey two questions long.
-    'artist-studio': [['appearancePreference'], ['budgetConstraint']],
+    'garden-room': [['appearancePreference'], ['budgetConstraint']],
   };
-  let activeFlow = 'artist-studio';
-  let activeFlowEl = els.matchFlowArtistStudio;
+  let activeFlow = GARDEN_ROOM_CONTEXT;
+  let activeFlowEl = els.matchFlowGardenRoom;
 
   // PB-001 SPRINT 1: simplified now that there is only one flow —
   // activeFlow/activeFlowEl are fixed, not derived from discoveryContext
@@ -23902,9 +23950,9 @@
   // its declaration above), and the matchFlowGeneric branch is removed
   // along with its markup.
   function setActiveFlow(){
-    activeFlow = 'artist-studio';
-    activeFlowEl = els.matchFlowArtistStudio;
-    els.matchInputKicker.textContent = DISCOVERY_CONTENT['artist-studio'].matchKicker;
+    activeFlow = GARDEN_ROOM_CONTEXT;
+    activeFlowEl = els.matchFlowGardenRoom;
+    els.matchInputKicker.textContent = DISCOVERY_CONTENT[GARDEN_ROOM_CONTEXT].matchKicker;
   }
 
   // PATCH D — TASK 1: traced the existing code before changing anything —
