@@ -535,123 +535,140 @@
   .pb-form{ width:100%; display:flex; flex-direction:column; align-items:center; }
 
   /* ===========================================================
-     ISSUE 004 PIECE 2 — THE ROUTE ASSESSMENT.
-     Built from the vocabulary already on this page: the .pb-preview
-     ground, the .pn-wordmark, the .pb-headline / .pb-subhead pair and
-     the .cs-exit link. No new colour is introduced and no existing
-     rule is altered.
+     ISSUE 004 PIECE 2.2 — FOUR INDEPENDENT ROUTE JOURNEYS.
 
-     The four route cards are deliberately identical — same border,
-     same padding, same heading size, same link treatment. Garden is
-     last in the fixed order. The only thing that differs between
-     cards is the words and where the link goes.
+     ONE ACTION SYSTEM. Piece 2.1 put class="cs-exit" on a <button>.
+     That class was written for links: it draws a bottom rule but never
+     resets appearance, background or border, so the Back control
+     rendered with the browser's own chrome — measured on the live page
+     at 2px outset black on #efefef, which is exactly the
+     "default-browser-button appearance" the review reported.
+
+     Everything interactive below therefore starts from .rt-act, which
+     resets the element first and styles it second. Doors, answers, Back
+     and the one primary action share a font, a focus ring, an easing
+     and an arrow that moves; they differ only in weight, and that
+     difference is the hierarchy.
+
+     No new colour is introduced. Every value is a brand token.
      =========================================================== */
   [hidden]{ display:none !important; }
-  /* ISSUE 004 PIECE 2 — the site's screen-reader utility, copied verbatim
-     from index.html. Without it the step announcer rendered as visible
-     text above every question. Found by looking at the render; the DOM
-     checks could not see it. */
+  /* The site's screen-reader utility, copied verbatim from index.html.
+     Without it the step announcer renders as visible text. */
   .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-  .rt-wrap{ width:100%; max-width:760px; margin:0 auto; text-align:left; }
-  .rt-progress{ display:flex; gap:7px; justify-content:center; margin-bottom:30px; }
-  .rt-dot{ width:7px; height:7px; border-radius:50%; background:rgba(31,59,46,.18); }
-  .rt-dot.is-on{ background:var(--brand-sage); }
-  .rt-q-title{ font-family:'Fraunces',serif; font-weight:400; font-size:clamp(20px,2.6vw,26px);
-    line-height:1.3; color:var(--ink); margin:0 0 20px; text-align:center; }
-  .rt-options{ display:flex; flex-direction:column; gap:10px; }
-  .rt-option{
-    -webkit-appearance:none; appearance:none; cursor:pointer; width:100%;
-    font-family:'Work Sans',sans-serif; font-size:15.5px; line-height:1.5; text-align:left;
-    color:var(--ink); background:var(--paper); border:1px solid rgba(31,59,46,.18);
-    border-radius:3px; padding:15px 18px; min-height:44px;
-    transition:border-color .2s ease, background .2s ease;
-  }
-  .rt-option:hover{ border-color:var(--accent); }
-  .rt-option:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
-  .rt-back{ margin-top:20px; text-align:center; }
 
-  /* ---- the result ---- */
-  .rt-result-head{ text-align:center; margin-bottom:34px; }
-  .rt-routes{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
-  .rt-card{
-    background:var(--paper); border:1px solid rgba(31,59,46,.14); border-radius:3px;
-    padding:24px 24px 22px; display:flex; flex-direction:column;
-  }
-  .rt-card h4{
-    font-family:'Fraunces',serif; font-weight:600; font-size:19px; line-height:1.3;
-    color:var(--ink); margin:0 0 4px;
-  }
-  .rt-state{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--accent); margin-bottom:13px; }
-  .rt-card.is-out .rt-state{ color:var(--soft); }
-  .rt-why{ font-size:15px; line-height:1.7; color:var(--soft); margin:0 0 13px; }
-  .rt-next{ font-size:14.5px; line-height:1.7; color:var(--soft); margin:0 0 16px; }
-  .rt-next strong{ color:var(--ink); font-weight:600; }
-  .rt-card .cs-exit{ align-self:flex-start; margin-top:auto; }
+  .rt-wrap{ width:100%; max-width:780px; margin:0 auto; text-align:left; }
 
-  /* ---- the shared next-step panel, used by three routes ---- */
-  .rt-panel{ margin-top:30px; background:var(--paper);
-    border:1px solid rgba(31,59,46,.14); border-radius:3px; padding:28px 26px 26px; }
-  .rt-panel h4{ font-family:'Fraunces',serif; font-weight:600; font-size:20px;
-    color:var(--ink); margin:0 0 12px; }
-  .rt-panel p{ font-size:15px; line-height:1.75; color:var(--soft); margin:0 0 12px; }
-  .rt-panel .cs-exits{ justify-content:flex-start; margin-top:20px; }
+  /* ---- the reset every control is built on ---- */
+  .rt-act{
+    -webkit-appearance:none; appearance:none; background:none; border:0; margin:0;
+    padding:0; cursor:pointer; text-align:left; color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+  }
+  .rt-act:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:4px; border-radius:2px; }
+  /* Screen headings take focus so that a keyboard or screen-reader user is
+     carried to the screen they just opened. They carry tabindex="-1" and are
+     never in the tab order, so the browser's ring on them is noise. Measured
+     before this rule: outline auto 1px rgb(16,16,16) on the entry heading.
+     The controls above keep their ring, which is the one that matters. */
+  .rt-wrap [tabindex="-1"]:focus{ outline:none; }
+  .rt-arrow{ font-style:normal; display:inline-block; transition:transform .25s ease; }
 
-  /* ---- ISSUE 004 PIECE 2.1 ----
-     The four route choices are FOUR EQUAL NEXT JOURNEYS, not four reports.
-     One rule sets all of them, so nothing can drift apart: same padding,
-     same border, same type, same action. The garden gets no extra weight
-     here — its live Atlas journey only becomes visible once it is chosen. */
-  /* The intro is the first thing in the journey and sits centred like the
-     question titles and the result heading. Without this it inherited
-     text-align:left from .rt-wrap and opened ragged against a centred
-     wordmark — measured, not guessed: left / 320px against centre. */
-  #rtIntro{ text-align:center; }
-  #rtIntro .pb-headline{ margin-left:auto; margin-right:auto; }
-  .rt-intro-body{ max-width:52ch; margin-left:auto; margin-right:auto; }
-  .rt-intro-go{ text-align:center; margin-top:26px; }
+  /* ---- the entry: one question, four doors ---- */
+  .rt-head{ text-align:center; margin:0 0 38px; }
+  .rt-head .pb-headline{ margin-left:auto; margin-right:auto; max-width:20ch; }
+  .rt-head .pb-subhead{ margin:0 auto; max-width:46ch; }
+
+  .rt-doors{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+  /* FOUR EQUAL DOORS. One rule sets all four, so nothing can drift apart.
+     No state, no ranking and no preselection: at this point the homeowner
+     has answered nothing, so there is nothing to rank them by. */
+  .rt-door{
+    background:var(--paper); border:1px solid rgba(31,59,46,.10); border-radius:4px;
+    padding:30px 28px 26px; min-height:44px;
+    display:flex; flex-direction:column; gap:9px;
+    transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  }
+  .rt-door:hover{ border-color:rgba(143,175,138,.85); transform:translateY(-2px);
+    box-shadow:0 6px 22px rgba(31,59,46,.07); }
+  .rt-door:hover .rt-arrow{ transform:translateX(4px); }
+  .rt-door-name{ font-family:'Fraunces',serif; font-weight:600; font-size:21px;
+    line-height:1.25; letter-spacing:-.005em; color:var(--ink); }
+  .rt-door-lead{ font-size:15px; line-height:1.65; color:var(--soft); }
+  .rt-door-go{ font-size:13px; font-weight:600; letter-spacing:.06em; color:var(--accent);
+    margin-top:5px; display:inline-flex; align-items:center; gap:7px; }
+
+  /* ---- a question, inside one branch ---- */
   .rt-eyebrow{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.16em;
-    text-transform:uppercase; color:var(--accent); margin:0 0 10px; text-align:center; }
-  .rt-choices{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-  .rt-choice{
-    -webkit-appearance:none; appearance:none; cursor:pointer; text-align:left; width:100%;
-    background:var(--paper); border:1px solid rgba(31,59,46,.18); border-radius:3px;
-    padding:20px 20px 18px; min-height:44px;
-    display:flex; flex-direction:column; gap:6px;
-    transition:border-color .2s ease;
+    text-transform:uppercase; color:var(--accent); margin:0 0 12px; text-align:center; }
+  .rt-q-title{ font-family:'Fraunces',serif; font-weight:400; font-size:clamp(21px,2.7vw,27px);
+    line-height:1.3; color:var(--ink); margin:0; text-align:center; max-width:24ch;
+    margin-left:auto; margin-right:auto; }
+  .rt-options{ display:flex; flex-direction:column; gap:12px;
+    max-width:560px; margin:32px auto 0; }
+  .rt-option{
+    width:100%; background:var(--paper); border:1px solid rgba(31,59,46,.10);
+    border-radius:4px; padding:18px 20px; min-height:44px;
+    font-size:16px; line-height:1.5; color:var(--ink);
+    display:flex; align-items:center; justify-content:space-between; gap:18px;
+    transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
   }
-  .rt-choice:hover{ border-color:var(--accent); }
-  .rt-choice:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
-  .rt-choice-name{ font-family:'Fraunces',serif; font-weight:600; font-size:17px;
-    line-height:1.3; color:var(--ink); }
-  .rt-choice-state{ font-family:'Work Sans',sans-serif; font-size:10.5px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--accent); }
-  .rt-choice-line{ font-size:14.5px; line-height:1.6; color:var(--soft); }
-  .rt-choice-go{ font-family:'Work Sans',sans-serif; font-size:13px; font-weight:600;
-    letter-spacing:.05em; color:var(--ink); margin-top:4px; }
-  /* Muted, never hidden. A route the property does not have is still information. */
-  .rt-choice.is-out{ opacity:.72; }
-  .rt-choice.is-out .rt-choice-state{ color:var(--soft); }
+  .rt-option:hover{ border-color:rgba(143,175,138,.85); transform:translateY(-1px);
+    box-shadow:0 4px 16px rgba(31,59,46,.06); }
+  .rt-option .rt-arrow{ color:var(--accent); opacity:0; }
+  .rt-option:hover .rt-arrow{ opacity:1; transform:translateX(3px); }
 
-  #rtDetail .rt-eyebrow{ text-align:left; }
-  #rtDetail .pb-headline{ text-align:left; max-width:20ch; }
-  #rtDetail .rt-why, #rtDetail .rt-next{ max-width:60ch; }
-  .rt-detail-prep{ font-size:14.5px; line-height:1.75; color:var(--soft);
-    border-left:2px solid var(--brand-sage); padding-left:14px; margin:6px 0 0; max-width:60ch; }
-  .rt-detail-cta{ margin-top:18px; }
-  .rt-nav{ margin-top:30px; text-align:center; }
+  /* ---- that route's own result ---- */
+  .rt-result-state{ text-align:left; }
+  #rtResult .pb-headline{ text-align:left; max-width:22ch; margin-bottom:18px; }
+  .rt-why{ font-size:16.5px; line-height:1.75; color:var(--soft); margin:0 0 16px; max-width:62ch; }
+  .rt-next{ font-size:15.5px; line-height:1.75; color:var(--soft); margin:0; max-width:62ch; }
+  .rt-next b{ color:var(--ink); font-weight:600; }
+  .rt-prep{ font-size:15px; line-height:1.75; color:var(--soft);
+    border-left:2px solid var(--brand-sage); padding-left:16px; margin:26px 0 0; max-width:62ch; }
+  .rt-cta{ margin-top:30px; }
+  /* The one real destination in the journey, and the only primary action
+     in it. It is reachable only after the garden door is chosen, so it
+     gives the garden no weight on the entry screen. */
+  .rt-primary{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--ink); color:var(--brand-ivory); text-decoration:none;
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    letter-spacing:.09em; text-transform:uppercase;
+    padding:17px 30px; border-radius:3px; min-height:44px;
+    transition:background .25s ease;
+  }
+  .rt-primary:hover{ background:var(--accent); }
+  .rt-primary:hover .rt-arrow{ transform:translateX(4px); }
+  .rt-primary:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:4px; }
+
+  /* ---- navigation: never more than two controls, never duplicated ---- */
+  .rt-nav{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap:4px 30px; margin-top:44px; padding-top:24px;
+    border-top:1px solid rgba(31,59,46,.10); }
+  .rt-back, .rt-all{
+    font-size:13.5px; font-weight:500; letter-spacing:.04em; color:var(--soft);
+    min-height:44px; display:inline-flex; align-items:center; gap:9px;
+    transition:color .25s ease;
+  }
+  .rt-back:hover, .rt-all:hover{ color:var(--ink); }
+  .rt-back:hover .rt-arrow{ transform:translateX(-4px); }
+
+  /* ---- THE SITE PILL STEPS ASIDE ----
+     The floating Back is a real site control and keeps its behaviour
+     everywhere else on this Discovery. It is suppressed only while the
+     journey is on screen, because it leads to the Discovery Library — the
+     one destination no navigation inside this journey may reach — and
+     because its fixed rectangle sat over the "Extend the house" door at
+     390 and 360. The component's own rules above are untouched; this is a
+     local override keyed on a class only this page sets. */
+  body.pb-brain-active .pn-return{ display:none; }
 
   @media(max-width:820px){
-    .rt-choices{ grid-template-columns:1fr; }
-    #rtDetail .pb-headline{ max-width:none; }
-  }
-
-  .rt-prep{ font-size:14.5px; line-height:1.7; color:var(--soft);
-    border-left:2px solid var(--brand-sage); padding-left:14px; margin:16px 0 0; }
-
-  @media(max-width:820px){
-    .rt-routes{ grid-template-columns:1fr; }
-    .rt-panel .cs-exits{ flex-direction:column; gap:2px; }
+    .rt-doors{ grid-template-columns:1fr; gap:14px; }
+    .rt-door{ padding:26px 22px 22px; }
+    #rtResult .pb-headline{ max-width:none; }
+    .rt-nav{ gap:2px 24px; margin-top:36px; }
   }
 
 </style>
@@ -986,84 +1003,85 @@
          presentation. -->
 
     <div class="rt-wrap">
-      <!-- ---------- intro ---------- -->
-      <div id="rtIntro">
-        <h2 class="pb-headline">Let&rsquo;s look at the four possibilities</h2>
-        <p class="pb-subhead rt-intro-body">Your attic, garage, the house itself and the garden could each offer a different way to create more space.</p>
-        <p class="pb-subhead rt-intro-body">We&rsquo;ll ask four quick questions &mdash; one about each route. Nothing will be ruled out just because you&rsquo;re unsure, and PlotNua won&rsquo;t choose a winner for you.</p>
-        <p class="pb-subhead rt-intro-body">At the end, you can explore each route separately.</p>
-        <div class="rt-intro-go">
-          <button type="button" class="cs-exit" id="rtStart">Check my options &rarr;</button>
+      <!-- ---------- FOUR DOORS ----------
+           The entry to Property Brain from DISC-006. There is no combined
+           assessment in front of it: the homeowner chooses a route first and
+           is asked only that route's own questions. The four doors carry no
+           state and no ranking, because nothing has been answered yet. -->
+      <div id="rtRoutes">
+        <div class="rt-head">
+          <h2 class="pb-headline">Which route would you like to explore?</h2>
+          <p class="pb-subhead">Your property could have more than one way to create extra space. Choose one to look at more closely.</p>
         </div>
+        <div class="rt-doors" id="rtDoors"></div>
       </div>
 
-      <!-- ---------- the questions ---------- -->
-      <div id="rtFlow" hidden>
-        <div class="rt-progress" role="group" aria-label="Question progress">
-          <span class="rt-dot is-on"></span><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span>
-        </div>
+      <!-- ---------- ONE QUESTION, FROM THE CHOSEN BRANCH ONLY ----------
+           All four questions live here, and the controller shows only the
+           ones the chosen branch names. A branch cannot reach another
+           branch's question: it never asks for it. -->
+      <div id="rtStep" hidden>
         <p class="sr" id="rtAnnounce" aria-live="polite" role="status"></p>
-<div class="rt-question" data-step="0">
-          <p class="rt-eyebrow">1 of 4 &middot; Your attic</p>
+
+        <div class="rt-question" data-field="attic" hidden>
+          <p class="rt-eyebrow">Your attic</p>
           <h3 class="rt-q-title">Can you stand up comfortably in the middle of your attic?</h3>
           <div class="rt-options">
-            <button type="button" class="rt-option" data-field="attic" data-value="yes">Yes, comfortably</button>
-            <button type="button" class="rt-option" data-field="attic" data-value="low">No — it's tight up there</button>
-            <button type="button" class="rt-option" data-field="attic" data-value="unknown">Not sure, I haven't measured</button>
+            <button type="button" class="rt-act rt-option" data-field="attic" data-value="yes"><span>Yes, comfortably</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="attic" data-value="low"><span>No &mdash; it's tight up there</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="attic" data-value="unknown"><span>Not sure, I haven't measured</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
           </div>
         </div>
-<div class="rt-question" data-step="1" hidden>
-          <p class="rt-eyebrow">2 of 4 &middot; Your garage</p>
+
+        <div class="rt-question" data-field="garage" hidden>
+          <p class="rt-eyebrow">Your garage</p>
           <h3 class="rt-q-title">Is there a garage attached to or built into the house?</h3>
           <div class="rt-options">
-            <button type="button" class="rt-option" data-field="garage" data-value="integral">Yes, attached or built in</button>
-            <button type="button" class="rt-option" data-field="garage" data-value="detached">There is a garage, but it's detached</button>
-            <button type="button" class="rt-option" data-field="garage" data-value="none">No garage</button>
-            <button type="button" class="rt-option" data-field="garage" data-value="unknown">Not sure</button>
+            <button type="button" class="rt-act rt-option" data-field="garage" data-value="integral"><span>Yes, attached or built in</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="garage" data-value="detached"><span>There is a garage, but it's detached</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="garage" data-value="none"><span>No garage</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="garage" data-value="unknown"><span>Not sure</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
           </div>
         </div>
-<div class="rt-question" data-step="2" hidden>
-          <p class="rt-eyebrow">3 of 4 &middot; Your garden access</p>
+
+        <div class="rt-question" data-field="access" hidden>
+          <p class="rt-eyebrow">Your garden &middot; 1 of 2</p>
           <h3 class="rt-q-title">Can you get to the back garden without going through the house?</h3>
           <div class="rt-options">
-            <button type="button" class="rt-option" data-field="access" data-value="yes">Yes — a side passage or a gate</button>
-            <button type="button" class="rt-option" data-field="access" data-value="no">No, only through the house</button>
-            <button type="button" class="rt-option" data-field="access" data-value="unknown">Not sure</button>
+            <button type="button" class="rt-act rt-option" data-field="access" data-value="yes"><span>Yes &mdash; a side passage or a gate</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="access" data-value="no"><span>No, only through the house</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="access" data-value="unknown"><span>Not sure</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
           </div>
         </div>
-<div class="rt-question" data-step="3" hidden>
-          <p class="rt-eyebrow">4 of 4 &middot; Your garden</p>
+
+        <div class="rt-question" data-field="give" hidden>
+          <p class="rt-eyebrow">Your garden &middot; 2 of 2</p>
           <h3 class="rt-q-title">Roughly how much of the garden would you be willing to give up?</h3>
           <div class="rt-options">
-            <button type="button" class="rt-option" data-field="give" data-value="good">A decent share of it</button>
-            <button type="button" class="rt-option" data-field="give" data-value="corner">A corner, no more</button>
-            <button type="button" class="rt-option" data-field="give" data-value="none">I'd rather not lose garden</button>
-            <button type="button" class="rt-option" data-field="give" data-value="unknown">Not sure yet</button>
+            <button type="button" class="rt-act rt-option" data-field="give" data-value="good"><span>A decent share of it</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="give" data-value="corner"><span>A corner, no more</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="give" data-value="none"><span>I'd rather not lose garden</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
+            <button type="button" class="rt-act rt-option" data-field="give" data-value="unknown"><span>Not sure yet</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
           </div>
         </div>
       </div>
 
-      <!-- ---------- four route choices ---------- -->
-      <div id="rtChoice" hidden>
-        <div class="rt-result-head">
-          <h2 class="pb-headline">Routes worth exploring</h2>
-          <p class="pb-subhead">Choose a route to look at next.</p>
-        </div>
-        <div class="rt-choices" id="rtChoices"></div>
+      <!-- ---------- THAT ROUTE'S RESULT, AND NOTHING ELSE ---------- -->
+      <div id="rtResult" role="region" aria-labelledby="rtResultTitle" hidden>
+        <p class="rt-eyebrow rt-result-state" id="rtResultState"></p>
+        <h2 class="pb-headline" id="rtResultTitle"></h2>
+        <p class="rt-why" id="rtResultWhy"></p>
+        <p class="rt-next" id="rtResultNext"></p>
+        <div id="rtResultAction"></div>
       </div>
 
-      <!-- ---------- one route ---------- -->
-      <div id="rtDetail" role="region" aria-labelledby="rtDetailTitle" hidden>
-        <p class="rt-eyebrow" id="rtDetailState"></p>
-        <h2 class="pb-headline" id="rtDetailTitle"></h2>
-        <p class="rt-why" id="rtDetailWhy"></p>
-        <p class="rt-next" id="rtDetailNext"></p>
-        <div id="rtDetailAction"></div>
-      </div>
-
-      <!-- One Back, whose label and destination follow the state. -->
-      <div class="rt-nav">
-        <button type="button" class="cs-exit is-home" id="rtBack"></button>
+      <!-- Back always steps back one place inside the journey. The second
+           control appears only when Back does not already reach the doors,
+           so the two never do the same job. Neither ever leaves for the
+           Discovery Library. -->
+      <div class="rt-nav" id="rtNav" hidden>
+        <button type="button" class="rt-act rt-back" id="rtBack"></button>
+        <button type="button" class="rt-act rt-all" id="rtAll" hidden></button>
       </div>
     </div>
 
@@ -1164,105 +1182,54 @@
 
 
 <script>
-/* ISSUE 004 PIECE 2 — THE ROUTE ASSESSMENT CONTROLLER.
+/* ISSUE 004 PIECE 2.2 — FOUR INDEPENDENT ROUTE JOURNEYS.
 
-   Four questions, four routes, no winner. The rules below are the whole
-   model, written out rather than buried in scoring:
+   THE ARCHITECTURE. The homeowner chooses a route, then answers that
+   route's questions, then reads that route's result. There is no combined
+   assessment. Someone exploring the garden is never asked about the attic,
+   because the garden branch never names the attic question.
 
-     UNKNOWN IS NEVER FALSE. No "Not sure" answer removes a route. Where an
-     answer is uncertain the route stays open and the card says what to check.
+   THE RULES ARE UNCHANGED, and the functions that hold them are not retyped
+   here — they are lifted out of the previous file byte for byte:
 
-     ONE ROUTE CAN BE RULED OUT, and only by a fact about the property that
-     the homeowner has stated themselves: there is no garage. It is still
-     shown, still explained, and never silently dropped.
+     UNKNOWN IS NEVER FALSE. No "Not sure" answer removes a route.
 
-     THE ATTIC IS NEVER RULED OUT BY LOW HEADROOM. Tight headroom does not
-     settle on its own whether a conversion is possible — that needs the roof
-     space assessed. PlotNua holds no established source on what Irish attic
-     conversions typically involve, so this code states no standard and no
-     measurement, and neither does the copy it produces.
+     ONE ROUTE CAN BE RULED OUT, and only by a fact about the property the
+     homeowner has stated themselves: there is no garage. It is still shown,
+     still explained, and never silently dropped.
 
-     THE GARDEN IS NEVER RULED OUT BY "I'd rather not lose garden". That is a
-     preference, not a constraint, and a small building takes little ground.
-     It is recorded honestly in the card rather than used to delete a route.
+     THE ATTIC IS NEVER RULED OUT BY LOW HEADROOM. PlotNua holds no
+     established source on what Irish attic conversions typically involve,
+     so this code states no standard and no measurement.
 
-   Nothing is stored. Nothing is sent. The whole assessment lives in this
-   page for as long as the homeowner is on it. */
+     THE GARDEN IS NEVER RULED OUT BY "I'd rather not lose garden". That is
+     a preference, not a constraint.
+
+   THE EXTENSION ASKS NOTHING. The four questions carried no genuine
+   extension-specific question, and one has not been invented for symmetry.
+   extension() reads a.give; with nothing answered it reaches the same
+   branch an honest "not sure" reaches, which is the approved extension
+   explanation. The screen says plainly that the deeper assessment is being
+   prepared.
+
+   Nothing is stored. Nothing is sent. */
 (function(){
-  var wrap    = document.getElementById('rtIntro');
-  if (!wrap) return;
-  var intro   = document.getElementById('rtIntro');
-  var flow    = document.getElementById('rtFlow');
-  var choice  = document.getElementById('rtChoice');
-  var choices = document.getElementById('rtChoices');
-  var detail  = document.getElementById('rtDetail');
+  var routes  = document.getElementById('rtRoutes');
+  if (!routes) return;
+  var doors   = document.getElementById('rtDoors');
+  var stepBox = document.getElementById('rtStep');
+  var result  = document.getElementById('rtResult');
+  var nav     = document.getElementById('rtNav');
   var backBtn = document.getElementById('rtBack');
+  var allBtn  = document.getElementById('rtAll');
   var announce= document.getElementById('rtAnnounce');
-  var steps   = Array.prototype.slice.call(flow.querySelectorAll('.rt-question'));
-  var dots    = Array.prototype.slice.call(flow.querySelectorAll('.rt-dot'));
-  var answers = {};
-  var step = 0;
-  var openRoute = null;
+  var qs      = Array.prototype.slice.call(stepBox.querySelectorAll('.rt-question'));
+  var section = document.getElementById('discover-your-property');
 
-  /* ONE BACK, WHOSE MEANING FOLLOWS THE STATE.
-     Piece 2 had a boxed "Previous question" inside the flow and a separate
-     "Change your answers" under the result: two controls doing one job, and
-     neither of them helping at the intro or on a route. This is the whole
-     navigation model, in one place:
+  var answers = {};   /* only ever holds the current branch's own answers */
+  var branch  = null; /* null on the doors screen */
+  var qi      = 0;    /* index within branch.qs */
 
-       intro      -> the Discovery above       (leaves Property Brain)
-       question 1 -> intro
-       question n -> question n-1
-       choices    -> question 4
-       one route  -> the choices
-
-     The site's own floating Back is untouched and still leads to the
-     Discovery Library from outside this journey. */
-  var state = 'intro';
-
-  function setBack(){
-    var label = { intro:  '\u2190 Back to the Discovery',
-                  flow:   step === 0 ? '\u2190 Back' : '\u2190 Previous question',
-                  choice: '\u2190 Back to the last question',
-                  detail: '\u2190 Back to routes' }[state];
-    backBtn.textContent = label;
-  }
-  function goBack(){
-    if (state === 'detail') { showChoices(); return; }
-    if (state === 'choice') { showFlow(steps.length - 1); return; }
-    if (state === 'flow')   { if (step === 0) showIntro(); else showFlow(step - 1); return; }
-    /* At the intro the journey has nothing behind it, so Back leaves Property
-       Brain for the Discovery it belongs to rather than jumping off the page. */
-    var sec = document.getElementById('discover-your-property');
-    var prev = sec && sec.previousElementSibling;
-    (prev || sec).scrollIntoView({ behavior:'smooth', block:'start' });
-  }
-
-  function only(el){
-    [intro, flow, choice, detail].forEach(function(n){ n.hidden = n !== el; });
-  }
-  function focusTop(el){
-    var h = el.querySelector('h2, h3');
-    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll:true }); }
-  }
-  function showIntro(){
-    state = 'intro'; only(intro); setBack(); focusTop(intro);
-  }
-  function showFlow(n){
-    state = 'flow';
-    step = Math.max(0, Math.min(steps.length - 1, n));
-    only(flow);
-    steps.forEach(function(s, i){ s.hidden = i !== step; });
-    dots.forEach(function(d, i){ d.classList.toggle('is-on', i <= step); });
-    if (announce) announce.textContent = 'Question ' + (step + 1) + ' of ' + steps.length;
-    setBack();
-    var h = steps[step].querySelector('.rt-q-title');
-    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll:true }); }
-  }
-
-  /* ---- THE ROUTE MODEL ----
-     Each builder returns { state, label, why, next }. state is 'open',
-     'check' or 'out'. 'out' is reachable from exactly one answer. */
   function attic(a){
     if (a.attic === 'yes') return { state:'open', label:'Worth exploring',
       why:'Your attic may be worth exploring. Headroom is one of the things that will need to be checked properly.',
@@ -1315,99 +1282,164 @@
       next:'Roughly how much ground you would be happy to lose.' };
   }
 
-  /* FIXED ORDER. Attic, garage, extension, garden \u2014 garden last, so the
-     one route with an Atlas journey behind it is never the first thing read.
-     The order does not change with the answers, because a changing order is
-     a ranking. */
-  var ROUTES = [
-    { key:'attic',     name:'Convert the attic',     build:attic },
-    { key:'garage',    name:'Convert the garage',    build:garage },
-    { key:'extension', name:'Extend the house',      build:extension },
-    { key:'garden',    name:'Build in the garden',   build:garden }
+  /* ---- THE FOUR BRANCHES ----
+     Fixed order, garden last, so the one route with a live Atlas journey
+     behind it is never the first thing read. `qs` is the whole guarantee of
+     independence: a branch is asked exactly the questions it names, and
+     there is no path that reaches any other. */
+  var BRANCHES = [
+    { key:'attic',     name:'Convert the attic',
+      lead:'See what your roof space might make possible.',
+      go:'Explore the attic',      qs:['attic'],           build:attic },
+    { key:'garage',    name:'Convert the garage',
+      lead:'See whether space you already have could become a room.',
+      go:'Explore the garage',     qs:['garage'],          build:garage },
+    { key:'extension', name:'Extend the house',
+      lead:'Explore what adding to the existing house could involve.',
+      go:'Explore an extension',   qs:[],                  build:extension },
+    { key:'garden',    name:'Build in the garden',
+      lead:'Explore a separate room elsewhere on your property.',
+      go:'Explore the garden',     qs:['access','give'],   build:garden }
   ];
 
-  /* THE ONE-LINE STATUS, for the choice screen only. The fuller explanation
-     the model writes stays on the route's own screen; putting it here is what
-     turned four choices into four reports. */
-  function shortLine(key, v){
-    if (v.state === 'out') return 'You told us there is no garage to convert.';
-    if (key === 'attic')   return 'Your answers do not rule this route out.';
-    if (key === 'garage')  return v.state === 'open'
-      ? 'A garage attached to or built into the house gives you a route to explore.'
-      : 'Not ruled out \u2014 worth a closer look.';
-    return 'This route remains open.';
+  var ARROW = '<i class="rt-arrow" aria-hidden="true">&rarr;</i>';
+  var BACK  = '<i class="rt-arrow" aria-hidden="true">&larr;</i>';
+
+  function show(el){ [routes, stepBox, result].forEach(function(n){ n.hidden = n !== el; }); }
+  function bring(){ if (section) section.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  function focusTop(el){
+    var h = el.querySelector('h2, h3');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll:true }); }
+  }
+  /* Back steps back one place. The second control is shown only when Back
+     does not already reach the doors, so two controls never do one job. */
+  function setNav(backLabel, backToDoors){
+    nav.hidden = false;
+    backBtn.innerHTML = BACK + backLabel;
+    allBtn.innerHTML = 'All four routes';
+    allBtn.hidden = backToDoors;
   }
 
-  function showChoices(){
-    state = 'choice'; openRoute = null;
-    choices.innerHTML = '';
-    ROUTES.forEach(function(r){
-      var v = r.build(answers);
-      /* One element, one class, for all four. A route the property does not
-         have is muted, never removed \u2014 and it can still be opened. */
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'rt-choice' + (v.state === 'out' ? ' is-out' : '');
-      var n = document.createElement('span'); n.className = 'rt-choice-name'; n.textContent = r.name;
-      var s = document.createElement('span'); s.className = 'rt-choice-state'; s.textContent = v.label;
-      var l = document.createElement('span'); l.className = 'rt-choice-line'; l.textContent = shortLine(r.key, v);
-      var g = document.createElement('span'); g.className = 'rt-choice-go';
-      g.textContent = 'Explore \u2192';
-      b.appendChild(n); b.appendChild(s); b.appendChild(l); b.appendChild(g);
-      b.addEventListener('click', function(){ showDetail(r, v); });
-      choices.appendChild(b);
-    });
-    only(choice); setBack(); focusTop(choice);
-    choice.scrollIntoView({ behavior:'smooth', block:'start' });
+  /* `quiet` is the initial paint. Moving focus is right when the homeowner
+     has just chosen something and wrong when it merely draws the first
+     screen: measured, the entry heading was taking focus on page load, which
+     drops a keyboard or screen-reader user at the foot of the Discovery
+     before they have read any of it. */
+  function showRoutes(quiet){
+    branch = null; answers = {}; qi = 0;
+    show(routes);
+    nav.hidden = true;   /* the homeowner is already inside the Discovery */
+    if (!quiet) focusTop(routes);
   }
 
-  function showDetail(r, v){
-    state = 'detail'; openRoute = r.key;
-    document.getElementById('rtDetailState').textContent = v.label;
-    document.getElementById('rtDetailTitle').textContent = r.name;
-    document.getElementById('rtDetailWhy').textContent = v.why;
-    var nx = document.getElementById('rtDetailNext');
+  function showStep(n){
+    qi = n;
+    var field = branch.qs[qi];
+    qs.forEach(function(q){ q.hidden = q.getAttribute('data-field') !== field; });
+    show(stepBox);
+    setNav(qi === 0 ? 'Back to the four routes' : 'Previous question', qi === 0);
+    if (announce) announce.textContent = branch.qs.length > 1
+      ? (branch.name + ', question ' + (qi + 1) + ' of ' + branch.qs.length)
+      : branch.name;
+    var h = qs.filter(function(q){ return !q.hidden; })[0].querySelector('.rt-q-title');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll:true }); }
+    bring();
+  }
+
+  function showResult(){
+    var v = branch.build(answers);
+    document.getElementById('rtResultState').textContent = v.label;
+    document.getElementById('rtResultTitle').textContent = branch.name;
+    document.getElementById('rtResultWhy').textContent = v.why;
+    var nx = document.getElementById('rtResultNext');
     nx.textContent = v.next ? ('What to check next: ' + v.next) : '';
     nx.hidden = !v.next;
-    var act = document.getElementById('rtDetailAction');
+
+    var act = document.getElementById('rtResultAction');
     act.innerHTML = '';
     if (v.state === 'out'){
-      /* Nothing to match, and nothing to pretend. Back is the only action. */
-    } else if (r.key === 'garden'){
-      /* The one route with a live product journey behind it. Nothing from the
-         assessment is passed on: the Match Engine asks for Eircode, style and
-         budget itself. */
-      var d = document.createElement('div'); d.className = 'rt-detail-cta';
-      var a = document.createElement('a');
-      a.className = 'cs-exit';
-      a.href = 'your-plot.html?discovery=garden-room';
-      a.textContent = 'Explore Garden Room options \u2192';
-      d.appendChild(a); act.appendChild(d);
+      /* Nothing to match, and nothing to pretend. */
+    } else if (branch.key === 'garden'){
+      /* The one route with a live product journey behind it. Nothing from
+         the assessment is passed on: the Match Engine asks for Eircode,
+         style and budget itself. */
+      var d = document.createElement('div'); d.className = 'rt-cta';
+      var link = document.createElement('a');
+      link.className = 'rt-primary';
+      link.href = 'your-plot.html?discovery=garden-room';
+      link.innerHTML = 'Explore Garden Room options' + ARROW;
+      d.appendChild(link); act.appendChild(d);
     } else {
       var p = document.createElement('p');
-      p.className = 'rt-detail-prep';
-      p.textContent = 'Atlas matching for this route is being prepared. PlotNua can already '
-        + 'tell you what the route involves \u2014 what it cannot yet do is put verified '
-        + 'products and prices in front of you for it.';
+      p.className = 'rt-prep';
+      p.textContent = 'Atlas matching for this route is being prepared.';
       act.appendChild(p);
     }
-    only(detail); setBack(); focusTop(detail);
-    detail.scrollIntoView({ behavior:'smooth', block:'start' });
+
+    show(result);
+    var noQuestions = branch.qs.length === 0;
+    setNav(noQuestions ? 'Back to the four routes' : 'Back to the question', noQuestions);
+    focusTop(result);
+    bring();
   }
 
-  document.getElementById('rtStart').addEventListener('click', function(){
-    showFlow(0);
-    flow.scrollIntoView({ behavior:'smooth', block:'start' });
+  function goBack(){
+    if (!branch) return;
+    if (!result.hidden){ if (branch.qs.length) showStep(branch.qs.length - 1); else showRoutes(); return; }
+    if (qi === 0) showRoutes(); else showStep(qi - 1);
+  }
+
+  /* ---- build the four doors ---- */
+  BRANCHES.forEach(function(br){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'rt-act rt-door';
+    var n = document.createElement('span'); n.className = 'rt-door-name'; n.textContent = br.name;
+    var l = document.createElement('span'); l.className = 'rt-door-lead'; l.textContent = br.lead;
+    var g = document.createElement('span'); g.className = 'rt-door-go';
+    g.innerHTML = br.go + ARROW;
+    b.appendChild(n); b.appendChild(l); b.appendChild(g);
+    b.addEventListener('click', function(){
+      branch = br; answers = {};
+      if (br.qs.length) showStep(0); else showResult();
+    });
+    doors.appendChild(b);
   });
-  flow.addEventListener('click', function(e){
+
+  stepBox.addEventListener('click', function(e){
     var opt = e.target.closest('.rt-option');
-    if (!opt) return;
+    if (!opt || !branch) return;
     answers[opt.getAttribute('data-field')] = opt.getAttribute('data-value');
-    if (step >= steps.length - 1) showChoices(); else showFlow(step + 1);
+    if (qi >= branch.qs.length - 1) showResult(); else showStep(qi + 1);
   });
   backBtn.addEventListener('click', goBack);
+  allBtn.addEventListener('click', function(){ showRoutes(); bring(); });
 
-  setBack();
+  showRoutes(true);
+})();
+</script>
+
+<script>
+/* ISSUE 004 PIECE 2.2 — SUPPRESS THE SITE PILL INSIDE PROPERTY BRAIN.
+
+   The journey carries its own complete Back model, so while it is on screen
+   the site-wide floating Back is both redundant and wrong: it is the only
+   control in reach that leaves for the Discovery Library, and at 390 and 360
+   it sat on top of a route door.
+
+   The target is .rt-wrap — the journey itself — rather than the section
+   around it, so the site control is only ever taken away while one of its
+   own controls could actually be underneath.
+
+   Nothing here modifies the pill. If IntersectionObserver is unavailable the
+   class is never set and the pill behaves exactly as it does today. */
+(function(){
+  var brain = document.querySelector('.rt-wrap');
+  var pill  = document.getElementById('pnReturn');
+  if (!brain || !pill || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(entries){
+    document.body.classList.toggle('pb-brain-active', entries[0].isIntersecting);
+  }, { threshold: 0 }).observe(brain);
 })();
 </script>
 
