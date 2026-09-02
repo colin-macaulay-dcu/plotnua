@@ -1,0 +1,75 @@
+name: Atlas statistics
+
+# Keeps the three homepage Atlas figures in step with the Atlas base.
+#
+# The figures are written INTO index.html, not fetched by the homeowner's
+# browser: the served page already carries them, so they work with JavaScript
+# disabled, need no loading state and cause no layout shift.
+#
+# If the Atlas read fails, or a sanity gate trips, the script writes nothing and
+# exits non-zero. Nothing is committed and the live homepage keeps its last
+# known valid figures. The failure is visible here, to maintainers only.
+
+on:
+  schedule:
+    - cron: '0 6 * * *'      # 06:00 UTC, daily
+  workflow_dispatch:          # and on demand, from the Actions tab
+
+# Least privilege: the job needs to push two files and nothing else.
+permissions:
+  contents: write
+
+concurrency:
+  group: atlas-stats
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+        # No dependencies to install: the script is standard library only.
+
+      - name: Read Atlas and update the homepage figures
+        env:
+          # The only secret this workflow touches. It is never printed, never
+          # written to a file, and never reaches the public site.
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: python .github/scripts/atlas_stats.py
+
+      - name: Commit, only if a governed figure changed
+        run: |
+          set -euo pipefail
+
+          # Stage the two approved paths by explicit name. Never `git add -A`,
+          # never `git add .`, never a wildcard: a scheduled job must not be
+          # able to sweep up an unrelated change that happens to be present.
+          git add index.html atlas-stats.json
+
+          if git diff --cached --quiet; then
+            echo "No change to commit."
+            exit 0
+          fi
+
+          # Second gate, belt and braces: refuse to commit if anything other
+          # than the two approved paths has somehow been staged.
+          STAGED="$(git diff --cached --name-only | sort | tr '\n' ' ')"
+          EXPECTED_A="atlas-stats.json index.html "
+          EXPECTED_B="index.html "
+          EXPECTED_C="atlas-stats.json "
+          if [ "$STAGED" != "$EXPECTED_A" ] && [ "$STAGED" != "$EXPECTED_B" ] \
+             && [ "$STAGED" != "$EXPECTED_C" ]; then
+            echo "::error::Unexpected staged paths: $STAGED"
+            exit 1
+          fi
+
+          git -c user.name='plotnua-atlas-bot' \
+              -c user.email='atlas-bot@users.noreply.github.com' \
+              commit -m 'Atlas statistics — refresh homepage figures'
+          git push
