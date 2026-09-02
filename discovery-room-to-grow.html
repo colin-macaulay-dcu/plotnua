@@ -596,6 +596,56 @@
     color:var(--ink); margin:0 0 12px; }
   .rt-panel p{ font-size:15px; line-height:1.75; color:var(--soft); margin:0 0 12px; }
   .rt-panel .cs-exits{ justify-content:flex-start; margin-top:20px; }
+
+  /* ---- ISSUE 004 PIECE 2.1 ----
+     The four route choices are FOUR EQUAL NEXT JOURNEYS, not four reports.
+     One rule sets all of them, so nothing can drift apart: same padding,
+     same border, same type, same action. The garden gets no extra weight
+     here — its live Atlas journey only becomes visible once it is chosen. */
+  /* The intro is the first thing in the journey and sits centred like the
+     question titles and the result heading. Without this it inherited
+     text-align:left from .rt-wrap and opened ragged against a centred
+     wordmark — measured, not guessed: left / 320px against centre. */
+  #rtIntro{ text-align:center; }
+  #rtIntro .pb-headline{ margin-left:auto; margin-right:auto; }
+  .rt-intro-body{ max-width:52ch; margin-left:auto; margin-right:auto; }
+  .rt-intro-go{ text-align:center; margin-top:26px; }
+  .rt-eyebrow{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 10px; text-align:center; }
+  .rt-choices{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .rt-choice{
+    -webkit-appearance:none; appearance:none; cursor:pointer; text-align:left; width:100%;
+    background:var(--paper); border:1px solid rgba(31,59,46,.18); border-radius:3px;
+    padding:20px 20px 18px; min-height:44px;
+    display:flex; flex-direction:column; gap:6px;
+    transition:border-color .2s ease;
+  }
+  .rt-choice:hover{ border-color:var(--accent); }
+  .rt-choice:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .rt-choice-name{ font-family:'Fraunces',serif; font-weight:600; font-size:17px;
+    line-height:1.3; color:var(--ink); }
+  .rt-choice-state{ font-family:'Work Sans',sans-serif; font-size:10.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); }
+  .rt-choice-line{ font-size:14.5px; line-height:1.6; color:var(--soft); }
+  .rt-choice-go{ font-family:'Work Sans',sans-serif; font-size:13px; font-weight:600;
+    letter-spacing:.05em; color:var(--ink); margin-top:4px; }
+  /* Muted, never hidden. A route the property does not have is still information. */
+  .rt-choice.is-out{ opacity:.72; }
+  .rt-choice.is-out .rt-choice-state{ color:var(--soft); }
+
+  #rtDetail .rt-eyebrow{ text-align:left; }
+  #rtDetail .pb-headline{ text-align:left; max-width:20ch; }
+  #rtDetail .rt-why, #rtDetail .rt-next{ max-width:60ch; }
+  .rt-detail-prep{ font-size:14.5px; line-height:1.75; color:var(--soft);
+    border-left:2px solid var(--brand-sage); padding-left:14px; margin:6px 0 0; max-width:60ch; }
+  .rt-detail-cta{ margin-top:18px; }
+  .rt-nav{ margin-top:30px; text-align:center; }
+
+  @media(max-width:820px){
+    .rt-choices{ grid-template-columns:1fr; }
+    #rtDetail .pb-headline{ max-width:none; }
+  }
+
   .rt-prep{ font-size:14.5px; line-height:1.7; color:var(--soft);
     border-left:2px solid var(--brand-sage); padding-left:14px; margin:16px 0 0; }
 
@@ -924,38 +974,46 @@
 <section class="pb-preview reveal" id="discover-your-property">
     <div class="pn-wordmark">PlotNua</div>
 
-    <!-- ISSUE 004 PIECE 2 — the route assessment replaces the Pattern C
-         holding state. Four questions about the house, then every route
-         that is still worth exploring, in a fixed order, in identical
-         cards. It does not pick a winner and it does not lead anywhere
-         near Atlas until the homeowner has seen all four routes.
+    <!-- ISSUE 004 PIECE 2.1 — the same decision, told as a journey.
 
-         The garden route carries a link to the Garden Room Atlas journey
-         because that journey exists. The other three carry a link to the
-         same shared panel, which says plainly that Atlas MATCHING is being
-         prepared for them — not that PlotNua knows nothing about the
-         route. Every card looks the same; only the words and the
-         destination differ. -->
+         Piece 2 opened on the attic question with no explanation, and ended
+         by putting four dense reports on one screen. The model was right; the
+         shape was wrong. It now runs intro -> four questions -> four simple
+         choices -> the one route the homeowner picks.
+
+         The four route builders and the ROUTES array below are untouched and
+         asserted byte-identical by the builder. Everything here is
+         presentation. -->
 
     <div class="rt-wrap">
+      <!-- ---------- intro ---------- -->
+      <div id="rtIntro">
+        <h2 class="pb-headline">Let&rsquo;s look at the four possibilities</h2>
+        <p class="pb-subhead rt-intro-body">Your attic, garage, the house itself and the garden could each offer a different way to create more space.</p>
+        <p class="pb-subhead rt-intro-body">We&rsquo;ll ask four quick questions &mdash; one about each route. Nothing will be ruled out just because you&rsquo;re unsure, and PlotNua won&rsquo;t choose a winner for you.</p>
+        <p class="pb-subhead rt-intro-body">At the end, you can explore each route separately.</p>
+        <div class="rt-intro-go">
+          <button type="button" class="cs-exit" id="rtStart">Check my options &rarr;</button>
+        </div>
+      </div>
+
       <!-- ---------- the questions ---------- -->
-      <div id="rtFlow">
+      <div id="rtFlow" hidden>
         <div class="rt-progress" role="group" aria-label="Question progress">
           <span class="rt-dot is-on"></span><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span>
         </div>
         <p class="sr" id="rtAnnounce" aria-live="polite" role="status"></p>
-        <div class="rt-question" data-step="0">
+<div class="rt-question" data-step="0">
+          <p class="rt-eyebrow">1 of 4 &middot; Your attic</p>
           <h3 class="rt-q-title">Can you stand up comfortably in the middle of your attic?</h3>
           <div class="rt-options">
             <button type="button" class="rt-option" data-field="attic" data-value="yes">Yes, comfortably</button>
             <button type="button" class="rt-option" data-field="attic" data-value="low">No — it's tight up there</button>
             <button type="button" class="rt-option" data-field="attic" data-value="unknown">Not sure, I haven't measured</button>
           </div>
-          <div class="rt-back">
-            <button type="button" class="cs-exit is-home rt-prev" hidden>&larr; Previous question</button>
-          </div>
         </div>
-        <div class="rt-question" data-step="1" hidden>
+<div class="rt-question" data-step="1" hidden>
+          <p class="rt-eyebrow">2 of 4 &middot; Your garage</p>
           <h3 class="rt-q-title">Is there a garage attached to or built into the house?</h3>
           <div class="rt-options">
             <button type="button" class="rt-option" data-field="garage" data-value="integral">Yes, attached or built in</button>
@@ -963,22 +1021,18 @@
             <button type="button" class="rt-option" data-field="garage" data-value="none">No garage</button>
             <button type="button" class="rt-option" data-field="garage" data-value="unknown">Not sure</button>
           </div>
-          <div class="rt-back">
-            <button type="button" class="cs-exit is-home rt-prev">&larr; Previous question</button>
-          </div>
         </div>
-        <div class="rt-question" data-step="2" hidden>
+<div class="rt-question" data-step="2" hidden>
+          <p class="rt-eyebrow">3 of 4 &middot; Your garden access</p>
           <h3 class="rt-q-title">Can you get to the back garden without going through the house?</h3>
           <div class="rt-options">
             <button type="button" class="rt-option" data-field="access" data-value="yes">Yes — a side passage or a gate</button>
             <button type="button" class="rt-option" data-field="access" data-value="no">No, only through the house</button>
             <button type="button" class="rt-option" data-field="access" data-value="unknown">Not sure</button>
           </div>
-          <div class="rt-back">
-            <button type="button" class="cs-exit is-home rt-prev">&larr; Previous question</button>
-          </div>
         </div>
-        <div class="rt-question" data-step="3" hidden>
+<div class="rt-question" data-step="3" hidden>
+          <p class="rt-eyebrow">4 of 4 &middot; Your garden</p>
           <h3 class="rt-q-title">Roughly how much of the garden would you be willing to give up?</h3>
           <div class="rt-options">
             <button type="button" class="rt-option" data-field="give" data-value="good">A decent share of it</button>
@@ -986,35 +1040,30 @@
             <button type="button" class="rt-option" data-field="give" data-value="none">I'd rather not lose garden</button>
             <button type="button" class="rt-option" data-field="give" data-value="unknown">Not sure yet</button>
           </div>
-          <div class="rt-back">
-            <button type="button" class="cs-exit is-home rt-prev">&larr; Previous question</button>
-          </div>
         </div>
       </div>
 
-      <!-- ---------- the result ---------- -->
-      <div id="rtResult" hidden>
+      <!-- ---------- four route choices ---------- -->
+      <div id="rtChoice" hidden>
         <div class="rt-result-head">
           <h2 class="pb-headline">Routes worth exploring</h2>
-          <p class="pb-subhead">Based on what you have told us about the house. Nothing here is a recommendation &mdash; these are the routes still open to you, and what each one would need next.</p>
+          <p class="pb-subhead">Choose a route to look at next.</p>
         </div>
-        <div class="rt-routes" id="rtRoutes"></div>
-        <div class="rt-back" style="margin-top:26px">
-          <button type="button" class="cs-exit is-home" id="rtRestart">&larr; Change your answers</button>
-        </div>
+        <div class="rt-choices" id="rtChoices"></div>
       </div>
 
-      <!-- ---------- the shared next-step panel ---------- -->
-      <div class="rt-panel" id="rtPanel" role="region" aria-labelledby="rtPanelTitle" hidden>
-        <h4 id="rtPanelTitle"></h4>
-        <p id="rtPanelWhy"></p>
-        <p id="rtPanelNext"></p>
-        <p class="rt-prep">Atlas matching for this route is being prepared. PlotNua can already tell you what the route involves &mdash; what it cannot yet do is put verified products and prices in front of you for it.</p>
-        <div class="cs-exits">
-          <button type="button" class="cs-exit" id="rtPanelBack">&larr; Back to your routes</button>
-          <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
-          <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
-        </div>
+      <!-- ---------- one route ---------- -->
+      <div id="rtDetail" role="region" aria-labelledby="rtDetailTitle" hidden>
+        <p class="rt-eyebrow" id="rtDetailState"></p>
+        <h2 class="pb-headline" id="rtDetailTitle"></h2>
+        <p class="rt-why" id="rtDetailWhy"></p>
+        <p class="rt-next" id="rtDetailNext"></p>
+        <div id="rtDetailAction"></div>
+      </div>
+
+      <!-- One Back, whose label and destination follow the state. -->
+      <div class="rt-nav">
+        <button type="button" class="cs-exit is-home" id="rtBack"></button>
       </div>
     </div>
 
@@ -1140,24 +1189,75 @@
    Nothing is stored. Nothing is sent. The whole assessment lives in this
    page for as long as the homeowner is on it. */
 (function(){
-  var flow = document.getElementById('rtFlow');
-  if (!flow) return;
-  var result  = document.getElementById('rtResult');
-  var routesEl= document.getElementById('rtRoutes');
-  var panel   = document.getElementById('rtPanel');
+  var wrap    = document.getElementById('rtIntro');
+  if (!wrap) return;
+  var intro   = document.getElementById('rtIntro');
+  var flow    = document.getElementById('rtFlow');
+  var choice  = document.getElementById('rtChoice');
+  var choices = document.getElementById('rtChoices');
+  var detail  = document.getElementById('rtDetail');
+  var backBtn = document.getElementById('rtBack');
   var announce= document.getElementById('rtAnnounce');
   var steps   = Array.prototype.slice.call(flow.querySelectorAll('.rt-question'));
   var dots    = Array.prototype.slice.call(flow.querySelectorAll('.rt-dot'));
   var answers = {};
   var step = 0;
+  var openRoute = null;
 
-  function show(n){
+  /* ONE BACK, WHOSE MEANING FOLLOWS THE STATE.
+     Piece 2 had a boxed "Previous question" inside the flow and a separate
+     "Change your answers" under the result: two controls doing one job, and
+     neither of them helping at the intro or on a route. This is the whole
+     navigation model, in one place:
+
+       intro      -> the Discovery above       (leaves Property Brain)
+       question 1 -> intro
+       question n -> question n-1
+       choices    -> question 4
+       one route  -> the choices
+
+     The site's own floating Back is untouched and still leads to the
+     Discovery Library from outside this journey. */
+  var state = 'intro';
+
+  function setBack(){
+    var label = { intro:  '\u2190 Back to the Discovery',
+                  flow:   step === 0 ? '\u2190 Back' : '\u2190 Previous question',
+                  choice: '\u2190 Back to the last question',
+                  detail: '\u2190 Back to routes' }[state];
+    backBtn.textContent = label;
+  }
+  function goBack(){
+    if (state === 'detail') { showChoices(); return; }
+    if (state === 'choice') { showFlow(steps.length - 1); return; }
+    if (state === 'flow')   { if (step === 0) showIntro(); else showFlow(step - 1); return; }
+    /* At the intro the journey has nothing behind it, so Back leaves Property
+       Brain for the Discovery it belongs to rather than jumping off the page. */
+    var sec = document.getElementById('discover-your-property');
+    var prev = sec && sec.previousElementSibling;
+    (prev || sec).scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function only(el){
+    [intro, flow, choice, detail].forEach(function(n){ n.hidden = n !== el; });
+  }
+  function focusTop(el){
+    var h = el.querySelector('h2, h3');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll:true }); }
+  }
+  function showIntro(){
+    state = 'intro'; only(intro); setBack(); focusTop(intro);
+  }
+  function showFlow(n){
+    state = 'flow';
     step = Math.max(0, Math.min(steps.length - 1, n));
+    only(flow);
     steps.forEach(function(s, i){ s.hidden = i !== step; });
     dots.forEach(function(d, i){ d.classList.toggle('is-on', i <= step); });
     if (announce) announce.textContent = 'Question ' + (step + 1) + ' of ' + steps.length;
+    setBack();
     var h = steps[step].querySelector('.rt-q-title');
-    if (h) h.setAttribute('tabindex', '-1'), h.focus({ preventScroll: true });
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll:true }); }
   }
 
   /* ---- THE ROUTE MODEL ----
@@ -1226,74 +1326,88 @@
     { key:'garden',    name:'Build in the garden',   build:garden }
   ];
 
-  function render(){
-    routesEl.innerHTML = '';
+  /* THE ONE-LINE STATUS, for the choice screen only. The fuller explanation
+     the model writes stays on the route's own screen; putting it here is what
+     turned four choices into four reports. */
+  function shortLine(key, v){
+    if (v.state === 'out') return 'You told us there is no garage to convert.';
+    if (key === 'attic')   return 'Your answers do not rule this route out.';
+    if (key === 'garage')  return v.state === 'open'
+      ? 'A garage attached to or built into the house gives you a route to explore.'
+      : 'Not ruled out \u2014 worth a closer look.';
+    return 'This route remains open.';
+  }
+
+  function showChoices(){
+    state = 'choice'; openRoute = null;
+    choices.innerHTML = '';
     ROUTES.forEach(function(r){
       var v = r.build(answers);
-      var card = document.createElement('article');
-      card.className = 'rt-card' + (v.state === 'out' ? ' is-out' : '');
-      var h = document.createElement('h4'); h.textContent = r.name; card.appendChild(h);
-      var s = document.createElement('div'); s.className = 'rt-state'; s.textContent = v.label; card.appendChild(s);
-      var w = document.createElement('p'); w.className = 'rt-why'; w.textContent = v.why; card.appendChild(w);
-      if (v.next){
-        var n = document.createElement('p'); n.className = 'rt-next';
-        var lab = document.createElement('strong'); lab.textContent = 'What to check next: ';
-        n.appendChild(lab); n.appendChild(document.createTextNode(v.next)); card.appendChild(n);
-      }
-      if (v.state !== 'out'){
-        if (r.key === 'garden'){
-          /* The only route with a product journey behind it. Same link style
-             as the other three; only the destination differs. Nothing from
-             the route assessment is passed on \u2014 the Garden Room Match
-             Engine asks for Eircode, style and budget itself. */
-          var a = document.createElement('a');
-          a.className = 'cs-exit';
-          a.href = 'your-plot.html?discovery=garden-room';
-          a.textContent = 'Explore Garden Room options \u2192';
-          card.appendChild(a);
-        } else {
-          var b = document.createElement('button');
-          b.type = 'button'; b.className = 'cs-exit';
-          b.textContent = 'What PlotNua can do next \u2192';
-          b.addEventListener('click', function(){ openPanel(r.name, v); });
-          card.appendChild(b);
-        }
-      }
-      routesEl.appendChild(card);
+      /* One element, one class, for all four. A route the property does not
+         have is muted, never removed \u2014 and it can still be opened. */
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'rt-choice' + (v.state === 'out' ? ' is-out' : '');
+      var n = document.createElement('span'); n.className = 'rt-choice-name'; n.textContent = r.name;
+      var s = document.createElement('span'); s.className = 'rt-choice-state'; s.textContent = v.label;
+      var l = document.createElement('span'); l.className = 'rt-choice-line'; l.textContent = shortLine(r.key, v);
+      var g = document.createElement('span'); g.className = 'rt-choice-go';
+      g.textContent = 'Explore \u2192';
+      b.appendChild(n); b.appendChild(s); b.appendChild(l); b.appendChild(g);
+      b.addEventListener('click', function(){ showDetail(r, v); });
+      choices.appendChild(b);
     });
-    flow.hidden = true; panel.hidden = true; result.hidden = false;
-    result.scrollIntoView({ behavior:'smooth', block:'start' });
+    only(choice); setBack(); focusTop(choice);
+    choice.scrollIntoView({ behavior:'smooth', block:'start' });
   }
 
-  function openPanel(name, v){
-    document.getElementById('rtPanelTitle').textContent = name;
-    document.getElementById('rtPanelWhy').textContent = v.why;
-    var nx = document.getElementById('rtPanelNext');
+  function showDetail(r, v){
+    state = 'detail'; openRoute = r.key;
+    document.getElementById('rtDetailState').textContent = v.label;
+    document.getElementById('rtDetailTitle').textContent = r.name;
+    document.getElementById('rtDetailWhy').textContent = v.why;
+    var nx = document.getElementById('rtDetailNext');
     nx.textContent = v.next ? ('What to check next: ' + v.next) : '';
     nx.hidden = !v.next;
-    result.hidden = true; panel.hidden = false;
-    panel.scrollIntoView({ behavior:'smooth', block:'start' });
-    document.getElementById('rtPanelTitle').setAttribute('tabindex','-1');
-    document.getElementById('rtPanelTitle').focus({ preventScroll:true });
+    var act = document.getElementById('rtDetailAction');
+    act.innerHTML = '';
+    if (v.state === 'out'){
+      /* Nothing to match, and nothing to pretend. Back is the only action. */
+    } else if (r.key === 'garden'){
+      /* The one route with a live product journey behind it. Nothing from the
+         assessment is passed on: the Match Engine asks for Eircode, style and
+         budget itself. */
+      var d = document.createElement('div'); d.className = 'rt-detail-cta';
+      var a = document.createElement('a');
+      a.className = 'cs-exit';
+      a.href = 'your-plot.html?discovery=garden-room';
+      a.textContent = 'Explore Garden Room options \u2192';
+      d.appendChild(a); act.appendChild(d);
+    } else {
+      var p = document.createElement('p');
+      p.className = 'rt-detail-prep';
+      p.textContent = 'Atlas matching for this route is being prepared. PlotNua can already '
+        + 'tell you what the route involves \u2014 what it cannot yet do is put verified '
+        + 'products and prices in front of you for it.';
+      act.appendChild(p);
+    }
+    only(detail); setBack(); focusTop(detail);
+    detail.scrollIntoView({ behavior:'smooth', block:'start' });
   }
 
-  flow.addEventListener('click', function(e){
-    var opt = e.target.closest('.rt-option');
-    if (opt){
-      answers[opt.getAttribute('data-field')] = opt.getAttribute('data-value');
-      if (step >= steps.length - 1) render(); else show(step + 1);
-      return;
-    }
-    if (e.target.closest('.rt-prev')) show(step - 1);
-  });
-  document.getElementById('rtRestart').addEventListener('click', function(){
-    result.hidden = true; panel.hidden = true; flow.hidden = false; show(0);
+  document.getElementById('rtStart').addEventListener('click', function(){
+    showFlow(0);
     flow.scrollIntoView({ behavior:'smooth', block:'start' });
   });
-  document.getElementById('rtPanelBack').addEventListener('click', function(){
-    panel.hidden = true; result.hidden = false;
-    result.scrollIntoView({ behavior:'smooth', block:'start' });
+  flow.addEventListener('click', function(e){
+    var opt = e.target.closest('.rt-option');
+    if (!opt) return;
+    answers[opt.getAttribute('data-field')] = opt.getAttribute('data-value');
+    if (step >= steps.length - 1) showChoices(); else showFlow(step + 1);
   });
+  backBtn.addEventListener('click', goBack);
+
+  setBack();
 })();
 </script>
 
