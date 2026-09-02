@@ -1,22 +1,1021 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="robots" content="noindex">
-<link rel="canonical" href="https://plotnua.ie/discoveries.html">
-<meta http-equiv="refresh" content="0; url=/discoveries.html">
-<title>Moved | PlotNua</title>
-<!-- LAUNCH-INT-002 — this Discovery has been retired.
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-     A meta refresh is a fallback, not the mechanism: _redirects in this folder
-     asks the host for a real 301, which is what a search engine needs. This
-     file exists so the URL still resolves on a host that ignores that file.
+  gtag('config', 'G-PKKJ0RK6N8');
+</script>
 
-     It goes to the Discovery Library rather than to a "closest match". The new
-     Discoveries share no subject with the retired ones, and pretending
-     otherwise would be a guess dressed as a redirect. -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Exchange | PlotNua Discoveries</title>
+<meta name="description" content="A home standing empty can be exchanged for the use of somebody else&rsquo;s. What that means in Ireland, where the new short-term letting rules sit, and the questions to settle first.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://plotnua.ie/discovery-home-exchange.html">
+
+<!-- Favicons — PlotNua Brand Package v1.0 -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1F3B2E">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PlotNua">
+<meta property="og:title" content="Home Exchange | PlotNua Discoveries">
+<meta property="og:description" content="Your house costs the same whether you are in it or not.">
+<meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://plotnua.ie/discovery-home-exchange.html">
+<meta property="og:locale" content="en_IE">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Home Exchange | PlotNua Discoveries">
+<meta name="twitter:description" content="Your house costs the same whether you are in it or not.">
+<meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ font-family:'Work Sans',sans-serif; background:var(--paper); color:var(--ink); overflow-x:hidden; }
+  h1,h2,h3{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em; }
+  h1,h2{ font-weight:700; }
+
+  .reveal{ opacity:0; transform:translateY(6px); transition:opacity 1.1s ease, transform 1.1s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---- fixed brand mark (unchanged from Brand Integration v1) ---- */
+  .brand-mark{
+    position:fixed; top:22px; left:22px; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    width:46px; height:46px; padding:0;
+    background:var(--brand-ivory);
+    border-radius:12px;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07);
+    opacity:0; transition:opacity 1.6s ease, transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;
+    text-decoration:none;
+  }
+  .brand-mark:hover{ transform:scale(1.06); box-shadow:0 5px 16px rgba(31,59,46,.20), 0 0 0 1px rgba(31,59,46,.09); }
+
+  /* RESULTS-003 PART D — THE FLOATING BACK.
+     Identical to the control on Results and My Plot: same corner, same 44px
+     minimum height, same radius, paper ground, hairline border and shadow,
+     same type. Only the label and destination differ, because they must.
+
+     It does not fight the brand mark. Measured: .brand-mark is fixed at
+     TOP:22px left:22px, this is fixed at BOTTOM:22px left:22px. Opposite
+     ends of the screen at every viewport. (I twice deferred this work on the
+     stated grounds that they shared a corner. They never did.)
+
+     z-index 60 sits above the page and below .am-modal-overlay (200), so an
+     open modal covers it rather than having it float over a dialog. */
+  .pn-return{
+    position:fixed; left:22px; bottom:22px; z-index:60;
+    display:inline-flex; align-items:center; gap:8px;
+    min-height:44px; padding:11px 17px 11px 14px;
+    background:var(--paper, #F8F5EC); color:var(--ink, #1F3B2E);
+    border:1px solid rgba(31,59,46,.16); border-radius:24px;
+    box-shadow:0 2px 10px rgba(31,59,46,.13);
+    font-family:'Work Sans',sans-serif; font-size:14px; font-weight:500;
+    text-decoration:none; cursor:pointer;
+    -webkit-appearance:none; appearance:none;
+  }
+  .pn-return:hover{ border-color:rgba(31,59,46,.3); }
+  .pn-return-arrow{ font-size:15px; line-height:1; }
+  @media (max-width:600px){
+    .pn-return{ left:16px; bottom:16px; padding:10px 15px 10px 12px; font-size:13.5px; }
+  }
+  .brand-mark.in{ opacity:1; }
+  .brand-mark img{ display:block; width:34px; height:34px; border-radius:8px; }
+  @media(max-width:720px){
+    .brand-mark{ top:16px; left:16px; width:40px; height:40px; }
+    .brand-mark img{ width:30px; height:30px; }
+  }
+
+  /* ================= DISCOVERY — HERO =================
+     Same visual grammar as the About page hero: a single still image,
+     bottom-anchored copy, warm ivory serif type. This is the master
+     template every future Discovery reuses, so the hero deliberately
+     stays close to the About page's pattern rather than inventing a
+     new one — consistency here is what makes the site feel like one
+     continuous place, not a stitched-together set of templates. */
+  .d-hero{ position:relative; width:100%; height:88vh; height:88svh; min-height:540px; overflow:hidden; background:var(--ink); }
+  .d-hero img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transform:scale(1.03); opacity:0;
+    transition:opacity 1.8s ease-out, transform 6s cubic-bezier(.22,.61,.36,1);
+  }
+  .d-hero img.on{ opacity:1; transform:scale(1); }
+  .d-hero-scrim{ position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(15,14,10,.14) 0%, rgba(15,14,10,0) 32%, rgba(15,14,10,.10) 60%, rgba(15,14,10,.60) 100%); }
+  .d-hero-scrim{ background:linear-gradient(180deg,
+    rgba(15,14,10,.16) 0%, rgba(15,14,10,0) 26%,
+    rgba(15,14,10,.42) 58%, rgba(15,14,10,.78) 100%); }
+  .d-hero-copy{ position:absolute; z-index:2; inset:auto 0 0 0; padding:0 8vw 10vh; text-align:center; }
+  /* HERO EYEBROW — ADAPTIVE COLOUR (Master Standard).
+     The eyebrow is an orientation label, not a brand element. On this hero
+     --brand-sage (luminance 0.36) sat inside the luminance range of the
+     plaster wall behind it (0.32-0.49) and washed out; no shadow can
+     separate a colour from a background it matches in lightness.
+     It therefore uses the same --brand-ivory as h1 / .subtitle / .intro,
+     with the same shadow family as .intro. Font, size, weight, tracking
+     and position are unchanged. */
+  .d-hero-copy .eyebrow{ opacity:0; transform:translateY(10px); transition:opacity 1s ease, transform 1s ease;
+    font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--brand-ivory); margin-bottom:20px;
+    text-shadow:0 1px 14px rgba(0,0,0,.28); }
+  .d-hero-copy h1{ opacity:0; transform:translateY(10px); transition:opacity 1s ease .1s, transform 1s ease .1s;
+    color:var(--brand-ivory); font-size:clamp(32px,5vw,58px); line-height:1.14; text-shadow:0 2px 24px rgba(0,0,0,.32); }
+  .d-hero-copy .subtitle{ opacity:0; transform:translateY(10px); transition:opacity 1s ease .18s, transform 1s ease .18s;
+    margin:18px auto 0; max-width:32ch; font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+    color:var(--brand-ivory); font-size:clamp(16px,1.9vw,21px); line-height:1.55; text-shadow:0 1px 16px rgba(0,0,0,.3); }
+  .d-hero-copy .intro{ opacity:0; transform:translateY(10px); transition:opacity 1s ease .26s, transform 1s ease .26s;
+    margin:24px auto 0; max-width:50ch; font-family:'Work Sans',sans-serif; font-weight:300;
+    color:var(--brand-ivory); font-size:clamp(14px,1.4vw,16px); line-height:1.75; text-shadow:0 1px 14px rgba(0,0,0,.28); }
+  .d-hero-copy.in .eyebrow, .d-hero-copy.in h1, .d-hero-copy.in .subtitle{ opacity:1; transform:none; }
+  .d-hero-copy.in .intro{ opacity:.86; transform:none; }
+
+  /* ================= ARTICLE RHYTHM (shared with About) ================= */
+  .article{ max-width:1040px; margin:0 auto; padding:0 7vw; }
+  .article-section{ padding:9.5vh 0; border-bottom:1px solid rgba(31,59,46,.06); }
+  .article-section:last-of-type{ border-bottom:none; }
+  .article-section .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:19px; }
+  .article-section h2{ font-size:clamp(26px,3.4vw,40px); line-height:1.32; max-width:19ch; margin-bottom:26px; }
+  .article-section p{ color:var(--soft); font-size:17px; line-height:1.85; max-width:60ch; }
+  .article-section p + p{ margin-top:20px; }
+
+  /* ---- The Spark — the emotional opening line of every Discovery.
+     Deliberately the quietest, largest moment on the page: one
+     sentence, generous whitespace, nothing else competing with it. ---- */
+  .spark{ position:relative; padding:12vh 7vw; text-align:center; background:var(--paper); overflow:hidden; }
+  .spark::before{ content:''; position:absolute; top:0; left:0; right:0; height:16vh;
+    background:linear-gradient(180deg, rgba(20,26,20,.05) 0%, rgba(20,26,20,0) 100%); pointer-events:none; }
+  .spark p{ position:relative; font-family:'Fraunces',serif; font-style:italic; font-weight:400; color:var(--ink);
+    font-size:clamp(25px,3.6vw,40px); line-height:1.5; max-width:21ch; margin:0 auto; letter-spacing:-.005em; }
+
+  /* ---- Imagine Your Property — a second full-width photograph with
+     minimal text; this is a mood beat, not an information beat. ---- */
+  .imagine-photo{ position:relative; width:100%; height:84vh; height:84svh; min-height:460px; overflow:hidden; background:var(--ink); }
+  .imagine-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .imagine-photo::before, .imagine-photo::after{ content:''; position:absolute; left:0; right:0; height:5vh; z-index:2; pointer-events:none; }
+  .imagine-photo::before{ top:0; background:linear-gradient(180deg, rgba(248,245,236,.5) 0%, rgba(248,245,236,0) 100%); }
+  .imagine-photo::after{ bottom:0; background:linear-gradient(0deg, rgba(242,239,230,.5) 0%, rgba(242,239,230,0) 100%); }
+
+  /* RULE 6 — Potential Asset annotation, drawn over Image 02 rather than burned
+     into the file. The SVG uses the image's own aspect ratio and the same
+     xMidYMid slice crop as object-fit:cover, so the anchor stays on the roof at
+     every viewport. Everything sits inside the horizontal centre band so it
+     survives the heavy side-crop on narrow screens. */
+  /* The SEAI quotation and the Looking Ahead lede: this page is the first
+     Discovery to need either, so both are defined here rather than remapped
+     onto a class that means something else. */
+  /* This is the first Discovery to use h3 as a subheading inside an article
+     section, so the donor never needed a rule. Direct child only, so the FAQ
+     h3s inside <summary> keep their own zero-margin treatment. */
+  .article-section > h3{ margin:36px 0 12px; }
+
+  .pull-quote{ margin:28px 0 24px; padding:2px 0 2px 22px; border-left:2px solid var(--brand-sage);
+    font-family:'Fraunces',Georgia,serif; font-size:19px; line-height:1.66;
+    color:var(--ink); max-width:56ch; }
+  .quarantine-lede{ font-style:italic; color:var(--ink); max-width:56ch; margin-bottom:26px; }
+
+  .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+  .pa-annot svg{ width:100%; height:100%; display:block; }
+  .pa-line{ stroke:rgba(15,14,10,.78); stroke-width:1.6; fill:none; }
+  .pa-dot{ fill:none; stroke:rgba(15,14,10,.85); stroke-width:2.2; }
+  .pa-wash{ fill:rgba(255,255,255,.60); }
+  .pa-kicker{ font-family:'Work Sans',system-ui,sans-serif; font-size:15px; font-weight:500;
+    letter-spacing:.18em; fill:rgba(15,14,10,.72); }
+  .pa-label{ font-family:'Fraunces',Georgia,serif; font-style:italic; font-size:27px;
+    fill:rgba(15,14,10,.92); }
+  .imagine-photo .caption{ position:absolute; z-index:3; left:0; right:0; bottom:0; padding:7vh 8vw;
+    background:linear-gradient(180deg, rgba(15,14,10,0) 0%, rgba(15,14,10,.42) 100%); text-align:center; }
+  .imagine-photo .caption p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+    color:var(--brand-ivory); font-size:clamp(16px,1.85vw,20px); max-width:32ch; margin:0 auto; text-shadow:0 1px 16px rgba(0,0,0,.3); letter-spacing:.01em; }
+   /* must outrank .imagine-photo img{display:block} */
+
+
+  /* hairline: ivory, with the faintest dark edge so it survives both images */
+
+  /* handle: 44px hit box, 26px visible ring, no disc, no shadow */
+
+  /* labels: lower corners, out of the caption's way */
+
+  /* caption sits clear of both labels */  /* above the hairline: no strikethrough at mid positions */
+
+  /* keyboard control: focusable, never captures pointer or touch */
+
+  @media (max-width:720px){
+  }
+  @media (prefers-reduced-motion: reduce){
+  }
+
+  /* ---- Could This Work For You — reflective questions, same
+     fragment-line treatment used across the site for short phrases,
+     given here as questions rather than statements. ---- */
+
+  /* ---- Understanding the Opportunity — practical detail, still
+     presented as prose rather than a spec sheet. Sub-headings stay
+     small and quiet so the page never tips into "brochure." ---- */
+  .practical-group{ margin-top:12px; }
+  .practical-item{ padding:19px 0; border-top:1px solid rgba(31,59,46,.06); }
+  .practical-item:first-child{ border-top:none; padding-top:0; }
+  .practical-item h3{ font-size:clamp(18px,1.9vw,21px); margin-bottom:11px; }
+  .practical-item p{ color:var(--soft); font-size:16px; line-height:1.8; max-width:56ch; }
+
+  /* ---- Things To Consider — balanced points, same quiet list
+     treatment, no warning icons or red text. ---- */
+  .considerations{ margin-top:10px; }
+  .considerations p{ color:var(--soft); font-size:16px; line-height:1.85; max-width:58ch; margin-bottom:16px; }
+  .considerations p:last-child{ margin-bottom:0; }
+
+  /* ---- Trusted Partners — premium placeholder. Reads as a promise,
+     not an empty state; no logos, no "coming soon" badge. ---- */
+  .partners{ position:relative; background:var(--cream); }
+  .partners::before{ content:''; position:absolute; top:0; left:0; right:0; height:10vh;
+    background:linear-gradient(180deg, var(--paper) 0%, rgba(248,245,236,0) 100%); pointer-events:none; }
+  .partners::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:10vh;
+    background:linear-gradient(0deg, var(--paper) 0%, rgba(248,245,236,0) 100%); pointer-events:none; }
+  .partners .article{ position:relative; z-index:1; padding-top:12vh; padding-bottom:12vh; text-align:center; }
+  .partners .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:24px; }
+  .partners h2{ max-width:none; margin:0 auto 20px; font-size:clamp(22px,2.6vw,30px); line-height:1.35; }
+  .partners p{ margin:0 auto; max-width:52ch; }
+  .partners .partner-frame{ margin:48px auto 0; max-width:420px; padding:38px 32px; border:1px solid rgba(31,59,46,.10); border-radius:2px; }
+  .partners .partner-frame p{ font-family:'Fraunces',serif; font-style:italic; color:var(--accent); font-size:16px; line-height:1.75; max-width:none; }
+
+  /* ---- inline links in body copy, carried from the launch standard ---- */
+  .article-section p a, .planning-conditions a, .faq-a a{
+    color:var(--accent); text-decoration:none;
+    border-bottom:1px solid rgba(79,107,74,.35); padding-bottom:1px;
+    transition:border-color .3s ease; }
+  .article-section p a:hover, .planning-conditions a:hover, .faq-a a:hover{
+    border-bottom-color:var(--accent); }
+
+  /* ---- hand-off pair, as DISC-004 ---- */
+  .handoff-pair{ margin-top:30px; display:flex; flex-direction:column; gap:14px; }
+  .handoff{ padding:22px 26px 24px; background:var(--cream);
+    border-left:2px solid var(--accent); border-radius:2px; }
+  .handoff h3{ font-family:'Fraunces',serif; font-weight:600; font-size:clamp(16px,1.8vw,19px);
+    line-height:1.35; color:var(--ink); margin:0 0 7px; }
+  .handoff p{ color:var(--soft); font-size:15.5px; line-height:1.7; max-width:52ch; margin:0 0 12px; }
+  .handoff a{ font-family:'Work Sans',sans-serif; font-size:14px; font-weight:500;
+    letter-spacing:.02em; color:var(--accent); text-decoration:none;
+    border-bottom:1px solid rgba(79,107,74,.35); padding-bottom:2px; transition:border-color .3s ease; }
+  .handoff a:hover{ border-color:var(--accent); }
+  @media(max-width:720px){ .handoff{ padding:18px 18px 20px; } }
+
+  .note{ margin-top:30px; font-size:15.5px; line-height:1.75; color:var(--soft);
+    max-width:60ch; }
+
+/* ---- DISC-008 experiment v2 — before / possible comparison.
+     Quieter control, direct pointer relationship, no easing on the divider.
+     Inherits .imagine-photo for full-bleed, height and section rhythm.
+     Controls appear only once .is-live is set by script. ---- */
+  .cmp{ --pos:65%; touch-action:pan-y; -webkit-user-select:none; user-select:none; }
+  .cmp img{ position:absolute; inset:0; -webkit-user-drag:none; user-drag:none; }
+  .cmp img.cmp-over{ display:none; }   /* must outrank .imagine-photo img{display:block} */
+  .cmp-divider,.cmp-tag,.cmp-range{ display:none; }
+
+  .cmp.is-live{ cursor:ew-resize; }
+  .cmp.is-live .cmp-over{
+    display:block;
+    clip-path:inset(0 calc(100% - var(--pos)) 0 0);
+  }
+
+  /* hairline: ivory, with the faintest dark edge so it survives both images */
+  .cmp.is-live .cmp-divider{
+    display:block; position:absolute; top:0; bottom:0; z-index:4;
+    left:var(--pos); width:1px; margin-left:-0.5px;
+    background:rgba(248,245,236,.72);
+    box-shadow:0 0 0 0.5px rgba(15,14,10,.16);
+    pointer-events:none;
+  }
+
+  /* handle: 44px hit box, 26px visible ring, no disc, no shadow */
+  .cmp.is-live .cmp-handle{
+    position:absolute; top:50%; left:50%;
+    width:44px; height:44px; margin:-22px 0 0 -22px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cmp.is-live .cmp-handle::before{
+    content:''; width:30px; height:30px; border-radius:50%;
+    border:1px solid rgba(248,245,236,.78);
+    background:rgba(15,14,10,.06);
+  }
+  .cmp.is-live .cmp-chev{
+    position:absolute; top:50%; width:4px; height:4px;
+    border-top:1px solid rgba(248,245,236,.85);
+    border-right:1px solid rgba(248,245,236,.85);
+  }
+  .cmp.is-live .cmp-chev-l{ left:12px; transform:translateY(-50%) rotate(-135deg); }
+  .cmp.is-live .cmp-chev-r{ right:12px; transform:translateY(-50%) rotate(45deg); }
+
+  /* labels: lower corners, out of the caption's way */
+  .cmp.is-live .cmp-tag{
+    display:block; position:absolute; bottom:3.2vh; z-index:4;
+    font-family:'Work Sans',sans-serif; font-size:10px; font-weight:600;
+    letter-spacing:.2em; text-transform:uppercase;
+    color:rgba(248,245,236,.82); text-shadow:0 1px 8px rgba(0,0,0,.5);
+    pointer-events:none;
+  }
+  .cmp.is-live .cmp-tag-a{ left:5vw; }
+  .cmp.is-live .cmp-tag-b{ right:5vw; }
+
+  /* caption sits clear of both labels */
+  .cmp.is-live .caption{ padding-left:14vw; padding-right:14vw; z-index:6; }  /* above the hairline: no strikethrough at mid positions */
+
+  /* keyboard control: focusable, never captures pointer or touch */
+  .cmp.is-live .cmp-range{
+    display:block; position:absolute; left:0; right:0; bottom:0;
+    width:100%; height:44px; margin:0; opacity:0;
+    pointer-events:none; z-index:5;
+  }
+  .cmp.is-live .cmp-range:focus ~ .cmp-divider .cmp-handle::before{
+    border-color:var(--brand-ivory);
+    box-shadow:0 0 0 3px rgba(248,245,236,.42);
+  }
+
+  @media (max-width:720px){
+    /* LAUNCH COMPLETION — 9px was the smallest text anywhere on the site, and
+       it is not decoration: these two labels are the only thing telling a
+       homeowner which side of the slider is today and which is possible. On a
+       390px phone, over a photograph, at 0.18em tracking, it was not reliably
+       readable. 11px with slightly tighter tracking keeps the labels in the
+       same place and the same weight. */
+    .cmp.is-live .cmp-tag{ bottom:2.4vh; font-size:11px; letter-spacing:.16em; }
+    .cmp.is-live .cmp-tag-a{ left:5vw; }
+    .cmp.is-live .cmp-tag-b{ right:5vw; }
+    .cmp.is-live .caption{ padding-left:8vw; padding-right:8vw; }
+    .cmp.is-live .caption p{ max-width:26ch; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .cmp,.cmp *{ transition:none !important; }
+  }
+
+  /* ---- THE ONE NEW SUB-COMPONENT.
+     Twenty statutory conditions read as one undifferentiated list unless they
+     are grouped. The blueprint allows a group heading and spacing built from
+     .planning-conditions, and nothing more than that. This is exactly a
+     heading and spacing. ---- */
+  .rule-group{ margin-top:30px; }
+  .rule-group:first-of-type{ margin-top:22px; }
+  .rule-group > h3{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--accent);
+    margin:0 0 10px; }
+  .rule-group .planning-conditions{ margin-top:0; }
+
+  /* ---- FAQ — elegant native accordion. No JS required for the
+     interaction itself, keeping this section resilient and fast; the
+     .reveal fade-in still applies on scroll like everything else. ---- */
+  .faq-list{ margin-top:8px; }
+  .faq-item{ border-top:1px solid rgba(31,59,46,.06); }
+  .faq-item:last-child{ border-bottom:1px solid rgba(31,59,46,.06); }
+  .faq-item summary{ list-style:none; cursor:pointer; padding:21px 0; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item summary h3{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(17px,1.8vw,19px); font-style:normal; transition:color .3s ease; }
+  .faq-item summary:hover h3{ color:var(--accent); }
+  .faq-item .icon{ flex-shrink:0; width:20px; height:20px; position:relative; }
+  .faq-item .icon::before, .faq-item .icon::after{ content:''; position:absolute; background:var(--accent); opacity:.75; border-radius:2px; transition:transform .35s cubic-bezier(.4,0,.2,1), opacity .35s ease; }
+  .faq-item .icon::before{ left:0; top:9px; width:20px; height:1.5px; }
+  .faq-item .icon::after{ left:9px; top:0; width:1.5px; height:20px; }
+  .faq-item summary:hover .icon::before, .faq-item summary:hover .icon::after{ opacity:1; }
+  .faq-item[open] .icon::after{ transform:rotate(90deg); opacity:0; }
+  .faq-item .faq-a{ padding:0 0 24px; color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch; }
+
+  /* ---- quiet tier — used on FAQ (and shares its language with Partners
+     and Related): muted kicker, smaller heading, so these sections recede
+     rather than compete with the emotional/editorial moments above them. ---- */
+  .quiet-section .kicker{ color:var(--soft); opacity:.8; }
+  .quiet-section h2{ font-size:clamp(22px,2.6vw,30px); line-height:1.35; max-width:22ch; }
+
+  /* ---- Related Discoveries — three cards; kept quiet (photo + tiny
+     kicker + title) so it invites exploration rather than selling. ---- */
+  .related{ background:var(--paper); padding:10vh 7vw; }
+  .related-head{ max-width:1040px; margin:0 auto 48px; text-align:center; }
+  .related-head .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:20px; }
+  .related-head h2{ font-size:clamp(23px,2.8vw,32px); }
+  .related-grid{ max-width:1040px; margin:0 auto; display:grid; grid-template-columns:repeat(3, 1fr); gap:34px; }
+  .related-card{ text-decoration:none; color:inherit; display:block; }
+  .related-card .thumb{ position:relative; width:100%; aspect-ratio:4/5.1; overflow:hidden; border-radius:2px; background:var(--ink);
+    box-shadow:0 1px 2px rgba(31,59,46,.06); transition:box-shadow .5s ease; }
+  .related-card .thumb img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform 1s cubic-bezier(.22,.61,.36,1); }
+  .related-card:hover .thumb{ box-shadow:0 22px 44px -18px rgba(31,59,46,.28); }
+  .related-card:hover .thumb img{ transform:scale(1.05); }
+  .related-card .r-kicker{ margin-top:22px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); }
+  .related-card h3{ margin-top:9px; font-size:clamp(17px,1.7vw,19px); transition:color .3s ease; }
+  .related-card:hover h3{ color:var(--accent); }
+
+  /* ---- The span card. The markup here is kicker / title / line, not a
+     thumbnail and an h3, and the three classes below had no rules at all:
+     every card on every Discovery rendered as one run of inline body text.
+     Values are lifted from .related-card .r-kicker and .related-card h3 above,
+     so this is the existing design expressed for the markup in use. ---- */
+  .related-card .related-kicker{ display:block; font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--brand-sage); }
+  .related-card .related-title{ display:block; margin-top:9px;
+    font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em;
+    font-size:clamp(17px,1.7vw,19px); line-height:1.3; color:var(--ink);
+    transition:color .3s ease; }
+  .related-card:hover .related-title{ color:var(--accent); }
+  .related-card .related-line{ display:block; margin-top:10px; font-size:15px;
+    line-height:1.7; color:var(--soft); }
+  /* .related-head carried the heading's centring, width, size and its 48px of
+     air. This markup has a bare h2, so it inherited none of them and the
+     heading sat on top of the first card. Same four values, applied direct. */
+  .related > h2{ max-width:1040px; margin:0 auto 48px; text-align:center;
+    font-size:clamp(23px,2.8vw,32px); }
+  @media(max-width:820px){
+    .related-grid{ grid-template-columns:1fr; gap:26px; max-width:420px; }
+    .related-card .thumb{ aspect-ratio:3/2; }
+    .related-head{ margin-bottom:40px; }
+  }
+
+  /* ---- closing statement (identical component to Homepage / About) ---- */
+  .closing-line{ padding:21vh 7vw 19vh; text-align:center; background:var(--paper); }
+  .closing-line p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400; font-size:clamp(19px,2.15vw,25px); color:var(--soft); max-width:36ch; margin:0 auto; line-height:1.7; letter-spacing:-.003em; }
+  .closing-line .continue{ margin-top:22px; font-size:13px; font-style:normal; letter-spacing:.03em; }
+  .closing-line .continue a{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); padding-bottom:1px; transition:border-color .35s ease; }
+  .closing-line .continue a:hover{ border-color:var(--accent); }
+
+  /* ---- footer (identical to Homepage / About) ---- */
+  footer{ background:linear-gradient(180deg, var(--paper) 0%, var(--ink) 110px, var(--ink) 100%); color:#B7AF9C; padding:72px 7vw 40px; }
+  footer b{ color:var(--brand-ivory); font-family:'Fraunces',serif; font-weight:500; }
+  .footer-inner{ max-width:1040px; margin:0 auto; }
+  .footer-top{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:64px; }
+  .footer-mark{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:0; }
+  .footer-mark img{ display:block; width:40px; height:40px; }
+  .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
+  .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
+  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col ul{ list-style:none; margin:0; padding:0; }
+  .footer-col li{ margin-bottom:13px; }
+  .footer-col li:last-child{ margin-bottom:0; }
+  .footer-col a{ position:relative; color:#B7AF9C; text-decoration:none; font-size:14px; letter-spacing:.005em; transition:color .3s ease; }
+  .footer-col a::after{ content:''; position:absolute; left:0; bottom:-3px; width:0; height:1px; background:currentColor; transition:width .35s cubic-bezier(.4,0,.2,1); }
+  .footer-col a:hover{ color:var(--brand-ivory); }
+  .footer-col a:hover::after{ width:100%; }
+  .footer-col p{ font-size:14px; color:#B7AF9C; line-height:1.7; }
+  @media(max-width:820px){
+    .footer-cols{ grid-template-columns:repeat(2, minmax(0,1fr)); text-align:center; gap:40px 24px; }
+  }
+  @media(max-width:520px){
+    .footer-cols{ grid-template-columns:1fr; gap:36px; }
+  }
+  .footer-base{ margin-top:64px; text-align:center; font-size:11.5px; letter-spacing:.04em; color:#7C7565; }
+
+  @media(max-width:720px){
+    .d-hero-copy{ padding:0 8vw 8vh; }
+    .article-section{ padding:7.5vh 0; }
+    .spark{ padding:8.5vh 8vw; }
+    .spark::before{ height:10vh; }
+    .imagine-photo{ height:62vh; height:62svh; }
+    .imagine-photo::before, .imagine-photo::after{ height:6vh; }
+    .partners .article{ padding-top:9vh; padding-bottom:9vh; }
+    .related{ padding:8vh 7vw; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .d-hero img, .d-hero-copy .eyebrow, .d-hero-copy h1, .d-hero-copy .subtitle, .d-hero-copy .intro{ transition-duration:.01ms !important; }
+    .d-hero img{ transform:none !important; }
+  }
+  /* ---- EDITOR-001B "What Changed in July 2026".
+     Built from the page's own editorial vocabulary: the .article-section
+     rhythm, the .kicker/h2/p treatment and the quiet rule used elsewhere.
+     Deliberately NOT an alert box, panel or legal notice. ---- */
+  .planning-change .planning-lede{
+    font-family:'Fraunces',serif; font-size:clamp(19px,2.1vw,23px); line-height:1.6;
+    color:var(--ink); max-width:34ch; margin:0 0 24px;
+  }
+  .planning-conditions{ margin:6px 0 0; padding:0; list-style:none; }
+  .planning-conditions li{
+    position:relative; padding-left:26px; margin-bottom:12px;
+    color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch;
+  }
+  .planning-conditions li::before{
+    content:''; position:absolute; left:2px; top:.72em;
+    width:7px; height:7px; border-radius:50%; background:var(--brand-sage);
+  }
+  .planning-conditions strong{ color:var(--ink); font-weight:600; }
+  .planning-sub{
+    font-family:'Fraunces',serif; font-weight:500; font-size:clamp(17px,1.9vw,20px);
+    color:var(--ink); margin:36px 0 12px;
+  }
+  .planning-note{
+    margin-top:44px; padding-top:26px; border-top:1px solid rgba(31,59,46,.10);
+    font-size:15.5px; line-height:1.8; color:var(--soft); max-width:58ch;
+  }
+  @media(max-width:720px){
+    .planning-change .planning-lede{ max-width:none; }
+  }
+
+  /* ============================================================
+     PROPERTY BRAIN PREVIEW — the standard Discovery destination.
+     NOT a new design. Every value below is lifted unchanged from
+     your-plot.html Screen 1 (.pn-wordmark, #screen-entry h1,
+     .entry-subhead, .pn-eircode-field, .btn-primary) so the homeowner
+     meets the same component here that they will meet when the journey
+     opens. Adapt content only — do not restyle.
+     ============================================================ */
+  .pb-preview{ background:var(--cream); padding:12vh 7vw;
+    border-top:1px solid rgba(31,59,46,.08);
+    display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .pn-wordmark{ font-family:'Fraunces',serif; font-weight:600; font-size:15px;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--ink); margin-bottom:36px; }
+  .pb-headline{ font-family:'Fraunces',serif; font-size:clamp(26px,5vw,40px); line-height:1.25;
+    color:var(--ink); max-width:16ch; margin:0 0 12px; font-weight:400; letter-spacing:-.01em; }
+  .pb-subhead{ font-size:16px; color:var(--soft); line-height:1.5; max-width:32ch; margin:0 0 26px; }
+  .pn-eircode-field{ width:100%; max-width:360px; text-align:left; }
+  .pn-eircode-field label{ font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--soft); display:block; margin-bottom:8px; }
+  .pn-eircode-field input{
+    width:100%; padding:15px 16px; font-size:16px; font-family:'Work Sans',sans-serif;
+    letter-spacing:.03em; border:1px solid rgba(31,59,46,.25); border-radius:2px;
+    background:#fff; color:var(--ink);
+  }
+  .pn-eircode-field input:disabled{ opacity:.55; cursor:not-allowed; }
+  .btn-primary{
+    display:inline-block; background:var(--ink); color:var(--brand-ivory); border:none;
+    font-family:'Work Sans',sans-serif; padding:16px 30px; font-size:14px;
+    letter-spacing:.08em; text-transform:uppercase; border-radius:2px; margin-top:24px;
+  }
+  .btn-primary:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
+  .pb-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px;
+    max-width:940px; margin:62px auto 0; text-align:left; }
+  .pb-step .n{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--brand-sage); margin-bottom:11px; }
+  .pb-step p{ color:var(--soft); font-size:15.5px; line-height:1.8; margin:0; }
+  .pb-independence{ margin:52px auto 0; max-width:50ch; color:var(--soft);
+    font-size:15px; line-height:1.75; }
+  .pb-independence strong{ color:var(--ink); font-weight:600; }
+  .pb-note{ margin:22px auto 0; max-width:46ch; font-size:14.5px; line-height:1.75;
+    color:var(--soft); opacity:.85; }
+  @media(max-width:820px){
+    .pb-steps{ grid-template-columns:1fr; gap:26px; margin-top:46px; text-align:center; }
+    .pb-preview{ padding:10vh 7vw; }
+    .pn-eircode-field{ max-width:100%; }
+  }
+
+  /* Outside the frozen block: the field and button are a real form now. */
+  .pb-form{ width:100%; display:flex; flex-direction:column; align-items:center; }
+  .cs-exits{
+    display:flex; flex-wrap:wrap; gap:14px 26px; justify-content:center;
+    margin-top:26px;
+  }
+  .cs-exit{
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    letter-spacing:.05em; text-decoration:none; color:var(--ink);
+    border-bottom:1px solid rgba(31,59,46,.35);
+    min-height:44px; display:inline-flex; align-items:center;
+  }
+  .cs-exit:hover{ border-bottom-color:var(--ink); }
+  .cs-exit:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .cs-exit.is-home{ color:var(--soft); border-bottom-color:rgba(85,96,90,.28); font-weight:500; }
+  @media (max-width:640px){
+    .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
+  }
+</style>
 </head>
 <body>
-<p>This Discovery has moved. <a href="/discoveries.html">Go to the Discovery Library</a>.</p>
+
+<!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
+     Goes to the Discovery Library, NOT to the homepage: the brand mark above
+     already goes home, and two fixed controls leading to the same place is
+     the "three routes, three names" problem this codebase has fixed once
+     already. A homeowner reading a Discovery wants the shelf it came off. -->
+<a href="discoveries.html" class="pn-return" id="pnReturn" aria-label="Back">
+  <span class="pn-return-arrow" aria-hidden="true">&larr;</span> Back
+</a>
+
+<a href="index.html" class="brand-mark" id="brandMark" aria-label="PlotNua &mdash; Home">
+  <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
+</a>
+
+<header class="d-hero">
+  <!-- IMAGE 01 - Home Exchange. Rule 1: eyebrow colour set against this image. -->
+  <img id="dHeroImg" class="on" src="assets/img/f373883b2d23d27b.jpg" width="1376" height="768" fetchpriority="high" decoding="async" alt="A split view of two kitchen tables, each with a mug and a travel book: one looking out to a lush Irish garden, the other to a sunlit Mediterranean harbour.">
+  <div class="d-hero-scrim"></div>
+  <div class="d-hero-copy in" id="dHeroCopy">
+    <div class="eyebrow">A PlotNua Discovery</div>
+    <h1>Home Exchange</h1>
+    <p class="subtitle">Your house costs the same whether you are in it or not.</p>
+    <p class="intro">When you go away, your home may be standing empty at exactly the time you are paying for somewhere else to stay.</p>
+  </div>
+</header>
+
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">Why This Discovery?</div>
+    <h2>Who is this for?</h2>
+    <p>Somebody whose house is empty for a week or two most years.</p>
+    <p>Somebody who has wondered, vaguely, whether that matters &mdash; and never had a reason to find out.</p>
+    <p>This is not about letting your house. Nobody pays anybody. <strong>It is about swapping the use of your home for the use of somebody else&rsquo;s, for the same fortnight or a different one.</strong></p>
+  </section>
+</main>
+
+<section class="imagine-photo reveal">
+  <!-- IMAGE 02 - Potential Asset. RULE 6: annotation supplied by the .pa-annot overlay below.
+       The hidden asset here is THE HOME ITSELF - location, sleeping capacity, availability - so the
+       leader terminates on the centre mass of the front elevation, not on a driveway, door, window
+       or room. The label sits in the clear sky deliberately left open in the upper left of the plate.
+       The image file is unmodified; the alt text names the annotation. -->
+  <img src="assets/img/2dd27e2c7c8018d4.jpg" width="1376" height="768" loading="lazy" decoding="async"
+       alt="An ordinary Irish semi-detached house seen from the footpath on a quiet estate road, the driveway empty and the curtains open, the whole house annotated by PlotNua as a potential asset.">
+
+  <div class="pa-annot" aria-hidden="true">
+    <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <circle class="pa-dot" cx="838" cy="350" r="7"/>
+      <path class="pa-line" d="M832 344 L348 194"/>
+      <rect class="pa-wash" x="60" y="110" width="280" height="76" rx="2"/>
+      <text class="pa-kicker" x="80" y="139">PLOTNUA DISCOVERY</text>
+      <text class="pa-label"  x="80" y="172">Potential Asset</text>
+    </svg>
+  </div>
+  <div class="caption"><p>An ordinary house, standing available.</p></div>
+</section>
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">The Opportunity</div>
+    <h2>What does this actually mean?</h2>
+    <p><strong>Your house is worth something to somebody else on exactly the days it is worth nothing to you.</strong></p>
+    <p>That is the whole idea. <strong>You stay in their home, they stay in yours, and no money changes hands in either direction.</strong> Nobody is renting anything. Nobody becomes a landlord.</p>
+    <p><strong>What makes your home useful in an exchange is usually not how impressive it is. It is where it is, how many people it sleeps and when it is available.</strong></p>
+    <p>Those three things are close to the whole list, and the first two came with the house.</p>
+    <p><strong>It also means you do not need to live somewhere remarkable.</strong> A three-bedroom semi twenty minutes from the coast is a straightforward exchange, because what another household needs is a place near whatever they came for and enough beds for everyone.</p>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Why Now</div>
+    <h2>Why does this come up now?</h2>
+    <p><strong>Two things have changed.</strong></p>
+    <p><strong>The date problem eased.</strong> Home exchange used to mean finding one household who wanted your house on precisely the fortnight you wanted theirs. That is a hard match. <strong>Points or credits have removed that constraint on some platforms:</strong> you host somebody in June, and use what you earn to stay somewhere else in October, with a different household. The two halves no longer have to line up.</p>
+    <p><strong>And short-term letting is about to be regulated properly.</strong> Ireland&rsquo;s short-term letting register opens on 1 December 2026, and anyone letting accommodation short-term has to be registered by the end of that month. Anyone who hears about that could reasonably assume it closes the door on any arrangement involving their house and a stranger.</p>
+    <p><strong>It is worth understanding why a straight swap is a different arrangement</strong> &mdash; and worth knowing where that is clear and where it is not.</p>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Today</div>
+    <h2>What can you do today?</h2>
+    <p>Three ways, and the one that suits you depends on your dates more than your house.</p>
+    <h3>If you can both travel at the same time &mdash; a straight swap</h3>
+    <p>The simplest version. You agree a fortnight with another household, you stay in their home, they stay in yours, and everybody goes home afterwards.</p>
+    <p>No money moves. The arrangement is between the two households, and a platform handles the introductions, the profiles and the record of what was agreed.</p>
+    <p><strong>The catch is the matching.</strong> Both households have to want the same two weeks.</p>
+    <h3>If your dates do not line up &mdash; points or credits</h3>
+    <p>Some platforms let you host without going anywhere yourself. <strong>A night at your home is worth a set number of points</strong>; hosting for a few nights earns you a few nights&rsquo; worth. You spend them later, somewhere else, with somebody who has never seen your house.</p>
+    <p><strong>One honest warning.</strong> Points are not money, but they have value. <strong>Ireland&rsquo;s new letting rules are written around accommodation provided for payment, and whether points count as payment has not been decided or written down anywhere we could find.</strong> A straight swap sits more clearly outside those rules than a points arrangement does. See Looking Ahead, below.</p>
+    <h3>If you have a second property &mdash; exchanging the one you are not in</h3>
+    <p>If you own a holiday home or an inherited house, it can be exchanged without anyone entering your own home at all.</p>
+    <p><strong>It removes the question of somebody staying in your own home.</strong> And it makes a house that sits empty for much of the year genuinely useful.</p>
+  </section>
+</main>
+
+<section class="imagine-photo reveal">
+  <!-- IMAGE 03 - Outcome. Same property, same angle, same light as Image 02: the matched-house
+       narrative the founder approved. Deliberately carries no annotation. -->
+  <img src="assets/img/991355de2bd66bcc.jpg" width="1376" height="768" loading="lazy" decoding="async"
+       alt="The same Irish semi-detached house a fortnight later: a hire car in the driveway, two children&rsquo;s bicycles against the wall and somebody carrying shopping to the front door.">
+  <div class="caption"><p>The same house, a fortnight later, with somebody else in it.</p></div>
+</section>
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">Day to Day</div>
+    <h2>What does it change day to day?</h2>
+    <p>Nothing at all, until the fortnight arrives.</p>
+    <p>Then it is mostly preparation: emptying a shelf or two, putting away what you would rather not have handled, leaving instructions for the heating and the bins, and arranging how the keys get from you to them.</p>
+    <p><strong>You may never meet them.</strong> Keys can pass through a neighbour, a lockbox or a key safe, and the two households can travel in opposite directions on the same day.</p>
+    <p><strong>What changes is smaller than it sounds and stranger than it sounds.</strong> Somebody is living in your house &mdash; cooking in your kitchen, sleeping in your bed &mdash; while you are doing exactly the same in theirs.</p>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Before You Start</div>
+    <h2>What should you think about before you start?</h2>
+    <p><strong>Start with the one that is not about the house.</strong></p>
+    <p>Would you be comfortable with another family living in your home for a fortnight? Some people are, immediately. Some are not, and never will be. <strong>If that is you, this Discovery is not for your house, and that is a perfectly good answer to reach early.</strong></p>
+    <p>Then the practical ones. How many weeks a year is the house genuinely empty? Are those weeks fixed by school terms? How many people can it sleep &mdash; really, not at a push? Is there parking, and does that matter where you are?</p>
+    <p><strong>Then the four that need proper thought.</strong></p>
+    <p><strong>Insurance, and it runs the opposite way to expectation.</strong> Irish home policies commonly restrict cover once a house has stood empty for a prolonged period, with the exact period depending on the policy. <strong>An empty house is the insurance question.</strong> But another household living in your home during an exchange raises a separate question again, and whether that counts as the house being occupied is not something we could establish for the Irish market. <strong>Ask your own insurer, in writing, before you agree dates.</strong> Any protection a platform offers sits on top of your policy &mdash; it does not replace it.</p>
+    <p><strong>The short-term letting register.</strong> It opens on 1 December 2026. The rules define a host as somebody providing accommodation for payment, and the register applies to accommodation offered for rent. In a straight swap nobody pays anybody. <strong>On the wording of the rules, a no-payment exchange is a different arrangement from a short-term let</strong> &mdash; but nobody has published a ruling on home exchange specifically, so this is a reading of the rules rather than a settled position. If money ever changes hands, it stops being an exchange and all the ordinary rules apply.</p>
+    <p><strong>Tax.</strong> No Revenue guidance addressing reciprocal home exchange was found. <strong>That is not the same as being told there is nothing to consider</strong>, and it should not be treated as it. Take your own advice rather than relying on the absence of a rule.</p>
+    <p><strong>Your mortgage, and your lease if you have one.</strong> Mortgage conditions and apartment or management-company rules can both restrict who may occupy a property. <strong>We have not verified what any particular lender or management company allows.</strong> Both are worth checking before you list.</p>
+    <p>PlotNua does not arrange exchanges, does not take a share of anything, and cannot tell you whether your house will be wanted.</p>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Looking Ahead</div>
+    <h2>Looking Ahead</h2>
+    <p class="quarantine-lede">Everything above can be done in Ireland today. What follows is less settled.</p>
+    <h3>The points question</h3>
+    <p>The rules coming into force in December are built around accommodation provided for payment. <strong>Points are not money, but they do have value</strong> &mdash; you earn them by hosting and spend them on somewhere to stay.</p>
+    <p><strong>Whether that counts as payment has not been decided, and nothing published answers it.</strong> A straight swap sits more clearly outside these rules than a points arrangement does. <strong>If you are exchanging on points, that is worth asking about rather than assuming.</strong></p>
+    <h3>What would settle it</h3>
+    <p>Guidance from F&aacute;ilte Ireland or the Department naming home exchange, one way or the other.</p>
+    <p>Until then this stays a question rather than a rule, and <strong>we would rather tell you that than tidy it away.</strong></p>
+    <h3>Why the house keeps its value either way</h3>
+    <p>Whatever happens to the rules, the thing that makes a house worth exchanging does not move. <strong>It is where the house is, how many it sleeps and when it is free</strong> &mdash; and none of those depends on a register.</p>
+  </section>
+
+  <section class="article-section quiet-section reveal" style="border-bottom:none;">
+    <div class="kicker">Frequently Asked Questions</div>
+    <h2>Questions this Discovery tends to raise.</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary><h3>Is this the same as renting out my house?</h3><span class="icon"></span></summary>
+        <div class="faq-a">No. In an exchange nobody pays anybody. You are not a landlord, no rent passes between the households, and the arrangement is that each of you gets somewhere to stay. That is a different thing from a short-term let, where a guest pays to stay.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Do I get paid?</h3><span class="icon"></span></summary>
+        <div class="faq-a">No, and it is worth being clear about it. No money reaches you. You pay an annual membership to the platform, and what you get back is somewhere to stay that you did not have to pay for. The benefit is real, but it is accommodation you avoid paying for rather than income.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Do we have to travel on the same dates?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Not necessarily. Some platforms run on points: you host somebody at a time that suits you, and spend what you earn later, somewhere else, with a different household. On those platforms your dates and theirs do not have to match.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>What about insurance?</h3><span class="icon"></span></summary>
+        <div class="faq-a">This is the one to sort first. Irish policies commonly restrict cover once a house has been empty for a prolonged period &mdash; how long depends on your policy. Another household staying in your home raises a separate question again, and we could not establish how Irish insurers treat it. Ask yours in writing before you agree anything. Platform protection sits on top of your own cover, not instead of it.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>What if something gets damaged?</h3><span class="icon"></span></summary>
+        <div class="faq-a">A platform may hold a deposit and offer cover for accidental damage, cancellation and homes that turn out not to match their listing. Read what yours actually covers, and remember it is separate from your household insurance.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Does the new short-term letting register apply to me?</h3><span class="icon"></span></summary>
+        <div class="faq-a">The register opens on 1 December 2026 and applies to hosts offering accommodation for payment, for periods up to 21 nights. In a straight swap nobody pays anybody, so on the wording of the rules there is no host and nothing to register. Nobody has published a ruling on home exchange specifically, so treat that as a reading of the rules rather than settled. Points are a separate question &mdash; see Looking Ahead.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Does my house need to be somewhere remarkable?</h3><span class="icon"></span></summary>
+        <div class="faq-a">No. What another household needs is a place near whatever they came for and enough beds. People exchange to visit family, to walk, to work somewhere for a month.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>What if I live in an apartment, or still have a mortgage?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Apartments can be exchanged. But management-company rules and mortgage conditions can both restrict who is allowed to occupy a property, and we have not verified what any particular lender or management company permits. Check both before you list.</div>
+      </details>
+    </div>
+  </section>
+</main>
+
+<section class="pb-preview reveal" id="discover-your-property">
+    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
+         your-plot.html, whose journey is hard-coded to discoveryContext =
+         'artist-studio'. Whatever this page said, the homeowner arrived in the
+         Garden Room journey. The interaction is removed rather than disabled,
+         for the reason already recorded on the three pages that did this first:
+         a control a homeowner cannot use is worse than no control at all.
+         Component, styling and independence statement are the existing ones. -->
+    <div class="pn-wordmark">PlotNua</div>
+    <h2 class="pb-headline">This property check is being prepared</h2>
+    <p class="pb-subhead">The Home Exchange check will look at where your house is, what is near it, how it is reached, and how many people it sleeps &mdash; to help answer the question that decides everything else: who might want to stay here. It is not ready yet. In the meantime, there is plenty to explore.</p>
+    <div class="cs-exits">
+      <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
+      <a class="cs-exit" href="discovery-neighbourhood-parcel-house.html">Explore The Neighbourhood Parcel House &rarr;</a>
+      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
+      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
+    </div>
+    <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
+  </section>
+
+<section class="related reveal">
+  <h2>Related Discoveries</h2>
+  <div class="related-grid">
+    <a class="related-card" href="discovery-driveway-income.html">
+      <span class="related-kicker">Income</span>
+      <span class="related-title">Driveway Income</span>
+      <span class="related-line">Your driveway is empty for most of the day. Someone nearby may already need it.</span>
+    </a>
+    <a class="related-card" href="discovery-neighbourhood-parcel-house.html">
+      <span class="related-kicker">Neighbourhood</span>
+      <span class="related-title">The Neighbourhood Parcel House</span>
+      <span class="related-line">A few homes on every road are better placed than the rest to take in a parcel.</span>
+    </a>
+    <a class="related-card" href="discovery-an-extra-room.html">
+      <span class="related-kicker">Space</span>
+      <span class="related-title">Create an Extra Room</span>
+      <span class="related-line">New planning rules have made adding an extra room much simpler.</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-mark">
+        <img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="40" height="40">
+        <span class="footer-word">PlotNua</span>
+      </div>
+    </div>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html#discover">Discoveries</a></li>
+          <li><a href="your-plot.html">Your Plot</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About PlotNua</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Social</h4>
+        <ul>
+          <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://linkedin.com/company/plotnua" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://pinterest.com/plotnua" target="_blank" rel="noopener">Pinterest</a></li>
+          <li><a href="https://tiktok.com/@plotnua" target="_blank" rel="noopener">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
+      </div>
+    </div>
+
+    <div class="footer-base">&copy; PlotNua.</div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const brandMark = document.getElementById('brandMark');
+
+    if (reduceMotion){
+      if (brandMark) brandMark.classList.add('in');
+    } else {
+      setTimeout(()=>{ if (brandMark) brandMark.classList.add('in'); }, 900);
+    }
+
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const io = new IntersectionObserver(es=>{
+        es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, {threshold:.12});
+      io.observe(el);
+    });
+  })();
+</script>
+
+
+<script>
+/* DISC-008 experiment v2 — before / possible comparison.
+   One unified pointer model: pointer capture on the frame, so a drag survives
+   crossing the clipped overlay and continues if the pointer leaves the frame.
+   DOM writes are batched to one per animation frame; the value itself is never
+   eased, so the divider tracks the pointer directly. */
+(function(){
+  var el = document.getElementById('gardenCompare');
+  if(!el || !window.PointerEvent) return;              /* graceful: stays static */
+  var range = el.querySelector('.cmp-range');
+  if(!range) return;
+  el.classList.add('is-live');
+
+  var pos = 65, rect = null, activeId = null, queued = false;
+
+  function describe(v){
+    if(v <= 2)  return 'Showing the same garden with a detached home';
+    if(v >= 98) return 'Showing the garden as it is today';
+    return 'Comparing the garden as it is today with the same garden containing a detached home, divider at ' + v + ' per cent';
+  }
+  function paint(){
+    queued = false;
+    el.style.setProperty('--pos', pos + '%');
+  }
+  function commit(v, syncRange){
+    v = v < 0 ? 0 : (v > 100 ? 100 : v);
+    if(v === pos && syncRange !== true) return;        /* avoid redundant writes */
+    pos = v;
+    if(!queued){ queued = true; requestAnimationFrame(paint); }
+    if(syncRange) range.value = Math.round(v);
+    range.setAttribute('aria-valuetext', describe(Math.round(v)));
+  }
+  function fromX(clientX){
+    var r = rect || el.getBoundingClientRect();
+    commit(((clientX - r.left) / r.width) * 100, true);
+  }
+
+  el.addEventListener('pointerdown', function(e){
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    activeId = e.pointerId;
+    rect = el.getBoundingClientRect();                 /* cached for the drag */
+    try{ el.setPointerCapture(e.pointerId); }catch(_){}
+    fromX(e.clientX);
+  });
+  el.addEventListener('pointermove', function(e){
+    if(activeId === null || e.pointerId !== activeId) return;
+    if(e.cancelable) e.preventDefault();               /* only while dragging */
+    fromX(e.clientX);
+  });
+  function release(e){
+    if(activeId === null) return;
+    if(e && e.pointerId != null && e.pointerId !== activeId) return;
+    try{ if(e && e.pointerId != null) el.releasePointerCapture(e.pointerId); }catch(_){}
+    activeId = null; rect = null;
+  }
+  el.addEventListener('pointerup', release);
+  el.addEventListener('pointercancel', release);
+  el.addEventListener('lostpointercapture', release);  /* no stale drag state */
+
+  range.addEventListener('input', function(){ commit(parseFloat(range.value), false); });
+  window.addEventListener('resize', function(){ if(activeId !== null) rect = el.getBoundingClientRect(); });
+
+  commit(65, true);
+})();
+</script>
+<script>
+/* THE FLOATING BACK — a real Back, and it cannot leave PlotNua.
+
+   The href on the control is the no-JavaScript answer and the last-resort
+   answer: the Discovery Library. This script only ever intercepts in order
+   to do something better than that.
+
+   Everything hinges on deciding, BEFORE the homeowner clicks, whether the
+   previous document was ours. history.back() cannot be inspected — you
+   cannot ask where it would go — so it is only ever called after
+   document.referrer has positively confirmed a same-origin previous page.
+   That is what stops this control firing somebody out to Google or a social
+   feed they arrived from. */
+(function(){
+  var btn = document.getElementById('pnReturn');
+  if (!btn) return;
+
+  /* Captured at load, not at click: history.length grows as the homeowner
+     uses in-page anchors, and the difference between then and now is exactly
+     how we know whether one back() step still lands on the previous PAGE. */
+  var startLen = history.length;
+  var prev = '';
+  try {
+    if (document.referrer) {
+      var u = new URL(document.referrer, location.href);
+      var here = location.href.split('#')[0];
+      /* Same origin, and not this page referring to itself — a reload leaves
+         the page as its own referrer, and "back" to yourself is a dead
+         control. */
+      if (u.origin === location.origin && u.href.split('#')[0] !== here) prev = u.href;
+    }
+  } catch (e) { prev = ''; }
+
+  btn.addEventListener('click', function(e){
+    /* No confirmed PlotNua previous page: do nothing, and let the href carry
+       them to the Library. Direct URLs, bookmarks and search arrivals all
+       land here. */
+    if (!prev) return;
+    e.preventDefault();
+    if (history.length === startLen && startLen > 1) {
+      /* The real Back, and the only branch with any chance of restoring
+         state. Hidden Potential links out of your-plot.html, a single-page
+         app; a fresh navigation to the same URL definitely reloads it and
+         throws the journey away, whereas a history traversal MAY be served
+         from bfcache with Results still on screen.
+
+         MEASURED, and not as hoped: under headless Chromium the journey
+         reset to the Eircode entry screen, so bfcache did not restore it
+         here. Headless is not proof either way about a real browser, so
+         this is written as the better bet rather than as a guarantee, and
+         the state loss is reported as an open item rather than claimed
+         fixed. The DESTINATION is correct in every case; it is the SPA's
+         resume behaviour that is unresolved, and that is a separate piece
+         of work from a navigation label. */
+      history.back();
+    } else {
+      /* In-page anchors have pushed entries, so one back() step would land
+         on a hash of this page. Go to the genuine previous page directly. */
+      location.href = prev;
+    }
+  });
+})();
+</script>
 </body>
 </html>
