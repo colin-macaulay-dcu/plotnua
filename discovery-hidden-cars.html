@@ -199,6 +199,38 @@
     color:var(--ink); max-width:56ch; }
   .quarantine-lede{ font-style:italic; color:var(--ink); max-width:56ch; margin-bottom:26px; }
 
+  /* ---- RULE 6 — THE ANNOTATED FRAME IS THE WHOLE PLATE.
+
+     A Potential Asset plate is not an ordinary photograph. The photograph, the
+     PLOTNUA DISCOVERY kicker, the Potential Asset label, the wash, the leader and
+     the dot are one composed explanatory graphic, and cropping any of it destroys
+     the explanation rather than trimming a picture.
+
+     The overlay shares the plate's coordinate system and is sliced with it, so it
+     stays registered to the photograph. That is correct and must not change. What
+     was wrong is that the FRAME was sized from the viewport (84vh, 62vh) rather
+     than from the plate, so the plate was cropped and the annotation with it:
+     measured, only the middle 42% of the plate survived at 390 and 50% at 768,
+     and above 1354px the plate was still cropped top and bottom — which is what
+     clipped DISC-006's label at 1920.
+
+     The frame now takes its height from the plate at EVERY width. Nothing can be
+     cropped, so there is no safe band to compose around on either axis, and a
+     future Discovery inherits this by adding one class.
+
+     Scoped to .pa-frame: unannotated plates keep the tall full-bleed frame.
+
+     The caption and the edge gradients keep the site's existing 820px breakpoint,
+     because a short band needs less of both. That is presentation. The height
+     rule above it carries no breakpoint, because cropping is not presentation. ---- */
+  .imagine-photo.pa-frame{ height:auto; min-height:0; }
+  .imagine-photo.pa-frame img{ height:auto; }
+  @media (max-width:820px){
+    .imagine-photo.pa-frame::before,
+    .imagine-photo.pa-frame::after{ height:18px; }
+    .imagine-photo.pa-frame .caption{ padding:26px 8vw 20px; }
+  }
+
   .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
   .pa-annot svg{ width:100%; height:100%; display:block; }
   .pa-line{ stroke:rgba(15,14,10,.78); stroke-width:1.6; fill:none; }
@@ -634,7 +666,7 @@
   </section>
 </main>
 
-<section class="imagine-photo reveal">
+<section class="imagine-photo pa-frame reveal">
   <!-- IMAGE 02 - Potential Asset. RULE 6: annotation supplied by the .pa-annot overlay below,
        the same component DISC-026 uses. The image file is unmodified; the alt text names the annotation. -->
   <img src="assets/img/458728c46951cf14.jpg" width="1376" height="768" loading="lazy" decoding="async"
@@ -643,10 +675,10 @@
   <div class="pa-annot" aria-hidden="true">
     <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid slice" focusable="false">
       <circle class="pa-dot" cx="605" cy="537" r="7"/>
-      <path class="pa-line" d="M599 543 L340 594"/>
-      <rect class="pa-wash" x="64" y="600" width="280" height="76" rx="2"/>
-      <text class="pa-kicker" x="84" y="629">PLOTNUA DISCOVERY</text>
-      <text class="pa-label"  x="84" y="662">Potential Asset</text>
+      <path class="pa-line" d="M599 531 L352 100"/>
+      <rect class="pa-wash" x="64" y="18" width="280" height="76" rx="2"/>
+      <text class="pa-kicker" x="84" y="47">PLOTNUA DISCOVERY</text>
+      <text class="pa-label"  x="84" y="80">Potential Asset</text>
     </svg>
   </div>
   <div class="caption"><p>The house was composed to be seen. It is now seen past the cars.</p></div>
