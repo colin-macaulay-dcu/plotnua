@@ -664,6 +664,10 @@
      local override keyed on a class only this page sets. */
   body.pb-brain-active .pn-return{ display:none; }
 
+  /* Inside .rt-wrap the statement would inherit text-align:left. It was
+     centred by .pb-preview before it moved; it stays centred. */
+  .rt-wrap .pb-independence{ text-align:center; }
+
   @media(max-width:820px){
     .rt-doors{ grid-template-columns:1fr; gap:14px; }
     .rt-door{ padding:26px 22px 22px; }
@@ -1014,6 +1018,10 @@
           <p class="pb-subhead">Your property could have more than one way to create extra space. Choose one to look at more closely.</p>
         </div>
         <div class="rt-doors" id="rtDoors"></div>
+        <!-- PIECE 2.3 — kept ONCE, here, on the entry screen. It used to sit
+             outside .rt-wrap, which is why one element rendered beneath every
+             question and every result. Wording, class and rule unchanged. -->
+        <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
       </div>
 
       <!-- ---------- ONE QUESTION, FROM THE CHOSEN BRANCH ONLY ----------
@@ -1044,26 +1052,10 @@
           </div>
         </div>
 
-        <div class="rt-question" data-field="access" hidden>
-          <p class="rt-eyebrow">Your garden &middot; 1 of 2</p>
-          <h3 class="rt-q-title">Can you get to the back garden without going through the house?</h3>
-          <div class="rt-options">
-            <button type="button" class="rt-act rt-option" data-field="access" data-value="yes"><span>Yes &mdash; a side passage or a gate</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
-            <button type="button" class="rt-act rt-option" data-field="access" data-value="no"><span>No, only through the house</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
-            <button type="button" class="rt-act rt-option" data-field="access" data-value="unknown"><span>Not sure</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
-          </div>
-        </div>
-
-        <div class="rt-question" data-field="give" hidden>
-          <p class="rt-eyebrow">Your garden &middot; 2 of 2</p>
-          <h3 class="rt-q-title">Roughly how much of the garden would you be willing to give up?</h3>
-          <div class="rt-options">
-            <button type="button" class="rt-act rt-option" data-field="give" data-value="good"><span>A decent share of it</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
-            <button type="button" class="rt-act rt-option" data-field="give" data-value="corner"><span>A corner, no more</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
-            <button type="button" class="rt-act rt-option" data-field="give" data-value="none"><span>I'd rather not lose garden</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
-            <button type="button" class="rt-act rt-option" data-field="give" data-value="unknown"><span>Not sure yet</span><i class="rt-arrow" aria-hidden="true">&rarr;</i></button>
-          </div>
-        </div>
+        <!-- PIECE 2.3 — the two garden questions are removed. Traced first:
+             all twelve answer combinations handed the Atlas an identical URL
+             and an empty store, so neither answer reached matching. The attic
+             and garage questions below are untouched. -->
       </div>
 
       <!-- ---------- THAT ROUTE'S RESULT, AND NOTHING ELSE ---------- -->
@@ -1071,6 +1063,7 @@
         <p class="rt-eyebrow rt-result-state" id="rtResultState"></p>
         <h2 class="pb-headline" id="rtResultTitle"></h2>
         <p class="rt-why" id="rtResultWhy"></p>
+        <p class="rt-why" id="rtResultWhy2" hidden></p>
         <p class="rt-next" id="rtResultNext"></p>
         <div id="rtResultAction"></div>
       </div>
@@ -1084,8 +1077,6 @@
         <button type="button" class="rt-act rt-all" id="rtAll" hidden></button>
       </div>
     </div>
-
-    <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
   </section>
 
 
@@ -1297,9 +1288,23 @@
     { key:'extension', name:'Extend the house',
       lead:'Explore what adding to the existing house could involve.',
       go:'Explore an extension',   qs:[],                  build:extension },
+    /* PIECE 2.3 — the Garden branch asks nothing.
+       Its two questions were traced end to end before removal: driven through
+       all twelve answer combinations, every one produced the identical CTA
+       href, an empty store, no cookie and no window.name. Nothing crossed
+       into the Atlas, so the homeowner was being asked twice for something
+       PlotNua could not use — and then asked again, on the Atlas side, where
+       garden access is a permanently open item the homeowner owns.
+
+       `fixed` carries the approved route copy. garden() is left byte-identical
+       and simply unreferenced, so the interpretation survives if the questions
+       ever come back. */
     { key:'garden',    name:'Build in the garden',
       lead:'Explore a separate room elsewhere on your property.',
-      go:'Explore the garden',     qs:['access','give'],   build:garden }
+      go:'Explore the garden',     qs:[],                  build:garden,
+      fixed:{ state:'open', label:'Worth exploring', next:null,
+              why:'A garden room can create useful extra space without changing the house itself.',
+              second:'PlotNua can now compare Garden Room options against what matters to you.' } }
   ];
 
   var ARROW = '<i class="rt-arrow" aria-hidden="true">&rarr;</i>';
@@ -1325,6 +1330,11 @@
      screen: measured, the entry heading was taking focus on page load, which
      drops a keyboard or screen-reader user at the foot of the Discovery
      before they have read any of it. */
+  function openBranch(br){
+    branch = br; answers = {};
+    if (br.qs.length) showStep(0); else showResult();
+  }
+
   function showRoutes(quiet){
     branch = null; answers = {}; qi = 0;
     show(routes);
@@ -1347,10 +1357,13 @@
   }
 
   function showResult(){
-    var v = branch.build(answers);
+    var v = branch.fixed || branch.build(answers);
     document.getElementById('rtResultState').textContent = v.label;
     document.getElementById('rtResultTitle').textContent = branch.name;
     document.getElementById('rtResultWhy').textContent = v.why;
+    var w2 = document.getElementById('rtResultWhy2');
+    w2.textContent = v.second || '';
+    w2.hidden = !v.second;
     var nx = document.getElementById('rtResultNext');
     nx.textContent = v.next ? ('What to check next: ' + v.next) : '';
     nx.hidden = !v.next;
@@ -1399,10 +1412,7 @@
     var g = document.createElement('span'); g.className = 'rt-door-go';
     g.innerHTML = br.go + ARROW;
     b.appendChild(n); b.appendChild(l); b.appendChild(g);
-    b.addEventListener('click', function(){
-      branch = br; answers = {};
-      if (br.qs.length) showStep(0); else showResult();
-    });
+    b.addEventListener('click', function(){ openBranch(br); });
     doors.appendChild(b);
   });
 
@@ -1416,6 +1426,21 @@
   allBtn.addEventListener('click', function(){ showRoutes(); bring(); });
 
   showRoutes(true);
+
+  /* PIECE 2.3 — A STABLE RETURN ADDRESS.
+     your-plot.html?discovery=garden-room offers "Back to Build in the
+     garden", and this is where it lands: the Garden route screen itself,
+     not the top of the Discovery and not the Library. A hash rather than
+     stored state, so the address survives a reload, a bookmark and a shared
+     link. Only the garden route declares one — no other branch is
+     addressable, because nothing else needs to be. */
+  if (location.hash === '#route-garden'){
+    var g = BRANCHES.filter(function(br){ return br.key === 'garden'; })[0];
+    if (g){
+      openBranch(g);
+      if (section) section.scrollIntoView({ behavior:'instant', block:'start' });
+    }
+  }
 })();
 </script>
 
