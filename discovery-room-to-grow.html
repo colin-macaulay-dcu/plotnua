@@ -533,6 +533,77 @@
 
   /* Outside the frozen block: the field and button are a real form now. */
   .pb-form{ width:100%; display:flex; flex-direction:column; align-items:center; }
+
+  /* ===========================================================
+     ISSUE 004 PIECE 2 — THE ROUTE ASSESSMENT.
+     Built from the vocabulary already on this page: the .pb-preview
+     ground, the .pn-wordmark, the .pb-headline / .pb-subhead pair and
+     the .cs-exit link. No new colour is introduced and no existing
+     rule is altered.
+
+     The four route cards are deliberately identical — same border,
+     same padding, same heading size, same link treatment. Garden is
+     last in the fixed order. The only thing that differs between
+     cards is the words and where the link goes.
+     =========================================================== */
+  [hidden]{ display:none !important; }
+  /* ISSUE 004 PIECE 2 — the site's screen-reader utility, copied verbatim
+     from index.html. Without it the step announcer rendered as visible
+     text above every question. Found by looking at the render; the DOM
+     checks could not see it. */
+  .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .rt-wrap{ width:100%; max-width:760px; margin:0 auto; text-align:left; }
+  .rt-progress{ display:flex; gap:7px; justify-content:center; margin-bottom:30px; }
+  .rt-dot{ width:7px; height:7px; border-radius:50%; background:rgba(31,59,46,.18); }
+  .rt-dot.is-on{ background:var(--brand-sage); }
+  .rt-q-title{ font-family:'Fraunces',serif; font-weight:400; font-size:clamp(20px,2.6vw,26px);
+    line-height:1.3; color:var(--ink); margin:0 0 20px; text-align:center; }
+  .rt-options{ display:flex; flex-direction:column; gap:10px; }
+  .rt-option{
+    -webkit-appearance:none; appearance:none; cursor:pointer; width:100%;
+    font-family:'Work Sans',sans-serif; font-size:15.5px; line-height:1.5; text-align:left;
+    color:var(--ink); background:var(--paper); border:1px solid rgba(31,59,46,.18);
+    border-radius:3px; padding:15px 18px; min-height:44px;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .rt-option:hover{ border-color:var(--accent); }
+  .rt-option:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .rt-back{ margin-top:20px; text-align:center; }
+
+  /* ---- the result ---- */
+  .rt-result-head{ text-align:center; margin-bottom:34px; }
+  .rt-routes{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+  .rt-card{
+    background:var(--paper); border:1px solid rgba(31,59,46,.14); border-radius:3px;
+    padding:24px 24px 22px; display:flex; flex-direction:column;
+  }
+  .rt-card h4{
+    font-family:'Fraunces',serif; font-weight:600; font-size:19px; line-height:1.3;
+    color:var(--ink); margin:0 0 4px;
+  }
+  .rt-state{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:13px; }
+  .rt-card.is-out .rt-state{ color:var(--soft); }
+  .rt-why{ font-size:15px; line-height:1.7; color:var(--soft); margin:0 0 13px; }
+  .rt-next{ font-size:14.5px; line-height:1.7; color:var(--soft); margin:0 0 16px; }
+  .rt-next strong{ color:var(--ink); font-weight:600; }
+  .rt-card .cs-exit{ align-self:flex-start; margin-top:auto; }
+
+  /* ---- the shared next-step panel, used by three routes ---- */
+  .rt-panel{ margin-top:30px; background:var(--paper);
+    border:1px solid rgba(31,59,46,.14); border-radius:3px; padding:28px 26px 26px; }
+  .rt-panel h4{ font-family:'Fraunces',serif; font-weight:600; font-size:20px;
+    color:var(--ink); margin:0 0 12px; }
+  .rt-panel p{ font-size:15px; line-height:1.75; color:var(--soft); margin:0 0 12px; }
+  .rt-panel .cs-exits{ justify-content:flex-start; margin-top:20px; }
+  .rt-prep{ font-size:14.5px; line-height:1.7; color:var(--soft);
+    border-left:2px solid var(--brand-sage); padding-left:14px; margin:16px 0 0; }
+
+  @media(max-width:820px){
+    .rt-routes{ grid-template-columns:1fr; }
+    .rt-panel .cs-exits{ flex-direction:column; gap:2px; }
+  }
+
 </style>
 </head>
 <body>
@@ -852,24 +923,104 @@
 
 <section class="pb-preview reveal" id="discover-your-property">
     <div class="pn-wordmark">PlotNua</div>
-    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
-         your-plot.html, whose journey is hard-coded to discoveryContext =
-         'artist-studio'. Whatever this page said, the homeowner arrived in the
-         Garden Room journey. The interaction is removed rather than disabled,
-         for the reason already recorded on the pages that did this first:
-         a control a homeowner cannot use is worse than no control at all.
-         Component, styling and independence statement are the existing ones. -->
-    <h2 class="pb-headline">This property check is being prepared</h2>
-    <p class="pb-subhead">The Space check will look at what your house already has &mdash; an attic with height to stand up in, a garage, side access to the back, and how much garden there is to give up &mdash; to help narrow four routes down to the one or two worth pricing. It is not ready yet. In the meantime, there is plenty to explore.</p>
-    <div class="cs-exits">
-      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore Build a Home in Your Garden &rarr;</a>
-      <a class="cs-exit" href="discovery-hidden-cars.html">Explore Hidden Cars &rarr;</a>
-      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
-      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
+
+    <!-- ISSUE 004 PIECE 2 — the route assessment replaces the Pattern C
+         holding state. Four questions about the house, then every route
+         that is still worth exploring, in a fixed order, in identical
+         cards. It does not pick a winner and it does not lead anywhere
+         near Atlas until the homeowner has seen all four routes.
+
+         The garden route carries a link to the Garden Room Atlas journey
+         because that journey exists. The other three carry a link to the
+         same shared panel, which says plainly that Atlas MATCHING is being
+         prepared for them — not that PlotNua knows nothing about the
+         route. Every card looks the same; only the words and the
+         destination differ. -->
+
+    <div class="rt-wrap">
+      <!-- ---------- the questions ---------- -->
+      <div id="rtFlow">
+        <div class="rt-progress" role="group" aria-label="Question progress">
+          <span class="rt-dot is-on"></span><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span>
+        </div>
+        <p class="sr" id="rtAnnounce" aria-live="polite" role="status"></p>
+        <div class="rt-question" data-step="0">
+          <h3 class="rt-q-title">Can you stand up comfortably in the middle of your attic?</h3>
+          <div class="rt-options">
+            <button type="button" class="rt-option" data-field="attic" data-value="yes">Yes, comfortably</button>
+            <button type="button" class="rt-option" data-field="attic" data-value="low">No — it's tight up there</button>
+            <button type="button" class="rt-option" data-field="attic" data-value="unknown">Not sure, I haven't measured</button>
+          </div>
+          <div class="rt-back">
+            <button type="button" class="cs-exit is-home rt-prev" hidden>&larr; Previous question</button>
+          </div>
+        </div>
+        <div class="rt-question" data-step="1" hidden>
+          <h3 class="rt-q-title">Is there a garage attached to or built into the house?</h3>
+          <div class="rt-options">
+            <button type="button" class="rt-option" data-field="garage" data-value="integral">Yes, attached or built in</button>
+            <button type="button" class="rt-option" data-field="garage" data-value="detached">There is a garage, but it's detached</button>
+            <button type="button" class="rt-option" data-field="garage" data-value="none">No garage</button>
+            <button type="button" class="rt-option" data-field="garage" data-value="unknown">Not sure</button>
+          </div>
+          <div class="rt-back">
+            <button type="button" class="cs-exit is-home rt-prev">&larr; Previous question</button>
+          </div>
+        </div>
+        <div class="rt-question" data-step="2" hidden>
+          <h3 class="rt-q-title">Can you get to the back garden without going through the house?</h3>
+          <div class="rt-options">
+            <button type="button" class="rt-option" data-field="access" data-value="yes">Yes — a side passage or a gate</button>
+            <button type="button" class="rt-option" data-field="access" data-value="no">No, only through the house</button>
+            <button type="button" class="rt-option" data-field="access" data-value="unknown">Not sure</button>
+          </div>
+          <div class="rt-back">
+            <button type="button" class="cs-exit is-home rt-prev">&larr; Previous question</button>
+          </div>
+        </div>
+        <div class="rt-question" data-step="3" hidden>
+          <h3 class="rt-q-title">Roughly how much of the garden would you be willing to give up?</h3>
+          <div class="rt-options">
+            <button type="button" class="rt-option" data-field="give" data-value="good">A decent share of it</button>
+            <button type="button" class="rt-option" data-field="give" data-value="corner">A corner, no more</button>
+            <button type="button" class="rt-option" data-field="give" data-value="none">I'd rather not lose garden</button>
+            <button type="button" class="rt-option" data-field="give" data-value="unknown">Not sure yet</button>
+          </div>
+          <div class="rt-back">
+            <button type="button" class="cs-exit is-home rt-prev">&larr; Previous question</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- the result ---------- -->
+      <div id="rtResult" hidden>
+        <div class="rt-result-head">
+          <h2 class="pb-headline">Routes worth exploring</h2>
+          <p class="pb-subhead">Based on what you have told us about the house. Nothing here is a recommendation &mdash; these are the routes still open to you, and what each one would need next.</p>
+        </div>
+        <div class="rt-routes" id="rtRoutes"></div>
+        <div class="rt-back" style="margin-top:26px">
+          <button type="button" class="cs-exit is-home" id="rtRestart">&larr; Change your answers</button>
+        </div>
+      </div>
+
+      <!-- ---------- the shared next-step panel ---------- -->
+      <div class="rt-panel" id="rtPanel" role="region" aria-labelledby="rtPanelTitle" hidden>
+        <h4 id="rtPanelTitle"></h4>
+        <p id="rtPanelWhy"></p>
+        <p id="rtPanelNext"></p>
+        <p class="rt-prep">Atlas matching for this route is being prepared. PlotNua can already tell you what the route involves &mdash; what it cannot yet do is put verified products and prices in front of you for it.</p>
+        <div class="cs-exits">
+          <button type="button" class="cs-exit" id="rtPanelBack">&larr; Back to your routes</button>
+          <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
+          <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
+        </div>
+      </div>
     </div>
 
     <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
   </section>
+
 
 <section class="related reveal">
   <div class="related-head">
@@ -960,6 +1111,190 @@
       io.observe(el);
     });
   })();
+</script>
+
+
+<script>
+/* ISSUE 004 PIECE 2 — THE ROUTE ASSESSMENT CONTROLLER.
+
+   Four questions, four routes, no winner. The rules below are the whole
+   model, written out rather than buried in scoring:
+
+     UNKNOWN IS NEVER FALSE. No "Not sure" answer removes a route. Where an
+     answer is uncertain the route stays open and the card says what to check.
+
+     ONE ROUTE CAN BE RULED OUT, and only by a fact about the property that
+     the homeowner has stated themselves: there is no garage. It is still
+     shown, still explained, and never silently dropped.
+
+     THE ATTIC IS NEVER RULED OUT BY LOW HEADROOM. Tight headroom does not
+     settle on its own whether a conversion is possible — that needs the roof
+     space assessed. PlotNua holds no established source on what Irish attic
+     conversions typically involve, so this code states no standard and no
+     measurement, and neither does the copy it produces.
+
+     THE GARDEN IS NEVER RULED OUT BY "I'd rather not lose garden". That is a
+     preference, not a constraint, and a small building takes little ground.
+     It is recorded honestly in the card rather than used to delete a route.
+
+   Nothing is stored. Nothing is sent. The whole assessment lives in this
+   page for as long as the homeowner is on it. */
+(function(){
+  var flow = document.getElementById('rtFlow');
+  if (!flow) return;
+  var result  = document.getElementById('rtResult');
+  var routesEl= document.getElementById('rtRoutes');
+  var panel   = document.getElementById('rtPanel');
+  var announce= document.getElementById('rtAnnounce');
+  var steps   = Array.prototype.slice.call(flow.querySelectorAll('.rt-question'));
+  var dots    = Array.prototype.slice.call(flow.querySelectorAll('.rt-dot'));
+  var answers = {};
+  var step = 0;
+
+  function show(n){
+    step = Math.max(0, Math.min(steps.length - 1, n));
+    steps.forEach(function(s, i){ s.hidden = i !== step; });
+    dots.forEach(function(d, i){ d.classList.toggle('is-on', i <= step); });
+    if (announce) announce.textContent = 'Question ' + (step + 1) + ' of ' + steps.length;
+    var h = steps[step].querySelector('.rt-q-title');
+    if (h) h.setAttribute('tabindex', '-1'), h.focus({ preventScroll: true });
+  }
+
+  /* ---- THE ROUTE MODEL ----
+     Each builder returns { state, label, why, next }. state is 'open',
+     'check' or 'out'. 'out' is reachable from exactly one answer. */
+  function attic(a){
+    if (a.attic === 'yes') return { state:'open', label:'Worth exploring',
+      why:'Your attic may be worth exploring. Headroom is one of the things that will need to be checked properly.',
+      next:'Measure the available headroom and have the roof space assessed before treating the attic as a realistic option.' };
+    if (a.attic === 'low') return { state:'check', label:'Worth exploring',
+      why:'Tight headroom does not tell us on its own whether an attic conversion is possible. The roof space would need to be assessed.',
+      next:'Measure the available headroom and have the roof space assessed before treating the attic as a realistic option.' };
+    return { state:'check', label:'Worth checking first',
+      why:'Nothing is being ruled out yet. Measuring the available headroom is a useful first check.',
+      next:'Measure the available headroom and have the roof space assessed before treating the attic as a realistic option.' };
+  }
+  function garage(a){
+    if (a.garage === 'integral') return { state:'open', label:'Worth exploring',
+      why:'A garage attached to or built into the house is already inside the footprint, with walls and a roof in place.',
+      next:'Whether the floor and walls meet habitable standard, and where the services would run.' };
+    if (a.garage === 'detached') return { state:'check', label:'Worth exploring',
+      why:'A detached garage can still become a room. In practice it behaves more like a garden building than part of the house.',
+      next:'Insulation, damp, and getting power and heat out to it.' };
+    if (a.garage === 'none') return { state:'out', label:'Not on this property',
+      why:'You told us there is no garage, so there is nothing here to convert. The other three routes are unaffected.',
+      next:null };
+    return { state:'check', label:'Worth checking first',
+      why:'Not ruled out. Whether a garage is attached, integral or detached changes what the conversion involves.',
+      next:'Which of the three it is \u2014 that one answer decides most of the rest.' };
+  }
+  function extension(a){
+    var base = 'An extension is the one route that does not depend on what the house already has.';
+    if (a.give === 'none') return { state:'check', label:'Worth exploring',
+      why:base + ' Worth knowing that most extensions take some ground too, and you have said you would rather keep the garden.',
+      next:'How much ground the extension you have in mind would actually use.' };
+    return { state:'check', label:'Worth exploring',
+      why:base,
+      next:'Planning comes first. Many rear extensions are exempt up to a size limit, and that limit counts anything already built.' };
+  }
+  function garden(a){
+    var access = (a.access === 'no')
+      ? ' Getting materials to the back without going through the house is the first thing to solve.'
+      : (a.access === 'unknown' ? ' Worth checking how materials would reach the back.' : '');
+    if (a.give === 'none') return { state:'check', label:'Worth exploring',
+      why:'You would rather not lose garden, so this one starts behind the others. It is not closed \u2014 a small building takes less ground than most people expect.' + access,
+      next:'How much ground a building the size you would actually use would take.' };
+    if (a.give === 'corner') return { state:'open', label:'Worth exploring',
+      why:'A corner is enough for a great deal.' + access,
+      next:'The size that fits the corner you have in mind, and what it costs.' };
+    if (a.give === 'good') return { state:'open', label:'Worth exploring',
+      why:'You have ground to give and are willing to use it, which is the main thing this route needs.' + access,
+      next:'Size, budget, and which makers can actually deliver and build in Ireland.' };
+    return { state:'check', label:'Worth exploring',
+      why:'Still open. How much garden you are willing to give up decides the size, and the size decides most of the cost.' + access,
+      next:'Roughly how much ground you would be happy to lose.' };
+  }
+
+  /* FIXED ORDER. Attic, garage, extension, garden \u2014 garden last, so the
+     one route with an Atlas journey behind it is never the first thing read.
+     The order does not change with the answers, because a changing order is
+     a ranking. */
+  var ROUTES = [
+    { key:'attic',     name:'Convert the attic',     build:attic },
+    { key:'garage',    name:'Convert the garage',    build:garage },
+    { key:'extension', name:'Extend the house',      build:extension },
+    { key:'garden',    name:'Build in the garden',   build:garden }
+  ];
+
+  function render(){
+    routesEl.innerHTML = '';
+    ROUTES.forEach(function(r){
+      var v = r.build(answers);
+      var card = document.createElement('article');
+      card.className = 'rt-card' + (v.state === 'out' ? ' is-out' : '');
+      var h = document.createElement('h4'); h.textContent = r.name; card.appendChild(h);
+      var s = document.createElement('div'); s.className = 'rt-state'; s.textContent = v.label; card.appendChild(s);
+      var w = document.createElement('p'); w.className = 'rt-why'; w.textContent = v.why; card.appendChild(w);
+      if (v.next){
+        var n = document.createElement('p'); n.className = 'rt-next';
+        var lab = document.createElement('strong'); lab.textContent = 'What to check next: ';
+        n.appendChild(lab); n.appendChild(document.createTextNode(v.next)); card.appendChild(n);
+      }
+      if (v.state !== 'out'){
+        if (r.key === 'garden'){
+          /* The only route with a product journey behind it. Same link style
+             as the other three; only the destination differs. Nothing from
+             the route assessment is passed on \u2014 the Garden Room Match
+             Engine asks for Eircode, style and budget itself. */
+          var a = document.createElement('a');
+          a.className = 'cs-exit';
+          a.href = 'your-plot.html?discovery=garden-room';
+          a.textContent = 'Explore Garden Room options \u2192';
+          card.appendChild(a);
+        } else {
+          var b = document.createElement('button');
+          b.type = 'button'; b.className = 'cs-exit';
+          b.textContent = 'What PlotNua can do next \u2192';
+          b.addEventListener('click', function(){ openPanel(r.name, v); });
+          card.appendChild(b);
+        }
+      }
+      routesEl.appendChild(card);
+    });
+    flow.hidden = true; panel.hidden = true; result.hidden = false;
+    result.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function openPanel(name, v){
+    document.getElementById('rtPanelTitle').textContent = name;
+    document.getElementById('rtPanelWhy').textContent = v.why;
+    var nx = document.getElementById('rtPanelNext');
+    nx.textContent = v.next ? ('What to check next: ' + v.next) : '';
+    nx.hidden = !v.next;
+    result.hidden = true; panel.hidden = false;
+    panel.scrollIntoView({ behavior:'smooth', block:'start' });
+    document.getElementById('rtPanelTitle').setAttribute('tabindex','-1');
+    document.getElementById('rtPanelTitle').focus({ preventScroll:true });
+  }
+
+  flow.addEventListener('click', function(e){
+    var opt = e.target.closest('.rt-option');
+    if (opt){
+      answers[opt.getAttribute('data-field')] = opt.getAttribute('data-value');
+      if (step >= steps.length - 1) render(); else show(step + 1);
+      return;
+    }
+    if (e.target.closest('.rt-prev')) show(step - 1);
+  });
+  document.getElementById('rtRestart').addEventListener('click', function(){
+    result.hidden = true; panel.hidden = true; flow.hidden = false; show(0);
+    flow.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+  document.getElementById('rtPanelBack').addEventListener('click', function(){
+    panel.hidden = true; result.hidden = false;
+    result.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+})();
 </script>
 
 
