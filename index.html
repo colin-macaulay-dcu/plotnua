@@ -601,6 +601,45 @@
        declaration outranks an id selector. Without it this rule is inert. */
     #pin-2{ --y:38.0% !important; --x:27.0% !important; }
 
+    /* ISSUE 002 — MOBILE PIN COMPOSITION (founder ruling: Option B).
+
+       Eight pins, 40x46 touch targets, on a frame that is 360x201 at the
+       narrowest supported width. The approved desktop composition places the
+       three new subjects in the middle band of the photograph, which works at
+       695px and above and overlaps below it. Rather than drop a Discovery,
+       shrink a touch target or change the desktop composition, the pins are
+       recomposed for small screens only — the precedent #pin-2 set below.
+
+       THE MOBILE PRIORITY, as ruled: credible association with the right
+       property first, clean distribution second, safe targets third, exact
+       micro-coordinates last. At 360px the arched front door is about 10px
+       wide; no pin identifies it precisely at that size, so pin-6 identifies
+       the frontage it belongs to instead.
+
+       Measured rectangle-to-rectangle, not centre-to-centre — the error that
+       let an overlap through the first time. At 360px every pair of touch
+       targets on this hero, including both fixed controls, is 12px or more
+       apart. Verified again at 390 and 430.
+
+       pin-1  moves right AND down: right to clear the (i) control's 44px
+              target, which reaches x=48 while pin-1's box began at x=49.5;
+              down to clear pin-2, which shipped 7.2px away. Still above the
+              garden room, which spans 10-28%.
+       pin-6  the frontage across the road, rather than its front door.
+       pin-7  the roofline up the street.
+       pin-8  the car parked at the kerb. Its first mobile position put the
+              tip above the film crew's van, which is pin-2's subject: a
+              parking pin pointing at the filming. Moved onto a parked car,
+              at no cost to the geometry.
+
+       !important is required throughout: --x and --y are set inline on each
+       button, and an inline declaration outranks an id selector. Without it
+       every rule here is inert. */
+    #pin-1{ --x:22.25% !important; --y:67.0% !important; }
+    #pin-6{ --x:60.5%  !important; --y:52.5% !important; }
+    #pin-7{ --x:64.5%  !important; --y:23.0% !important; }
+    #pin-8{ --x:46.0%  !important; --y:36.0% !important; }
+
     .hero.cards-docked .hero-cards-dock{ width:100%; padding:0 7vw; margin-top:16px; }
   }
   .hero-cards-dock{ display:none; width:min(1600px,100%,calc((100vh - var(--hero-chrome)) * 1.79167)); margin:0 auto; }
@@ -877,9 +916,77 @@
   }
   .brand-mark.in{ opacity:1; }
   .brand-mark img{ display:block; width:34px; height:34px; border-radius:8px; }
+
+  /* ---- ISSUE 002A · the PlotNua information control ----
+     A small (i) set directly BENEATH the fixed brand mark, at every width.
+     Beneath, not beside: at 360px the hero frame is only 360x201 and the
+     corner is already crowded — pin-2 was itself nudged out of it, in the
+     rule further down this stylesheet. A control placed beside the mark puts
+     its 44px hit area straight into that traffic.
+
+     And far enough beneath. The ::after target is 44x44 centred on a 20px
+     circle, so it reaches 12px ABOVE the circle: placed 6px under the mark it
+     overlapped the mark's own target by 6px, at every width. Measured after
+     the fact, not before it. The offsets below are what clears the mark by
+     12px at both breakpoints. If the circle size changes, re-measure.
+
+     It is deliberately smaller than the mark (22 against 46) so it reads as
+     a footnote to the logo rather than a second logo.
+
+     The button borrows the Atlas control's vocabulary exactly — same circle,
+     same 44px hit expansion, same focus ring. The PANEL deliberately does not
+     borrow the Atlas panel's in-flow positioning: in flow it would push the
+     hero photograph down the page every time it opened. It is fixed to the
+     same corner as the mark, clamped to the viewport with min()/calc() so it
+     cannot leave the screen at any width, and it uses no backdrop-filter. */
+  .brand-info{
+    -webkit-appearance:none; appearance:none; cursor:pointer;
+    position:fixed; top:92px; left:22px; z-index:50;
+    width:22px; height:22px; padding:0; border-radius:50%;
+    border:1px solid rgba(31,59,46,.32);
+    background:var(--brand-ivory); color:var(--soft);
+    font-family:'Fraunces',Georgia,serif; font-size:13px; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transition:opacity 1.6s ease;
+  }
+  /* Fades in with the mark, on the same trigger, with no extra JavaScript. */
+  .brand-mark.in ~ .brand-info{ opacity:1; }
+  .brand-info::after{
+    content:''; position:absolute; top:50%; left:50%;
+    width:44px; height:44px; transform:translate(-50%,-50%);
+  }
+  .brand-info:hover{ border-color:var(--ink); color:var(--ink); }
+  .brand-info:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .brand-info-pop{
+    position:fixed; top:124px; left:22px; z-index:60;
+    width:min(340px, calc(100vw - 44px));
+    max-height:calc(100vh - 140px); overflow:auto;
+    text-align:left;
+    background:var(--paper); border:1px solid rgba(31,59,46,.14);
+    border-radius:3px; padding:22px 24px 24px;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07),
+               0 18px 44px rgba(31,59,46,.18);
+  }
+  .brand-info-pop h2{
+    margin:0 0 10px; font-family:'Fraunces',Georgia,serif;
+    font-weight:600; font-size:17px; line-height:1.28; letter-spacing:0;
+    color:var(--ink);
+  }
+  .brand-info-pop p{ margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--soft); }
+  .brand-info-pop p:last-child{ margin-bottom:0; }
+
   @media(max-width:720px){
     .brand-mark{ top:16px; left:16px; width:40px; height:40px; }
     .brand-mark img{ width:30px; height:30px; }
+    .brand-info{ top:80px; left:16px; width:20px; height:20px; font-size:12px; }
+    .brand-info-pop{
+      top:108px; left:16px;
+      width:min(340px, calc(100vw - 32px));
+      max-height:calc(100vh - 124px);
+      padding:18px 18px 20px;
+    }
+    .brand-info-pop h2{ font-size:16px; }
+    .brand-info-pop p{ font-size:14px; }
   }
 
   /* ---- footer mark (unchanged from Brand Integration v1) ---- */
@@ -904,6 +1011,16 @@
 <a href="#top" class="brand-mark" id="brandMark" aria-label="PlotNua — Home">
   <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
 </a>
+<button type="button" class="brand-info" id="brandInfoBtn"
+        aria-expanded="false" aria-controls="brandInfo"
+        aria-label="What is PlotNua?"><span aria-hidden="true">i</span></button>
+<div class="brand-info-pop" id="brandInfo" role="region"
+     aria-labelledby="brandInfoTitle" hidden>
+  <h2 id="brandInfoTitle">What is PlotNua?</h2>
+  <p>PlotNua helps Irish homeowners discover what their property could make
+     possible &mdash; and understand what each option would really take.</p>
+  <p>We research the possibilities so you can make a more confident decision.</p>
+</div>
 
 <section class="hero" id="hero">
   <div class="hero-inner">
@@ -936,11 +1053,16 @@
            subject entirely. The pointer identifies; the badge stays out of the
            photograph. pin-3 was already built this way and is the reference.
 
-           ROUND 4 — FIVE PINS, THE FOUNDER'S FIVE.
-           The hero shows what a street like this could hold, not what we
-           have finished writing. Three of these are not researched yet
-           and their cards say so and carry no Explore link — a pin that
-           promises a page that does not exist is worse than no pin. -->
+           ROUND 5 — EIGHT PINS, SEVEN OF THEM LIVE.
+           The hero shows what a street like this could hold. Seven of these
+           now lead to a written Discovery; only the filming pin does not,
+           and its card says so and carries no Explore link — a pin that
+           promises a page that does not exist is worse than no pin.
+
+           Round 4 shipped three Coming Soon pins. Two of them, the solar
+           roof and the driveway, were still saying "still in development"
+           after their Discoveries had gone live, which told a homeowner a
+           page did not exist when it did. Corrected here. -->
       <div class="pins" id="pins">
         <button class="pin" type="button" id="pin-1" data-card="card-1"
                 style="--x:19.3%; --y:64.5%;"
@@ -972,7 +1094,7 @@
                 aria-expanded="false" aria-controls="card-4">
           <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
           <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">Future-Proof Your Home &mdash; over the solar panels on the roof across the road</span>
+          <span class="sr">The House as a Power Station &mdash; over the solar panels on the roof across the road</span>
         </button>
         <button class="pin" type="button" id="pin-5" data-card="card-5"
                 style="--x:78.0%; --y:63.5%;"
@@ -980,7 +1102,31 @@
                 aria-expanded="false" aria-controls="card-5">
           <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
           <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">Earn from Your Driveway &mdash; over the car on the paved driveway</span>
+          <span class="sr">Driveway Income &mdash; over the car on the paved driveway</span>
+        </button>
+        <button class="pin" type="button" id="pin-6" data-card="card-6"
+                style="--x:62.0%; --y:40.0%;"
+                data-subject="the arched front porch of the house across the road"
+                aria-expanded="false" aria-controls="card-6">
+          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
+          <span class="pin-tip" aria-hidden="true"></span>
+          <span class="sr">The Neighbourhood Parcel House &mdash; over the front porch of the house across the road</span>
+        </button>
+        <button class="pin" type="button" id="pin-7" data-card="card-7"
+                style="--x:56.0%; --y:25.0%;"
+                data-subject="a complete house, roof and gable, further up the street"
+                aria-expanded="false" aria-controls="card-7">
+          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
+          <span class="pin-tip" aria-hidden="true"></span>
+          <span class="sr">Home Exchange &mdash; over the whole house further up the street</span>
+        </button>
+        <button class="pin" type="button" id="pin-8" data-card="card-8"
+                style="--x:48.0%; --y:40.5%;"
+                data-subject="the car parked at the kerb in the middle of the street"
+                aria-expanded="false" aria-controls="card-8">
+          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
+          <span class="pin-tip" aria-hidden="true"></span>
+          <span class="sr">Hidden Cars &mdash; over the car parked at the kerb</span>
         </button>
       </div>
 
@@ -1006,21 +1152,40 @@
         <p class="card-body">Let someone nearby grow food on a small part of your garden.</p>
         <a class="card-link" href="discovery-the-borrowed-garden.html">Explore <span aria-hidden="true">&rarr;</span></a>
       </article>
-      <article class="pn-card is-soon" id="card-4" data-pin="pin-4" aria-labelledby="ct-4">
+      <article class="pn-card" id="card-4" data-pin="pin-4" aria-labelledby="ct-4">
         <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref card-ref-soon">Coming soon</p>
-        <h3 id="ct-4">Future-Proof Your Home</h3>
-        <p class="card-body">Making the house cheaper to run, and what each step would cost.</p>
-        <p class="card-soon-note">This Discovery is still in development.</p>
-        <a class="card-link card-link-soft" href="discoveries.html">Browse available Discoveries <span aria-hidden="true">&rarr;</span></a>
+        <p class="card-ref">Discovery</p>
+        <h3 id="ct-4">The House as a Power Station</h3>
+        <p class="card-body">Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
+        <a class="card-link" href="discovery-house-as-power-station.html">Explore <span aria-hidden="true">&rarr;</span></a>
       </article>
-      <article class="pn-card is-soon" id="card-5" data-pin="pin-5" aria-labelledby="ct-5">
+      <article class="pn-card" id="card-5" data-pin="pin-5" aria-labelledby="ct-5">
         <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref card-ref-soon">Coming soon</p>
-        <h3 id="ct-5">Earn from Your Driveway</h3>
-        <p class="card-body">Renting out a driveway that sits empty during the day.</p>
-        <p class="card-soon-note">This Discovery is still in development.</p>
-        <a class="card-link card-link-soft" href="discoveries.html">Browse available Discoveries <span aria-hidden="true">&rarr;</span></a>
+        <p class="card-ref">Discovery</p>
+        <h3 id="ct-5">Driveway Income</h3>
+        <p class="card-body">Your driveway is empty for most of the day. Someone nearby may already need it.</p>
+        <a class="card-link" href="discovery-driveway-income.html">Explore <span aria-hidden="true">&rarr;</span></a>
+      </article>
+      <article class="pn-card" id="card-6" data-pin="pin-6" aria-labelledby="ct-6">
+        <button class="card-close" type="button" aria-label="Close">&times;</button>
+        <p class="card-ref">Discovery</p>
+        <h3 id="ct-6">The Neighbourhood Parcel House</h3>
+        <p class="card-body">A few homes on every road are better placed than the rest to take in a parcel.</p>
+        <a class="card-link" href="discovery-neighbourhood-parcel-house.html">Explore <span aria-hidden="true">&rarr;</span></a>
+      </article>
+      <article class="pn-card" id="card-7" data-pin="pin-7" aria-labelledby="ct-7">
+        <button class="card-close" type="button" aria-label="Close">&times;</button>
+        <p class="card-ref">Discovery</p>
+        <h3 id="ct-7">Home Exchange</h3>
+        <p class="card-body">Your house costs the same whether you are in it or not.</p>
+        <a class="card-link" href="discovery-home-exchange.html">Explore <span aria-hidden="true">&rarr;</span></a>
+      </article>
+      <article class="pn-card" id="card-8" data-pin="pin-8" aria-labelledby="ct-8">
+        <button class="card-close" type="button" aria-label="Close">&times;</button>
+        <p class="card-ref">Discovery</p>
+        <h3 id="ct-8">Hidden Cars</h3>
+        <p class="card-body">Stacked, lowered and concealed parking, and the front garden it gives back.</p>
+        <a class="card-link" href="discovery-hidden-cars.html">Explore <span aria-hidden="true">&rarr;</span></a>
       </article>
     </figure>
 
@@ -1900,6 +2065,35 @@
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); }
   });
+})();
+
+/* ISSUE 002A — the PlotNua information control. The Atlas controller above,
+   unchanged in behaviour, with one addition. A pin's own click handler calls
+   stopPropagation, so the document-level outside-click below never sees a pin
+   press and the panel would stay open underneath an opening card. A
+   capture-phase listener on the pin layer runs before that handler and closes
+   the panel first, so the two disclosures are never open at once over the
+   same photograph. */
+(function(){
+  var btn = document.getElementById('brandInfoBtn');
+  var pop = document.getElementById('brandInfo');
+  if (!btn || !pop) return;
+  function set(open){
+    pop.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    set(btn.getAttribute('aria-expanded') !== 'true');
+  });
+  document.addEventListener('click', function(e){
+    if (!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) set(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); }
+  });
+  var pinLayer = document.getElementById('pins');
+  if (pinLayer) pinLayer.addEventListener('click', function(){ set(false); }, true);
 })();
 </script>
 </body>
