@@ -577,6 +577,22 @@
 
   /* Outside the frozen block: the field and button are a real form now. */
   .pb-form{ width:100%; display:flex; flex-direction:column; align-items:center; }
+  .cs-exits{
+    display:flex; flex-wrap:wrap; gap:14px 26px; justify-content:center;
+    margin-top:26px;
+  }
+  .cs-exit{
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    letter-spacing:.05em; text-decoration:none; color:var(--ink);
+    border-bottom:1px solid rgba(31,59,46,.35);
+    min-height:44px; display:inline-flex; align-items:center;
+  }
+  .cs-exit:hover{ border-bottom-color:var(--ink); }
+  .cs-exit:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .cs-exit.is-home{ color:var(--soft); border-bottom-color:rgba(85,96,90,.28); font-weight:500; }
+  @media (max-width:640px){
+    .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
+  }
 </style>
 </head>
 <body>
@@ -781,46 +797,22 @@
 </main>
 
 <section class="pb-preview reveal" id="discover-your-property">
+    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
+         your-plot.html, whose journey is hard-coded to discoveryContext =
+         'artist-studio'. Whatever this page said, the homeowner arrived in the
+         Garden Room journey. The interaction is removed rather than disabled,
+         for the reason already recorded on the three pages that did this first:
+         a control a homeowner cannot use is worse than no control at all.
+         Component, styling and independence statement are the existing ones. -->
     <div class="pn-wordmark">PlotNua</div>
-    <h2 class="pb-headline">Let&rsquo;s start with your plot</h2>
-    <p class="pb-subhead">When this Discovery is ready, we&rsquo;ll begin with your driveway, your ground conditions and how much of the frontage the cars have taken.</p>
-
-    <form class="pb-form" action="your-plot.html" method="get">
-      <div class="pn-eircode-field">
-        <label for="pbEircode">Enter your Eircode</label>
-        <input id="pbEircode" name="eircode" type="text" inputmode="text"
-               autocapitalize="characters" autocomplete="postal-code"
-               placeholder="e.g. D02 X285" required>
-      </div>
-      <button type="submit" class="btn-primary" id="startMyDiscovery">Start with your property</button>
-    </form>
-
-    <div class="pb-steps">
-      <div class="pb-step">
-        <div class="n">What you do</div>
-        <!-- FINAL UX — this described questions PlotNua no longer asks. It
-             promised "a few short questions about the property and what you
-             want the room for" (and, on the other two pages, about the garden
-             and about the space you need) — but space and usage were removed in
-             Discovery v1.0. A homeowner was being told they would be asked
-             about things they will not be asked about. The line now names the
-             three real questions, and reads identically on all three journey
-             pages because the Discovery is the same three questions whichever
-             page you arrive from. -->
-        <p>Enter your Eircode and answer three short questions: how many cars,
-          what the ground is like, and your budget.</p>
-      </div>
-      <div class="pb-step">
-        <div class="n">What we do</div>
-        <p>We take what you tell us about the property and compare it with the research we
-          have already done.</p>
-      </div>
-      <div class="pb-step">
-        <div class="n">What you get</div>
-        <p>A clearer view of what your property can take, and practical next steps.</p>
-      </div>
+    <h2 class="pb-headline">This property check is being prepared</h2>
+    <p class="pb-subhead">The Hidden Cars check will look at how much of your frontage the cars take up, how much room there is to work with, what your ground is like, and whether a lift or a stacker could realistically fit. It is not ready yet. In the meantime, there is plenty to explore.</p>
+    <div class="cs-exits">
+      <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
+      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore Build a Home in Your Garden &rarr;</a>
+      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
+      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
     </div>
-
     <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
   </section>
 
