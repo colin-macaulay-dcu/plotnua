@@ -14,8 +14,8 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Four Ways to Get More Space | PlotNua Discoveries</title>
-<meta name="description" content="Four ways to create another room: extend the house, convert the attic, convert the garage, or build in the garden. What each one gives you, and which suits your property.">
+<title>Four Ways to Add a Room | PlotNua Discoveries</title>
+<meta name="description" content="Four places another room could come from: the garden, the attic, the garage or an extension. What each one gives you, what it costs you, and the 2026 rule change that affects the garden.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-room-to-grow.html">
 
@@ -31,7 +31,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
-<meta property="og:title" content="Four Ways to Get More Space | PlotNua Discoveries">
+<meta property="og:title" content="Four Ways to Add a Room | PlotNua Discoveries">
 <meta property="og:description" content="Four ways to create another room. What each one gives you, and which suits your property.">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
@@ -41,7 +41,7 @@
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Four Ways to Get More Space | PlotNua Discoveries">
+<meta name="twitter:title" content="Four Ways to Add a Room | PlotNua Discoveries">
 <meta name="twitter:description" content="Four ways to create another room, compared.">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 
@@ -398,6 +398,38 @@
     font-family:'Fraunces',serif; font-size:clamp(19px,2.1vw,23px); line-height:1.6;
     color:var(--ink); max-width:34ch; margin:0 0 24px;
   }
+  /* Rule 7 — the Looking Ahead lede, ported unchanged from DISC-014. */
+  .quarantine-lede{ font-style:italic; color:var(--ink); max-width:56ch; margin-bottom:26px; }
+
+  /* Frozen Pattern C onward links, ported unchanged from DISC-014. */
+  .cs-exits{
+    display:flex; flex-wrap:wrap; gap:14px 26px; justify-content:center;
+    margin-top:26px;
+  }
+  .cs-exit{
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    letter-spacing:.05em; text-decoration:none; color:var(--ink);
+    border-bottom:1px solid rgba(31,59,46,.35);
+    min-height:44px; display:inline-flex; align-items:center;
+  }
+  .cs-exit:hover{ border-bottom-color:var(--ink); }
+  .cs-exit:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .cs-exit.is-home{ color:var(--soft); border-bottom-color:rgba(85,96,90,.28); font-weight:500; }
+  @media (max-width:640px){
+    .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
+  }
+
+  /* Rule 6 Potential Asset annotation, ported unchanged from DISC-014. */
+  .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+  .pa-annot svg{ width:100%; height:100%; display:block; }
+  .pa-line{ stroke:rgba(15,14,10,.78); stroke-width:1.6; fill:none; }
+  .pa-dot{ fill:none; stroke:rgba(15,14,10,.85); stroke-width:2.2; }
+  .pa-wash{ fill:rgba(255,255,255,.60); }
+  .pa-kicker{ font-family:'Work Sans',system-ui,sans-serif; font-size:15px; font-weight:500;
+    letter-spacing:.18em; fill:rgba(15,14,10,.72); }
+  .pa-label{ font-family:'Fraunces',Georgia,serif; font-style:italic; font-size:27px;
+    fill:rgba(15,14,10,.92); }
+
   .planning-conditions{ margin:6px 0 0; padding:0; list-style:none; }
   .planning-conditions li{
     position:relative; padding-left:26px; margin-bottom:12px;
@@ -491,8 +523,8 @@
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
-    <h1>Four Ways to Get More Space</h1>
-    <p class="subtitle">Four ways. One of them suits your house.</p>
+    <h1>Four Ways to Add a Room</h1>
+    <p class="subtitle">The garden, the attic, the garage, or an extension.</p>
     <p class="intro">The house filled up long before the property did.</p>
   </div>
 </header>
@@ -506,7 +538,37 @@
     <p>There are four ways to answer that, and most houses can do more than one of
       them. This Discovery is about choosing between them, before you start looking at
       anything.</p>
+    <p>Every one of them ends with the same thing: another room. What they cost you is
+      different in each case &mdash; money, garden, attic, months of disruption, and how
+      easily you could change your mind afterwards.</p>
   </section>
+</main>
+
+<section class="imagine-photo reveal">
+  <!-- IMAGE 02 - Potential Asset. Commissioned production plate, delivered and installed
+       byte-identical: 1376x768 JPEG, nothing regenerated, cropped or re-encoded.
+       RULE 6: the hidden asset is THE WHOLE PROPERTY, so the leader terminates on the centre
+       mass of the subject dwelling's front elevation - clear of every window, door, the garage
+       door and the garage roof - rather than on any one of the four routes.
+       GEOMETRY NOTE: label and dot are both placed inside viewBox x 402-974, which is the band
+       that survives the xMidYMid-slice crop at 430, 390 and 360. That is a per-page placement
+       choice, not a change to the shared component: nothing in .pa-annot is modified. -->
+  <img src="assets/img/35042af2ef89612b.jpg" width="1376" height="768" loading="lazy" decoding="async"
+       alt="An elevated view of an ordinary Irish semi-detached house seen whole, with its roof and attic, its garage, its front and back gardens and the ground beside it all visible at once, the property annotated by PlotNua as a potential asset.">
+
+  <div class="pa-annot" aria-hidden="true">
+    <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <circle class="pa-dot" cx="630" cy="332" r="7"/>
+      <path class="pa-line" d="M624 326 L590 127"/>
+      <rect class="pa-wash" x="430" y="45" width="280" height="76" rx="2"/>
+      <text class="pa-kicker" x="450" y="74">PLOTNUA DISCOVERY</text>
+      <text class="pa-label"  x="450" y="107">Potential Asset</text>
+    </svg>
+  </div>
+  <div class="caption"><p>One property, four places another room could come from.</p></div>
+</section>
+
+<main class="article">
 
   <section class="article-section reveal">
     <div class="kicker">The Four Routes</div>
@@ -525,7 +587,6 @@
         <dt>Later on</dt><dd>Hard to undo, and rarely worth undoing.</dd>
         <dt>Costs you</dt><dd>Garden, permanently.</dd>
       </dl>
-      <div class="r-next"><span class="soon">A Discovery on extending is being researched.</span></div>
     </div>
     <div class="route">
       <h3>Convert the attic</h3>
@@ -539,7 +600,6 @@
         <dt>Later on</dt><dd>Permanent, and the storage does not come back.</dd>
         <dt>Costs you</dt><dd>The attic.</dd>
       </dl>
-      <div class="r-next"><span class="soon">A Discovery on converting is being researched.</span></div>
     </div>
     <div class="route">
       <h3>Convert the garage</h3>
@@ -553,7 +613,6 @@
         <dt>Later on</dt><dd>Reversible in principle. Rarely reversed in practice.</dd>
         <dt>Costs you</dt><dd>The garage, and wherever its contents were going to go.</dd>
       </dl>
-      <div class="r-next"><span class="soon">A Discovery on converting is being researched.</span></div>
     </div>
     <div class="route">
       <h3>Build in the garden</h3>
@@ -567,7 +626,6 @@
         <dt>Later on</dt><dd>The easiest of the four to change your mind about.</dd>
         <dt>Costs you</dt><dd>Garden.</dd>
       </dl>
-      <div class="r-next"><a href="discovery-an-extra-room.html">Explore: Create an Extra Room &rarr;</a></div>
     </div>
     </div>
     <p class="note">Costs are broad guides for planning purposes, not quotes. The
@@ -576,6 +634,54 @@
       generally costs in Ireland. PlotNua is building out that side of the research now.
       Reviewed August 2026.</p>
   </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">The Garden Route</div>
+    <h2>The one route where the rules changed.</h2>
+    <p>Since 27 July 2026 you can build up to 30 m&sup2; in your back garden with no
+      planning application at all. That is about 5 m by 6 m. The limit before that was
+      25 m&sup2;.</p>
+    <p>Whether your own garden qualifies depends on its size, its shape and what is
+      already built on it. The conditions are set out in the <a
+      href="https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-regulations-2026-si-338-of-2026/"
+      target="_blank" rel="noopener">2026 exempted development regulations</a>.</p>
+    <p>Most of what people want the room for is already allowed &mdash; a home office, a
+      studio, a gym, a playroom, a study, somewhere for the teenagers to go.</p>
+    <p>Prices, taken from garden rooms PlotNua has already researched and compared:</p>
+    <ul class="planning-conditions">
+      <li><strong>From about &euro;3,600.</strong> A timber building, lightly insulated
+        or not insulated at all. Comfortable in spring and autumn, cold in January.
+        Gardenhouse24 Monaco 28 at &euro;3,624.</li>
+      <li><strong>About &euro;8,000 to &euro;18,000.</strong> Insulated walls, floor and
+        roof, double glazing, and a finished interior you can work in all year. By far
+        the largest group. Sprout Pod 6m at &euro;10,250.</li>
+      <li><strong>&euro;18,000 and above.</strong> More floor area, more glazing, better
+        heating and a higher internal finish. Concept Modular Cabin 25 m&sup2; at
+        &euro;49,750.</li>
+    </ul>
+    <p>Usually extra: the base, delivery, installation, electricity, heating and any
+      groundworks. Indicative prices reviewed in August 2026.</p>
+    <p><strong>Planning is one part of it.</strong> <a
+      href="https://www.gov.ie/en/publication/1d2af-building-regulations/" target="_blank"
+      rel="noopener">Building Regulations</a> and <a
+      href="https://www.gov.ie/en/publication/3e711-building-control/" target="_blank"
+      rel="noopener">Building Control</a> apply separately, fire safety depends on how
+      close the room sits to the house and the boundary, and if your house is protected
+      or inside an architectural conservation area the exemption can be restricted. None
+      of that is a reason not to proceed. All of it is a reason to ring the council
+      before you order.</p>
+  </section>
+</main>
+
+<section class="imagine-photo reveal">
+  <!-- IMAGE 03 - Outcome. Approved existing asset, absorbed from DISC-004. DISC-004
+       itself is not modified: this is a reference to a shared production asset. -->
+  <img src="assets/img/3cac96685bcd03a5.jpg" width="1376" height="768" loading="lazy" decoding="async"
+       alt="A woman with a mug in the kitchen doorway looking down the garden to a lit timber garden room where three teenagers are playing pool and sitting on a sofa.">
+  <div class="caption"><p>The teenagers get their own space, and the family gets the house back.</p></div>
+</section>
+
+<main class="article">
 
   <section class="article-section reveal">
     <div class="kicker">Choosing</div>
@@ -624,6 +730,38 @@
     </ul>
   </section>
 
+  <section class="article-section reveal">
+    <div class="kicker">Room or Home</div>
+    <h2>If somebody needs somewhere to live.</h2>
+    <p>Everything above gives you a room. Nobody sleeps in it.</p>
+    <p>The moment somebody is going to live there &mdash; an adult child, a parent, a
+      carer &mdash; it stops being a room and becomes a home, and a different set of
+      rules applies. Those rules set a minimum size as well as a maximum, and the home
+      stays part of your property: it cannot be sold or divided off.</p>
+    <p>That is a separate Discovery.
+      <a href="discovery-living-in-the-garden.html">Build a Home in Your Garden &rarr;</a></p>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Looking Ahead</div>
+    <h2>Looking Ahead</h2>
+    <p class="quarantine-lede">Everything above can be done in Ireland today. What
+      follows is less settled.</p>
+    <h3>The garden rules are new</h3>
+    <p>The 30 m&sup2; exemption came in on 27 July 2026. It has not yet been through a
+      full year of local authority interpretation, and how strictly the conditions are
+      read may vary from one council to the next until it has.</p>
+    <h3>Three of the four routes are not priced yet</h3>
+    <p>PlotNua holds published prices for garden rooms and has compared them. For
+      extending, the attic and the garage, the figures on this page are what the work
+      generally costs in Ireland rather than researched prices. That side of the research
+      is being built now, and this page will keep saying so until it is done.</p>
+    <h3>What does not change</h3>
+    <p>Whatever happens to prices or to guidance, the four routes are decided by the
+      property. An attic with head height, a garage, side access to the back, and how
+      much garden you are willing to give up. None of that depends on a rule.</p>
+  </section>
+
   <section class="article-section quiet-section reveal" style="border-bottom:none;">
     <div class="kicker">Frequently Asked Questions</div>
     <h2>Common questions.</h2>
@@ -650,50 +788,52 @@
         <div class="faq-a">There is no clock on this. The decision is worth taking
           slowly, because it is the one that sets everything after it.</div>
       </details>
+      <details class="faq-item">
+        <summary><h3>Do any of these need planning permission?</h3><span class="icon"></span></summary>
+        <div class="faq-a">It depends on the route and the size. Extending and converting
+          are rarely an obstacle at ordinary sizes &mdash; going up rather than out, a
+          dormer at the front, or using a converted garage for a business are the usual
+          exceptions. In the garden, up to 30 m&sup2; has needed no planning application
+          since 27 July 2026, subject to conditions. None of that is a substitute for one
+          call to your local authority about your own address.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>How long does a garden room take?</h3><span class="icon"></span></summary>
+        <div class="faq-a">A single room is one of the quicker home projects &mdash; often
+          a matter of weeks, depending on the design and how easy the garden is to get
+          into.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Can I work from a garden room?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Your own work, yes. Teaching, clients or a business may need
+          permission depending on how much of it there is. Ring the council first.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Can someone sleep in it?</h3><span class="icon"></span></summary>
+        <div class="faq-a">Not under these rules. A separate rule covers a one-bedroom
+          home in the garden, with its own size and conditions &mdash;
+          <a href="discovery-living-in-the-garden.html">Build a Home in Your Garden</a>.</div>
+      </details>
     </div>
   </section>
 </main>
 
 <section class="pb-preview reveal" id="discover-your-property">
     <div class="pn-wordmark">PlotNua</div>
-    <h2 class="pb-headline">Let&rsquo;s start with your plot</h2>
-    <p class="pb-subhead">Answer a few questions about your property and we&rsquo;ll
-      start with what it can take.</p>
-
-    <form class="pb-form" action="your-plot.html" method="get">
-      <div class="pn-eircode-field">
-        <label for="pbEircode">Enter your Eircode</label>
-        <input id="pbEircode" name="eircode" type="text" inputmode="text"
-               autocapitalize="characters" autocomplete="postal-code"
-               placeholder="e.g. D02 X285" required>
-      </div>
-      <button type="submit" class="btn-primary" id="startMyDiscovery">Start with your property</button>
-    </form>
-
-    <div class="pb-steps">
-      <div class="pb-step">
-        <div class="n">What you do</div>
-        <!-- FINAL UX — this described questions PlotNua no longer asks. It
-             promised "a few short questions about the property and what you
-             want the room for" (and, on the other two pages, about the garden
-             and about the space you need) — but space and usage were removed in
-             Discovery v1.0. A homeowner was being told they would be asked
-             about things they will not be asked about. The line now names the
-             three real questions, and reads identically on all three journey
-             pages because the Discovery is the same three questions whichever
-             page you arrive from. -->
-        <p>Enter your Eircode and answer three short questions: the style you like,
-          where it should be made, and your budget.</p>
-      </div>
-      <div class="pb-step">
-        <div class="n">What we do</div>
-        <p>We take what you tell us about the property and compare it with the research
-          we have already done.</p>
-      </div>
-      <div class="pb-step">
-        <div class="n">What you get</div>
-        <p>A clearer view of what your property can take, and practical next steps.</p>
-      </div>
+    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
+         your-plot.html, whose journey is hard-coded to discoveryContext =
+         'artist-studio'. Whatever this page said, the homeowner arrived in the
+         Garden Room journey. The interaction is removed rather than disabled,
+         for the reason already recorded on the pages that did this first:
+         a control a homeowner cannot use is worse than no control at all.
+         Component, styling and independence statement are the existing ones. -->
+    <h2 class="pb-headline">This property check is being prepared</h2>
+    <p class="pb-subhead">The Space check will look at what your house already has &mdash; an attic with height to stand up in, a garage, side access to the back, and how much garden there is to give up &mdash; to help narrow four routes down to the one or two worth pricing. It is not ready yet. In the meantime, there is plenty to explore.</p>
+    <div class="cs-exits">
+      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore Build a Home in Your Garden &rarr;</a>
+      <a class="cs-exit" href="discovery-hidden-cars.html">Explore Hidden Cars &rarr;</a>
+      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
+      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
     </div>
 
     <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
@@ -705,10 +845,10 @@
     <h2>Related Discoveries</h2>
   </div>
   <div class="related-grid">
-    <a class="related-card" href="discovery-an-extra-room.html">
-      <div class="thumb"><img src="assets/img/622372950ce70b40.jpg" loading="lazy" decoding="async" alt="An ordinary Irish back garden at dusk, the house lit on one side and a small timber-and-glass room at the far end of the garden, its interior warm but"></div>
-      <div class="r-kicker">Everyday Space</div>
-      <h3>Create an Extra Room</h3>
+    <a class="related-card" href="discovery-hidden-cars.html">
+      <div class="thumb"><img src="assets/img/9aa6c362d5486001.jpg" loading="lazy" decoding="async" alt="A car raised on a platform lift above an open chamber in the driveway of an Irish period house, a second car parked in the lit space below."></div>
+      <div class="r-kicker">Ground Given Back</div>
+      <h3>Hidden Cars</h3>
     </a>
     <a class="related-card" href="discovery-living-in-the-garden.html">
       <div class="thumb"><img src="assets/img/8c60a8f27eb9c697.jpg" loading="lazy" decoding="async" alt="An ordinary Irish back garden behind a suburban house, with a small single-storey home standing at the far end, its door open and a person visible ins"></div>
