@@ -637,6 +637,20 @@
     max-width:16ch; margin-bottom:12px; font-weight:400; }
   .entry-subhead{ font-size:16px; color:var(--soft); line-height:1.5; max-width:32ch; margin:0 0 26px; }
   .entry-hook{ font-size:14px; color:var(--accent); font-weight:600; letter-spacing:.01em; margin:2px 0 10px; }
+  /* ISSUE 004 PIECE 2.3 — the way back to the Garden route.
+     Subtle by design: this is a secondary action under a primary one, so it
+     is text and an arrow rather than a second button competing with "Find My
+     Plot". Shown only when the URL explicitly carried discovery=garden-room. */
+  .entry-discovery-back{
+    display:inline-flex; align-items:center; gap:8px; min-height:44px;
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:500;
+    letter-spacing:.04em; color:var(--soft); text-decoration:none;
+    margin-top:20px; transition:color .22s ease;
+  }
+  .entry-discovery-back:hover{ color:var(--ink); }
+  .entry-discovery-back i{ font-style:normal; display:inline-block; transition:transform .22s ease; }
+  .entry-discovery-back:hover i{ transform:translateX(-4px); }
+  .entry-discovery-back:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:4px; border-radius:2px; }
   .entry-hook[hidden]{ display:none; }
   .entry-subhead[hidden]{ display:none; }
 
@@ -7167,6 +7181,14 @@
 
     <button type="submit" class="btn-primary" id="findPlotBtn">Find My Plot →</button>
   </form>
+
+  <!-- ISSUE 004 PIECE 2.3 — context-aware return. Hidden by default and
+       revealed only for discovery=garden-room, so a direct visit to
+       your-plot.html is never offered a way "back" to a page it did not come
+       from. It is a real link: it works without JavaScript and can be opened
+       in a new tab. -->
+  <a class="entry-discovery-back" id="entryDiscoveryBack"
+     href="discovery-room-to-grow.html#route-garden" hidden><i aria-hidden="true">&larr;</i> Back to Build in the garden</a>
 </section>
 
 <!-- ============== SCREEN 3: REVEAL (transparent overlay atop the live 3D view) ============== -->
@@ -8892,6 +8914,22 @@
     }
   }
   applyDiscoveryContextCopy();
+
+  /* ISSUE 004 PIECE 2.3 — CONTEXT-AWARE RETURN TO THE GARDEN ROUTE.
+
+     Gated on requestedDiscovery, NOT on discoveryContext. discoveryContext
+     falls back to Garden Room when no parameter is present, so gating on it
+     would offer "Back to Build in the garden" to somebody who opened this
+     page directly and was never on DISC-006. The parameter is the only
+     evidence that they actually came from the Garden route.
+
+     Deliberately not generalised: no other Discovery context declares a
+     return label, and none should inherit this one by accident. */
+  (function(){
+    if (requestedDiscovery !== GARDEN_ROOM_CONTEXT) return;
+    var back = document.getElementById('entryDiscoveryBack');
+    if (back) back.hidden = false;
+  })();
 
   // PATCH Q — SCREEN 1 POLISH: the Eircode input already ships with no
   // `value` attribute in the HTML (only a placeholder), so it is empty by
