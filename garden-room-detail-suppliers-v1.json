@@ -1,0 +1,743 @@
+{
+  "schema": "plotnua.garden-room-recommendation-universe.detail",
+  "version": "1.0.0-dryrun",
+  "generated": "2026-09-03T23:02:26Z",
+  "categories": [
+    "suppliers"
+  ],
+  "productCount": 61,
+  "products": {
+    "rec0E8ongSL0hZnZR": {
+      "name": "Lasita Maja",
+      "locality": {
+        "installationModel": "None \u2014 DIY Kit Only supplier per the certified Installation layer; no installation service published",
+        "irishPresence": "None published \u2014 no Irish premises, no named Irish distributor; Irish buyers purchase through third-party retailers",
+        "deliveryCoverage": "Not stated for Ireland; sells through independent retailers across the UK and Ireland",
+        "manufacturingLocation": "Tartu region, Estonia \u2014 THREE separate factories published, enabling different log cabin designs; each is a distinct production site and they are not merged here. Company established in Tartu 1998; 250+ employees; 40,000+ buildings produced per year",
+        "jurisdiction": "European Union (Estonia)",
+        "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec0zLenIbn3nsvjh": {
+      "name": "Garden Office Solutions",
+      "locality": {
+        "installationModel": "Kildare and surrounding counties including Kilkenny \u2014 REGIONAL, explicitly not nationwide",
+        "irishPresence": "Yes \u2014 Irish-headquartered regional operator",
+        "deliveryCoverage": "Regional",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec17SIbblmee8Vs3": {
+      "name": "SIPS-House",
+      "locality": {
+        "installationModel": "Not stated for Ireland",
+        "irishPresence": "None \u2014 no Irish base, no Irish premises, no named Irish distributor",
+        "deliveryCoverage": "Not stated for Ireland",
+        "manufacturingLocation": "Lithuania",
+        "jurisdiction": "European Union (Lithuania)",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec2URqKyVwlhHSBw": {
+      "name": "\u00d6\u00d6D House",
+      "locality": {
+        "installationModel": "Not stated for Ireland",
+        "irishPresence": "None published",
+        "deliveryCoverage": "International; Ireland not separately named",
+        "manufacturingLocation": "2 or more distinct arrangements, recorded separately and not merged \u2014 (1) Estonia, the primary production base; (2) LOCAL PRODUCTION operated in the EU and the USA per the supplier's own statement, with specific sites not published",
+        "jurisdiction": "European Union (Estonia)",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec4VIYIbk68JihtK": {
+      "name": "Timber Living",
+      "locality": {
+        "installationModel": "Ireland \u2014 supplier publishes a design-to-installation service; no county list published",
+        "irishPresence": "Yes \u2014 Irish company with a three-province showroom footprint across Leinster, Connacht and Munster",
+        "deliveryCoverage": "Ireland; not itemised by county",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier A \u2014 https://timberliving.ie/contact-us/ directly fetched 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec5Dwr8vYDDkHEeW": {
+      "name": "Dunster House",
+      "locality": {
+        "installationModel": "Not stated for Ireland",
+        "irishPresence": "None published",
+        "deliveryCoverage": "United Kingdom; Ireland not named",
+        "manufacturingLocation": "4 UK sites, recorded separately and not merged \u2014 (1) Bedford, Bedfordshire (primary factory); (2) Gosberton, Lincolnshire; (3) Huntly, Aberdeenshire, Scotland \u2014 the Garden Offices / Dominator range is EVIDENCED as produced here; (4) Cumbernauld, North Lanarkshire, Scotland. A further 5 European sites are run by sister companies and are recorded as related, not as Dunster House locations",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec66sNzKArqeOU23": {
+      "name": "Ballyfree Garden Sheds",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish supplier, Dublin-based; second published contact number 0404 68847 is a Co. Wicklow dialling code, recorded as an open question rather than a second location",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec7dG4sHJtzstIHo": {
+      "name": "Berko Pod Systems Ltd",
+      "locality": {
+        "installationModel": "United Kingdom and Ireland, per supplier statement",
+        "irishPresence": "Yes \u2014 all-island; Northern Ireland base with published cross-border delivery and installation, and EUR pricing held in Atlas (EUR 46k-56k ex-VAT) consistent with Republic trade",
+        "deliveryCoverage": "United Kingdom and Ireland, per supplier statement",
+        "manufacturingLocation": "Dungiven, Co. Derry \u2014 same site as headquarters",
+        "jurisdiction": "NORTHERN IRELAND \u2014 UK planning and building control apply at the supplier's base; Irish exempted-development rules do not",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec7q7WitcIuY3phT": {
+      "name": "All In One Cabins",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish company with a full published Roscommon address and Eircode; one of only two Connacht-based suppliers in the Garden Room catalogue",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec7wp2vzUC3dxcYr": {
+      "name": "Iglucraft",
+      "locality": {
+        "installationModel": "Not included \u2014 the price expressly excludes transportation and installation",
+        "irishPresence": "None published \u2014 no Irish premises or dealer; contracts are governed by Estonian law with disputes to the Estonian Consumer Disputes Committee",
+        "deliveryCoverage": "International; delivery fee varies by destination and shipping method, quoted per order",
+        "manufacturingLocation": "Naaritsa, Leie village, Viljandi municipality, 70303 Viljandi County, Estonia \u2014 the registered production seat of Iglucraft O\u00dc per its own terms of sale; a DISTINCT LOCATION from the Tallinn head office and not merged with it",
+        "jurisdiction": "European Union (Estonia)",
+        "evidenceTier": "Tier A \u2014 General Terms and Conditions of Sales Contract PDF fetched and read in full 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rec8j9KTIVfQAVMzg": {
+      "name": "Oeco Garden Rooms",
+      "locality": {
+        "installationModel": "Nationwide United Kingdom on-site installation",
+        "irishPresence": "None published \u2014 'nationwide' refers to the United Kingdom; Ireland is not named",
+        "deliveryCoverage": "Nationwide United Kingdom \u2014 supplier publishes bespoke garden rooms installed nationwide",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recAbCMI3LkwWO3Z6": {
+      "name": "Pineca Ireland",
+      "locality": {
+        "installationModel": "Nationwide \u2014 professional installation arrangeable for any location, subject to confirming availability and lead time per area",
+        "irishPresence": "Yes \u2014 Irish office address with Eircode, Irish sales line, all-island delivery reach including Belfast",
+        "deliveryCoverage": "WHOLE OF IRELAND \u2014 supplier publishes delivery from Dublin and Cork to Galway, Limerick, Belfast and every county in between; delivery INCLUDED in the listed price for standard mainland Ireland addresses; usual lead time 2-4 weeks for stock items",
+        "manufacturingLocation": "Not stated in Ireland \u2014 pineca.ie is the Irish trading arm of the Pineca Group; production is offshore and the site is not published. Manufacturing and headquarters are therefore in different jurisdictions and are recorded separately",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recDRvQusj5KgRU2s": {
+      "name": "Quinn Offsite Ltd",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Northern Ireland manufacturer publishing all-island and UK supply",
+        "deliveryCoverage": "Not stated; supplier publishes trading across Ireland, Northern Ireland and the UK",
+        "manufacturingLocation": "Dungannon, Co. Tyrone \u2014 offsite timber frame manufacturing, same site as headquarters; nearly 50 years of timber frame construction",
+        "jurisdiction": "NORTHERN IRELAND \u2014 UK planning and building control apply at the supplier's base",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recEMNNtEYy59gmbt": {
+      "name": "Koto",
+      "locality": {
+        "installationModel": "Not stated for Ireland",
+        "irishPresence": "None published \u2014 Ireland falls within the stated European delivery area but no Irish premises, dealer or Ireland-specific terms are published",
+        "deliveryCoverage": "United Kingdom, Europe and the USA; Niwa published as shipping to the US",
+        "manufacturingLocation": "Not stated \u2014 Niwa is a flat-pack line shipped for customer-arranged assembly",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recExaEx7i1hqG6CD": {
+      "name": "MCD Garden Sheds",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish manufacturer with national retail distribution through Woodie's",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Naul, Co. Dublin \u2014 same site as headquarters; full-cell pressure treatment applied in-house",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recFQ1GyK0fq2fK4I": {
+      "name": "Sprout Pod",
+      "locality": {
+        "installationModel": "Free installation nationwide \u2014 Republic of Ireland and Northern Ireland",
+        "irishPresence": "Yes \u2014 Irish manufacturer, all-island delivery and installation included in price",
+        "deliveryCoverage": "Free delivery nationwide \u2014 Republic of Ireland and Northern Ireland",
+        "manufacturingLocation": "Dundalk, Co. Louth \u2014 same site as headquarters",
+        "jurisdiction": "Republic of Ireland, trading all-island",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recIFIi1fxjwc1g1C": {
+      "name": "Rayco Modular Homes",
+      "locality": {
+        "installationModel": "Turnkey delivery stated; no coverage area published",
+        "irishPresence": "Irish company in Co. Wexford with two published addresses and an Irish mobile line (087 109 3647)",
+        "deliveryCoverage": "Steel-frame modular homes, garden rooms and extensions marketed ACROSS IRELAND; no county list published",
+        "manufacturingLocation": "Not published separately; steel-frame modular construction with a stated A1 BER rating",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recJJ4jFPAMxw6IkY": {
+      "name": "Green Retreats",
+      "locality": {
+        "installationModel": "Not stated beyond the delivery radius",
+        "irishPresence": "None \u2014 the published delivery radius excludes Ireland",
+        "deliveryCoverage": "Free delivery within 100 miles of HP18 \u2014 a radius that DOES NOT REACH IRELAND",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recJwB6aXMbElG2Fm": {
+      "name": "Luxury Garden Studios",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Northern Ireland base with published Ireland-facing trading",
+        "deliveryCoverage": "Not stated; supplier publishes an Ireland-facing modular homes page",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "NORTHERN IRELAND",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recKazlmd4FCnanxR": {
+      "name": "Sanctum Garden Studios",
+      "locality": {
+        "installationModel": "United Kingdom; Ireland not named",
+        "irishPresence": "None \u2014 no published Irish purchasing route (Session 8 finding, carried forward)",
+        "deliveryCoverage": "United Kingdom; Ireland not named",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recLQOPHHfSrfs3xA": {
+      "name": "Quick-Garden",
+      "locality": {
+        "installationModel": "None \u2014 DIY or Installed supplier per the certified Installation layer; no installation coverage area published",
+        "irishPresence": "None published",
+        "deliveryCoverage": "United Kingdom; IRELAND IS NOT NAMED in the published delivery statement",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom \u2014 established by London telephone numbers 020 7099 4301 and 07418 351 697 and GBP-only pricing",
+        "evidenceTier": "Tier A for the specification tables read directly; Tier B for the absence of address",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recOjnbeotdf0jnqH": {
+      "name": "Adman Steel Sheds",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish steel manufacturer with a full published Wexford address and Eircode",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Gorey, Co. Wexford \u2014 steel shed manufacture, same site as headquarters",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recP4lqMNuNceOyNh": {
+      "name": "TimberIN",
+      "locality": {
+        "installationModel": "None \u2014 the supplier provides no installation; unloading and placement are the customer's responsibility per the certified Installation layer",
+        "irishPresence": "Yes, delivery only \u2014 the supplier's own copy states 'Projects in Ireland' and maintains an Ireland delivery page; no Irish premises or dealer published",
+        "deliveryCoverage": "EU-wide delivery and logistics service published, including a DEDICATED IRELAND DELIVERY PAGE for wood-fired hot tubs",
+        "manufacturingLocation": "Europe-wide production indicated by an FR/DE/NL/DK/IT/SE/NO/PL storefront network; no specific production site published",
+        "jurisdiction": "European Union \u2014 country of registration not established",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recSDXX7gK0FT7g8G": {
+      "name": "Lugarde",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "None direct \u2014 no Irish premises and no Lugarde-operated Irish route; Irish buyers purchase through independent dealers, who are the counterparty",
+        "deliveryCoverage": "Free delivery in the Netherlands only, excluding islands. Ireland and the UK are served through INDEPENDENT RESELLERS \u2014 Titan Garden Buildings, ForeverTimber, Garden Chic, elbec and Simply Log Cabins \u2014 with no Ireland-specific terms confirmed",
+        "manufacturingLocation": "2 distinct sites, recorded separately and not merged \u2014 (1) Laren, Netherlands; (2) a second facility in Latvia. Approximately 180 staff across both sites",
+        "jurisdiction": "European Union (Netherlands)",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recUnzSlV4tszVzg6": {
+      "name": "Ecohouse Building Systems",
+      "locality": {
+        "installationModel": "INCLUDED IN PRICE. Every garden room page states 'Fitting is also included in the price', with a published lead time of 4\u20136 weeks and a build time of 1\u20132 weeks. No installation geography is published",
+        "deliveryCoverage": "Ireland. The shop is published as 'Garden rooms, Offices and House Extensions for sale in Ireland. Shop Online, delivered to you.' No county exclusions, delivery charge or delivery radius is published",
+        "manufacturingLocation": "Not published as an address. The supplier states it manufactures prefabricated SIP panels and invites engineers, architects and builders to 'visit our factory', but no factory address is published; whether the Grants Rise premises is the factory is NOT established",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier A \u2014 all fields above read directly from ecohouse.ie 29 August 2026",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recXGziDNcDnpz0iN": {
+      "name": "Waltons",
+      "locality": {
+        "installationModel": "Optional installation service published for the UK; Ireland not named",
+        "irishPresence": "None published",
+        "deliveryCoverage": "United Kingdom mainland; Ireland not named",
+        "manufacturingLocation": "Not stated \u2014 Waltons is a garden building RETAILER rather than a manufacturer",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B for the absence \u2014 searched 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recZVKy9FPReF7I9H": {
+      "name": "Auroom Wellness",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes, sales route only \u2014 Ireland is a selectable destination on the supplier's own enquiry form; no Irish premises or dealer published. US retailers sell the range but their terms and locations are their own and are NOT transferred",
+        "deliveryCoverage": "Supplies 30+ countries; the supplier's own inquiry form carries an EXPLICIT IRELAND / UK OPTION",
+        "manufacturingLocation": "Estonia \u2014 specific site not published",
+        "jurisdiction": "European Union (Estonia)",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recZcfloN72CBES6I": {
+      "name": "Modern Garden Rooms",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish-headquartered with a full published Dublin address and Eircode",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recZsdhQM53LBVyyg": {
+      "name": "Total Garden Rooms",
+      "locality": {
+        "installationModel": "Northern Ireland \u2014 turnkey service published from original enquiry to final installation",
+        "irishPresence": "Yes \u2014 Northern Ireland operator with a Belfast base and show village; Republic of Ireland coverage not published",
+        "deliveryCoverage": "Northern Ireland; supplier publishes local pages including Newry, Co. Down",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "NORTHERN IRELAND",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recaVJQjZD9UV8JSs": {
+      "name": "The Pod Factory",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish manufacturer with a purpose-built Meath factory and more than 30 years of published experience",
+        "deliveryCoverage": "Not stated; delivery published in as little as 12 weeks from order",
+        "manufacturingLocation": "Purpose-built factory, Co. Meath \u2014 every pod assembled in factory conditions",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recbZVOTUMCmMphuj": {
+      "name": "Sonic Box Studios",
+      "locality": {
+        "installationModel": "South East of England; Ireland not named",
+        "irishPresence": "None \u2014 no Irish base and no Irish route published",
+        "deliveryCoverage": "South East of England, per the supplier's published operating area; Ireland not named",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "reccM9Gg66ZuZC0m3": {
+      "name": "All About Outdoors",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish company with a published Carlow address and Eircode",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recdkZXPh12FyiCRr": {
+      "name": "Elevate Modular",
+      "locality": {
+        "installationModel": "Northern Ireland",
+        "irishPresence": "Yes \u2014 Northern Ireland manufacturer with a full published Tyrone address; Republic of Ireland coverage not published",
+        "deliveryCoverage": "Northern Ireland; supplier publishes customisable modular buildings for sale in Northern Ireland",
+        "manufacturingLocation": "Moy, Co. Tyrone \u2014 same site as headquarters; units built in the supplier's own warehouse and delivered ready to use",
+        "jurisdiction": "NORTHERN IRELAND",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recePJOyXsH8LXtwf": {
+      "name": "Shanette Sheds",
+      "locality": {
+        "installationModel": "Not stated on the contact page",
+        "irishPresence": "Yes \u2014 Irish manufacturer, two Irish sites across Westmeath and Dublin",
+        "deliveryCoverage": "Not stated on the contact page",
+        "manufacturingLocation": "Kilbeggan, Co. Westmeath \u2014 insulated steel manufacture, same site as headquarters",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier A \u2014 https://shanettesheds.ie/contact/ directly fetched 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recefOJGKHPwabRhV": {
+      "name": "Loghouse",
+      "locality": {
+        "installationModel": "All 32 counties, by Loghouse's own installation team, included in price",
+        "irishPresence": "Yes \u2014 four Irish sites across Westmeath, Wicklow and Dublin; own installation team; all-island trading",
+        "deliveryCoverage": "All 32 counties",
+        "manufacturingLocation": "Not stated in Ireland \u2014 part of a wider Log Cabin Group supplying 20+ EU countries; production site not published",
+        "jurisdiction": "Republic of Ireland, trading across all 32 counties",
+        "evidenceTier": "Tier A for the 32-county and own-team claims (loghouse.ie homepage directly fetched); Tier B for the Athlone address and Eircode",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "receufKmrd8c4QgMv": {
+      "name": "Hansa24 Group",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes, indirect \u2014 sells into Ireland exclusively through its own Irish retail arm, HANSA GARDEN IRELAND LTD trading as Summerhouse24 Ireland, the named official Irish dealer; an Irish warehouse near Dublin is held as a DISTINCT LOCATION and is not merged with the Estonian headquarters",
+        "deliveryCoverage": "Ireland served via an Irish warehouse near Dublin with national Hi-Ab delivery",
+        "manufacturingLocation": "Kuressaare, Saaremaa, Estonia \u2014 production on the same site as headquarters",
+        "jurisdiction": "European Union (Estonia)",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recfV4V49BHoMsYBA": {
+      "name": "Concept Modular",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes at country level only \u2014 Irish domain, Irish mobile, Irish trading entity; no premises evidenced",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland \u2014 established by Irish domain and Irish mobile number only",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recfpcUL7s03Es3lV": {
+      "name": "Home Modular",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish company with a full published Dublin industrial-estate address and Eircode",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recgsaDsSVCCad0q4": {
+      "name": "KC Modular Buildings",
+      "locality": {
+        "installationModel": "United Kingdom; Ireland not named",
+        "irishPresence": "None published",
+        "deliveryCoverage": "United Kingdom; Ireland not named",
+        "manufacturingLocation": "Not stated \u2014 factory-built modular buildings with galvanised steel frames and composite panels; site not published",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rechco59Sn6wp3Aiq": {
+      "name": "Garden Rooms",
+      "locality": {
+        "installationModel": "Dublin, Louth, Meath, Kildare and Wicklow \u2014 five counties, REGIONAL not nationwide, per the supplier's own published building capacity; installation included in price at no extra cost",
+        "irishPresence": "Yes \u2014 Irish company with a Dublin base, a Dublin show site and more than 2,200 garden rooms constructed across Ireland",
+        "deliveryCoverage": "Dublin, Louth, Meath, Kildare and Wicklow",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rechsPFUooApigybT": {
+      "name": "Essex Garden Studios",
+      "locality": {
+        "installationModel": "Essex and Suffolk only \u2014 explicitly regional, with published local pages including Chelmsford",
+        "irishPresence": "None \u2014 the published service area excludes Ireland entirely",
+        "deliveryCoverage": "Essex and Suffolk only",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "reclA5R4kPCCwc8Pc": {
+      "name": "Gardenhouse24 Ireland",
+      "locality": {
+        "installationModel": "Across Ireland, included free; also orderable as a specialised service",
+        "irishPresence": "Yes \u2014 Irish-registered entity with an Irish head office, two Irish showrooms and nationwide Republic delivery and installation",
+        "deliveryCoverage": "Free delivery across Ireland",
+        "manufacturingLocation": "Estonia \u2014 Nordic spruce manufactured offshore; the Irish entity is the retail and installation arm, so manufacturing and headquarters are in different jurisdictions and are recorded separately",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier A for company registration; Tier B for showroom detail",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "reclCNqekU666UWJA": {
+      "name": "Booths Garden Studios",
+      "locality": {
+        "installationModel": "United Kingdom; Ireland not named",
+        "irishPresence": "None published",
+        "deliveryCoverage": "United Kingdom; Ireland not named",
+        "manufacturingLocation": "Corby, Northamptonshire \u2014 the St Marks Road site is published as showroom AND factory",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recmBdXALBPGk5wSI": {
+      "name": "NOOK Prefab (espacio NOOK)",
+      "locality": {
+        "installationModel": "Units published as installable in hours; coverage area not stated for Ireland",
+        "irishPresence": "None published \u2014 no Irish premises, dealer or Ireland-specific terms",
+        "deliveryCoverage": "Shipped worldwide; the supplier publishes UK and European market activity. Ireland not separately named",
+        "manufacturingLocation": "Spain \u2014 factory-built modular units, specific site not published",
+        "jurisdiction": "European Union (Spain)",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recmW0HlJFr9GvLEj": {
+      "name": "Garden Solutions 4U",
+      "locality": {
+        "installationModel": "Not stated; supplier publishes installation within about a week from stock",
+        "irishPresence": "Yes \u2014 Northern Ireland operator with two Ulster sites",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Belfast workshop \u2014 THE HOP range handcrafted in-house",
+        "jurisdiction": "NORTHERN IRELAND",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recn9B3Qn43VUXxAg": {
+      "name": "Outdoor Living (ModPod)",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish retailer based in Co. Wicklow selling an Irish-manufactured pod range",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated by Outdoor Living. The ModPod range is manufactured by MODECO LTD (modeco.ie), a separate timber engineering company \u2014 recorded as a distinct manufacturing party and NOT merged with the retailer's own location",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recnvHCjmfim16w3q": {
+      "name": "Big Man Tiny Homes",
+      "locality": {
+        "installationModel": "Not stated; supplier delivers and installs",
+        "irishPresence": "Yes \u2014 Irish manufacturer with a full published Cork address and Eircode, 20+ years building experience",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Clancool Beg, Bandon, Co. Cork \u2014 same site as headquarters; units built in full on the supplier's premises and certified by the supplier's own engineer before dispatch",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recontC2BSomwggsc": {
+      "name": "Cabin Master",
+      "locality": {
+        "installationModel": "United Kingdom",
+        "irishPresence": "None published",
+        "deliveryCoverage": "Nationwide United Kingdom; no Irish route published",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recrtMY2s1Tabf06e": {
+      "name": "Modular Innovations",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Country level only \u2014 Irish domain; no premises, county or contact address evidenced",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland \u2014 established by Irish domain only",
+        "evidenceTier": "Tier B for the absence \u2014 searched 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recsDmxfYLRJiaFmG": {
+      "name": "Bertilo",
+      "locality": {
+        "installationModel": "None published",
+        "irishPresence": "None \u2014 no Irish distributor named, no Irish delivery route published",
+        "deliveryCoverage": "Ships direct to Estonia only",
+        "manufacturingLocation": "Estonia",
+        "jurisdiction": "European Union (Estonia)",
+        "evidenceTier": "Tier A \u2014 bertilo.com read directly during Session 6 supplier enrichment",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rectRQUdpY3t4ukdP": {
+      "name": "My Garden Room (Barna Buildings)",
+      "locality": {
+        "installationModel": "Dublin, Wicklow, Kildare and Wexford ONLY \u2014 four counties, explicitly REGIONAL",
+        "irishPresence": "Yes \u2014 Irish manufacturer operating as Barna Buildings; regional coverage only",
+        "deliveryCoverage": "Dublin, Wicklow, Kildare and Wexford only",
+        "manufacturingLocation": "Barna Buildings, Glenealy, Co. Wicklow \u2014 same site as headquarters",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "rectTyBhqejHG4GQG": {
+      "name": "X-Gen Homes",
+      "locality": {
+        "installationModel": "Not separately stated",
+        "irishPresence": "Yes, delivery only \u2014 Ireland is named in the published delivery area; no Irish premises, dealer or Ireland-specific terms published",
+        "deliveryCoverage": "United Kingdom and Ireland",
+        "manufacturingLocation": "United Kingdom \u2014 specific site not published",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recuCWhMIEWD1X1yE": {
+      "name": "Garden Office Buildings",
+      "locality": {
+        "installationModel": "Same seven counties; explicitly regional",
+        "irishPresence": "None \u2014 the published service area excludes Ireland entirely",
+        "deliveryCoverage": "South East England only \u2014 Kent, Surrey, Sussex, Essex, Greater London, Hampshire and Berkshire",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "United Kingdom",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recv6T9JI9T8aqcRO": {
+      "name": "MyCabin.ie",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish company with three Irish showroom sites across Leinster and Munster",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recw124UIanKV5Ath": {
+      "name": "Shomera",
+      "locality": {
+        "installationModel": "Dublin plus parts of Meath, Kildare and Wicklow \u2014 REGIONAL, not nationwide, per the supplier's own service statement",
+        "irishPresence": "Yes \u2014 Irish-headquartered and Irish-operating, trading since 1998 with 3,000+ completed projects",
+        "deliveryCoverage": "Not itemised; installed product, delivered as part of the build",
+        "manufacturingLocation": "Not stated \u2014 design-and-build practice with in-house architects, engineers, project managers and quantity surveyors; no separate factory published",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recxdr0chc5ljRqfR": {
+      "name": "CG Garden Rooms (CG Joinery)",
+      "locality": {
+        "contractingEntity": "CG Joinery (IRE) Limited, Northern Ireland company number NI657018",
+        "installationModel": "All-island and UK by the supplier's own statement; no county list published",
+        "irishPresence": "ALL-ISLAND \u2014 a Co. Down base close to the border, with the supplier explicitly addressing both Northern Ireland and the Republic of Ireland",
+        "deliveryCoverage": "The supplier states it builds bespoke garden rooms ACROSS IRELAND AND THE UK, and publishes distinct Northern Ireland, Ireland and UK pages",
+        "manufacturingLocation": "Not published separately; the supplier is a JOINERY business, indicating own-workshop fabrication at or near the Mayobridge site",
+        "jurisdiction": "Northern Ireland (United Kingdom)",
+        "evidenceTier": "B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "recyfWvDVODL06P8l": {
+      "name": "Yardbox",
+      "locality": {
+        "installationModel": "Ireland and Northern Ireland \u2014 supplier's published model covers design, manufacture and installation",
+        "irishPresence": "Yes \u2014 all-island; Northern Ireland base serving both jurisdictions",
+        "deliveryCoverage": "Ireland and Northern Ireland, per supplier statement",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "NORTHERN IRELAND",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "reczIVnJujZd8a2CK": {
+      "name": "Modular Outlook Ireland",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 Irish-headquartered, Irish-manufacturing, three Irish locations across Westmeath and Longford",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Longford facility, Co. Longford, Leinster \u2014 a THIRD distinct location, recorded separately and not merged with either office",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "reczQn59haPghHYmT": {
+      "name": "Vilarte",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "None published",
+        "deliveryCoverage": "No delivery country list published; no UK or Ireland statement located",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "European Union (Belgium)",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "reczankduIWGWwXKR": {
+      "name": "Live in Garden Pods",
+      "locality": {
+        "installationModel": "Not stated",
+        "irishPresence": "Yes \u2014 family business publishing live-in garden pods as long-term accommodation, priced from EUR 39,950 plus VAT at 13.5%",
+        "deliveryCoverage": "Not stated",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    },
+    "reczne3oE3EHQyp7L": {
+      "name": "Granny Flats Dublin",
+      "locality": {
+        "installationModel": "Dublin and commuter counties ONLY \u2014 explicitly NOT nationwide",
+        "irishPresence": "Yes \u2014 Irish-headquartered with a full published Kildare street address; regional operator",
+        "deliveryCoverage": "Dublin and commuter areas only",
+        "manufacturingLocation": "Not stated",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "Tier B",
+        "evidenceScope": "Organisation-Wide"
+      }
+    }
+  }
+}

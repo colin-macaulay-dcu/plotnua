@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-03T20:46:17Z",
+  "generated": "2026-09-03T23:02:26Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "qualificationRuleVersion": "garden-room-qualification-v1",
   "dryRun": true,

@@ -1,0 +1,2157 @@
+{
+  "schema": "plotnua.garden-room-recommendation-universe.detail",
+  "version": "1.0.0-dryrun",
+  "generated": "2026-09-03T23:02:26Z",
+  "sourceBase": "appoLZFWesvoPhZGR",
+  "categories": [
+    "sources"
+  ],
+  "productCount": 357,
+  "recordCounts": {
+    "sources": 357
+  },
+  "products": {
+    "recMYX68xsyrwVoR1": {
+      "sources": {
+        "text": "https://www.gardenrooms.ie/",
+        "evidenceScope": null
+      }
+    },
+    "rec8F9RgkYuSmG5OH": {
+      "sources": {
+        "text": "https://www.lasita.com/products-gb/brava",
+        "evidenceScope": null
+      }
+    },
+    "recM5CIL0367YeB8B": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/large-garden-room-with-gable-roof-ireland.html",
+        "evidenceScope": null
+      }
+    },
+    "recs7HkmTa9mk4yCh": {
+      "sources": {
+        "text": "https://cggardenrooms.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec06ZGcmh6Rii2cA": {
+      "sources": {
+        "text": "https://cggardenrooms.com/",
+        "evidenceScope": null
+      }
+    },
+    "recZ7EVCGzbY3BJWi": {
+      "sources": {
+        "text": "https://cggardenrooms.com/",
+        "evidenceScope": null
+      }
+    },
+    "recZZEwIkAOAZhAbb": {
+      "sources": {
+        "text": "https://cggardenrooms.com/",
+        "evidenceScope": null
+      }
+    },
+    "recN1my7Kn0Je65Yj": {
+      "sources": {
+        "text": "https://cggardenrooms.com/",
+        "evidenceScope": null
+      }
+    },
+    "reckBCrumgiHsZR6R": {
+      "sources": {
+        "text": "https://cggardenrooms.com/",
+        "evidenceScope": null
+      }
+    },
+    "recfFcnNP9ZV4BcVW": {
+      "sources": {
+        "text": "https://www.gardenrooms.ie/designs/",
+        "evidenceScope": null
+      }
+    },
+    "recvwcsiEDuC4FwYx": {
+      "sources": {
+        "text": "https://www.cabinmaster.co.uk/product/garden-gym",
+        "evidenceScope": null
+      }
+    },
+    "recCYqVXnF0MSxB8f": {
+      "sources": {
+        "text": "https://www.cabinmaster.co.uk/product/garden-gym",
+        "evidenceScope": null
+      }
+    },
+    "recapo48Ejtu6CnKk": {
+      "sources": {
+        "text": "https://www.cabinmaster.co.uk/product/garden-gym",
+        "evidenceScope": null
+      }
+    },
+    "recfYtPA0VtK6XIyF": {
+      "sources": {
+        "text": "https://www.cabinmaster.co.uk/product/small-garden-office",
+        "evidenceScope": null
+      }
+    },
+    "recKjrVFaxLluglSW": {
+      "sources": {
+        "text": "https://www.cabinmaster.co.uk/product/small-garden-office",
+        "evidenceScope": null
+      }
+    },
+    "rec7rTWkame6t97R0": {
+      "sources": {
+        "text": "https://www.cabinmaster.co.uk/product/small-garden-office",
+        "evidenceScope": null
+      }
+    },
+    "recjywa2b7bICYBuT": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/garden-room-carin-44-a-with-storage-room-and-a-terrace-5-4m-x-2-5m-17-8-x-8-2.html",
+        "evidenceScope": null
+      }
+    },
+    "recc8L2y90pwVkaSd": {
+      "sources": {
+        "text": "https://www.lasita.com/products/carroz",
+        "evidenceScope": null
+      }
+    },
+    "recv567ypoUWHSHgD": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recX34lTvJT2y9CVY": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-grace-alu-g0370/",
+        "evidenceScope": null
+      }
+    },
+    "rec9uQSpCV1OnrV9y": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-office-olivia-alu-g0368/",
+        "evidenceScope": null
+      }
+    },
+    "recEZ2nnKMBzuHnQ6": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-office-pod-olivia-g0367/",
+        "evidenceScope": null
+      }
+    },
+    "rechyfJmxqpq0gXar": {
+      "sources": {
+        "text": "https://summerhouse24.ie/contemporary-garden-room-aurora-g0384/",
+        "evidenceScope": null
+      }
+    },
+    "recClI0ZejdwUFLQc": {
+      "sources": {
+        "text": "https://summerhouse24.ie/contemporary-garden-room-leo-g0415/",
+        "evidenceScope": null
+      }
+    },
+    "recLg4z2cQydV02Ky": {
+      "sources": {
+        "text": "https://summerhouse24.ie/corner-garden-house-with-veranda-hansa-b-g0198/",
+        "evidenceScope": null
+      }
+    },
+    "recT2DoASzrfwSgDm": {
+      "sources": {
+        "text": "https://summerhouse24.ie/corner-summer-house-fargo-a-g0345/",
+        "evidenceScope": null
+      }
+    },
+    "recO5eUiPpdoGSIwg": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recQFcW1UjjsErM4l": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recj3Tbs0KLo07g4O": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recyGDfYaBSldsE0Q": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recsp5WcfaTUUPUEe": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "recydqpN5Lb53S5QH": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "rec47JjB2uMP5gkBd": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "recXsqRqhNvo7d9jt": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "rechUK60A3dghgqkH": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "recQJtDL60DynZGY8": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "recYuLnuUG6i1kS9V": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "reccLKAMbDcRakXaM": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "recdEm5Wh8AynGOhK": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/garden-room-with-bi-fold-doors-dublin-70-5-9x4-9m-19-5-x16-1-70mm.html",
+        "evidenceScope": null
+      }
+    },
+    "reckmUiP9cOyZqvWX": {
+      "sources": {
+        "text": "https://www.lasita.com/products-gb/outdoor-cooking",
+        "evidenceScope": null
+      }
+    },
+    "recXmUXm5FxCPWIKK": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "rec6K2sgykCb8MJkS": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "rec7C36FNJeiQYgfn": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recOD7UXF4dq0uDuq": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "rech1bMcgWKvoGOSC": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recQQla3qVqvygPGW": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recbJJoG6XfPVmQaw": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "rechjA8DWp9vpkQCU": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recNmbK35U3CuKSGZ": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recPfsCrGVQPRqhDa": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recX7QAMiJrBxhQlN": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recUJaJaAzeZHOezH": {
+      "sources": {
+        "text": "https://dunsterhouse.co.uk/garden-offices/insulated-garden-offices",
+        "evidenceScope": null
+      }
+    },
+    "recxmzCbe2Ec1dWrg": {
+      "sources": {
+        "text": "https://www.mygardenroom.ie/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recO2cx1fkeTvEkkp": {
+      "sources": {
+        "text": "https://www.mygardenroom.ie/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "rec280lNwFUpajNBI": {
+      "sources": {
+        "text": "https://www.mygardenroom.ie/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recUH8MGNKWpem1CM": {
+      "sources": {
+        "text": "https://www.mygardenroom.ie/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recIuSj7HPtMSRvyk": {
+      "sources": {
+        "text": "https://www.mygardenroom.ie/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "rect6WMjxZHZFhdkL": {
+      "sources": {
+        "text": "https://www.mygardenroom.ie/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "rec6hBlyxKfJEA6C5": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "rech7TfmJLA8n4Jj9": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recTpjQUJ7rIgemhk": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product/eco-garden-room-4-0m-x-4-0m/",
+        "evidenceScope": null
+      }
+    },
+    "recr7HRb2CIqnyoAa": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "rec66xKgPx0ipzfOQ": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "rec6pnA2GkdMzlmPf": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product/eco-garden-room-6-0m-x-3-0m/",
+        "evidenceScope": null
+      }
+    },
+    "recDHVxszqcxMTrXs": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product/eco-garden-room-6-0m-x-4-0m/",
+        "evidenceScope": null
+      }
+    },
+    "recH01pLG7Ge59UPk": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-3x3m/",
+        "evidenceScope": null
+      }
+    },
+    "recKzzABQROrsghWQ": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-4x3m/",
+        "evidenceScope": null
+      }
+    },
+    "recWXmRw2oeyvQKiC": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-4x4m/",
+        "evidenceScope": null
+      }
+    },
+    "recpfkE6APPXD4kES": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-5x3m/",
+        "evidenceScope": null
+      }
+    },
+    "recbw7iIgPJ5KHYfk": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-5x4m/",
+        "evidenceScope": null
+      }
+    },
+    "recPrS0p3j4uel1hA": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-6x3m/",
+        "evidenceScope": null
+      }
+    },
+    "recw7nbBogSsdXlxG": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-6x4m/",
+        "evidenceScope": null
+      }
+    },
+    "recajMqfHOEbpL8q5": {
+      "sources": {
+        "text": "https://www.lasita.com/products-gb/brava",
+        "evidenceScope": null
+      }
+    },
+    "recFj5XNkQlgAdgQo": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-golf-simulator-room-sim-1-g0348/",
+        "evidenceScope": null
+      }
+    },
+    "recZKjt6uyincLYdW": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-golf-simulator-room-sim-2-g0349/",
+        "evidenceScope": null
+      }
+    },
+    "recdxtMLemYPmia3L": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-roland2-g0407/",
+        "evidenceScope": null
+      }
+    },
+    "recps04FNsKlopszs": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-roland3-g0408/",
+        "evidenceScope": null
+      }
+    },
+    "recER56ZfsXxJAOWJ": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recZq4A5KYmuyeLiS": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recxevUvAMaC5wYtA": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recWK0oqTuo36Ayid": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec0KNX4tX2tuD1u3": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec9AvN02YVIDWRE8": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recpcQGqURO2CxDNn": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recpjqtenVUxkzjfv": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recQ4GmCsYxI5g3n1": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec3kD3CjpFYRcs4c": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recCOdoEpwh2w4lqz": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recZbN3qkw6isO6CO": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recMXsTkUORqhKtvf": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recI5kYLShcneUIs8": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-dean-g0390/",
+        "evidenceScope": null
+      }
+    },
+    "recyCTqnOalHib0g1": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-terrace-eva-d-g0151/",
+        "evidenceScope": null
+      }
+    },
+    "rec0PT6HBTp362Ycd": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recbrdguyNRjmA5YB": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recdFhlMLdM8H81Ij": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-veranda-hansa-studio-xxl-g0282/",
+        "evidenceScope": null
+      }
+    },
+    "recLd7AesV3hcffyZ": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec4sje6wXjpOsYKG": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-linda-g0234/",
+        "evidenceScope": null
+      }
+    },
+    "rec1zG67NZtl7Q9eA": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-canopy-lucas-d-g0159/",
+        "evidenceScope": null
+      }
+    },
+    "rec5jsM7fGx7P1gSh": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-veranda-lucas-d-g0160/",
+        "evidenceScope": null
+      }
+    },
+    "recXte1rzrrNGFLf4": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-mark-g0099/",
+        "evidenceScope": null
+      }
+    },
+    "recLxYfzOghqV7Er8": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-porch-toilet-martin-1-g0302/",
+        "evidenceScope": null
+      }
+    },
+    "recJw2eZmsMUZOCKh": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-shower-toilet-mia-1-g0304/",
+        "evidenceScope": null
+      }
+    },
+    "rectGPQCXEwkJXCvg": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-canopy-nora-e-g0148/",
+        "evidenceScope": null
+      }
+    },
+    "recBo2syeTpdt1pq8": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-porch-terrace-paradise-a-g0221/",
+        "evidenceScope": null
+      }
+    },
+    "recKEvzfeojtRYUeB": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-large-veranda-paradise-b-g0222/",
+        "evidenceScope": null
+      }
+    },
+    "recU2hBitk8XGzUGu": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recgPCOJEuqMjteZh": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recprwvbk1GroAWty": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recQ7tUwndTfo22rZ": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recrJ2OZ71l5zFHRK": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec4HouUyfBlLhfGw": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-shed-veranda-super-lucas-e-g0246/",
+        "evidenceScope": null
+      }
+    },
+    "recwZgVdrpD1osfLQ": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-side-shed-super-tom-g0203/",
+        "evidenceScope": null
+      }
+    },
+    "reckhe43a9sTiAI93": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recr3iKcGfovQ89IX": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-log-cabin-with-shower-room-sweden-a-g0265/",
+        "evidenceScope": null
+      }
+    },
+    "recSuPCKG52WU2c24": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rechdMnIn9PcHJI1U": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recXjnThLhyeZxRH4": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-roland1-g0406/",
+        "evidenceScope": null
+      }
+    },
+    "rec77bRmubsyg6yOL": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-office-ryan-1-g0303/",
+        "evidenceScope": null
+      }
+    },
+    "recKHXaApIugjOKti": {
+      "sources": {
+        "text": "https://gardenofficesolutions.ie/garden-room-cost/",
+        "evidenceScope": null
+      }
+    },
+    "recUs4gexxlfkaiUj": {
+      "sources": {
+        "text": "https://gardenofficesolutions.ie/garden-room-cost/",
+        "evidenceScope": null
+      }
+    },
+    "reciolethPMEn50gQ": {
+      "sources": {
+        "text": "https://gardenofficesolutions.ie/garden-room-cost/",
+        "evidenceScope": null
+      }
+    },
+    "recUnUAWq0TWkNO5C": {
+      "sources": {
+        "text": "https://gardenofficesolutions.ie/garden-room-cost/",
+        "evidenceScope": null
+      }
+    },
+    "rec4Ze6W85ZIfsAMp": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recq74tv2QuEkF2Ev": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recbdz0iT8UJbK9Dp": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-aruba-g0096/",
+        "evidenceScope": null
+      }
+    },
+    "recDQUSsaXJZirHjf": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recs0H7XsOVufI4ap": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-barbados-g0097/",
+        "evidenceScope": null
+      }
+    },
+    "rec2kgqP990nZPkmN": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-storage-shed-barbados-plus-g0295/",
+        "evidenceScope": null
+      }
+    },
+    "rec7MWC4V4J6v73TT": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "reczRlPZ6QEtXGU2I": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recMa9xyEmfP70YFw": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-room-evelin-plus-insulated-34-cladding-6x3m-20x10-18m-2.html",
+        "evidenceScope": null
+      }
+    },
+    "recFyJvpQrlawL682": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "rec9I4XauqjWlZ7Uf": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recTRD5b10gxD2yDP": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-hansa-lounge-xxl-pool-edition-g0196/",
+        "evidenceScope": null
+      }
+    },
+    "recXbQkN2pdTRsXRA": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "rec3N3KVuxnX6VYS1": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recZX63NBfrzmkghd": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-jacob-e-g0139/",
+        "evidenceScope": null
+      }
+    },
+    "recikE6QKqPbkeovi": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-canopy-jacob-e-g0155/",
+        "evidenceScope": null
+      }
+    },
+    "recwrKkR8cwI5Mru5": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-veranda-jacob-e-g0156/",
+        "evidenceScope": null
+      }
+    },
+    "recTtCCDTDeldC46y": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recaj7Ngc6yeMuLg8": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-room-layla-insulated-34-cladding-6x3-m-20x10-15-m2-3.html",
+        "evidenceScope": null
+      }
+    },
+    "receZKzDGBygAPUmx": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-liam-g0058/",
+        "evidenceScope": null
+      }
+    },
+    "recU4arbWMrit65S9": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-side-shed-liam-plus-g0324/",
+        "evidenceScope": null
+      }
+    },
+    "recTZtBkNzRmQ4zpl": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "reckbjGkcLFsjui17": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "reczizQyovkJktppg": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recdsv9K7rmPYi8UU": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-room-maja-34-mm-7-5x4-m-25x13-30-m2.html",
+        "evidenceScope": null
+      }
+    },
+    "recrcB8pgFufpvizK": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recWZxT5YoWkHo8Z2": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recXNj9G5xWP7bTKV": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recdvevmu5LvJ3iNe": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-veranda-nora-e-g0149/",
+        "evidenceScope": null
+      }
+    },
+    "recWSp6lPbZejPLyy": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "reczxS9ObYqm25Ylb": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-room-oak-34-mm-6x3-m-20x10-16-m2.html",
+        "evidenceScope": null
+      }
+    },
+    "rec8ySMAa9imdlneW": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-office-jacob-c-g0137/",
+        "evidenceScope": null
+      }
+    },
+    "recVEOJnbDshl4Wh4": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "reczxM0lggLXTBCdU": {
+      "sources": {
+        "text": "https://www.lugarde.com/product/garden-room-psml2/",
+        "evidenceScope": null
+      }
+    },
+    "recH2Hb0tWlLEEbWY": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recGYNATTQs9GbNkl": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "rec6Dq9maQC1n64fl": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-a-4-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "rectqsDl3ICG1zBLI": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-a-4-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "rec6RlGMXfiOKLoXI": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-a-5-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "recKVpAYv1FFQawt3": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-a-5-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "rec2TsWvU33Zvo5Oq": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-a-6-x-3/",
+        "evidenceScope": null
+      }
+    },
+    "recc8O4ZqcKZj6ggg": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-a-6-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "recwzT2mdlQs6M1Z9": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-b-5-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "recmco8WpFDvXlTyz": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-b-5-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "recaW2IvYZ7FsFd4N": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-b-6-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "recPH4VD6lrABSCEe": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-b-6-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "recBrj7ekM04xztik": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-c-5-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "recvjnDJw3Jb7B6ec": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-c-5-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "rec2W2zY3M4H0PmtR": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-c-6-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "recdCRssy0iQOAS1i": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-c-6-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "recWkJry9JTm05yK8": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-d-4-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "rec0rLjJ01rUywucm": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-d-4-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "recHvJiqAbNhvaRQN": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-d-5-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "rec6s03hJ8hPHAKkk": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-d-5-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "recNaL5MDUWAVCvql": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-d-6-x-3m/",
+        "evidenceScope": null
+      }
+    },
+    "recquIcthfA8iC9oH": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/garden-room-type-d-6-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "rec5ffitnJKaKLZsZ": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "rec9WBVilPouugzCG": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recM8E9hO1O5rMh2v": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recQjDysuvebThsgy": {
+      "sources": {
+        "text": "https://lugarde.com/en/product-range/garden-rooms",
+        "evidenceScope": null
+      }
+    },
+    "recsgMN8y8DV2On4I": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-shed-porch-super-jacob-e-g0247/",
+        "evidenceScope": null
+      }
+    },
+    "recjtDoDYtp7TKCze": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-snooker-room-hansa-b-g0195/",
+        "evidenceScope": null
+      }
+    },
+    "recsMmTBKHHyMt0Sn": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-armin-g0019/",
+        "evidenceScope": null
+      }
+    },
+    "recpvyuLmexYLqi7p": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-costa-a-g0259/",
+        "evidenceScope": null
+      }
+    },
+    "recW6DjtfmrlAHyfQ": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-eva-e-g0147/",
+        "evidenceScope": null
+      }
+    },
+    "recrFFekZa6jNZsKe": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-with-porch-franz-g0098/",
+        "evidenceScope": null
+      }
+    },
+    "recJrM9Ubx8WyWXCS": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-malaga-1-g0240/",
+        "evidenceScope": null
+      }
+    },
+    "recCLPeIXS09tSjIo": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-with-canopy-nora-d-g0152/",
+        "evidenceScope": null
+      }
+    },
+    "recQAh2Q9scUud7pC": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-nora-d-g0153/",
+        "evidenceScope": null
+      }
+    },
+    "recXnoELVoiRNfgzR": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-sophia-g0105/",
+        "evidenceScope": null
+      }
+    },
+    "recFbjneFCeQ95d9U": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-studio-xl-g0253/",
+        "evidenceScope": null
+      }
+    },
+    "recgzy5w1BEgaXIWh": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-table-tennis-room-hansa-a-g0194/",
+        "evidenceScope": null
+      }
+    },
+    "recRjS5zLEtgaJ5d7": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-wooden-house-eva-b-g0119/",
+        "evidenceScope": null
+      }
+    },
+    "rec4j76czA6CK2y75": {
+      "sources": {
+        "text": "https://summerhouse24.ie/golf-simulator-cabin-ibiza-g0410/",
+        "evidenceScope": null
+      }
+    },
+    "recdqMIoZCYMeRVgw": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-golf-sim-5-g0398/",
+        "evidenceScope": null
+      }
+    },
+    "rece4PEPCVbX0Ll8r": {
+      "sources": {
+        "text": "https://www.greenretreats.co.uk/garden-rooms/g-range/g2/",
+        "evidenceScope": null
+      }
+    },
+    "recciRQlMUPZqlNp4": {
+      "sources": {
+        "text": "https://www.greenretreats.co.uk/garden-rooms/g-range/g2/",
+        "evidenceScope": null
+      }
+    },
+    "rec9VCTXNmS6gxjgZ": {
+      "sources": {
+        "text": "https://www.greenretreats.co.uk/garden-rooms/g-range/g2/",
+        "evidenceScope": null
+      }
+    },
+    "recYMkEgF4dxk7iSP": {
+      "sources": {
+        "text": "https://www.sanctumgardenstudios.com/garden-studios/hampton-garden-room/",
+        "evidenceScope": null
+      }
+    },
+    "recjCMAHBZECw8aiu": {
+      "sources": {
+        "text": "https://www.sanctumgardenstudios.com/garden-studios/hampton-garden-room/",
+        "evidenceScope": null
+      }
+    },
+    "rec3GvJzP3GvAZYPk": {
+      "sources": {
+        "text": "https://timberliving.ie/product/havana-garden-office-cabin/",
+        "evidenceScope": null
+      }
+    },
+    "recg6v7Dp122WxlEz": {
+      "sources": {
+        "text": "https://www.lasita.com/products/outdoor-living",
+        "evidenceScope": null
+      }
+    },
+    "rectNeIDvu63i8kmi": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/insulated/",
+        "evidenceScope": null
+      }
+    },
+    "rec5ELeTdtQfsZ0oi": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "rec2K9ejMLjEPRKoq": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/insulated/",
+        "evidenceScope": null
+      }
+    },
+    "recAtLJPMIqn2fXMJ": {
+      "sources": {
+        "text": "https://summerhouse24.ie/large-corner-summer-house-deluxe-a-g0200/",
+        "evidenceScope": null
+      }
+    },
+    "recP4MFfAPeQfrRvG": {
+      "sources": {
+        "text": "https://summerhouse24.ie/large-corner-summer-house-deluxe-b-g0230/",
+        "evidenceScope": null
+      }
+    },
+    "reccpfjXSuc2gt9vi": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-with-loft-bruno-1-g0374/",
+        "evidenceScope": null
+      }
+    },
+    "recpxuTAtQkRURSTk": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-office-barcelona-g0249/",
+        "evidenceScope": null
+      }
+    },
+    "recmRlTbKXL0c4FAf": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-office-room-ian-a-g0170/",
+        "evidenceScope": null
+      }
+    },
+    "recw0oy0R5hOJwoAs": {
+      "sources": {
+        "text": "https://summerhouse24.ie/large-garden-room-c-g0228/",
+        "evidenceScope": null
+      }
+    },
+    "recAq2NceovXy5f1P": {
+      "sources": {
+        "text": "https://summerhouse24.ie/large-garden-room-d-g0229/",
+        "evidenceScope": null
+      }
+    },
+    "recTm0jDWfdkDrV1T": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-hansa-e-g0251/",
+        "evidenceScope": null
+      }
+    },
+    "recrTAV9qTBQqNMhB": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-hansa-f-g0252/",
+        "evidenceScope": null
+      }
+    },
+    "recbfj9EpBAQJVojj": {
+      "sources": {
+        "text": "https://summerhouse24.ie/large-garden-room-snooker-xl-1-g0300/",
+        "evidenceScope": null
+      }
+    },
+    "recY4qougMHHxJ2BX": {
+      "sources": {
+        "text": "https://summerhouse24.ie/large-modern-garden-room-rebeka-g0394/",
+        "evidenceScope": null
+      }
+    },
+    "recQIhbMjC2B1EJvR": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-garden-room-roberta-g0396/",
+        "evidenceScope": null
+      }
+    },
+    "recPYxbqwMRlCAXKj": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/practical-garden-room-lasse-44-c-5-7-x-6-2m-18-8-x-20-4.html",
+        "evidenceScope": null
+      }
+    },
+    "rec8B6vrwCj8hjuKk": {
+      "sources": {
+        "text": "https://timberliving.ie/product/laura-garden-office-gym/",
+        "evidenceScope": null
+      }
+    },
+    "rec6OyJEU3y05Dbfd": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/mayo-garden-black-office-box-s-5-71m2-2-8-x-2-5m.html",
+        "evidenceScope": null
+      }
+    },
+    "recBvytzYaY6cAK7I": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/mayo-garden-office-box-m-8-2m2-2-5-x-4-5m.html",
+        "evidenceScope": null
+      }
+    },
+    "recqlTeGlYmQPLEPc": {
+      "sources": {
+        "text": "https://www.lasita.com/products/miami-2-0",
+        "evidenceScope": null
+      }
+    },
+    "recBW2vBPcT0kOT1o": {
+      "sources": {
+        "text": "https://moderngardenrooms.ie/garden-guest-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recQhafVxkW46trn6": {
+      "sources": {
+        "text": "https://moderngardenrooms.ie/garden-gym-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recPf1sgAK27FBATY": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-garden-house-hansa-lounge-g0100/",
+        "evidenceScope": null
+      }
+    },
+    "rec0IMBwT7pLSTX7s": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-garden-house-hansa-lounge-xl-g0101/",
+        "evidenceScope": null
+      }
+    },
+    "recSpzyQeSlo8yylE": {
+      "sources": {
+        "text": "https://moderngardenrooms.ie/garden-office/",
+        "evidenceScope": null
+      }
+    },
+    "recBJkV2lgaMdBYAj": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-garden-room-clara-g0417/",
+        "evidenceScope": null
+      }
+    },
+    "rec1wl0WdZT3fqtYU": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-garden-room-with-veranda-elias-xl-g0327/",
+        "evidenceScope": null
+      }
+    },
+    "recriVSJZvTvJCC3N": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-veranda-elias-g0326/",
+        "evidenceScope": null
+      }
+    },
+    "recMzNDRbqdvQzU3l": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-garden-room-grace-g0369/",
+        "evidenceScope": null
+      }
+    },
+    "recnT8CvqYEU89nBO": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-luna-g0399/",
+        "evidenceScope": null
+      }
+    },
+    "rec5lkqEoNRHGuXn3": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-trinity-g0377/",
+        "evidenceScope": null
+      }
+    },
+    "rec8yqq3yj2qFyU7T": {
+      "sources": {
+        "text": "https://moderngardenrooms.ie/golf-simulator-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recGMPCzZKWL0MO10": {
+      "sources": {
+        "text": "https://moderngardenrooms.ie/modular-garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recCzU3zoDU8Kh3E5": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-summer-house-with-side-shed-arnold-g0391/",
+        "evidenceScope": null
+      }
+    },
+    "recR72cgr3K378iBJ": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-shed-hansa-lounge-xxl-g0163/",
+        "evidenceScope": null
+      }
+    },
+    "recMl4iXshSpnRiW7": {
+      "sources": {
+        "text": "https://summerhouse24.ie/modern-summer-house-with-veranda-remo-1-g0223/",
+        "evidenceScope": null
+      }
+    },
+    "recQmO34TajMZh10v": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/durable-garden-shed-monaco-28-ireland.html",
+        "evidenceScope": null
+      }
+    },
+    "recDa5vihxcYG9xoH": {
+      "sources": {
+        "text": "https://nookprefab.com/pages/nook-base-garden-room",
+        "evidenceScope": null
+      }
+    },
+    "rectQX4XpBbD6H3LU": {
+      "sources": {
+        "text": "https://nookprefab.com/pages/nook-double-garden-room",
+        "evidenceScope": null
+      }
+    },
+    "recP919wrvdMWbonl": {
+      "sources": {
+        "text": "https://www.lasita.com/products-gb/outdoor-cooking",
+        "evidenceScope": null
+      }
+    },
+    "rec5GQJc6JkQnKEQb": {
+      "sources": {
+        "text": "https://www.lasita.com/products-gb/outdoor-cooking",
+        "evidenceScope": null
+      }
+    },
+    "recL4sDGEMK33JGw7": {
+      "sources": {
+        "text": "https://timberliving.ie/product/nila-garden-cabin/",
+        "evidenceScope": null
+      }
+    },
+    "recP9G0xFJ6R0ic4W": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/traditional/",
+        "evidenceScope": null
+      }
+    },
+    "recDGpbgqL1YuAaou": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/insulated/",
+        "evidenceScope": null
+      }
+    },
+    "recxZcEXwgG0z2Oj8": {
+      "sources": {
+        "text": "https://summerhouse24.ie/one-bedroom-log-cabin-sweden-c-g0267/",
+        "evidenceScope": null
+      }
+    },
+    "recCHp7HhaDdDm2dG": {
+      "sources": {
+        "text": "https://www.lasita.com/products-gb/outdoor-cooking",
+        "evidenceScope": null
+      }
+    },
+    "recJoiGxpDME4NpKs": {
+      "sources": {
+        "text": "https://summerhouse24.ie/outdoor-garden-room-eamon-g0199/",
+        "evidenceScope": null
+      }
+    },
+    "recqFJku63WsenzIp": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/",
+        "evidenceScope": null
+      }
+    },
+    "recg24eTdOz4r7spM": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/",
+        "evidenceScope": null
+      }
+    },
+    "recXaAApdni8k0SQb": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/",
+        "evidenceScope": null
+      }
+    },
+    "recnCy08NkmZJhddo": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/",
+        "evidenceScope": null
+      }
+    },
+    "recDzCduv5x3q1MIS": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/",
+        "evidenceScope": null
+      }
+    },
+    "recCdvhzJuoDrj3F0": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/",
+        "evidenceScope": null
+      }
+    },
+    "rec6UZ9EfM9119T1N": {
+      "sources": {
+        "text": "https://timberliving.ie/product/panorama-garden-office-ireland/",
+        "evidenceScope": null
+      }
+    },
+    "recFPqOoqvWsvLo7c": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "reckDwEfvP0N7hhpM": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recZ4foLaBow9KhQO": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recbeWsVaAv1thZvX": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recQQKnxkgfYW7qnU": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rechnp1AIz9bl9SZf": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recLz3OK8dwiAoZMU": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recf6H6XWSpgbOUNd": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recmAzR8svHDJIOvi": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recxJ83v0M523DqFY": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec2cFghHCBAyU2Fj": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec6emodtImdSPOUm": {
+      "sources": {
+        "text": "https://www.thepodfactory.ie/garden-office/pod-17-home-office-garden-studio/",
+        "evidenceScope": null
+      }
+    },
+    "recwB65msRX01JISW": {
+      "sources": {
+        "text": "https://www.thepodfactory.ie/garden-office/pod-22-cosy-garden-room/",
+        "evidenceScope": null
+      }
+    },
+    "recyqFWqZEX7pnIiv": {
+      "sources": {
+        "text": "https://boothsgardenstudios.co.uk/garden-gyms",
+        "evidenceScope": null
+      }
+    },
+    "recCfVgn4iQWteJpy": {
+      "sources": {
+        "text": "https://boothsgardenstudios.co.uk/pricing/",
+        "evidenceScope": null
+      }
+    },
+    "rec3LrDKFvUvp9Iey": {
+      "sources": {
+        "text": "https://boothsgardenstudios.co.uk/pricing/",
+        "evidenceScope": null
+      }
+    },
+    "recNeAa2qSG1fyRb4": {
+      "sources": {
+        "text": "https://boothsgardenstudios.co.uk/garden-gyms",
+        "evidenceScope": null
+      }
+    },
+    "rec5tCT2VnVFYvHSF": {
+      "sources": {
+        "text": "https://boothsgardenstudios.co.uk/garden-retreats",
+        "evidenceScope": null
+      }
+    },
+    "recgVbhMe4l7mbQ81": {
+      "sources": {
+        "text": "https://www.sanctumgardenstudios.com/garden-studios/quadpod-garden-office-studios/",
+        "evidenceScope": null
+      }
+    },
+    "recuDJXkGScr8aedx": {
+      "sources": {
+        "text": "https://www.sanctumgardenstudios.com/garden-studios/quadpod-garden-office-studios/",
+        "evidenceScope": null
+      }
+    },
+    "rect9ZuAtfSmjfNuE": {
+      "sources": {
+        "text": "https://gardenhouse24.ie/modern-garden-room-ramsay-70-a-alu.html",
+        "evidenceScope": null
+      }
+    },
+    "recAwfzWN7yA1UNaH": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/insulated/",
+        "evidenceScope": null
+      }
+    },
+    "recGiUv7TVW9ZWgJu": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/insulated/",
+        "evidenceScope": null
+      }
+    },
+    "recqSEwvfVhTRbzBn": {
+      "sources": {
+        "text": "https://www.lasita.com/products/sacramento",
+        "evidenceScope": null
+      }
+    },
+    "recFqx8QAXYLjWXIt": {
+      "sources": {
+        "text": "https://shanettesheds.ie/private-home-gym-in-kildare-a-shanette-superior-space-built-for-everyday-fitness/",
+        "evidenceScope": null
+      }
+    },
+    "recRcFIkZKj31McmU": {
+      "sources": {
+        "text": "https://shanettesheds.ie/transforming-your-fitness-routine-with-an-insulated-home-gym-shed-in-dublin/",
+        "evidenceScope": null
+      }
+    },
+    "recS4ar9jaIFmsb8A": {
+      "sources": {
+        "text": "https://www.shomera.ie/garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recompzydsCVirAt1": {
+      "sources": {
+        "text": "https://www.shomera.ie/garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recKMPyGLGijfoF7Z": {
+      "sources": {
+        "text": "https://www.shomera.ie/garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "recz1YQYHAmVy54tq": {
+      "sources": {
+        "text": "https://www.shomera.ie/garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "rechOR32AnF0SaxWD": {
+      "sources": {
+        "text": "https://www.shomera.ie/garden-rooms/",
+        "evidenceScope": null
+      }
+    },
+    "rec2si77KhUCXZugl": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-lucas-c-g0132/",
+        "evidenceScope": null
+      }
+    },
+    "recc97FOzHnBWS3CX": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-house-nora-e-g0129/",
+        "evidenceScope": null
+      }
+    },
+    "rectYErBjekO7S60e": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-office-avalon-g0397/",
+        "evidenceScope": null
+      }
+    },
+    "recELvKJfjXzAr9s8": {
+      "sources": {
+        "text": "https://summerhouse24.ie/small-garden-office-hansa-lounge-mini-g0174/",
+        "evidenceScope": null
+      }
+    },
+    "recerRglqc8u2qxkL": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-lucas-b-g0131/",
+        "evidenceScope": null
+      }
+    },
+    "recQMkJPkm4K51WWb": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-noah-g0325/",
+        "evidenceScope": null
+      }
+    },
+    "recoUUxGGtvWFcywn": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-veranda-remo-2-g0224/",
+        "evidenceScope": null
+      }
+    },
+    "recpGXhZ31shUKDRF": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-room-with-large-veranda-remo-3-g0225/",
+        "evidenceScope": null
+      }
+    },
+    "recN0eyXwNoGQcVOe": {
+      "sources": {
+        "text": "https://summerhouse24.ie/spacious-summer-house-with-veranda-roger-g0393/",
+        "evidenceScope": null
+      }
+    },
+    "recToZjhvh3r0TiFa": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recI4u9qUr2DfWHdo": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "rec7va4elQhxQ0YvV": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recoxB8dRxrqmSg7L": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recstfGDfONMJJk4P": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recdTWdhauaxBp3I8": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recJhNR1MNaNySnqE": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recmSMswDKnieOdnI": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recs7MhTctE0OXJAo": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recTmznLRs94g9fls": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recltaZF2FYRo2Qg6": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recBwIwkgMXs2tLHU": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "rec4ZpfM1zYyV5DIy": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recIF1lYitX83aO0Z": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recu5t35P6aTRSjsd": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recE6YWfhBPoo6rnO": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recre3F4kjawIxrr3": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recmmVA8lLGddxG2b": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recfChiaXoSuRvriV": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recAg0XHsUdWwBRlr": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "reccBngfWSjD3vMR9": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recGQnRl8rdrb10OT": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "rec24lUlKe85rkQZr": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recUl20yByFnlGf3c": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "rec23XrAeAQXjZOhP": {
+      "sources": {
+        "text": "https://sproutpod.ie/galleries/",
+        "evidenceScope": null
+      }
+    },
+    "recJ3HPVMPrYzaXvH": {
+      "sources": {
+        "text": "https://www.loghouse.ie/product/studio-eco-garden-room-5m-x-4m/",
+        "evidenceScope": null
+      }
+    },
+    "rec8zUEze2SpvNGeJ": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/studio-garden-room-5x4m/",
+        "evidenceScope": null
+      }
+    },
+    "rechuxNjdIT5stZeF": {
+      "sources": {
+        "text": "https://ecohouse.ie/product/studio-garden-room-6x4m/",
+        "evidenceScope": null
+      }
+    },
+    "recUWK2T4YkXEahne": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-garden-house-with-terrace-lucas-e-g0158/",
+        "evidenceScope": null
+      }
+    },
+    "recM7eVMG0vS0FGUe": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-veranda-armin-xl-g0020/",
+        "evidenceScope": null
+      }
+    },
+    "recks5ktWZQGQ26e4": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-large-canopy-arthur-g0385/",
+        "evidenceScope": null
+      }
+    },
+    "recJDyyw8FJfN9j1a": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-premium-folding-doors-david-1-g0312/",
+        "evidenceScope": null
+      }
+    },
+    "recCYOPggfliZAvQW": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-premium-folding-doors-david-2-g0313/",
+        "evidenceScope": null
+      }
+    },
+    "recgOQWcwBubjOLWh": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-summer-house-with-porch-eva-e-g0146/",
+        "evidenceScope": null
+      }
+    },
+    "rec74jHDrOU6IOM32": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-shed-terrace-heinz-g0102/",
+        "evidenceScope": null
+      }
+    },
+    "recyeygxZoAXfut9Z": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-side-shed-paula-g0126/",
+        "evidenceScope": null
+      }
+    },
+    "recHz87seqU3XQXRL": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-shed-porch-robin-g0154/",
+        "evidenceScope": null
+      }
+    },
+    "rec1pR9uJl4GJdulC": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-porch-sommerland-a-g0140/",
+        "evidenceScope": null
+      }
+    },
+    "rec4po0qH7QdpSYct": {
+      "sources": {
+        "text": "https://summerhouse24.ie/summer-house-with-veranda-sommerland-b-g0141/",
+        "evidenceScope": null
+      }
+    },
+    "recVVue3BQWtxnBx1": {
+      "sources": {
+        "text": "https://timberliving.ie/product/sunny-garden-house/",
+        "evidenceScope": null
+      }
+    },
+    "recwjSM2Fzqi1ZWB3": {
+      "sources": {
+        "text": "https://www.waltons.co.uk/products/the-classic-insulated-garden-room",
+        "evidenceScope": null
+      }
+    },
+    "recn7Scwt64Udigb5": {
+      "sources": {
+        "text": "https://www.waltons.co.uk/products/the-classic-insulated-garden-room",
+        "evidenceScope": null
+      }
+    },
+    "rec34rHUaz7l3jDe1": {
+      "sources": {
+        "text": "https://boothsgardenstudios.co.uk/garden-annexes",
+        "evidenceScope": null
+      }
+    },
+    "recce4t2fTLJVmO75": {
+      "sources": {
+        "text": "https://boothsgardenstudios.co.uk/garden-annexes",
+        "evidenceScope": null
+      }
+    },
+    "recmUztxenbT07NQD": {
+      "sources": {
+        "text": "https://www.waltons.co.uk/products/the-thoresby-premium-insulated-garden-room",
+        "evidenceScope": null
+      }
+    },
+    "recFQ6LsmRjnd581W": {
+      "sources": {
+        "text": "https://www.waltons.co.uk/products/the-thoresby-premium-insulated-garden-room",
+        "evidenceScope": null
+      }
+    },
+    "recRCqT1uEYOojORv": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "rec0TMisXgy9bfRlS": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recPmdokw4KU1uSCb": {
+      "sources": {
+        "text": "https://summerhouse24.ie/two-room-garden-house-amelia-g0361/",
+        "evidenceScope": null
+      }
+    },
+    "recAQfnR3x0QkMq6W": {
+      "sources": {
+        "text": "https://summerhouse24.ie/garden-log-cabin-granada-g0386/",
+        "evidenceScope": null
+      }
+    },
+    "recnBe46LKTCzLJ3P": {
+      "sources": {
+        "text": "https://www.gardenrooms.ie/designs/",
+        "evidenceScope": null
+      }
+    },
+    "recGUSbhYqAi9oAs3": {
+      "sources": {
+        "text": "https://www.sanctumgardenstudios.com/garden-studios/urban-garden-studio/",
+        "evidenceScope": null
+      }
+    },
+    "recRkL1MMvRKWjgYA": {
+      "sources": {
+        "text": "https://www.sanctumgardenstudios.com/garden-studios/urban-garden-studio/",
+        "evidenceScope": null
+      }
+    },
+    "reczTXdqSKKYAYLI2": {
+      "sources": {
+        "text": "https://www.pineca.ie/garden-offices/",
+        "evidenceScope": null
+      }
+    },
+    "recmYlhx1jbs5iqBP": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recScjWkI6mDFSJm0": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recwCfl3NsrlVxAeR": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recHCbhZcBvryqApY": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    },
+    "recWPbqYBl0hCVcgB": {
+      "sources": {
+        "text": "https://bertilo.com/",
+        "evidenceScope": null
+      }
+    }
+  }
+}
