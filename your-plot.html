@@ -14305,6 +14305,96 @@
     'Unknown': [null, null],
   };
 
+  /* ISSUE 005 PIECE D4b — LONG-FORM DETAIL EVIDENCE, FETCHED LAZILY.
+
+     Considerations is 465 unique research paragraphs. Carrying it in the Match
+     universe would have added ~399 KB of raw JSON to the file EVERY visitor
+     downloads, to serve a panel that opens only after a homeowner has chosen a
+     product. So it lives in its own artefact, keyed by canonical Airtable
+     product id, and is requested by openProductDetail() and nowhere else.
+
+     MEMOISED, SO ONE REQUEST PER SESSION. Not one per product, and not one per
+     open — the promise itself is the cache, which does not depend on the HTTP
+     cache behaving.
+
+     IT CANNOT REJECT. Every failure resolves to an empty store, so a missing or
+     malformed detail file produces silence rather than an exception. Detail
+     evidence is an enhancement; the journey does not depend on it. */
+  const PN_DETAIL_SOURCE = 'garden-room-detail-evidence-v1.json';
+  let pnDetailEvidence = null;      // null = not loaded, {} = loaded-or-failed
+  let pnDetailPromise = null;
+  let pnDetailFailed = false;
+  let pnDetailFetchCount = 0;       // read by the network proof harness
+
+  function pnDetailEvidenceReady(){
+    if (pnDetailPromise) return pnDetailPromise;
+    pnDetailFetchCount++;
+    pnDetailPromise = fetch(PN_DETAIL_SOURCE)
+      .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(data){
+        /* Shape-checked before adoption, exactly as the core loader does. A
+           file of the wrong shape is a failure, not a partial success. */
+        if (!data || typeof data !== 'object' || !data.products ||
+            typeof data.products !== 'object' || Array.isArray(data.products)) {
+          throw new Error('unexpected detail evidence shape');
+        }
+        pnDetailEvidence = data.products;
+        return pnDetailEvidence;
+      })
+      .catch(function(err){
+        pnDetailFailed = true;
+        pnDetailEvidence = {};
+        console.warn('[Atlas detail] evidence unavailable; Product Detail continues without it', err);
+        return pnDetailEvidence;
+      });
+    return pnDetailPromise;
+  }
+
+  /* The record for one product, or null. Never throws on a malformed entry. */
+  function pnDetailFor(productId, category){
+    if (!pnDetailEvidence || typeof productId !== 'string') return null;
+    const rec = pnDetailEvidence[productId];
+    if (!rec || typeof rec !== 'object') return null;
+    const v = rec[category];
+    return (v && typeof v === 'object') ? v : null;
+  }
+
+  /* ISSUE 005 PIECE D4 — CONSIDERATIONS, READ ONLY AS FAR AS THE LABEL.
+
+     465 records, measured. No LIMITATION: label exists anywhere in the
+     category and no SAFE TO RANK; 317 carry HOMEOWNER IMPLICATION: and 148
+     carry nothing machine-findable at all. The lead sentence and the body are
+     research prose in which the buyer's caution, the evidence limitation, the
+     catalogue commentary and 37 DO NOT RANK directives share sentences — so
+     the body is never read. Only the implication segment is taken, by the
+     shipped pnEvSegment(), and everything else is withheld whole.
+
+     THE GUARD EXISTS FOR ONE MEASURED RECORD. rec4qL2j6Nn4NKzBS ends
+     "HOMEOWNER IMPLICATION: the record should not be surfaced until it is
+     reconciled to a current supplier listing" — Atlas instructing PlotNua, not
+     the homeowner. That is the only such segment in 465 records. The bare word
+     "catalogue" is deliberately NOT a trigger: a legitimate segment reads
+     "there is no catalogue to fall back on". */
+  const PN_CONSIDER_WITHHOLD = /(surfac|reconcil|architecture frozen|Recorded, not corrected|DO NOT RANK|Tier [AB]\b|CATALOGUE ISSUE|TECHNICAL DEBT|VOCABULARY LIMITATION|SUPPLIER STATUS|EVIDENCE TIER|RECORD NOTE)/i;
+
+  /* Returns the buyer-facing consideration, or null. Never the body. */
+  function pnConsiderations(product){
+    /* ISSUE 005 PIECE D4b — the detail artefact first, the core product second.
+       The core no longer carries this category, but reading it as a fallback
+       costs nothing and keeps every D4 test and any future core-carried record
+       working unchanged. */
+    const f = (product && pnDetailFor(product.id, 'considerations')) ||
+              (product && product.features && product.features.considerations);
+    const text = f && typeof f.text === 'string' ? f.text : '';
+    if (!text) return null;
+    const seg = pnEvTrim(pnEvSegment(text, 'HOMEOWNER IMPLICATION'), 260);
+    if (!seg) return null;
+    if (PN_CONSIDER_WITHHOLD.test(seg)) return null;
+    if (PN_DEFER_RE.test(seg) && !/\b(ask|get|confirm|obtain|check|measure|total)\b/i.test(seg))
+      return null;
+    return pnLeadCap(seg);
+  }
+
   /* ISSUE 005 PIECE D3b — WARRANTY, ANSWERED RATHER THAN QUOTED.
 
      Measured across all 547 Garden Room Warranty records. Five findings carry
@@ -14666,6 +14756,21 @@
       if (read && read.limitation) checks.push({ label: row.label, text: read.limitation });
       else if (row.flat) checks.push({ label: row.label, text: 'not established' });
     });
+    /* ISSUE 005 PIECE D4 — the consideration joins the checking list, once.
+
+       Not a row above: a row would put Atlas's shouted lead in the answer
+       position. This is a thing to check before choosing, so it goes where
+       those live. DEDUPLICATION IS EXACT-MATCH ONLY on the normalised text —
+       two differently-worded cautions are two cautions, and deciding otherwise
+       would be fuzzy deletion. */
+    const consider = pnConsiderations(product);
+    if (consider){
+      const norm = function(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); };
+      const already = checks.some(function(c){ return norm(c.text) === norm(consider); })
+        || knows.some(function(k){ return k.meaning && norm(k.meaning) === norm(consider); });
+      if (!already) checks.push({ label: 'Before you choose', text: consider });
+    }
+
     return { knows: knows, checks: checks };
   }
 
@@ -14700,10 +14805,54 @@
     return { state: 'unknown' };
   }
 
+  /* ISSUE 005 PIECE D4b — ENRICH IN PLACE, DO NOT RE-RENDER.
+
+     One list item is appended to the checking list that is already on screen.
+     Nothing above it moves, no panel is rebuilt, no <details> state is lost and
+     no spinner is introduced — the founder asked for a quiet asynchronous
+     enrichment and this is the smallest thing that is one.
+
+     GUARDED AGAINST A STALE OPEN. A homeowner who opens product A and moves to
+     product B before the fetch resolves must not have A's consideration land on
+     B's panel, so the root records the product it was built for and the
+     enrichment refuses to write into a panel for anything else, or into one
+     that has been detached from the document. */
+  function pnEnrichDetail(root, product){
+    if (!root || !product || root.getAttribute('data-pn-product') !== product.id) return false;
+    if (!root.isConnected) return false;
+    const list = root.querySelector('.am-panel-check .am-fact-list');
+    if (!list) return false;
+    if (list.querySelector('[data-pn-consider]')) return false;   // already enriched
+    const text = pnConsiderations(product);
+    if (!text) return false;
+    /* The same exact-match deduplication D4 applies, against what is painted. */
+    const norm = function(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); };
+    const target = norm(text);
+    const existing = list.querySelectorAll('.am-ev-gap');
+    for (let i = 0; i < existing.length; i++)
+      if (norm(existing[i].textContent) === target) return false;
+    const li = document.createElement('li');
+    li.className = 'am-ev';
+    li.setAttribute('data-pn-consider', '1');
+    const lab = document.createElement('span');
+    lab.className = 'am-ev-cat';
+    lab.textContent = 'Before you choose';
+    li.appendChild(lab);
+    const val = document.createElement('span');
+    val.className = 'am-ev-gap';
+    val.textContent = text;
+    li.appendChild(val);
+    list.appendChild(li);
+    return true;
+  }
+
   function buildProductIntelligenceEl(product, includeProgress){
     if (includeProgress === undefined) includeProgress = true;
     const wrap = document.createElement('div');
     wrap.className = 'am-intel';
+    /* ISSUE 005 PIECE D4b — which product this panel was built for, so a late
+       detail fetch can never enrich the wrong one. */
+    if (product && product.id) wrap.setAttribute('data-pn-product', product.id);
 
     const atlasKnows = document.createElement('div');
     atlasKnows.className = 'am-panel';
@@ -21473,7 +21622,21 @@
     // wrapper in the HTML — buildProductIntelligenceEl()'s output and its
     // evidence logic are unchanged, only its default visibility/weight.
     els.pdIntelligence.innerHTML = '';
-    els.pdIntelligence.appendChild(buildProductIntelligenceEl(product));
+    const pdIntelEl = buildProductIntelligenceEl(product);
+    els.pdIntelligence.appendChild(pdIntelEl);
+    /* ISSUE 005 PIECE D4b — THE ONLY PLACE THE DETAIL ARTEFACT IS REQUESTED.
+
+       After the panel is already on screen, never before it. Discovery,
+       Results, Compare and My Plot never reach this line, so they issue no
+       request for it. The promise is memoised, so the second open in a session
+       issues none either. A failure resolves to an empty store and this simply
+       does nothing. */
+    try {
+      pnDetailEvidenceReady().then(function(){
+        try { pnEnrichDetail(pdIntelEl, product); }
+        catch (e) { console.warn('[Atlas detail] enrichment skipped', e); }
+      });
+    } catch (e) { console.warn('[Atlas detail] fetch not started', e); }
     if (els.pdMore) els.pdMore.open = false;
 
     els.pdActions.innerHTML = '';
