@@ -104,6 +104,15 @@ jobs:
           mkdir -p "$OUT"
           echo "path=$OUT" >> "$GITHUB_OUTPUT"
 
+      # ISSUE 005 PIECE E2.1 — the last gate before Atlas is touched.
+      # Runs the real generator against a synthetic snapshot: no token, no
+      # network, no Airtable. The 06:15 run that failed died on a NameError in
+      # the provenance line, which no source-text test could see. If that or
+      # anything like it returns, the job stops HERE — Airtable is never
+      # called, no candidate is generated, and nothing is published.
+      - name: Generator regression (offline, no token)
+        run: python3 .github/scripts/test_generator_provenance.py
+
       # If this fails, the job stops here and production is untouched.
       - name: Generate a candidate universe from Atlas (read-only)
         env:
