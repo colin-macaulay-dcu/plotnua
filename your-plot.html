@@ -10499,11 +10499,51 @@
   let atlasMarketAdmission = null;
   let atlasMatchPoolVersion = null;
   let atlasMatchPoolName = null;
+  /* BRIDGE PIECE 1 — WHAT MAKES A CANDIDATE POOL USABLE.
+
+     Until now the only test was "products is an array". That is not enough.
+     A generated export keyed productId/productName is still an array, so a
+     schema mismatch would load records whose id and name are undefined, and
+     because nothing threw, loadAtlasPool() would never fall through to the
+     working file behind it — a silent, total failure with the fail-safe
+     standing by unused.
+
+     So the contract is checked on the NORMALISED records, which is what every
+     consumer reads. Measured before choosing the threshold: both legacy
+     exports satisfy it exactly — 37/37 and 47/47 carry a rec-prefixed
+     canonical id and a product name, with no duplicate ids — so requiring all
+     records costs nothing today and refuses a malformed export tomorrow.
+
+     Throwing is the point. loadAtlasPool() catches and moves to the next
+     source, which is the behaviour the homeowner needs. */
+  const ATLAS_ID_RE = /^rec[A-Za-z0-9]{14}$/;
+  function validateAtlasPool(pool, file){
+    if (!Array.isArray(pool) || !pool.length) {
+      throw new Error(file + ': pool contains no products');
+    }
+    const seen = new Set();
+    for (let i = 0; i < pool.length; i++){
+      const p = pool[i];
+      if (!p || typeof p.id !== 'string' || !ATLAS_ID_RE.test(p.id)) {
+        throw new Error(file + ': record ' + i + ' has no valid canonical Airtable id');
+      }
+      if (typeof p.name !== 'string' || !p.name.trim()) {
+        throw new Error(file + ': record ' + i + ' (' + p.id + ') has no product name');
+      }
+      if (seen.has(p.id)) {
+        throw new Error(file + ': duplicate canonical id ' + p.id);
+      }
+      seen.add(p.id);
+    }
+    return pool;
+  }
   function adoptAtlasPool(data, file){
     // Accept either a bare array (legacy) or { generated, products } (v1).
     const products = Array.isArray(data) ? data : (data && Array.isArray(data.products) ? data.products : null);
     if (!products) throw new Error('Unexpected JSON shape');
-    atlasMatchPool = products.map(normalizePoolProduct);
+    /* Assigned only if validation returns. If it throws, atlasMatchPool keeps
+       whatever it held and no partial pool is ever adopted. */
+    atlasMatchPool = validateAtlasPool(products.map(normalizePoolProduct), file);
     atlasMatchPoolSource = file;
     atlasMatchPoolGenerated = (!Array.isArray(data) && data.generated) ? data.generated : null;
     /* EVID-004A — optional. A legacy bare-array export, or a v1 export without
@@ -10988,7 +11028,14 @@
       const v = String(o || '').trim();
       if (v && v.length > 2 && !/^insufficient/i.test(v)) out.add(v.toLowerCase());
     };
-    (typeof ATLAS_MATCH_PRODUCTS !== 'undefined' ? ATLAS_MATCH_PRODUCTS : []).forEach(p => add(p.organisation));
+    /* BRIDGE PIECE 1 — the active pool first. This collected supplier names
+       from the 7-product literal, so a recognition check knew seven names
+       while Atlas holds hundreds. The literal is kept for the case where the
+       pool has not loaded, so coverage can only grow, never shrink. */
+    const namesPool = (function(){ try { return getActiveAtlasPool() || []; } catch (e) { return []; } })();
+    (namesPool.length ? namesPool
+      : (typeof ATLAS_MATCH_PRODUCTS !== 'undefined' ? ATLAS_MATCH_PRODUCTS : []))
+      .forEach(p => add(p.organisation));
     (atlasRecognitionPool || []).forEach(p => add(p.organisation));
     return out;
   }
@@ -16138,9 +16185,12 @@
        poorly documented supplier. */
     const reviewed = suppEvDate(rec.reviewedAt);
     if (!reviewed) return null;
-    if (!product || !product.organisation || !Array.isArray(atlasMatchPool)) return null;
+    /* BRIDGE PIECE 1 — read through the guarded accessor, like every other
+       consumer surface, rather than the raw array. */
+    const supplierPool = getActiveAtlasPool();
+    if (!product || !product.organisation || !Array.isArray(supplierPool)) return null;
 
-    const mine = atlasMatchPool.filter(function(q){
+    const mine = supplierPool.filter(function(q){
       return q.organisation === product.organisation;
     });
     if (!mine.length) return null;
@@ -16589,8 +16639,11 @@
      finding in "What Atlas checked", which answers a different question.
      ------------------------------------------------------------------------ */
   function evidSupplierPricing(product){
-    if (!product || !product.organisation || !Array.isArray(atlasMatchPool)) return null;
-    const mine = atlasMatchPool.filter(function(q){
+    /* BRIDGE PIECE 1 — read through the guarded accessor, like every other
+       consumer surface, rather than the raw array. */
+    const supplierPool = getActiveAtlasPool();
+    if (!product || !product.organisation || !Array.isArray(supplierPool)) return null;
+    const mine = supplierPool.filter(function(q){
       return q.organisation === product.organisation;
     });
     if (!mine.length) return null;

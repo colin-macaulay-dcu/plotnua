@@ -278,6 +278,57 @@ def txt(v) -> str:
     return (v or "").strip() if isinstance(v, str) else ""
 
 
+# ── the Match-compatible contract ───────────────────────────────────────────
+# BRIDGE PIECE 1. These build the flat view your-plot.html reads. They add;
+# they never replace. Every one of them returns None rather than a guess.
+
+# Units Atlas may record a floor area in. Only these are square metres, and a
+# number carrying any other unit is NOT emitted as floorAreaM2 — publishing a
+# cm² figure as m² would be a wrong number, which is worse than no number.
+M2_UNITS = ("m2", "m²", "sqm", "sq m", "square metres", "square meters")
+
+
+def feature_text(features: dict, key: str):
+    v = (features or {}).get(key)
+    return (v or {}).get("text") or None
+
+
+def feature_m2(features: dict, key: str):
+    """A floor area in square metres, or None. Unit-checked, never assumed."""
+    v = (features or {}).get(key) or {}
+    n = v.get("number")
+    if not isinstance(n, (int, float)) or isinstance(n, bool):
+        return None
+    unit = txt(v.get("unit")).lower()
+    if unit and unit not in M2_UNITS:
+        return None                      # a real number in the wrong unit
+    return n
+
+
+def match_price(price_rec):
+    """(numeric price or None, currency, basis).
+
+    Base Price first, then Price From. Structured evidence only: no prose is
+    parsed, nothing is inferred, and an unknown price is None — never 0."""
+    if not price_rec:
+        return None, None, None
+    for field in ("Base Price", "Price From"):
+        v = cell(price_rec, field)
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            return v, cell(price_rec, "Currency"), cell(price_rec, "Status")
+    return None, cell(price_rec, "Currency"), cell(price_rec, "Status")
+
+
+def match_irish_state(ie_state: str):
+    """The ruled mapping. no-published-irish-route is NOT unavailable and is
+    handled by its own boolean, so it never reaches this function as "No"."""
+    if ie_state == "confirmed":
+        return "Yes"
+    if ie_state == "unavailable":
+        return "No"
+    return None                          # unknown stays unknown
+
+
 # ── qualification ────────────────────────────────────────────────────────────
 def classify_irish_availability(feat_rows: list) -> tuple:
     """(state, basis, scope, classified, no_route) for Irish availability.
@@ -607,14 +658,26 @@ def main():
         if q["evidenceSignals"].get("noPublishedIrishRoute"):
             no_route_count += 1
 
+        org_names = [orgs.get(i, {}).get("name", "") for i in links(p, "Organisation")]
         rec = {
+            # BRIDGE PIECE 1 — the Match contract. `id` and `name` are the
+            # canonical Airtable record id and Product Name, and they sit on
+            # EVERY record including excluded ones, so the exclusions audit is
+            # identifiable by the same key Match, Compare, My Plot and Product
+            # Detail all use.
+            "id": pid,
+            "name": txt(cell(p, "Product Name")),
+            "organisation": next((n for n in org_names if n), None),
             "productId": pid,
             "productCode": txt(cell(p, "Product Code")),
             "productName": txt(cell(p, "Product Name")),
             "productType": txt(cell(p, "Product Type")),
             "productCategory": txt(cell(p, "Product Category")),
-            "organisation": [{"id": i, "name": orgs.get(i, {}).get("name", "")}
-                             for i in links(p, "Organisation")],
+            # The structured evidence is preserved, moved to its own key so the
+            # flat Match `organisation` above can be the display string the
+            # website reads. Nothing is lost.
+            "organisationEvidence": [{"id": i, "name": orgs.get(i, {}).get("name", "")}
+                                     for i in links(p, "Organisation")],
             "productUrl": txt(cell(p, "Product URL")) or None,
             "verificationStatus": txt(cell(p, "Verification Status")) or None,
             "qualification": q,
@@ -624,7 +687,9 @@ def main():
         else:
             price_rows = by_product["pricing"].get(pid, [])
             _, pick = usable_price(price_rows)
-            rec["price"] = None if not pick else {
+            # Renamed so the flat numeric `price` Match reads can take that key.
+            # The structured evidence is preserved in full, not summarised away.
+            rec["priceEvidence"] = None if not pick else {
                 "base": cell(pick, "Base Price"), "from": cell(pick, "Price From"),
                 "to": cell(pick, "Price To"), "currency": cell(pick, "Currency"),
                 "priceType": cell(pick, "Price Type"), "status": cell(pick, "Status"),
@@ -641,6 +706,39 @@ def main():
                                     "unit": cell(r, "Unit"),
                                     "evidenceScope": cell(r, "Evidence Scope")}
             rec["features"] = carried
+
+            # ---- BRIDGE PIECE 1 — the flat Match view -----------------------
+            # Built from the evidence already gathered above. Added beside the
+            # qualification block, never instead of it.
+            sig = q["evidenceSignals"]
+            num, cur, basis = match_price(pick)
+            avail_rows_p = by_product["availability"].get(pid, [])
+            rec.update({
+                "price": num,                       # numeric or null, never 0-for-unknown
+                "currency": cur or ("EUR" if num is not None else None),
+                "priceBasis": basis,
+                "floorAreaM2": feature_m2(carried, "floorArea"),
+                "glazing": feature_text(carried, "glazing"),
+                "insulation": feature_text(carried, "insulation"),
+                "manufactureCountry": feature_text(carried, "countryOfManufacture"),
+                "designLanguage": feature_text(carried, "designLanguage"),
+                "irishAvailabilityConfirmationState": match_irish_state(sig["irishAvailability"]),
+                # your-plot.html's normalizePoolProduct derives the confirmation
+                # state from a BOOLEAN `irishAvailability`, not from the string
+                # above — measured, not assumed. So the boolean is emitted too,
+                # carrying exactly the ruled mapping: confirmed -> true,
+                # unavailable -> false, unknown -> absent (never false). The
+                # page therefore needs no change to read this contract.
+                "irishAvailability": (True if sig["irishAvailability"] == "confirmed"
+                                      else False if sig["irishAvailability"] == "unavailable"
+                                      else None),
+                "availabilityStatus": next(
+                    (txt(cell(r, "Availability")) for r in avail_rows_p
+                     if txt(cell(r, "Availability"))), None),
+                "noPublishedIrishRoute": bool(sig.get("noPublishedIrishRoute")),
+                "qualificationTier": q["confidenceTier"],
+                "qualificationCaveats": q["caveats"],
+            })
             emitted.append(rec)
 
     gates(garden, emitted, excluded, source_count)
