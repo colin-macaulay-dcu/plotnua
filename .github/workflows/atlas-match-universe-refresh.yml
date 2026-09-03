@@ -53,6 +53,10 @@ concurrency:
 
 env:
   PRODUCTION_FILE: garden-room-recommendation-universe-v1.json
+  # ISSUE 005 PIECE D4b — the long-form evidence a homeowner only reads after
+  # opening Product Detail. Published alongside the core file, never instead of
+  # it, and never without it.
+  DETAIL_FILE: garden-room-detail-evidence-v1.json
 
 jobs:
   refresh:
@@ -78,6 +82,16 @@ jobs:
           test -s "$PRODUCTION_FILE" || { echo "::error::production universe missing"; exit 1; }
           echo "sha=$(sha256sum "$PRODUCTION_FILE" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
           echo "Last known-good: $(sha256sum "$PRODUCTION_FILE" | cut -c1-16)…  $(wc -c < "$PRODUCTION_FILE") bytes"
+          # ISSUE 005 PIECE D4b — the detail artefact's last-known-good. It is
+          # NOT required to exist: the first refresh after this Piece is the run
+          # that creates it, and demanding it would fail that run.
+          if [ -s "$DETAIL_FILE" ]; then
+            echo "detail_sha=$(sha256sum "$DETAIL_FILE" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+            echo "Last known-good detail: $(sha256sum "$DETAIL_FILE" | cut -c1-16)…  $(wc -c < "$DETAIL_FILE") bytes"
+          else
+            echo "detail_sha=" >> "$GITHUB_OUTPUT"
+            echo "No detail evidence artefact yet — this run may create the first one."
+          fi
 
       - name: Create the candidate directory outside the repository
         id: outdir
@@ -117,37 +131,65 @@ jobs:
             --summary-out "${{ steps.outdir.outputs.path }}/validation-summary.txt" \
             --github-output
 
-      - name: Publish the candidate, only if it is genuinely different
-        if: steps.validate.outputs.changed == 'true'
+      # ISSUE 005 PIECE D4b — THE SECOND GATE, AND IT RUNS BEFORE ANY COPY.
+      # A separate validator for a separate contract. The core validator above
+      # is untouched: this neither weakens it nor re-points it.
+      - name: Validate the detail evidence candidate
+        id: validate_detail
+        run: |
+          set -euo pipefail
+          python .github/scripts/validate_garden_room_detail_evidence.py \
+            --candidate "${{ steps.outdir.outputs.path }}/$DETAIL_FILE" \
+            --production "$DETAIL_FILE" \
+            --summary-out "${{ steps.outdir.outputs.path }}/detail-validation-summary.txt" \
+            --github-output
+
+      # ATOMIC. Both artefacts are validated above; this publishes BOTH or
+      # NEITHER, so production can never hold a fresh core beside a stale or
+      # rejected detail file. It runs only when EITHER has genuinely changed —
+      # 'generated' moves every run and is excluded from that test on both.
+      - name: Publish the candidates, only if they are genuinely different
+        if: >-
+          steps.validate.outputs.valid == 'true' &&
+          steps.validate_detail.outputs.detail_valid == 'true' &&
+          (steps.validate.outputs.changed == 'true' ||
+           steps.validate_detail.outputs.detail_changed == 'true')
         run: |
           set -euo pipefail
           cp "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" "$PRODUCTION_FILE"
+          cp "${{ steps.outdir.outputs.path }}/$DETAIL_FILE" "$DETAIL_FILE"
 
           # Stage the one approved path by explicit name. Never `git add -A`,
           # never `git add .`, never a wildcard: an unattended job must not be
           # able to sweep up an unrelated change that happens to be present.
-          git add "$PRODUCTION_FILE"
+          git add "$PRODUCTION_FILE" "$DETAIL_FILE"
 
           if git diff --cached --quiet; then
             echo "Nothing staged after all — leaving production as it stands."
             exit 0
           fi
 
-          # Second gate. If anything other than the single approved path has
-          # somehow been staged, refuse rather than commit it.
+          # Second gate. Every staged path must be one of the two approved
+          # names. Either may be unchanged on a given run — only one file may
+          # have moved — so this checks membership rather than an exact pair.
+          APPROVED=" $PRODUCTION_FILE $DETAIL_FILE "
           STAGED="$(git diff --cached --name-only | sort | tr '\n' ' ')"
-          if [ "$STAGED" != "$PRODUCTION_FILE " ]; then
-            echo "::error::Unexpected staged paths: $STAGED"
-            exit 1
-          fi
+          for path in $STAGED; do
+            case "$APPROVED" in
+              *" $path "*) ;;
+              *) echo "::error::Unexpected staged path: $path"; exit 1 ;;
+            esac
+          done
 
           git -c user.name='plotnua-atlas-bot' \
               -c user.email='atlas-bot@users.noreply.github.com' \
-              commit -m 'Atlas: refresh Garden Room recommendation universe'
+              commit -m 'Atlas: refresh Garden Room recommendation universe and detail evidence'
           git push
 
-      - name: Confirm the universe was left untouched when nothing changed
-        if: steps.validate.outputs.changed != 'true'
+      - name: Confirm both artefacts were left untouched when nothing changed
+        if: >-
+          steps.validate.outputs.changed != 'true' &&
+          steps.validate_detail.outputs.detail_changed != 'true'
         run: |
           set -euo pipefail
           NOW="$(sha256sum "$PRODUCTION_FILE" | cut -d' ' -f1)"
@@ -155,7 +197,17 @@ jobs:
             echo "::error::The production universe changed on a run that should not have touched it."
             exit 1
           fi
-          echo "NO CHANGE — production universe already current, and byte-identical to the run's start."
+          # ISSUE 005 PIECE D4b — the same protection for the second artefact.
+          # Absent is allowed: the detail file does not exist until the first
+          # refresh that produces it, and a missing baseline is not a change.
+          if [ -n "${{ steps.baseline.outputs.detail_sha }}" ]; then
+            NOWD="$(sha256sum "$DETAIL_FILE" | cut -d' ' -f1)"
+            if [ "$NOWD" != "${{ steps.baseline.outputs.detail_sha }}" ]; then
+              echo "::error::The detail evidence changed on a run that should not have touched it."
+              exit 1
+            fi
+          fi
+          echo "NO CHANGE — both artefacts already current, and byte-identical to the run's start."
 
       # Debugging aid for a hand-run refresh. Deliberately NOT the delivery
       # mechanism: Piece 4 was blocked for a day because the only copy of a
@@ -170,7 +222,9 @@ jobs:
             ${{ steps.outdir.outputs.path }}/garden-room-recommendation-universe-v1.json
             ${{ steps.outdir.outputs.path }}/garden-room-exclusions-v1.json
             ${{ steps.outdir.outputs.path }}/garden-room-qualification-report.txt
+            ${{ steps.outdir.outputs.path }}/garden-room-detail-evidence-v1.json
             ${{ steps.outdir.outputs.path }}/validation-summary.txt
+            ${{ steps.outdir.outputs.path }}/detail-validation-summary.txt
           if-no-files-found: warn
           retention-days: 7
 
@@ -185,6 +239,11 @@ jobs:
               echo '```'
               cat "${{ steps.outdir.outputs.path }}/validation-summary.txt"
               echo '```'
+              if [ -s "${{ steps.outdir.outputs.path }}/detail-validation-summary.txt" ]; then
+                echo '```'
+                cat "${{ steps.outdir.outputs.path }}/detail-validation-summary.txt"
+                echo '```'
+              fi
             else
               echo 'No validation summary — generation did not complete. Production universe untouched.'
             fi

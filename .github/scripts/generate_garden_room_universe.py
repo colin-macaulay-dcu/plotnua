@@ -117,6 +117,19 @@ FEATURE_FIELDS = ["Feature Name", "Feature Code", "Feature Group", "Data Type"]
 # Features whose values the universe carries forward for ranking. Matched on
 # lowercased name, because Atlas holds near-duplicates ("Irish availability"
 # FEAT-0021 and "Irish Availability" FEA-025 both exist and both are read).
+# ---- ISSUE 005 PIECE D4b — THE DETAIL EVIDENCE CONTRACT --------------------
+# Long-form Atlas evidence a homeowner reads only AFTER opening Product Detail.
+# It is emitted into garden-room-detail-evidence-v1.json and fetched lazily, so
+# it never enters the file every visitor downloads.
+#
+# THIS MAP IS THE EXTENSION POINT. Planning Considerations, Best For, Strengths
+# and Typical Homeowner are expected to join it later; adding one is a single
+# line here and needs no change to the file shape, the validator or the reader.
+# D4b DELIBERATELY ADDS NONE OF THEM.
+DETAIL_FEATURES_WANTED = {
+    "considerations":          "considerations",
+}
+
 FEATURES_WANTED = {
     "irish availability":      "irishAvailability",
     "internal floor area":     "floorArea",
@@ -656,6 +669,8 @@ def main():
                 by_product[key].setdefault(pid, []).append(r)
 
     emitted, excluded = [], []
+    # ISSUE 005 PIECE D4b — long-form evidence, keyed by canonical product id.
+    detail_products = {}
     unclassified_ie = 0
     no_route_count = 0
     for p in sorted(garden, key=lambda r: (txt(cell(r, "Product Name")), r["id"])):
@@ -768,6 +783,38 @@ def main():
                     _v.pop("feature", None)
             rec["features"] = carried
 
+            # ---- ISSUE 005 PIECE D4b — the same carry, into the detail file --
+            # Identical D2 semantics: nothing is discarded, colliding evidence
+            # is preserved in records[], and truth metadata is kept only where
+            # Atlas holds it. This dict never touches `rec`, so no long-form
+            # prose can reach the core Match universe.
+            detail = {}
+            for r in by_product["featureValues"].get(pid, []):
+                fname = next((features.get(i, "") for i in links(r, "Feature")), "")
+                key = DETAIL_FEATURES_WANTED.get(fname.lower())
+                if not key:
+                    continue
+                one = {"text": txt(cell(r, "Value Text")) or None,
+                       "evidenceScope": cell(r, "Evidence Scope")}
+                conf = cell(r, "Confirmation State")
+                stat = cell(r, "Status")
+                if conf: one["confirmationState"] = conf
+                if stat: one["status"] = stat
+                one["feature"] = fname or None
+                if key not in detail:
+                    detail[key] = dict(one)
+                    detail[key]["records"] = [one]
+                else:
+                    detail[key]["records"].append(one)
+            for _v in detail.values():
+                if len(_v["records"]) < 2:
+                    _v.pop("records")
+                    _v.pop("feature", None)
+            # A product with no long-form evidence is simply absent from the
+            # detail artefact. Absent is not an error and not an empty entry.
+            if detail:
+                detail_products[pid] = detail
+
             # ---- BRIDGE PIECE 1 — the flat Match view -----------------------
             # Built from the evidence already gathered above. Added beside the
             # qualification block, never instead of it.
@@ -847,6 +894,25 @@ def main():
         json.dumps(payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
     (out / "garden-room-exclusions-v1.json").write_text(
         json.dumps(audit, indent=2) + "\n", encoding="utf-8")
+
+    # ---- ISSUE 005 PIECE D4b — THE DETAIL EVIDENCE ARTEFACT -----------------
+    # Keyed by canonical Airtable product id, which is the ONLY join. No price,
+    # no ranking, no qualification, no organisation — nothing that would make
+    # this a second copy of the product.
+    detail_payload = {
+        "schema": SCHEMA + ".detail",
+        "version": VERSION,
+        "generated": payload["generated"],
+        "sourceBase": BASE_ID,
+        "categories": sorted(set(DETAIL_FEATURES_WANTED.values())),
+        "productCount": len(detail_products),
+        "recordCounts": {k: sum(len(v[k].get("records", [None]))
+                                for v in detail_products.values() if k in v)
+                         for k in sorted(set(DETAIL_FEATURES_WANTED.values()))},
+        "products": detail_products,
+    }
+    (out / "garden-room-detail-evidence-v1.json").write_text(
+        json.dumps(detail_payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
 
     lines = [
         "GARDEN ROOM MATCH QUALIFICATION v1 — DRY RUN",
