@@ -189,6 +189,25 @@ SUPPLIER_LABELS_WITHHELD = {
     "GPS COORDINATES",   # Most Local is frozen; no distance claim in E2
 }
 
+# ISSUE 005 PIECE E2.2 — A CORRECT LABEL CAN STILL CARRY PERSONAL DATA.
+#
+# The first real supplier artefact was refused by the validator:
+#   recUnzSlV4tszVzg6.locality.irishPresence: personal contact data '+353 ...'
+# The record was Ecohouse Building Systems, whose IRISH PRESENCE segment reads
+# "Full — Irish premises with Eircode, Irish landline +353 ..., euro pricing
+# ... business hours". The field, the label and the selection were all correct;
+# the VALUE carried a landline as corroboration, and SUPPLIER_LABELS_WITHHELD
+# only ever inspected a segment's HEAD.
+#
+# This pattern is byte-identical to SUPPLIER_PERSONAL in
+# validate_garden_room_detail_evidence.py, deliberately: the producer must
+# decline exactly what the gate would refuse, so the two cannot drift. The
+# validator is untouched and remains the backstop.
+SUPPLIER_PERSONAL_RE = re.compile(
+    r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"      # email
+    r"|(?:\+\d[\d ()-]{7,})"                                # international phone
+)
+
 
 def supplier_segment(text: str, label: str):
     """One labelled segment of a pipe-delimited Atlas locality record.
@@ -216,6 +235,20 @@ def supplier_segment(text: str, label: str):
         # An evidenced absence is a FACT and is kept: "None published" is a
         # finding. UNKNOWN is not, and is dropped rather than asserted.
         if value.lower() in ("unknown", "not established", "n/a", "tbc"):
+            return None
+        # ISSUE 005 PIECE E2.2 — the value-level refusal.
+        #
+        # The WHOLE segment goes, not the offending characters. Stripping the
+        # number and keeping the remainder would mean deciding where the
+        # evidence stops and the personal data starts, which is exactly the
+        # derivation this programme refuses — and the brief forbids it by name.
+        #
+        # The cost is real and is accepted: Ecohouse, the organisation with the
+        # strongest Irish evidence in the base, now exports irishPresence null
+        # because its evidence cites a landline. A null here means "Atlas holds
+        # this but it is not exportable in its present form", NOT "no Irish
+        # presence". UNKNOWN is not FALSE.
+        if SUPPLIER_PERSONAL_RE.search(value):
             return None
         return value
     return None
