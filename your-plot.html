@@ -10486,6 +10486,34 @@
       // reviewed evidence.
       appearance: raw.appearance || undefined,
       appearanceProvenance: raw.appearanceProvenance || undefined,
+
+      /* ISSUE 005 PIECE B — THE PIPE, REOPENED.
+
+         Four objects the export already carries and this whitelist discarded.
+         For Shomera that meant five researched Atlas records — installation
+         model, insulation build-up, Irish availability, floor-area integrity
+         note and glazing — dying on arrival, along with the price provenance
+         and the qualification reasoning behind its own HIGH_CONFIDENCE tier.
+
+         The sixth time a fixed list in this file has dropped a field that was
+         correctly emitted upstream, after designLanguage (PB045), curated
+         appearance (MATCH-STYLE-001), qualificationTier and
+         noPublishedIrishRoute (Piece 3) and the Irish caveat (Piece 4).
+
+         CARRIED BY REFERENCE, deliberately. Nothing in this file mutates a
+         product or assigns into any of these objects; the raw export array is
+         discarded immediately after this map; and My Plot stores hand-picked
+         fields rather than serialising the product. A reference is therefore
+         safe, and cheaper than copying four objects 490 times.
+
+         ABSENT STAYS ABSENT. `|| undefined` keeps "Atlas holds nothing here"
+         distinct from "Atlas holds an empty set". Nothing is flattened into a
+         new value, nothing is reinterpreted, and no consumer is changed by
+         this Piece: the intelligence is simply reachable now. */
+      features: raw.features || undefined,
+      priceEvidence: raw.priceEvidence || undefined,
+      qualification: raw.qualification || undefined,
+      organisationEvidence: raw.organisationEvidence || undefined,
     };
   }
 
