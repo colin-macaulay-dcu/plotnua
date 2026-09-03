@@ -912,7 +912,7 @@ def main():
             # that is the only attribution the schema supports. No URL parsing,
             # no per-field attribution, no invented relationship between a
             # source and a particular Feature Value.
-            src = txt(cell(product, "    Sources"))
+            src = txt(cell(p, "    Sources"))
             if src:
                 detail_products.setdefault(pid, {})[DETAIL_PROVENANCE_KEY] = {
                     "text": src, "evidenceScope": None}
@@ -1009,11 +1009,20 @@ def main():
         "version": VERSION,
         "generated": payload["generated"],
         "sourceBase": BASE_ID,
-        "categories": sorted(set(DETAIL_FEATURES_WANTED.values())),
+        # ISSUE 005 PIECE E2.1 — the provenance key is a CATEGORY IN THE DATA,
+        # so it must be declared here too. E2 added `sources` to every product
+        # entry but left this declaration derived from DETAIL_FEATURES_WANTED
+        # alone, and the validator correctly refused the file:
+        #   "category present in the data but not declared: 'sources'"
+        # Publication is all-or-none, so that single undeclared key would have
+        # blocked the whole 06:15 run even after the NameError was fixed. This
+        # is the same expression the partition writer already uses below.
+        "categories": sorted(set(DETAIL_FEATURES_WANTED.values())) + [DETAIL_PROVENANCE_KEY],
         "productCount": len(detail_products),
         "recordCounts": {k: sum(len(v[k].get("records", [None]))
                                 for v in detail_products.values() if k in v)
-                         for k in sorted(set(DETAIL_FEATURES_WANTED.values()))},
+                         for k in sorted(set(DETAIL_FEATURES_WANTED.values()))
+                                  + [DETAIL_PROVENANCE_KEY]},
         "products": detail_products,
     }
     (out / "garden-room-detail-evidence-v1.json").write_text(
