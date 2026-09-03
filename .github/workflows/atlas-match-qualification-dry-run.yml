@@ -1,0 +1,122 @@
+# PlotNua — Atlas Match Qualification v1, LIVE DRY RUN.
+#
+# Runs .github/scripts/generate_garden_room_universe.py across every Garden
+# Room in Atlas and uploads the qualification preview and its human-readable
+# report as workflow artefacts.
+#
+# THIS WORKFLOW PUBLISHES NOTHING.
+#   It does not commit, does not push, does not touch the site, and does not
+#   write to Airtable. The generated JSON is a PREVIEW for founder review; the
+#   live Match Engine is not connected to it and is not modified here.
+#
+# WHY MANUAL ONLY.
+#   No schedule. This is an investigation, and an investigation that runs
+#   itself on a timer quietly becomes production automation. When
+#   qualification is approved, a separate workflow will be written for that
+#   purpose, deliberately.
+#
+# THE TOKEN.
+#   ${{ secrets.AIRTABLE_TOKEN }} is the repository secret already proven by
+#   atlas-stats.yml. It is passed to one step as an environment variable and
+#   exists nowhere else: not in a file, not in an argument, not in the output,
+#   not in the artefacts. GitHub masks it in logs, and the script additionally
+#   redacts anything token-shaped before printing. Airtable access is
+#   read-only — the script issues GET requests and carries no request body.
+name: Atlas Match Qualification v1 — dry run
+
+on:
+  workflow_dispatch:
+
+# Read-only checkout. No write scope is requested, so this workflow could not
+# commit to the repository even if it tried to.
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-match-qualification-dry-run
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # The output directory is created under the runner's temp space, well
+      # outside the checked-out tree, so a generated file cannot land beside a
+      # production artefact even by accident. The script refuses such a
+      # directory anyway; this is the belt to that pair of braces.
+      - name: Create a temporary output directory outside the repository
+        id: outdir
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/atlas-qualification-dry-run"
+          mkdir -p "$OUT"
+          echo "path=$OUT" >> "$GITHUB_OUTPUT"
+          echo "Output directory: $OUT"
+
+      - name: Run Garden Room qualification against live Atlas (read-only)
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: |
+          set -euo pipefail
+          python .github/scripts/generate_garden_room_universe.py \
+            --out-dir "${{ steps.outdir.outputs.path }}"
+
+      # Proves the run did what it claimed, and that it left the working tree
+      # alone. If the generator ever started writing into the repository, this
+      # step fails the job rather than letting an artefact quietly appear.
+      - name: Verify the repository was not modified
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::The working tree was modified. This workflow must not write to the repository."
+            git status --porcelain
+            exit 1
+          fi
+          echo "Working tree clean — nothing was written to the repository."
+
+      - name: Confirm the expected artefacts exist
+        run: |
+          set -euo pipefail
+          OUT="${{ steps.outdir.outputs.path }}"
+          for f in garden-room-recommendation-universe-v1.json \
+                   garden-room-exclusions-v1.json \
+                   garden-room-qualification-report.txt; do
+            test -s "$OUT/$f" || { echo "::error::missing or empty: $f"; exit 1; }
+            echo "  $(wc -c < "$OUT/$f") bytes  $f"
+          done
+
+      - name: Upload the qualification preview and report
+        uses: actions/upload-artifact@v4
+        with:
+          name: garden-room-qualification-v1-dry-run
+          path: |
+            ${{ steps.outdir.outputs.path }}/garden-room-recommendation-universe-v1.json
+            ${{ steps.outdir.outputs.path }}/garden-room-exclusions-v1.json
+            ${{ steps.outdir.outputs.path }}/garden-room-qualification-report.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Print the human-readable report into the job summary
+        run: |
+          set -euo pipefail
+          {
+            echo '## Garden Room Match Qualification v1 — dry run'
+            echo ''
+            echo 'Preview only. Nothing committed, nothing deployed, nothing written to Airtable.'
+            echo ''
+            echo '```'
+            cat "${{ steps.outdir.outputs.path }}/garden-room-qualification-report.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
