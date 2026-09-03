@@ -14285,6 +14285,117 @@
       ['Insulated for year-round use', 'The most completely specified envelope in the catalogue'],
   };
 
+  /* ISSUE 005 PIECE D3 — ELECTRICAL, MAPPED ON THE CONFIRMATION STATE.
+
+     Measured across every Electrical Included record in Atlas: Yes 64,
+     Yes - Conditional 6, No 12, Unknown 0, and 27 records with no state at
+     all. A closed set of three live states, so it is mapped explicitly.
+
+     THE 27 WITH NO STATE ARE NOT MAPPED. They fall through to their own
+     researcher prose, and where that prose defers they land under what still
+     needs checking. An absent Confirmation State is not a No. */
+  const PN_LABEL_ELECTRICAL = {
+    'Yes': ['Electrical fit-out included', null],
+    'Yes - Conditional (package-dependent)':
+      ['Electrical fit-out included in some packages',
+       'Depends on the package chosen \u2014 confirm which one includes it'],
+    'No': ['Electrical fit-out not included', null],
+    /* Zero records carry this today. Mapped anyway so that an Unknown can
+       never fall through into the No branch by accident. */
+    'Unknown': [null, null],
+  };
+
+  /* ISSUE 005 PIECE D3b — WARRANTY, ANSWERED RATHER THAN QUOTED.
+
+     Measured across all 547 Garden Room Warranty records. Five findings carry
+     established evidence and are mapped; three defer and are deliberately
+     ABSENT from this map because PN_DEFER_RE already routes them to what still
+     needs checking; 81 records are older free lowercase prose and are quoted
+     as Atlas wrote them.
+
+       STRUCTURAL WARRANTY              56    CONDITIONAL WARRANTY     29
+       ANTI-ROT WARRANTY                46    FRAME ONLY WARRANTY       4
+       COMPREHENSIVE PRODUCT WARRANTY   66                                */
+  const PN_LABEL_WARRANTY = {
+    'STRUCTURAL WARRANTY': ['Structural warranty', null],
+    'ANTI-ROT WARRANTY': ['Anti-rot warranty',
+      'Covers rot, not the whole building'],
+    'COMPREHENSIVE PRODUCT WARRANTY': ['Full product warranty', null],
+    'CONDITIONAL WARRANTY': ['Warranty with conditions attached',
+      'Cover depends on conditions being met — read them before you buy'],
+    'FRAME ONLY WARRANTY': ['Frame-only warranty',
+      'Covers the frame only — not the cladding, roof, glazing or services'],
+  };
+
+  /* The only finding-level tail in the measured set: 6 records read
+     "COMPREHENSIVE PRODUCT WARRANTY — DURATION CONTESTED", where the supplier
+     publishes a ten-YEAR and a ten-MONTH term on one page. An unmapped tail is
+     dropped rather than shown, because Atlas's shouted vocabulary is not a
+     sentence written for a homeowner. */
+  const PN_WARRANTY_TAIL = {
+    'DURATION CONTESTED':
+      'The supplier publishes two different warranty lengths — get the term in writing',
+  };
+
+  /* Deferred findings. 265 of 547 records. These are CHECKING items, never
+     claims. Without this a deferred warranty with no LIMITATION: reached
+     neither panel, and only 32 records anywhere carry LIMITATION:. */
+  const PN_CHECK_WARRANTY = {
+    'WARRANTY UNKNOWN':
+      'no warranty terms are published — ask what is covered and for how long',
+    'WARRANTY NOT PUBLISHED':
+      'no warranty terms are published — ask what is covered and for how long',
+    'REQUIRES PRODUCT-SPECIFIC VERIFICATION':
+      'a warranty is published, but not one confirmed for this model — ask for the term in writing',
+  };
+
+  /* "HEAD — tail", split from the LEFT on the finding only. Durations are
+     never passed through here, because a duration can itself contain an
+     em-dash: "80 years, covering the steel frame only — not the envelope". */
+  function pnWarrantyParts(s){
+    const i = s.indexOf(' \u2014 ');
+    if (i < 0) return [s, null];
+    return [s.slice(0, i), PN_WARRANTY_TAIL[s.slice(i + 3)] || null];
+  }
+
+  /* ISSUE 005 PIECE D3b — THE TERM, VERBATIM, OR NOTHING.
+
+     456 of the 547 records carry a researcher-written "DURATION:" label, and
+     ZERO carry a Value Number or Unit, so the prose is the only place the term
+     exists. NOTHING IS PARSED OUT OF THE PROSE. This takes Atlas's own labelled
+     segment, keeps its FIRST SENTENCE, and refuses it unless every guard below
+     passes. The first-sentence rule is what stops a supplier essay being quoted
+     at a homeowner: "DURATION: 80 years, covering the steel frame only … .
+     Nothing inferred. SUPPLIER STATUS — BERKO POD SYSTEMS, 3 Garden-Room
+     products, …" yields the term and stops.
+
+     A record this has not seen loses its duration. It cannot gain a wrong one. */
+  function pnWarrantyDuration(text){
+    if (typeof text !== 'string' || !text) return null;
+    const seg = pnEvSegment(text, 'DURATION');
+    if (!seg) return null;
+    const m = seg.match(/^([^.]{1,200})\.(\s|$)/);
+    const one = (m ? m[1] : seg).trim();
+    /* Every measured term fits comfortably; the longest is 111 characters. */
+    if (!one || one.length > 120) return null;
+    /* A DEFERRAL IS NOT A TERM. 128 records say "none published" or "not
+       published" under the DURATION label itself. The finding still speaks. */
+    if (PN_DEFER_RE.test(one) || /^none\b/i.test(one)) return null;
+    /* Every real term in the measured set carries a figure, or is the single
+       published word LIFETIME (3 records, and Atlas records that it is
+       nowhere defined — which is why it is quoted exactly as published). */
+    if (!/\d/.test(one) && !/^published as LIFETIME$/i.test(one)) return null;
+    /* NO SEPARATE INTERNAL-DIRECTIVE GUARD, AND THAT IS DELIBERATE.
+
+       I wrote one, then could not make it fire. pnEvSegment() already cuts the
+       segment at the FIRST PN_EV_LABELS occurrence after the label, so a
+       directive — DO NOT RANK, TECHNICAL DEBT, RECORD NOTE — is a cut point
+       and can never survive inside the segment. A guard that cannot fail is
+       not protection, it is decoration that hides the real mechanism. The
+       test asserts the strip happens where it actually happens. */
+    return one;
+  }
+
   /* IRISH AVAILABILITY — 4 shouted values plus a UK ONLY family whose tails
      are free prose. The tail is kept verbatim as context, never paraphrased. */
   const PN_LABEL_IRISH = {
@@ -14343,14 +14454,38 @@
   /* THE ONE ENTRY POINT. Returns { answer, note } — answer is what the
      homeowner reads first, note is quiet context. Anything unmapped returns
      the statement unchanged with no note. */
-  function pnHomeownerLabel(label, statement){
+  function pnHomeownerLabel(label, statement, duration){
     if (typeof statement !== 'string' || !statement) return { answer: statement, note: null };
     const s = statement.trim();
+
+    /* ISSUE 005 PIECE D3b — WHERE ATLAS HOLDS A TERM, THE TERM IS THE ANSWER.
+
+       Shomera stops reading "STRUCTURAL WARRANTY" and starts reading
+       "10 years structural; 20 years on the roof", with the classification
+       demoted to the quiet note where it belongs. Where Atlas holds no
+       established term the mapped finding answers on its own, and no duration
+       is manufactured for it. `duration` is only ever supplied by
+       pnWarrantyDuration(); the Compare call site passes two arguments and is
+       unchanged. */
+    if (label === 'Warranty'){
+      const parts = pnWarrantyParts(s);
+      const map = PN_LABEL_WARRANTY[parts[0]] || null;
+      const notes = [];
+      if (map && map[1]) notes.push(map[1]);
+      if (parts[1]) notes.push(parts[1]);
+      if (duration){
+        if (map) notes.unshift(map[0]);
+        return { answer: duration, note: notes.join(' \u2014 ') || null };
+      }
+      if (map) return { answer: map[0], note: notes.join(' \u2014 ') || null };
+    }
 
     if (label === 'Installation' && PN_LABEL_INSTALL[s])
       return { answer: PN_LABEL_INSTALL[s][0], note: PN_LABEL_INSTALL[s][1] };
     if (label === 'Year-round use' && PN_LABEL_THERMAL[s])
       return { answer: PN_LABEL_THERMAL[s][0], note: PN_LABEL_THERMAL[s][1] };
+    if (label === 'Electrical' && PN_LABEL_ELECTRICAL[s])
+      return { answer: PN_LABEL_ELECTRICAL[s][0], note: PN_LABEL_ELECTRICAL[s][1] };
     if (label === 'Irish availability'){
       if (PN_LABEL_IRISH[s]) return { answer: PN_LABEL_IRISH[s][0], note: PN_LABEL_IRISH[s][1] };
       /* "UK ONLY. <free prose>" — 32 products, every tail different. */
@@ -14436,10 +14571,32 @@
         ? titleCase(p.glazing) + ' glazing' : null; } },
     { label: 'Floor area', keys: ['floorArea'],
       flat: function(p){ return hasValidArea(p.floorAreaM2) ? p.floorAreaM2 + 'm\u00B2' : null; } },
+    /* ISSUE 005 PIECE D3 — beside Floor area, deliberately. Where Atlas has
+       not established one floor area it may still hold published dimensions,
+       and a homeowner reading "Floor area: not established" should be able to
+       see that in the same glance. It is CONTEXT: never converted to an area,
+       never multiplied out, never given to ranking. */
+    { label: 'External dimensions', keys: ['externalDimensions'], flat: null },
     { label: 'Irish availability', keys: ['irishAvailability'],
       flat: function(p){ return p.irishAvailabilityConfirmationState === 'Yes'
         ? 'Confirmed' : null; } },
     { label: 'Installation', keys: ['installationModel'], flat: null },
+    /* ISSUE 005 PIECE D3 — beside Installation, because both answer "what do
+       I actually get". The answer comes from the Confirmation State, which is
+       the field Atlas built to express this; the record's prose supplies the
+       detail. An absent state yields null here, so the record's own words are
+       used and an unknown never becomes a No. */
+    { label: 'Electrical', keys: ['electricalIncluded'],
+      flat: function(p){
+        const f = (p.features || {}).electricalIncluded;
+        const m = f && PN_LABEL_ELECTRICAL[f.confirmationState];
+        return (m && m[0]) || null; } },
+    /* ISSUE 005 PIECE D3b — D3 discarded the term Atlas already held. It is
+       now read from Atlas's own DURATION: label by pnWarrantyDuration(), which
+       quotes one sentence verbatim or returns nothing. Still no flat field:
+       there is no warranty scalar in the export, and inventing one would be
+       the derivation this programme keeps refusing. */
+    { label: 'Warranty', keys: ['warranty'], flat: null },
     { label: 'Construction', keys: ['construction'], flat: null },
     { label: 'External finish', keys: ['cladding'], flat: null },
     { label: 'Where it is made', keys: ['countryOfManufacture'], flat: null },
@@ -14475,8 +14632,13 @@
           ? (flat && row.label === 'Floor area' ? flat + ' \u2014 ' + read.finding : read.finding)
           : flat;
         if (stmt){
+          /* ISSUE 005 PIECE D3b — warranty only, gated on the label so no
+             other category's path can change. Null everywhere else. */
           knows.push({ label: row.label, statement: stmt, conflict: null,
-            scope: pnScopeNote(read), meaning: read.meaning || null });
+            scope: pnScopeNote(read), meaning: read.meaning || null,
+            duration: row.label === 'Warranty'
+              ? pnWarrantyDuration(((product.features || {}).warranty || {}).text)
+              : null });
         }
         if (read.limitation) checks.push({ label: row.label, text: read.limitation });
         return;
@@ -14493,6 +14655,14 @@
       /* Nothing established. This is the honest home for what used to render
          as "Insufficient information" inside a panel headed "What Atlas
          Knows" — a line that asserted an absence as though it were a finding. */
+      /* ISSUE 005 PIECE D3b — 265 of 547 warranty records defer, and only 32
+         records anywhere carry LIMITATION:. Without this the whole category
+         vanished from both panels for most of the products that most need the
+         caution. UNKNOWN IS NOT NO WARRANTY and is never rendered as one. */
+      if (row.label === 'Warranty' && read && read.finding && !read.limitation){
+        const w = PN_CHECK_WARRANTY[pnWarrantyParts(read.finding)[0]];
+        if (w) { checks.push({ label: row.label, text: w }); return; }
+      }
       if (read && read.limitation) checks.push({ label: row.label, text: read.limitation });
       else if (row.flat) checks.push({ label: row.label, text: 'not established' });
     });
@@ -14603,7 +14773,7 @@
           + '. Confirm with the provider before relying on either.';
         li.appendChild(c);
       } else {
-        const mapped = pnHomeownerLabel(row.label, row.statement);
+        const mapped = pnHomeownerLabel(row.label, row.statement, row.duration);
         ans.textContent = mapped.answer;
         li.appendChild(ans);
         if (mapped.note){

@@ -132,6 +132,18 @@ FEATURES_WANTED = {
     "design language":         "designLanguage",
     "installation model":      "installationModel",
     "measurement basis":       "measurementBasis",
+    # ---- ISSUE 005 PIECE D3 — THE FIRST CONTROLLED WIDENING ----------------
+    # Three categories, measured in Airtable and restricted to the 490 Garden
+    # Rooms: 795 feature values between them. Each already exists in Atlas and
+    # already follows the researcher convention C-C3 reads.
+    #
+    # "warranty status" is DELIBERATELY ABSENT. D1 established it as an older
+    # overlapping vocabulary saying the same thing as "warranty" — Shomera
+    # carries both, both stating 10 years structural and 20 on the roof. The
+    # brief forbids exposing both, so only the current one is carried.
+    "electrical included":     "electricalIncluded",
+    "warranty":                "warranty",
+    "external dimensions":     "externalDimensions",
 }
 
 # ── Irish availability vocabulary ────────────────────────────────────────────
