@@ -34,7 +34,7 @@ blocked product contributes nothing, provenance included.
 
 Run:  python3 test_generator_provenance.py
 """
-import json, subprocess, sys, tempfile
+import json, re, subprocess, sys, tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -61,6 +61,12 @@ SRC_P1 = "shomera.ie — range pages read 8 Aug 2026; indexed evidence only."
 SRC_P3 = "example.ie — supplier catalogue read 1 Sep 2026."
 
 ORG = "recORG00000000001"
+# ISSUE 005 PIECE E2.2 — the organisation that broke the first real run.
+# Ecohouse Building Systems' IRISH PRESENCE segment is GENUINE Irish-presence
+# evidence that happens to cite a landline. The label was right, the selection
+# was right, and the VALUE carried personal data. This reproduces that exact
+# shape, with the exact number from the failed workflow.
+ORG_PHONE_IN_PRESENCE = "recORG00000000002"
 FEAT_CONSIDER = "recFEAT0000000001"
 
 
@@ -89,6 +95,12 @@ def snapshot():
             product("recPROD0000000002", "Beta Room"),
             product("recPROD0000000003", "Gamma Room", sources=SRC_P3),
             product("recPROD0000000004", "Delta Room", sources="never exported", org=False),
+            rec("recPROD0000000005", {"Product Name": "Epsilon Room",
+                                      "Product Category": "Garden Rooms",
+                                      "Product Code": "EPSILON-ROOM", "Status": "Active",
+                                      "Verification Status": "Partially Verified",
+                                      "Product URL": "https://eco.example.ie/epsilon",
+                                      "Organisation": [{"id": ORG_PHONE_IN_PRESENCE}]}),
         ],
         "pricing": [],
         "availability": [],
@@ -102,7 +114,20 @@ def snapshot():
                                     "Website": "https://example.ie/",
                                     "Headquarters": "HEADQUARTERS: Main St, Cork | "
                                                     "IRISH PRESENCE: Cork premises published | "
-                                                    "CONTACT: +353 1 234 5678, sales@example.ie"})],
+                                                    "CONTACT: +353 1 234 5678, sales@example.ie"}),
+                          rec(ORG_PHONE_IN_PRESENCE, {
+                              "Organisation Name": "Ecohouse-shaped Systems",
+                              "Organisation Type": "Manufacturer",
+                              "Website": "https://eco.example.ie/",
+                              # Verbatim shape of the record that failed the real run.
+                              "Headquarters":
+                                  "HEADQUARTERS: Unit 9A, Dublin 24 | "
+                                  "JURISDICTION: Republic of Ireland | "
+                                  "INSTALLATION COVERAGE: INCLUDED IN PRICE | "
+                                  "IRISH PRESENCE: Full — Irish premises with Eircode, "
+                                  "Irish landline +353 1 253 3786, euro pricing inclusive "
+                                  "of VAT, and published business hours Mon-Fri 08:00-17:00 | "
+                                  "EVIDENCE TIER: Tier A"})],
     }
 
 
@@ -186,6 +211,29 @@ with tempfile.TemporaryDirectory() as td:
            not any(k in blob for k in ("deliveryConfirmed", "excludesIreland",
                                        "excludedProductIds", '"irish"')))
 
+    # ── ISSUE 005 PIECE E2.2 — A CORRECT LABEL CARRYING PERSONAL DATA ─────
+    # The first real supplier artefact was refused because Ecohouse's IRISH
+    # PRESENCE value cited a landline. The label and the selection were both
+    # correct; only the VALUE was unsafe. The whole segment must be withheld —
+    # never stripped and salvaged, which would mean deciding where the evidence
+    # stops and the personal data starts.
+    print("\n--- E2.2: a correct label whose VALUE carries a phone number ---")
+    if sup:
+        eco = sup.get(ORG_PHONE_IN_PRESENCE, {}).get("locality", {})
+        ck("E2.2: irishPresence is WITHHELD, not stripped",
+           "irishPresence" not in eco, eco.get("irishPresence"))
+        ck("E2.2: no remainder of the unsafe value survives",
+           not any("Irish premises" in str(v) for v in eco.values()), eco)
+        ck("E2.2: the exact production number is absent from the artefact",
+           "+353 1 253 3786" not in json.dumps(sup))
+        ck("E2.2: the SAFE labels on the same record still export",
+           eco.get("jurisdiction") == "Republic of Ireland"
+           and eco.get("installationModel") == "INCLUDED IN PRICE", eco)
+        ck("E2.2: no phone survives anywhere in the supplier artefact",
+           not re.search(r"\+\d[\d ()-]{7,}", json.dumps(sup)))
+        ck("E2.2: no email survives anywhere in the supplier artefact",
+           not re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", json.dumps(sup)))
+
     # ── THE VALIDATOR MUST ACCEPT WHAT THE GENERATOR PRODUCES ─────────────
     # A second E2 defect, found by running this chain: `sources` was written
     # into every product entry but NOT declared in the combined file's
@@ -207,6 +255,38 @@ with tempfile.TemporaryDirectory() as td:
        "sources" in combined.get("categories", []), combined.get("categories"))
     ck("'sources' is counted in recordCounts",
        "sources" in (combined.get("recordCounts") or {}), combined.get("recordCounts"))
+
+    # ── E2.2 REINTRODUCED: remove the value-level refusal ──────────────────
+    # A guard that cannot fail proves nothing. This strips the E2.2 refusal
+    # from a copy of the generator and confirms the production failure returns
+    # — the phone reaches the artefact AND the validator refuses it.
+    print("\n--- E2.2 guard capability: remove the refusal, the failure returns ---")
+    unsafe = td / "unsafe_generator.py"
+    gtext = GEN.read_text(encoding="utf-8")
+    refusal = ("        if SUPPLIER_PERSONAL_RE.search(value):\n"
+               "            return None\n")
+    if gtext.count(refusal) != 1:
+        ck("E2.2: the refusal is uniquely locatable for the negative test",
+           False, gtext.count(refusal))
+    else:
+        unsafe.write_text(gtext.replace(refusal, ""), encoding="utf-8")
+        out3 = td / "out3"
+        out3.mkdir()
+        r3 = run_generator(unsafe, out3, snap)
+        ck("E2.2 REINTRODUCED: the generator still runs (it is a data defect)",
+           r3.returncode == 0, r3.returncode)
+        sup3 = detail_for(out3, "suppliers") or {}
+        ck("E2.2 REINTRODUCED: the phone DOES reach the artefact",
+           "+353 1 253 3786" in json.dumps(sup3))
+        v3 = subprocess.run(
+            [sys.executable, str(HERE / "validate_garden_room_detail_evidence.py"),
+             "--candidate", str(out3 / "garden-room-detail-evidence-v1.json"),
+             "--index", str(out3 / "garden-room-detail-index-v1.json"),
+             "--output-prefix", str(out3) + "/"],
+            capture_output=True, text=True)
+        ck("E2.2 REINTRODUCED: the validator REFUSES it, exactly as production did",
+           v3.returncode != 0 and "personal contact data" in (v3.stdout + v3.stderr),
+           (v3.stdout + v3.stderr)[-220:])
 
     # ── THE BUG, REINTRODUCED ON PURPOSE ───────────────────────────────────
     print("\n--- the guard must be able to fail: reintroduce the exact bug ---")
