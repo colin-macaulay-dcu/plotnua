@@ -10503,7 +10503,7 @@
   // dataset. The legacy 47-product Artist Studio export is retained only as a
   // last resort so an older working copy still opens, and whichever file wins
   // is RECORDED rather than assumed — the runtime panel reads it.
-  const ATLAS_POOL_SOURCES = ['recommendation-universe-v1.json', 'atlas-match-pool.json'];
+  const ATLAS_POOL_SOURCES = ['garden-room-recommendation-universe-v1.json', 'recommendation-universe-v1.json', 'atlas-match-pool.json'];
   let atlasMatchPoolSource = null;
   let atlasMatchPoolGenerated = null;
   /* EVID-004A — organisation-keyed supplier evidence, shipped alongside the
@@ -11526,8 +11526,27 @@
         reason: 'Irish availability not established \u2014 the supplier\u2019s published delivery information currently covers the UK only',
         evidenceField: 'noPublishedIrishRoute' };
     }
-    if (product.irishAvailabilityConfirmationState === 'Yes' || product.availabilityStatus === 'Available to Order') {
-      return { modifier: 1, state: 'confirmed', reason: 'confirmed available', evidenceField: product.irishAvailabilityConfirmationState === 'Yes' ? 'irishAvailabilityConfirmationState' : 'availabilityStatus' };
+    /* PIECE 4 CORRECTION A — availabilityStatus no longer stands in for Irish
+       evidence. This read:
+
+         irishAvailabilityConfirmationState === 'Yes'
+           || availabilityStatus === 'Available to Order'
+
+       'Available to Order' is a supplier stock status. It says the supplier
+       will take an order; it says nothing about the Republic of Ireland.
+       Measured on the real 490: 40 products carried that status with NO Irish
+       confirmation at all, 6 caught first by the route branch above, so 34
+       were scored CONFIRMED AVAILABLE IN IRELAND while their own Qualification
+       v1 caveat read "Irish availability is not yet confirmed."
+
+       The explicit Atlas Irish evidence is now the only thing that confirms.
+       This DEMOTES an unproven claim; it excludes nothing. Those 34 fall
+       through to the -1 unknown branch below, stay in the pool, and are still
+       ranked and shown. Unknown must not become FALSE — and it must not become
+       TRUE either. */
+    if (product.irishAvailabilityConfirmationState === 'Yes') {
+      return { modifier: 1, state: 'confirmed', reason: 'confirmed available',
+        evidenceField: 'irishAvailabilityConfirmationState' };
     }
     /* Qualification v1 hard-excludes these upstream, so nothing in the
        eligible universe reaches here today. Named rather than left to fall
@@ -14561,6 +14580,20 @@
     editorial.textContent = buildCardEditorialSentence(ctx, product);
     body.appendChild(editorial);
 
+    /* PIECE 4 CORRECTION B — the recommendation states its own Irish
+       availability gap. Placed directly after the editorial verdict so the
+       homeowner reads the recommendation and its one qualification together,
+       and built exactly like the "Above the budget you selected" note a few
+       lines above: same element, same existing class, no new CSS. The product
+       is not hidden and is not called unavailable. */
+    const irishRouteNote = irishRouteNoteText(product);
+    if (irishRouteNote) {
+      const routeNote = document.createElement('p');
+      routeNote.className = 'results-hero-budget-note';
+      routeNote.textContent = irishRouteNote;
+      body.appendChild(routeNote);
+    }
+
     /* LP-2 — the hero confidence ticks are gone. "Price published by X",
        "Maker confirmed" and "Manufactured in Ireland" all predate Atlas
        Assessment, which now states each of them with a source and a date.
@@ -15107,6 +15140,23 @@
   // means: today's recommendation rests on real supplier evidence, and
   // PlotNua's research keeps going rather than stopping here. No
   // apology, no hedge beyond the honest fact that research continues.
+  /* PIECE 4 CORRECTION B — the one place the no-published-Irish-route state is
+     turned into homeowner language.
+
+     Returns the approved sentence for that state and null for every other
+     state, so a product Atlas has simply not confirmed yet can never be
+     described as UK-only. Ordinary unknown and confirmed both return null and
+     are unchanged.
+
+     Reads the explicit generated contract field. It does not re-derive the
+     state, and it never exposes the field name, the tier, or any other
+     internal label. */
+  function irishRouteNoteText(product){
+    if (!product || product.noPublishedIrishRoute !== true) return null;
+    return 'Irish availability not established \u2014 the supplier\u2019s published '
+      + 'delivery information currently covers the UK only.';
+  }
+
   function describeAtlasConfidenceLine(product){
     return product.matchCaveat
       ? "Based on verified supplier evidence — PlotNua keeps researching, so this recommendation gets sharper over time."
@@ -18987,6 +19037,21 @@
       (product.price != null) ? pb046Price(product.price) : null]
       .filter(Boolean).join(' · ');
     b.foot.appendChild(name); b.foot.appendChild(meta);
+    /* PIECE 4 CORRECTION B — an alternative states its own Irish availability
+       gap, exactly as the recommendation does. This is the LIVE alternative
+       card: renderLensRail() draws the rail from here, and
+       buildResultsGalleryCard()/buildReasonedAlternativeCard() are defined but
+       never appended. Its own element rather than appended to .alt-meta,
+       because a caveat is not another metadata field; reuses .alt-meta's
+       styling so no new CSS is introduced. Returns null for every state except
+       no-published-Irish-route, so ordinary unknown is untouched. */
+    const altRouteNote = irishRouteNoteText(product);
+    if (altRouteNote) {
+      const routeNote = document.createElement('div');
+      routeNote.className = 'alt-meta';
+      routeNote.textContent = altRouteNote;
+      b.foot.appendChild(routeNote);
+    }
     const cmp = raCompareControl(lens, product);
     if (cmp) b.foot.appendChild(cmp);
     return b.card;
@@ -19125,7 +19190,10 @@
            neighbours instead of being a special case that nearly matches. */
         const b = raShell(lens, 'is-wildcard');
         b.card.classList.remove('alt-card');
-        const keep = ['.alt-name', '.alt-meta', '.alt-wild-fact', '.alt-why', '.alt-wild-go'];
+        /* PIECE 4 CORRECTION B — '.alt-route-note' added. This list decides what
+           survives the wildcard rebuild, and anything not named here is dropped
+           without an error. The Irish-availability caveat must survive. */
+        const keep = ['.alt-name', '.alt-meta', '.alt-route-note', '.alt-wild-fact', '.alt-why', '.alt-wild-go'];
         keep.forEach(function(sel){
           const el = wildEl.querySelector(sel);
           if (!el) return;
@@ -19252,6 +19320,25 @@
                         (prod.price != null) ? pb046Price(prod.price) : null]
                        .filter(Boolean).join(' \u00b7 ');
     card.appendChild(meta);
+
+    /* PIECE 4 CORRECTION B — the Wildcard states its own Irish availability
+       gap. Measured, not guessed: on the real 490 this card surfaces a
+       no-published-route product in most Budget x Style combinations, which
+       stands to reason — the card exists to show a maker nobody would find
+       alone, and that is precisely the sort of supplier whose Irish delivery
+       route is not published. The product is still shown and is still not
+       called unavailable. */
+    const wildRouteNote = irishRouteNoteText(prod);
+    if (wildRouteNote) {
+      const routeNote = document.createElement('div');
+      /* .alt-meta for the styling this line should share with the meta row;
+         .alt-route-note purely so renderLensRail()'s rebuild whitelist can
+         find THIS element. Without the second class its querySelector('.alt-meta')
+         returns the supplier/price row and the caveat is dropped. */
+      routeNote.className = 'alt-meta alt-route-note';
+      routeNote.textContent = wildRouteNote;
+      card.appendChild(routeNote);
+    }
 
     /* ONE reason, from the same pick.reasons the chapter used. No new claim. */
     /* UX-008C — the surprise leads. Atlas holds no cleared photograph for
