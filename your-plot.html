@@ -11964,6 +11964,37 @@
   // written inline at three sites in rankArtistStudioCandidates(); it now
   // lives here, owned by Best Overall, and those three sites call it. The
   // body is unchanged, so the order cannot be.
+  /* BRIDGE PIECE 2 — BUDGET FIT.
+
+     Deterministic, three values, and it never removes anybody:
+
+       2  a known numeric price inside the stated band
+       1  price unknown — Atlas holds no usable figure
+       0  a known numeric price outside the stated band
+
+     When no band is stated, or the homeowner said "Not sure", EVERY product
+     scores 1, so the slot is constant and separates nothing. That is what
+     "budget is completely neutral" has to mean in a tuple: not absent, but
+     identical for everyone.
+
+     Unknown sits ABOVE known-outside and BELOW known-inside, which is exactly
+     the ruled order. An unknown price is never read as 0, never read as
+     outside the band, and never read as a failure.
+
+     THE BAND BOUNDARIES ARE LEFT EXACTLY AS THEY ARE. AS_BUDGET_BANDS is
+     inclusive at both ends, so €10,000 sits inside both "Under €10,000" and
+     "€10,000–€20,000". That is not an ambiguity here: a homeowner states ONE
+     band, and membership of that one band is a single deterministic test. The
+     overlap would only matter if products were being assigned to bands, which
+     they are not. It resolves in the homeowner's favour on either selection,
+     which is the published intent, so nothing is changed. */
+  function budgetFit(product, band){
+    if (!band) return 1;
+    const price = product ? product.price : null;
+    if (typeof price !== 'number' || !isFinite(price)) return 1;
+    return (price >= band.lo && price <= band.hi) ? 2 : 0;
+  }
+
   function compareByScoreVector(a, b){
     for (let i = 0; i < a.tuple.length; i++) { if (b.tuple[i] !== a.tuple[i]) return b.tuple[i] - a.tuple[i]; }
     return (a.product.price || 0) - (b.product.price || 0);
@@ -12345,17 +12376,28 @@
        rule can resurrect an excluded product. */
     const allCandidates = getEligibleAtlasPool();
     const budgetKey = decisionProfile && decisionProfile.searchConstraints ? decisionProfile.searchConstraints.budget : null;
-    let pool = allCandidates;
-    let budgetMatched = false;
     const hardConstraintsFailed = [];
     const band = (budgetKey && AS_BUDGET_BANDS[budgetKey]) ? AS_BUDGET_BANDS[budgetKey] : null;
 
-    if (band) {
-      const filtered = allCandidates.filter(p => p.price != null && p.price >= band.lo && p.price <= band.hi);
-      if (filtered.length) { pool = filtered; budgetMatched = true; }
-      else hardConstraintsFailed.push('budget: no candidates within ' + budgetKey + ', falling back to full eligible pool');
-    }
-    pool = pool.slice();
+    /* BRIDGE PIECE 2 — BUDGET NO LONGER TOUCHES THE POOL.
+
+       This removed every product whose price sat outside the stated band AND
+       every product whose price Atlas does not hold. Against the real
+       universe that is 262 of 490 disappearing the moment a homeowner names a
+       budget: absence of evidence read as failure.
+
+       Budget is now ranking evidence only, at the head of the tuple. The
+       candidate universe entering scoring is exactly the universe that left
+       eligibility — nothing is filtered, and no replacement filter is added.
+       `hardConstraintsFailed` stays, because other constraints may yet use
+       it, but budget can no longer fail: there is nothing left for it to fail
+       at. */
+    const pool = allCandidates.slice();
+
+    // Reported, not enforced: how many candidates are KNOWN to fit the stated
+    // band. Nothing reads this to exclude anything.
+    const budgetInBandCount = band
+      ? allCandidates.filter(function(p){ return budgetFit(p, band) === 2; }).length : 0;
 
     // DISCOVERY v1.0 — the price percentile went with the buying-priority
     // scorer, which was its only reader.
@@ -12380,14 +12422,19 @@
       const banded = appearanceBand(p, appearancePreference);
       const origin = scoreOriginFromProfile(p, originPreference);
       const availability = scoreAvailabilityConfidence(p);
+      /* BRIDGE PIECE 2 — budget leads the tuple, so homeowner fit outranks
+         every other signal. With no band stated it is 1 for everyone and
+         separates nothing. */
+      const budget = budgetFit(p, band);
       return {
         product: p, buying, space, usage, appearance, appearanceScore, origin, availability,
+        budgetFit: budget,
         appearanceBand: banded.band, appearanceClass: banded.classification,
         appearanceReason: appearanceBandReason(p, appearancePreference),
         // DISCOVERY v1.0 — four slots, not seven. The removed three were
         // always zero for every candidate, so they never separated anything;
         // the surviving four keep their exact relative order.
-        tuple: [banded.band, appearanceScore, origin.score, availability.modifier],
+        tuple: [budget, banded.band, appearanceScore, origin.score, availability.modifier],
       };
     }
 
@@ -12485,15 +12532,34 @@
     const carousel = primaryEntry ? [primaryEntry].concat(carouselTail) : [];
 
     const buildRow = (entry, index) => {
-      const aboveBudget = !!(band && entry.product.price > band.hi);
-      const belowBudget = !!(band && entry.product.price < band.lo);
+      /* BRIDGE PIECE 2 — these are now per product, and guarded on a real
+         number. `null < 10000` is TRUE in JavaScript, because null coerces
+         to 0; that was harmless only while unknown-price products were
+         filtered out before this line could see them. Unguarded, all 262
+         would now be reported "below budget" — a claim about a price Atlas
+         does not hold. */
+      const knownPrice = typeof entry.product.price === 'number' && isFinite(entry.product.price);
+      const aboveBudget = !!(band && knownPrice && entry.product.price > band.hi);
+      const belowBudget = !!(band && knownPrice && entry.product.price < band.lo);
+      /* Was a single global flag meaning "the filter ran and kept somebody",
+         which was true per product only because the pool had been filtered.
+         It now means what every reader already took it to mean: THIS product
+         is known to fit the stated band. */
+      const budgetMatched = entry.budgetFit === 2;
+      const budgetUnknownPrice = entry.budgetFit === 1 && !!band;
       const outsideStatedBand = !!entry.outsideStatedBand;
       const appearanceMismatch = !!entry.appearanceMismatch;
       const scoreTrace = {
         productId: entry.product.id, productName: entry.product.name,
-        eligibility: budgetMatched ? 'within stated budget band' : (band ? 'outside stated budget band — fallback to full eligible pool' : 'no budget stated'),
+        /* No fallback exists any more, so no sentence may describe one. */
+        eligibility: !band ? 'no budget stated'
+          : budgetMatched ? 'within stated budget band'
+          : budgetUnknownPrice ? 'price unknown — not treated as outside budget'
+          : 'outside stated budget band — retained and ranked below in-budget products',
         hardConstraintsFailed,
-        budgetResult: { budgetMatched, aboveBudget, belowBudget, outsideStatedBand, bandExtended, band: budgetKey || null },
+        budgetResult: { budgetMatched, budgetFit: entry.budgetFit, budgetUnknownPrice,
+          aboveBudget, belowBudget, outsideStatedBand, bandExtended,
+          band: budgetKey || null, candidatesKnownInBand: budgetInBandCount },
         originScore: entry.origin,
         appearanceEvidenceScore: Object.assign({ value: appearancePreference || null, scoreContribution: entry.appearanceScore }, entry.appearance),
         appearanceBand: { band: entry.appearanceBand, reason: entry.appearanceReason,
@@ -12510,12 +12576,13 @@
         // mechanism that produced them. Origin now reaches Results as
         // Recommendation View state, not as a per-entry trace.
 
-        selectionReason: 'ranked ' + (index + 1) + ' of ' + scored.length + ' eligible candidates by [APPEARANCE BAND, appearance evidence, origin, availability] tuple; price ascending as final tiebreak',
+        selectionReason: 'ranked ' + (index + 1) + ' of ' + scored.length + ' eligible candidates by [BUDGET FIT, appearance band, appearance evidence, origin, availability] tuple; price ascending as final tiebreak',
       };
       return {
         product: entry.product,
         role: entry.product.spaceRole || 'balanced',
-        budgetMatched, aboveBudget, belowBudget, outsideStatedBand, appearanceMismatch,
+        budgetMatched, budgetFit: entry.budgetFit, budgetUnknownPrice,
+        aboveBudget, belowBudget, outsideStatedBand, appearanceMismatch,
         scoreTrace,
       };
     };
@@ -12547,7 +12614,13 @@
         return n;
       })(),
       budgetStated: !!band,
-      budgetApplied: !!budgetMatched,
+      /* BRIDGE PIECE 2 — budget is applied as ranking evidence whenever a band
+         is stated. It no longer narrows the pool, so `universeTotal` and the
+         ranked set are the same size and no scope sentence may imply
+         otherwise. */
+      budgetApplied: !!band,
+      budgetFiltersPool: false,
+      candidatesKnownInBand: budgetInBandCount,
       budgetKey: budgetKey || null,
     } });
     return rows;
