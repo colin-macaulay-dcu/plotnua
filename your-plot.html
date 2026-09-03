@@ -10406,6 +10406,22 @@
       electricalConfirmationState: undefined, // not exported — no reliable Atlas field identified for this yet
       irishAvailabilityConfirmationState: raw.irishAvailability === true ? 'Yes' : (raw.irishAvailability === false ? 'No' : undefined),
       availabilityStatus: raw.availabilityStatus || undefined,
+      // BRIDGE PIECE 3 — the three Piece 1 contract fields the ranking reads.
+      // Exactly the omission the PB045 and MATCH-STYLE-001 comments below
+      // describe, repeated a third time: the generator has emitted these since
+      // Piece 1, and this whitelist dropped them on the way in. So
+      // qualificationConfidence() saw undefined for every product and returned
+      // the neutral 1 for all 490, and scoreAvailabilityConfidence() could
+      // never reach its -2 branch because the flag never arrived. Piece 3
+      // would have shipped INERT: a sixth tuple slot that is constant, and a
+      // reduction that never fires. Found by the real Budget x Style matrix
+      // returning zero High Confidence products in every top twelve.
+      // Legacy fallbacks carry none of these, so the tier stays undefined
+      // (neutral 1, never Limited Evidence) and the route flag resolves false
+      // — the ordinary existing behaviour.
+      qualificationTier: raw.qualificationTier || undefined,
+      qualificationCaveats: Array.isArray(raw.qualificationCaveats) ? raw.qualificationCaveats : undefined,
+      noPublishedIrishRoute: raw.noPublishedIrishRoute === true,
       verificationStatus: raw.verificationStatus || undefined,
       floorAreaConfidence: hasValidArea(raw.floorAreaM2) ? 'confirmed' : undefined,
       // PB-020A2: structured origin evidence, passed through untouched.
@@ -11484,14 +11500,63 @@
   // PROPERTY BRAIN ACTIVATION (v4.3) — SECTION 5: availability confidence
   // as a soft modifier, not a hard filter. Unknown availability reduces
   // confidence slightly; it does not exclude the product.
+  /* BRIDGE PIECE 3 — IRISH AVAILABILITY CONFIDENCE.
+
+     Three states, and not one of them removes a product:
+
+       +1  confirmed available in the Republic of Ireland
+       -1  unknown or unconfirmed
+       -2  no published Irish route — the supplier's published delivery
+           information currently covers the UK only
+
+     -2 is a STRONGER REDUCTION, never an exclusion, and never a claim that
+     the product is unavailable. It is read from the explicit generated
+     contract field, never inferred from prose in the browser.
+
+     THE FOURTH STATE IS GONE. This previously returned 0 for "no strong
+     signal either way", which sat between confirmed and unknown. The ruling
+     names three states, and a product Atlas holds nothing about IS unknown.
+     Measured before making the change: all 37 products in the live
+     recommendation-universe-v1.json carry no availability evidence at all, so
+     every one of them moves 0 -> -1 together and the order within the live
+     pool cannot change. */
   function scoreAvailabilityConfidence(product){
+    if (product && product.noPublishedIrishRoute === true) {
+      return { modifier: -2, state: 'no-published-irish-route',
+        reason: 'Irish availability not established \u2014 the supplier\u2019s published delivery information currently covers the UK only',
+        evidenceField: 'noPublishedIrishRoute' };
+    }
     if (product.irishAvailabilityConfirmationState === 'Yes' || product.availabilityStatus === 'Available to Order') {
-      return { modifier: 1, reason: 'confirmed available', evidenceField: product.irishAvailabilityConfirmationState === 'Yes' ? 'irishAvailabilityConfirmationState' : 'availabilityStatus' };
+      return { modifier: 1, state: 'confirmed', reason: 'confirmed available', evidenceField: product.irishAvailabilityConfirmationState === 'Yes' ? 'irishAvailabilityConfirmationState' : 'availabilityStatus' };
     }
-    if (product.availabilityStatus === 'Unknown' && !product.irishAvailabilityConfirmationState) {
-      return { modifier: -1, reason: 'availability unknown — confidence reduced, not excluded', evidenceField: 'availabilityStatus' };
+    /* Qualification v1 hard-excludes these upstream, so nothing in the
+       eligible universe reaches here today. Named rather than left to fall
+       through silently, so the state is legible if it ever does. */
+    if (product.irishAvailabilityConfirmationState === 'No') {
+      return { modifier: -2, state: 'unavailable',
+        reason: 'confirmed unavailable in the Republic of Ireland',
+        evidenceField: 'irishAvailabilityConfirmationState' };
     }
-    return { modifier: 0, reason: 'no strong availability signal either way', evidenceField: null };
+    return { modifier: -1, state: 'unknown',
+      reason: 'Irish availability not yet confirmed \u2014 confidence reduced, not excluded',
+      evidenceField: 'irishAvailabilityConfirmationState' };
+  }
+
+  /* BRIDGE PIECE 3 — QUALIFICATION CONFIDENCE.
+
+     HIGH_CONFIDENCE 2 · WITH_CAVEAT 1 · LIMITED_EVIDENCE 0.
+
+     ABSENT scores 1, the same as WITH_CAVEAT and deliberately NOT 0. The
+     live 37-product and 47-product fallbacks predate Qualification v1 and
+     carry no tier at all; scoring them 0 would classify them as weak on the
+     strength of a field they never had, which is precisely the mistake this
+     programme exists to stop. Missing evidence is neutral. */
+  function qualificationConfidence(product){
+    var tier = product ? product.qualificationTier : null;
+    if (tier === 'HIGH_CONFIDENCE') return 2;
+    if (tier === 'WITH_CAVEAT') return 1;
+    if (tier === 'LIMITED_EVIDENCE') return 0;
+    return 1;
   }
 
   // PROPERTY BRAIN ACTIVATION (v4.3) — SECTION 1: the structured
@@ -12426,15 +12491,19 @@
          every other signal. With no band stated it is 1 for everyone and
          separates nothing. */
       const budget = budgetFit(p, band);
+      /* BRIDGE PIECE 3 — the LAST slot. Qualification separates candidates
+         that are otherwise identical and can never outrank budget fit, style
+         fit, appearance evidence, origin or availability. */
+      const qualification = qualificationConfidence(p);
       return {
         product: p, buying, space, usage, appearance, appearanceScore, origin, availability,
-        budgetFit: budget,
+        budgetFit: budget, qualificationConfidence: qualification,
         appearanceBand: banded.band, appearanceClass: banded.classification,
         appearanceReason: appearanceBandReason(p, appearancePreference),
         // DISCOVERY v1.0 — four slots, not seven. The removed three were
         // always zero for every candidate, so they never separated anything;
         // the surviving four keep their exact relative order.
-        tuple: [budget, banded.band, appearanceScore, origin.score, availability.modifier],
+        tuple: [budget, banded.band, appearanceScore, origin.score, availability.modifier, qualification],
       };
     }
 
@@ -12566,6 +12635,20 @@
           classification: entry.appearanceClass.appearance, confidence: entry.appearanceClass.confidence,
           modernScore: entry.appearanceClass.modernScore, traditionalScore: entry.appearanceClass.traditionalScore },
         availabilityConfidence: entry.availability,
+        /* BRIDGE PIECE 3 — explanatory state only. Nothing renders these
+           yet; homeowner-facing presentation is a later step. They are
+           recorded so the trace can say what the ranking actually used. */
+        qualification: {
+          tier: entry.product.qualificationTier || null,
+          confidence: entry.qualificationConfidence,
+          tierStated: !!entry.product.qualificationTier,
+          caveats: Array.isArray(entry.product.qualificationCaveats) ? entry.product.qualificationCaveats : [],
+        },
+        irishAvailability: {
+          state: entry.availability.state || null,
+          confirmationState: entry.product.irishAvailabilityConfirmationState || null,
+          noPublishedIrishRoute: entry.product.noPublishedIrishRoute === true,
+        },
         specificationEvidence: specificationScore(entry.product).notes,
         missingEvidence: [
           appearancePreference && !entry.appearance.matched ? ('no ' + appearancePreference + ' appearance evidence found for this product') : null,
@@ -12576,12 +12659,14 @@
         // mechanism that produced them. Origin now reaches Results as
         // Recommendation View state, not as a per-entry trace.
 
-        selectionReason: 'ranked ' + (index + 1) + ' of ' + scored.length + ' eligible candidates by [BUDGET FIT, appearance band, appearance evidence, origin, availability] tuple; price ascending as final tiebreak',
+        selectionReason: 'ranked ' + (index + 1) + ' of ' + scored.length + ' eligible candidates by [BUDGET FIT, appearance band, appearance evidence, origin, availability, qualification confidence] tuple; price ascending as final tiebreak',
       };
       return {
         product: entry.product,
         role: entry.product.spaceRole || 'balanced',
         budgetMatched, budgetFit: entry.budgetFit, budgetUnknownPrice,
+        qualificationConfidence: entry.qualificationConfidence,
+        availabilityState: entry.availability.state || null,
         aboveBudget, belowBudget, outsideStatedBand, appearanceMismatch,
         scoreTrace,
       };
