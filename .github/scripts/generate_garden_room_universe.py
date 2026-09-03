@@ -39,12 +39,20 @@ WHY IRISH AVAILABILITY IS PARSED FROM TEXT, AND WHY THAT IS FLAGGED
         "AVAILABILITY UNKNOWN. No supplier-attributable delivery coverage…"
         "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer…"
 
-    So this script reads Confirmation State FIRST where it exists, and falls
-    back to a strict prefix match on Value Text. Any lead phrase not in the
-    vocabulary below resolves to UNKNOWN — never to unavailable — and is
-    counted in unclassifiedIrishAvailabilityCount so the blind spot is visible
-    rather than silent. Fixing the underlying field is Atlas work, not
-    qualification work, and is reported rather than papered over.
+    ORDER OF EVIDENCE (revised by the 3 September diagnostic). A POSITIVE
+    Confirmation State is decisive. Otherwise Value Text is read first, and a
+    legacy negative Confirmation State is honoured only where the text
+    explicitly establishes that the Republic cannot be served. Reading the
+    legacy flag first is what produced the incoherence the diagnostic found:
+    six products hard-excluded on a populated checkbox while ~48 carrying the
+    same UK-ONLY prose stayed eligible because theirs was blank.
+
+    Any lead phrase not in the vocabulary below resolves to UNKNOWN — never to
+    unavailable — and is counted in unclassifiedIrishAvailabilityCount so the
+    blind spot is visible rather than silent. UK-only coverage resolves to
+    UNKNOWN carrying `noPublishedIrishRoute`. Fixing the underlying field is
+    Atlas work, not qualification work, and is reported rather than papered
+    over.
 
 Standard library only, matching .github/scripts/atlas_stats.py.
 """
@@ -134,6 +142,11 @@ IE_CONFIRMED = (
     "AVAILABLE ACROSS IRELAND",
     "AVAILABLE IN IRELAND",
     "AVAILABLE IN THE REPUBLIC OF IRELAND",
+    # FIX 1. Atlas writes this WITHOUT the definite article, and the original
+    # vocabulary carried it with. "AVAILABLE IN IRELAND" does not rescue the
+    # case either: after "AVAILABLE IN " comes REPUBLIC, not IRELAND. One
+    # missing word was resolving ~160 explicitly-positive products to UNKNOWN.
+    "AVAILABLE IN REPUBLIC OF IRELAND",
     "REPUBLIC OF IRELAND CONFIRMED",
     "IRISH AVAILABILITY CONFIRMED",
     "SUPPLIES IRELAND",
@@ -151,6 +164,24 @@ IE_UNKNOWN = (
     "REPUBLIC OF IRELAND UNCONFIRMED",
     "IRISH AVAILABILITY UNKNOWN",
     "UNCONFIRMED",
+)
+
+# FIX 2 — NO PUBLISHED IRISH ROUTE.
+# The supplier's published delivery evidence covers the UK only. Atlas itself
+# draws this distinction: on Quick-Garden it reasons that a supplier which
+# "does not exclude Ireland, it simply says nothing about it" is UNCONFIRMED
+# rather than restricted. UK ONLY goes further than silence — it is a
+# published coverage boundary — but it still does not establish that an Irish
+# homeowner could never obtain the product.
+#
+# So this is NOT a hard blocker and NOT `unavailable`. It resolves to UNKNOWN
+# carrying an explicit signal, which keeps the product eligible while making
+# High Confidence unreachable for it.
+IE_NO_PUBLISHED_ROUTE = (
+    "UK ONLY",
+    "UNITED KINGDOM ONLY",
+    "GB ONLY",
+    "MAINLAND UK ONLY",
 )
 
 # A contradiction is only a hard blocker when Atlas has RECORDED one. These are
@@ -249,42 +280,76 @@ def txt(v) -> str:
 
 # ── qualification ────────────────────────────────────────────────────────────
 def classify_irish_availability(feat_rows: list) -> tuple:
-    """(state, basis, scope, classified) — state is confirmed|unknown|unavailable.
+    """(state, basis, scope, classified, no_route) for Irish availability.
 
-    Confirmation State wins when populated: it is the field the schema intends,
-    and its own description forbids treating Unknown as No. Value Text is the
-    documented fallback. `classified` is False when a lead phrase was present
-    but matched no vocabulary — that product still resolves to UNKNOWN, and the
-    caller counts it so the parser's blind spots are visible rather than
-    silently becoming verdicts."""
+    state is confirmed | unknown | unavailable. `no_route` marks the
+    no-published-irish-route case, which is a kind of UNKNOWN, never a kind of
+    unavailable. `classified` is False when a lead phrase was present but
+    matched no vocabulary — that product still resolves to UNKNOWN, and the
+    caller counts it so the parser's blind spots stay visible.
+
+    ORDER OF EVIDENCE, AND WHY IT CHANGED.
+
+    The first version read Confirmation State first and returned immediately
+    on a legacy `No`. That produced the incoherence the diagnostic found: six
+    products hard-excluded on a legacy checkbox while ~48 carrying the same
+    UK-ONLY prose stayed eligible, because their checkbox was blank.
+
+    A legacy `No` is now a CANDIDATE for unavailable, not a verdict. It is
+    honoured only when the accompanying text explicitly establishes that the
+    Republic cannot be served. Where the text says only that coverage is UK
+    ONLY, the product is UNKNOWN + no-published-irish-route. Where there is no
+    text at all, a bare legacy `No` is not explicit evidence of anything and
+    resolves to UNKNOWN.
+
+    UNAVAILABLE is reserved for evidence that says so in terms.
+    """
     best = ("unknown", "no irish-availability evidence recorded", None)
     classified = True
+    no_route = False
+    legacy_no = None                      # a bare `No`, pending corroboration
+
     for row in feat_rows:
         scope = cell(row, "Evidence Scope")
         conf = txt(cell(row, "Confirmation State"))
-        if conf:
-            c = conf.lower()
-            if c.startswith("yes"):
-                return ("confirmed", f"Confirmation State: {conf}", scope, True)
-            if c == "no":
-                return ("unavailable", f"Confirmation State: {conf}", scope, True)
-            if c == "unknown":
-                best = ("unknown", f"Confirmation State: {conf}", scope)
-                continue
         body = txt(cell(row, "Value Text"))
-        if not body:
-            continue
         head = body.upper()
-        if any(head.startswith(p) for p in IE_UNAVAILABLE):
-            return ("unavailable", body[:200], scope, True)
-        if any(head.startswith(p) for p in IE_CONFIRMED):
-            return ("confirmed", body[:200], scope, True)
-        if any(head.startswith(p) for p in IE_UNKNOWN):
+
+        # A positive Confirmation State is still decisive: it is an explicit
+        # statement, and nothing in the ruling weakens it.
+        if conf and conf.lower().startswith("yes"):
+            return ("confirmed", f"Confirmation State: {conf}", scope, True, False)
+
+        # Text is now read before a negative Confirmation State is honoured.
+        if body:
+            if any(head.startswith(p) for p in IE_UNAVAILABLE):
+                return ("unavailable", body[:200], scope, True, False)
+            if any(head.startswith(p) for p in IE_CONFIRMED):
+                return ("confirmed", body[:200], scope, True, False)
+            if any(head.startswith(p) for p in IE_NO_PUBLISHED_ROUTE):
+                no_route = True
+                best = ("unknown", body[:200], scope)
+                continue
+            if any(head.startswith(p) for p in IE_UNKNOWN):
+                best = ("unknown", body[:200], scope)
+                continue
+            classified = False
             best = ("unknown", body[:200], scope)
             continue
-        classified = False
-        best = ("unknown", body[:200], scope)
-    return best + (classified,)
+
+        if conf:
+            c = conf.lower()
+            if c == "no":
+                legacy_no = (f"Confirmation State: {conf} (no accompanying evidence text)", scope)
+            elif c == "unknown":
+                best = ("unknown", f"Confirmation State: {conf}", scope)
+
+    # A legacy `No` that nothing corroborates is not explicit evidence of
+    # unavailability. It lowers nothing and excludes nothing.
+    if legacy_no and best[1] == "no irish-availability evidence recorded":
+        best = ("unknown", legacy_no[0], legacy_no[1])
+
+    return best + (classified, no_route)
 
 
 def usable_price(price_rows: list) -> tuple:
@@ -323,7 +388,7 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows) -> dict:
     org_names = [orgs.get(i, {}).get("name", "") for i in org_ids]
     url = txt(cell(product, "Product URL"))
     sources_text = txt(cell(product, "    Sources"))
-    ie_state, ie_basis, ie_scope, ie_classified = classify_irish_availability(feat_rows)
+    ie_state, ie_basis, ie_scope, ie_classified, ie_no_route = classify_irish_availability(feat_rows)
     price_state, price_rec = usable_price(price_rows)
     contradiction = has_contradiction(product, feat_rows, price_rows)
 
@@ -361,6 +426,8 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows) -> dict:
         "irishAvailabilityBasis": ie_basis,
         "irishAvailabilityScope": ie_scope,
         "irishAvailabilityClassified": ie_classified,
+        # FIX 2 — a kind of UNKNOWN, never a kind of unavailable.
+        "noPublishedIrishRoute": ie_no_route,
         "price": price_state,
         "source": source_level,
         "supplierAttribution": "confirmed" if org_ids else "unresolved",
@@ -382,7 +449,10 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows) -> dict:
 
     # ---- caveats: material but never blocking ----
     caveats, reasons = [], []
-    if ie_state == "unknown":
+    if ie_state == "unknown" and ie_no_route:
+        caveats.append("Irish availability not established \u2014 the supplier's published "
+                       "delivery information currently covers the UK only.")
+    elif ie_state == "unknown":
         caveats.append("Irish availability is not yet confirmed. Nothing establishes it is unavailable.")
     else:
         reasons.append("Irish availability is confirmed by recorded evidence.")
@@ -411,7 +481,18 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows) -> dict:
     if (ie_state == "confirmed" and price_state in ("verified", "present-unverified")
             and source_level in ("product-level", "supplier-level") and strong_identity):
         tier, status = "HIGH_CONFIDENCE", "ELIGIBLE — HIGH CONFIDENCE"
-    elif price_state == "missing" and source_level in ("range-level", "missing"):
+    elif source_level == "missing":
+        # FIX 3 — LIMITED EVIDENCE means the product evidence itself is weak,
+        # not that a price is absent. Price uncertainty and evidence
+        # confidence are separate concepts: a well-sourced product with no
+        # published price is WITH CAVEAT, and says so.
+        #
+        # The remaining evidence-based distinction available from the current
+        # structured data is whether Atlas holds ANY usable source for the
+        # product at any scope — no Product URL, no Sources text, no
+        # product-specific price evidence and no recorded evidence scope. If
+        # that population turns out to be empty, it stays empty. A tier is not
+        # filled to make a distribution look balanced.
         tier, status = "LIMITED_EVIDENCE", "ELIGIBLE — LIMITED EVIDENCE"
     else:
         tier, status = "WITH_CAVEAT", "ELIGIBLE — WITH CAVEAT"
@@ -513,6 +594,7 @@ def main():
 
     emitted, excluded = [], []
     unclassified_ie = 0
+    no_route_count = 0
     for p in sorted(garden, key=lambda r: (txt(cell(r, "Product Name")), r["id"])):
         pid = p["id"]
         fv = by_product["featureValues"].get(pid, [])
@@ -522,6 +604,8 @@ def main():
                     by_product["availability"].get(pid, []), ie_rows)
         if not q["evidenceSignals"]["irishAvailabilityClassified"]:
             unclassified_ie += 1
+        if q["evidenceSignals"].get("noPublishedIrishRoute"):
+            no_route_count += 1
 
         rec = {
             "productId": pid,
@@ -589,6 +673,7 @@ def main():
         "unknownIrishAvailabilityCount": ie["unknown"],
         "confirmedUnavailableCount": ie["unavailable"],
         "unclassifiedIrishAvailabilityCount": unclassified_ie,
+        "noPublishedIrishRouteCount": no_route_count,
         "missingPriceCount": sum(1 for e in emitted
                                  if e["qualification"]["evidenceSignals"]["price"] == "missing"),
         "missingProductUrlCount": sum(1 for e in emitted + excluded
@@ -620,6 +705,7 @@ def main():
         f"    unknown                    {ie['unknown']:>5}",
         f"    confirmed unavailable      {ie['unavailable']:>5}",
         f"    unclassified lead phrase   {unclassified_ie:>5}   (treated as unknown)",
+        f"    no published Irish route   {no_route_count:>5}   (a kind of unknown, never unavailable)",
         "",
         f"  Missing price                 {payload['missingPriceCount']:>5}",
         f"  Missing Product URL           {payload['missingProductUrlCount']:>5}",
