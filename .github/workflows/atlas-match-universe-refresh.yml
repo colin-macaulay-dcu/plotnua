@@ -16,10 +16,8 @@
 #   fails the job loudly. There is no path that half-replaces it.
 #
 # WHY IT CANNOT LOOP.
-#   The only trigger is a button — and there is no `push` trigger, so the
-#   commit this workflow makes cannot start it again. That stays true when the
-#   schedule is added in Piece 5B: a timer cannot be triggered by a commit
-#   either.
+#   The only triggers are a timer and a button. There is no `push` trigger, so
+#   the commit this workflow makes cannot start it again.
 #
 # THE TOKEN.
 #   ${{ secrets.AIRTABLE_TOKEN }} — the same repository secret atlas-stats.yml
@@ -28,22 +26,21 @@
 #   Airtable access is read-only: the generator issues GET requests only.
 name: Atlas Match universe refresh
 
-# PIECE 5A — MANUAL ONLY, DELIBERATELY.
+# PIECE 5B — THE DAILY SCHEDULE IS ON.
 #
-# Everything below this line has been proved offline, but the generator has
-# never been exercised against live Airtable from THIS workflow. A first run
-# that publishes to production unattended would be a first run nobody watched.
-# So the first one is founder-triggered, inspected, and only then does the
-# timer go in.
+# Piece 5A ran this workflow against live Airtable by hand and the whole path
+# held: live Atlas -> frozen generator -> temporary candidate -> validator ->
+# NO CHANGE -> production untouched, no commit. 490 Garden Rooms, 490 eligible,
+# 141 High Confidence, 274 confirmed Irish availability, 48 with no published
+# Irish route. That run is why the timer is now allowed to do it unwatched.
 #
-# PIECE 5B WILL RESTORE, unchanged:
-#
-#     schedule:
-#       - cron: '15 6 * * *'      # 06:15 UTC daily
-#
-# 06:15 because Atlas statistics runs at 06:00 and the quarter-hour stagger
-# keeps two jobs off the same Airtable rate-limit window.
+# The manual trigger stays. It is how the next person reproduces a scheduled
+# run when they need to see one.
 on:
+  schedule:
+    # 06:15 UTC. Atlas statistics runs at 06:00; the quarter-hour stagger keeps
+    # two jobs off the same Airtable rate-limit window.
+    - cron: '15 6 * * *'
   workflow_dispatch:
 
 # Least privilege. The job pushes one file; it needs nothing else.
