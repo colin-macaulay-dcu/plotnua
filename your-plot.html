@@ -16855,7 +16855,16 @@
       return q.organisation === product.organisation;
     });
     if (!mine.length) return null;
-    const withPrice = mine.filter(function(q){ return q.priceBasis === 'atlas-price'; }).length;
+    /* ISSUE 005 A2 — was `q.priceBasis === 'atlas-price'`. That token has not
+       been carried by a single product since the 490 universe was connected,
+       so this counted 0 every time and the branch below told the homeowner
+       Atlas holds no published price for ANY of this maker's models. Atlas
+       holds prices for 228 products. For Shomera it said "none" beside two
+       verified published figures. */
+    const withPrice = mine.filter(function(q){
+      return typeof q.price === 'number' && isFinite(q.price)
+          && comparePriceEvidenceState(q.priceBasis) !== 'unconfirmed';
+    }).length;
     if (withPrice === 0) {
       return { state:'none', headline:'None published',
                detail:'Atlas holds no published price for any of the ' + mine.length +
@@ -16948,13 +16957,29 @@
 
     /* Pricing transparency, from priceBasis — three real states. */
     const pb = product && product.priceBasis;
-    if (pb === 'atlas-price') {
+    /* ISSUE 005 A2 — the first two branches tested 'atlas-price' and
+       'atlas-price-record-is-zero'. Neither token exists in the live universe,
+       so this row could never say "Published" for any product. It now reads
+       the real Atlas price-record status, and keeps the partial state visibly
+       distinct from the full one rather than collapsing them. */
+    const pbState = comparePriceEvidenceState(pb);
+    const pbNum = !!product && typeof product.price === 'number' && isFinite(product.price);
+    if (pbState === 'confirmed' && pbNum) {
       rows.push({ key:'pricing', label:'Published pricing', state:'reviewed',
                   value:'Published', tone:'full',
                   detail:org + ' publishes a price for this model, and Atlas holds it. ' +
                          'It is a published price, not a quotation for your site.',
                   source:'PlotNua Atlas' });
-    } else if (pb === 'atlas-price-record-is-zero') {
+    } else if (pbState === 'qualified' && pbNum) {
+      rows.push({ key:'pricing', label:'Published pricing', state:'reviewed',
+                  value:'Published, verification in progress', tone:'partial',
+                  detail:org + ' publishes a price for this model and Atlas holds it. ' +
+                         'Atlas has partly verified that record and has not finished, ' +
+                         'so treat the figure as published rather than as fully checked.',
+                  source:'PlotNua Atlas' });
+    } else if (pbNum && product.price === 0) {
+      /* A zero-value record. Reached by its value now rather than by a token
+         no product carries; every zero in the live universe is a Draft. */
       rows.push({ key:'pricing', label:'Published pricing', state:'not-published',
                   value:'Record incomplete', tone:'none',
                   detail:'Atlas holds a price record for this product but its value is zero, ' +
@@ -17035,9 +17060,14 @@
     /* Same correction as the pricing row: the strong statement stays gated on
        real provenance, but a price with unrecorded provenance is no longer
        silently dropped from the section. */
-    if (product.price && product.priceBasis && product.priceBasis !== 'atlas-price'
-        && product.priceBasis !== 'no-price-record-in-atlas') { /* zero-value record: say nothing */ }
-    else if (product.price && !product.priceBasis) {
+    /* ISSUE 005 A2 — the strong statement below was gated on 'atlas-price'
+       and therefore never appeared, while the generic statement was gated on
+       having NO provenance at all. Between them, a product with a real Atlas
+       price status got neither. Both are now driven by the same three states. */
+    const pfState = comparePriceEvidenceState(product.priceBasis);
+    const pfNum = typeof product.price === 'number' && isFinite(product.price)
+                  && product.price !== 0;   /* a zero record says nothing */
+    if (pfNum && pfState === 'unconfirmed') {
       facts.push({
         label: 'The price shown is the figure PlotNua holds for this model',
         detail: 'We are not able to show you how it was captured, so treat it as ' +
@@ -17049,12 +17079,15 @@
                   'and on any charge your bank applies.' });
       }
     }
-    if (product.priceBasis === 'atlas-price' && product.price) {
+    if (pfNum && pfState !== 'unconfirmed') {
       const cur = product.currency || 'EUR';
       facts.push({
         label: 'The price shown is ' + org + '’s own published figure',
         detail: 'Atlas holds it directly from the maker. It is not a quotation ' +
-                'for your property and it is not PlotNua’s estimate.' });
+                'for your property and it is not PlotNua’s estimate.' +
+                (pfState === 'qualified'
+                  ? ' Atlas has partly verified that price record and has not finished.'
+                  : '') });
       /* 38 of 239 products are priced in sterling. For an Irish homeowner that
          is a real and unmentioned cost variable, and it comes straight from a
          populated field. */
@@ -17405,6 +17438,11 @@
   function tpBuildCards(product, signals){
     const P = product || {};
     const org = P.organisation || 'this maker';
+    /* ISSUE 005 A2 — resolved once here and read by the Published pricing chip
+       below, so the chip's three lines cannot drift apart from one another. */
+    const pdPriceState = comparePriceEvidenceState(P.priceBasis);
+    const pdPricePublished = (typeof P.price === 'number' && isFinite(P.price)
+                              && pdPriceState !== 'unconfirmed');
     let sup = null;
     try { sup = (atlasSupplierEvidence && atlasSupplierEvidence[org] || {}).irish || null; }
     catch (e) { sup = null; }
@@ -17464,13 +17502,17 @@
         detail: { source: P.manufactureSource ? String(P.manufactureSource).replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') : src,
                   checked: when, evidence: P.manufactureEvidence || '' } },
 
+      /* ISSUE 005 A2 — all three lines tested 'atlas-price', so this chip could
+         never reach 'verified' and always claimed PlotNua lacked the maker's
+         published source, for every product in the catalogue. */
       { group:'verified', title:'Published pricing',
-        state: (P.priceBasis === 'atlas-price' && P.price != null) ? 'verified'
-             : (P.price != null ? 'assessing' : 'unassessed'),
-        value: (P.priceBasis === 'atlas-price' && P.price != null) ? 'Published by the maker' : '',
-        note:  (P.priceBasis === 'atlas-price' && P.price != null)
+        state: (pdPricePublished ? 'verified' : (P.price != null ? 'assessing' : 'unassessed')),
+        value: (pdPricePublished ? 'Published by the maker' : ''),
+        note:  (pdPriceState === 'confirmed'
                  ? 'You can compare before you ever make contact.'
-                 : 'We hold a figure but not the maker\u2019s own published source.',
+                 : pdPriceState === 'qualified'
+                   ? 'You can compare before you ever make contact. Atlas has partly verified this price record.'
+                   : 'We hold a figure but not the maker\u2019s own published source.'),
         detail: D('') },
 
       /* UX-013 — one card, not three. "Ireland delivery", "Nationwide
@@ -17613,8 +17655,13 @@
           ? ux009Address(sup.contractingEntity, org).replace(/\s*Phone.*$/i, '') : '',
         why:'A real premises, not a PO box or a landing page.' },
 
+      /* ISSUE 005 A2 — was gated on 'atlas-price' and was therefore false for
+         every product. A boolean has no room for a caveat, so it carries the
+         fact it can stand over: the maker publishes this figure. Whether Atlas
+         has finished verifying that record is stated where there is room. */
       { key:'pricing', label:'Published pricing',
-        held: product.priceBasis === 'atlas-price' && product.price != null,
+        held: typeof product.price === 'number' && isFinite(product.price)
+              && comparePriceEvidenceState(product.priceBasis) !== 'unconfirmed',
         value:'Price published openly',
         why:'You can compare before you enquire, and the number is theirs rather than ours.' },
 
@@ -17785,7 +17832,12 @@
        contracting entity; the country is the fallback, never an invention. */
     const cM    = String(sup.contractingEntity || '').match(/\bCo\.\s+[A-Z][a-z]+/);
     const place = cM ? cM[0] : madeIn;
-    const priced = (P.priceBasis === 'atlas-price' && P.price != null);
+    /* ISSUE 005 A2 — was gated on 'atlas-price', so the Published price
+       finding never appeared in the assessment for any product. Includes
+       partially verified records: the caption states the figure is the maker's
+       own rather than an Atlas estimate, and that is true of both. */
+    const priced = (typeof P.price === 'number' && isFinite(P.price)
+                    && comparePriceEvidenceState(P.priceBasis) !== 'unconfirmed');
 
     /* ---- masthead. The section's single dateline. ---- */
     const mast = aaEl('div', 'aa-mast');
@@ -21336,6 +21388,29 @@
     };
   }
 
+  /* ISSUE 005 PIECE A — WHAT THE ATLAS PRICE-RECORD STATUS SUPPORTS.
+
+     `priceBasis` carries the Airtable price record's Status. Three outcomes:
+
+       'confirmed'    the figure may be reported as a published price
+       'qualified'    the figure may be reported, and the partial verification
+                      must be stated with it
+       'unconfirmed'  the figure is not reported as a published price
+
+     Compared lowercased and trimmed on purpose. The defect this replaces was a
+     vocabulary mismatch between the generator and this file; a future casing or
+     whitespace change must not be able to reopen it in silence. */
+  function comparePriceEvidenceState(basis){
+    const b = (typeof basis === 'string') ? basis.trim().toLowerCase() : '';
+    if (b === 'verified') return 'confirmed';
+    if (b === 'partially verified') return 'qualified';
+    /* Researching and Draft are work states. Active says the record is live,
+       not that the price was checked. Absent is absent. None of them is
+       evidence of a published price, and none of them is a denial that one
+       exists — which is why they resolve to the OPEN cell, not a negative. */
+    return 'unconfirmed';
+  }
+
   // The five rows, in fixed order. Order never re-sorts by state: the
   // recommendation stays left, the alternative stays right, and the five
   // field positions are stable across every comparison.
@@ -21344,18 +21419,42 @@
       key: 'price', label: 'Published price',
       resolve: function(p){
         if (!p) return pnOpenCell();
-        // priceBasis is the provenance of the figure. 'atlas-price-record-is-zero'
-        // is a real Atlas state and is NOT a published price.
-        if (p.price == null || p.priceBasis !== 'atlas-price') {
+
+        /* ISSUE 005 PIECE A. This read `p.priceBasis !== 'atlas-price'`, a
+           token no product has carried since the 490 universe was connected —
+           0 of 490 — so the row was dead for all 228 priced products and the
+           same product showed a price on Results and "Not confirmed" here. */
+
+        /* An unusable figure is unknown, never zero. A string, a boolean, NaN
+           or Infinity are all coercion damage and none of them is a price. */
+        if (typeof p.price !== 'number' || !isFinite(p.price)) {
+          return pnOpenCell({ checked: !!p.priceBasis });
+        }
+
+        const evidence = comparePriceEvidenceState(p.priceBasis);
+
+        if (evidence === 'unconfirmed') {
           return pnOpenCell({
             checked: !!p.priceBasis,
-            note: p.priceBasis === 'atlas-price-record-is-zero'
+            /* Every zero-value price in the live universe carries Draft
+               status, so zero is already excluded by the rule above. The
+               explanation is kept because a zero record is a real Atlas state
+               and saying so is more use than silence. */
+            note: p.price === 0
               ? 'Atlas holds a zero-value price record for this product, which is not a published price.'
-              : null,
+              : (p.priceBasis
+                  ? 'Atlas holds a price for this product, but its price record is not verified, so it is not reported as confirmed.'
+                  : null),
           });
         }
-        return pnConfirmedCell(Number(p.price), pb046Price(p.price),
-                                    'atlas:price-basis/atlas-price', null, null);
+
+        return pnConfirmedCell(
+          Number(p.price), pb046Price(p.price),
+          'atlas:price-basis/' + String(p.priceBasis).trim().toLowerCase().replace(/\s+/g, '-'),
+          null,
+          evidence === 'qualified'
+            ? 'Atlas has partly verified this price record \u2014 the figure is as published, and the verification is not yet complete.'
+            : null);
       },
       equals: function(a, b){ return Number(a) === Number(b); },
     },
