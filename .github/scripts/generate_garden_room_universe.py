@@ -696,15 +696,64 @@ def main():
                 "includesVat": cell(pick, "Price Includes VAT"),
                 "evidenceScope": cell(pick, "Evidence Scope"),
             }
+            # ---- ISSUE 005 PIECE D2 — THE PIPE STOPS LEAKING ---------------
+            # `if key not in carried` discarded every Atlas Feature Value after
+            # the first for any key. D1 measured 396 records lost that way
+            # across the 490, before any catalogue widening.
+            #
+            # features[key] KEEPS ITS EXACT SHAPE. Every consumer reads a single
+            # object — atlasFeatureRead() and pnVatPosition() in your-plot.html,
+            # feature_text() and feature_m2() here, and the i5b/i5c guards — and
+            # all of them read .text/.number/.unit. An array would make .text
+            # undefined and silently empty the whole C-C3 evidence architecture
+            # instead of failing loudly, so the array was rejected on evidence.
+            #
+            # The complete set is carried alongside, in `records`, and ONLY where
+            # Atlas actually holds more than one. Single-record keys are
+            # unchanged apart from truth metadata Atlas genuinely has.
+            #
+            # PRIMARY SELECTION IS UNCHANGED, DELIBERATELY. Nine Garden Rooms
+            # have a numeric "Floor Area" record contradicting an "Internal
+            # Floor Area" record that says NO AREA PUBLISHED, NOTHING ESTIMATED.
+            # Preferring the number would hand each of them an area, move
+            # ranking, and overrule a record that explicitly refuses to
+            # estimate. D2 records the conflict and leaves the decision to the
+            # founder; it does not quietly pick the prettier answer.
+            #
+            # `records` order is ARRIVAL order and carries NO precedence. Each
+            # entry carries its own evidenceScope, confirmationState and status
+            # so a consumer can adjudicate on evidence rather than on position.
             carried = {}
             for r in by_product["featureValues"].get(pid, []):
                 fname = next((features.get(i, "") for i in links(r, "Feature")), "")
                 key = FEATURES_WANTED.get(fname.lower())
-                if key and key not in carried:
-                    carried[key] = {"text": txt(cell(r, "Value Text")) or None,
-                                    "number": cell(r, "Value Number"),
-                                    "unit": cell(r, "Unit"),
-                                    "evidenceScope": cell(r, "Evidence Scope")}
+                if not key:
+                    continue
+                one = {"text": txt(cell(r, "Value Text")) or None,
+                       "number": cell(r, "Value Number"),
+                       "unit": cell(r, "Unit"),
+                       "evidenceScope": cell(r, "Evidence Scope")}
+                # Fetched by FEATVAL_FIELDS and previously thrown away. Present
+                # only where Atlas holds a value, so absent keeps meaning
+                # "Atlas holds nothing here" rather than "Atlas holds nothing".
+                conf = cell(r, "Confirmation State")
+                stat = cell(r, "Status")
+                if conf: one["confirmationState"] = conf
+                if stat: one["status"] = stat
+                one["feature"] = fname or None
+                if key not in carried:
+                    carried[key] = dict(one)          # primary: selection unchanged
+                    carried[key]["records"] = [one]
+                else:
+                    carried[key]["records"].append(one)
+
+            # A single record needs no set, and naming its Atlas feature is only
+            # useful where two aliases competed. Keeping both off the 2,446
+            # single-record keys is what holds the payload growth down.
+            for _v in carried.values():
+                if len(_v["records"]) < 2:
+                    _v.pop("records")
+                    _v.pop("feature", None)
             rec["features"] = carried
 
             # ---- BRIDGE PIECE 1 — the flat Match view -----------------------
