@@ -1869,6 +1869,56 @@
   .am-panel-title{ font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink); font-weight:700; margin-bottom:5px; }
   .am-panel-check .am-panel-title{ color:var(--terracotta); }
   .am-fact-list{ margin:0; padding-left:16px; }
+  /* ISSUE 005 PIECE C2 — THE READING HIERARCHY.
+
+     C1's list was truthful and flat: category, answer, scope and implication
+     all arrived at the same weight, so the eye had nothing to land on and the
+     panel read like a research record. These rules do the work the copy should
+     not have to — no evidence is removed to achieve it.
+
+     Bullets go: with a category label on its own line the marker is noise, and
+     removing it buys back 16px of indent, which matters at 390px. */
+  .am-fact-list{ list-style:none; padding-left:0; }
+  .am-ev{ margin:0 0 13px; }
+  .am-ev:last-child{ margin-bottom:0; }
+  .am-ev-cat{
+    display:block; font-size:10.5px; font-weight:700; letter-spacing:.09em;
+    text-transform:uppercase; opacity:.62; margin-bottom:2px;
+  }
+  .am-ev-answer{ display:block; font-size:15px; line-height:1.34; font-weight:600; }
+  .am-ev-gap{ display:block; font-size:14.5px; line-height:1.36; }
+  .am-ev-conflict{ color:var(--terracotta); }
+  /* Context, not findings: scope and qualifiers sit below the answer and
+     deliberately do not compete with it. Scope is never hidden. */
+  .am-ev-note{ display:block; font-size:12.5px; line-height:1.45; opacity:.72; margin-top:2px; }
+  .am-ev-scope{ display:block; font-size:11.5px; line-height:1.4; opacity:.55; margin-top:2px; }
+  .am-ev-means{ display:block; font-size:13px; line-height:1.5; opacity:.8; margin-top:4px; }
+  @media (max-width:560px){
+    .am-ev{ margin-bottom:15px; }
+    .am-ev-answer{ font-size:15.5px; }
+    .am-ev-means{ font-size:12.5px; }
+  }
+  /* ISSUE 005 PIECE C2 — THE MOBILE OVERLAP.
+
+     Measured, at the founder's own widths, with the pill's real rect against
+     the reading column's right edge:
+
+        390   pill [ 94,20, 370, 92]   column ends 342   overlaps
+        430   pill [134,20, 410, 92]   column ends 382   overlaps
+        768   pill [446,20, 748,106]   column ends 640   overlaps
+       1440   pill [1118,20,1420,106]  column ends 976   CLEAR by 142px
+
+     Product Detail is a full-screen overlay with its own scrolling column, so
+     a fixed pill over that column obscures whatever is scrolled under it —
+     at 390 that is 276px of a 390px screen. It is hidden there and left
+     exactly as it is on desktop, where it never reaches the column.
+
+     Nothing about the pill's markup, size, colour, position or click
+     behaviour changes anywhere else, and My Plot stays one tap away: Product
+     Detail carries its own "Back to My Plot" control. */
+  @media (max-width:768px){
+    body.pn-detail-live .my-plot-access-wrap{ display:none; }
+  }
   .am-fact-list li{ font-size:12.5px; color:var(--ink); opacity:.88; line-height:1.55; margin-bottom:3px; }
   .am-fit-note, .am-trust-line{ font-size:11.5px; color:var(--soft); line-height:1.5; margin:4px 0 0; }
   .am-progress-btn{ margin-top:10px; }
@@ -6473,6 +6523,46 @@
        measured at 390px on the "Who installs it" row. */
     padding:24px 24px 140px; text-align:left;
   }
+  /* ISSUE 005 PIECE C3 — THE BACK CONTROL STOPS COVERING THE COMPARISON.
+
+     CP-3b's 140px foot padding above reserves space at the END of the scroll.
+     It cannot help the rows that pass through the fixed .pn-return control on
+     the way there, and measurement found exactly that: at 390px the control
+     covered "Turnkey installation included" and "Atlas verification", and at
+     768px and 1200px it covered "Made in".
+
+     NOT a mobile-only defect. The shell is centred with a max width and its
+     left edge only clears the control's right edge (201px) at about 1312px —
+     so 1024 to 1280 would have stayed broken behind a mobile breakpoint. The
+     crossover was measured, not assumed:
+
+        390   shell  24.. 366   control 14..185   overlaps
+        768   shell  48.. 720   control 22..201   overlaps
+       1200   shell 145..1055   control 22..201   overlaps
+       1440   shell 265..1175   control 22..201   CLEAR by 64px
+
+     So the scroll container ENDS ABOVE the control instead of running behind
+     it. Nothing can pass underneath at any scroll offset — a guarantee padding
+     cannot give. The control itself is untouched: same markup, label, size,
+     position, colour, z-index and click behaviour. It now sits on the page
+     ground below the panel rather than on top of it.
+
+     `height` is the lever because .screen sets an explicit height:100dvh,
+     which wins over a bottom inset on a fixed element with top:0.
+
+      74px = bottom 22 + height 44 + 8 clearance (16px at <=600px, where the
+             control drops to bottom:14)
+     124px = bottom 72 + height 44 + 8, the position the control takes when the
+             3D-fallback note is showing.
+
+     `body:has(...)` rather than the sibling combinator the .pn-return rule
+     uses, because #screen-compare appears BEFORE the fallback note in the
+     document. The same pattern already handles this collision on
+     #screen-match-input and #screen-reveal. */
+  @media (max-width:1320px){
+    #screen-compare{ height:calc(100dvh - 74px); padding-bottom:32px; }
+    body:has(.pn-fallback-note.is-visible) #screen-compare{ height:calc(100dvh - 124px); }
+  }
   #screen-compare .compare-shell{
     width:100%; max-width:910px;  /* the Results measure, .match-results-panel */
     margin:0 auto;
@@ -9110,6 +9200,11 @@
        answers" on My Plot after some later refactor moves one and not the
        other. */
     document.body.classList.toggle('pn-myplot-live', el === els.myPlotScreen);
+    /* ISSUE 005 PIECE C2 — the same single-source-of-truth pattern as the line
+       above, for the one CSS rule that hides the fixed My Plot pill while
+       Product Detail is open on narrow screens. Derived from showScreen so it
+       cannot drift out of step with what is actually on screen. */
+    document.body.classList.toggle('pn-detail-live', el === els.productDetailScreen);
     {
       const rt = document.getElementById('pnReturn');
       if (rt) {
@@ -13016,7 +13111,12 @@
   // generic provider-confirmation items, so they don't get lost among them.
   function buildPrimaryWorthChecking(product, ctx){
     const items = [];
-    if (product.vatIncluded === 'unknown') items.push('VAT inclusion — not confirmed for this price.');
+    /* ISSUE 005 PIECE C1 — was `product.vatIncluded === 'unknown'`, a test
+       that never fired because the field is never exported. Now the same
+       evidence resolver every other VAT surface uses. */
+    const wcVat = pnVatPosition(product);
+    if (wcVat.state === 'disputed') items.push('VAT inclusion — Atlas holds conflicting evidence for this price.');
+    else if (wcVat.state === 'unknown') items.push('VAT inclusion — not confirmed for this price.');
     if (product.foundationRequirement === 'unknown') items.push('Foundation or base requirement — provider confirmation required.');
     if (product.heightMm === null || product.heightMm === undefined) items.push('Overall height — not yet published.');
     if (!items.length) items.push('Provider confirmation on remaining specification details.');
@@ -13962,6 +14062,474 @@
   // (My Plot's Product Detail overlay, untouched this sprint) keeps its
   // exact prior behaviour. Only the new Results in-place expansion passes
   // false.
+  /* ISSUE 005 PIECE C — READING ATLAS'S OWN WORDS.
+
+     Atlas's feature evidence is research prose written to a convention, and
+     this quotes it rather than interpreting it. Measured across all 2,353
+     records in the live universe: 84% open with a capitalised finding, 41%
+     carry HOMEOWNER IMPLICATION, 9% carry LIMITATION.
+
+     Returns { finding, meaning, limitation } — every value a verbatim slice of
+     what a researcher wrote. Nothing is summarised, derived or inferred, so
+     there is no way for this to state something Atlas did not.
+
+     THE INTERNAL LABELS ARE WITHHELD ON PURPOSE. RECORD NOTE, INTEGRITY,
+     TECHNICAL DEBT, CATALOGUE ISSUE, VOCABULARY LIMITATION and DO NOT RANK are
+     Atlas talking to itself about catalogue defects. True, and not the
+     homeowner's business. */
+  const PN_EV_LABELS = ['HOMEOWNER IMPLICATION', 'LIMITATION', 'NOT ESTABLISHED',
+    'RECORD NOTE', 'INTEGRITY', 'TECHNICAL DEBT', 'CATALOGUE ISSUE',
+    'VOCABULARY LIMITATION', 'SUPPLIER COMPLETION', 'EVIDENCE TIER',
+    'PLANNING', 'DO NOT RANK', 'NOT FOR', 'RANGE NOTE'];
+
+  function pnEvSegment(text, label){
+    const i = text.indexOf(label + ':');
+    if (i < 0) return null;
+    let cut = text.length;
+    for (let k = 0; k < PN_EV_LABELS.length; k++){
+      /* Search the BARE label, not label+':'. Measured on real records:
+         Atlas writes "TECHNICAL DEBT carried forward:" and "DO NOT RANK on any
+         basis." — the colon is not adjacent to the label, or absent. Requiring
+         it let internal notes run on into homeowner text on 3+ products. */
+      const j = text.indexOf(PN_EV_LABELS[k], i + label.length + 1);
+      if (j > -1 && j < cut) cut = j;
+    }
+    const seg = text.slice(i + label.length + 1, cut).trim();
+    return seg || null;
+  }
+
+  /* Trim to a whole word. Long research paragraphs must not break the layout,
+     and a sentence cut mid-word reads as a bug rather than as a summary. */
+  function pnEvTrim(s, max){
+    if (!s) return null;
+    const clean = String(s).replace(/\s+/g, ' ').trim();
+    if (clean.length <= max) return clean;
+    const cut = clean.slice(0, max);
+    const sp = cut.lastIndexOf(' ');
+    return (sp > max * 0.6 ? cut.slice(0, sp) : cut).replace(/[,;:\-—]$/, '') + '…';
+  }
+
+  function atlasFeatureRead(product, key){
+    const f = product && product.features && product.features[key];
+    const text = f && typeof f.text === 'string' ? f.text.trim() : '';
+    if (!text) return null;
+
+    /* THE FINDING. Atlas's own opening clause, verbatim. */
+    let finding = null;
+    const caps = text.match(/^([A-Z][A-Z0-9 ,'’\-—/&\.\(\)%]{8,160}?)\.\s/);
+    if (caps && (caps[1].match(/[A-Z]/g) || []).length >= 8) finding = caps[1].trim();
+    if (!finding) {
+      const first = text.match(/^(.{10,150}?)\.\s/);
+      if (first) finding = first[1].trim();
+    }
+    /* A short record with no terminal full stop is already a finding — e.g.
+       Shomera's glazing, "Upgraded timber Alu-Clad windows/doors from
+       Rationel, double-glazed". Measured: this is the only remaining shape. */
+    if (!finding && text.length <= 150) finding = text.replace(/\.$/, '');
+
+    /* WITHHOLD, DO NOT SALVAGE.
+
+       Measured: 264 records embed an internal directive INSIDE the opening
+       finding — "VERIFIED EXTERNAL FOOTPRINT — DO NOT RANK ON INTERNAL AREA",
+       "VERIFIED INTERNAL FLOOR AREA — measurement verified, but DO NOT RANK as
+       a Garden Room". That is Atlas instructing its own ranker, not a sentence
+       written for a homeowner.
+
+       I could truncate at Atlas's em-dash and keep the clean half. I am not
+       going to: choosing where an instruction stops and a fact starts is
+       exactly the derivation this Piece refuses. The finding is dropped whole.
+       Any HOMEOWNER IMPLICATION on the same record still shows, because a
+       researcher wrote that one for the homeowner deliberately. */
+    if (finding) {
+      for (let k = 0; k < PN_EV_LABELS.length; k++){
+        if (finding.indexOf(PN_EV_LABELS[k]) > -1) { finding = null; break; }
+      }
+    }
+
+    const meaning = pnEvTrim(pnEvSegment(text, 'HOMEOWNER IMPLICATION'), 260);
+    const limitation = pnEvTrim(
+      pnEvSegment(text, 'LIMITATION') || pnEvSegment(text, 'NOT ESTABLISHED'), 200);
+
+    if (!finding && !meaning && !limitation) return null;
+    return {
+      finding: pnEvTrim(finding, 150),
+      meaning: meaning,
+      limitation: limitation,
+      scope: (f && f.evidenceScope) || null,
+    };
+  }
+
+  /* A finding sized for a table cell. 5% of findings run past 72 characters;
+     for those the clause before Atlas's own em-dash or semicolon is used —
+     still Atlas's words, never a paraphrase. */
+  function atlasFeatureShort(read, max){
+    if (!read || !read.finding) return null;
+    const cap = max || 72;
+    if (read.finding.length <= cap) return read.finding;
+    const split = read.finding.split(/\s[—–-]\s|;\s/)[0].trim();
+    return split.length <= cap ? split : pnEvTrim(read.finding, cap);
+  }
+
+  /* NO CASE TRANSFORMATION, DELIBERATELY.
+
+     I built a sentence-caser for Atlas's shouted findings and tested it. It
+     corrupted a proper noun on the founder's own acceptance product:
+     "AVAILABLE IN REPUBLIC OF IRELAND" came back as "Available in republic of
+     ireland". Recovering which words were proper nouns from upper-cased text
+     is not possible without a dictionary, and a dictionary of Irish place
+     names, supplier names and product ranges would be one more thing to be
+     wrong about — on a page whose whole promise is not being wrong.
+
+     So the finding is quoted VERBATIM. If Atlas emphasised it, the emphasis is
+     Atlas's. Mangling a country's name to soften a shout is a worse fault than
+     the shout. Case can be softened in CSS later without touching the text. */
+
+  /* ISSUE 005 PIECE C1 — THE RECONCILIATION LAYER.
+
+     Piece C showed the researched evidence beside the flat-field summary and
+     they disagreed on 451 of 490 products. This resolves the precedence once,
+     here, so every surface downstream reads one answer. See the builder
+     docstring for the full model; in short:
+
+       a deferral is not a fact         -> never resolves an unknown
+       a determination beats an ABSENT  -> the record is shown
+       a determination never overrides a contradictory POSITIVE fact
+       scope is always stated           -> range/supplier evidence says so
+
+     Measured on the live universe, not assumed. */
+
+  /* The deferral vocabulary, read off the real records. A finding matching
+     this states no fact, however confidently it is capitalised. */
+  const PN_DEFER_RE = /(REQUIRES\s+[A-Z-]*\s*VERIFICATION|NOT\s+PUBLISHED|NOT\s+DETERMINED|NO\s+AREA\s+PUBLISHED|BASIS\s+UNCLEAR|UNCONFIRMED|UNKNOWN|SPECIFICATION-DEPENDENT|NOT\s+ESTABLISHED|NOT\s+YET\s+VERIFIED)/i;
+
+  /* Findings that assert the NEGATIVE of what the flat field asserts. Only
+     these two categories have a flat field capable of contradiction. */
+  const PN_NEGATIVE_RE = {
+    insulationRating: /^(UNINSULATED|NOT\s+INSULATED|THREE-SEASON)/i,
+    insulation:       /^(UNINSULATED|NOT\s+INSULATED|THREE-SEASON)/i,
+    irishAvailability:/^(UK\s+ONLY|INTERNATIONAL\s+SHIPPING)/i,
+  };
+
+  /* ISSUE 005 PIECE C2 — THE CLOSED-VOCABULARY LABEL MAP.
+
+     Atlas's classifications are shouted because they are internal taxonomy
+     tokens. This turns them into homeowner sentences — but ONLY by exact
+     string or exact prefix, never by transformation.
+
+     Piece C already proved what algorithmic casing does: it turned "AVAILABLE
+     IN REPUBLIC OF IRELAND" into "Available in republic of ireland" and
+     corrupted a country's name. Nothing here rewrites arbitrary prose. Every
+     entry below is a value measured in the live universe and written out by
+     hand, so the whole mapping is reviewable in one screen.
+
+     A value that is not in this table FALLS THROUGH TO ITSELF, unchanged. */
+
+  /* INSTALLATION — 22 distinct values, 435 rows, all of them shouted. */
+  const PN_LABEL_INSTALL = {
+    'TURNKEY INSTALLATION INCLUDED': ['Turnkey installation included', null],
+    'DIY OR INSTALLED': ['DIY or installed', null],
+    'DIY KIT ONLY': ['DIY kit only', null],
+    'SUPPLY-ONLY KIT WITH DELIVERY INCLUDED': ['Supply-only kit, delivery included', null],
+    'INSTALLATION AVAILABLE (OPTIONAL)': ['Installation available as an option', null],
+    'SUPPLY AND FIT \u2014 INSTALLATION INCLUDED IN THE PUBLISHED PRICE':
+      ['Supply and fit', 'Installation included in the published price'],
+    'DIY OR INSTALLED \u2014 INSTALLATION IS THE DEFAULT AND IS FREE':
+      ['DIY or installed', 'Installation is the default and is free'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS INSIDE THE PRICE':
+      ['Turnkey installation included', 'Foundations inside the price'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND VAT INSIDE THE PRICE':
+      ['Turnkey installation included', 'Foundations and VAT inside the price'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 WITHIN ENGLAND':
+      ['Turnkey installation included', 'Within England'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 UNIT ONLY, FOUNDATION EXCLUDED':
+      ['Turnkey installation included', 'Unit only \u2014 foundation excluded'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 BUILDING ONLY, THREE EXCLUSIONS':
+      ['Turnkey installation included', 'Building only \u2014 three exclusions'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SERVICES INSIDE THE SCOPE':
+      ['Turnkey installation included', 'Foundations and services inside the scope'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATION, DELIVERY AND CRANE INSIDE THE PRICE':
+      ['Turnkey installation included', 'Foundation, delivery and crane inside the price'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS INSIDE THE SCOPE':
+      ['Turnkey installation included', 'Foundations inside the scope'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 STRUCTURE ONLY, BASE AND INTERIOR EXCLUDED':
+      ['Turnkey installation included', 'Structure only \u2014 base and interior excluded'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION AND CONNECTIONS COORDINATED':
+      ['Turnkey installation included', 'Site preparation and connections coordinated'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 GROUND PREPARATION EXCLUDED':
+      ['Turnkey installation included', 'Ground preparation excluded'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 BUILDING ONLY, SITE PREPARATION EXCLUDED':
+      ['Turnkey installation included', 'Building only \u2014 site preparation excluded'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS TO ELECTRICS AT A FIXED PRICE':
+      ['Turnkey installation included', 'Foundations to electrics at a fixed price'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SITE WORKS PRICED SEPARATELY':
+      ['Turnkey installation included', 'Foundations and site works priced separately'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION INSIDE THE SCOPE':
+      ['Turnkey installation included', 'Site preparation inside the scope'],
+  };
+
+  /* YEAR-ROUND USE — 8 distinct values, 329 rows.
+     "Insulated" is the flat field's own word and is already readable, so it is
+     listed for completeness and maps to itself. */
+  const PN_LABEL_THERMAL = {
+    'YEAR-ROUND INSULATED': ['Insulated for year-round use', null],
+    'UNINSULATED': ['Not insulated', null],
+    'Insulated': ['Insulated', null],
+    'THREE-SEASON': ['Three-season use, not year-round', null],
+    'YEAR-ROUND USE SUPPORTED BY PUBLISHED U-VALUES':
+      ['Year-round use, supported by published U-values', null],
+    'YEAR-ROUND INSULATED \u2014 BUT NOT TO HABITABLE-ROOM STANDARD':
+      ['Insulated for year-round use', 'Not to habitable-room standard'],
+    'YEAR-ROUND INSULATED \u2014 AND THE ONLY SPECIFICATION IN THIS LAYER WITH PUBLISHED U-VALUES':
+      ['Insulated for year-round use', 'The only specification here with a published U-value'],
+    'YEAR-ROUND INSULATED \u2014 AND THE MOST COMPLETELY SPECIFIED ENVELOPE IN THE CATALOGUE':
+      ['Insulated for year-round use', 'The most completely specified envelope in the catalogue'],
+  };
+
+  /* IRISH AVAILABILITY — 4 shouted values plus a UK ONLY family whose tails
+     are free prose. The tail is kept verbatim as context, never paraphrased. */
+  const PN_LABEL_IRISH = {
+    'AVAILABLE IN REPUBLIC OF IRELAND': ['Available in the Republic of Ireland', null],
+    'AVAILABLE ACROSS IRELAND': ['Available across Ireland', null],
+    'AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY':
+      ['Available in Ireland', 'Irish trading entity'],
+    'AVAILABLE IN IRELAND \u2014 IRISH MANUFACTURER':
+      ['Available in Ireland', 'Irish manufacturer'],
+    'INTERNATIONAL SHIPPING ONLY': ['International shipping only', null],
+    'Confirmed': ['Confirmed', null],
+  };
+
+  /* FLOOR AREA — 129 distinct values, but they grow from six stable prefixes
+     and the tails are one-offs. The prefix is mapped; the tail is preserved
+     verbatim rather than summarised, because summarising 30 one-off clauses is
+     exactly the invention this Piece refuses. */
+  /* The floor-area tails are themselves a closed set of 14, measured. Two of
+     them are Atlas instructing its own ranker, not homeowner content, and are
+     WITHHELD — the same judgement Piece C made for DO NOT RANK. The rest are
+     mapped; nothing is paraphrased beyond case and punctuation. */
+  const PN_AREA_TAIL_WITHHOLD = /^SAFE TO RANK/i;
+  const PN_AREA_TAIL = {
+    'FOUR VARIANTS': 'Four variants',
+    'FOUR VARIANTS, WALL THICKNESS VARIABLE': 'Four variants, wall thickness variable',
+    'WITH A PUBLISHED CONVERSION RULE': 'With a published conversion rule',
+    'SINGLE DIMENSION ONLY': 'Single dimension only',
+    'COMBINED UNIT': 'Combined unit',
+    'COMBINED ROOM, SHED AND PORCH': 'Combined room, shed and porch',
+    'ROOM WITH SIDE SHED': 'Room with side shed',
+    'VERANDA MODEL': 'Veranda model',
+    'VERANDA MODEL, EXTERNAL FOOTPRINT MORE THAN DOUBLE THE ROOM':
+      'Veranda model — external footprint more than double the room',
+    'VERANDA MODEL, EXTERNAL FOOTPRINT NEARLY DOUBLE THE ROOM':
+      'Veranda model — external footprint nearly double the room',
+    'AND THE VERANDA QUESTION IS NOW QUANTIFIED': 'The veranda question is now quantified',
+    'THREE FIGURES IN CONFLICT': 'Three figures in conflict',
+  };
+  const PN_LABEL_AREA = [
+    ['VERIFIED INTERNAL FLOOR AREA', 'Internal floor area verified'],
+    ['VERIFIED EXTERNAL FOOTPRINT', 'External footprint verified'],
+    ['VERIFIED NOMINAL SIZE', 'Nominal size verified'],
+    ['CONFLICTING MEASUREMENTS', 'Published measurements conflict'],
+    ['PUBLISHED AREA', 'Published area'],
+    ['NOT A FLOOR-AREA PRODUCT', 'Not a floor-area product'],
+  ];
+
+  /* Split "HEAD \u2014 tail" once, so an unmapped tail can still be shown as
+     Atlas wrote it instead of being dropped. */
+  function pnSplitTail(s){
+    const i = s.indexOf(' \u2014 ');
+    if (i < 0) return [s, null];
+    return [s.slice(0, i), s.slice(i + 3)];
+  }
+
+  /* THE ONE ENTRY POINT. Returns { answer, note } — answer is what the
+     homeowner reads first, note is quiet context. Anything unmapped returns
+     the statement unchanged with no note. */
+  function pnHomeownerLabel(label, statement){
+    if (typeof statement !== 'string' || !statement) return { answer: statement, note: null };
+    const s = statement.trim();
+
+    if (label === 'Installation' && PN_LABEL_INSTALL[s])
+      return { answer: PN_LABEL_INSTALL[s][0], note: PN_LABEL_INSTALL[s][1] };
+    if (label === 'Year-round use' && PN_LABEL_THERMAL[s])
+      return { answer: PN_LABEL_THERMAL[s][0], note: PN_LABEL_THERMAL[s][1] };
+    if (label === 'Irish availability'){
+      if (PN_LABEL_IRISH[s]) return { answer: PN_LABEL_IRISH[s][0], note: PN_LABEL_IRISH[s][1] };
+      /* "UK ONLY. <free prose>" — 32 products, every tail different. */
+      const m = s.match(/^UK ONLY\.\s*(.*)$/i);
+      if (m) return { answer: 'United Kingdom only', note: m[1] ? m[1].replace(/\.$/, '') : null };
+    }
+    if (label === 'Floor area'){
+      /* A published number is the most useful answer there is; keep it. */
+      const num = s.match(/^VERIFIED (INTERNAL FLOOR AREA|EXTERNAL FOOTPRINT):\s*([\d.]+)\s*m2/i);
+      if (num) return { answer: num[2] + ' m\u00B2',
+        note: /INTERNAL/i.test(num[1]) ? 'Verified internal floor area' : 'Verified external footprint' };
+      const parts = pnSplitTail(s);
+      for (let i = 0; i < PN_LABEL_AREA.length; i++){
+        if (parts[0].toUpperCase().indexOf(PN_LABEL_AREA[i][0]) === 0){
+          let tail = parts[1];
+          if (tail && PN_AREA_TAIL_WITHHOLD.test(tail)) tail = null;
+          else if (tail && PN_AREA_TAIL[tail]) tail = PN_AREA_TAIL[tail];
+          return { answer: PN_LABEL_AREA[i][1], note: tail };
+        }
+      }
+    }
+    return { answer: s, note: null };
+  }
+
+  /* ONE CHARACTER, GUARDED — AND WHY THIS IS NOT THE THING THAT WAS REMOVED.
+
+     Atlas writes its implications as continuations of "HOMEOWNER IMPLICATION:",
+     so 723 of the 783 rendered begin lowercase. With the mechanical prefix
+     gone they stand alone, and "winter-capable as delivered." reads as a
+     fragment rather than a sentence.
+
+     The caser Piece C removed rewrote WHOLE STRINGS and destroyed "REPUBLIC OF
+     IRELAND". This changes exactly one character at a known position, and only
+     when the first word has no internal capital — so a deliberately lowercase
+     word like uPVC or eco-grade can never be touched. Measured on the live
+     universe: 0 of 783 first words carry an internal capital, so the guard
+     costs nothing today and exists for data that has not arrived yet.
+
+     Nothing else about the sentence is altered. */
+  function pnLeadCap(s){
+    if (typeof s !== 'string' || !s) return s;
+    const first = s.split(/\s+/)[0];
+    if (/[a-z].*[A-Z]/.test(first)) return s;   // uPVC, eco-Grade: leave alone
+    const c = s.charAt(0);
+    if (c < 'a' || c > 'z') return s;           // already capital, or not a letter
+    return c.toUpperCase() + s.slice(1);
+  }
+
+  /* Scope, demoted. C1 rendered these as their own block line, where they
+     competed with the answer. Same truth, said in a suffix. */
+  function pnScopeShort(scope){
+    if (scope === 'supplier-level evidence, not this exact model') return 'supplier-level evidence, not this model';
+    if (scope === 'evidence for this range, not this exact model') return 'range-level evidence, not this model';
+    return scope || null;
+  }
+
+  function pnEvidenceState(key, read){
+    if (!read) return 'none';
+    if (!read.finding) return read.meaning ? 'stated' : 'none';
+    if (PN_DEFER_RE.test(read.finding)) return 'deferred';
+    if (PN_NEGATIVE_RE[key] && PN_NEGATIVE_RE[key].test(read.finding)) return 'negative';
+    return 'established';
+  }
+
+  /* Atlas records how far its evidence reaches. Saying so is the difference
+     between "this model is insulated" and "this range is insulated". */
+  function pnScopeNote(read){
+    const s = read && read.scope;
+    if (s === 'Organisation-Wide') return 'supplier-level evidence, not this exact model';
+    if (s === 'Range-Level') return 'evidence for this range, not this exact model';
+    return null;
+  }
+
+  /* THE ROW MODEL. Each entry pairs the researched record(s) with the flat
+     field that used to answer for that category alone. `flat` returns a
+     positive established value or null — null means "Atlas holds nothing
+     here", which is not the same as a negative and never rendered as one. */
+  const PN_KNOWS_ROWS = [
+    { label: 'Year-round use', keys: ['insulationRating', 'insulation'],
+      flat: function(p){ return p.insulation === 'yes' ? 'Insulated' : null; } },
+    { label: 'Glazing', keys: ['glazing'],
+      flat: function(p){ return (p.glazing && p.glazing !== 'unknown')
+        ? titleCase(p.glazing) + ' glazing' : null; } },
+    { label: 'Floor area', keys: ['floorArea'],
+      flat: function(p){ return hasValidArea(p.floorAreaM2) ? p.floorAreaM2 + 'm\u00B2' : null; } },
+    { label: 'Irish availability', keys: ['irishAvailability'],
+      flat: function(p){ return p.irishAvailabilityConfirmationState === 'Yes'
+        ? 'Confirmed' : null; } },
+    { label: 'Installation', keys: ['installationModel'], flat: null },
+    { label: 'Construction', keys: ['construction'], flat: null },
+    { label: 'External finish', keys: ['cladding'], flat: null },
+    { label: 'Where it is made', keys: ['countryOfManufacture'], flat: null },
+    { label: 'Design', keys: ['designLanguage'], flat: null },
+  ];
+
+  function pnReconcile(product){
+    const knows = [], checks = [];
+    PN_KNOWS_ROWS.forEach(function(row){
+      let read = null, key = null;
+      for (let i = 0; i < row.keys.length && !read; i++){
+        const r = atlasFeatureRead(product, row.keys[i]);
+        if (r) { read = r; key = row.keys[i]; }
+      }
+      const state = pnEvidenceState(key, read);
+      const flat = row.flat ? row.flat(product) : null;
+
+      /* CONFLICT — the flat field says yes, the record says no. Neither wins.
+         30 insulation cases and 2 Irish availability cases pool-wide. */
+      if (flat && state === 'negative'){
+        knows.push({ label: row.label, statement: null, conflict: {
+          a: flat, b: read.finding }, scope: pnScopeNote(read),
+          meaning: read.meaning || null });
+        if (read.limitation) checks.push({ label: row.label, text: read.limitation });
+        return;
+      }
+
+      /* The record makes a determination — show it, at its own scope. Where a
+         flat measurement also exists it leads, because a number is more use
+         to a homeowner than a classification of one. */
+      if (state === 'established' || state === 'negative' || state === 'stated'){
+        const stmt = read.finding
+          ? (flat && row.label === 'Floor area' ? flat + ' \u2014 ' + read.finding : read.finding)
+          : flat;
+        if (stmt){
+          knows.push({ label: row.label, statement: stmt, conflict: null,
+            scope: pnScopeNote(read), meaning: read.meaning || null });
+        }
+        if (read.limitation) checks.push({ label: row.label, text: read.limitation });
+        return;
+      }
+
+      /* The record defers or is absent. The flat field answers if it can. */
+      if (flat){
+        knows.push({ label: row.label, statement: flat, conflict: null,
+          scope: null, meaning: (read && read.meaning) || null });
+        if (read && read.limitation) checks.push({ label: row.label, text: read.limitation });
+        return;
+      }
+
+      /* Nothing established. This is the honest home for what used to render
+         as "Insufficient information" inside a panel headed "What Atlas
+         Knows" — a line that asserted an absence as though it were a finding. */
+      if (read && read.limitation) checks.push({ label: row.label, text: read.limitation });
+      else if (row.flat) checks.push({ label: row.label, text: 'not established' });
+    });
+    return { knows: knows, checks: checks };
+  }
+
+  /* VAT — DIAGNOSED, NEVER DECIDED.
+
+     Two Atlas layers, one figure. priceEvidence.includesVat is what the
+     pricing researcher established; the installation record is separate
+     research that sometimes states a VAT position anyway. Where they disagree
+     — or where one is silent and the other is not — the homeowner is told
+     they disagree. Piece C1 does not pick a winner. */
+  function pnVatPosition(product){
+    const pe = product.priceEvidence || {};
+    const raw = String(pe.includesVat == null ? '' : pe.includesVat).trim().toLowerCase();
+    const f = product.features && product.features.installationModel;
+    const text = (f && typeof f.text === 'string') ? f.text : '';
+    const mentions = /\bVAT\b/i.test(text);
+    const saysIn = /VAT\s+(INSIDE|INCLUDED|IS\s+INCLUDED)|INCLUSIVE\s+OF\s+VAT|INCLUDING\s+VAT|AND\s+VAT\s+ARE\s+ALL\s+IN/i.test(text);
+    const saysOut = /EX-?\s?VAT|EXCLUD\w*\s+VAT|PLUS\s+VAT|EXCLUDING\s+VAT/i.test(text);
+    const peIn = (raw === 'yes');
+    const peOut = (raw === 'no' || raw === 'excluding vat');
+    const peSilent = !peIn && !peOut;
+
+    if (mentions && ((peIn && saysOut) || (peOut && saysIn) || (peSilent && (saysIn || saysOut)))){
+      return { state: 'disputed',
+        priceRecord: peIn ? 'includes VAT' : peOut ? 'excludes VAT'
+          : 'does not establish the VAT position',
+        research: saysIn ? 'states VAT is inside the published price'
+          : 'states the published price is before VAT' };
+    }
+    if (peIn) return { state: 'included' };
+    if (peOut) return { state: 'excluded' };
+    return { state: 'unknown' };
+  }
+
   function buildProductIntelligenceEl(product, includeProgress){
     if (includeProgress === undefined) includeProgress = true;
     const wrap = document.createElement('div');
@@ -13984,21 +14552,114 @@
     atlasKnows.appendChild(akIntro);
     const akList = document.createElement('ul');
     akList.className = 'am-fact-list';
-    const facts = [
-      ['Floor area', hasValidArea(product.floorAreaM2) ? (product.floorAreaM2 + 'm² (' + (product.floorAreaConfidence === 'confirmed' ? 'Confirmed' : product.floorAreaConfidence === 'derived-estimated' ? 'Derived/estimated from published dimensions' : 'Insufficient information') + ')') : 'Area not yet verified'],
-      ['Glazing', product.glazing && product.glazing !== 'unknown' ? titleCase(product.glazing) + (product.glazingScope === 'range-level' ? ' — standard across ' + product.organisation + "'s range" : ' — confirmed for this model') : 'Insufficient information'],
-      ['Insulation', product.insulation === 'yes' ? ('Confirmed' + (product.insulationScope === 'range-level' ? ' — standard across ' + product.organisation + "'s range" : '')) : 'Insufficient information'],
-      ['Electrics', product.electricalConfirmationState === 'Yes' ? 'Confirmed' : (product.electricalConfirmationState || 'Insufficient information')],
-      ['Irish availability', product.irishAvailabilityConfirmationState === 'Yes' ? 'Confirmed' : (product.irishAvailabilityConfirmationState || 'Insufficient information')],
-      ['Verification status', product.verificationStatus || 'Not yet verified by PlotNua'],
-    ];
-    facts.forEach(([label, value]) => {
+
+    /* ISSUE 005 PIECE C1 — ONE LIST, NOT TWO PANELS.
+
+       This was six rows read from flat fields alone, and it announced
+       "Insufficient information" for floor area on 394 products, glazing on
+       456, insulation on 294 and electrics on all 490 — while the researched
+       records held determinations for many of them. Electrics was the clearest
+       case: electricalConfirmationState is undefined for every product in the
+       universe, so that row said the same non-fact 490 times.
+
+       Rows now come from pnReconcile(), which merges both sources under the
+       precedence model. What is not established no longer appears here at all;
+       it appears below, under what still needs checking, which is where an
+       absence honestly belongs.
+
+       textContent throughout. The old loop built each row with innerHTML from
+       values that interpolate the organisation name. */
+    const pnIntel = pnReconcile(product);
+    pnIntel.knows.forEach(function(row){
+      /* ISSUE 005 PIECE C2 — THREE LEVELS, NOT ONE.
+
+         C1 rendered category, answer, scope and implication at nearly equal
+         weight, which is why it scanned like a research record. The category
+         is now a quiet label, the answer carries the weight, and scope and
+         implication sit under it as context.
+
+         The mechanical "What this means:" prefix is gone: with the hierarchy
+         doing the work, the prefix was a label for something the layout
+         already says. Atlas's implication text itself is untouched. */
       const li = document.createElement('li');
-      li.innerHTML = '<strong>' + label + ':</strong> ' + value;
+      li.className = 'am-ev';
+
+      const cat = document.createElement('span');
+      cat.className = 'am-ev-cat';
+      cat.textContent = row.label;
+      li.appendChild(cat);
+
+      const ans = document.createElement('span');
+      ans.className = 'am-ev-answer';
+
+      if (row.conflict){
+        ans.classList.add('am-ev-conflict');
+        ans.textContent = 'Atlas holds conflicting evidence';
+        li.appendChild(ans);
+        const c = document.createElement('span');
+        c.className = 'am-ev-note';
+        c.textContent = 'One record states ' + row.conflict.a.toLowerCase()
+          + '; separate research states ' + row.conflict.b.toLowerCase()
+          + '. Confirm with the provider before relying on either.';
+        li.appendChild(c);
+      } else {
+        const mapped = pnHomeownerLabel(row.label, row.statement);
+        ans.textContent = mapped.answer;
+        li.appendChild(ans);
+        if (mapped.note){
+          const q = document.createElement('span');
+          q.className = 'am-ev-note';
+          q.textContent = mapped.note;
+          li.appendChild(q);
+        }
+      }
+
+      const shortScope = pnScopeShort(row.scope);
+      if (shortScope){
+        const s = document.createElement('span');
+        s.className = 'am-ev-scope';
+        s.textContent = shortScope;
+        li.appendChild(s);
+      }
+      if (row.meaning){
+        const m = document.createElement('span');
+        m.className = 'am-ev-means';
+        m.textContent = pnLeadCap(row.meaning);
+        li.appendChild(m);
+      }
       akList.appendChild(li);
     });
+
+    /* Verification status is PlotNua's own state, not an Atlas finding about
+       the building, so it stays a plain last row and is never reconciled. */
+    const vLi = document.createElement('li');
+    vLi.className = 'am-ev';
+    const vCat = document.createElement('span');
+    vCat.className = 'am-ev-cat';
+    vCat.textContent = 'Verification';
+    vLi.appendChild(vCat);
+    const vAns = document.createElement('span');
+    vAns.className = 'am-ev-answer';
+    vAns.textContent = product.verificationStatus || 'Not yet verified by PlotNua';
+    vLi.appendChild(vAns);
+    akList.appendChild(vLi);
+
     atlasKnows.appendChild(akList);
     wrap.appendChild(atlasKnows);
+
+    /* ISSUE 005 PIECE C1 — THE SECOND PANEL IS RETIRED.
+
+       Piece C added "What Atlas Found" beside "What Atlas Knows". Two panels
+       reading two sources produced 451 visible contradictions, and asking a
+       homeowner to reconcile them is asking them to understand PlotNua's
+       storage layout. The evidence has not been removed — it has moved up into
+       the single list above, where it is reconciled against the flat fields
+       once, and into the checking list below. Its internal framing line
+       ("in Atlas's own words") is gone with it: how the record system works
+       is not the homeowner's concern.
+
+       The reader itself — atlasFeatureRead() and friends — is unchanged and
+       still feeds Compare. */
 
     if (hasRichEvidence(product)) {
       // TRUE COST
@@ -14018,7 +14679,17 @@
            — the word "Undefined", presented as if Atlas had established it.
            Absent and 'unknown' are the same fact and now read the same. A
            product carrying a real value is unaffected. */
-        ['VAT', (product.vatIncluded == null || product.vatIncluded === 'unknown') ? 'Provider confirmation required' : titleCase(String(product.vatIncluded))],
+        /* ISSUE 005 PIECE C1 — was `product.vatIncluded`, a field the
+           generator never exports, so this always read "Provider confirmation
+           required" regardless of what Atlas held. Routed through the single
+           evidence resolver instead. Dormant today; correct when revived. */
+        ['VAT', (function(){
+          const v = pnVatPosition(product);
+          if (v.state === 'included') return 'Recorded as included';
+          if (v.state === 'excluded') return 'Recorded as NOT included';
+          if (v.state === 'disputed') return 'Atlas holds conflicting evidence \u2014 confirm with the provider';
+          return 'Provider confirmation required';
+        })()],
         ['Known exclusions', product.knownExclusions || 'Insufficient information'],
       ];
       tcItems.forEach(([label, value]) => {
@@ -14083,7 +14754,13 @@
          ===================================================================== */
       const rNeedsFoundation = (product.foundationRequirement == null || product.foundationRequirement === 'unknown');
       const rNeedsHeight     = (product.heightMm == null);
-      const rNeedsVat        = (product.vatIncluded == null || product.vatIncluded === 'unknown');
+      /* ISSUE 005 PIECE C1 — same never-exported field, same always-true
+         result. An unresolved OR disputed VAT position is a thing to confirm;
+         a recorded one is not. */
+      const rNeedsVat        = (function(){
+        const v = pnVatPosition(product);
+        return v.state === 'unknown' || v.state === 'disputed';
+      })();
       const resolveCount = (rNeedsFoundation ? 1 : 0) + (rNeedsHeight ? 1 : 0) + (rNeedsVat ? 1 : 0);
       rTitle.textContent = 'Resolve — ' + resolveCount + ' thing' + (resolveCount === 1 ? '' : 's') + ' to confirm';
       resolve.appendChild(rTitle);
@@ -14093,7 +14770,12 @@
          is unchanged, word for word. */
       if (rNeedsFoundation) { const li = document.createElement('li'); li.textContent = 'Foundation/base requirement — site/professional assessment required.'; rList.appendChild(li); }
       if (rNeedsHeight) { const li = document.createElement('li'); li.textContent = 'Overall height — provider confirmation required (relevant to some planning exemption thresholds).'; rList.appendChild(li); }
-      if (rNeedsVat) { const li = document.createElement('li'); li.textContent = 'Whether VAT is included in the published price — provider confirmation required.'; rList.appendChild(li); }
+      if (rNeedsVat) { const li = document.createElement('li');
+        const v = pnVatPosition(product);
+        li.textContent = (v.state === 'disputed')
+          ? 'Whether VAT is included in the published price — Atlas holds conflicting evidence; confirm with the provider.'
+          : 'Whether VAT is included in the published price — provider confirmation required.';
+        rList.appendChild(li); }
       resolve.appendChild(rList);
       wrap.appendChild(resolve);
     } else {
@@ -14105,12 +14787,91 @@
       check.appendChild(cTitle);
       const cList = document.createElement('ul');
       cList.className = 'am-fact-list';
-      const items = [
-        'Whether VAT is included in the published price — provider confirmation required.',
-        'Whether anything sits outside the published price (base/foundation, delivery, electrics) — provider confirmation required.',
-      ];
-      items.forEach(t => { const li = document.createElement('li'); li.textContent = t; cList.appendChild(li); });
+      /* ISSUE 005 PIECE C1 — BUILT, NOT HARD-CODED.
+
+         These two sentences were fixed text on every product taking this
+         branch — which, measured, is all 490. So the page told every
+         homeowner that VAT was unconfirmed, including on products whose
+         installation record states plainly that VAT is inside the price. That
+         is the contradiction the founder saw, and it was not computed from
+         anything: it was a literal.
+
+         The list is now the real limitations Atlas recorded, plus the
+         categories where nothing is established, plus a VAT line that reports
+         the actual evidence position — including "the records disagree", which
+         is a state this page previously had no way to express. */
+      /* ISSUE 005 PIECE C2 — the same three-level shape, so the two lists
+         scan as one thing. Content and precedence are C1's, unchanged. */
+      pnIntel.checks.forEach(function(c){
+        const li = document.createElement('li');
+        li.className = 'am-ev';
+        const lab = document.createElement('span');
+        lab.className = 'am-ev-cat';
+        lab.textContent = c.label;
+        li.appendChild(lab);
+        const val = document.createElement('span');
+        val.className = 'am-ev-gap';
+        val.textContent = pnLeadCap(c.text);
+        li.appendChild(val);
+        cList.appendChild(li);
+      });
+
+      const vat = pnVatPosition(product);
+      const vatLi = document.createElement('li');
+      vatLi.className = 'am-ev';
+      const vatCat = document.createElement('span');
+      vatCat.className = 'am-ev-cat';
+      vatCat.textContent = 'VAT';
+      vatLi.appendChild(vatCat);
+      const vatVal = document.createElement('span');
+      vatVal.className = 'am-ev-gap';
+      vatLi.appendChild(vatVal);
+      if (vat.state === 'disputed'){
+        /* CONCISE AT FIRST READING, BUT THE CONFLICT IS NOT REMOVED. The
+           homeowner must not come away believing VAT is definitely included,
+           so the headline says conflicting evidence and the sources follow
+           underneath rather than being dropped. */
+        vatVal.textContent = 'Atlas holds conflicting evidence \u2014 treat it as unconfirmed';
+        const d = document.createElement('span');
+        d.className = 'am-ev-note';
+        d.textContent = 'The price record ' + vat.priceRecord
+          + '; separate research ' + vat.research + '.';
+        vatLi.appendChild(d);
+      } else if (vat.state === 'included'){
+        vatVal.textContent = 'Recorded as included in the published price';
+      } else if (vat.state === 'excluded'){
+        vatVal.textContent = 'Recorded as NOT included \u2014 budget for it on top';
+      } else {
+        vatVal.textContent = 'Not confirmed \u2014 ask the provider';
+      }
+      cList.appendChild(vatLi);
+
+      /* The generic "what sits outside the price" prompt exists to fill a gap.
+         Where the installation record has already answered it — and that row
+         is now in the list above — the prompt is noise, so it is dropped. */
+      const pnInstallKnown = pnIntel.knows.some(function(r){
+        return r.label === 'Installation' && !r.conflict; });
+      if (!pnInstallKnown){
+        const li = document.createElement('li');
+        li.className = 'am-ev';
+        const lab = document.createElement('span');
+        lab.className = 'am-ev-cat';
+        lab.textContent = "What's in the price";
+        li.appendChild(lab);
+        const val = document.createElement('span');
+        val.className = 'am-ev-gap';
+        val.textContent = 'Not confirmed \u2014 ask whether the base, delivery '
+          + 'and electrics are included';
+        li.appendChild(val);
+        cList.appendChild(li);
+      }
       check.appendChild(cList);
+
+      /* The closing note. My first attempt at this swap consumed its
+         declaration along with the hard-coded items and left only the
+         appendChild — a ReferenceError on every Product Detail open, which the
+         browser found and the post-flight did not, because I asserted cList
+         survived and forgot cNote. Declared here, wording unchanged. */
       const cNote = document.createElement('p');
       cNote.className = 'am-fit-note';
       cNote.textContent = "PlotNua hasn't researched this model to the same depth as some others in the Atlas yet — this isn't a mark against it, just an honest gap.";
@@ -20494,7 +21255,13 @@
     if (product.irishAvailabilityConfirmationState === 'Yes') pdChips.push(['Irish availability', 'confirmed']);
     /* IH-1 — absence is unconfirmed here too. The gate is unchanged, so
        this chip is as unreachable after this pass as before it. */
-    if (hasRichEvidence(product) && (product.vatIncluded == null || product.vatIncluded === 'unknown')) pdChips.push(['VAT — provider confirmation required', 'caution']);
+    /* ISSUE 005 PIECE C1 — same never-exported field. Dormant behind
+       hasRichEvidence today; correct if that flag ever becomes true. */
+    if (hasRichEvidence(product)) {
+      const chipVat = pnVatPosition(product);
+      if (chipVat.state === 'disputed') pdChips.push(['VAT — Atlas holds conflicting evidence', 'caution']);
+      else if (chipVat.state === 'unknown') pdChips.push(['VAT — provider confirmation required', 'caution']);
+    }
     pdChips.forEach(([label, state]) => els.pdSpecs.appendChild(atlasChip(label, state)));
 
     // LAUNCH v1.8 — STEP 3: condensed reasoning — the first two reasons
@@ -21489,6 +22256,29 @@
     {
       key: 'installation', label: 'Who installs it',
       resolve: function(p){
+        /* ISSUE 005 PIECE C — the product's OWN installation evidence, which
+           Piece B made reachable, is tried before the supplier-level record.
+           Atlas researched this per product; the supplier blob is empty for
+           every organisation today, so this row answered "Not confirmed" for
+           the whole catalogue while the answer sat in the export.
+
+           The value is Atlas's own finding, quoted. The homeowner implication
+           Atlas wrote becomes the note. No categorical label is derived: a
+           "supplier installs" verdict would be my inference, and this is not
+           the place to invent one. */
+        const ev = p ? atlasFeatureRead(p, 'installationModel') : null;
+        if (ev && ev.finding) {
+          const note = [ev.meaning, ev.limitation ? 'Atlas has not established: ' + ev.limitation : null]
+            .filter(Boolean).join(' ');
+          return pnConfirmedCell(
+            /* ISSUE 005 PIECE C2 — the comparison cell reads the same closed
+               map as the panel, so the row answers with "Turnkey installation
+               included" instead of a shouted research heading. Unmapped values
+               fall through to the Piece C behaviour unchanged; Compare is not
+               widened and no other row is touched. */
+            ev.finding, pnHomeownerLabel('Installation', atlasFeatureShort(ev, 72)).answer,
+            'atlas:feature/installationModel', null, note || null);
+        }
         const irish = p ? compareSupplierIrish(p.organisation) : null;
         if (!irish || !irish.installationModel) return pnOpenCell({ checked: !!irish });
         return pnConfirmedCell(
