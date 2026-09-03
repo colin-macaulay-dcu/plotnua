@@ -128,7 +128,97 @@ FEATURE_FIELDS = ["Feature Name", "Feature Code", "Feature Group", "Data Type"]
 # D4b DELIBERATELY ADDS NONE OF THEM.
 DETAIL_FEATURES_WANTED = {
     "considerations":          "considerations",
+    # ---- ISSUE 005 PIECE E2 — the remaining Decision Intelligence layer -----
+    # Measured across all 2,327 records this Piece. Every one is CARRIED here;
+    # what the homeowner is shown is decided in the page, per category, on the
+    # evidence below. Nothing is discarded, so a later presentation decision
+    # needs no generator change.
+    #
+    #                          records   HOMEOWNER IMPLICATION:   presentable?
+    #   Planning Considerations   467          451  (96.6%)        yes
+    #   Best For                  465          352  (75.7%)        yes
+    #   Alternatives              465          298  (64.1%)        yes, as evidence
+    #   Typical Homeowner         465            0   (0.0%)        only NOT FOR: / NOT THIS BUYER:
+    #   Strengths                 465           36   (7.7%)        NO — carried, withheld
+    "planning considerations": "planningConsiderations",
+    "best for":                "bestFor",
+    "strengths":               "strengths",
+    "typical homeowner":       "typicalHomeowner",
+    "alternatives":            "alternatives",
 }
+
+# ISSUE 005 PIECE E2 — ONE PARTITION PER CATEGORY, PLUS PROVENANCE.
+# A homeowner reading a Consideration must not download Alternatives to do it.
+# Six small files, never 490: the brief's explicit ceiling. The index below is
+# what the runtime reads to learn which partitions exist, so the page never
+# guesses a filename and a category can be added or removed without a page
+# change.
+DETAIL_PARTITION_PREFIX = "garden-room-detail-"
+DETAIL_PARTITION_SUFFIX = "-v1.json"
+DETAIL_INDEX_FILE = "garden-room-detail-index-v1.json"
+# Reserved, not implemented in E2: "suppliers" needs an Organisations field-name
+# forensic before anything can be exported without guessing. The slot exists so
+# that adding it later is an entry here, not an architecture change.
+DETAIL_PROVENANCE_KEY = "sources"
+
+# ISSUE 005 PIECE E2a — THE SUPPLIER EVIDENCE CONTRACT.
+#
+# Keyed by CANONICAL ORGANISATION RECORD ID, in its own partition. 188 supplier
+# objects, not one duplicated across each of its ~30 products. Products already
+# carry `organisationEvidence: [{id, name}]`, so the join is by id and needs no
+# fuzzy supplier matching and no invented identity.
+#
+# Each entry is a label read out of `Headquarters`, exactly. A label absent from
+# this map is a label the homeowner cannot see, which is how CONTACT: stays out.
+DETAIL_SUPPLIER_KEY = "suppliers"
+SUPPLIER_LABELS = {
+    # exported key          Headquarters label        coverage /188
+    "contractingEntity":    "LEGAL ENTITY",         #   51   27.1%
+    "installationModel":    "INSTALLATION COVERAGE",#  179   95.2%
+    "irishPresence":        "IRISH PRESENCE",       #  179   95.2%
+    "deliveryCoverage":     "DELIVERY COVERAGE",    #  measured at runtime
+    "manufacturingLocation":"MANUFACTURING LOCATION",
+    "jurisdiction":         "JURISDICTION",
+    "evidenceTier":         "EVIDENCE TIER",
+    "evidenceScope":        "EVIDENCE SCOPE",
+}
+# Read but NEVER exported. Named so the refusal is explicit rather than an
+# accident of omission.
+SUPPLIER_LABELS_WITHHELD = {
+    "CONTACT",           # personal contact data — phone numbers, email addresses
+    "GPS COORDINATES",   # Most Local is frozen; no distance claim in E2
+}
+
+
+def supplier_segment(text: str, label: str):
+    """One labelled segment of a pipe-delimited Atlas locality record.
+
+    `Headquarters` is `LABEL: value | LABEL: value | ...`. Splitting on the
+    pipe and matching the label exactly is deterministic: no regex over prose,
+    no inference about where a value starts or stops, and a malformed record
+    yields nothing rather than something wrong.
+    """
+    if not text:
+        return None
+    for part in str(text).split("|"):
+        part = part.strip()
+        head, sep, value = part.partition(":")
+        if not sep:
+            continue
+        head = head.strip().upper()
+        if head in SUPPLIER_LABELS_WITHHELD:
+            continue
+        if head != label:
+            continue
+        value = value.strip()
+        if not value:
+            return None
+        # An evidenced absence is a FACT and is kept: "None published" is a
+        # finding. UNKNOWN is not, and is dropped rather than asserted.
+        if value.lower() in ("unknown", "not established", "n/a", "tbc"):
+            return None
+        return value
+    return None
 
 FEATURES_WANTED = {
     "irish availability":      "irishAvailability",
@@ -645,7 +735,8 @@ def main():
                 "availability": fetch_all(token, T_AVAIL, AVAIL_FIELDS),
                 "featureValues": fetch_all(token, T_FEATVALS, FEATVAL_FIELDS),
                 "features":  fetch_all(token, T_FEATURES, FEATURE_FIELDS),
-                "organisations": fetch_all(token, T_ORGS, ["Organisation Name", "Organisation Type", "Website"]),
+                "organisations": fetch_all(token, T_ORGS, ["Organisation Name", "Organisation Type", "Website",
+                                                       "Headquarters", "Sources"]),
             }
         except Exception as e:
             fail(f"Atlas read failed: {e}")
@@ -812,8 +903,22 @@ def main():
                     _v.pop("feature", None)
             # A product with no long-form evidence is simply absent from the
             # detail artefact. Absent is not an error and not an empty entry.
+            # ---- ISSUE 005 PIECE E2 — PROVENANCE ---------------------------
+            # `"    Sources"` — the leading spaces are Airtable's field name,
+            # not a typo — has been READ by this generator since Piece 5 and
+            # never emitted. 363 of 490 products carry it.
+            #
+            # It is exported as the text Atlas holds, at PRODUCT level, because
+            # that is the only attribution the schema supports. No URL parsing,
+            # no per-field attribution, no invented relationship between a
+            # source and a particular Feature Value.
+            src = txt(cell(product, "    Sources"))
+            if src:
+                detail_products.setdefault(pid, {})[DETAIL_PROVENANCE_KEY] = {
+                    "text": src, "evidenceScope": None}
+
             if detail:
-                detail_products[pid] = detail
+                detail_products.setdefault(pid, {}).update(detail)
 
             # ---- BRIDGE PIECE 1 — the flat Match view -----------------------
             # Built from the evidence already gathered above. Added beside the
@@ -913,6 +1018,110 @@ def main():
     }
     (out / "garden-room-detail-evidence-v1.json").write_text(
         json.dumps(detail_payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
+
+    # ---- ISSUE 005 PIECE E2 — ONE PARTITION PER CATEGORY --------------------
+    # Same shape as the combined file, one category each, so the validator and
+    # the runtime reader need no special case: a partition IS a detail artefact
+    # that happens to declare one category.
+    #
+    # The combined file above is still written, byte-compatible with D4b, so
+    # the currently deployed page keeps working while the runtime moves over.
+    # ---- ISSUE 005 PIECE E2a — SUPPLIER EVIDENCE ---------------------------
+    # Only organisations actually attributed to an exported Garden Room. The
+    # other suppliers in the table are not this artefact's business.
+    _linked_orgs = set()
+    for _p in garden:
+        for _oid in links(_p, "Organisation"):
+            _linked_orgs.add(_oid)
+
+    supplier_evidence = {}
+    for _r in raw["organisations"]:
+        _oid = _r["id"]
+        if _oid not in _linked_orgs:
+            continue
+        _hq = txt(cell(_r, "Headquarters"))
+        _rec = {}
+        for _key, _label in SUPPLIER_LABELS.items():
+            _v = supplier_segment(_hq, _label)
+            if _v:
+                _rec[_key] = _v
+        _src = txt(cell(_r, "Sources"))
+        if _src:
+            _rec["sources"] = _src
+        if not _rec:
+            continue
+        # `locality`, NOT `irish`. marketEligibility reads `.irish` and
+        # getEligibleAtlasPool filters the pool on it; an empty `.irish` would
+        # change the sentence a homeowner reads from "Atlas has not
+        # established" to "Atlas read the maker's delivery information", which
+        # for these suppliers is not true. Results Eligibility v1 is frozen.
+        supplier_evidence[_oid] = {
+            "name": orgs.get(_oid, {}).get("name", ""),
+            "locality": _rec,
+        }
+
+    # Shaped as a PARTITION, not a special case: same keys, same index entry,
+    # same validator run, same atomic publication. Only its per-record shape
+    # differs, and that is what the validator dispatches on.
+    supplier_doc = {
+        "schema": SCHEMA + ".detail",
+        "version": VERSION,
+        "generated": payload["generated"],
+        "categories": [DETAIL_SUPPLIER_KEY],
+        "productCount": len(supplier_evidence),
+        "products": supplier_evidence,
+    }
+    _sup_file = (DETAIL_PARTITION_PREFIX + DETAIL_SUPPLIER_KEY
+                 + DETAIL_PARTITION_SUFFIX)
+    _sup_raw = json.dumps(supplier_doc, indent=2, sort_keys=False) + "\n"
+    (out / _sup_file).write_text(_sup_raw, encoding="utf-8")
+    print(f"  supplier evidence: {len(supplier_evidence)} organisations, "
+          f"{len(_sup_raw)} bytes")
+
+    detail_index = {
+        "schema": SCHEMA + ".detail.index",
+        "version": VERSION,
+        "generated": payload["generated"],
+        "partitions": [],
+    }
+    _all_categories = sorted(set(DETAIL_FEATURES_WANTED.values())) + [DETAIL_PROVENANCE_KEY]
+    for _cat in _all_categories:
+        _prods = {pid: {_cat: rec[_cat]} for pid, rec in detail_products.items() if _cat in rec}
+        if not _prods:
+            continue
+        _part = {
+            "schema": SCHEMA + ".detail",
+            "version": VERSION,
+            "generated": payload["generated"],
+            "sourceBase": BASE_ID,
+            "categories": [_cat],
+            "productCount": len(_prods),
+            "recordCounts": {_cat: sum(len(v[_cat].get("records", [None])) for v in _prods.values())},
+            "products": _prods,
+        }
+        _name = DETAIL_PARTITION_PREFIX + _cat.lower() + DETAIL_PARTITION_SUFFIX
+        _text = json.dumps(_part, indent=2, sort_keys=False) + "\n"
+        (out / _name).write_text(_text, encoding="utf-8")
+        detail_index["partitions"].append({
+            "category": _cat, "file": _name,
+            "productCount": _prods and len(_prods) or 0,
+            "recordCount": _part["recordCounts"][_cat],
+            "rawBytes": len(_text.encode("utf-8")),
+        })
+    # ISSUE 005 PIECE E2a — the supplier partition is a first-class partition:
+    # same shape, same validator, same atomic publication. It is declared here
+    # so the runtime learns of it the same way it learns of every other, and
+    # so it CANNOT be published without being validated.
+    detail_index["partitions"].append({
+        "category": DETAIL_SUPPLIER_KEY,
+        "file": _sup_file,
+        "productCount": len(supplier_evidence),
+        "recordCount": sum(len(v["locality"]) for v in supplier_evidence.values()),
+        "rawBytes": len(_sup_raw),
+    })
+
+    (out / DETAIL_INDEX_FILE).write_text(
+        json.dumps(detail_index, indent=2, sort_keys=False) + "\n", encoding="utf-8")
 
     lines = [
         "GARDEN ROOM MATCH QUALIFICATION v1 — DRY RUN",
