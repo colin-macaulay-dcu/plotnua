@@ -57,6 +57,9 @@ env:
   # opening Product Detail. Published alongside the core file, never instead of
   # it, and never without it.
   DETAIL_FILE: garden-room-detail-evidence-v1.json
+  # ISSUE 005 PIECE E2 — the partition index. The runtime reads this to learn
+  # which per-category files exist, so it never guesses a filename.
+  DETAIL_INDEX: garden-room-detail-index-v1.json
 
 jobs:
   refresh:
@@ -144,6 +147,20 @@ jobs:
             --summary-out "${{ steps.outdir.outputs.path }}/detail-validation-summary.txt" \
             --github-output
 
+      # ISSUE 005 PIECE E2 — the index, and through it every partition it names.
+      # Same script, same exit code: a bad partition fails the job here, before
+      # anything has been copied into the repository.
+      - name: Validate the detail partition index and every partition
+        id: validate_parts
+        run: |
+          set -euo pipefail
+          python .github/scripts/validate_garden_room_detail_evidence.py \
+            --candidate "${{ steps.outdir.outputs.path }}/$DETAIL_FILE" \
+            --index "${{ steps.outdir.outputs.path }}/$DETAIL_INDEX" \
+            --summary-out "${{ steps.outdir.outputs.path }}/partition-validation-summary.txt" \
+            --output-prefix parts_ \
+            --github-output
+
       # ATOMIC. Both artefacts are validated above; this publishes BOTH or
       # NEITHER, so production can never hold a fresh core beside a stale or
       # rejected detail file. It runs only when EITHER has genuinely changed —
@@ -152,17 +169,32 @@ jobs:
         if: >-
           steps.validate.outputs.valid == 'true' &&
           steps.validate_detail.outputs.detail_valid == 'true' &&
+          steps.validate_parts.outputs.parts_valid == 'true' &&
           (steps.validate.outputs.changed == 'true' ||
            steps.validate_detail.outputs.detail_changed == 'true')
         run: |
           set -euo pipefail
           cp "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" "$PRODUCTION_FILE"
           cp "${{ steps.outdir.outputs.path }}/$DETAIL_FILE" "$DETAIL_FILE"
+          # ISSUE 005 PIECE E2 — the index and every partition, together. All of
+          # them were validated above; none of them is copied unless all passed.
+          cp "${{ steps.outdir.outputs.path }}/$DETAIL_INDEX" "$DETAIL_INDEX"
+          for f in "${{ steps.outdir.outputs.path }}"/garden-room-detail-*-v1.json; do
+            b="$(basename "$f")"
+            [ "$b" = "$DETAIL_FILE" ] && continue
+            [ "$b" = "$DETAIL_INDEX" ] && continue
+            cp "$f" "$b"
+          done
 
           # Stage the one approved path by explicit name. Never `git add -A`,
           # never `git add .`, never a wildcard: an unattended job must not be
           # able to sweep up an unrelated change that happens to be present.
-          git add "$PRODUCTION_FILE" "$DETAIL_FILE"
+          git add "$PRODUCTION_FILE" "$DETAIL_FILE" "$DETAIL_INDEX"
+          # Bounded glob: the partition names are generated from the category
+          # list, so they cannot be enumerated here without duplicating that
+          # list. The second gate below still refuses anything outside the
+          # approved shape, so this is bounded rather than a wildcard sweep.
+          git add -- 'garden-room-detail-*-v1.json'
 
           if git diff --cached --quiet; then
             echo "Nothing staged after all — leaving production as it stands."
@@ -172,13 +204,18 @@ jobs:
           # Second gate. Every staged path must be one of the two approved
           # names. Either may be unchanged on a given run — only one file may
           # have moved — so this checks membership rather than an exact pair.
-          APPROVED=" $PRODUCTION_FILE $DETAIL_FILE "
+          APPROVED=" $PRODUCTION_FILE $DETAIL_FILE $DETAIL_INDEX "
           STAGED="$(git diff --cached --name-only | sort | tr '\n' ' ')"
           for path in $STAGED; do
             case "$APPROVED" in
-              *" $path "*) ;;
-              *) echo "::error::Unexpected staged path: $path"; exit 1 ;;
+              *" $path "*) continue ;;
             esac
+            # ISSUE 005 PIECE E2 — a partition is approved only if it matches the
+            # generated shape exactly. Anything else fails the job.
+            case "$path" in
+              garden-room-detail-*-v1.json) continue ;;
+            esac
+            echo "::error::Unexpected staged path: $path"; exit 1
           done
 
           git -c user.name='plotnua-atlas-bot' \

@@ -14321,26 +14321,103 @@
      malformed detail file produces silence rather than an exception. Detail
      evidence is an enhancement; the journey does not depend on it. */
   const PN_DETAIL_SOURCE = 'garden-room-detail-evidence-v1.json';
+  /* ISSUE 005 PIECE E2 — the index names the partitions; the page never guesses
+     a filename. Absent index = production has not refreshed yet, and the reader
+     falls back to the D4b combined file so nothing regresses in the meantime. */
+  const PN_DETAIL_INDEX = 'garden-room-detail-index-v1.json';
+
+  /* THE CATEGORIES PRODUCT DETAIL ASKS FOR — and the two it never asks for.
+
+     `strengths` is carried in the artefact and NOT requested: 429 of its 465
+     records have no extractable homeowner segment and its content cannot be
+     presented without inventing a strength the researcher declined to claim.
+     `sources` is provenance for audit and certification, not homeowner copy.
+     Not requesting them is what keeps them off the wire as well as off screen. */
+  /* ISSUE 005 PIECE E2a — THE LAUNCH SET, AND WHY IT IS TWO AND NOT FIVE.
+
+     E2 measured the five-category fetch at ~536 KB gzip on first Product
+     Detail open — MORE than the entire core initial download (519,728 B).
+     Founder decision: launch on the two categories that carry the planning
+     intelligence a homeowner actually acts on, at ~215 KB.
+
+     The other four partitions are still generated, validated and published.
+     They are not requested. Adding one back is one string here plus one in
+     PN_DETAIL_LAUNCH below — no architecture change, no generator change.
+
+     'strengths' is deliberately absent: it has no presentable segment.
+     'sources' is deliberately absent: provenance is audit-only and must never
+     be downloaded by an ordinary Product Detail. */
+  const PN_DETAIL_VIEW = ['considerations', 'planningConsiderations'];
+
   let pnDetailEvidence = null;      // null = not loaded, {} = loaded-or-failed
-  let pnDetailPromise = null;
+  let pnDetailPromise = null;       // the D4b combined-file promise (fallback)
   let pnDetailFailed = false;
   let pnDetailFetchCount = 0;       // read by the network proof harness
+  let pnDetailIndexPromise = null;
+  let pnDetailIndex = null;
+  const pnDetailParts = {};         // category -> products map
+  const pnDetailPartPromises = {};  // category -> memoised promise
+
+  /* Shape check shared by the combined file and every partition. A file of the
+     wrong shape is a failure, not a partial success. */
+  function pnDetailAdopt(data){
+    if (!data || typeof data !== 'object' || !data.products ||
+        typeof data.products !== 'object' || Array.isArray(data.products)) {
+      throw new Error('unexpected detail evidence shape');
+    }
+    return data.products;
+  }
+
+  function pnDetailIndexReady(){
+    if (pnDetailIndexPromise) return pnDetailIndexPromise;
+    pnDetailFetchCount++;
+    pnDetailIndexPromise = fetch(PN_DETAIL_INDEX)
+      .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(d){
+        pnDetailIndex = (d && Array.isArray(d.partitions)) ? d.partitions : [];
+        return pnDetailIndex;
+      })
+      .catch(function(){ pnDetailIndex = []; return pnDetailIndex; });
+    return pnDetailIndexPromise;
+  }
+
+  /* ONE PARTITION, MEMOISED. Never rejects: every failure resolves to an empty
+     store, so a missing or malformed partition is silence, not an exception. */
+  function pnDetailPartitionReady(category){
+    if (pnDetailPartPromises[category]) return pnDetailPartPromises[category];
+    pnDetailPartPromises[category] = pnDetailIndexReady().then(function(parts){
+      const hit = (parts || []).filter(function(p){ return p && p.category === category; })[0];
+      if (!hit || typeof hit.file !== 'string'){
+        /* No partition for this category. Fall back to the D4b combined file,
+           which is what production holds until the next refresh. */
+        return pnDetailEvidenceReady().then(function(store){
+          pnDetailParts[category] = store || {}; return pnDetailParts[category]; });
+      }
+      pnDetailFetchCount++;
+      return fetch(hit.file)
+        .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function(d){ pnDetailParts[category] = pnDetailAdopt(d); return pnDetailParts[category]; })
+        .catch(function(err){
+          pnDetailFailed = true;
+          pnDetailParts[category] = {};
+          console.warn('[Atlas detail] partition unavailable: ' + category, err);
+          return pnDetailParts[category];
+        });
+    });
+    return pnDetailPartPromises[category];
+  }
+
+  /* Every category the current view needs, in parallel, resolved together. */
+  function pnDetailViewReady(){
+    return Promise.all(PN_DETAIL_VIEW.map(pnDetailPartitionReady));
+  }
 
   function pnDetailEvidenceReady(){
     if (pnDetailPromise) return pnDetailPromise;
     pnDetailFetchCount++;
     pnDetailPromise = fetch(PN_DETAIL_SOURCE)
       .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function(data){
-        /* Shape-checked before adoption, exactly as the core loader does. A
-           file of the wrong shape is a failure, not a partial success. */
-        if (!data || typeof data !== 'object' || !data.products ||
-            typeof data.products !== 'object' || Array.isArray(data.products)) {
-          throw new Error('unexpected detail evidence shape');
-        }
-        pnDetailEvidence = data.products;
-        return pnDetailEvidence;
-      })
+      .then(function(data){ pnDetailEvidence = pnDetailAdopt(data); return pnDetailEvidence; })
       .catch(function(err){
         pnDetailFailed = true;
         pnDetailEvidence = {};
@@ -14350,10 +14427,13 @@
     return pnDetailPromise;
   }
 
-  /* The record for one product, or null. Never throws on a malformed entry. */
+  /* The record for one product, or null. Reads the category's own partition
+     first, then the combined store. Never throws on a malformed entry. */
   function pnDetailFor(productId, category){
-    if (!pnDetailEvidence || typeof productId !== 'string') return null;
-    const rec = pnDetailEvidence[productId];
+    if (typeof productId !== 'string') return null;
+    const store = pnDetailParts[category] || pnDetailEvidence;
+    if (!store) return null;
+    const rec = store[productId];
     if (!rec || typeof rec !== 'object') return null;
     const v = rec[category];
     return (v && typeof v === 'object') ? v : null;
@@ -14375,9 +14455,64 @@
      the homeowner. That is the only such segment in 465 records. The bare word
      "catalogue" is deliberately NOT a trigger: a legitimate segment reads
      "there is no catalogue to fall back on". */
-  const PN_CONSIDER_WITHHOLD = /(surfac|reconcil|architecture frozen|Recorded, not corrected|DO NOT RANK|Tier [AB]\b|CATALOGUE ISSUE|TECHNICAL DEBT|VOCABULARY LIMITATION|SUPPLIER STATUS|EVIDENCE TIER|RECORD NOTE)/i;
+  const PN_CONSIDER_WITHHOLD = /(surfac|reconcil|architecture frozen|Recorded, not corrected|DO NOT RANK|SAFE TO RANK|Layer Completion Audit|STATUS FOR CHANGE CONTROL|Tier [AB]\b|CATALOGUE ISSUE|TECHNICAL DEBT|VOCABULARY LIMITATION|SUPPLIER STATUS|EVIDENCE TIER|RECORD NOTE)/i;
 
   /* Returns the buyer-facing consideration, or null. Never the body. */
+  /* ISSUE 005 PIECE E2 — THE GOVERNED CATEGORY TABLE.
+
+     One entry per presentable category: which Atlas labels carry the buyer-
+     facing segment, which panel it belongs in, and what the homeowner sees as
+     its label. Adding a category later is one row here plus one entry in
+     PN_DETAIL_VIEW — there is no sixth loading system to build.
+
+     `labels` is tried in order and the FIRST that yields a segment wins, so a
+     record carrying both NOT FOR: and NOT THIS BUYER: is read once, not twice. */
+  /* ISSUE 005 PIECE E2a — THE PRESENTATION GATE.
+
+     Independent of PN_DETAIL_VIEW on purpose. If presentation depended only on
+     data being absent, a category would light up silently the day anything
+     else happened to fetch its partition. Here "not downloaded" and "not
+     shown" are two separate facts, each separately provable.
+
+     A row below that is not in this set is carried, documented and dark. */
+  const PN_DETAIL_LAUNCH = { considerations: true, planningConsiderations: true };
+
+  const PN_DETAIL_PRESENT = [
+    { key: 'planningConsiderations', labels: ['HOMEOWNER IMPLICATION'],
+      panel: 'check', label: 'Planning' },
+    { key: 'considerations', labels: ['HOMEOWNER IMPLICATION'],
+      panel: 'check', label: 'Before you choose' },
+    /* Typical Homeowner: the EXCLUSION only. The body profiles the buyer, and
+       PlotNua does not tell a homeowner who they are. */
+    { key: 'typicalHomeowner', labels: ['NOT FOR', 'NOT THIS BUYER'],
+      panel: 'check', label: 'May not suit you if' },
+    { key: 'bestFor', labels: ['HOMEOWNER IMPLICATION'],
+      panel: 'means', label: 'Where this makes sense' },
+    /* Alternatives: EVIDENCE, never a rail and never a link. The computed Match
+       alternatives remain the only recommendation architecture. */
+    { key: 'alternatives', labels: ['HOMEOWNER IMPLICATION'],
+      panel: 'means', label: 'Atlas also looked at' },
+  ];
+
+  /* ONE READER FOR EVERY CATEGORY. Identical discipline to D4: the shipped
+     pnEvSegment cuts at the shipped PN_EV_LABELS, the shipped withhold guard
+     refuses governance prose, and anything unexpected yields nothing. */
+  function pnDetailSegment(product, category, labels){
+    const f = (product && pnDetailFor(product.id, category)) ||
+              (product && product.features && product.features[category]);
+    const text = f && typeof f.text === 'string' ? f.text : '';
+    if (!text) return null;
+    for (let i = 0; i < labels.length; i++){
+      const seg = pnEvTrim(pnEvSegment(text, labels[i]), 260);
+      if (!seg) continue;
+      if (PN_CONSIDER_WITHHOLD.test(seg)) return null;
+      if (PN_DEFER_RE.test(seg) && !/\b(ask|get|confirm|obtain|check|measure|total)\b/i.test(seg))
+        return null;
+      return pnLeadCap(seg);
+    }
+    return null;
+  }
+
   function pnConsiderations(product){
     /* ISSUE 005 PIECE D4b — the detail artefact first, the core product second.
        The core no longer carries this category, but reading it as a fallback
@@ -14822,28 +14957,45 @@
     if (!root.isConnected) return false;
     const list = root.querySelector('.am-panel-check .am-fact-list');
     if (!list) return false;
-    if (list.querySelector('[data-pn-consider]')) return false;   // already enriched
-    const text = pnConsiderations(product);
-    if (!text) return false;
-    /* The same exact-match deduplication D4 applies, against what is painted. */
+    if (list.querySelector('[data-pn-detail]')) return false;   // already enriched
+
+    /* ISSUE 005 PIECE E2 — every presentable category, once each, in the fixed
+       order of PN_DETAIL_PRESENT so the reading order is stable rather than
+       whichever fetch happened to resolve first.
+
+       Exact-match deduplication against WHAT IS PAINTED, and against the other
+       categories added in this same pass — two Atlas categories that reached
+       the same sentence are one caution, not two. Differently-worded cautions
+       are NOT suppressed: deciding those are "the same" is fuzzy deletion. */
     const norm = function(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); };
-    const target = norm(text);
-    const existing = list.querySelectorAll('.am-ev-gap');
-    for (let i = 0; i < existing.length; i++)
-      if (norm(existing[i].textContent) === target) return false;
-    const li = document.createElement('li');
-    li.className = 'am-ev';
-    li.setAttribute('data-pn-consider', '1');
-    const lab = document.createElement('span');
-    lab.className = 'am-ev-cat';
-    lab.textContent = 'Before you choose';
-    li.appendChild(lab);
-    const val = document.createElement('span');
-    val.className = 'am-ev-gap';
-    val.textContent = text;
-    li.appendChild(val);
-    list.appendChild(li);
-    return true;
+    const painted = [];
+    const existing = list.querySelectorAll('.am-ev-gap, .am-ev-means');
+    for (let i = 0; i < existing.length; i++) painted.push(norm(existing[i].textContent));
+    let added = 0;
+    for (let c = 0; c < PN_DETAIL_PRESENT.length; c++){
+      const spec = PN_DETAIL_PRESENT[c];
+      /* ISSUE 005 PIECE E2a — dark unless launched. */
+      if (!PN_DETAIL_LAUNCH[spec.key]) continue;
+      const text = pnDetailSegment(product, spec.key, spec.labels);
+      if (!text) continue;
+      const target = norm(text);
+      if (painted.indexOf(target) > -1) continue;
+      painted.push(target);
+      const li = document.createElement('li');
+      li.className = 'am-ev';
+      li.setAttribute('data-pn-detail', spec.key);
+      const lab = document.createElement('span');
+      lab.className = 'am-ev-cat';
+      lab.textContent = spec.label;
+      li.appendChild(lab);
+      const val = document.createElement('span');
+      val.className = 'am-ev-gap';
+      val.textContent = text;
+      li.appendChild(val);
+      list.appendChild(li);
+      added++;
+    }
+    return added > 0;
   }
 
   function buildProductIntelligenceEl(product, includeProgress){
@@ -21632,7 +21784,7 @@
        issues none either. A failure resolves to an empty store and this simply
        does nothing. */
     try {
-      pnDetailEvidenceReady().then(function(){
+      pnDetailViewReady().then(function(){
         try { pnEnrichDetail(pdIntelEl, product); }
         catch (e) { console.warn('[Atlas detail] enrichment skipped', e); }
       });
