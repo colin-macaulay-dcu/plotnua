@@ -1,0 +1,194 @@
+# PlotNua — Garden Room recommendation universe: PRODUCTION REFRESH.
+#
+# Regenerates garden-room-recommendation-universe-v1.json from Atlas and, only
+# if the result is valid AND actually different, commits it. This is the file
+# the homeowner's browser loads first, so the whole design is arranged around
+# one rule:
+#
+#   A FAILED OR QUESTIONABLE REFRESH MUST NEVER REPLACE THE LAST KNOWN-GOOD
+#   PRODUCTION UNIVERSE.
+#
+# HOW THAT RULE IS ENFORCED, STRUCTURALLY RATHER THAN BY CARE.
+#   The generator writes into ${RUNNER_TEMP}, outside the checked-out tree, and
+#   refuses a directory holding production files anyway. The production JSON is
+#   overwritten by exactly one step, which runs only after generation exited 0
+#   and validation exited 0. Every other outcome leaves the file untouched and
+#   fails the job loudly. There is no path that half-replaces it.
+#
+# WHY IT CANNOT LOOP.
+#   The only trigger is a button — and there is no `push` trigger, so the
+#   commit this workflow makes cannot start it again. That stays true when the
+#   schedule is added in Piece 5B: a timer cannot be triggered by a commit
+#   either.
+#
+# THE TOKEN.
+#   ${{ secrets.AIRTABLE_TOKEN }} — the same repository secret atlas-stats.yml
+#   has used since launch. It is handed to one step as an environment variable,
+#   is never written to a file or an argument, and never reaches the artefact.
+#   Airtable access is read-only: the generator issues GET requests only.
+name: Atlas Match universe refresh
+
+# PIECE 5A — MANUAL ONLY, DELIBERATELY.
+#
+# Everything below this line has been proved offline, but the generator has
+# never been exercised against live Airtable from THIS workflow. A first run
+# that publishes to production unattended would be a first run nobody watched.
+# So the first one is founder-triggered, inspected, and only then does the
+# timer go in.
+#
+# PIECE 5B WILL RESTORE, unchanged:
+#
+#     schedule:
+#       - cron: '15 6 * * *'      # 06:15 UTC daily
+#
+# 06:15 because Atlas statistics runs at 06:00 and the quarter-hour stagger
+# keeps two jobs off the same Airtable rate-limit window.
+on:
+  workflow_dispatch:
+
+# Least privilege. The job pushes one file; it needs nothing else.
+permissions:
+  contents: write
+
+concurrency:
+  group: atlas-match-universe-refresh
+  cancel-in-progress: false
+
+env:
+  PRODUCTION_FILE: garden-room-recommendation-universe-v1.json
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+        # Standard library only. Nothing to install, nothing to pin.
+
+      # Recorded BEFORE anything runs, so the final step can prove the file was
+      # left alone rather than merely assert it.
+      - name: Record the last known-good universe
+        id: baseline
+        run: |
+          set -euo pipefail
+          test -s "$PRODUCTION_FILE" || { echo "::error::production universe missing"; exit 1; }
+          echo "sha=$(sha256sum "$PRODUCTION_FILE" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          echo "Last known-good: $(sha256sum "$PRODUCTION_FILE" | cut -c1-16)…  $(wc -c < "$PRODUCTION_FILE") bytes"
+
+      - name: Create the candidate directory outside the repository
+        id: outdir
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/atlas-match-universe-candidate"
+          mkdir -p "$OUT"
+          echo "path=$OUT" >> "$GITHUB_OUTPUT"
+
+      # If this fails, the job stops here and production is untouched.
+      - name: Generate a candidate universe from Atlas (read-only)
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: |
+          set -euo pipefail
+          python .github/scripts/generate_garden_room_universe.py \
+            --out-dir "${{ steps.outdir.outputs.path }}"
+
+      - name: Verify the generator wrote nothing into the repository
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::The generator modified the working tree. It must only write to its --out-dir."
+            git status --porcelain
+            exit 1
+          fi
+
+      # THE GATE. Exits non-zero on any structural or truthfulness failure, and
+      # decides changed/unchanged. Nothing downstream runs if this fails.
+      - name: Validate the candidate against production
+        id: validate
+        run: |
+          set -euo pipefail
+          python .github/scripts/validate_garden_room_universe.py \
+            --candidate "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" \
+            --production "$PRODUCTION_FILE" \
+            --summary-out "${{ steps.outdir.outputs.path }}/validation-summary.txt" \
+            --github-output
+
+      - name: Publish the candidate, only if it is genuinely different
+        if: steps.validate.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          cp "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" "$PRODUCTION_FILE"
+
+          # Stage the one approved path by explicit name. Never `git add -A`,
+          # never `git add .`, never a wildcard: an unattended job must not be
+          # able to sweep up an unrelated change that happens to be present.
+          git add "$PRODUCTION_FILE"
+
+          if git diff --cached --quiet; then
+            echo "Nothing staged after all — leaving production as it stands."
+            exit 0
+          fi
+
+          # Second gate. If anything other than the single approved path has
+          # somehow been staged, refuse rather than commit it.
+          STAGED="$(git diff --cached --name-only | sort | tr '\n' ' ')"
+          if [ "$STAGED" != "$PRODUCTION_FILE " ]; then
+            echo "::error::Unexpected staged paths: $STAGED"
+            exit 1
+          fi
+
+          git -c user.name='plotnua-atlas-bot' \
+              -c user.email='atlas-bot@users.noreply.github.com' \
+              commit -m 'Atlas: refresh Garden Room recommendation universe'
+          git push
+
+      - name: Confirm the universe was left untouched when nothing changed
+        if: steps.validate.outputs.changed != 'true'
+        run: |
+          set -euo pipefail
+          NOW="$(sha256sum "$PRODUCTION_FILE" | cut -d' ' -f1)"
+          if [ "$NOW" != "${{ steps.baseline.outputs.sha }}" ]; then
+            echo "::error::The production universe changed on a run that should not have touched it."
+            exit 1
+          fi
+          echo "NO CHANGE — production universe already current, and byte-identical to the run's start."
+
+      # Debugging aid for a hand-run refresh. Deliberately NOT the delivery
+      # mechanism: Piece 4 was blocked for a day because the only copy of a
+      # generated universe lived in an Actions artefact. Production truth is
+      # the committed repository file and nothing else.
+      - name: Keep the candidate and its validation for manual runs
+        if: always() && github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: garden-room-universe-candidate
+          path: |
+            ${{ steps.outdir.outputs.path }}/garden-room-recommendation-universe-v1.json
+            ${{ steps.outdir.outputs.path }}/garden-room-exclusions-v1.json
+            ${{ steps.outdir.outputs.path }}/garden-room-qualification-report.txt
+            ${{ steps.outdir.outputs.path }}/validation-summary.txt
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          set -euo pipefail
+          {
+            echo '## Garden Room recommendation universe — refresh'
+            echo ''
+            if [ -s "${{ steps.outdir.outputs.path }}/validation-summary.txt" ]; then
+              echo '```'
+              cat "${{ steps.outdir.outputs.path }}/validation-summary.txt"
+              echo '```'
+            else
+              echo 'No validation summary — generation did not complete. Production universe untouched.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
