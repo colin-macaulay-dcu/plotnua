@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-04T07:08:53Z",
+  "generated": "2026-09-04T15:35:36Z",
   "categories": [
     "suppliers"
   ],
@@ -17,7 +17,9 @@
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rec0zLenIbn3nsvjh": {
       "name": "Garden Office Solutions",
@@ -29,7 +31,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rec17SIbblmee8Vs3": {
       "name": "SIPS-House",
@@ -41,7 +45,9 @@
         "jurisdiction": "European Union (Lithuania)",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rec2URqKyVwlhHSBw": {
       "name": "\u00d6\u00d6D House",
@@ -53,7 +59,9 @@
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rec4VIYIbk68JihtK": {
       "name": "Timber Living",
@@ -65,7 +73,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A \u2014 https://timberliving.ie/contact-us/ directly fetched 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Supplier",
+      "lastReviewed": "2026-08-28"
     },
     "rec5Dwr8vYDDkHEeW": {
       "name": "Dunster House",
@@ -77,7 +87,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rec66sNzKArqeOU23": {
       "name": "Ballyfree Garden Sheds",
@@ -89,7 +101,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rec7dG4sHJtzstIHo": {
       "name": "Berko Pod Systems Ltd",
@@ -101,7 +115,9 @@
         "jurisdiction": "NORTHERN IRELAND \u2014 UK planning and building control apply at the supplier's base; Irish exempted-development rules do not",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rec7q7WitcIuY3phT": {
       "name": "All In One Cabins",
@@ -113,7 +129,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Supplier",
+      "lastReviewed": "2026-08-28"
     },
     "rec7wp2vzUC3dxcYr": {
       "name": "Iglucraft",
@@ -125,7 +143,9 @@
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier A \u2014 General Terms and Conditions of Sales Contract PDF fetched and read in full 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-30"
     },
     "rec8j9KTIVfQAVMzg": {
       "name": "Oeco Garden Rooms",
@@ -137,7 +157,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Bespoke Builder",
+      "lastReviewed": "2026-08-28"
     },
     "recAbCMI3LkwWO3Z6": {
       "name": "Pineca Ireland",
@@ -149,7 +171,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Supplier",
+      "lastReviewed": "2026-08-28"
     },
     "recDRvQusj5KgRU2s": {
       "name": "Quinn Offsite Ltd",
@@ -161,7 +185,9 @@
         "jurisdiction": "NORTHERN IRELAND \u2014 UK planning and building control apply at the supplier's base",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recEMNNtEYy59gmbt": {
       "name": "Koto",
@@ -173,7 +199,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recExaEx7i1hqG6CD": {
       "name": "MCD Garden Sheds",
@@ -185,7 +213,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recFQ1GyK0fq2fK4I": {
       "name": "Sprout Pod",
@@ -197,7 +227,9 @@
         "jurisdiction": "Republic of Ireland, trading all-island",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Modular Builder",
+      "lastReviewed": "2026-08-28"
     },
     "recIFIi1fxjwc1g1C": {
       "name": "Rayco Modular Homes",
@@ -209,7 +241,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recJJ4jFPAMxw6IkY": {
       "name": "Green Retreats",
@@ -221,7 +255,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recJwB6aXMbElG2Fm": {
       "name": "Luxury Garden Studios",
@@ -233,7 +269,9 @@
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recKazlmd4FCnanxR": {
       "name": "Sanctum Garden Studios",
@@ -245,7 +283,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recLQOPHHfSrfs3xA": {
       "name": "Quick-Garden",
@@ -257,7 +297,9 @@
         "jurisdiction": "United Kingdom \u2014 established by London telephone numbers 020 7099 4301 and 07418 351 697 and GBP-only pricing",
         "evidenceTier": "Tier A for the specification tables read directly; Tier B for the absence of address",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Supplier",
+      "lastReviewed": "2026-08-30"
     },
     "recOjnbeotdf0jnqH": {
       "name": "Adman Steel Sheds",
@@ -269,7 +311,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recP4lqMNuNceOyNh": {
       "name": "TimberIN",
@@ -281,7 +325,9 @@
         "jurisdiction": "European Union \u2014 country of registration not established",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recSDXX7gK0FT7g8G": {
       "name": "Lugarde",
@@ -293,7 +339,9 @@
         "jurisdiction": "European Union (Netherlands)",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recUnzSlV4tszVzg6": {
       "name": "Ecohouse Building Systems",
@@ -304,7 +352,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A \u2014 all fields above read directly from ecohouse.ie 29 August 2026",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-29"
     },
     "recXGziDNcDnpz0iN": {
       "name": "Waltons",
@@ -316,7 +366,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B for the absence \u2014 searched 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recZVKy9FPReF7I9H": {
       "name": "Auroom Wellness",
@@ -328,7 +380,9 @@
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recZcfloN72CBES6I": {
       "name": "Modern Garden Rooms",
@@ -340,7 +394,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Bespoke Builder",
+      "lastReviewed": "2026-08-28"
     },
     "recZsdhQM53LBVyyg": {
       "name": "Total Garden Rooms",
@@ -352,7 +408,9 @@
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recaVJQjZD9UV8JSs": {
       "name": "The Pod Factory",
@@ -364,7 +422,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Modular Builder",
+      "lastReviewed": "2026-08-28"
     },
     "recbZVOTUMCmMphuj": {
       "name": "Sonic Box Studios",
@@ -376,7 +436,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "reccM9Gg66ZuZC0m3": {
       "name": "All About Outdoors",
@@ -388,7 +450,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Installer",
+      "lastReviewed": "2026-08-28"
     },
     "recdkZXPh12FyiCRr": {
       "name": "Elevate Modular",
@@ -400,7 +464,9 @@
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recePJOyXsH8LXtwf": {
       "name": "Shanette Sheds",
@@ -412,7 +478,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A \u2014 https://shanettesheds.ie/contact/ directly fetched 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recefOJGKHPwabRhV": {
       "name": "Loghouse",
@@ -424,7 +492,9 @@
         "jurisdiction": "Republic of Ireland, trading across all 32 counties",
         "evidenceTier": "Tier A for the 32-county and own-team claims (loghouse.ie homepage directly fetched); Tier B for the Athlone address and Eircode",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Supplier",
+      "lastReviewed": "2026-08-28"
     },
     "receufKmrd8c4QgMv": {
       "name": "Hansa24 Group",
@@ -436,7 +506,9 @@
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recfV4V49BHoMsYBA": {
       "name": "Concept Modular",
@@ -448,7 +520,9 @@
         "jurisdiction": "Republic of Ireland \u2014 established by Irish domain and Irish mobile number only",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recfpcUL7s03Es3lV": {
       "name": "Home Modular",
@@ -460,7 +534,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Modular Builder",
+      "lastReviewed": "2026-08-28"
     },
     "recgsaDsSVCCad0q4": {
       "name": "KC Modular Buildings",
@@ -472,7 +548,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rechco59Sn6wp3Aiq": {
       "name": "Garden Rooms",
@@ -484,7 +562,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Bespoke Builder",
+      "lastReviewed": "2026-08-28"
     },
     "rechsPFUooApigybT": {
       "name": "Essex Garden Studios",
@@ -496,7 +576,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Bespoke Builder",
+      "lastReviewed": "2026-08-28"
     },
     "reclA5R4kPCCwc8Pc": {
       "name": "Gardenhouse24 Ireland",
@@ -508,7 +590,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A for company registration; Tier B for showroom detail",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "reclCNqekU666UWJA": {
       "name": "Booths Garden Studios",
@@ -520,7 +604,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recmBdXALBPGk5wSI": {
       "name": "NOOK Prefab (espacio NOOK)",
@@ -532,7 +618,9 @@
         "jurisdiction": "European Union (Spain)",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recmW0HlJFr9GvLEj": {
       "name": "Garden Solutions 4U",
@@ -544,7 +632,9 @@
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recn9B3Qn43VUXxAg": {
       "name": "Outdoor Living (ModPod)",
@@ -556,7 +646,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Supplier",
+      "lastReviewed": "2026-08-28"
     },
     "recnvHCjmfim16w3q": {
       "name": "Big Man Tiny Homes",
@@ -568,7 +660,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recontC2BSomwggsc": {
       "name": "Cabin Master",
@@ -580,7 +674,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recrtMY2s1Tabf06e": {
       "name": "Modular Innovations",
@@ -592,7 +688,9 @@
         "jurisdiction": "Republic of Ireland \u2014 established by Irish domain only",
         "evidenceTier": "Tier B for the absence \u2014 searched 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recsDmxfYLRJiaFmG": {
       "name": "Bertilo",
@@ -604,7 +702,9 @@
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier A \u2014 bertilo.com read directly during Session 6 supplier enrichment",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rectRQUdpY3t4ukdP": {
       "name": "My Garden Room (Barna Buildings)",
@@ -616,7 +716,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "rectTyBhqejHG4GQG": {
       "name": "X-Gen Homes",
@@ -628,7 +730,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recuCWhMIEWD1X1yE": {
       "name": "Garden Office Buildings",
@@ -640,7 +744,9 @@
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recv6T9JI9T8aqcRO": {
       "name": "MyCabin.ie",
@@ -652,7 +758,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "recw124UIanKV5Ath": {
       "name": "Shomera",
@@ -664,7 +772,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Bespoke Builder",
+      "lastReviewed": "2026-08-28"
     },
     "recxdr0chc5ljRqfR": {
       "name": "CG Garden Rooms (CG Joinery)",
@@ -677,7 +787,9 @@
         "jurisdiction": "Northern Ireland (United Kingdom)",
         "evidenceTier": "B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Bespoke Builder",
+      "lastReviewed": "2026-08-28"
     },
     "recyfWvDVODL06P8l": {
       "name": "Yardbox",
@@ -689,7 +801,9 @@
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "reczIVnJujZd8a2CK": {
       "name": "Modular Outlook Ireland",
@@ -701,7 +815,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Modular Builder",
+      "lastReviewed": "2026-08-28"
     },
     "reczQn59haPghHYmT": {
       "name": "Vilarte",
@@ -713,7 +829,9 @@
         "jurisdiction": "European Union (Belgium)",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-08-28"
     },
     "reczankduIWGWwXKR": {
       "name": "Live in Garden Pods",
@@ -725,7 +843,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Modular Builder",
+      "lastReviewed": "2026-08-28"
     },
     "reczne3oE3EHQyp7L": {
       "name": "Granny Flats Dublin",
@@ -737,7 +857,9 @@
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
         "evidenceScope": "Organisation-Wide"
-      }
+      },
+      "organisationType": "Bespoke Builder",
+      "lastReviewed": "2026-08-28"
     }
   }
 }

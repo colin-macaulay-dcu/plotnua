@@ -10489,7 +10489,16 @@
       // builders, Product Detail) keeps working unchanged.
       id: raw.id, name: raw.name, organisation: raw.organisation,
       floorAreaM2: raw.floorAreaM2 == null ? undefined : raw.floorAreaM2,
-      price: raw.price == null ? undefined : raw.price,
+      /* ATLAS 487 BATCH 2 PIECE 1 (2A) — a governed zero is not a price.
+         The generator now refuses to emit one, but the published artefact is
+         only regenerated when the Atlas workflow next runs, so the runtime
+         refuses it too rather than waiting. `priceEvidence` still carries the
+         zero record untouched: pnZeroPriceRecord() reads it, so Product Detail
+         keeps saying that Atlas holds a record whose figure was never
+         captured. Absent, not excluded -- budgetFit() then scores these 1
+         (unknown) exactly as it scores any other unpriced product. */
+      price: (typeof raw.price === 'number' && isFinite(raw.price) && raw.price > 0)
+             ? raw.price : undefined,
       currency: raw.currency || 'EUR',
       glazing: inferGlazingType(raw.glazing),
       insulation: inferInsulated(raw.insulation),
@@ -11499,6 +11508,10 @@
     '20k-30k': { lo: 20000, hi: 30000 }, '30k-plus': { lo: 30000, hi: Infinity },
   };
   const AS_BUDGET_LABEL = { 'under-10k': 'Under €10,000', '10k-20k': '€10,000–€20,000', '20k-30k': '€20,000–€30,000', '30k-plus': '€30,000+' };
+  /* ATLAS 487 BATCH 2 PIECE 2 (2C) — the bands above are euro figures, and
+     every label says so. Naming that here stops the currency test being a
+     magic string at four separate call sites. */
+  const AS_BUDGET_CURRENCY = 'EUR';
 
   // Deterministic selection (generic route): for a given role, prefer a
   // candidate whose static budgetBand matches the homeowner's stated band.
@@ -12228,12 +12241,125 @@
     if (!band) return 1;
     const price = product ? product.price : null;
     if (typeof price !== 'number' || !isFinite(price)) return 1;
+    /* ATLAS 487 BATCH 2 PIECE 2 (2C) — the bands are EUR, and this function
+       used to test any number against them regardless of its currency. 70 of
+       the 487 carry a governed GBP price, so a sterling figure was being read
+       as though it were euro: £23,790 scored 2 ("inside €20,000-€30,000") on
+       the strength of the digits alone. Across the four bands that produced 71
+       false "in budget" verdicts and 209 false "out of budget" ones.
+
+       Atlas holds the numeric price AND the governed currency. It does NOT
+       hold an authorised conversion rate, and none may be introduced. So a
+       non-euro price is neither proven inside a euro band nor proven outside
+       it: it is UNKNOWN, which is exactly what 1 already means here and what
+       an unpriced product already scores. Not 2 (confirmed fit) and not 0
+       (confirmed miss).
+
+       No band (the homeowner said "not sure") returns 1 above, before this
+       test, so currency cannot affect the no-band case. */
+    if (!pnPriceComparableToBudget(product)) return 1;
     return (price >= band.lo && price <= band.hi) ? 2 : 0;
   }
 
+  /* =====================================================================
+     ATLAS 487 BATCH 2 PIECE 2.1 (R1) — WHY PRICE LEFT THIS COMPARATOR.
+
+     Price used to be the final tiebreak here. Two earlier corrections landed
+     on it: Piece 1.1 stopped an ABSENT price being read as zero, and Piece 2
+     stopped a sterling figure being tested against a euro BAND. The remaining
+     defect was that two prices in different currencies still reached
+     `aPrice - bPrice`, and EUR minus GBP is not a quantity.
+
+     The obvious repair -- "same currency: compare; different currency: return
+     0" -- was implemented, measured and REJECTED. Returning 0 for incomparable
+     pairs is an incomparability relation, and incomparability is not
+     transitive:
+
+         EUR 6,630  vs  EUR 134,500  ->  ordered
+         EUR 6,630  vs  GBP   4,800  ->  incomparable
+         GBP 4,800  vs  EUR 134,500  ->  incomparable
+
+     a == c and c == b but a < b, so the function was not a strict weak
+     ordering, Array.prototype.sort had no consistent relation to work with,
+     and it produced runs with EUR 134,500 sitting above EUR 6,630. Measured:
+     15 same-currency order violations across the 14 real profiles.
+
+     No pairwise comparator can order same-currency prices, refuse
+     cross-currency comparison, AND stay transitive. So price is not a pairwise
+     concern any more. This comparator now ranks the SUBSTANTIVE tuple only --
+     a total preorder, transitive, safe in any Array.sort -- and price is
+     applied afterwards, per tied group, by pnOrderTiedGroup() below. */
   function compareByScoreVector(a, b){
     for (let i = 0; i < a.tuple.length; i++) { if (b.tuple[i] !== a.tuple[i]) return b.tuple[i] - a.tuple[i]; }
-    return (a.product.price || 0) - (b.product.price || 0);
+    return 0;
+  }
+
+  /* GROUP-AWARE, CURRENCY-SAFE FINAL ORDERING.
+
+     Input: one maximal run of candidates that tie on the WHOLE substantive
+     tuple, in the order they entered this stage. Output: the same candidates,
+     reordered only where Atlas holds evidence that permits it.
+
+       1. priced candidates are grouped into cohorts by GOVERNED currency;
+       2. inside one cohort -- one shared, non-null currency -- ascending price;
+       3. cohorts are never compared numerically with each other;
+       4. cohort order is FIRST APPEARANCE in the incoming group, so a cohort's
+          position cannot be moved by any price it contains;
+       5. unpriced candidates form the final cohort, keeping their incoming
+          order, which preserves Piece 1.1's known-price-before-unpriced;
+       6. a priced candidate with NO governed currency becomes a cohort of ONE.
+          Two nulls are not a shared currency, so such products are never
+          compared with each other or with anything else, and never read as EUR.
+
+     THIS IS NOT A CURRENCY PREFERENCE. Nothing here knows what EUR or GBP are.
+     Whichever cohort the incoming order happened to present first stays first;
+     had the group arrived EUR-first, EUR would lead. The stage only refines
+     ordering where the evidence is comparable, and otherwise leaves the order
+     it was given exactly as it found it. */
+  function pnOrderTiedGroup(group){
+    if (!group || group.length < 2) return group || [];
+    const cohorts = [], index = {}, unpriced = [];
+    for (let i = 0; i < group.length; i++) {
+      const e = group[i];
+      const amount = pnUsablePrice(e && e.product && e.product.price);
+      if (amount == null) { unpriced.push(e); continue; }
+      const cur = pnGovernedCurrency(e.product);
+      /* A known currency shares a cohort; an unknown one never does. */
+      const key = cur ? ('c:' + cur) : ('u:' + i);
+      if (!(key in index)) { index[key] = cohorts.length; cohorts.push({ comparable: !!cur, rows: [] }); }
+      cohorts[index[key]].rows.push({ e: e, amount: amount });
+    }
+    const out = [];
+    for (let c = 0; c < cohorts.length; c++) {
+      const co = cohorts[c];
+      if (co.comparable && co.rows.length > 1) {
+        /* One currency on both sides, so this subtraction is a real quantity.
+           Array.prototype.sort is stable, so equal prices keep incoming order. */
+        co.rows.sort(function(x, y){ return x.amount - y.amount; });
+      }
+      for (let r = 0; r < co.rows.length; r++) out.push(co.rows[r].e);
+    }
+    for (let u = 0; u < unpriced.length; u++) out.push(unpriced[u]);
+    return out;
+  }
+
+  /* THE ONE AUTHORITATIVE ORDERING. Every ranking path calls this: the
+     production ranking, applyRecommendationView(), and the parity probe. A
+     view may supply its own substantive comparator; ties are then whatever
+     that comparator calls equal, so the group stage stays correct for it. */
+  function pnRankByScore(list, cmp){
+    const compare = cmp || compareByScoreVector;
+    const sorted = (list || []).slice().sort(compare);
+    const out = [];
+    let i = 0;
+    while (i < sorted.length) {
+      let j = i + 1;
+      while (j < sorted.length && compare(sorted[i], sorted[j]) === 0) j++;
+      const run = pnOrderTiedGroup(sorted.slice(i, j));
+      for (let k = 0; k < run.length; k++) out.push(run[k]);
+      i = j;
+    }
+    return out;
   }
 
   const RECOMMENDATION_VIEWS = {
@@ -12465,7 +12591,10 @@
     if (!view) return [];
     let list = qualifiedFor(view, scoredPool);
     if (view.predicate) list = list.filter(e => { try { return !!view.predicate(e, decisionProfile); } catch (err) { return false; } });
-    return list.slice().sort(view.compare);
+    /* PIECE 2.1 (R1) — the same authoritative ordering as the production path,
+       so a view can never rank by a rule the recommendation itself does not
+       use. view.compare is still honoured as the SUBSTANTIVE comparator. */
+    return pnRankByScore(list, view.compare);
   }
 
 
@@ -12684,10 +12813,12 @@
     }
 
     const scored = pool.map(scoreCandidate);
-    scored.sort((a, b) => {
-      // Sprint 1: the ordering is now owned by the Best Overall view.
-      return compareByScoreVector(a, b);
-    });
+    /* PIECE 2.1 (R1) — one authoritative ordering: substantive tuple, then the
+       currency-safe group stage. Was `scored.sort(compareByScoreVector)`, which
+       carried the price tiebreak inside the comparator. */
+    const rankedScored = pnRankByScore(scored);
+    scored.length = 0;
+    for (let i = 0; i < rankedScored.length; i++) scored.push(rankedScored[i]);
 
     // SPRINT 2 — the bespoke origin promotion is gone. Roughly sixty lines
     // of PB-020A2 reordering, which moved the origin-satisfying product
@@ -12795,8 +12926,15 @@
          would now be reported "below budget" — a claim about a price Atlas
          does not hold. */
       const knownPrice = typeof entry.product.price === 'number' && isFinite(entry.product.price);
-      const aboveBudget = !!(band && knownPrice && entry.product.price > band.hi);
-      const belowBudget = !!(band && knownPrice && entry.product.price < band.lo);
+      /* ATLAS 487 BATCH 2 PIECE 2 (2C) — these two do NOT read budgetFit; they
+         compare the raw number to the band themselves, so correcting budgetFit
+         alone would have left them claiming a sterling figure "costs more than
+         the €20,000-€30,000 you chose". They now require the same governed euro
+         price that budgetFit requires. A non-euro price is neither above nor
+         below a euro band. */
+      const euroComparable = pnPriceComparableToBudget(entry.product);
+      const aboveBudget = !!(band && knownPrice && euroComparable && entry.product.price > band.hi);
+      const belowBudget = !!(band && knownPrice && euroComparable && entry.product.price < band.lo);
       /* Was a single global flag meaning "the filter ran and kept somebody",
          which was true per product only because the pool had been filtered.
          It now means what every reader already took it to mean: THIS product
@@ -12954,16 +13092,25 @@
     // PB046-S1: was `'€' + product.price.toLocaleString(...)`, which threw on
     // any product without a published price. The sentence changes shape rather
     // than printing a placeholder mid-clause.
-    const priceStr = pb046Price(product.price);
+    /* BATCH 2 PIECE 1 — the sentence form, not the headline form: a floor
+       price reads "Priced from €35,950", never "Priced at From €35,950". */
+    const priceTail = pnPriceView(product).tail;
 
-    if (product.price == null) {
+    /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — the branch below carries TWO claims:
+       that no price is published, and that the supplier quotes on enquiry.
+       Both are false for an ambiguous Product, which has published prices
+       Atlas cannot rank. The semantic state comes from pnPriceView() rather
+       than from a second guess at product.price. */
+    if (pnPriceView(product).kind === 'ambiguous') {
+      reasons.push(PB046_AMBIGUOUS_REASON);
+    } else if (!pnPriceView(product).known) {
       reasons.push(`${PB046_NO_PRICE} — the supplier quotes this one on enquiry.`);
     } else if (ctx.aboveBudget) {
-      reasons.push(`Priced at ${priceStr} — above the ${ctx.budgetLabel} you selected, but included to show the next size option in this role.`);
+      reasons.push(`Priced ${priceTail} — above the ${ctx.budgetLabel} you selected, but included to show the next size option in this role.`);
     } else if (ctx.budgetMatched) {
-      reasons.push(`Priced at ${priceStr} — within the ${ctx.budgetLabel} you selected.`);
+      reasons.push(`Priced ${priceTail} — within the ${ctx.budgetLabel} you selected.`);
     } else {
-      reasons.push(`Priced at ${priceStr}.`);
+      reasons.push(`Priced ${priceTail}.`);
     }
 
     const attrs = [];
@@ -13569,7 +13716,12 @@
   // alternative card.
   function describeWhyNotFirst(altResult, primaryResult){
     const altP = altResult.product, priP = primaryResult.product;
-    const priceDelta = altP.price - priP.price;
+    /* BATCH 2 PIECE 1 — null rather than a meaningless number when the two
+       products are priced in different currencies, or either is unpriced. The
+       existing non-price fallbacks below already carry that case: a NaN delta
+       failed every comparison here before this change too. */
+    const priceCmp = pnPriceDelta(altP, priP);
+    const priceDelta = priceCmp ? priceCmp.diff : null;
     // PB-019 — AREA VALIDITY GUARD: an area comparison is only stated when BOTH
     // products carry a valid area. Otherwise the two area sentences are skipped
     // and the existing non-area fallbacks below carry the reasoning, so a
@@ -13584,13 +13736,13 @@
        TO RESTORE: hasValidArea(altP.floorAreaM2) && hasValidArea(priP.floorAreaM2) */
     const areaComparable = false;
     const areaDelta = areaComparable ? (altP.floorAreaM2 - priP.floorAreaM2) : null;
-    const priceAbs = '€' + Math.abs(priceDelta).toLocaleString('en-IE');
+    const priceAbs = priceCmp ? pnMoney(Math.abs(priceDelta), priceCmp.currency) : null;
     const areaAbs = areaComparable ? (Math.round(Math.abs(areaDelta) * 10) / 10).toString() : '';
 
-    if (areaComparable && priceDelta < 0 && areaDelta < 0) return `Better value, but ${areaAbs}m² less floor area.`;
-    if (priceDelta < 0) return 'Better value, but a different size direction.';
-    if (areaComparable && priceDelta > 0 && areaDelta > 0) return `${areaAbs}m² more floor area, but costs ${priceAbs} more.`;
-    if (priceDelta > 0) return `A closer size fit in one direction, but costs ${priceAbs} more.`;
+    if (areaComparable && priceDelta != null && priceDelta < 0 && areaDelta < 0) return `Better value, but ${areaAbs}m² less floor area.`;
+    if (priceDelta != null && priceDelta < 0) return 'Better value, but a different size direction.';
+    if (areaComparable && priceDelta != null && priceDelta > 0 && areaDelta > 0) return `${areaAbs}m² more floor area, but costs ${priceAbs} more.`;
+    if (priceDelta != null && priceDelta > 0) return `A closer size fit in one direction, but costs ${priceAbs} more.`;
     return 'A genuine alternative direction, closely comparable on price and size.';
   }
   function buildAlternativeRationale(altResult, primaryResult){
@@ -15394,7 +15546,7 @@
       const tcList = document.createElement('ul');
       tcList.className = 'am-fact-list';
       const tcItems = [
-        ['Published price', pb046Price(product.price) + (product.turnkeyPrice ? ' (basic) / €' + product.turnkeyPrice.toLocaleString('en-IE') + ' (turnkey)' : '')],
+        ['Published price', pnPriceDisplay(product) + (product.turnkeyPrice ? ' (basic) / ' + pnMoney(product.turnkeyPrice, pnPriceCurrency(product)) + ' (turnkey)' : '')],
         /* IH-1 — an ABSENT vatIncluded is not a VAT status. The old test
            matched only the string 'unknown', so a product without the field
            fell to the else branch and rendered titleCase(String(undefined))
@@ -16043,7 +16195,7 @@
     priceRow.className = 'results-hero-price-row';
     const price = document.createElement('span');
     price.className = 'results-hero-price';
-    price.textContent = pb046Price(product.price); // PB046-S1: was unguarded
+    price.textContent = pnPriceDisplay(product); // BATCH 2 PIECE 1: was pb046Price(), euro-only and exact-only
     priceRow.appendChild(price);
     // PB-019 — AREA VALIDITY GUARD: the area span is created and appended only
     // when the area is valid, so an unverified area leaves the price standing
@@ -16426,7 +16578,7 @@
     /* DISCOVERY v1.0 — roleWord is gone from this paragraph. It read the
        recommended product's own spaceRole and reported it back as something
        the homeowner had been looking for. */
-    const priceStr = pb046Price(product.price); // PB046-S1: was unguarded
+    const priceView = pnPriceView(product); // BATCH 2 PIECE 1
     /* ISSUE 004 PIECE 1 — was `const isStudio = IS_SINGLE_DISCOVERY_BUILD`,
        which is always true, so the line below said "creative studio" and its
        'garden room' alternative had never rendered. The flag gates the
@@ -16480,7 +16632,15 @@
       reasons.push(`its design cues lean ${dp.appearancePreference} — ${trace.appearanceEvidenceScore.matchedPhrase} — which is the feel you chose`);
     }
 
-    const reasoning = (product.price == null ? `${PB046_NO_PRICE}. ` : `At ${priceStr}, `) + joinWithAnd(reasons) + '.';
+    /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — same distinction, in the sentence
+       that opens the reasoning paragraph. */
+    const reasoning = (priceView.kind === 'ambiguous'
+      ? `${PB046_AMBIGUOUS_PRICE}. `
+      : !priceView.known
+      ? `${PB046_NO_PRICE}. `
+      /* "At €35,950, " / "From €35,950, " / "At an estimated €19,999, " */
+      : (priceView.tail.charAt(0).toUpperCase() + priceView.tail.slice(1) + ', ')) +
+      joinWithAnd(reasons) + '.';
 
     // Honest appearance fallback — exact wording specified by Launch/UX —
     // only when the homeowner stated an appearance preference but no
@@ -16944,7 +17104,14 @@
       score: win.u.score,
       reasons: win.u.reasons,
       exhibit: PLOT_TWIST_EXHIBITS[win.product.organisation] || null,
-      aboveBand: !!(band && band.hi < 1e9 && win.product.price > band.hi),
+      /* ATLAS 487 BATCH 2 PIECE 2 (2C) — this flag renders as "It sits above
+         the budget you chose", which is a euro-budget verdict. It required the
+         same governed euro price as every other budget verdict. The candidate
+         FILTER above still compares raw numbers to the band; that is selection
+         rather than a claim, it is outside this job's scope, and its measured
+         effect is reported to the founder rather than changed here. */
+      aboveBand: !!(band && band.hi < 1e9 && pnPriceComparableToBudget(win.product)
+                    && win.product.price > band.hi),
     };
   }
 
@@ -18474,23 +18641,30 @@
        the real Atlas price-record status, and keeps the partial state visibly
        distinct from the full one rather than collapsing them. */
     const pbState = comparePriceEvidenceState(pb);
-    const pbNum = !!product && typeof product.price === 'number' && isFinite(product.price);
+    const pbNum = !!product && pnUsablePrice(product.price) != null;
+    /* BATCH 2 PIECE 1 (2F) — where Atlas recorded that the figure belongs to
+       the maker's range or to the maker as a whole, that qualification travels
+       with the row. A null scope stays unknown; it is never promoted. */
+    const pbScope = pnPriceScopeNote(product);
+    const pbScopeTail = pbScope ? (' ' + pbScope) : '';
     if (pbState === 'confirmed' && pbNum) {
       rows.push({ key:'pricing', label:'Published pricing', state:'reviewed',
                   value:'Published', tone:'full',
                   detail:org + ' publishes a price for this model, and Atlas holds it. ' +
-                         'It is a published price, not a quotation for your site.',
+                         'It is a published price, not a quotation for your site.' + pbScopeTail,
                   source:'PlotNua Atlas' });
     } else if (pbState === 'qualified' && pbNum) {
       rows.push({ key:'pricing', label:'Published pricing', state:'reviewed',
                   value:'Published, verification in progress', tone:'partial',
                   detail:org + ' publishes a price for this model and Atlas holds it. ' +
                          'Atlas has partly verified that record and has not finished, ' +
-                         'so treat the figure as published rather than as fully checked.',
+                         'so treat the figure as published rather than as fully checked.' + pbScopeTail,
                   source:'PlotNua Atlas' });
-    } else if (pbNum && product.price === 0) {
-      /* A zero-value record. Reached by its value now rather than by a token
-         no product carries; every zero in the live universe is a Draft. */
+    } else if (pnZeroPriceRecord(product)) {
+      /* A zero-value record. BATCH 2 PIECE 1 — read from priceEvidence now
+         rather than from product.price, because 2A stops that zero ever
+         reaching the runtime as a number. The record still exists and this
+         row is the place that says so. */
       rows.push({ key:'pricing', label:'Published pricing', state:'not-published',
                   value:'Record incomplete', tone:'none',
                   detail:'Atlas holds a price record for this product but its value is zero, ' +
@@ -18502,7 +18676,7 @@
                   detail:'Atlas holds no price for this model. That may mean it is quoted on ' +
                          'request rather than listed — we have not established which.',
                   source:'PlotNua Atlas' });
-    } else if (product && product.price) {
+    } else if (product && pnUsablePrice(product.price) != null) {
       /* A price exists but its provenance did not reach us. Saying "not
          published" here would be a false negative — PlotNua is showing this
          price elsewhere on the page. Say precisely what is true. */
@@ -18510,7 +18684,7 @@
                   value:'Held, source unrecorded', tone:'partial',
                   detail:'We hold a price for this model but not a record of how it was ' +
                          'captured, so we cannot tell you whether the maker publishes it ' +
-                         'or whether it was taken another way.',
+                         'or whether it was taken another way.' + pbScopeTail,
                   source:'PlotNua Atlas' });
     } else {
       rows.push({ key:'pricing', label:'Published pricing', state:'not-published',
@@ -18576,8 +18750,9 @@
        having NO provenance at all. Between them, a product with a real Atlas
        price status got neither. Both are now driven by the same three states. */
     const pfState = comparePriceEvidenceState(product.priceBasis);
-    const pfNum = typeof product.price === 'number' && isFinite(product.price)
-                  && product.price !== 0;   /* a zero record says nothing */
+    /* BATCH 2 PIECE 1 — one shared definition of a usable figure; the
+       explicit `!== 0` is now redundant but the intent it recorded is kept. */
+    const pfNum = pnUsablePrice(product.price) != null;   /* a zero record says nothing */
     if (pfNum && pfState === 'unconfirmed') {
       facts.push({
         label: 'The price shown is the figure PlotNua holds for this model',
@@ -18952,6 +19127,10 @@
     /* ISSUE 005 A2 — resolved once here and read by the Published pricing chip
        below, so the chip's three lines cannot drift apart from one another. */
     const pdPriceState = comparePriceEvidenceState(P.priceBasis);
+    /* ATLAS 487 BATCH 2 PIECE 3.1 — same single source as everywhere else in
+       this Piece. Not re-derived from priceEvidence, and never inferred from a
+       null price, which would sweep genuinely unpriced Products in with it. */
+    const pdPriceAmbiguous = (pnPriceView(P).kind === 'ambiguous');
     const pdPricePublished = (typeof P.price === 'number' && isFinite(P.price)
                               && pdPriceState !== 'unconfirmed');
     let sup = null;
@@ -19019,7 +19198,14 @@
       { group:'verified', title:'Published pricing',
         state: (pdPricePublished ? 'verified' : (P.price != null ? 'assessing' : 'unassessed')),
         value: (pdPricePublished ? 'Published by the maker' : ''),
-        note:  (pdPriceState === 'confirmed'
+        /* ATLAS 487 BATCH 2 PIECE 3.1 — the ambiguous case is tested first.
+           The final branch below says "We hold a figure", which is precisely
+           what 2G has established Atlas cannot say for these Products. The
+           card's state is left alone: 'unassessed' is already the honest
+           token for it, and this Piece does not invent a new taxonomy. */
+        note:  (pdPriceAmbiguous
+                 ? 'Atlas holds more than one price record for this model, but cannot establish which is authoritative.'
+                 : pdPriceState === 'confirmed'
                  ? 'You can compare before you ever make contact.'
                  : pdPriceState === 'qualified'
                    ? 'You can compare before you ever make contact. Atlas has partly verified this price record.'
@@ -19417,7 +19603,7 @@
       mark += 1; placed += 1;
       const cell = aaEl('div', 'aa-find');
       cell.appendChild(aaEl('p', 'aa-find-lab', 'Published price'));
-      cell.appendChild(aaFig('aa-fig', pb046Price(P.price), mark));
+      cell.appendChild(aaFig('aa-fig', pnPriceDisplay(P), mark));
       cell.appendChild(aaEl('p', 'aa-find-cap',
         'The maker\u2019s own published figure, not an Atlas estimate.'));
       finds.appendChild(cell);
@@ -19950,7 +20136,7 @@
 
     const obs = document.getElementById('plotTwistObservation');
     obs.textContent = prod.organisation
-      + (prod.price != null ? ' \u00B7 ' + euro0(prod.price) : '');
+      + (pnPriceView(prod).known ? ' \u00B7 ' + pnPriceDisplay(prod) : '');
 
     /* WHY IT IS UNUSUAL — assembled from the signals that actually scored, so
        the sentence can never claim more than the evidence behind it. */
@@ -20150,7 +20336,11 @@
   // never re-derived: it is whatever results[0] already is.
   // =========================================================================
 
-  const euro0 = n => '€' + Math.round(n).toLocaleString('en-IE');
+  /* BATCH 2 PIECE 1 — euro0() is retired. It printed a euro sign on every
+     figure it touched, including the 70 sterling-priced products, and it was
+     the second of four parallel formatters. Its four call sites now read the
+     one contract: pnPriceDisplay() for a product's own price, and
+     pnPriceDelta() + pnMoney0() for a difference between two products. */
 
   // Pull the comparable figures off a row's existing trace.
   function altFacts(r){
@@ -20167,7 +20357,18 @@
       // not treated as a construction system.
       build: (r.product.productType && !/^garden room$/i.test(r.product.productType))
         ? r.product.productType : null,
-      price: (r.product.price != null) ? r.product.price : null,
+      price: pnUsablePrice(r.product.price),
+      /* BATCH 2 PIECE 1 — carried so a price comparison can check that the
+         two figures are in the same currency before claiming a difference. */
+      currency: pnPriceCurrency(r.product),
+      /* ATLAS 487 BATCH 2 PIECE 3.1 — the price STATE, not the price evidence.
+         `price` above is null both when Atlas holds nothing and when 2G holds
+         two records it cannot rank, and those are different facts that need
+         different sentences. This carries the one semantic token that
+         separates them and nothing else: no candidate figures, no count, no
+         record ids, no priceEvidence object. It is read from pnPriceView() so
+         there is exactly one definition of ambiguity in the runtime. */
+      priceState: pnPriceView(r.product).kind,
       band: t.appearanceBand ? t.appearanceBand.band : 0,
       appearanceMatched: !!(t.appearanceEvidenceScore && t.appearanceEvidenceScore.matched),
       originSatisfies: !!(t.originScore && t.originScore.satisfiesPreference),
@@ -20189,8 +20390,16 @@
     {
       id: 'price',
       // 1% guards against calling €40 on €25,000 a reason.
-      wins: (a, p) => a.price != null && p.price != null && a.price < p.price * 0.99,
-      reason: (a, p) => euro0(p.price - a.price) + ' less than the one we’d start with',
+      /* BATCH 2 PIECE 1 — `wins` must be a genuine, evidenced difference, and
+         a euro figure minus a sterling figure is not one. Same-currency is now
+         part of the evidence test rather than an assumption. Cross-currency
+         pairs fall through to the origin/availability/appearance dimensions,
+         which is a change of stated REASON only: this list picks how an
+         alternative is described, never how the 487 are ranked. */
+      wins: (a, p) => a.price != null && p.price != null
+        && a.currency && p.currency && a.currency === p.currency
+        && a.price < p.price * 0.99,
+      reason: (a, p) => pnMoney0(p.price - a.price, p.currency) + ' less than the one we’d start with',
     },
     {
       id: 'origin',
@@ -20243,8 +20452,10 @@
   // Missing evidence is never described as a fault in the product: Atlas not
   // holding a fact is a fact about Atlas.
   function altTradeOff(a, p, usedDim){
-    if (usedDim !== 'price' && a.price != null && p.price != null && a.price > p.price) {
-      return euro0(a.price - p.price) + ' more';
+    if (usedDim !== 'price' && a.price != null && p.price != null
+        && a.currency && p.currency && a.currency === p.currency
+        && a.price > p.price) {
+      return pnMoney0(a.price - p.price, p.currency) + ' more';
     }
     if (usedDim !== 'origin' && p.originSatisfies && !a.originSatisfies) {
       return a.originCountry
@@ -20259,6 +20470,12 @@
     }
     /* DISCOVERY v1.0 — the space and usage trade-offs go with their
        dimensions. The final fallback below still says the true thing. */
+    /* ATLAS 487 BATCH 2 PIECE 3.1 — tested before the line below, which reads
+       a missing number as a missing published price. For an ambiguous Product
+       that is false: the maker has published, and Atlas holds more than one
+       published figure it cannot rank. Said as a trade-off phrase, because
+       this string lands mid-sentence beside the other trade-offs. */
+    if (a.priceState === 'ambiguous') return 'price not confirmed by Atlas';
     if (a.price == null) return 'no published price yet';
     // Nothing separable. Say the true thing rather than invent a fault: the
     // score vector still put the recommendation first, and that is why.
@@ -20657,7 +20874,7 @@
     const meta = document.createElement('div');
     meta.className = 'alt-meta';
     meta.textContent = [product.organisation || null,
-      (product.price != null) ? pb046Price(product.price) : null]
+      pnPriceView(product).known ? pnPriceDisplay(product) : null]
       .filter(Boolean).join(' · ');
     b.foot.appendChild(name); b.foot.appendChild(meta);
     /* PIECE 4 CORRECTION B — an alternative states its own Irish availability
@@ -20940,7 +21157,7 @@
     const meta = document.createElement('div');
     meta.className = 'alt-meta';
     meta.textContent = [prod.organisation || null,
-                        (prod.price != null) ? pb046Price(prod.price) : null]
+                        pnPriceView(prod).known ? pnPriceDisplay(prod) : null]
                        .filter(Boolean).join(' \u00b7 ');
     card.appendChild(meta);
 
@@ -21095,7 +21312,7 @@
     // Construction system, where the Atlas record actually states one — the
     // other axis of difference the carousel is meant to show.
     const build = product.productType && !/^garden room$/i.test(product.productType) ? product.productType : '';
-    priceRow.textContent = pb046Price(product.price) // PB046-S1: was unguarded
+    priceRow.textContent = pnPriceDisplay(product) // BATCH 2 PIECE 1
       + (hasValidArea(product.floorAreaM2) ? ' · ' + product.floorAreaM2 + 'm²' : '')
       + (build ? ' · ' + build : '');
     body.appendChild(priceRow);
@@ -21329,7 +21546,16 @@
     const budgetKey = dp.searchConstraints && dp.searchConstraints.budget;
     const budgetLabel = budgetKey && AS_BUDGET_LABEL[budgetKey];
     if (budgetLabel) {
-      if (product.price != null) {
+      /* ATLAS 487 BATCH 2 PIECE 2 (2C) — a priced product whose price is not in
+         euro reached the `else` of the ternary below and told the homeowner
+         "Inside the €20,000–€30,000 budget you chose" on the strength of a
+         sterling number. It is not known to be inside, and it is not known to
+         be outside. This mirrors the existing no-price sentence's second half
+         rather than inventing a new register; the sterling-specific detail
+         already lives on Product Detail. */
+      if (product.price != null && !pnPriceComparableToBudget(product)) {
+        points.push({ ok: false, text: 'Its price is not in euro, so Atlas cannot place it against your ' + budgetLabel + '.' });
+      } else if (product.price != null) {
         points.push(ctx.aboveBudget
           ? { ok: false, kind: 'budget', text: 'It costs more than the ' + budgetLabel +
               ' you chose. Nothing inside that budget came close enough to recommend.' }
@@ -21997,7 +22223,7 @@
     els.pdRole.textContent = MATCH_ROLE_LABEL[role] || '';
     els.pdName.textContent = product.name;
     els.pdOrg.textContent = product.organisation;
-    els.pdPrice.textContent = pb046Price(product.price); // PB046-S1: was unguarded
+    els.pdPrice.textContent = pnPriceDisplay(product); // BATCH 2 PIECE 1
     // PB-019 — AREA VALIDITY GUARD: the area element is populated only when
     // the product carries a valid area; otherwise it is emptied and hidden so
     // the price line reads naturally on its own (no fallback text here, per
@@ -22404,9 +22630,17 @@
         // The price difference. Subtraction of two published figures, placed
         // under the lower one, in metadata grey. Never a badge, never a verb.
         if (row.key === 'price' && row.state === 'separates') {
-          const diff = Math.abs(Number(row.a.value) - Number(row.b.value));
-          const lower = Number(row.a.value) < Number(row.b.value) ? cellA : cellB;
-          lower.appendChild(cmpEl('div', 'cmp-delta', pb046Price(diff) + ' less'));
+          /* BATCH 2 PIECE 1 — the subtraction is only meaningful, and the
+             symbol only truthful, when both columns are in one currency.
+             Across currencies the two figures still show in full; only the
+             derived difference is withheld, because Atlas cannot state it. */
+          const cmpDelta = pnPriceDelta(pair.recommendation, pair.alternative);
+          if (cmpDelta) {
+            const diff = Math.abs(Number(row.a.value) - Number(row.b.value));
+            const lower = Number(row.a.value) < Number(row.b.value) ? cellA : cellB;
+            lower.appendChild(cmpEl('div', 'cmp-delta',
+              pnMoney(diff, cmpDelta.currency) + ' less'));
+          }
         }
         r.appendChild(cellA);
         r.appendChild(cellB);
@@ -22821,7 +23055,7 @@
         facts.classList.add('is-withdrawn');
         facts.textContent = 'Atlas no longer holds a record for this option.';
       } else {
-        facts.textContent = pb046Price(product.price) // PB046-S1: crash guard only
+        facts.textContent = pnPriceDisplay(product) // BATCH 2 PIECE 1
           + (hasValidArea(product.floorAreaM2) ? ' · ' + product.floorAreaM2 + 'm²' : '');
       }
       bodyEl.appendChild(facts);
@@ -23018,8 +23252,16 @@
 
         /* An unusable figure is unknown, never zero. A string, a boolean, NaN
            or Infinity are all coercion damage and none of them is a price. */
-        if (typeof p.price !== 'number' || !isFinite(p.price)) {
-          return pnOpenCell({ checked: !!p.priceBasis });
+        /* BATCH 2 PIECE 1 — a zero record is now unpriced, so it arrives
+           here rather than at the note further down. Atlas genuinely holds a
+           record for it, and saying so is more use than silence. */
+        if (pnUsablePrice(p.price) == null) {
+          return pnOpenCell({
+            checked: !!p.priceBasis,
+            note: pnZeroPriceRecord(p)
+              ? 'Atlas holds a zero-value price record for this product, which is not a published price.'
+              : null,
+          });
         }
 
         const evidence = comparePriceEvidenceState(p.priceBasis);
@@ -23031,21 +23273,29 @@
                status, so zero is already excluded by the rule above. The
                explanation is kept because a zero record is a real Atlas state
                and saying so is more use than silence. */
-            note: p.price === 0
-              ? 'Atlas holds a zero-value price record for this product, which is not a published price.'
-              : (p.priceBasis
-                  ? 'Atlas holds a price for this product, but its price record is not verified, so it is not reported as confirmed.'
-                  : null),
+            note: [
+              p.priceBasis
+                ? 'Atlas holds a price for this product, but its price record is not verified, so it is not reported as confirmed.'
+                : null,
+              pnPriceScopeNote(p),
+            ].filter(Boolean).join(' ') || null,
           });
         }
 
+        /* BATCH 2 PIECE 1 — the cell's VALUE stays the raw number, so
+           Compare still subtracts and equates on evidence rather than on a
+           string; only its DISPLAY gains currency, from/range semantics and
+           the evidence-scope qualification. */
         return pnConfirmedCell(
-          Number(p.price), pb046Price(p.price),
+          Number(p.price), pnPriceDisplay(p),
           'atlas:price-basis/' + String(p.priceBasis).trim().toLowerCase().replace(/\s+/g, '-'),
           null,
-          evidence === 'qualified'
-            ? 'Atlas has partly verified this price record \u2014 the figure is as published, and the verification is not yet complete.'
-            : null);
+          [
+            evidence === 'qualified'
+              ? 'Atlas has partly verified this price record \u2014 the figure is as published, and the verification is not yet complete.'
+              : null,
+            pnPriceScopeNote(p),
+          ].filter(Boolean).join(' ') || null);
       },
       equals: function(a, b){ return Number(a) === Number(b); },
     },
@@ -23854,7 +24104,7 @@
       const meta = document.createElement('span');
       meta.className = 'pick2-meta';
       meta.textContent = [p.organisation || null,
-                          (p.price != null) ? pb046Price(p.price) : null,
+                          pnPriceView(p).known ? pnPriceDisplay(p) : null,
                           row.source].filter(Boolean).join(' · ');
       btn.appendChild(nm); btn.appendChild(meta);
       btn.addEventListener('click', function(){
@@ -24740,7 +24990,7 @@
       btn.appendChild(rsvEl('span', 'pick2-name', p.name || ''));
       btn.appendChild(rsvEl('span', 'pick2-meta',
         [p.organisation || null,
-         (p.price != null) ? pb046Price(p.price) : null,
+         pnPriceView(p).known ? pnPriceDisplay(p) : null,
          row.source].filter(Boolean).join(' · ')));
       btn.addEventListener('click', function(){
         open(els.myPlotScreen, p);
@@ -25326,8 +25576,214 @@
   // One formatter, used at those six sites. It states the truth rather than
   // inventing a number or hiding the product.
   const PB046_NO_PRICE = 'Price not published';
-  function pb046Price(value){
-    return value == null ? PB046_NO_PRICE : '€' + value.toLocaleString('en-IE');
+
+  /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — THE SECOND UNPRICED STATE.
+
+     PB046_NO_PRICE above says something quite specific: the maker has not put
+     a price in public. For the 17 Products that 2G refuses to adjudicate that
+     sentence is simply untrue. The maker HAS published; Atlas holds more than
+     one published figure for the model and cannot establish which is current
+     or authoritative. Saying "Price not published" there would convert an
+     honest inability to choose into a false claim about the maker.
+
+     So there are two different unpriced states, and they must not collapse
+     into one another:
+
+       'none'      — Atlas holds no price evidence        -> Price not published
+       'ambiguous' — Atlas holds evidence it cannot rank   -> Price not confirmed
+
+     Neither shows a number. That is the only thing they have in common. */
+  const PB046_AMBIGUOUS_PRICE = 'Price not confirmed';
+
+  /* The same state, said in a full sentence where a reason needs one. It says
+     what is true and stops: no candidate figures, no count, no record ids, no
+     talk of adjudication or verification ladders. */
+  const PB046_AMBIGUOUS_REASON = 'Price not confirmed \u2014 Atlas holds more than one ' +
+    'price record for this model and cannot establish which is authoritative.';
+
+  /* =====================================================================
+     ATLAS 487 BATCH 2 PIECE 1 — THE ONE PRICE PRESENTATION CONTRACT.
+
+     Before this, four systems formatted money independently: pb046Price()
+     (14 sites), euro0() (4 sites), and two hand-rolled '€' + toLocaleString
+     concatenations. Every one of them printed a euro sign unconditionally,
+     so 70 sterling-priced products were shown to Irish homeowners as euro,
+     and none of them could see priceType, from, to or evidenceScope -- all
+     of which Atlas already ships in every payload and nothing read.
+
+     pnPriceView(product) is now the single place that decides what a price
+     LOOKS like. It reads only governed evidence and invents nothing: no
+     conversion, no inferred currency, no calculated ceiling, no assumed
+     scope. Ranking does not consume it -- budgetFit() and
+     compareByScoreVector() still read the numeric product.price, exactly as
+     before, so presentation can never feed back into what is recommended.
+     ===================================================================== */
+
+  const PN_PRICE_SYMBOL = { EUR: '\u20AC', GBP: '\u00A3', USD: '$' };
+
+  /* The Airtable Price Type vocabulary carries duplicate tokens for one
+     meaning -- "    Standard Price" (four leading spaces, 77 products) beside
+     "Standard Price" (16), and "Sale Price" (18) beside "Sale" (2). Comparing
+     raw strings would silently split each pair. Normalising here fixes the
+     reading without touching Airtable, which is out of scope for this Piece. */
+  function pnPriceToken(v){
+    return (typeof v === 'string') ? v.replace(/\s+/g, ' ').trim().toLowerCase() : '';
+  }
+
+  function pnPriceCurrency(product){
+    const c = product && product.currency;
+    const t = (typeof c === 'string') ? c.trim().toUpperCase() : '';
+    return t || null;
+  }
+
+  /* ATLAS 487 BATCH 2 PIECE 2 (2C) — THE CURRENCY ATLAS ACTUALLY RECORDED.
+
+     pnPriceCurrency() above reads product.currency, and normalizePoolProduct
+     sets that with `raw.currency || 'EUR'` -- it MANUFACTURES euro when none is
+     governed, for 249 of the 487. That default is harmless for display (every
+     one of those products is unpriced, so no figure is ever shown) but it must
+     never be allowed to answer "is this price denominated in euro", because it
+     would answer yes for a product Atlas holds no currency for at all.
+
+     This reader goes to the picked pricing record instead. No currency is ever
+     inferred from supplier country, product country, market, URL, organisation
+     or the product name. Absent stays absent. */
+  function pnGovernedCurrency(product){
+    const e = (product && product.priceEvidence) || null;
+    const c = e && e.currency;
+    const t = (typeof c === 'string') ? c.trim().toUpperCase() : '';
+    return t || null;
+  }
+
+  /* True only when this product's price can honestly be tested against the
+     homeowner's budget bands, which are denominated in AS_BUDGET_CURRENCY.
+     Atlas holds no exchange rate, and none is authorised, so a sterling figure
+     is neither inside nor outside a euro band -- it is UNKNOWN. */
+  function pnPriceComparableToBudget(product){
+    return pnGovernedCurrency(product) === AS_BUDGET_CURRENCY;
+  }
+
+  /* A figure is usable only if it is a real positive number. Zero is a record
+     nobody filled in; NaN, Infinity, strings and booleans are coercion damage.
+     None of them is a price. */
+  function pnUsablePrice(v){
+    return (typeof v === 'number' && isFinite(v) && v > 0) ? v : null;
+  }
+
+  /* Never a currency symbol we cannot justify. A known currency gets its
+     symbol; a governed currency we hold no symbol for is printed as its own
+     code ("USD 12,000"); a genuinely unknown currency prints the bare number
+     rather than silently claiming euro. */
+  function pnMoney(value, currency){
+    if (typeof value !== 'number' || !isFinite(value)) return null;
+    const n = value.toLocaleString('en-IE');
+    const sym = PN_PRICE_SYMBOL[currency];
+    return sym ? (sym + n) : (currency ? (currency + '\u00A0' + n) : n);
+  }
+  /* Rounded variant, preserving exactly what euro0() used to do at its four
+     sites. Five products carry a price with a decimal part, so rounding is a
+     real difference and is kept where it already applied, not spread. */
+  function pnMoney0(value, currency){
+    if (typeof value !== 'number' || !isFinite(value)) return null;
+    return pnMoney(Math.round(value), currency);
+  }
+
+  /* Atlas holds a pricing record whose figure is zero -- a real and different
+     state from holding no record at all, and Product Detail says so. */
+  function pnZeroPriceRecord(product){
+    const e = (product && product.priceEvidence) || null;
+    if (!e) return false;
+    return e.base === 0 || e.from === 0;
+  }
+
+  /* The governed Evidence Scope, where it says the figure is NOT this model's
+     own price. A null scope stays unknown and is never promoted to
+     Product-Specific. */
+  function pnPriceScopeNote(product){
+    const e = (product && product.priceEvidence) || null;
+    const s = e && e.evidenceScope;
+    if (s === 'Range-Level') {
+      return 'This figure is recorded against the maker\u2019s range rather than this model on its own.';
+    }
+    if (s === 'Organisation-Wide') {
+      return 'This figure is recorded against the maker rather than this model on its own.';
+    }
+    return null;
+  }
+
+  /* THE VIEW. kind is decided from governed evidence only:
+       range     -- Price From and Price To both present (7 products)
+       from      -- Price Type "Starting From", or the figure came from
+                    Price From with no Base Price (84)
+       estimated -- Price Type "Estimated Price" (7)
+       quoted    -- Price Type "Custom Quote" with a real figure (1)
+       exact     -- Standard/Sale/Turnkey/Promotional, or untyped (120)
+     `display` is the headline form; `tail` is the sentence form, so a
+     paragraph reads "Priced from \u20ac35,950." rather than gluing a headline
+     into the middle of a clause. */
+  function pnPriceView(product){
+    const P = product || {};
+    const e = P.priceEvidence || {};
+    const cur = pnPriceCurrency(P);
+    const amount = pnUsablePrice(P.price);
+    const scope = pnPriceScopeNote(P);
+    /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — AMBIGUOUS EVIDENCE COMES FIRST.
+
+       This is tested BEFORE the no-usable-price branch below, because that
+       branch reads a missing number as a missing price and would label these
+       Products "Price not published". Ambiguity is read from the explicit
+       governed state the generator emits, never inferred from price == null:
+       a null price on its own means Atlas has nothing, which is a different
+       and equally truthful thing to say. */
+    if (e.adjudication === 'ambiguous') {
+      return { known: false, kind: 'ambiguous',
+               amount: null, ceiling: null, currency: cur, scopeNote: scope,
+               figure: null, display: PB046_AMBIGUOUS_PRICE, tail: null };
+    }
+    if (amount == null) {
+      return { known: false, kind: pnZeroPriceRecord(P) ? 'zero-record' : 'none',
+               amount: null, ceiling: null, currency: cur, scopeNote: scope,
+               figure: null, display: PB046_NO_PRICE, tail: null };
+    }
+    const from = pnUsablePrice(e.from);
+    const to   = pnUsablePrice(e.to);
+    const base = pnUsablePrice(e.base);
+    const t = pnPriceToken(e.priceType);
+    let kind;
+    if (from != null && to != null && to > from)          kind = 'range';
+    else if (t === 'starting from' || (base == null && from != null)) kind = 'from';
+    else if (t === 'estimated price')                     kind = 'estimated';
+    else if (t === 'custom quote')                        kind = 'quoted';
+    else                                                  kind = 'exact';
+    const figure = (kind === 'range')
+      ? (pnMoney(from, cur) + '\u00A0\u2013\u00A0' + pnMoney(to, cur))
+      : pnMoney(amount, cur);
+    const display = kind === 'from'      ? ('From ' + figure)
+                  : kind === 'estimated' ? ('Estimated ' + figure)
+                  : kind === 'quoted'    ? ('Quoted ' + figure)
+                  : figure;
+    const tail    = kind === 'from'      ? ('from ' + figure)
+                  : kind === 'estimated' ? ('at an estimated ' + figure)
+                  : kind === 'quoted'    ? ('at a quoted ' + figure)
+                  : ('at ' + figure);
+    return { known: true, kind: kind, amount: amount, ceiling: to, currency: cur,
+             scopeNote: scope, figure: figure, display: display, tail: tail };
+  }
+
+  /* The headline string, for the many sites that just need one. */
+  function pnPriceDisplay(product){ return pnPriceView(product).display; }
+
+  /* A money DIFFERENCE between two products. Subtracting a sterling figure
+     from a euro one produces a number that means nothing, so this returns
+     null unless both sides carry the same governed currency; every caller
+     already has a truthful non-numeric path for that case. Converting is not
+     authorised in this Piece and Atlas holds no exchange rate anyway. */
+  function pnPriceDelta(a, b){
+    const ca = pnPriceCurrency(a), cb = pnPriceCurrency(b);
+    if (!ca || !cb || ca !== cb) return null;
+    const va = pnUsablePrice(a && a.price), vb = pnUsablePrice(b && b.price);
+    if (va == null || vb == null) return null;
+    return { currency: ca, diff: va - vb };
   }
 
   const pb046 = { originalResults: null, pool: null, active: null };
@@ -25506,7 +25962,7 @@
     const n = document.createElement('p'); n.className = 'rc-name'; n.textContent = product.name;
     const m = document.createElement('p'); m.className = 'rc-meta'; m.textContent = product.organisation || '';
     const pr = document.createElement('p'); pr.className = 'rc-price';
-    pr.textContent = product.price != null ? euro0(product.price) : 'No published price yet';
+    pr.textContent = pnPriceView(product).known ? pnPriceDisplay(product) : 'No published price yet';
     host.appendChild(n); host.appendChild(m); host.appendChild(pr);
     if (note) {
       const s = document.createElement('p'); s.className = 'rc-same'; s.textContent = note;
@@ -26748,7 +27204,7 @@
         const factsEl = document.createElement('div');
         factsEl.className = 'match-card-facts-line';
         const bits = [];
-        if (pp.price != null) bits.push('€' + pp.price.toLocaleString('en-IE'));
+        if (pnPriceView(pp).known) bits.push(pnPriceDisplay(pp));
         if (hasValidArea(pp.floorAreaM2)) bits.push(pp.floorAreaM2 + 'm²');
         factsEl.textContent = bits.join(' · ');
         if (bits.length) body.appendChild(factsEl);
@@ -27840,16 +28296,25 @@
     const dp = Object.assign({}, buildDecisionProfile(matchState), profile || {});
     const ordered = rankCandidates(dp);
     const scored = ordered.__scored || [];
-    const legacy = scored.slice().sort(function(a, b){
-      for (let i = 0; i < a.tuple.length; i++) { if (b.tuple[i] !== a.tuple[i]) return b.tuple[i] - a.tuple[i]; }
-      return (a.product.price || 0) - (b.product.price || 0);
-    });
-    // SPRINT 2 — parity now measures the COMPARATOR, which is what Sprint 1
-    // moved into the registry. applyRecommendationView() additionally applies
-    // the qualification guard, so comparing against it would compare ordering
-    // against ordering-plus-filtering and report a change that is the guard
-    // working as designed. The guard's effect is reported separately below.
-    const viaComparator = scored.slice().sort(compareByScoreVector);
+    /* PIECE 1.1 — this is a deliberate second, independent implementation of
+       the comparator. PIECE 2.1 (R1) RETIRES IT.
+
+       Ordering is no longer expressible as one pairwise comparator: price is
+       applied per tied group, after substantive sorting, because no pairwise
+       rule can order same-currency prices, refuse cross-currency comparison
+       and stay transitive at the same time. A hand-inlined second copy of a
+       two-stage algorithm would be exactly the "two subtly different ranking
+       algorithms" this probe exists to catch.
+
+       So parity now measures the question that actually matters today: does
+       the PRODUCTION ranking path agree with the RECOMMENDATION VIEW path on
+       the same pool? Both go through pnRankByScore(); if they ever diverge,
+       something has grown a private ordering. The qualification guard is not
+       in play here because both sides are given the same already-scored pool
+       and the Best Overall view carries no predicate. */
+    const viaProduction = pnRankByScore(scored);
+    const viaComparator = applyRecommendationView('best-overall', scored, dp);
+    const legacy = viaProduction;
     const parity = legacy.length === viaComparator.length
       && legacy.every(function(e, i){ return e.product.id === viaComparator[i].product.id; });
     const viaView = applyRecommendationView('best-overall', scored, dp);

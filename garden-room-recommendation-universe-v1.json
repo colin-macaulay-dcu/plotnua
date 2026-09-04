@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-04T07:08:53Z",
+  "generated": "2026-09-04T15:35:36Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "qualificationRuleVersion": "garden-room-qualification-v1",
   "dryRun": true,
@@ -76,7 +76,9 @@
         "priceType": "Estimated Price",
         "status": "Verified",
         "includesVat": "Excluding VAT",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -204,7 +206,9 @@
         "priceType": "Estimated Price",
         "status": "Verified",
         "includesVat": "Excluding VAT",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -332,7 +336,9 @@
         "priceType": "Estimated Price",
         "status": "Verified",
         "includesVat": "Excluding VAT",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -461,7 +467,9 @@
         "priceType": "Custom Quote",
         "status": "Researching",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -582,7 +590,9 @@
         "priceType": "Custom Quote",
         "status": "Researching",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -825,7 +835,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -957,7 +969,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -1089,7 +1103,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -1321,7 +1337,9 @@
         "priceType": "Custom Quote",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -2001,7 +2019,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -2870,7 +2890,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -3044,7 +3066,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "countryOfManufacture": {
@@ -3217,7 +3241,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -3391,7 +3417,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -3568,7 +3596,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -3744,7 +3774,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -3918,7 +3950,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -4031,7 +4065,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -4375,7 +4411,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -4499,7 +4537,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -4635,7 +4675,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -4771,7 +4813,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -4906,7 +4950,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -5041,7 +5087,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -5185,7 +5233,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -5309,7 +5359,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -5574,7 +5626,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -5720,7 +5774,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -5863,7 +5919,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -6006,7 +6064,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -6149,7 +6209,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -6292,7 +6354,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -6534,7 +6598,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -7215,14 +7281,16 @@
         }
       },
       "priceEvidence": {
-        "base": 4562,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "    Standard Price",
+        "currency": null,
+        "priceType": null,
         "status": null,
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "floorArea": {
@@ -7302,8 +7370,8 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 4562,
-      "currency": "EUR",
+      "price": null,
+      "currency": null,
       "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
@@ -7368,14 +7436,16 @@
         }
       },
       "priceEvidence": {
-        "base": 5384,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "    Standard Price",
+        "currency": null,
+        "priceType": null,
         "status": null,
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "irishAvailability": {
@@ -7455,8 +7525,8 @@
           "evidenceScope": "Product-Specific"
         }
       },
-      "price": 5384,
-      "currency": "EUR",
+      "price": null,
+      "currency": null,
       "priceBasis": null,
       "floorAreaM2": 16,
       "glazing": null,
@@ -7521,14 +7591,16 @@
         }
       },
       "priceEvidence": {
-        "base": 6528,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "    Standard Price",
+        "currency": null,
+        "priceType": null,
         "status": null,
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "irishAvailability": {
@@ -7608,8 +7680,8 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 6528,
-      "currency": "EUR",
+      "price": null,
+      "currency": null,
       "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
@@ -7674,14 +7746,16 @@
         }
       },
       "priceEvidence": {
-        "base": 5704,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "GBP",
-        "priceType": "    Standard Price",
+        "currency": null,
+        "priceType": null,
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "installationModel": {
@@ -7761,8 +7835,8 @@
           ]
         }
       },
-      "price": 5704,
-      "currency": "GBP",
+      "price": null,
+      "currency": null,
       "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
@@ -7958,7 +8032,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -8111,7 +8187,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -8389,7 +8467,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -9659,7 +9739,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -10338,7 +10420,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -10461,14 +10545,16 @@
         }
       },
       "priceEvidence": {
-        "base": 7000,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "    Standard Price",
-        "status": "Verified",
+        "currency": null,
+        "priceType": null,
+        "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "electricalIncluded": {
@@ -10549,9 +10635,9 @@
           "evidenceScope": "Range-Level"
         }
       },
-      "price": 7000,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": "A+ rated double-glazed UPVC windows and doors, custom sized to order",
       "insulation": "Insulation fit-out is included only in the Full Turnkey Price package (along with electrics, plastering, painting and flooring); the Basic Unit Price explicitly excludes insulation fit-out.",
@@ -10616,14 +10702,16 @@
         }
       },
       "priceEvidence": {
-        "base": 12200,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "    Standard Price",
-        "status": "Verified",
+        "currency": null,
+        "priceType": null,
+        "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "insulation": {
@@ -10704,9 +10792,9 @@
           "status": "Verified"
         }
       },
-      "price": 12200,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": "A+ rated double-glazed UPVC windows and doors, custom sized to order",
       "insulation": "Insulation fit-out is included only in the Full Turnkey Price package (along with electrics, plastering, painting and flooring); the Basic Unit Price explicitly excludes insulation fit-out.",
@@ -10771,14 +10859,16 @@
         }
       },
       "priceEvidence": {
-        "base": 19600,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "Estimated Price",
-        "status": "Verified",
-        "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "currency": null,
+        "priceType": null,
+        "status": null,
+        "includesVat": null,
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "installationModel": {
@@ -10860,9 +10950,9 @@
           "status": "Verified"
         }
       },
-      "price": 19600,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": "A+ rated double-glazed UPVC windows and doors, custom sized to order",
       "insulation": "Insulation fit-out is included only in the Full Turnkey Price package (along with electrics, plastering, painting and flooring); the Basic Unit Price explicitly excludes insulation fit-out.",
@@ -10927,14 +11017,16 @@
         }
       },
       "priceEvidence": {
-        "base": 20900,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "Estimated Price",
-        "status": "Verified",
+        "currency": null,
+        "priceType": null,
+        "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "construction": {
@@ -11015,9 +11107,9 @@
           "status": "Verified"
         }
       },
-      "price": 20900,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": "A+ rated double-glazed UPVC windows and doors, custom sized to order",
       "insulation": "Insulation fit-out is included only in the Full Turnkey Price package (along with electrics, plastering, painting and flooring); the Basic Unit Price explicitly excludes insulation fit-out.",
@@ -11082,14 +11174,16 @@
         }
       },
       "priceEvidence": {
-        "base": 28550,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "Estimated Price",
-        "status": "Verified",
+        "currency": null,
+        "priceType": null,
+        "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "insulation": {
@@ -11170,9 +11264,9 @@
           "status": "Verified"
         }
       },
-      "price": 28550,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": "A+ rated double-glazed UPVC windows and doors, custom sized to order",
       "insulation": "Insulation fit-out is included only in the Full Turnkey Price package (along with electrics, plastering, painting and flooring); the Basic Unit Price explicitly excludes insulation fit-out.",
@@ -11237,14 +11331,16 @@
         }
       },
       "priceEvidence": {
-        "base": 16000,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "    Standard Price",
-        "status": "Verified",
+        "currency": null,
+        "priceType": null,
+        "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "construction": {
@@ -11332,9 +11428,9 @@
           "status": "Verified"
         }
       },
-      "price": 16000,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": "A+ rated double-glazed UPVC windows and doors, custom sized to order",
       "insulation": "Insulation fit-out is included only in the Full Turnkey Price package (along with electrics, plastering, painting and flooring); the Basic Unit Price explicitly excludes insulation fit-out.",
@@ -11404,7 +11500,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -11530,7 +11628,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -12136,7 +12236,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -12852,7 +12954,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -15875,7 +15979,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -17599,7 +17705,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -18219,7 +18327,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -18331,7 +18441,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -18443,7 +18555,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -18644,14 +18758,16 @@
         }
       },
       "priceEvidence": {
-        "base": 4800,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "GBP",
-        "priceType": "Sale Price",
-        "status": "Verified",
-        "includesVat": "Unknown",
-        "evidenceScope": null
+        "currency": null,
+        "priceType": null,
+        "status": null,
+        "includesVat": null,
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "warranty": {
@@ -18752,9 +18868,9 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 4800,
-      "currency": "GBP",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": "Double glazing, tempered safety glass",
       "insulation": "Not included as standard on the Garden Room / Garden House range; base timber wall panels alone provide modest thermal performance suited to three-season use. Roof and floor insulation kits are offered as optional extras, and the manufacturer recommends adding insulation plus a light heating system for genuine all-year/four-season use.",
@@ -18821,7 +18937,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "insulation": {
@@ -19017,7 +19135,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "floorArea": {
@@ -19206,7 +19326,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "insulationRating": {
@@ -19395,7 +19517,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "electricalIncluded": {
@@ -20159,7 +20283,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -20304,7 +20430,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "installationModel": {
@@ -21604,7 +21732,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -21844,7 +21974,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -22245,7 +22377,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -23500,7 +23634,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -23902,7 +24038,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -24199,7 +24337,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -26626,7 +26766,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -26771,7 +26913,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -26914,7 +27058,9 @@
         "priceType": "Sale",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "insulation": {
@@ -27067,7 +27213,9 @@
         "priceType": "Sale",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "insulation": {
@@ -27217,10 +27365,12 @@
         "from": null,
         "to": null,
         "currency": "GBP",
-        "priceType": "Sale Price",
+        "priceType": "Sale",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "floorArea": {
@@ -27567,7 +27717,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -28294,7 +28446,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -29479,7 +29633,9 @@
         "priceType": "Custom Quote",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -29813,7 +29969,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -30008,7 +30166,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "designLanguage": {
@@ -30194,7 +30354,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "designLanguage": {
@@ -30380,7 +30542,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -30529,7 +30693,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -30873,7 +31039,9 @@
         "priceType": "    Standard Price",
         "status": "Researching",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -31019,7 +31187,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -31150,7 +31320,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -31281,7 +31453,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -31385,7 +31559,9 @@
         "priceType": "Custom Quote",
         "status": "Researching",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -31507,14 +31683,16 @@
         }
       },
       "priceEvidence": {
-        "base": 4269,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "GBP",
-        "priceType": "    Standard Price",
+        "currency": null,
+        "priceType": null,
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "installationModel": {
@@ -31594,8 +31772,8 @@
           ]
         }
       },
-      "price": 4269,
-      "currency": "GBP",
+      "price": null,
+      "currency": null,
       "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
@@ -31667,7 +31845,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -31826,7 +32006,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -32051,7 +32233,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -32293,7 +32477,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -32535,7 +32721,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -32680,7 +32868,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -32825,7 +33015,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -32971,7 +33163,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -33311,7 +33505,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -33459,7 +33655,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -33716,7 +33914,9 @@
         "priceType": "Custom Quote",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -33854,7 +34054,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -33992,7 +34194,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -34154,7 +34358,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -34316,7 +34522,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -34478,7 +34686,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -34641,7 +34851,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -34821,7 +35033,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -34984,7 +35198,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -35147,7 +35363,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -35310,7 +35528,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -35473,7 +35693,9 @@
         "priceType": "Turnkey",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -35628,14 +35850,16 @@
         }
       },
       "priceEvidence": {
-        "base": 8899,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "Starting From",
-        "status": "Verified",
-        "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "currency": null,
+        "priceType": null,
+        "status": null,
+        "includesVat": null,
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "cladding": {
@@ -35701,9 +35925,9 @@
           "confirmationState": "Yes"
         }
       },
-      "price": 8899,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
       "insulation": "NOT INSULATED AS STANDARD \u2014 insulation is a customisation option. Handmade timber, Naul, Co. Dublin. NO thickness, material, U-value or price published. THREE-SEASON as base-specified.",
@@ -35763,14 +35987,16 @@
         }
       },
       "priceEvidence": {
-        "base": 7099,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "Starting From",
-        "status": "Verified",
-        "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "currency": null,
+        "priceType": null,
+        "status": null,
+        "includesVat": null,
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "insulationRating": {
@@ -35836,9 +36062,9 @@
           "evidenceScope": "Product-Specific"
         }
       },
-      "price": 7099,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
       "insulation": "NOT INSULATED AS STANDARD \u2014 insulation is a customisation option. Handmade timber, Naul, Co. Dublin. NO thickness, material, U-value or price published. THREE-SEASON as base-specified.",
@@ -35898,14 +36124,16 @@
         }
       },
       "priceEvidence": {
-        "base": 5469,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "Starting From",
-        "status": "Verified",
-        "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "currency": null,
+        "priceType": null,
+        "status": null,
+        "includesVat": null,
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "floorArea": {
@@ -35971,9 +36199,9 @@
           "confirmationState": "Yes"
         }
       },
-      "price": 5469,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
       "insulation": "NOT INSULATED AS STANDARD \u2014 INSULATION IS A CUSTOMISATION OPTION. MCD states buildings 'can be customised' with insulation, double glazed windows and plaster walls, which places insulation outside the base specification. Handmade timber construction by in-house carpenters, Naul, Co. Dublin. NO thickness, material, U-value or price published. THREE-SEASON as base-specified; confirm specification quoted before treating as year-round.",
@@ -36033,14 +36261,16 @@
         }
       },
       "priceEvidence": {
-        "base": 10549,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "Starting From",
-        "status": "Verified",
-        "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "currency": null,
+        "priceType": null,
+        "status": null,
+        "includesVat": null,
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "irishAvailability": {
@@ -36106,9 +36336,9 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 10549,
-      "currency": "EUR",
-      "priceBasis": "Verified",
+      "price": null,
+      "currency": null,
+      "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
       "insulation": "NOT INSULATED AS STANDARD \u2014 insulation is a customisation option alongside double glazing and plaster walls. Handmade timber, Naul, Co. Dublin. NO thickness, material, U-value or price published. THREE-SEASON as base-specified.",
@@ -36177,7 +36407,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -36339,7 +36571,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -36809,7 +37043,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "floorArea": {
@@ -36947,7 +37183,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -37087,7 +37325,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -37159,7 +37399,7 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -37234,7 +37474,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -37313,7 +37555,7 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -37582,7 +37824,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -37661,7 +37905,7 @@
           "evidenceScope": "Product-Specific"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -38237,7 +38481,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -38384,7 +38630,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -38455,7 +38703,7 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -38530,7 +38778,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -38601,7 +38851,7 @@
           "evidenceScope": "Product-Specific"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -39069,7 +39319,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "glazing": {
@@ -39204,7 +39456,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -39356,7 +39610,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -39501,7 +39757,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -39645,7 +39903,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -39789,7 +40049,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "countryOfManufacture": {
@@ -39934,7 +40196,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -40079,7 +40343,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "countryOfManufacture": {
@@ -40223,7 +40489,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -40368,7 +40636,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -40513,7 +40783,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "countryOfManufacture": {
@@ -40659,7 +40931,9 @@
         "priceType": "Custom Quote",
         "status": "Researching",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -40843,7 +41117,9 @@
         "priceType": "Custom Quote",
         "status": "Researching",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -41686,7 +41962,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -41792,7 +42070,9 @@
         "priceType": "Custom Quote",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -42035,7 +42315,9 @@
         "priceType": "Custom Quote",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -42690,7 +42972,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -42843,7 +43127,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -42996,7 +43282,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -43149,7 +43437,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -45056,7 +45346,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -45193,7 +45485,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -45345,7 +45639,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -45498,7 +45794,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -45636,7 +45934,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -45774,7 +46074,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -45934,7 +46236,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -46088,7 +46392,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -46207,7 +46513,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -46326,7 +46634,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -46446,7 +46756,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -46614,7 +46926,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": null,
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -46719,14 +47033,16 @@
         }
       },
       "priceEvidence": {
-        "base": 9390,
-        "from": null,
-        "to": null,
+        "base": null,
+        "from": 9390,
+        "to": 10490,
         "currency": "EUR",
-        "priceType": "    Standard Price",
+        "priceType": "Starting From",
         "status": "Verified",
-        "includesVat": null,
-        "evidenceScope": null
+        "includesVat": "No",
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "installationModel": {
@@ -46887,7 +47203,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "floorArea": {
@@ -47043,14 +47361,16 @@
         }
       },
       "priceEvidence": {
-        "base": 8290,
-        "from": null,
-        "to": null,
+        "base": null,
+        "from": 8290,
+        "to": 9390,
         "currency": "EUR",
-        "priceType": "    Standard Price",
+        "priceType": "Starting From",
         "status": "Verified",
-        "includesVat": null,
-        "evidenceScope": null
+        "includesVat": "No",
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "irishAvailability": {
@@ -47211,7 +47531,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "floorArea": {
@@ -47361,7 +47683,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "installationModel": {
@@ -47505,7 +47829,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "irishAvailability": {
@@ -47649,7 +47975,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 2
       },
       "features": {
         "installationModel": {
@@ -47792,7 +48120,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -47945,7 +48275,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -48495,7 +48827,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "glazing": {
@@ -48632,7 +48966,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -48762,7 +49098,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "glazing": {
@@ -48803,7 +49141,7 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -48878,7 +49216,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -48919,7 +49259,7 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -48994,7 +49334,9 @@
         "priceType": "Custom Quote",
         "status": "Draft",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -49035,7 +49377,7 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": 0,
+      "price": null,
       "currency": "EUR",
       "priceBasis": "Draft",
       "floorAreaM2": null,
@@ -49965,7 +50307,9 @@
         "priceType": "Custom Quote",
         "status": "Active",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -50078,7 +50422,9 @@
         "priceType": "Custom Quote",
         "status": "Active",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -50191,7 +50537,9 @@
         "priceType": "Custom Quote",
         "status": "Active",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -50304,7 +50652,9 @@
         "priceType": "Custom Quote",
         "status": "Active",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -50515,7 +50865,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -50646,7 +50998,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -50777,7 +51131,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -50908,7 +51264,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -51039,7 +51397,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -51170,7 +51530,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -51301,7 +51663,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -51432,7 +51796,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -51563,7 +51929,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -51694,7 +52062,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -51825,7 +52195,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -51956,7 +52328,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -52087,7 +52461,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -52218,7 +52594,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -52349,7 +52727,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -52480,7 +52860,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -52611,7 +52993,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -52742,7 +53126,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -52873,7 +53259,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -53004,7 +53392,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -53135,7 +53525,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -53266,7 +53658,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -53397,7 +53791,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulation": {
@@ -53528,7 +53924,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -53659,7 +54057,9 @@
         "priceType": "Starting From",
         "status": "Partially Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Range-Level"
+        "evidenceScope": "Range-Level",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -54042,7 +54442,9 @@
         "priceType": "Estimated Price",
         "status": "Verified",
         "includesVat": "Excluding VAT",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -54170,7 +54572,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "No",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -55475,7 +55879,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -55618,7 +56024,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -55760,7 +56168,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -55912,7 +56322,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -56095,7 +56507,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -56269,7 +56683,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -56411,7 +56827,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -56562,7 +56980,9 @@
         "priceType": "Starting From",
         "status": "Researching",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -56714,7 +57134,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -56863,7 +57285,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -57005,7 +57429,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -57147,7 +57573,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -57268,7 +57696,9 @@
         "priceType": "Standard Price",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -57389,7 +57819,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -57531,7 +57963,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -57674,7 +58108,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "externalDimensions": {
@@ -57817,7 +58253,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -57964,7 +58402,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -58103,7 +58543,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -58286,7 +58728,9 @@
         "priceType": "Sale Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -58468,7 +58912,9 @@
         "priceType": "Standard Price",
         "status": "Active",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -58581,7 +59027,9 @@
         "priceType": "Standard Price",
         "status": "Active",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -58694,7 +59142,9 @@
         "priceType": "Sale Price",
         "status": "Active",
         "includesVat": "Yes",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -59352,7 +59802,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -59798,7 +60250,9 @@
         "priceType": "    Standard Price",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "electricalIncluded": {
@@ -59959,7 +60413,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Yes",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -60120,7 +60576,9 @@
         "priceType": "Custom Quote",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "construction": {
@@ -60259,7 +60717,9 @@
         "priceType": "Custom Quote",
         "status": "Researching",
         "includesVat": "Unknown",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "adjudication": "missing",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -60395,14 +60855,16 @@
         }
       },
       "priceEvidence": {
-        "base": 5647,
+        "base": null,
         "from": null,
         "to": null,
-        "currency": "EUR",
-        "priceType": "    Standard Price",
+        "currency": null,
+        "priceType": null,
         "status": null,
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": null,
+        "adjudication": "ambiguous",
+        "candidateCount": 2
       },
       "features": {
         "irishAvailability": {
@@ -60482,8 +60944,8 @@
           ]
         }
       },
-      "price": 5647,
-      "currency": "EUR",
+      "price": null,
+      "currency": null,
       "priceBasis": null,
       "floorAreaM2": null,
       "glazing": null,
@@ -60979,7 +61441,9 @@
         "priceType": "Starting From",
         "status": "Researching",
         "includesVat": null,
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
@@ -61269,7 +61733,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -61381,7 +61847,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -61493,7 +61961,9 @@
         "priceType": "    Standard Price",
         "status": null,
         "includesVat": null,
-        "evidenceScope": null
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -61965,7 +62435,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -62103,7 +62575,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "installationModel": {
@@ -62240,7 +62714,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
@@ -62377,7 +62853,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -62515,7 +62993,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "warranty": {
@@ -62652,7 +63132,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "floorArea": {
@@ -62790,7 +63272,9 @@
         "priceType": "Starting From",
         "status": "Verified",
         "includesVat": "Unknown",
-        "evidenceScope": "Product-Specific"
+        "evidenceScope": "Product-Specific",
+        "adjudication": "adjudicated",
+        "candidateCount": 1
       },
       "features": {
         "insulationRating": {
