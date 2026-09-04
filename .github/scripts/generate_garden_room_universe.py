@@ -342,6 +342,53 @@ CONTRADICTION_MARKERS = (
 )
 CONTRADICTION_STATUSES = ("Contradicted", "Conflict", "Disputed")
 
+# ISSUE 005 PIECE E3a — THE CATEGORY-INTEGRITY EXCLUSION CONTRACT.
+#
+# CLOSED. Two literal phrases, measured across the complete Feature Value base
+# as the only text that means "keep this out of garden-room recommendations"
+# and never means anything else: 6 records, 3 products, 0 false positives.
+#
+# Adding a phrase here changes what PlotNua recommends. It is a founder
+# decision with its own forensic, never a convenience.
+CATEGORY_EXCLUSION_PHRASES = (
+    "must be excluded from garden-room recommendations",
+    "must never surface in a garden-room comparison",
+)
+# Deliberately NOT triggers — each has a MEASURED false-positive rate:
+#   DO NOT RANK (391)  NOT A GARDEN ROOM (22)  CATEGORY INTEGRITY (7)
+#   CATEGORY ISSUE     excluded from (65)      should never (1)
+# Nor product name, product type, supplier, or category-adjacent vocabulary.
+
+_WS = re.compile(r"\s+")
+
+
+def _normalise(s: str) -> str:
+    """Lower-case with runs of whitespace collapsed to one space.
+
+    A line break or a double space inside the phrase must not defeat the
+    match, and the phrase must read the same however it was typed. Nothing
+    else is altered: no punctuation stripping, no stemming, no fuzziness.
+    """
+    return _WS.sub(" ", str(s or "")).strip().lower()
+
+
+def category_exclusion(feat_rows):
+    """The Atlas adjudication that this product must not be recommended.
+
+    Returns (phrase, record_id) for the first Feature Value carrying one of
+    the closed phrases, else None. Reads only `feat_rows` — the product's
+    Feature Values, ALREADY LOADED for this product by main(); no extra
+    Airtable call, and the canonical product id is the join.
+    """
+    for r in feat_rows or []:
+        hay = _normalise(cell(r, "Value Text"))
+        if not hay:
+            continue
+        for phrase in CATEGORY_EXCLUSION_PHRASES:
+            if phrase in hay:
+                return phrase, r.get("id")
+    return None
+
 PRICE_VERIFIED_STATUSES = ("Verified",)
 
 
@@ -580,8 +627,16 @@ def has_contradiction(product, feat_rows, price_rows) -> str:
     return ""
 
 
-def qualify(product, orgs, price_rows, avail_rows, feat_rows) -> dict:
-    """Deterministic. Same inputs, same output, every run."""
+def qualify(product, orgs, price_rows, avail_rows, feat_rows,
+            all_feat_rows=None) -> dict:
+    """Deterministic. Same inputs, same output, every run.
+
+    ISSUE 005 PIECE E3a — A NAMING TRAP, RECORDED SO IT CANNOT BITE AGAIN.
+    `feat_rows` is NOT every Feature Value for the product. main() passes
+    `ie_rows` — the IRISH AVAILABILITY subset — and blockers A-D depend on
+    exactly that. Blocker E needs the whole evidence set, so it takes its own
+    parameter and A-D keep the input they have always had.
+    """
     name = txt(cell(product, "Product Name"))
     org_ids = links(product, "Organisation")
     org_names = [orgs.get(i, {}).get("name", "") for i in org_ids]
@@ -607,6 +662,21 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows) -> dict:
     if not name or txt(cell(product, "Product Category")) != GARDEN_ROOMS:
         hard.append({"code": "D", "reason": "Cannot be reliably identified as a Garden Room product",
                      "sourceFields": ["Product Name", "Product Category"]})
+    # ---- ISSUE 005 PIECE E3a — BLOCKER E -----------------------------------
+    # Blocker D tests the Airtable CATEGORY FIELD. These products are filed
+    # under Garden Rooms, so D passes them — while the research evidence for
+    # the very same product says they must be excluded. D is about how a record
+    # is filed; E is about what Atlas has decided.
+    adjudication = category_exclusion(
+        all_feat_rows if all_feat_rows is not None else feat_rows)
+    if adjudication:
+        _phrase, _rec_id = adjudication
+        hard.append({"code": "E",
+                     "reason": "Atlas has explicitly adjudicated that this product "
+                               "must not participate in Garden Room recommendations",
+                     "sourceFields": ["Product Feature Values: category adjudication"],
+                     "evidence": _phrase,
+                     "evidenceRecordId": _rec_id})
 
     # ---- evidence signals ----
     scopes = [cell(r, "Evidence Scope") for r in feat_rows if cell(r, "Evidence Scope")]
@@ -803,7 +873,8 @@ def main():
         ie_rows = [r for r in fv if set(links(r, "Feature")) & ie_feature_ids] or [
             r for r in fv if "irish availability" in txt(cell(r, "Product Feature Value Name")).lower()]
         q = qualify(p, orgs, by_product["pricing"].get(pid, []),
-                    by_product["availability"].get(pid, []), ie_rows)
+                    by_product["availability"].get(pid, []), ie_rows,
+                    all_feat_rows=fv)   # E3a: fv is EVERY Feature Value for pid
         if not q["evidenceSignals"]["irishAvailabilityClassified"]:
             unclassified_ie += 1
         if q["evidenceSignals"].get("noPublishedIrishRoute"):
@@ -998,6 +1069,20 @@ def main():
     for e in excluded:
         for b in e["qualification"]["hardBlockers"]:
             blockers[b["code"]] = blockers.get(b["code"], 0) + 1
+
+    # ---- ISSUE 005 PIECE E3a — name every category-adjudicated exclusion ----
+    # Operator diagnostics, printed to the run log and never sent to a
+    # homeowner. A silent exclusion is indistinguishable from a bug, so each
+    # one states the product, the supplier, the phrase Atlas used and the
+    # record that authorises it.
+    _cat_excluded = [e for e in excluded
+                     if any(b["code"] == "E" for b in e["qualification"]["hardBlockers"])]
+    print(f"\n  Category-integrity exclusions (Blocker E): {len(_cat_excluded)}")
+    for e in _cat_excluded:
+        _b = [b for b in e["qualification"]["hardBlockers"] if b["code"] == "E"][0]
+        print(f"    {e['productId']}  {e.get('productName') or '?'}"
+              f"  [{e.get('organisation') or 'no organisation'}]")
+        print(f"      authorised by {_b.get('evidenceRecordId')}: \"{_b.get('evidence')}\"")
 
     payload = {
         "schema": SCHEMA,
