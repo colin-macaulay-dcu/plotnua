@@ -10499,7 +10499,20 @@
          (unknown) exactly as it scores any other unpriced product. */
       price: (typeof raw.price === 'number' && isFinite(raw.price) && raw.price > 0)
              ? raw.price : undefined,
-      currency: raw.currency || 'EUR',
+      /* ATLAS 487 BATCH 2 PIECE 2H-2 — was `raw.currency || 'EUR'`, which
+         MANUFACTURED euro for every product Atlas holds no currency for. On
+         the current 487 that is 266 products; none of them carries a usable
+         price today, so nothing euro-shaped ever reached a homeowner -- but
+         that was a fact about the data, not about the code. The number and the
+         currency come from the same pricing record independently, so one
+         record with a Base Price and a blank Currency would have rendered
+         "EUR X" for a figure Atlas has no currency evidence for.
+
+         An absent currency now stays absent. Nothing is inferred from supplier
+         country, organisation, origin, market, URL, name or availability.
+         pnMoney() already prints the bare number for an unknown currency
+         rather than claiming a symbol, so this needs no new wording. */
+      currency: raw.currency || undefined,
       glazing: inferGlazingType(raw.glazing),
       insulation: inferInsulated(raw.insulation),
       spaceRole: raw.spaceRole || undefined,
@@ -17074,11 +17087,47 @@
     if (primaryResult.product.organisation) shownOrgs[primaryResult.product.organisation] = 1;
     pool.forEach(function(x){ if (x && seen[x.id] && x.organisation) shownOrgs[x.organisation] = 1; });
 
-    const ranked = pool
+    /* PIECE 2H-1 — `let`, because the cohort-safe ordering step below
+       reassigns it. The filtering and scoring pipeline is unchanged. */
+    let ranked = pool
       .filter(function(x){
         if (!x || seen[x.id] || x.id === primaryResult.product.id) return false;
         if (x.organisation && shownOrgs[x.organisation]) return false;
         if (x.price == null) return false;                       // unpriced is a dead end
+        /* ATLAS 487 BATCH 2 PIECE 2H-1 — THESE ARE EURO THRESHOLDS.
+           AS_BUDGET_BANDS is denominated in EUR, and x.price is whatever
+           currency the product carries, so comparing them raw asked whether a
+           sterling number was bigger than a euro one. That question has no
+           answer, and Atlas holds no exchange rate to give it one. Where the
+           price is not governed-comparable to the euro budget the gate now
+           ABSTAINS: the product is not admitted BECAUSE it fits, and not
+           rejected BECAUSE it does not -- the euro threshold simply does not
+           get a vote on it. Unknown is not a negative verdict.
+
+           This changes SELECTION only. The homeowner-facing `aboveBand` claim
+           further down has been governed by pnPriceComparableToBudget since
+           Piece 2 / 2C and is untouched. */
+        const cmp = pnPriceComparableToBudget(x);
+        /* ATLAS 487 BATCH 2 PIECE 2H R1 — THE HOMEOWNER'S BUDGET SIGNAL WINS.
+           2H first made these gates ABSTAIN on a non-comparable currency. That
+           was truthful but it let the euro budget be bypassed entirely: with
+           the gates silent, one sterling building became the Plot Twist for
+           all four bands, including under EUR 10,000, because its eligibility
+           had stopped varying with the band at all.
+
+           So where the homeowner has named an explicit EUR budget, only a
+           price Atlas can actually compare to that budget takes part in this
+           PRICE-RELATIVE selection. `band` is truthy only for the four
+           explicit bands, so a homeowner who said "not sure" is unaffected:
+           no band, no ceiling, no price gate, exactly as before.
+
+           This is a suitability rule for one discovery surface, not a verdict.
+           A non-comparable product remains eligible in Atlas, in the main
+           recommendation, and in Results / Compare / My Plot. It is not
+           downgraded, not outside budget, not above budget. UNKNOWN is still
+           not FALSE -- Atlas declines a comparison it cannot make rather than
+           guessing at one. */
+        if (band && !cmp) return false;
         if (ceiling != null && x.price > ceiling) return false;   // never absurd
         /* PRICE-AWARE CUTS BOTH WAYS. The first version only guarded the top,
            and offered an €11,750 building to a homeowner who had said
@@ -17092,10 +17141,21 @@
       })
       .map(function(x){ return { product: x, u: plotTwistUnusualness(x, makerCounts) }; })
       .filter(function(c){ return c.u.score >= PLOT_TWIST_MIN_SCORE; })
-      .sort(function(a, b){
-        if (b.u.score !== a.u.score) return b.u.score - a.u.score;
-        return (a.product.price || 0) - (b.product.price || 0);
-      });
+      /* ATLAS 487 BATCH 2 PIECE 2H-1 — the tie-break used to be
+         `(a.product.price || 0) - (b.product.price || 0)`, which subtracts a
+         sterling figure from a euro one and, for good measure, read an absent
+         price as zero. Ordering now goes through the SAME machinery the
+         authoritative ranking has used since Piece 2.1 R1: sort on the
+         substantive score, then order each tied run by cohort, where a cohort
+         is one governed currency. Price decides order only inside a cohort;
+         cohorts keep their first-appearance order; an unknown currency is a
+         cohort of one; unpriced sits last.
+
+         Deliberately NOT a pairwise comparator that abstains on mismatched
+         currencies. Piece 2.1 proved that non-transitive -- 15 same-currency
+         ordering violations -- and it was rejected. This reuses the accepted
+         group-aware design rather than re-litigating it. */
+      ranked = pnRankByScore(ranked, function(a, b){ return b.u.score - a.u.score; });
 
     if (!ranked.length) return null;
     const win = ranked[0];
