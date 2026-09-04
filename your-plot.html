@@ -12301,7 +12301,12 @@
       // is empty, so this view is unsupported and must stay invisible rather
       // than degrade into "cheapest" — which in the under-10k band is a
       // EUR 1,229 summerhouse, and is not a value judgement at all.
-      requiredFields: ['floorAreaM2', 'price'],
+      /* ISSUE 005 PIECE E3b.3 — floorAreaM2 removed from the support gate.
+         Best Value's availability must not depend on a comparable-area basis
+         Atlas cannot currently vouch for. Price alone still gates it, and every
+         other part of Best Value — predicate, comparator, unavailableLine — is
+         untouched. TO RESTORE: ['floorAreaM2', 'price']. */
+      requiredFields: ['price'],
       predicate: null,
       compare: compareByScoreVector,
       unavailableLine: () => 'Atlas does not yet hold enough verified specification to judge value here.',
@@ -12686,8 +12691,19 @@
       for (const e of list) {
         const org = e.product.organisation || '(unknown)';
         const priceBucket = e.product.price == null ? 'x' : Math.round(e.product.price / 2500);
-        const areaBucket = e.product.floorAreaM2 == null ? 'x' : Math.round(e.product.floorAreaM2 / 4);
-        const shape = org + '|' + priceBucket + '|' + areaBucket;
+        /* ISSUE 005 PIECE E3b.3 — FLOOR AREA REMOVED FROM THE SHAPE.
+           This bucket decided which products were KEPT and which were DEFERRED,
+           so a floor-area figure was shaping the visible result set. E3b.1 found
+           151 eligible products whose area sits beside an Atlas adjudication
+           that a floor-area basis must not be ranked, and E3b.2 proved the two
+           cannot be associated without guessing. Organisation and price still
+           diversify; nothing replaces area, deliberately — a substitute
+           heuristic would be a new claim, not a smaller one.
+           TO RESTORE, once Atlas carries a structured Measurement Basis:
+             const areaBucket = e.product.floorAreaM2 == null ? 'x'
+                              : Math.round(e.product.floorAreaM2 / 4);
+             const shape = org + '|' + priceBucket + '|' + areaBucket; */
+        const shape = org + '|' + priceBucket;
         perOrg[org] = perOrg[org] || 0;
         if (perOrg[org] >= 2 || seenShape.has(shape)) { deferred.push(e); continue; }
         perOrg[org] += 1; seenShape.add(shape); kept.push(e);
@@ -13529,7 +13545,15 @@
     // products carry a valid area. Otherwise the two area sentences are skipped
     // and the existing non-area fallbacks below carry the reasoning, so a
     // missing area can never coerce into a fabricated size difference.
-    const areaComparable = hasValidArea(altP.floorAreaM2) && hasValidArea(priP.floorAreaM2);
+    /* ISSUE 005 PIECE E3b.3 — the like-for-like area claim is suppressed.
+       "3.2m² less floor area" asserts that two areas are comparable. E3b.2
+       proved that cannot be established: the numbers carry no basis, and where
+       a directive names one it cites a different figure. The alternative and
+       every other reason for it survive — only the area sentence goes, and the
+       existing non-area fallbacks below carry the reasoning, exactly as the
+       PB-019 guard already provided for when an area was missing.
+       TO RESTORE: hasValidArea(altP.floorAreaM2) && hasValidArea(priP.floorAreaM2) */
+    const areaComparable = false;
     const areaDelta = areaComparable ? (altP.floorAreaM2 - priP.floorAreaM2) : null;
     const priceAbs = '€' + Math.abs(priceDelta).toLocaleString('en-IE');
     const areaAbs = areaComparable ? (Math.round(Math.abs(areaDelta) * 10) / 10).toString() : '';
