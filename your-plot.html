@@ -14371,7 +14371,14 @@
      'strengths' is deliberately absent: it has no presentable segment.
      'sources' is deliberately absent: provenance is audit-only and must never
      be downloaded by an ordinary Product Detail. */
-  const PN_DETAIL_VIEW = ['considerations', 'planningConsiderations'];
+  /* ISSUE 005 PIECE F1 — 'suppliers' joins the lazily-fetched set.
+     It is resolved through the SAME index the other partitions use, so no
+     filename is hard-coded here and a category can still be added or removed
+     without a page change. It is fetched only when Product Detail opens, like
+     every other partition. It carries no presentation row in
+     PN_DETAIL_PRESENT and is absent from PN_DETAIL_LAUNCH, so it renders
+     nothing through the category path — it has its own surface below. */
+  const PN_DETAIL_VIEW = ['considerations', 'planningConsiderations', 'suppliers'];
 
   let pnDetailEvidence = null;      // null = not loaded, {} = loaded-or-failed
   let pnDetailPromise = null;       // the D4b combined-file promise (fallback)
@@ -14453,6 +14460,51 @@
 
   /* The record for one product, or null. Reads the category's own partition
      first, then the combined store. Never throws on a malformed entry. */
+  /* ISSUE 005 PIECE F1 — WHAT ATLAS KNOWS ABOUT A SUPPLIER.
+
+     A CLOSED vocabulary of the locality fields the generator emits, in reading
+     order, each mapped to homeowner language. A field absent from this map is
+     never shown; a field absent from an organisation's record is simply not
+     rendered for that organisation. Nothing is derived, inferred or parsed out
+     of prose — each value is printed exactly as Atlas recorded it.
+
+     `evidenceTier` and `evidenceScope` are deliberately NOT here. They are
+     Atlas's internal grading vocabulary ("Tier B — attributed via search
+     index"), and E2/D4 governance keeps that kind of language off the page. */
+  const PN_SUPPLIER_LOCALITY = [
+    { key: 'irishPresence',         label: 'Irish presence' },
+    { key: 'installationModel',     label: 'Installation coverage' },
+    { key: 'deliveryCoverage',      label: 'Delivery coverage' },
+    { key: 'manufacturingLocation', label: 'Where it is made' },
+    { key: 'jurisdiction',          label: 'Operating jurisdiction' },
+  ];
+
+  /* THE CANONICAL JOIN: organisation RECORD ID, never the display name.
+     Every product in the universe carries organisationEvidence[0].id, and the
+     suppliers partition is keyed by exactly that. The old consumers used
+     product.organisation — a NAME — which matched 0 of 61 organisations. */
+  function pnSupplierOrgId(product){
+    const ev = product && product.organisationEvidence;
+    return (Array.isArray(ev) && ev.length && ev[0] && ev[0].id) ? ev[0].id : null;
+  }
+
+  /* The organisation's locality evidence, or null. Reads `.locality` DIRECTLY.
+     It must never alias into `.irish`: marketEligibility() branches on that key
+     and Results eligibility is frozen (E2.2). */
+  function pnSupplierLocality(product){
+    const orgId = pnSupplierOrgId(product);
+    if (!orgId) return null;
+    const store = pnDetailParts['suppliers'];
+    const rec = store && store[orgId];
+    const loc = rec && rec.locality;
+    if (!loc || typeof loc !== 'object') return null;
+    for (let i = 0; i < PN_SUPPLIER_LOCALITY.length; i++){
+      const v = loc[PN_SUPPLIER_LOCALITY[i].key];
+      if (typeof v === 'string' && v.trim()) return loc;   // at least one field
+    }
+    return null;
+  }
+
   function pnDetailFor(productId, category){
     if (typeof productId !== 'string') return null;
     const store = pnDetailParts[category] || pnDetailEvidence;
@@ -19248,6 +19300,55 @@
     return true;
   }
 
+  /* ISSUE 005 PIECE F1 — the summary sentence, told honestly.
+     Unchanged for the two verified branches. The third branch now distinguishes
+     "Atlas has looked and found things" from "Atlas has nothing", which is the
+     distinction the old single sentence collapsed for all 487 products. */
+  function pnSupplierStatement(product, verifiedCount){
+    if (verifiedCount >= 4) return 'The available evidence supports Atlas\u2019s recommendation.';
+    if (verifiedCount >= 2) return 'Atlas found some supporting evidence, but not enough to be certain.';
+    if (pnSupplierLocality(product))
+      return 'Here is what Atlas has established about this supplier. The independent checks below are still outstanding.';
+    return 'Atlas has not yet gathered enough evidence on this supplier.';
+  }
+
+  /* WHAT ATLAS KNOWS ABOUT THIS SUPPLIER — data driven, no supplier named.
+     Renders one row per locality field the organisation actually holds, in the
+     fixed order of PN_SUPPLIER_LOCALITY, with the value exactly as recorded.
+     An organisation holding one field renders one row; an organisation holding
+     none renders nothing at all and the honest gap statement stands. */
+  function pnRenderSupplierLocality(host, product){
+    if (!host || host.querySelector('[data-pn-supplier-locality]')) return 0;
+    const loc = pnSupplierLocality(product);
+    if (!loc) return 0;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'tp-atlas-knows';
+    wrap.setAttribute('data-pn-supplier-locality', pnSupplierOrgId(product) || '');
+    const h = document.createElement('h4');
+    h.className = 'tp-atlas-knows-title';
+    h.textContent = 'What Atlas knows about this supplier';
+    wrap.appendChild(h);
+
+    const dl = document.createElement('dl');
+    dl.className = 'tp-atlas-knows-list';
+    let rows = 0;
+    for (let i = 0; i < PN_SUPPLIER_LOCALITY.length; i++){
+      const spec = PN_SUPPLIER_LOCALITY[i];
+      const raw = loc[spec.key];
+      if (typeof raw !== 'string' || !raw.trim()) continue;   // absent stays absent
+      const dt = document.createElement('dt');
+      dt.textContent = spec.label;
+      const dd = document.createElement('dd');
+      dd.textContent = raw.trim();          // exactly as Atlas recorded it
+      dl.appendChild(dt); dl.appendChild(dd); rows += 1;
+    }
+    if (!rows) return 0;
+    wrap.appendChild(dl);
+    host.appendChild(wrap);
+    return rows;
+  }
+
   function renderTrustProfile(product, signals){
     const sec  = document.getElementById('aboutSupplier');
     const host = document.getElementById('supplierRow');
@@ -19292,13 +19393,24 @@
     /* ---- THE ASSESSMENT. Typography, not a panel. ---- */
     const stmt = document.createElement('p');
     stmt.className = 'tp-statement';
-    /* RA-4 — same rhythm on the fallback path: statement, then findings. */
-    stmt.textContent = verified.length >= 4
-      ? 'The available evidence supports Atlas\u2019s recommendation.'
-      : (verified.length >= 2
-          ? 'Atlas found some supporting evidence, but not enough to be certain.'
-          : 'Atlas has not yet gathered enough evidence on this supplier.');
+    /* RA-4 — same rhythm on the fallback path: statement, then findings.
+
+       ISSUE 005 PIECE F1 — the last branch no longer claims Atlas knows
+       nothing when it holds locality evidence for this supplier. The nine
+       tiles below are unchanged and still report honestly on the external
+       checks Atlas has NOT run; this only stops the summary sentence
+       overstating that into "we know nothing about them". */
+    stmt.setAttribute('data-pn-tp-statement', '1');
+    stmt.textContent = pnSupplierStatement(product, verified.length);
     host.appendChild(stmt);
+    /* WHAT ATLAS KNOWS, before WHAT IT IS STILL CHECKING. Renders synchronously
+       if the partition has already resolved, and quietly enriches if not. */
+    pnRenderSupplierLocality(host, product);
+    pnDetailPartitionReady('suppliers').then(function(){
+      pnRenderSupplierLocality(host, product);
+      const s = host.querySelector('[data-pn-tp-statement]');
+      if (s) s.textContent = pnSupplierStatement(product, verified.length);
+    });
 
     const knows = [];
     if (byTitle['Irish trading entity'] && byTitle['Irish trading entity'].state === 'verified') knows.push('their identity');
