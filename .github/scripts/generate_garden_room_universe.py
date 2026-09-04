@@ -509,7 +509,16 @@ def match_price(price_rec):
         return None, None, None
     for field in ("Base Price", "Price From"):
         v = cell(price_rec, field)
-        if isinstance(v, (int, float)) and not isinstance(v, bool):
+        # ATLAS 487 BATCH 2 PIECE 1 (2A) — the docstring above always claimed
+        # "an unknown price is None -- never 0", but nothing enforced it: 0 is
+        # a number, so `isinstance(v, (int, float))` passed it straight through
+        # and eight Draft/Custom Quote placeholder records became a runtime
+        # price of 0. That scored in-band for "under 10k" and rendered as
+        # "€0" in the Results hero. A governed zero (or a negative) is a
+        # record that was never filled in, not a price. The record itself is
+        # still emitted in priceEvidence below, unchanged, so Product Detail
+        # can still say that Atlas holds an empty price record.
+        if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0:
             return v, cell(price_rec, "Currency"), cell(price_rec, "Status")
     return None, cell(price_rec, "Currency"), cell(price_rec, "Status")
 
