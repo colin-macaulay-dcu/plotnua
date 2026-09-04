@@ -14875,6 +14875,28 @@
       ? v.trim() : null;
   }
 
+  /* ATLAS 487 BATCH 4 PIECE 1 — the governed supplier review date, formatted.
+
+     pnSupplierLastReviewed() above already returns either a value matching
+     ^\d{4}-\d{2}-\d{2}$ exactly as Atlas recorded it, or null. This adds only
+     display formatting, in the same house convention used elsewhere in this
+     file, and re-checks the parse rather than trusting the shape:
+
+         "2026-08-28"  ->  "28 August 2026"
+
+     Anything absent or unparseable returns null, and the caller omits the row.
+     No date is substituted from the artefact timestamp, the page load, the
+     workflow run or anywhere else. This is the date Atlas reviewed the
+     ORGANISATION's credential record -- not the product, not the price, not
+     the recommendation, and not a certification expiry. The row label says so. */
+  function pnSupplierReviewDate(product){
+    const iso = pnSupplierLastReviewed(product);
+    if (!iso) return null;
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return null;
+    return d.toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
   /* ATLAS 487 BATCH 1 — THE GOVERNED PRODUCT SOURCE URL.
 
      Resolved by the CANONICAL PRODUCT ID through the same pnDetailFor() the
@@ -19860,8 +19882,17 @@
   function pnSupplierStatement(product, verifiedCount){
     if (verifiedCount >= 4) return 'The available evidence supports Atlas\u2019s recommendation.';
     if (verifiedCount >= 2) return 'Atlas found some supporting evidence, but not enough to be certain.';
+    /* ATLAS 487 BATCH 4 PIECE 3 — the trailing clause said "The independent
+       checks below are still outstanding", which tells the homeowner those
+       checks are pending. Six of the seven read atlasSupplierEvidence, which
+       is not generated for this catalogue, so they cannot run at all --
+       "outstanding" describes a queue that does not exist. The clause is
+       removed and nothing replaces it: the first sentence is true on its own,
+       and no positive claim (verified, approved, trusted, complete) is
+       substituted. The absent legacy checks are not described to the
+       homeowner, because their absence is Atlas's problem, not theirs. */
     if (pnSupplierLocality(product))
-      return 'Here is what Atlas has established about this supplier. The independent checks below are still outstanding.';
+      return 'Here is what Atlas has established about this supplier.';
     return 'Atlas has not yet gathered enough evidence on this supplier.';
   }
 
@@ -19870,10 +19901,55 @@
      fixed order of PN_SUPPLIER_LOCALITY, with the value exactly as recorded.
      An organisation holding one field renders one row; an organisation holding
      none renders nothing at all and the honest gap statement stands. */
+  /* ATLAS 487 BATCH 4 PIECE 1 — two governed Organisation fields, wired.
+
+     Batch 1 wrote pnSupplierOrgType() and pnSupplierLastReviewed(), resolved
+     them through the same canonical organisation-record-id join as the
+     locality, and left them with zero call sites pending a founder decision on
+     presentation. That decision is this Piece, and it is presentation ONLY:
+
+       Organisation type      the stored value, VERBATIM, first
+       ...the five locality rows, unchanged, in their existing order...
+       Atlas supplier review  the governed date, formatted, last
+
+     The stored vocabulary is closed -- Manufacturer, Supplier, Modular
+     Builder, Bespoke Builder, Installer -- and is printed as recorded. It is
+     NOT reinterpreted, graded, ranked, coloured, badged or turned into a
+     quality judgement: "Manufacturer" is a description of what the company
+     does, never "trusted", "verified", "approved" or "recommended".
+
+     Every row here remains a statement about the ORGANISATION. Nothing implies
+     that a particular building is made in the stated place, includes
+     installation, carries a certification or carries a warranty -- the panel
+     is titled "What Atlas knows about this supplier" and each value is printed
+     exactly as recorded, including the absences ("Not stated", "None
+     published"), which stay plain informational rows. An absence is not a
+     negative credential and gets no scoring, no colour and no warning styling.
+
+     evidenceTier and evidenceScope remain off the page.
+
+     The rows are assembled BEFORE rendering so that an organisation holding a
+     type but no locality still shows the type. All 61 organisations hold
+     locality today, so this changes nothing measurable; it stops one absence
+     from suppressing an unrelated governed field. */
   function pnRenderSupplierLocality(host, product){
     if (!host || host.querySelector('[data-pn-supplier-locality]')) return 0;
     const loc = pnSupplierLocality(product);
-    if (!loc) return 0;
+
+    const entries = [];
+    const orgType = pnSupplierOrgType(product);
+    if (orgType) entries.push(['Organisation type', orgType]);
+    if (loc) {
+      for (let i = 0; i < PN_SUPPLIER_LOCALITY.length; i++){
+        const spec = PN_SUPPLIER_LOCALITY[i];
+        const raw = loc[spec.key];
+        if (typeof raw !== 'string' || !raw.trim()) continue;   // absent stays absent
+        entries.push([spec.label, raw.trim()]);                 // exactly as Atlas recorded it
+      }
+    }
+    const reviewed = pnSupplierReviewDate(product);
+    if (reviewed) entries.push(['Atlas supplier review', reviewed]);
+    if (!entries.length) return 0;
 
     const wrap = document.createElement('div');
     wrap.className = 'tp-atlas-knows';
@@ -19885,21 +19961,16 @@
 
     const dl = document.createElement('dl');
     dl.className = 'tp-atlas-knows-list';
-    let rows = 0;
-    for (let i = 0; i < PN_SUPPLIER_LOCALITY.length; i++){
-      const spec = PN_SUPPLIER_LOCALITY[i];
-      const raw = loc[spec.key];
-      if (typeof raw !== 'string' || !raw.trim()) continue;   // absent stays absent
+    for (let i = 0; i < entries.length; i++){
       const dt = document.createElement('dt');
-      dt.textContent = spec.label;
+      dt.textContent = entries[i][0];
       const dd = document.createElement('dd');
-      dd.textContent = raw.trim();          // exactly as Atlas recorded it
-      dl.appendChild(dt); dl.appendChild(dd); rows += 1;
+      dd.textContent = entries[i][1];
+      dl.appendChild(dt); dl.appendChild(dd);
     }
-    if (!rows) return 0;
     wrap.appendChild(dl);
     host.appendChild(wrap);
-    return rows;
+    return entries.length;
   }
 
   function renderTrustProfile(product, signals){
@@ -21063,9 +21134,30 @@
     const b = raShell(lens);
     const name = document.createElement('div');
     name.className = 'alt-name'; name.textContent = product.name || '';
+    /* ATLAS 487 BATCH 4 PIECE 2 — the governed organisation type, beside the
+       maker's name. One more element in a sequence that already existed, read
+       through pnSupplierOrgType() -- the same reader and the same canonical
+       organisation-record-id join Piece 1 uses. No second lookup is created.
+
+       It is descriptive, not a grade: "Manufacturer" says what the company
+       does, exactly as Atlas recorded it, and carries no ranking, ordering,
+       verification or quality meaning. The stored vocabulary is closed --
+       Manufacturer, Supplier, Modular Builder, Bespoke Builder, Installer --
+       and is printed verbatim, with no badge, icon or colour.
+
+       PLOT TWIST IS EXCLUDED IN CODE. The twist card is a Discovery card and
+       never reaches this builder, but the gate is written here anyway so the
+       exclusion is enforced by the condition rather than by the current call
+       graph.
+
+       Absence needs no handling of its own: the existing .filter(Boolean)
+       already drops an unknown price, and drops an absent type the same way,
+       so the line falls back to "Organisation · Price" and nothing is ever
+       substituted for a type Atlas does not hold. */
     const meta = document.createElement('div');
     meta.className = 'alt-meta';
     meta.textContent = [product.organisation || null,
+      (lens && lens.id !== 'plot-twist') ? pnSupplierOrgType(product) : null,
       pnPriceView(product).known ? pnPriceDisplay(product) : null]
       .filter(Boolean).join(' · ');
     b.foot.appendChild(name); b.foot.appendChild(meta);
@@ -21346,9 +21438,19 @@
     name.textContent = prod.name;
     card.appendChild(name);
 
+    /* ATLAS 487 BATCH 4 PIECE 2 — the same governed organisation type, on the
+       Wildcard. The rail rebuilds this card from the mounted element rather
+       than through raProductCard() (documented above as deliberate, not an
+       oversight), so the founder-approved Wildcard has to be served here. Same
+       reader, same join, same closed vocabulary, same verbatim printing, and
+       the same existing .filter(Boolean) making an absent type safe.
+
+       This builder is only ever the Wildcard, so it needs no lens gate: the
+       Plot Twist cannot reach it. */
     const meta = document.createElement('div');
     meta.className = 'alt-meta';
     meta.textContent = [prod.organisation || null,
+                        pnSupplierOrgType(prod),
                         pnPriceView(prod).known ? pnPriceDisplay(prod) : null]
                        .filter(Boolean).join(' \u00b7 ');
     card.appendChild(meta);
@@ -22021,10 +22123,27 @@
     if (unknown.length) {
       const dl = document.createElement('p');
       dl.className = 'evid-ev-note';
-      dl.textContent = 'Availability still to confirm: Atlas holds ' + unknown.length +
-        ' product' + (unknown.length === 1 ? '' : 's') + ' where the maker says nothing ' +
-        'either way about ' + PLOTNUA_ACTIVE_MARKET + '. None of them is confirmed, and ' +
-        'none is ruled out.';
+      /* ATLAS 487 BATCH 4 PIECE 3 — WHAT THIS SENTENCE MAY TRUTHFULLY SAY.
+
+         It used to report a catalogue-wide count of Products "where the maker
+         says nothing either way" about the market. That count came from
+         marketEligibility(), which reads the dead atlasSupplierEvidence
+         channel and therefore returns 'unknown' for 487 of 487 -- so the
+         sentence claimed Atlas knows nothing about Irish availability for the
+         entire catalogue. It is not true: 274 Products carry a confirmed Irish
+         availability state that already earns +1 in the ranking, and 60 of 61
+         organisations have a recorded Irish presence.
+
+         marketEligibility() is NOT rewired -- eligibility semantics are frozen
+         and it may go on returning 'unknown' -- but its output may no longer
+         be narrated as the sum of what Atlas knows. The sentence now describes
+         the limit of THIS ONE CHECK. It carries no count, makes no positive
+         Irish-availability claim, and does not say Atlas holds no Irish
+         evidence, because Atlas does. */
+      dl.textContent = 'Republic of Ireland supplier check: Atlas cannot complete this ' +
+        'particular check from the delivery evidence it uses here, so it is unresolved. ' +
+        'That is a limit of this one check \u2014 not a finding about whether these ' +
+        'products can be supplied in ' + PLOTNUA_ACTIVE_MARKET + '.';
       wrap.appendChild(dl);
     }
     if (excluded.length) {
@@ -23517,11 +23636,39 @@
             ev.finding, pnHomeownerLabel('Installation', atlasFeatureShort(ev, 72)).answer,
             'atlas:feature/installationModel', null, note || null);
         }
-        const irish = p ? compareSupplierIrish(p.organisation) : null;
-        if (!irish || !irish.installationModel) return pnOpenCell({ checked: !!irish });
+        /* ATLAS 487 BATCH 4 PIECE 3 — THE FALLBACK NOW READS GOVERNED DATA
+           THAT EXISTS.
+
+           This branch read compareSupplierIrish(), which resolves through
+           atlasSupplierEvidence. That object is populated from a top-level
+           "suppliers" block in the pool file, and the 487 universe does not
+           carry one -- so it is {} in production and this branch returned an
+           open cell for every Product it reached, forever. Measured: 462 of
+           487 answer from the product feature above and never arrive here; the
+           25 that do arrive found nothing, while the suppliers partition held
+           a governed installation answer for all 61 organisations.
+
+           It now reads pnSupplierLocality() -- the SAME reader and the SAME
+           canonical organisation-record-id join the supplier panel uses. No
+           second lookup, no second join.
+
+           THE PRODUCT FEATURE ABOVE IS UNTOUCHED AND STILL WINS. This is a
+           fallback, reached only when Atlas holds no product-specific
+           installation finding, and the caveat below -- preserved word for
+           word -- is what keeps an organisation-level answer honest on a
+           per-product row. An organisation statement is never promoted to
+           product-specific truth.
+
+           Source and date are governed, not invented: an atlas: URI naming the
+           exact field, exactly as the product branch does, and the
+           organisation record's own lastReviewed through the existing reader. */
+        const loc = p ? pnSupplierLocality(p) : null;
+        const orgInstall = loc && typeof loc.installationModel === 'string' && loc.installationModel.trim()
+          ? loc.installationModel.trim() : null;
+        if (!orgInstall) return pnOpenCell({ checked: !!loc });
         return pnConfirmedCell(
-          irish.installationModel, irish.installationModel,
-          irish.sourceUrl, irish.checkedAt,
+          orgInstall, orgInstall,
+          'atlas:supplier/locality.installationModel', pnSupplierLastReviewed(p),
           /* CR-1 — was "Supplier scope: the maker's statement is about its
              operation as a whole, not this product alone." Accurate, and
              written to be unimpeachable rather than to be read. The
@@ -23532,23 +23679,25 @@
       },
       equals: function(a, b){ return String(a) === String(b); },
     },
-    {
-      key: 'deliveryCharges', label: 'Delivery charges',
-      resolve: function(p){
-        const irish = p ? compareSupplierIrish(p.organisation) : null;
-        if (!irish || typeof irish.deliveryChargesPublished !== 'boolean') {
-          return pnOpenCell({ checked: !!irish });
-        }
-        // A published `false` is a CONFIRMED NEGATIVE, not an unknown: Atlas
-        // checked and established that the maker does not publish them.
-        // Approved 26 August 2026. Fact styling, not metadata grey.
-        return pnConfirmedCell(
-          irish.deliveryChargesPublished,
-          irish.deliveryChargesPublished ? 'Published' : 'Not published',
-          irish.sourceUrl, irish.checkedAt, null);
-      },
-      equals: function(a, b){ return a === b; },
-    },
+    /* ATLAS 487 BATCH 4 PIECE 3 — "DELIVERY CHARGES" REMOVED AS A COMPARISON
+       CRITERION.
+
+       Its only source was compareSupplierIrish().deliveryChargesPublished,
+       from the dead atlasSupplierEvidence channel. Measured, it resolved for
+       0 of 487 Products and could never resolve: the field is not generated
+       for this catalogue. A comparison row that is structurally incapable of
+       answering is not a comparison.
+
+       NOTHING REPLACES IT. Atlas holds delivery COVERAGE
+       (locality.deliveryCoverage, "Free delivery nationwide", "Regional") and
+       a coverage statement is not a published charge -- substituting one for
+       the other would invent an answer, which is the fault this whole Batch
+       exists to remove. No "Ask supplier", "On request" or "Contact maker"
+       placeholder is added either: none of those is backed by a governed
+       charges field.
+
+       The row entry is deleted rather than filtered, which is the smallest
+       change that stops it rendering. Every other Compare row is untouched. */
     {
       key: 'madeIn', label: 'Made in',
       resolve: function(p){
