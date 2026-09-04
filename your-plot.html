@@ -11943,25 +11943,86 @@
   // because in this dataset it describes INTERNAL panelling and says nothing
   // about how the building looks from the garden.
   // =========================================================================
+  /* ATLAS 487 BATCH 3 PIECE 1 — WHAT A BUILDING IS MADE OF IS NOT WHAT IT
+     LOOKS LIKE, AND NEITHER IS ITS NAME.
+
+     Nine cues read constructionMaterial and two read externalCladding:
+     factory-built, flat roof, aluminium, fibre-cement, steel-clad,
+     box-profile steel, cedar cladding, black-painted, pvc coated. Seven more
+     read the product NAME: cube, cubed, bi-fold, quadpod, office box, urban,
+     ' alu'. All are removed.
+
+     The construction and cladding cues fire for 0 of the current 487, because
+     neither field is generated into the artefact. That is an accident of the
+     payload, not a safeguard: the day either field starts being generated,
+     a prohibited construction-to-appearance mapping would switch itself on
+     with nobody deciding to switch it on. The name cues were live, and
+     decided the appearance of 14 Products from words in a product title.
+
+     Nothing replaces them. A Product left with no signal becomes UNKNOWN,
+     which appearanceBand() already scores as neutral -- band 1, identical to
+     "either" -- so nothing is penalised for evidence Atlas does not hold.
+
+     productType cues were retained by Piece 1 pending a founder decision.
+     That decision is Piece 3, below. */
+
+  /* ATLAS 487 BATCH 3 PIECE 3 — STATE D. A STYLE WORD IS EVIDENCE OF A LOOK.
+     A MATERIAL, A FORM OR A FEATURE IS NOT.
+
+     productType is the Airtable Product Type free-text field: 85 distinct
+     values across 450 Products, mixing category, material, size, function and
+     commercial model, with no governed appearance vocabulary anywhere in the
+     schema. Measured against the only governed appearance evidence Atlas
+     holds, the cue scan over that field CONTRADICTED the governed Design
+     Language verdict in 5 of the 13 cases where both spoke -- 38.5% -- and
+     the contradictions were structural, not unlucky: a maker's range name
+     ("Modern multi-room garden house" on a Product the Atlas records as
+     Classic), a feature ("Garden room with veranda" on three Products the
+     Atlas records as modern) and a build method ("compact garden cabin",
+     likewise recorded modern).
+
+     So the founder retained only the two cues that read an appearance word a
+     human deliberately wrote -- 'contemporary' and 'modern' -- and removed:
+
+       timber garden room (64 Products)  a MATERIAL
+       cabin              (27)           a FORM / build method
+       pod                (15)           a FORM
+       modular            ( 7)           a FORM / build method
+       veranda            ( 7)           a FEATURE
+
+     plus five cues matching 0 of the current 487 -- composite, chalet,
+     summerhouse, apex, annexe -- which are removed for the same reason the
+     construction cues were removed in Piece 1: a dormant prohibited mapping
+     switches itself on the day the catalogue text changes, with nobody
+     deciding to switch it on.
+
+     Nothing replaces them and no cue is added. A Product left with no signal
+     becomes UNKNOWN, which appearanceBand() already scores as neutral band 1,
+     identical to "either". Governed Design Language is unchanged and still
+     outranks everything here. */
   const APPEARANCE_MODERN_CUES = [
     ['contemporary', 3, 'productType'], ['modern', 3, 'productType'],
-    ['pod', 2, 'productType'], ['composite', 2, 'productType'],
-    ['modular', 2, 'productType'], ['factory-built', 2, 'constructionMaterial'],
-    ['flat roof', 2, 'constructionMaterial'], ['aluminium', 2, 'constructionMaterial'],
-    ['black-painted', 2, 'externalCladding'], ['fibre-cement', 2, 'constructionMaterial'],
-    ['steel-clad', 2, 'constructionMaterial'], ['pvc coated', 2, 'externalCladding'],
-    ['box-profile steel', 1, 'constructionMaterial'], ['cedar cladding', 1, 'constructionMaterial'],
-    ['cube', 2, 'name'], ['cubed', 2, 'name'], ['bi-fold', 2, 'name'],
-    ['quadpod', 2, 'name'], ['office box', 2, 'name'], ['urban', 2, 'name'], [' alu', 1, 'name'],
   ];
-  const APPEARANCE_TRADITIONAL_CUES = [
-    ['timber garden room', 3, 'productType'], ['cabin', 3, 'productType'],
-    ['chalet', 3, 'productType'], ['summerhouse', 3, 'productType'],
-    ['log construction', 3, 'constructionMaterial'], ['nordic spruce log', 2, 'constructionMaterial'],
-    ['veranda', 2, 'productType'], ['apex', 2, 'productType'], ['annexe', 1, 'productType'],
-    ['shiplap', 2, 'externalCladding'],
-    ['classic', 3, 'name'], ['hampton', 2, 'name'], ['retreat', 2, 'name'],
-  ];
+  /* ATLAS 487 BATCH 3 PIECE 1 — same rule, the traditional side.
+     Removed: 'log construction' and 'nordic spruce log' (constructionMaterial),
+     'shiplap' (externalCladding), and the three NAME cues 'classic',
+     'hampton' and 'retreat'. A building called Hampton is not thereby
+     traditional, and logs are a construction method, not a look. */
+
+  /* ATLAS 487 BATCH 3 PIECE 3 — STATE D, the traditional side.
+
+     EMPTY BY FOUNDER DECISION, AND DELIBERATELY SO. Every traditional cue
+     that survived Piece 1 read a material, a form, a build method or a
+     feature -- timber garden room, cabin, veranda -- or matched nothing at
+     all -- chalet, summerhouse, apex, annexe. None of them read a style word,
+     and none of them is evidence of how a building looks.
+
+     AFTER THIS PIECE, A TRADITIONAL VERDICT CAN ONLY COME FROM GOVERNED
+     DESIGN LANGUAGE. No inference produces one.
+
+     appearanceCueScore() over an empty array returns {score: 0, hits: []} --
+     no special case is needed, and none is added. */
+  const APPEARANCE_TRADITIONAL_CUES = [];
   function appearanceCueScore(product, cues){
     let score = 0; const hits = [];
     for (const [cue, weight, field] of cues) {
@@ -12112,13 +12173,62 @@
     return 'The Atlas record carries no appearance evidence either way.';
   }
 
+  /* ATLAS 487 BATCH 3 PIECE 4 — APPEARANCE EVIDENCE FOLLOWS THE SAME RULE AS
+     THE APPEARANCE VERDICT.
+
+     This list feeds slot 2 of the ranking tuple and the sentence the homeowner
+     reads. It used to mix style words with material, construction, form and
+     feature words, so a building could be offered to a Modern homeowner as
+     evidence-backed because its Product Type contained "Glass", and to a
+     Traditional homeowner because it contained "Cabin". Measured on the 487:
+     'cabin' matched 26 Products, 'glass' 7, 'pavilion' 3, 'steel' 2. That is
+     the same inference Pieces 1-3 removed from the classifier, alive in a
+     second function -- and it decided a recommendation winner.
+
+     What remains is exactly the intersection of this list with
+     APPEARANCE_VERDICTS below: the governed appearance-verdict vocabulary.
+     Nothing is added -- 'minimalist' appears in APPEARANCE_VERDICTS but has
+     never been in this function and is not introduced here.
+
+     Removed, modern side:
+       pavilion, steel, glass                 form and material
+       bold, statement, distinctive,
+       design-led, sculptural                 aesthetic adjectives that are not
+                                              governed verdict vocabulary; each
+                                              matched 0 of the current 487
+     Removed, traditional side:
+       cabin, cottage, log                    form
+       spruce, cedar, natural timber,
+       timber finish, wood finish,
+       untreated timber                       material
+
+     ('log' also matched seven governed records by accident, through the word
+     "catalogued" -- a fair warning about substring scanning of prose.) */
+  /* ATLAS 487 BATCH 3 PIECE 4.1 — TRADITIONAL IS GOVERNED-ONLY.
+
+     Piece 4 retained the four governed traditional style words here, and that
+     left thirteen Products whose operative appearance was UNKNOWN carrying
+     positive TRADITIONAL evidence, because their Product Type read
+     "Traditional timber garden office". The State D classifier cannot produce
+     a traditional verdict from Product Type at all, so evidence and verdict
+     disagreed. The founder closed the gap in the strict direction:
+
+       TRADITIONAL  governed Design Language ONLY
+       MODERN       governed Design Language, or the two approved explicit
+                    Product Type style words below
+
+     The traditional array is therefore EMPTY, and deliberately so. It does NOT
+     disable governed traditional evidence: the verdict branch above this scan
+     reads APPEARANCE_VERDICTS, not this list, so all seven governed Classic
+     verdicts still match a traditional homeowner. What it removes is Product
+     Type's ability to assert a traditional look on its own.
+
+     The thirteen Products stay UNKNOWN and NEUTRAL -- band 1 under a
+     traditional preference. Absent evidence is not contrary evidence, and none
+     of them becomes a mismatch. */
   const APPEARANCE_EVIDENCE_PHRASES = {
-    modern: ['modern', 'contemporary', 'minimal', 'clean-lined', 'bold', 'statement',
-             'distinctive', 'design-led', 'sculptural', 'pavilion', 'steel', 'glass',
-             'scandinavian', 'scandi'],
-    traditional: ['classic', 'traditional', 'timeless', 'heritage', 'natural timber',
-                  'timber finish', 'wood finish', 'untreated timber', 'spruce', 'cedar',
-                  'cabin', 'cottage', 'log'],
+    modern: ['modern', 'contemporary', 'minimal', 'clean-lined', 'scandinavian', 'scandi'],
+    traditional: [],
   };
   function extractAppearanceEvidence(product, appearancePreference){
     const phrases = APPEARANCE_EVIDENCE_PHRASES[appearancePreference];
@@ -12144,13 +12254,35 @@
         evidenceText: String(product.designLanguage), matchedPhrase: verdict.verdict };
     }
 
+    /* ATLAS 487 BATCH 3 PIECE 4 — ONE FIELD, THE SAME ONE THE CLASSIFIER READS.
+
+       This used to say "no verdict, so the prose is fair game as ordinary
+       evidence", and scanned five fields. It is not fair game:
+
+         designLanguage  -- consulted through its VERDICT or not at all. One
+                            record carries Design Language whose leading clause
+                            is not a verdict (rechjA8DWp9vpkQCU, Dominator
+                            Pressure Treated Office: "Vertical timber cladding
+                            construction, described by the manufacturer as
+                            giving 'a sleek and contemporary look'..."). The
+                            prose scan was matching 'contemporary' INSIDE THE
+                            MANUFACTURER'S MARKETING QUOTATION and handing it to
+                            a Modern homeowner as Atlas evidence -- the precise
+                            failure the verdict rule above exists to prevent,
+                            reached by walking around it.
+         productCategory -- one value, "Garden Rooms", for all 487 Products. A
+                            category is not a look.
+         constructionMaterial, externalCladding
+                         -- what a building is made of is not what it looks
+                            like (Piece 1). Non-empty for 0 of the current 487,
+                            so this closes a dormant hole rather than changing
+                            behaviour today.
+
+       productType is the field State D accepted as carrying an explicit style
+       word a human wrote, so appearance EVIDENCE now reads exactly the field
+       the appearance VERDICT reads. */
     const sources = [
-      // No verdict, so the prose is fair game as ordinary evidence.
-      ['designLanguage', product.designLanguage || ''],
       ['productType', product.productType || ''],
-      ['productCategory', product.productCategory || ''],
-      ['constructionMaterial', product.constructionMaterial || ''],
-      ['externalCladding', product.externalCladding || ''],
     ];
     for (const [field, text] of sources) {
       if (!text) continue;
