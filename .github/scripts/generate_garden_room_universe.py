@@ -607,8 +607,131 @@ def classify_irish_availability(feat_rows: list) -> tuple:
     return best + (classified, no_route)
 
 
+# ── ATLAS 487 BATCH 2 PIECE 3 (2G) — DETERMINISTIC PRICE ADJUDICATION ───────
+#
+# usable_price() below ends in `(verified or primary)[0]`. When more than one
+# candidate survives its filters, the winner is whichever record Airtable
+# happened to return first. Measured over the 33 real multi-record Products in
+# the current 487 universe:
+#
+#     Primary Price set on ...................  0 / 33   (the filter is inert)
+#     Status resolves the conflict ...........  6 / 33
+#     order changes the SELECTED RECORD ...... 27 / 33
+#     order changes the HOMEOWNER-VISIBLE price 17 / 33
+#
+# and the 17 include €7,000 vs €15,575 for the same product. That is not an
+# evidence rule; it is an accident of row order.
+#
+# WHAT THE EVIDENCE SUPPORTS, AND WHAT IT DOES NOT.
+#
+# Two governed signals genuinely carry authority: an explicit Primary Price
+# flag, and Atlas's own verification Status. Everything else that varies
+# between competing records was tested and rejected as an authority signal:
+#
+#   Last Price Check — 13 pairs carry two different dates, but nothing in the
+#     schema says newer supersedes older, and the Garden Office Solutions
+#     records prove the opposite: there the NEWER record is `Researching` and
+#     the OLDER one is `Verified`. Recency and verification point in opposite
+#     directions, so recency cannot be authority.
+#   Evidence Scope — 17 pairs are Product-Specific vs absent. Absent is an
+#     UNKNOWN scope, not a weaker one. Promoting one over the other would be
+#     reading absence as inferiority.
+#   Price Type — Piece 1 established this as presentation semantics. A
+#     Verified range and a Verified exact price are not ranked by their type.
+#   Currency — explicitly not an authority signal. EUR does not beat GBP.
+#   The price itself — neither cheaper nor dearer is more true.
+#
+# So where two records of equal governed authority disagree about the number
+# or the currency, Atlas has no basis for choosing, and this returns
+# AMBIGUOUS rather than inventing one. UNKNOWN is not permission to choose.
+#
+# The one refinement the evidence does support: where every surviving
+# candidate yields the SAME number in the SAME currency, there is nothing to
+# adjudicate — the outcome is unanimous, and only the record carrying it is in
+# question. 10 of the 33 are like that (7 SIPS range-vs-exact pairs sharing a
+# floor, 3 Garden Solutions pairs sharing a price). Those keep their price,
+# and the record chosen is the one carrying the most governed evidence, so no
+# known ceiling or VAT position is thrown away. That is a completeness rule,
+# never a value judgement about the price.
+
+# Governed verification strength. Absent status ranks 0 -- unknown, not weak.
+PRICE_STATUS_RANK = {"Verified": 2, "Partially Verified": 1}
+
+# Fields whose presence makes one record a strictly fuller account of the SAME
+# adjudicated outcome. Used only to break a tie that the number cannot.
+PRICE_EVIDENCE_FIELDS = (
+    "Base Price", "Price From", "Price To", "Currency", "Price Type", "Status",
+    "Last Price Check", "Evidence Scope", "Price Includes VAT", "Known Exclusions",
+)
+
+
+def price_record_number(price_rec):
+    """The figure this one record would contribute, by match_price()'s own
+    rule: Base Price first, then Price From, positive numbers only."""
+    if not price_rec:
+        return None
+    for field in ("Base Price", "Price From"):
+        v = cell(price_rec, field)
+        if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0:
+            return v
+    return None
+
+
+def price_evidence_weight(price_rec) -> int:
+    return sum(1 for f in PRICE_EVIDENCE_FIELDS if cell(price_rec, f) is not None)
+
+
+def adjudicate_price(price_rows: list) -> tuple:
+    """(state, record, candidates) — adjudicated | ambiguous | missing.
+
+    Deterministic: the result depends only on the CONTENT of the records, never
+    on the order they arrive in. Every branch either selects on governed
+    authority, or selects among candidates that already agree on the outcome,
+    or declines to select at all."""
+    rows = list(price_rows or [])
+    if not rows:
+        return ("missing", None, [])
+
+    numeric = [r for r in rows if price_record_number(r) is not None]
+    if not numeric:
+        # Records exist but none carries a figure. Nothing to adjudicate; the
+        # pick is provenance only, chosen by record id so it cannot move.
+        return ("missing", sorted(rows, key=lambda r: r.get("id") or "")[0], rows)
+    if len(numeric) == 1:
+        return ("adjudicated", numeric[0], numeric)
+
+    # 1 · an explicit, unique Primary Price is a governed instruction.
+    primary = [r for r in numeric if cell(r, "Primary Price")]
+    if len(primary) == 1:
+        return ("adjudicated", primary[0], numeric)
+    pool = primary or numeric
+
+    # 2 · a uniquely strongest governed verification status.
+    ranks = [PRICE_STATUS_RANK.get(cell(r, "Status"), 0) for r in pool]
+    top = max(ranks)
+    strongest = [r for r, k in zip(pool, ranks) if k == top]
+    if len(strongest) == 1:
+        return ("adjudicated", strongest[0], numeric)
+
+    # 3 · equal authority, but every candidate says the same thing.
+    outcomes = {(price_record_number(r), cell(r, "Currency")) for r in strongest}
+    if len(outcomes) == 1:
+        pick = sorted(strongest,
+                      key=lambda r: (-price_evidence_weight(r), r.get("id") or ""))[0]
+        return ("adjudicated", pick, numeric)
+
+    # 4 · equal authority, and they disagree. Atlas cannot say which is right.
+    return ("ambiguous", None, numeric)
+
+
 def usable_price(price_rows: list) -> tuple:
-    """(state, record) — verified | present-unverified | missing."""
+    """(state, record) — verified | present-unverified | missing.
+
+    UNCHANGED by 2G, deliberately. Its only consumer is the qualification
+    evidence block, which reads the STATE and not the record; and the state is
+    already order-independent for all 33 multi-record Products (both candidates
+    share a status band in every one of them). Leaving it alone keeps
+    qualification byte-identical, which 2G is required not to touch."""
     if not price_rows:
         return ("missing", None)
     primary = [r for r in price_rows if cell(r, "Primary Price")] or price_rows
@@ -921,16 +1044,35 @@ def main():
             excluded.append(rec)
         else:
             price_rows = by_product["pricing"].get(pid, [])
-            _, pick = usable_price(price_rows)
-            # Renamed so the flat numeric `price` Match reads can take that key.
-            # The structured evidence is preserved in full, not summarised away.
-            rec["priceEvidence"] = None if not pick else {
-                "base": cell(pick, "Base Price"), "from": cell(pick, "Price From"),
-                "to": cell(pick, "Price To"), "currency": cell(pick, "Currency"),
-                "priceType": cell(pick, "Price Type"), "status": cell(pick, "Status"),
-                "includesVat": cell(pick, "Price Includes VAT"),
-                "evidenceScope": cell(pick, "Evidence Scope"),
-            }
+            # ATLAS 487 BATCH 2 PIECE 3 (2G) — was `_, pick = usable_price(...)`,
+            # whose tie-break was row order. adjudicate_price() decides on
+            # governed evidence or declines.
+            adj_state, pick, adj_candidates = adjudicate_price(price_rows)
+            # An AMBIGUOUS product still HAS evidence -- two records Atlas
+            # cannot choose between -- and none of it is discarded. The record
+            # fields stay null because no single record won; the count and the
+            # state say what is actually true, so nothing downstream has to
+            # infer "no record" from "no number".
+            if adj_state == "ambiguous":
+                rec["priceEvidence"] = {
+                    "base": None, "from": None, "to": None, "currency": None,
+                    "priceType": None, "status": None, "includesVat": None,
+                    "evidenceScope": None,
+                    "adjudication": "ambiguous",
+                    "candidateCount": len(adj_candidates),
+                }
+            else:
+                # Renamed so the flat numeric `price` Match reads can take that key.
+                # The structured evidence is preserved in full, not summarised away.
+                rec["priceEvidence"] = None if not pick else {
+                    "base": cell(pick, "Base Price"), "from": cell(pick, "Price From"),
+                    "to": cell(pick, "Price To"), "currency": cell(pick, "Currency"),
+                    "priceType": cell(pick, "Price Type"), "status": cell(pick, "Status"),
+                    "includesVat": cell(pick, "Price Includes VAT"),
+                    "evidenceScope": cell(pick, "Evidence Scope"),
+                    "adjudication": adj_state,
+                    "candidateCount": len(adj_candidates) or (1 if pick else 0),
+                }
             # ---- ISSUE 005 PIECE D2 — THE PIPE STOPS LEAKING ---------------
             # `if key not in carried` discarded every Atlas Feature Value after
             # the first for any key. D1 measured 396 records lost that way
@@ -1041,7 +1183,11 @@ def main():
             # Built from the evidence already gathered above. Added beside the
             # qualification block, never instead of it.
             sig = q["evidenceSignals"]
-            num, cur, basis = match_price(pick)
+            # ATLAS 487 BATCH 2 PIECE 3 (2G) — an ambiguous product has no
+            # adjudicated record, so it has no number, no currency and no
+            # status to report. It stays ELIGIBLE and unpriced, exactly as the
+            # eight zero-placeholder records already do since Piece 1.
+            num, cur, basis = (None, None, None) if adj_state == "ambiguous" else match_price(pick)
             avail_rows_p = by_product["availability"].get(pid, [])
             rec.update({
                 "price": num,                       # numeric or null, never 0-for-unknown

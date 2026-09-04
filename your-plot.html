@@ -13096,7 +13096,14 @@
        price reads "Priced from €35,950", never "Priced at From €35,950". */
     const priceTail = pnPriceView(product).tail;
 
-    if (!pnPriceView(product).known) {
+    /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — the branch below carries TWO claims:
+       that no price is published, and that the supplier quotes on enquiry.
+       Both are false for an ambiguous Product, which has published prices
+       Atlas cannot rank. The semantic state comes from pnPriceView() rather
+       than from a second guess at product.price. */
+    if (pnPriceView(product).kind === 'ambiguous') {
+      reasons.push(PB046_AMBIGUOUS_REASON);
+    } else if (!pnPriceView(product).known) {
       reasons.push(`${PB046_NO_PRICE} — the supplier quotes this one on enquiry.`);
     } else if (ctx.aboveBudget) {
       reasons.push(`Priced ${priceTail} — above the ${ctx.budgetLabel} you selected, but included to show the next size option in this role.`);
@@ -16625,7 +16632,11 @@
       reasons.push(`its design cues lean ${dp.appearancePreference} — ${trace.appearanceEvidenceScore.matchedPhrase} — which is the feel you chose`);
     }
 
-    const reasoning = (!priceView.known
+    /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — same distinction, in the sentence
+       that opens the reasoning paragraph. */
+    const reasoning = (priceView.kind === 'ambiguous'
+      ? `${PB046_AMBIGUOUS_PRICE}. `
+      : !priceView.known
       ? `${PB046_NO_PRICE}. `
       /* "At €35,950, " / "From €35,950, " / "At an estimated €19,999, " */
       : (priceView.tail.charAt(0).toUpperCase() + priceView.tail.slice(1) + ', ')) +
@@ -19116,6 +19127,10 @@
     /* ISSUE 005 A2 — resolved once here and read by the Published pricing chip
        below, so the chip's three lines cannot drift apart from one another. */
     const pdPriceState = comparePriceEvidenceState(P.priceBasis);
+    /* ATLAS 487 BATCH 2 PIECE 3.1 — same single source as everywhere else in
+       this Piece. Not re-derived from priceEvidence, and never inferred from a
+       null price, which would sweep genuinely unpriced Products in with it. */
+    const pdPriceAmbiguous = (pnPriceView(P).kind === 'ambiguous');
     const pdPricePublished = (typeof P.price === 'number' && isFinite(P.price)
                               && pdPriceState !== 'unconfirmed');
     let sup = null;
@@ -19183,7 +19198,14 @@
       { group:'verified', title:'Published pricing',
         state: (pdPricePublished ? 'verified' : (P.price != null ? 'assessing' : 'unassessed')),
         value: (pdPricePublished ? 'Published by the maker' : ''),
-        note:  (pdPriceState === 'confirmed'
+        /* ATLAS 487 BATCH 2 PIECE 3.1 — the ambiguous case is tested first.
+           The final branch below says "We hold a figure", which is precisely
+           what 2G has established Atlas cannot say for these Products. The
+           card's state is left alone: 'unassessed' is already the honest
+           token for it, and this Piece does not invent a new taxonomy. */
+        note:  (pdPriceAmbiguous
+                 ? 'Atlas holds more than one price record for this model, but cannot establish which is authoritative.'
+                 : pdPriceState === 'confirmed'
                  ? 'You can compare before you ever make contact.'
                  : pdPriceState === 'qualified'
                    ? 'You can compare before you ever make contact. Atlas has partly verified this price record.'
@@ -20339,6 +20361,14 @@
       /* BATCH 2 PIECE 1 — carried so a price comparison can check that the
          two figures are in the same currency before claiming a difference. */
       currency: pnPriceCurrency(r.product),
+      /* ATLAS 487 BATCH 2 PIECE 3.1 — the price STATE, not the price evidence.
+         `price` above is null both when Atlas holds nothing and when 2G holds
+         two records it cannot rank, and those are different facts that need
+         different sentences. This carries the one semantic token that
+         separates them and nothing else: no candidate figures, no count, no
+         record ids, no priceEvidence object. It is read from pnPriceView() so
+         there is exactly one definition of ambiguity in the runtime. */
+      priceState: pnPriceView(r.product).kind,
       band: t.appearanceBand ? t.appearanceBand.band : 0,
       appearanceMatched: !!(t.appearanceEvidenceScore && t.appearanceEvidenceScore.matched),
       originSatisfies: !!(t.originScore && t.originScore.satisfiesPreference),
@@ -20440,6 +20470,12 @@
     }
     /* DISCOVERY v1.0 — the space and usage trade-offs go with their
        dimensions. The final fallback below still says the true thing. */
+    /* ATLAS 487 BATCH 2 PIECE 3.1 — tested before the line below, which reads
+       a missing number as a missing published price. For an ambiguous Product
+       that is false: the maker has published, and Atlas holds more than one
+       published figure it cannot rank. Said as a trade-off phrase, because
+       this string lands mid-sentence beside the other trade-offs. */
+    if (a.priceState === 'ambiguous') return 'price not confirmed by Atlas';
     if (a.price == null) return 'no published price yet';
     // Nothing separable. Say the true thing rather than invent a fault: the
     // score vector still put the recommendation first, and that is why.
@@ -25541,6 +25577,30 @@
   // inventing a number or hiding the product.
   const PB046_NO_PRICE = 'Price not published';
 
+  /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — THE SECOND UNPRICED STATE.
+
+     PB046_NO_PRICE above says something quite specific: the maker has not put
+     a price in public. For the 17 Products that 2G refuses to adjudicate that
+     sentence is simply untrue. The maker HAS published; Atlas holds more than
+     one published figure for the model and cannot establish which is current
+     or authoritative. Saying "Price not published" there would convert an
+     honest inability to choose into a false claim about the maker.
+
+     So there are two different unpriced states, and they must not collapse
+     into one another:
+
+       'none'      — Atlas holds no price evidence        -> Price not published
+       'ambiguous' — Atlas holds evidence it cannot rank   -> Price not confirmed
+
+     Neither shows a number. That is the only thing they have in common. */
+  const PB046_AMBIGUOUS_PRICE = 'Price not confirmed';
+
+  /* The same state, said in a full sentence where a reason needs one. It says
+     what is true and stops: no candidate figures, no count, no record ids, no
+     talk of adjudication or verification ladders. */
+  const PB046_AMBIGUOUS_REASON = 'Price not confirmed \u2014 Atlas holds more than one ' +
+    'price record for this model and cannot establish which is authoritative.';
+
   /* =====================================================================
      ATLAS 487 BATCH 2 PIECE 1 — THE ONE PRICE PRESENTATION CONTRACT.
 
@@ -25667,6 +25727,19 @@
     const cur = pnPriceCurrency(P);
     const amount = pnUsablePrice(P.price);
     const scope = pnPriceScopeNote(P);
+    /* ATLAS 487 BATCH 2 PIECE 3.1 (2G) — AMBIGUOUS EVIDENCE COMES FIRST.
+
+       This is tested BEFORE the no-usable-price branch below, because that
+       branch reads a missing number as a missing price and would label these
+       Products "Price not published". Ambiguity is read from the explicit
+       governed state the generator emits, never inferred from price == null:
+       a null price on its own means Atlas has nothing, which is a different
+       and equally truthful thing to say. */
+    if (e.adjudication === 'ambiguous') {
+      return { known: false, kind: 'ambiguous',
+               amount: null, ceiling: null, currency: cur, scopeNote: scope,
+               figure: null, display: PB046_AMBIGUOUS_PRICE, tail: null };
+    }
     if (amount == null) {
       return { known: false, kind: pnZeroPriceRecord(P) ? 'zero-record' : 'none',
                amount: null, ceiling: null, currency: cur, scopeNote: scope,
