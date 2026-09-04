@@ -10562,6 +10562,35 @@
       constructionMaterial: raw.constructionMaterial || undefined,
       externalCladding: raw.externalCladding || undefined,
       estimatedLeadTime: raw.estimatedLeadTime || undefined,
+
+      /* ATLAS 487 BATCH 1 · JOB A — TWO FIELDS THE EXPORT ALREADY CARRIED.
+
+         `features` has been passed through since Issue 005 Piece B, but the
+         consumers below read FLAT properties that the export has never had at
+         top level, so the evidence arrived and was never looked at:
+           the Resolve readiness matrix reads p.warranty
+           Product Detail's Property Fit list reads product.externalDimensions
+
+         WARRANTY IS READ THROUGH THE GOVERNED READER, NOT RAW.
+         462 products carry warranty text, but 115 of them BEGIN "WARRANTY
+         UNKNOWN. DURATION: none published." The Resolve matrix renders a
+         present value through pnConfirmedCell(), so bridging .text directly
+         would have shown 115 explicit unknowns as CONFIRMED evidence — the
+         exact inversion this programme exists to prevent. pnWarrantyDuration()
+         already ships, is already the Product Detail reader, and already
+         returns null for deferrals, for a missing DURATION label and for any
+         term carrying no figure. Measured on the real universe: 279 of 487
+         yield a published term, 183 stay unknown and therefore stay undefined,
+         and the matrix keeps showing its open state for them.
+
+         EXTERNAL DIMENSIONS IS VERBATIM. Airtable Feature "External
+         Dimensions" -> the consumer's "External dimensions" row. 0 of 154
+         values are deferrals; nothing is parsed or reformatted.
+
+         ABSENT STAYS ABSENT: `|| undefined` throughout. Nothing is coerced,
+         no boolean is manufactured, and no unknown becomes a value. */
+      warranty: pnWarrantyDuration((((raw.features || {}).warranty) || {}).text) || undefined,
+      externalDimensions: (((raw.features || {}).externalDimensions) || {}).text || undefined,
       // PB045 — the Atlas's own Design Language verdict. This field has been in
       // the Recommendation Universe since PB042R-C but was never carried into
       // the runtime, so appearance was being classified from Product Type and
@@ -14369,8 +14398,21 @@
      PN_DETAIL_LAUNCH below — no architecture change, no generator change.
 
      'strengths' is deliberately absent: it has no presentable segment.
-     'sources' is deliberately absent: provenance is audit-only and must never
-     be downloaded by an ordinary Product Detail. */
+
+     'sources' WAS deliberately absent, on this rule: "provenance is audit-only
+     and must never be downloaded by an ordinary Product Detail."
+
+     ATLAS 487 BATCH 1 — THAT RULE IS NOW SUPERSEDED, NARROWLY.
+     Founder decision: PlotNua is restoring a restrained homeowner-facing
+     provenance layer, so the ALREADY-GOVERNED source URL may be downloaded by
+     ordinary Product Detail. The distinction the old rule protected still
+     stands and is enforced in code below:
+       — the governed source URL is homeowner-visible
+       — every other part of the provenance record stays audit-only, and no
+         title, type or date is exposed because Atlas holds none (measured
+         0 of 355 for all three)
+     Measured cost: the fetch set goes 201,134 -> 208,732 B gzip, +3.8%,
+     inside the ~215 KB launch budget this comment's own decision set. */
   /* ISSUE 005 PIECE F1 — 'suppliers' joins the lazily-fetched set.
      It is resolved through the SAME index the other partitions use, so no
      filename is hard-coded here and a category can still be added or removed
@@ -14378,7 +14420,7 @@
      every other partition. It carries no presentation row in
      PN_DETAIL_PRESENT and is absent from PN_DETAIL_LAUNCH, so it renders
      nothing through the category path — it has its own surface below. */
-  const PN_DETAIL_VIEW = ['considerations', 'planningConsiderations', 'suppliers'];
+  const PN_DETAIL_VIEW = ['considerations', 'planningConsiderations', 'suppliers', 'sources'];
 
   let pnDetailEvidence = null;      // null = not loaded, {} = loaded-or-failed
   let pnDetailPromise = null;       // the D4b combined-file promise (fallback)
@@ -14503,6 +14545,113 @@
       if (typeof v === 'string' && v.trim()) return loc;   // at least one field
     }
     return null;
+  }
+
+  /* ATLAS 487 BATCH 1 · JOBS B and C — the two governed Organisation fields,
+     resolved by the SAME record-id join the locality already uses.
+
+     Both are read straight from the governed Organisations record. Neither is
+     parsed out of Headquarters prose, neither is inferred from a supplier
+     name, a product type or website wording, and neither is substituted with a
+     generated, file, page-load or workflow timestamp. Absent returns null.
+
+     BATCH 1 MAKES THEM REACHABLE; it does not render them. Which assessment
+     slot each can truthfully support is reported for founder decision, and the
+     presentation itself belongs to a later Piece. */
+  function pnSupplierOrgType(product){
+    const orgId = pnSupplierOrgId(product);
+    if (!orgId) return null;
+    const store = pnDetailParts['suppliers'];
+    const rec = store && store[orgId];
+    const v = rec && rec.organisationType;
+    return (typeof v === 'string' && v.trim()) ? v.trim() : null;
+  }
+
+  function pnSupplierLastReviewed(product){
+    const orgId = pnSupplierOrgId(product);
+    if (!orgId) return null;
+    const store = pnDetailParts['suppliers'];
+    const rec = store && store[orgId];
+    const v = rec && rec.lastReviewed;
+    /* The governed date, exactly as Atlas recorded it, or nothing. */
+    return (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.trim()))
+      ? v.trim() : null;
+  }
+
+  /* ATLAS 487 BATCH 1 — THE GOVERNED PRODUCT SOURCE URL.
+
+     Resolved by the CANONICAL PRODUCT ID through the same pnDetailFor() the
+     other partitions use — never by product name, supplier name, array
+     position or a URL guessed from anything else. One product's source can
+     therefore not reach another product.
+
+     SAFETY IS DETERMINISTIC AND REFUSES RATHER THAN REPAIRS. The value must be
+     a single absolute http(s) URL with no whitespace and no credentials in the
+     authority. It is never rewritten, never upgraded to https, never resolved
+     against a domain and never mined out of surrounding prose. Anything else
+     returns null — the data is not repaired here; that is not Batch 1's job.
+
+     Returns a URL string, or null. Never false, never a placeholder, never a
+     supplier homepage inferred from the organisation, never product.productUrl
+     substituted in. UNKNOWN stays UNKNOWN. */
+  const PN_SOURCE_URL_RE = /^https?:\/\/[^\s<>"'\\]+$/;
+
+  function pnProductSourceUrl(product){
+    const pid = product && product.id;
+    if (typeof pid !== 'string') return null;
+    const rec = pnDetailFor(pid, 'sources');
+    const raw = rec && rec.text;
+    if (typeof raw !== 'string') return null;
+    const url = raw.trim();
+    if (!url || !PN_SOURCE_URL_RE.test(url)) return null;
+    /* An authority may not carry credentials: https://evil.example@real.example
+       reads as the real host to a person and resolves to the other one. None of
+       the 355 governed values carries this today; the guard is what keeps that
+       true. */
+    const authority = url.split('/')[2] || '';
+    if (authority.indexOf('@') > -1) return null;
+    return url;
+  }
+
+  /* ATLAS 487 BATCH 1 — THE PROVENANCE FOOTNOTE, rendered.
+
+     One row, in the list that is already there, using the classes that are
+     already there (.am-ev / .am-ev-cat / .am-ev-answer) and the external-link
+     convention this file already uses (.evid-ev-link, target _blank, rel
+     noopener noreferrer). No new section and no new visual system.
+
+     THE LABEL IS DELIBERATELY BARE. "Source" and "View the source" describe the
+     link and nothing else. Atlas holds no title, type or date for any of the
+     355, so this cannot be called a manufacturer source, an official source, a
+     verified source or a product specification: the URL is governed, its
+     editorial status is not.
+
+     IDEMPOTENT, because it is called both synchronously and again when the
+     partition lands. Absent renders nothing at all — no row, no empty state,
+     no "unknown". */
+  function pnRenderProductSource(list, product){
+    if (!list || list.querySelector('[data-pn-product-source]')) return 0;
+    const srcUrl = pnProductSourceUrl(product);
+    if (!srcUrl) return 0;
+    const sLi = document.createElement('li');
+    sLi.className = 'am-ev';
+    sLi.setAttribute('data-pn-product-source', '1');
+    const sCat = document.createElement('span');
+    sCat.className = 'am-ev-cat';
+    sCat.textContent = 'Source';
+    sLi.appendChild(sCat);
+    const sAns = document.createElement('span');
+    sAns.className = 'am-ev-answer';
+    const sA = document.createElement('a');
+    sA.className = 'evid-ev-link';
+    sA.href = srcUrl;
+    sA.target = '_blank';
+    sA.rel = 'noopener noreferrer';
+    sA.textContent = 'View the source';
+    sAns.appendChild(sA);
+    sLi.appendChild(sAns);
+    list.appendChild(sLi);
+    return 1;
   }
 
   function pnDetailFor(productId, category){
@@ -15190,6 +15339,32 @@
     vAns.textContent = product.verificationStatus || 'Not yet verified by PlotNua';
     vLi.appendChild(vAns);
     akList.appendChild(vLi);
+
+    /* ATLAS 487 BATCH 1 — THE PROVENANCE FOOTNOTE.
+
+       One row, in the list that is already here, using the classes that are
+       already here (.am-ev / .am-ev-cat / .am-ev-answer) and the external-link
+       convention this file already uses (.evid-ev-link, target _blank, rel
+       noopener noreferrer). No new section, no new visual system.
+
+       THE LABEL IS DELIBERATELY BARE. "Source" and "View the source" describe
+       the link and nothing else. Atlas holds no title, type or date for any of
+       the 355, so the record cannot be called a manufacturer source, an
+       official source, a verified source or product specification — the URL is
+       governed, its editorial status is not.
+
+       Absent renders nothing at all: no row, no empty state, no "unknown". */
+    /* The sources partition is fetched lazily when Product Detail opens, so it
+       usually resolves AFTER this element is built. Rendered twice, exactly as
+       F1 renders the supplier surface: once synchronously in case the
+       partition is already resolved (a second open), and once when it lands.
+       pnRenderProductSource() is idempotent, so the pair cannot double-render. */
+    pnRenderProductSource(akList, product);
+    try {
+      pnDetailPartitionReady('sources').then(function(){
+        pnRenderProductSource(akList, product);
+      });
+    } catch (e) { /* absent partition is not an error; the row simply stays away */ }
 
     atlasKnows.appendChild(akList);
     wrap.appendChild(atlasKnows);

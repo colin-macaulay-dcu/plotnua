@@ -55,6 +55,15 @@ SUPPLIER_FORBIDDEN_KEYS = {
     "irish", "excludedProductIds", "excludedRanges", "excludesIreland",
     "deliveryConfirmed", "installationConfirmed",
 }
+# ATLAS 487 BATCH 1 · JOB B — the EXACT governed Organisation Type vocabulary.
+# Proved against all 61 resolved Garden Room organisations before this list was
+# written: 42 Manufacturer, 7 Bespoke Builder, 5 Modular Builder, 6 Supplier,
+# 1 Installer = 61/61, and no other value occurs. A closed set here is what
+# stops a future free-text or renamed value reaching a homeowner unreviewed,
+# and what stops anything being INFERRED into the field.
+SUPPLIER_ORG_TYPES = {
+    "Manufacturer", "Bespoke Builder", "Modular Builder", "Supplier", "Installer",
+}
 SUPPLIER_PERSONAL = re.compile(
     r"[A-Za-z0-9._%%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"      # email
     r"|(?:\+\d[\d ()-]{7,})"                                # international phone
@@ -79,6 +88,18 @@ def validate_supplier(doc, errors):
         for bad in SUPPLIER_FORBIDDEN_KEYS:
             if bad in rec:
                 errors.append(f"{oid}: FROZEN eligibility key present: {bad!r}")
+        # ATLAS 487 BATCH 1 — the two governed Organisation fields.
+        # These GATES ARE ADDITIVE. Nothing existing is relaxed.
+        if "organisationType" in rec:
+            ot = rec["organisationType"]
+            if not isinstance(ot, str) or ot not in SUPPLIER_ORG_TYPES:
+                errors.append(
+                    f"{oid}.organisationType: not a governed Organisation Type: {ot!r}")
+        if "lastReviewed" in rec:
+            lr = rec["lastReviewed"]
+            if not isinstance(lr, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", lr):
+                errors.append(
+                    f"{oid}.lastReviewed: not a governed ISO date: {lr!r}")
         loc = rec.get("locality")
         if not isinstance(loc, dict) or not loc:
             errors.append(f"{oid}: locality is not a non-empty object")
