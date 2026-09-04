@@ -11508,6 +11508,10 @@
     '20k-30k': { lo: 20000, hi: 30000 }, '30k-plus': { lo: 30000, hi: Infinity },
   };
   const AS_BUDGET_LABEL = { 'under-10k': 'Under €10,000', '10k-20k': '€10,000–€20,000', '20k-30k': '€20,000–€30,000', '30k-plus': '€30,000+' };
+  /* ATLAS 487 BATCH 2 PIECE 2 (2C) — the bands above are euro figures, and
+     every label says so. Naming that here stops the currency test being a
+     magic string at four separate call sites. */
+  const AS_BUDGET_CURRENCY = 'EUR';
 
   // Deterministic selection (generic route): for a given role, prefer a
   // candidate whose static budgetBand matches the homeowner's stated band.
@@ -12237,45 +12241,125 @@
     if (!band) return 1;
     const price = product ? product.price : null;
     if (typeof price !== 'number' || !isFinite(price)) return 1;
+    /* ATLAS 487 BATCH 2 PIECE 2 (2C) — the bands are EUR, and this function
+       used to test any number against them regardless of its currency. 70 of
+       the 487 carry a governed GBP price, so a sterling figure was being read
+       as though it were euro: £23,790 scored 2 ("inside €20,000-€30,000") on
+       the strength of the digits alone. Across the four bands that produced 71
+       false "in budget" verdicts and 209 false "out of budget" ones.
+
+       Atlas holds the numeric price AND the governed currency. It does NOT
+       hold an authorised conversion rate, and none may be introduced. So a
+       non-euro price is neither proven inside a euro band nor proven outside
+       it: it is UNKNOWN, which is exactly what 1 already means here and what
+       an unpriced product already scores. Not 2 (confirmed fit) and not 0
+       (confirmed miss).
+
+       No band (the homeowner said "not sure") returns 1 above, before this
+       test, so currency cannot affect the no-band case. */
+    if (!pnPriceComparableToBudget(product)) return 1;
     return (price >= band.lo && price <= band.hi) ? 2 : 0;
   }
 
+  /* =====================================================================
+     ATLAS 487 BATCH 2 PIECE 2.1 (R1) — WHY PRICE LEFT THIS COMPARATOR.
+
+     Price used to be the final tiebreak here. Two earlier corrections landed
+     on it: Piece 1.1 stopped an ABSENT price being read as zero, and Piece 2
+     stopped a sterling figure being tested against a euro BAND. The remaining
+     defect was that two prices in different currencies still reached
+     `aPrice - bPrice`, and EUR minus GBP is not a quantity.
+
+     The obvious repair -- "same currency: compare; different currency: return
+     0" -- was implemented, measured and REJECTED. Returning 0 for incomparable
+     pairs is an incomparability relation, and incomparability is not
+     transitive:
+
+         EUR 6,630  vs  EUR 134,500  ->  ordered
+         EUR 6,630  vs  GBP   4,800  ->  incomparable
+         GBP 4,800  vs  EUR 134,500  ->  incomparable
+
+     a == c and c == b but a < b, so the function was not a strict weak
+     ordering, Array.prototype.sort had no consistent relation to work with,
+     and it produced runs with EUR 134,500 sitting above EUR 6,630. Measured:
+     15 same-currency order violations across the 14 real profiles.
+
+     No pairwise comparator can order same-currency prices, refuse
+     cross-currency comparison, AND stay transitive. So price is not a pairwise
+     concern any more. This comparator now ranks the SUBSTANTIVE tuple only --
+     a total preorder, transitive, safe in any Array.sort -- and price is
+     applied afterwards, per tied group, by pnOrderTiedGroup() below. */
   function compareByScoreVector(a, b){
     for (let i = 0; i < a.tuple.length; i++) { if (b.tuple[i] !== a.tuple[i]) return b.tuple[i] - a.tuple[i]; }
-    /* ATLAS 487 BATCH 2 PIECE 1.1 — the final tiebreak was:
-
-           return (a.product.price || 0) - (b.product.price || 0);
-
-       `undefined || 0` is 0, so an ABSENT price was compared as if the product
-       cost nothing, and every unpriced product sorted ahead of every priced
-       one whenever the six score dimensions tied. 268 of the 487 carry no
-       usable price, so this was not an edge case: it is why `either +
-       not-sure` still led with a product whose price reads "Price not
-       published". UNKNOWN is not zero here either.
-
-       The three cases, using the same pnUsablePrice() contract as the rest of
-       the price work rather than a second definition of "usable":
-
-         both priced   -> ascending price, exactly as before
-         one priced    -> the priced one first. Not a penalty: a published
-                          price is evidence this tiebreak can order on, and an
-                          absent one is not. The unpriced product keeps its
-                          place in every earlier dimension and stays eligible.
-         neither       -> 0. Price offers no evidence, so the incoming order
-                          stands (Array.prototype.sort is stable per ES2019),
-                          which is deterministic for a given artefact.
-
-       CURRENCY IS DELIBERATELY UNTOUCHED. Two priced products still subtract
-       raw numbers even across currencies, exactly as before this Piece. That
-       is the 2C defect and it is not authorised here; fixing unknown-as-zero
-       does not require touching it, so it is left alone rather than
-       half-solved. */
-    const aPrice = pnUsablePrice(a.product && a.product.price);
-    const bPrice = pnUsablePrice(b.product && b.product.price);
-    if (aPrice != null && bPrice != null) return aPrice - bPrice;
-    if (aPrice != null) return -1;
-    if (bPrice != null) return 1;
     return 0;
+  }
+
+  /* GROUP-AWARE, CURRENCY-SAFE FINAL ORDERING.
+
+     Input: one maximal run of candidates that tie on the WHOLE substantive
+     tuple, in the order they entered this stage. Output: the same candidates,
+     reordered only where Atlas holds evidence that permits it.
+
+       1. priced candidates are grouped into cohorts by GOVERNED currency;
+       2. inside one cohort -- one shared, non-null currency -- ascending price;
+       3. cohorts are never compared numerically with each other;
+       4. cohort order is FIRST APPEARANCE in the incoming group, so a cohort's
+          position cannot be moved by any price it contains;
+       5. unpriced candidates form the final cohort, keeping their incoming
+          order, which preserves Piece 1.1's known-price-before-unpriced;
+       6. a priced candidate with NO governed currency becomes a cohort of ONE.
+          Two nulls are not a shared currency, so such products are never
+          compared with each other or with anything else, and never read as EUR.
+
+     THIS IS NOT A CURRENCY PREFERENCE. Nothing here knows what EUR or GBP are.
+     Whichever cohort the incoming order happened to present first stays first;
+     had the group arrived EUR-first, EUR would lead. The stage only refines
+     ordering where the evidence is comparable, and otherwise leaves the order
+     it was given exactly as it found it. */
+  function pnOrderTiedGroup(group){
+    if (!group || group.length < 2) return group || [];
+    const cohorts = [], index = {}, unpriced = [];
+    for (let i = 0; i < group.length; i++) {
+      const e = group[i];
+      const amount = pnUsablePrice(e && e.product && e.product.price);
+      if (amount == null) { unpriced.push(e); continue; }
+      const cur = pnGovernedCurrency(e.product);
+      /* A known currency shares a cohort; an unknown one never does. */
+      const key = cur ? ('c:' + cur) : ('u:' + i);
+      if (!(key in index)) { index[key] = cohorts.length; cohorts.push({ comparable: !!cur, rows: [] }); }
+      cohorts[index[key]].rows.push({ e: e, amount: amount });
+    }
+    const out = [];
+    for (let c = 0; c < cohorts.length; c++) {
+      const co = cohorts[c];
+      if (co.comparable && co.rows.length > 1) {
+        /* One currency on both sides, so this subtraction is a real quantity.
+           Array.prototype.sort is stable, so equal prices keep incoming order. */
+        co.rows.sort(function(x, y){ return x.amount - y.amount; });
+      }
+      for (let r = 0; r < co.rows.length; r++) out.push(co.rows[r].e);
+    }
+    for (let u = 0; u < unpriced.length; u++) out.push(unpriced[u]);
+    return out;
+  }
+
+  /* THE ONE AUTHORITATIVE ORDERING. Every ranking path calls this: the
+     production ranking, applyRecommendationView(), and the parity probe. A
+     view may supply its own substantive comparator; ties are then whatever
+     that comparator calls equal, so the group stage stays correct for it. */
+  function pnRankByScore(list, cmp){
+    const compare = cmp || compareByScoreVector;
+    const sorted = (list || []).slice().sort(compare);
+    const out = [];
+    let i = 0;
+    while (i < sorted.length) {
+      let j = i + 1;
+      while (j < sorted.length && compare(sorted[i], sorted[j]) === 0) j++;
+      const run = pnOrderTiedGroup(sorted.slice(i, j));
+      for (let k = 0; k < run.length; k++) out.push(run[k]);
+      i = j;
+    }
+    return out;
   }
 
   const RECOMMENDATION_VIEWS = {
@@ -12507,7 +12591,10 @@
     if (!view) return [];
     let list = qualifiedFor(view, scoredPool);
     if (view.predicate) list = list.filter(e => { try { return !!view.predicate(e, decisionProfile); } catch (err) { return false; } });
-    return list.slice().sort(view.compare);
+    /* PIECE 2.1 (R1) — the same authoritative ordering as the production path,
+       so a view can never rank by a rule the recommendation itself does not
+       use. view.compare is still honoured as the SUBSTANTIVE comparator. */
+    return pnRankByScore(list, view.compare);
   }
 
 
@@ -12726,10 +12813,12 @@
     }
 
     const scored = pool.map(scoreCandidate);
-    scored.sort((a, b) => {
-      // Sprint 1: the ordering is now owned by the Best Overall view.
-      return compareByScoreVector(a, b);
-    });
+    /* PIECE 2.1 (R1) — one authoritative ordering: substantive tuple, then the
+       currency-safe group stage. Was `scored.sort(compareByScoreVector)`, which
+       carried the price tiebreak inside the comparator. */
+    const rankedScored = pnRankByScore(scored);
+    scored.length = 0;
+    for (let i = 0; i < rankedScored.length; i++) scored.push(rankedScored[i]);
 
     // SPRINT 2 — the bespoke origin promotion is gone. Roughly sixty lines
     // of PB-020A2 reordering, which moved the origin-satisfying product
@@ -12837,8 +12926,15 @@
          would now be reported "below budget" — a claim about a price Atlas
          does not hold. */
       const knownPrice = typeof entry.product.price === 'number' && isFinite(entry.product.price);
-      const aboveBudget = !!(band && knownPrice && entry.product.price > band.hi);
-      const belowBudget = !!(band && knownPrice && entry.product.price < band.lo);
+      /* ATLAS 487 BATCH 2 PIECE 2 (2C) — these two do NOT read budgetFit; they
+         compare the raw number to the band themselves, so correcting budgetFit
+         alone would have left them claiming a sterling figure "costs more than
+         the €20,000-€30,000 you chose". They now require the same governed euro
+         price that budgetFit requires. A non-euro price is neither above nor
+         below a euro band. */
+      const euroComparable = pnPriceComparableToBudget(entry.product);
+      const aboveBudget = !!(band && knownPrice && euroComparable && entry.product.price > band.hi);
+      const belowBudget = !!(band && knownPrice && euroComparable && entry.product.price < band.lo);
       /* Was a single global flag meaning "the filter ran and kept somebody",
          which was true per product only because the pool had been filtered.
          It now means what every reader already took it to mean: THIS product
@@ -16997,7 +17093,14 @@
       score: win.u.score,
       reasons: win.u.reasons,
       exhibit: PLOT_TWIST_EXHIBITS[win.product.organisation] || null,
-      aboveBand: !!(band && band.hi < 1e9 && win.product.price > band.hi),
+      /* ATLAS 487 BATCH 2 PIECE 2 (2C) — this flag renders as "It sits above
+         the budget you chose", which is a euro-budget verdict. It required the
+         same governed euro price as every other budget verdict. The candidate
+         FILTER above still compares raw numbers to the band; that is selection
+         rather than a claim, it is outside this job's scope, and its measured
+         effect is reported to the founder rather than changed here. */
+      aboveBand: !!(band && band.hi < 1e9 && pnPriceComparableToBudget(win.product)
+                    && win.product.price > band.hi),
     };
   }
 
@@ -21407,7 +21510,16 @@
     const budgetKey = dp.searchConstraints && dp.searchConstraints.budget;
     const budgetLabel = budgetKey && AS_BUDGET_LABEL[budgetKey];
     if (budgetLabel) {
-      if (product.price != null) {
+      /* ATLAS 487 BATCH 2 PIECE 2 (2C) — a priced product whose price is not in
+         euro reached the `else` of the ternary below and told the homeowner
+         "Inside the €20,000–€30,000 budget you chose" on the strength of a
+         sterling number. It is not known to be inside, and it is not known to
+         be outside. This mirrors the existing no-price sentence's second half
+         rather than inventing a new register; the sterling-specific detail
+         already lives on Product Detail. */
+      if (product.price != null && !pnPriceComparableToBudget(product)) {
+        points.push({ ok: false, text: 'Its price is not in euro, so Atlas cannot place it against your ' + budgetLabel + '.' });
+      } else if (product.price != null) {
         points.push(ctx.aboveBudget
           ? { ok: false, kind: 'budget', text: 'It costs more than the ' + budgetLabel +
               ' you chose. Nothing inside that budget came close enough to recommend.' }
@@ -25464,6 +25576,33 @@
     return t || null;
   }
 
+  /* ATLAS 487 BATCH 2 PIECE 2 (2C) — THE CURRENCY ATLAS ACTUALLY RECORDED.
+
+     pnPriceCurrency() above reads product.currency, and normalizePoolProduct
+     sets that with `raw.currency || 'EUR'` -- it MANUFACTURES euro when none is
+     governed, for 249 of the 487. That default is harmless for display (every
+     one of those products is unpriced, so no figure is ever shown) but it must
+     never be allowed to answer "is this price denominated in euro", because it
+     would answer yes for a product Atlas holds no currency for at all.
+
+     This reader goes to the picked pricing record instead. No currency is ever
+     inferred from supplier country, product country, market, URL, organisation
+     or the product name. Absent stays absent. */
+  function pnGovernedCurrency(product){
+    const e = (product && product.priceEvidence) || null;
+    const c = e && e.currency;
+    const t = (typeof c === 'string') ? c.trim().toUpperCase() : '';
+    return t || null;
+  }
+
+  /* True only when this product's price can honestly be tested against the
+     homeowner's budget bands, which are denominated in AS_BUDGET_CURRENCY.
+     Atlas holds no exchange rate, and none is authorised, so a sterling figure
+     is neither inside nor outside a euro band -- it is UNKNOWN. */
+  function pnPriceComparableToBudget(product){
+    return pnGovernedCurrency(product) === AS_BUDGET_CURRENCY;
+  }
+
   /* A figure is usable only if it is a real positive number. Zero is a record
      nobody filled in; NaN, Infinity, strings and booleans are coercion damage.
      None of them is a price. */
@@ -28085,28 +28224,24 @@
     const ordered = rankCandidates(dp);
     const scored = ordered.__scored || [];
     /* PIECE 1.1 — this is a deliberate second, independent implementation of
-       the comparator: the probe below asserts the registry comparator still
-       orders identically to it. It carried the same unknown-as-zero tiebreak,
-       so leaving it would have made `parity` report false for the corrected
-       ordering — flagging the intended fix as a regression. Corrected in step
-       with compareByScoreVector so the probe keeps measuring what it was
-       written to measure. It is NOT replaced by a call to the comparator:
-       comparing a function against itself would prove nothing. */
-    const legacy = scored.slice().sort(function(a, b){
-      for (let i = 0; i < a.tuple.length; i++) { if (b.tuple[i] !== a.tuple[i]) return b.tuple[i] - a.tuple[i]; }
-      const ap = pnUsablePrice(a.product && a.product.price);
-      const bp = pnUsablePrice(b.product && b.product.price);
-      if (ap != null && bp != null) return ap - bp;
-      if (ap != null) return -1;
-      if (bp != null) return 1;
-      return 0;
-    });
-    // SPRINT 2 — parity now measures the COMPARATOR, which is what Sprint 1
-    // moved into the registry. applyRecommendationView() additionally applies
-    // the qualification guard, so comparing against it would compare ordering
-    // against ordering-plus-filtering and report a change that is the guard
-    // working as designed. The guard's effect is reported separately below.
-    const viaComparator = scored.slice().sort(compareByScoreVector);
+       the comparator. PIECE 2.1 (R1) RETIRES IT.
+
+       Ordering is no longer expressible as one pairwise comparator: price is
+       applied per tied group, after substantive sorting, because no pairwise
+       rule can order same-currency prices, refuse cross-currency comparison
+       and stay transitive at the same time. A hand-inlined second copy of a
+       two-stage algorithm would be exactly the "two subtly different ranking
+       algorithms" this probe exists to catch.
+
+       So parity now measures the question that actually matters today: does
+       the PRODUCTION ranking path agree with the RECOMMENDATION VIEW path on
+       the same pool? Both go through pnRankByScore(); if they ever diverge,
+       something has grown a private ordering. The qualification guard is not
+       in play here because both sides are given the same already-scored pool
+       and the Best Overall view carries no predicate. */
+    const viaProduction = pnRankByScore(scored);
+    const viaComparator = applyRecommendationView('best-overall', scored, dp);
+    const legacy = viaProduction;
     const parity = legacy.length === viaComparator.length
       && legacy.every(function(e, i){ return e.product.id === viaComparator[i].product.id; });
     const viaView = applyRecommendationView('best-overall', scored, dp);
