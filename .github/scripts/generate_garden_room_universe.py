@@ -838,8 +838,12 @@ def main():
                 "availability": fetch_all(token, T_AVAIL, AVAIL_FIELDS),
                 "featureValues": fetch_all(token, T_FEATVALS, FEATVAL_FIELDS),
                 "features":  fetch_all(token, T_FEATURES, FEATURE_FIELDS),
+                # ATLAS 487 BATCH 1 · JOB C — "Last Reviewed " carries a TRAILING
+                # SPACE in Airtable. That is the field's real name, not a typo;
+                # requesting "Last Reviewed" returns nothing. "Organisation
+                # Type" was already being fetched and simply never exported.
                 "organisations": fetch_all(token, T_ORGS, ["Organisation Name", "Organisation Type", "Website",
-                                                       "Headquarters", "Sources"]),
+                                                       "Headquarters", "Sources", "Last Reviewed "]),
             }
         except Exception as e:
             fail(f"Atlas read failed: {e}")
@@ -1182,10 +1186,32 @@ def main():
         # change the sentence a homeowner reads from "Atlas has not
         # established" to "Atlas read the maker's delivery information", which
         # for these suppliers is not true. Results Eligibility v1 is frozen.
-        supplier_evidence[_oid] = {
+        # ATLAS 487 BATCH 1 · JOBS B and C — two governed Organisation fields,
+        # emitted at record TOP LEVEL beside `name`, deliberately NOT inside
+        # `locality`. `locality` is the set parsed out of the Headquarters
+        # prose blob; these two are structured governed fields and must not be
+        # mixed in with parsed text or subjected to segment parsing.
+        #
+        # Organisation Type is an Airtable single-select. It is carried EXACTLY
+        # as governed — no grouping, no maker/intermediary derivation, no
+        # sentence. Any such conclusion is a presentation decision for a later
+        # Piece, made from this exact value.
+        #
+        # Last Reviewed is the governed review date and the only honest source
+        # for an assessment dateline. Absent stays absent: a missing date is
+        # simply not emitted, never replaced by `generated`, by the workflow
+        # run time or by today.
+        _entry = {
             "name": orgs.get(_oid, {}).get("name", ""),
             "locality": _rec,
         }
+        _otype = txt(cell(_r, "Organisation Type"))
+        if _otype:
+            _entry["organisationType"] = _otype
+        _reviewed = txt(cell(_r, "Last Reviewed "))
+        if _reviewed:
+            _entry["lastReviewed"] = _reviewed
+        supplier_evidence[_oid] = _entry
 
     # Shaped as a PARTITION, not a special case: same keys, same index entry,
     # same validator run, same atomic publication. Only its per-record shape
