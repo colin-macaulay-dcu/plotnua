@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-03T23:02:26Z",
+  "generated": "2026-09-04T07:08:53Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "planningConsiderations"
   ],
-  "productCount": 465,
+  "productCount": 462,
   "recordCounts": {
-    "planningConsiderations": 465
+    "planningConsiderations": 462
   },
   "products": {
     "rec6erGeW5wf5SDgT": {
@@ -573,12 +573,6 @@
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No area or dimensions are held; the certified AM-001 Measurement Basis record confirms nothing has been estimated, records that 'Medium' is a SIZE BAND and not a measurement and has not been treated as one, and notes that the record is explicitly BESPOKE so a fixed product-level area may not exist even in principle. The URL held is a bespoke pricing page rather than a product specification page. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) therefore cannot be tested at product level and must be applied to the as-commissioned design. Conditions applying to whatever is built: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. AVAILABILITY: essexgardenstudios.co.uk serves South East England and Atlas holds no evidence of an Irish purchasing route, so the Irish test is academic for an Irish buyer. HOMEOWNER IMPLICATION: for a bespoke build the size decision and the planning decision are the same decision \u2014 total your existing garden structures, subtract from 30 m2, and give the designer the remainder as an external footprint budget. SUPPLIER STATUS: this completes Essex Garden Studios for the Planning Considerations layer \u2014 1 Garden Room product, classified REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA, bespoke and with no product-level area. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
         "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recajMqfHOEbpL8q5": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT \u2014 33.06 m2 EXTERNAL footprint (32.06 m2 internal floor) against a 30 m2 combined back-garden allowance. PLANNING PERMISSION IS REQUIRED, even after the 27 July 2026 increase from 25 m2, and this product overruns the allowance on its own before any existing structure is counted. THE ALLOWANCE COVERS GARAGES TOO: the same Class 3 figure applies to sheds, stores AND garages together, so a garage of this size consumes and exceeds the entire plot allowance. HEIGHT ALSO FAILS: the 313.5 cm ridge breaches the 3 m limit that applies to its shingled pitched roof \u2014 the 4 m allowance is for tile or slate only. CATEGORY INTEGRITY, restated once from AM-001: this is NOT a garden room. The manufacturer states plainly that Falkland is a GARAGE suitable for two vehicles, lists 'Vehicles' as the only intended use, and offers it with a double garage door. It is held in Atlas under Garden Rooms and should be excluded from garden-room recommendations. HOMEOWNER IMPLICATION: this fails on area and on height, and it is not the product type a garden-room buyer is looking for.",
-        "evidenceScope": "Product-Specific"
       }
     },
     "recFj5XNkQlgAdgQo": {
@@ -1334,12 +1328,6 @@
     "rec3GvJzP3GvAZYPk": {
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 all four published size options sit inside the 30 m2 combined back-garden allowance, raised from 25 m2 on 27 July 2026: 3m x 3m (9 m2), 3.5m x 3.5m (12.25 m2), 4m x 4m (16 m2) and 4.64m x 4.64m (21.53 m2). Conditions: behind the front wall, 25 m2 private open space retained, 3 m height for a flat or non-tiled roof and 4 m for a tiled or slated pitched roof, incidental use, NO HUMAN HABITATION. MEASUREMENT CAVEAT from the certified AM-001 layer: these are NOMINAL size labels, not measured externals \u2014 the supplier's own drawing for the smallest option is captioned 302 x 302, not 300 x 300. Nothing derived or subtracted. SUPPLIER GUIDANCE CONTRADICTED, recorded not repeated: Timber Living's page states garden rooms 'under 25-40 sqm' may not need permission. That range is vague and does not match the actual threshold. The figure is 30 m2 combined across all garden structures. HOMEOWNER IMPLICATION: every variant is inside the allowance, but the largest leaves only about 8.5 m2 for an existing shed \u2014 and do not rely on the supplier's own planning wording.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recg6v7Dp122WxlEz": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT \u2014 40.56 m2 EXTERNAL footprint (39.42 m2 internal floor) against a 30 m2 combined back-garden allowance, the largest overrun in the Lasita range. PLANNING PERMISSION IS REQUIRED, even after the 27 July 2026 increase from 25 m2. HEIGHT ALSO FAILS: the 321.48 cm ridge breaches the 3 m limit applying to its shingled roof. CATEGORY INTEGRITY, restated once from AM-001: this is NOT a garden room. The manufacturer describes it as its largest GARAGE with a stepped roof, suitable for two vehicles, lists 'Vehicles' as the only intended use, and offers wooden or Hormann garage doors. VARIANT NOTE, recorded not resolved: two further Hawaii listings exist at the same 39.42 m2, so the Atlas record may correspond to any of three near-identical pages. HOMEOWNER IMPLICATION: fails on area and on height, and is a garage rather than a garden room.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2598,12 +2586,6 @@
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. This is a combined sauna-and-hot-tub unit; the certified AM-001 Measurement Basis record confirms no footprint or internal area is held and that nothing has been estimated or apportioned between the two elements. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. THE COMBINED FOOTPRINT IS WHAT COUNTS: the sauna element is an enclosed structure and the whole unit occupies one continuous footprint in the garden, so the buyer must obtain the overall external footprint from TimberIN \u2014 not the sauna cabin alone \u2014 and count all of it toward the 30 m2. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: ask for the overall external footprint of the complete unit and its maximum height above finished ground level, in writing, before ordering. SUPPLIER STATUS: this completes TimberIN for the Planning Considerations layer \u2014 4 Garden Room products, ALL classified REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA, but for two different reasons that matter to homeowners. TWO of the four are VESSELS rather than structures \u2014 the Nordic Rojal wood-fired hot tub and the Nordic Ice cold plunge tub \u2014 and the floor-area test does not properly apply to them at all; their planning relevance depends on whether they are decked, housed or roofed on site. The other TWO are enclosed structures to which the area test does apply \u2014 the Nordic Pod Custom barrel sauna, which is made to order so has no fixed area even in principle, and this Hobbiton combo, for which no footprint is published. VOCABULARY LIMITATION recorded once: the approved classification set assumes an enclosed structure assessed on floor area and cannot express 'the area test does not apply to this product type'; the closest approved value is retained throughout and the distinction is explained in each value. CATEGORY ISSUE recorded once: all four are wellness equipment held under Garden Rooms because Atlas has no correct Product Category, and they should be excluded from garden-room recommendations; recorded, not corrected, architecture frozen. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
         "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "rechyMNmPvPrIhZKx": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The certified AM-001 Measurement Basis record classifies this NOT A FLOOR-AREA PRODUCT: a cold plunge tub is a vessel, not an enclosed structure, so it has no internal floor area to verify and none has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be applied in the ordinary way. VOCABULARY LIMITATION: the approved classification set assumes an enclosed structure assessed on floor area; the closest approved value is retained and the position is explained here. THE SITE QUESTION, restated from the certified record: a tub is not a habitable structure, but if it is HOUSED or DECKED it may still form part of a garden structure counting toward the combined 30 m2 allowance. That depends entirely on how it is installed and cannot be answered from the product. CATEGORY ISSUE: recorded under Garden Rooms but is wellness equipment \u2014 part of the standing TimberIN misclassification; it must never surface in a garden-room comparison. Recorded, not corrected. HOMEOWNER IMPLICATION: the tub on its own is very unlikely to raise a planning question. Any shelter, roof or raised decking built around it may. Ask about the whole installation, not the vessel.",
-        "evidenceScope": "Product-Specific"
       }
     },
     "recgmL8p4EKPREiWf": {

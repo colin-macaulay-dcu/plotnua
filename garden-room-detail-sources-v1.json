@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-03T23:02:26Z",
+  "generated": "2026-09-04T07:08:53Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "sources"
   ],
-  "productCount": 357,
+  "productCount": 355,
   "recordCounts": {
-    "sources": 357
+    "sources": 355
   },
   "products": {
     "recMYX68xsyrwVoR1": {
@@ -440,12 +440,6 @@
     "recw7nbBogSsdXlxG": {
       "sources": {
         "text": "https://ecohouse.ie/product/garden-room-6x4m/",
-        "evidenceScope": null
-      }
-    },
-    "recajMqfHOEbpL8q5": {
-      "sources": {
-        "text": "https://www.lasita.com/products-gb/brava",
         "evidenceScope": null
       }
     },
@@ -1226,12 +1220,6 @@
     "rec3GvJzP3GvAZYPk": {
       "sources": {
         "text": "https://timberliving.ie/product/havana-garden-office-cabin/",
-        "evidenceScope": null
-      }
-    },
-    "recg6v7Dp122WxlEz": {
-      "sources": {
-        "text": "https://www.lasita.com/products/outdoor-living",
         "evidenceScope": null
       }
     },

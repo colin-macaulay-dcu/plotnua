@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-03T23:02:26Z",
+  "generated": "2026-09-04T07:08:53Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "typicalHomeowner"
   ],
-  "productCount": 465,
+  "productCount": 462,
   "recordCounts": {
-    "typicalHomeowner": 465
+    "typicalHomeowner": 462
   },
   "products": {
     "rec6erGeW5wf5SDgT": {
@@ -572,12 +572,6 @@
     "rectxhwR0REkJYhYA": {
       "typicalHomeowner": {
         "text": "A SOUTH EAST ENGLAND HOMEOWNER, NOT AN IRISH ONE \u2014 that is the first and most useful thing to say about this record. Within that market, the buyer this suits is someone with an awkward or tightly constrained garden who wants the studio designed around the plot rather than chosen from a size list, and who is comfortable working from a quotation rather than a published price. NOT FOR: a buyer who wants to compare specifications and cost per square metre across suppliers before committing, because none of that data exists here. HOMEOWNER IMPLICATION for an Irish reader: this record exists in Atlas for catalogue completeness, not as a live option.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recajMqfHOEbpL8q5": {
-      "typicalHomeowner": {
-        "text": "SOMEBODY BUILDING A TWO-CAR TIMBER GARAGE, WITH PERMISSION. That is the whole and honest description \u2014 a large plot, two vehicles, a preference for timber over steel, and an application to the planning authority. THEY SHOULD ALSO KNOW that this building uses more than the entire back-garden allowance, so a garden room afterwards would need permission too. NOT FOR: anyone shopping for a garden office, studio or gym \u2014 this record appears in that category by a classification error, not because it serves the brief.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1334,12 +1328,6 @@
     "rec3GvJzP3GvAZYPk": {
       "typicalHomeowner": {
         "text": "SOMEONE WHO WANTS TO SEE THE BUILDING BEFORE BUYING IT. That is the deciding advantage here \u2014 three showrooms across three provinces, one walk-in \u2014 and it suits a household spending five figures who is not comfortable ordering from photographs. A SQUARE PLAN IN FOUR SIZES covers most single-room briefs. THEY SHOULD USE THE SHOWROOM VISIT TO RESOLVE THE WALL SPECIFICATION, which is the one thing the catalogue leaves contradictory. NOT FOR: a buyer who needs a confirmed year-round specification from published information; nor for anyone who takes the supplier's own planning wording at face value.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recg6v7Dp122WxlEz": {
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD WITH TWO CARS, A LARGE SITE AND AN APPETITE FOR A BUILD PROJECT. A stepped-roof timber garage of this size is a serious structure and is bought as one \u2014 with permission, a slab and a builder arranged separately. THEY ARE NOT SHOPPING FOR A GARDEN ROOM, and the only reason this record reaches that category is a classification error. NOT FOR: anyone seeking an office, studio or gym; nor for a standard suburban plot, where this building alone overruns the entire back-garden allowance.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2594,12 +2582,6 @@
     "recsgRXeV6TNzxCYa": {
       "typicalHomeowner": {
         "text": "A HOUSEHOLD MAKING WELLNESS THE POINT OF THE GARDEN. They want the full sequence \u2014 heat, then water \u2014 and they would rather buy it once than assemble it piece by piece over three summers. They have space and budget, and they are likely to be building this instead of, not alongside, a garden office. THAT TRADE IS THE HONEST FRAMING: a combined unit is likely to consume a substantial share of the 30 m2 allowance, so a future workspace may need permission. NOT FOR: a garden already carrying a shed or garage near the limit.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rechyMNmPvPrIhZKx": {
-      "typicalHomeowner": {
-        "text": "SOMEONE WITH AN ESTABLISHED COLD-WATER HABIT WHO WANTS IT AT HOME. Often the same buyer who already has, or is planning, a sauna \u2014 the two are usually bought as a pair. They are choosing on water volume, materials and how easily it can be emptied and refilled, none of which Atlas holds. THEY DO NOT NEED TO WORRY ABOUT THE PLANNING ALLOWANCE unless they enclose or deck the tub. NOT FOR: anyone looking for usable indoor space; this contributes none.",
         "evidenceScope": "Product-Specific"
       }
     },

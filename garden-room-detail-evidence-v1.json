@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-03T23:02:26Z",
+  "generated": "2026-09-04T07:08:53Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "alternatives",
@@ -12,15 +12,15 @@
     "typicalHomeowner",
     "sources"
   ],
-  "productCount": 490,
+  "productCount": 487,
   "recordCounts": {
-    "alternatives": 465,
-    "bestFor": 465,
-    "considerations": 465,
-    "planningConsiderations": 465,
-    "strengths": 465,
-    "typicalHomeowner": 465,
-    "sources": 357
+    "alternatives": 462,
+    "bestFor": 462,
+    "considerations": 462,
+    "planningConsiderations": 462,
+    "strengths": 462,
+    "typicalHomeowner": 462,
+    "sources": 355
   },
   "products": {
     "rec6erGeW5wf5SDgT": {
@@ -2758,36 +2758,6 @@
       },
       "bestFor": {
         "text": "NOT AVAILABLE TO IRISH HOMEOWNERS \u2014 OUT OF PRACTICAL REACH RATHER THAN OUT OF QUALITY. essexgardenstudios.co.uk serves South East England and Atlas holds no evidence of an Irish purchasing route, so however the product performs, an Irish buyer cannot currently obtain it. Within its own market it is a BESPOKE build: the certified AM-001 layer records that 'Medium' is a size band rather than a measurement and that a fixed product-level area may not exist at all, because each studio is specified per commission. HOMEOWNER IMPLICATION: a bespoke route suits a buyer who wants the building shaped to the site rather than the site shaped to the building \u2014 but only where the supplier delivers. Confirm Irish availability before spending any time on this record.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recajMqfHOEbpL8q5": {
-      "sources": {
-        "text": "https://www.lasita.com/products-gb/brava",
-        "evidenceScope": null
-      },
-      "alternatives": {
-        "text": "THE HAWAII IS THE OTHER LASITA GARAGE, larger again at 40.56 m2 external and with the same two failures on area and height \u2014 so it is not an escape. FOR A GARDEN ROOM RATHER THAN A GARAGE, the NEW YORK is the only Lasita model listed for workshop and office use and is exempt at 20.40 m2 external. HOMEOWNER IMPLICATION: if you want a workspace, start again at the New York or with an Irish supplier \u2014 nothing in this part of the Lasita range is a garden room.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT \u2014 33.06 m2 EXTERNAL footprint (32.06 m2 internal floor) against a 30 m2 combined back-garden allowance. PLANNING PERMISSION IS REQUIRED, even after the 27 July 2026 increase from 25 m2, and this product overruns the allowance on its own before any existing structure is counted. THE ALLOWANCE COVERS GARAGES TOO: the same Class 3 figure applies to sheds, stores AND garages together, so a garage of this size consumes and exceeds the entire plot allowance. HEIGHT ALSO FAILS: the 313.5 cm ridge breaches the 3 m limit that applies to its shingled pitched roof \u2014 the 4 m allowance is for tile or slate only. CATEGORY INTEGRITY, restated once from AM-001: this is NOT a garden room. The manufacturer states plainly that Falkland is a GARAGE suitable for two vehicles, lists 'Vehicles' as the only intended use, and offers it with a double garage door. It is held in Atlas under Garden Rooms and should be excluded from garden-room recommendations. HOMEOWNER IMPLICATION: this fails on area and on height, and it is not the product type a garden-room buyer is looking for.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "SOMEBODY BUILDING A TWO-CAR TIMBER GARAGE, WITH PERMISSION. That is the whole and honest description \u2014 a large plot, two vehicles, a preference for timber over steel, and an application to the planning authority. THEY SHOULD ALSO KNOW that this building uses more than the entire back-garden allowance, so a garden room afterwards would need permission too. NOT FOR: anyone shopping for a garden office, studio or gym \u2014 this record appears in that category by a classification error, not because it serves the brief.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "ASSESSED AS WHAT IT ACTUALLY IS \u2014 A TIMBER GARAGE \u2014 IT IS WELL SPECIFIED AND FULLY DOCUMENTED: 44 mm walls, a 575 \u00d7 575 cm envelope reconciling exactly to 32.06 m2 of internal floor, a 17.7-degree pitched roof of 41.91 m2, published ridge and wall heights, and a choice between a wooden double door and a Hormann steel up-and-over. THAT LEVEL OF DISCLOSURE IS RARE and it is what makes the planning position knowable. TWO CARS UNDER TIMBER rather than steel is a genuine and attractive proposition for the right plot. NOT ESTABLISHED: no U-value, no confirmed Irish route, no warranty term for this model \u2014 and NO CASE AT ALL as a habitable room.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "THIS IS NOT A GARDEN ROOM. Lasita states plainly that 'Falkland is a garage suitable for two vehicles', lists 'VEHICLES' as the only intended use, and offers it with a wooden double garage door or a Hormann steel up-and-over door. IT IS HELD IN ATLAS UNDER GARDEN ROOMS AND MUST BE EXCLUDED FROM GARDEN-ROOM RECOMMENDATIONS. ON PLANNING IT FAILS TWICE: at 33.06 m2 external it EXCEEDS the 30 m2 combined allowance on its own \u2014 and that same Class 3 allowance covers sheds, garages and stores together, so a garage of this size consumes and overruns the entire plot allowance \u2014 while the 313.5 cm ridge BREACHES the 3 m limit applying to its shingled roof. HOMEOWNER IMPLICATION: a two-car timber garage requiring planning permission.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "THE DECISIVE POINT IS CATEGORY, NOT SPECIFICATION: this record sits in Atlas under Garden Rooms and is a GARAGE by the supplier's own classification. It should not appear in a garden-office comparison, and thermal usability is not the relevant test for a building not intended for occupation. SECOND, IT IS NOT EXEMPT DEVELOPMENT ON EITHER TEST \u2014 33.06 m2 external exceeds the 30 m2 combined allowance outright, and the 313.5 cm ridge breaches the 3 m limit that applies to a shingled roof. THIRD, A GARAGE CONSUMES THE SAME ALLOWANCE AS A GARDEN ROOM, so building one forecloses a garden office entirely. FOURTH, DIY kit only, base excluded, Republic of Ireland unconfirmed. HOMEOWNER IMPLICATION: this is a planning application, and it uses up the allowance a garden room would need.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -6624,36 +6594,6 @@
       },
       "strengths": {
         "text": "THE SUPPLIER POSITION BEHIND THIS PRODUCT IS ONE OF THE STRONGEST IN THE CATALOGUE. Timber Living is an Irish company in Tullow, Co. Carlow with THREE SHOWROOMS ACROSS THREE PROVINCES \u2014 Carlow, Roscommon and Cork \u2014 the widest physical presence of any supplier in Atlas, and the Tullow site can be walked into without an appointment. INSTALLATION IS TURNKEY AND TWO-STAGE: the shell in about three days, then a return visit for insulation, flooring and interior walls, with DELIVERY AND VAT INCLUDED. THE WARRANTY IS 10 YEARS FROM PRACTICAL COMPLETION covering fitness for purpose, suitability and merchantability. NOT ESTABLISHED: no internal area, no U-value, and no confirmed groundworks position.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recg6v7Dp122WxlEz": {
-      "sources": {
-        "text": "https://www.lasita.com/products/outdoor-living",
-        "evidenceScope": null
-      },
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD WITH TWO CARS, A LARGE SITE AND AN APPETITE FOR A BUILD PROJECT. A stepped-roof timber garage of this size is a serious structure and is bought as one \u2014 with permission, a slab and a builder arranged separately. THEY ARE NOT SHOPPING FOR A GARDEN ROOM, and the only reason this record reaches that category is a classification error. NOT FOR: anyone seeking an office, studio or gym; nor for a standard suburban plot, where this building alone overruns the entire back-garden allowance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "CATEGORY FIRST: this is a garage held under Garden Rooms, and it should not appear in a garden-office comparison. SECOND, IT IS THE FURTHEST OVER THE LIMIT OF ANY LASITA RECORD \u2014 40.56 m2 external against a 30 m2 allowance, and a 321.48 cm ridge against a 3 m cap. THIRD, A VARIANT AMBIGUITY IS RECORDED: two further Hawaii listings exist at the same 39.42 m2, so the Atlas record may correspond to any of three near-identical pages and a quotation should name the exact one. FOURTH, DIY kit only with the base excluded, and Republic of Ireland unconfirmed. HOMEOWNER IMPLICATION: a planning application, a groundworks contract and a builder \u2014 none of which the supplier provides.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT \u2014 40.56 m2 EXTERNAL footprint (39.42 m2 internal floor) against a 30 m2 combined back-garden allowance, the largest overrun in the Lasita range. PLANNING PERMISSION IS REQUIRED, even after the 27 July 2026 increase from 25 m2. HEIGHT ALSO FAILS: the 321.48 cm ridge breaches the 3 m limit applying to its shingled roof. CATEGORY INTEGRITY, restated once from AM-001: this is NOT a garden room. The manufacturer describes it as its largest GARAGE with a stepped roof, suitable for two vehicles, lists 'Vehicles' as the only intended use, and offers wooden or Hormann garage doors. VARIANT NOTE, recorded not resolved: two further Hawaii listings exist at the same 39.42 m2, so the Atlas record may correspond to any of three near-identical pages. HOMEOWNER IMPLICATION: fails on area and on height, and is a garage rather than a garden room.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE FALKLAND IS THE SMALLER LASITA GARAGE at 33.06 m2 external, still over the allowance and still over the height limit. FOR A GARDEN ROOM, the NEW YORK at 20.40 m2 external is the only Lasita model listed for workshop and office use and the only one of the ten a homeowner searching for a workspace should be looking at. HOMEOWNER IMPLICATION: nine of the ten Lasita records Atlas holds under Garden Rooms are storage, outdoor-living or vehicle buildings \u2014 the category is the first thing to check, not the last.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "THE LARGEST BUILDING LASITA MAJA HOLDS IN ATLAS \u2014 AND, LIKE THE FALKLAND, IT IS A GARAGE. Lasita describes it as 'our largest garage with stepped roof \u2014 the main room is suitable for two vehicles', lists 'VEHICLES' as the only intended use, and offers wooden or Hormann garage doors. IT IS HELD UNDER GARDEN ROOMS AND MUST BE EXCLUDED FROM GARDEN-ROOM RECOMMENDATIONS. ON PLANNING IT FAILS BOTH TESTS BY A WIDE MARGIN: 40.56 m2 external against a 30 m2 combined allowance, and a 321.48 cm ridge against the 3 m limit applying to its shingled roof. HOMEOWNER IMPLICATION: a two-vehicle timber garage that requires planning permission on area and on height.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "JUDGED AS A GARAGE IT IS THOROUGHLY DOCUMENTED: 44 mm walls, a 520 \u00d7 780 cm envelope reconciling exactly to 39.42 m2 internal, a stepped roof at 12.5/13.9 degrees covering 51.66 m2, and published ridge, wall and overhang figures. A DOOR CHOICE BETWEEN TIMBER AND A HORMANN STEEL UP-AND-OVER is offered. FOR A HOUSEHOLD THAT WANTS TWO CARS UNDER TIMBER on a large plot, that is a coherent product and the figures can be trusted arithmetically. NOT ESTABLISHED: no U-value, no confirmed Irish route, no warranty term for this model \u2014 and no case as a habitable room, which is not the test for this building.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -12655,32 +12595,6 @@
       },
       "typicalHomeowner": {
         "text": "A HOUSEHOLD MAKING WELLNESS THE POINT OF THE GARDEN. They want the full sequence \u2014 heat, then water \u2014 and they would rather buy it once than assemble it piece by piece over three summers. They have space and budget, and they are likely to be building this instead of, not alongside, a garden office. THAT TRADE IS THE HONEST FRAMING: a combined unit is likely to consume a substantial share of the 30 m2 allowance, so a future workspace may need permission. NOT FOR: a garden already carrying a shed or garage near the limit.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rechyMNmPvPrIhZKx": {
-      "strengths": {
-        "text": "IT IS THE LIGHTEST-TOUCH ITEM IN THE ENTIRE CATALOGUE. A free-standing vessel needs no foundation slab, no wall build-up and, in ordinary use, no planning consideration \u2014 which makes it the one product here that can be added to a garden without spending any of the 30 m2 allowance. FOR A HOUSEHOLD ALREADY AT OR NEAR THE LIMIT, that matters. NOT ESTABLISHED: no dimensions, capacity, materials specification, warranty or price is held in Atlas, and nothing has been inferred.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The certified AM-001 Measurement Basis record classifies this NOT A FLOOR-AREA PRODUCT: a cold plunge tub is a vessel, not an enclosed structure, so it has no internal floor area to verify and none has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be applied in the ordinary way. VOCABULARY LIMITATION: the approved classification set assumes an enclosed structure assessed on floor area; the closest approved value is retained and the position is explained here. THE SITE QUESTION, restated from the certified record: a tub is not a habitable structure, but if it is HOUSED or DECKED it may still form part of a garden structure counting toward the combined 30 m2 allowance. That depends entirely on how it is installed and cannot be answered from the product. CATEGORY ISSUE: recorded under Garden Rooms but is wellness equipment \u2014 part of the standing TimberIN misclassification; it must never surface in a garden-room comparison. Recorded, not corrected. HOMEOWNER IMPLICATION: the tub on its own is very unlikely to raise a planning question. Any shelter, roof or raised decking built around it may. Ask about the whole installation, not the vessel.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A COLD-WATER ROUTINE, USUALLY ALONGSIDE A SAUNA. The certified AM-001 layer classifies this NOT A FLOOR-AREA PRODUCT \u2014 a plunge tub is a vessel with no internal floor area to verify \u2014 so it cannot be compared with garden rooms on size at all, and sits under Garden Rooms only because Atlas has no correct category. HOMEOWNER IMPLICATION: this is equipment, and the sensible way to evaluate it is against other plunge tubs, not against buildings. It is also the least likely product in this catalogue to raise a planning question on its own.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE NATURAL PAIRING IS A SAUNA: TimberIN's own Nordic Pod Custom barrel sauna, its Nordic Hobbiton sauna-and-tub combo, Auroom's Quu or Aurea, or MyCabin.ie's Cube Sauna M for an Irish supplier. All of those are enclosed structures and DO count toward the 30 m2 allowance, unlike this record. FOR HOT WATER RATHER THAN COLD, the Nordic Rojal is the same supplier's wood-fired tub. HOMEOWNER IMPLICATION: a plunge tub is the cheapest addition to a wellness garden in planning terms \u2014 the sauna beside it is the one that costs allowance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "THE ONLY PLANNING RISK IS WHAT YOU BUILD AROUND IT. The certified AM-006 layer records that a tub is not a habitable structure, but if it is HOUSED or DECKED it may form part of a garden structure counting toward the combined 30 m2 allowance \u2014 a site question the product cannot answer. SECOND, NO SPECIFICATION IS HELD: no dimensions, capacity, chiller or filtration detail, warranty or price, so nothing can be said about running cost or maintenance. THIRD, the vocabulary limitation recorded in the certified layer stands: the classification set assumes an enclosed structure and does not fit a vessel. HOMEOWNER IMPLICATION: keep it free-standing and the planning question stays closed.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "SOMEONE WITH AN ESTABLISHED COLD-WATER HABIT WHO WANTS IT AT HOME. Often the same buyer who already has, or is planning, a sauna \u2014 the two are usually bought as a pair. They are choosing on water volume, materials and how easily it can be emptied and refilled, none of which Atlas holds. THEY DO NOT NEED TO WORRY ABOUT THE PLANNING ALLOWANCE unless they enclose or deck the tub. NOT FOR: anyone looking for usable indoor space; this contributes none.",
         "evidenceScope": "Product-Specific"
       }
     },

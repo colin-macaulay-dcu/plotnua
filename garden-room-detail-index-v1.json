@@ -1,56 +1,56 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail.index",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-03T23:02:26Z",
+  "generated": "2026-09-04T07:08:53Z",
   "partitions": [
     {
       "category": "alternatives",
       "file": "garden-room-detail-alternatives-v1.json",
-      "productCount": 465,
-      "recordCount": 465,
-      "rawBytes": 427194
+      "productCount": 462,
+      "recordCount": 462,
+      "rawBytes": 425275
     },
     {
       "category": "bestFor",
       "file": "garden-room-detail-bestfor-v1.json",
-      "productCount": 465,
-      "recordCount": 465,
-      "rawBytes": 335833
+      "productCount": 462,
+      "recordCount": 462,
+      "rawBytes": 333500
     },
     {
       "category": "considerations",
       "file": "garden-room-detail-considerations-v1.json",
-      "productCount": 465,
-      "recordCount": 465,
-      "rawBytes": 394208
+      "productCount": 462,
+      "recordCount": 462,
+      "rawBytes": 391637
     },
     {
       "category": "planningConsiderations",
       "file": "garden-room-detail-planningconsiderations-v1.json",
-      "productCount": 465,
-      "recordCount": 465,
-      "rawBytes": 494647
+      "productCount": 462,
+      "recordCount": 462,
+      "rawBytes": 490974
     },
     {
       "category": "strengths",
       "file": "garden-room-detail-strengths-v1.json",
-      "productCount": 465,
-      "recordCount": 465,
-      "rawBytes": 345475
+      "productCount": 462,
+      "recordCount": 462,
+      "rawBytes": 343333
     },
     {
       "category": "typicalHomeowner",
       "file": "garden-room-detail-typicalhomeowner-v1.json",
-      "productCount": 465,
-      "recordCount": 465,
-      "rawBytes": 303418
+      "productCount": 462,
+      "recordCount": 462,
+      "rawBytes": 301531
     },
     {
       "category": "sources",
       "file": "garden-room-detail-sources-v1.json",
-      "productCount": 357,
-      "recordCount": 357,
-      "rawBytes": 57660
+      "productCount": 355,
+      "recordCount": 355,
+      "rawBytes": 57352
     },
     {
       "category": "suppliers",

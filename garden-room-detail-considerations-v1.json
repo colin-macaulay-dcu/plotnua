@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-03T23:02:26Z",
+  "generated": "2026-09-04T07:08:53Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "considerations"
   ],
-  "productCount": 465,
+  "productCount": 462,
   "recordCounts": {
-    "considerations": 465
+    "considerations": 462
   },
   "products": {
     "rec6erGeW5wf5SDgT": {
@@ -572,12 +572,6 @@
     "rectxhwR0REkJYhYA": {
       "considerations": {
         "text": "AVAILABILITY IS THE BLOCKING CONSIDERATION: the supplier serves South East England and no Irish route is published, so for an Irish site this product should not reach a shortlist. BEYOND THAT, THE BESPOKE MODEL CUTS BOTH WAYS. Nothing can be compared: no fixed area, no fixed price, no published specification, so the record cannot be ranked against catalogue products on size, cost per square metre or thermal performance, and the certified AM-001 layer classifies it accordingly. 'Medium' invites a reader to assume a size and has not been read as one. THE URL HELD IS A BESPOKE PRICING PAGE rather than a product specification page, so even the pricing basis is a starting point rather than a figure. HOMEOWNER IMPLICATION: with bespoke work, everything that matters is in the written quotation \u2014 there is no catalogue to fall back on.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recajMqfHOEbpL8q5": {
-      "considerations": {
-        "text": "THE DECISIVE POINT IS CATEGORY, NOT SPECIFICATION: this record sits in Atlas under Garden Rooms and is a GARAGE by the supplier's own classification. It should not appear in a garden-office comparison, and thermal usability is not the relevant test for a building not intended for occupation. SECOND, IT IS NOT EXEMPT DEVELOPMENT ON EITHER TEST \u2014 33.06 m2 external exceeds the 30 m2 combined allowance outright, and the 313.5 cm ridge breaches the 3 m limit that applies to a shingled roof. THIRD, A GARAGE CONSUMES THE SAME ALLOWANCE AS A GARDEN ROOM, so building one forecloses a garden office entirely. FOURTH, DIY kit only, base excluded, Republic of Ireland unconfirmed. HOMEOWNER IMPLICATION: this is a planning application, and it uses up the allowance a garden room would need.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1334,12 +1328,6 @@
     "rec3GvJzP3GvAZYPk": {
       "considerations": {
         "text": "THIS IS THE ONE TIMBER LIVING PRODUCT WHOSE THERMAL POSITION IS RECORDED AS UNKNOWN, AND THE REASON IS A CONTRADICTION IN THE SUPPLIER'S OWN MATERIAL: a 'fully insulated build' claim sits alongside a 45 mm log specification. Nothing has been inferred either way. SECOND, SUPPLIER PLANNING GUIDANCE IS CONTRADICTED, recorded once: Timber Living's page states garden rooms 'under 25\u201340 sqm' may not need permission \u2014 vague, not the threshold, and a homeowner relying on the 40 figure could order a building that needs permission. THE CORRECT FIGURE IS 30 m2 COMBINED across all garden structures. THIRD, no internal area and no U-value. FOURTH, groundworks inclusion is unresolved. HOMEOWNER IMPLICATION: ask what the wall build-up actually is, in writing, before treating this as an office.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recg6v7Dp122WxlEz": {
-      "considerations": {
-        "text": "CATEGORY FIRST: this is a garage held under Garden Rooms, and it should not appear in a garden-office comparison. SECOND, IT IS THE FURTHEST OVER THE LIMIT OF ANY LASITA RECORD \u2014 40.56 m2 external against a 30 m2 allowance, and a 321.48 cm ridge against a 3 m cap. THIRD, A VARIANT AMBIGUITY IS RECORDED: two further Hawaii listings exist at the same 39.42 m2, so the Atlas record may correspond to any of three near-identical pages and a quotation should name the exact one. FOURTH, DIY kit only with the base excluded, and Republic of Ireland unconfirmed. HOMEOWNER IMPLICATION: a planning application, a groundworks contract and a builder \u2014 none of which the supplier provides.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2594,12 +2582,6 @@
     "recsgRXeV6TNzxCYa": {
       "considerations": {
         "text": "THE COMBINED FOOTPRINT IS THE FIGURE THAT MATTERS AND IT IS NOT PUBLISHED. A buyer who thinks of the tub as equipment and only counts the sauna will understate what the 30 m2 allowance measures, because the unit occupies one continuous footprint. The certified AM-006 layer makes that explicit and records that the test could not be run. SECOND, NO HEIGHT IS PUBLISHED, so the 3 m limit for a non-tiled roof cannot be checked. THIRD, SERVICES ARE HEAVIER THAN FOR EITHER ELEMENT ALONE \u2014 electrical supply, water fill and drainage \u2014 and none is specified. FOURTH, no warranty or price. HOMEOWNER IMPLICATION: ask for the overall external footprint of the complete unit and its maximum height, in writing.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rechyMNmPvPrIhZKx": {
-      "considerations": {
-        "text": "THE ONLY PLANNING RISK IS WHAT YOU BUILD AROUND IT. The certified AM-006 layer records that a tub is not a habitable structure, but if it is HOUSED or DECKED it may form part of a garden structure counting toward the combined 30 m2 allowance \u2014 a site question the product cannot answer. SECOND, NO SPECIFICATION IS HELD: no dimensions, capacity, chiller or filtration detail, warranty or price, so nothing can be said about running cost or maintenance. THIRD, the vocabulary limitation recorded in the certified layer stands: the classification set assumes an enclosed structure and does not fit a vessel. HOMEOWNER IMPLICATION: keep it free-standing and the planning question stays closed.",
         "evidenceScope": "Product-Specific"
       }
     },
