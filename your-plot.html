@@ -4661,6 +4661,15 @@
   .ask-own-done-sub { margin:6px 0 0; font-size:13px; line-height:1.5;
     color:var(--soft); }
   .ask-own-done-sub a { color:var(--accent); }
+  /* The way back. Same quiet register as OTHER, so the confirmation stays the
+     louder of the two things in the block. */
+  .ask-own-again { display:inline-block; margin-top:14px;
+    font-family:'Work Sans',sans-serif; font-size:10px; letter-spacing:.17em;
+    text-transform:uppercase; color:var(--accent); background:none; border:none;
+    border-bottom:1px solid var(--pn-edge, rgba(139,137,113,.42));
+    padding:0 0 3px; cursor:pointer; }
+  .ask-own-again:hover { color:var(--brand-green); border-bottom-color:var(--brand-green); }
+  .ask-own-again:focus-visible { outline:2px solid var(--brand-sage); outline-offset:3px; }
   .ask-pick-main{ display:block; font-size:16.5px; line-height:1.45; color:var(--ink); }
   .ask-pick-sub{ display:block; font-size:13px; line-height:1.45; color:var(--soft); margin-top:3px; }
 
@@ -5165,6 +5174,61 @@
     display:flex; flex-direction:column; justify-content:center;
   }
   .results-gallery-heading{ margin:0 0 14px; }
+
+  /* ---- OTHER OPTIONS WORTH CONSIDERING --------------------------------
+     The dormant gallery was tuned to a 620px card. In the 910px results
+     panel that leaves 270px — 43% — of the second card showing, which is the
+     bisected read FP-3 has just corrected on the lens rail. The same
+     principle applies here: derive the card from the rail so the peek is the
+     SAME at every width, and give the scroll an end gutter.
+
+     --rg-card is overridden rather than the card's own width, because
+     .results-gallery-card sets flex, width, min-width AND max-width from that
+     one variable. Two ids beat the .results-gallery width steps below, so
+     this value holds at every desktop size.
+
+     Nothing about the card itself changes: image well, typography, colour,
+     border, radius, shadow, the 560px vertical stack and the governed image
+     fallback are all the existing architecture. */
+  #screen-match-results #altResults{
+    --rg-card: clamp(300px, calc((100% - 96px) / 2), 460px);
+    padding-right:24px; scroll-padding-right:24px; }
+  /* Below this the panel is too narrow for two cards at a readable width, so
+     one strong card and a clear peek, matching the lens rail's own rule. */
+  @media (max-width:700px){
+    #screen-match-results #altResults{ --rg-card: min(420px, 84%); }
+  }
+
+  /* ---- A · NO PHOTOGRAPH, NO FRAME ------------------------------------
+     There is no product photography in the current artefacts: no image key
+     on any of the 487 records, none in the nine detail partitions, none for
+     any supplier. So the media well held nothing but the PlotNua mark on a
+     gradient — 44% of the card's width AND 44% of its area, reserved for a
+     picture that does not exist. The hero reached this conclusion twice
+     before: first replacing the logo with a sentence, then dropping its
+     media element altogether.
+
+     SUPPRESSED, NOT REMOVED, and deliberately keyed on .pn-image-fallback —
+     the class attachImageFallback() applies ONLY when there is no imageUrl or
+     the load fails. A genuine product.imageUrl means the class is never
+     added, this rule never matches, and the image-led card returns with no
+     further code change. The <img>, the fallback helper, the fallback source
+     and every image-rights field are untouched.
+
+     :has() is already relied on by the hero's own no-image rules, so this
+     introduces no new browser assumption. */
+  #screen-match-results #altResults .results-gallery-media:has(img.pn-image-fallback){
+    display:none; }
+
+  /* ---- B · THE REASON IS A SENTENCE, NOT AN EYEBROW --------------------
+     .results-gallery-role carries text-transform:uppercase, written when this
+     slot held two words ("Another Real Option"). It now carries the
+     selector's governed reason, and uppercase was flattening a maker's own
+     name to "A DIFFERENT MAKER — OUTDOOR LIVING (MODPOD)". The reason strings
+     are not touched; only the transform that was mangling them, and only
+     here. */
+  #screen-match-results #altResults .results-gallery-role{
+    text-transform:none; letter-spacing:normal; }
 
   /* Width steps only — the rail and card proportions never change shape.
      Below ~980px the panel narrows, so the card steps down with it while
@@ -6340,7 +6404,35 @@
      technique. The arrow stays, and is the better affordance: a control you
      can press beats a gradient you have to interpret. */
   #screen-match-results .alt-rail-fade{ display:none; }
-  #screen-match-results .alt-rail > *{ flex:0 0 min(344px, 84%); }
+
+  /* ---- FP-3 — THE WILDCARD WAS BISECTED, NOT CLIPPED -------------------
+     The panel is capped at 910px on every desktop width, so a 344px card and
+     a 24px gap left exactly 174px — half a card — showing. Half a card reads
+     as a rendering fault; a sliver reads as an invitation to scroll.
+
+     The card is derived from the rail rather than fixed, so the sliver is the
+     SAME on every screen: with 24px of right padding, a basis of
+     (content - 96)/2 leaves 72px of the third card in view at any width.
+     Measured in the browser at 1280, 1024, 900, 834 and 768: 74px each time,
+     with both leading cards whole.
+
+     Widening the card is what SHRINKS the peek — a narrower basis shows more
+     of the third card, not less (344 -> 174px; 375 -> 112; 400 -> 62). The
+     clamp bounds are belt-and-braces for a future panel width; at 910px
+     neither is reached.
+
+     Nothing about the cards themselves changes: type, colour, border, radius,
+     shadow, gap, content and order are all untouched. The right padding is
+     the end-of-scroll breathing room the rail never had — 2px, now 26px. */
+  #screen-match-results .alt-rail{
+    padding-right:24px; scroll-padding-right:24px; }
+  #screen-match-results .alt-rail > *{
+    flex:0 0 clamp(272px, calc((100% - 96px) / 2), 400px); }
+  /* Below this the panel is too narrow for two cards at a readable width, so
+     the existing one-card-and-a-peek rule stands, unchanged. */
+  @media (max-width:700px){
+    #screen-match-results .alt-rail > *{ flex:0 0 min(344px, 84%); }
+  }
   #screen-match-results #altRailNote{ margin:0 0 var(--pn-space-md); color:var(--pn-body); }
   @media (max-width:640px){
     #screen-match-results .alt-lens{ padding:24px 22px 20px; min-height:0; }
@@ -7939,8 +8031,8 @@
            nothing persisted, no supplier was contacted and PlotNua holds no
            email address. What is left is what this section actually is —
            the questions worth resolving before the homeowner decides. -->
-      <p class="ask-intro">Atlas has established what it can. These are worth
-        confirming before you decide.</p>
+      <p class="ask-intro">There are a few things worth checking before you
+        decide.</p>
 
       <ul class="evid-asks" id="evidAsks"></ul>
 
@@ -8003,6 +8095,10 @@
           <p class="ask-own-done-lead">Thanks — PlotNua has received your question.</p>
           <p class="ask-own-done-sub">Questions like this help us improve what
             Atlas investigates.</p>
+          <!-- The way back. It NEVER opens by itself: the homeowner has to
+               choose it, so the confirmation is allowed to be the end of the
+               interaction for anyone who is finished. -->
+          <button type="button" class="ask-own-again" id="askOwnAgain">Ask another question →</button>
         </div>
       </div>
 
@@ -8040,6 +8136,16 @@
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" width="15" height="15"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
+
+    <!-- OTHER OPTIONS WORTH CONSIDERING — the separate, homeowner-facing
+         Alternative Results section. Its own host: #matchAlternatives belongs
+         to the lens rail, which clears and rebuilds it on every render, and
+         #matchFoundCards belongs to the "Already found something elsewhere?"
+         form below. Heading, note and rail are hidden together, so there is
+         never an empty shell and never a gap where a section is not. -->
+    <div class="results-gallery-heading" id="altResultsHeading" hidden>Other options worth considering</div>
+    <p class="alt-rail-note" id="altResultsNote" hidden>Three alternatives Atlas found in the same search.</p>
+    <div class="results-gallery alt-results" id="altResults" hidden></div>
 
     <!-- RESULTS V2 SPRINT 1 — MOVED, NOT REDESIGNED.
          This panel and its result cards used to sit between the Plot
@@ -14981,6 +15087,111 @@
     return null;
   }
 
+  /* ================================================================
+     LOCAL OPTION — THE HOMEOWNER'S COUNTY.
+
+     Read from the SAME string simplifyLocalityDisplay() already parses, by the
+     SAME segment rule it already uses to spot a county — there, in order to
+     strip it, so the Reveal card does not print it back. Nothing new is
+     fetched and no second geocode is made.
+
+     Verified against production: six real Eircodes through the live v4
+     endpoint return "..., Co. <County>, <Eircode>, Ireland", and an invalid
+     code returns no result at all, which lands here as null.
+
+     A CLOSED LIST of the 26 Republic counties. A town is never evidence of a
+     county, a coordinate is never converted to one, and Northern Irish
+     counties are deliberately absent. Anything unrecognised returns null and
+     the lens stays unresolved. */
+  const PN_ROI_COUNTIES = ['Carlow','Cavan','Clare','Cork','Donegal','Dublin',
+    'Galway','Kerry','Kildare','Kilkenny','Laois','Leitrim','Limerick',
+    'Longford','Louth','Mayo','Meath','Monaghan','Offaly','Roscommon','Sligo',
+    'Tipperary','Waterford','Westmeath','Wexford','Wicklow'];
+
+  function pnHomeownerCounty(){
+    let f = null;
+    try { f = geocodedResult && geocodedResult.formattedAddress; } catch (e) { return null; }
+    if (typeof f !== 'string' || !f) return null;
+    const segs = f.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+    for (let i = 0; i < segs.length; i++){
+      if (!/^co\.?\s/i.test(segs[i])) continue;
+      /* "(review mode)" is stripped so the local review fixture behaves as a
+         real address would. Nothing else is removed. */
+      const bare = segs[i].replace(/^co\.?\s+/i, '').replace(/\s*\(.*\)\s*$/, '').trim();
+      for (let j = 0; j < PN_ROI_COUNTIES.length; j++){
+        if (PN_ROI_COUNTIES[j].toLowerCase() === bare.toLowerCase()) return PN_ROI_COUNTIES[j];
+      }
+    }
+    return null;
+  }
+
+  /* ================================================================
+     LOCAL OPTION — DOES THIS SUPPLIER SERVE THAT COUNTY?
+
+     installationModel is the ONLY authority. Headquarters, Irish presence,
+     jurisdiction, manufacturing location and delivery coverage are each a
+     different fact, and 125 products say something about delivery while saying
+     nothing about installation — letting delivery stand in would tell 125
+     homeowners a fitting team is coming when no record says so.
+
+     Returns 'county' | 'nationwide' | null. null is UNKNOWN, never FALSE. */
+
+  /* Genuine uncertainty. These disqualify. */
+  const PN_LOCAL_HEDGE = /\b(may|might|typically|generally|usually|likely|depend|enquire|confirm|check|subject to|on request|case[- ]by[- ]case|varies|unclear|unknown|not stated|not itemised|not published)\b/i;
+  /* NATIONAL COVERAGE — AND THE WORD "NATIONWIDE" IS NOT EVIDENCE OF IT.
+
+     THE DEFECT THIS REPLACES. The rule was /\b(nationwide|...)/i, which asked
+     whether a supplier said "nationwide" and never asked NATIONWIDE WHERE.
+     Oeco Garden Rooms publishes "Nationwide United Kingdom on-site
+     installation" and carries noPublishedIrishRoute: true — its own record
+     says the Republic is not established — and it satisfied the rule for all
+     26 counties. It was never selected only because it ranks below a
+     qualifying Irish product every time. Ranking is not a guard.
+
+     A national claim now needs an EXPLICIT Irish scope, and NORTHERN IRELAND
+     IS NEUTRALISED BEFORE THAT SCOPE IS READ: "Ireland and Northern Ireland"
+     keeps its Ireland, "Northern Ireland" on its own keeps nothing.
+
+     Note the boundary: `ireland\b` closes, the multi-word literals do not.
+     Wrapping the whole alternation in \b...\b silently refused Loghouse's
+     "All 32 counties" — the boundary fell between "count" and "ies". Caught
+     by driving every real statement through the candidate rule before this
+     file was opened. */
+  const PN_LOCAL_NI = /\bnorthern\s+ireland\b/ig;
+  const PN_LOCAL_IE = /\b(?:republic of ireland|all of ireland|across ireland|throughout ireland|island of ireland|all[- ]island|anywhere in ireland|whole of ireland|all 32 count|32 count|ireland\b)/i;
+  /* Ireland NAMED IN ORDER TO BE EXCLUDED. "United Kingdom; Ireland not
+     named" and "coverage area not stated for Ireland" both contain the word
+     and both mean the opposite of coverage. */
+  const PN_LOCAL_IE_NEG = /\b(?:not|never|no)\s+(?:\w+\s+){0,3}ireland\b|\bireland\b(?:\s+\w+){0,2}\s+(?:not|never)\b/i;
+  /* ...and the original denial guard is kept. "REGIONAL, not nationwide" is
+     not a nationwide claim, and reading it as one is the exact error that made
+     the first forensic run report zero usable county evidence. */
+  const PN_LOCAL_NAT_NEG = /\b(not|never|no|rather than|instead of)\s+(?:\w+\s+){0,2}(nationwide|all of ireland|across ireland|countrywide)/i;
+
+  function pnSupplierServesCounty(product, county){
+    if (!product || !county) return null;
+    let loc = null;
+    try { loc = pnSupplierLocality(product); } catch (e) { return null; }
+    const t = (loc && typeof loc.installationModel === 'string') ? loc.installationModel : '';
+    if (!t.trim()) return null;
+    if (PN_LOCAL_HEDGE.test(t)) return null;
+    /* A — the homeowner's own county, named in the installation statement.
+       A bounded list ("... ONLY — four counties, explicitly REGIONAL") is the
+       strongest evidence there is, so ONLY and REGIONAL are not treated as
+       doubt. */
+    const named = new RegExp('\\b(?:Co\\.?\\s+)?' + county + '\\b', 'i');
+    if (named.test(t)) return 'county';
+    /* B — NATIONAL COVERAGE, with an explicit Irish scope and no denial.
+       This is real, usable service evidence and it is returned as such — the
+       Local Option lens simply may not build a card on it (see raLocalPick).
+       Recognised here, refused there: the distinction the founder drew. */
+    const scoped = t.replace(PN_LOCAL_NI, ' ');
+    if (PN_LOCAL_IE.test(scoped)
+        && !PN_LOCAL_IE_NEG.test(scoped)
+        && !PN_LOCAL_NAT_NEG.test(scoped)) return 'nationwide';
+    return null;
+  }
+
   /* ATLAS 487 BATCH 1 · JOBS B and C — the two governed Organisation fields,
      resolved by the SAME record-id join the locality already uses.
 
@@ -18030,115 +18241,37 @@
   ];
 
   /* Things nobody could know in advance. These are normal due diligence, they
-     are the homeowner's to resolve, and they are what the countdown counts. */
-  /* ISSUE 008 LEVEL A+ — EACH QUESTION NOW HAS TWO FORMS.
+     are the homeowner's to resolve, and they are what the countdown counts.
 
-     `label` / `detail` is the full question, asked when Atlas has established
-     nothing about the product half. `narrowLabel` / `narrowDetail` is what
-     remains once Atlas HAS established it: the property half, which no amount
-     of Atlas completeness will ever close, said in the homeowner's terms.
+     FINAL POLISH — plain homeowner guidance, one universal set. The Level A+
+     two-form narrowing is retired here: every explanation below asks only for
+     a PROPERTY fact, and Atlas holds no property facts on any record, so there
+     is nothing for a per-product binding to suppress. ASK_BASE_SETTLED and
+     askProductHalfEstablished are removed with it rather than left as dead
+     code. `key` is unchanged because RESOLVE_REGISTRY points at three of these
+     by name.
 
-     `establishes` names the ONE governed field that settles the product half.
-     It is fixed here, at authoring time. Nothing is matched at runtime.
-
-     `schedule` carries no `establishes` on purpose: nothing in the governed
-     data settles it. estimatedLeadTime is populated on 0 of 487 records and no
-     installation vocabulary key states a timescale, so the question stands on
-     every product. That is not an oversight; it is the measurement. */
+     THESE SUBMIT NOTHING. No control, no checkbox, no field, no request. The
+     only thing on this screen that submits is the homeowner's own question
+     under OTHER. */
   const EVID_ASK_SUPPLIER = [
     { key:'access',    material:true,
-      label:'Can it get to the back garden?',
-      detail:'Panel sizes, side-passage width, and whether a crane is needed.',
-      narrowLabel:'Will it get through to your garden?',
-      narrowDetail:'The model sizes are established. Your side passage, gates '
-        + 'and overhead clearance are not.',
-      establishes:{ field:'externalDimensions', label:'Dimensions' } },
+      label:'Will it get through to your garden?',
+      detail:'Check the width of your side passage, gates and any overhead '
+        + 'restrictions.' },
     { key:'ground',    material:true,
-      label:'What base does it need, and will your ground take it?',
-      detail:'Ask what foundation is specified and who pours it.',
-      narrowLabel:'Will your ground take it?',
-      narrowDetail:'What the price covers is established. Whether your soil, '
-        + 'levels and drainage suit it is not.',
-      establishes:{ field:'installationModel', label:'Installation',
-                    vocabulary:'ASK_BASE_SETTLED' } },
+      label:'Will your ground take it?',
+      detail:'Check what base it needs and whether your garden needs any '
+        + 'preparation first.' },
     { key:'electrics', material:false,
-      label:'How does it get power?',
-      detail:'Whether a connection back to the house is included.',
-      narrowLabel:'How does it connect to your house?',
-      narrowDetail:'What the building includes is established. The run back to '
-        + 'the house, and what your board can carry, is not.',
-      establishes:{ field:'electricalIncluded', label:'Electrical' } },
+      label:'How does it connect to your house?',
+      detail:'Check what electrical connection is needed between the garden '
+        + 'room and your home.' },
     { key:'schedule',  material:false,
       label:'What happens, and when?',
-      detail:'Survey, deposit, build slot, install day.',
-      establishes:null },
+      detail:'Ask about the survey, deposit, build time and installation '
+        + 'date.' },
   ];
-
-  /* THE BASE POSITION, READ FROM A CLOSED VOCABULARY AND NOTHING ELSE.
-
-     installationModel's finding head is a governed taxonomy token, not free
-     prose: 23 distinct values across the live 487. Thirteen of them state where
-     the base sits -- eight put it inside the price or scope, five put it
-     outside -- and BOTH settle the homeowner's question, because "the base is
-     excluded" is as complete an answer as "the base is included".
-
-     The other ten say nothing about it. "TURNKEY INSTALLATION INCLUDED" on its
-     own, 120 records, is the important one: turnkey installation is not a
-     statement about foundations, and treating it as one would be the overclaim
-     this whole issue exists to remove.
-
-     A value absent from this table -- today's ten, or one written next month --
-     leaves the question standing. That is the safe direction. */
-  const ASK_BASE_SETTLED = {
-    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS INSIDE THE PRICE': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND VAT INSIDE THE PRICE': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SERVICES INSIDE THE SCOPE': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATION, DELIVERY AND CRANE INSIDE THE PRICE': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS INSIDE THE SCOPE': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS TO ELECTRICS AT A FIXED PRICE': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION INSIDE THE SCOPE': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION AND CONNECTIONS COORDINATED': 'included',
-    'TURNKEY INSTALLATION INCLUDED \u2014 UNIT ONLY, FOUNDATION EXCLUDED': 'excluded',
-    'TURNKEY INSTALLATION INCLUDED \u2014 STRUCTURE ONLY, BASE AND INTERIOR EXCLUDED': 'excluded',
-    'TURNKEY INSTALLATION INCLUDED \u2014 GROUND PREPARATION EXCLUDED': 'excluded',
-    'TURNKEY INSTALLATION INCLUDED \u2014 BUILDING ONLY, SITE PREPARATION EXCLUDED': 'excluded',
-    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SITE WORKS PRICED SEPARATELY': 'excluded',
-  };
-
-  /* HAS ATLAS SETTLED THE PRODUCT HALF OF THIS QUESTION?
-
-     Three gates, all of them existing shipped readers, and every one of them
-     must pass:
-
-       atlasFeatureRead   the governed evidence exists at all
-       pnEvidenceState    it is 'established' -- not deferred, not negative,
-                          not a bare classification with nothing behind it
-       pnAssessRead       the shipped reader can actually render it, so the
-                          homeowner has in fact been told
-
-     That last gate is the one that matters most. A fact Atlas holds but does
-     not show is not a fact the homeowner has been given, and suppressing a
-     question on the strength of it would hide the question AND the answer.
-
-     Where a `vocabulary` is named the finding must additionally appear in that
-     closed table. Anything unexpected returns false and the full question
-     stands. Nothing here reads free prose, and nothing here generates text. */
-  function askProductHalfEstablished(product, entry){
-    const spec = entry && entry.establishes;
-    if (!product || !spec || !spec.field) return false;
-    let ev = null;
-    try { ev = atlasFeatureRead(product, spec.field); } catch (e) { return false; }
-    if (!ev || !ev.finding) return false;
-    let state = null;
-    try { state = pnEvidenceState(spec.field, ev); } catch (e) { return false; }
-    if (state !== 'established') return false;
-    if (spec.vocabulary === 'ASK_BASE_SETTLED' &&
-        !Object.prototype.hasOwnProperty.call(ASK_BASE_SETTLED, String(ev.finding).trim()))
-      return false;
-    let read = null;
-    try { read = pnAssessRead(product, spec.field, spec.label); } catch (e) { return false; }
-    return !!(read && read.answer);
-  }
 
 
   /* ==========================================================================
@@ -21131,39 +21264,26 @@
      and that is all this keeps. */
   /* RC-1c — the Ask Atlas checklist. Moved out of the retired evidence
      function unchanged: same source list, same markup, same host node. */
-  function renderAskAtlasPicks(product){
-    /* ISSUE 008 — these were checkboxes. Nothing read them, nothing was sent,
-       and a tick that vanishes on the next navigation buys nothing to set
-       against the impression that pressing it does something. They are now
-       what they always were in substance: the questions Atlas thinks are worth
-       resolving, written to be read and taken to the supplier.
+  function renderAskAtlasPicks(){
+    /* The four questions, rendered as a read-and-take-with-you list.
 
-       LEVEL A+ — and now only the ones still worth resolving. Where Atlas has
-       established the product half, the question narrows to the property half
-       it can never answer. No answer is rendered here and no evidence is
-       repeated; the section states the remaining question and nothing else. */
+       There is no control here of any kind: no checkbox, no button, no field,
+       no request. Nothing about these four is ever transmitted. */
     const al = document.getElementById('evidAsks');
     if (!al) return 0;
     al.innerHTML = '';
     al.className = 'ask-picks';
     let shown = 0;
     EVID_ASK_SUPPLIER.forEach(function(q){
-      const narrowed = askProductHalfEstablished(product, q);
-      /* A question with no property half and nothing left to ask would be
-         dropped entirely here. None exists today -- every narrowed form is
-         authored -- and the guard says so rather than assuming it. */
-      const main = narrowed ? (q.narrowLabel || '') : (q.label || '');
-      if (!main) return;
-      const sub = narrowed ? (q.narrowDetail || '') : (q.detail || '');
+      if (!q.label) return;
       const li = document.createElement('li');
       li.className = 'ask-pick';
-      if (narrowed) li.setAttribute('data-ask-narrowed', '1');
       const m = document.createElement('span');
-      m.className = 'ask-pick-main'; m.textContent = main;
+      m.className = 'ask-pick-main'; m.textContent = q.label;
       li.appendChild(m);
-      if (sub) {
+      if (q.detail) {
         const s = document.createElement('span');
-        s.className = 'ask-pick-sub'; s.textContent = sub;
+        s.className = 'ask-pick-sub'; s.textContent = q.detail;
         li.appendChild(s);
       }
       al.appendChild(li);
@@ -21202,9 +21322,9 @@
       return false;
     }
     if (askSec) { askSec.hidden = false; askSec.removeAttribute('aria-hidden'); }
-    /* LEVEL A+ — the questions are now per-product, so the product travels
-       with them. `product` is already established non-null above. */
-    renderAskAtlasPicks(product);
+    /* The four questions are universal guidance and take no product. The
+       Ask PlotNua context still does. */
+    renderAskAtlasPicks();
     askOwnSetContext(product);
 
     /* The three sections this function has always driven, unchanged. They read
@@ -21842,9 +21962,11 @@
        is a canonical supplier address with latitude and longitude, or a
        structured list of counties served — then this lens can compare the
        homeowner's already-geocoded property against governed supplier data. */
-    { id:'local',      mark:'\uD83D\uDCCD', label:'Most Local',
-      say:'The closest verified option to your property.',
-      suppressed:true },
+    /* LOCAL OPTION, not "Most Local". A superlative is a claim, and Atlas
+       cannot rank suppliers by distance. This line says what the lens is
+       looking for; it does not say it has found it. */
+    { id:'local',      mark:'\uD83D\uDCCD', label:'Local Option',
+      say:'A strong option that specifically serves your county.' },
     { id:'european',   mark:'\uD83C\uDDEA\uD83C\uDDFA', label:'Best European',
       say:'The strongest option built outside Ireland.' },
     { id:'wildcard',   mark:'\u2B50', label:'Wildcard',
@@ -22020,7 +22142,33 @@
     return btn;
   }
 
-  function raProductCard(lens, product){
+  /* LOCAL OPTION — COUNTY-SPECIFIC EVIDENCE, AND NOTHING WEAKER.
+
+     An installer covering the whole Republic is good evidence that the
+     supplier serves this homeowner. It is not evidence that anybody is LOCAL
+     to them: the same 42 products answer for Dublin, Cork, Kerry and Donegal
+     alike, so a card built on it would say the identical sentence about the
+     identical product to every homeowner in Ireland. A lens called Local must
+     answer a local question, so only a supplier that NAMES this county in its
+     own installation statement can produce one.
+
+     Everything else is unchanged. It READS the order the ranking already
+     produced, first qualifying product wins, pnRankByScore is not called, and
+     a sibling of the recommendation's own supplier is never skipped — that
+     would be manufactured variety, not evidence. */
+  function raLocalPick(rows, county, excludeId){
+    const list = rows || [];
+    for (let i = 0; i < list.length; i++){
+      const prod = list[i] && list[i].product;
+      if (!prod || prod.id === excludeId) continue;
+      if (pnSupplierServesCounty(prod, county) === 'county') {
+        return { product: prod, how: 'county' };
+      }
+    }
+    return null;
+  }
+
+  function raProductCard(lens, product, note){
     const b = raShell(lens);
     const name = document.createElement('div');
     name.className = 'alt-name'; name.textContent = product.name || '';
@@ -22066,6 +22214,15 @@
       routeNote.textContent = altRouteNote;
       b.foot.appendChild(routeNote);
     }
+    /* LOCAL OPTION — the only caller that passes a third argument. Every
+       existing call site passes two, so `note` is undefined for Best European,
+       Wildcard and Plot Twist and their cards are byte-identical. */
+    if (note) {
+      const ev = document.createElement('div');
+      ev.className = 'alt-meta alt-lens-evidence';
+      ev.textContent = note;
+      b.foot.appendChild(ev);
+    }
     const cmp = raCompareControl(lens, product);
     if (cmp) b.foot.appendChild(cmp);
     return b.card;
@@ -22073,6 +22230,12 @@
 
   /* THE PASS. Runs after every selector has had its say. Returns the number
      of cards rendered, which is five whenever there is a recommendation. */
+  /* One monotonic ordinal per lens-rail render. The asynchronous repaint
+     below stamps the rail with the ordinal it was scheduled for and refuses to
+     land if the rail has been drawn again since. A product id alone would not
+     do: two consecutive results can share a recommendation. */
+  let pnRailRun = 0;
+
   function renderLensRail(primaryResult, alternativeResults, twistIdea){
     const rail = document.getElementById('matchAlternatives');
     if (!rail) return 0;
@@ -22098,10 +22261,72 @@
 
     RESULTS_LENSES.forEach(function(lens){
 
-      /* A suppressed lens renders NOTHING — no card, no shell, no state note,
-         no promise about when it will open. The homeowner simply sees the
-         lenses Atlas can answer today. */
+      /* A suppressed lens renders nothing. None is suppressed today; the flag
+         is kept because it is one word to set and Most Local has already been
+         switched off once. */
       if (lens.suppressed) return;
+
+      if (lens.id === 'local') {
+        /* LOCAL OPTION. A SERVICE question, never a distance one.
+
+           No coordinates are read, no distance is computed, and no supplier is
+           called nearest or closest. The only question asked is whether the
+           supplier's own governed installation statement covers the county the
+           homeowner's Eircode resolved to.
+
+           The ranking is READ. raLocalPick walks the order the rail already
+           holds, exactly as raEuropeanPick does, so the recommendation,
+           eligibility, qualification and the score vector are untouched and
+           pnRankByScore is not called again. */
+        const county = pnHomeownerCounty();
+
+        if (county) {
+          const local = raLocalPick(alternativeResults, county, primary && primary.id);
+          if (local) {
+            /* One sentence, because there is now only one rule that can get
+               here. "Installs nationwide." is gone: it was the evidence basis
+               for a card that claimed locality while carrying none. This
+               sentence claims no proximity — it says the supplier named this
+               county, which is exactly what the record says. */
+            out.push(raProductCard(lens, local.product, 'Serves your county.'));
+            return;
+          }
+          /* The strongest qualifying option IS the recommendation. Showing the
+             same product twice in one rail is not an answer. */
+          /* GATED ON COUNTY EVIDENCE TOO. This is a Local Option card, so the
+             same rule governs it: national coverage alone must not produce
+             one. Without this gate a nationwide-only recommendation would
+             print "already serves your area" beneath a heading that says
+             "specifically serves your county". */
+          if (primary && pnSupplierServesCounty(primary, county) === 'county') {
+            out.push(raStateCard(lens, 'not-applicable',
+              'Your recommendation already serves your area.'));
+            return;
+          }
+        }
+
+        /* NO COUNTY, OR NO COUNTY-NAMED EVIDENCE. ONE SENTENCE, NO GLOSS.
+
+           raStateCard() always appends a second paragraph beneath the heading,
+           and the approved copy is a single line with no explanation under it.
+           So this branch calls raShell() and removes the footing — precisely
+           what raStateCard does, minus the paragraph. raShell, raStateCard and
+           raProductCard are all untouched, and the .is-not-yet dashed
+           treatment still applies because the class is the same.
+
+           It says PlotNua is still building coverage. It does not mention the
+           homeowner's location — they gave an Eircode at the entry screen — and
+           it names no database, no missing data, no verification, no distance
+           and no date. Absence of evidence is never rendered as "nobody serves
+           your county". */
+        const unres = raShell(
+          { id: lens.id, mark: lens.mark, label: lens.label,
+            say: 'We\u2019re still building local coverage for your county.' },
+          'is-not-yet');
+        unres.foot.remove();
+        out.push(unres.card);
+        return;
+      }
 
       if (lens.id === 'european') {
         if (euro) { out.push(raProductCard(lens, euro)); return; }
@@ -22414,7 +22639,11 @@
      separate, explicit act. */
   /* CP-5 — clearResultsCompare() retired with #resultsCompare. */
 
-  function buildResultsGalleryCard({ role, product, ctx, outsideStatedBand, belowBudget, appearanceMismatch }, primaryResult){
+  /* altReason / altTradeOff — the governed sentences selectReasonedAlternatives()
+     already computes in __alt. They replace two lines this card used to build
+     for itself; see the two comments below for what each of those claimed and
+     why neither could be shipped. */
+  function buildResultsGalleryCard({ role, product, ctx, outsideStatedBand, belowBudget, appearanceMismatch, altReason, altTradeOff }, primaryResult){
     const card = document.createElement('div');
     card.className = 'results-gallery-card';
 
@@ -22458,15 +22687,19 @@
       roleLabel.textContent = belowBudget ? 'Below your budget band' : 'Above your budget band';
       roleLabel.classList.add('is-outside-band');
       body.appendChild(roleLabel);
-    } else {
-    // SPRINT 2 — "Strongest Overall Alternative" described a product that
-    // origin promotion had pushed out of the primary slot. Nothing is pushed
-    // out any more: Best Overall keeps the primary, and the origin perspective
-    // is rendered separately. The label has nothing left to describe.
-    roleLabel.textContent = ctx.isRunnerUp
-      ? 'Another Real Option'
-      : alternativeLabel(primaryResult.role, role);
-    body.appendChild(roleLabel);
+    } else if (altReason) {
+      /* THE SELECTOR'S OWN GOVERNED REASON — "A different construction —
+         Log Cabin", "A different maker — MyCabin.ie". A stated Atlas fact,
+         never inferred, and computed on every render already.
+
+         WHAT THIS REPLACES, AND WHY. alternativeLabel(primaryRole, altRole)
+         compares ROLE_RANK[role]. spaceRole is undefined on all 487 products,
+         so every row's role is 'balanced', every diff is 0, and every single
+         card read "Alternative Direction" — a label that describes nothing.
+         The two stronger branches above still win: an appearance mismatch or
+         an out-of-band price keeps its own warning in this same slot. */
+      roleLabel.textContent = altReason;
+      body.appendChild(roleLabel);
     }
 
     const name = document.createElement('div');
@@ -22498,24 +22731,42 @@
     const reasons = buildMatchReasons(product, role, ctx);
     productDetailContext.set(product.id, { role, ctx, reasons });
 
-    const explain = document.createElement('p');
-    explain.className = 'results-gallery-explain';
-    // PB-020A2: state the origin trade-off on the displaced card itself, rather
-    // than relying on the homeowner to infer it from the primary's wording.
-    // SPRINT 2 — the promotion this narrated no longer happens. The origin
-    // perspective is rendered once, in its own section, from view state.
-    const promoNote = false
-      ? ''
-      : '';
-    explain.textContent = promoNote || buildAlternativeRationale({ role, product, ctx }, primaryResult);
-    body.appendChild(explain);
+    /* THE SELECTOR'S OWN GOVERNED TRADE-OFF — "€3,676 more". A price
+       difference between two published prices in one currency, and nothing
+       else.
 
-    // RESULTS R2.1 — ATLAS CONFIDENCE line, same discreet reused style as
-    // the primary recommendation's.
-    const confidence = document.createElement('p');
-    confidence.className = 'results-hero-budget-note';
-    confidence.textContent = describeAtlasConfidenceLine(product);
-    body.appendChild(confidence);
+       WHAT THIS REPLACES, AND WHY. buildAlternativeRationale() called
+       describeWhyNotFirst(), whose live branch reads "A closer size fit in one
+       direction, but costs €X more." Issue 005 E3b.3 hard-wired
+       areaComparable = false there, because floor-area comparison could not be
+       established — so that sentence was reached PURELY because the
+       alternative was more expensive. It asserted a size finding Atlas does
+       not hold. No trade-off, no paragraph: silence rather than a claim. */
+    if (altTradeOff) {
+      const explain = document.createElement('p');
+      explain.className = 'results-gallery-explain';
+      explain.textContent = altTradeOff;
+      body.appendChild(explain);
+    }
+
+    /* C — THE GENERIC CONFIDENCE PARAGRAPH IS NOT PRINTED HERE.
+
+       "Based on verified supplier evidence — PlotNua's research continues, so
+       recommendations keep improving." Measured before removing it: ONE live
+       call site, three occurrences on the whole Results page, all three inside
+       #altResults, and the matchCaveat variant unreachable on the live data
+       (0 of 487 products carry that field). It states a disposition, not a
+       finding: no price, availability, qualification, appearance or locality
+       claim travels with it.
+
+       describeAtlasConfidenceLine() STAYS DEFINED, per this file's
+       leave-defined convention — dormant, not deleted, and one line away if
+       another surface ever wants it.
+
+       Nothing governed leaves with it: the qualification tier and caveats, the
+       budget-band and appearance-mismatch labels in the role slot above, the
+       no-published-Irish-route note and the Atlas Assessment's caveat block
+       are all unchanged. */
 
     const { actions, openMyPlotLink } = buildSaveActions(product);
     body.appendChild(actions);
@@ -22523,6 +22774,161 @@
 
     card.appendChild(body);
     return card;
+  }
+
+  /* ================================================================
+     OTHER OPTIONS WORTH CONSIDERING — three actual product alternatives.
+
+     A DIFFERENT FEATURE FROM THE LENS RAIL. The rail asks four questions
+     about the same evidence; this shows three other buildings. It reuses the
+     selector that has been running on every render since Sprint 2 and
+     discarding its answer, and the image-led card architecture that has been
+     defined and uncalled since the first commit in this repository.
+
+     NOTHING IS RE-RANKED AND NOTHING IS RE-SELECTED. The candidate list is
+     the existing alternativeResults; the picker is the existing
+     selectReasonedAlternatives(); the cap is the existing three. */
+
+  /* The ctx buildMatchReasons() reads. Every field comes from the row Results
+     already computed or from the homeowner's own stated band — nothing here
+     is inferred, and isRunnerUp is false because this surface has no
+     same-role sibling concept. */
+  function altResultsCtx(row, budgetLabel){
+    return {
+      isRunnerUp: false,
+      aboveBudget: !!(row && row.aboveBudget),
+      budgetMatched: !!(row && row.budgetMatched),
+      budgetLabel: budgetLabel || 'budget',
+    };
+  }
+
+  /* THE TRADE-OFF SAYS WHAT IT IS COMPARED WITH — on this surface only.
+
+     "€3,676 more" is ambiguous on a card: more than what? This appends the
+     comparison the number is already making, and nothing else.
+
+     IT IDENTIFIES THE PRICE LINE BY REGENERATING IT, NOT BY READING IT.
+     altTradeOff() has eight branches; exactly one compares prices with the
+     primary recommendation, and a different one contains the word "less"
+     ("we know less about getting it to Ireland") while comparing AVAILABILITY
+     EVIDENCE, not money. A pattern match on prose would eventually attach a
+     price claim to that. So the price-branch value is recomputed here from the
+     same two products, with the same guards altTradeOff() uses — both prices
+     usable, same currency, alternative dearer — and the clause is appended ONLY
+     when the stored string is byte-identical to the recomputed one. Anything
+     else is returned exactly as governed.
+
+     THE VALUE IS NOT RECALCULATED. pnMoney0() is called only to answer "is this
+     that string?"; what renders is always the stored governed string, with a
+     clause appended or nothing appended.
+
+     SURFACE-SPECIFIC. altTradeOff() and __alt.tradeOff are untouched, so the
+     review ledger and every other consumer still read the governed string. */
+  function altTradeOffForDisplay(row, primaryResult){
+    const stored = (row && row.__alt && row.__alt.tradeOff) || '';
+    if (!stored || !row || !row.product || !primaryResult || !primaryResult.product) return stored;
+    const a = pnUsablePrice(row.product.price);
+    const p = pnUsablePrice(primaryResult.product.price);
+    const ac = pnPriceCurrency(row.product);
+    const pc = pnPriceCurrency(primaryResult.product);
+    if (a == null || p == null || !ac || !pc || ac !== pc || !(a > p)) return stored;
+    if (stored !== (pnMoney0(a - p, pc) + ' more')) return stored;
+    return stored + ' than your recommendation';
+  }
+
+  /* ONE TERMINOLOGY FOR ONE REFERENT — on this surface only.
+
+     The trade-off line says "€3,676 more than your recommendation". The cheaper
+     alternative's governed REASON says "€1,203 less than the one we’d start
+     with". Same referent, two phrasings, adjacent in the same rail.
+
+     WHY THIS IS NOT A PROSE REPLACEMENT. "the one we’d start with" occurs TWICE
+     in this file: in the price dimension's reason, and in altTradeOff()'s final
+     fallback — "the one we’d start with matches more of what you asked for" —
+     which is a statement about the whole score vector, not a price. A search
+     and replace would rewrite both. So the governed cheaper-price reason is
+     REGENERATED here from the same two products, under the same guards the
+     price dimension's own `wins` test applies (both prices usable, same
+     currency, cheaper by more than 1%), and the terminology is normalised only
+     when the stored string is byte-identical to what was regenerated.
+
+     THE VALUE IS NOT RECALCULATED. Identity proven, the money bytes are carried
+     across untouched: the proven suffix is removed by its own length and the
+     new one appended. pnMoney0() is called only to answer "is this that
+     string?".
+
+     DISPLAY ONLY. ALT_DIMENSIONS is byte-identical and __alt.reason is still
+     written and read verbatim by every other consumer. */
+  const PN_ALT_REASON_OLD = ' less than the one we\u2019d start with';
+  const PN_ALT_REASON_NEW = ' less than your recommendation';
+
+  function altReasonForDisplay(row, primaryResult){
+    const stored = (row && row.__alt && row.__alt.reason) || '';
+    if (!stored || !row || !row.product || !primaryResult || !primaryResult.product) return stored;
+    const a = pnUsablePrice(row.product.price);
+    const p = pnUsablePrice(primaryResult.product.price);
+    const ac = pnPriceCurrency(row.product);
+    const pc = pnPriceCurrency(primaryResult.product);
+    if (a == null || p == null || !ac || !pc || ac !== pc || !(a < p * 0.99)) return stored;
+    if (stored !== (pnMoney0(p - a, pc) + PN_ALT_REASON_OLD)) return stored;
+    return stored.slice(0, stored.length - PN_ALT_REASON_OLD.length) + PN_ALT_REASON_NEW;
+  }
+
+  function renderAltResults(primaryResult, alternativeResults){
+    const host = document.getElementById('altResults');
+    const head = document.getElementById('altResultsHeading');
+    const note = document.getElementById('altResultsNote');
+    if (!host) return 0;
+    host.innerHTML = '';
+
+    const primary = primaryResult && primaryResult.product;
+    let candidates = (alternativeResults || []).slice();
+
+    /* THE LOCAL OPTION EXCLUSION — display only, one product id, nothing else.
+       The same product appearing as a resolved Local Option immediately above
+       and again here reads as a mistake. The supplier is NOT excluded, no
+       supplier is preferred, ranking is untouched, and Local Option selection
+       is untouched: this asks the lens's own functions what it resolved to,
+       with the lens's own arguments, and removes exactly that id.
+
+       Unresolved Local Option, or no county, means nothing to exclude. */
+    let localId = null;
+    try {
+      const county = pnHomeownerCounty();
+      if (county && primary) {
+        const lp = raLocalPick(candidates, county, primary.id);
+        if (lp && lp.product) localId = lp.product.id;
+      }
+    } catch (e) { localId = null; }
+    if (localId) {
+      candidates = candidates.filter(function(r){
+        return r && r.product && r.product.id !== localId; });
+    }
+
+    const picks = (primary && candidates.length)
+      ? selectReasonedAlternatives(candidates, primaryResult, 3) : [];
+
+    const budgetKey = decisionProfile && decisionProfile.searchConstraints
+      ? decisionProfile.searchConstraints.budget : null;
+    const budgetLabel = (budgetKey && AS_BUDGET_LABEL[budgetKey]) || '';
+
+    picks.forEach(function(row){
+      const alt = row.__alt || {};
+      host.appendChild(buildResultsGalleryCard(
+        Object.assign({}, row, {
+          ctx: altResultsCtx(row, budgetLabel),
+          altReason: altReasonForDisplay(row, primaryResult),
+          altTradeOff: altTradeOffForDisplay(row, primaryResult),
+        }), primaryResult));
+    });
+
+    /* One section, one visibility. No empty shell, and no gap where a section
+       is not. */
+    const n = host.children.length;
+    host.hidden = n === 0;
+    if (head) head.hidden = n === 0;
+    if (note) note.hidden = n === 0;
+    return n;
   }
 
   // TASK 8 — rewired to split the same {role, product, ctx} results array
@@ -23232,6 +23638,60 @@
     }
     if (els.matchAlternativesHeading) els.matchAlternativesHeading.hidden = lensCount === 0;
     if (els.altRailWrap) els.altRailWrap.hidden = lensCount === 0;
+
+    /* OTHER OPTIONS WORTH CONSIDERING — painted in the same pass as the rail,
+       and repainted in the same pass below, so the Local Option exclusion is
+       always computed against the same supplier-evidence state the rail is
+       showing. */
+    renderAltResults(primaryResult, alternativeResults);
+
+    /* PAINT NOW, REPAINT ONCE — the convention renderTrustProfile() already
+       uses eleven hundred lines above, for the identical reason.
+
+       THE DEFECT THIS CLOSES. The suppliers partition is fetched lazily, and
+       renderLensRail() reads it SYNCHRONOUSLY through pnSupplierServesCounty()
+       -> pnSupplierLocality() -> pnDetailParts['suppliers']. The fetch is
+       started seven lines above, by renderBeforeYouCommit(); a promise cannot
+       resolve before the synchronous pass that created it has finished. So the
+       first paint could only ever see an empty store, every candidate answered
+       null, and the Local Option showed its unresolved card to every homeowner
+       in every county, always.
+
+       pnDetailPartitionReady() is memoised and already in flight, so this
+       awaits the same promise and adds no request. Nothing here changes what
+       the rail decides — only that the existing renderer runs a second time
+       once the evidence has landed. The first paint is deliberately left
+       standing, so a slow or failed fetch degrades to the honest unresolved
+       card and Results is never held back waiting on supplier evidence. */
+    try {
+      const railRun = (++pnRailRun) + ':' +
+        ((primaryResult && primaryResult.product && primaryResult.product.id) || '');
+      if (els.matchAlternatives) els.matchAlternatives.setAttribute('data-rail-run', railRun);
+      pnDetailPartitionReady('suppliers').then(function(){
+        if (!els.matchAlternatives) return;
+        /* A repaint scheduled by an earlier render must never overwrite a
+           later one. */
+        if (els.matchAlternatives.getAttribute('data-rail-run') !== railRun) return;
+        const settledCount = renderLensRail(primaryResult, alternativeResults, twistIdea);
+        /* The exclusion depends on the same supplier evidence the rail does,
+           so the two sections settle together. */
+        renderAltResults(primaryResult, alternativeResults);
+        if (railNote) railNote.hidden = settledCount === 0;
+        if (els.matchAlternativesHeading) els.matchAlternativesHeading.hidden = settledCount === 0;
+        if (els.altRailWrap) els.altRailWrap.hidden = settledCount === 0;
+        /* The review surface must report the SETTLED rail, not the first
+           paint, or it would describe a state the homeowner never sees. */
+        if (typeof LEDGER_REVIEW_MODE !== 'undefined' && LEDGER_REVIEW_MODE) {
+          window.__pnLenses = [].slice.call(els.matchAlternatives.children).map(function(c){
+            return { lens: c.getAttribute('data-lens'),
+                     state: c.classList.contains('is-not-yet') ? 'not-yet'
+                          : c.classList.contains('is-not-applicable') ? 'not-applicable'
+                          : 'resolved' };
+          });
+          window.__pnRailRepaints = (window.__pnRailRepaints || 0) + 1;
+        }
+      });
+    } catch (e) { /* a failed fetch leaves the first paint standing */ }
 
     const hiddenShown = twistIdea
       ? { id: 'hidden-potential', discovery: twistIdea.name, built: twistIdea.built }
@@ -26545,6 +27005,7 @@
     const send   = document.getElementById('askOwnSend');
     const state  = document.getElementById('askOwnState');
     const done   = document.getElementById('askOwnDone');
+    const again  = document.getElementById('askOwnAgain');
     if (!toggle || !form || !field || !send || !state || !done) return;
 
     toggle.addEventListener('click', function(){
@@ -26566,6 +27027,29 @@
       /* The question is deliberately NOT cleared. A failed send must not cost
          the homeowner what they wrote. */
       say('That didn\u2019t send. You can email hello@plotnua.ie.', true);
+    }
+
+    /* ASK ANOTHER QUESTION. A clean form on the same screen: the field is
+       emptied, the previous state message cleared, the confirmation hidden and
+       the in-flight latch released, so the next submit is a first submit.
+
+       The hidden product and supplier inputs are NOT touched, so the next
+       question carries exactly the same context as the last one. Nothing
+       reloads and nothing navigates. */
+    if (again) {
+      again.addEventListener('click', function(){
+        field.value = '';
+        say('');
+        send.disabled = false;
+        send.textContent = 'Ask PlotNua';
+        sending = false;
+        done.hidden = true;
+        toggle.hidden = false;
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.classList.add('is-open');
+        form.hidden = false;
+        field.focus();
+      });
     }
 
     let sending = false;
@@ -26595,7 +27079,12 @@
       }).then(function(r){
         if (!r || !r.ok) throw new Error('HTTP ' + (r ? r.status : 'none'));
         /* The form and its opener are replaced by the confirmation, so there
-           is nothing left to press twice. */
+           is nothing left to press twice. The latch is released here rather
+           than left set, because "Ask another question" reopens a form that
+           must be able to submit again. */
+        sending = false;
+        send.disabled = false;
+        send.textContent = 'Ask PlotNua';
         form.hidden = true;
         toggle.hidden = true;
         done.hidden = false;
@@ -29482,9 +29971,22 @@
     // standing in for a real Eircode submission — geocoding is skipped
     // entirely (no Google Maps key needed for review mode). Not a real
     // customer's address.
+    //
+    // FIXTURE SHAPE MATTERS. This string is the ONLY address review mode
+    // ever produces, and pnHomeownerCounty() reads its `Co. X` segment, so
+    // a fixture without one leaves the Local Option permanently unresolved
+    // on localhost — the lens could never be seen working. It now mirrors
+    // the real Google v4 shape ("..., Co. Dublin, ...") closely enough to
+    // be read, and keeps the non-customer warning in a trailing
+    // parenthetical, which pnHomeownerCounty() already strips and
+    // simplifyLocalityDisplay() already discards with the county segment.
+    // The warning is still printed in full by My Plot, which reads
+    // formattedAddress directly. An em-dash tail OUTSIDE the parentheses
+    // would attach to the county segment and fail to match — measured, not
+    // assumed. Review-mode fixture only; no parser and no logic changed.
     geocodedResult = {
       lat: 53.2905, lon: -6.2413,
-      formattedAddress: 'LOCAL DEV REVIEW — representative Dublin-area test coordinates, not a real customer address',
+      formattedAddress: 'Dundrum, Co. Dublin (LOCAL DEV REVIEW — not a real customer address)',
       locationType: 'ROOFTOP', placeId: null, isRooftop: true,
     };
     if (els.localityLabel) els.localityLabel.textContent = 'Dundrum, Co. Dublin (review mode)';
