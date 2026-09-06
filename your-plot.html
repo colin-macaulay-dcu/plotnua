@@ -15108,6 +15108,91 @@
     'Longford','Louth','Mayo','Meath','Monaghan','Offaly','Roscommon','Sligo',
     'Tipperary','Waterford','Westmeath','Wexford','Wicklow'];
 
+  /* ================================================================
+     FROZEN ADJUDICATED SUPPLIER LOCATION — LAUNCH ONLY, MEANT TO BE REPLACED.
+
+     THE LOCAL OPTION ASKS WHERE THE SUPPLIER IS, NOT WHERE IT WILL TRAVEL.
+     The homeowner gave an Eircode; this lens exists to show PlotNua used it.
+     "Serves your county" answered a different question — and the founder's own
+     live example proves why the difference matters: My Garden Room (Barna
+     Buildings) served Dublin and is based in Co. Wicklow, so the new sentence
+     "Located in Dublin" would have been false about the very supplier the old
+     rule surfaced.
+
+     WHY A LITERAL AND NOT A PARSER. Atlas holds no structured supplierCounty
+     field — every key of every artefact was walked and none exists. Location,
+     where it is known, is PROSE inside irishPresence / manufacturingLocation.
+     Parsing that at runtime would put a truth claim on a card behind a regex;
+     the forensic's own parser had two defects before it was right. So the
+     adjudication is done ONCE, frozen here, and re-verified against the
+     artefact by the builder on every build.
+
+     EVERY ENTRY IS PREMISES EVIDENCE — a published address, base, headquarters,
+     factory, showroom, office or site in a named county. Nothing is inferred
+     from service coverage, delivery coverage, trading name, phone or dialling
+     code, proximity ("near Dublin"), Irish availability, manufacturing country
+     or country-level Irish presence.
+
+     THREE REFUSALS WORTH KNOWING:
+       · Granny Flats Dublin is KILDARE. The name says Dublin; the published
+         street address does not. A name is not a location.
+       · Hansa24 Group is UNRESOLVED. Its warehouse is "near Dublin", and near
+         a county is not in it.
+       · Ballyfree is Dublin only. Its Wicklow signal is a dialling code the
+         record itself records as "an open question rather than a second
+         location".
+
+     MULTI-SITE SUPPLIERS carry every evidenced county: Loghouse (Dublin,
+     Westmeath, Wicklow), Shanette Sheds (Dublin, Westmeath), Modular Outlook
+     Ireland (Longford, Westmeath).
+
+     UNKNOWN IS NOT FALSE. 43 of 61 suppliers have no premises evidence and are
+     absent from this map. They are not "not local" — Atlas does not know.
+     Shomera is one of them, so Shomera can no longer resolve as a Local Option.
+
+     TO REPLACE: delete this literal and point pnSupplierCounties() at the
+     governed export. Nothing else reads it. */
+  const PN_SUPPLIER_COUNTY_SOURCE = 'frozen adjudication of '
+    + 'garden-room-detail-suppliers-v1.json (generated 2026-08-28), premises evidence only';
+  const PN_SUPPLIER_COUNTY = {
+    'Adman Steel Sheds':                   ['Wexford'],   // irishPresence: "full published Wexford address and Eircode",
+    'All About Outdoors':                  ['Carlow'],   // irishPresence: "published Carlow address and Eircode",
+    'All In One Cabins':                   ['Roscommon'],   // irishPresence: "full published Roscommon address and Eircode",
+    'Ballyfree Garden Sheds':              ['Dublin'],   // irishPresence: "Irish supplier, Dublin-based" (Wicklow REFUSED — dialling code, "open question"),
+    'Big Man Tiny Homes':                  ['Cork'],   // irishPresence: "full published Cork address and Eircode",
+    'Garden Rooms':                        ['Dublin'],   // irishPresence: "a Dublin base, a Dublin show site",
+    'Granny Flats Dublin':                 ['Kildare'],   // irishPresence: "full published Kildare street address" (NAME says Dublin — refused),
+    'Home Modular':                        ['Dublin'],   // irishPresence: "full published Dublin industrial-estate address and Eircode",
+    'Loghouse':                            ['Dublin', 'Westmeath', 'Wicklow'],   // irishPresence: "four Irish sites across Westmeath, Wicklow and Dublin",
+    'MCD Garden Sheds':                    ['Dublin'],   // manufacturingLocation: "Naul, Co. Dublin — same site as headquarters",
+    'Modern Garden Rooms':                 ['Dublin'],   // irishPresence: "full published Dublin address and Eircode",
+    'Modular Outlook Ireland':             ['Longford', 'Westmeath'],   // irishPresence: "three Irish locations across Westmeath and Longford",
+    'My Garden Room (Barna Buildings)':    ['Wicklow'],   // manufacturingLocation: "Barna Buildings, Glenealy, Co. Wicklow — same site as headquarters",
+    'Outdoor Living (ModPod)':             ['Wicklow'],   // irishPresence: "Irish retailer based in Co. Wicklow",
+    'Rayco Modular Homes':                 ['Wexford'],   // irishPresence: "Irish company in Co. Wexford with two published addresses",
+    'Shanette Sheds':                      ['Dublin', 'Westmeath'],   // irishPresence: "two Irish sites across Westmeath and Dublin",
+    'Sprout Pod':                          ['Louth'],   // manufacturingLocation: "Dundalk, Co. Louth — same site as headquarters",
+    'The Pod Factory':                     ['Meath'],   // irishPresence: "purpose-built Meath factory"
+  };
+
+  /* The counties a supplier is EVIDENCED to be based in, or null. Never a
+     guess: an organisation absent from the map returns null, which the callers
+     read as UNKNOWN, never as "not local". */
+  function pnSupplierCounties(product){
+    const org = product && product.organisation;
+    if (!org) return null;
+    const cs = PN_SUPPLIER_COUNTY[org];
+    return (cs && cs.length) ? cs : null;
+  }
+
+  function pnSupplierBasedInCounty(product, county){
+    if (!county) return false;
+    const cs = pnSupplierCounties(product);
+    if (!cs) return false;
+    for (let i = 0; i < cs.length; i++) if (cs[i] === county) return true;
+    return false;
+  }
+
   function pnHomeownerCounty(){
     let f = null;
     try { f = geocodedResult && geocodedResult.formattedAddress; } catch (e) { return null; }
@@ -21966,7 +22051,7 @@
        cannot rank suppliers by distance. This line says what the lens is
        looking for; it does not say it has found it. */
     { id:'local',      mark:'\uD83D\uDCCD', label:'Local Option',
-      say:'A strong option that specifically serves your county.' },
+      say:'A strong option based in your county.' },
     { id:'european',   mark:'\uD83C\uDDEA\uD83C\uDDFA', label:'Best European',
       say:'The strongest option built outside Ireland.' },
     { id:'wildcard',   mark:'\u2B50', label:'Wildcard',
@@ -22168,6 +22253,28 @@
     return null;
   }
 
+  /* THE LOCAL OPTION PICKER — LOCATION.
+
+     Same shape as raLocalPick(), same list, same primary exclusion, same
+     read-only walk of the order the rail already holds. The only difference is
+     the question asked of each candidate: not "does this supplier serve the
+     county" but "is this supplier BASED in it".
+
+     raLocalPick() is deliberately left defined. Service coverage is still a
+     real, governed fact and may still be worth surfacing somewhere — it is
+     simply not what the Local Option means. */
+  function raLocalPickLocated(rows, county, excludeId){
+    const list = rows || [];
+    for (let i = 0; i < list.length; i++){
+      const prod = list[i] && list[i].product;
+      if (!prod || prod.id === excludeId) continue;
+      if (pnSupplierBasedInCounty(prod, county)) {
+        return { product: prod, how: 'located', county: county };
+      }
+    }
+    return null;
+  }
+
   function raProductCard(lens, product, note){
     const b = raShell(lens);
     const name = document.createElement('div');
@@ -22281,14 +22388,20 @@
         const county = pnHomeownerCounty();
 
         if (county) {
-          const local = raLocalPick(alternativeResults, county, primary && primary.id);
+          const local = raLocalPickLocated(alternativeResults, county, primary && primary.id);
           if (local) {
-            /* One sentence, because there is now only one rule that can get
-               here. "Installs nationwide." is gone: it was the evidence basis
-               for a card that claimed locality while carrying none. This
-               sentence claims no proximity — it says the supplier named this
-               county, which is exactly what the record says. */
-            out.push(raProductCard(lens, local.product, 'Serves your county.'));
+            /* "Located in Wicklow." — the county comes from the match itself,
+               never hard-coded, and it is the SAME canonical string on both
+               sides: pnHomeownerCounty() produced it and the frozen map was
+               keyed on it, so the sentence cannot name a county the evidence
+               does not.
+
+               IT CLAIMS NO PROXIMITY. Atlas holds county names — no coordinate,
+               no distance, no travel time exists anywhere in the artefacts — so
+               "nearest", "closest", "most local" and "X km away" are all
+               unsayable and none of them is said. */
+            out.push(raProductCard(lens, local.product,
+              'Located in ' + local.county + '.'));
             return;
           }
           /* The strongest qualifying option IS the recommendation. Showing the
@@ -22298,9 +22411,18 @@
              one. Without this gate a nationwide-only recommendation would
              print "already serves your area" beneath a heading that says
              "specifically serves your county". */
-          if (primary && pnSupplierServesCounty(primary, county) === 'county') {
+          /* RE-GATED ONTO LOCATION, for the same reason as the card above.
+             This branch exists so the rail never shows the recommendation
+             twice. Under the old rule it fired on coverage; under the new one
+             it must fire on the only thing the lens now asserts — that the
+             supplier is based in the county. Its sentence moves with it.
+
+             Without this branch the rail would say "we haven't confirmed a
+             supplier based in your county" directly beneath a recommendation
+             that is based in it, which is false. */
+          if (primary && pnSupplierBasedInCounty(primary, county)) {
             out.push(raStateCard(lens, 'not-applicable',
-              'Your recommendation already serves your area.'));
+              'Your recommendation is based in your county.'));
             return;
           }
         }
@@ -22321,7 +22443,7 @@
            your county". */
         const unres = raShell(
           { id: lens.id, mark: lens.mark, label: lens.label,
-            say: 'We\u2019re still building local coverage for your county.' },
+            say: 'We haven\u2019t yet confirmed a supplier based in your county.' },
           'is-not-yet');
         unres.foot.remove();
         out.push(unres.card);
@@ -22874,6 +22996,93 @@
     return stored.slice(0, stored.length - PN_ALT_REASON_OLD.length) + PN_ALT_REASON_NEW;
   }
 
+  /* A PRICED CANDIDATE IS PREFERRED WITHIN A DIMENSION THE SELECTOR ALREADY
+     CHOSE — and nowhere else.
+
+     selectReasonedAlternatives() takes the FIRST row in rank order that wins a
+     governed dimension. Price is not consulted, so an unpriced row that happens
+     to sit higher takes the slot even when a priced row below it would have won
+     the same dimension. Measured before this was written: 1,028 of 3,510
+     visible cards across 1,170 county-journeys carried no price.
+
+     HOW A REPLACEMENT IS FOUND, WITHOUT INVENTING ONE. The governed selector is
+     re-run on the same candidate set with the unpriced row removed, and its
+     answer is accepted ONLY IF it fills THE SAME DIMENSION and carries a usable
+     price. The reason string is therefore still the selector's own, generated
+     for the row it is attached to. Nothing is written by hand.
+
+     WHAT PRICE IS NOT. Not a dimension, not an eligibility test, not a
+     re-ranking, and never able to reach the primary recommendation — which is
+     fixed before this function is called. An unpriced alternative still takes
+     the slot whenever no priced row wins the same dimension, and measured, that
+     is the common case: 178 journeys still show three unpriced cards because
+     their candidate sets do not hold three priced rows at all. This is a
+     presentation preference. It is not a fix for Atlas price coverage, and it
+     should not be described as one.
+
+     The cap, the dimension set, the governed reason architecture, the ranking
+     and the Local Option exclusion are all untouched. */
+  function altPricedPreference(candidates, primaryResult, picks){
+    const out = [], usedIds = Object.create(null), usedOrgs = Object.create(null);
+    const priced = function(p){ return p && pnUsablePrice(p.price) != null; };
+    const prim = primaryResult && primaryResult.product;
+    if (prim && prim.organisation) usedOrgs[prim.organisation] = 1;
+    (picks || []).forEach(function(sel){
+      const keep = function(row){
+        out.push(row);
+        usedIds[row.product.id] = 1;
+        if (row.product.organisation) usedOrgs[row.product.organisation] = 1;
+      };
+      if (priced(sel.product)) { keep(sel); return; }
+      const dim = (sel.__alt || {}).dimension;
+      const without = (candidates || []).filter(function(c){
+        return c && c.product && c.product.id !== sel.product.id && !usedIds[c.product.id];
+      });
+      let swap = null;
+      try {
+        const redo = selectReasonedAlternatives(without, primaryResult, 3);
+        for (let i = 0; i < redo.length; i++){
+          const r = redo[i];
+          if ((r.__alt || {}).dimension !== dim) continue;
+          if (!priced(r.product)) continue;
+          if (usedIds[r.product.id]) continue;
+          if (r.product.organisation && usedOrgs[r.product.organisation]) continue;
+          swap = r; break;
+        }
+      } catch (e) { swap = null; }
+      keep(swap || sel);
+    });
+    return out;
+  }
+
+  /* THE MISSING PRICE IS STATED ONCE, NOT TWICE.
+
+     An unpriced card's price row already reads "Price not published" or "Price
+     not confirmed". The governed trade-off then read "no published price yet"
+     or "price not confirmed by Atlas" — the same fact, one line apart, in
+     nearly the same words, on 448 of 1,028 unpriced cards.
+
+     THE UNKNOWN PRICE IS NOT HIDDEN. The governed price row still prints,
+     unchanged. Only the trade-off REPETITION is withheld.
+
+     MATCHED AT THE SOURCE, NOT BY READING PROSE. pnPriceView(product).kind is
+     the same governed state that chose the price row's own wording, so the pair
+     is decided where both come from: 'ambiguous' pairs with "price not
+     confirmed by Atlas"; a price that is simply not known pairs with "no
+     published price yet". A trade-off that says something DIFFERENT — "we know
+     less about getting it to Ireland", 580 cards — is never suppressed, because
+     it is a second fact standing beside the missing price, not an echo of it.
+
+     __alt.tradeOff is not mutated and altTradeOff() is not rewritten. The
+     ledger still reads the governed string. */
+  function altTradeOffRepeatsPrice(product, tradeOff){
+    if (!product || !tradeOff) return false;
+    const view = pnPriceView(product);
+    if (!view || view.known) return false;
+    if (view.kind === 'ambiguous') return tradeOff === 'price not confirmed by Atlas';
+    return tradeOff === 'no published price yet';
+  }
+
   function renderAltResults(primaryResult, alternativeResults){
     const host = document.getElementById('altResults');
     const head = document.getElementById('altResultsHeading');
@@ -22896,7 +23105,7 @@
     try {
       const county = pnHomeownerCounty();
       if (county && primary) {
-        const lp = raLocalPick(candidates, county, primary.id);
+        const lp = raLocalPickLocated(candidates, county, primary.id);
         if (lp && lp.product) localId = lp.product.id;
       }
     } catch (e) { localId = null; }
@@ -22905,8 +23114,12 @@
         return r && r.product && r.product.id !== localId; });
     }
 
+    /* The governed selector still chooses the dimensions and writes the
+       reasons; the preference only decides WHICH qualifying row fills a slot
+       the selector has already awarded. */
     const picks = (primary && candidates.length)
-      ? selectReasonedAlternatives(candidates, primaryResult, 3) : [];
+      ? altPricedPreference(candidates, primaryResult,
+          selectReasonedAlternatives(candidates, primaryResult, 3)) : [];
 
     const budgetKey = decisionProfile && decisionProfile.searchConstraints
       ? decisionProfile.searchConstraints.budget : null;
@@ -22918,7 +23131,8 @@
         Object.assign({}, row, {
           ctx: altResultsCtx(row, budgetLabel),
           altReason: altReasonForDisplay(row, primaryResult),
-          altTradeOff: altTradeOffForDisplay(row, primaryResult),
+          altTradeOff: altTradeOffRepeatsPrice(row.product, alt.tradeOff)
+            ? '' : altTradeOffForDisplay(row, primaryResult),
         }), primaryResult));
     });
 
