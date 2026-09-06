@@ -3802,10 +3802,12 @@
     font-size:clamp(21px,2.7vw,28px); line-height:1.32; letter-spacing:-.014em;
     color:var(--aa-voice); margin:28px 0 0 -1px;
   }
-  .aa-sup{ font-size:.4em; letter-spacing:0; vertical-align:super; color:var(--aa-meta); }
-  /* The marker is sized against the body copy, not against the numeral it
-     sits beside, so it stays a mark rather than becoming a figure. */
-  .aa-fig--big .aa-sup{ font-size:.186em; }
+  /* STAGE 4.4 — a source marker is a mark, not a proportion of whatever it
+     sits beside: at .4em it rendered 21px next to a 52px figure. Flat, raised,
+     quiet, and identical everywhere it appears. */
+  .aa-sup{ font-size:11px; line-height:1; letter-spacing:0; vertical-align:top;
+           position:relative; top:.15em; margin-left:2px; color:var(--aa-meta); }
+  /* superseded by the flat .aa-sup rule in Stage 4.4 */
 
   .aa-finds{
     margin-top:32px; padding-top:22px; border-top:1px solid var(--aa-rule);
@@ -3853,6 +3855,79 @@
   .aa-src-name{ font-size:14px; line-height:1.4; color:var(--aa-body); margin:0; }
   .aa-src-state{ font-size:11px; line-height:1.4; color:var(--aa-meta); margin:6px 0 0; }
   .aa-src-state--live{ color:var(--aa-body); }
+
+  /* PREMIUM RESTORATION — the sixteen Stage 3.x classes (.aa-why, .aa-ev*,
+     .aa-buy*, .aa-ctx, .aa-moment, .aa-stmt, .aa-quiet*, .aa-ask*) are gone.
+     The page composes from the 34 original .aa-* selectors again.
+
+     These two rules are the single concession the current data requires. The
+     old matrix held tokens -- 1998, I.S.440, EUR 35,950 -- so aa-fig could sit
+     at 37px. The governed layers that replace them are sentence-length
+     ("Turnkey installation included"), and a sentence at 37px is a wall. So a
+     cell sets at quote scale by default and keeps the full section scale when
+     the governed value is short enough to carry it. Same class, same grammar,
+     one adaptive size. */
+  /* STAGE 4.1 — the matrix had become a wall of large serif statements. A cell
+     is SUPPORTING EVIDENCE and sets accordingly; exactly one cell per page may
+     be elected the second dominant finding and step up to statement scale. The
+     only other large moments are the organisation type, the price and the
+     closing principle. */
+  /* CONCISE PASS — the maker rows read as a scannable band rather than as a
+     stacked definition list: the tracked label sits inline with its governed
+     value on one line, wrapping only when it must. */
+  /* STAGE 4.4 — the principal commercial fact sits on the existing stone
+     tint. One band, no card, no new colour: --pn-panel is already in the
+     palette and is --pn-stone at 9%. */
+  #screen-match-results .aa-find--lead{
+    background:var(--pn-panel); border-radius:2px; padding:22px 26px 24px;
+    margin-top:4px; }
+  /* RHYTHM. Not every step is the same distance. */
+  #screen-match-results .aa-finds{ margin-top:38px; padding-top:26px; gap:44px; }
+  #screen-match-results .aa-finds[data-group="spec"]{
+    margin-top:22px; padding-top:20px; gap:24px 40px; }
+  #screen-match-results .aa-finds[data-group="spec"] .aa-find{ flex:1 1 196px; }
+
+  /* THE MAKER VOICE. Product facts are serif; supplier intelligence is sans.
+     That contrast is the distinction, not another specification grid. */
+  .aa-mkr{ margin-top:42px; padding-top:20px; border-top:1px solid var(--aa-rule); }
+  #screen-match-results .aa-mkr .aa-stand{
+    font-size:17px; line-height:1.5; color:var(--aa-voice); max-width:58ch;
+    margin:2px 0 16px; }
+  .aa-mkr-row{ display:flex; gap:14px; align-items:baseline; margin:0 0 7px;
+               font-size:var(--pn-w-body); line-height:1.5; color:var(--aa-body); }
+  .aa-mkr-row:last-child{ margin-bottom:0; }
+  .aa-mkr-k{ flex:0 0 158px; font-size:10px; letter-spacing:.17em; line-height:2.1;
+             text-transform:uppercase; color:var(--aa-label); }
+  .aa-mkr-v{ flex:1 1 auto; min-width:0; }
+  /* The evidence footer. Everything that proves the work, at metadata weight:
+     sources, what is still open, the footnotes and the one principle. */
+  .aa-ev-foot{ margin-top:38px; padding-top:16px; border-top:1px solid var(--aa-rule);
+               display:flex; gap:48px; align-items:flex-start; flex-wrap:wrap; }
+  .aa-ev-col{ flex:1 1 240px; min-width:0; }
+  .aa-ev-note{ font-size:13px; line-height:1.5; color:var(--aa-meta); margin:0; max-width:34ch; }
+  @media (max-width:900px){
+    #screen-match-results .aa-finds{ gap:32px; }
+    #screen-match-results .aa-finds[data-group="spec"]{ gap:20px 32px; }
+    #screen-match-results .aa-find[data-level="spec"]{ flex:1 1 170px; }
+  }
+  @media (max-width:640px){
+    /* the levels must survive: identity, price, key fact, spec, maker, sources
+       still read as five different weights on a phone */
+    #screen-match-results .aa-find--lead{ padding:18px 18px 20px; }
+    #screen-match-results .aa-finds{ margin-top:30px; padding-top:22px; gap:26px; }
+    #screen-match-results .aa-finds[data-group="spec"]{ gap:18px; margin-top:18px; padding-top:16px; }
+    #screen-match-results .aa-finds .aa-fig:not(.aa-fig--big){ font-size:18px; }
+    #screen-match-results .aa-mkr .aa-stand{ font-size:16px; margin-bottom:14px; }
+    .aa-mkr-row{ display:block; }
+    /* the key is a <span>; without this it runs straight into its value
+       ("INSTALLATION COVERAGEDublin plus parts of Meath…") once the row stops
+       being a flex container */
+    .aa-mkr-k{ display:block; line-height:1.8; margin-bottom:1px; }
+    .aa-ev-foot{ gap:26px; }
+  }
+  .aa-finds .aa-fig{ font-size:var(--pn-s-emph); line-height:1.36; letter-spacing:-.008em; }
+  .aa-finds .aa-fig[data-primary="1"]{ font-size:var(--pn-s-statement); line-height:1.16;
+                                       letter-spacing:-.018em; }
 
   .aa-foot{ margin-top:26px; padding-top:12px; border-top:1px solid var(--aa-rule); }
   .aa-more{
@@ -4551,21 +4626,41 @@
      inside it, no borders, nothing to scan. It reads as an offer, which is
      what it is. Spacing tokens are inherited from the evidence chapter so
      the two sit in the same rhythm rather than two different systems. */
-  /* RESULTS-UX-007 — the selectable question list. */
-  /* RESULTS-UX-008 — questions left, action right. */
-  .ask-cols{ display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
-    gap:clamp(28px,4vw,64px); align-items:start; }
-  .ask-cols .ask-action{ margin:0; padding:22px 24px; border-radius:12px;
-    background:var(--paper); border:1px solid rgba(31,59,46,.13); }
-  .ask-picks{ list-style:none; margin:0; padding:0; display:grid; gap:2px; max-width:none; }
-  .ask-pick-label{
-    display:grid; grid-template-columns:20px minmax(0,1fr); gap:12px;
-    align-items:start; cursor:pointer; padding:11px 12px 11px 4px; border-radius:8px;
-    transition:background .18s ease;
-  }
-  .ask-pick-label:hover{ background:rgba(31,59,46,.045); }
-  .ask-pick-box{ width:17px; height:17px; margin-top:2px; accent-color:var(--accent); cursor:pointer; }
-  .ask-pick-box:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:2px; }
+  /* ISSUE 008 — a read-and-take-with-you list, not a form. No control column,
+     no hover affordance, nothing that behaves as though it can be pressed. */
+  .ask-picks { list-style:none; margin:0; padding:0; display:grid; gap:18px; max-width:62ch; }
+  .ask-picks .ask-pick { display:block; }
+  .ask-own { margin-top:26px; max-width:62ch; }
+  .ask-own-toggle { font-family:'Work Sans',sans-serif; font-size:10px;
+    letter-spacing:.17em; text-transform:uppercase; color:var(--accent);
+    background:none; border:none; border-bottom:1px solid var(--pn-edge, rgba(139,137,113,.42));
+    padding:0 0 3px; cursor:pointer; }
+  .ask-own-toggle:hover { color:var(--brand-green); border-bottom-color:var(--brand-green); }
+  .ask-own-toggle:focus-visible { outline:2px solid var(--brand-sage); outline-offset:3px; }
+  .ask-own-toggle.is-open { color:var(--brand-green); border-bottom-color:var(--brand-green); }
+  .ask-own-field { display:block; width:100%; margin-top:14px; padding:12px 14px;
+    font-family:'Work Sans',sans-serif; font-size:15px; line-height:1.55;
+    color:var(--ink); background:var(--paper);
+    border:1px solid var(--pn-hair, rgba(31,59,46,.16)); border-radius:6px;
+    resize:vertical; }
+  .ask-own-field::placeholder { color:var(--soft); opacity:.75; }
+  .ask-own-field:focus-visible { outline:2px solid var(--brand-sage); outline-offset:2px; }
+  /* ASK PLOTNUA — the send control reuses the shipped .btn-secondary.small so
+     it cannot drift from the rest of the page. Only its spacing is new. */
+  .ask-own-act { margin-top:14px; }
+  .ask-own-send.btn-secondary { margin-top:0; }
+  .ask-own-state { margin:10px 0 0; font-size:13px; line-height:1.5;
+    color:var(--soft); min-height:1em; }
+  .ask-own-state.is-warn { color:var(--terracotta, #BD6A46); }
+  /* Off-screen rather than display:none — a bot that skips hidden inputs
+     should still find this one. Never reachable by keyboard or pointer. */
+  .ask-own-hp { position:absolute; left:-9999px; width:1px; height:1px;
+    opacity:0; pointer-events:none; }
+  .ask-own-done-lead { margin:0; font-family:Fraunces,serif; font-size:19px;
+    line-height:1.35; color:var(--pn-voice, #24351F); }
+  .ask-own-done-sub { margin:6px 0 0; font-size:13px; line-height:1.5;
+    color:var(--soft); }
+  .ask-own-done-sub a { color:var(--accent); }
   .ask-pick-main{ display:block; font-size:16.5px; line-height:1.45; color:var(--ink); }
   .ask-pick-sub{ display:block; font-size:13px; line-height:1.45; color:var(--soft); margin-top:3px; }
 
@@ -4587,39 +4682,8 @@
      nothing about how a question reads has changed — only where it sits. */
   .ask .evid-asks{ margin:0 0 var(--s5); }
 
-  .ask-action{
-    background:var(--brand-ivory); border-radius:14px;
-    padding:var(--s4) var(--s4) var(--s3);
-    max-width:60ch;
-  }
-  .ask-btn{
-    font-family:'Work Sans',sans-serif; font-size:15px; font-weight:600;
-    letter-spacing:.01em; color:var(--brand-ivory); background:var(--brand-green);
-    border:none; border-radius:999px; padding:14px 30px; cursor:pointer;
-    transition:opacity .18s ease, transform .18s ease;
-  }
-  .ask-btn:hover{ opacity:.92; transform:translateY(-1px); }
-  .ask-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .ask-btn.is-asked{ background:none; color:var(--soft);
-    box-shadow:inset 0 0 0 1px rgba(31,59,46,.22); cursor:default;
-    transform:none; opacity:1; }
-
-  .ask-promise{ list-style:none; margin:var(--s3) 0 0; padding:0;
-    display:flex; flex-wrap:wrap; gap:6px var(--s3); }
-  .ask-promise li{ font-size:14px; line-height:1.6; color:var(--soft);
-    display:flex; align-items:baseline; gap:8px; }
-  .ask-promise li::before{ content:'\2713'; font-size:10px; color:var(--accent);
-    flex:none; }
-  .ask-cols .ask-btn{ width:100%; justify-content:center; }
-  .ask-note{ font-size:13.5px; line-height:1.65; color:var(--soft);
-    margin:var(--s3) 0 0; opacity:.85; max-width:52ch; }
-  .ask-note.is-asked{ opacity:1; color:var(--ink); }
-
   @media (max-width:640px){
     .ask.chapter{ padding-bottom:var(--s5); }
-    .ask-action{ padding:var(--s3); border-radius:12px; }
-    .ask-btn{ width:100%; }
-    .ask-promise{ flex-direction:column; gap:8px; }
   }
 
   .evid.chapter{
@@ -5492,9 +5556,6 @@
   .fork-card-sub{ font-size:13.5px; line-height:1.5; color:var(--soft); margin:0; }
 
   @media (max-width:900px){
-    /* RESULTS-UX-008 — one column below desktop; the action follows the
-       questions it belongs to. */
-    .ask-cols{ grid-template-columns:1fr; gap:24px; }
   }
   @media (max-width:640px){
     .decide, .supplier, .fork{ margin:0 0 44px; }
@@ -5799,6 +5860,39 @@
   #screen-match-results .aa-title{ font-size:var(--pn-s-hero); }
   /* Fraunces · section · 36px */
   #screen-match-results .aa-fig{ font-size:var(--pn-s-section); }
+  /* CONCISE PASS — the matrix cell is SUPPORTING evidence, not a headline.
+     This step-down has to live here, in the governed scale block, because
+     "#screen-match-results .aa-fig" is specificity (1,1,0) and an unscoped
+     ".aa-finds .aa-fig" is (0,2,0) — so the earlier attempt to reduce the
+     matrix never actually reached the browser. Exactly one cell per page may
+     be elected the second dominant finding and step back up. */
+  /* STAGE 4.4 — FOUR LEVELS. 4.3 flattened everything below the identity to
+     one weight; this restores the steps without restoring the wall.
+       L2  the price      36-52px, its own band
+       L3  1-2 key facts  27px, editorial green
+       L4  everything else 19px near-black, 12.5px sans beneath
+     The levels are carried on data attributes so no class name is added. */
+  #screen-match-results .aa-finds .aa-fig:not(.aa-fig--big){ font-size:19px; line-height:1.28; }
+  #screen-match-results .aa-find[data-level="key"] .aa-fig{
+    font-size:var(--pn-s-statement); line-height:1.16; letter-spacing:-.018em;
+    color:var(--aa-voice); }
+  #screen-match-results .aa-find[data-level="spec"] .aa-find-cap{ font-size:12.5px; line-height:1.5; }
+  /* PRE-EXISTING COLLISION, found by looking at the rendered page rather than
+     at the DOM. "#screen-match-results .aa-fig--big" and
+     "#screen-match-results .aa-fig" are both (1,1,0) and the SECOND one wins,
+     so the display figure has been rendering at section scale — 36px, not
+     80px — for as long as this scale block has existed. Two classes on one
+     element restores the intended step. */
+  /* STAGE 4.3 — 80px read as an advertisement. It stays the strongest single
+     commercial fact and stops shouting; the mobile floor is unchanged in
+     spirit, clamped against the same viewport. */
+  #screen-match-results .aa-fig.aa-fig--big{ font-size:clamp(36px,4.2vw,52px); }
+  /* At display scale the lead cell cannot share a line with its caption -- the
+     caption was reduced to a four-word column jammed against the next cell.
+     The price takes its own band, the caption sits under it, and the remaining
+     evidence flows beneath. */
+  #screen-match-results .aa-find--lead{ flex:1 1 100%; display:block; }
+  #screen-match-results .aa-find--lead .aa-find-cap{ margin-top:10px; padding-bottom:0; max-width:52ch; }
   #screen-match-results .evid-title{ font-size:var(--pn-s-section); }
   #screen-match-results .hidden-potential.chapter .hp-title{ font-size:var(--pn-s-section); }
   #screen-match-results .hp-title{ font-size:var(--pn-s-section); }
@@ -5867,7 +5961,6 @@
   #screen-match-results .aa-src-name{ font-size:var(--pn-w-body); }
   #screen-match-results .aa-stand{ font-size:var(--pn-w-body); }
   #screen-match-results .alt-why{ font-size:var(--pn-w-body); }
-  #screen-match-results .ask-btn{ font-size:var(--pn-w-body); }
   #screen-match-results .brief-intro{ font-size:var(--pn-w-body); }
   #screen-match-results .brief-status{ font-size:var(--pn-w-body); }
   #screen-match-results .btn-primary{ font-size:var(--pn-w-body); }
@@ -5911,7 +6004,6 @@
   #screen-match-results .alt-compare{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .alt-meta{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .alt-rail-note{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .ask-note{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .ask-pick-sub{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .brief-note{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .btn-secondary{ font-size:var(--pn-w-body-sm); }
@@ -7841,34 +7933,77 @@
            homeowner's own question rather than describing Atlas's limits, and
            the intro states the offer in two sentences instead of three. -->
       <h3 class="sec-title" id="askTitle">Questions worth asking</h3>
-      <!-- RESULTS-UX-007 — the intro no longer opens on what Atlas could not
-           do. Same offer, stated as an invitation. The questions below are the
-           SAME real per-product items from EVID_ASK_SUPPLIER; they are now
-           selectable rather than presented as a list of gaps. -->
-      <p class="ask-intro">Select anything you’d like us to check with
-        the supplier.</p>
+      <!-- ISSUE 008 — the submission theatre is gone. The button, its "Asked"
+           state and the promise "We'll ask the supplier and email you what we
+           find." are removed and NOT replaced: nothing was ever submitted,
+           nothing persisted, no supplier was contacted and PlotNua holds no
+           email address. What is left is what this section actually is —
+           the questions worth resolving before the homeowner decides. -->
+      <p class="ask-intro">Atlas has established what it can. These are worth
+        confirming before you decide.</p>
 
-      <!-- RESULTS-UX-008 — two columns on desktop: the questions on the left,
-           the action on the right. The list and the button stacked full-width
-           wasted the right half of the page and pushed the button most of a
-           viewport below the heading. Stacks naturally on mobile. -->
-      <div class="ask-cols">
       <ul class="evid-asks" id="evidAsks"></ul>
 
-      <div class="ask-action">
-        <button type="button" class="ask-btn" id="askAtlasBtn">Ask Atlas</button>
-        <!-- RESULTS-UX-005 — the five-item promise list becomes one sentence.
-             No action is dropped: contacting, asking, comparing, updating and
-             replying are all still stated. A bulleted specification of our own
-             internal process is not what a homeowner needs at the moment of
-             deciding whether to press a button. "Nothing has been sent yet" is
-             the reassurance that actually matters there. -->
-        <!-- RESULTS-UX-008 — 42 words to 11. Everything the longer version
-             described is what "ask the supplier" means; a homeowner deciding
-             whether to press a button does not need our process. -->
-        <p class="ask-note" id="askAtlasNote" role="status">We’ll ask the supplier
-          and email you what we find.</p>
-      </div>
+      <!-- ASK PLOTNUA — the homeowner's own question, and the ONLY thing on
+           this screen that submits anywhere. The four standard questions above
+           are guidance and carry no control of any kind.
+
+           The action and method are real so the endpoint lives in one place,
+           but submit is always intercepted: a native POST would navigate the
+           homeowner off the assessment they are reading, which is exactly what
+           this section must not do.
+
+           The hidden fields carry the product and the maker BY NAME. Product
+           name + organisation is unique across all 487 records, so no internal
+           identifier is needed and none is sent. No Airtable id, no evidence
+           tier, no evidence scope, no qualification, no price, no Eircode and
+           no geocoded address -- every one of those is reachable at this
+           moment and every one of them stays where it is. -->
+      <div class="ask-own">
+        <button type="button" class="ask-own-toggle" id="askOwnToggle"
+                aria-expanded="false" aria-controls="askOwnForm">Other</button>
+
+        <form class="ask-own-form" id="askOwnForm" hidden
+              action="https://formspree.io/f/xrpgakqw" method="POST">
+          <textarea class="ask-own-field" id="askOwnField" name="question"
+                    rows="3" maxlength="1000" aria-label="Your own question"
+                    placeholder="Add your own question…"></textarea>
+
+          <input type="hidden" name="product"  id="askOwnProduct"  value="">
+          <input type="hidden" name="supplier" id="askOwnSupplier" value="">
+          <input type="hidden" name="context"
+                 value="Atlas Assessment — Questions worth asking">
+          <input type="hidden" name="_subject"
+                 value="Ask PlotNua — question from a homeowner">
+          <!-- Formspree's documented honeypot. Bots fill it; nobody else can
+               reach it. The contact page has none; this does. -->
+          <input type="text" class="ask-own-hp" name="_gotcha" tabindex="-1"
+                 autocomplete="off" aria-hidden="true">
+
+          <div class="ask-own-act">
+            <button type="submit" class="btn-secondary small ask-own-send"
+                    id="askOwnSend">Ask PlotNua</button>
+          </div>
+          <p class="ask-own-state" id="askOwnState" role="status" aria-live="polite"></p>
+        </form>
+
+        <!-- It says RECEIVED. It does not say answered, researched, or that
+             anyone has been contacted, because none of those has happened.
+
+             FOUNDER AMENDMENT — Ask PlotNua is an intelligence-feedback
+             channel, not a support desk. No address is collected, so no
+             personal reply is offered here; the second line says what the
+             question is actually for instead. It promises no reply, claims no
+             research, names no supplier and guarantees no answer.
+
+             The FAILURE state still names hello@plotnua.ie. That is not an
+             inconsistency: when a send genuinely fails, an address to fall
+             back on is the honest thing to give. -->
+        <div class="ask-own-done" id="askOwnDone" hidden role="status">
+          <p class="ask-own-done-lead">Thanks — PlotNua has received your question.</p>
+          <p class="ask-own-done-sub">Questions like this help us improve what
+            Atlas investigates.</p>
+        </div>
       </div>
 
       <!-- AR-1 — "Worth confirming" is gone. It sat directly beneath the Ask
@@ -7891,7 +8026,9 @@
          nobody. Atlas speaks here instead, as it does everywhere else on this
          page that works. The deck below is #altRailNote, which has existed and
          been hidden since UX-008; no element was added for it. -->
-    <div class="results-gallery-heading" id="matchAlternativesHeading" hidden>Atlas looked at this four other ways.</div>
+    <!-- ISSUE 007 — the count is gone. "Four" was hard-coded and became untrue
+         the moment a lens was suppressed; this stays true whatever renders. -->
+    <div class="results-gallery-heading" id="matchAlternativesHeading" hidden>Atlas looked at this in other ways.</div>
     <!-- RESULTS-UX-008 — the single useful fact from the retired search-funnel
          section, said where the four results actually are. Figures come from
          the matching logic, never typed. -->
@@ -15019,7 +15156,13 @@
      shown" are two separate facts, each separately provable.
 
      A row below that is not in this set is carried, documented and dark. */
-  const PN_DETAIL_LAUNCH = { considerations: true, planningConsiderations: true };
+  /* ISSUE 006 — the four remaining partitions are launched. All four are
+     generated, published and loaded for 462 of 487 Products and were gated
+     off; the dossier's lede and closing question read them through the
+     existing governed pnDetailSegment(), which already withholds internal
+     commentary and refuses deferred wording. Nothing new is generated. */
+  const PN_DETAIL_LAUNCH = { considerations: true, planningConsiderations: true,
+    bestFor: true, strengths: true, typicalHomeowner: true, alternatives: true };
 
   const PN_DETAIL_PRESENT = [
     { key: 'planningConsiderations', labels: ['HOMEOWNER IMPLICATION'],
@@ -17888,20 +18031,114 @@
 
   /* Things nobody could know in advance. These are normal due diligence, they
      are the homeowner's to resolve, and they are what the countdown counts. */
+  /* ISSUE 008 LEVEL A+ — EACH QUESTION NOW HAS TWO FORMS.
+
+     `label` / `detail` is the full question, asked when Atlas has established
+     nothing about the product half. `narrowLabel` / `narrowDetail` is what
+     remains once Atlas HAS established it: the property half, which no amount
+     of Atlas completeness will ever close, said in the homeowner's terms.
+
+     `establishes` names the ONE governed field that settles the product half.
+     It is fixed here, at authoring time. Nothing is matched at runtime.
+
+     `schedule` carries no `establishes` on purpose: nothing in the governed
+     data settles it. estimatedLeadTime is populated on 0 of 487 records and no
+     installation vocabulary key states a timescale, so the question stands on
+     every product. That is not an oversight; it is the measurement. */
   const EVID_ASK_SUPPLIER = [
     { key:'access',    material:true,
       label:'Can it get to the back garden?',
-      detail:'Panel sizes, side-passage width, and whether a crane is needed.' },
+      detail:'Panel sizes, side-passage width, and whether a crane is needed.',
+      narrowLabel:'Will it get through to your garden?',
+      narrowDetail:'The model sizes are established. Your side passage, gates '
+        + 'and overhead clearance are not.',
+      establishes:{ field:'externalDimensions', label:'Dimensions' } },
     { key:'ground',    material:true,
       label:'What base does it need, and will your ground take it?',
-      detail:'Ask what foundation is specified and who pours it.' },
+      detail:'Ask what foundation is specified and who pours it.',
+      narrowLabel:'Will your ground take it?',
+      narrowDetail:'What the price covers is established. Whether your soil, '
+        + 'levels and drainage suit it is not.',
+      establishes:{ field:'installationModel', label:'Installation',
+                    vocabulary:'ASK_BASE_SETTLED' } },
     { key:'electrics', material:false,
       label:'How does it get power?',
-      detail:'Whether a connection back to the house is included.' },
+      detail:'Whether a connection back to the house is included.',
+      narrowLabel:'How does it connect to your house?',
+      narrowDetail:'What the building includes is established. The run back to '
+        + 'the house, and what your board can carry, is not.',
+      establishes:{ field:'electricalIncluded', label:'Electrical' } },
     { key:'schedule',  material:false,
       label:'What happens, and when?',
-      detail:'Survey, deposit, build slot, install day.' },
+      detail:'Survey, deposit, build slot, install day.',
+      establishes:null },
   ];
+
+  /* THE BASE POSITION, READ FROM A CLOSED VOCABULARY AND NOTHING ELSE.
+
+     installationModel's finding head is a governed taxonomy token, not free
+     prose: 23 distinct values across the live 487. Thirteen of them state where
+     the base sits -- eight put it inside the price or scope, five put it
+     outside -- and BOTH settle the homeowner's question, because "the base is
+     excluded" is as complete an answer as "the base is included".
+
+     The other ten say nothing about it. "TURNKEY INSTALLATION INCLUDED" on its
+     own, 120 records, is the important one: turnkey installation is not a
+     statement about foundations, and treating it as one would be the overclaim
+     this whole issue exists to remove.
+
+     A value absent from this table -- today's ten, or one written next month --
+     leaves the question standing. That is the safe direction. */
+  const ASK_BASE_SETTLED = {
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS INSIDE THE PRICE': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND VAT INSIDE THE PRICE': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SERVICES INSIDE THE SCOPE': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATION, DELIVERY AND CRANE INSIDE THE PRICE': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS INSIDE THE SCOPE': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS TO ELECTRICS AT A FIXED PRICE': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION INSIDE THE SCOPE': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION AND CONNECTIONS COORDINATED': 'included',
+    'TURNKEY INSTALLATION INCLUDED \u2014 UNIT ONLY, FOUNDATION EXCLUDED': 'excluded',
+    'TURNKEY INSTALLATION INCLUDED \u2014 STRUCTURE ONLY, BASE AND INTERIOR EXCLUDED': 'excluded',
+    'TURNKEY INSTALLATION INCLUDED \u2014 GROUND PREPARATION EXCLUDED': 'excluded',
+    'TURNKEY INSTALLATION INCLUDED \u2014 BUILDING ONLY, SITE PREPARATION EXCLUDED': 'excluded',
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SITE WORKS PRICED SEPARATELY': 'excluded',
+  };
+
+  /* HAS ATLAS SETTLED THE PRODUCT HALF OF THIS QUESTION?
+
+     Three gates, all of them existing shipped readers, and every one of them
+     must pass:
+
+       atlasFeatureRead   the governed evidence exists at all
+       pnEvidenceState    it is 'established' -- not deferred, not negative,
+                          not a bare classification with nothing behind it
+       pnAssessRead       the shipped reader can actually render it, so the
+                          homeowner has in fact been told
+
+     That last gate is the one that matters most. A fact Atlas holds but does
+     not show is not a fact the homeowner has been given, and suppressing a
+     question on the strength of it would hide the question AND the answer.
+
+     Where a `vocabulary` is named the finding must additionally appear in that
+     closed table. Anything unexpected returns false and the full question
+     stands. Nothing here reads free prose, and nothing here generates text. */
+  function askProductHalfEstablished(product, entry){
+    const spec = entry && entry.establishes;
+    if (!product || !spec || !spec.field) return false;
+    let ev = null;
+    try { ev = atlasFeatureRead(product, spec.field); } catch (e) { return false; }
+    if (!ev || !ev.finding) return false;
+    let state = null;
+    try { state = pnEvidenceState(spec.field, ev); } catch (e) { return false; }
+    if (state !== 'established') return false;
+    if (spec.vocabulary === 'ASK_BASE_SETTLED' &&
+        !Object.prototype.hasOwnProperty.call(ASK_BASE_SETTLED, String(ev.finding).trim()))
+      return false;
+    let read = null;
+    try { read = pnAssessRead(product, spec.field, spec.label); } catch (e) { return false; }
+    return !!(read && read.answer);
+  }
 
 
   /* ==========================================================================
@@ -19680,6 +19917,492 @@
   ];
 
   /* AA-001 — 25.08.26 from an ISO checkedAt. One date on the whole section. */
+  /* ================= ISSUE 006 — THE GOVERNED DOSSIER RESOLVERS =============
+
+     Every function below reads a governed post-recovery contract and nothing
+     else. None of them parses a fact out of prose: where the evidence is a
+     sentence, the sentence is returned whole and is later quoted and
+     attributed. atlasSupplierEvidence is not read anywhere in this block. */
+
+  /* A locality value that actually says something. Atlas records absence in
+     its own words ("Not stated", "None published"), and those are printed as
+     ordinary context -- they are just never treated as substantive evidence. */
+  /* A governed value that is written entirely in capitals is a shout, not a
+     heading -- "NORTHERN IRELAND" is the same place as "Northern Ireland".
+     This normalises the case of a fully upper-case segment for display and
+     touches nothing else: a value with any lower-case letter in it is returned
+     byte-for-byte, so "Republic of Ireland" can never become "Republic Of
+     Ireland" the way titleCase() would render it. No word is added, removed or
+     reordered. */
+  function pnAssessCase(v){
+    const s = String(v == null ? '' : v);
+    if (!s) return s;
+    return s.split(' \u2014 ').map(function(seg){
+      if (!/[A-Z]/.test(seg) || /[a-z]/.test(seg)) return seg;
+      return seg.toLowerCase().replace(/(^|[\s(\-\/])([a-z])/g,
+        function(_, pre, ch){ return pre + ch.toUpperCase(); });
+    }).join(' \u2014 ');
+  }
+
+  /* A caption that stops mid-word with an ellipsis reads as a broken page, and
+     28% of them did. This trims to the last COMPLETE sentence inside the
+     budget instead of to the last space. Measured over every meaning clause in
+     the catalogue: a whole sentence is available for all 1,229, so nothing is
+     lost and no ellipsis is printed. Falls back to the old behaviour only if a
+     record ever carries a first sentence longer than the budget. */
+  function pnAssessSentence(s, max){
+    /* CORRECTED after measurement. The first cut assumed only THIS code
+       truncated, and it was wrong: 113 of the meaning clauses arrive from the
+       generator ALREADY cut at ~258 characters with an ellipsis, and some of
+       them dangle internal notes at the break -- "... CATEGORY NOTE…",
+       "... LEGACY NORMALISATION: the value previously sat in…". So a string
+       that ALREADY ends in an ellipsis is treated as cut, not as complete.
+
+       Where no whole sentence survives, the caption is dropped rather than a
+       fragment printed. The governed answer still renders; a half-sentence is
+       not information. */
+    const c = String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+    if (!c) return '';
+    if (c.length <= max && !/\u2026$/.test(c)) return c;
+    const m = /^[\s\S]*[.!?](?=\s|$)/.exec(c.slice(0, max));
+    return m ? m[0] : '';
+  }
+
+  function pnAssessSubstantive(v){
+    const s = String(v == null ? '' : v).trim();
+    if (!s) return false;
+    return !/^(not stated|none published|none\b|not published|not itemised)/i.test(s);
+  }
+
+  /* THE TIER. Evidence depth, measured, not authored. A is the rich dossier,
+     B the standard one, C the essential one. Every eligible Product resolves. */
+  function pnAssessTier(product){
+    if (!product) return 'C';
+    const hasProse = !!pnDetailFor(product.id, 'bestFor');
+    const feats = product.features ? Object.keys(product.features).length : 0;
+    if (!hasProse || !feats) return 'C';
+    const loc = pnSupplierLocality(product) || {};
+    let sub = 0;
+    for (let i = 0; i < PN_SUPPLIER_LOCALITY.length; i++){
+      if (pnAssessSubstantive(loc[PN_SUPPLIER_LOCALITY[i].key])) sub += 1;
+    }
+    const numeric = pnAssessNumericFact(product) != null;
+    return (numeric && sub >= 3 && feats >= 4) ? 'A' : 'B';
+  }
+
+  /* THE ONLY TWO SOURCES ALLOWED INTO LARGE NUMERIC TYPE.
+
+     Measured across the catalogue: features.warranty.number is set for 0 of
+     487 and its durations are conditional prose ("80 years, covering the steel
+     frame only"); dimensions, insulation and installation carry no structured
+     number either. Setting a numeral lifted out of any of those would be the
+     worst overclaim on the page. So .aa-fig--big accepts a governed price or a
+     structured floor area, and nothing else can reach it.
+
+     An ambiguous, absent or zero-record price can never become a figure: Batch
+     2 established that Atlas cannot say which record is authoritative. */
+  function pnAssessNumericFact(product){
+    if (!product) return null;
+    const v = pnPriceView(product);
+    if (v && ['exact', 'from', 'range', 'estimated', 'quoted'].indexOf(v.kind) > -1) {
+      return { label: (v.kind === 'from' ? 'Published price, from' : 'Published price'),
+               value: pnPriceDisplay(product),
+               caption: 'Published by ' + (product.organisation || 'the maker') + '.',
+               source: 'price' };
+    }
+    if (typeof product.floorAreaM2 === 'number' && isFinite(product.floorAreaM2)) {
+      return { label: 'Floor area', value: product.floorAreaM2 + ' m\u00b2',
+               caption: 'From what Atlas holds for this model.',
+               source: 'product' };
+    }
+    return null;
+  }
+
+  /* THE STATEMENT. When there is no governed number, a governed sentence is
+     set at figure scale instead. It is quoted whole and attributed; nothing is
+     summarised, shortened into a claim, or turned into a field. */
+  function pnAssessStatementFact(product){
+    if (!product) return null;
+    const first = function(text){
+      const s = String(text || '').trim();
+      if (!s) return '';
+      const m = /^[\s\S]*?[.!?](?=\s|$)/.exec(s);
+      return (m ? m[0] : s).trim();
+    };
+    const inst = pnAssessRead(product, 'installationModel', 'Installation');
+    if (inst) {
+      return { label: 'Installation', value: inst.answer,  /* 3.3: label matches the evidence row */
+               caption: inst.caption || 'What Atlas found for this model.',
+               source: 'product', plain: true };
+    }
+    const loc = pnSupplierLocality(product) || {};
+    if (pnAssessSubstantive(loc.irishPresence)) {
+      return { label: 'Irish presence', value: first(loc.irishPresence),
+               caption: 'This describes the company, rather than this particular building.',
+               source: 'supplier' };
+    }
+    const w = pnAssessRead(product, 'warranty', 'Warranty');
+    if (w) {
+      return { label: 'Warranty', value: w.answer,
+               caption: w.caption || 'What Atlas found for this model.',
+               source: 'product', plain: true };
+    }
+    if (pnAssessSubstantive(loc.manufacturingLocation)) {
+      return { label: 'Where it is made', value: first(loc.manufacturingLocation),
+               caption: 'This describes the company, rather than this particular building.',
+               source: 'supplier' };
+    }
+    return null;
+  }
+
+  /* THE GOVERNED HOMEOWNER READING of one evidence layer.
+
+     atlasFeatureRead().finding is the researcher's ALL-CAPS heading, which is
+     a filing label rather than something to set in type. pnHomeownerLabel() is
+     the governed mapping the Compare table already reads, and it returns the
+     homeowner answer and its note; ev.meaning is the researcher's own
+     HOMEOWNER IMPLICATION clause. Both already ship. Nothing here interprets,
+     shortens into a claim, or turns prose into a field. */
+  function pnAssessRead(product, key, labelKey){
+    const ev = atlasFeatureRead(product, key);
+    if (!ev || !ev.finding) return null;
+    const raw = String(ev.finding);
+    if (/^[A-Z ]*UNKNOWN|^NO AREA PUBLISHED|^NOT PUBLISHED/.test(raw)) return null;
+    let answer = '', note = '';
+    if (labelKey) {
+      let m = null;
+      try { m = pnHomeownerLabel(labelKey, atlasFeatureShort(ev, 72)); } catch (e) { m = null; }
+      if (m && m.answer) { answer = m.answer; note = m.note || ''; }
+    }
+    if (!answer) answer = atlasFeatureShort(ev, 88) || raw;
+    /* Still the researcher's filing heading. Sentence-casing it would alter
+       recorded text, so the candidate is skipped and the next one is used. */
+    if (answer && answer === answer.toUpperCase() && /[A-Z]{4}/.test(answer)) return null;
+    /* RESTORATION — the implication clause is researcher prose, and a small
+       number of records carry engineering notes inside it ("LEGACY
+       NORMALISATION ... no Evidence Tier and no source"). pnDetailSegment()
+       already refuses that class of text through PN_CONSIDER_WITHHOLD; this
+       reader did not. The governed answer is kept either way -- only the
+       caption is withheld, so no evidence is lost. */
+    let cap = ev.meaning ? pnLeadCap(pnAssessSentence(ev.meaning, 260)) : (note || '');
+    if (!cap) cap = note || '';
+    if (cap && PN_CONSIDER_WITHHOLD.test(cap)) cap = note || '';
+    return { answer: answer, caption: cap };
+  }
+
+  /* THE LEDE. The homeowner-facing segment the researcher labelled, read
+     through the EXISTING pnDetailSegment() -- the same governed extractor the
+     launched Considerations panel already uses, which withholds internal
+     commentary and refuses deferred wording. */
+  function pnAssessLede(product){
+    return pnDetailSegment(product, 'bestFor', ['HOMEOWNER IMPLICATION'])
+        || pnDetailSegment(product, 'strengths', ['HOMEOWNER IMPLICATION'])
+        || pnDetailSegment(product, 'alternatives', ['HOMEOWNER IMPLICATION'])
+        || null;
+  }
+
+  /* THE FINDINGS. Governed evidence, each printed as the record states it. */
+  /* WHY THIS IS IN YOUR RESULTS.
+
+     Every line below is a statement of an input the ranking ALREADY used, read
+     through the function that computed it: appearanceBand() and
+     extractAppearanceEvidence() for appearance, budgetFit() and
+     AS_BUDGET_BANDS for budget. No new ranking logic, no new score, no
+     explanation invented. If the homeowner has not been through Match,
+     decisionProfile is null and the section does not render at all rather than
+     guessing what he asked for. */
+  function pnAssessWhy(product){
+    /* WHY YOU ARE SEEING THIS.
+
+       Same two governed inputs as before -- appearanceBand() and budgetFit(),
+       the exact functions the ranking used -- but stated as the conclusion the
+       homeowner needs rather than as the mechanism that produced it. Nothing
+       new is claimed, no value is altered, and where a test could not be run
+       the sentence says so. If the homeowner has not been through Match there
+       is no profile and nothing renders. */
+    if (!product) return [];
+    let dp = null;
+    try { dp = decisionProfile; } catch (e) { dp = null; }
+    if (!dp) return [];
+
+    let look = '', money = '';
+
+    const pref = dp.appearancePreference || null;
+    if (pref && pref !== 'either') {
+      let band = null;
+      try { band = appearanceBand(product, pref).band; } catch (e) { band = null; }
+      if (band === 2)      look = 'It matches the ' + pref + ' style you chose';
+      else if (band === 1) look = 'Style did not count for or against this one';
+    } else if (pref === 'either') {
+      look = 'You did not narrow the style, so it did not separate this one from the others';
+    }
+
+    const key   = dp.searchConstraints && dp.searchConstraints.budget;
+    const band2 = key ? AS_BUDGET_BANDS[key] : null;
+    const label = key ? AS_BUDGET_LABEL[key] : null;
+    if (band2 && label) {
+      const fit = budgetFit(product, band2);
+      if (fit === 2) {
+        /* pnPriceDisplay() prefixes the governed figure with the word its
+           price KIND already establishes -- From / Quoted / Estimated. The
+           figure itself is untouched; only that prefix moves into the
+           sentence, so "From €35,950" reads as "starting price of €35,950". */
+        const shown = String(pnPriceDisplay(product) || '');
+        const kind  = pnPriceView(product).kind;
+        const bare  = shown.replace(/^(From|Quoted|Estimated)\s+/, '');
+        const noun  = kind === 'from'      ? 'published starting price of '
+                    : kind === 'quoted'    ? 'quoted price of '
+                    : kind === 'estimated' ? 'estimated price of '
+                    : kind === 'range'     ? 'published price range of '
+                    : 'published price of ';
+        if (bare) money = 'its ' + noun + bare + ' sits within your ' + label + ' budget';
+      } else if (fit === 1) {
+        money = 'your ' + label + ' budget could not be tested here, because no '
+              + 'comparable price is published \u2014 so it did not rule this one out';
+      }
+    }
+
+    if (look && money) return [look + ', and ' + money + '.'];
+    if (look)  return [look + '.'];
+    if (money) return [money.charAt(0).toUpperCase() + money.slice(1) + '.'];
+    return [];
+  }
+
+  /* WHAT YOU ARE ACTUALLY BUYING. The record's OWN homeowner sentences, pulled
+     by the governed clause labels that already exist in the evidence
+     vocabulary. Presented as the record's statement; not decomposed, not
+     re-worded, not summarised. Three of these were reachable all along and
+     were simply never asked for. */
+  function pnAssessBuying(product){
+    /* STAGE 4 — this used to be headed "What you are buying", which was a
+       category error: what the homeowner is buying is the matrix above. Traced
+       to source, these clauses are a closing consideration set, so that is what
+       they are now. Each is the record's own sentence, presented not
+       decomposed, with two guards:
+
+         DEDUPLICATION -- the planning clause repeats the Worth-asking clause
+         on 97 of the 231 records that hold both.
+
+         CONTRADICTION -- three records carry a NOT FOR sentence asserting that
+         nothing is published to compare, on a page that is at that moment
+         showing a published price and several governed layers. A stale
+         sentence that collides with the evidence beside it is withheld. It is
+         never rewritten. */
+    if (!product) return [];
+    const out = [];
+    const words = function(s){
+      return String(s).toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
+        .filter(function(w){ return w.length > 3; });
+    };
+    const same = function(a, b){
+      if (!a || !b) return false;
+      if (a === b) return true;
+      const B = {}; words(b).forEach(function(w){ B[w] = 1; });
+      const A = words(a); if (!A.length) return false;
+      let hit = 0; A.forEach(function(w){ if (B[w]) hit++; });
+      return (hit / A.length) > 0.6;
+    };
+
+    const ask = pnDetailSegment(product, 'considerations', ['HOMEOWNER IMPLICATION'])
+             || pnDetailSegment(product, 'planningConsiderations', ['HOMEOWNER IMPLICATION']);
+    if (ask) out.push(['Worth asking', ask]);
+
+    const plan = pnDetailSegment(product, 'planningConsiderations', ['HOMEOWNER IMPLICATION']);
+    if (plan && !same(plan, ask)) out.push(['On planning', plan]);
+
+    /* The same collision test as the NOT FOR clause below. One record --
+       Shomera -- carries a comparison clause telling the reader to "choose a
+       supplier who publishes model-level figures" on a page that is at that
+       moment publishing model-level figures for three models. Measured: 1 of
+       259. Withheld, never rewritten. */
+    const shows0 = (pnAssessNumericFact(product) != null)
+                || (pnAssessFindings(product, null).length >= 3);
+    const collides = /(nothing (here )?to compare|no published specifications?|choose a supplier who publishes|needs a fixed price from a website)/i;
+    const alt = pnDetailSegment(product, 'alternatives', ['HOMEOWNER IMPLICATION']);
+    if (alt && !same(alt, ask) && !(collides.test(alt) && shows0))
+      out.push(['How it compares', alt]);
+
+    const notFor = pnDetailSegment(product, 'typicalHomeowner', ['NOT FOR']);
+    if (notFor && !same(notFor, ask)) {
+      if (!(collides.test(notFor) && shows0)) out.push(['Who it may not suit', notFor]);
+    }
+    return out;
+  }
+
+  function pnAssessFindings(product, exclude){
+    /* STAGE 3.3 — two defects fixed here, both mine.
+
+       (a) THE LABEL KEYS WERE WRONG. 'Thermal' is not a key pnHomeownerLabel()
+           knows; the key is 'Year-round use'. Every insulation line therefore
+           missed the governed mapping, stayed ALL-CAPS, and was discarded by
+           the shouty-text guard. 392 products hold the layer and none of them
+           could print it. irishAvailability was never asked for at all.
+
+       (b) THE CAP OF THREE. Products hold up to seven readable layers. The
+           page showed three, minus one if the moment had already taken it.
+           There is no reason to withhold governed evidence a homeowner is
+           about to spend tens of thousands against, so the cap is gone and
+           the section paginates itself in a two-column grid instead. */
+    const out = [];
+    const push = function(lab, key, labelKey){
+      if (exclude && exclude === lab) return;
+      const r = pnAssessRead(product, key, labelKey);
+      if (!r) return;
+      out.push({ lab: lab, text: r.answer, cap: r.caption });
+    };
+    push('Installation', 'installationModel', 'Installation');
+    push('Warranty', 'warranty', 'Warranty');
+    /* Atlas establishes the TYPE of warranty and, measured across all 487, not
+       one of the 202 governed captions says what it covers. So the caption
+       states the homeowner's next move instead of repeating opaque prose. This
+       adds no claim: it is a question, and it is true of every record. */
+    for (let w = 0; w < out.length; w++) {
+      if (out[w].lab === 'Warranty') out[w].cap = 'Confirm exactly what this warranty covers.';
+    }
+    push('Year-round use', 'insulationRating', 'Year-round use');
+    /* STAGE 4.3 — where the governed mapping already produced a definite
+       answer ("Insulated for year-round use"), the researcher's interpretive
+       paragraph beneath it says the same thing at length. The evidence is
+       untouched in the record; it is simply not printed twice. If the mapping
+       carries its own short note it is kept, because that note qualifies the
+       answer rather than restating it. */
+    for (let y = 0; y < out.length; y++) {
+      if (out[y].lab !== 'Year-round use') continue;
+      const ev = atlasFeatureRead(product, 'insulationRating');
+      let mapped = null;
+      try { mapped = pnHomeownerLabel('Year-round use', atlasFeatureShort(ev, 72)); }
+      catch (e) { mapped = null; }
+      if (mapped && mapped.answer && mapped.answer === out[y].text) {
+        out[y].cap = mapped.note || '';
+      }
+    }
+    push('Dimensions', 'externalDimensions', null);
+    push('Floor area', 'floorArea', 'Floor area');
+    push('Electrical', 'electricalIncluded', 'Electrical');
+    push('Glazing', 'glazing', null);
+    push('Irish availability', 'irishAvailability', 'Irish availability');
+    /* ISSUE 007 — 65 of the governed irishAvailability captions are bare
+       instructions to the homeowner ("Confirm they work in your county."),
+       which is PlotNua's job, not his. The record's words are WITHHELD, never
+       rewritten. Where the maker band already states an installation area the
+       caption is simply dropped, because the page has answered it; where
+       nothing is established, Atlas says so in its own voice. */
+    for (let a = 0; a < out.length; a++) {
+      if (out[a].lab !== 'Irish availability') continue;
+      if (!/^confirm\b/i.test(String(out[a].cap || ''))) continue;
+      let loc0 = null;
+      try { loc0 = pnSupplierLocality(product); } catch (e) { loc0 = null; }
+      const stated = !!(loc0 && pnAssessSubstantive(loc0.installationModel));
+      out[a].cap = stated ? '' : 'County coverage not yet confirmed.';
+    }
+    return out;
+  }
+
+  /* SUPPLIER CONTEXT as running prose. Each value is printed exactly as the
+     supplier record states it, including the absences, and the paragraph is
+     attributed to the supplier record so it can never be read as a promise
+     about this particular building. */
+  function pnAssessContext(product){
+    /* STAGE 4.3 — the same governed values, presented concisely. Every rule
+       here was measured across the 487 first, and every one is reversible
+       presentation: no value is rewritten, only trimmed at a boundary the
+       record itself provides, or replaced by "Not confirmed." where the record
+       says nothing. UNKNOWN never becomes FALSE. */
+    const loc = pnSupplierLocality(product);
+    if (!loc) return [];
+    const NONSUB = /^(not stated|none published|none\b|not published|not itemised|unknown|not established|not confirmed)/i;
+    const LABEL  = { 'Installation coverage': 'Installation area',
+                     'Where it is made': 'Manufacturing' };
+    const out = [];
+    for (let i = 0; i < PN_SUPPLIER_LOCALITY.length; i++){
+      const spec = PN_SUPPLIER_LOCALITY[i];
+      let v = loc[spec.key];
+      if (typeof v !== 'string' || !v.trim()) continue;
+      v = v.trim();
+
+      /* The standfirst already prints "Operating in {jurisdiction}." on all
+         487, so the row is a straight duplicate. */
+      if (spec.label === 'Operating jurisdiction') continue;
+
+      const empty = NONSUB.test(v);
+
+      /* Delivery is dropped when the record establishes nothing about it. The
+         377 records carrying real delivery information keep it. */
+      if (spec.label === 'Delivery coverage' && empty) continue;
+
+      if (empty) {
+        v = 'Not confirmed.';
+      } else {
+        /* "Yes — Irish-headquartered and ..." : the "Yes" is answered by the
+           label, and the substance follows it. */
+        v = v.replace(/^Yes\s+\u2014\s+/, '');
+        /* A trailing research qualifier -- "— REGIONAL, not nationwide, per
+           the supplier's own service statement" -- restates the head as an
+           internal category. Trimmed ONLY when it opens with an ALL-CAPS
+           classification or names the supplier's own statement, and only when
+           a substantial head survives. */
+        const at = v.indexOf(' \u2014 ');
+        if (at >= 25) {
+          const tail = v.slice(at + 3);
+          if (/^[A-Z][A-Z ]{3,}/.test(tail) || /^per the (supplier|maker)/i.test(tail)) {
+            v = v.slice(0, at);
+          }
+        }
+      }
+      out.push((LABEL[spec.label] || spec.label) + ': ' + v);
+    }
+    return out;
+  }
+
+  /* WHAT ATLAS IS STILL CHECKING. Six governed caveat strings, each rewritten
+     once into homeowner language. Nothing that can never resolve appears here:
+     Google, Trustpilot, awards, memberships, media, satisfaction, project
+     counts, accreditations, after-sales and lead time are not open questions,
+     they are things Atlas does not collect -- and the old 20-card wall
+     presented all of them as if they were pending. */
+  const PN_ASSESS_CAVEATS = [
+    ['No usable price is recorded.',
+     'A published price for this model.'],
+    ['A published price is recorded but has not been verified.',
+     'Verification of the published price.'],
+    ['Evidence reaches supplier-level rather than this exact product.',
+     'Product-specific information for this model.'],
+    ['Irish availability is not yet confirmed.',
+     'Whether this can be supplied in the Republic of Ireland.'],
+    ['Irish availability not established',
+     'An Irish delivery route.'],
+    ['Product URL is missing',
+     '\u0000ORG\u2019s own page for this model.'],
+  ];
+  /* Workflow vocabulary never reaches the page. "Researching" is an internal
+     queue state, not something to tell a homeowner. */
+  function pnAssessPlainStatus(v){
+    const s = String(v == null ? '' : v).trim();
+    if (s === 'Verified') return 'Verified';
+    if (s === 'Partially Verified') return 'Partly verified';
+    return 'Not yet verified';
+  }
+
+  function pnAssessCaveats(product){
+    const raw = (product && Array.isArray(product.qualificationCaveats))
+                  ? product.qualificationCaveats : [];
+    const out = [];
+    for (let i = 0; i < PN_ASSESS_CAVEATS.length; i++){
+      if (out.length >= 4) break;
+      const pair = PN_ASSESS_CAVEATS[i];
+      for (let j = 0; j < raw.length; j++){
+        if (String(raw[j]).indexOf(pair[0]) === 0) {
+          /* the slot is filled with the supplier's own name, or with a neutral
+             phrase where the record does not carry one */
+          out.push(String(pair[1]).replace(/\u0000ORG/g,
+            (product && product.organisation) ? product.organisation : 'The maker'));
+          break;
+        }
+      }
+    }
+    return out;
+  }
+
   function aaDate(iso){
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
     return m ? (m[3] + '.' + m[2] + '.' + m[1].slice(2)) : '';
@@ -19719,159 +20442,237 @@
   }
 
   function aaRenderAssessment(host, product, signals){
-    const P   = product || {};
-    const org = P.organisation || '';
-    let sup = null;
-    try { sup = (atlasSupplierEvidence && atlasSupplierEvidence[org] || {}).irish || null; }
-    catch (e) { sup = null; }
-    let ie = null;
-    try { ie = (P.markets && P.markets.IE) || null; } catch (e) { ie = null; }
-    if (!org || !sup) return false;
+    /* ================= PREMIUM RESTORATION ==================================
 
-    const own = !!(sup.installationModel && /in-house|own team/i.test(sup.installationModel));
-    const madeIn = (P.manufactureCountry && P.manufactureCountry !== 'unknown')
-                     ? P.manufactureCountry : '';
-    if (!(own && sup.deliveryConfirmed && sup.installationConfirmed && madeIn)) return false;
+       The benchmark is this function as it stood on main at 422f1dd. Its eight
+       movements are restored in order and in the original .aa-* grammar:
 
-    const when  = aaDate(sup.checkedAt || (ie && ie.checkedAt) || '');
-    const yrM   = String((ie && ie.reason) || '').match(/since\s+((19|20)\d{2})/i);
-    const year  = yrM ? yrM[1] : '';
-    const years = year ? ((new Date()).getFullYear() - parseInt(year, 10)) : 0;
-    const stdM  = String(P.manufactureEvidence || '').match(/\bI\.S\.\s?\d{3}\b/);
-    const std   = stdM ? stdM[0].replace(/\s+/g, '') : '';
-    /* The frozen caption names the county. Atlas holds it inside the
-       contracting entity; the country is the fallback, never an invention. */
-    const cM    = String(sup.contractingEntity || '').match(/\bCo\.\s+[A-Z][a-z]+/);
-    const place = cM ? cM[0] : madeIn;
-    /* ISSUE 005 A2 — was gated on 'atlas-price', so the Published price
-       finding never appeared in the assessment for any product. Includes
-       partially verified records: the caption states the figure is the maker's
-       own rather than an Atlas estimate, and that is true of both. */
-    const priced = (typeof P.price === 'number' && isFinite(P.price)
-                    && comparePriceEvidenceState(P.priceBasis) !== 'unconfirmed');
+         masthead / conclusion + standfirst / rule / lede / EVIDENCE MATRIX /
+         footnote strip / methodology with sources nested inside it
 
-    /* ---- masthead. The section's single dateline. ---- */
+       Three things could not come back, because the data behind them is gone
+       from the 487 artefact and inventing it would be a lie:
+
+         "A manufacturer, not a middleman."  -> the governed organisation type
+         "Trading since 1998" at 86px        -> no adjudicated year field exists
+         "I.S.440" / Accreditation           -> manufactureEvidence is empty on
+                                                0 of 487 records
+         Sources: Assessed/Assessed/Assessed/Next -> read per record instead
+
+       Everything else is the old page. */
+    if (!host) return false;
+    const P        = product || {};
+    const org      = P.organisation || '';
+    const orgType  = pnSupplierOrgType(P);
+    const reviewed = pnSupplierReviewDate(P);
+    const srcUrl   = pnProductSourceUrl(P);
+    const loc      = pnSupplierLocality(P) || {};
+
+    /* The old footnote strip, with one mark per distinct source rather than one
+       per fact, so eight superscripts do not all point at the same record. */
+    const notes = [];
+    const note = function(text){
+      if (!text) return 0;
+      for (let i = 0; i < notes.length; i++) if (notes[i][1] === text) return notes[i][0];
+      notes.push([notes.length + 1, text]);
+      return notes.length;
+    };
+    const NOTE_PRODUCT  = function(){ return note('Atlas product record'); };
+    const NOTE_SUPPLIER = function(){
+      return note('Atlas supplier record' + (reviewed ? (', reviewed ' + reviewed) : '')); };
+
+    /* ---- (1) MASTHEAD. The section's single dateline. -------------------- */
     const mast = aaEl('div', 'aa-mast');
     mast.appendChild(aaEl('span', 'aa-mast-l', 'Atlas assessment'));
     mast.appendChild(aaEl('span', 'aa-mast-r',
-      org + (when ? ('  \u00b7  Assessed ' + when) : '')));
+      org + (reviewed ? ('  ·  Reviewed ' + reviewed) : '')));
     host.appendChild(mast);
 
-    /* ---- the conclusion ---- */
+    /* ---- (2) THE CONCLUSION. The old typographic drama, honest content. --- */
     const head = aaEl('div', 'aa-head');
     const hl = aaEl('div', 'aa-head-l');
-    const h  = aaEl('h4', 'aa-title');
-    h.appendChild(document.createTextNode('A manufacturer,'));
-    h.appendChild(document.createElement('br'));
-    h.appendChild(document.createTextNode('not a middleman.'));
-    hl.appendChild(h);
+    hl.appendChild(aaEl('p', 'aa-find-lab', 'Atlas records this supplier as'));
+    hl.appendChild(aaEl('h4', 'aa-title', orgType || org || 'this supplier'));
     const hr = aaEl('div', 'aa-head-r');
-    hr.appendChild(aaEl('p', 'aa-stand',
-      'Everything Atlas has established about the maker points the same way.'));
+    const stand = [];
+    if (typeof loc.jurisdiction === 'string' && loc.jurisdiction.trim())
+      stand.push('Operating in ' + pnAssessCase(loc.jurisdiction.trim().replace(/\.$/, '')) + '.');
+    if (P.name) stand.push('This assessment covers ' + P.name + '.');
+    if (stand.length) hr.appendChild(aaEl('p', 'aa-stand', stand.join(' ')));
     head.appendChild(hl); head.appendChild(hr);
     host.appendChild(head);
 
+    /* ---- (3) THE RULE ---------------------------------------------------- */
     host.appendChild(aaEl('div', 'aa-rule'));
 
-    /* ---- the evidence. The argument first, its supports beneath. ---- */
-    let mark = 0;
-    const notes = [];
-    mark += 1;
-    const lede = aaEl('p', 'aa-lede');
-    lede.appendChild(document.createTextNode(
-      'Design, manufacture, delivery and installation are carried out by ' + org + '.'));
-    lede.appendChild(document.createElement('br'));
-    lede.appendChild(document.createTextNode('Nobody is subcontracted in.'));
-    lede.appendChild(aaEl('span', 'aa-sup', String(mark)));
-    host.appendChild(lede);
-    notes.push([mark, 'Stated scope of works']);
-
-    const finds = aaEl('div', 'aa-finds');
-    let placed = 0;
-
-    if (year) {
-      mark += 1; placed += 1;
-      const cell = aaEl('div', 'aa-find aa-find--lead');
-      const box  = aaEl('div', null);
-      box.appendChild(aaEl('p', 'aa-find-lab', 'Trading since'));
-      box.appendChild(aaFig('aa-fig aa-fig--big', year, mark));
-      cell.appendChild(box);
-      cell.appendChild(aaEl('p', 'aa-find-cap',
-        years + ' years building garden rooms in Ireland.'));
-      finds.appendChild(cell);
-      notes.push([mark, 'Company trading record']);
+    /* ---- (4) WHY THIS IS IN YOUR RESULTS ---------------------------------
+       In the opening rhythm as a kicker, not as a panel. One paragraph at
+       standfirst weight. Every clause states an input the ranking already
+       used, read back through the function that computed it. */
+    const why = pnAssessWhy(P);
+    if (why.length) {
+      host.appendChild(aaEl('p', 'aa-find-lab', 'Why you are seeing this'));
+      host.appendChild(aaEl('p', 'aa-stand', why.join(' ')));
     }
 
-    if (std) {
-      mark += 1; placed += 1;
-      const cell = aaEl('div', 'aa-find');
-      cell.appendChild(aaEl('p', 'aa-find-lab', 'Accreditation'));
-      cell.appendChild(aaFig('aa-fig', std, mark));
-      cell.appendChild(aaEl('p', 'aa-find-cap',
-        'NSAI timber\u2011frame standard, held for their own factory in ' + place + '.'));
-      finds.appendChild(cell);
-      notes.push([mark, 'NSAI register']);
+    /* ---- (5) THE SLOT IS GONE --------------------------------------------
+       STAGE 4.1 — a governed HOMEOWNER IMPLICATION was being promoted to a
+       prominent position simply because one existed. There is no rule that can
+       tell a consequential statement from a procedural one, and inventing a
+       replacement is not allowed, so the slot is removed rather than filled.
+       The matrix follows the rule directly and the page is stronger for it. */
+
+    /* ---- (6) THE EVIDENCE MATRIX. The heart of the old page, restored. ----
+       One lead cell carrying the single structural number Atlas holds -- a
+       published price or a floor area, never a figure parsed out of prose --
+       and every remaining governed layer beside it. No cap: .aa-finds wraps. */
+    const fig  = pnAssessNumericFact(P);
+    const rows = pnAssessFindings(P, fig ? fig.label : null);
+    if (fig || rows.length) {
+      const finds = aaEl('div', 'aa-finds');
+      if (fig) {
+        const cell = aaEl('div', 'aa-find aa-find--lead');
+        const box  = aaEl('div', null);
+        box.appendChild(aaEl('p', 'aa-find-lab', fig.label));
+        box.appendChild(aaFig('aa-fig aa-fig--big', fig.value,
+          note(fig.source === 'price' ? 'Published by the maker' : 'Atlas product record')));
+        cell.appendChild(box);
+        if (fig.caption) cell.appendChild(aaEl('p', 'aa-find-cap', fig.caption));
+        finds.appendChild(cell);
+      }
+      /* ONE elected finding may take the second dominant position, chosen by a
+         fixed order of consequence to the homeowner and never by length or by
+         how the sentence reads. Installation leads it because it decides
+         whether the price above is the whole price. Measured across 487:
+         Installation 432, Year-round use 10, Irish availability 5,
+         Dimensions 4, none available 36. */
+      const AA_PRIMARY_ORDER = ['Installation', 'Irish availability',
+        'Year-round use', 'Warranty', 'Dimensions', 'Floor area',
+        'Electrical', 'Glazing'];
+      /* STAGE 4.4 — up to TWO key facts, by the same fixed order. */
+      const key = [];
+      for (let o = 0; o < AA_PRIMARY_ORDER.length && key.length < 2; o++) {
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i].lab === AA_PRIMARY_ORDER[o] && key.indexOf(i) < 0) { key.push(i); break; }
+        }
+      }
+      const mProd = rows.length ? NOTE_PRODUCT() : 0;
+      /* The supporting specification sits in its own, tighter grid so the
+         rhythm changes as well as the size. */
+      const spec = aaEl('div', 'aa-finds');
+      spec.setAttribute('data-group', 'spec');
+      let specN = 0;
+      for (let i = 0; i < rows.length; i++) {
+        const isKey = key.indexOf(i) > -1;
+        const cell = aaEl('div', 'aa-find');
+        cell.setAttribute('data-level', isKey ? 'key' : 'spec');
+        cell.appendChild(aaEl('p', 'aa-find-lab', rows[i].lab));
+        const v = aaFig('aa-fig', rows[i].text, (i === 0 ? mProd : 0));
+        if (isKey) v.setAttribute('data-primary', '1');
+        cell.appendChild(v);
+        if (rows[i].cap) cell.appendChild(aaEl('p', 'aa-find-cap', rows[i].cap));
+        if (isKey) { finds.appendChild(cell); } else { spec.appendChild(cell); specN++; }
+      }
+      host.appendChild(finds);
+      if (specN) host.appendChild(spec);
     }
 
-    if (priced) {
-      mark += 1; placed += 1;
-      const cell = aaEl('div', 'aa-find');
-      cell.appendChild(aaEl('p', 'aa-find-lab', 'Published price'));
-      cell.appendChild(aaFig('aa-fig', pnPriceDisplay(P), mark));
-      cell.appendChild(aaEl('p', 'aa-find-cap',
-        'The maker\u2019s own published figure, not an Atlas estimate.'));
-      finds.appendChild(cell);
-      notes.push([mark, 'Published price list']);
+    /* ---- (6) THE MAKER BAND ---------------------------------------------
+       Company evidence, scannable, and still marked as company evidence. The
+       strongest governed sentence leads it; the rest read as label-and-value
+       lines instead of a stacked definition list. */
+    const ctx = pnAssessContext(P);
+    if (ctx.length) {
+      const band = aaEl('div', 'aa-mkr');
+      const blab = aaEl('p', 'aa-find-lab',
+        'What Atlas holds on ' + (org || 'the maker'));
+      const mS = NOTE_SUPPLIER();
+      if (mS) blab.appendChild(aaEl('span', 'aa-sup', String(mS)));
+      band.appendChild(blab);
+      let lead = -1;
+      for (let i = 0; i < ctx.length; i++) {
+        const at0 = String(ctx[i]).indexOf(': ');
+        const val = at0 > 0 ? String(ctx[i]).slice(at0 + 2) : String(ctx[i]);
+        if (val.length >= 40 && val.length <= 190 && pnAssessSubstantive(val)) { lead = i; break; }
+      }
+      if (lead > -1) {
+        const at1 = String(ctx[lead]).indexOf(': ');
+        band.appendChild(aaEl('p', 'aa-stand',
+          pnAssessCase(String(ctx[lead]).slice(at1 + 2)).replace(/^Yes — /, '')));
+      }
+      for (let i = 0; i < ctx.length; i++) {
+        if (i === lead) continue;
+        const at = String(ctx[i]).indexOf(': ');
+        const row = aaEl('div', 'aa-mkr-row');
+        if (at > 0) {
+          row.appendChild(aaEl('span', 'aa-mkr-k', String(ctx[i]).slice(0, at)));
+          row.appendChild(aaEl('span', 'aa-mkr-v', pnAssessCase(String(ctx[i]).slice(at + 2))));
+        } else {
+          row.appendChild(aaEl('span', 'aa-mkr-v', pnAssessCase(ctx[i])));
+        }
+        band.appendChild(row);
+      }
+      host.appendChild(band);
     }
 
-    if (!placed) return false;
-    host.appendChild(finds);
+    /* ---- (7) THE EVIDENCE FOOTER ----------------------------------------
+       Sources, what is still open, the footnotes and the one principle, all at
+       metadata weight in a single band. The two paragraphs that used to
+       explain how Atlas works are gone: the source states and the still-open
+       list demonstrate the same thing without narrating it. */
+    const foot = aaEl('div', 'aa-ev-foot');
 
-    const nl = aaEl('p', 'aa-notes');
-    notes.forEach(function(n, i){
-      if (i) nl.appendChild(document.createTextNode('  \u00b7  '));
-      const sp = document.createElement('sup');
-      sp.textContent = String(n[0]);
-      nl.appendChild(sp);
-      nl.appendChild(document.createTextNode('\u200a ' + n[1]));
-    });
-    host.appendChild(nl);
+    const cSrc = aaEl('div', 'aa-ev-col');
+    const rowsSrc = [];
+    const vs = pnAssessPlainStatus(P.verificationStatus);
+    if (vs) rowsSrc.push(['Product record', vs, false]);
+    const pv = pnPriceView(P);
+    rowsSrc.push(['Price record',
+      pv.kind === 'ambiguous' ? 'Not confirmed'
+        : (!pv.known ? 'No published price held'
+        : (comparePriceEvidenceState(P.priceBasis) === 'confirmed' ? 'Verified' : 'Not verified')), false]);
+    if (reviewed) rowsSrc.push(['Supplier record', 'Reviewed ' + reviewed, true]);
+    if (srcUrl) rowsSrc.push(['The maker’s own website',
+      String(srcUrl).replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''), true]);
+    if (rowsSrc.length) {
+      cSrc.appendChild(aaEl('p', 'aa-lab', 'Sources'));
+      const grid = aaEl('div', 'aa-sources-grid');
+      for (let i = 0; i < rowsSrc.length; i++) {
+        const cell = aaEl('div', null);
+        cell.appendChild(aaEl('p', 'aa-src-name', rowsSrc[i][0]));
+        cell.appendChild(aaEl('p', 'aa-src-state' + (rowsSrc[i][2] ? ' aa-src-state--live' : ''),
+          rowsSrc[i][1]));
+        grid.appendChild(cell);
+      }
+      cSrc.appendChild(grid);
+      foot.appendChild(cSrc);
+    }
 
-    /* ---- how Atlas reaches a recommendation ---- */
-    const meth = aaEl('div', 'aa-method');
-    const cols = aaEl('div', 'aa-method-cols');
-    const ml = aaEl('div', 'aa-method-l');
-    ml.appendChild(aaEl('p', 'aa-lab', 'How Atlas reaches a recommendation'));
-    const pr = aaEl('p', 'aa-principle');
-    pr.appendChild(document.createTextNode('No single source settles'));
-    pr.appendChild(document.createElement('br'));
-    pr.appendChild(document.createTextNode('a recommendation.'));
-    ml.appendChild(pr);
-    const mr = aaEl('div', 'aa-method-r');
-    mr.appendChild(aaEl('p', 'aa-para',
-      'Atlas brings together manufacturer information, public records, technical '
-      + 'evidence and independent customer experience into a single assessment. '
-      + 'Together they provide a fuller picture.'));
-    cols.appendChild(ml); cols.appendChild(mr);
-    meth.appendChild(cols);
+    const cRight = aaEl('div', 'aa-ev-col');
+    const open = pnAssessCaveats(P);
+    if (open.length) {
+      cRight.appendChild(aaEl('p', 'aa-lab', 'Still checking'));
+      for (let i = 0; i < open.length; i++) cRight.appendChild(aaEl('p', 'aa-src-state', open[i]));
+    }
+    /* STAGE 4.3 — the explanatory sentence is gone and is NOT replaced. The
+       source states and the still-open list already show what it described. */
+    if (open.length || cSrc.children) foot.appendChild(cRight);
+    host.appendChild(foot);
 
-    const srcWrap = aaEl('div', 'aa-sources');
-    srcWrap.appendChild(aaEl('p', 'aa-lab', 'Sources'));
-    const grid = aaEl('div', 'aa-sources-grid');
-    [['Manufacturer information', 'Assessed', false],
-     ['Public records',           'Assessed', false],
-     ['Technical evidence',       'Assessed', false],
-     ['Independent customer experience', 'Next', true]
-    ].forEach(function(row){
-      const cell = aaEl('div', null);
-      cell.appendChild(aaEl('p', 'aa-src-name', row[0]));
-      cell.appendChild(aaEl('p', 'aa-src-state' + (row[2] ? ' aa-src-state--live' : ''), row[1]));
-      grid.appendChild(cell);
-    });
-    srcWrap.appendChild(grid);
-    meth.appendChild(srcWrap);
-    host.appendChild(meth);
+    if (notes.length) {
+      const nl = aaEl('p', 'aa-notes');
+      for (let i = 0; i < notes.length; i++) {
+        if (i) nl.appendChild(document.createTextNode('  ·  '));
+        const sp = document.createElement('sup');
+        sp.textContent = String(notes[i][0]);
+        nl.appendChild(sp);
+        nl.appendChild(document.createTextNode('  ' + notes[i][1]));
+      }
+      host.appendChild(nl);
+    }
 
+    aaAdoptFindings(host);
+    return true;    aaAdoptFindings(host);
     return true;
   }
 
@@ -19973,6 +20774,13 @@
     return entries.length;
   }
 
+  /* The partitions the restored assessment reads. Everything here is already
+     declared in PN_DETAIL_LAUNCH or PN_DETAIL_VIEW; this names them in one
+     place so the repaint waits for exactly what it needs and nothing more. */
+  const AA_DETAIL_NEEDS = ['suppliers', 'sources', 'considerations',
+    'planningConsiderations', 'bestFor', 'strengths', 'typicalHomeowner',
+    'alternatives'];
+
   function renderTrustProfile(product, signals){
     const sec  = document.getElementById('aboutSupplier');
     const host = document.getElementById('supplierRow');
@@ -20004,6 +20812,34 @@
       const f0 = document.getElementById('supplierFoot');
       if (f0) { f0.textContent = ''; f0.hidden = true; }
       sec.hidden = false;
+
+      /* THE RUNTIME DEFECT THE RESET FORENSIC FOUND.
+
+         The detail partitions are fetched lazily. This function ran the
+         assessment synchronously, before any of them had landed, and never ran
+         it again -- so the homeowner saw a page with no lede, no product
+         evidence, no maker context and no closing question, on a record that
+         held all four. 451 of 487 products were in that state, between them
+         holding 1,667 readable product layers.
+
+         The fix is the convention this file already uses twice: paint now,
+         repaint once the data arrives. The product id is stamped on the host so
+         a promise that resolves after the homeowner has moved to another
+         product cannot overwrite the newer assessment, and the repaint happens
+         at most once. Nothing here touches ranking, eligibility, qualification
+         or any adjudication -- it only decides when the same renderer runs. */
+      try {
+        const pid = (product && product.id) || '';
+        host.setAttribute('data-aa-for', pid);
+        host.setAttribute('data-aa-painted', '');
+        Promise.all(AA_DETAIL_NEEDS.map(pnDetailPartitionReady)).then(function(){
+          if (host.getAttribute('data-aa-for') !== pid) return;
+          if (host.getAttribute('data-aa-painted') === '1') return;
+          host.setAttribute('data-aa-painted', '1');
+          host.innerHTML = '';
+          if (aaRenderAssessment(host, product, signals)) host.classList.add('aa');
+        });
+      } catch (e) { /* a failed fetch leaves the first paint standing */ }
       return;
     }
 
@@ -20295,33 +21131,67 @@
      and that is all this keeps. */
   /* RC-1c — the Ask Atlas checklist. Moved out of the retired evidence
      function unchanged: same source list, same markup, same host node. */
-  function renderAskAtlasPicks(){
+  function renderAskAtlasPicks(product){
+    /* ISSUE 008 — these were checkboxes. Nothing read them, nothing was sent,
+       and a tick that vanishes on the next navigation buys nothing to set
+       against the impression that pressing it does something. They are now
+       what they always were in substance: the questions Atlas thinks are worth
+       resolving, written to be read and taken to the supplier.
+
+       LEVEL A+ — and now only the ones still worth resolving. Where Atlas has
+       established the product half, the question narrows to the property half
+       it can never answer. No answer is rendered here and no evidence is
+       repeated; the section states the remaining question and nothing else. */
     const al = document.getElementById('evidAsks');
     if (!al) return 0;
     al.innerHTML = '';
     al.className = 'ask-picks';
+    let shown = 0;
     EVID_ASK_SUPPLIER.forEach(function(q){
+      const narrowed = askProductHalfEstablished(product, q);
+      /* A question with no property half and nothing left to ask would be
+         dropped entirely here. None exists today -- every narrowed form is
+         authored -- and the guard says so rather than assuming it. */
+      const main = narrowed ? (q.narrowLabel || '') : (q.label || '');
+      if (!main) return;
+      const sub = narrowed ? (q.narrowDetail || '') : (q.detail || '');
       const li = document.createElement('li');
       li.className = 'ask-pick';
-      const lab = document.createElement('label');
-      lab.className = 'ask-pick-label';
-      const cb = document.createElement('input');
-      cb.type = 'checkbox'; cb.className = 'ask-pick-box';
-      cb.value = q.key; cb.setAttribute('data-ask-key', q.key);
-      const txt = document.createElement('span');
-      const main = document.createElement('span');
-      main.className = 'ask-pick-main'; main.textContent = q.label;
-      txt.appendChild(main);
-      if (q.detail) {
-        const sub = document.createElement('span');
-        sub.className = 'ask-pick-sub'; sub.textContent = q.detail;
-        txt.appendChild(sub);
+      if (narrowed) li.setAttribute('data-ask-narrowed', '1');
+      const m = document.createElement('span');
+      m.className = 'ask-pick-main'; m.textContent = main;
+      li.appendChild(m);
+      if (sub) {
+        const s = document.createElement('span');
+        s.className = 'ask-pick-sub'; s.textContent = sub;
+        li.appendChild(s);
       }
-      lab.appendChild(cb); lab.appendChild(txt);
-      li.appendChild(lab);
       al.appendChild(li);
+      shown++;
     });
-    return EVID_ASK_SUPPLIER.length;
+    return shown;
+  }
+
+  /* ASK PLOTNUA — the two context fields, and nothing else.
+
+     Product name and organisation are the ONLY product facts that travel with
+     a question. Both are governed, both are homeowner-readable, and the pair
+     is unique across all 487 records -- measured, 487 distinct combinations
+     with zero duplicates -- so an internal identifier would add nothing that
+     is not already here. `product.id` is an Airtable record id and is
+     deliberately not sent; neither is evidenceTier, evidenceScope,
+     qualification, price, the Eircode or the geocoded address.
+
+     Absent values write an empty string rather than the word "undefined". */
+  function askOwnSetContext(product){
+    const p = document.getElementById('askOwnProduct');
+    const s = document.getElementById('askOwnSupplier');
+    if (!p || !s) return;
+    const name = (product && typeof product.name === 'string') ? product.name.trim() : '';
+    const org  = (product && typeof product.organisation === 'string')
+      ? product.organisation.trim() : '';
+    p.value = name;
+    s.value = org;
   }
 
   function renderBeforeYouCommit(primaryResult){
@@ -20332,7 +21202,10 @@
       return false;
     }
     if (askSec) { askSec.hidden = false; askSec.removeAttribute('aria-hidden'); }
-    renderAskAtlasPicks();
+    /* LEVEL A+ — the questions are now per-product, so the product travels
+       with them. `product` is already established non-null above. */
+    renderAskAtlasPicks(product);
+    askOwnSetContext(product);
 
     /* The three sections this function has always driven, unchanged. They read
        the same supplier signals, so they cannot disagree with one another. */
@@ -20953,8 +21826,25 @@
        Copy is the founder's own, verbatim. Each line states what the lens
        selects, in the second person, so the card answers "why am I looking at
        this?" before it answers "what is it?". */
+    /* ISSUE 007 — MOST LOCAL IS SUPPRESSED FOR LAUNCH, not renamed and not
+       approximated. The question is a good one and the wording is kept
+       verbatim for the day Atlas can answer it; what is missing is the data,
+       not the design.
+
+       Measured: there are no supplier coordinates anywhere, no supplier county
+       field and no structured service area. installationModel names an Irish
+       county on 22 of 487 records and 16 of those hedge it in the same
+       sentence ("REGIONAL, not nationwide"). Irish jurisdiction, Irish
+       availability, manufacturing location and headquarters are none of them
+       proximity, so none of them may stand in for it.
+
+       Re-enabling is one word: delete `suppressed`. What has to arrive first
+       is a canonical supplier address with latitude and longitude, or a
+       structured list of counties served — then this lens can compare the
+       homeowner's already-geocoded property against governed supplier data. */
     { id:'local',      mark:'\uD83D\uDCCD', label:'Most Local',
-      say:'The closest verified option to your property.' },
+      say:'The closest verified option to your property.',
+      suppressed:true },
     { id:'european',   mark:'\uD83C\uDDEA\uD83C\uDDFA', label:'Best European',
       say:'The strongest option built outside Ireland.' },
     { id:'wildcard',   mark:'\u2B50', label:'Wildcard',
@@ -21208,16 +22098,10 @@
 
     RESULTS_LENSES.forEach(function(lens){
 
-      if (lens.id === 'local') {
-        /* Blocked on supplier geography, not on design. Two of five suppliers
-           have no locatable address and none are geocoded. Estimating from a
-           county name is not an option: "closest to you" is a distance claim,
-           and an unmeasured distance claim is an invention. */
-        out.push(raStateCard(lens, 'not-yet',
-          'Atlas is still confirming where every maker builds. This opens '
-          + 'automatically once that is complete.'));
-        return;
-      }
+      /* A suppressed lens renders NOTHING — no card, no shell, no state note,
+         no promise about when it will open. The homeowner simply sees the
+         lenses Atlas can answer today. */
+      if (lens.suppressed) return;
 
       if (lens.id === 'european') {
         if (euro) { out.push(raProductCard(lens, euro)); return; }
@@ -22343,7 +23227,7 @@
        not have to infer it from four cards. */
     const railNote = document.getElementById('altRailNote');
     if (railNote) {
-      railNote.textContent = 'Not runners-up. Four different questions about the same evidence.';
+      railNote.textContent = 'Not runners-up. Different questions about the same evidence.';
       railNote.hidden = lensCount === 0;
     }
     if (els.matchAlternativesHeading) els.matchAlternativesHeading.hidden = lensCount === 0;
@@ -25645,17 +26529,77 @@
      say "we've contacted Shomera", because we have not, and a trust page
      cannot open with a claim the next sentence disproves. */
   (function wireAskAtlas(){
-    const btn = document.getElementById('askAtlasBtn');
-    const note = document.getElementById('askAtlasNote');
-    if (!btn || !note) return;
-    btn.addEventListener('click', function(){
-      btn.disabled = true;
-      btn.textContent = 'Asked';
-      btn.classList.add('is-asked');
-      note.textContent = 'Noted. Atlas will take these questions to the supplier '
-        + 'and come back to you by email. Nothing has been sent yet — this is a '
-        + 'preview of a service we are still building.';
-      note.classList.add('is-asked');
+    /* ASK PLOTNUA. The disclosure is unchanged; what follows it is new.
+
+       SUBMIT IS ALWAYS INTERCEPTED. There is no native-POST fallback on
+       purpose: a native POST leaves Results and lands the homeowner on a
+       Formspree page, destroying the assessment they were reading. Where fetch
+       is unavailable the honest failure state appears instead, with the
+       published address, and the typed question is still on screen.
+
+       NOTHING ELSE ON THIS SCREEN SUBMITS. The four standard questions have no
+       control, no state and no field; they are not read here and are not sent. */
+    const toggle = document.getElementById('askOwnToggle');
+    const form   = document.getElementById('askOwnForm');
+    const field  = document.getElementById('askOwnField');
+    const send   = document.getElementById('askOwnSend');
+    const state  = document.getElementById('askOwnState');
+    const done   = document.getElementById('askOwnDone');
+    if (!toggle || !form || !field || !send || !state || !done) return;
+
+    toggle.addEventListener('click', function(){
+      const open = form.hidden;
+      form.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.classList.toggle('is-open', open);
+      if (open) field.focus();
+    });
+
+    function say(msg, warn){
+      state.textContent = msg || '';
+      state.className = 'ask-own-state' + (warn ? ' is-warn' : '');
+    }
+    function fail(){
+      sending = false;
+      send.disabled = false;
+      send.textContent = 'Ask PlotNua';
+      /* The question is deliberately NOT cleared. A failed send must not cost
+         the homeowner what they wrote. */
+      say('That didn\u2019t send. You can email hello@plotnua.ie.', true);
+    }
+
+    let sending = false;
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+
+      /* Trim first, and trim in the field, so what is sent is what is seen. */
+      const q = String(field.value || '').trim();
+      field.value = q;
+      if (!q) { say('Add your question first.', true); field.focus(); return; }
+      if (sending) return;              /* duplicate submit while in flight */
+
+      if (typeof window.fetch !== 'function' || typeof window.FormData !== 'function') {
+        say('That didn\u2019t send. You can email hello@plotnua.ie.', true);
+        return;
+      }
+
+      sending = true;
+      send.disabled = true;
+      send.textContent = 'Sending\u2026';
+      say('');
+
+      window.fetch(form.action, {
+        method: 'POST',
+        body: new window.FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function(r){
+        if (!r || !r.ok) throw new Error('HTTP ' + (r ? r.status : 'none'));
+        /* The form and its opener are replaced by the confirmation, so there
+           is nothing left to press twice. */
+        form.hidden = true;
+        toggle.hidden = true;
+        done.hidden = false;
+      }).catch(fail);
     });
   })();
   // RESULTS v4.0 — MY PLOT POPUP: "Implement using the EXACT same popup
