@@ -13396,6 +13396,22 @@
     // same convention as filterPool above — so the honesty gate can ask
     // whether a view is AVAILABLE without re-running qualification.
     Object.defineProperty(rows, '__scored', { value: ordered, enumerable: false });
+    /* THE ELIGIBLE ALTERNATIVE SET, CARRIED OUT — same convention, one line.
+
+       `onPreference` above is every scored candidate on the leading appearance
+       band: the exact collection the carousel draws from BEFORE diversify()
+       truncates it to CAROUSEL_DEPTH - 1. The Local Option needs to search that
+       set, because a supplier based in the homeowner's county rarely survives
+       into eleven diversified rows — measured, 0 to 2 of Dublin's 24 eligible
+       products reached the tail, and the lens said "we haven't confirmed a
+       supplier based in your county" while 24 sat in the eligible set.
+
+       IT IS NOT __scored. That carries all 487, including products OUTSIDE the
+       leading band which this function deliberately withholds from alternatives.
+       Exposing onPreference keeps eligibility exactly as it already is; reading
+       __scored would widen it. Nothing here re-ranks, re-scores or re-filters —
+       the array is the one already built above. */
+    Object.defineProperty(rows, '__eligible', { value: onPreference, enumerable: false });
     // RESULTS V2 SPRINT 1 — the shape of the investigation, recorded at the
     // point where it is actually known. `pool` is what survived the budget
     // filter; `allCandidates` is everything Atlas holds. budgetApplied is
@@ -22275,6 +22291,69 @@
     return null;
   }
 
+  /* THE LOCAL OPTION, RESOLVED ONCE — and asked the same way by both readers.
+
+     THE FOUNDER'S FROZEN DEFINITION: the strongest eligible option Atlas can
+     evidence as physically based in the homeowner's county.
+
+     "Strongest" needs no new model. The eligible set arrives in the existing
+     ranked order, so the first same-county row in it is the strongest one; and
+     the PRIMARY outranks every alternative, so when the primary is same-county
+     it is the strongest and is reported as such. That is why the primary is
+     tested FIRST — production tested it second, and on the 16 county-journeys
+     where both qualify it showed an alternative while the recommendation the
+     homeowner was already reading was itself based in their county.
+
+     WHICH COLLECTION. rows.__eligible — the on-band set the carousel itself
+     draws from, before diversify() cuts it to eleven. If it is absent for any
+     reason the function falls back to the list it was handed, which is exactly
+     the previous behaviour: a missing pool degrades to the old answer rather
+     than to a wrong one.
+
+     UNKNOWN IS NOT FALSE. No county evidence for any eligible product means
+     null, and the caller says so honestly. */
+  function raLocalResolve(rows, county, primaryProduct){
+    if (!county) return null;
+    if (primaryProduct && pnSupplierBasedInCounty(primaryProduct, county)) {
+      return { how: 'primary', product: primaryProduct, county: county };
+    }
+    const pool = (rows && rows.__eligible && rows.__eligible.length)
+      ? rows.__eligible : (rows || []);
+    const pick = raLocalPickLocated(pool, county, primaryProduct && primaryProduct.id);
+    return pick ? { how: 'located', product: pick.product, county: county } : null;
+  }
+
+  /* DOES ATLAS HOLD ANY SUPPLIER BASED IN THIS COUNTY AT ALL?
+
+     A DIFFERENT QUESTION FROM THE ONE THE LENS ASKS. raLocalResolve() asks
+     whether a same-county option is strong enough for THIS journey. This asks
+     whether Atlas can evidence a same-county supplier AT ALL, on any journey.
+     The first is about a match; the second is about the world.
+
+     It exists because the two answers need different sentences. Telling a
+     Dublin homeowner "we haven't confirmed a supplier based in your county"
+     while Atlas holds seven Dublin organisations and 24 of their products is
+     not a hedge, it is wrong.
+
+     SAME GOVERNED READER, NO NEW EVIDENCE. pnSupplierBasedInCounty() reads the
+     frozen PN_SUPPLIER_COUNTY premises adjudication and nothing else, so this
+     predicate cannot reach service coverage, delivery, proximity or any other
+     proxy — none of which is locality, and none of which becomes sayable here.
+
+     A PRODUCT IS REQUIRED, not merely a map entry. The sentence this gates
+     invites the homeowner to think there is something to be recommended, so an
+     organisation Atlas holds no products for must not license it. Measured on
+     the current data the two tests agree on all 26 counties. */
+  function pnCountyHasLocatedSupplier(county){
+    if (!county) return false;
+    let pool;
+    try { pool = getEligibleAtlasPool() || []; } catch (e) { return false; }
+    for (let i = 0; i < pool.length; i++) {
+      if (pnSupplierBasedInCounty(pool[i], county)) return true;
+    }
+    return false;
+  }
+
   function raProductCard(lens, product, note){
     const b = raShell(lens);
     const name = document.createElement('div');
@@ -22388,7 +22467,14 @@
         const county = pnHomeownerCounty();
 
         if (county) {
-          const local = raLocalPickLocated(alternativeResults, county, primary && primary.id);
+          const local = raLocalResolve(alternativeResults, county, primary);
+          if (local && local.how === 'primary') {
+            /* The recommendation itself is the strongest same-county option.
+               Showing it again as its own Local Option is not an answer. */
+            out.push(raStateCard(lens, 'not-applicable',
+              'Your recommendation is based in your county.'));
+            return;
+          }
           if (local) {
             /* "Located in Wicklow." — the county comes from the match itself,
                never hard-coded, and it is the SAME canonical string on both
@@ -22420,11 +22506,10 @@
              Without this branch the rail would say "we haven't confirmed a
              supplier based in your county" directly beneath a recommendation
              that is based in it, which is false. */
-          if (primary && pnSupplierBasedInCounty(primary, county)) {
-            out.push(raStateCard(lens, 'not-applicable',
-              'Your recommendation is based in your county.'));
-            return;
-          }
+          /* The primary case is handled ABOVE, before the alternatives, because
+             the primary outranks them and "strongest" is the definition. This
+             branch is retained as an explicit no-op guard so the reading order
+             of the file still shows both outcomes side by side. */
         }
 
         /* NO COUNTY, OR NO COUNTY-NAMED EVIDENCE. ONE SENTENCE, NO GLOSS.
@@ -22441,10 +22526,33 @@
            it names no database, no missing data, no verification, no distance
            and no date. Absence of evidence is never rendered as "nobody serves
            your county". */
-        const unres = raShell(
-          { id: lens.id, mark: lens.mark, label: lens.label,
-            say: 'We haven\u2019t yet confirmed a supplier based in your county.' },
-          'is-not-yet');
+        /* THE SENTENCE NO LONGER DENIES THAT SUPPLIERS EXIST. "a strong
+           match", not "a supplier": what PlotNua has failed to confirm is a
+           recommendation, which is the truth on every journey that reaches
+           here — including the ones where Atlas holds local suppliers it
+           cannot yet stand behind for this search. */
+        const notYet = { id: lens.id, mark: lens.mark, label: lens.label,
+          say: 'We haven\u2019t yet confirmed a strong match based in your county.' };
+
+        /* THE SECOND SENTENCE IS A POSITIVE CLAIM, SO IT IS GATED ON POSITIVE
+           EVIDENCE. It is said only where Atlas can actually evidence a
+           supplier based in this county — never inferred from the fact that
+           the match failed, which would be exactly the guess this layer
+           refuses. raStateCard() is the shipped builder for a state card with
+           a sentence beneath it; it is called, not reimplemented. */
+        if (pnCountyHasLocatedSupplier(county)) {
+          out.push(raStateCard(notYet, 'not-yet',
+            'Atlas found local suppliers, but not enough evidence to '
+            + 'recommend one for this search.'));
+          return;
+        }
+
+        /* NO PREMISES EVIDENCE FOR THIS COUNTY — SO NO CLAIM ABOUT IT.
+           The homeowner is NOT told that no supplier exists there. UNKNOWN is
+           not FALSE: 43 of 61 suppliers have no premises evidence, and the
+           county may well have one Atlas has not yet governed. One sentence,
+           no gloss, exactly as before. */
+        const unres = raShell(notYet, 'is-not-yet');
         unres.foot.remove();
         out.push(unres.card);
         return;
@@ -23105,8 +23213,12 @@
     try {
       const county = pnHomeownerCounty();
       if (county && primary) {
-        const lp = raLocalPickLocated(candidates, county, primary.id);
-        if (lp && lp.product) localId = lp.product.id;
+        /* THE SAME RESOLVER, THE SAME ARGUMENTS the lens itself uses — asked of
+           `alternativeResults`, not the sliced copy, because .slice() drops the
+           non-enumerable eligible set. When the lens resolved to the PRIMARY
+           there is nothing to exclude: the primary is not in this list. */
+        const lp = raLocalResolve(alternativeResults, county, primary);
+        if (lp && lp.how === 'located' && lp.product) localId = lp.product.id;
       }
     } catch (e) { localId = null; }
     if (localId) {
@@ -23693,6 +23805,13 @@
     }
 
     const [primaryResult, ...alternativeResults] = results;
+    /* Rest-destructuring builds another new array, so the eligible set is
+       carried once more — onto the exact object renderLensRail() and
+       renderAltResults() already receive. No function signature changes. */
+    try {
+      Object.defineProperty(alternativeResults, '__eligible',
+        { value: (results && results.__eligible) || [], enumerable: false });
+    } catch (e) { /* absent simply means the lens falls back to the tail */ }
 
     // RESULTS v3.0 — SCENE 1: "Your Brief" bullets, rendered once per
     // results computation regardless of primaryResult (it only reads
@@ -28158,6 +28277,14 @@
         },
       });
       results = ranked.map(toResult);
+      /* .map() returns a NEW array, and a non-enumerable property does not
+         travel with it — which is why the Local Option only ever saw the
+         eleven-row carousel. The eligible set is re-attached, by the same
+         convention, so the lens can read it without a signature change. */
+      try {
+        Object.defineProperty(results, '__eligible',
+          { value: (ranked && ranked.__eligible) || [], enumerable: false });
+      } catch (e) { /* a frozen array leaves the previous behaviour standing */ }
       // PB046-S1 — cache the Property Brain answer and the pool the filters
       // may draw from. Both are built from THIS single ranking run. Reset
       // restores the cached array itself, so "exactly as it was" is not a
