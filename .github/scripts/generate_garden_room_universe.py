@@ -171,6 +171,26 @@ DETAIL_PROVENANCE_KEY = "sources"
 # Each entry is a label read out of `Headquarters`, exactly. A label absent from
 # this map is a label the homeowner cannot see, which is how CONTACT: stays out.
 DETAIL_SUPPLIER_KEY = "suppliers"
+
+# ISSUE 007 — SUPPLIER OPERATIONS EVIDENCE. Certified by a person, recorded in
+# a generator-side input file, never published as its own artefact and never
+# read back from Airtable. Order is the contract order; unknown keys are
+# ignored here and refused by the validator.
+SUPPLIER_OPS_KEYS = (
+    "installationType", "installationStatus",
+    "installationSourceUrl", "installationCheckedAt",
+    "roiDelivery", "roiInstallCoverage", "deliveryStatus",
+    "deliverySourceUrl", "deliveryCheckedAt",
+)
+SUPPLIER_OPS_FILE = Path(__file__).with_name("supplier-operations-evidence-v1.json")
+try:
+    SUPPLIER_OPS_EVIDENCE = json.loads(
+        SUPPLIER_OPS_FILE.read_text(encoding="utf-8")).get("organisations", {})
+except FileNotFoundError:
+    # Absent is a valid state: the partition simply carries prose only, exactly
+    # as it did before Issue 007. A missing certification file must never fail
+    # the whole universe run.
+    SUPPLIER_OPS_EVIDENCE = {}
 SUPPLIER_LABELS = {
     # exported key          Headquarters label        coverage /188
     "contractingEntity":    "LEGAL ENTITY",         #   51   27.1%
@@ -1334,6 +1354,28 @@ def main():
         _src = txt(cell(_r, "Sources"))
         if _src:
             _rec["sources"] = _src
+        # ---- ISSUE 007 — SUPPLIER OPERATIONS EVIDENCE ----------------------
+        # The Headquarters segments above are governed PROSE with no source and
+        # no per-segment date, so nothing derived from them can pass PlotNua's
+        # value-AND-source gate. These typed fields are the certified layer:
+        # each one is set only from a page whose visible content supports the
+        # claim, and each carries that page and the date it was read.
+        #
+        # Merged here, into `locality`, so it travels with the prose it types
+        # and stays inside the partition that NOTHING in the eligibility path
+        # reads. The keys are deliberately named apart from the frozen
+        # `deliveryConfirmed` / `installationConfirmed` that marketEligibility()
+        # branches on, and the validator refuses those names outright.
+        #
+        # Certification is a human act recorded in a file, not something this
+        # generator derives. An organisation absent from the file simply has no
+        # typed evidence — which is a finding, not a negative.
+        _ops = SUPPLIER_OPS_EVIDENCE.get(_oid)
+        if _ops:
+            for _k in SUPPLIER_OPS_KEYS:
+                _v = _ops.get(_k)
+                if isinstance(_v, str) and _v.strip():
+                    _rec[_k] = _v.strip()
         if not _rec:
             continue
         # `locality`, NOT `irish`. marketEligibility reads `.irish` and

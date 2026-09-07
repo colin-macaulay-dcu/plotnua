@@ -1,0 +1,553 @@
+{
+  "schema": "plotnua.supplier-operations-evidence",
+  "version": "1.0.0-scale",
+  "note": "GENERATOR INPUT, NEVER PUBLISHED. Typed Supplier Operations Evidence keyed by canonical Airtable organisation id. Every CONFIRMED value names the page whose visible content supports the claim and the date it was read. STATED_NOT_CERTIFIED means Atlas prose asserts something no read page supported. UNKNOWN asserts nothing. Organisations absent from this file were not read and carry no typed evidence — which is a finding, not a negative. Nothing here is read by marketEligibility(), getEligibleAtlasPool(), qualification, ranking or recommendation selection.",
+  "checkedAt": "2026-09-07",
+  "organisationsRead": 61,
+  "organisations": {
+    "recw124UIanKV5Ath": {
+      "name": "Shomera",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.shomera.ie/garden-rooms/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec0E8ongSL0hZnZR": {
+      "name": "Lasita Maja",
+      "installationType": "SUPPLY_ONLY",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.lasita.com/installation-support",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "reclA5R4kPCCwc8Pc": {
+      "name": "Gardenhouse24 Ireland",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://gardenhouse24.ie/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "receufKmrd8c4QgMv": {
+      "name": "Hansa24 Group",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recUnzSlV4tszVzg6": {
+      "name": "Ecohouse Building Systems",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recFQ1GyK0fq2fK4I": {
+      "name": "Sprout Pod",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://sproutpod.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "NATIONWIDE",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://sproutpod.ie/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "recLQOPHHfSrfs3xA": {
+      "name": "Quick-Garden",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recn9B3Qn43VUXxAg": {
+      "name": "Outdoor Living (ModPod)",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "rec7q7WitcIuY3phT": {
+      "name": "All In One Cabins",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://allinonecabins.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://allinonecabins.ie/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "recJwB6aXMbElG2Fm": {
+      "name": "Luxury Garden Studios",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recOjnbeotdf0jnqH": {
+      "name": "Adman Steel Sheds",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recefOJGKHPwabRhV": {
+      "name": "Loghouse",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.loghouse.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "NATIONWIDE",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://www.loghouse.ie/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "recfV4V49BHoMsYBA": {
+      "name": "Concept Modular",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "rechco59Sn6wp3Aiq": {
+      "name": "Garden Rooms",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recZcfloN72CBES6I": {
+      "name": "Modern Garden Rooms",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "rec0zLenIbn3nsvjh": {
+      "name": "Garden Office Solutions",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://gardenofficesolutions.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recExaEx7i1hqG6CD": {
+      "name": "MCD Garden Sheds",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://mcdgardensheds.ie/delivery-cancellations-returns/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "reccM9Gg66ZuZC0m3": {
+      "name": "All About Outdoors",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://allaboutoutdoors.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "reczankduIWGWwXKR": {
+      "name": "Live in Garden Pods",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://liveingardenpods.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "rectRQUdpY3t4ukdP": {
+      "name": "My Garden Room (Barna Buildings)",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec4VIYIbk68JihtK": {
+      "name": "Timber Living",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://timberliving.ie/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "recv6T9JI9T8aqcRO": {
+      "name": "MyCabin.ie",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recnvHCjmfim16w3q": {
+      "name": "Big Man Tiny Homes",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://bigmantinyhomes.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "reczne3oE3EHQyp7L": {
+      "name": "Granny Flats Dublin",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec7dG4sHJtzstIHo": {
+      "name": "Berko Pod Systems Ltd",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recDRvQusj5KgRU2s": {
+      "name": "Quinn Offsite Ltd",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recmW0HlJFr9GvLEj": {
+      "name": "Garden Solutions 4U",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recIFIi1fxjwc1g1C": {
+      "name": "Rayco Modular Homes",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://raycomodularhomes.ie/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://raycomodularhomes.ie/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "recePJOyXsH8LXtwf": {
+      "name": "Shanette Sheds",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recaVJQjZD9UV8JSs": {
+      "name": "The Pod Factory",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recfpcUL7s03Es3lV": {
+      "name": "Home Modular",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recZsdhQM53LBVyyg": {
+      "name": "Total Garden Rooms",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.totalgardenrooms.com/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rectTyBhqejHG4GQG": {
+      "name": "X-Gen Homes",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recyfWvDVODL06P8l": {
+      "name": "Yardbox",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.yardbox.co.uk/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recP4lqMNuNceOyNh": {
+      "name": "TimberIN",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://www.woodenhottubsale.co.uk/",
+      "deliveryCheckedAt": "2026-09-07"
+    },
+    "recAbCMI3LkwWO3Z6": {
+      "name": "Pineca Ireland",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recxdr0chc5ljRqfR": {
+      "name": "CG Garden Rooms (CG Joinery)",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec66sNzKArqeOU23": {
+      "name": "Ballyfree Garden Sheds",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recrtMY2s1Tabf06e": {
+      "name": "Modular Innovations",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recdkZXPh12FyiCRr": {
+      "name": "Elevate Modular",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "reczIVnJujZd8a2CK": {
+      "name": "Modular Outlook Ireland",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "recZVKy9FPReF7I9H": {
+      "name": "Auroom Wellness",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recsDmxfYLRJiaFmG": {
+      "name": "Bertilo",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recSDXX7gK0FT7g8G": {
+      "name": "Lugarde",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec5Dwr8vYDDkHEeW": {
+      "name": "Dunster House",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec17SIbblmee8Vs3": {
+      "name": "SIPS-House",
+      "installationType": "SUPPLY_ONLY",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://sips-house.com/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    },
+    "rec2URqKyVwlhHSBw": {
+      "name": "ÖÖD House",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "reclCNqekU666UWJA": {
+      "name": "Booths Garden Studios",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://boothsgardenstudios.co.uk/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recontC2BSomwggsc": {
+      "name": "Cabin Master",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.cabinmaster.co.uk/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recKazlmd4FCnanxR": {
+      "name": "Sanctum Garden Studios",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.sanctumgardenstudios.com/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recXGziDNcDnpz0iN": {
+      "name": "Waltons",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recbZVOTUMCmMphuj": {
+      "name": "Sonic Box Studios",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recJJ4jFPAMxw6IkY": {
+      "name": "Green Retreats",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recuCWhMIEWD1X1yE": {
+      "name": "Garden Office Buildings",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://gardenofficebuildings.co.uk/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec7wp2vzUC3dxcYr": {
+      "name": "Iglucraft",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recmBdXALBPGk5wSI": {
+      "name": "NOOK Prefab (espacio NOOK)",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://nookprefab.com/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rec8j9KTIVfQAVMzg": {
+      "name": "Oeco Garden Rooms",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://www.oecogardenrooms.co.uk/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recEMNNtEYy59gmbt": {
+      "name": "Koto",
+      "installationType": "SUPPLIER_INSTALLS",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://koto.co.uk/",
+      "installationCheckedAt": "2026-09-07",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "recgsaDsSVCCad0q4": {
+      "name": "KC Modular Buildings",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "rechsPFUooApigybT": {
+      "name": "Essex Garden Studios",
+      "installationType": "UNKNOWN",
+      "installationStatus": "STATED_NOT_CERTIFIED",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "STATED_NOT_CERTIFIED"
+    },
+    "reczQn59haPghHYmT": {
+      "name": "Vilarte",
+      "installationType": "UNKNOWN",
+      "installationStatus": "UNKNOWN",
+      "roiDelivery": "UNKNOWN",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "UNKNOWN"
+    }
+  }
+}

@@ -47,7 +47,60 @@ SUPPLIER_ALLOWED_KEYS = {
     "contractingEntity", "installationModel", "irishPresence", "deliveryCoverage",
     "manufacturingLocation", "jurisdiction", "evidenceTier", "evidenceScope",
     "sources",
+    # ISSUE 007 — SUPPLIER OPERATIONS EVIDENCE, the typed layer over the prose.
+    "installationType", "installationStatus",
+    "installationSourceUrl", "installationCheckedAt",
+    "roiDelivery", "roiInstallCoverage", "deliveryStatus",
+    "deliverySourceUrl", "deliveryCheckedAt",
 }
+# Closed vocabularies. A value outside these is refused rather than shown.
+SUPPLIER_OPS_ENUMS = {
+    "installationType":   {"SUPPLIER_INSTALLS", "THIRD_PARTY_INSTALLS", "SUPPLY_ONLY", "UNKNOWN"},
+    "installationStatus": {"CONFIRMED", "STATED_NOT_CERTIFIED", "UNKNOWN"},
+    "roiDelivery":        {"CONFIRMED", "EXCLUDED", "UNKNOWN"},
+    "roiInstallCoverage": {"NATIONWIDE", "REGIONAL", "NONE", "UNKNOWN"},
+    "deliveryStatus":     {"CONFIRMED", "STATED_NOT_CERTIFIED", "UNKNOWN"},
+}
+# THE GATE. A typed claim — positive OR negative — must name the page that
+# supports it and the date that page was read. UNKNOWN asserts nothing and
+# therefore needs nothing; it is a finding, not an absence of one.
+SUPPLIER_OPS_SOURCED = {
+    "installationStatus": ("installationSourceUrl", "installationCheckedAt"),
+    "deliveryStatus":     ("deliverySourceUrl", "deliveryCheckedAt"),
+}
+# The typed values that make a claim about the world, per lane. Any of these
+# present requires that lane's status to be CONFIRMED, which requires a source.
+SUPPLIER_OPS_CLAIMS = {
+    "installationType":   ("installationStatus",
+                           {"SUPPLIER_INSTALLS", "THIRD_PARTY_INSTALLS", "SUPPLY_ONLY"}),
+    "roiDelivery":        ("deliveryStatus", {"CONFIRMED", "EXCLUDED"}),
+    "roiInstallCoverage": ("deliveryStatus", {"NATIONWIDE", "REGIONAL", "NONE"}),
+}
+SUPPLIER_OPS_URL_RE = re.compile(r"^https://[^\s\"'<>]+$")
+
+
+def validate_supplier_ops(oid, loc, errors):
+    """ISSUE 007 — the typed operations layer. Additive; relaxes nothing."""
+    for key, allowed in SUPPLIER_OPS_ENUMS.items():
+        if key in loc and loc[key] not in allowed:
+            errors.append(f"{oid}.locality.{key}: not in the closed vocabulary: {loc[key]!r}")
+    for status_key, (url_key, date_key) in SUPPLIER_OPS_SOURCED.items():
+        confirmed = loc.get(status_key) == "CONFIRMED"
+        url, date = loc.get(url_key), loc.get(date_key)
+        if confirmed and not url:
+            errors.append(f"{oid}.locality.{status_key}: CONFIRMED without {url_key}")
+        if confirmed and not date:
+            errors.append(f"{oid}.locality.{status_key}: CONFIRMED without {date_key}")
+        if url and not confirmed:
+            errors.append(f"{oid}.locality.{url_key}: source present but {status_key} is not CONFIRMED")
+        if url and not SUPPLIER_OPS_URL_RE.fullmatch(str(url)):
+            errors.append(f"{oid}.locality.{url_key}: not an https page URL: {url!r}")
+        if date and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(date)):
+            errors.append(f"{oid}.locality.{date_key}: not an ISO date: {date!r}")
+    for claim_key, (status_key, claiming) in SUPPLIER_OPS_CLAIMS.items():
+        if loc.get(claim_key) in claiming and loc.get(status_key) != "CONFIRMED":
+            errors.append(f"{oid}.locality.{claim_key}: claims {loc[claim_key]!r} "
+                          f"while {status_key} is {loc.get(status_key)!r}")
 # Frozen for E3. marketEligibility() branches on these and getEligibleAtlasPool()
 # filters the pool on the result, so one of them appearing here would silently
 # move products in and out of Results.
@@ -115,6 +168,7 @@ def validate_supplier(doc, errors):
             hit = SUPPLIER_PERSONAL.search(v)
             if hit:
                 errors.append(f"{oid}.locality.{k}: personal contact data: {hit.group(0)!r}")
+        validate_supplier_ops(oid, loc, errors)
 
 
 ALLOWED_CATEGORIES = {
