@@ -4942,6 +4942,52 @@
   .results-reassurance-list{ margin:0 0 16px; padding-left:20px; }
   .results-reassurance-list li{ font-size:14px; line-height:1.6; color:var(--ink); margin-bottom:6px; }
   .results-reassurance-links{ display:flex; flex-wrap:wrap; gap:8px 22px; }
+
+  /* ISSUE 007 — BEFORE YOU DECIDE. Editorial, not a dashboard: hairline
+     separators instead of cards, one idea per row, and the question
+     carrying the weight rather than a badge beside it. No panel, no
+     background and no border on the section itself — it is subordinate
+     to the recommendation by construction, not by being made smaller. */
+  .results-uncertainty{ margin:40px 0 32px; }
+  .results-uncertainty-label{
+    font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:10px;
+  }
+  .results-uncertainty-situation{
+    margin:0 0 14px; font-size:14px; line-height:1.6; color:var(--soft);
+  }
+  .results-uncertainty-list{ list-style:none; margin:0; padding:0; }
+  .results-uncertainty-item{
+    padding:16px 0; border-top:1px solid rgba(31,59,46,.12);
+  }
+  .results-uncertainty-item[hidden]{ display:none; }
+  .results-uncertainty-q{
+    display:block; font-size:15px; font-weight:600; color:var(--ink);
+  }
+  .results-uncertainty-why,
+  .results-uncertainty-note{
+    margin:6px 0 0; font-size:13.5px; line-height:1.6; color:var(--soft);
+  }
+  .results-uncertainty-empty{
+    padding:16px 0; border-top:1px solid rgba(31,59,46,.12);
+    font-size:13.5px; line-height:1.6; color:var(--soft);
+  }
+  .results-uncertainty-more{
+    margin-top:14px; background:none; border:none; padding:6px 0; cursor:pointer;
+    color:var(--brand-green); font-size:13px; font-weight:600;
+    font-family:'Work Sans',sans-serif; text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .results-uncertainty-more[hidden]{ display:none; }
+  .results-uncertainty-boundary{ margin-top:20px; }
+  .results-uncertainty-boundary .rsv-boundary-line{
+    margin:0 0 8px; font-size:13px; line-height:1.6; color:var(--soft);
+  }
+  .results-uncertainty-ask{
+    margin:14px 0 0; font-size:13px; color:var(--brand-green);
+    cursor:pointer; text-decoration:underline; text-underline-offset:3px;
+  }
+  .results-uncertainty-ask[hidden]{ display:none; }
   .results-reassurance-link{
     background:none; border:none; padding:0; font-family:'Work Sans',sans-serif;
     font-size:13.5px; font-weight:600; color:var(--accent); cursor:pointer; text-decoration:underline;
@@ -8024,17 +8070,31 @@
            for the same reason the hero eyebrow went. The heading now asks the
            homeowner's own question rather than describing Atlas's limits, and
            the intro states the offer in two sentences instead of three. -->
-      <h3 class="sec-title" id="askTitle">Questions worth asking</h3>
+      <!-- ISSUE 007 — the heading follows the content. The four generic
+           questions below were the same uncertainties Before You Decide now
+           derives per product, so they are withdrawn (see #evidAsks) and
+           this section is what it has always actually been: the homeowner's
+           own question. The id and the aria-labelledby relationship are
+           unchanged. -->
+      <h3 class="sec-title" id="askTitle">Still have a question?</h3>
       <!-- ISSUE 008 — the submission theatre is gone. The button, its "Asked"
            state and the promise "We'll ask the supplier and email you what we
            find." are removed and NOT replaced: nothing was ever submitted,
            nothing persisted, no supplier was contacted and PlotNua holds no
            email address. What is left is what this section actually is —
            the questions worth resolving before the homeowner decides. -->
-      <p class="ask-intro">There are a few things worth checking before you
-        decide.</p>
+      <p class="ask-intro">If something about this option is still unclear,
+        ask PlotNua.</p>
 
-      <ul class="evid-asks" id="evidAsks"></ul>
+      <!-- ISSUE 007 — WITHDRAWN, NOT DELETED. EVID_ASK_SUPPLIER's four
+           questions (access, ground, electrics, schedule) are the same
+           uncertainties Before You Decide derives from the Resolve
+           registry, per product, at the end of the page. Two visible
+           checklists asking the homeowner the same things is the exact
+           duplication this change removes. The node and
+           renderAskAtlasPicks() both stay; TO RESTORE, drop `hidden` here
+           and put back the call in renderBeforeYouCommit(). -->
+      <ul class="evid-asks" id="evidAsks" hidden></ul>
 
       <!-- ASK PLOTNUA — the homeowner's own question, and the ONLY thing on
            this screen that submits anywhere. The four standard questions above
@@ -8539,6 +8599,34 @@
       </div>
     </details>
 
+    <!-- ================================================================
+         ISSUE 007 — BEFORE YOU DECIDE.
+
+         The quiet conclusion of Results, and the ONLY visible "what is
+         still open" system on this page. Its own section, deliberately
+         NOT inside #resultsReassurance: that container is force-hidden by
+         Results Sprint R1 CHANGE 4 and lives inside the Sunlight
+         <details>, so anything left in it would be both invisible and
+         filed under Sunlight. Everything in that container — the old
+         label, the old intro, buildPrimaryWorthChecking()'s checklist,
+         Planning and Things to Know — stays exactly as R1 left it,
+         hidden and intact, because Resolve reads Things to Know's
+         readinessList out of the live DOM for its power/water wording.
+
+         Content is derived by resolveUncertaintiesFor(), never authored.
+         There are no controls of any kind here: no acceptance, no
+         persistence, no form, no lanes. Reading changes nothing.
+         ================================================================ -->
+    <section class="results-uncertainty" id="resultsUncertainty" hidden
+             aria-labelledby="resultsUncertaintyLabel">
+      <div class="results-uncertainty-label" id="resultsUncertaintyLabel">Before You Decide</div>
+      <p class="results-uncertainty-situation" id="resultsUncertaintySituation"></p>
+      <ul class="results-uncertainty-list" id="resultsUncertaintyList"></ul>
+      <button type="button" class="results-uncertainty-more" id="resultsUncertaintyMore" hidden></button>
+      <div class="results-uncertainty-boundary" id="resultsUncertaintyBoundary"></div>
+      <p class="results-uncertainty-ask" id="resultsUncertaintyAsk" hidden></p>
+    </section>
+
     <!-- CP-5 — #resultsCompare is removed. It was the old in-page "Side by
          side" host: unreachable since CP-0 removed the dead hero link, and
          explicitly NOT converted into a doorway at CP-4, because a doorway
@@ -9010,6 +9098,12 @@
     resultsReassurance: document.getElementById('resultsReassurance'),
     resultsReassuranceIntro: document.getElementById('resultsReassuranceIntro'),
     resultsReassuranceList: document.getElementById('resultsReassuranceList'),
+    resultsUncertainty: document.getElementById('resultsUncertainty'),
+    resultsUncertaintySituation: document.getElementById('resultsUncertaintySituation'),
+    resultsUncertaintyList: document.getElementById('resultsUncertaintyList'),
+    resultsUncertaintyMore: document.getElementById('resultsUncertaintyMore'),
+    resultsUncertaintyBoundary: document.getElementById('resultsUncertaintyBoundary'),
+    resultsUncertaintyAsk: document.getElementById('resultsUncertaintyAsk'),
     matchFoundCards: document.getElementById('matchFoundCards'),
     matchNextStep: document.getElementById('matchNextStep'),
     resultsScope: document.getElementById('resultsScope'),
@@ -9875,6 +9969,23 @@
   // Application Database fetch), are unchanged.
   els.planningToggle.addEventListener('click', () => openTopicOverlay('planning', els.matchResultsScreen));
   els.thingsToggle.addEventListener('click', () => openTopicOverlay('things', els.matchResultsScreen));
+  /* ISSUE 007 — reveal, not paginate. One press, everything visible, and
+     the control removes itself because it has nothing left to offer. */
+  if (els.resultsUncertaintyMore) {
+    els.resultsUncertaintyMore.addEventListener('click', function(){
+      const rows = els.resultsUncertaintyList
+        ? els.resultsUncertaintyList.querySelectorAll('.results-uncertainty-item') : [];
+      for (let i = 0; i < rows.length; i++) rows[i].hidden = false;
+      els.resultsUncertaintyMore.setAttribute('aria-expanded', 'true');
+      els.resultsUncertaintyMore.hidden = true;
+    });
+  }
+  if (els.resultsUncertaintyAsk) {
+    els.resultsUncertaintyAsk.textContent = 'Still not sure? Ask PlotNua.';
+    els.resultsUncertaintyAsk.addEventListener('click', function(){
+      if (els.askAtlas) els.askAtlas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
   els.plotTopicBackBtn.addEventListener('click', () => closeTopicOverlay());
 
   // LAUNCH v1.1 — Property Readiness accordion. Only one item may be open
@@ -21423,9 +21534,15 @@
       return false;
     }
     if (askSec) { askSec.hidden = false; askSec.removeAttribute('aria-hidden'); }
-    /* The four questions are universal guidance and take no product. The
-       Ask PlotNua context still does. */
-    renderAskAtlasPicks();
+    /* ISSUE 007 — the four universal questions are withdrawn; see the
+       #evidAsks markup comment. renderAskAtlasPicks() is left defined and
+       uncalled, per this file's leave-defined convention.
+
+       askOwnSetContext() IS STILL CALLED, unchanged: it is what puts the
+       product and organisation names into the two hidden fields the Ask
+       PlotNua form submits. Withdrawing the guidance list must not touch
+       the one thing on this screen that actually goes anywhere. */
+    // renderAskAtlasPicks();
     askOwnSetContext(product);
 
     /* The three sections this function has always driven, unchanged. They read
@@ -22438,6 +22555,10 @@
 
     const primary = primaryResult && primaryResult.product;
     resultsComparePrimary = primary || null;   // CP-4 — before any card is built
+    /* ISSUE 007 — the inline Before You Decide list follows the same
+       handle Compare uses, so the two cannot disagree about which product
+       is being recommended. */
+    try { renderResultsUncertainty(resultsComparePrimary); } catch (e) {}
     const euro = raEuropeanPick(alternativeResults, primary && primary.id);
     const out = [];
     /* CR-0 — hoisted to isEuroProduct() above so raWildcardEuropeanNote() can
@@ -26329,6 +26450,122 @@
     if (!productId) return null;
     const pool = getActiveAtlasPool();
     return pool.find(function(p){ return p.id === productId; }) || null;
+  }
+
+  /* =========================================================================
+     ISSUE 007 — BEFORE YOU DECIDE, THE LAUNCH VIEW.
+
+     Same model, far less apparatus. resolveUncertaintiesFor(product, {}) is
+     called with NO positions on purpose: this view records nothing, so it must
+     not read a homeowner's recorded state either. Passing {} is the truthful
+     input for a read-only surface.
+
+     ORDER CARRIES SEVERITY. model.needsPosition is already sorted by
+     consequence then declaration order, so the item that would stop the job
+     comes first without a badge saying so. No taxonomy is shown: not the
+     lanes, not resolvability, not owner, not the consequence names.
+
+     WHAT IS SUPPRESSED, AND WHY. Two registry entries are already answered
+     elsewhere in this same Results view — `contractingEntity` is stated in
+     Atlas Assessment (see the UX-009 note) and `origin` is on the hero and in
+     Compare. Repeating them here would make PlotNua look like it had lost
+     track of what it had already said. `planning` STAYS: one line naming it
+     as open is a quiet reference, not a duplicate of the Planning section.
+     ========================================================================= */
+  const RESULTS_UNCERTAINTY_SHOWN = 4;
+
+  /* Answered elsewhere on this page. Keys, not labels, so a copy change
+     cannot silently reopen the duplication. */
+  const RESULTS_UNCERTAINTY_ELSEWHERE = ['contractingEntity', 'origin'];
+
+  function renderResultsUncertainty(product){
+    const sec = els.resultsUncertainty;
+    if (!sec) return 0;
+    if (!product) { sec.hidden = true; return 0; }
+
+    const model = resolveUncertaintiesFor(product, {});
+    const items = (model.needsPosition || []).filter(function(e){
+      return RESULTS_UNCERTAINTY_ELSEWHERE.indexOf(e.key) < 0;
+    });
+
+    els.resultsUncertaintyList.innerHTML = '';
+    els.resultsUncertaintyBoundary.innerHTML = '';
+
+    /* The situation line, unchanged, and the file's only sentence about this
+       moment. It belongs to the whole section, not to any one item. */
+    if (els.resultsUncertaintySituation) {
+      els.resultsUncertaintySituation.textContent = RESOLVE_SITUATION;
+    }
+
+    if (!items.length) {
+      /* NOT "everything is verified". The model found nothing further; that
+         is a fact about the model, and the second sentence says so. */
+      const li = document.createElement('li');
+      li.className = 'results-uncertainty-empty';
+      li.textContent = 'Atlas has not identified any further open questions '
+        + 'about this option. That is not the same as there being nothing '
+        + 'left to check.';
+      els.resultsUncertaintyList.appendChild(li);
+      if (els.resultsUncertaintyMore) els.resultsUncertaintyMore.hidden = true;
+    } else {
+      items.forEach(function(e, i){
+        const copy = resolveCopyFor(e);
+        const li = document.createElement('li');
+        li.className = 'results-uncertainty-item';
+        li.setAttribute('data-key', e.key);
+        /* Hidden, not absent: "Show the rest" reveals, it does not rebuild. */
+        li.hidden = i >= RESULTS_UNCERTAINTY_SHOWN;
+
+        const q = document.createElement('span');
+        q.className = 'results-uncertainty-q';
+        q.textContent = (copy && copy.label) || e.key;
+        li.appendChild(q);
+
+        /* The existing sentence, spoken plainly. Only blocking and costly
+           have one; the rest say nothing rather than something empty. */
+        const cq = resolveConsequenceLine(e.consequence);
+        if (cq) {
+          const p = document.createElement('p');
+          p.className = 'results-uncertainty-why';
+          p.textContent = cq;
+          li.appendChild(p);
+        }
+
+        /* Atlas's own words about why it could not settle this. Never a
+           paraphrase, and absent renders nothing. */
+        if (e.cell && e.cell.note) {
+          const n = document.createElement('p');
+          n.className = 'results-uncertainty-note';
+          n.textContent = e.cell.note;
+          li.appendChild(n);
+        }
+
+        els.resultsUncertaintyList.appendChild(li);
+      });
+
+      const hidden = Math.max(0, items.length - RESULTS_UNCERTAINTY_SHOWN);
+      if (els.resultsUncertaintyMore) {
+        els.resultsUncertaintyMore.hidden = hidden === 0;
+        els.resultsUncertaintyMore.textContent = 'Show the rest';
+        els.resultsUncertaintyMore.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    /* THE BOUNDARY, VERBATIM. resolveBoundaryBlock() is reused rather than
+       rewritten: it is the most carefully governed paragraph on the stage and
+       nothing here may soften it. */
+    try {
+      els.resultsUncertaintyBoundary.appendChild(resolveBoundaryBlock(model, product));
+    } catch (err) { /* absent renders nothing */ }
+
+    /* Ask PlotNua is the existing answer to "I still do not know". A move, not
+       a second form: the chapter itself is a few sections down this page. */
+    if (els.resultsUncertaintyAsk) {
+      els.resultsUncertaintyAsk.hidden = !(els.askAtlas && !els.askAtlas.hidden);
+    }
+
+    sec.hidden = false;
+    return items.length;
   }
 
   function renderResolve(product){
