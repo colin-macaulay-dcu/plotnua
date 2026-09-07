@@ -1692,7 +1692,9 @@
   .match-bring-your-own{
     /* RESULTS-UX-004 — a 2px border and a filled panel, on a page where every
        other container has been removed. Reduced to one hairline. */
-    margin-top:72px; padding:32px 30px; border:1px solid rgba(31,59,46,.12); border-radius:10px;
+    /* ISSUE 007 — the 72px top margin went with the panel. The scoped rule
+       in the RD block below owns this element's box now. */
+    margin-top:0; padding:32px 30px; border:1px solid rgba(31,59,46,.12); border-radius:10px;
     background:none; text-align:center;
   }
   .match-bring-your-own-title{ font-family:'Fraunces',serif; font-size:27px; font-weight:500; line-height:1.25; color:var(--ink); margin-bottom:12px; }
@@ -4995,9 +4997,23 @@
 
   /* The Ask beat, in its new home. The chapter keeps every rule it already
      had; only the space around it belongs to this section. */
-  .byd-ask{ margin:0 0 var(--pn-space-xl); }
-  .byd-ask #askAtlas{ margin:0; padding-top:var(--pn-space-lg);
+  /* The Ask beat closes the composition. A hairline and air, then a heading
+     sized as a beat rather than a chapter — it is the last line of Before
+     You Decide, not a new subject. */
+  .byd-ask{ margin:var(--pn-space-lg) 0 0; padding-top:var(--pn-space-lg);
     border-top:1px solid var(--pn-hair); }
+  .byd-ask #askAtlas{ margin:0; }
+  .byd-ask #askTitle{
+    font-family:'Fraunces',Georgia,serif; font-weight:400;
+    font-size:19px; line-height:1.3; letter-spacing:-.008em;
+    color:var(--ink); margin:0 0 var(--pn-space-sm); max-width:none;
+  }
+  /* The operational disclosure, now inside the form. Small, quiet, and
+     read at the moment it applies. */
+  .byd-ask .byd-ask-note{
+    font-size:12.5px; line-height:1.55; color:var(--soft);
+    margin:0 0 var(--pn-space-sm); max-width:52ch;
+  }
 
   @media (max-width:820px){
     .byd-points{ grid-template-columns:1fr; }
@@ -6073,6 +6089,10 @@
   #screen-match-results .results-why-evidence{ font-size:var(--pn-s-emph); }
   /* Work Sans · body-lg · 16.5px */
   #screen-match-results .ask-intro{ font-size:var(--pn-w-body-lg); }
+  /* ISSUE 007 — inside the Before You Decide composition the disclosure is a
+     footnote to the form, not journey copy. This wins on specificity over
+     the rule above. */
+  #screen-match-results .byd-ask .byd-ask-note{ font-size:12.5px; }
   #screen-match-results .ask-pick-main{ font-size:var(--pn-w-body-lg); }
   #screen-match-results .decide-list li{ font-size:var(--pn-w-body-lg); }
   #screen-match-results .evid-fact-label{ font-size:var(--pn-w-body-lg); }
@@ -6308,6 +6328,18 @@
        one new weight. */
     --pn-edge:rgba(139,137,113,.42);   /* the interactive edge */
     --pn-panel:rgba(139,137,113,.09);  /* the mid ground */
+    /* ISSUE 007 — THE CARD SURFACE. Measured on production: every light
+       card was rgb(245,242,232), which is --pn-ground exactly — the cards
+       were not close to the page, they WERE the page. This is --pn-ground
+       carrying 8% of --pn-stone: the same warm family, one step down, a
+       surface rather than a grey box. */
+    --pn-surface:#ECE9DE;
+    /* The Wildcard, lightened. --pn-voice (#24351F) at 11.7:1 against ivory
+       was darker than anything else on the page and pulled the eye off the
+       recommendation. This sits between --pn-voice and the original brand
+       accent #4F6B4A, and still measures 7.0:1 for ivory body text and
+       5.1:1 for the 80% secondary — both above AA. */
+    --pn-wild:#44573F;
 
   }
 
@@ -6416,11 +6448,11 @@
 
   /* ---- ⭐ wildcard · inverted ----------------------------------------- */
   #screen-match-results .alt-lens.is-wildcard{ border-color:transparent; }
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-label{ color:rgba(245,242,232,.60); }
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-label{ color:rgba(245,242,232,.78); }
   #screen-match-results .alt-lens.is-wildcard .alt-lens-say{ color:var(--pn-on-dark); }
   #screen-match-results .alt-lens.is-wildcard .alt-lens-foot{ border-top-color:rgba(245,242,232,.22); }
   #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-name{ color:var(--pn-on-dark); }
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-meta{ color:rgba(245,242,232,.66); }
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-meta{ color:rgba(245,242,232,.80); }
   #screen-match-results .alt-lens.is-wildcard .alt-why{
     margin:var(--pn-space-sm) 0 0; color:rgba(245,242,232,.82); }
   #screen-match-results .alt-lens.is-wildcard .alt-wild-fact{ margin:var(--pn-space-sm) 0 0; }
@@ -6525,7 +6557,13 @@
      between — except the rail fade, which is a scroll affordance rather than
      decoration and would read as a hard cut without it. */
   #screen-match-results .results-hero-inner, #screen-match-results .results-hero-inner.is-fieldonly{ background:var(--pn-ground); background-image:none; }
-  #screen-match-results .alt-card{ background:var(--pn-ground); background-image:none; }
+  /* ISSUE 007 — the lens cards (Local Option, Best European) get a surface.
+     They kept their hairline and their shape; only the fill changes. */
+  #screen-match-results .alt-card{ background:var(--pn-surface); background-image:none; }
+  /* The alternative cards are the same family and had the same fault:
+     .results-gallery-card asks for var(--paper), and --paper is remapped to
+     --pn-ground inside this screen, so they painted the page colour. */
+  #screen-match-results .results-gallery-card{ background:var(--pn-surface); }
   #screen-match-results .plot-twist.wildcard{ background:var(--pn-ground); background-image:none; }
   #screen-match-results img.pn-image-fallback{ background:var(--pn-hair); background-image:none; }
   #screen-match-results .results-map-viewport{ background:var(--pn-hair); }
@@ -6534,10 +6572,15 @@
   /* The two dark surfaces keep their weight but take the editorial green, and
      everything on them is the ground colour at graded opacity. */
   #screen-match-results .alt-card.is-wildcard, #screen-match-results .plot-twist, #screen-match-results .results-centrepiece-panel{ background-image:none; }
-  #screen-match-results .alt-card.is-wildcard{ background:var(--pn-voice); }
+  #screen-match-results .alt-card.is-wildcard{ background:var(--pn-wild); }
   #screen-match-results .alt-card.is-wildcard .alt-name, #screen-match-results .alt-wild-fact, #screen-match-results .plot-twist-idea{ color:var(--pn-on-dark); }
   #screen-match-results .alt-card.is-wildcard .alt-why, #screen-match-results .plot-twist-intro, #screen-match-results .results-centrepiece-intro{ color:rgba(245,242,232,.86); }
-  #screen-match-results .alt-card.is-wildcard .alt-meta, #screen-match-results .pt-why, #screen-match-results .plot-twist.wildcard .plot-twist-observation{ color:rgba(245,242,232,.70); }
+  /* ISSUE 007 — the secondary tone is raised from .70 to .80 because the
+     ground beneath it is lighter. Measured: .70 on --pn-wild is 3.4:1,
+     which fails AA; .80 is 5.1:1, which passes. The Plot Twist selectors
+     in this same rule sit on their own darker ground and are unaffected by
+     the change in either direction. */
+  #screen-match-results .alt-card.is-wildcard .alt-meta, #screen-match-results .pt-why, #screen-match-results .plot-twist.wildcard .plot-twist-observation{ color:rgba(245,242,232,.80); }
   #screen-match-results .alt-wild-eyebrow, #screen-match-results .alt-wild-fact-cap, #screen-match-results .alt-wild-note, #screen-match-results .plot-twist-footnote{ color:rgba(245,242,232,.58); }
   #screen-match-results .match-next-step-saved, #screen-match-results .plot-twist-footnote, #screen-match-results .pt-explore, #screen-match-results .results-centrepiece-panel, #screen-match-results .results-centrepiece-panel .season-tab{ border-color:rgba(245,242,232,.20); }
   #screen-match-results .plot-twist.wildcard .plot-twist-observation{ color:var(--pn-body); }
@@ -6620,16 +6663,31 @@
   :root{
     --pn-space-xs:8px;   --pn-space-sm:16px;  --pn-space-md:24px;
     --pn-space-lg:32px;  --pn-space-xl:48px;  --pn-space-2xl:96px;
+    /* ISSUE 007 — the lower journey's section gap. Named rather than typed
+       at each site so the rhythm stays one decision. */
+    --pn-space-section:64px;
   }
 
   /* Every top-level section closes with the same gap and opens with none, so
      the rhythm cannot drift when a section is hidden or empty. */
   #screen-match-results #matchPrimary,
   #screen-match-results #aboutSupplier,
-  #screen-match-results #altRailWrap,
-  #screen-match-results .match-bring-your-own,
-  #screen-match-results #yourProperty,
   #screen-match-results #resultsCompare{ margin-top:0; margin-bottom:var(--pn-space-2xl); }
+
+  /* ISSUE 007 — THE LOWER JOURNEY BREATHES AT 64, NOT 96.
+
+     Measured on production at a 747px viewport: five consecutive 96px
+     boundaries, and #yourProperty is 99px tall when collapsed — so it sat
+     alone inside a 291px band and read as an island rather than a section.
+     The two boundaries above the recommendation keep 96, because that is
+     where the change of subject is real. Everything below the alternatives
+     is one continuous argument and closes at 64.
+
+     .match-bring-your-own leaves this list entirely — it is no longer a
+     section (see below). */
+  #screen-match-results #altRailWrap,
+  #screen-match-results #yourProperty{ margin-top:0; margin-bottom:var(--pn-space-section); }
+  #screen-match-results .byd{ margin-top:var(--pn-space-section); }
 
   /* RA-1 — the three parts of Atlas Assessment are subsections, not sections.
      They sit one `xl` step apart, which keeps them clearly inside the same
@@ -6648,6 +6706,18 @@
   /* A label sits one small step above the thing it labels, never a section
      gap — the alternatives heading was 14px from its own rail. */
   #screen-match-results #matchAlternativesHeading{ margin-top:0; margin-bottom:var(--pn-space-sm); }
+
+  /* ISSUE 007 — "Other options worth considering" is a real section of
+     Results and was set at the same 20px as a card title. It steps up to
+     --pn-s-statement (27px) — the next stop on the existing scale, and
+     still one below --pn-s-section (36px), which belongs to the chapter
+     headings above it. Heading, note and cards then close up, so the three
+     read as one group instead of three stacked lines. */
+  #screen-match-results #altResultsHeading{
+    font-size:var(--pn-s-statement); line-height:1.2; letter-spacing:-.012em;
+    margin:0 0 var(--pn-space-xs);
+  }
+  #screen-match-results #altResultsNote{ margin:0 0 var(--pn-space-sm); }
 
   /* The last section on the page does not need a full gap beneath it.
      RA-5 — Plot Twist is no longer a section, so Compare closes the page and
@@ -6718,9 +6788,20 @@
      The one place a homeowner hands PlotNua something. It was an unfilled
      panel holding a transparent outline button on an unfilled page: three
      levels of nothing. This is where the mid tonal layer belongs. */
+  /* ISSUE 007 — NO LONGER A SECTION. Measured: a 282px panel with 72px above
+     it and 96px below, between the alternatives and the property — three
+     screens of Results given to one text field. The capability is untouched
+     (same form, same ids, same intake, same handlers); it now reads as a
+     quiet utility belonging to the alternatives directly above it, which is
+     the only place on the page it makes sense. */
   #screen-match-results .match-bring-your-own{
-    background:var(--pn-panel); border:1px solid var(--pn-edge);
-    border-radius:14px; padding:36px 34px; }
+    background:none; border:none; border-top:1px solid var(--pn-hair);
+    border-radius:0; padding:var(--pn-space-md) 0 0;
+    margin:var(--pn-space-md) 0 var(--pn-space-section); }
+  #screen-match-results .match-bring-your-own .match-bring-your-own-title{
+    font-size:var(--pn-s-quote); margin-bottom:var(--pn-space-xs); }
+  #screen-match-results .match-bring-your-own .match-bring-your-own-copy{
+    font-size:var(--pn-w-body); margin:0 0 var(--pn-space-sm); }
   #screen-match-results .match-bring-your-own .match-bring-your-own-title{ color:var(--pn-voice); }
   #screen-match-results .match-bring-your-own .match-bring-your-own-copy{ color:var(--pn-body); }
   #screen-match-results .match-bring-your-own .match-add-own-field-label{
@@ -8304,7 +8385,7 @@
          visible: it contains #resultsAddYourOwnForm, the add-your-own-product
          intake, which is a feature and not repetition. -->
     <div class="match-bring-your-own">
-      <div class="match-bring-your-own-title" id="resultsByoTitle">Already found something elsewhere?</div>
+      <div class="match-bring-your-own-title" id="resultsByoTitle">Already found something yourself?</div>
       <!-- RESULTS-UX-004 — was "Bring it to PlotNua. We'll compare it against
            verified Atlas evidence before you spend money." Ask Atlas already
            promises "compare their answers with existing Atlas evidence"
@@ -8488,8 +8569,12 @@
 
     <details class="your-property" id="yourProperty">
       <summary class="your-property-summary">
-        <span class="your-property-label">Sunlight on your property</span>
-        <span class="your-property-lede" id="yourPropertyLede">Atlas read the light here before it recommended anything. Open it if you want to see what it saw.</span>
+        <!-- ISSUE 007 — the outer title only. Inside, the panel still says
+             "Watch the light move across your plot" and still runs the same
+             sun calculation; nothing here claims PlotNua checks access,
+             gates, overhead clearance or placement. -->
+        <span class="your-property-label">Your property in 3D</span>
+        <span class="your-property-lede" id="yourPropertyLede">Explore your plot, see how the light moves across it, and get a better sense of where this option could sit.</span>
       </summary>
       <div class="your-property-body">
     <!-- SCENE 3 — THEY PROVED IT. The single Sun & Light centrepiece.
@@ -8655,12 +8740,10 @@
          ================================================================ -->
     <section class="byd" id="resultsDecide" hidden aria-labelledby="bydLabel">
       <div class="byd-label" id="bydLabel">Before You Decide</div>
-      <p class="byd-lede">PlotNua has done the research and narrowed this
-        down. These are the few things that decide it from here.</p>
+      <p class="byd-lede">Three things to know before you decide.</p>
       <div class="byd-points" id="bydPoints"></div>
-    </section>
 
-    <!-- ISSUE 007 — THE FINAL ASK PLOTNUA BEAT.
+      <!-- ISSUE 007 — THE FINAL ASK PLOTNUA BEAT.
 
          An empty host. #askAtlas — the ONE submitting form on this page,
          with its Formspree action, its hidden product/supplier fields, its
@@ -8669,7 +8752,8 @@
          wireAskAtlas() bound, so the form is never rebuilt and never
          duplicated. The same relocation pattern the Sun & Light controls
          already use (see activateResultsSunlightCentrepiece). -->
-    <div class="byd-ask" id="bydAskHost"></div>
+      <div class="byd-ask" id="bydAskHost"></div>
+    </section>
 
     <!-- CP-5 — #resultsCompare is removed. It was the old in-page "Side by
          side" host: unreachable since CP-0 removed the dead hero link, and
@@ -16985,10 +17069,12 @@
     if (propLine) {
       propLine.classList.add('is-in-hero');
       /* RESULTS-UX-007 — the sunlight link leaves the HERO only. The feature
-         itself is untouched: "Sunlight on your property" is still in Results,
-         still closed by default, still the same component. Where Sun & Light
-         ultimately belongs is a decision deliberately postponed until after
-         this simplification. */
+         itself is untouched: it is still in Results, still closed by default,
+         still the same component. ISSUE 007 renamed its outer title to "Your
+         property in 3D" — the door, not the room — because Before You Decide
+         sends the homeowner there to look at their plot and not only at the
+         light. Inside, the panel still reads "Watch the light move across
+         your plot" and runs the same calculation. */
       const sunLink = propLine.querySelector('.prop-confirm-link');
       if (sunLink) { sunLink.hidden = true; sunLink.setAttribute('aria-hidden','true'); }
       body.appendChild(propLine);
@@ -26540,9 +26626,11 @@
       key: 'property',
       category: 'Your property',
       question: 'Where would it actually go?',
-      body: 'PlotNua has modelled the light on your plot in 3D. It has not '
-          + 'seen your side access, your gates or what is overhead — that '
-          + 'part is still yours to look at.',
+      /* Two clauses, and the second is the honest one: PlotNua shows the
+         plot, the homeowner does the looking. "Then look at" is an
+         instruction to them, never a claim about us. */
+      body: 'See your plot in 3D, then look at the practical route in — '
+          + 'side access, gates and anything overhead.',
       actionLabel: 'See your plot in 3D →',
       action: bydOpenProperty
     };
@@ -26584,9 +26672,8 @@
 
     const am = BYD_ALLOWANCE_RE.exec(text);
     const frame = am
-      ? ('Irish exemption rules can allow up to ' + am[1] + ' m² of garden '
-         + 'structures, subject to conditions including height and how much '
-         + 'garden is left. ')
+      ? ('Irish exemption rules can allow up to ' + am[1] + ' m², subject to '
+         + 'conditions. ')
       : '';
     const maker = (product && product.organisation) || 'The maker';
     let position;
@@ -26604,8 +26691,8 @@
         : 'This one’s published floor area is larger than the Irish exemption '
           + 'limit for a back-garden structure on its own.';
     } else {
-      position = maker + ' doesn’t publish a footprint or height for this one, '
-               + 'so Atlas can’t test it against the limit yet.';
+      position = maker + ' doesn’t publish the footprint or height for this '
+               + 'one, so Atlas can’t confirm the position yet.';
     }
 
     return {
@@ -26663,8 +26750,8 @@
       /* FOUNDATIONS is read from the classification head only, and only where
          the same head does not exclude them — measured: 24 include, 7 exclude. */
       const founds = head.indexOf('FOUNDATION') > -1 && head.indexOf('EXCLUDED') < 0;
-      lead = maker + ' publishes this as a turnkey price, with installation'
-           + (founds ? ' and foundations' : '') + ' inside it.';
+      lead = maker + ' describes this as a turnkey price, including installation'
+           + (founds ? ' and foundations' : '') + '.';
     } else if (inst === 'optional') {
       lead = maker + ' publishes this to be self-built or installed for you, so '
            + 'installation may sit outside the price.';
@@ -26676,12 +26763,23 @@
            + 'price.';
     }
 
+    /* The bare governed figure — no label. pnPriceView().figure is the money
+       string pnPriceDisplay() wraps; taking it directly is what lets the
+       question ask about "€35,950" while the BASIS moves into the body,
+       where it sits with the other things this price does not settle. */
+    let figure = null;
+    try { const v = pnPriceView(product); if (v && v.known && v.figure) figure = v.figure; }
+    catch (e) { figure = null; }
+
     const caveats = [];
     if (/^(Starting From|Custom Quote|Estimated Price)$/i.test(basis)) {
-      caveats.push('this is a “' + basis.toLowerCase() + '” figure');
+      const word = /custom quote/i.test(basis) ? 'quoted price'
+                 : /estimated/i.test(basis)    ? 'estimated price'
+                 : 'starting price';
+      caveats.push((figure ? figure + ' is a ' : 'this is a ') + word);
     }
     if (vat.state === 'disputed') {
-      caveats.push('Atlas holds conflicting evidence on whether VAT is included');
+      caveats.push('Atlas found conflicting information about whether VAT is included');
     } else if (vat.state === 'unknown') {
       caveats.push('Atlas hasn’t established whether VAT is included');
     } else if (vat.state === 'excluded') {
@@ -26695,22 +26793,14 @@
             + caveats[caveats.length - 1] + '.';
     }
 
-    /* The figure is the governed display price, or no figure at all.
-
-       pnPriceDisplay() returns a LABELLED figure — "From \u20ac28,450",
-       "Estimated \u20ac9,950", "Quoted \u20ac…" — and the label is part of
-       what Atlas established, so it is never dropped. Only its CASE belongs
-       to this sentence: a capital in the middle of a question reads as a
-       bug. The guard requires a lower-case letter after the capital, so a
-       currency symbol, a numeral and a separator are all untouched. */
-    let question = 'What would this actually cost?';
-    try {
-      const shown = pnPriceDisplay(product);
-      if (shown && /\d/.test(shown)) {
-        question = 'What does ' + String(shown).replace(/^[A-Z](?=[a-z])/,
-          function(c){ return c.toLowerCase(); }) + ' actually include?';
-      }
-    } catch (e) { /* no price, no figure */ }
+    /* THE QUESTION CARRIES THE FIGURE, NOT THE LABEL. "What does From
+       €35,950 actually include?" put a capital in the middle of a sentence
+       and made the reader parse a data label mid-question. The label is not
+       lost — it is stated properly in the body above, as "€35,950 is a
+       starting price". No figure, no number in the question. */
+    const question = figure
+      ? ('What does ' + figure + ' actually include?')
+      : 'What would this actually cost?';
 
     return { key: 'trueCost', category: 'True cost', question: question, body: body,
              actionLabel: null, action: null };
@@ -26798,6 +26888,19 @@
     if (!host || !ask) return false;
     if (ask.parentNode === host) return true;      /* idempotent */
     host.appendChild(ask);
+
+    /* THE DISCLOSURE FOLLOWS THE ACTION. "No address is collected, so no
+       reply is promised" is true and must stay — but as journey copy it
+       dominated a closed section, promising nothing to someone who had not
+       asked anything yet. Moved, not deleted, and moved as the SAME node:
+       it now sits at the top of the form, where the homeowner meets it at
+       the moment it applies to them. */
+    const intro = ask.querySelector('.ask-intro');
+    const form  = document.getElementById('askOwnForm');
+    if (intro && form && intro.parentNode !== form) {
+      intro.classList.add('byd-ask-note');
+      form.insertBefore(intro, form.firstChild);
+    }
     return true;
   }
 
@@ -29925,7 +30028,11 @@
       els.resultsByoTitle.textContent = 'Add another option?';
       els.resultsByoCopy.textContent  = 'Keep everything you\u2019re considering together in one place.';
     } else {
-      els.resultsByoTitle.textContent = 'Already found something elsewhere?';
+      /* ISSUE 007 — "yourself" rather than "elsewhere": this now sits under
+         Atlas's own alternatives, so the distinction being drawn is whose
+         find it is, not where it came from. The copy line below is unchanged
+         and still describes exactly what happens. */
+      els.resultsByoTitle.textContent = 'Already found something yourself?';
       /* RESULTS-UX-005 — the markup default was rewritten in UX-004, but this
          call site overwrites it on every render, so nothing changed on screen.
          Ask Atlas already offers to "compare their answers with existing Atlas
