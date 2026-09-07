@@ -24084,7 +24084,25 @@
        Position is unchanged. The section already sat after Sunlight and
        immediately before the three backward controls; it only needed showing.
        ===================================================================== */
-    if (els.matchNextStep) els.matchNextStep.hidden = false;
+    /* ISSUE 007 — THE "NEXT STEPS" PANEL IS CLOSED.
+
+       It ended Results by naming My Plot as the next stage. My Plot is
+       OPTIONAL persistence, not a gate: the floating control reaches it
+       from anywhere, and Compare already opens straight from a lens card
+       without anything being saved. A closing panel that points at an
+       optional workspace tells the homeowner the journey is shaped in a
+       way it is not.
+
+       Everything stays built. The markup, the ids, the click handler and
+       updateNextStepSection() are all untouched and still run; only this
+       reveal is withdrawn, and `hidden` plus the global
+       `[hidden]{display:none !important}` rule collapses the panel and
+       its 56px top margin, so the three quiet footer controls close the
+       page instead.
+
+       TO RESTORE: put back `els.matchNextStep.hidden = false;`. That is
+       the whole of it. */
+    // if (els.matchNextStep) els.matchNextStep.hidden = false;
   }
 
   // =========================================================================
