@@ -8778,12 +8778,11 @@
              sun calculation; nothing here claims PlotNua checks access,
              gates, overhead clearance or placement. -->
         <span class="your-property-label">Your property in 3D</span>
-        <!-- ISSUE 007 QA — the closed disclosure says what is behind it; the
-             panel inside says how to use it. The click/drag/pinch/scroll
-             instruction belongs with the controls it operates, and stating
-             it here as well made the homeowner read it twice. Nothing is
-             lost: the full instruction is unchanged inside the panel. -->
-        <span class="your-property-lede" id="yourPropertyLede">A 3D view of your actual property, with the light Atlas calculated for it.</span>
+        <!-- ISSUE 007 QA — THE LEDE IS REMOVED, NOT EMPTIED. #yourPropertyLede
+             had exactly one reference in this file: the markup itself. Nothing
+             read it, wrote it or measured it, so an empty span would have been
+             a ghost carrying an id nothing needs. The summary is the title
+             alone now; the panel inside says how to use the view. -->
       </summary>
       <div class="your-property-body">
     <!-- SCENE 3 — THEY PROVED IT. The single Sun & Light centrepiece.
@@ -8806,8 +8805,7 @@
            time slider and the attribution are all untouched. -->
       <h3 class="results-centrepiece-title">Explore your property in 3D</h3>
       <p class="results-centrepiece-howto">Click and drag to look around your
-        plot. Pinch or scroll to zoom, then use the controls below to see how
-        the light changes through the day and seasons.</p>
+        plot. Pinch or scroll to zoom.</p>
       <p class="results-centrepiece-intro" id="resultsCentrepieceIntro"></p>
       <div class="results-centrepiece-panel" id="resultsCentrepiecePanel">
         <!-- RESULTS R1.2: bounded viewport for the existing, single
@@ -18037,7 +18035,17 @@
     // controls — see activateResultsMapViewport() above.
     activateResultsMapViewport();
     if (els.sunlightCaption) els.sunlightCaption.textContent = SUNLIGHT_CAPTION_EMBEDDED;
-    if (els.resultsCentrepieceIntro) els.resultsCentrepieceIntro.textContent = chain.inferred.join(' ');
+    /* ISSUE 007 QA — THE SENTENCE IS WITHDRAWN FROM THE PAGE, NOT FROM THE
+       REASONING. chain.inferred is buildSunlightReasoningChain()'s own
+       output — the sun calculation the founder has locked — and it is still
+       computed, still carried, and still read by its other consumer in
+       reconcileBrainModuleWithNewEvidence(). Only this assignment stops, so
+       "See how sunlight moves across your plot through the day and across
+       the seasons." no longer prints above the view. Deleting the push
+       instead would have edited derived evidence to solve a copy problem.
+
+       TO RESTORE: put the assignment back. That is the whole of it. */
+    // if (els.resultsCentrepieceIntro) els.resultsCentrepieceIntro.textContent = chain.inferred.join(' ');
     setActiveSeasonTab(currentSeason);
     syncSunlightControlsToHour(currentHour);
     // "The animation should already be alive when the user reaches
