@@ -4943,51 +4943,71 @@
   .results-reassurance-list li{ font-size:14px; line-height:1.6; color:var(--ink); margin-bottom:6px; }
   .results-reassurance-links{ display:flex; flex-wrap:wrap; gap:8px 22px; }
 
-  /* ISSUE 007 — BEFORE YOU DECIDE. Editorial, not a dashboard: hairline
-     separators instead of cards, one idea per row, and the question
-     carrying the weight rather than a badge beside it. No panel, no
-     background and no border on the section itself — it is subordinate
-     to the recommendation by construction, not by being made smaller. */
-  .results-uncertainty{ margin:40px 0 32px; }
-  .results-uncertainty-label{
-    font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:10px;
+  /* ISSUE 007 — BEFORE YOU DECIDE. Architectural, not a dashboard.
+
+     No card, no panel, no background, no badge and no colour coding. Three
+     columns divided by the file's single hairline, the numeral and the
+     question carrying the hierarchy, and content as the only visual interest.
+     Every value is an existing token. */
+  .byd{ margin:var(--pn-space-2xl) 0 var(--pn-space-xl); }
+  .byd-label{
+    font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:var(--pn-space-sm);
   }
-  .results-uncertainty-situation{
-    margin:0 0 14px; font-size:14px; line-height:1.6; color:var(--soft);
+  .byd-lede{
+    margin:0 0 var(--pn-space-lg); font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(21px,2.4vw,27px); line-height:1.28;
+    letter-spacing:-0.012em; color:var(--ink); max-width:30ch;
   }
-  .results-uncertainty-list{ list-style:none; margin:0; padding:0; }
-  .results-uncertainty-item{
-    padding:16px 0; border-top:1px solid rgba(31,59,46,.12);
+  /* auto-fit, so two decision points fill the measure and never leave a
+     column-shaped hole where a card was refused for want of evidence. */
+  .byd-points{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    border-top:1px solid var(--pn-hair);
   }
-  .results-uncertainty-item[hidden]{ display:none; }
-  .results-uncertainty-q{
-    display:block; font-size:15px; font-weight:600; color:var(--ink);
+  .byd-point{
+    padding:var(--pn-space-md) var(--pn-space-md) var(--pn-space-lg) var(--pn-space-md);
+    border-left:1px solid var(--pn-hair);
   }
-  .results-uncertainty-why,
-  .results-uncertainty-note{
-    margin:6px 0 0; font-size:13.5px; line-height:1.6; color:var(--soft);
+  .byd-point:first-child{ border-left:none; padding-left:0; }
+  .byd-head{ display:flex; align-items:baseline; gap:10px; }
+  .byd-num{
+    font-family:'Fraunces',Georgia,serif; font-size:13px; letter-spacing:.06em;
+    color:var(--accent);
   }
-  .results-uncertainty-empty{
-    padding:16px 0; border-top:1px solid rgba(31,59,46,.12);
-    font-size:13.5px; line-height:1.6; color:var(--soft);
+  .byd-cat{
+    font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--soft);
   }
-  .results-uncertainty-more{
-    margin-top:14px; background:none; border:none; padding:6px 0; cursor:pointer;
-    color:var(--brand-green); font-size:13px; font-weight:600;
-    font-family:'Work Sans',sans-serif; text-decoration:underline;
-    text-underline-offset:3px;
+  .byd-q{
+    margin:12px 0 10px; font-family:'Fraunces',Georgia,serif; font-weight:400;
+    font-size:19px; line-height:1.3; letter-spacing:-0.008em; color:var(--ink);
   }
-  .results-uncertainty-more[hidden]{ display:none; }
-  .results-uncertainty-boundary{ margin-top:20px; }
-  .results-uncertainty-boundary .rsv-boundary-line{
-    margin:0 0 8px; font-size:13px; line-height:1.6; color:var(--soft);
+  .byd-body{ margin:0; font-size:14px; line-height:1.65; color:var(--soft); }
+  .byd-act{
+    margin-top:16px; background:none; border:none; padding:0; cursor:pointer;
+    font-family:'Work Sans',sans-serif; font-size:11.5px; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--brand-green);
+    transition:color .2s ease;
   }
-  .results-uncertainty-ask{
-    margin:14px 0 0; font-size:13px; color:var(--brand-green);
-    cursor:pointer; text-decoration:underline; text-underline-offset:3px;
+  .byd-act:hover{ color:var(--accent); }
+  .byd-act:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+
+  /* The Ask beat, in its new home. The chapter keeps every rule it already
+     had; only the space around it belongs to this section. */
+  .byd-ask{ margin:0 0 var(--pn-space-xl); }
+  .byd-ask #askAtlas{ margin:0; padding-top:var(--pn-space-lg);
+    border-top:1px solid var(--pn-hair); }
+
+  @media (max-width:820px){
+    .byd-points{ grid-template-columns:1fr; }
+    .byd-point{
+      border-left:none; border-top:1px solid var(--pn-hair);
+      padding:var(--pn-space-md) 0 var(--pn-space-lg);
+    }
+    .byd-point:first-child{ border-top:none; }
   }
-  .results-uncertainty-ask[hidden]{ display:none; }
+
   .results-reassurance-link{
     background:none; border:none; padding:0; font-family:'Work Sans',sans-serif;
     font-size:13.5px; font-weight:600; color:var(--accent); cursor:pointer; text-decoration:underline;
@@ -6619,7 +6639,11 @@
      the forest rule that closes the opening statement. It needs air above it
      as well as below, or the heading reads as a caption to the rule. */
   #screen-match-results #aboutSupplier #supplierRow{ margin:0 0 var(--pn-space-xl); }
-  #screen-match-results #aboutSupplier #askAtlas{ margin:var(--pn-space-xl) 0 0; }
+  /* ISSUE 007 — #askAtlas is re-homed out of #aboutSupplier at load, so this
+     descendant selector no longer matches anything. Its replacement lives
+     with the .byd-ask rules above. Left rather than deleted: restoring the
+     old position is one line in bydRehomeAsk(). */
+  /* #screen-match-results #aboutSupplier #askAtlas{ margin:var(--pn-space-xl) 0 0; } */
 
   /* A label sits one small step above the thing it labels, never a section
      gap — the alternatives heading was 14px from its own rail. */
@@ -8070,21 +8094,20 @@
            for the same reason the hero eyebrow went. The heading now asks the
            homeowner's own question rather than describing Atlas's limits, and
            the intro states the offer in two sentences instead of three. -->
-      <!-- ISSUE 007 — the heading follows the content. The four generic
-           questions below were the same uncertainties Before You Decide now
-           derives per product, so they are withdrawn (see #evidAsks) and
-           this section is what it has always actually been: the homeowner's
-           own question. The id and the aria-labelledby relationship are
-           unchanged. -->
-      <h3 class="sec-title" id="askTitle">Still have a question?</h3>
+      <!-- ISSUE 007 — THE FINAL BEAT. This section is re-homed beneath the
+           decision points and is the ONE customer-facing Ask PlotNua entry
+           in Results. The heading is the beat; the disclosure control below
+           is the offer. Ids and the aria-labelledby relationship are
+           unchanged, and nothing about submission is touched. -->
+      <h3 class="sec-title" id="askTitle">Still something you want to know?</h3>
       <!-- ISSUE 008 — the submission theatre is gone. The button, its "Asked"
            state and the promise "We'll ask the supplier and email you what we
            find." are removed and NOT replaced: nothing was ever submitted,
            nothing persisted, no supplier was contacted and PlotNua holds no
            email address. What is left is what this section actually is —
            the questions worth resolving before the homeowner decides. -->
-      <p class="ask-intro">If something about this option is still unclear,
-        ask PlotNua.</p>
+      <p class="ask-intro">Ask about this option and PlotNua will look into
+        it. No address is collected, so no reply is promised.</p>
 
       <!-- ISSUE 007 — WITHDRAWN, NOT DELETED. EVID_ASK_SUPPLIER's four
            questions (access, ground, electrics, schedule) are the same
@@ -8112,8 +8135,11 @@
            no geocoded address -- every one of those is reachable at this
            moment and every one of them stays where it is. -->
       <div class="ask-own">
+        <!-- ISSUE 007 — the label names what it opens. "Other" made sense
+             beneath four standard questions; those are withdrawn, so it
+             now names the capability. Behaviour, aria and id unchanged. -->
         <button type="button" class="ask-own-toggle" id="askOwnToggle"
-                aria-expanded="false" aria-controls="askOwnForm">Other</button>
+                aria-expanded="false" aria-controls="askOwnForm">Ask PlotNua about this option →</button>
 
         <form class="ask-own-form" id="askOwnForm" hidden
               action="https://formspree.io/f/xrpgakqw" method="POST">
@@ -8547,7 +8573,17 @@
         <div class="planning-status-label">Garden Rooms &amp; Planning</div>
         <p class="planning-good-news" id="planningGoodNews">Good news. Many modern garden rooms may not require a full planning application. Let's check whether yours could qualify.</p>
         <p class="planning-copy">PlotNua will help you check the important things — including size, height, position and intended use — against the garden room you are considering.</p>
-        <p class="planning-copy">Choose a garden room to start your check.</p>
+        <!-- ISSUE 007 — THE OVERCLAIM IS CORRECTED. This offered to "start
+             your check", which read as a determination PlotNua would issue.
+             There is no verified exemption engine in this build (see the
+             file header: the rules-based MAY QUALIFY / NEEDS CHECKING engine
+             is post-launch), so the panel now says what it actually does —
+             it explains the position and shows what has been decided nearby.
+             No determination is offered, promised or implied. -->
+        <p class="planning-copy">PlotNua doesn’t decide this for you, and
+          nothing here is a planning determination. What follows is the
+          position explained plainly, and what has actually been applied for
+          near your property.</p>
         <div class="planning-history">
           <div class="planning-history-label">Planning History Near This Property</div>
           <div class="planning-history-body" id="planningHistoryBody">
@@ -8617,15 +8653,23 @@
          There are no controls of any kind here: no acceptance, no
          persistence, no form, no lanes. Reading changes nothing.
          ================================================================ -->
-    <section class="results-uncertainty" id="resultsUncertainty" hidden
-             aria-labelledby="resultsUncertaintyLabel">
-      <div class="results-uncertainty-label" id="resultsUncertaintyLabel">Before You Decide</div>
-      <p class="results-uncertainty-situation" id="resultsUncertaintySituation"></p>
-      <ul class="results-uncertainty-list" id="resultsUncertaintyList"></ul>
-      <button type="button" class="results-uncertainty-more" id="resultsUncertaintyMore" hidden></button>
-      <div class="results-uncertainty-boundary" id="resultsUncertaintyBoundary"></div>
-      <p class="results-uncertainty-ask" id="resultsUncertaintyAsk" hidden></p>
+    <section class="byd" id="resultsDecide" hidden aria-labelledby="bydLabel">
+      <div class="byd-label" id="bydLabel">Before You Decide</div>
+      <p class="byd-lede">PlotNua has done the research and narrowed this
+        down. These are the few things that decide it from here.</p>
+      <div class="byd-points" id="bydPoints"></div>
     </section>
+
+    <!-- ISSUE 007 — THE FINAL ASK PLOTNUA BEAT.
+
+         An empty host. #askAtlas — the ONE submitting form on this page,
+         with its Formspree action, its hidden product/supplier fields, its
+         honeypot and its Received/failure states — is MOVED here at load
+         time by bydRehomeAsk(). Moving the node keeps every listener
+         wireAskAtlas() bound, so the form is never rebuilt and never
+         duplicated. The same relocation pattern the Sun & Light controls
+         already use (see activateResultsSunlightCentrepiece). -->
+    <div class="byd-ask" id="bydAskHost"></div>
 
     <!-- CP-5 — #resultsCompare is removed. It was the old in-page "Side by
          side" host: unreachable since CP-0 removed the dead hero link, and
@@ -9098,12 +9142,9 @@
     resultsReassurance: document.getElementById('resultsReassurance'),
     resultsReassuranceIntro: document.getElementById('resultsReassuranceIntro'),
     resultsReassuranceList: document.getElementById('resultsReassuranceList'),
-    resultsUncertainty: document.getElementById('resultsUncertainty'),
-    resultsUncertaintySituation: document.getElementById('resultsUncertaintySituation'),
-    resultsUncertaintyList: document.getElementById('resultsUncertaintyList'),
-    resultsUncertaintyMore: document.getElementById('resultsUncertaintyMore'),
-    resultsUncertaintyBoundary: document.getElementById('resultsUncertaintyBoundary'),
-    resultsUncertaintyAsk: document.getElementById('resultsUncertaintyAsk'),
+    resultsDecide: document.getElementById('resultsDecide'),
+    bydPoints: document.getElementById('bydPoints'),
+    bydAskHost: document.getElementById('bydAskHost'),
     matchFoundCards: document.getElementById('matchFoundCards'),
     matchNextStep: document.getElementById('matchNextStep'),
     resultsScope: document.getElementById('resultsScope'),
@@ -9735,15 +9776,18 @@
       return;
     }
     if (targetEl === els.resolveScreen) {
-      const st = (event.state && event.state.pnProduct) || null;
-      const product = st ? buildResolveFromId(st.id) : null;
-      if (product && renderResolve(product)) {
-        resolveReturn.remember(els.myPlotScreen);
-        showScreen(els.resolveScreen);
-      } else {
-        currentHistoryKey = 'myplot';
-        openMyPlot();
-      }
+      /* ISSUE 007 — THE STALE HISTORY ROUTE IS CLOSED TOO.
+
+         Closing the button is not enough: a Resolve entry already in the
+         session's history — from a Back press, or a restored tab — would
+         have re-rendered and re-shown the screen the founder retired.
+         Every Resolve history entry now lands on My Plot, which is where
+         that journey started and the only place it can honestly end.
+
+         renderResolve() and buildResolveFromId() are left defined and
+         intact; this simply stops calling them from the history layer. */
+      currentHistoryKey = 'myplot';
+      openMyPlot();
       isApplyingHistoryState = false;
       return;
     }
@@ -9969,23 +10013,14 @@
   // Application Database fetch), are unchanged.
   els.planningToggle.addEventListener('click', () => openTopicOverlay('planning', els.matchResultsScreen));
   els.thingsToggle.addEventListener('click', () => openTopicOverlay('things', els.matchResultsScreen));
-  /* ISSUE 007 — reveal, not paginate. One press, everything visible, and
-     the control removes itself because it has nothing left to offer. */
-  if (els.resultsUncertaintyMore) {
-    els.resultsUncertaintyMore.addEventListener('click', function(){
-      const rows = els.resultsUncertaintyList
-        ? els.resultsUncertaintyList.querySelectorAll('.results-uncertainty-item') : [];
-      for (let i = 0; i < rows.length; i++) rows[i].hidden = false;
-      els.resultsUncertaintyMore.setAttribute('aria-expanded', 'true');
-      els.resultsUncertaintyMore.hidden = true;
-    });
-  }
-  if (els.resultsUncertaintyAsk) {
-    els.resultsUncertaintyAsk.textContent = 'Still not sure? Ask PlotNua.';
-    els.resultsUncertaintyAsk.addEventListener('click', function(){
-      if (els.askAtlas) els.askAtlas.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }
+  /* ISSUE 007 — "Show the rest" is withdrawn with the list it paginated.
+     Three decision points do not need a reveal control, and the Ask
+     PlotNua route is now the section immediately below them rather than a
+     scroll link to somewhere else on the page. */
+
+  /* ISSUE 007 — the Ask beat is re-homed once, at load, before anything
+     renders. Idempotent: a second call is a no-op. */
+  bydRehomeAsk();
   els.plotTopicBackBtn.addEventListener('click', () => closeTopicOverlay());
 
   // LAUNCH v1.1 — Property Readiness accordion. Only one item may be open
@@ -22555,10 +22590,10 @@
 
     const primary = primaryResult && primaryResult.product;
     resultsComparePrimary = primary || null;   // CP-4 — before any card is built
-    /* ISSUE 007 — the inline Before You Decide list follows the same
-       handle Compare uses, so the two cannot disagree about which product
-       is being recommended. */
-    try { renderResultsUncertainty(resultsComparePrimary); } catch (e) {}
+    /* ISSUE 007 — Before You Decide follows the same handle Compare uses,
+       so the two cannot disagree about which product is being
+       recommended. */
+    try { renderResultsDecide(resultsComparePrimary); } catch (e) {}
     const euro = raEuropeanPick(alternativeResults, primary && primary.id);
     const out = [];
     /* CR-0 — hoisted to isEuroProduct() above so raWildcardEuropeanNote() can
@@ -24994,11 +25029,18 @@
   function updateCompareVisibility(){
     const total = savedProductIds.size + addedItems.length;
     els.myPlotCompareBtn.hidden = total < 2;
-    /* RS-2 — the threshold is ONE, not two. §9: Resolve is single-product,
-       and "with an empty My Plot, Resolve is not reachable". Read from the
-       same `total` Compare's control uses, so the two cannot disagree about
-       what is saved. */
-    if (els.myPlotResolveBtn) els.myPlotResolveBtn.hidden = total < 1;
+    /* ISSUE 007 — "WHAT'S STILL OPEN" IS CLOSED FOR LAUNCH.
+
+       Founder review rejected the customer-facing Resolve screen. The
+       engine, RESOLVE_REGISTRY, renderResolve(), openResolveScreen(),
+       resolvePositions and every stored structure are untouched and still
+       run — only this reveal is withdrawn, so My Plot is what it says it
+       is: a place to save possibilities and come back to them.
+
+       TO RESTORE: put back `els.myPlotResolveBtn.hidden = total < 1;`.
+
+       RS-2's threshold, for the record: ONE, not two. */
+    if (els.myPlotResolveBtn) els.myPlotResolveBtn.hidden = true;
     /* LAUNCH-INT-002 — PROGRESS IS HIDDEN FOR LAUNCH.
 
        The stage stays built: the screen, the model, the history entry, the
@@ -26453,120 +26495,312 @@
   }
 
   /* =========================================================================
-     ISSUE 007 — BEFORE YOU DECIDE, THE LAUNCH VIEW.
+     ISSUE 007 — BEFORE YOU DECIDE: THREE GOVERNED DECISION POINTS.
 
-     Same model, far less apparatus. resolveUncertaintiesFor(product, {}) is
-     called with NO positions on purpose: this view records nothing, so it must
-     not read a homeowner's recorded state either. Passing {} is the truthful
-     input for a read-only surface.
+     NOT a list of unresolved questions, and not the Resolve screen wearing a
+     different coat. Three things: what PlotNua has established, what it has
+     not, and — where PlotNua genuinely has the capability — somewhere to go.
 
-     ORDER CARRIES SEVERITY. model.needsPosition is already sorted by
-     consequence then declaration order, so the item that would stop the job
-     comes first without a badge saying so. No taxonomy is shown: not the
-     lanes, not resolvability, not owner, not the consequence names.
+     WHAT IS DELIBERATELY ABSENT. No consequence taxonomy, no blocking/costly
+     vocabulary, no acceptance, no persistence, no state, no controls beyond
+     the two that open capabilities this page already ships. Reading this
+     section writes nothing anywhere.
 
-     WHAT IS SUPPRESSED, AND WHY. Two registry entries are already answered
-     elsewhere in this same Results view — `contractingEntity` is stated in
-     Atlas Assessment (see the UX-009 note) and `origin` is on the hero and in
-     Compare. Repeating them here would make PlotNua look like it had lost
-     track of what it had already said. `planning` STAYS: one line naming it
-     as open is a quiet reference, not a duplicate of the Planning section.
+     EVERY SENTENCE IS DERIVED. The classification vocabularies were measured
+     across all 487 records before this was written, and each card is built
+     from the governed classification for THIS product. Nothing is typed in
+     for a particular maker; the Shomera reading is what the rules produce
+     when they meet Shomera's evidence, and a product with a published
+     footprint produces a different sentence from the same code.
+
+     TARGET THREE, CEILING FOUR. A concept with no governed evidence produces
+     NO card rather than a weak one — measured, that leaves 80 of 487 products
+     with two decision points instead of three, and two true ones are worth
+     more than three where the third is filler.
      ========================================================================= */
-  const RESULTS_UNCERTAINTY_SHOWN = 4;
 
-  /* Answered elsewhere on this page. Keys, not labels, so a copy change
-     cannot silently reopen the duplication. */
-  const RESULTS_UNCERTAINTY_ELSEWHERE = ['contractingEntity', 'origin'];
+  const BYD_MAX_POINTS = 4;
 
-  function renderResultsUncertainty(product){
-    const sec = els.resultsUncertainty;
-    if (!sec) return 0;
-    if (!product) { sec.hidden = true; return 0; }
+  /* ---- 01 · YOUR PROPERTY -------------------------------------------------
+     The one capability that is always present: Results has already built the
+     3D view of this address and run the sun calculation on it. What it has
+     NOT done is look at the way in, and the sentence says so in the same
+     breath. PlotNua does not hold, measure or store anything about access,
+     gates or overhead clearance, so the action offers SIGHT, never a check. */
+  function bydOpenProperty(){
+    const d = document.getElementById('yourProperty');
+    if (!d) return;
+    if ('open' in d) d.open = true;          /* it is a <details>, opened not faked */
+    try { d.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    catch (e) { d.scrollIntoView(); }
+  }
 
-    const model = resolveUncertaintiesFor(product, {});
-    const items = (model.needsPosition || []).filter(function(e){
-      return RESULTS_UNCERTAINTY_ELSEWHERE.indexOf(e.key) < 0;
+  function bydPropertyPoint(){
+    return {
+      key: 'property',
+      category: 'Your property',
+      question: 'Where would it actually go?',
+      body: 'PlotNua has modelled the light on your plot in 3D. It has not '
+          + 'seen your side access, your gates or what is overhead — that '
+          + 'part is still yours to look at.',
+      actionLabel: 'See your plot in 3D →',
+      action: bydOpenProperty
+    };
+  }
+
+  /* ---- 02 · PLANNING ------------------------------------------------------
+     THREE THINGS THIS MUST NEVER DO: state that permission is required, state
+     that it is not, or imply PlotNua has run an exemption test it has not.
+     There is no exemption engine in this build (see the file header) and this
+     card does not pretend otherwise.
+
+     The position comes from the record's own leading classification, a closed
+     vocabulary measured across 462 records. The ALLOWANCE FIGURE IS READ OUT
+     OF THE RECORD rather than typed here, so a change in Irish law reaches
+     the page through Atlas — the way every other figure on this page does —
+     and never through a number I remembered. A record that does not state the
+     allowance simply does not get that sentence. */
+  const BYD_PLANNING_CLASS = [
+    { key: 'within',     re: /^WITHIN EXEMPTED DEVELOPMENT/ },
+    { key: 'exceeds',    re: /^EXCEEDS THE EXEMPTION/ },
+    { key: 'untestable', re: /^REQUIRES PRODUCT-SPECIFIC VERIFICATION/ }
+  ];
+  const BYD_ALLOWANCE_RE = /(\d{1,3})\s*m2\s+combined back-garden allowance/i;
+
+  function bydPlanningRecordText(product){
+    const f = product && pnDetailFor(product.id, 'planningConsiderations');
+    return (f && typeof f.text === 'string') ? f.text : '';
+  }
+
+  function bydPlanningPoint(product){
+    const text = bydPlanningRecordText(product);
+    if (!text) return null;
+    const head = text.split('.')[0];
+    let cls = null;
+    for (let i = 0; i < BYD_PLANNING_CLASS.length; i++){
+      if (BYD_PLANNING_CLASS[i].re.test(head)) { cls = BYD_PLANNING_CLASS[i].key; break; }
+    }
+    if (!cls) return null;          /* unclassified says nothing, so it says nothing */
+
+    const am = BYD_ALLOWANCE_RE.exec(text);
+    const frame = am
+      ? ('Irish exemption rules can allow up to ' + am[1] + ' m² of garden '
+         + 'structures, subject to conditions including height and how much '
+         + 'garden is left. ')
+      : '';
+    const maker = (product && product.organisation) || 'The maker';
+    let position;
+    if (cls === 'within') {
+      position = frame
+        ? 'This one’s published floor area is inside that allowance — the '
+          + 'other conditions still have to be met at your property.'
+        : 'This one’s published floor area is inside the Irish exemption limit '
+          + 'for a back-garden structure — the other conditions still have to '
+          + 'be met at your property.';
+    } else if (cls === 'exceeds') {
+      position = frame
+        ? 'This one’s published floor area is larger than that allowance on '
+          + 'its own.'
+        : 'This one’s published floor area is larger than the Irish exemption '
+          + 'limit for a back-garden structure on its own.';
+    } else {
+      position = maker + ' doesn’t publish a footprint or height for this one, '
+               + 'so Atlas can’t test it against the limit yet.';
+    }
+
+    return {
+      key: 'planning',
+      category: 'Planning',
+      question: 'Would you need planning permission?',
+      body: frame + position,
+      actionLabel: 'Understand the planning →',
+      action: function(){ openTopicOverlay('planning', els.matchResultsScreen); }
+    };
+  }
+
+  /* ---- 03 · TRUE COST -----------------------------------------------------
+     NO ACTION, ON PURPOSE. PlotNua holds no cost calculator, no configurator
+     and no quote route, so there is no honest destination and no button is
+     drawn. The finding is the value.
+
+     It also deliberately does NOT repeat Atlas Assessment, which already
+     states the installation position as a fact. This card is about what the
+     price does not settle: the basis it is quoted on, and the VAT position —
+     which across this catalogue is the single largest silent swing, at 13.5
+     to 23 per cent. pnVatPosition() is the shipped resolver, reused rather
+     than re-implemented, so this card cannot disagree with any other surface
+     about VAT. */
+  const BYD_INSTALL_CLASS = [
+    { key: 'included', re: /^(TURNKEY INSTALLATION INCLUDED|SUPPLY AND FIT)/ },
+    { key: 'optional', re: /^DIY OR INSTALLED/ },
+    { key: 'kit',      re: /^(DIY KIT ONLY|SUPPLY-ONLY KIT)/ },
+    { key: 'unknown',  re: /^INSTALLATION UNKNOWN/ }
+  ];
+
+  function bydInstallationHead(product){
+    const f = product && product.features && product.features.installationModel;
+    const t = (f && typeof f.text === 'string') ? f.text : '';
+    return t ? t.split('.')[0] : '';
+  }
+
+  function bydTrueCostPoint(product){
+    const head = bydInstallationHead(product);
+    let inst = null;
+    for (let i = 0; i < BYD_INSTALL_CLASS.length; i++){
+      if (BYD_INSTALL_CLASS[i].re.test(head)) { inst = BYD_INSTALL_CLASS[i].key; break; }
+    }
+    const vat = pnVatPosition(product);
+    const pe = (product && product.priceEvidence) || {};
+    const basis = String(pe.priceType == null ? '' : pe.priceType).trim();
+    const maker = (product && product.organisation) || 'The maker';
+
+    /* Nothing established about installation AND nothing unresolved about VAT
+       is a card with nothing to say. It is not drawn. */
+    if (!inst && vat.state === 'included') return null;
+
+    let lead;
+    if (inst === 'included') {
+      /* FOUNDATIONS is read from the classification head only, and only where
+         the same head does not exclude them — measured: 24 include, 7 exclude. */
+      const founds = head.indexOf('FOUNDATION') > -1 && head.indexOf('EXCLUDED') < 0;
+      lead = maker + ' publishes this as a turnkey price, with installation'
+           + (founds ? ' and foundations' : '') + ' inside it.';
+    } else if (inst === 'optional') {
+      lead = maker + ' publishes this to be self-built or installed for you, so '
+           + 'installation may sit outside the price.';
+    } else if (inst === 'kit') {
+      lead = maker + ' publishes this as a kit — installation is not part of '
+           + 'the price.';
+    } else {
+      lead = 'Atlas hasn’t established whether installation is part of this '
+           + 'price.';
+    }
+
+    const caveats = [];
+    if (/^(Starting From|Custom Quote|Estimated Price)$/i.test(basis)) {
+      caveats.push('this is a “' + basis.toLowerCase() + '” figure');
+    }
+    if (vat.state === 'disputed') {
+      caveats.push('Atlas holds conflicting evidence on whether VAT is included');
+    } else if (vat.state === 'unknown') {
+      caveats.push('Atlas hasn’t established whether VAT is included');
+    } else if (vat.state === 'excluded') {
+      caveats.push('the published figure is recorded before VAT');
+    }
+
+    let body = lead;
+    if (caveats.length === 1) body += ' But ' + caveats[0] + '.';
+    else if (caveats.length > 1) {
+      body += ' But ' + caveats.slice(0, -1).join(', ') + ', and '
+            + caveats[caveats.length - 1] + '.';
+    }
+
+    /* The figure is the governed display price, or no figure at all.
+
+       pnPriceDisplay() returns a LABELLED figure — "From \u20ac28,450",
+       "Estimated \u20ac9,950", "Quoted \u20ac…" — and the label is part of
+       what Atlas established, so it is never dropped. Only its CASE belongs
+       to this sentence: a capital in the middle of a question reads as a
+       bug. The guard requires a lower-case letter after the capital, so a
+       currency symbol, a numeral and a separator are all untouched. */
+    let question = 'What would this actually cost?';
+    try {
+      const shown = pnPriceDisplay(product);
+      if (shown && /\d/.test(shown)) {
+        question = 'What does ' + String(shown).replace(/^[A-Z](?=[a-z])/,
+          function(c){ return c.toLowerCase(); }) + ' actually include?';
+      }
+    } catch (e) { /* no price, no figure */ }
+
+    return { key: 'trueCost', category: 'True cost', question: question, body: body,
+             actionLabel: null, action: null };
+  }
+
+  /* ---- SELECTION ---------------------------------------------------------- */
+  function bydPointsFor(product){
+    if (!product) return [];
+    const out = [bydPropertyPoint()];
+    const plan = bydPlanningPoint(product);
+    if (plan) out.push(plan);
+    let cost = null;
+    try { cost = bydTrueCostPoint(product); } catch (e) { cost = null; }
+    if (cost) out.push(cost);
+    return out.slice(0, BYD_MAX_POINTS);
+  }
+
+  /* ---- RENDER -------------------------------------------------------------
+     Editorial, not a dashboard: a number, a quiet category, the question in
+     the serif the rest of the page states facts in, one sentence, and at most
+     one restrained action. No badge, no colour coding, no panel. */
+  function bydEl(tag, cls, text){
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function renderResultsDecide(product){
+    const sec = els.resultsDecide;
+    if (!sec || !els.bydPoints) return 0;
+    if (!product) { sec.hidden = true; els.bydPoints.innerHTML = ''; return 0; }
+
+    /* Guarded against a stale async repaint: the planning partition may land
+       after the homeowner has already moved to another recommendation. */
+    sec.setAttribute('data-byd-product', product.id);
+
+    const points = bydPointsFor(product);
+    els.bydPoints.innerHTML = '';
+    points.forEach(function(p, i){
+      const art = bydEl('article', 'byd-point');
+      art.setAttribute('data-key', p.key);
+      const head = bydEl('div', 'byd-head');
+      head.appendChild(bydEl('span', 'byd-num', ('0' + (i + 1)).slice(-2)));
+      head.appendChild(bydEl('span', 'byd-cat', p.category));
+      art.appendChild(head);
+      art.appendChild(bydEl('h3', 'byd-q', p.question));
+      art.appendChild(bydEl('p', 'byd-body', p.body));
+      if (p.actionLabel && p.action) {
+        const b = bydEl('button', 'byd-act', p.actionLabel);
+        b.type = 'button';
+        b.addEventListener('click', p.action);
+        art.appendChild(b);
+      }
+      els.bydPoints.appendChild(art);
     });
 
-    els.resultsUncertaintyList.innerHTML = '';
-    els.resultsUncertaintyBoundary.innerHTML = '';
+    sec.hidden = points.length === 0;
 
-    /* The situation line, unchanged, and the file's only sentence about this
-       moment. It belongs to the whole section, not to any one item. */
-    if (els.resultsUncertaintySituation) {
-      els.resultsUncertaintySituation.textContent = RESOLVE_SITUATION;
-    }
-
-    if (!items.length) {
-      /* NOT "everything is verified". The model found nothing further; that
-         is a fact about the model, and the second sentence says so. */
-      const li = document.createElement('li');
-      li.className = 'results-uncertainty-empty';
-      li.textContent = 'Atlas has not identified any further open questions '
-        + 'about this option. That is not the same as there being nothing '
-        + 'left to check.';
-      els.resultsUncertaintyList.appendChild(li);
-      if (els.resultsUncertaintyMore) els.resultsUncertaintyMore.hidden = true;
-    } else {
-      items.forEach(function(e, i){
-        const copy = resolveCopyFor(e);
-        const li = document.createElement('li');
-        li.className = 'results-uncertainty-item';
-        li.setAttribute('data-key', e.key);
-        /* Hidden, not absent: "Show the rest" reveals, it does not rebuild. */
-        li.hidden = i >= RESULTS_UNCERTAINTY_SHOWN;
-
-        const q = document.createElement('span');
-        q.className = 'results-uncertainty-q';
-        q.textContent = (copy && copy.label) || e.key;
-        li.appendChild(q);
-
-        /* The existing sentence, spoken plainly. Only blocking and costly
-           have one; the rest say nothing rather than something empty. */
-        const cq = resolveConsequenceLine(e.consequence);
-        if (cq) {
-          const p = document.createElement('p');
-          p.className = 'results-uncertainty-why';
-          p.textContent = cq;
-          li.appendChild(p);
-        }
-
-        /* Atlas's own words about why it could not settle this. Never a
-           paraphrase, and absent renders nothing. */
-        if (e.cell && e.cell.note) {
-          const n = document.createElement('p');
-          n.className = 'results-uncertainty-note';
-          n.textContent = e.cell.note;
-          li.appendChild(n);
-        }
-
-        els.resultsUncertaintyList.appendChild(li);
-      });
-
-      const hidden = Math.max(0, items.length - RESULTS_UNCERTAINTY_SHOWN);
-      if (els.resultsUncertaintyMore) {
-        els.resultsUncertaintyMore.hidden = hidden === 0;
-        els.resultsUncertaintyMore.textContent = 'Show the rest';
-        els.resultsUncertaintyMore.setAttribute('aria-expanded', 'false');
-      }
-    }
-
-    /* THE BOUNDARY, VERBATIM. resolveBoundaryBlock() is reused rather than
-       rewritten: it is the most carefully governed paragraph on the stage and
-       nothing here may soften it. */
+    /* THE ONE FETCH THIS SECTION ADDS. The planning partition is the evidence
+       decision point 02 is made of; without it there is no planning card at
+       all. Memoised by pnDetailPartitionReady(), so it is requested once per
+       session however many times Results renders, and a failure resolves to
+       an empty store and simply leaves the card out. */
     try {
-      els.resultsUncertaintyBoundary.appendChild(resolveBoundaryBlock(model, product));
-    } catch (err) { /* absent renders nothing */ }
+      pnDetailPartitionReady('planningConsiderations').then(function(){
+        if (sec.getAttribute('data-byd-product') !== product.id) return;
+        if (els.bydPoints.querySelector('[data-key="planning"]')) return;
+        if (!bydPlanningPoint(product)) return;
+        renderResultsDecide(product);
+      });
+    } catch (e) { /* absent renders nothing */ }
 
-    /* Ask PlotNua is the existing answer to "I still do not know". A move, not
-       a second form: the chapter itself is a few sections down this page. */
-    if (els.resultsUncertaintyAsk) {
-      els.resultsUncertaintyAsk.hidden = !(els.askAtlas && !els.askAtlas.hidden);
-    }
-
-    sec.hidden = false;
-    return items.length;
+    return points.length;
   }
+
+  /* ---- THE ASK BEAT -------------------------------------------------------
+     A MOVE, NOT A REBUILD. #askAtlas carries the only submitting form on this
+     page. Re-creating it would mean a second Formspree action, a second set
+     of hidden fields and a second honeypot; moving the node keeps exactly one
+     of each, and every listener wireAskAtlas() bound survives, because a DOM
+     move does not detach handlers. */
+  function bydRehomeAsk(){
+    const host = els.bydAskHost, ask = els.askAtlas;
+    if (!host || !ask) return false;
+    if (ask.parentNode === host) return true;      /* idempotent */
+    host.appendChild(ask);
+    return true;
+  }
+
 
   function renderResolve(product){
     const view = els.resolveView;
