@@ -4997,6 +4997,35 @@
 
   /* The Ask beat, in its new home. The chapter keeps every rule it already
      had; only the space around it belongs to this section. */
+  /* ISSUE 007 FINAL — THE CLOSING BEAT. Full width inside the composition,
+     on the same stone the cards use, so it reads as PlotNua speaking rather
+     than as a banner. No dark slab, no border, no icon, one control. */
+  .byd-close{
+    margin:var(--pn-space-lg) 0 0; padding:var(--pn-space-lg) var(--pn-space-lg) var(--pn-space-md);
+    background:var(--pn-surface); border-radius:14px;
+  }
+  .byd-close-title{
+    margin:0 0 10px; font-family:'Fraunces',Georgia,serif; font-weight:400;
+    font-size:clamp(22px,2.6vw,28px); line-height:1.22; letter-spacing:-.014em;
+    color:var(--ink);
+  }
+  .byd-close-body{
+    margin:0 0 var(--pn-space-md); font-size:15px; line-height:1.6;
+    color:var(--soft); max-width:52ch;
+  }
+  .byd-close-cta{
+    background:none; border:1.5px solid var(--brand-green); border-radius:999px;
+    padding:12px 26px; cursor:pointer;
+    font-family:'Work Sans',sans-serif; font-size:12px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--brand-green);
+    transition:background .2s ease, color .2s ease;
+  }
+  .byd-close-cta:hover{ background:var(--brand-green); color:var(--pn-ground); }
+  .byd-close-cta:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
+  @media (max-width:640px){
+    .byd-close{ padding:var(--pn-space-md) var(--pn-space-md) var(--pn-space-sm); }
+  }
+
   /* The Ask beat closes the composition. A hairline and air, then a heading
      sized as a beat rather than a chapter — it is the last line of Before
      You Decide, not a new subject. */
@@ -6328,12 +6357,14 @@
        one new weight. */
     --pn-edge:rgba(139,137,113,.42);   /* the interactive edge */
     --pn-panel:rgba(139,137,113,.09);  /* the mid ground */
-    /* ISSUE 007 — THE CARD SURFACE. Measured on production: every light
-       card was rgb(245,242,232), which is --pn-ground exactly — the cards
-       were not close to the page, they WERE the page. This is --pn-ground
-       carrying 8% of --pn-stone: the same warm family, one step down, a
-       surface rather than a grey box. */
-    --pn-surface:#ECE9DE;
+    /* ISSUE 007 FINAL — THE CARD SURFACE, DEEPENED BECAUSE IT WAS MEASURED
+       AND NOT SEEN. #ECE9DE applied correctly and reached only 1.09:1
+       against the ground — arithmetically a step, visually nothing. This
+       is 1.21:1: still the same warm stone family (r>g>b, no grey in it),
+       still no shadow and no gradient, but a card the eye reads as an
+       object on the page. Text on it measures 8.9:1 for ink and 4.8:1 for
+       body copy, both above AA. */
+    --pn-surface:#E3DECB;
     /* The Wildcard, lightened. --pn-voice (#24351F) at 11.7:1 against ivory
        was darker than anything else on the page and pulled the eye off the
        recommendation. This sits between --pn-voice and the original brand
@@ -6564,6 +6595,18 @@
      .results-gallery-card asks for var(--paper), and --paper is remapped to
      --pn-ground inside this screen, so they painted the page colour. */
   #screen-match-results .results-gallery-card{ background:var(--pn-surface); }
+  /* ISSUE 007 FINAL — LOCAL OPTION WAS NOT THE SAME BUG. Measured live, its
+     computed background was rgba(0,0,0,0): a state rule for the unresolved
+     lenses sets `background:none`, which beats the .alt-card fill, so that
+     ONE card was fully transparent whatever --pn-surface said. The state
+     still reads as unresolved — it keeps its own muted type and hairline —
+     but it is a card like its neighbours now. */
+  #screen-match-results .alt-lens.is-not-yet,
+  #screen-match-results .alt-lens.is-not-applicable,
+  #screen-match-results .alt-card.alt-lens.is-not-yet,
+  #screen-match-results .alt-card.alt-lens.is-not-applicable{
+    background:var(--pn-surface); background-image:none;
+  }
   #screen-match-results .plot-twist.wildcard{ background:var(--pn-ground); background-image:none; }
   #screen-match-results img.pn-image-fallback{ background:var(--pn-hair); background-image:none; }
   #screen-match-results .results-map-viewport{ background:var(--pn-hair); }
@@ -6674,6 +6717,26 @@
   #screen-match-results #aboutSupplier,
   #screen-match-results #resultsCompare{ margin-top:0; margin-bottom:var(--pn-space-2xl); }
 
+  /* ISSUE 007 FINAL — THE REAL DEAD SPACE IS INSIDE THE LENS RAIL.
+
+     Measured on the live build: .alt-lens carries min-height:340px while
+     Local Option holds 150px of content and Best European 160px — roughly
+     138px hollow in each. The Plot Twist lens is 494px, so it alone sets
+     the rail to 502px, and because the rail is align-items:flex-start the
+     three shorter cards stop 161px above its floor. That blank strip runs
+     the full width of the page and is immediately followed by the section
+     margin: 225px of nothing on a 747px viewport. It is not a margin
+     problem, which is why changing margins again would not have fixed it.
+
+     Three declarations. The floor goes (content decides the height), the
+     rail stretches (every card reaches the same floor, so there is no
+     ragged strip under the short ones), and the state line is seated at
+     the foot of its card instead of pooling wherever the text ended.
+     Nothing about which lenses render, or what they say, is touched. */
+  #screen-match-results .alt-lens{ min-height:0; }
+  #screen-match-results #matchAlternatives{ align-items:stretch; }
+  #screen-match-results .alt-lens .alt-lens-state{ margin-top:auto; }
+
   /* ISSUE 007 — THE LOWER JOURNEY BREATHES AT 64, NOT 96.
 
      Measured on production at a 747px viewport: five consecutive 96px
@@ -6685,7 +6748,10 @@
 
      .match-bring-your-own leaves this list entirely — it is no longer a
      section (see below). */
-  #screen-match-results #altRailWrap,
+  /* The alternatives are one argument in two parts — the lenses and then
+     the three Atlas found — so the rail closes at 48, not 64, and "Other
+     options" sits with what it belongs to. */
+  #screen-match-results #altRailWrap{ margin-top:0; margin-bottom:var(--pn-space-xl); }
   #screen-match-results #yourProperty{ margin-top:0; margin-bottom:var(--pn-space-section); }
   #screen-match-results .byd{ margin-top:var(--pn-space-section); }
 
@@ -6794,14 +6860,18 @@
      (same form, same ids, same intake, same handlers); it now reads as a
      quiet utility belonging to the alternatives directly above it, which is
      the only place on the page it makes sense. */
+  /* ISSUE 007 FINAL — INSIDE THE OTHER OPTIONS COMPOSITION, not after it.
+     No rule above it, no section gap, no heading weight: it reads as the
+     last line of the alternatives, which is what it is. The form, the
+     field, the ids and every handler are untouched. */
   #screen-match-results .match-bring-your-own{
-    background:none; border:none; border-top:1px solid var(--pn-hair);
-    border-radius:0; padding:var(--pn-space-md) 0 0;
-    margin:var(--pn-space-md) 0 var(--pn-space-section); }
+    background:none; border:none; border-radius:0; padding:0;
+    margin:var(--pn-space-sm) 0 var(--pn-space-section); }
   #screen-match-results .match-bring-your-own .match-bring-your-own-title{
-    font-size:var(--pn-s-quote); margin-bottom:var(--pn-space-xs); }
+    font-family:'Work Sans',sans-serif; font-size:var(--pn-w-body);
+    font-weight:600; color:var(--pn-body); margin-bottom:2px; }
   #screen-match-results .match-bring-your-own .match-bring-your-own-copy{
-    font-size:var(--pn-w-body); margin:0 0 var(--pn-space-sm); }
+    font-size:var(--pn-w-body-sm); margin:0 0 var(--pn-space-xs); }
   #screen-match-results .match-bring-your-own .match-bring-your-own-title{ color:var(--pn-voice); }
   #screen-match-results .match-bring-your-own .match-bring-your-own-copy{ color:var(--pn-body); }
   #screen-match-results .match-bring-your-own .match-add-own-field-label{
@@ -8574,7 +8644,7 @@
              sun calculation; nothing here claims PlotNua checks access,
              gates, overhead clearance or placement. -->
         <span class="your-property-label">Your property in 3D</span>
-        <span class="your-property-lede" id="yourPropertyLede">Explore your plot, see how the light moves across it, and get a better sense of where this option could sit.</span>
+        <span class="your-property-lede" id="yourPropertyLede">Click and drag to explore your plot. Pinch or scroll to zoom. See how the light moves across it and get a better sense of where this option could sit.</span>
       </summary>
       <div class="your-property-body">
     <!-- SCENE 3 — THEY PROVED IT. The single Sun & Light centrepiece.
@@ -8742,6 +8812,23 @@
       <div class="byd-label" id="bydLabel">Before You Decide</div>
       <p class="byd-lede">Three things to know before you decide.</p>
       <div class="byd-points" id="bydPoints"></div>
+
+      <!-- ISSUE 007 FINAL — THE CLOSING BEAT.
+
+           The conclusion of the Results journey, and deliberately NOT a
+           fourth diagnostic card: it states what the homeowner now has,
+           and offers the one route PlotNua can honestly still give them.
+           It promises no reply, names no next stage and is not a gate —
+           the page ends here whether or not anyone presses it. The
+           control opens the SAME Ask disclosure below; it never submits
+           anything and never creates a second form. -->
+      <div class="byd-close" id="bydClose">
+        <p class="byd-close-title">You know what matters now.</p>
+        <p class="byd-close-body">PlotNua has narrowed the decision down.
+          If there’s still something you want to understand, ask us about
+          this option.</p>
+        <button type="button" class="byd-close-cta" id="bydCloseCta">Ask PlotNua →</button>
+      </div>
 
       <!-- ISSUE 007 — THE FINAL ASK PLOTNUA BEAT.
 
@@ -9228,7 +9315,13 @@
     resultsReassuranceList: document.getElementById('resultsReassuranceList'),
     resultsDecide: document.getElementById('resultsDecide'),
     bydPoints: document.getElementById('bydPoints'),
+    bydClose: document.getElementById('bydClose'),
+    bydCloseCta: document.getElementById('bydCloseCta'),
     bydAskHost: document.getElementById('bydAskHost'),
+    /* ISSUE 007 FINAL — the node bydRehomeAsk() needs. Its absence is what
+       silently disabled the relocation; it is looked up by id there now,
+       and carried here as well so nothing has to guess again. */
+    askAtlas: document.getElementById('askAtlas'),
     matchFoundCards: document.getElementById('matchFoundCards'),
     matchNextStep: document.getElementById('matchNextStep'),
     resultsScope: document.getElementById('resultsScope'),
@@ -10103,8 +10196,25 @@
      scroll link to somewhere else on the page. */
 
   /* ISSUE 007 — the Ask beat is re-homed once, at load, before anything
-     renders. Idempotent: a second call is a no-op. */
+     renders. Idempotent: a second call is a no-op, and renderMatchResults
+     re-asserts it on every render. */
   bydRehomeAsk();
+
+  /* ISSUE 007 FINAL — the closing control opens the Ask disclosure that is
+     already on the page, a few hundred pixels below it. It clicks the
+     SHIPPED toggle rather than reimplementing the open state, so the
+     aria-expanded contract, the focus move and the form stay exactly as
+     wireAskAtlas() built them. Nothing is submitted here. */
+  if (els.bydCloseCta) {
+    els.bydCloseCta.addEventListener('click', function(){
+      const ask = document.getElementById('askAtlas');
+      const form = document.getElementById('askOwnForm');
+      const toggle = document.getElementById('askOwnToggle');
+      if (toggle && form && form.hidden) toggle.click();
+      if (ask) { try { ask.scrollIntoView({ behavior:'smooth', block:'center' }); }
+                 catch (e) { ask.scrollIntoView(); } }
+    });
+  }
   els.plotTopicBackBtn.addEventListener('click', () => closeTopicOverlay());
 
   // LAUNCH v1.1 — Property Readiness accordion. Only one item may be open
@@ -22680,6 +22790,12 @@
        so the two cannot disagree about which product is being
        recommended. */
     try { renderResultsDecide(resultsComparePrimary); } catch (e) {}
+    /* ISSUE 007 FINAL — RE-ASSERTED ON EVERY RENDER, not trusted once at
+       load. bydRehomeAsk() is idempotent, so this costs nothing when the
+       node is already home; what it buys is that the Ask beat cannot end
+       up back beside Atlas Assessment because of any ordering I have not
+       thought of. The load-time call stays as the fast path. */
+    try { bydRehomeAsk(); } catch (e) {}
     const euro = raEuropeanPick(alternativeResults, primary && primary.id);
     const out = [];
     /* CR-0 — hoisted to isEuroProduct() above so raWildcardEuropeanNote() can
@@ -26884,7 +27000,13 @@
      of each, and every listener wireAskAtlas() bound survives, because a DOM
      move does not detach handlers. */
   function bydRehomeAsk(){
-    const host = els.bydAskHost, ask = els.askAtlas;
+    /* THE BUG THIS LINE FIXES. This read els.askAtlas — and there is no
+       askAtlas key in the els map. It was undefined, the guard below fired
+       on every call, and the function returned false silently for the whole
+       of bfe0930. Every other consumer in this file reaches the node the
+       same way this now does, by id, which is why they all worked. */
+    const host = els.bydAskHost;
+    const ask  = document.getElementById('askAtlas');
     if (!host || !ask) return false;
     if (ask.parentNode === host) return true;      /* idempotent */
     host.appendChild(ask);
