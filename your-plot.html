@@ -6859,6 +6859,36 @@
     align-items:flex-start;
   }
 
+  /* A PRODUCT THE HOMEOWNER BROUGHT, AT THE COMPOSITION'S OWN SCALE.
+
+     MEASURED: #matchFoundCards carries .match-cards, and at the desktop
+     breakpoint that rule is `display:grid; grid-template-columns:repeat(3,1fr)`
+     inside a 910px panel — so a single returned card rendered at about a third
+     of the measure, roughly 287px, directly beneath a composition whose cells
+     are 443px. That is the narrow isolated card in the QA screenshot. It is
+     the SAME grid as the four cells above it now.
+
+     The negative top margin closes the section gap #altResults carries, so the
+     result reads as the answer to the fourth cell rather than as a new
+     section. It cannot pull anything up in the ordinary case, because
+     `.match-cards-found:empty{ display:none; margin:0 }` already removes the
+     host entirely when nothing has been submitted.
+
+     buildFoundCard() is untouched: same DOM, same information, same
+     verification state, same Remove control, same handlers. Only the box it
+     is drawn in changes. */
+  #screen-match-results #matchFoundCards{
+    display:grid; grid-template-columns:1fr; gap:var(--pn-space-md);
+    margin:calc(var(--pn-space-md) - var(--pn-space-section)) 0 var(--pn-space-section);
+  }
+  @media (min-width:900px){
+    #screen-match-results #matchFoundCards{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  }
+  #screen-match-results #matchFoundCards .match-card-found{
+    background:var(--pn-surface); border:1px solid var(--pn-hair); border-radius:14px;
+    overflow:hidden;
+  }
+
   /* THE PROPERTY PANEL'S NEW INSTRUCTION LINE. Same voice as the intro it
      sits above, one step quieter. */
   #screen-match-results .results-centrepiece-howto{
@@ -8748,7 +8778,12 @@
              sun calculation; nothing here claims PlotNua checks access,
              gates, overhead clearance or placement. -->
         <span class="your-property-label">Your property in 3D</span>
-        <span class="your-property-lede" id="yourPropertyLede">Click and drag to explore your plot. Pinch or scroll to zoom. See how the light moves across it and get a better sense of where this option could sit.</span>
+        <!-- ISSUE 007 QA — the closed disclosure says what is behind it; the
+             panel inside says how to use it. The click/drag/pinch/scroll
+             instruction belongs with the controls it operates, and stating
+             it here as well made the homeowner read it twice. Nothing is
+             lost: the full instruction is unchanged inside the panel. -->
+        <span class="your-property-lede" id="yourPropertyLede">A 3D view of your actual property, with the light Atlas calculated for it.</span>
       </summary>
       <div class="your-property-body">
     <!-- SCENE 3 — THEY PROVED IT. The single Sun & Light centrepiece.
