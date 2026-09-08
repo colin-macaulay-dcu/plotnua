@@ -6914,6 +6914,88 @@
   #screen-match-results .aa-evd[open] > summary{ margin-bottom:var(--pn-space-md); }
   #screen-match-results .aa-evd .aa-mkr{ margin-top:0; }
 
+  /* ---- GOOGLE REPUTATION -------------------------------------------
+     Supporting evidence, inside the disclosure, after everything Atlas
+     holds. Subordinate by construction: it is last, it is smaller than the
+     assessment, and its card sits BELOW the recommendation's surface.
+     Google's element is themed only through Google's own documented
+     custom properties; nothing pierces its closed shadow DOM. */
+  #screen-match-results .pn-gx{
+    margin-top:var(--pn-space-xl); padding-top:var(--pn-space-md);
+    border-top:1px solid var(--pn-hair);
+  }
+  #screen-match-results .pn-gx-label{
+    display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px;
+  }
+  #screen-match-results .pn-gx-label b{
+    font-size:10px; letter-spacing:.17em; text-transform:uppercase;
+    color:var(--pn-stone); font-weight:600;
+  }
+  #screen-match-results .pn-gx-label i{
+    font-style:normal; font-size:11.5px; color:var(--pn-meta);
+  }
+  #screen-match-results .pn-gx-note{
+    font-size:11.5px; color:var(--pn-meta); margin:0 0 var(--pn-space-md); max-width:58ch;
+  }
+  /* MEASURED: #EAE4D2 is 1.13:1 against the page and 1.06:1 against the
+     recommendation's --pn-surface, so it reads as a card without competing
+     with the recommendation. */
+  #screen-match-results .pn-gx-card{
+    background:#EAE4D2;
+    border:1px solid var(--pn-edge);
+    border-radius:14px;
+    padding:var(--pn-space-md) var(--pn-space-lg) var(--pn-space-sm);
+    box-shadow:0 1px 2px rgba(36,53,31,.05), 0 12px 30px -16px rgba(36,53,31,.16);
+    max-width:420px;
+  }
+  #screen-match-results .pn-gx-more{
+    margin-top:var(--pn-space-sm); padding-top:var(--pn-space-sm);
+    border-top:1px solid var(--pn-hair);
+  }
+  #screen-match-results .pn-gx-more > summary{
+    list-style:none; cursor:pointer;
+    font-family:'Work Sans',sans-serif;
+    font-size:14.5px; font-weight:600; letter-spacing:-.002em;
+    color:var(--pn-voice); padding:2px 0;
+    text-decoration:underline; text-underline-offset:4px;
+    text-decoration-thickness:1px; text-decoration-color:var(--pn-wild);
+  }
+  #screen-match-results .pn-gx-more > summary::-webkit-details-marker{ display:none; }
+  #screen-match-results .pn-gx-more > summary:hover{
+    color:var(--accent); text-decoration-color:var(--accent);
+  }
+  #screen-match-results .pn-gx-more > summary:focus-visible{
+    outline:2px solid var(--pn-wild); outline-offset:3px; border-radius:2px;
+  }
+  /* Google's element scrolls inside the space it is given — a documented
+     appearance configuration, not truncation of its content. */
+  #screen-match-results .pn-gx-reviews{
+    max-height:420px; overflow:auto; margin-top:var(--pn-space-xs);
+  }
+  /* GOOGLE'S DOCUMENTED THEMING. Every property here appears in Google's
+     "CSS properties to customize Places UI Kit" table as supported on the
+     Details Compact Element. color-scheme is pinned light because this is a
+     fixed light theme and Google warns the component otherwise follows the
+     OS. The filled star keeps Google's own gold: not themeable here, and it
+     should stay Google's. */
+  #screen-match-results gmp-place-details,
+  #screen-match-results gmp-place-details-compact{
+    display:block; width:388px; max-width:100%;
+    color-scheme:light;
+    --gmp-mat-color-surface:transparent;
+    --gmp-mat-color-on-surface:var(--pn-voice);
+    --gmp-mat-color-on-surface-variant:var(--pn-body);
+    --gmp-mat-color-primary:var(--pn-wild);
+    --gmp-mat-color-outline-decorative:var(--pn-hair);
+    --gmp-mat-color-neutral-container:var(--pn-wash);
+    --gmp-mat-color-on-neutral-container:var(--pn-stone);
+    --gmp-mat-color-secondary-container:#EAE4D2;
+    --gmp-mat-color-on-secondary-container:#6B6A57;
+    --gmp-mat-font-family:'Work Sans',-apple-system,sans-serif;
+    border:none;
+    border-radius:0;
+  }
+
   /* ONE ASK. The section is inside the closing composition now, so its own
      heading and its own disclosure control are withdrawn — the closing
      sentence is the headline and ASK PLOTNUA is the control. The form, its
@@ -15572,6 +15654,132 @@
     return (Array.isArray(ev) && ev.length && ev[0] && ev[0].id) ? ev[0].id : null;
   }
 
+  /* ==================================================================
+     GOOGLE REPUTATION — IDENTITY ONLY, POST-SELECTION ONLY.
+
+     PlotNua holds ONE Google value: a Place ID on the organisation record,
+     carried in the suppliers detail partition. That partition is fetched
+     lazily AFTER a product has been selected, so nothing here can exist
+     while ranking is running.
+
+     RANKING CANNOT REACH THIS. Ranking reads the universe artefact; this
+     reads pnDetailParts['suppliers']. The two are different documents and
+     no ranking function calls pnGoogleIdentity(). Emptying the identity
+     changes nothing about which product is recommended.
+
+     FOUR INTERNAL STATES, ONE VISIBLE. verified | ambiguous | unresolved |
+     none. Only 'verified' renders anything. The other three are silent: a
+     homeowner is never told Atlas could not identify a supplier's Google
+     listing, because absence of Google evidence is not evidence about the
+     supplier.
+     ================================================================== */
+  function pnGoogleIdentity(product){
+    const orgId = pnSupplierOrgId(product);
+    if (!orgId) return null;
+    const store = pnDetailParts['suppliers'];
+    const rec = store && store[orgId];
+    const g = rec && rec.googleIdentity;
+    if (!g || typeof g !== 'object') return null;
+    if (g.state !== 'verified') return null;
+    return (typeof g.placeId === 'string' && g.placeId.trim()) ? g : null;
+  }
+
+  /* Google's own documented bootstrap, injected ONCE and only when a
+     verified identity is actually about to render. A homeowner whose
+     supplier has no verified Place ID never loads the Maps library. */
+  let pnMapsLoaderStarted = false;
+  function pnEnsureMapsLoader(){
+    if (pnMapsLoaderStarted) return;
+    if (googleKeyIsPlaceholder) return;
+    pnMapsLoaderStarted = true;
+    ((g)=>{var h,a,k,p='The Google Maps JavaScript API',c='google',l='importLibrary',
+      q='__ib__',m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),
+      r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{
+      await (a=m.createElement('script'));e.set('libraries',[...r]+'');
+      for(k in g)e.set(k.replace(/[A-Z]/g,t=>'_'+t[0].toLowerCase()),g[k]);
+      e.set('callback',c+'.maps.'+q);a.src='https://maps.'+c+'apis.com/maps/api/js?'+e;
+      d[q]=f;a.onerror=()=>h=n(Error(p+' could not load.'));m.head.append(a)}));
+      d[l]?0:d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n));})
+      ({ key: window.PLOTNUA_GOOGLE_MAPS_KEY, v: 'weekly' });
+    try { window.google.maps.importLibrary('places'); } catch (e) {}
+  }
+
+  /* One element builder. PlotNua supplies a Place ID and a content config
+     naming only the parts Google should draw; nothing that comes back is
+     read, stored or post-processed. */
+  function pnGoogleElement(tagName, placeId, parts, attrs){
+    const el = document.createElement(tagName);
+    if (attrs) Object.keys(attrs).forEach(function(k){ el.setAttribute(k, attrs[k]); });
+    const req = document.createElement('gmp-place-details-place-request');
+    req.setAttribute('place', placeId);
+    el.appendChild(req);
+    const cfg = document.createElement('gmp-place-content-config');
+    parts.forEach(function(t){
+      const node = document.createElement(t);
+      /* Google permits exactly three brand colours for the Maps attribution
+         and requires it to stay visible after customisation. 'gray' is the
+         softest of the three: this is the compliant limit, not a fade. */
+      if (t === 'gmp-place-attribution') {
+        node.setAttribute('light-scheme-color', 'gray');
+        node.setAttribute('dark-scheme-color', 'white');
+      }
+      cfg.appendChild(node);
+    });
+    el.appendChild(cfg);
+    return el;
+  }
+
+  /* Mounts the reputation block at the foot of the evidence disclosure.
+     Idempotent — safe to call synchronously and again when the partition
+     resolves. NO VISIBILITY GATE: the block is mounted visible and left
+     alone, so Google's own loading state is what the homeowner sees. An
+     earlier prototype hid it and required rendered height before revealing
+     it, which a hidden element can never have; that mistake is not repeated. */
+  function pnRenderGoogleReputation(host, product){
+    if (!host) return false;
+    const box = host.querySelector('.aa-evd');
+    if (!box) return false;
+    if (box.querySelector('.pn-gx')) return true;      /* already mounted */
+    const identity = pnGoogleIdentity(product);
+    if (!identity) return false;                        /* silent */
+    pnEnsureMapsLoader();
+
+    const wrap = document.createElement('div'); wrap.className = 'pn-gx';
+    const lab = document.createElement('div'); lab.className = 'pn-gx-label';
+    const b = document.createElement('b'); b.textContent = 'Reputation';
+    const i = document.createElement('i'); i.textContent = 'rendered by Google';
+    lab.appendChild(b); lab.appendChild(i);
+    const note = document.createElement('p'); note.className = 'pn-gx-note';
+    note.textContent = 'Reviews and ratings are displayed directly by Google and '
+      + 'do not affect Atlas recommendations.';
+    const card = document.createElement('div'); card.className = 'pn-gx-card';
+
+    /* DEFAULT — ONE Google component: identity, rating, review count and
+       Google's required attribution and disclosure action. */
+    card.appendChild(pnGoogleElement('gmp-place-details-compact', identity.placeId,
+      ['gmp-place-rating','gmp-place-attribution'],
+      { orientation:'horizontal', 'truncation-preferred':'' }));
+
+    /* COLLAPSED — the full review set, built by Google on first open. */
+    const more = document.createElement('details'); more.className = 'pn-gx-more';
+    const sum = document.createElement('summary');
+    sum.textContent = 'See Google\u2019s reviews \u2192';
+    more.appendChild(sum);
+    const rhost = document.createElement('div'); rhost.className = 'pn-gx-reviews';
+    more.appendChild(rhost);
+    more.addEventListener('toggle', function(){
+      if (more.open && !rhost.firstChild) {
+        rhost.appendChild(pnGoogleElement('gmp-place-details', identity.placeId,
+          ['gmp-place-reviews','gmp-place-attribution']));
+      }
+    });
+    card.appendChild(more);
+
+    wrap.appendChild(lab); wrap.appendChild(note); wrap.appendChild(card);
+    box.appendChild(wrap);                              /* LAST inside the disclosure */
+    return true;
+  }
+
   /* The organisation's locality evidence, or null. Reads `.locality` DIRECTLY.
      It must never alias into `.irish`: marketEligibility() branches on that key
      and Results eligibility is frozen (E2.2). */
@@ -21429,6 +21637,17 @@
       box.appendChild(sum);
       host.insertBefore(box, evd[0]);
       for (let i = 0; i < evd.length; i++) box.appendChild(evd[i]);
+      /* Google reputation, appended LAST inside the disclosure — after the
+         maker band, the sources footer and the notes. Silent unless the
+         organisation carries a verified Place ID. */
+      /* HARDENED. The reputation layer is an OPTIONAL enhancement and must
+         never be able to break the Atlas assessment. A lifted-runtime harness
+         proved the risk was real: with the function out of scope,
+         aaRenderAssessment() threw and 2 of 487 products rendered nothing at
+         all. Evidence is the product; Google is a garnish on it. */
+      try {
+        if (typeof pnRenderGoogleReputation === 'function') pnRenderGoogleReputation(host, product);
+      } catch (e) {}
     }
 
     aaAdoptFindings(host);
@@ -21630,6 +21849,12 @@
       pnRenderSupplierLocality(host, product);
       const s = host.querySelector('[data-pn-tp-statement]');
       if (s) s.textContent = pnSupplierStatement(product, verified.length);
+      /* The identity arrives with this partition, so the reputation block
+         is attempted again here. pnRenderGoogleReputation() is idempotent, and
+         guarded for the same reason as the synchronous call above. */
+      try {
+        if (typeof pnRenderGoogleReputation === 'function') pnRenderGoogleReputation(host, product);
+      } catch (e) {}
     });
 
     const knows = [];

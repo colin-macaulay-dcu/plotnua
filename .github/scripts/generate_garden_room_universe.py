@@ -1408,6 +1408,26 @@ def main():
         _reviewed = txt(cell(_r, "Last Reviewed "))
         if _reviewed:
             _entry["lastReviewed"] = _reviewed
+        # GOOGLE IDENTITY — an IDENTIFIER AND A STATE, never reputation content.
+        # PlotNua stores a Place ID so Google's own component can fetch and
+        # render Google's own rating and reviews. No rating, review count or
+        # review text is ever written here.
+        #
+        # Guarded so this is a no-op until the Airtable fields exist: an absent
+        # field yields "" and nothing is emitted. Only "Verified" renders on
+        # Results; ambiguous / unresolved / none are carried for internal
+        # record and are silent to the homeowner.
+        _gpid = txt(cell(_r, "Google Place ID"))
+        _gstate = txt(cell(_r, "Google Identity State")).strip().lower()
+        if _gpid and _gstate:
+            _gi = {"state": _gstate, "placeId": _gpid}
+            _gverified = txt(cell(_r, "Google Identity Verified On"))
+            if _gverified:
+                _gi["verifiedOn"] = _gverified
+            _gbasis = txt(cell(_r, "Google Identity Basis"))
+            if _gbasis:
+                _gi["basis"] = _gbasis
+            _entry["googleIdentity"] = _gi
         supplier_evidence[_oid] = _entry
 
     # Shaped as a PARTITION, not a special case: same keys, same index entry,

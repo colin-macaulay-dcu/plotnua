@@ -564,7 +564,11 @@
         "evidenceScope": "Organisation-Wide"
       },
       "organisationType": "Bespoke Builder",
-      "lastReviewed": "2026-08-28"
+      "lastReviewed": "2026-08-28",
+      "googleIdentity": {
+        "state": "verified",
+        "placeId": "ChIJi8YJW2wSZ0gRVWL3QKDZZuc"
+      }
     },
     "rechsPFUooApigybT": {
       "name": "Essex Garden Studios",
