@@ -365,7 +365,7 @@
        Frame height still matters beyond looks: below 380px the cards dock, and
        every size above stays clear of it, so the interaction model is
        unchanged from the approved design. */
-    --hero-chrome:calc(146px + 13vh);
+    --hero-chrome:calc(186px + 13vh);
     background:var(--cream);
     padding:clamp(40px,4.4vh,58px) 4vw clamp(44px,5.5vh,72px);
     display:flex; flex-direction:column; align-items:center;
@@ -373,9 +373,14 @@
   .hero-inner{ width:100%; max-width:1600px; display:flex; flex-direction:column; align-items:center; }
 
   .hero-wordmark{
-    font-family:'Fraunces',serif; font-weight:600; font-size:14px;
-    letter-spacing:.22em; text-transform:uppercase; color:var(--ink);
-    margin-bottom:clamp(12px,1.6vh,18px);
+    /* APPROVED MASTHEAD (Prototype 02, State 2). It was 14px with .22em
+       tracking — an eyebrow, not a title, and the page had no element
+       carrying brand authority as a result. Tracking eases as the size
+       rises: .22em at 46px would read as a banner rather than a masthead. */
+    font-family:'Fraunces',serif; font-weight:600;
+    font-size:clamp(28px,3.4vw,46px); line-height:1.12;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink);
+    margin-bottom:clamp(16px,2.2vh,26px);
     opacity:0; transition:opacity 1s ease;
   }
   .hero-wordmark.on{ opacity:1; }
@@ -520,7 +525,7 @@
        holds it to two lines, which is what the chrome reserve is budgeted for
        — a third line would cost the photograph 54px of height. */
     font-family:'Fraunces',serif; font-weight:700; letter-spacing:-.015em;
-    font-size:clamp(27px,3.5vw,46px); line-height:1.16; color:var(--ink);
+    font-size:clamp(25px,3.0vw,38px); line-height:1.16; color:var(--ink);
     max-width:34ch; margin:0;
   }
   /* ---- short viewports ----
@@ -573,8 +578,13 @@
        wordmark hidden because the fixed .brand-mark is already on screen two
        centimetres away. The photograph touching three edges is what makes the
        phone hero a design rather than a reduction. */
-    .hero{ padding:0 0 clamp(30px,4.2vh,44px); }
-    .hero-wordmark{ display:none; }
+    /* APPROVED MASTHEAD — the phone kept the photograph against the top
+       edge and hid the wordmark entirely, so on the majority device the
+       brand name did not appear in the opening screen at all. 18px is the
+       smallest seat that holds it above the full-bleed frame. */
+    .hero{ padding:18px 0 clamp(30px,4.2vh,44px); }
+    .hero-wordmark{ display:block; font-size:clamp(22px,6.2vw,26px);
+                    letter-spacing:.08em; margin-bottom:14px; }
     /* full-bleed, and the aspect ratio still governs the height, so the
        photograph is uncropped on a phone too and the pins stay true */
     .hero-frame{ width:100vw; min-width:0; }
@@ -582,7 +592,7 @@
        hero has room to breathe, and the headline can take the size it was
        always denied. 22ch, three lines, nothing chasing it down the screen. */
     .hero-copy2{ margin-top:clamp(28px,3.6vh,40px); padding:0 8vw; }
-    .hero-title{ font-size:clamp(25px,6.6vw,32px); max-width:22ch; }
+    .hero-title{ font-size:clamp(24px,6.2vw,30px); max-width:22ch; }
     .pin{ width:40px; height:46px; }
     .pin-face{ width:29px; height:29px; border-radius:9px; }
     .pin-face img{ width:22px; height:22px; border-radius:6px; }
