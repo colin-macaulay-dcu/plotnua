@@ -7962,6 +7962,54 @@
     .dh-journey input[type=number]{ width:92px; }
     .dh-opt button{ flex:1 1 auto; }
   }
+
+  /* ============================================================
+     THE HOME ASSESSMENT WORKSPACE — residential only.
+
+     .match-panel is a 420px box built for the Garden Room Discovery,
+     which asks one question at a time. The HOME assessment is seven
+     questions and a full evidence readout, and inheriting that box
+     left it 368px wide inside a 1440px desktop — and, worse, 1912px
+     of content in a 900px screen with no overflow rule, so it could
+     not be scrolled at all.
+
+     Every selector below is prefixed with #screen-home-journey, an id
+     that exists once and is shown only by the residential branch. The
+     Garden Room panel shares the .match-panel class and is untouched.
+     ============================================================ */
+  #screen-home-journey{
+    padding:clamp(18px,3.5vh,40px) clamp(16px,4vw,48px);
+  }
+  #screen-home-journey .match-panel{
+    /* min() rather than a flat 820px: one rule serves every width, and
+       the panel simply stops growing once there is room for it. */
+    max-width:min(820px, 100%);
+    width:100%;
+    text-align:left;
+    padding:clamp(22px,2.6vw,34px) clamp(20px,2.8vw,38px);
+    /* The panel scrolls, not the screen. .screen.is-overlay is
+       pointer-events:none and .interactive restores it, so a screen-level
+       scroll would never receive the wheel — and making the screen capture
+       pointer events would take them from the property view behind it.
+       Capping the height here also guarantees the imagery stays visible
+       around the assessment rather than being covered by it. */
+    max-height:calc(100dvh - clamp(36px,7vh,80px));
+    overflow-y:auto;
+    overscroll-behavior:contain;
+  }
+  #screen-home-journey .dh-journey{
+    /* The 720px cap belonged to the Discovery page this journey came from.
+       The panel is the constraint now. */
+    max-width:none;
+  }
+  @media (max-width:720px){
+    #screen-home-journey{ padding:14px 12px; }
+    #screen-home-journey .match-panel{
+      max-width:100%;
+      padding:20px 18px;
+      max-height:calc(100dvh - 28px);
+    }
+  }
 </style>
 </head>
 <body>
