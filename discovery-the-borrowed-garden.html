@@ -263,6 +263,11 @@
   .related-head .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:20px; }
   .related-head h2{ font-size:clamp(23px,2.8vw,32px); }
   .related-grid{ max-width:1040px; margin:0 auto; display:grid; grid-template-columns:repeat(3, 1fr); gap:34px; }
+  /* TWO-CARD RAIL — local modifier, this document only. Applied where the
+     duplicate Garden Discovery card was removed, so two cards centre in the
+     rail instead of leaving a third column empty. Card width is preserved:
+     324px at three-up, 333px here. */
+  .related-grid.is-pair{ grid-template-columns:repeat(2, 1fr); max-width:700px; }
   .related-card{ text-decoration:none; color:inherit; display:block; }
   .related-card .thumb{ position:relative; width:100%; aspect-ratio:4/5.1; overflow:hidden; border-radius:2px; background:var(--ink);
     box-shadow:0 1px 2px rgba(31,59,46,.06); transition:box-shadow .5s ease; }
@@ -274,6 +279,7 @@
   .related-card:hover h3{ color:var(--accent); }
   @media(max-width:820px){
     .related-grid{ grid-template-columns:1fr; gap:26px; max-width:420px; }
+    .related-grid.is-pair{ grid-template-columns:1fr; max-width:420px; }
     .related-card .thumb{ aspect-ratio:3/2; }
     .related-head{ margin-bottom:40px; }
   }
@@ -628,8 +634,7 @@
       it could work for your property. In the meantime, there is plenty to explore.</p>
 
     <div class="cs-exits">
-      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore Build a Home in Your Garden &rarr;</a>
-      <a class="cs-exit" href="discovery-room-to-grow.html">Explore Four Ways to Add a Room &rarr;</a>
+      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore What Could You Build in Your Garden? &rarr;</a>
       <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
       <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
     </div>
@@ -642,12 +647,7 @@
     <div class="kicker">Continue Exploring</div>
     <h2>Related Discoveries</h2>
   </div>
-  <div class="related-grid">
-    <a class="related-card" href="discovery-room-to-grow.html">
-      <div class="thumb"><img src="assets/img/92c60a78f601cedc.jpg" loading="lazy" decoding="async" alt="An Irish kitchen with the garden doors open, the family table covered in stock boxes, packing materials and a laptop, and a woman standing with a mug "></div>
-      <div class="r-kicker">Before You Choose</div>
-      <h3>Four Ways to Add a Room</h3>
-    </a>
+  <div class="related-grid is-pair">
     <a class="related-card" href="discovery-neighbourhood-parcel-house.html">
       <div class="thumb"><img src="assets/img/8b20a0968b1fc5a1.jpg" loading="lazy" decoding="async" alt="An Irish house on a summer afternoon with a timber porch over the front door and a car in the gravel driveway."></div>
       <div class="r-kicker">Neighbourhood</div>
@@ -656,7 +656,7 @@
     <a class="related-card" href="discovery-living-in-the-garden.html">
       <div class="thumb"><img src="assets/img/8c60a8f27eb9c697.jpg" loading="lazy" decoding="async" alt="An ordinary Irish back garden behind a suburban house, with a small single-storey home standing at the far end, its door open and a person visible ins"></div>
       <div class="r-kicker">Room To Build</div>
-      <h3>Build a Home in Your Garden</h3>
+      <h3>What Could You Build in Your Garden?</h3>
     </a>
   </div>
 </section>

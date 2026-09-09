@@ -447,6 +447,11 @@
   .related-head .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:20px; }
   .related-head h2{ font-size:clamp(23px,2.8vw,32px); }
   .related-grid{ max-width:1040px; margin:0 auto; display:grid; grid-template-columns:repeat(3, 1fr); gap:34px; }
+  /* TWO-CARD RAIL — local modifier, this document only. Applied where the
+     duplicate Garden Discovery card was removed, so two cards centre in the
+     rail instead of leaving a third column empty. Card width is preserved:
+     324px at three-up, 333px here. */
+  .related-grid.is-pair{ grid-template-columns:repeat(2, 1fr); max-width:700px; }
   .related-card{ text-decoration:none; color:inherit; display:block; }
   .related-card .thumb{ position:relative; width:100%; aspect-ratio:4/5.1; overflow:hidden; border-radius:2px; background:var(--ink);
     box-shadow:0 1px 2px rgba(31,59,46,.06); transition:box-shadow .5s ease; }
@@ -478,6 +483,7 @@
     font-size:clamp(23px,2.8vw,32px); }
   @media(max-width:820px){
     .related-grid{ grid-template-columns:1fr; gap:26px; max-width:420px; }
+    .related-grid.is-pair{ grid-template-columns:1fr; max-width:420px; }
     .related-card .thumb{ aspect-ratio:3/2; }
     .related-head{ margin-bottom:40px; }
   }
@@ -918,7 +924,7 @@
     <p class="pb-subhead">The House as a Power Station check will look at your roof, your electricity connection and meter, and how much power your home already uses, to help identify which energy options may be worth exploring. It is not ready yet. In the meantime, there is plenty to explore.</p>
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
-      <a class="cs-exit" href="discovery-room-to-grow.html">Explore Four Ways to Add a Room &rarr;</a>
+      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore What Could You Build in Your Garden? &rarr;</a>
       <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
       <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
     </div>
@@ -927,24 +933,18 @@
 
 <section class="related reveal">
   <h2>Related Discoveries</h2>
-  <div class="related-grid">
+  <div class="related-grid is-pair">
     <a class="related-card" href="discovery-hidden-cars.html">
       <div class="thumb"><img src="assets/img/9aa6c362d5486001.jpg" loading="lazy" decoding="async" alt="A car raised on a platform lift above an open chamber in the driveway of an Irish period house, a second car parked in the lit space below."></div>
       <span class="related-kicker">Space</span>
       <span class="related-title">Hidden Cars</span>
       <span class="related-line">Stacked, lowered and concealed parking, and the front garden it gives back.</span>
     </a>
-    <a class="related-card" href="discovery-room-to-grow.html">
-      <div class="thumb"><img src="assets/img/92c60a78f601cedc.jpg" loading="lazy" decoding="async" alt="An Irish kitchen with the garden doors open and the family table covered in plans."></div>
-      <span class="related-kicker">Space</span>
-      <span class="related-title">Four Ways to Add a Room</span>
-      <span class="related-line">Four places another room could come from &mdash; the garden, the attic, the garage or an extension &mdash; and which one suits your house.</span>
-    </a>
     <a class="related-card" href="discovery-living-in-the-garden.html">
       <div class="thumb"><img src="assets/img/8c60a8f27eb9c697.jpg" loading="lazy" decoding="async" alt="An Irish back garden behind a suburban house, with a small single-storey home at the end of it."></div>
       <span class="related-kicker">Space</span>
-      <span class="related-title">Build a Home in Your Garden</span>
-      <span class="related-line">A small home at the far end of the garden, and what the new rules allow.</span>
+      <span class="related-title">What Could You Build in Your Garden?</span>
+      <span class="related-line">An office, a studio, space for the kids &mdash; or, since 2026, even a home.</span>
     </a>
   </div>
 </section>
