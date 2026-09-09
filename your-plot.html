@@ -3435,8 +3435,16 @@
   html.results-scroll-mode, html.results-scroll-mode body{
     overflow-y:auto; height:auto;
   }
-  html.results-scroll-mode #screen-match-results,
-  html.results-scroll-mode #screen-home-results{
+  /* LAUNCH V3 DEFECT 2 — :not(.is-hidden) IS THE WHOLE FIX FOR THE
+     PHANTOM VIEWPORT. With two result screens, this rule was taking BOTH
+     out of position:fixed, and .screen.is-hidden only sets opacity,
+     visibility and pointer-events — the hidden screen still occupies
+     layout. Measured at 1440x900: document 4317px, HOME result 3417px,
+     hidden Garden Room screen 900px beneath it, and elementFromPoint
+     across that band returned #cesiumContainer. The hidden screen now
+     stays fixed, as it was before there were two. */
+  html.results-scroll-mode #screen-match-results:not(.is-hidden),
+  html.results-scroll-mode #screen-home-results:not(.is-hidden){
     position:static; height:auto; min-height:100vh; min-height:100dvh; overflow:visible;
     /* RESULTS R1.1 — CHANGE 1: the R1 scroll fix only made the browser
        capable of scrolling Results — it didn't fix WHERE scroll input is
@@ -3459,6 +3467,27 @@
        was happening before. */
     pointer-events:auto;
   }
+
+  /* LAUNCH V3 DEFECT 2 — CESIUM IS NOT AN INTERACTION SURFACE WHILE A
+     RESULT IS OPEN.
+
+     The rule above already leaves no uncovered document for the map to
+     show through, but a layout consequence is not a guarantee: a short
+     result, a mid-transition frame or a dvh change on mobile could each
+     re-open a gap. This states it.
+
+     `body > ` is doing real work and is not decoration. It matches only
+     while #cesiumContainer is in its full-viewport home, and stops
+     matching the moment embedCesiumInResults() reparents it into
+     #resultsMapViewport — so the Garden Room's own 'Your property in 3D'
+     panel stays fully interactive. Same DOM-ancestry technique the
+     existing .results-map-viewport #cesiumContainer rule uses.
+
+     Cesium is NOT disabled globally and nothing here touches the viewer,
+     camera, clock or shadows. html.results-scroll-mode is set only while
+     a result screen is showing, so Eircode -> property visual -> property
+     confirmation are all outside this rule entirely. */
+  html.results-scroll-mode body > #cesiumContainer{ pointer-events:none; }
 
   /* =========================================================================
      RESULTS V2 — IMPLEMENTATION SPRINT: one continuous story instead of a
@@ -7895,21 +7924,10 @@
 
   /* --- property confirmation --- */
 
-  /* --- the checking pattern ---
-     Reproduced from #screen-atlas-search in your-plot.html (line 8131),
-     including its restraint: nothing turns, nothing spins, and the meaning
-     is carried by a polite live region rather than by the animation. */
-  .dh-chk{ margin:0 0 8px; padding:0; }
-  .dh-chk li{ list-style:none; display:flex; gap:12px; align-items:flex-start; padding:11px 0;
-    border-bottom:1px solid rgba(31,59,46,.09); font-size:15.5px; color:var(--soft);
-    opacity:.35; transition:opacity .35s ease, color .35s ease; }
-  .dh-chk li.dh-on{ opacity:1; color:var(--ink); }
-  .dh-chk li .dh-tick{ width:19px; flex:0 0 19px; color:var(--accent); font-size:14px;
-    line-height:1.5; opacity:0; transition:opacity .3s ease; }
-  .dh-chk li.dh-on .dh-tick{ opacity:1; }
-  @media (prefers-reduced-motion: reduce){
-    .dh-chk li, .dh-chk li .dh-tick{ transition:none; }
-  }
+  /* --- the checking pattern is RETIRED (LAUNCH V3 DEFECT 3).
+     It was a second loader standing beside the real one. The residential
+     branch now plays the Garden Room Atlas analysis experience, with
+     HOME-specific lines, through playAtlasSearchInterstitial(). --- */
 
   /* --- the Atlas assessment ---
      LAUNCH V3 — the .hm-band verdict chip is retired. The verdict is now the
@@ -8067,6 +8085,18 @@
   }
   #screen-home-results .results-hero-inner.is-fieldonly .hm-verdict-detail{ grid-column:1; }
 
+  /* THE FLAGSHIP BUILDING'S HERO. LEFT identity, RIGHT the evidence —
+     the same column roles the Garden Room hero uses, with the building's
+     established/open pair standing where .hero-trust stands there. */
+  #screen-home-results #hmrHero .alt-lens-label{ display:block; margin:0 0 var(--pn-space-sm); }
+  #screen-home-results .results-hero-inner.is-fieldonly .alt-lens-label,
+  #screen-home-results .results-hero-inner.is-fieldonly .results-hero-budget-note{ grid-column:1; }
+  #screen-home-results .results-hero-inner.is-fieldonly .hm-hero-evidence{
+    grid-column:2; grid-row:1; align-self:start; margin-top:6px;
+  }
+  #screen-home-results .hm-hero-evidence{ margin-top:var(--pn-space-lg); }
+  #screen-home-results .hm-hero-evidence .hm-ev-h{ margin-top:0; }
+
   /* BUILDINGS WORTH EXPLORING. .alt-rail on Results is a horizontal track
      sized for three short lens cards; these are two tall evidence cards and
      belong side by side, then stacked. The gap is the shared spacing token,
@@ -8096,6 +8126,7 @@
   #screen-home-results ul.hm-finds li{ font-size:var(--pn-w-body-lg); }
   #screen-home-results .hm-calc{ font-size:var(--pn-w-body); }
   #screen-home-results .hm-calm{ font-size:var(--pn-w-body-lg); }
+  #screen-home-results #hmrWhyLede{ margin:0 0 var(--pn-space-md); }
   #screen-home-results .hm-sources a{ font-size:var(--pn-w-body-sm); min-height:0; padding:3px 0; }
   #screen-home-results .hm-sources .hm-prov{ font-size:var(--pn-w-body-sm); }
   #screen-home-results details.hm-evd > summary{ font-size:var(--pn-s-emph); }
@@ -8605,14 +8636,6 @@
            what happened rather than watching ticks it cannot see. Every
            line names something Atlas genuinely does with the answers
            given. No external check is implied. -->
-      <section id="dh-checking" hidden>
-        <p class="dh-step">Build a Home in Your Garden &middot; Atlas</p>
-        <h3 class="dh-big">Atlas is working through it.</h3>
-        <p class="dh-lede">Checking what you told us against the conditions in the 2026 auxiliary
-          dwelling regulations.</p>
-        <ul class="dh-chk" id="dhChkList" aria-hidden="true"></ul>
-        <p class="dh-sr" role="status" aria-live="polite" id="dhChkSr"></p>
-      </section>
 
       <!-- ---------- 5 · THE ATLAS ASSESSMENT ---------- -->
     </div>
@@ -8631,19 +8654,25 @@
   <div class="match-results-panel interactive results-v2" id="homeResultsPanel">
     <div id="homeResultsBody">
 
+      <!-- THE PROPERTY VERDICT sits where the Garden Room result puts its
+           intro: eyebrow, headline, one line. The premium hero position
+           below belongs to a BUILDING, exactly as it does on Garden Room. -->
       <div class="results-intro">
-        <p class="results-eyebrow">Atlas assessment</p>
-        <h2 class="results-headline" id="hmrHeadline">Build a home in your garden.</h2>
+        <p class="results-eyebrow">Atlas assessment &middot; Build a home in your garden</p>
+        <h2 class="results-headline" id="hmrHeadline">Atlas has read your property.</h2>
+        <p class="results-scope" id="hmrVerdictLine"></p>
       </div>
 
-      <!-- THE VERDICT HERO. Built by renderHomeVerdictHero(), which uses the
-           shared hero classes and does NOT call buildResultsHero() — that
-           builder is tied to a ranked product, its price, its supplier and
-           its Save actions, none of which exists here. -->
-      <div class="results-hero" id="hmrHero"></div>
+      <!-- THE FLAGSHIP BUILDING. Hidden unless the governed evidence
+           distinguishes exactly one candidate — see pnCandidateSplit().
+           Built by renderHomeFlagship(), which uses the shared hero
+           classes and does NOT call buildResultsHero(): that builder is
+           tied to a ranked product, its ctx and its Save actions. -->
+      <div class="results-hero" id="hmrHero" hidden></div>
 
       <section class="chapter" id="hmrEvidence">
         <h3 class="sec-title">Why Atlas reached this</h3>
+        <p class="hm-calm" id="hmrWhyLede"></p>
         <ul class="hm-finds" id="dhWhy"></ul>
         <details class="hm-evd" id="dhCalcWrap">
           <summary>What Atlas calculated</summary>
@@ -8655,7 +8684,7 @@
            not residentially qualified, not compliant homes. The governed
            filter behind them is unchanged. -->
       <section class="chapter" id="dhCandWrap">
-        <h3 class="results-gallery-heading">Buildings worth exploring</h3>
+        <h3 class="results-gallery-heading" id="dhCandHeading">Buildings worth exploring</h3>
         <p class="alt-rail-note" id="dhCandIntro"></p>
         <div class="results-gallery alt-rail" id="dhCands"></div>
       </section>
@@ -10607,6 +10636,10 @@
      or els. Rather than export either, this exposes three NAMED destinations
      and nothing else: no element, no state, no way to reach any other screen.
      Same pattern as __PN_GARDEN_BUILDINGS__ and __PN_INTENDED_USE__. */
+  /* LAUNCH V3 DEFECT 3 — the residential branch drives the SAME loader.
+     A function declaration, so it is hoisted and reachable from here. */
+  window.__PN_ATLAS_LOADER__ = playAtlasSearchInterstitial;
+
   window.__PN_GOTO__ = function (key) {
     const dest = { entry: els.entry,
                    homeJourney: els.homeJourneyScreen,
@@ -30100,9 +30133,14 @@
     ];
   }
 
-  function playAtlasSearchInterstitial(onDone){
+  /* LAUNCH V3 DEFECT 3 — the loader takes optional content so a second
+     product can use the same analysis experience instead of inventing
+     one. `opts` is the only addition: the existing Garden Room call site
+     passes nothing, so its messages, its final line, its timing, its
+     phases and its mark are all exactly as before. */
+  function playAtlasSearchInterstitial(onDone, opts){
     if (!els.atlasSearchScreen) { onDone(); return; }
-    const messages = atlasSearchMessages();
+    const messages = (opts && opts.messages) || atlasSearchMessages();
     const reduced = prefersReducedMotion();
     els.atlasSearchMark.innerHTML = plotMarkStandalone();
     // PB037 CORRECTION 2 — SIZE, MEASURED RATHER THAN ASSUMED. The brand
@@ -30182,7 +30220,8 @@
         // WORK PACKAGE 2: understated concluding line — states the
         // outcome plainly, no "Property Brain," no AI-thinking language,
         // no exaggerated intelligence claim.
-        els.atlasSearchMessage.textContent = 'Your recommendations are ready.';
+        els.atlasSearchMessage.textContent =
+          (opts && opts.finalLine) || 'Your recommendations are ready.';
         els.atlasSearchMessage.classList.add('is-final', 'is-visible');
         setTimeout(onDone, finalHold);
         return;
@@ -32403,27 +32442,14 @@
 
      The three COPY strings are unchanged and are used in their existing
      order: the verdict, the homeowner-first sentence, the explanation. */
-  function renderHomeVerdictHero(C){
-    var host = $('hmrHero'); if (!host) return;
-    host.innerHTML = '';
-    var wrap = document.createElement('div');
-    wrap.className = 'results-hero-inner is-fieldonly';
-    var body = document.createElement('div');
-    body.className = 'results-hero-body';
-    var name = document.createElement('h2');
-    name.className = 'results-hero-name';
-    name.textContent = C[0];
-    body.appendChild(name);
-    var ed = document.createElement('p');
-    ed.className = 'results-hero-editorial';
-    ed.textContent = C[1];
-    body.appendChild(ed);
-    var detail = document.createElement('p');
-    detail.className = 'hm-verdict-detail';
-    detail.textContent = C[2];
-    body.appendChild(detail);
-    wrap.appendChild(body);
-    host.appendChild(wrap);
+  /* THE PROPERTY VERDICT, in the intro. The three COPY strings are
+     unchanged and keep their order and their meaning: C[0] is the
+     verdict, C[1] the homeowner-first sentence, C[2] the explanation —
+     which now opens 'Why Atlas reached this', where the reasoning is. */
+  function renderHomeVerdict(C){
+    var h = $('hmrHeadline'); if (h) h.textContent = C[0];
+    var line = $('hmrVerdictLine'); if (line) line.textContent = C[1];
+    var lede = $('hmrWhyLede'); if (lede) lede.textContent = C[2];
   }
 
   function renderResult(){
@@ -32432,7 +32458,7 @@
        presentation any more — the chip it coloured is retired — but it
        keeps the state visible in the DOM for diagnosis. */
     $('homeResultsBody').className = 'dh-s' + d.st;
-    renderHomeVerdictHero(C);
+    renderHomeVerdict(C);
 
     /* ---- why: only statements the answers actually support ---- */
     var why = [];
@@ -32538,8 +32564,12 @@
     var nextWrap = $('hmrNext');
     if (nextWrap) nextWrap.hidden = !rs.length;
     var candWrap = $('dhCandWrap');
-    if (candWrap) candWrap.hidden = !(d.st === 1 || d.st === 2);
-    renderCandidates();
+    var offerBuildings = (d.st === 1 || d.st === 2);
+    if (candWrap) candWrap.hidden = !offerBuildings;
+    /* The flagship is part of the same offer: nothing is put in front of a
+       homeowner whose garden cannot take a home. */
+    if (offerBuildings){ renderCandidates(); }
+    else { renderHomeFlagship(null); $('dhCands').innerHTML = ''; }
   }
 
 
@@ -32627,12 +32657,48 @@
     return cur + Number(p.price).toLocaleString('en-IE');
   }
 
+  /* THE FLAGSHIP PARTITION — GOVERNED EVIDENCE, NOT A RANKING.
+
+     There is no score, no ordering and no comparison between products.
+     One governed distinction is read: TOP_OF_BAND matches a floor-area
+     record whose own text says the figure sits at the outer edge of the
+     32–45 m² route and that an internal measurement would put the
+     building over the ceiling. A candidate whose record carries no such
+     qualification sits unambiguously inside the band.
+
+     If EXACTLY ONE candidate is unqualified it leads. Zero, or two or
+     more, and there is no flagship — every candidate renders as an equal
+     card, which is what shipped. The rule degrades to today's behaviour
+     the moment the evidence stops distinguishing, which is the point:
+     the distinction belongs to Atlas, not to this function.
+
+     The qualified candidate is NOT called unsuitable and is NOT hidden.
+     Its caveat travels with it, in its own card, in the same closed
+     disclosure the flagship has. UNKNOWN IS NOT FALSE. */
+  function pnCandidateSplit(list){
+    var clear = [], qualified = [];
+    list.forEach(function(p){
+      var fa = pnFloorAreaEvidence(p);
+      (fa && TOP_OF_BAND.test(String(fa.text)) ? qualified : clear).push(p);
+    });
+    if (clear.length !== 1) return { lead:null, others:list };
+    return { lead:clear[0], others:qualified };
+  }
+
   function renderCandidates(){
     var wrap = $('dhCandWrap'); if (!wrap) return;
-    var list = pnResidentialCandidates();
+    var all = pnResidentialCandidates();
+    var split = pnCandidateSplit(all);
+    renderHomeFlagship(split.lead);
+    var list = split.others;
     var host = $('dhCands');
+    var heading = $('dhCandHeading');
+    if (heading) heading.textContent = split.lead
+      ? (list.length === 1 ? 'Other building worth exploring'
+                           : 'Other buildings worth exploring')
+      : 'Buildings worth exploring';
 
-    if (!list.length){
+    if (!all.length){
       /* The honest empty state. It is not a failure message and it does not
          say no building could work — only that none can be confirmed yet. */
       $('dhCandIntro').textContent = 'Atlas has not yet established enough evidence to put '
@@ -32642,15 +32708,35 @@
       return;
     }
 
-    /* Two sentences. The detail moved into the cards, where it belongs. */
-    $('dhCandIntro').textContent = 'Atlas found ' + (list.length === 1 ? 'one building' : list.length + ' buildings')
-      + ' sold in Ireland as living accommodation that sit within the size range your garden '
-      + 'could take. They are worth exploring; some residential evidence still needs to be '
-      + 'established.';
+    /* Two sentences, and they describe what is actually under this
+       heading — the whole set when nothing leads, the remainder when
+       something does. Neither wording calls anything better or worse. */
+    $('dhCandIntro').textContent = split.lead
+      /* A participial phrase, not a relative clause: 'one other building
+         ... that also sit within' was a number-agreement fault caught in
+         the browser. This reads correctly for one and for many. */
+      ? 'Atlas found ' + (list.length === 1 ? 'one other building' : list.length + ' other buildings')
+        + ' sold in Ireland as living accommodation, also within the size range your garden '
+        + 'could take. Each card says what Atlas has established and what is still open.'
+      : 'Atlas found ' + (list.length === 1 ? 'one building' : list.length + ' buildings')
+        + ' sold in Ireland as living accommodation that sit within the size range your garden '
+        + 'could take. They are worth exploring; some residential evidence still needs to be '
+        + 'established.';
 
     host.innerHTML = list.map(function(p){
-      var fa = pnFloorAreaEvidence(p);
-      var price = pnMoney(p);
+      var ev = pnCandidateEvidence(p, false);
+      return pnCandidateCard(p, ev);
+    }).join('');
+
+  }
+
+  /* THE GOVERNED EVIDENCE FOR ONE CANDIDATE, assembled once so the
+     flagship hero and the rail card can never disagree about what Atlas
+     holds. Every string below is the shipped wording; `lead` changes one
+     sentence and nothing else. */
+  function pnCandidateEvidence(p, lead){
+    var fa = pnFloorAreaEvidence(p);
+    var price = pnMoney(p);
 
       var known = [];
       known.push('Sold in Ireland as living accommodation');
@@ -32673,6 +32759,40 @@
                   + ' m² and this route would not be open');
       open.push('Whether it suits your particular garden, ground and access');
 
+    /* The reason this building is in front of the homeowner, stated from
+       the evidence. The flagship sentence is true BECAUSE TOP_OF_BAND did
+       not match its floor-area record — it is not a claim that the
+       building is better, and it names no other product. */
+    var say = lead
+      ? 'Sold in Ireland as living accommodation. Its published ' + fa.number + ' '
+        + fa.unit + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden '
+        + 'could take with room to spare, so no question arises about whether the '
+        + 'finished footprint would exceed the ' + R.MAX + ' m² ceiling.'
+      : 'Sold in Ireland as living accommodation, and its published ' + fa.number + ' '
+        + fa.unit + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden could take.';
+
+    return { fa:fa, price:price, known:known, open:open, say:say,
+             meta:[p.organisation || 'Supplier not recorded',
+                   price || 'price not recorded',
+                   fa.number + ' ' + fa.unit,
+                   'Available in Ireland'].join(' · ') };
+  }
+
+  function pnEvidenceBlock(ev){
+    return '<div class="hm-ev-h">What Atlas has established</div>'
+      + '<ul class="hm-ev">' + ev.known.map(function(k){
+            return '<li class="hm-known">' + esc(k) + '</li>'; }).join('') + '</ul>'
+      /* Closed by default. The 45 m² top-of-band caveat lives in here and
+         is one click away — collapsed, never removed, on the flagship and
+         on every other card alike. */
+      + '<details class="hm-open-ev"><summary>What still needs checking'
+      +   ' (' + ev.open.length + ')</summary>'
+      +   '<ul class="hm-ev">' + ev.open.map(function(o){
+                return '<li class="hm-open">' + esc(o) + '</li>'; }).join('') + '</ul>'
+      + '</details>';
+  }
+
+  function pnCandidateCard(p, ev){
       /* THE SHARED RESULT CARD. .alt-card.alt-lens and its footing were
          built to carry "here is a building, and here is the reason it is in
          front of you" — a lens label, one statement, then the product
@@ -32684,33 +32804,66 @@
          irishRouteNoteText() and raCompareControl(), and they render none
          of the established/open evidence this card exists to show. The
          VOCABULARY is reused; the ranking builders are not. */
-      var say = 'Sold in Ireland as living accommodation, and its published '
-              + fa.number + ' ' + fa.unit + ' sits inside the '
-              + R.MIN + '–' + R.MAX + ' m² range your garden could take.';
-      var meta = [p.organisation || 'Supplier not recorded',
-                  price || 'price not recorded',
-                  fa.number + ' ' + fa.unit,
-                  'Available in Ireland'].join(' · ');
       return '<div class="alt-card alt-lens" data-lens="residential-candidate">'
         + '<span class="alt-lens-label">Worth exploring</span>'
-        + '<p class="alt-lens-say">' + esc(say) + '</p>'
+        + '<p class="alt-lens-say">' + esc(ev.say) + '</p>'
         + '<div class="alt-lens-foot">'
         +   '<div class="alt-name">' + esc(p.name || 'Product') + '</div>'
-        +   '<div class="alt-meta">' + esc(meta) + '</div>'
-        +   '<div class="hm-ev-h">What Atlas has established</div>'
-        +   '<ul class="hm-ev">' + known.map(function(k){
-                return '<li class="hm-known">' + esc(k) + '</li>'; }).join('') + '</ul>'
-        /* Closed by default. The 45 m² top-of-band caveat lives in here and
-           is one click away — collapsed, never removed. */
-        +   '<details class="hm-open-ev"><summary>What still needs checking'
-        +     ' (' + open.length + ')</summary>'
-        +     '<ul class="hm-ev">' + open.map(function(o){
-                  return '<li class="hm-open">' + esc(o) + '</li>'; }).join('') + '</ul>'
-        +   '</details>'
+        +   '<div class="alt-meta">' + esc(ev.meta) + '</div>'
+        +   pnEvidenceBlock(ev)
         + '</div>'
         + '</div>';
-    }).join('');
+  }
 
+  /* THE FLAGSHIP HERO. Same shared hero classes the Garden Room
+     recommendation uses, carrying supplier, price, area, Irish
+     availability, the evidence-labelled reason, and the same
+     established/open pair every other card carries. The label reads
+     WORTH EXPLORING — never recommended, best, qualified or compliant. */
+  function renderHomeFlagship(p){
+    var host = $('hmrHero'); if (!host) return;
+    host.innerHTML = '';
+    if (!p){ host.hidden = true; return; }
+    host.hidden = false;
+    var ev = pnCandidateEvidence(p, true);
+    var wrap = document.createElement('div');
+    wrap.className = 'results-hero-inner is-fieldonly';
+    var body = document.createElement('div');
+    body.className = 'results-hero-body';
+    var lab = document.createElement('span');
+    lab.className = 'alt-lens-label'; lab.textContent = 'Worth exploring';
+    body.appendChild(lab);
+    var name = document.createElement('h2');
+    name.className = 'results-hero-name'; name.textContent = p.name || 'Product';
+    body.appendChild(name);
+    var org = document.createElement('div');
+    org.className = 'results-hero-org';
+    org.textContent = p.organisation || 'Supplier not recorded';
+    body.appendChild(org);
+    var row = document.createElement('div');
+    row.className = 'results-hero-price-row';
+    var pr = document.createElement('span');
+    pr.className = 'results-hero-price';
+    pr.textContent = ev.price || 'Price not recorded';
+    row.appendChild(pr);
+    var ar = document.createElement('span');
+    ar.className = 'results-hero-area';
+    ar.textContent = ev.fa.number + ' ' + ev.fa.unit;
+    row.appendChild(ar);
+    body.appendChild(row);
+    var avail = document.createElement('div');
+    avail.className = 'results-hero-budget-note';
+    avail.textContent = 'Available in Ireland';
+    body.appendChild(avail);
+    var ed = document.createElement('p');
+    ed.className = 'results-hero-editorial'; ed.textContent = ev.say;
+    body.appendChild(ed);
+    var box = document.createElement('div');
+    box.className = 'hm-hero-evidence';
+    box.innerHTML = pnEvidenceBlock(ev);
+    body.appendChild(box);
+    wrap.appendChild(body);
+    host.appendChild(wrap);
   }
 
   /* =================================================================
@@ -32739,31 +32892,38 @@
      Every line names something Atlas genuinely does with the answers
      given. Nothing external is checked and nothing is implied to be.
      ================================================================= */
-  var CHECKS = [
-    'Working out the garden area from your measurements',
-    'Taking off anything already built in the garden',
-    'Testing what is left against the 45 m² allowance',
-    'Holding back the private open space the house has to keep',
-    'Comparing what remains with the 32–45 m² range',
+  /* THE SAME ATLAS ANALYSIS EXPERIENCE THE GARDEN ROOM USES.
+
+     Six lines, matching the six the Garden Room plays, so the pace is the
+     one that was already agreed (~5.9s) rather than a new one. Each names
+     work the residential engine genuinely does, in the order it does it:
+     calc() computes the garden area, subtracts what is already built and
+     holds back R.OPEN; the remainder is tested against R.MIN–R.MAX;
+     decide() reads the access, entrance and services answers; and
+     pnResidentialCandidates() filters the one garden buildings universe.
+
+     None of them claims planning approval, Building Regulations
+     certification, or any other check Atlas does not perform — the
+     assessment itself says those are not determined, and a loader that
+     implied otherwise would contradict the page it introduces. */
+  var HOME_CHECKS = [
+    'Working out your garden area',
+    'Taking off anything already built',
+    'Holding back the open space the house has to keep',
+    'Comparing what is left with the 32–45 m² range',
     'Reading your answers on access, entrance and services',
-    'Listing what still needs confirming'
+    'Checking Atlas for buildings sold as living accommodation'
   ];
-  var checkingTimer = null;
+  /* No second implementation. The shared loader is driven with HOME's
+     content; if it is ever absent the journey goes straight through to
+     the result rather than stalling on a screen that will not play. */
   function runChecking(){
-    var ul = $('dhChkList');
-    ul.innerHTML = CHECKS.map(function(t){
-      return '<li><span class="dh-tick">✓</span><span>'+esc(t)+'</span></li>'; }).join('');
-    $('dhChkSr').textContent = 'Atlas is working through your answers.';
-    var items = Array.prototype.slice.call(ul.children), i = 0;
-    if (checkingTimer) clearTimeout(checkingTimer);
-    (function tick(){
-      if (i >= items.length){
-        checkingTimer = setTimeout(function(){ show('result'); }, 420);
-        return;
-      }
-      items[i].classList.add('dh-on'); i++;
-      checkingTimer = setTimeout(tick, 320);
-    })();
+    if (typeof window.__PN_ATLAS_LOADER__ === 'function'){
+      window.__PN_ATLAS_LOADER__(function(){ show('result'); },
+        { messages: HOME_CHECKS, finalLine: 'Your property assessment is ready.' });
+      return;
+    }
+    show('result');
   }
 
   /* =================================================================
@@ -32779,7 +32939,7 @@
      'eircode' previously fell through to $('dh-eircode'), which does not
      exist — show('eircode') threw on "Start again". It now routes to the
      shared property entry, which is what the label has always promised. */
-  var SCREENS = ['questions','checking'];
+  var SCREENS = ['questions'];
   var currentScreen = 'questions';
   function goTo(key){
     if (typeof window.__PN_GOTO__ === 'function') window.__PN_GOTO__(key);
@@ -32790,9 +32950,9 @@
   }
   function show(id){
     if (id === 'eircode'){ goTo('entry'); return; }
+    if (id === 'checking'){ currentScreen = 'checking'; runChecking(); return; }
     if (id === 'result' || id === 'next'){
       currentScreen = 'result';
-      if (checkingTimer){ clearTimeout(checkingTimer); checkingTimer = null; }
       renderResult();
       goTo('homeResults');
       window.scrollTo({ top: 0, behavior: 'auto' });
@@ -32806,8 +32966,6 @@
        screen is hidden, so the opening show('questions') moves nothing —
        otherwise the assessment would be forced open on every page load. */
     if (onResultScreen()) goTo('homeJourney');
-    if (id === 'checking') runChecking();
-    if (id !== 'checking' && checkingTimer){ clearTimeout(checkingTimer); checkingTimer = null; }
     /* Bring the top of the journey into view rather than the top of the
        page: the homeowner has read their way down to get here. */
     var top = root.getBoundingClientRect().top + window.pageYOffset - 24;
