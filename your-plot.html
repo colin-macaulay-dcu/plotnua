@@ -8010,6 +8010,52 @@
       max-height:calc(100dvh - 28px);
     }
   }
+
+  /* ---- buildings worth exploring: a filtered evidence set, not a ranking.
+     Deliberately NOT the Results product card. That card carries rank order,
+     match language and a "we'd start with this one" voice, none of which is
+     true here. These are calmer, and they lead with evidence. ---- */
+  .hm-cands{ display:grid; gap:14px; margin:0 0 4px; }
+  @media (min-width:860px){ .hm-cands{ grid-template-columns:1fr 1fr; } }
+  .hm-cand{ background:var(--paper); border:1px solid rgba(31,59,46,.14);
+    border-radius:4px; padding:18px 20px; }
+  .hm-cand .hm-sup{ font:600 10.5px/1 'Work Sans',sans-serif; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:7px; }
+  .hm-cand h5{ font-family:'Fraunces',serif; font-weight:600; font-size:17.5px;
+    line-height:1.3; color:var(--ink); margin:0 0 10px; }
+  .hm-facts{ display:flex; flex-wrap:wrap; gap:6px 18px; font-size:13.5px;
+    color:var(--soft); padding:10px 0; border-top:1px solid rgba(31,59,46,.09);
+    border-bottom:1px solid rgba(31,59,46,.09); margin-bottom:12px; }
+  .hm-facts b{ color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
+  .hm-ev{ list-style:none; padding:0; margin:0 0 4px; }
+  .hm-ev li{ position:relative; padding-left:22px; margin-bottom:7px;
+    font-size:13.5px; line-height:1.55; color:var(--soft); }
+  .hm-ev li::before{ position:absolute; left:0; font-size:12px; }
+  .hm-ev li.hm-known::before{ content:'\2713'; color:var(--accent); }
+  .hm-ev li.hm-open::before{ content:'?'; color:#8A7B45; }
+  .hm-ev-h{ font:600 10px/1 'Work Sans',sans-serif; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--soft); margin:10px 0 7px; }
+  .hm-cand-note{ font-size:13px; line-height:1.6; color:var(--soft);
+    margin:12px 0 0; padding-top:10px; border-top:1px solid rgba(31,59,46,.09); }
+  /* The outstanding evidence, closed by default. Same disclosure pattern
+     the assessment already uses for its arithmetic: what is established
+     leads, what is open is one click away and never more than that. */
+  details.hm-open-ev{ border-top:1px solid rgba(31,59,46,.09); margin-top:10px; }
+  details.hm-open-ev > summary{ list-style:none; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    min-height:44px; font:600 10px/1 'Work Sans',sans-serif; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--soft); }
+  details.hm-open-ev > summary::-webkit-details-marker{ display:none; }
+  details.hm-open-ev > summary::after{ content:'+'; font:400 17px/1 'Work Sans',sans-serif;
+    color:var(--soft); text-transform:none; letter-spacing:0; }
+  details.hm-open-ev[open] > summary::after{ content:'\2013'; }
+  details.hm-open-ev > summary:hover{ color:var(--ink); }
+  details.hm-open-ev > summary:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  details.hm-open-ev .hm-ev{ padding-bottom:4px; }
+  /* The ending is the one screen that has to close without scrolling, so
+     its navigation sits a little tighter than elsewhere. Scoped: no other
+     screen changes. */
+  #dh-next .dh-nav{ margin-top:22px; }
 </style>
 </head>
 <body>
@@ -8574,12 +8620,10 @@
         <p class="dh-lede" id="dhNextSub"></p>
         <ol class="dh-res" id="dhNextList"></ol>
 
-        <div class="hm-sect" style="margin-top:34px">
-          <h4>Buildings for this use</h4>
-          <p class="hm-calm">Atlas has not yet verified specific garden buildings for residential
-            use. A home somebody lives in has to meet conditions a garden room does not, and that
-            is a question about evidence rather than about size. <b>As residential qualification
-            evidence is added, suitable buildings will appear here.</b></p>
+        <div class="hm-sect" style="margin-top:20px" id="dhCandWrap">
+          <h4>Buildings worth exploring</h4>
+          <p class="hm-calm" id="dhCandIntro"></p>
+          <div class="hm-cands" id="dhCands"></div>
         </div>
 
         <div class="dh-nav">
@@ -12260,6 +12304,10 @@
   atlasMatchPoolReady.then(() => atlasRecognitionReady).then(() => {
     const d = atlasRuntimeDiagnostics();
     window.__plotnuaAtlas = d;
+    /* SHARED GARDEN BUILDINGS UNIVERSE, read-only. One universe, read by
+       every intended-use lens. Returns a fresh array so a consumer cannot
+       sort or splice the live pool. */
+    window.__PN_GARDEN_BUILDINGS__ = function(){ return getActiveAtlasPool().slice(); };
     console.info('[Atlas runtime] source=' + d.source +
       ' products=' + d.productCount +
       ' organisations=' + d.organisationCount +
@@ -32324,33 +32372,207 @@
     $('dhCheck').innerHTML = ck.map(function(t){
       return '<li class="hm-ask"><span class="hm-find-lab">?</span>'+esc(t)+'</li>'; }).join('');
 
-    /* ---- what to establish next. Only what THIS assessment raised. ---- */
+    /* ---- what to establish next.
+       ONE SCREEN, AND ONLY WHAT THIS ASSESSMENT ACTUALLY RAISED.
+
+       The property-specific item is conditional and is simply absent when
+       nothing is open — an empty slot is better than an invented action.
+       Nothing general is added: no architect by default, and no instruction
+       to read the regulations PlotNua has already read. Those links live in
+       the assessment's evidence section, as provenance. ---- */
     var rs = [];
+
+    /* 1 · the property-specific check, only where there is one. */
     if (d.st===3){
       rs.push(['Re-measure with a tape','Paces are fine for a first look, but the difference between '+Math.max(0,c.maxArea)+' m² and '+R.MIN+' m² can be a pace on each side.']);
-      rs.push(['See whether a shed could go','Anything already built comes off the '+R.MAX+' m² allowance. Clearing one gives that space straight back.']);
     }
     if (d.st===4 && S.services==='own')
       rs.push(['Ask whether the house could serve both','A plumber or engineer can tell you whether the existing connection has the capacity. If it has, this condition may not apply after all.']);
     if (d.st===4 && S.entrance==='yes')
-      rs.push(['Look again at the existing way in','The regulations let the way in stay as it is. They do not allow a new one, so the question is whether the existing entrance could serve both.']);
+      rs.push(['Look again at the existing way in','The regulations let the way in stay as it is, so the question is whether the existing entrance could serve both.']);
     if (d.st===4 && S.access==='no')
       rs.push(['Look again at the side of the house','A route on foot and by wheelchair has to be inside your own boundaries. Sometimes it is a gate or a step rather than the space itself.']);
-    if (d.st===1 || d.st===2){
-      rs.push(['Confirm your protected structure status','One call or search with your local authority. They hold the record and it is free to ask.']);
-      rs.push(['Talk to an architect or engineer','Ground conditions, levels and drainage do not show up in a measurement, and they decide what is actually buildable.']);
-      rs.push(['Note the two dates','Fourteen days’ notice to the planning authority before work starts, and completion by the end of 2030.']);
-    }
+    if (S.protected==='unsure' || S.protected===null)
+      rs.push(['Confirm whether the house is a protected structure','One call or search with your local authority. They hold the record and it is free to ask.']);
     if (S.septic==='yes')
       rs.push(['Have the percolation area located','If the tank’s percolation area runs under the spot you had in mind, the building moves — better to know now.']);
-    rs.push(['Read the two published sources','Everything Atlas used is in them. They are linked on the assessment.']);
+
+    /* 2 and 3 · explore, then compare. Offered only where the space works,
+       because there is nothing to explore when the garden is the limit. */
+    if (d.st===1 || d.st===2){
+      var nCand = pnResidentialCandidates().length;
+      if (nCand) {
+        rs.push(['Look at the buildings that could suit',
+                 nCand === 1
+                   ? 'One building in Atlas is sold in Ireland as living accommodation and fits the size range your garden could take.'
+                   : nCand + ' buildings in Atlas are sold in Ireland as living accommodation and fit the size range your garden could take.']);
+        rs.push(['Compare what Atlas holds on each',
+                 'Price, size, what is established and what is still open, side by side.']);
+      }
+    }
+
     $('dhNextList').innerHTML = rs.map(function(r){
       return '<li><b>'+esc(r[0])+'</b>'+esc(r[1])+'</li>'; }).join('');
     $('dhNextSub').textContent =
-        d.st===1 ? 'Nothing here is a purchase. These are the things that would turn a promising garden into a decision you could actually make.'
-      : d.st===2 ? 'These are the open items from your assessment, in the order worth taking them.'
-      : d.st===3 ? 'Space was the limit. These are the two things that could change that, and what to do if they cannot.'
-                 : 'One condition was in the way. These are the questions worth asking before setting it aside.';
+        d.st===1 ? 'Your property looks worth taking further. Here are the next things that can turn that possibility into the right home for your garden.'
+      : d.st===2 ? 'Your property looks worth taking further. A few things are still open — here they are, with what you can explore alongside them.'
+      : d.st===3 ? 'Space was the limit here. This is the one thing that could change that.'
+                 : 'One condition was in the way. This is the question worth asking before setting it aside.';
+    renderCandidates();
+  }
+
+
+  /* =================================================================
+     BUILDINGS WORTH EXPLORING — the residential candidate filter.
+
+     A FILTER OVER THE ONE GARDEN BUILDINGS UNIVERSE, not a second
+     catalogue and not a ranking. Nothing here scores, orders or
+     recommends; the set comes back in pool order and is presented as
+     an evidence set.
+     ================================================================= */
+
+  /* A Product-Specific record that refuses to state an area DISOWNS any
+     number held at a broader scope. This is the known Range-Level vs
+     Product-Specific integrity fault in the artefact, and the filter
+     refuses to be fooled by it rather than pretending it is fixed. */
+  var AREA_DISOWNED = /(NO AREA PUBLISHED|No area or dimensions held|DO NOT RANK on any basis|Numeral not treated as an area|REQUIRES PRODUCT-SPECIFIC VERIFICATION)/i;
+
+  /* The building is classified as living accommodation by governed
+     evidence — not inferred from size, price, insulation or a name. */
+  var HABITABLE = /(annexe with bedroom|residential accommodation|granny flat|one-bedroom flat|is habitable accommodation|two-bedroom cabin is habitable|Studio Living)/i;
+
+  /* The published figure's basis is recorded as unclear. */
+  var BASIS_UNCLEAR = /BASIS UNCLEAR/i;
+
+  /* The governed record itself flags the top-of-band risk: if the published
+     figure is internal, the external footprint breaks the 45 m² ceiling.
+     Detected from the evidence, never from `area === 45`. */
+  var TOP_OF_BAND = /(outer edge of that route|TOP of the 32-45|will exceed 45)/i;
+
+  function pnFloorAreaEvidence(p){
+    var fa = (p && p.features && p.features.floorArea) || null;
+    if (!fa) return null;
+    var recs = fa.records || [];
+    var textOf = recs.map(function(r){ return r && r.text ? r.text : ''; }).join(' ');
+    var disowned = recs.some(function(r){
+      return r && r.evidenceScope === 'Product-Specific'
+             && (r.number === null || r.number === undefined)
+             && AREA_DISOWNED.test(r.text || '');
+    });
+    return { number: fa.number, unit: fa.unit || 'm²', text: textOf, disowned: disowned };
+  }
+
+  /* IRISH AVAILABILITY, IN BOTH SHAPES.
+     The raw artefact carries a boolean `irishAvailability`. The RUNTIME pool
+     is normalised and carries `irishAvailabilityConfirmationState: 'Yes'`
+     instead — the boolean is not present at all. Reading only the raw shape
+     returned zero candidates in the browser while returning two against the
+     artefact, which is how this was found. Both shapes are accepted so the
+     filter is correct against the pool the page actually holds and against
+     the artefact in tests. Counts agree: 274 either way.
+
+     noPublishedIrishRoute is also honoured: a product can be marked
+     available and still have no published route into Ireland, and that is
+     not something to put in front of a homeowner as buyable. */
+  function pnIrishConfirmed(p){
+    if (!p) return false;
+    if (p.noPublishedIrishRoute === true) return false;
+    if (p.irishAvailability === true) return true;
+    return String(p.irishAvailabilityConfirmationState || '').toLowerCase() === 'yes';
+  }
+
+  function pnResidentialCandidates(){
+    var pool = (typeof window.__PN_GARDEN_BUILDINGS__ === 'function')
+      ? window.__PN_GARDEN_BUILDINGS__() : [];
+    return pool.filter(function(p){
+      if (!pnIrishConfirmed(p)) return false;
+      var fa = pnFloorAreaEvidence(p);
+      if (!fa || typeof fa.number !== 'number') return false;
+      if (fa.number < R.MIN || fa.number > R.MAX) return false;
+      if (fa.disowned) return false;
+      var blob = '';
+      try { blob = JSON.stringify(p); } catch (e) { return false; }
+      return HABITABLE.test(blob);
+    });
+  }
+
+  /* How many buildings sit in or near the band but cannot be assessed —
+     stated so the absence is explained rather than silent. UNKNOWN IS NOT
+     FALSE: these are unmeasured or unclassified, not unsuitable. */
+
+  function pnMoney(p){
+    if (p.price == null) return null;
+    var cur = (p.currency === 'GBP') ? '£' : '€';
+    return cur + Number(p.price).toLocaleString('en-IE');
+  }
+
+  function renderCandidates(){
+    var wrap = $('dhCandWrap'); if (!wrap) return;
+    var list = pnResidentialCandidates();
+    var host = $('dhCands');
+
+    if (!list.length){
+      /* The honest empty state. It is not a failure message and it does not
+         say no building could work — only that none can be confirmed yet. */
+      $('dhCandIntro').textContent = 'Atlas has not yet established enough evidence to put '
+        + 'specific buildings forward for living in. As residential qualification evidence is '
+        + 'added, buildings will appear here.';
+      host.innerHTML = '';
+      return;
+    }
+
+    /* Two sentences. The detail moved into the cards, where it belongs. */
+    $('dhCandIntro').textContent = 'Atlas found ' + (list.length === 1 ? 'one building' : list.length + ' buildings')
+      + ' sold in Ireland as living accommodation that sit within the size range your garden '
+      + 'could take. They are worth exploring; some residential evidence still needs to be '
+      + 'established.';
+
+    host.innerHTML = list.map(function(p){
+      var fa = pnFloorAreaEvidence(p);
+      var price = pnMoney(p);
+
+      var known = [];
+      known.push('Sold in Ireland as living accommodation');
+      known.push('Published floor area ' + fa.number + ' ' + fa.unit
+                 + ', inside the ' + R.MIN + '–' + R.MAX + ' m² range');
+      if (price) known.push('Price recorded by Atlas: ' + price);
+      if (p.insulation && /INSULATED/i.test(String(p.insulation)))
+        known.push('Built for year-round use');
+
+      var open = [];
+      /* This is the governed record's own wording, and it is the single most
+         important thing on the card. */
+      open.push('Whether it meets the Building and Fire Regulations the auxiliary-dwelling '
+                + 'route requires — Atlas records this as not determined');
+      if (BASIS_UNCLEAR.test(fa.text))
+        open.push('Whether the published area is measured inside or outside the walls');
+      if (TOP_OF_BAND.test(fa.text))
+        open.push('This sits at the very top of the range. If the published figure is an '
+                  + 'internal measurement, the outside footprint would be over ' + R.MAX
+                  + ' m² and this route would not be open');
+      open.push('Whether it suits your particular garden, ground and access');
+
+      return '<div class="hm-cand">'
+        + '<div class="hm-sup">' + esc(p.organisation || 'Supplier not recorded') + '</div>'
+        + '<h5>' + esc(p.name || 'Product') + '</h5>'
+        + '<div class="hm-facts">'
+        +   '<span><b>' + fa.number + ' ' + fa.unit + '</b></span>'
+        +   (price ? '<span><b>' + esc(price) + '</b></span>' : '<span>price not recorded</span>')
+        +   '<span>Available in Ireland</span>'
+        + '</div>'
+        + '<div class="hm-ev-h">What Atlas has established</div>'
+        + '<ul class="hm-ev">' + known.map(function(k){
+              return '<li class="hm-known">' + esc(k) + '</li>'; }).join('') + '</ul>'
+        /* Closed by default. The 45 m² top-of-band caveat lives in here and
+           is one click away — collapsed, never removed. */
+        + '<details class="hm-open-ev"><summary>What still needs checking'
+        +   ' (' + open.length + ')</summary>'
+        +   '<ul class="hm-ev">' + open.map(function(o){
+                return '<li class="hm-open">' + esc(o) + '</li>'; }).join('') + '</ul>'
+        + '</details>'
+        + '</div>';
+    }).join('');
+
   }
 
   /* =================================================================
