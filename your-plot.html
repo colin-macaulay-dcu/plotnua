@@ -573,8 +573,8 @@
      #screen-match-input are transparent overlays on the property view and
      SHOULD cross-fade — there is nothing behind them to ghost through except
      the photograph they are supposed to sit on. */
-  #screen-atlas-search, #screen-match-results, #screen-home-results{ transition:opacity .24s ease; }
-  #screen-atlas-search.is-hidden, #screen-match-results.is-hidden, #screen-home-results.is-hidden{
+  #screen-atlas-search, #screen-match-results{ transition:opacity .24s ease; }
+  #screen-atlas-search.is-hidden, #screen-match-results.is-hidden{
     transition:opacity .6s ease, visibility .6s ease;
   }
   /* FOUNDER CORRECTION — the page-level h1, visually hidden. */
@@ -1515,8 +1515,7 @@
      several small contributions (alongside the narrower panel, the
      shorter hero image, and tighter intro spacing below) toward the
      recommendation title sitting much closer to the top of the viewport. */
-  #screen-match-results,
-  #screen-home-results{
+  #screen-match-results{
     background:rgba(248,245,236,.97); backdrop-filter:blur(10px); z-index:40;
     overflow-y:auto; align-items:center; justify-content:flex-start;
     /* RESULTS SPRINT R1 — CHANGE 3: top padding reduced (34px → 16px) so
@@ -3411,8 +3410,7 @@
        every other breakpoint; #screen-match-results already handles page
        scrolling. */
     /* RESULTS SPRINT R1 — CHANGE 3: same top-padding reduction on mobile. */
-    #screen-match-results,
-    #screen-home-results{ padding:20px 16px 56px; }
+    #screen-match-results{ padding:20px 16px 56px; }
     .match-options-budget .match-option{ text-align:center; }
   }
 
@@ -3443,8 +3441,7 @@
      hidden Garden Room screen 900px beneath it, and elementFromPoint
      across that band returned #cesiumContainer. The hidden screen now
      stays fixed, as it was before there were two. */
-  html.results-scroll-mode #screen-match-results:not(.is-hidden),
-  html.results-scroll-mode #screen-home-results:not(.is-hidden){
+  html.results-scroll-mode #screen-match-results:not(.is-hidden){
     position:static; height:auto; min-height:100vh; min-height:100dvh; overflow:visible;
     /* RESULTS R1.1 — CHANGE 1: the R1 scroll fix only made the browser
        capable of scrolling Results — it didn't fix WHERE scroll input is
@@ -6059,7 +6056,7 @@
 
   /* Fraunces · display · 80px */
   #screen-match-results .aa-fig--big{ font-size:var(--pn-s-display); }
-  #screen-match-results .results-hero-name, #screen-home-results .results-hero-name{ font-size:var(--pn-s-display); }
+  #screen-match-results .results-hero-name{ font-size:var(--pn-s-display); }
   /* Fraunces · hero · 53px */
   #screen-match-results .aa-title{ font-size:var(--pn-s-hero); }
   /* Fraunces · section · 36px */
@@ -6100,8 +6097,8 @@
   #screen-match-results .evid-title{ font-size:var(--pn-s-section); }
   #screen-match-results .hidden-potential.chapter .hp-title{ font-size:var(--pn-s-section); }
   #screen-match-results .hp-title{ font-size:var(--pn-s-section); }
-  #screen-match-results .results-hero-price, #screen-home-results .results-hero-price{ font-size:var(--pn-s-section); }
-  #screen-match-results .sec-title, #screen-home-results .sec-title{ font-size:var(--pn-s-section); }
+  #screen-match-results .results-hero-price{ font-size:var(--pn-s-section); }
+  #screen-match-results .sec-title{ font-size:var(--pn-s-section); }
   #screen-match-results .tp-statement{ font-size:var(--pn-s-section); }
   /* Fraunces · statement · 27px */
   #screen-match-results .aa-lede{ font-size:var(--pn-s-statement); }
@@ -6111,7 +6108,7 @@
   #screen-match-results .evid-count-line{ font-size:var(--pn-s-statement); }
   #screen-match-results .hp-eyebrow{ font-size:var(--pn-s-statement); }
   #screen-match-results .match-bring-your-own-title{ font-size:var(--pn-s-statement); }
-  #screen-match-results .results-headline, #screen-home-results .results-headline{ font-size:var(--pn-s-statement); }
+  #screen-match-results .results-headline{ font-size:var(--pn-s-statement); }
   #screen-match-results .results-why-verdict{ font-size:var(--pn-s-statement); }
   /* Fraunces · quote · 20px */
   #screen-match-results .brief-title{ font-size:var(--pn-s-quote); }
@@ -6122,26 +6119,26 @@
   #screen-match-results .hidden-potential.chapter .hp-card-name{ font-size:var(--pn-s-quote); }
   #screen-match-results .hp-card-name{ font-size:var(--pn-s-quote); }
   #screen-match-results .match-atlas-popover-title{ font-size:var(--pn-s-quote); }
-  #screen-match-results .match-next-step-title, #screen-home-results .match-next-step-title{ font-size:var(--pn-s-quote); }
+  #screen-match-results .match-next-step-title{ font-size:var(--pn-s-quote); }
   #screen-match-results .plot-twist-title{ font-size:var(--pn-s-quote); }
   #screen-match-results .plot-twist.wildcard .plot-twist-title{ font-size:var(--pn-s-quote); }
   #screen-match-results .rc-title{ font-size:var(--pn-s-quote); }
   #screen-match-results .results-centrepiece-title{ font-size:var(--pn-s-quote); }
-  #screen-match-results .results-gallery-heading, #screen-home-results .results-gallery-heading{ font-size:var(--pn-s-quote); }
-  #screen-match-results .results-hero-editorial, #screen-home-results .results-hero-editorial{ font-size:var(--pn-s-quote); }
+  #screen-match-results .results-gallery-heading{ font-size:var(--pn-s-quote); }
+  #screen-match-results .results-hero-editorial{ font-size:var(--pn-s-quote); }
   #screen-match-results .time-current-label{ font-size:var(--pn-s-quote); }
   #screen-match-results .tp-open-title{ font-size:var(--pn-s-quote); }
   #screen-match-results .tp-pillar-head{ font-size:var(--pn-s-quote); }
   #screen-match-results .your-property-label{ font-size:var(--pn-s-quote); }
   /* Fraunces · emph · 16px */
-  #screen-match-results .alt-name, #screen-home-results .alt-name{ font-size:var(--pn-s-emph); }
+  #screen-match-results .alt-name{ font-size:var(--pn-s-emph); }
   #screen-match-results .alt-wild-eyebrow{ font-size:var(--pn-s-emph); }
   #screen-match-results .alt-wild-tease{ font-size:var(--pn-s-emph); }
   #screen-match-results .evid-disclosure-label{ font-size:var(--pn-s-emph); }
   #screen-match-results .plot-twist-intro{ font-size:var(--pn-s-emph); }
   #screen-match-results .plot-twist.wildcard .plot-twist-intro, #screen-match-results .plot-twist.wildcard .plot-twist-observation, #screen-match-results .plot-twist.wildcard .pt-why{ font-size:var(--pn-s-emph); }
-  #screen-match-results .prop-confirm-place, #screen-home-results .prop-confirm-place{ font-size:var(--pn-s-emph); }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-place, #screen-home-results .prop-confirm.is-in-hero .prop-confirm-place{ font-size:var(--pn-s-emph); }
+  #screen-match-results .prop-confirm-place{ font-size:var(--pn-s-emph); }
+  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-place{ font-size:var(--pn-s-emph); }
   #screen-match-results .pt-why{ font-size:var(--pn-s-emph); }
   #screen-match-results .results-why-compromise{ font-size:var(--pn-s-emph); }
   #screen-match-results .results-why-evidence{ font-size:var(--pn-s-emph); }
@@ -6150,7 +6147,7 @@
   /* ISSUE 007 — inside the Before You Decide composition the disclosure is a
      footnote to the form, not journey copy. This wins on specificity over
      the rule above. */
-  #screen-match-results .byd-ask .byd-ask-note, #screen-home-results .byd-ask .byd-ask-note{ font-size:12.5px; }
+  #screen-match-results .byd-ask .byd-ask-note{ font-size:12.5px; }
   #screen-match-results .ask-pick-main{ font-size:var(--pn-w-body-lg); }
   #screen-match-results .decide-list li{ font-size:var(--pn-w-body-lg); }
   #screen-match-results .evid-fact-label{ font-size:var(--pn-w-body-lg); }
@@ -6181,17 +6178,17 @@
   #screen-match-results .evid-row-label{ font-size:var(--pn-w-body); }
   #screen-match-results .evid-rows .evid-row-label{ font-size:var(--pn-w-body); }
   #screen-match-results .evid-subrow-label{ font-size:var(--pn-w-body); }
-  #screen-match-results .hero-secondary-link, #screen-home-results .hero-secondary-link{ font-size:var(--pn-w-body); }
-  #screen-match-results .hero-trust-list li, #screen-home-results .hero-trust-list li{ font-size:var(--pn-w-body); }
+  #screen-match-results .hero-secondary-link{ font-size:var(--pn-w-body); }
+  #screen-match-results .hero-trust-list li{ font-size:var(--pn-w-body); }
   #screen-match-results .hp-card-line{ font-size:var(--pn-w-body); }
   #screen-match-results .match-add-own-form input{ font-size:var(--pn-w-body); }
   #screen-match-results .match-atlas-popover-intro{ font-size:var(--pn-w-body); }
   #screen-match-results .match-atlas-popover-list li{ font-size:var(--pn-w-body); }
   #screen-match-results .match-bring-your-own .results-byo-form input{ font-size:var(--pn-w-body); }
   #screen-match-results .match-card-save-primary{ font-size:var(--pn-w-body); }
-  #screen-match-results .match-next-step-copy, #screen-home-results .match-next-step-copy{ font-size:var(--pn-w-body); }
-  #screen-match-results .match-next-step-open, #screen-home-results .match-next-step-open{ font-size:var(--pn-w-body); }
-  #screen-match-results .match-next-step-saved, #screen-home-results .match-next-step-saved{ font-size:var(--pn-w-body); }
+  #screen-match-results .match-next-step-copy{ font-size:var(--pn-w-body); }
+  #screen-match-results .match-next-step-open{ font-size:var(--pn-w-body); }
+  #screen-match-results .match-next-step-saved{ font-size:var(--pn-w-body); }
   #screen-match-results .planning-history-placeholder{ font-size:var(--pn-w-body); }
   #screen-match-results .pt-explore{ font-size:var(--pn-w-body); }
   #screen-match-results .rc-changed{ font-size:var(--pn-w-body); }
@@ -6199,7 +6196,7 @@
   #screen-match-results .results-centrepiece-intro{ font-size:var(--pn-w-body); }
   #screen-match-results .results-reassurance-intro{ font-size:var(--pn-w-body); }
   #screen-match-results .results-reassurance-list li{ font-size:var(--pn-w-body); }
-  #screen-match-results .results-scope, #screen-home-results .results-scope{ font-size:var(--pn-w-body); }
+  #screen-match-results .results-scope{ font-size:var(--pn-w-body); }
   #screen-match-results .rp-so{ font-size:var(--pn-w-body); }
   #screen-match-results .ruled-out-lede{ font-size:var(--pn-w-body); }
   #screen-match-results .ruled-out-list li{ font-size:var(--pn-w-body); }
@@ -6210,8 +6207,8 @@
   /* Work Sans · body-sm · 13px */
   #screen-match-results .aa-find-cap{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .alt-compare{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .alt-meta, #screen-home-results .alt-meta{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .alt-rail-note, #screen-home-results .alt-rail-note{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .alt-meta{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .alt-rail-note{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .ask-pick-sub{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .brief-note{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .btn-secondary{ font-size:var(--pn-w-body-sm); }
@@ -6231,20 +6228,20 @@
   #screen-match-results .evid-tile-sub{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .evid-unknowns .evid-open{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .fork-card-sub{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .hero-trust-more, #screen-home-results .hero-trust-more{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .hero-trust-more{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .hp-card-go{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .match-atlas-popover-confidence{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .match-card-open-myplot-link, #screen-home-results .match-card-open-myplot-link{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .match-next-step-empty, #screen-home-results .match-next-step-empty{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .match-card-open-myplot-link{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .match-next-step-empty{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .planning-history-label{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .planning-status-label{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .plot-twist-observation{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .plot-twist.wildcard .plot-twist-observation{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .prop-confirm-link, #screen-home-results .prop-confirm-link{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-link, #screen-home-results .prop-confirm.is-in-hero .prop-confirm-link{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .prop-confirm-link{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-link{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .readiness-detail{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .readiness-toggle{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .results-eyebrow, #screen-home-results .results-eyebrow{ font-size:var(--pn-w-body-sm); }
+  #screen-match-results .results-eyebrow{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .results-reassurance-link{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .ruled-out-note{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .season-tab{ font-size:var(--pn-w-body-sm); }
@@ -6254,7 +6251,7 @@
   #screen-match-results .aa-src-state{ font-size:var(--pn-w-caption); }
   #screen-match-results .alt-verdict{ font-size:var(--pn-w-caption); }
   #screen-match-results .alt-wild-note{ font-size:var(--pn-w-caption); }
-  #screen-match-results .btn-muted-text, #screen-home-results .btn-muted-text{ font-size:var(--pn-w-caption); }
+  #screen-match-results .btn-muted-text{ font-size:var(--pn-w-caption); }
   #screen-match-results .decide-head{ font-size:var(--pn-w-caption); }
   #screen-match-results .decide-mark{ font-size:var(--pn-w-caption); }
   #screen-match-results .evid-card-meta{ font-size:var(--pn-w-caption); }
@@ -6268,10 +6265,10 @@
   #screen-match-results .match-bring-your-own .match-add-own-field-label{ font-size:var(--pn-w-caption); }
   #screen-match-results .plot-twist-footnote{ font-size:var(--pn-w-caption); }
   #screen-match-results .plot-twist.wildcard .plot-twist-footnote{ font-size:var(--pn-w-caption); }
-  #screen-match-results .prop-confirm-label, #screen-home-results .prop-confirm-label{ font-size:var(--pn-w-caption); }
+  #screen-match-results .prop-confirm-label{ font-size:var(--pn-w-caption); }
   #screen-match-results .readiness-caption{ font-size:var(--pn-w-caption); }
   #screen-match-results .results-centrepiece-label{ font-size:var(--pn-w-caption); }
-  #screen-match-results .results-hero-org, #screen-home-results .results-hero-org{ font-size:var(--pn-w-caption); }
+  #screen-match-results .results-hero-org{ font-size:var(--pn-w-caption); }
   #screen-match-results .results-reassurance-label{ font-size:var(--pn-w-caption); }
   #screen-match-results .results-why-points li .rp-icon{ font-size:var(--pn-w-caption); }
   #screen-match-results .ruled-out-group{ font-size:var(--pn-w-caption); }
@@ -6285,7 +6282,7 @@
   #screen-match-results .aa-mast-l{ font-size:var(--pn-w-meta); }
   #screen-match-results .aa-mast-r{ font-size:var(--pn-w-meta); }
   #screen-match-results .aa-more{ font-size:var(--pn-w-meta); }
-  #screen-match-results .aa-notes, #screen-home-results .aa-notes{ font-size:var(--pn-w-meta); }
+  #screen-match-results .aa-notes{ font-size:var(--pn-w-meta); }
   #screen-match-results .alt-wild-fact-cap{ font-size:var(--pn-w-meta); }
   #screen-match-results .evid-card-eyebrow{ font-size:var(--pn-w-meta); }
   #screen-match-results .evid-facts .evid-tick{ font-size:var(--pn-w-meta); }
@@ -6293,7 +6290,7 @@
   #screen-match-results .evid-tile-label{ font-size:var(--pn-w-meta); }
   #screen-match-results .evid-tile-src{ font-size:var(--pn-w-meta); }
   #screen-match-results .hero-tick{ font-size:var(--pn-w-meta); }
-  #screen-match-results .hero-trust-title, #screen-home-results .hero-trust-title{ font-size:var(--pn-w-meta); }
+  #screen-match-results .hero-trust-title{ font-size:var(--pn-w-meta); }
   #screen-match-results .hp-card-status{ font-size:var(--pn-w-meta); }
   #screen-match-results .plot-twist-eyebrow{ font-size:var(--pn-w-meta); }
   #screen-match-results .plot-twist.wildcard .plot-twist-eyebrow{ font-size:var(--pn-w-meta); }
@@ -6303,12 +6300,12 @@
   /* These were declared inside a media query; the override keeps the query
      so the breakpoint survives rather than being flattened. */
   @media (max-width: 640px){
-    #screen-match-results .results-scope, #screen-home-results .results-scope{ font-size:var(--pn-w-body); }
+    #screen-match-results .results-scope{ font-size:var(--pn-w-body); }
   }
   @media (max-width: 719px){
-    #screen-match-results .results-hero-name, #screen-home-results .results-hero-name{ font-size:var(--pn-s-display); }
-    #screen-match-results .results-hero-price, #screen-home-results .results-hero-price{ font-size:var(--pn-s-section); }
-    #screen-match-results .results-hero-editorial, #screen-home-results .results-hero-editorial{ font-size:var(--pn-s-quote); }
+    #screen-match-results .results-hero-name{ font-size:var(--pn-s-display); }
+    #screen-match-results .results-hero-price{ font-size:var(--pn-s-section); }
+    #screen-match-results .results-hero-editorial{ font-size:var(--pn-s-quote); }
   }
   @media (max-width: 460px){
     #screen-match-results .evid-tile-label{ font-size:var(--pn-w-meta); }
@@ -6324,7 +6321,7 @@
 
   /* Marks, not type: a separator and three status glyphs. Sized off the
      metadata step so nothing on the page sits outside the scale. */
-  #screen-match-results .hero-secondary-dot, #screen-home-results .hero-secondary-dot{ font-size:var(--pn-w-body); }
+  #screen-match-results .hero-secondary-dot{ font-size:var(--pn-w-body); }
   #screen-match-results .evid-card-mark{
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-meta); font-weight:400; }
   #screen-match-results .alt-wild-fact-cap{ font-weight:400; }
@@ -6335,24 +6332,24 @@
   #screen-match-results .brief-title{ font-weight:500; }
   #screen-match-results .hidden-potential.chapter .hp-card-name{ font-weight:500; }
   #screen-match-results .hp-card-name{ font-weight:500; }
-  #screen-match-results .match-next-step-title, #screen-home-results .match-next-step-title{ font-weight:500; }
+  #screen-match-results .match-next-step-title{ font-weight:500; }
   #screen-match-results .rc-title{ font-weight:500; }
-  #screen-match-results .results-hero-editorial, #screen-home-results .results-hero-editorial{ font-weight:500; }
+  #screen-match-results .results-hero-editorial{ font-weight:500; }
   #screen-match-results .time-current-label{ font-weight:500; }
   #screen-match-results .your-property-label{ font-weight:500; }
-  #screen-match-results .alt-name, #screen-home-results .alt-name{ font-weight:500; }
+  #screen-match-results .alt-name{ font-weight:500; }
   #screen-match-results .alt-wild-tease{ font-weight:500; }
   #screen-match-results .evid-disclosure-label{ font-weight:500; }
   #screen-match-results .plot-twist-intro{ font-weight:500; }
   #screen-match-results .plot-twist.wildcard .plot-twist-intro, #screen-match-results .plot-twist.wildcard .plot-twist-observation, #screen-match-results .plot-twist.wildcard .pt-why{ font-weight:500; }
-  #screen-match-results .prop-confirm-place, #screen-home-results .prop-confirm-place{ font-weight:500; }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-place, #screen-home-results .prop-confirm.is-in-hero .prop-confirm-place{ font-weight:500; }
+  #screen-match-results .prop-confirm-place{ font-weight:500; }
+  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-place{ font-weight:500; }
   #screen-match-results .pt-why{ font-weight:500; }
   #screen-match-results .results-why-compromise{ font-weight:500; }
   #screen-match-results .results-why-evidence{ font-weight:500; }
-  #screen-match-results .match-card-open-myplot-link, #screen-home-results .match-card-open-myplot-link{ font-weight:600; }
-  #screen-match-results .prop-confirm-link, #screen-home-results .prop-confirm-link{ font-weight:400; }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-link, #screen-home-results .prop-confirm.is-in-hero .prop-confirm-link{ font-weight:400; }
+  #screen-match-results .match-card-open-myplot-link{ font-weight:600; }
+  #screen-match-results .prop-confirm-link{ font-weight:400; }
+  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-link{ font-weight:400; }
   #screen-match-results .match-atlas-popover-subtitle{ font-weight:600; }
 
   /* ======================================================================
@@ -6422,8 +6419,7 @@
   /* LAUNCH V3 — the brand remap is the single biggest cause of the premium
      read, and it is now addressed to both result screens. One rule, one set
      of declarations, two hosts. */
-  #screen-match-results,
-  #screen-home-results{
+  #screen-match-results{
     --ink:var(--pn-voice);
     --soft:var(--pn-body);
     --accent:var(--pn-voice);
@@ -6456,7 +6452,7 @@
      their four footings on the same line, and that alignment is most of the
      difference between a designed set and four boxes in a row. */
 
-  #screen-match-results .alt-lens, #screen-home-results .alt-lens{
+  #screen-match-results .alt-lens{
     display:flex; flex-direction:column; gap:0;
     /* AR-6 — the floor. Three cards level, one feature card taller. Without
        it the set measured 223/223/347/510, which reads as four accidents. */
@@ -6465,7 +6461,7 @@
     border:1px solid var(--pn-hair); background:var(--pn-ground);
     overflow:hidden; }
 
-  #screen-match-results .alt-lens-label, #screen-home-results .alt-lens-label{
+  #screen-match-results .alt-lens-label{
     display:block; font-family:'Work Sans',sans-serif;
     font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.18em;
     text-transform:uppercase; color:var(--pn-stone);
@@ -6474,7 +6470,7 @@
   /* THE HERO. Was 13px Work Sans under a 16px product name; the card was a
      product tile with a caption, which is the ecommerce reading the whole
      lens architecture exists to avoid. */
-  #screen-match-results .alt-lens-say, #screen-home-results .alt-lens-say{
+  #screen-match-results .alt-lens-say{
     margin:0 0 var(--pn-space-lg); font-family:'Fraunces',Georgia,serif;
     font-weight:500; font-size:var(--pn-s-quote); line-height:1.25;
     color:var(--pn-voice); }
@@ -6482,14 +6478,14 @@
   /* AR-5 — was margin-top:auto, which parked the rail's whole height
      difference in the middle of every card. The rail no longer stretches, so
      the footing simply follows the statement. */
-  #screen-match-results .alt-lens-foot, #screen-home-results .alt-lens-foot{
+  #screen-match-results .alt-lens-foot{
     margin-top:var(--pn-space-lg); padding-top:var(--pn-space-md);
     border-top:1px solid var(--pn-hair); }
-  #screen-match-results .alt-lens-foot .alt-name, #screen-home-results .alt-lens-foot .alt-name{
+  #screen-match-results .alt-lens-foot .alt-name{
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-body);
     font-weight:600; line-height:1.35; color:var(--pn-fact);
     margin:0 0 4px; }
-  #screen-match-results .alt-lens-foot .alt-meta, #screen-home-results .alt-lens-foot .alt-meta{
+  #screen-match-results .alt-lens-foot .alt-meta{
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-caption);
     line-height:1.45; color:var(--pn-meta); }
 
@@ -6498,58 +6494,58 @@
      unresolved lens reads as a note Atlas has left for itself rather than as
      a card that failed to load. */
   #screen-match-results .alt-lens.is-not-yet,
-  #screen-match-results .alt-lens.is-not-applicable, #screen-home-results .alt-lens.is-not-applicable{
+  #screen-match-results .alt-lens.is-not-applicable{
     background:none; border-style:dashed; }
   #screen-match-results .alt-lens.is-not-yet .alt-lens-say,
-  #screen-match-results .alt-lens.is-not-applicable .alt-lens-say, #screen-home-results .alt-lens.is-not-applicable .alt-lens-say{ color:var(--pn-stone); }
-  #screen-match-results .alt-lens-state, #screen-home-results .alt-lens-state{
+  #screen-match-results .alt-lens.is-not-applicable .alt-lens-say{ color:var(--pn-stone); }
+  #screen-match-results .alt-lens-state{
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-body-sm);
     line-height:1.55; color:var(--pn-meta); margin:var(--pn-space-lg) 0 0;
     max-width:34ch; }
   #screen-match-results .alt-lens.is-not-yet:hover,
-  #screen-match-results .alt-lens.is-not-applicable:hover, #screen-home-results .alt-lens.is-not-applicable:hover{
+  #screen-match-results .alt-lens.is-not-applicable:hover{
     transform:none; box-shadow:none; border-color:var(--pn-hair); }
 
   /* ---- ⭐ wildcard · inverted ----------------------------------------- */
-  #screen-match-results .alt-lens.is-wildcard, #screen-home-results .alt-lens.is-wildcard{ border-color:transparent; }
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-label, #screen-home-results .alt-lens.is-wildcard .alt-lens-label{ color:rgba(245,242,232,.78); }
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-say, #screen-home-results .alt-lens.is-wildcard .alt-lens-say{ color:var(--pn-on-dark); }
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot, #screen-home-results .alt-lens.is-wildcard .alt-lens-foot{ border-top-color:rgba(245,242,232,.22); }
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-name, #screen-home-results .alt-lens.is-wildcard .alt-lens-foot .alt-name{ color:var(--pn-on-dark); }
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-meta, #screen-home-results .alt-lens.is-wildcard .alt-lens-foot .alt-meta{ color:rgba(245,242,232,.80); }
-  #screen-match-results .alt-lens.is-wildcard .alt-why, #screen-home-results .alt-lens.is-wildcard .alt-why{
+  #screen-match-results .alt-lens.is-wildcard{ border-color:transparent; }
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-label{ color:rgba(245,242,232,.78); }
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-say{ color:var(--pn-on-dark); }
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot{ border-top-color:rgba(245,242,232,.22); }
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-name{ color:var(--pn-on-dark); }
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-meta{ color:rgba(245,242,232,.80); }
+  #screen-match-results .alt-lens.is-wildcard .alt-why{
     margin:var(--pn-space-sm) 0 0; color:rgba(245,242,232,.82); }
-  #screen-match-results .alt-lens.is-wildcard .alt-wild-fact, #screen-home-results .alt-lens.is-wildcard .alt-wild-fact{ margin:var(--pn-space-sm) 0 0; }
+  #screen-match-results .alt-lens.is-wildcard .alt-wild-fact{ margin:var(--pn-space-sm) 0 0; }
 
   /* AR-4 — the country was set at statement size inside a footing that is
      otherwise a name and a meta line, and it alone put the four footing rules
      81px apart. Kept, quietened, set inline: the fact survives, the set
      resolves. */
-  #screen-match-results .alt-lens.is-wildcard .alt-wild-fact, #screen-home-results .alt-lens.is-wildcard .alt-wild-fact{
+  #screen-match-results .alt-lens.is-wildcard .alt-wild-fact{
     display:block; margin:6px 0 0; white-space:nowrap;
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-caption);
     font-weight:600; line-height:1.45; letter-spacing:0;
     color:rgba(245,242,232,.82); }
-  #screen-match-results .alt-lens.is-wildcard .alt-wild-fact-cap, #screen-home-results .alt-lens.is-wildcard .alt-wild-fact-cap{
+  #screen-match-results .alt-lens.is-wildcard .alt-wild-fact-cap{
     /* AR-7 — was display:block from the standalone card, which put the label
        on its own line and made nowrap on the parent meaningless. */
     display:inline; font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.16em;
     text-transform:uppercase; color:rgba(245,242,232,.52);
     margin-right:6px; }
-  #screen-match-results .alt-lens.is-wildcard .alt-why, #screen-home-results .alt-lens.is-wildcard .alt-why{
+  #screen-match-results .alt-lens.is-wildcard .alt-why{
     font-size:var(--pn-w-body-sm); line-height:1.5; }
 
   /* ---- ✨ plot twist · photograph-led ----------------------------------
      The only image in the rail, and deliberately so: three cards offer a
      building, this one offers a different idea of what the garden is for.
      Bled to the card edges against the 28px padding. */
-  #screen-match-results .alt-lens.is-twist, #screen-home-results .alt-lens.is-twist{ text-decoration:none; }
-  #screen-match-results .alt-lens-shot, #screen-home-results .alt-lens-shot{
+  #screen-match-results .alt-lens.is-twist{ text-decoration:none; }
+  #screen-match-results .alt-lens-shot{
     display:block; margin:-28px -28px var(--pn-space-md); }
-  #screen-match-results .alt-lens-shot img, #screen-home-results .alt-lens-shot img{
+  #screen-match-results .alt-lens-shot img{
     display:block; width:100%; height:160px; object-fit:cover; }
-  #screen-match-results .alt-lens.is-twist .alt-lens-foot .alt-meta, #screen-home-results .alt-lens.is-twist .alt-lens-foot .alt-meta{ color:var(--pn-body); }
-  #screen-match-results .alt-lens-go, #screen-home-results .alt-lens-go{
+  #screen-match-results .alt-lens.is-twist .alt-lens-foot .alt-meta{ color:var(--pn-body); }
+  #screen-match-results .alt-lens-go{
     display:block; margin-top:var(--pn-space-md);
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-caption);
     font-weight:600; color:var(--pn-voice); }
@@ -6558,14 +6554,14 @@
   /* AR-5 — the rail stops stretching its children. One feature card taller
      than its three neighbours is an editorial rail; three cards padded out
      with 300px of void to match it is a fault. */
-  #screen-match-results .alt-rail, #screen-home-results .alt-rail{ gap:var(--pn-space-md); align-items:flex-start; }
+  #screen-match-results .alt-rail{ gap:var(--pn-space-md); align-items:flex-start; }
 
   /* AR-7 — the scroll fade is removed here. A 44px ivory gradient over the
      wildcard's forest ground is a white smear that reads as a failed render;
      UX-008C softened it and could not fix it, because the fault is the
      technique. The arrow stays, and is the better affordance: a control you
      can press beats a gradient you have to interpret. */
-  #screen-match-results .alt-rail-fade, #screen-home-results .alt-rail-fade{ display:none; }
+  #screen-match-results .alt-rail-fade{ display:none; }
 
   /* ---- FP-3 — THE WILDCARD WAS BISECTED, NOT CLIPPED -------------------
      The panel is capped at 910px on every desktop width, so a 344px card and
@@ -6586,20 +6582,20 @@
      Nothing about the cards themselves changes: type, colour, border, radius,
      shadow, gap, content and order are all untouched. The right padding is
      the end-of-scroll breathing room the rail never had — 2px, now 26px. */
-  #screen-match-results .alt-rail, #screen-home-results .alt-rail{
+  #screen-match-results .alt-rail{
     padding-right:24px; scroll-padding-right:24px; }
-  #screen-match-results .alt-rail > *, #screen-home-results .alt-rail > *{
+  #screen-match-results .alt-rail > *{
     flex:0 0 clamp(272px, calc((100% - 96px) / 2), 400px); }
   /* Below this the panel is too narrow for two cards at a readable width, so
      the existing one-card-and-a-peek rule stands, unchanged. */
   @media (max-width:700px){
-    #screen-match-results .alt-rail > *, #screen-home-results .alt-rail > *{ flex:0 0 min(344px, 84%); }
+    #screen-match-results .alt-rail > *{ flex:0 0 min(344px, 84%); }
   }
   #screen-match-results #altRailNote{ margin:0 0 var(--pn-space-md); color:var(--pn-body); }
   @media (max-width:640px){
-    #screen-match-results .alt-lens, #screen-home-results .alt-lens{ padding:24px 22px 20px; min-height:0; }
-    #screen-match-results .alt-lens-shot, #screen-home-results .alt-lens-shot{ margin:-24px -22px var(--pn-space-md); }
-    #screen-match-results .alt-lens-shot img, #screen-home-results .alt-lens-shot img{ height:158px; }
+    #screen-match-results .alt-lens{ padding:24px 22px 20px; min-height:0; }
+    #screen-match-results .alt-lens-shot{ margin:-24px -22px var(--pn-space-md); }
+    #screen-match-results .alt-lens-shot img{ height:158px; }
   }
 
   /* Marks are metadata, not text: ticks, bullets and question marks sit at
@@ -6608,26 +6604,26 @@
 
   /* One hairline. Every border on the page was an alpha of the brand green at
      ten different opacities; they are one value now. Widths are untouched. */
-  #screen-match-results .alt-card, #screen-home-results .alt-card, #screen-match-results .alt-compare, #screen-match-results .ask-cols .ask-action, #screen-match-results .brief, #screen-match-results .btn-secondary, #screen-match-results .decide-head, #screen-match-results .evid-card, #screen-match-results .evid-card-meta, #screen-match-results .evid-conf-head, #screen-match-results .evid-count, #screen-match-results .evid-disclosure, #screen-match-results .evid-disclosure-label, #screen-match-results .evid-gaps-sum, #screen-match-results .evid-row, #screen-match-results .evid-rows, #screen-match-results .evid-rows .evid-row, #screen-match-results .evid-signals, #screen-match-results .evid.chapter, #screen-match-results .fork-card, #screen-match-results .hero-trust, #screen-home-results .hero-trust, #screen-match-results .hero-trust-more, #screen-home-results .hero-trust-more, #screen-match-results .hidden-potential.chapter, #screen-match-results .hidden-potential.chapter .hp-card, #screen-match-results .hidden-potential.chapter .hp-shot, #screen-match-results .hp-card, #screen-match-results .hp-card-status, #screen-match-results .match-add-own-form input, #screen-match-results .match-atlas-popover-confidence, #screen-match-results .match-bring-your-own, #screen-match-results .match-bring-your-own .results-byo-form input, #screen-match-results .match-card-save-primary, #screen-match-results .planning-history, #screen-match-results .plot-twist, #screen-match-results .plot-twist-footnote, #screen-match-results .prop-confirm, #screen-home-results .prop-confirm, #screen-match-results .prop-confirm-link, #screen-home-results .prop-confirm-link, #screen-match-results .rc-card, #screen-match-results .rc-card.is-refined, #screen-match-results .rc-end, #screen-match-results .rc-temp, #screen-match-results .readiness-item, #screen-match-results .refined-compare, #screen-match-results .results-compare, #screen-match-results .results-reassurance, #screen-match-results .results-why-evidence, #screen-match-results .ruled-out, #screen-match-results .supplier-row, #screen-match-results .tp-detail-link, #screen-match-results .your-property{ border-color:var(--pn-hair); }
+  #screen-match-results .alt-card, #screen-match-results .alt-compare, #screen-match-results .ask-cols .ask-action, #screen-match-results .brief, #screen-match-results .btn-secondary, #screen-match-results .decide-head, #screen-match-results .evid-card, #screen-match-results .evid-card-meta, #screen-match-results .evid-conf-head, #screen-match-results .evid-count, #screen-match-results .evid-disclosure, #screen-match-results .evid-disclosure-label, #screen-match-results .evid-gaps-sum, #screen-match-results .evid-row, #screen-match-results .evid-rows, #screen-match-results .evid-rows .evid-row, #screen-match-results .evid-signals, #screen-match-results .evid.chapter, #screen-match-results .fork-card, #screen-match-results .hero-trust, #screen-match-results .hero-trust-more, #screen-match-results .hidden-potential.chapter, #screen-match-results .hidden-potential.chapter .hp-card, #screen-match-results .hidden-potential.chapter .hp-shot, #screen-match-results .hp-card, #screen-match-results .hp-card-status, #screen-match-results .match-add-own-form input, #screen-match-results .match-atlas-popover-confidence, #screen-match-results .match-bring-your-own, #screen-match-results .match-bring-your-own .results-byo-form input, #screen-match-results .match-card-save-primary, #screen-match-results .planning-history, #screen-match-results .plot-twist, #screen-match-results .plot-twist-footnote, #screen-match-results .prop-confirm, #screen-match-results .prop-confirm-link, #screen-match-results .rc-card, #screen-match-results .rc-card.is-refined, #screen-match-results .rc-end, #screen-match-results .rc-temp, #screen-match-results .readiness-item, #screen-match-results .refined-compare, #screen-match-results .results-compare, #screen-match-results .results-reassurance, #screen-match-results .results-why-evidence, #screen-match-results .ruled-out, #screen-match-results .supplier-row, #screen-match-results .tp-detail-link, #screen-match-results .your-property{ border-color:var(--pn-hair); }
 
   /* No white, no near-white, no second cream. One ground. */
   #screen-match-results .match-add-own-form input, #screen-match-results .match-atlas-popover, #screen-match-results .match-bring-your-own .results-byo-form input, #screen-match-results .tp-open-list li, #screen-match-results .tp-open-panel, #screen-match-results .tp-pillar{ background:var(--pn-ground); }
 
   /* Tinted fills become a wash of the editorial green rather than sage or
      accent tints, which were the only two remaining off-palette hues. */
-  #screen-match-results .brief-current, #screen-match-results .evid-signals, #screen-match-results .hidden-potential .chapter-rule, #screen-match-results .match-card-open-myplot-link, #screen-home-results .match-card-open-myplot-link, #screen-match-results .rc-card.is-refined, #screen-match-results .time-track-line{ background:var(--pn-wash); }
+  #screen-match-results .brief-current, #screen-match-results .evid-signals, #screen-match-results .hidden-potential .chapter-rule, #screen-match-results .match-card-open-myplot-link, #screen-match-results .rc-card.is-refined, #screen-match-results .time-track-line{ background:var(--pn-wash); }
 
   /* Flat. Every gradient on the page replaced by the surface it was fading
      between — except the rail fade, which is a scroll affordance rather than
      decoration and would read as a hard cut without it. */
-  #screen-match-results .results-hero-inner, #screen-home-results .results-hero-inner, #screen-match-results .results-hero-inner.is-fieldonly, #screen-home-results .results-hero-inner.is-fieldonly{ background:var(--pn-ground); background-image:none; }
+  #screen-match-results .results-hero-inner, #screen-match-results .results-hero-inner.is-fieldonly{ background:var(--pn-ground); background-image:none; }
   /* ISSUE 007 — the lens cards (Local Option, Best European) get a surface.
      They kept their hairline and their shape; only the fill changes. */
-  #screen-match-results .alt-card, #screen-home-results .alt-card{ background:var(--pn-surface); background-image:none; }
+  #screen-match-results .alt-card{ background:var(--pn-surface); background-image:none; }
   /* The alternative cards are the same family and had the same fault:
      .results-gallery-card asks for var(--paper), and --paper is remapped to
      --pn-ground inside this screen, so they painted the page colour. */
-  #screen-match-results .results-gallery-card, #screen-home-results .results-gallery-card{ background:var(--pn-surface); }
+  #screen-match-results .results-gallery-card{ background:var(--pn-surface); }
   /* ISSUE 007 FINAL — see the ordered override at the end of this sheet.
      This attempt used the SAME selectors as the state rules it meant to
      beat and sat ABOVE the last of them (line ~6828), so the file carried
@@ -6636,22 +6632,22 @@
   #screen-match-results .plot-twist.wildcard{ background:var(--pn-ground); background-image:none; }
   #screen-match-results img.pn-image-fallback{ background:var(--pn-hair); background-image:none; }
   #screen-match-results .results-map-viewport{ background:var(--pn-hair); }
-  #screen-match-results .alt-rail-fade, #screen-home-results .alt-rail-fade{ background:linear-gradient(90deg,rgba(245,242,232,0) 0%,rgba(245,242,232,.92) 100%); }
+  #screen-match-results .alt-rail-fade{ background:linear-gradient(90deg,rgba(245,242,232,0) 0%,rgba(245,242,232,.92) 100%); }
 
   /* The two dark surfaces keep their weight but take the editorial green, and
      everything on them is the ground colour at graded opacity. */
-  #screen-match-results .alt-card.is-wildcard, #screen-home-results .alt-card.is-wildcard, #screen-match-results .plot-twist, #screen-match-results .results-centrepiece-panel{ background-image:none; }
-  #screen-match-results .alt-card.is-wildcard, #screen-home-results .alt-card.is-wildcard{ background:var(--pn-wild); }
-  #screen-match-results .alt-card.is-wildcard .alt-name, #screen-home-results .alt-card.is-wildcard .alt-name, #screen-match-results .alt-wild-fact, #screen-match-results .plot-twist-idea{ color:var(--pn-on-dark); }
-  #screen-match-results .alt-card.is-wildcard .alt-why, #screen-home-results .alt-card.is-wildcard .alt-why, #screen-match-results .plot-twist-intro, #screen-match-results .results-centrepiece-intro{ color:rgba(245,242,232,.86); }
+  #screen-match-results .alt-card.is-wildcard, #screen-match-results .plot-twist, #screen-match-results .results-centrepiece-panel{ background-image:none; }
+  #screen-match-results .alt-card.is-wildcard{ background:var(--pn-wild); }
+  #screen-match-results .alt-card.is-wildcard .alt-name, #screen-match-results .alt-wild-fact, #screen-match-results .plot-twist-idea{ color:var(--pn-on-dark); }
+  #screen-match-results .alt-card.is-wildcard .alt-why, #screen-match-results .plot-twist-intro, #screen-match-results .results-centrepiece-intro{ color:rgba(245,242,232,.86); }
   /* ISSUE 007 — the secondary tone is raised from .70 to .80 because the
      ground beneath it is lighter. Measured: .70 on --pn-wild is 3.4:1,
      which fails AA; .80 is 5.1:1, which passes. The Plot Twist selectors
      in this same rule sit on their own darker ground and are unaffected by
      the change in either direction. */
-  #screen-match-results .alt-card.is-wildcard .alt-meta, #screen-home-results .alt-card.is-wildcard .alt-meta, #screen-match-results .pt-why, #screen-match-results .plot-twist.wildcard .plot-twist-observation{ color:rgba(245,242,232,.80); }
+  #screen-match-results .alt-card.is-wildcard .alt-meta, #screen-match-results .pt-why, #screen-match-results .plot-twist.wildcard .plot-twist-observation{ color:rgba(245,242,232,.80); }
   #screen-match-results .alt-wild-eyebrow, #screen-match-results .alt-wild-fact-cap, #screen-match-results .alt-wild-note, #screen-match-results .plot-twist-footnote{ color:rgba(245,242,232,.58); }
-  #screen-match-results .match-next-step-saved, #screen-home-results .match-next-step-saved, #screen-match-results .plot-twist-footnote, #screen-match-results .pt-explore, #screen-match-results .results-centrepiece-panel, #screen-match-results .results-centrepiece-panel .season-tab{ border-color:rgba(245,242,232,.20); }
+  #screen-match-results .match-next-step-saved, #screen-match-results .plot-twist-footnote, #screen-match-results .pt-explore, #screen-match-results .results-centrepiece-panel, #screen-match-results .results-centrepiece-panel .season-tab{ border-color:rgba(245,242,232,.20); }
   #screen-match-results .plot-twist.wildcard .plot-twist-observation{ color:var(--pn-body); }
 
   /* ======================================================================
@@ -6664,7 +6660,7 @@
      gradient is gone, so the indent is only a misalignment. Vertical padding
      was 48.96 / 40.32 — clamp output — and is now on the grid. */
   #screen-match-results .results-hero-inner,
-  #screen-match-results .results-hero-inner.is-fieldonly, #screen-home-results .results-hero-inner.is-fieldonly{
+  #screen-match-results .results-hero-inner.is-fieldonly{
     padding-left:0; padding-right:0; padding-top:40px; padding-bottom:40px;
   }
 
@@ -6681,14 +6677,14 @@
      are still the quietest type in the section. */
   #screen-match-results .aa-mast-l{ font-size:var(--pn-w-caption); letter-spacing:.26em; font-weight:600; }
   #screen-match-results .aa-mast-r{ font-size:var(--pn-w-caption); letter-spacing:.10em; color:var(--pn-stone); }
-  #screen-match-results .aa-notes, #screen-home-results .aa-notes{ font-size:var(--pn-w-caption); line-height:1.65; color:var(--pn-stone); }
+  #screen-match-results .aa-notes{ font-size:var(--pn-w-caption); line-height:1.65; color:var(--pn-stone); }
   #screen-match-results .aa-notes sup,
   #screen-match-results .aa-sup{ color:var(--pn-stone); }
 
   /* Flat means flat: no texture, no inset highlight. */
-  #screen-match-results .results-hero-inner::before, #screen-home-results .results-hero-inner::before{ content:none; background-image:none; }
+  #screen-match-results .results-hero-inner::before{ content:none; background-image:none; }
   #screen-match-results .results-hero-inner,
-  #screen-match-results .results-hero-inner.is-fieldonly, #screen-home-results .results-hero-inner.is-fieldonly{ box-shadow:none; }
+  #screen-match-results .results-hero-inner.is-fieldonly{ box-shadow:none; }
 
   /* One page, one alignment. Everything else on Results is left-aligned. */
   #screen-match-results .match-bring-your-own,
@@ -6714,13 +6710,12 @@
   /* The hero no longer needs to bleed past the gutter: with one ground there
      is nothing on the other side of the edge to reach. */
   @media (max-width:760px){
-    #screen-match-results .results-hero-inner, #screen-home-results .results-hero-inner{ margin-left:0; margin-right:0; }
+    #screen-match-results .results-hero-inner{ margin-left:0; margin-right:0; }
   }
 
   /* RD-2c — one ground. The screen painted its own translucent near-ivory,
      which is what made the hero panel look like a different surface. */
-  #screen-match-results,
-  #screen-home-results{ background:var(--pn-ground); }
+  #screen-match-results{ background:var(--pn-ground); }
 
   /* ======================================================================
      RD-3 · ONE VERTICAL RHYTHM.
@@ -6773,13 +6768,13 @@
      floor returns to this file's own original 340px, and the one value
      that lifts the Plot Twist lens above its neighbours is trimmed
      below. Delta after: 78px. */
-  #screen-match-results .alt-lens, #screen-home-results .alt-lens{ min-height:340px; }
+  #screen-match-results .alt-lens{ min-height:340px; }
   #screen-match-results #matchAlternatives{ align-items:flex-start; }
   /* The lens rail's copy of the observation photograph only. Plot Twist's
      selection, its observation and its product are untouched — this is
      how tall its picture draws inside a 340px-floor rail. */
-  #screen-match-results .alt-lens.is-twist .alt-lens-shot, #screen-home-results .alt-lens.is-twist .alt-lens-shot{ height:120px; }
-  #screen-match-results .alt-lens .alt-lens-state, #screen-home-results .alt-lens .alt-lens-state{ margin-top:auto; }
+  #screen-match-results .alt-lens.is-twist .alt-lens-shot{ height:120px; }
+  #screen-match-results .alt-lens .alt-lens-state{ margin-top:auto; }
 
   /* ISSUE 007 — THE LOWER JOURNEY BREATHES AT 64, NOT 96.
 
@@ -6797,7 +6792,16 @@
      options" sits with what it belongs to. */
   #screen-match-results #altRailWrap{ margin-top:0; margin-bottom:var(--pn-space-xl); }
   #screen-match-results #yourProperty{ margin-top:0; margin-bottom:var(--pn-space-section); }
-  #screen-match-results .byd, #screen-home-results .byd{ margin-top:var(--pn-space-section); }
+  #screen-match-results .byd{ margin-top:var(--pn-space-section); }
+  /* Property fit sits in the Atlas Assessment position and keeps the same
+     top-level rhythm as every other section on the page. */
+  #screen-match-results #hmrPropertyFit{ margin:0 0 var(--pn-space-2xl); }
+  #screen-match-results #hmrPropertyFit .hm-sect{ margin:0 0 var(--pn-space-lg); }
+  #screen-match-results #hmrPropertyFit #hmrFitVerdict{ margin:0 0 var(--pn-space-md); }
+  /* P3 — the property check reads as supporting evidence, not a chapter:
+     one summary line closed, the governed detail one click inside it. */
+  #screen-match-results #hmrPropertyCheck .hm-check-body{ padding:4px 0 22px; }
+  #screen-match-results #hmrPropertyCheck .hm-sect:last-child{ margin-bottom:0; }
 
   /* RA-1 — the three parts of Atlas Assessment are subsections, not sections.
      They sit one `xl` step apart, which keeps them clearly inside the same
@@ -6851,7 +6855,7 @@
      state keeps every other cue it had: its muted type, its hairline and its
      own hover. Only the fill changes, to the one its neighbours use. */
   #screen-match-results .results-gallery .alt-card.alt-lens.is-not-yet,
-  #screen-match-results .results-gallery .alt-card.alt-lens.is-not-applicable, #screen-home-results .results-gallery .alt-card.alt-lens.is-not-applicable{
+  #screen-match-results .results-gallery .alt-card.alt-lens.is-not-applicable{
     background:var(--pn-surface); background-image:none;
   }
 
@@ -7061,7 +7065,7 @@
 
   /* Shadows are not in the palette. The one exception is the popover, which
      genuinely floats above the page and needs to separate from it. */
-  #screen-match-results .tp-pillar, #screen-match-results .tp-open-panel, #screen-match-results .evid-tile, #screen-match-results .alt-rail-edge, #screen-home-results .alt-rail-edge, #screen-match-results .match-card-save-primary{ box-shadow:none; }
+  #screen-match-results .tp-pillar, #screen-match-results .tp-open-panel, #screen-match-results .evid-tile, #screen-match-results .alt-rail-edge, #screen-match-results .match-card-save-primary{ box-shadow:none; }
   #screen-match-results .match-atlas-popover{ box-shadow:0 24px 64px rgba(36,53,31,.22), 0 3px 12px rgba(36,53,31,.10); }
   #screen-match-results .time-track-progress{ box-shadow:none; }
 
@@ -7077,29 +7081,29 @@
   /* ---- the lens cards stop reading as disabled ------------------------
      Confidence from ink and edge. No fill: the brief said not louder and not
      darker, and RD-2c already removed a second ground from this page. */
-  #screen-match-results .alt-card.alt-lens, #screen-home-results .alt-card.alt-lens{ border:1px solid var(--pn-edge); }
+  #screen-match-results .alt-card.alt-lens{ border:1px solid var(--pn-edge); }
   #screen-match-results .alt-card.alt-lens.is-not-yet,
-  #screen-match-results .alt-card.alt-lens.is-not-applicable, #screen-home-results .alt-card.alt-lens.is-not-applicable{
+  #screen-match-results .alt-card.alt-lens.is-not-applicable{
     /* Was dashed. The dashed border WAS the unresolved device, and it is
        exactly what read as unavailable. Unresolved is said in words. */
     border-style:solid; border-color:var(--pn-edge); background:none; }
-  #screen-match-results .alt-card.alt-lens.is-wildcard, #screen-home-results .alt-card.alt-lens.is-wildcard{ border-color:transparent; }
+  #screen-match-results .alt-card.alt-lens.is-wildcard{ border-color:transparent; }
 
   /* Heading contrast. The statement was --pn-stone on a state card, the tone
      this page uses for small-caps furniture. Voice green on every card now,
      resolved or not. */
-  #screen-match-results .alt-card.alt-lens .alt-lens-say, #screen-home-results .alt-card.alt-lens .alt-lens-say{ color:var(--pn-voice); }
-  #screen-match-results .alt-card.alt-lens.is-wildcard .alt-lens-say, #screen-home-results .alt-card.alt-lens.is-wildcard .alt-lens-say{ color:var(--pn-on-dark); }
+  #screen-match-results .alt-card.alt-lens .alt-lens-say{ color:var(--pn-voice); }
+  #screen-match-results .alt-card.alt-lens.is-wildcard .alt-lens-say{ color:var(--pn-on-dark); }
 
   /* Body contrast. The state note was set in the footnote tone. */
-  #screen-match-results .alt-card.alt-lens .alt-lens-state, #screen-home-results .alt-card.alt-lens .alt-lens-state{ color:var(--pn-body); }
-  #screen-match-results .alt-card.alt-lens .alt-lens-label, #screen-home-results .alt-card.alt-lens .alt-lens-label{ color:var(--pn-stone); }
-  #screen-match-results .alt-card.alt-lens .alt-lens-foot, #screen-home-results .alt-card.alt-lens .alt-lens-foot{ border-top-color:var(--pn-edge); }
-  #screen-match-results .alt-card.alt-lens.is-wildcard .alt-lens-foot, #screen-home-results .alt-card.alt-lens.is-wildcard .alt-lens-foot{
+  #screen-match-results .alt-card.alt-lens .alt-lens-state{ color:var(--pn-body); }
+  #screen-match-results .alt-card.alt-lens .alt-lens-label{ color:var(--pn-stone); }
+  #screen-match-results .alt-card.alt-lens .alt-lens-foot{ border-top-color:var(--pn-edge); }
+  #screen-match-results .alt-card.alt-lens.is-wildcard .alt-lens-foot{
     border-top-color:rgba(245,242,232,.24); }
 
   /* Icon presence. */
-  #screen-match-results .alt-lens-mark, #screen-home-results .alt-lens-mark{
+  #screen-match-results .alt-lens-mark{
     display:inline-block; font-size:15px; line-height:1;
     margin-right:9px; vertical-align:-2px; letter-spacing:0; }
 
@@ -7402,17 +7406,17 @@
 
   /* CP-4 — the compare control on a resolved lens card. Quiet: it is an
      offer, not the card's purpose. The lens statement is still the hero. */
-  #screen-match-results .alt-lens .alt-lens-compare, #screen-home-results .alt-lens .alt-lens-compare{
+  #screen-match-results .alt-lens .alt-lens-compare{
     display:block; margin-top:var(--pn-space-sm);
     padding:0; border:0; background:none; cursor:pointer; text-align:left;
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-caption);
     font-weight:600; letter-spacing:.01em; color:var(--pn-voice);
   }
-  #screen-match-results .alt-lens .alt-lens-compare:hover, #screen-home-results .alt-lens .alt-lens-compare:hover{
+  #screen-match-results .alt-lens .alt-lens-compare:hover{
     text-decoration:underline;
   }
   /* The wildcard sits on the forest ground, so its ink is the light one. */
-  #screen-match-results .alt-lens.is-wildcard .alt-lens-compare, #screen-home-results .alt-lens.is-wildcard .alt-lens-compare{
+  #screen-match-results .alt-lens.is-wildcard .alt-lens-compare{
     color:var(--pn-on-dark);
   }
 
@@ -8068,84 +8072,6 @@
   details.hm-open-ev > summary:hover{ color:var(--ink); }
   details.hm-open-ev > summary:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   details.hm-open-ev .hm-ev{ padding-bottom:4px; }
-
-  /* ============================================================
-     HOME RESULT — the shared premium shell, plus only what the
-     shared vocabulary does not already carry.
-     ============================================================ */
-
-  /* THE VERDICT'S THIRD LINE. The hero carries the verdict (name) and the
-     homeowner-first sentence (editorial); this is the explanation under
-     them. grid-column:1 is required because the is-fieldonly hero body is a
-     two-column grid above 720px and an unplaced child would auto-flow into
-     the right-hand column, which is deliberately air. */
-  #screen-home-results .hm-verdict-detail{
-    font-size:var(--pn-w-body-lg); line-height:1.7; color:var(--pn-body);
-    margin:22px 0 0; max-width:52ch;
-  }
-  #screen-home-results .results-hero-inner.is-fieldonly .hm-verdict-detail{ grid-column:1; }
-
-  /* THE FLAGSHIP BUILDING'S HERO. LEFT identity, RIGHT the evidence —
-     the same column roles the Garden Room hero uses, with the building's
-     established/open pair standing where .hero-trust stands there. */
-  #screen-home-results #hmrHero .alt-lens-label{ display:block; margin:0 0 var(--pn-space-sm); }
-  #screen-home-results .results-hero-inner.is-fieldonly .alt-lens-label,
-  #screen-home-results .results-hero-inner.is-fieldonly .results-hero-budget-note{ grid-column:1; }
-  #screen-home-results .results-hero-inner.is-fieldonly .hm-hero-evidence{
-    grid-column:2; grid-row:1; align-self:start; margin-top:6px;
-  }
-  #screen-home-results .hm-hero-evidence{ margin-top:var(--pn-space-lg); }
-  #screen-home-results .hm-hero-evidence .hm-ev-h{ margin-top:0; }
-
-  /* BUILDINGS WORTH EXPLORING. .alt-rail on Results is a horizontal track
-     sized for three short lens cards; these are two tall evidence cards and
-     belong side by side, then stacked. The gap is the shared spacing token,
-     so the rhythm is the page's, not this block's. */
-  #screen-home-results #dhCands{
-    display:grid; gap:var(--pn-space-md); grid-template-columns:1fr;
-    overflow:visible;
-  }
-  @media (min-width:860px){
-    #screen-home-results #dhCands{ grid-template-columns:1fr 1fr; }
-  }
-  /* The rail's 340px floor exists to level three short cards. These two are
-     content-led and taller than it; the floor would only add air on mobile. */
-  #screen-home-results .alt-lens{ min-height:0; }
-  /* The evidence lists sit inside the card footing, under the hairline the
-     footing already draws. */
-  #screen-home-results .alt-lens-foot .hm-ev-h{ margin-top:16px; }
-
-  /* THE CARRIED-OVER ASSESSMENT COMPONENTS, RESOLVED ONTO THE SHARED SCALE.
-     .hm-finds, .hm-calc, .dh-res and the evidence disclosure are the
-     assessment's own components and are kept — there is no Garden Room
-     equivalent for a three-state finding or for the arithmetic. What changes
-     is that their sizes stop being one-off pixel values and read from the
-     same six-step scale every other result component reads from. */
-  #screen-home-results .hm-sect{ margin:0 0 var(--pn-space-lg); }
-  #screen-home-results .hm-sect > h4{ font-size:var(--pn-w-meta); }
-  #screen-home-results ul.hm-finds li{ font-size:var(--pn-w-body-lg); }
-  #screen-home-results .hm-calc{ font-size:var(--pn-w-body); }
-  #screen-home-results .hm-calm{ font-size:var(--pn-w-body-lg); }
-  #screen-home-results #hmrWhyLede{ margin:0 0 var(--pn-space-md); }
-  #screen-home-results .hm-sources a{ font-size:var(--pn-w-body-sm); min-height:0; padding:3px 0; }
-  #screen-home-results .hm-sources .hm-prov{ font-size:var(--pn-w-body-sm); }
-  #screen-home-results details.hm-evd > summary{ font-size:var(--pn-s-emph); }
-  #screen-home-results .hm-ev li{ font-size:var(--pn-w-body-sm); }
-  #screen-home-results ol.dh-res li{ font-size:var(--pn-w-body-lg); }
-  #screen-home-results ol.dh-res li b{ font-size:var(--pn-s-emph); }
-
-  /* THE VERTICAL RHYTHM. The same 96px between top-level sections the Garden
-     Room result uses, so the two pages breathe identically. */
-  #screen-home-results #hmrHero{ margin:0 0 var(--pn-space-2xl); }
-  #screen-home-results #hmrEvidence,
-  #screen-home-results #dhCandWrap,
-  #screen-home-results #hmrDecide{ margin:0 0 var(--pn-space-2xl); }
-  #screen-home-results #hmrNext{ margin:0 0 var(--pn-space-xl); }
-  #screen-home-results .hmr-actions{
-    display:flex; gap:22px; flex-wrap:wrap; align-items:center;
-    padding-top:var(--pn-space-md); border-top:1px solid var(--pn-hair);
-  }
-  #screen-home-results .hmr-actions .plot-try-another{ margin-top:0; }
 </style>
 </head>
 <body>
@@ -8623,7 +8549,7 @@
         </div>
 
         <div class="dh-nav">
-          <button class="dh-btn" type="button" data-dh-go="checking">Ask Atlas</button>
+          <button class="dh-btn" type="button" data-dh-go="checking">Check my property</button>
           <button class="dh-btn dh-ghost" type="button" data-dh-go="property">Back</button>
         </div>
         <p class="dh-status" id="dhQStatus" role="status" aria-live="polite"></p>
@@ -8642,89 +8568,6 @@
   </div>
 </section>
 
-<!-- ============== SCREEN 5b: HOME RESULT (LAUNCH V3) ==============
-     THE SHARED PREMIUM RESULT SHELL, SECOND HOST.
-
-     Same .match-results-panel measure, same .results-v2 alignment, same
-     palette remap, same type scale, same 96px section rhythm, same
-     page-scroll model. What differs is the SUBJECT: the Garden Room result
-     leads on a ranked product, this one leads on a verdict about the
-     property. Nothing on this page ranks, recommends or qualifies. -->
-<section id="screen-home-results" class="screen is-hidden is-overlay" aria-labelledby="hmrHeadline">
-  <div class="match-results-panel interactive results-v2" id="homeResultsPanel">
-    <div id="homeResultsBody">
-
-      <!-- THE PROPERTY VERDICT sits where the Garden Room result puts its
-           intro: eyebrow, headline, one line. The premium hero position
-           below belongs to a BUILDING, exactly as it does on Garden Room. -->
-      <div class="results-intro">
-        <p class="results-eyebrow">Atlas assessment &middot; Build a home in your garden</p>
-        <h2 class="results-headline" id="hmrHeadline">Atlas has read your property.</h2>
-        <p class="results-scope" id="hmrVerdictLine"></p>
-      </div>
-
-      <!-- THE FLAGSHIP BUILDING. Hidden unless the governed evidence
-           distinguishes exactly one candidate — see pnCandidateSplit().
-           Built by renderHomeFlagship(), which uses the shared hero
-           classes and does NOT call buildResultsHero(): that builder is
-           tied to a ranked product, its ctx and its Save actions. -->
-      <div class="results-hero" id="hmrHero" hidden></div>
-
-      <section class="chapter" id="hmrEvidence">
-        <h3 class="sec-title">Why Atlas reached this</h3>
-        <p class="hm-calm" id="hmrWhyLede"></p>
-        <ul class="hm-finds" id="dhWhy"></ul>
-        <details class="hm-evd" id="dhCalcWrap">
-          <summary>What Atlas calculated</summary>
-          <div class="hm-calc" id="dhCalc"></div>
-        </details>
-      </section>
-
-      <!-- BUILDINGS WORTH EXPLORING. Not recommendations, not best matches,
-           not residentially qualified, not compliant homes. The governed
-           filter behind them is unchanged. -->
-      <section class="chapter" id="dhCandWrap">
-        <h3 class="results-gallery-heading" id="dhCandHeading">Buildings worth exploring</h3>
-        <p class="alt-rail-note" id="dhCandIntro"></p>
-        <div class="results-gallery alt-rail" id="dhCands"></div>
-      </section>
-
-      <section class="byd" id="hmrDecide" aria-labelledby="hmrDecideLabel">
-        <div class="byd-label" id="hmrDecideLabel">Before you decide</div>
-        <p class="byd-lede">What still needs checking.</p>
-        <ul class="hm-finds" id="dhCheck"></ul>
-
-        <div class="hm-sect" style="margin-top:26px">
-          <h4>What this does not confirm</h4>
-          <p class="hm-calm"><b>This is an early property check, not planning permission or
-            professional confirmation.</b> Atlas has worked from your measurements against
-            published conditions. Your local authority decides whether a build qualifies, and
-            an architect or engineer needs to see the site before anything is committed.</p>
-        </div>
-
-        <div class="hm-sect hm-sources">
-          <h4>Where this comes from</h4>
-          <p class="hm-prov">Every condition above is taken from published regulation. Atlas holds
-            no opinion of its own here, and nothing on this page can be paid for.</p>
-          <a href="https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-no-3-regulations-2026-si-340-of-2026/" target="_blank" rel="noopener">S.I. 340 of 2026 &mdash; Planning and Development (Exempted Development) Regulations &middot; gov.ie</a>
-          <a href="https://assets.gov.ie/static/documents/e39ca58b/Auxiliary_Dwelling_Information_Note.pdf" target="_blank" rel="noopener">Auxiliary Dwelling Information Note &middot; gov.ie</a>
-          <a href="https://www.citizensinformation.ie/en/housing/building-or-altering-a-home/protected-structures/" target="_blank" rel="noopener">Protected structures &middot; Citizens Information</a>
-        </div>
-      </section>
-
-      <section class="chapter" id="hmrNext">
-        <h3 class="sec-title">What to establish next</h3>
-        <p class="hm-calm" id="dhNextSub"></p>
-        <ol class="dh-res" id="dhNextList"></ol>
-      </section>
-
-      <div class="hmr-actions">
-        <button type="button" class="btn-muted-text plot-try-another" data-dh-go="questions">&larr; Change an answer</button>
-        <button type="button" class="btn-muted-text plot-try-another" data-dh-go="eircode">Start again</button>
-      </div>
-
-    </div>
-  </div>
 </section>
 
 <!-- ============== SCREEN 6: MATCH RESULTS (LAUNCH v1.2) ============== -->
@@ -8984,7 +8827,51 @@
          chosen, who makes it, and what is still worth asking. "Why this one?"
          and "Still have a question?" were separate top-level sections making
          the same case in parallel; they are subsections here now. -->
-    <section class="supplier" id="aboutSupplier" hidden aria-labelledby="supplierTitle">
+    <!-- PROPERTY FIT — residential only, hidden for Garden Room. The first
+         beat of the Atlas Assessment: whether the property qualifies at all,
+         the arithmetic behind it, and what is still open. -->
+    <section class="chapter" id="hmrPropertyFit" hidden aria-label="Your property check">
+      <p class="hm-calm" id="hmrFitVerdict"></p>
+      <!-- P3 — YOUR PROPERTY CHECK. One closed disclosure holding the
+           governed residential evidence. Every string inside is carried
+           across unchanged; only the container is new. The verdict sentence
+           stays OUTSIDE it, beside the flagship, because that is the concise
+           reason the result fits this property. -->
+      <details class="hm-evd" id="hmrPropertyCheck">
+        <summary>Your property check</summary>
+        <div class="hm-check-body">
+          <div class="hm-sect">
+            <h4>Why Atlas reached this</h4>
+            <ul class="hm-finds" id="dhWhy"></ul>
+          </div>
+          <div class="hm-sect">
+            <h4>What Atlas calculated</h4>
+            <div class="hm-calc" id="dhCalc"></div>
+          </div>
+          <div class="hm-sect">
+            <h4>What still needs checking</h4>
+            <ul class="hm-finds" id="dhCheck"></ul>
+          </div>
+          <div class="hm-sect">
+            <h4>What this does not confirm</h4>
+            <p class="hm-calm"><b>This is an early property check, not planning permission or
+              professional confirmation.</b> Atlas has worked from your measurements against
+              published conditions. Your local authority decides whether a build qualifies, and
+              an architect or engineer needs to see the site before anything is committed.</p>
+          </div>
+          <div class="hm-sect hm-sources">
+            <h4>Where this comes from</h4>
+            <p class="hm-prov">Every condition above is taken from published regulation. Atlas holds
+              no opinion of its own here, and nothing on this page can be paid for.</p>
+            <a href="https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-no-3-regulations-2026-si-340-of-2026/" target="_blank" rel="noopener">S.I. 340 of 2026 &mdash; Planning and Development (Exempted Development) Regulations &middot; gov.ie</a>
+            <a href="https://assets.gov.ie/static/documents/e39ca58b/Auxiliary_Dwelling_Information_Note.pdf" target="_blank" rel="noopener">Auxiliary Dwelling Information Note &middot; gov.ie</a>
+            <a href="https://www.citizensinformation.ie/en/housing/building-or-altering-a-home/protected-structures/" target="_blank" rel="noopener">Protected structures &middot; Citizens Information</a>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="supplier" id="aboutSupplier" hidden>
       <h3 class="sec-title" id="supplierTitle">About the supplier</h3>
 
     <!-- AR-1 — "What Atlas found" is gone. RA-3 reduced it to budget fit and
@@ -8996,6 +8883,19 @@
 
       <div class="supplier-row" id="supplierRow"></div>
       <p class="supplier-foot" id="supplierFoot"></p>
+
+      <!-- P4 — the flagship building's own governed evidence belongs with
+           the assessment OF THAT PRODUCT, not in the property chapter. It
+           uses the evidence and disclosure vocabulary already on this page
+           and is hidden entirely on the Garden Room path. -->
+      <div class="hm-sect" id="hmrLeadEvidence" hidden>
+        <h4>What Atlas has established about this building</h4>
+        <ul class="hm-ev" id="hmrLeadKnown"></ul>
+        <details class="hm-open-ev" id="hmrLeadOpenWrap">
+          <summary><span id="hmrLeadOpenLabel">What still needs checking</span></summary>
+          <ul class="hm-ev" id="hmrLeadOpen"></ul>
+        </details>
+      </div>
 
     <section class="ask chapter" id="askAtlas" hidden aria-labelledby="askTitle">
       <!-- RESULTS-UX-005 — the approved wording. "Ask Atlas" had been said
@@ -9139,7 +9039,11 @@
          form below. Heading, note and rail are hidden together, so there is
          never an empty shell and never a gap where a section is not. -->
     <div class="results-gallery-heading" id="altResultsHeading" hidden>Other options worth considering</div>
-    <p class="alt-rail-note" id="altResultsNote" hidden>Three alternatives Atlas found in the same search.</p>
+    <!-- P1 — the count is written at render time from what was actually
+         drawn. It said "Three" in markup, which the selector never
+         guaranteed: it CAPS at three. Wrong on HOME today, and wrong on
+         Garden Room whenever fewer than three qualify. -->
+    <p class="alt-rail-note" id="altResultsNote" hidden></p>
     <div class="results-gallery alt-results" id="altResults" hidden></div>
 
     <!-- RESULTS V2 SPRINT 1 — MOVED, NOT REDESIGNED.
@@ -9585,6 +9489,15 @@
       <p class="byd-lede">Three things to know before you decide.</p>
       <div class="byd-points" id="bydPoints"></div>
 
+      <!-- P4 — what to establish next is decision-support, and Before You
+           Decide is where this page does decision-support. One ending, not
+           two. Hidden entirely on the Garden Room path. -->
+      <div class="hm-sect" id="hmrNextSteps" hidden>
+        <h4>What to establish next</h4>
+        <p class="hm-calm" id="dhNextSub"></p>
+        <ol class="dh-res" id="dhNextList"></ol>
+      </div>
+
       <!-- ISSUE 007 FINAL — THE CLOSING BEAT.
 
            The conclusion of the Results journey, and deliberately NOT a
@@ -10001,12 +9914,6 @@
     thingsControls: document.getElementById('thingsControls'),
     matchInputScreen: document.getElementById('screen-match-input'),
     homeJourneyScreen: document.getElementById('screen-home-journey'),
-    /* LAUNCH V3 — the residential result is its own screen on the shared
-       premium shell. It is NOT rendered into the Garden Room DOM: that
-       panel has 28 top-level blocks, 11 of them visible by default, and
-       coupling the two products at the DOM would make every Garden Room
-       change a HOME risk. */
-    homeResultsScreen: document.getElementById('screen-home-results'),
     matchResultsScreen: document.getElementById('screen-match-results'),
     // SPRINT 2 — Atlas Search interstitial.
     atlasSearchScreen: document.getElementById('screen-atlas-search'),
@@ -10511,7 +10418,7 @@
   // SPRINT 1C — CONTROLLED OPENING: els.plotScreen (#screen-plot) and
   // els.discoveryRevealScreen (#screen-discovery-reveal) are both retired
   // — removed from this list along with the rest of their teardown.
-  const ALL_SCREENS = [els.entry, els.reveal, els.matchInputScreen, els.homeJourneyScreen, els.homeResultsScreen, els.atlasSearchScreen, els.matchResultsScreen, els.myPlotScreen, els.productDetailScreen, els.plotTopicScreen, els.compareScreen, els.resolveScreen, els.progressScreen].filter(Boolean);
+  const ALL_SCREENS = [els.entry, els.reveal, els.matchInputScreen, els.homeJourneyScreen, els.atlasSearchScreen, els.matchResultsScreen, els.myPlotScreen, els.productDetailScreen, els.plotTopicScreen, els.compareScreen, els.resolveScreen, els.progressScreen].filter(Boolean);
   // STAGE 0 — ACCESSIBILITY: overlay focus management. Before this, opening a
   // screen left focus on the control behind it, so a keyboard or screen-reader
   // user stayed in the previous screen while the new one covered it. showScreen()
@@ -10539,9 +10446,7 @@
   function syncFallbackNoteVisibility(el){
     const note = document.getElementById('fallbackNote');
     if (!note) return;
-    /* LAUNCH V3 — both result screens. A fixed banner over the HOME result
-       would be the same defect it was over the Garden Room result. */
-    const onResults = !!(el && (el.id === 'screen-match-results' || el.id === 'screen-home-results'));
+    const onResults = !!(el && el.id === 'screen-match-results');
     note.classList.toggle('is-suppressed', onResults);
     const panel = document.getElementById('matchResultsPanel');
     if (panel && onResults) panel.classList.remove('has-fallback-note');
@@ -10617,11 +10522,11 @@
     // point every screen transition already passes through. See the
     // "html.results-scroll-mode" CSS rule for what that class actually
     // changes; nothing here touches any other screen's behaviour.
-    /* LAUNCH V3 — the HOME result uses the SAME page-scroll model. The HOME
-       ASSESSMENT screen keeps its own panel-scroll model; the two are never
-       mixed on one screen because they are two screens. */
+    /* LAUNCH V3 — ONE result screen again, and it keeps the page-scroll
+       model. The HOME ASSESSMENT screen keeps its own panel-scroll model;
+       the two are never mixed because they are different screens. */
     document.documentElement.classList.toggle('results-scroll-mode',
-      el === els.matchResultsScreen || el === els.homeResultsScreen);
+      el === els.matchResultsScreen);
     // RESULTS R1.2: restore the single Cesium viewer to its normal full-
     // viewport home the instant Results is left, so every other screen
     // sees exactly the same full-bleed 3D view it always has — see
@@ -10640,10 +10545,65 @@
      A function declaration, so it is hoisted and reachable from here. */
   window.__PN_ATLAS_LOADER__ = playAtlasSearchInterstitial;
 
+  /* LAUNCH V3 — THE RESIDENTIAL ENTRY INTO THE PRODUCTION RENDERER.
+     The HOME journey is a separate module and cannot see renderMatchResults
+     or els. This is the whole interface: a results array of the shape the
+     ranking already produces, a use, and the property-fit payload. No
+     ranking function is exposed and none is called. */
+  const PN_PRODUCT_SECTIONS = ['matchPrimary','aboutSupplier','matchAlternativesHeading',
+    'altRailNote','altRailWrap','altResultsHeading','altResultsNote','altResults',
+    'resultsDecide','resultsSunlightCentrepiece','yourProperty',
+    /* P4 — both relocated blocks live inside sections above, but naming
+       them keeps the no-buildings branch explicit rather than incidental. */
+    'hmrLeadEvidence','hmrNextSteps'];
+
+  window.__PN_RENDER_RESIDENTIAL__ = function (results, fit) {
+    const fitEl = document.getElementById('hmrPropertyFit');
+    if (fitEl && fit) {
+      fitEl.hidden = false;
+      const set = (id, html) => { const e = document.getElementById(id); if (e) e.innerHTML = html; };
+      const v = document.getElementById('hmrFitVerdict');
+      if (v) v.textContent = fit.verdict;
+      set('dhWhy', fit.whyHtml); set('dhCalc', fit.calcHtml);
+      set('dhCheck', fit.checkHtml); set('dhNextList', fit.nextHtml);
+      /* The lead building's governed pair, from the ctx the renderer is
+         about to draw — one source, so the hero and the evidence cannot
+         disagree. Hidden entirely when there is no lead. */
+      const lead = results && results.length ? results[0] : null;
+      const lk = (lead && lead.ctx && lead.ctx.residentialKnown) || [];
+      const lo = (lead && lead.ctx && lead.ctx.residentialOpen) || [];
+      const nextWrap = document.getElementById('hmrNextSteps');
+      if (nextWrap) nextWrap.hidden = !document.querySelectorAll('#dhNextList li').length;
+      const leadWrap = document.getElementById('hmrLeadEvidence');
+      if (leadWrap) {
+        leadWrap.hidden = !lk.length;
+        const li = (cls, s) => '<li class="' + cls + '">' +
+          String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) + '</li>';
+        set('hmrLeadKnown', lk.map(k => li('hm-known', k)).join(''));
+        set('hmrLeadOpen', lo.map(o => li('hm-open', o)).join(''));
+        const lbl = document.getElementById('hmrLeadOpenLabel');
+        if (lbl) lbl.textContent = 'What still needs checking (' + lo.length + ')';
+        const ow = document.getElementById('hmrLeadOpenWrap');
+        if (ow) ow.hidden = !lo.length;
+      }
+    }
+    if (results && results.length) {
+      renderMatchResults(results, 'residential');
+    } else {
+      /* No building can be put forward — the garden is the limit, or a
+         condition is in the way. The property assessment still stands; the
+         product sections simply have nothing to say and say nothing. */
+      PN_PRODUCT_SECTIONS.forEach(function (id) {
+        const e = document.getElementById(id); if (e) e.hidden = true;
+      });
+    }
+    showScreen(els.matchResultsScreen);
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  };
+
   window.__PN_GOTO__ = function (key) {
     const dest = { entry: els.entry,
-                   homeJourney: els.homeJourneyScreen,
-                   homeResults: els.homeResultsScreen }[key];
+                   homeJourney: els.homeJourneyScreen }[key];
     if (dest) showScreen(dest);
   };
 
@@ -17915,6 +17875,10 @@
   // on the engine's own appearanceBand(), the same truth source Results
   // already uses for the ranking trace — no new judgement is invented here.
   function buildCardEditorialSentence(ctx, product){
+    /* A result that arrives with its own governed reason states it. Every
+       Garden Room ctx is built without this field, so the sentence below
+       is reached exactly as before on that path. */
+    if (ctx && ctx.leadReason) return ctx.leadReason;
     const dp = ctx.decisionProfile || {};
     const pref = dp.appearancePreference;
     if (pref && APPEARANCE_FEEL[pref]) {
@@ -18166,6 +18130,18 @@
       budgetNote.textContent = 'Above the budget you selected, but included as the closest genuine match in this direction.';
       body.appendChild(budgetNote);
     }
+    /* IRISH AVAILABILITY, STATED POSITIVELY — residential only.
+       irishRouteNoteText() below returns a CAVEAT and only when there is no
+       published Irish route, so it is silent for a product that has one.
+       On this path the fact is load-bearing: it is why the building is a
+       candidate at all. Same element, same class, no new component, and
+       nothing is claimed beyond what pnIrishConfirmed() established. */
+    if (ctx.irishAvailabilityNote) {
+      const availNote = document.createElement('div');
+      availNote.className = 'results-hero-budget-note';
+      availNote.textContent = ctx.irishAvailabilityNote;
+      body.appendChild(availNote);
+    }
 
     // RESULTS v4.1 — PRODUCT CARD (LOCKED): the one editorial sentence,
     // placed directly beneath the metadata (brief/name/org/price/area/
@@ -18220,7 +18196,10 @@
        It is not repaired here because Compare is being rebuilt as its own
        screen and there is nowhere honest to point yet. It returns as a real
        route when that screen lands. */
-    [['Ask Atlas', 'askAtlas']].forEach(function(pair, i){
+    /* P1 — the destination is unchanged: it still scrolls to #askAtlas,
+       the working "Still something you want to know?" disclosure. Only the
+       name changes, to the one the homeowner is actually talking to. */
+    [['Ask PlotNua', 'askAtlas']].forEach(function(pair, i){
       if (i) {
         const dot = document.createElement('span');
         dot.className = 'hero-secondary-dot'; dot.setAttribute('aria-hidden','true');
@@ -23941,6 +23920,18 @@
         return;
       }
 
+      /* BEST EUROPEAN — the SAME lens, the SAME state card, a sentence
+         that is true on this path. Every Garden Room branch below says
+         "at this budget" and "Atlas ranked", neither of which happened
+         here: the residential set is a governed evidence filter, not a
+         budget ranking. The lens resolves to not-yet, which is a statement
+         about Atlas's evidence and not about the world. */
+      if (lens.id === 'european' && pnResultUse === 'residential') {
+        out.push(raStateCard(lens, 'not-yet',
+          'Atlas has not yet established a building sold in Ireland as living '
+          + 'accommodation that is built outside Ireland.'));
+        return;
+      }
       if (lens.id === 'european') {
         if (euro) { out.push(raProductCard(lens, euro)); return; }
 
@@ -24016,6 +24007,17 @@
         return;
       }
 
+      /* WILDCARD — the SAME lens and the SAME state card. The Garden Room
+         wildcard is chosen by a selection this path does not run, and its
+         not-applicable sentence ("everything at this budget...") would be
+         untrue here. Not-yet, because Atlas has not established one — not
+         not-applicable, which would claim none exists. */
+      if (lens.id === 'wildcard' && pnResultUse === 'residential') {
+        out.push(raStateCard(lens, 'not-yet',
+          'Atlas has not yet established a wildcard among the buildings it '
+          + 'can put forward for living in.'));
+        return;
+      }
       if (lens.id === 'wildcard') {
         if (!wildEl) {
           out.push(raStateCard(lens, 'not-applicable',
@@ -24114,6 +24116,23 @@
     });
 
     out.forEach(function(c){ rail.appendChild(c); });
+    /* P2 — THE RAIL IS WORTH SHOWING WHEN AT LEAST ONE LENS RESOLVES.
+
+       A state card is an honest answer, but four of them in a row answer a
+       question the homeowner did not ask and read as a catalogue audit.
+       The return value drives the section's visibility, so counting
+       RESOLVED lenses rather than total cards is the whole change.
+
+       Garden Room resolves three today (Local, Wildcard, Plot Twist) and
+       is unaffected, including its honest Best European not-yet, which
+       still renders beside them. HOME resolves none and the section hides
+       — and returns on its own the moment one genuinely resolves. No lens
+       is removed, suppressed or invented. */
+    const resolved = out.filter(function(c){
+      return !(c.classList.contains('is-not-yet') ||
+               c.classList.contains('is-not-applicable'));
+    }).length;
+    if (!resolved) { rail.innerHTML = ''; return 0; }
     return out.length;
   }
 
@@ -24623,9 +24642,22 @@
     /* The governed selector still chooses the dimensions and writes the
        reasons; the preference only decides WHICH qualifying row fills a slot
        the selector has already awarded. */
-    const picks = (primary && candidates.length)
-      ? altPricedPreference(candidates, primaryResult,
-          selectReasonedAlternatives(candidates, primaryResult, 3)) : [];
+    /* The Garden Room selection compares score bands and prefers priced
+       rows. Neither exists on the residential path, where the set is a
+       governed evidence filter and arrives in pool order carrying its own
+       reason and its own caveat. */
+    const picks = !(primary && candidates.length) ? []
+      : (pnResultUse === 'residential')
+        ? candidates.map(function (r) {
+            return Object.assign({}, r, { __alt: {
+              dimension: 'residential-evidence',
+              reason: (r.ctx && r.ctx.leadReason) || '',
+              tradeOff: (r.ctx && r.ctx.residentialTradeOff) || '',
+              primaryName: primary && primary.name
+            } });
+          })
+        : altPricedPreference(candidates, primaryResult,
+            selectReasonedAlternatives(candidates, primaryResult, 3));
 
     const budgetKey = decisionProfile && decisionProfile.searchConstraints
       ? decisionProfile.searchConstraints.budget : null;
@@ -24633,12 +24665,18 @@
 
     picks.forEach(function(row){
       const alt = row.__alt || {};
+      /* altReasonForDisplay/altTradeOffForDisplay normalise a RANKING
+         comparison ("cheaper than", "bigger than"). The residential rows
+         already carry governed sentences, so they pass through as written
+         rather than being run through a comparison that did not happen. */
+      const resid = pnResultUse === 'residential';
       host.appendChild(buildResultsGalleryCard(
         Object.assign({}, row, {
           ctx: altResultsCtx(row, budgetLabel),
-          altReason: altReasonForDisplay(row, primaryResult),
-          altTradeOff: altTradeOffRepeatsPrice(row.product, alt.tradeOff)
-            ? '' : altTradeOffForDisplay(row, primaryResult),
+          altReason: resid ? (alt.reason || '') : altReasonForDisplay(row, primaryResult),
+          altTradeOff: resid ? (alt.tradeOff || '')
+            : (altTradeOffRepeatsPrice(row.product, alt.tradeOff)
+               ? '' : altTradeOffForDisplay(row, primaryResult)),
         }), primaryResult));
     });
 
@@ -24658,7 +24696,15 @@
     if (n && bydByoNode()) host.appendChild(bydByoNode());
     host.hidden = n === 0;
     if (head) head.hidden = n === 0;
-    if (note) note.hidden = n === 0;
+    if (note) {
+      /* P1 — say the number that is on the page. `n` is measured above,
+         before the bring-your-own block is attached, so it is exactly the
+         count of alternatives and nothing else. */
+      const word = ['No', 'One', 'Two', 'Three'][n] || String(n);
+      note.textContent = word + ' alternative' + (n === 1 ? '' : 's')
+        + ' Atlas found in the same search.';
+      note.hidden = n === 0;
+    }
     return n;
   }
 
@@ -25188,7 +25234,17 @@
     });
   }
 
-  function renderMatchResults(results){
+  /* LAUNCH V3 — ONE RESULTS RENDERER.
+     `use` is the only addition to the signature. The Garden Room call site
+     passes nothing, so it is undefined there and every gate below falls
+     through to the shipped code. It is held on a module variable as well,
+     because renderLensRail() is called from two places inside this
+     function and threading a fifth argument through both would be a
+     larger edit than the one fact it carries. */
+  let pnResultUse = 'garden-room';
+  function renderMatchResults(results, use){
+    pnResultUse = (use === 'residential') ? 'residential' : 'garden-room';
+    const pnResidential = pnResultUse === 'residential';
     els.matchPrimary.innerHTML = '';
     els.matchAlternatives.innerHTML = '';
 
@@ -25222,7 +25278,11 @@
     // results computation regardless of primaryResult (it only reads
     // matchState, not the selected product) — hidden entirely when no
     // genuine answers exist yet.
-    if (els.resultsBrief && els.resultsBriefList) {
+    /* GATE 1 — the brief is the Garden Room questionnaire's own summary and
+       reads matchState. Residential answers a different set of questions,
+       so the section is hidden rather than filled with the wrong ones. */
+    if (pnResidential && els.resultsBrief) els.resultsBrief.hidden = true;
+    if (!pnResidential && els.resultsBrief && els.resultsBriefList) {
       const briefBullets = buildResultsBriefBullets();
       els.resultsBriefList.innerHTML = '';
       briefBullets.forEach(t => {
@@ -25234,7 +25294,11 @@
     }
 
     // PB-022: the choices strip is retired; the match breakdown remains.
-    renderProfileMatch(primaryResult);
+    /* GATE 2 — the profile match compares the recommendation against the
+       Garden Room decision profile. There is no residential decision
+       profile, so the section is hidden rather than shown empty. */
+    if (pnResidential) { if (els.resultsProfileMatch) els.resultsProfileMatch.hidden = true; }
+    else renderProfileMatch(primaryResult);
     if (primaryResult) {
       // SCENE 1
       els.matchPrimary.appendChild(buildResultsHero(primaryResult));
@@ -25309,7 +25373,18 @@
     // buildResultsGalleryCard is left defined and unused, per this file's
     // leave-defined convention, so the seven-card presentation is one line
     // away if it is ever wanted back.
-    const reasoned = selectReasonedAlternatives(alternativeResults, primaryResult, 3);
+    /* The presentation is shared; the selection is not, because the Garden
+       Room selection is a ranking comparison. See the builder note. */
+    const reasoned = pnResidential
+      ? (alternativeResults || []).map(function (r) {
+          return Object.assign({}, r, { __alt: {
+            dimension: 'residential-evidence',
+            reason: (r.ctx && r.ctx.leadReason) || '',
+            tradeOff: (r.ctx && r.ctx.residentialTradeOff) || null,
+            primaryName: primaryResult && primaryResult.product && primaryResult.product.name
+          } });
+        })
+      : selectReasonedAlternatives(alternativeResults, primaryResult, 3);
     /* RESULTS-002 — recorded on the ledger so the narrowing sentence can quote
        the number actually on screen rather than assume it. */
     if (recommendationLedger) recommendationLedger.shownAlternatives = reasoned.length;
@@ -25341,7 +25416,9 @@
     // SPRINT 2 — the origin perspective renders immediately before Plot
     // Twist, matching DOM order, so the page reads primary -> alternatives
     // -> where it is made -> the twist.
-    const corroborationCount = renderCorroborationBand(
+    /* GATE 3 — the corroboration band narrates the Garden Room origin
+       preference. Residential never asked it. */
+    const corroborationCount = pnResidential ? 0 : renderCorroborationBand(
       lastOriginViewState, primaryResult, lastDecisionProfile);
     if (typeof LEDGER_REVIEW_MODE !== 'undefined' && LEDGER_REVIEW_MODE) {
       window.__pnOriginView = lastOriginViewState ? lastOriginViewState.state : null;
@@ -25360,7 +25437,11 @@
     if (primaryResult && primaryResult.product) shownIds[primaryResult.product.id] = 1;
     (reasoned || []).forEach(function(r){ if (r && r.product) shownIds[r.product.id] = 1; });
     renderBeforeYouCommit(primaryResult);
-    const twistShown = renderPlotTwist(primaryResult, shownIds);
+    /* GATE 4 — renderPlotTwist() mounts the Garden Room wildcard element
+       into the rail and reads the recommendation ledger. Skipping it for
+       residential leaves wildEl null, which is precisely the condition the
+       wildcard lens already handles with a state card. Nothing is faked. */
+    const twistShown = pnResidential ? false : renderPlotTwist(primaryResult, shownIds);
 
     /* RA-5 — THE LENS PASS. It has to run here, not at the rail-population
        line above, because the wildcard is mounted by renderPlotTwist() one
@@ -31216,7 +31297,10 @@
          call site overwrites it on every render, so nothing changed on screen.
          Ask Atlas already offers to "compare their answers with existing Atlas
          evidence" 1,350px earlier; this was the same promise a second time. */
-      els.resultsByoCopy.textContent  = 'Seen another garden room you like? Add it '
+      /* P1 — a shared component may not name one product. "Garden building"
+         is the universe every intended use draws from, so this one string
+         is correct for Room, Home, Studio and Office without a branch. */
+      els.resultsByoCopy.textContent  = 'Seen another garden building you like? Add it '
         + 'here and Atlas will look at it alongside these options.';
     }
   }
@@ -31328,6 +31412,15 @@
   // two visible entry points, per the approved brief's navigation
   // requirement.
   function goBackToLastMatchQuestion(){
+    /* LAUNCH V3 — the answers behind a residential result are the HOME
+       assessment's, not the Garden Room questions'. Same control, same
+       label, the destination that is true for the journey the homeowner
+       actually took. */
+    if (pnResultUse === 'residential') {
+      showScreen(els.homeJourneyScreen);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
     const groups = STEP_FIELD_GROUPS[activeFlow];
     goToMatchStep(groups.length);
     showScreen(els.matchInputScreen);
@@ -32442,23 +32535,57 @@
 
      The three COPY strings are unchanged and are used in their existing
      order: the verdict, the homeowner-first sentence, the explanation. */
-  /* THE PROPERTY VERDICT, in the intro. The three COPY strings are
-     unchanged and keep their order and their meaning: C[0] is the
-     verdict, C[1] the homeowner-first sentence, C[2] the explanation —
-     which now opens 'Why Atlas reached this', where the reasoning is. */
-  function renderHomeVerdict(C){
-    var h = $('hmrHeadline'); if (h) h.textContent = C[0];
-    var line = $('hmrVerdictLine'); if (line) line.textContent = C[1];
-    var lede = $('hmrWhyLede'); if (lede) lede.textContent = C[2];
+  /* THE RESIDENTIAL RESULT SET.
+
+     This function builds DATA, not a page: an array of the same
+     {role, product, ctx} shape the Garden Room ranking produces, which the
+     production renderer then draws. Nothing here scores, orders against a
+     profile, or compares products.
+
+     The one ordering fact is the governed evidence partition already in
+     place: a candidate whose floor-area record carries no TOP_OF_BAND
+     qualification sits unambiguously inside the band. Exactly one such
+     candidate leads; zero, or two or more, and there is no lead and the set
+     goes to the renderer in pool order. */
+  function pnResidentialResults(){
+    var all = pnResidentialCandidates();
+    if (!all.length) return [];
+    var split = pnCandidateSplit(all);
+    var ordered = split.lead ? [split.lead].concat(split.others) : all;
+    return ordered.map(function(p, i){
+      var lead = (i === 0) && !!split.lead;
+      var ev = pnCandidateEvidence(p, lead);
+      return {
+        role: 'residential',
+        product: p,
+        ctx: {
+          discoveryContext: 'residential',
+          intendedUse: 'residential',
+          isPreferred: i === 0,
+          budgetMatched: true, aboveBudget: false, spaceSpecified: false,
+          /* The hero's one line, from the governed evidence. */
+          leadReason: ev.say,
+          residentialKnown: ev.known, residentialOpen: ev.open,
+          irishAvailabilityNote: 'Available in Ireland',
+          /* The governed caveat, on the same handle Garden Room uses for a
+             trade-off. Present only on the candidate whose own record
+             carries it; null everywhere else. Never invented. */
+          residentialTradeOff: (function(){
+            for (var i = 0; i < ev.open.length; i++)
+              if (TOP_OF_BAND.test(ev.open[i]) || /very top of the range/.test(ev.open[i]))
+                return ev.open[i];
+            return null;
+          })(),
+          /* There is no residential decision profile, and saying so with a
+             null is more honest than assembling an empty one. */
+          decisionProfile: null, scoreTrace: null
+        }
+      };
+    });
   }
 
   function renderResult(){
     var c = calc(S), d = decide(S,c), C = COPY[d.st];
-    /* The state class moves to the result body. Nothing reads it for
-       presentation any more — the chip it coloured is retired — but it
-       keeps the state visible in the DOM for diagnosis. */
-    $('homeResultsBody').className = 'dh-s' + d.st;
-    renderHomeVerdict(C);
 
     /* ---- why: only statements the answers actually support ---- */
     var why = [];
@@ -32561,15 +32688,23 @@
       : d.st===2 ? 'Your property looks worth taking further. A few things are still open — here they are, with what you can explore alongside them.'
       : d.st===3 ? 'Space was the limit here. This is the one thing that could change that.'
                  : 'One condition was in the way. This is the question worth asking before setting it aside.';
-    var nextWrap = $('hmrNext');
-    if (nextWrap) nextWrap.hidden = !rs.length;
-    var candWrap = $('dhCandWrap');
+
+    /* HAND THE SET TO THE PRODUCTION RENDERER. Buildings are offered only
+       where the space works — the shipped gate, carried forward: nothing is
+       put in front of a homeowner whose garden cannot take a home. An empty
+       set is a real answer and the bridge renders the assessment without
+       the product sections. */
     var offerBuildings = (d.st === 1 || d.st === 2);
-    if (candWrap) candWrap.hidden = !offerBuildings;
-    /* The flagship is part of the same offer: nothing is put in front of a
-       homeowner whose garden cannot take a home. */
-    if (offerBuildings){ renderCandidates(); }
-    else { renderHomeFlagship(null); $('dhCands').innerHTML = ''; }
+    var results = offerBuildings ? pnResidentialResults() : [];
+    if (typeof window.__PN_RENDER_RESIDENTIAL__ === 'function'){
+      window.__PN_RENDER_RESIDENTIAL__(results, {
+        verdict: C[0] + ' — ' + C[1] + '. ' + C[2],
+        whyHtml: $('dhWhy') ? $('dhWhy').innerHTML : '',
+        calcHtml: $('dhCalc') ? $('dhCalc').innerHTML : '',
+        checkHtml: $('dhCheck') ? $('dhCheck').innerHTML : '',
+        nextHtml: $('dhNextList') ? $('dhNextList').innerHTML : ''
+      });
+    }
   }
 
 
@@ -32685,51 +32820,6 @@
     return { lead:clear[0], others:qualified };
   }
 
-  function renderCandidates(){
-    var wrap = $('dhCandWrap'); if (!wrap) return;
-    var all = pnResidentialCandidates();
-    var split = pnCandidateSplit(all);
-    renderHomeFlagship(split.lead);
-    var list = split.others;
-    var host = $('dhCands');
-    var heading = $('dhCandHeading');
-    if (heading) heading.textContent = split.lead
-      ? (list.length === 1 ? 'Other building worth exploring'
-                           : 'Other buildings worth exploring')
-      : 'Buildings worth exploring';
-
-    if (!all.length){
-      /* The honest empty state. It is not a failure message and it does not
-         say no building could work — only that none can be confirmed yet. */
-      $('dhCandIntro').textContent = 'Atlas has not yet established enough evidence to put '
-        + 'specific buildings forward for living in. As residential qualification evidence is '
-        + 'added, buildings will appear here.';
-      host.innerHTML = '';
-      return;
-    }
-
-    /* Two sentences, and they describe what is actually under this
-       heading — the whole set when nothing leads, the remainder when
-       something does. Neither wording calls anything better or worse. */
-    $('dhCandIntro').textContent = split.lead
-      /* A participial phrase, not a relative clause: 'one other building
-         ... that also sit within' was a number-agreement fault caught in
-         the browser. This reads correctly for one and for many. */
-      ? 'Atlas found ' + (list.length === 1 ? 'one other building' : list.length + ' other buildings')
-        + ' sold in Ireland as living accommodation, also within the size range your garden '
-        + 'could take. Each card says what Atlas has established and what is still open.'
-      : 'Atlas found ' + (list.length === 1 ? 'one building' : list.length + ' buildings')
-        + ' sold in Ireland as living accommodation that sit within the size range your garden '
-        + 'could take. They are worth exploring; some residential evidence still needs to be '
-        + 'established.';
-
-    host.innerHTML = list.map(function(p){
-      var ev = pnCandidateEvidence(p, false);
-      return pnCandidateCard(p, ev);
-    }).join('');
-
-  }
-
   /* THE GOVERNED EVIDENCE FOR ONE CANDIDATE, assembled once so the
      flagship hero and the rail card can never disagree about what Atlas
      holds. Every string below is the shipped wording; `lead` changes one
@@ -32776,94 +32866,6 @@
                    price || 'price not recorded',
                    fa.number + ' ' + fa.unit,
                    'Available in Ireland'].join(' · ') };
-  }
-
-  function pnEvidenceBlock(ev){
-    return '<div class="hm-ev-h">What Atlas has established</div>'
-      + '<ul class="hm-ev">' + ev.known.map(function(k){
-            return '<li class="hm-known">' + esc(k) + '</li>'; }).join('') + '</ul>'
-      /* Closed by default. The 45 m² top-of-band caveat lives in here and
-         is one click away — collapsed, never removed, on the flagship and
-         on every other card alike. */
-      + '<details class="hm-open-ev"><summary>What still needs checking'
-      +   ' (' + ev.open.length + ')</summary>'
-      +   '<ul class="hm-ev">' + ev.open.map(function(o){
-                return '<li class="hm-open">' + esc(o) + '</li>'; }).join('') + '</ul>'
-      + '</details>';
-  }
-
-  function pnCandidateCard(p, ev){
-      /* THE SHARED RESULT CARD. .alt-card.alt-lens and its footing were
-         built to carry "here is a building, and here is the reason it is in
-         front of you" — a lens label, one statement, then the product
-         beneath a hairline. That is exactly the shape of this card, and it
-         carries no rank order and no match language.
-
-         raShell()/raProductCard() are NOT called across the module
-         boundary. They reach pnSupplierOrgType(), pnPriceView(),
-         irishRouteNoteText() and raCompareControl(), and they render none
-         of the established/open evidence this card exists to show. The
-         VOCABULARY is reused; the ranking builders are not. */
-      return '<div class="alt-card alt-lens" data-lens="residential-candidate">'
-        + '<span class="alt-lens-label">Worth exploring</span>'
-        + '<p class="alt-lens-say">' + esc(ev.say) + '</p>'
-        + '<div class="alt-lens-foot">'
-        +   '<div class="alt-name">' + esc(p.name || 'Product') + '</div>'
-        +   '<div class="alt-meta">' + esc(ev.meta) + '</div>'
-        +   pnEvidenceBlock(ev)
-        + '</div>'
-        + '</div>';
-  }
-
-  /* THE FLAGSHIP HERO. Same shared hero classes the Garden Room
-     recommendation uses, carrying supplier, price, area, Irish
-     availability, the evidence-labelled reason, and the same
-     established/open pair every other card carries. The label reads
-     WORTH EXPLORING — never recommended, best, qualified or compliant. */
-  function renderHomeFlagship(p){
-    var host = $('hmrHero'); if (!host) return;
-    host.innerHTML = '';
-    if (!p){ host.hidden = true; return; }
-    host.hidden = false;
-    var ev = pnCandidateEvidence(p, true);
-    var wrap = document.createElement('div');
-    wrap.className = 'results-hero-inner is-fieldonly';
-    var body = document.createElement('div');
-    body.className = 'results-hero-body';
-    var lab = document.createElement('span');
-    lab.className = 'alt-lens-label'; lab.textContent = 'Worth exploring';
-    body.appendChild(lab);
-    var name = document.createElement('h2');
-    name.className = 'results-hero-name'; name.textContent = p.name || 'Product';
-    body.appendChild(name);
-    var org = document.createElement('div');
-    org.className = 'results-hero-org';
-    org.textContent = p.organisation || 'Supplier not recorded';
-    body.appendChild(org);
-    var row = document.createElement('div');
-    row.className = 'results-hero-price-row';
-    var pr = document.createElement('span');
-    pr.className = 'results-hero-price';
-    pr.textContent = ev.price || 'Price not recorded';
-    row.appendChild(pr);
-    var ar = document.createElement('span');
-    ar.className = 'results-hero-area';
-    ar.textContent = ev.fa.number + ' ' + ev.fa.unit;
-    row.appendChild(ar);
-    body.appendChild(row);
-    var avail = document.createElement('div');
-    avail.className = 'results-hero-budget-note';
-    avail.textContent = 'Available in Ireland';
-    body.appendChild(avail);
-    var ed = document.createElement('p');
-    ed.className = 'results-hero-editorial'; ed.textContent = ev.say;
-    body.appendChild(ed);
-    var box = document.createElement('div');
-    box.className = 'hm-hero-evidence';
-    box.innerHTML = pnEvidenceBlock(ev);
-    body.appendChild(box);
-    wrap.appendChild(body);
-    host.appendChild(wrap);
   }
 
   /* =================================================================
@@ -32945,7 +32947,7 @@
     if (typeof window.__PN_GOTO__ === 'function') window.__PN_GOTO__(key);
   }
   function onResultScreen(){
-    var s = document.getElementById('screen-home-results');
+    var s = document.getElementById('screen-match-results');
     return !!(s && !s.classList.contains('is-hidden'));
   }
   function show(id){
@@ -32953,10 +32955,10 @@
     if (id === 'checking'){ currentScreen = 'checking'; runChecking(); return; }
     if (id === 'result' || id === 'next'){
       currentScreen = 'result';
+      /* renderResult() hands the set to the production renderer, which
+         shows the screen and scrolls to the top itself. */
       renderResult();
-      goTo('homeResults');
-      window.scrollTo({ top: 0, behavior: 'auto' });
-      var rh = document.getElementById('hmrHeadline');
+      var rh = document.getElementById('matchResultsPanel');
       if (rh){ rh.setAttribute('tabindex','-1'); rh.focus({ preventScroll:true }); }
       return;
     }
@@ -33039,7 +33041,10 @@
     }
   }
   root.addEventListener('click', dhClick);
-  var hmrPanel = document.getElementById('homeResultsPanel');
+  /* The result panel is the production one now. It carries no [data-dh-go]
+     control of its own, so this listener is the seam that stays open for
+     any the residential result may need later; it is inert until then. */
+  var hmrPanel = document.getElementById('matchResultsPanel');
   if (hmrPanel) hmrPanel.addEventListener('click', dhClick);
 
   root.addEventListener('input', function(e){
