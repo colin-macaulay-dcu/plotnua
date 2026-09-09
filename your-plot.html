@@ -7810,6 +7810,158 @@
     #screen-resolve .rsv-head, #screen-progress .rsv-head{ padding-bottom:var(--pn-space-xl); }
     #screen-resolve .rsv-answer-row{ max-width:none; }
   }
+  /* ============================================================
+     HOME JOURNEY — the residential branch of the shared property
+     journey. Values approved at prototype-disc008-feasibility-v2.html
+     and shipped/measured in discovery-living-in-the-garden.html.
+
+     TWO NAMESPACES, BOTH NEW TO THIS FILE: .dh-* for the journey
+     chrome, .hm-* for the assessment.
+
+     .hm-* IS NOT .aa-*, AND THAT MATTERS. The assessment block was
+     written against the .aa-* vocabulary on the Discovery page, where
+     nothing else used those names. THIS file already uses .aa-finds,
+     .aa-evd, .aa-sources, .aa-find-lab and .aa-ask for the real
+     Product Detail Atlas Assessment, so porting them unchanged would
+     have restyled the Garden Room dossier — a Garden Room regression
+     introduced by a HOME feature. Measured before writing, and
+     renamed. Neither prefix collides with anything here.
+     ============================================================ */
+  .dh-journey{ width:100%; max-width:720px; margin:0 auto; text-align:left; }
+  .dh-journey [hidden]{ display:none !important; }
+  .dh-step{ font:500 10.5px/1 'Work Sans',sans-serif; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+  .dh-journey h3.dh-big{ font-family:'Fraunces',serif; font-weight:700;
+    letter-spacing:-.015em; font-size:clamp(24px,3.4vw,34px); line-height:1.18;
+    margin:0 0 12px; color:var(--ink); }
+  .dh-lede{ font-size:clamp(15px,1.25vw,16.5px); line-height:1.65; color:var(--soft);
+    max-width:54ch; margin:0 0 28px; }
+
+  /* --- questions --- */
+  .dh-q{ margin-bottom:24px; padding-bottom:22px; border-bottom:1px solid rgba(31,59,46,.09); }
+  .dh-q:last-of-type{ border-bottom:0; }
+  .dh-qlab{ display:block; font-family:'Fraunces',serif; font-weight:600; font-size:18px;
+    line-height:1.35; margin-bottom:6px; color:var(--ink); }
+  .dh-qhint{ font-size:13.5px; line-height:1.6; color:var(--soft); max-width:50ch; margin:0 0 12px; }
+  .dh-row{ display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+  .dh-cell{ display:flex; flex-direction:column; gap:5px; }
+  .dh-cell small{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); }
+  .dh-journey input[type=number]{
+    font:400 17px/1 'Work Sans',sans-serif; color:var(--ink); width:106px; max-width:36vw;
+    padding:12px 13px; background:var(--paper); border:1px solid rgba(31,59,46,.16);
+    border-radius:3px; }
+  .dh-journey input:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
+  .dh-x{ font-size:17px; color:var(--soft); padding-bottom:13px; }
+  .dh-opt{ display:flex; gap:8px; flex-wrap:wrap; }
+  .dh-opt button{ font:500 14.5px/1.25 'Work Sans',sans-serif; color:var(--ink); cursor:pointer;
+    background:var(--paper); border:1px solid rgba(31,59,46,.16); border-radius:3px;
+    padding:12px 17px; min-height:46px; text-align:left; }
+  .dh-opt button:hover{ border-color:var(--ink); }
+  .dh-opt button[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--cream); }
+  .dh-opt button[data-v="unsure"][aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); }
+  .dh-opt button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .dh-bldg{ background:var(--paper); border:1px solid rgba(31,59,46,.09); border-radius:3px;
+    padding:14px 16px; margin-top:12px; }
+  .dh-bldg + .dh-bldg{ margin-top:8px; }
+  .dh-bh{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:10px; }
+  .dh-bh span{ font:600 11px/1 'Work Sans',sans-serif; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--soft); }
+  /* 44px minimum on a customer-facing control. Padding rather than font
+     size, so it still reads as a link and not a second button. */
+  .dh-lnk{ background:none; border:0; font:500 13.5px/1 'Work Sans',sans-serif; color:var(--accent);
+    cursor:pointer; padding:15px 2px; min-height:44px; text-decoration:underline;
+    text-underline-offset:3px; }
+  .dh-lnk:hover{ color:var(--ink); }
+  .dh-lnk:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .dh-nav{ display:flex; gap:12px; align-items:center; margin-top:32px; flex-wrap:wrap; }
+  .dh-btn{ font:500 12.5px/1 'Work Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase;
+    background:var(--ink); color:var(--cream); border:0; border-radius:3px;
+    padding:17px 28px; min-height:50px; cursor:pointer; }
+  .dh-btn:hover{ background:var(--accent); }
+  .dh-btn.dh-ghost{ background:none; color:var(--ink); border:1px solid rgba(31,59,46,.16); }
+  .dh-btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .dh-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .dh-status{ font-size:14px; line-height:1.6; color:var(--oak); margin-top:12px; min-height:1px; }
+
+  /* --- property confirmation --- */
+
+  /* --- the checking pattern ---
+     Reproduced from #screen-atlas-search in your-plot.html (line 8131),
+     including its restraint: nothing turns, nothing spins, and the meaning
+     is carried by a polite live region rather than by the animation. */
+  .dh-chk{ margin:0 0 8px; padding:0; }
+  .dh-chk li{ list-style:none; display:flex; gap:12px; align-items:flex-start; padding:11px 0;
+    border-bottom:1px solid rgba(31,59,46,.09); font-size:15.5px; color:var(--soft);
+    opacity:.35; transition:opacity .35s ease, color .35s ease; }
+  .dh-chk li.dh-on{ opacity:1; color:var(--ink); }
+  .dh-chk li .dh-tick{ width:19px; flex:0 0 19px; color:var(--accent); font-size:14px;
+    line-height:1.5; opacity:0; transition:opacity .3s ease; }
+  .dh-chk li.dh-on .dh-tick{ opacity:1; }
+  @media (prefers-reduced-motion: reduce){
+    .dh-chk li, .dh-chk li .dh-tick{ transition:none; }
+  }
+
+  /* --- the Atlas assessment --- */
+  .hm-band{ display:inline-block; font:600 10.5px/1 'Work Sans',sans-serif; letter-spacing:.16em;
+    text-transform:uppercase; padding:8px 13px; border-radius:2px; margin-bottom:16px; }
+  .dh-s1 .hm-band{ background:#DDE8DC; color:#2C4A36; }
+  .dh-s2 .hm-band{ background:#EFE7D0; color:#6B5A2B; }
+  .dh-s3 .hm-band{ background:#E8E2D5; color:#5C5343; }
+  .dh-s4 .hm-band{ background:#E8E2D5; color:#5C5343; }
+  .hm-sect{ margin:0 0 30px; }
+  .hm-sect > h4{ font:600 10.5px/1 'Work Sans',sans-serif; letter-spacing:.17em;
+    text-transform:uppercase; color:var(--soft); margin-bottom:13px; }
+  ul.hm-finds{ list-style:none; padding:0; margin:0; }
+  ul.hm-finds li{ position:relative; padding-left:26px; margin-bottom:11px; font-size:15.5px;
+    line-height:1.6; max-width:56ch; }
+  ul.hm-finds li .hm-find-lab{ position:absolute; left:0; top:0; font-size:15px; width:18px; }
+  ul.hm-finds li.hm-yes .hm-find-lab{ color:var(--accent); }
+  ul.hm-finds li.hm-ask{ color:var(--soft); } ul.hm-finds li.hm-ask .hm-find-lab{ color:#8A7B45; }
+  ul.hm-finds li.hm-no{ color:var(--soft); }  ul.hm-finds li.hm-no .hm-find-lab{ color:#8C6A4F; }
+
+  details.hm-evd{ border-top:1px solid rgba(31,59,46,.16); border-bottom:1px solid rgba(31,59,46,.16); }
+  details.hm-evd > summary{ list-style:none; cursor:pointer; padding:16px 0;
+    font-family:'Fraunces',serif; font-weight:600; font-size:16.5px; color:var(--ink);
+    display:flex; justify-content:space-between; gap:14px; align-items:center; min-height:44px; }
+  details.hm-evd > summary::-webkit-details-marker{ display:none; }
+  details.hm-evd > summary::after{ content:'+'; font-family:'Work Sans',sans-serif; font-weight:400;
+    font-size:19px; color:var(--soft); }
+  details.hm-evd[open] > summary::after{ content:'\2013'; }
+  details.hm-evd > summary:hover{ color:var(--accent); }
+  details.hm-evd > summary:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .hm-calc{ padding:2px 0 20px; font-size:14.5px; line-height:1.95; }
+  .hm-calc .hm-cr{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .hm-calc .hm-cr.hm-tot{ border-top:1px solid rgba(31,59,46,.16); margin-top:9px; padding-top:9px; font-weight:600; }
+  .hm-calc .hm-cr span:last-child{ font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .hm-calc .hm-cg{ font:600 10.5px/1 'Work Sans',sans-serif; letter-spacing:.15em; text-transform:uppercase;
+    color:var(--soft); margin:16px 0 6px; }
+  .hm-calc .hm-cn{ font-size:13px; color:var(--soft); line-height:1.65; margin-top:9px; }
+  .hm-calm{ font-size:15px; line-height:1.7; color:var(--soft); max-width:56ch; }
+  .hm-calm b{ color:var(--ink); font-weight:600; }
+  .hm-sources a{ display:block; font-size:14px; line-height:1.55; color:var(--ink); margin-bottom:7px;
+    word-break:break-word; min-height:44px; }
+  .hm-sources a:hover{ color:var(--accent); }
+  .hm-sources .hm-prov{ font-size:13px; color:var(--soft); margin-bottom:12px; max-width:56ch; }
+
+  /* --- what to establish next --- */
+  ol.dh-res{ list-style:none; counter-reset:dhr; padding:0; margin:0; }
+  ol.dh-res li{ counter-increment:dhr; position:relative; padding-left:34px; margin-bottom:16px;
+    font-size:15.5px; line-height:1.6; max-width:56ch; }
+  ol.dh-res li::before{ content:counter(dhr); position:absolute; left:0; top:1px;
+    width:22px; height:22px; border-radius:50%; border:1px solid rgba(31,59,46,.16);
+    font:500 12px/21px 'Work Sans',sans-serif; text-align:center; color:var(--soft); }
+  ol.dh-res li b{ display:block; font-family:'Fraunces',serif; font-weight:600; font-size:16.5px;
+    color:var(--ink); margin-bottom:2px; }
+
+  .dh-sr{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+  @media (max-width:520px){
+    .dh-journey input[type=number]{ width:92px; }
+    .dh-opt button{ flex:1 1 auto; }
+  }
 </style>
 </head>
 <body>
@@ -8181,6 +8333,213 @@
            the same sentence in two different cases, stacked. One calm line
            under the mark is both less text and a better composition. -->
       <div class="atlas-search-message" id="atlasSearchMessage" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SCREEN 5H: HOME JOURNEY (SHARED PROPERTY BRANCH) ==============
+     Reached only when intendedUse === 'residential'. Four steps behind one
+     screen, over the same property view every other overlay sits on. -->
+<section id="screen-home-journey" class="screen is-hidden is-overlay">
+  <div class="match-panel interactive">
+    <div class="dh-journey" id="homeJourney">
+
+      <!-- ---------- 3 · THE QUESTIONS ----------
+           ATLAS DOES THE HOMEWORK. The homeowner gives ordinary facts —
+           a length, a width, a yes or a no. They are never asked for a
+           combined area, never asked whether 25 m² can remain, and never
+           asked anything technical about a septic tank. "Not sure" is an
+           answer on every question that has one, and it is never read
+           as "no". -->
+      <section id="dh-questions" hidden>
+        <p class="dh-step">Build a Home in Your Garden &middot; A few things about your garden</p>
+        <h3 class="dh-big">Tell us about the garden.</h3>
+        <p class="dh-lede">Ordinary measurements are fine &mdash; pacing it out is enough. Atlas does
+          the arithmetic and the rules.</p>
+
+        <div class="dh-q">
+          <span class="dh-qlab" id="dhGardenLab">Roughly how big is the back garden?</span>
+          <p class="dh-qhint">A normal walking pace is about a metre. Walk the length, then the
+            width, and count. Round down rather than up.</p>
+          <div class="dh-row">
+            <div class="dh-cell"><small><label for="dhGl">Length (m)</label></small>
+              <input type="number" id="dhGl" min="0" step="0.5" inputmode="decimal"></div>
+            <span class="dh-x" aria-hidden="true">&times;</span>
+            <div class="dh-cell"><small><label for="dhGw">Width (m)</label></small>
+              <input type="number" id="dhGw" min="0" step="0.5" inputmode="decimal"></div>
+          </div>
+        </div>
+
+        <div class="dh-q">
+          <span class="dh-qlab" id="dhHasBLab">Is there already a shed, garage or other building in the garden?</span>
+          <p class="dh-qhint">Anything permanent counts &mdash; a shed, a garage, a workshop, an old
+            garden room.</p>
+          <div class="dh-opt" role="group" aria-labelledby="dhHasBLab" data-dh-q="hasB">
+            <button type="button" data-v="no" aria-pressed="false">No, nothing</button>
+            <button type="button" data-v="yes" aria-pressed="false">Yes, there is</button>
+          </div>
+          <div id="dhBWrap" hidden>
+            <div id="dhBList"></div>
+            <button class="dh-lnk" id="dhAddB" type="button">+ Add another building</button>
+          </div>
+        </div>
+
+        <div class="dh-q">
+          <span class="dh-qlab" id="dhAccessLab">Could someone get to the far end of the garden without going through the house?</span>
+          <p class="dh-qhint">Down the side passage, say &mdash; and wide enough for a wheelchair as
+            well as on foot. It has to stay inside your own boundaries.</p>
+          <div class="dh-opt" role="group" aria-labelledby="dhAccessLab" data-dh-q="access">
+            <button type="button" data-v="yes" aria-pressed="false">Yes</button>
+            <button type="button" data-v="no" aria-pressed="false">No</button>
+            <button type="button" data-v="unsure" aria-pressed="false">Not sure</button>
+          </div>
+        </div>
+
+        <div class="dh-q">
+          <span class="dh-qlab" id="dhEntranceLab">Would it need its own new gate or entrance from the road?</span>
+          <p class="dh-qhint">Most gardens are reached through the existing driveway or side gate.
+            This is asking about cutting a new opening onto a public road.</p>
+          <div class="dh-opt" role="group" aria-labelledby="dhEntranceLab" data-dh-q="entrance">
+            <button type="button" data-v="no" aria-pressed="false">No, the existing way in</button>
+            <button type="button" data-v="yes" aria-pressed="false">Yes, a new one</button>
+            <button type="button" data-v="unsure" aria-pressed="false">Not sure</button>
+          </div>
+        </div>
+
+        <div class="dh-q">
+          <span class="dh-qlab" id="dhServicesLab">Where would its water and drains come from?</span>
+          <p class="dh-qhint">Plumbed off the existing house, or brought in separately?</p>
+          <div class="dh-opt" role="group" aria-labelledby="dhServicesLab" data-dh-q="services">
+            <button type="button" data-v="house" aria-pressed="false">Off the house</button>
+            <button type="button" data-v="own" aria-pressed="false">Its own connection</button>
+            <button type="button" data-v="unsure" aria-pressed="false">Not sure</button>
+          </div>
+        </div>
+
+        <div class="dh-q">
+          <span class="dh-qlab" id="dhSepticLab">Does the property use a septic tank?</span>
+          <p class="dh-qhint">Rather than mains drainage. Common outside towns. If yes, Atlas will
+            simply flag it for checking &mdash; you do not need to know anything technical about it.</p>
+          <div class="dh-opt" role="group" aria-labelledby="dhSepticLab" data-dh-q="septic">
+            <button type="button" data-v="no" aria-pressed="false">No, mains drainage</button>
+            <button type="button" data-v="yes" aria-pressed="false">Yes</button>
+            <button type="button" data-v="unsure" aria-pressed="false">Not sure</button>
+          </div>
+        </div>
+
+        <div class="dh-q">
+          <span class="dh-qlab" id="dhProtectedLab">Is the house a protected structure, or in a conservation area?</span>
+          <p class="dh-qhint">Most houses are neither. If you have never been told otherwise, &ldquo;not
+            sure&rdquo; is the honest answer and Atlas will treat it as something to check.</p>
+          <div class="dh-opt" role="group" aria-labelledby="dhProtectedLab" data-dh-q="protected">
+            <button type="button" data-v="no" aria-pressed="false">No</button>
+            <button type="button" data-v="yes" aria-pressed="false">Yes</button>
+            <button type="button" data-v="unsure" aria-pressed="false">Not sure</button>
+          </div>
+        </div>
+
+        <div class="dh-nav">
+          <button class="dh-btn" type="button" data-dh-go="checking">Ask Atlas</button>
+          <button class="dh-btn dh-ghost" type="button" data-dh-go="property">Back</button>
+        </div>
+        <p class="dh-status" id="dhQStatus" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-- ---------- 4 · ATLAS CHECKING ----------
+           Reproduced from #screen-atlas-search (your-plot.html 8131),
+           restraint included. The list is decorative; the live region
+           below it is where the meaning is, so a screen reader is told
+           what happened rather than watching ticks it cannot see. Every
+           line names something Atlas genuinely does with the answers
+           given. No external check is implied. -->
+      <section id="dh-checking" hidden>
+        <p class="dh-step">Build a Home in Your Garden &middot; Atlas</p>
+        <h3 class="dh-big">Atlas is working through it.</h3>
+        <p class="dh-lede">Checking what you told us against the conditions in the 2026 auxiliary
+          dwelling regulations.</p>
+        <ul class="dh-chk" id="dhChkList" aria-hidden="true"></ul>
+        <p class="dh-sr" role="status" aria-live="polite" id="dhChkSr"></p>
+      </section>
+
+      <!-- ---------- 5 · THE ATLAS ASSESSMENT ---------- -->
+      <section id="dh-result" hidden>
+        <div id="dhResultRoot">
+          <p class="dh-step">Build a Home in Your Garden &middot; Atlas assessment</p>
+          <span class="hm-band" id="dhBand"></span>
+          <h3 class="dh-big" id="dhHead"></h3>
+          <p class="dh-lede" id="dhSub"></p>
+
+          <div class="hm-sect">
+            <h4>Why Atlas reached this</h4>
+            <ul class="hm-finds" id="dhWhy"></ul>
+          </div>
+
+          <div class="hm-sect">
+            <details class="hm-evd" id="dhCalcWrap">
+              <summary>What Atlas calculated</summary>
+              <div class="hm-calc" id="dhCalc"></div>
+            </details>
+          </div>
+
+          <div class="hm-sect">
+            <h4>What still needs checking</h4>
+            <ul class="hm-finds" id="dhCheck"></ul>
+          </div>
+
+          <div class="hm-sect">
+            <h4>What this does not confirm</h4>
+            <p class="hm-calm"><b>This is an early property check, not planning permission or
+              professional confirmation.</b> Atlas has worked from your measurements against
+              published conditions. Your local authority decides whether a build qualifies, and
+              an architect or engineer needs to see the site before anything is committed.</p>
+          </div>
+
+          <div class="hm-sect hm-sources">
+            <h4>Where this comes from</h4>
+            <p class="hm-prov">Every condition above is taken from published regulation. Atlas holds
+              no opinion of its own here, and nothing on this page can be paid for.</p>
+            <a href="https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-no-3-regulations-2026-si-340-of-2026/" target="_blank" rel="noopener">S.I. 340 of 2026 &mdash; Planning and Development (Exempted Development) Regulations &middot; gov.ie</a>
+            <a href="https://assets.gov.ie/static/documents/e39ca58b/Auxiliary_Dwelling_Information_Note.pdf" target="_blank" rel="noopener">Auxiliary Dwelling Information Note &middot; gov.ie</a>
+            <a href="https://www.citizensinformation.ie/en/housing/building-or-altering-a-home/protected-structures/" target="_blank" rel="noopener">Protected structures &middot; Citizens Information</a>
+          </div>
+
+          <div class="dh-nav">
+            <button class="dh-btn" type="button" data-dh-go="next">What to establish next</button>
+            <button class="dh-btn dh-ghost" type="button" data-dh-go="questions">Change an answer</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 6 · WHAT TO ESTABLISH NEXT ----------
+           NOT the production Resolve engine. That engine is scoped to a
+           product at every level — renderResolve(product),
+           openResolveScreen(returnScreen, product), and every
+           RESOLVE_REGISTRY entry reading fields off a product record.
+           There is no product here and inventing one would be the exact
+           HOME-as-Garden-Room confusion this Discovery exists to avoid.
+           What is borrowed is the GRAMMAR: only what the assessment
+           actually raised, in consequence order, with no purchase at the
+           end of it. -->
+      <section id="dh-next" hidden>
+        <p class="dh-step">Build a Home in Your Garden &middot; Next</p>
+        <h3 class="dh-big">What to establish next.</h3>
+        <p class="dh-lede" id="dhNextSub"></p>
+        <ol class="dh-res" id="dhNextList"></ol>
+
+        <div class="hm-sect" style="margin-top:34px">
+          <h4>Buildings for this use</h4>
+          <p class="hm-calm">Atlas has not yet verified specific garden buildings for residential
+            use. A home somebody lives in has to meet conditions a garden room does not, and that
+            is a question about evidence rather than about size. <b>As residential qualification
+            evidence is added, suitable buildings will appear here.</b></p>
+        </div>
+
+        <div class="dh-nav">
+          <button class="dh-btn dh-ghost" type="button" data-dh-go="result">Back to the assessment</button>
+          <button class="dh-btn dh-ghost" type="button" data-dh-go="eircode">Start again</button>
+        </div>
+      </section>
+
     </div>
   </div>
 </section>
@@ -9458,6 +9817,7 @@
     thingsToggle: document.getElementById('thingsToggle'),
     thingsControls: document.getElementById('thingsControls'),
     matchInputScreen: document.getElementById('screen-match-input'),
+    homeJourneyScreen: document.getElementById('screen-home-journey'),
     matchResultsScreen: document.getElementById('screen-match-results'),
     // SPRINT 2 — Atlas Search interstitial.
     atlasSearchScreen: document.getElementById('screen-atlas-search'),
@@ -9720,6 +10080,30 @@
       // generic sentence with the key absent, which is the correct default
       // now that the journey is no longer Artist-Studio-only.
     },
+
+    /* SHARED PROPERTY JOURNEY — the second intended use.
+
+       A home somebody lives in is not a bigger garden room. It answers to
+       different conditions, and Atlas holds no residential qualification
+       evidence for any product yet. So this entry carries COPY AND CONTEXT
+       ONLY.
+
+       DELIBERATELY ABSENT: `views` and `category`. views is what
+       evaluateRecommendationViews() reads to build ranked Recommendation
+       Views; category is what Plot Twist excludes against. Residential
+       ranks nothing, so declaring either would describe a capability that
+       does not exist. Both arrive with the Residential Qualification layer.
+
+       planningBanner is absent for the same reason: the garden-room
+       exemption sentence is not true of an auxiliary dwelling, and the HOME
+       journey states its own governed conditions from published sources. */
+    'residential': {
+      label: 'Home in the Garden',
+      entryHeadline: "Let's start with your property",
+      entrySubhead: "Enter your Eircode and we'll begin with the place you already have.",
+      matchKicker: 'Your Home in the Garden',
+      progressLabel: 'Your Home in the Garden',
+    },
   };
   // STAGE 0 — SINGLE-DISCOVERY BUILD. discoveryContext is retained as the
   // future extension point: when the Studio Property Brain gains a second
@@ -9764,6 +10148,23 @@
     (requestedDiscovery && DISCOVERY_CONTENT[requestedDiscovery])
       ? requestedDiscovery
       : GARDEN_ROOM_CONTEXT;
+
+  /* INTENDED USE. The property journey is the same for everyone; what a
+     homeowner is trying to DO with the garden is what diverges, and it
+     diverges once, at the Continue handler.
+
+     Derived from discoveryContext rather than read separately from the
+     URL, so one value decides both the copy and the route and the two
+     cannot disagree. Anything that is not residential is garden-room —
+     the safe default, and the only use that ranks anything. */
+  const RESIDENTIAL_CONTEXT = 'residential';
+  const intendedUse =
+    (discoveryContext === RESIDENTIAL_CONTEXT) ? 'residential' : 'garden-room';
+  /* Published once, from the one place it is derived, so the HOME journey
+     script at the end of this file can gate itself on the same value the
+     branch uses rather than re-reading the URL and risking a second,
+     disagreeing derivation. */
+  window.__PN_INTENDED_USE__ = intendedUse;
 
   function applyDiscoveryContextCopy(){
     if (!discoveryContext) return;
@@ -9921,7 +10322,7 @@
   // SPRINT 1C — CONTROLLED OPENING: els.plotScreen (#screen-plot) and
   // els.discoveryRevealScreen (#screen-discovery-reveal) are both retired
   // — removed from this list along with the rest of their teardown.
-  const ALL_SCREENS = [els.entry, els.reveal, els.matchInputScreen, els.atlasSearchScreen, els.matchResultsScreen, els.myPlotScreen, els.productDetailScreen, els.plotTopicScreen, els.compareScreen, els.resolveScreen, els.progressScreen].filter(Boolean);
+  const ALL_SCREENS = [els.entry, els.reveal, els.matchInputScreen, els.homeJourneyScreen, els.atlasSearchScreen, els.matchResultsScreen, els.myPlotScreen, els.productDetailScreen, els.plotTopicScreen, els.compareScreen, els.resolveScreen, els.progressScreen].filter(Boolean);
   // STAGE 0 — ACCESSIBILITY: overlay focus management. Before this, opening a
   // screen left focus on the control behind it, so a keyboard or screen-reader
   // user stayed in the previous screen while the new one covered it. showScreen()
@@ -31405,6 +31806,26 @@
   els.continueBtn.addEventListener('click', async () => {
     hideInteractionHint();
     resetPlotIntelligenceUI();
+
+    /* THE INTENDED-USE BRANCH. Everything above this line was the shared
+       property journey. Everything below belongs to one use.
+
+       THE RETURN IS WHAT DOES THE WORK. resetMatchUI() on the line below
+       is what creates Garden Room matchState, and buildDecisionProfile(),
+       computeAndShowResults(), rankCandidates(), the 487-product universe
+       and Compare are all reached only from the screen it opens. Returning
+       first makes them UNREACHABLE on the residential path rather than
+       merely unused — HOME cannot rank a Garden Room even by accident.
+
+       The camera move stays on both paths: it frames the property both
+       journeys are standing on, and is not Garden Room logic. */
+    if (intendedUse === 'residential') {
+      showScreen(els.homeJourneyScreen);
+      enableShadowsForSunLight();
+      await moveCloserForPlotIntelligence();
+      return;
+    }
+
     resetMatchUI();
     showScreen(els.matchInputScreen);
     enableShadowsForSunLight();
@@ -31652,5 +32073,402 @@
   // LOCAL DEVELOPMENT REVIEW MODE — END (RESULTS R1.2)
   // ==========================================================================
 </script>
+<!-- type="module" is load-bearing, not decoration. The main PlotNua script
+     above is a module, and modules are DEFERRED: they execute after the
+     document is parsed and after every classic inline script. As a classic
+     script this ran BEFORE the main module had derived intendedUse, so the
+     gate below read undefined and the HOME journey never initialised.
+     Caught in testing. Module scripts execute in document order, so as a
+     module this runs after the one that publishes the value. -->
+<script type="module">
+/* =====================================================================
+   THE HOME JOURNEY — the residential branch.
+
+   Reached only from the intended-use branch in the Continue handler, and
+   only when intendedUse === 'residential'.
+
+   WHAT THIS CODE DOES NOT DO, AND WHY THAT IS NOT A CLAIM ABOUT THE FILE.
+   It lives in your-plot.html now, which also holds the Match Engine, the
+   487-product Recommendation Universe, Compare, My Plot and the
+   product-scoped Resolve engine. So the honest statement is about REACH,
+   not about the file: this code calls none of them, and the branch above
+   returns before resetMatchUI() so the screens that do are never opened on
+   this path. Whether that isolation still holds is a testable claim, and
+   the regression suite tests it rather than trusting this comment.
+
+   NOTHING IS STORED. No localStorage, no sessionStorage, no cookie, no
+   IndexedDB, and no My Plot record. A Discovery possibility is not a
+   product, and the governed My Plot store is product-shaped; wiring one in
+   is separate bounded work. So the journey is honest about its own memory:
+   it has none, and it does not offer to save.
+
+   NO NETWORK. The property lookup happened upstream in the shared journey.
+   This code fetches nothing.
+   ===================================================================== */
+(function(){
+  'use strict';
+  /* ONLY ON THE RESIDENTIAL PATH. The screen below is unreachable without the
+     branch, so leaving this to run everywhere would have been harmless — but
+     "harmless" is not the same as "isolated", and a Garden Room homeowner
+     should carry no HOME listeners at all. Gated on the value the branch
+     itself uses, published once by the main script. */
+  if (window.__PN_INTENDED_USE__ !== 'residential') return;
+  var root = document.getElementById('homeJourney');
+  if (!root) return;
+
+  /* ---- governed thresholds. All already published and cited on this
+     page, above. Nothing new is introduced here. ------------------- */
+  var R = { MIN:32, MAX:45, OPEN:25, SETBACK:0.6 };
+
+  /* ---- the journey's whole state ----
+     intendedUse is DECLARED, not inferred from anything. It is the lens
+     name for the one garden-buildings universe: Garden Room, Studio,
+     Residential and whatever follows are use-specific qualification
+     lenses over the same catalogue, not separate catalogues.
+
+     qualifiedBuildings === null means ATLAS HAS NOT YET ESTABLISHED
+     RESIDENTIAL QUALIFICATION. It does not mean nothing qualifies.
+     UNKNOWN IS NOT FALSE, and the copy on screen says exactly that. It
+     is not populated by this build, and nothing here reads a product. */
+  var S = {
+    intendedUse: 'residential',
+    qualifiedBuildings: null,
+    gl:null, gw:null, hasB:null, buildings:[],
+    access:null, entrance:null, services:null, septic:null, protected:null
+  };
+
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ var d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; };
+
+  /* =================================================================
+     WHAT ATLAS COMPUTES
+     ================================================================= */
+  function calc(s){
+    var g = (Number(s.gl)||0) * (Number(s.gw)||0);
+    var built = (s.buildings||[]).reduce(function(a,b){
+      return a + (Number(b.l)||0)*(Number(b.w)||0); }, 0);
+    var allowance = R.MAX - built;          /* the 45 m² ceiling covers everything */
+    var afterOpen = g - built - R.OPEN;     /* 25 m² stays with the house */
+    var maxArea = Math.min(allowance, afterOpen);
+    return {
+      garden:+g.toFixed(1), built:+built.toFixed(1),
+      allowance:+allowance.toFixed(1), afterOpen:+afterOpen.toFixed(1),
+      maxArea:+maxArea.toFixed(1),
+      limiter: allowance <= afterOpen ? 'existing buildings' : 'open space for the house',
+      fits: maxArea >= R.MIN,
+      measured: !!(s.gl && s.gw)
+    };
+  }
+
+  /* ---- the state rule. Priority order.
+     NOT SURE IS NEVER TREATED AS NO — an unanswered or unsure item can
+     only ever move the assessment to state 2, never to a refusal.
+       4  a condition answered against    -> a key condition doesn't fit
+       3  the measurements don't reach    -> space looks like the limit
+       2  anything unresolved or flagged  -> a few things need checking
+       1  clear, and the space works      -> worth exploring          ---- */
+  function decide(s, c){
+    var fired=[], open=[], flags=[];
+    if (s.entrance==='yes') fired.push(4);
+    if (s.services==='own') fired.push(4);
+    if (s.access==='no')    fired.push(4);
+    if (c.measured && !c.fits) fired.push(3);
+    ['access','entrance','services','septic','protected'].forEach(function(k){
+      if (s[k]==='unsure' || s[k]===null) open.push(k);
+    });
+    if (!c.measured) open.push('garden');
+    if (s.septic==='yes')    flags.push('septic');
+    if (s.protected==='yes') flags.push('protected');
+    var st = fired.indexOf(4)>-1 ? 4
+           : fired.indexOf(3)>-1 ? 3
+           : (open.length || flags.length) ? 2 : 1;
+    return { st:st, open:open, flags:flags };
+  }
+
+  var COPY = {
+    1:['Worth exploring','Your garden looks like it could take one',
+       'On what you told us there is room for a home inside the 32–45 m² range these regulations set, with enough garden still left for the house, and none of the other conditions is in the way.'],
+    2:['A few things need checking','Nothing is ruled out',
+       'The space itself works. What is not settled yet is listed below — none of it counts against you, and each one has a straightforward way to resolve it.'],
+    3:['Space looks like the limit','The garden is what decides it here',
+       'Once the house keeps the open space it has to keep, what is left is smaller than the minimum size these regulations allow. That is a fact about the garden, not about permission.'],
+    4:['A key condition doesn’t fit','Something outside the measurements',
+       'One of the conditions these regulations set is not met, and it is not about size. Whatever the garden measures, that condition would need to change first.']
+  };
+  var ASK = {
+    access:'whether someone could reach the far end of the garden on foot and by wheelchair, inside your own boundaries',
+    entrance:'whether a new entrance onto the road would be needed',
+    services:'where the water and drains would come from',
+    septic:'whether the property is on a septic tank',
+    protected:'whether the house is a protected structure or in a conservation area',
+    garden:'the size of the garden'
+  };
+
+  var cr = function(a,b){ return '<div class="hm-cr"><span>'+a+'</span><span>'+b+'</span></div>'; };
+
+  function renderResult(){
+    var c = calc(S), d = decide(S,c), C = COPY[d.st];
+    $('dhResultRoot').className = 'dh-s' + d.st;
+    $('dhBand').textContent = C[1];
+    $('dhHead').textContent = C[0];
+    $('dhSub').textContent  = C[2];
+
+    /* ---- why: only statements the answers actually support ---- */
+    var why = [];
+    if (c.measured && c.fits)
+      why.push(['hm-yes','✓','Your measurements leave room for about '+c.maxArea+' m², inside the '+R.MIN+'–'+R.MAX+' m² range']);
+    if (c.measured && !c.fits)
+      why.push(['hm-no','–','Your measurements leave about '+Math.max(0,c.maxArea)+' m² available — the smallest allowed is '+R.MIN+' m²']);
+    if (c.measured && S.hasB==='yes' && c.built>0 && c.fits)
+      why.push(['hm-yes','✓','The '+c.built+' m² already built in the garden still leaves '+c.allowance+' m² of the '+R.MAX+' m² allowance']);
+    if (c.measured && S.hasB==='no')
+      why.push(['hm-yes','✓','Nothing is built in the garden yet, so the full '+R.MAX+' m² allowance is available']);
+    if (S.access==='yes')     why.push(['hm-yes','✓','You told us the far end of the garden can be reached inside your own property']);
+    if (S.access==='no')      why.push(['hm-no','–','You told us the far end of the garden cannot be reached inside your own property']);
+    if (S.entrance==='no')    why.push(['hm-yes','✓','No new entrance onto the road would be needed']);
+    if (S.entrance==='yes')   why.push(['hm-no','–','A new entrance onto the road would be needed, which these regulations do not allow']);
+    if (S.services==='house') why.push(['hm-yes','✓','Water and drains would run off the existing house']);
+    if (S.services==='own')   why.push(['hm-no','–','A separate water or wastewater connection would be needed, which these regulations do not allow']);
+    d.open.forEach(function(k){
+      why.push(['hm-ask','?','You were not sure about '+ASK[k]+' — Atlas has left it open']); });
+    if (S.septic==='yes')    why.push(['hm-ask','?','The property is on a septic tank, so where its percolation area runs needs checking']);
+    if (S.protected==='yes') why.push(['hm-ask','?','The house is a protected structure or in a conservation area, which changes what is involved']);
+    $('dhWhy').innerHTML = why.map(function(w){
+      return '<li class="'+w[0]+'"><span class="hm-find-lab">'+w[1]+'</span>'+esc(w[2])+'</li>'; }).join('');
+
+    /* ---- the arithmetic, collapsed. The evidence disclosure pattern:
+       a <details> created without `open`, exactly as the Atlas
+       Assessment does it. ---- */
+    var h = '<div class="hm-cg">Your garden</div>';
+    h += cr('What you measured', c.measured ? esc(S.gl)+' m × '+esc(S.gw)+' m' : 'not given');
+    h += cr('Garden area', c.garden+' m²');
+    h += '<div class="hm-cg">Already built</div>';
+    if (S.hasB==='yes' && S.buildings.length){
+      S.buildings.forEach(function(b,i){
+        h += cr('Building '+(i+1), esc(b.l||0)+' m × '+esc(b.w||0)+' m = '+
+                (((+b.l||0)*(+b.w||0)).toFixed(1))+' m²'); });
+    } else { h += cr('Buildings in the garden','none'); }
+    h += cr('Counts towards the '+R.MAX+' m² allowance', '− '+c.built+' m²');
+    h += cr('Allowance left', c.allowance+' m²');
+    h += '<div class="hm-cg">Space the house has to keep</div>';
+    h += cr('Private open space that stays with the house', '− '+R.OPEN+' m²');
+    h += cr('Garden left over after that', c.afterOpen+' m²');
+    h += '<div class="hm-cg">What that leaves</div>';
+    /* AREA LANGUAGE. Not "the largest home the garden could take": the
+       0.6 m setback on every side and the actual shape of the plot are
+       not modelled here, so this is what the MEASUREMENTS leave, which
+       is a smaller and more honest claim. */
+    h += '<div class="hm-cr hm-tot"><span>Potential area available from these measurements</span><span>'+c.maxArea+' m²</span></div>';
+    h += cr('The range these regulations allow', R.MIN+'–'+R.MAX+' m²');
+    h += '<p class="hm-cn">Limited by '+c.limiter+'. '+
+      (c.fits ? 'That clears the '+R.MIN+' m² minimum by '+(+(c.maxArea-R.MIN).toFixed(1))+' m².'
+              : 'That is '+(+(R.MIN-c.maxArea).toFixed(1))+' m² short of the '+R.MIN+' m² minimum — and the minimum is as binding as the maximum.')+
+      ' A '+R.SETBACK+' m gap is also needed on every side of the building, which comes out of wherever it sits — a tape measure on site is the next step, not a pace.</p>';
+    $('dhCalc').innerHTML = h;
+
+    /* ---- what still needs checking ---- */
+    var ck = [];
+    d.open.forEach(function(k){ ck.push('Settle '+ASK[k]+'.'); });
+    if (S.septic==='yes') ck.push('Where the septic tank’s percolation area runs. The building has to stay off it, and that is something a professional establishes, not you.');
+    if (S.protected==='yes' || S.protected==='unsure') ck.push('Protected structure or conservation area status. Your local authority holds the record — it is not something PlotNua can look up.');
+    ck.push('The tax treatment of a home like this. The Government has said it will be clarified; it is not settled yet.');
+    ck.push('What “occupied in conjunction with the main house” means in practice. The regulations use the phrase and do not define it.');
+    $('dhCheck').innerHTML = ck.map(function(t){
+      return '<li class="hm-ask"><span class="hm-find-lab">?</span>'+esc(t)+'</li>'; }).join('');
+
+    /* ---- what to establish next. Only what THIS assessment raised. ---- */
+    var rs = [];
+    if (d.st===3){
+      rs.push(['Re-measure with a tape','Paces are fine for a first look, but the difference between '+Math.max(0,c.maxArea)+' m² and '+R.MIN+' m² can be a pace on each side.']);
+      rs.push(['See whether a shed could go','Anything already built comes off the '+R.MAX+' m² allowance. Clearing one gives that space straight back.']);
+    }
+    if (d.st===4 && S.services==='own')
+      rs.push(['Ask whether the house could serve both','A plumber or engineer can tell you whether the existing connection has the capacity. If it has, this condition may not apply after all.']);
+    if (d.st===4 && S.entrance==='yes')
+      rs.push(['Look again at the existing way in','The regulations let the way in stay as it is. They do not allow a new one, so the question is whether the existing entrance could serve both.']);
+    if (d.st===4 && S.access==='no')
+      rs.push(['Look again at the side of the house','A route on foot and by wheelchair has to be inside your own boundaries. Sometimes it is a gate or a step rather than the space itself.']);
+    if (d.st===1 || d.st===2){
+      rs.push(['Confirm your protected structure status','One call or search with your local authority. They hold the record and it is free to ask.']);
+      rs.push(['Talk to an architect or engineer','Ground conditions, levels and drainage do not show up in a measurement, and they decide what is actually buildable.']);
+      rs.push(['Note the two dates','Fourteen days’ notice to the planning authority before work starts, and completion by the end of 2030.']);
+    }
+    if (S.septic==='yes')
+      rs.push(['Have the percolation area located','If the tank’s percolation area runs under the spot you had in mind, the building moves — better to know now.']);
+    rs.push(['Read the two published sources','Everything Atlas used is in them. They are linked on the assessment.']);
+    $('dhNextList').innerHTML = rs.map(function(r){
+      return '<li><b>'+esc(r[0])+'</b>'+esc(r[1])+'</li>'; }).join('');
+    $('dhNextSub').textContent =
+        d.st===1 ? 'Nothing here is a purchase. These are the things that would turn a promising garden into a decision you could actually make.'
+      : d.st===2 ? 'These are the open items from your assessment, in the order worth taking them.'
+      : d.st===3 ? 'Space was the limit. These are the two things that could change that, and what to do if they cannot.'
+                 : 'One condition was in the way. These are the questions worth asking before setting it aside.';
+  }
+
+  /* =================================================================
+     THE BUILDINGS REPEATER
+     ================================================================= */
+  function drawBuildings(){
+    var w = $('dhBWrap'), l = $('dhBList');
+    w.hidden = (S.hasB !== 'yes');
+    if (S.hasB !== 'yes'){ l.innerHTML = ''; return; }
+    if (!S.buildings.length) S.buildings.push({l:'',w:''});
+    l.innerHTML = S.buildings.map(function(b,i){
+      return '<div class="dh-bldg"><div class="dh-bh"><span>Building '+(i+1)+'</span>'+
+        (S.buildings.length>1 ? '<button class="dh-lnk" type="button" data-dh-rm="'+i+'">Remove</button>' : '')+
+        '</div><div class="dh-row">'+
+        '<div class="dh-cell"><small><label for="dhB'+i+'l">Length (m)</label></small>'+
+        '<input type="number" id="dhB'+i+'l" data-dh-b="'+i+'" data-dh-f="l" min="0" step="0.5" inputmode="decimal" value="'+esc(b.l||'')+'"></div>'+
+        '<span class="dh-x" aria-hidden="true">×</span>'+
+        '<div class="dh-cell"><small><label for="dhB'+i+'w">Width (m)</label></small>'+
+        '<input type="number" id="dhB'+i+'w" data-dh-b="'+i+'" data-dh-f="w" min="0" step="0.5" inputmode="decimal" value="'+esc(b.w||'')+'"></div>'+
+        '</div></div>';
+    }).join('');
+  }
+
+  /* =================================================================
+     THE CHECKING SEQUENCE
+     Every line names something Atlas genuinely does with the answers
+     given. Nothing external is checked and nothing is implied to be.
+     ================================================================= */
+  var CHECKS = [
+    'Working out the garden area from your measurements',
+    'Taking off anything already built in the garden',
+    'Testing what is left against the 45 m² allowance',
+    'Holding back the private open space the house has to keep',
+    'Comparing what remains with the 32–45 m² range',
+    'Reading your answers on access, entrance and services',
+    'Listing what still needs confirming'
+  ];
+  var checkingTimer = null;
+  function runChecking(){
+    var ul = $('dhChkList');
+    ul.innerHTML = CHECKS.map(function(t){
+      return '<li><span class="dh-tick">✓</span><span>'+esc(t)+'</span></li>'; }).join('');
+    $('dhChkSr').textContent = 'Atlas is working through your answers.';
+    var items = Array.prototype.slice.call(ul.children), i = 0;
+    if (checkingTimer) clearTimeout(checkingTimer);
+    (function tick(){
+      if (i >= items.length){
+        checkingTimer = setTimeout(function(){ show('result'); }, 420);
+        return;
+      }
+      items[i].classList.add('dh-on'); i++;
+      checkingTimer = setTimeout(tick, 320);
+    })();
+  }
+
+  /* =================================================================
+     NAVIGATION
+     ================================================================= */
+  var SCREENS = ['questions','checking','result','next'];
+  var currentScreen = 'questions';
+  function show(id){
+    currentScreen = id;
+    SCREENS.forEach(function(s){ $('dh-'+s).hidden = (s !== id); });
+    if (id === 'result' || id === 'next') renderResult();
+    if (id === 'checking') runChecking();
+    if (id !== 'checking' && checkingTimer){ clearTimeout(checkingTimer); checkingTimer = null; }
+    /* Bring the top of the journey into view rather than the top of the
+       page: the homeowner has read their way down to get here. */
+    var top = root.getBoundingClientRect().top + window.pageYOffset - 24;
+    window.scrollTo({ top: top, behavior: 'auto' });
+    /* Focus moves to the new screen's heading so a keyboard or screen
+       reader user is taken with the journey rather than left behind it. */
+    var h = $('dh-'+id).querySelector('h3');
+    if (h){ h.setAttribute('tabindex','-1'); h.focus({ preventScroll:true }); }
+  }
+
+  /* =================================================================
+     WHAT ATLAS NEEDS BEFORE IT WILL ANSWER
+
+     The five condition questions are genuinely optional — an unanswered
+     or unsure one is an open item, never a refusal. The MEASUREMENTS are
+     different in kind. Without them the arithmetic runs on zero: garden
+     0 m², minus the 25 m² the house keeps, and the page offers the
+     homeowner "−25 m² available" and tells them they are 57 m² short.
+     That is not an assessment with a gap in it, it is a wrong answer.
+     Caught in testing before it could reach anyone.
+
+     So the measurement is required, and so is knowing whether anything
+     is already built — assuming an empty garden would silently hand back
+     allowance that may not be there. Nothing else is required.
+     ================================================================= */
+  function missingBeforeAtlas(){
+    var m = [];
+    if (!(Number(S.gl) > 0) || !(Number(S.gw) > 0))
+      m.push('the length and width of the garden');
+    if (S.hasB === null)
+      m.push('whether anything is already built in the garden');
+    if (S.hasB === 'yes' && S.buildings.some(function(b){
+          return !(Number(b.l) > 0) || !(Number(b.w) > 0); }))
+      m.push('the length and width of each building already there');
+    return m;
+  }
+
+  root.addEventListener('click', function(e){
+    var g = e.target.closest('[data-dh-go]');
+    if (g){
+      if (g.getAttribute('data-dh-go') === 'checking'){
+        var miss = missingBeforeAtlas();
+        if (miss.length){
+          $('dhQStatus').textContent = 'Atlas needs ' +
+            (miss.length === 1 ? miss[0]
+              : miss.slice(0,-1).join(', ') + ' and ' + miss[miss.length-1]) +
+            ' before it can work this out. A rough pace is fine.';
+          /* Focus the first field actually at fault, not simply the
+             first field on the screen. */
+          var fields = $('dh-questions').querySelectorAll('input[type=number]');
+          for (var fi = 0; fi < fields.length; fi++){
+            if (!(Number(fields[fi].value) > 0)){ fields[fi].focus(); break; }
+          }
+          return;
+        }
+        $('dhQStatus').textContent = '';
+      }
+      show(g.getAttribute('data-dh-go')); return;
+    }
+    var rm = e.target.closest('[data-dh-rm]');
+    if (rm){ S.buildings.splice(+rm.getAttribute('data-dh-rm'), 1); drawBuildings(); return; }
+    var o = e.target.closest('.dh-opt button');
+    if (o){
+      var grp = o.closest('.dh-opt');
+      S[grp.getAttribute('data-dh-q')] = o.getAttribute('data-v');
+      Array.prototype.forEach.call(grp.querySelectorAll('button'), function(b){
+        b.setAttribute('aria-pressed', String(b === o)); });
+      if (grp.getAttribute('data-dh-q') === 'hasB') drawBuildings();
+    }
+  });
+
+  root.addEventListener('input', function(e){
+    var t = e.target;
+    if (t.id === 'dhGl') S.gl = t.value;
+    if (t.id === 'dhGw') S.gw = t.value;
+    if (t.hasAttribute && t.hasAttribute('data-dh-b'))
+      S.buildings[+t.getAttribute('data-dh-b')][t.getAttribute('data-dh-f')] = t.value;
+  });
+
+  $('dhAddB').addEventListener('click', function(){
+    S.buildings.push({l:'',w:''}); drawBuildings();
+  });
+
+  drawBuildings();
+
+  /* OPEN ON THE FIRST QUESTION.
+     Every step carries `hidden` in the markup so none of them flashes before
+     the script runs. On the Discovery page the opening call was show('eircode');
+     the Eircode step is shared infrastructure now, so the journey opens on the
+     first thing it actually asks. Without this the branch would show an empty
+     panel — caught in testing, which is what testing is for. */
+  show('questions');
+
+  /* Exposed for verification only — read, never written to. Gives the
+     four-state test suite the shipped functions rather than a copy of
+     them, so what is tested is what runs. */
+  window.__PN_HOME__ = { R:R, S:S, calc:calc, decide:decide, COPY:COPY,
+                         missingBeforeAtlas:missingBeforeAtlas, show:show };
+})();
+</script>
+
 </body>
 </html>

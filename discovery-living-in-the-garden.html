@@ -758,25 +758,30 @@
 
 <section class="pb-preview reveal" id="discover-your-property">
     <div class="pn-wordmark">PlotNua</div>
-    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
-         your-plot.html, whose journey is hard-coded to discoveryContext =
-         'artist-studio'. Whatever this page said, the homeowner arrived in the
-         Garden Room journey — which is the wrong journey twice over here, since
-         this Discovery is about a home somebody lives in, not a room. The
-         interaction is removed rather than disabled, for the reason already
-         recorded on the pages that did this first: a control a homeowner cannot
-         use is worse than no control at all. Component, styling and independence
-         statement are the existing ones. -->
-    <h2 class="pb-headline">This property check is being prepared</h2>
-    <p class="pb-subhead">The Home in the Garden check will look at how much clear garden is left once the house, the boundaries and whatever is already built on the site are measured &mdash; because a home has a minimum size as well as a maximum, and the space has to be there before anything else matters. It is not ready yet. In the meantime, there is plenty to explore.</p>
-    <div class="cs-exits">
-      <a class="cs-exit" href="discovery-room-to-grow.html">Explore Four Ways to Add a Room &rarr;</a>
-      <a class="cs-exit" href="discovery-the-borrowed-garden.html">Explore Share Your Spare Garden &rarr;</a>
-      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
-      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
-    </div>
+    <!-- ============================================================
+         THE HAND-OFF.
 
-    <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
+         What stood here was a withdrawal notice, and before that an Eircode
+         form that posted into a journey hard-coded to Garden Room. Neither
+         was right.
+
+         The property question — which house is this? — is now shared
+         infrastructure in your-plot.html, and this Discovery hands off to it
+         with the intended use named in the URL:
+
+             your-plot.html?discovery=residential
+
+         There is no second Eircode field, no second geocoder and no second
+         property confirmation on this page, because there is no second
+         property question.
+         ============================================================ -->
+    <h2 class="pb-headline">See what your garden could take</h2>
+    <p class="pb-subhead">Atlas starts with your Eircode, shows you the property it found, then asks
+      a few ordinary questions about the garden &mdash; and works out what the 2026 regulations would
+      allow there. About a minute, and a rough pace of the garden is enough.</p>
+    <a class="btn-primary" href="your-plot.html?discovery=residential">Check my property &rarr;</a>
+    <p class="pb-note">Nothing is bought or reserved here. This is an early property check, not
+      planning permission.</p>
   </section>
 
 <section class="related reveal">
