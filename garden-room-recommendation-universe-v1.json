@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-04T15:35:36Z",
+  "generated": "2026-09-10T11:15:14Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "qualificationRuleVersion": "garden-room-qualification-v1",
   "dryRun": true,
@@ -6521,10 +6521,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -13081,10 +13082,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no simulator equipment, screen, projector, netting or electrical provision is published. HOMEOWNER IMPLICATION: this is a timber shell only. The simulator hardware that gives the product its name is not included and is not costed on the listing; base, assembly and a certified electrical connection are all separate.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. No simulator equipment, screen, projector, netting or electrical provision is established by this installation evidence; specialist fit-out, base and certified electrical connection remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -13172,10 +13174,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no simulator equipment, screen, projector, netting or electrical provision is published. HOMEOWNER IMPLICATION: this is a timber shell only. The simulator hardware that gives the product its name is not included and is not costed on the listing; base, assembly and a certified electrical connection are all separate.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. No simulator equipment, screen, projector, netting or electrical provision is established by this installation evidence; specialist fit-out, base and certified electrical connection remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 14,300, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -13263,10 +13266,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no floor specification or electrical provision is published. HOMEOWNER IMPLICATION: for gym use the buyer must arrange base, assembly, any reinforced or protective flooring, and a certified electrical connection separately; none is included in the published price.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. No floor reinforcement/protection or electrical provision is established by this installation evidence; those items and the base remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND USABILITY NOT ESTABLISHED. Only thermal datum published is a 70 mm log wall, the thickest this supplier publishes. No insulation specification, U-value, floor or roof insulation detail, ventilation or heating provision is published. HOMEOWNER IMPLICATION: this product is marketed as a gym room, a use that generates moisture and normally requires ventilation as well as heating, but the published data addresses neither. Ask the supplier what insulation, ventilation and heating provision is included.",
@@ -13372,10 +13376,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no floor specification or electrical provision is published. HOMEOWNER IMPLICATION: for gym use the buyer must arrange base, assembly, any reinforced or protective flooring, and a certified electrical connection separately; none is included in the published price.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. No floor reinforcement/protection or electrical provision is established by this installation evidence; those items and the base remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 16,020, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -15285,10 +15290,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation service is published, and no water, drainage or electrical connection is published. HOMEOWNER IMPLICATION: the buyer must arrange base, assembly, plumbing and foul drainage connection separately. The base must span the full 655 x 700 cm envelope, which is a substantial groundworks cost in its own right.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Water, drainage and electrical connections remain separate unless explicitly quoted. The base must span the full 655 x 700 cm envelope, which remains a substantial groundworks cost in its own right.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -15376,10 +15382,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, terrace groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -15761,10 +15768,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 864 x 502 cm envelope, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, veranda groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -16147,10 +16155,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 600 x 298 cm envelope including the canopy.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, canopy groundworks and finishing remain separate unless explicitly quoted. The base must span the full 600 x 298 cm envelope including the canopy.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -16220,10 +16229,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 578 x 298 cm envelope including the veranda.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and veranda groundworks remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -16317,10 +16327,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND USABILITY NOT ESTABLISHED. Only thermal datum published is a 44 mm log wall. No insulation specification, U-value, floor or roof insulation detail or heating provision is published. HOMEOWNER IMPLICATION: a 44 mm solid log wall is a structural specification, not an insulation specification. Confirm with the supplier what insulation is included or available before planning year-round use.",
@@ -16414,10 +16425,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation service is published, and no water, drainage or electrical connection is published. HOMEOWNER IMPLICATION: the buyer must arrange base, assembly, plumbing and foul drainage connection separately; none is included in the published price. A 70 mm log kit is also a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Water, drainage and electrical connections are not established by this evidence and remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 11,630, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -16517,10 +16529,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation service is published, and no water, drainage or electrical connection is published. HOMEOWNER IMPLICATION: this is the only class of product in the range that needs mains water and foul drainage. The buyer must arrange base, assembly, plumbing and drainage connection separately; none is included in the published price.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Water, drainage and electrical connections are not established by this installation evidence and remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 15 m2. Published external dimensions 516 x 306 cm = 15.79 m2 overall footprint. Wall thickness 44 mm. Room area and footprint differ by only 0.79 m2. HOMEOWNER IMPLICATION: 95% of the ground covered is enclosed \u2014 among the most efficient in the catalogue \u2014 but the 15 m2 includes the shower room and WC named in the title, so the open living area is smaller than 15 m2. The supplier does not publish the split.",
@@ -16632,10 +16645,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 600 x 305 cm envelope including the canopy.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, canopy groundworks and finishing remain separate unless explicitly quoted. The base must span the full 600 x 305 cm envelope including the canopy.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -16723,10 +16737,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, porch/terrace groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND USABILITY NOT ESTABLISHED. Only thermal datum published is a 58 mm log wall \u2014 one of four products at 58 mm in this 150-row catalogue. No insulation specification, U-value, floor or roof insulation detail or heating provision is published. HOMEOWNER IMPLICATION: wall thickness alone does not establish year-round comfort. Ask the supplier what insulation is included.",
@@ -16814,10 +16829,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published for this product. HOMEOWNER IMPLICATION: the price is the delivered kit. Base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, veranda groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 10 m2. Published external dimensions 763 x 278 cm = 21.21 m2 overall footprint. Wall thickness 58 mm. The 11.21 m2 difference is occupied by the large veranda named in the product title. HOMEOWNER IMPLICATION: slightly over half the ground the structure covers is open veranda rather than enclosed room.",
@@ -17622,10 +17638,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 758 cm including shed and veranda sections.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, shed/veranda groundworks and finishing remain separate unless explicitly quoted. The base must span the full 758 cm including shed and veranda sections.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 9,050, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -17989,10 +18006,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation service is published, and no water, drainage or electrical connection is published. HOMEOWNER IMPLICATION: the buyer must arrange base, assembly, plumbing and foul drainage connection separately; none is included in the published price. A 70 mm log kit with an internal dividing wall is a heavier assembly than the single-space models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Water, drainage and electrical connections are not established by this installation evidence and remain separate unless quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -18670,10 +18688,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no electrical or data provision is published. HOMEOWNER IMPLICATION: for office use the buyer must arrange base, assembly and a certified electrical connection separately; none is included in the published price.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and a certified electrical/data connection remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND USABILITY NOT ESTABLISHED. Only thermal datum published is a 70 mm log wall, the thickest this supplier publishes, carried by 57 of 150 catalogue rows. No insulation specification, U-value, floor or roof insulation detail or heating provision is published. HOMEOWNER IMPLICATION: this product is marketed as an office, a use that normally implies year-round occupation, but the published data does not establish that it is suitable for it. Ask the supplier directly what insulation and heating provision is included.",
@@ -20054,10 +20073,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -21303,10 +21323,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no pool, plant or drainage provision is published. HOMEOWNER IMPLICATION: the price is the delivered kit only; base, groundworks, assembly and any pool-related works are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers customers a choice between DIY assembly and its professional installation service. Professional installation is optional and is not included in the headline kit price. Pool equipment, plant, drainage and electrical provision are not established by this installation evidence.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -21873,10 +21894,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND USABILITY NOT ESTABLISHED. Only thermal datum published is a 44 mm log wall. No insulation specification, U-value, floor or roof insulation detail or heating provision is published. HOMEOWNER IMPLICATION: a 44 mm solid log wall is a structural specification, not an insulation specification. Confirm with the supplier what insulation is included or available before planning year-round use.",
@@ -22533,10 +22555,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 775 cm including the shed section.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, shed groundworks and finishing remain separate unless explicitly quoted. The base must span the full 775 cm including the shed section.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 10,420, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -27531,10 +27554,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 512 x 645 cm envelope including the veranda, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and veranda groundworks remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -27628,10 +27652,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 498 x 498 cm envelope, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND USABILITY NOT ESTABLISHED. Only thermal datum published is a 70 mm log wall, the thickest this supplier publishes, carried by 57 of 150 catalogue rows. No insulation specification, U-value, floor or roof insulation detail or heating provision is published. HOMEOWNER IMPLICATION: 70 mm is the top of this supplier's published wall range, but wall thickness alone does not establish year-round comfort. Ask what insulation is included.",
@@ -27866,10 +27891,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 428 x 558 cm envelope including the porch.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, porch groundworks and finishing remain separate unless explicitly quoted. The base must span the full 428 x 558 cm envelope including the porch.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -27975,10 +28001,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 698 x 398 cm envelope, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -28072,10 +28099,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 600 x 298 cm envelope including the canopy.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, canopy groundworks and finishing remain separate unless explicitly quoted. The base must span the full 600 x 298 cm envelope including the canopy.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 5,600, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -28169,10 +28197,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 578 x 298 cm envelope including the veranda.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, veranda groundworks and finishing remain separate unless explicitly quoted. The base must span the full 578 x 298 cm envelope including the veranda.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 8.5 m2. Published external dimensions 578 x 298 cm = 17.22 m2 overall footprint. Wall thickness 44 mm. The 8.72 m2 difference is occupied by the veranda named in the product title. HOMEOWNER IMPLICATION: 49% of the ground covered is enclosed room. PUBLISHED INCONSISTENCY: the supplier lists Small Garden Room Lucas D with Veranda on the identical 578 x 298 cm footprint at the identical 44 mm wall thickness but publishes 9 m2 for it against 8.5 m2 here. Both figures are published; Atlas records both and resolves neither. The 0.5 m2 discrepancy is small but it means room area cannot be relied on to distinguish these two products.",
@@ -28254,10 +28283,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' as range-wide propositions and describes the catalogue as offering 'over 100 DIY options'. No installation or assembly service is published for this product. HOMEOWNER IMPLICATION: the quoted price should be read as the kit delivered to the property. Groundworks, base, assembly labour and any finishing are separate costs the buyer must establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Groundworks, base and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 10 m2. Published external dimensions 778 x 328 cm = 25.52 m2 overall footprint. Wall thickness 44 mm. The 15.52 m2 difference between footprint and room area is occupied by the veranda named in the product title. HOMEOWNER IMPLICATION: the enclosed usable room is 10 m2 \u2014 the size of a single bedroom \u2014 while the structure occupies 25.52 m2 of garden. Buyers comparing on footprint will overestimate the working space by a factor of 2.55.",
@@ -28345,10 +28375,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 577 x 502 cm envelope, not just the 15 m2 room.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. The base must span the full 577 x 502 cm envelope, not just the 15 m2 room.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -28601,10 +28632,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -29775,10 +29807,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no simulator equipment, screen, projector, netting or electrical provision is published. HOMEOWNER IMPLICATION: this is a timber shell only. The simulator hardware that gives the product its name is not included and is not costed; base, assembly and a certified electrical connection are all separate, across a 920 cm base run.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. No simulator equipment, screen, projector, netting or electrical provision is established by this installation evidence; specialist fit-out, base and certified electrical connection remain separate unless explicitly quoted. The base run remains 920 cm.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 33 m2. Published external dimensions 920 x 410 cm = 37.72 m2 overall footprint. Wall thickness 70 mm. The 4.72 m2 difference is not accounted for by the product title, which names no veranda, canopy or terrace. HOMEOWNER IMPLICATION: 87% of the ground covered is enclosed room. At 920 cm this publishes the longest single dimension of the simulator family, which matters for ball-flight distance.",
@@ -29866,10 +29899,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no simulator equipment, screen, projector, netting or electrical provision is published. HOMEOWNER IMPLICATION: this is a timber shell only. The simulator hardware that gives the product its name is not included and is not costed; base, assembly and a certified electrical connection are all separate.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. No simulator equipment, screen, projector, netting or electrical provision is established by this installation evidence; specialist fit-out, base and certified electrical connection remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 16,360, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -32132,10 +32166,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 739 x 678 cm envelope, the largest in this expansion, which is a substantial groundworks cost in its own right.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. The base must span the full 739 x 678 cm envelope, the largest in this expansion, which is a substantial groundworks cost in its own right.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -32400,10 +32435,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. A two-level 70 mm log structure is a substantially heavier and more complex self-assembly than the single-storey models in this range.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. A two-level 70 mm log structure remains substantially heavier and more complex to self-assemble than the single-storey models in this range.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -32632,10 +32668,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no electrical or data provision is published. HOMEOWNER IMPLICATION: for office use the buyer must arrange base, assembly and a certified electrical connection separately; none is included in the published price. A 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and a certified electrical/data connection remain separate unless explicitly quoted. A 70 mm log kit is a heavier assembly than the 44 mm models.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -33319,10 +33356,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. This is the largest 70 mm log kit in the range by room area, and the base must span the full 798 x 562 cm envelope \u2014 a substantial groundworks cost in its own right.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, finishing and any specialist room fit-out remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 18,520, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -33404,10 +33442,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 863 cm run, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. The live Rebeka product page offers Cabin Installation (+\u20ac3,190), and Summerhouse24 Ireland also publishes DIY assembly as an alternative. Professional installation is optional, not included in the \u20ac16,020 headline kit price.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 29 m2. Published external dimensions 863 x 385 cm = 33.23 m2 overall footprint. Wall thickness 70 mm. The 4.23 m2 difference is not accounted for by the product title, which names no veranda, canopy or terrace. HOMEOWNER IMPLICATION: 87% of the ground covered is enclosed room, delivered as a long 863 cm run only 385 cm deep. The supplier lists Rebeka Plus on identical published figures for EUR 1,380 more.",
@@ -37630,10 +37669,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 11.26 m2. Published external dimensions 497 x 497 cm = 24.70 m2 overall footprint. Wall thickness 44 mm. The 13.44 m2 difference is not accounted for by the product title, which names no veranda, canopy or terrace. HOMEOWNER IMPLICATION: the enclosed room is 46% of the ground covered. Because the supplier does not name an outdoor element for this model, buyers should ask what occupies the remaining footprint before assuming it is usable.",
@@ -37739,10 +37779,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 592 x 502 cm envelope, not just the 14.5 m2 room.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. The base must span the full 592 x 502 cm envelope, not just the 14.5 m2 room.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 8,700, reduced from a published EUR 9,190, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery. The sale price may not persist.",
@@ -38112,10 +38153,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 657 cm length including the veranda.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, veranda groundworks and finishing remain separate unless explicitly quoted. The base must span the full 657 cm length including the veranda.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -38185,10 +38227,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 567 cm length including the veranda.",
+          "text": "DIY OR INSTALLED. The live Elias product page offers Cabin Installation (+\u20ac1,840), and Summerhouse24 Ireland also supports DIY assembly. Professional installation is optional, not included in the \u20ac6,530 headline kit price. Base and veranda groundworks remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 6,530, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -38306,10 +38349,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 783 x 385 cm envelope, not just the 18 m2 room.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. The base must span the full 783 x 385 cm envelope, not just the 18 m2 room.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -38391,10 +38435,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently. A 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. The live Luna product page offers Cabin Installation (+\u20ac2,520), while Summerhouse24 Ireland also supports DIY assembly. Professional installation is optional, not included in the \u20ac13,610 headline kit price. Base and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -38920,10 +38965,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 595 cm including the shed section, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, shed groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -39023,10 +39069,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 784 x 502 cm envelope including the shed section.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, shed groundworks and finishing remain separate unless explicitly quoted. The base must span the full 784 x 502 cm envelope including the shed section.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 22 m2. Published external dimensions 784 x 502 cm = 39.36 m2 overall footprint. Wall thickness 44 mm. The 17.36 m2 difference is occupied by the shed named in the title together with whatever else the envelope contains; the supplier does not publish the split. HOMEOWNER IMPLICATION: 56% of the ground covered is the published room area, and the shed is not part of it. A 17 m2 residual is far larger than a store shed would normally require, so establish with the supplier what the envelope contains.",
@@ -39126,10 +39173,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 773 x 598 cm envelope including the veranda, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and veranda groundworks remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -39661,7 +39709,7 @@
           "evidenceScope": "Product-Specific"
         },
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds is an Irish manufacturer at Ballycanew Road, Gorey, Co. Wexford, Y25 XV29, manufacturing steel buildings on the same site. Nothing inferred. LIMITATION: delivery and installation coverage are not published, so the extent of the Republic served is unconfirmed and Northern Ireland is not addressed. HOMEOWNER IMPLICATION: an Irish manufacturer with a full published Wexford address \u2014 confirm delivery and installation to your county and the cost before ordering. LEGACY NORMALISATION: this record previously carried its value only in the Value Boolean checkbox (true) and Confirmation State (Yes), with no name, no Value Text, no Evidence Tier and no source. Normalised to approved AM-005 vocabulary; the legacy Yes is consistent with and corroborated by the certified AM-S01 locality evidence.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -39682,10 +39730,11 @@
           "status": "Verified"
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED. Price from EUR 9,995 including delivery and professional assembly.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         }
       },
       "price": 9995,
@@ -39693,7 +39742,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": 9.11,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED. Price from EUR 9,995 including delivery and professional assembly.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -39756,7 +39805,7 @@
         "currency": "EUR",
         "priceType": "    Standard Price",
         "status": "Verified",
-        "includesVat": "Yes",
+        "includesVat": "Unknown",
         "evidenceScope": null,
         "adjudication": "adjudicated",
         "candidateCount": 1
@@ -39787,13 +39836,14 @@
           ]
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         },
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish manufacturer, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. LIMITATION: delivery and installation coverage not published; Northern Ireland not addressed. HOMEOWNER IMPLICATION: confirm delivery and installation to your county before ordering. LEGACY NORMALISATION: value previously held only in Value Boolean and Confirmation State; normalised to approved vocabulary with Tier, Scope and source added.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -39839,7 +39889,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -39902,14 +39952,14 @@
         "currency": "EUR",
         "priceType": "    Standard Price",
         "status": "Verified",
-        "includesVat": "Yes",
+        "includesVat": "Unknown",
         "evidenceScope": null,
         "adjudication": "adjudicated",
         "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish manufacturer, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. LIMITATION: delivery and installation coverage not published. HOMEOWNER IMPLICATION: confirm delivery and installation to your county before ordering. LEGACY NORMALISATION: value previously held only in Value Boolean and Confirmation State; normalised with Tier, Scope and source added.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -39968,10 +40018,11 @@
           "evidenceScope": "Product-Specific"
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         },
         "installationModel": {
           "text": "TURNKEY INSTALLATION INCLUDED. Free nationwide delivery and professional installation included, expertly assembled by the supplier's own team with no hidden costs; free site visit; certified electrical work included; listed at EUR 12,450 including delivery and professional assembly. Rebated concrete base required and not included. Nothing inferred. HOMEOWNER IMPLICATION: delivered, assembled and wired for the quoted figure; the base is the buyer's responsibility.",
@@ -39985,7 +40036,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -40048,7 +40099,7 @@
         "currency": "EUR",
         "priceType": "    Standard Price",
         "status": "Verified",
-        "includesVat": "Yes",
+        "includesVat": "Unknown",
         "evidenceScope": null,
         "adjudication": "adjudicated",
         "candidateCount": 1
@@ -40062,7 +40113,7 @@
           "status": "Verified"
         },
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish manufacturer, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. LIMITATION: delivery and installation coverage not published. HOMEOWNER IMPLICATION: confirm delivery and installation to your county before ordering. LEGACY NORMALISATION: value previously held only in Value Boolean and Confirmation State; normalised with Tier, Scope and source added.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -40113,10 +40164,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         },
         "electricalIncluded": {
           "text": null,
@@ -40132,7 +40184,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": 17.87,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -40195,7 +40247,7 @@
         "currency": "EUR",
         "priceType": "    Standard Price",
         "status": "Verified",
-        "includesVat": "Yes",
+        "includesVat": "Unknown",
         "evidenceScope": null,
         "adjudication": "adjudicated",
         "candidateCount": 1
@@ -40222,7 +40274,7 @@
           "evidenceScope": "Product-Specific"
         },
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish manufacturer, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. LIMITATION: delivery and installation coverage not published. HOMEOWNER IMPLICATION: confirm delivery and installation to your county before ordering. LEGACY NORMALISATION: value previously held only in Value Boolean and Confirmation State; normalised with Tier, Scope and source added.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -40262,10 +40314,11 @@
           "status": "Verified"
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED. Largest Multiroom depth held in Atlas; internal partitions and doors available as a build option.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         },
         "installationModel": {
           "text": "TURNKEY INSTALLATION INCLUDED. Free nationwide delivery and professional installation included; certified electrical work included; listed at EUR 17,550 including delivery and professional assembly. Rebated concrete base required and not included. Nothing inferred. HOMEOWNER IMPLICATION: at roughly 27.6 m2 this is one of the larger models, so the concrete base is correspondingly larger and more expensive \u2014 the excluded item scales with the building.",
@@ -40279,7 +40332,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": 26.63,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED. Largest Multiroom depth held in Atlas; internal partitions and doors available as a build option.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -40386,10 +40439,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         },
         "electricalIncluded": {
           "text": null,
@@ -40412,7 +40466,7 @@
           "evidenceScope": "Product-Specific"
         },
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish manufacturer, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. LIMITATION: delivery and installation coverage not published. HOMEOWNER IMPLICATION: confirm delivery and installation to your county before ordering. LEGACY NORMALISATION: value previously held only in Value Boolean and Confirmation State; normalised with Tier, Scope and source added.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -40425,7 +40479,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -40488,17 +40542,18 @@
         "currency": "EUR",
         "priceType": "    Standard Price",
         "status": "Verified",
-        "includesVat": "Yes",
+        "includesVat": "Unknown",
         "evidenceScope": null,
         "adjudication": "adjudicated",
         "candidateCount": 1
       },
       "features": {
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         },
         "warranty": {
           "text": "STRUCTURAL WARRANTY. DURATION: 15 years. Published 15 year anti-rust guarantee; expected lifespan more than 30 years. Nothing inferred. HOMEOWNER IMPLICATION: corrosion cover for fifteen years on the structure only.",
@@ -40553,7 +40608,7 @@
           "evidenceScope": "Product-Specific"
         },
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish manufacturer, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. LIMITATION: delivery and installation coverage not published. HOMEOWNER IMPLICATION: confirm delivery and installation to your county before ordering. LEGACY NORMALISATION: value previously held only in Value Boolean and Confirmation State; normalised with Tier, Scope and source added.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -40572,7 +40627,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": 20.07,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -40635,14 +40690,14 @@
         "currency": "EUR",
         "priceType": "    Standard Price",
         "status": "Verified",
-        "includesVat": "Yes",
+        "includesVat": "Unknown",
         "evidenceScope": null,
         "adjudication": "adjudicated",
         "candidateCount": 1
       },
       "features": {
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish manufacturer, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. LIMITATION: delivery and installation coverage not published. HOMEOWNER IMPLICATION: confirm delivery and installation to your county before ordering. LEGACY NORMALISATION: value previously held only in Value Boolean and Confirmation State; normalised with Tier, Scope and source added.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -40708,10 +40763,11 @@
           "evidenceScope": "Product-Specific"
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         }
       },
       "price": 15995,
@@ -40719,7 +40775,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": 23.99,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -40804,7 +40860,7 @@
           "status": "Verified"
         },
         "irishAvailability": {
-          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Nothing inferred. SUPPLIER STATUS \u2014 ADMAN STEEL SHEDS, 9 Garden-Room products, IRISH AVAILABILITY LAYER COMPLETE. All 9 AVAILABLE IN REPUBLIC OF IRELAND, all Tier B, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: an Irish steel manufacturer at Ballycanew Road, Gorey, Co. Wexford, Y25 XV29, with manufacturing on the same site and a published Irish landline. This is an Irish company selling Irish-made buildings to Irish buyers. LIMITATION RECORDED ONCE: delivery and installation coverage are NOT published, so how much of the Republic is served, and at what cost, is unconfirmed. Northern Ireland is not addressed at all. Recording an all-island classification would overstate the evidence. LEGACY NORMALISATION, recorded once for the supplier: all 9 records previously carried their value only in the Value Boolean checkbox (true) and Confirmation State (Yes), with no name, no Value Text, no Evidence Tier and no source URL. They were invisible to name-based completeness checks. All 9 are now normalised to the approved AM-005 vocabulary with Evidence Tier, Evidence Scope and source added; the legacy Yes is consistent with the certified AM-S01 locality evidence and has not been contradicted. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: Irish-made and Irish-sold, but establish delivery and installation coverage and cost for your county in writing before ordering. AUDIT REPAIR, AM-005 Layer Completion Audit: a second approved classification previously appeared verbatim in the limitation above and corrupted mutually-exclusive counting. Reworded; classification, Evidence Tier and Evidence Scope unchanged.",
+          "text": "AVAILABLE IN REPUBLIC OF IRELAND. Adman Steel Sheds publishes free nationwide delivery and professional installation for its Multiroom Garden Rooms. Head office: Ballycanew Road, Gorey, Co. Wexford, Y25 XV29. Nothing inferred. Northern Ireland coverage is not established by this evidence.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
@@ -40842,10 +40898,11 @@
           ]
         },
         "insulation": {
-          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED. Largest Multiroom in Atlas at 4m x 9.2m; internal partitions available.",
+          "text": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Range-Level",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND INSULATED. Published exactly as given: 40 mm insulation throughout walls and roof, 25 mm floor insulation with OSB timber; double-glazed PVC doors and windows, three windows on this size; tongue-and-groove timber internal panelling; certified electrical work included. Listed at EUR 19,995 including delivery and professional assembly. Rebated concrete base required, not included. Nothing inferred. PLANNING NOTE, recorded as intelligence and not as a determination: at 4 m x 9.2 m the footprint is approximately 36.8 m2, which EXCEEDS the 30 m2 back-garden exempted-development allowance on its own, before any existing garden structure is counted. No planning finding is made here and floor area alone does not settle the question, but a buyer should treat this size as one to check with the local authority before ordering. SUPPLIER STATUS \u2014 ADMAN STEEL SHEDS, 9 Garden-Room products, THERMAL LAYER COMPLETE. All 9 are YEAR-ROUND INSULATED and all 9 are Tier A at product level, matched individually to the supplier's published size and price table. THE SUPPLIER-LEVEL FINDING: Adman is the only supplier reached so far in this layer that publishes an insulation THICKNESS for every element as standard \u2014 40 mm to walls and roof, 25 mm to the floor \u2014 alongside a complete, per-size price table that includes nationwide delivery, professional assembly and certified electrical work. That combination of disclosure and inclusive pricing is unmatched in the catalogue to date, and the entry price of EUR 9,995 for an insulated, wired, installed building is the lowest recorded in this layer. TWO QUALIFICATIONS. First, no U-value is published, so the 40 mm figure establishes that insulation exists and how much, but not how the assembly performs \u2014 and the structure is steel, which conducts heat readily at panel junctions and fixings in a way timber does not. Second, the prices exclude the rebated concrete base, which the supplier requires and for which it publishes separate base guidance and a concrete partners list; that is a real and unpriced cost that must be added before comparing against turnkey suppliers such as Cabin Master, whose quoted price includes foundations. Head office is Gorey, Co. Wexford, with nationwide Irish delivery \u2014 an Irish supplier with an Irish route to purchase.",
@@ -40865,7 +40922,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Roof, walls and floor fully insulated as standard. Steel construction. Thickness, material and U-value NOT PUBLISHED. Largest Multiroom in Atlas at 4m x 9.2m; internal partitions available.",
+      "insulation": "INSULATED AS STANDARD \u2014 YEAR-ROUND. Manufacturer states 40mm insulation throughout walls and roof, plus 25mm floor insulation with OSB timber. Double-glazed PVC door/window options and certified electrical work are also published. No U-value is published.",
       "manufactureCountry": "Ireland",
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -42213,10 +42270,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no electrical, water or drainage provision is published. HOMEOWNER IMPLICATION: a bedroom implies services the kit does not include. The buyer must arrange base, assembly and all connections separately, and a 70 mm log kit with an internal dividing wall is a heavier assembly than the single-space models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers customers a choice between DIY assembly and its professional installation service. Professional installation is optional and is not included in the headline kit price. For a bedroom cabin, electrical, water and drainage connections remain separate unless explicitly included in the product quotation.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 15,500, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -42622,10 +42680,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. Because the published dimensions are contradicted by the published room area, obtain written confirmation of the true external size before setting out a base.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. Because the published dimensions are contradicted by the published room area, obtain written confirmation of the true external size before setting out a base.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "PUBLISHED AREA \u2014 BASIS UNCLEAR. The supplier publishes a room area of 24.5 m2 and external dimensions of 573 x 398 cm, which give an overall footprint of 22.81 m2. The published room area therefore EXCEEDS the published external footprint by 1.69 m2, which is not physically possible for a single-storey structure with walls of any thickness. Wall thickness is published as 70 mm. HOMEOWNER IMPLICATION: one of these two published figures is wrong, and Atlas cannot determine which. Do not rely on either the 24.5 m2 or the 573 x 398 cm dimensions without written confirmation from the supplier.",
@@ -49607,10 +49666,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. At 9.70 m2 this is among the smaller and simpler kits in the range to assemble.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. At 9.70 m2 this remains among the smaller and simpler kits in the range to assemble.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -49686,10 +49746,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no electrical or data provision is published. HOMEOWNER IMPLICATION: for office use the buyer must arrange base, assembly and a certified electrical connection separately. On the published footprint this is the smallest kit in the range, so groundworks should be correspondingly modest \u2014 but confirm the true external size first, since the title and the listing row disagree.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and a certified electrical/data connection remain separate unless explicitly quoted. On the published footprint this is among the smaller kits in the range, but confirm the true external size first because the title and listing row disagree.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 6,200, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery, and an Irish contact on which to resolve the published specification gaps before ordering.",
@@ -49783,10 +49844,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published, and no electrical or data provision is published. HOMEOWNER IMPLICATION: for office use the buyer must arrange base, assembly and a certified electrical connection separately; none is included in the published price.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and a certified electrical/data connection remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 7,320, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -50035,10 +50097,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. At 8.29 m2 and 21 mm this is among the lightest and simplest kits in the range to assemble.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. At 8.29 m2 and 21 mm this remains among the lightest and simpler kits in the range to assemble.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -50132,10 +50195,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 408 x 498 cm envelope even though only 8 m2 of it is enclosed room.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. The veranda/base groundworks position remains to be confirmed in the product quotation.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -50217,10 +50281,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 553 x 398 cm envelope even though only 6.5 m2 of it is enclosed room.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. The veranda/base groundworks position remains to be confirmed in the product quotation.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 6.5 m2. Published external dimensions 553 x 398 cm = 22.01 m2 overall footprint. Wall thickness 58 mm. The 15.51 m2 difference is occupied by the large veranda named in the product title. HOMEOWNER IMPLICATION: only 30% of the ground covered is enclosed room. At a footprint-to-room ratio of 3.39 this is the second most veranda-dominated product in the catalogue, behind Paradise A at 4.03. Buyers comparing on footprint will overestimate the working space by more than three times.",
@@ -50762,10 +50827,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 639 x 616 cm envelope including the veranda, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and veranda groundworks remain separate unless explicitly included in the quotation.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 25.3 m2. Published external dimensions 639 x 616 cm = 39.36 m2 overall footprint. Wall thickness 70 mm. The 14.06 m2 difference is occupied by the veranda named in the title together with the 70 mm wall construction. HOMEOWNER IMPLICATION: 64% of the ground covered is enclosed room. Armin XL publishes a near-identical 39.37 m2 footprint at the same wall thickness with 25 m2 of room \u2014 0.3 m2 less \u2014 for EUR 4,730 less.",
@@ -54729,10 +54795,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. Whether the terrace requires its own deck substructure is not published; establish this before pricing groundworks.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, terrace groundworks and finishing remain separate unless explicitly quoted. Whether the terrace requires its own deck substructure remains unpublished and should be established before pricing groundworks.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -54820,10 +54887,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 512 x 769 cm envelope including the veranda, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and veranda groundworks remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "insulationRating": {
           "text": "YEAR-ROUND USABILITY NOT ESTABLISHED. Only thermal datum published is a 70 mm log wall, the thickest this supplier publishes, carried by 57 of 150 catalogue rows. No insulation specification, U-value, floor or roof insulation detail or heating provision is published. HOMEOWNER IMPLICATION: 70 mm is the top of this supplier's published wall range, but wall thickness alone does not establish year-round comfort. Ask what insulation is included.",
@@ -54905,10 +54973,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate. The base must span the full 678 x 328 cm envelope even though only 7.5 m2 of it is enclosed room.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and groundworks remain separate unless explicitly included in the quotation.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 8,180, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -55008,10 +55077,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. Hanging and aligning a folding door set is more exacting than fitting a standard door, and no fitting service is published.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. Hanging and aligning a folding door set is more exacting than fitting a standard door.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE IN IRELAND \u2014 IRISH TRADING ENTITY. Sold by Hansa Garden Ireland Ltd through summerhouse24.ie at EUR 14,300, with an Irish landline (+353 56 777 4010) and Irish support address (info@summerhouse24.ie). Free delivery published range-wide; the supplier states it serves 'Dublin, Cork, and beyond'. HOMEOWNER IMPLICATION: an Irish-registered seller with euro pricing and included delivery.",
@@ -55117,10 +55187,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. Hanging and aligning a folding door set is more exacting than fitting a standard door, and no fitting service is published.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. Hanging and aligning a folding door set is more exacting than fitting a standard door.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -55214,10 +55285,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, porch groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -55299,10 +55371,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 883 cm length including shed and terrace, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, shed/terrace groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -55408,10 +55481,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs to establish independently. The base must span the full 706 cm including the shed section.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, side-store groundworks and finishing remain separate unless explicitly quoted. The base must span the full 706 cm including the shed section.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -55487,10 +55561,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 885 cm length including shed and porch, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, shed/porch groundworks and finishing remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -55602,10 +55677,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. A 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and porch groundworks remain separate unless explicitly quoted.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -55675,10 +55751,11 @@
       "priceEvidence": null,
       "features": {
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 669 cm depth including the veranda, and a 70 mm log kit is a heavier assembly than the 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base and veranda groundworks remain separate unless explicitly included in the quotation.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: 5 years. A 5-year guarantee is published organisation-wide across the Hansa24 / Summerhouse24 range; its scope, exclusions and claim procedure are not published, and the Summerhouse24 Ireland /garden-rooms/ listing pages state only 'free delivery & warranty' with no term. HOMEOWNER IMPLICATION: ask for the written terms before treating this as whole-building cover, and note that self-assembly may affect what a guarantee will honour.",
@@ -59978,10 +60055,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. The base must span the full 822 x 558 cm envelope, which is a substantial groundworks cost in its own right.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers DIY assembly or professional installation. Professional installation is optional and not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly quoted. The base must span the full 822 x 558 cm envelope, which remains a substantial groundworks cost in its own right.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         }
       },
       "price": null,
@@ -60069,10 +60147,11 @@
           "evidenceScope": "Product-Specific"
         },
         "installationModel": {
-          "text": "SUPPLY-ONLY KIT WITH DELIVERY INCLUDED. Summerhouse24 Ireland publishes 'Factory direct' and 'Free delivery' range-wide and describes 'over 100 DIY options'. No installation or assembly service is published. HOMEOWNER IMPLICATION: the price is the delivered kit; base, groundworks, assembly labour and finishing are separate costs. A 70 mm log kit with an internal dividing wall is a heavier and more involved assembly than the single-space 44 mm models.",
+          "text": "DIY OR INSTALLED. Summerhouse24 Ireland explicitly offers customers a choice between DIY assembly and its professional installation service. Professional installation is optional and is not included in the headline kit price. Base, groundworks and finishing remain separate unless explicitly included in the quotation.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Organisation-Wide",
+          "status": "Verified"
         },
         "floorArea": {
           "text": "VERIFIED INTERNAL FLOOR AREA: 21 m2. Published external dimensions 720 x 370 cm = 26.64 m2 overall footprint. Wall thickness 70 mm. The 5.64 m2 difference is not accounted for by the product title, which names no veranda, canopy or terrace. HOMEOWNER IMPLICATION: the 21 m2 is divided between two rooms as the title states, but the supplier does not publish the split, so neither room's individual size can be established from the listing.",

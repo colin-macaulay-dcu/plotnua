@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-04T15:35:36Z",
+  "generated": "2026-09-10T11:15:14Z",
   "categories": [
     "suppliers"
   ],
@@ -16,7 +16,14 @@
         "manufacturingLocation": "Tartu region, Estonia \u2014 THREE separate factories published, enabling different log cabin designs; each is a distinct production site and they are not merged here. Company established in Tartu 1998; 250+ employees; 40,000+ buildings produced per year",
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLY_ONLY",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.lasita.com/installation-support",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -30,7 +37,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://gardenofficesolutions.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -44,7 +58,14 @@
         "manufacturingLocation": "Lithuania",
         "jurisdiction": "European Union (Lithuania)",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLY_ONLY",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://sips-house.com/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -58,7 +79,12 @@
         "manufacturingLocation": "2 or more distinct arrangements, recorded separately and not merged \u2014 (1) Estonia, the primary production base; (2) LOCAL PRODUCTION operated in the EU and the USA per the supplier's own statement, with specific sites not published",
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -72,7 +98,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A \u2014 https://timberliving.ie/contact-us/ directly fetched 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://timberliving.ie/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Supplier",
       "lastReviewed": "2026-08-28"
@@ -86,7 +119,12 @@
         "manufacturingLocation": "4 UK sites, recorded separately and not merged \u2014 (1) Bedford, Bedfordshire (primary factory); (2) Gosberton, Lincolnshire; (3) Huntly, Aberdeenshire, Scotland \u2014 the Garden Offices / Dominator range is EVIDENCED as produced here; (4) Cumbernauld, North Lanarkshire, Scotland. A further 5 European sites are run by sister companies and are recorded as related, not as Dunster House locations",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -100,7 +138,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -114,7 +157,12 @@
         "manufacturingLocation": "Dungiven, Co. Derry \u2014 same site as headquarters",
         "jurisdiction": "NORTHERN IRELAND \u2014 UK planning and building control apply at the supplier's base; Irish exempted-development rules do not",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -128,7 +176,16 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://allinonecabins.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://allinonecabins.ie/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Supplier",
       "lastReviewed": "2026-08-28"
@@ -142,7 +199,12 @@
         "manufacturingLocation": "Naaritsa, Leie village, Viljandi municipality, 70303 Viljandi County, Estonia \u2014 the registered production seat of Iglucraft O\u00dc per its own terms of sale; a DISTINCT LOCATION from the Tallinn head office and not merged with it",
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier A \u2014 General Terms and Conditions of Sales Contract PDF fetched and read in full 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-30"
@@ -156,7 +218,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.oecogardenrooms.co.uk/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Bespoke Builder",
       "lastReviewed": "2026-08-28"
@@ -170,7 +239,12 @@
         "manufacturingLocation": "Not stated in Ireland \u2014 pineca.ie is the Irish trading arm of the Pineca Group; production is offshore and the site is not published. Manufacturing and headquarters are therefore in different jurisdictions and are recorded separately",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Supplier",
       "lastReviewed": "2026-08-28"
@@ -184,7 +258,12 @@
         "manufacturingLocation": "Dungannon, Co. Tyrone \u2014 offsite timber frame manufacturing, same site as headquarters; nearly 50 years of timber frame construction",
         "jurisdiction": "NORTHERN IRELAND \u2014 UK planning and building control apply at the supplier's base",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -198,7 +277,14 @@
         "manufacturingLocation": "Not stated \u2014 Niwa is a flat-pack line shipped for customer-arranged assembly",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://koto.co.uk/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -212,7 +298,14 @@
         "manufacturingLocation": "Naul, Co. Dublin \u2014 same site as headquarters; full-cell pressure treatment applied in-house",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://mcdgardensheds.ie/delivery-cancellations-returns/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -226,7 +319,16 @@
         "manufacturingLocation": "Dundalk, Co. Louth \u2014 same site as headquarters",
         "jurisdiction": "Republic of Ireland, trading all-island",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://sproutpod.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "NATIONWIDE",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://sproutpod.ie/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Modular Builder",
       "lastReviewed": "2026-08-28"
@@ -240,7 +342,16 @@
         "manufacturingLocation": "Not published separately; steel-frame modular construction with a stated A1 BER rating",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://raycomodularhomes.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://raycomodularhomes.ie/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -254,7 +365,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -268,7 +384,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -282,7 +403,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.sanctumgardenstudios.com/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -296,7 +424,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom \u2014 established by London telephone numbers 020 7099 4301 and 07418 351 697 and GBP-only pricing",
         "evidenceTier": "Tier A for the specification tables read directly; Tier B for the absence of address",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Supplier",
       "lastReviewed": "2026-08-30"
@@ -310,7 +443,12 @@
         "manufacturingLocation": "Gorey, Co. Wexford \u2014 steel shed manufacture, same site as headquarters",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -324,7 +462,14 @@
         "manufacturingLocation": "Europe-wide production indicated by an FR/DE/NL/DK/IT/SE/NO/PL storefront network; no specific production site published",
         "jurisdiction": "European Union \u2014 country of registration not established",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://www.woodenhottubsale.co.uk/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -338,7 +483,12 @@
         "manufacturingLocation": "2 distinct sites, recorded separately and not merged \u2014 (1) Laren, Netherlands; (2) a second facility in Latvia. Approximately 180 staff across both sites",
         "jurisdiction": "European Union (Netherlands)",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -351,7 +501,12 @@
         "manufacturingLocation": "Not published as an address. The supplier states it manufactures prefabricated SIP panels and invites engineers, architects and builders to 'visit our factory', but no factory address is published; whether the Grants Rise premises is the factory is NOT established",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A \u2014 all fields above read directly from ecohouse.ie 29 August 2026",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-29"
@@ -365,7 +520,12 @@
         "manufacturingLocation": "Not stated \u2014 Waltons is a garden building RETAILER rather than a manufacturer",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B for the absence \u2014 searched 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -379,7 +539,12 @@
         "manufacturingLocation": "Estonia \u2014 specific site not published",
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -393,7 +558,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Bespoke Builder",
       "lastReviewed": "2026-08-28"
@@ -407,7 +577,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.totalgardenrooms.com/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -421,7 +598,12 @@
         "manufacturingLocation": "Purpose-built factory, Co. Meath \u2014 every pod assembled in factory conditions",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Modular Builder",
       "lastReviewed": "2026-08-28"
@@ -435,7 +617,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -449,7 +636,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://allaboutoutdoors.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Installer",
       "lastReviewed": "2026-08-28"
@@ -463,7 +657,12 @@
         "manufacturingLocation": "Moy, Co. Tyrone \u2014 same site as headquarters; units built in the supplier's own warehouse and delivered ready to use",
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -477,7 +676,12 @@
         "manufacturingLocation": "Kilbeggan, Co. Westmeath \u2014 insulated steel manufacture, same site as headquarters",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A \u2014 https://shanettesheds.ie/contact/ directly fetched 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -491,7 +695,16 @@
         "manufacturingLocation": "Not stated in Ireland \u2014 part of a wider Log Cabin Group supplying 20+ EU countries; production site not published",
         "jurisdiction": "Republic of Ireland, trading across all 32 counties",
         "evidenceTier": "Tier A for the 32-county and own-team claims (loghouse.ie homepage directly fetched); Tier B for the Athlone address and Eircode",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.loghouse.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "NATIONWIDE",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://www.loghouse.ie/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Supplier",
       "lastReviewed": "2026-08-28"
@@ -505,7 +718,12 @@
         "manufacturingLocation": "Kuressaare, Saaremaa, Estonia \u2014 production on the same site as headquarters",
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -519,7 +737,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland \u2014 established by Irish domain and Irish mobile number only",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -533,7 +756,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Modular Builder",
       "lastReviewed": "2026-08-28"
@@ -547,7 +775,12 @@
         "manufacturingLocation": "Not stated \u2014 factory-built modular buildings with galvanised steel frames and composite panels; site not published",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -561,14 +794,15 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Bespoke Builder",
-      "lastReviewed": "2026-08-28",
-      "googleIdentity": {
-        "state": "verified",
-        "placeId": "ChIJi8YJW2wSZ0gRVWL3QKDZZuc"
-      }
+      "lastReviewed": "2026-08-28"
     },
     "rechsPFUooApigybT": {
       "name": "Essex Garden Studios",
@@ -579,7 +813,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Bespoke Builder",
       "lastReviewed": "2026-08-28"
@@ -593,7 +832,14 @@
         "manufacturingLocation": "Estonia \u2014 Nordic spruce manufactured offshore; the Irish entity is the retail and installation arm, so manufacturing and headquarters are in different jurisdictions and are recorded separately",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier A for company registration; Tier B for showroom detail",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://gardenhouse24.ie/",
+        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -607,7 +853,14 @@
         "manufacturingLocation": "Corby, Northamptonshire \u2014 the St Marks Road site is published as showroom AND factory",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://boothsgardenstudios.co.uk/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -621,7 +874,14 @@
         "manufacturingLocation": "Spain \u2014 factory-built modular units, specific site not published",
         "jurisdiction": "European Union (Spain)",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://nookprefab.com/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -635,7 +895,12 @@
         "manufacturingLocation": "Belfast workshop \u2014 THE HOP range handcrafted in-house",
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -649,7 +914,12 @@
         "manufacturingLocation": "Not stated by Outdoor Living. The ModPod range is manufactured by MODECO LTD (modeco.ie), a separate timber engineering company \u2014 recorded as a distinct manufacturing party and NOT merged with the retailer's own location",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Supplier",
       "lastReviewed": "2026-08-28"
@@ -663,7 +933,14 @@
         "manufacturingLocation": "Clancool Beg, Bandon, Co. Cork \u2014 same site as headquarters; units built in full on the supplier's premises and certified by the supplier's own engineer before dispatch",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://bigmantinyhomes.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -677,7 +954,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.cabinmaster.co.uk/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -691,7 +975,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland \u2014 established by Irish domain only",
         "evidenceTier": "Tier B for the absence \u2014 searched 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -705,7 +994,12 @@
         "manufacturingLocation": "Estonia",
         "jurisdiction": "European Union (Estonia)",
         "evidenceTier": "Tier A \u2014 bertilo.com read directly during Session 6 supplier enrichment",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -719,7 +1013,12 @@
         "manufacturingLocation": "Barna Buildings, Glenealy, Co. Wicklow \u2014 same site as headquarters",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -733,7 +1032,12 @@
         "manufacturingLocation": "United Kingdom \u2014 specific site not published",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -747,7 +1051,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "United Kingdom",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://gardenofficebuildings.co.uk/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -761,7 +1072,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -775,7 +1091,14 @@
         "manufacturingLocation": "Not stated \u2014 design-and-build practice with in-house architects, engineers, project managers and quantity surveyors; no separate factory published",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B \u2014 attributed via search index 2026-08-28",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.shomera.ie/garden-rooms/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Bespoke Builder",
       "lastReviewed": "2026-08-28"
@@ -790,7 +1113,12 @@
         "manufacturingLocation": "Not published separately; the supplier is a JOINERY business, indicating own-workshop fabrication at or near the Mayobridge site",
         "jurisdiction": "Northern Ireland (United Kingdom)",
         "evidenceTier": "B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Bespoke Builder",
       "lastReviewed": "2026-08-28"
@@ -804,7 +1132,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "NORTHERN IRELAND",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://www.yardbox.co.uk/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -818,7 +1153,12 @@
         "manufacturingLocation": "Longford facility, Co. Longford, Leinster \u2014 a THIRD distinct location, recorded separately and not merged with either office",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Modular Builder",
       "lastReviewed": "2026-08-28"
@@ -832,7 +1172,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "European Union (Belgium)",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "UNKNOWN",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -846,7 +1191,14 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLIER_INSTALLS",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://liveingardenpods.ie/",
+        "installationCheckedAt": "2026-09-07",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Modular Builder",
       "lastReviewed": "2026-08-28"
@@ -860,7 +1212,12 @@
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "UNKNOWN",
+        "installationStatus": "STATED_NOT_CERTIFIED",
+        "roiDelivery": "UNKNOWN",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Bespoke Builder",
       "lastReviewed": "2026-08-28"
