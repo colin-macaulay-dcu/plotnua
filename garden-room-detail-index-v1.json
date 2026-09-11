@@ -1,49 +1,49 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail.index",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-10T11:15:14Z",
+  "generated": "2026-09-11T11:16:46Z",
   "partitions": [
     {
       "category": "alternatives",
       "file": "garden-room-detail-alternatives-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 425275
+      "rawBytes": 422892
     },
     {
       "category": "bestFor",
       "file": "garden-room-detail-bestfor-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 333500
+      "rawBytes": 331923
     },
     {
       "category": "considerations",
       "file": "garden-room-detail-considerations-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 391637
+      "rawBytes": 389253
     },
     {
       "category": "planningConsiderations",
       "file": "garden-room-detail-planningconsiderations-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 490974
+      "rawBytes": 489719
     },
     {
       "category": "strengths",
       "file": "garden-room-detail-strengths-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 343333
+      "rawBytes": 341280
     },
     {
       "category": "typicalHomeowner",
       "file": "garden-room-detail-typicalhomeowner-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 301531
+      "rawBytes": 299937
     },
     {
       "category": "sources",

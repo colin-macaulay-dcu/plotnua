@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-10T11:15:14Z",
+  "generated": "2026-09-11T11:16:46Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "considerations"
@@ -505,43 +505,43 @@
     },
     "rec6hBlyxKfJEA6C5": {
       "considerations": {
-        "text": "THE ROOF COVERING CHANGES THE HEIGHT TEST, AND MOST BUYERS WILL GET THIS WRONG. Loghouse fits POWDER-COATED STEEL ROOFING, which is NOT a tiled or slated pitched roof \u2014 so the tighter 3 m limit applies to this and every other model in the range, not the 4 m allowed for tiled pitched roofs. A buyer who sees a pitched profile and assumes 4 m is applying the wrong test. NO FINISHED HEIGHT IS PUBLISHED, so it cannot be checked from Atlas evidence. SECOND, 9 m2 is one desk with no room for storage or a second occupant. HOMEOWNER IMPLICATION: ask for the finished ridge height above ground level and measure it against 3 m.",
+        "text": "CONSIDERATIONS: the marketed 3.0m \u00d7 3.0m name should not be treated as an exact planning footprint or usable internal area. The current supplier specification publishes 3m \u00d7 3.3m, while the planning measurement basis remains unverified in Atlas. The roof-covering height rule and other Class 3 conditions still need checking against the actual installed building and site.",
         "evidenceScope": "Product-Specific"
       }
     },
     "rech7TfmJLA8n4Jj9": {
       "considerations": {
-        "text": "HEIGHT IS THE OPEN CONDITION ON THIS PRODUCT, AS ON EVERY LOGHOUSE MODEL. Because the roofing is powder-coated steel rather than tile or slate, the 3 m limit applies and not the 4 m available to tiled pitched roofs \u2014 a distinction that turns on the covering, not the shape. No finished height is published, so the test cannot be run from Atlas evidence. SECOND, no U-value or wall specification is published, so year-round thermal comfort cannot be assessed \u2014 which matters for a room intended as a daily office. THIRD, the 18 m2 of remaining allowance is generous but still shared with every existing structure. HOMEOWNER IMPLICATION: ask for the finished ridge height and the wall build-up in the same conversation.",
+        "text": "CONSIDERATIONS: current direct evidence confirms SIP/EPS insulation, but no U-values are published. The supplier publishes 4.0m \u00d7 3.0m and 12.0m\u00b2 alongside the product size; Atlas does not treat that automatically as usable internal area. Height and other site-specific planning conditions should still be verified against the installed building.",
         "evidenceScope": "Product-Specific"
       }
     },
     "recTpjQUJ7rIgemhk": {
       "considerations": {
-        "text": "A DEEPER BUILDING IS ALSO A WIDER ONE ON THE GROUND, AND SOME GARDENS CANNOT TAKE IT. Four metres of depth plus access around the structure needs a plot that is genuinely wide, and the exemption separately requires at least 25 m2 of PRIVATE OPEN SPACE to remain \u2014 a condition that bites on smaller gardens well before the 30 m2 building allowance does. SECOND, THE HEIGHT CONDITION: steel roofing means 3 m, not 4 m, and no finished height is published. THIRD, 14 m2 of allowance remains, which an existing garage could exhaust. HOMEOWNER IMPLICATION: check the open-space requirement as carefully as the building area, and confirm the ridge height.",
+        "text": "CONSIDERATIONS: the marketed model name does not establish an exact 4m depth; current supplier specification is 4.2m \u00d7 4.4m. Atlas does not calculate remaining planning allowance from these dimensions because the required measurement basis has not been established. Check siting, retained private open space and installed height against the actual project.",
         "evidenceScope": "Product-Specific"
       }
     },
     "recr7HRb2CIqnyoAa": {
       "considerations": {
-        "text": "THREE METRES OF DEPTH IS THE FIXED CONSTRAINT AT THIS SIZE, AND LENGTH CANNOT COMPENSATE. A 5 m \u00d7 3 m room takes furniture along its length; it will not accommodate a desk and a treadmill side by side the way a 4 m depth allows. THAT IS A LAYOUT LIMIT, NOT A PLANNING ONE. ON PLANNING, the open condition is height: steel roofing means the 3 m limit applies rather than 4 m, and no finished height is published. THIRD, half the combined allowance is now committed, so a garage or large shed already on the plot needs measuring. HOMEOWNER IMPLICATION: check the depth against your furniture plan, and the ridge height against 3 m.",
+        "text": "CONSIDERATIONS: do not treat the marketed 5.0m \u00d7 3.0m name as a fixed 3m internal depth or exact footprint. The supplier currently publishes 5.2m \u00d7 3.4m, but usable internal dimensions and the planning measurement basis remain unverified. Layout and planning margin therefore require confirmation rather than nominal-size arithmetic.",
         "evidenceScope": "Product-Specific"
       }
     },
     "rec66xKgPx0ipzfOQ": {
       "considerations": {
-        "text": "TWO THIRDS OF THE ALLOWANCE GOES ON THE BUILDING, AND THE CERTIFIED LAYERS SINGLE THIS OUT AS THE POINT WHERE EXISTING STRUCTURES MUST BE MEASURED FIRST. Ten square metres of headroom sounds adequate until a garden shed, a bike store and a greenhouse are counted \u2014 and the allowance is COMBINED across all of them. SECOND, THE HEIGHT CONDITION IS TIGHTER THAN BUYERS EXPECT: powder-coated steel roofing is not a tiled or slated pitched roof, so 3 m applies rather than 4 m, and no finished height is published. THIRD, no thermal specification for a room this size. HOMEOWNER IMPLICATION: audit the garden before ordering and confirm the ridge height against 3 m.",
+        "text": "CONSIDERATIONS: the current supplier specification is 5.2m \u00d7 4.4m, but Atlas cannot use those dimensions alone to calculate planning floor area or remaining allowance. Current direct evidence does establish SIP/EPS insulation and the installed package, so the former 'no thermal specification' statement is withdrawn. Planning margin and installed height still require appropriate verification.",
         "evidenceScope": "Product-Specific"
       }
     },
     "rec6pnA2GkdMzlmPf": {
       "considerations": {
-        "text": "EIGHTEEN SQUARE METRES IN A 3 m DEPTH IS LESS USEFUL THAN THE FIGURE SUGGESTS. Every metre added to the length is consumed along one axis, so the room gains storage wall rather than open floor \u2014 and for a gym, a studio or two people working simultaneously, depth is what is actually needed. THE 4.0 m \u00d7 4.0 m AT 16 m2 DELIVERS MORE FUNCTION FOR LESS AREA on most briefs. SECOND, the height condition: steel roofing means the 3 m limit, and no finished height is published. THIRD, a 6 m building along a boundary raises neighbour considerations that sit outside the exemption tests. HOMEOWNER IMPLICATION: be clear whether you are buying length or usable floor.",
+        "text": "CONSIDERATIONS: the current supplier specification is 6.2m \u00d7 3.4m, so the marketed 6.0m \u00d7 3.0m name should not be used as exact internal geometry or a planning footprint. Usable internal dimensions and planning measurement basis remain unknown. Compare layout against other models only using their current governed specifications.",
         "evidenceScope": "Product-Specific"
       }
     },
     "recDHVxszqcxMTrXs": {
       "considerations": {
-        "text": "SIX SQUARE METRES OF HEADROOM IS LESS THAN A STANDARD GARDEN SHED. That is the whole risk on this product: the allowance is COMBINED, so a 2 m \u00d7 3 m shed already in place takes the plot to exactly the limit, and anything larger takes it over \u2014 with the exemption lost for the whole development, not just the excess. SECOND, THE HEIGHT CONDITION: steel roofing means 3 m rather than 4 m, and no finished height is published. THIRD, on a 24 m2 building the 25 m2 private open space requirement becomes a real constraint on smaller gardens. HOMEOWNER IMPLICATION: measure every existing structure before ordering, and confirm the ridge height against 3 m.",
+        "text": "CONSIDERATIONS: current supplier specification is 6.2m \u00d7 4.4m, but Atlas cannot use those dimensions alone to state a planning floor area or remaining allowance. The former 24m\u00b2 / 6m\u00b2-headroom precision is withdrawn. Confirm planning measurement basis, retained open space, siting and installed height for the actual project.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2371,7 +2371,7 @@
     },
     "recJ3HPVMPrYzaXvH": {
       "considerations": {
-        "text": "FIVE POINT SIX SQUARE METRES IS THE THINNEST MARGIN IN THE RANGE, AND THE CERTIFIED LAYERS SAY SO EXPLICITLY. Almost any existing garden structure \u2014 a standard shed, a bike store, a greenhouse \u2014 takes the combined total past 30 m2, and the exemption is then lost for the development as a whole. THE ODD DIMENSIONS COMPOUND THE CARE REQUIRED: 5.2 m \u00d7 4.7 m gives 24.44 m2, so there is no rounding room in either direction. SECOND, the height condition: steel roofing means 3 m, not 4 m, and no finished height is published. HOMEOWNER IMPLICATION: measure existing structures precisely, not approximately, and confirm the ridge height before ordering.",
+        "text": "CONSIDERATIONS: the Studio page directly publishes 5.2m \u00d7 4.7m product dimensions and a 2900mm ridge height, so the former height-unknown statement is obsolete. Atlas does not derive a planning floor area or remaining allowance from the published dimensions because the required measurement basis is not established. Confirm all remaining planning and site conditions for the actual installation.",
         "evidenceScope": "Product-Specific"
       }
     },

@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-10T11:15:14Z",
+  "generated": "2026-09-11T11:16:46Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "qualificationRuleVersion": "garden-room-qualification-v1",
   "dryRun": true,
   "sourceGardenRoomCount": 490,
   "eligibleCount": 487,
-  "highConfidenceCount": 141,
-  "withCaveatCount": 346,
+  "highConfidenceCount": 146,
+  "withCaveatCount": 341,
   "limitedEvidenceCount": 0,
   "excludedCount": 3,
   "exclusionSummaryByReason": {
@@ -19,7 +19,7 @@
   "confirmedUnavailableCount": 0,
   "unclassifiedIrishAvailabilityCount": 3,
   "noPublishedIrishRouteCount": 48,
-  "missingPriceCount": 260,
+  "missingPriceCount": 255,
   "missingProductUrlCount": 175,
   "products": [
     {
@@ -11507,21 +11507,21 @@
       },
       "features": {
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. Published for the ECO Garden Room range: the buildings are made from SIP \u2014 Structural Insulated Panels \u2014 with roof, floor and wall insulation, and Loghouse states it uses expanded polystyrene (EPS) insulation across roofs, walls and floors. Nothing inferred. WHY SIP MATTERS HERE: a structural insulated panel is a rigid insulation core bonded between two structural boards, so the insulation is the structure rather than something fitted into a frame. That removes the repeating timber or steel studs that carry heat through most insulated walls in this catalogue \u2014 the cold-bridging problem recorded against Concept Modular, Adman and Sprout Pod. On the published construction this is the only supplier in the layer using SIP as its standard build. SITE ACCESS LIMITATION recorded per the standing rule: loghouse.ie returned an empty body on every path attempted this session, as it did during the measurement layer, so this classification rests on indexed evidence attributed to loghouse.ie \u2014 Tier B. LIMITATION: no insulation thickness and no U-value are published for wall, roof or floor, so the envelope is established as insulated but not quantified. EPS is also a lower-performing core per millimetre than the PIR and rigid foam used by Cabin Master and Green Retreats, which makes the missing thickness figure more consequential here, not less. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction. Ask for the EPS thickness in writing.",
+          "text": "THERMAL USABILITY: the current product page directly confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. This supports an insulated garden-room classification. No U-values are published, so Atlas does not quantify heat-loss performance or rank the product on a derived thermal value.",
           "number": null,
           "unit": null,
           "evidenceScope": "Range-Level",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. Published for the ECO Garden Room range: the buildings are made from SIP \u2014 Structural Insulated Panels \u2014 with roof, floor and wall insulation, and Loghouse states it uses expanded polystyrene (EPS) insulation across roofs, walls and floors. Nothing inferred. WHY SIP MATTERS HERE: a structural insulated panel is a rigid insulation core bonded between two structural boards, so the insulation is the structure rather than something fitted into a frame. That removes the repeating timber or steel studs that carry heat through most insulated walls in this catalogue \u2014 the cold-bridging problem recorded against Concept Modular, Adman and Sprout Pod. On the published construction this is the only supplier in the layer using SIP as its standard build. SITE ACCESS LIMITATION recorded per the standing rule: loghouse.ie returned an empty body on every path attempted this session, as it did during the measurement layer, so this classification rests on indexed evidence attributed to loghouse.ie \u2014 Tier B. LIMITATION: no insulation thickness and no U-value are published for wall, roof or floor, so the envelope is established as insulated but not quantified. EPS is also a lower-performing core per millimetre than the PIR and rigid foam used by Cabin Master and Green Retreats, which makes the missing thickness figure more consequential here, not less. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction. Ask for the EPS thickness in writing.",
+              "text": "THERMAL USABILITY: the current product page directly confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. This supports an insulated garden-room classification. No U-values are published, so Atlas does not quantify heat-loss performance or rank the product on a derived thermal value.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. SIP (Structural Insulated Panel) construction with wall, roof and floor insulation: 100mm EPS composite panels in walls, 150mm EPS boards in the roof. Powder-coated steel roofing. Meaningful insulation evidenced on all three planes. No U-value published. Homeowner implication: suitable for year-round use; at 100mm wall this sits in the upper tier of the Atlas Garden Room catalogue.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: current direct first-party product evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-value is published, so comparative thermal performance is not quantified.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -11530,16 +11530,18 @@
           ]
         },
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Supplier designation 3.0m x 3.0m recorded exactly as published; 9 m2 nominal plan area. Loghouse publishes no rule converting the designation to usable internal area, so nothing has been subtracted and no internal figure is recorded. DO NOT RANK on internal area. RETRIEVAL LIMITATION: loghouse.ie returned an empty body to direct fetch on 2026-08-28, both at the product URL and the category URL, so the supplier's own specification page could not be read; this classification rests on the product designation held in Atlas and is therefore Tier B. PLANNING: 9 m2 sits well inside the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026), which is shared across every garden structure on the plot; the other Class 3 conditions still apply.",
+          "text": "PUBLISHED PRODUCT SIZE: 3m x 3.3m on the current product specification. The page does not label this as internal floor dimensions or publish usable internal floor area. Internal floor area therefore remains UNKNOWN; do not derive it from the product name.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Product-Specific"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulation": {
-          "text": "INSULATED \u2014 SIP (Structural Insulated Panel) construction with wall, roof and floor insulation. Walls: 100mm EPS insulation composite panels. Roof: 150mm expanded polystyrene boards. Powder-coated steel roofing with wraparound steel soffit and fascias.\n\nNO U-VALUES OR LAMBDA FIGURES PUBLISHED. Insulation thickness is stated; thermal performance is not quantified.\n\nEVIDENCE TIER B: loghouse.ie product and category pages returned empty bodies to direct fetch on 2026-08-27 (client-rendered). This specification is attributed to named loghouse.ie URLs via search index but the page body was NOT directly read. Re-verify before using in a homeowner-facing thermal ranking.\n\nHOMEOWNER IMPLICATION: at 100mm wall / 150mm roof this is at the upper end of the Garden Room category on insulation thickness \u2014 four times Quick-Garden's insulated Twin Skin (25mm) and comparable to Concept Modular (100mm). Suitable for year-round use on the stated specification.",
+          "text": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: minimum 10 years. Homepage states a 'minimum Ten Year Guarantee'; scope and terms not published or retrievable. Homeowner implication: strong headline cover from an Irish company, but request the written guarantee document and confirm what it covers.",
@@ -11554,10 +11556,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Installed by Loghouse's own team as the standard delivery model. Homeowner implication: a fully installed building, but confirm whether base and electrical connection are included.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Loghouse states this ECO Garden Room is delivered and assembled and that fitting is included in the price. Ground screws and insulated SIP foundations are included where ground conditions are suitable. Electrics, plumbing and internal/external painting are not included but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         }
       },
       "price": 14280,
@@ -11565,7 +11568,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP (Structural Insulated Panel) construction with wall, roof and floor insulation. Walls: 100mm EPS insulation composite panels. Roof: 150mm expanded polystyrene boards. Powder-coated steel roofing with wraparound steel soffit and fascias.\n\nNO U-VALUES OR LAMBDA FIGURES PUBLISHED. Insulation thickness is stated; thermal performance is not quantified.\n\nEVIDENCE TIER B: loghouse.ie product and category pages returned empty bodies to direct fetch on 2026-08-27 (client-rendered). This specification is attributed to named loghouse.ie URLs via search index but the page body was NOT directly read. Re-verify before using in a homeowner-facing thermal ranking.\n\nHOMEOWNER IMPLICATION: at 100mm wall / 150mm roof this is at the upper end of the Garden Room category on insulation thickness \u2014 four times Quick-Garden's insulated Twin Skin (25mm) and comparable to Concept Modular (100mm). Suitable for year-round use on the stated specification.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -11635,21 +11638,21 @@
       },
       "features": {
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. Homeowner implication: suitable for year-round use; upper tier of the Atlas catalogue on insulation thickness.",
+          "text": "YEAR-ROUND INSULATION EVIDENCE: direct first-party evidence confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
           "number": null,
           "unit": null,
           "evidenceScope": "Range-Level",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. Homeowner implication: suitable for year-round use; upper tier of the Atlas catalogue on insulation thickness.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: direct first-party evidence confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP \u2014 Structural Insulated Panel \u2014 construction with roof, floor and wall insulation, using expanded polystyrene (EPS) across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned an empty body on every path attempted this session; classification rests on indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published for any element. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction; SIP avoids the repeating stud cold-bridge that affects framed insulated buildings, but the EPS thickness should be confirmed in writing.",
+              "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. This is sufficient to classify the building as insulated; no U-value is published, so no quantified thermal-performance claim is made.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -11664,10 +11667,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "insulation": {
-          "text": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. Powder-coated steel roofing, wraparound steel soffit and fascias. No U-values or lambda figures published.\n\nEVIDENCE TIER B: attributed to named loghouse.ie URLs via search index; page bodies not directly retrievable (client-rendered). Re-verify before thermal ranking.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated specification; among the thicker insulation specifications in the Garden Room category.",
+          "text": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: minimum 10 years. Homepage states a 'minimum Ten Year Guarantee'; scope and terms not published or retrievable. Homeowner implication: request the written guarantee document and confirm what it covers.",
@@ -11676,16 +11680,18 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Installed by Loghouse's own team as the standard delivery model. Homeowner implication: a fully installed building, but confirm whether base and electrical connection are included.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Loghouse states this ECO Garden Room is delivered and assembled and fitting is included in the price. Ground screws and insulated SIP foundations are included where ground conditions are suitable. Electrics, plumbing and internal/external painting are excluded but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Designation 4.0m x 3.0m recorded exactly as published; 12 m2 nominal plan area. No conversion rule published, so nothing deducted and no internal figure recorded. DO NOT RANK on internal area. Tier B \u2014 loghouse.ie could not be read directly. PLANNING: 12 m2, inside the 30 m2 combined allowance, which is shared with any existing shed or garage.",
+          "text": "PUBLISHED PRODUCT SIZE: 4.0m x 3.0m; supplier also prints 12.0m\u00b2 alongside the size. It is not identified as usable internal floor area. Internal floor area remains UNKNOWN and has not been inferred.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Product-Specific"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         }
       },
       "price": 16380,
@@ -11693,7 +11699,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. Powder-coated steel roofing, wraparound steel soffit and fascias. No U-values or lambda figures published.\n\nEVIDENCE TIER B: attributed to named loghouse.ie URLs via search index; page bodies not directly retrievable (client-rendered). Re-verify before thermal ranking.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated specification; among the thicker insulation specifications in the Garden Room category.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -11718,19 +11724,18 @@
           "name": "Loghouse"
         }
       ],
-      "productUrl": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+      "productUrl": "https://www.loghouse.ie/product/eco-garden-room-4-0m-x-4-0m/",
       "verificationStatus": "Partially Verified",
       "qualification": {
-        "status": "ELIGIBLE \u2014 WITH CAVEAT",
-        "confidenceTier": "WITH_CAVEAT",
+        "status": "ELIGIBLE \u2014 HIGH CONFIDENCE",
+        "confidenceTier": "HIGH_CONFIDENCE",
         "reasons": [
           "Irish availability is confirmed by recorded evidence.",
+          "A verified price is recorded.",
           "A product-level source is recorded.",
           "Supplier attribution is confirmed: Loghouse."
         ],
-        "caveats": [
-          "No usable price is recorded."
-        ],
+        "caveats": [],
         "hardBlockers": [],
         "evidenceSignals": {
           "irishAvailability": "confirmed",
@@ -11738,7 +11743,7 @@
           "irishAvailabilityScope": "Organisation-Wide",
           "irishAvailabilityClassified": true,
           "noPublishedIrishRoute": false,
-          "price": "missing",
+          "price": "verified",
           "source": "product-level",
           "supplierAttribution": "confirmed",
           "manufacturerAttribution": "unknown",
@@ -11746,34 +11751,46 @@
           "contradiction": "none",
           "productEvidenceCompleteness": "Product Evidence Complete \u2014 Organisation Gate Required",
           "featureValueCount": 1,
-          "pricingRecordCount": 0,
+          "pricingRecordCount": 1,
           "availabilityRecordCount": 0
         }
       },
-      "priceEvidence": null,
+      "priceEvidence": {
+        "base": 19630,
+        "from": null,
+        "to": null,
+        "currency": "EUR",
+        "priceType": "Standard Price",
+        "status": "Verified",
+        "includesVat": "Yes",
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
+      },
       "features": {
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Installed by Loghouse's own team as the standard delivery model. Homeowner implication: a fully installed building, but confirm whether base and electrical connection are included.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Product page states delivered and assembled; fitting is included in the price. Ground screws and insulated SIP foundations are included where suitable. Electrics, plumbing and internal/external painting are excluded but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction.",
+          "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. The building is evidenced as insulated, but no U-values are published and no quantified thermal ranking is inferred.",
           "number": null,
           "unit": null,
           "evidenceScope": "Range-Level",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction.",
+              "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. The building is evidenced as insulated, but no U-values are published and no quantified thermal ranking is inferred.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. Homeowner implication: suitable for year-round use.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: direct first-party product evidence confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -11788,16 +11805,18 @@
           "evidenceScope": "Organisation-Wide"
         },
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Designation 4.0m x 4.0m recorded exactly as published; 16 m2 nominal plan area. No conversion rule published, so nothing deducted. DO NOT RANK on internal area. Tier B \u2014 loghouse.ie could not be read directly. PLANNING: 16 m2, inside the 30 m2 combined allowance but more than half of it.",
+          "text": "PUBLISHED PRODUCT SIZE: 4.2m x 4.4m on the current product specification, despite the marketed model name 4.0m x 4.0m. The page does not publish usable internal floor area. Internal floor area remains UNKNOWN.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Product-Specific"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulation": {
-          "text": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size. Re-verify before thermal ranking.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+          "text": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE ACROSS IRELAND. Irish company since 2007, four Irish locations, euro pricing, own installation team, named coverage across all 32 counties. Homeowner implication: purchasable north and south with no import or currency complication.",
@@ -11806,22 +11825,20 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": null,
-      "currency": null,
-      "priceBasis": null,
+      "price": 19630,
+      "currency": "EUR",
+      "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size. Re-verify before thermal ranking.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
       "irishAvailability": true,
       "availabilityStatus": null,
       "noPublishedIrishRoute": false,
-      "qualificationTier": "WITH_CAVEAT",
-      "qualificationCaveats": [
-        "No usable price is recorded."
-      ]
+      "qualificationTier": "HIGH_CONFIDENCE",
+      "qualificationCaveats": []
     },
     {
       "id": "recr7HRb2CIqnyoAa",
@@ -11838,19 +11855,18 @@
           "name": "Loghouse"
         }
       ],
-      "productUrl": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+      "productUrl": "https://www.loghouse.ie/product/eco-garden-room-5-0m-x-3-0m/",
       "verificationStatus": "Partially Verified",
       "qualification": {
-        "status": "ELIGIBLE \u2014 WITH CAVEAT",
-        "confidenceTier": "WITH_CAVEAT",
+        "status": "ELIGIBLE \u2014 HIGH CONFIDENCE",
+        "confidenceTier": "HIGH_CONFIDENCE",
         "reasons": [
           "Irish availability is confirmed by recorded evidence.",
+          "A verified price is recorded.",
           "A product-level source is recorded.",
           "Supplier attribution is confirmed: Loghouse."
         ],
-        "caveats": [
-          "No usable price is recorded."
-        ],
+        "caveats": [],
         "hardBlockers": [],
         "evidenceSignals": {
           "irishAvailability": "confirmed",
@@ -11858,7 +11874,7 @@
           "irishAvailabilityScope": "Organisation-Wide",
           "irishAvailabilityClassified": true,
           "noPublishedIrishRoute": false,
-          "price": "missing",
+          "price": "verified",
           "source": "product-level",
           "supplierAttribution": "confirmed",
           "manufacturerAttribution": "unknown",
@@ -11866,34 +11882,46 @@
           "contradiction": "none",
           "productEvidenceCompleteness": "Product Evidence Complete \u2014 Organisation Gate Required",
           "featureValueCount": 1,
-          "pricingRecordCount": 0,
+          "pricingRecordCount": 1,
           "availabilityRecordCount": 0
         }
       },
-      "priceEvidence": null,
+      "priceEvidence": {
+        "base": 19630,
+        "from": null,
+        "to": null,
+        "currency": "EUR",
+        "priceType": "Standard Price",
+        "status": "Verified",
+        "includesVat": "Yes",
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
+      },
       "features": {
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Designation 5.0m x 3.0m recorded exactly as published; 15 m2 nominal plan area. No conversion rule published, so nothing deducted. DO NOT RANK on internal area. Tier B \u2014 loghouse.ie could not be read directly. PLANNING: 15 m2 is exactly half the 30 m2 combined allowance; the whole-plot total must be checked, not this figure alone.",
+          "text": "PUBLISHED PRODUCT SIZE: 5.2m x 3.4m on the current product specification, despite the marketed model name 5.0m x 3.0m. The page does not publish usable internal floor area. Internal floor area remains UNKNOWN.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Product-Specific"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction.",
+          "text": "THERMAL USABILITY: direct first-party evidence confirms 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation in SIP construction. No U-values are published, so no quantified thermal comparison is inferred.",
           "number": null,
           "unit": null,
           "evidenceScope": "Range-Level",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction.",
+              "text": "THERMAL USABILITY: direct first-party evidence confirms 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation in SIP construction. No U-values are published, so no quantified thermal comparison is inferred.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. Homeowner implication: suitable for year-round use.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: direct first-party product evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -11908,16 +11936,18 @@
           "evidenceScope": "Organisation-Wide"
         },
         "insulation": {
-          "text": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+          "text": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Installed by Loghouse's own team as the standard delivery model. Homeowner implication: a fully installed building, but confirm whether base and electrical connection are included.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Product page states delivered and assembled; fitting is included. Ground screws and insulated SIP foundations are included where suitable. Electrics, plumbing and internal/external painting are excluded but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE ACROSS IRELAND. Irish company since 2007, four Irish locations, euro pricing, own installation team, named coverage across all 32 counties. Homeowner implication: purchasable north and south with no import or currency complication.",
@@ -11926,22 +11956,20 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": null,
-      "currency": null,
-      "priceBasis": null,
+      "price": 19630,
+      "currency": "EUR",
+      "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
       "irishAvailability": true,
       "availabilityStatus": null,
       "noPublishedIrishRoute": false,
-      "qualificationTier": "WITH_CAVEAT",
-      "qualificationCaveats": [
-        "No usable price is recorded."
-      ]
+      "qualificationTier": "HIGH_CONFIDENCE",
+      "qualificationCaveats": []
     },
     {
       "id": "rec66xKgPx0ipzfOQ",
@@ -11958,19 +11986,18 @@
           "name": "Loghouse"
         }
       ],
-      "productUrl": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+      "productUrl": "https://www.loghouse.ie/product/eco-garden-room-5-0m-x-4-0m/",
       "verificationStatus": "Partially Verified",
       "qualification": {
-        "status": "ELIGIBLE \u2014 WITH CAVEAT",
-        "confidenceTier": "WITH_CAVEAT",
+        "status": "ELIGIBLE \u2014 HIGH CONFIDENCE",
+        "confidenceTier": "HIGH_CONFIDENCE",
         "reasons": [
           "Irish availability is confirmed by recorded evidence.",
+          "A verified price is recorded.",
           "A product-level source is recorded.",
           "Supplier attribution is confirmed: Loghouse."
         ],
-        "caveats": [
-          "No usable price is recorded."
-        ],
+        "caveats": [],
         "hardBlockers": [],
         "evidenceSignals": {
           "irishAvailability": "confirmed",
@@ -11978,7 +12005,7 @@
           "irishAvailabilityScope": "Organisation-Wide",
           "irishAvailabilityClassified": true,
           "noPublishedIrishRoute": false,
-          "price": "missing",
+          "price": "verified",
           "source": "product-level",
           "supplierAttribution": "confirmed",
           "manufacturerAttribution": "unknown",
@@ -11986,11 +12013,22 @@
           "contradiction": "none",
           "productEvidenceCompleteness": "Product Evidence Complete \u2014 Organisation Gate Required",
           "featureValueCount": 1,
-          "pricingRecordCount": 0,
+          "pricingRecordCount": 1,
           "availabilityRecordCount": 0
         }
       },
-      "priceEvidence": null,
+      "priceEvidence": {
+        "base": 23190,
+        "from": null,
+        "to": null,
+        "currency": "EUR",
+        "priceType": "Standard Price",
+        "status": "Verified",
+        "includesVat": "Yes",
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
+      },
       "features": {
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: minimum 10 years. Nothing inferred. SUPPLIER STATUS \u2014 LOGHOUSE, 8 Garden-Room products, WARRANTY LAYER COMPLETE. All 8 REQUIRES PRODUCT-SPECIFIC VERIFICATION, Tier A for the statement itself, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING, read directly from the homepage: 'We guarantee quality with each product we sell! ... you also get our minimum Ten Year Guarantee!' THE WORD 'MINIMUM' IS WHY THIS IS NOT A TEN-YEAR CLASSIFICATION: it states a floor and implies that some products carry longer, without saying which or how much. No per-product term is published, and the guarantee's terms and conditions were not retrievable \u2014 loghouse.ie is client-rendered and its guide pages returned empty bodies. Scope is therefore entirely unstated: whether the ten years covers structure, rot, workmanship or the whole building is unknown. WHAT MAKES THE UNDERLYING POSITION STRONG NONETHELESS: this is an established Irish company operating its own installation team, so a buyer has a domestic counterparty and the supplier warrants a building it erected itself. That is a materially better starting point than a continental kit supplier's five years. BLOCKED-CONTENT LIMITATION, carried forward: the guarantee document could not be retrieved. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: a ten-year minimum from an installing Irish company is a strong position on its face. Request the written guarantee document, confirm what it covers, and ask whether this product carries more than the minimum.",
@@ -11999,33 +12037,35 @@
           "evidenceScope": "Organisation-Wide"
         },
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Designation 5.0m x 4.0m recorded exactly as published; 20 m2 nominal plan area. No conversion rule published, so nothing deducted. DO NOT RANK on internal area. Tier B \u2014 loghouse.ie could not be read directly. PLANNING: 20 m2 leaves only about 10 m2 of the 30 m2 combined allowance for every other structure on the plot.",
+          "text": "PUBLISHED PRODUCT SIZE: 5.2m x 4.4m on the current product specification, despite the marketed model name 5.0m x 4.0m. The page does not label a usable internal floor area. Internal floor area remains UNKNOWN.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Product-Specific"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulation": {
-          "text": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+          "text": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction. At 20 m2 this is a full working room rather than a desk pod, and well within the 30 m2 back-garden allowance on its own.",
+          "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published, so quantified thermal performance remains unknown.",
           "number": null,
           "unit": null,
           "evidenceScope": "Range-Level",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction. At 20 m2 this is a full working room rather than a desk pod, and well within the 30 m2 back-garden allowance on its own.",
+              "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published, so quantified thermal performance remains unknown.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. Homeowner implication: suitable for year-round use.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: direct first-party product evidence confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -12040,28 +12080,27 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Loghouse installs with its own team and states there is 'no need to try to tackle complicated assembly instructions on your own' \u2014 installation is the supplier's standard delivery model, not an optional extra. Homeowner implication: a fully installed building, but confirm whether the base and electrical connection are inside or outside the quoted price. SUPPLIER STATUS \u2014 LOGHOUSE, 8 Garden-Room products, INSTALLATION LAYER COMPLETE. Status record created at the Installation Layer Completion Audit 2026-08-28; the supplier's product values were populated ahead of this layer's production runs and therefore held no supplier-level status. All 8 products carry a classification with Evidence Tier, Evidence Scope and source recorded. THE SUPPLIER-LEVEL FINDING: the supplier's own installation team is the delivery method and the marketing explicitly positions it against self-assembly. RECORDED LIMITATION, restated once: loghouse.ie is client-rendered and its page bodies have not been directly readable across this programme, so terms are attributed to the named supplier URL. What the installed price covers beneath the building \u2014 base and electrical connection \u2014 is not resolved by published material.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Product page states delivered and assembled; fitting is included. Ground screws and insulated SIP foundations are included where suitable. Electrics, plumbing and internal/external painting are excluded but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         }
       },
-      "price": null,
-      "currency": null,
-      "priceBasis": null,
+      "price": 23190,
+      "currency": "EUR",
+      "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
       "irishAvailability": true,
       "availabilityStatus": null,
       "noPublishedIrishRoute": false,
-      "qualificationTier": "WITH_CAVEAT",
-      "qualificationCaveats": [
-        "No usable price is recorded."
-      ]
+      "qualificationTier": "HIGH_CONFIDENCE",
+      "qualificationCaveats": []
     },
     {
       "id": "rec6pnA2GkdMzlmPf",
@@ -12078,19 +12117,18 @@
           "name": "Loghouse"
         }
       ],
-      "productUrl": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+      "productUrl": "https://www.loghouse.ie/product/eco-garden-room-6-0m-x-3-0m/",
       "verificationStatus": "Partially Verified",
       "qualification": {
-        "status": "ELIGIBLE \u2014 WITH CAVEAT",
-        "confidenceTier": "WITH_CAVEAT",
+        "status": "ELIGIBLE \u2014 HIGH CONFIDENCE",
+        "confidenceTier": "HIGH_CONFIDENCE",
         "reasons": [
           "Irish availability is confirmed by recorded evidence.",
+          "A verified price is recorded.",
           "A product-level source is recorded.",
           "Supplier attribution is confirmed: Loghouse."
         ],
-        "caveats": [
-          "No usable price is recorded."
-        ],
+        "caveats": [],
         "hardBlockers": [],
         "evidenceSignals": {
           "irishAvailability": "confirmed",
@@ -12098,7 +12136,7 @@
           "irishAvailabilityScope": "Organisation-Wide",
           "irishAvailabilityClassified": true,
           "noPublishedIrishRoute": false,
-          "price": "missing",
+          "price": "verified",
           "source": "product-level",
           "supplierAttribution": "confirmed",
           "manufacturerAttribution": "unknown",
@@ -12106,28 +12144,39 @@
           "contradiction": "none",
           "productEvidenceCompleteness": "Product Evidence Complete \u2014 Organisation Gate Required",
           "featureValueCount": 1,
-          "pricingRecordCount": 0,
+          "pricingRecordCount": 1,
           "availabilityRecordCount": 0
         }
       },
-      "priceEvidence": null,
+      "priceEvidence": {
+        "base": 22840,
+        "from": null,
+        "to": null,
+        "currency": "EUR",
+        "priceType": "Standard Price",
+        "status": "Verified",
+        "includesVat": "Yes",
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
+      },
       "features": {
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction.",
+          "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published; quantified thermal performance remains unknown.",
           "number": null,
           "unit": null,
           "evidenceScope": "Range-Level",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered on the published construction.",
+              "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published; quantified thermal performance remains unknown.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. Homeowner implication: suitable for year-round use.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: direct first-party product evidence confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -12142,10 +12191,11 @@
           "evidenceScope": "Organisation-Wide"
         },
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Installed by Loghouse's own team as the standard delivery model. Homeowner implication: a fully installed building, but confirm whether base and electrical connection are included.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Product page states delivered and assembled; fitting is included. Ground screws and insulated SIP foundations are included where suitable. Electrics, plumbing and internal/external painting are excluded but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "irishAvailability": {
           "text": "AVAILABLE ACROSS IRELAND. Irish company since 2007, four Irish locations, euro pricing, own installation team, named coverage across all 32 counties. Homeowner implication: purchasable north and south with no import or currency complication.",
@@ -12154,34 +12204,34 @@
           "evidenceScope": "Organisation-Wide"
         },
         "insulation": {
-          "text": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+          "text": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Designation 6.0m x 3.0m recorded exactly as published; 18 m2 nominal plan area. No conversion rule published, so nothing deducted. DO NOT RANK on internal area. Tier B \u2014 loghouse.ie could not be read directly. PLANNING: 18 m2, inside the 30 m2 combined allowance; note this is the same nominal area as the 4.5m x 4.0m footprint offered by other suppliers but in a long narrow proportion, which changes usable layout without changing the area figure \u2014 a reason area alone should never be the sole ranking input.",
+          "text": "PUBLISHED PRODUCT SIZE: 6.2m x 3.4m on the current product specification, despite the marketed model name 6.0m x 3.0m. The page does not publish usable internal floor area. Internal floor area remains UNKNOWN.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Product-Specific"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         }
       },
-      "price": null,
-      "currency": null,
-      "priceBasis": null,
+      "price": 22840,
+      "currency": "EUR",
+      "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
       "irishAvailability": true,
       "availabilityStatus": null,
       "noPublishedIrishRoute": false,
-      "qualificationTier": "WITH_CAVEAT",
-      "qualificationCaveats": [
-        "No usable price is recorded."
-      ]
+      "qualificationTier": "HIGH_CONFIDENCE",
+      "qualificationCaveats": []
     },
     {
       "id": "recDHVxszqcxMTrXs",
@@ -12255,27 +12305,28 @@
           "evidenceScope": "Organisation-Wide"
         },
         "insulation": {
-          "text": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. Powder-coated steel roofing, wraparound steel soffit and fascias. No U-values published.\n\nEVIDENCE TIER B: attributed to https://www.loghouse.ie/product/eco-garden-room-6-0m-x-4-0m/ via search index; page body not directly retrievable.\n\nHOMEOWNER IMPLICATION: at 24 m2 nominal this is one of the larger ECO Garden Rooms, and the insulation specification supports year-round use. Note this product's Atlas Verification Status is 'Researching' \u2014 the least verified of the eight.",
+          "text": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered. At 24 m2 this is the largest rectangular model in the range and consumes most of a 30 m2 back-garden allowance on its own \u2014 recorded as intelligence, no planning determination made.",
+          "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. This establishes an insulated envelope; no U-values are published and no quantified thermal ranking is inferred.",
           "number": null,
           "unit": null,
           "evidenceScope": "Range-Level",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. Site access limitation: loghouse.ie returned no page body this session; indexed evidence \u2014 Tier B. LIMITATION: no insulation thickness or U-value published. HOMEOWNER IMPLICATION: winter-capable as delivered. At 24 m2 this is the largest rectangular model in the range and consumes most of a 30 m2 back-garden allowance on its own \u2014 recorded as intelligence, no planning determination made.",
+              "text": "THERMAL USABILITY: direct first-party evidence confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. This establishes an insulated envelope; no U-values are published and no quantified thermal ranking is inferred.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. NOTE: this product's Atlas Verification Status is 'Researching', the least verified of the eight Loghouse records. Homeowner implication: suitable for year-round use on the stated range specification.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: direct first-party product evidence confirms SIP construction with 100mm EPS walls, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -12284,16 +12335,18 @@
           ]
         },
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Installed by Loghouse's own team as the standard delivery model. Homeowner implication: a fully installed building, but confirm whether base and electrical connection are included.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Product page states delivered and assembled; fitting is included. Ground screws and insulated SIP foundations are included where suitable. Electrics, plumbing and internal/external painting are excluded but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Designation 6.0m x 4.0m recorded exactly as published; 24 m2 nominal plan area \u2014 the largest rectangular unit in the ECO range. No conversion rule published, so nothing deducted. DO NOT RANK on internal area. Tier B \u2014 loghouse.ie could not be read directly. PLANNING: 24 m2 sits inside the 30 m2 combined allowance and was inside even the previous 25 m2 limit, but it leaves only about 6 m2 for all other structures on the plot.",
+          "text": "PUBLISHED PRODUCT SIZE: 6.2m x 4.4m on the current product specification, despite the marketed model name 6.0m x 4.0m. The page does not publish usable internal floor area. Internal floor area remains UNKNOWN.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Product-Specific"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         }
       },
       "price": 27090,
@@ -12301,7 +12354,7 @@
       "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. Powder-coated steel roofing, wraparound steel soffit and fascias. No U-values published.\n\nEVIDENCE TIER B: attributed to https://www.loghouse.ie/product/eco-garden-room-6-0m-x-4-0m/ via search index; page body not directly retrievable.\n\nHOMEOWNER IMPLICATION: at 24 m2 nominal this is one of the larger ECO Garden Rooms, and the insulation specification supports year-round use. Note this product's Atlas Verification Status is 'Researching' \u2014 the least verified of the eight.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Product page states 100mm EPS wall insulation, 150mm EPS roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
@@ -54215,19 +54268,18 @@
           "name": "Loghouse"
         }
       ],
-      "productUrl": "https://www.loghouse.ie/product-category/eco-garden-rooms/",
+      "productUrl": "https://www.loghouse.ie/product/studio-eco-garden-room-5m-x-4m/",
       "verificationStatus": "Partially Verified",
       "qualification": {
-        "status": "ELIGIBLE \u2014 WITH CAVEAT",
-        "confidenceTier": "WITH_CAVEAT",
+        "status": "ELIGIBLE \u2014 HIGH CONFIDENCE",
+        "confidenceTier": "HIGH_CONFIDENCE",
         "reasons": [
           "Irish availability is confirmed by recorded evidence.",
+          "A verified price is recorded.",
           "A product-level source is recorded.",
           "Supplier attribution is confirmed: Loghouse."
         ],
-        "caveats": [
-          "No usable price is recorded."
-        ],
+        "caveats": [],
         "hardBlockers": [],
         "evidenceSignals": {
           "irishAvailability": "confirmed",
@@ -54235,7 +54287,7 @@
           "irishAvailabilityScope": "Organisation-Wide",
           "irishAvailabilityClassified": true,
           "noPublishedIrishRoute": false,
-          "price": "missing",
+          "price": "verified",
           "source": "product-level",
           "supplierAttribution": "confirmed",
           "manufacturerAttribution": "unknown",
@@ -54243,40 +54295,53 @@
           "contradiction": "none",
           "productEvidenceCompleteness": "Product Evidence Complete \u2014 Organisation Gate Required",
           "featureValueCount": 1,
-          "pricingRecordCount": 0,
+          "pricingRecordCount": 1,
           "availabilityRecordCount": 0
         }
       },
-      "priceEvidence": null,
+      "priceEvidence": {
+        "base": 30610,
+        "from": null,
+        "to": null,
+        "currency": "EUR",
+        "priceType": "Standard Price",
+        "status": "Verified",
+        "includesVat": "Yes",
+        "evidenceScope": null,
+        "adjudication": "adjudicated",
+        "candidateCount": 1
+      },
       "features": {
         "insulation": {
-          "text": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size. This product is named 'Studio' rather than plain ECO Garden Room, so its specification may differ from the standard range \u2014 that has NOT been confirmed either way.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification, subject to confirming the Studio variant shares it.",
+          "text": "INSULATED SIP CONSTRUCTION. Studio ECO product page states EPS 100mm wall insulation, EPS 150mm roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Range-Level"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "floorArea": {
-          "text": "VERIFIED NOMINAL SIZE. Designation 5.2m x 4.7m recorded exactly as published; 24.44 m2 nominal plan area. The centimetre-level precision here, against the round metre dimensions used across the rest of the ECO range, suggests a manufacturer-derived figure rather than a marketing label, but Loghouse does not state whether it is external or internal, so nothing has been derived from it. DO NOT RANK on internal area. Tier B \u2014 loghouse.ie could not be read directly. PLANNING: 24.44 m2, inside the 30 m2 combined allowance and marginally inside the previous 25 m2 limit. RANGE OBSERVATION: every one of the eight Loghouse ECO Garden Rooms falls at or below 24.44 m2 \u2014 the whole range was evidently sized to sit under the old 25 m2 exemption threshold. Under the new 30 m2 allowance that gives Loghouse buyers headroom the range was not designed to need, which is useful where a shed or garage already stands on the plot. SUPPLIER STATUS: this completes Loghouse \u2014 8 Garden-Room products, all designated by nominal size, none published with a stated internal floor area, none rankable on internal area. Loghouse is an Irish supplier and the range is purchasable in the Republic, so this cohort is blocked on measurement disclosure alone; one supplier statement of internal area would make all eight rankable. MEASUREMENT BASIS COMPLETE.",
+          "text": "PUBLISHED PRODUCT SIZE: 5.2m x 4.7m. The Studio product page also publishes wall height 2200mm and ridge height 2900mm. The size is not labelled as usable internal floor dimensions, so internal floor area remains UNKNOWN.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "insulationRating": {
-          "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. SUPPLIER STATUS \u2014 LOGHOUSE, 8 Garden-Room products, THERMAL LAYER COMPLETE (EVIDENCE UNAVAILABLE). All 8 are YEAR-ROUND INSULATED. None is Tier A: loghouse.ie returned an empty body on every path attempted this session and during the measurement layer, so the whole supplier rests on indexed evidence attributed to loghouse.ie. THE SUPPLIER-LEVEL FINDING: Loghouse is the only supplier reached in this layer whose standard build is SIP \u2014 Structural Insulated Panels, a rigid insulation core bonded between two structural boards, with EPS used across roofs, walls and floors. That is a materially different construction from everything else in the catalogue. Every other insulated supplier here builds a frame and fills it: Concept Modular and Adman use steel frames, Sprout Pod uses steel, Cabin Master and Booths use timber studs. In each of those the frame members run continuously through the insulation layer and conduct heat around it, which is the cold-bridging caution recorded repeatedly in this layer. A SIP panel has no repeating studs, so that particular weakness does not arise. THE COUNTERWEIGHT, and it is real: EPS is a lower-performing insulant per millimetre than the PIR and rigid foil-faced boards specified by Cabin Master, Green Retreats and Dunster House. A SIP wall avoids cold bridges but needs more thickness to reach the same performance, and Loghouse publishes NO thickness and NO U-value for any element. The construction is therefore structurally superior in principle and unquantified in practice. Every buyer should ask for the panel thickness and the wall U-value in writing before comparing a Loghouse price against a PIR-insulated competitor. THE ACCESS PROBLEM, recorded as technical debt for a third consecutive layer: loghouse.ie has not returned a readable page body in any session of this programme. Until it does, this supplier cannot rise above Tier B on any decision layer.",
+          "text": "THERMAL USABILITY / SUPPLIER STATUS: direct first-party evidence now confirms the Studio and ECO range use SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation on the audited product pages. The previous supplier-wide Tier-B/page-inaccessible limitation is superseded for these eight products. No U-values are published, so Atlas does not quantify or rank thermal performance from insulation thickness alone.",
           "number": null,
           "unit": null,
           "evidenceScope": "Organisation-Wide",
           "feature": "Year-round insulation",
           "records": [
             {
-              "text": "YEAR-ROUND INSULATED. ECO Garden Room range: SIP construction with roof, floor and wall insulation, using EPS across all three elements. Nothing inferred. SUPPLIER STATUS \u2014 LOGHOUSE, 8 Garden-Room products, THERMAL LAYER COMPLETE (EVIDENCE UNAVAILABLE). All 8 are YEAR-ROUND INSULATED. None is Tier A: loghouse.ie returned an empty body on every path attempted this session and during the measurement layer, so the whole supplier rests on indexed evidence attributed to loghouse.ie. THE SUPPLIER-LEVEL FINDING: Loghouse is the only supplier reached in this layer whose standard build is SIP \u2014 Structural Insulated Panels, a rigid insulation core bonded between two structural boards, with EPS used across roofs, walls and floors. That is a materially different construction from everything else in the catalogue. Every other insulated supplier here builds a frame and fills it: Concept Modular and Adman use steel frames, Sprout Pod uses steel, Cabin Master and Booths use timber studs. In each of those the frame members run continuously through the insulation layer and conduct heat around it, which is the cold-bridging caution recorded repeatedly in this layer. A SIP panel has no repeating studs, so that particular weakness does not arise. THE COUNTERWEIGHT, and it is real: EPS is a lower-performing insulant per millimetre than the PIR and rigid foil-faced boards specified by Cabin Master, Green Retreats and Dunster House. A SIP wall avoids cold bridges but needs more thickness to reach the same performance, and Loghouse publishes NO thickness and NO U-value for any element. The construction is therefore structurally superior in principle and unquantified in practice. Every buyer should ask for the panel thickness and the wall U-value in writing before comparing a Loghouse price against a PIR-insulated competitor. THE ACCESS PROBLEM, recorded as technical debt for a third consecutive layer: loghouse.ie has not returned a readable page body in any session of this programme. Until it does, this supplier cannot rise above Tier B on any decision layer.",
+              "text": "THERMAL USABILITY / SUPPLIER STATUS: direct first-party evidence now confirms the Studio and ECO range use SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation on the audited product pages. The previous supplier-wide Tier-B/page-inaccessible limitation is superseded for these eight products. No U-values are published, so Atlas does not quantify or rank thermal performance from insulation thickness alone.",
               "number": null,
               "unit": null,
               "evidenceScope": "Organisation-Wide",
               "feature": "Year-round insulation"
             },
             {
-              "text": "YEAR-ROUND INSULATED. SIP construction: 100mm EPS composite wall panels, 150mm EPS roof, insulated floor. No U-value published. NOTE: this product is named 'Studio' rather than plain ECO Garden Room, so its specification may differ from the standard range; that has NOT been confirmed either way. Homeowner implication: suitable for year-round use subject to confirming the Studio variant shares the range specification.",
+              "text": "YEAR-ROUND INSULATION EVIDENCE: the Studio product page is now directly verified and confirms SIP construction with 100mm EPS wall insulation, 150mm EPS roof insulation and 100mm EPS floor insulation. No U-values are published.",
               "number": null,
               "unit": null,
               "evidenceScope": "Range-Level",
@@ -54285,10 +54350,11 @@
           ]
         },
         "installationModel": {
-          "text": "TURNKEY INSTALLATION INCLUDED. Installed by Loghouse's own team as the standard delivery model. Homeowner implication: a fully installed building, but confirm whether base and electrical connection are included.",
+          "text": "INSTALLED / ASSEMBLED INCLUDED. Studio ECO product page states delivered and assembled and fitting is included in the price. Ground-screw and insulated SIP foundations are included where suitable. Electrics, plumbing and internal/external painting are excluded but can be arranged.",
           "number": null,
           "unit": null,
-          "evidenceScope": "Organisation-Wide"
+          "evidenceScope": "Product-Specific",
+          "status": "Verified"
         },
         "warranty": {
           "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. DURATION: minimum 10 years. Homepage states a 'minimum Ten Year Guarantee'; scope and terms not published or retrievable. Homeowner implication: request the written guarantee document and confirm what it covers.",
@@ -54303,22 +54369,20 @@
           "evidenceScope": "Organisation-Wide"
         }
       },
-      "price": null,
-      "currency": null,
-      "priceBasis": null,
+      "price": 30610,
+      "currency": "EUR",
+      "priceBasis": "Verified",
       "floorAreaM2": null,
       "glazing": null,
-      "insulation": "INSULATED \u2014 SIP construction. Walls 100mm EPS composite panels; roof 150mm EPS boards; floor insulated. No U-values published.\n\nEVIDENCE TIER B, RANGE-LEVEL: attributed to the loghouse.ie ECO Garden Rooms category via search index; no product-specific page was read for this size. This product is named 'Studio' rather than plain ECO Garden Room, so its specification may differ from the standard range \u2014 that has NOT been confirmed either way.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated range specification, subject to confirming the Studio variant shares it.",
+      "insulation": "INSULATED SIP CONSTRUCTION. Studio ECO product page states EPS 100mm wall insulation, EPS 150mm roof insulation and EPS 100mm floor insulation. Roof total thickness 217mm; wall total thickness 184mm. No U-value is published.",
       "manufactureCountry": null,
       "designLanguage": null,
       "irishAvailabilityConfirmationState": "Yes",
       "irishAvailability": true,
       "availabilityStatus": null,
       "noPublishedIrishRoute": false,
-      "qualificationTier": "WITH_CAVEAT",
-      "qualificationCaveats": [
-        "No usable price is recorded."
-      ]
+      "qualificationTier": "HIGH_CONFIDENCE",
+      "qualificationCaveats": []
     },
     {
       "id": "rec8zUEze2SpvNGeJ",

@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-10T11:15:14Z",
+  "generated": "2026-09-11T11:16:46Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "typicalHomeowner"
@@ -505,7 +505,7 @@
     },
     "rec6hBlyxKfJEA6C5": {
       "typicalHomeowner": {
-        "text": "A HYBRID WORKER WITH A SMALL GARDEN AND A SINGLE REQUIREMENT. One desk, one occupant, and a preference for keeping most of the lawn \u2014 with the added comfort of buying from an Irish supplier whose published size lets them check the exemption themselves before enquiring. THEY ALSO HAVE THE MOST HEADROOM IN THE RANGE, 21 m2, which matters if a shed or a future garden store is in prospect. NOT FOR: two occupants, a gym, or anyone storing equipment as well as working \u2014 the 4.0 m \u00d7 3.0 m at 12 m2 is the honest next step up.",
+        "text": "TYPICAL HOMEOWNER: someone seeking a compact single-purpose garden room and preferring an Irish supplier with current published price, installation and insulation evidence. The actual planning margin cannot be stated from the marketed model name; confirm the relevant dimensions and site conditions before relying on exempt-development headroom.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -517,31 +517,31 @@
     },
     "recTpjQUJ7rIgemhk": {
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD WHERE THE ROOM HAS TO SERVE MORE THAN ONE PERSON OR MORE THAN ONE PURPOSE. Two people working on alternate days, or an office that becomes a gym at six o'clock \u2014 the uses that need floor in front of the furniture rather than only alongside it. They have a garden wide enough to take a 4 m depth and still leave the required open space. NOT FOR: a narrow plot, where the 5.0 m \u00d7 3.0 m at 15 m2 fits the shape better; nor for a garden already carrying a garage, where 14 m2 of remaining allowance may not be enough.",
+        "text": "TYPICAL HOMEOWNER: someone wanting a broader-format garden room for more than one activity. The current supplier specification is 4.2m \u00d7 4.4m; the marketed model name should not be used as exact internal geometry. Planning headroom is verification-required because Atlas does not hold the necessary measurement basis.",
         "evidenceScope": "Product-Specific"
       }
     },
     "recr7HRb2CIqnyoAa": {
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD WITH A NARROW GARDEN AND A REAL WORKSPACE REQUIREMENT. The 3 m depth suits a plot where width is the scarce dimension, and the 5 m length gives room for more than a desk \u2014 a common Irish suburban shape. They are comfortable buying from a published size list and want the supplier close enough to visit. THEY HAVE HALF THE ALLOWANCE LEFT, which is the right position for a household that may add a shed later. NOT FOR: a room that must work in two directions at once \u2014 the 4.0 m \u00d7 4.0 m or 5.0 m \u00d7 4.0 m models exist for that.",
+        "text": "TYPICAL HOMEOWNER: someone seeking a longer-format garden room and valuing an Irish supplier with current product-specific price, fitting and insulation evidence. The current product specification is 5.2m \u00d7 3.4m; exact internal usable dimensions and planning headroom remain verification-required.",
         "evidenceScope": "Product-Specific"
       }
     },
     "rec66xKgPx0ipzfOQ": {
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD TREATING THE GARDEN ROOM AS A PERMANENT EXTENSION OF THE HOUSE. Two working adults, or a workspace that also serves as a gym and an occasional family room \u2014 the requirement that justifies committing two thirds of the allowance to one building. They have a reasonably large, otherwise clear garden and they intend this to be the only structure in it. NOT FOR: a household that also wants a shed, where 10 m2 of remaining allowance disappears quickly; nor for a small garden, where the 25 m2 private open space condition may bind before the building allowance does.",
+        "text": "TYPICAL HOMEOWNER: someone looking for a larger multi-purpose garden room and willing to verify the actual planning measurement basis and site conditions before purchase. Current supplier specification is 5.2m \u00d7 4.4m; Atlas does not state a remaining-allowance figure or treat the marketed model name as exact internal geometry.",
         "evidenceScope": "Product-Specific"
       }
     },
     "rec6pnA2GkdMzlmPf": {
       "typicalHomeowner": {
-        "text": "SOMEONE WHOSE GARDEN DICTATES THE SHAPE OF THE BUILDING. A long narrow plot, a boundary run, or a site where a deeper structure would block light or a path \u2014 the geometry decides before the specification does. They want maximum accommodation without the building dominating the garden, and they are working from published dimensions with an Irish supplier. NOT FOR: a household whose requirement is really about depth \u2014 a gym, a studio, two simultaneous desks \u2014 where the 4.0 m \u00d7 4.0 m or 5.0 m \u00d7 4.0 m models do more with the same or less area.",
+        "text": "TYPICAL HOMEOWNER: someone whose site favours a longer, relatively narrow garden-room format. Current supplier specification is 6.2m \u00d7 3.4m. Exact internal usable geometry and planning margin require verification; this record does not infer them from the marketed model name.",
         "evidenceScope": "Product-Specific"
       }
     },
     "recDHVxszqcxMTrXs": {
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD MAKING ONE LARGE COMMITMENT RATHER THAN SEVERAL SMALL ONES. They have a big garden, no shed worth keeping, and a requirement that genuinely needs 24 m2 \u2014 a studio, a workshop, or a room serving several members of the family. THEY UNDERSTAND THAT THIS BUILDING IS EFFECTIVELY THEIR WHOLE ALLOWANCE, and they are content for it to be the only structure in the garden. NOT FOR: anyone with an existing shed, garage or greenhouse of any size; nor for a household that expects to add storage later, since there will be no allowance left to do it with.",
+        "text": "TYPICAL HOMEOWNER: someone seeking a large garden room as a major use of garden space and willing to verify planning/site constraints before purchase. The current supplier specification is 6.2m \u00d7 4.4m. Atlas does not state that this product consumes a particular share of the planning allowance without a verified measurement basis.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2371,7 +2371,7 @@
     },
     "recJ3HPVMPrYzaXvH": {
       "typicalHomeowner": {
-        "text": "SOMEONE WHOSE WORK NEEDS FLOOR AREA IN THE MIDDLE OF THE ROOM. An artist, a maker, a yoga or movement practice, a photographer \u2014 uses where furniture goes to the walls and the centre stays clear, which is exactly what a nearly square plan provides and a long narrow one does not. THEY HAVE A LARGE, EMPTY GARDEN, because 5.6 m2 of remaining allowance leaves room for essentially nothing else. NOT FOR: a garden with any existing structure; nor for a buyer who wants margin for error, where the 5.0 m \u00d7 4.0 m at 20 m2 is the sensible retreat.",
+        "text": "TYPICAL HOMEOWNER: someone drawn to the Studio-designated model for a broader room format and wanting current product-specific price, installation, insulation and height evidence. The supplier publishes 5.2m \u00d7 4.7m, but Atlas does not infer usable internal floor area or a remaining planning allowance from those dimensions. Planning suitability remains verification-required.",
         "evidenceScope": "Product-Specific"
       }
     },

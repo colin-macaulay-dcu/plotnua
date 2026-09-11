@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-10T11:15:14Z",
+  "generated": "2026-09-11T11:16:46Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "alternatives",
@@ -2393,27 +2393,27 @@
         "evidenceScope": null
       },
       "typicalHomeowner": {
-        "text": "A HYBRID WORKER WITH A SMALL GARDEN AND A SINGLE REQUIREMENT. One desk, one occupant, and a preference for keeping most of the lawn \u2014 with the added comfort of buying from an Irish supplier whose published size lets them check the exemption themselves before enquiring. THEY ALSO HAVE THE MOST HEADROOM IN THE RANGE, 21 m2, which matters if a shed or a future garden store is in prospect. NOT FOR: two occupants, a gym, or anyone storing equipment as well as working \u2014 the 4.0 m \u00d7 3.0 m at 12 m2 is the honest next step up.",
+        "text": "TYPICAL HOMEOWNER: someone seeking a compact single-purpose garden room and preferring an Irish supplier with current published price, installation and insulation evidence. The actual planning margin cannot be stated from the marketed model name; confirm the relevant dimensions and site conditions before relying on exempt-development headroom.",
         "evidenceScope": "Product-Specific"
       },
       "bestFor": {
-        "text": "THE SMALLEST PLANNING FOOTPRINT IN AN IRISH RANGE WHERE EVERY SIZE IS PUBLISHED. 9 m2 against the 30 m2 combined allowance leaves 21 m2 for everything else in the garden \u2014 and 9 m2 also sat well inside the 25 m2 limit that applied before 27 July 2026, so nothing about this product depends on the 2026 change. WHAT SETS THE RANGE APART is that Loghouse publishes an external two-dimension size for every model, so the area test can be run before a single enquiry is made. HOMEOWNER IMPLICATION: the lowest-risk entry point in the range \u2014 but confirm the ridge height against 3 m, not 4 m, for the reason set out in Considerations.",
+        "text": "BEST FOR: a homeowner seeking the smallest marketed model in the current Loghouse ECO range and wanting a compact Irish-supplied garden room. The supplier currently publishes a 3m \u00d7 3.3m product specification, but Atlas does not hold verified usable internal floor area or a planning measurement basis. Suitability therefore depends on checking the actual site and confirming dimensions relevant to planning before relying on an exemption.",
         "evidenceScope": "Product-Specific"
       },
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 9 m2 against the 30 m2 back-garden allowance (raised from 25 m2 on 27 July 2026). Steel roofing means the 3 m height limit applies, not the 4 m pitched-roof limit. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: the smallest planning footprint in the Loghouse range; confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier page publishes product dimensions of 3m \u00d7 3.3m, but does not establish that these dimensions are the measurement basis required for a planning floor-area calculation or usable internal area. Do not use the model name or multiply the published dimensions to claim remaining allowance. Other Class 3 conditions still require separate checking, including siting, retained private open space, use and height.",
         "evidenceScope": "Product-Specific"
       },
       "considerations": {
-        "text": "THE ROOF COVERING CHANGES THE HEIGHT TEST, AND MOST BUYERS WILL GET THIS WRONG. Loghouse fits POWDER-COATED STEEL ROOFING, which is NOT a tiled or slated pitched roof \u2014 so the tighter 3 m limit applies to this and every other model in the range, not the 4 m allowed for tiled pitched roofs. A buyer who sees a pitched profile and assumes 4 m is applying the wrong test. NO FINISHED HEIGHT IS PUBLISHED, so it cannot be checked from Atlas evidence. SECOND, 9 m2 is one desk with no room for storage or a second occupant. HOMEOWNER IMPLICATION: ask for the finished ridge height above ground level and measure it against 3 m.",
+        "text": "CONSIDERATIONS: the marketed 3.0m \u00d7 3.0m name should not be treated as an exact planning footprint or usable internal area. The current supplier specification publishes 3m \u00d7 3.3m, while the planning measurement basis remains unverified in Atlas. The roof-covering height rule and other Class 3 conditions still need checking against the actual installed building and site.",
         "evidenceScope": "Product-Specific"
       },
       "strengths": {
-        "text": "A PUBLISHED SIZE FROM AN IRISH SUPPLIER IS THE COMBINATION THIS CATALOGUE MOST OFTEN LACKS, and Loghouse provides it across the whole range rather than on a single flagship model. THE SQUARE 3 m PLAN also makes 9 m2 work as a room rather than a passage \u2014 at this size the proportion decides whether the floor is usable. STEEL ROOFING IS A DURABLE COVERING for Irish weather, and the certified layers identify it explicitly, which is what allowed the correct height test to be applied. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price is held in Atlas.",
+        "text": "STRENGTHS: compact marketed model from an Irish supplier, with current Product-Specific evidence for price, installation and SIP/EPS insulation. The supplier publishes a 3m \u00d7 3.3m product specification. Atlas does not treat this as verified usable internal floor area or planning floor area. Current pricing is published as a range and package scope is separately recorded.",
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "AT 9 m2 THE COMPARISON IS CROWDED AND USEFUL. Yardbox's Whistler publishes a 3.2 m \u00d7 3.2 m footprint, 9 m2 of living space AND a 2.5 m height \u2014 the height figure this record leaves open, and comfortably under the 3 m steel-roof limit. Waltons' Classic Insulated 3m x 3m matches the nominal size with a stated insulated build. Adman Steel Sheds' Multiroom 3m x 3.2m at 9.60 m2 and MyCabin.ie's Laois at 9.00 m2 are the other Irish options. WITHIN LOGHOUSE, every step up is published, which makes resizing straightforward. HOMEOWNER IMPLICATION: with area settled, choose on published height and envelope.",
+        "text": "ALTERNATIVES: compare this compact Loghouse model with other small Irish garden-room options using each supplier's own governed measurements, price, installation and insulation evidence. Do not treat the marketed 3.0m \u00d7 3.0m name as an exact 9m\u00b2 usable or planning area. Current Loghouse product specification is 3m \u00d7 3.3m; internal usable area remains unknown.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2423,7 +2423,7 @@
         "evidenceScope": null
       },
       "considerations": {
-        "text": "HEIGHT IS THE OPEN CONDITION ON THIS PRODUCT, AS ON EVERY LOGHOUSE MODEL. Because the roofing is powder-coated steel rather than tile or slate, the 3 m limit applies and not the 4 m available to tiled pitched roofs \u2014 a distinction that turns on the covering, not the shape. No finished height is published, so the test cannot be run from Atlas evidence. SECOND, no U-value or wall specification is published, so year-round thermal comfort cannot be assessed \u2014 which matters for a room intended as a daily office. THIRD, the 18 m2 of remaining allowance is generous but still shared with every existing structure. HOMEOWNER IMPLICATION: ask for the finished ridge height and the wall build-up in the same conversation.",
+        "text": "CONSIDERATIONS: current direct evidence confirms SIP/EPS insulation, but no U-values are published. The supplier publishes 4.0m \u00d7 3.0m and 12.0m\u00b2 alongside the product size; Atlas does not treat that automatically as usable internal area. Height and other site-specific planning conditions should still be verified against the installed building.",
         "evidenceScope": "Product-Specific"
       },
       "planningConsiderations": {
@@ -2439,11 +2439,11 @@
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "WALTONS' THORESBY PREMIUM INSULATED 4m x 3m matches this size exactly and is explicitly sold on its insulation grade \u2014 the direct comparison if thermal performance is the priority, though it publishes no U-value either. ADMAN STEEL SHEDS' MULTIROOM 3m x 4.2m at 12.60 m2 is the Irish-made steel equivalent with an explicit designation. FOR A PUBLISHED HEIGHT, Yardbox states 2.5 m across its range. WITHIN LOGHOUSE, the 5.0 m \u00d7 3.0 m at 15 m2 adds length and the 4.0 m \u00d7 4.0 m at 16 m2 adds depth \u2014 depth is usually the more useful metre. HOMEOWNER IMPLICATION: at this size, choose on proportion and envelope rather than on area.",
+        "text": "ALTERNATIVES: compare this Loghouse model with other Irish garden rooms using governed supplier-specific dimensions rather than model-name arithmetic. Neighbouring Loghouse models now have current direct product specifications that differ from several marketed names, so old nominal-area comparisons should not be used. Price, installation and insulation evidence is now available for this cohort.",
         "evidenceScope": "Product-Specific"
       },
       "strengths": {
-        "text": "IT SITS AT THE POINT WHERE USABLE SPACE AND A WIDE PLANNING MARGIN MEET. 12 m2 is a real workspace, and 18 m2 of the combined allowance still remains \u2014 enough for a substantial shed or a future store without any risk of breaching the limit. THE SIZE IS PUBLISHED AS AN EXTERNAL TWO-DIMENSION FIGURE, which is why the certified layers could classify it definitively rather than requiring verification, and Loghouse is an Irish supplier so the position is directly actionable. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price.",
+        "text": "STRENGTHS: the supplier publishes this model as 4.0m \u00d7 3.0m and also prints 12.0m\u00b2 alongside the size. Current Product-Specific evidence also confirms EUR pricing, included assembly/fitting and SIP/EPS insulation. The 12.0m\u00b2 figure is not treated as verified usable internal floor area unless the supplier explicitly establishes that basis.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2453,27 +2453,27 @@
         "evidenceScope": null
       },
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 16 m2 against the 30 m2 back-garden allowance. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: well inside the allowance; confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier specification publishes 4.2m \u00d7 4.4m for the marketed 4.0m \u00d7 4.0m model, but Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis or usable internal floor area. Do not rely on the former 16m\u00b2 calculation or stated remaining allowance. Other Class 3 conditions remain separate checks.",
         "evidenceScope": "Product-Specific"
       },
       "bestFor": {
-        "text": "THE FIRST MODEL IN THE RANGE WITH 4 m OF DEPTH \u2014 AND DEPTH IS WHAT MAKES A ROOM MULTI-PURPOSE. 16 m2 against the 30 m2 combined allowance leaves 14 m2, and the square plan means the floor can be divided in two directions rather than one: a desk and a training area, or a workspace and a seating corner. IT WAS COMFORTABLY INSIDE THE PRE-2026 25 m2 LIMIT TOO. HOMEOWNER IMPLICATION: for one square metre more than the 5.0 m \u00d7 3.0 m model, this is the size at which a garden room stops being a corridor \u2014 the most consequential step in the range.",
+        "text": "BEST FOR: a homeowner wanting a broader, more square-proportioned model than the narrower ECO options. Current supplier specification is 4.2m \u00d7 4.4m, despite the marketed 4.0m \u00d7 4.0m name. Atlas does not infer usable internal area or planning headroom from those dimensions. Confirm the actual planning measurement basis and site conditions before relying on any allowance calculation.",
         "evidenceScope": "Product-Specific"
       },
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD WHERE THE ROOM HAS TO SERVE MORE THAN ONE PERSON OR MORE THAN ONE PURPOSE. Two people working on alternate days, or an office that becomes a gym at six o'clock \u2014 the uses that need floor in front of the furniture rather than only alongside it. They have a garden wide enough to take a 4 m depth and still leave the required open space. NOT FOR: a narrow plot, where the 5.0 m \u00d7 3.0 m at 15 m2 fits the shape better; nor for a garden already carrying a garage, where 14 m2 of remaining allowance may not be enough.",
+        "text": "TYPICAL HOMEOWNER: someone wanting a broader-format garden room for more than one activity. The current supplier specification is 4.2m \u00d7 4.4m; the marketed model name should not be used as exact internal geometry. Planning headroom is verification-required because Atlas does not hold the necessary measurement basis.",
         "evidenceScope": "Product-Specific"
       },
       "strengths": {
-        "text": "A SQUARE 4 m PLAN IS THE MOST FLEXIBLE SHAPE AT THIS AREA. Sixteen square metres arranged 4 m \u00d7 4 m accommodates layouts that a 5 m \u00d7 3 m of similar size cannot \u2014 a bed of equipment against one wall with clear floor in front, or two people working back to back. IT STILL LEAVES 14 m2 OF THE COMBINED ALLOWANCE, so the planning position remains relaxed rather than tight. THE SIZE IS PUBLISHED and Loghouse is Irish. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price, so nothing about thermal performance has been recorded.",
+        "text": "STRENGTHS: a broad-format ECO room with current Product-Specific evidence for EUR pricing, included assembly/fitting and SIP/EPS insulation. The supplier now publishes 4.2m \u00d7 4.4m for this marketed 4.0m \u00d7 4.0m model. Internal usable area and planning floor-area basis remain unverified and are not derived.",
         "evidenceScope": "Product-Specific"
       },
       "considerations": {
-        "text": "A DEEPER BUILDING IS ALSO A WIDER ONE ON THE GROUND, AND SOME GARDENS CANNOT TAKE IT. Four metres of depth plus access around the structure needs a plot that is genuinely wide, and the exemption separately requires at least 25 m2 of PRIVATE OPEN SPACE to remain \u2014 a condition that bites on smaller gardens well before the 30 m2 building allowance does. SECOND, THE HEIGHT CONDITION: steel roofing means 3 m, not 4 m, and no finished height is published. THIRD, 14 m2 of allowance remains, which an existing garage could exhaust. HOMEOWNER IMPLICATION: check the open-space requirement as carefully as the building area, and confirm the ridge height.",
+        "text": "CONSIDERATIONS: the marketed model name does not establish an exact 4m depth; current supplier specification is 4.2m \u00d7 4.4m. Atlas does not calculate remaining planning allowance from these dimensions because the required measurement basis has not been established. Check siting, retained private open space and installed height against the actual project.",
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "YARDBOX PUBLISHES BOTH FOOTPRINT AND USABLE LIVING SPACE AT COMPARABLE SIZES, plus a 2.5 m height, and serves both Irish jurisdictions \u2014 the closest documented equivalent. ADMAN STEEL SHEDS' MULTIROOM RANGE reaches this area in steel with explicit designations. WITHIN LOGHOUSE, the 6.0 m \u00d7 3.0 m at 18 m2 offers more area but returns to a 3 m depth, and the 5.0 m \u00d7 4.0 m at 20 m2 keeps the depth while adding length \u2014 the natural upgrade if the budget allows. HOMEOWNER IMPLICATION: compare on depth first; area alone will mislead you about how a room actually works.",
+        "text": "ALTERNATIVES: compare neighbouring Loghouse models using their current supplier-published specifications, prices, installation scope and insulation evidence. Several current product specifications differ from their marketed size names, so previous 16m\u00b2/18m\u00b2/20m\u00b2 nominal comparisons are not used as authoritative usable or planning areas.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2483,27 +2483,27 @@
         "evidenceScope": null
       },
       "considerations": {
-        "text": "THREE METRES OF DEPTH IS THE FIXED CONSTRAINT AT THIS SIZE, AND LENGTH CANNOT COMPENSATE. A 5 m \u00d7 3 m room takes furniture along its length; it will not accommodate a desk and a treadmill side by side the way a 4 m depth allows. THAT IS A LAYOUT LIMIT, NOT A PLANNING ONE. ON PLANNING, the open condition is height: steel roofing means the 3 m limit applies rather than 4 m, and no finished height is published. THIRD, half the combined allowance is now committed, so a garage or large shed already on the plot needs measuring. HOMEOWNER IMPLICATION: check the depth against your furniture plan, and the ridge height against 3 m.",
+        "text": "CONSIDERATIONS: do not treat the marketed 5.0m \u00d7 3.0m name as a fixed 3m internal depth or exact footprint. The supplier currently publishes 5.2m \u00d7 3.4m, but usable internal dimensions and the planning measurement basis remain unverified. Layout and planning margin therefore require confirmation rather than nominal-size arithmetic.",
         "evidenceScope": "Product-Specific"
       },
       "bestFor": {
-        "text": "A LONGER ROOM THAT USES EXACTLY HALF THE ALLOWANCE. 15 m2 against the 30 m2 combined figure leaves 15 m2 \u2014 a clean midpoint, and enough remaining for a shed and a store without arithmetic. THE EXTRA METRE GOES INTO LENGTH RATHER THAN DEPTH, which suits a room with a defined layout: desk at one end, seating or storage at the other. IT WAS ALSO INSIDE THE PRE-2026 25 m2 LIMIT, so the position does not depend on the July 2026 increase. HOMEOWNER IMPLICATION: the size to choose when the requirement is a longer room rather than a wider one, with the planning margin still comfortable.",
+        "text": "BEST FOR: a homeowner wanting a longer-format ECO room while retaining a relatively narrow form. Current supplier specification is 5.2m \u00d7 3.4m. Atlas does not treat the marketed 5.0m \u00d7 3.0m name as exact internal geometry or planning area, and no remaining-allowance figure is stated without a verified planning measurement basis.",
         "evidenceScope": "Product-Specific"
       },
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD WITH A NARROW GARDEN AND A REAL WORKSPACE REQUIREMENT. The 3 m depth suits a plot where width is the scarce dimension, and the 5 m length gives room for more than a desk \u2014 a common Irish suburban shape. They are comfortable buying from a published size list and want the supplier close enough to visit. THEY HAVE HALF THE ALLOWANCE LEFT, which is the right position for a household that may add a shed later. NOT FOR: a room that must work in two directions at once \u2014 the 4.0 m \u00d7 4.0 m or 5.0 m \u00d7 4.0 m models exist for that.",
+        "text": "TYPICAL HOMEOWNER: someone seeking a longer-format garden room and valuing an Irish supplier with current product-specific price, fitting and insulation evidence. The current product specification is 5.2m \u00d7 3.4m; exact internal usable dimensions and planning headroom remain verification-required.",
         "evidenceScope": "Product-Specific"
       },
       "strengths": {
-        "text": "FIFTEEN SQUARE METRES IS ENOUGH FOR TWO DISTINCT FUNCTIONS IN ONE ROOM \u2014 a working desk and a seating or storage zone \u2014 without approaching the exemption limit. THE STEP BETWEEN MODELS IS SMALL AND PUBLISHED, which is a strength of the range as a whole: a buyer can move up or down in one-metre increments with the area consequence visible at each step, rather than choosing between two widely spaced options. LOGHOUSE IS IRISH, so survey and installation are local. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price.",
+        "text": "STRENGTHS: longer-format product from an Irish supplier with current Product-Specific EUR pricing, installation and SIP/EPS insulation evidence. The supplier publishes 5.2m \u00d7 3.4m for the product specification. Internal usable area and planning floor-area basis remain unknown and are not calculated.",
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "WALTONS' THORESBY PREMIUM INSULATED 5m x 3m IS THE EXACT MATCH at 15.00 m2 nominal, sold on its insulation grade. FOR A PUBLISHED HEIGHT AS WELL AS AN AREA, Yardbox's range states 2.5 m per model across both Irish jurisdictions. ADMAN STEEL SHEDS covers the same territory in steel with explicit designations. WITHIN LOGHOUSE, the 4.0 m \u00d7 4.0 m at 16 m2 offers almost the same area with an extra metre of depth \u2014 for most uses the better trade at effectively the same planning cost. HOMEOWNER IMPLICATION: when two models cost the same square metres, take the one with more depth.",
+        "text": "ALTERNATIVES: compare this product with other similar garden rooms using governed supplier-specific measurements and package evidence rather than assuming an exact 15m\u00b2 match from model names. Current Loghouse specification is 5.2m \u00d7 3.4m and internal usable area remains unknown. Neighbouring Loghouse products should likewise be compared on their current published specifications, not historical nominal areas.",
         "evidenceScope": "Product-Specific"
       },
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 15 m2 against the 30 m2 back-garden allowance. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: half the allowance used; confirm ridge height against 3 m. SUPPLIER STATUS \u2014 LOGHOUSE, 8 Garden Room products, PLANNING LAYER COMPLETE. ALL EIGHT sit inside the allowance on floor area, and all eight were also inside the 25 m2 limit that applied before 27 July 2026, so not one of them depends on the 2026 increase. The range runs 9 m2 to 24.44 m2 on published external dimensions \u2014 3.0 x 3.0, 4.0 x 3.0, 5.0 x 3.0, 4.0 x 4.0, 6.0 x 3.0, 5.0 x 4.0, 6.0 x 4.0 and the Studio at 5.2 x 4.7 m. Every product carries a published two-dimension size, so every product could be tested and none required a verification classification. Nothing estimated. THE CONDITION THAT ACTUALLY BINDS THIS RANGE IS HEIGHT, NOT AREA: Loghouse fits POWDER-COATED STEEL ROOFING, which is not a tiled or slated pitched roof, so the tighter 3 m Class 3 limit applies to every model rather than 4 m. A buyer who assumes the 4 m allowance because the roof is pitched would be applying the wrong test across the whole range. SECOND POINT FOR THE LARGER MODELS: at 20 m2 and above, two thirds of the combined allowance is consumed by the building alone, so an existing shed or garage needs measuring first. Loghouse is an Irish supplier, so these positions are directly actionable. Recorded at the AM-006 Layer Completion Audit Repair.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current first-party product page publishes 5.2m \u00d7 3.4m for this marketed 5.0m \u00d7 3.0m model. Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis, so the former 15m\u00b2 / half-the-allowance conclusion is withdrawn. This record must not be used to generalise planning areas across the eight-product Loghouse cohort. Check the required measurement basis and all other Class 3 conditions for the actual installation.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2513,27 +2513,27 @@
         "evidenceScope": null
       },
       "strengths": {
-        "text": "TWENTY SQUARE METRES AT 4 m DEEP IS THE RANGE'S BEST BALANCE OF SPACE AND MARGIN. It delivers a room that genuinely supports two functions at once, while still leaving a third of the combined allowance intact \u2014 unlike the 6.0 m \u00d7 4.0 m and the Studio, where the remaining headroom falls below what a typical garden shed occupies. THE EXTERNAL DIMENSIONS ARE PUBLISHED, so the position is checkable, and Loghouse is an Irish supplier. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price, so thermal performance at this size cannot be assessed.",
+        "text": "STRENGTHS: larger-format ECO room with current Product-Specific EUR pricing, included assembly/fitting and SIP/EPS insulation evidence. The supplier publishes 5.2m \u00d7 4.4m. Internal usable area and planning floor-area basis are not established, so no derived area or planning margin is stated.",
         "evidenceScope": "Product-Specific"
       },
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD TREATING THE GARDEN ROOM AS A PERMANENT EXTENSION OF THE HOUSE. Two working adults, or a workspace that also serves as a gym and an occasional family room \u2014 the requirement that justifies committing two thirds of the allowance to one building. They have a reasonably large, otherwise clear garden and they intend this to be the only structure in it. NOT FOR: a household that also wants a shed, where 10 m2 of remaining allowance disappears quickly; nor for a small garden, where the 25 m2 private open space condition may bind before the building allowance does.",
+        "text": "TYPICAL HOMEOWNER: someone looking for a larger multi-purpose garden room and willing to verify the actual planning measurement basis and site conditions before purchase. Current supplier specification is 5.2m \u00d7 4.4m; Atlas does not state a remaining-allowance figure or treat the marketed model name as exact internal geometry.",
         "evidenceScope": "Product-Specific"
       },
       "considerations": {
-        "text": "TWO THIRDS OF THE ALLOWANCE GOES ON THE BUILDING, AND THE CERTIFIED LAYERS SINGLE THIS OUT AS THE POINT WHERE EXISTING STRUCTURES MUST BE MEASURED FIRST. Ten square metres of headroom sounds adequate until a garden shed, a bike store and a greenhouse are counted \u2014 and the allowance is COMBINED across all of them. SECOND, THE HEIGHT CONDITION IS TIGHTER THAN BUYERS EXPECT: powder-coated steel roofing is not a tiled or slated pitched roof, so 3 m applies rather than 4 m, and no finished height is published. THIRD, no thermal specification for a room this size. HOMEOWNER IMPLICATION: audit the garden before ordering and confirm the ridge height against 3 m.",
+        "text": "CONSIDERATIONS: the current supplier specification is 5.2m \u00d7 4.4m, but Atlas cannot use those dimensions alone to calculate planning floor area or remaining allowance. Current direct evidence does establish SIP/EPS insulation and the installed package, so the former 'no thermal specification' statement is withdrawn. Planning margin and installed height still require appropriate verification.",
         "evidenceScope": "Product-Specific"
       },
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 20 m2 against the 30 m2 back-garden allowance, raised from 25 m2 on 27 July 2026 (S.I. 338-344 of 2026). The allowance is COMBINED across all garden structures. Conditions: behind the front wall of the house, at least 25 m2 private open space retained, max 4 m height with a tiled or slated pitched roof or 3 m with any other roof, incidental use only, no human habitation. NOTE: Loghouse fits powder-coated steel roofing, which is NOT a tiled or slated pitched roof \u2014 the 3 m limit is the one that applies. Homeowner implication: inside the allowance on area, but confirm the finished ridge height against 3 m, not 4 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The supplier now publishes 5.2m \u00d7 4.4m for this marketed 5.0m \u00d7 4.0m model. Atlas does not hold evidence that those product dimensions equal the planning floor-area measurement basis, so the former 20m\u00b2 and remaining-allowance conclusions are withdrawn. Continue to check the relevant Class 3 siting, retained-open-space, use and height conditions against the actual installation.",
         "evidenceScope": "Product-Specific"
       },
       "bestFor": {
-        "text": "A FULL MULTI-PURPOSE ROOM \u2014 20 m2 WITH 4 m OF DEPTH, WHICH IS THE COMBINATION MOST HOUSEHOLDS ACTUALLY WANT. Against the 30 m2 combined allowance it leaves 10 m2, and it sat inside the pre-2026 25 m2 limit as well, so the exemption does not depend on the July 2026 change. AT THIS POINT TWO THIRDS OF THE ALLOWANCE IS COMMITTED to the building alone, which is where the certified layers begin flagging existing structures as the live risk. HOMEOWNER IMPLICATION: enough room for an office and a gym, or a studio with proper storage \u2014 provided the garden is otherwise clear.",
+        "text": "BEST FOR: a homeowner seeking a larger multi-purpose ECO room. Current supplier specification is 5.2m \u00d7 4.4m and Product-Specific price, fitting and insulation evidence is available. Atlas does not infer usable internal floor area or remaining planning allowance from these dimensions; confirm the planning measurement basis before relying on an exemption calculation.",
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "YARDBOX'S VANCOUVER AT A PUBLISHED 24.00 m2 WITH A STATED 2.5 m HEIGHT is the better-documented step up, serving both Irish jurisdictions; Waltons' Classic 6m x 4m matches it on nominal area. FOR A LARGER ROOM STILL, All About Outdoors' Ontario XL at 30 m2 is the maximum an exempt structure can be \u2014 with zero headroom and an unstated measurement basis, which is the opposite of this record's position. WITHIN LOGHOUSE, the 4.0 m \u00d7 4.0 m at 16 m2 preserves more allowance and the 6.0 m \u00d7 4.0 m at 24 m2 leaves only 6 m2. HOMEOWNER IMPLICATION: this is the largest model that still leaves room for a shed.",
+        "text": "ALTERNATIVES: compare larger Loghouse and competitor rooms using each product's current governed specification, price, installation scope and insulation evidence. Historical 16m\u00b2/20m\u00b2/24m\u00b2 Loghouse comparisons were based on marketed names and are no longer used as authoritative usable or planning areas.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2543,27 +2543,27 @@
         "evidenceScope": null
       },
       "considerations": {
-        "text": "EIGHTEEN SQUARE METRES IN A 3 m DEPTH IS LESS USEFUL THAN THE FIGURE SUGGESTS. Every metre added to the length is consumed along one axis, so the room gains storage wall rather than open floor \u2014 and for a gym, a studio or two people working simultaneously, depth is what is actually needed. THE 4.0 m \u00d7 4.0 m AT 16 m2 DELIVERS MORE FUNCTION FOR LESS AREA on most briefs. SECOND, the height condition: steel roofing means the 3 m limit, and no finished height is published. THIRD, a 6 m building along a boundary raises neighbour considerations that sit outside the exemption tests. HOMEOWNER IMPLICATION: be clear whether you are buying length or usable floor.",
+        "text": "CONSIDERATIONS: the current supplier specification is 6.2m \u00d7 3.4m, so the marketed 6.0m \u00d7 3.0m name should not be used as exact internal geometry or a planning footprint. Usable internal dimensions and planning measurement basis remain unknown. Compare layout against other models only using their current governed specifications.",
         "evidenceScope": "Product-Specific"
       },
       "typicalHomeowner": {
-        "text": "SOMEONE WHOSE GARDEN DICTATES THE SHAPE OF THE BUILDING. A long narrow plot, a boundary run, or a site where a deeper structure would block light or a path \u2014 the geometry decides before the specification does. They want maximum accommodation without the building dominating the garden, and they are working from published dimensions with an Irish supplier. NOT FOR: a household whose requirement is really about depth \u2014 a gym, a studio, two simultaneous desks \u2014 where the 4.0 m \u00d7 4.0 m or 5.0 m \u00d7 4.0 m models do more with the same or less area.",
+        "text": "TYPICAL HOMEOWNER: someone whose site favours a longer, relatively narrow garden-room format. Current supplier specification is 6.2m \u00d7 3.4m. Exact internal usable geometry and planning margin require verification; this record does not infer them from the marketed model name.",
         "evidenceScope": "Product-Specific"
       },
       "strengths": {
-        "text": "THE LONG PLAN IS A GENUINE ADVANTAGE ON THE RIGHT SITE. A 6 m \u00d7 3 m building placed along a boundary reads as a wall of the garden rather than an object in it, and leaves the remaining space in one usable piece \u2014 which is often worth more to a household than a marginally better internal proportion. IT ALSO SUPPORTS TWO CLEARLY SEPARATED ZONES along its length: work at one end, storage or seating at the other. 12 m2 OF ALLOWANCE REMAINS. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price.",
+        "text": "STRENGTHS: long-format model with current Product-Specific EUR pricing, included assembly/fitting and SIP/EPS insulation evidence. The supplier publishes 6.2m \u00d7 3.4m. Internal usable floor area and planning floor-area basis remain unverified and are not derived.",
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "OECO'S SOUNDPROOF RANGE INCLUDES A 10 m \u00d7 3 m OPTION at the extreme of this long-narrow logic, with published prices and a 2.5 m design height \u2014 though UK-mainland delivery only. ADMAN STEEL SHEDS AND GARDEN SOLUTIONS 4U publish comparable long formats in Ireland. WITHIN LOGHOUSE, the 4.0 m \u00d7 4.0 m at 16 m2 is the deeper alternative for two square metres less, and the 5.0 m \u00d7 4.0 m at 20 m2 the deeper alternative for two more. HOMEOWNER IMPLICATION: if the plot allows either shape, the deeper model is almost always the better room.",
+        "text": "ALTERNATIVES: compare this long-format room with other Irish garden rooms using each product's current supplier specification and governed package evidence. Historical Loghouse 16m\u00b2/18m\u00b2/20m\u00b2 nominal-area comparisons are not retained because several marketed names differ from current published specifications and internal usable area remains unknown.",
         "evidenceScope": "Product-Specific"
       },
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 18 m2 against the 30 m2 back-garden allowance (raised from 25 m2 on 27 July 2026). Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: inside the allowance with 12 m2 of headroom; confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier specification publishes 6.2m \u00d7 3.4m for this marketed 6.0m \u00d7 3.0m model. Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis, so the former 18m\u00b2 and 12m\u00b2 remaining-allowance conclusions are withdrawn. Other Class 3 conditions must be checked separately.",
         "evidenceScope": "Product-Specific"
       },
       "bestFor": {
-        "text": "THE LONGEST NARROW MODEL \u2014 BUILT FOR A GARDEN THAT HAS LENGTH BUT NOT WIDTH. 18 m2 against the 30 m2 combined allowance leaves 12 m2 of headroom, and the position held under the pre-2026 25 m2 limit as well. SIX METRES OF FRONTAGE ACROSS A 3 m DEPTH suits a plot where the building runs along a boundary rather than projecting into the garden \u2014 a shape that often preserves more usable lawn than a squarer building of the same area. HOMEOWNER IMPLICATION: choose this for the plot shape, not for the area; at 18 m2 the same square metres are available in deeper configurations.",
+        "text": "BEST FOR: a homeowner wanting a long-format ECO room. Current supplier specification is 6.2m \u00d7 3.4m. The marketed 6.0m \u00d7 3.0m name is not treated as exact internal geometry or planning area, and Atlas does not state remaining planning headroom without the required measurement basis.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2573,27 +2573,27 @@
         "evidenceScope": null
       },
       "strengths": {
-        "text": "IT IS THE LARGEST CONVENTIONAL MODEL IN THE RANGE AND THE BEST PROPORTIONED. Twenty-four square metres at 6 m \u00d7 4 m gives a room that can hold a desk, seating and equipment simultaneously without any of them compromising the others \u2014 close to the practical ceiling for what an exempt back-garden structure can deliver. THE POSITION IS FULLY CHECKABLE because Loghouse publishes external dimensions for every model, and the supplier is Irish, so survey and installation are local. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price.",
+        "text": "STRENGTHS: large-format ECO product with current Product-Specific EUR pricing, included assembly/fitting and SIP/EPS insulation evidence. The supplier publishes 6.2m \u00d7 4.4m. Internal usable floor area and planning measurement basis remain unverified, so no derived area or planning margin is stated.",
         "evidenceScope": "Product-Specific"
       },
       "bestFor": {
-        "text": "A LARGE ROOM ON A GARDEN THAT HAS NOTHING ELSE IN IT. 24 m2 against the 30 m2 combined allowance leaves 6 m2 \u2014 and the certified record is blunt about the consequence: an existing shed of more than 6 m2 puts you over. AT 6 m \u00d7 4 m THE PROPORTION IS EXCELLENT, enough depth for two functions and enough length for three, which is why this is the model most households would choose if the allowance were not shared. IT WAS ALSO INSIDE THE PRE-2026 25 m2 LIMIT. HOMEOWNER IMPLICATION: audit the garden before ordering \u2014 this product's viability depends on what is already standing.",
+        "text": "BEST FOR: a homeowner seeking one of the larger marketed ECO room formats and prepared to verify the project-specific planning basis. Current supplier specification is 6.2m \u00d7 4.4m. Atlas does not derive usable internal area or remaining planning allowance from those dimensions.",
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "AT EXACTLY THIS SIZE THE CATALOGUE OFFERS TWO WELL-DOCUMENTED COMPARISONS: Yardbox's Vancouver at 6.0 m \u00d7 4.0 m with usable living space and a 2.5 m height published separately, and Waltons' Classic 6m x 4m at the same nominal 24.00 m2. BOTH PUBLISH A HEIGHT, WHICH THIS RECORD DOES NOT. IF THE GARDEN ALREADY HOLDS A SHED, the 5.0 m \u00d7 4.0 m at 20 m2 restores a workable margin for four square metres less floor. THE STUDIO AT 24.4 m2 is marginally larger with an even thinner margin. HOMEOWNER IMPLICATION: at 6 m2 of headroom, the shed you already own may be the deciding factor.",
+        "text": "ALTERNATIVES: compare this large Loghouse model with other large garden rooms using each product's current governed specification, price, installation scope and insulation evidence. Do not treat the marketed 6.0m \u00d7 4.0m name as an exact 24m\u00b2 footprint or usable area. Current Loghouse specification is 6.2m \u00d7 4.4m; neighbouring Loghouse planning margins likewise require verified measurement basis rather than nominal-name arithmetic.",
         "evidenceScope": "Product-Specific"
       },
       "typicalHomeowner": {
-        "text": "A HOUSEHOLD MAKING ONE LARGE COMMITMENT RATHER THAN SEVERAL SMALL ONES. They have a big garden, no shed worth keeping, and a requirement that genuinely needs 24 m2 \u2014 a studio, a workshop, or a room serving several members of the family. THEY UNDERSTAND THAT THIS BUILDING IS EFFECTIVELY THEIR WHOLE ALLOWANCE, and they are content for it to be the only structure in the garden. NOT FOR: anyone with an existing shed, garage or greenhouse of any size; nor for a household that expects to add storage later, since there will be no allowance left to do it with.",
+        "text": "TYPICAL HOMEOWNER: someone seeking a large garden room as a major use of garden space and willing to verify planning/site constraints before purchase. The current supplier specification is 6.2m \u00d7 4.4m. Atlas does not state that this product consumes a particular share of the planning allowance without a verified measurement basis.",
         "evidenceScope": "Product-Specific"
       },
       "considerations": {
-        "text": "SIX SQUARE METRES OF HEADROOM IS LESS THAN A STANDARD GARDEN SHED. That is the whole risk on this product: the allowance is COMBINED, so a 2 m \u00d7 3 m shed already in place takes the plot to exactly the limit, and anything larger takes it over \u2014 with the exemption lost for the whole development, not just the excess. SECOND, THE HEIGHT CONDITION: steel roofing means 3 m rather than 4 m, and no finished height is published. THIRD, on a 24 m2 building the 25 m2 private open space requirement becomes a real constraint on smaller gardens. HOMEOWNER IMPLICATION: measure every existing structure before ordering, and confirm the ridge height against 3 m.",
+        "text": "CONSIDERATIONS: current supplier specification is 6.2m \u00d7 4.4m, but Atlas cannot use those dimensions alone to state a planning floor area or remaining allowance. The former 24m\u00b2 / 6m\u00b2-headroom precision is withdrawn. Confirm planning measurement basis, retained open space, siting and installed height for the actual project.",
         "evidenceScope": "Product-Specific"
       },
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 24 m2 against a 30 m2 allowance, leaving 6 m2. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: inside the allowance, but an existing shed of more than 6 m2 puts you over \u2014 audit the garden before ordering.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier specification publishes 6.2m \u00d7 4.4m for this marketed 6.0m \u00d7 4.0m model. Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis, so the former 24m\u00b2 / 6m\u00b2 remaining-allowance conclusion is withdrawn. Check all Class 3 conditions against the actual installation and site.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -11580,27 +11580,27 @@
         "evidenceScope": null
       },
       "strengths": {
-        "text": "A NEARLY SQUARE 24.4 m2 IS THE MOST USABLE FLOOR SHAPE IN THE RANGE. At 4.7 m deep the room supports a genuine studio layout \u2014 clear floor in the middle, equipment or storage on two or three walls \u2014 which neither the 6 m \u00d7 4 m nor any of the 3 m-deep models can match. IT IS ALSO THE ONLY MODEL SOLD BY USE rather than by size alone, and the dimensions behind that designation are published, so the claim can be checked. LOGHOUSE IS IRISH. NOT ESTABLISHED: no published height, U-value, wall specification, warranty or price, so the studio designation is a shape rather than a specification.",
+        "text": "STRENGTHS: Studio-designated ECO model with current direct evidence for 5.2m \u00d7 4.7m product dimensions, 2200mm wall height, 2900mm ridge height, EUR price range, included assembly/fitting and SIP/EPS insulation. Usable internal floor area remains unknown and is not inferred from the published product dimensions.",
         "evidenceScope": "Product-Specific"
       },
       "typicalHomeowner": {
-        "text": "SOMEONE WHOSE WORK NEEDS FLOOR AREA IN THE MIDDLE OF THE ROOM. An artist, a maker, a yoga or movement practice, a photographer \u2014 uses where furniture goes to the walls and the centre stays clear, which is exactly what a nearly square plan provides and a long narrow one does not. THEY HAVE A LARGE, EMPTY GARDEN, because 5.6 m2 of remaining allowance leaves room for essentially nothing else. NOT FOR: a garden with any existing structure; nor for a buyer who wants margin for error, where the 5.0 m \u00d7 4.0 m at 20 m2 is the sensible retreat.",
+        "text": "TYPICAL HOMEOWNER: someone drawn to the Studio-designated model for a broader room format and wanting current product-specific price, installation, insulation and height evidence. The supplier publishes 5.2m \u00d7 4.7m, but Atlas does not infer usable internal floor area or a remaining planning allowance from those dimensions. Planning suitability remains verification-required.",
         "evidenceScope": "Product-Specific"
       },
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 24.4 m2 against a 30 m2 allowance, leaving 5.6 m2. The largest Loghouse Garden Room in Atlas and the closest to the limit. Under the pre-27-July-2026 25 m2 rule it sat within 0.6 m2 of the old threshold. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: the tightest margin in this range \u2014 measure existing structures and confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The Studio supplier page publishes 5.2m \u00d7 4.7m plus a 2200mm wall height and 2900mm ridge height. Atlas does not hold evidence that the 5.2m \u00d7 4.7m product dimensions are the planning floor-area measurement basis, so the former 24.44m\u00b2 / 5.56m\u00b2 remaining-allowance calculation is not retained as planning certainty. The published 2900mm ridge height removes the former product-height uncertainty, but all other planning conditions remain site-specific checks.",
         "evidenceScope": "Product-Specific"
       },
       "bestFor": {
-        "text": "THE LARGEST LOGHOUSE GARDEN ROOM AND THE CLOSEST TO THE LIMIT \u2014 24.4 m2 leaving 5.6 m2 of the combined allowance. The certified record identifies it as the tightest margin in the range. UNDER THE PRE-27 JULY 2026 RULE IT SAT WITHIN 0.6 m2 OF THE OLD 25 m2 THRESHOLD, which is as close as any product in this catalogue came to the previous limit without crossing it. THE 5.2 m \u00d7 4.7 m PLAN IS NEARLY SQUARE, giving the most genuinely open floor of any model here \u2014 which is what a studio use actually needs. HOMEOWNER IMPLICATION: the best room in the range, on the least margin.",
+        "text": "BEST FOR: a homeowner wanting the Studio-designated ECO model and valuing its broader current published form. The supplier directly publishes 5.2m \u00d7 4.7m, a 2200mm wall height and 2900mm ridge height, with Product-Specific price, installation and insulation evidence. Atlas does not call it the largest or closest-to-limit Loghouse room because planning measurement basis and usable internal area are not established across the cohort.",
         "evidenceScope": "Product-Specific"
       },
       "alternatives": {
-        "text": "YARDBOX'S VANCOUVER AT 24.00 m2 IS THE NEAREST DOCUMENTED EQUIVALENT and publishes a 2.5 m height as well as a footprint, which this record does not. ALL ABOUT OUTDOORS' ONTARIO XL AT 30 m2 is the only larger exempt-eligible product in the catalogue, on zero headroom and an unstated measurement basis. WITHIN LOGHOUSE, the 5.0 m \u00d7 4.0 m at 20 m2 is the safe retreat. SUPPLIER STATUS \u2014 LOGHOUSE, 8 Garden Room products, DECISION INTELLIGENCE LAYER COMPLETE. ALL EIGHT carry published external two-dimension sizes running 9 m2 to 24.44 m2 \u2014 3.0 x 3.0, 4.0 x 3.0, 5.0 x 3.0, 4.0 x 4.0, 6.0 x 3.0, 5.0 x 4.0, 6.0 x 4.0 and this Studio at 5.2 x 4.7 \u2014 and all eight sit inside the allowance on floor area, each of them also inside the 25 m2 limit that applied before 27 July 2026, so not one depends on the 2026 increase. THE RANGE IS THEREFORE DIFFERENTIATED ON GENUINE PUBLISHED EVIDENCE: area, plan proportion and residual allowance, which is more than most suppliers in this catalogue permit. THE CONDITION THAT ACTUALLY BINDS IT IS HEIGHT, NOT AREA, as already recorded in the certified Planning layer: powder-coated steel roofing is not a tiled or slated pitched roof, so the 3 m limit applies to every model rather than 4 m, and no finished height is published for any of them. EVIDENCE NEUTRALITY IS PRESERVED ON ENVELOPE: no U-value, wall specification, warranty or price exists for any model, so nothing has been ranked on build quality. Loghouse is an Irish supplier, so every position here is directly actionable. Nothing inferred.",
+        "text": "ALTERNATIVES / SUPPLIER STATUS: compare the Studio and other Loghouse ECO products using current Product-Specific supplier evidence. Several marketed model names differ from current published specifications, so the previous cohort-wide 9m\u00b2\u201324.44m\u00b2 range and statements that every product sat below the former 25m\u00b2 threshold are not retained as planning conclusions. The Studio itself publishes 5.2m \u00d7 4.7m, 2200mm wall height and 2900mm ridge height. Current direct evidence also establishes Product-Specific EUR pricing and SIP/EPS insulation across the cohort. Internal usable floor area and planning measurement basis remain unverified unless expressly stated by the supplier.",
         "evidenceScope": "Organisation-Wide"
       },
       "considerations": {
-        "text": "FIVE POINT SIX SQUARE METRES IS THE THINNEST MARGIN IN THE RANGE, AND THE CERTIFIED LAYERS SAY SO EXPLICITLY. Almost any existing garden structure \u2014 a standard shed, a bike store, a greenhouse \u2014 takes the combined total past 30 m2, and the exemption is then lost for the development as a whole. THE ODD DIMENSIONS COMPOUND THE CARE REQUIRED: 5.2 m \u00d7 4.7 m gives 24.44 m2, so there is no rounding room in either direction. SECOND, the height condition: steel roofing means 3 m, not 4 m, and no finished height is published. HOMEOWNER IMPLICATION: measure existing structures precisely, not approximately, and confirm the ridge height before ordering.",
+        "text": "CONSIDERATIONS: the Studio page directly publishes 5.2m \u00d7 4.7m product dimensions and a 2900mm ridge height, so the former height-unknown statement is obsolete. Atlas does not derive a planning floor area or remaining allowance from the published dimensions because the required measurement basis is not established. Confirm all remaining planning and site conditions for the actual installation.",
         "evidenceScope": "Product-Specific"
       }
     },

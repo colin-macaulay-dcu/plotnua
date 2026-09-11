@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-10T11:15:14Z",
+  "generated": "2026-09-11T11:16:46Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "planningConsiderations"
@@ -505,7 +505,7 @@
     },
     "rec6hBlyxKfJEA6C5": {
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 9 m2 against the 30 m2 back-garden allowance (raised from 25 m2 on 27 July 2026). Steel roofing means the 3 m height limit applies, not the 4 m pitched-roof limit. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: the smallest planning footprint in the Loghouse range; confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier page publishes product dimensions of 3m \u00d7 3.3m, but does not establish that these dimensions are the measurement basis required for a planning floor-area calculation or usable internal area. Do not use the model name or multiply the published dimensions to claim remaining allowance. Other Class 3 conditions still require separate checking, including siting, retained private open space, use and height.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -517,31 +517,31 @@
     },
     "recTpjQUJ7rIgemhk": {
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 16 m2 against the 30 m2 back-garden allowance. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: well inside the allowance; confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier specification publishes 4.2m \u00d7 4.4m for the marketed 4.0m \u00d7 4.0m model, but Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis or usable internal floor area. Do not rely on the former 16m\u00b2 calculation or stated remaining allowance. Other Class 3 conditions remain separate checks.",
         "evidenceScope": "Product-Specific"
       }
     },
     "recr7HRb2CIqnyoAa": {
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 15 m2 against the 30 m2 back-garden allowance. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: half the allowance used; confirm ridge height against 3 m. SUPPLIER STATUS \u2014 LOGHOUSE, 8 Garden Room products, PLANNING LAYER COMPLETE. ALL EIGHT sit inside the allowance on floor area, and all eight were also inside the 25 m2 limit that applied before 27 July 2026, so not one of them depends on the 2026 increase. The range runs 9 m2 to 24.44 m2 on published external dimensions \u2014 3.0 x 3.0, 4.0 x 3.0, 5.0 x 3.0, 4.0 x 4.0, 6.0 x 3.0, 5.0 x 4.0, 6.0 x 4.0 and the Studio at 5.2 x 4.7 m. Every product carries a published two-dimension size, so every product could be tested and none required a verification classification. Nothing estimated. THE CONDITION THAT ACTUALLY BINDS THIS RANGE IS HEIGHT, NOT AREA: Loghouse fits POWDER-COATED STEEL ROOFING, which is not a tiled or slated pitched roof, so the tighter 3 m Class 3 limit applies to every model rather than 4 m. A buyer who assumes the 4 m allowance because the roof is pitched would be applying the wrong test across the whole range. SECOND POINT FOR THE LARGER MODELS: at 20 m2 and above, two thirds of the combined allowance is consumed by the building alone, so an existing shed or garage needs measuring first. Loghouse is an Irish supplier, so these positions are directly actionable. Recorded at the AM-006 Layer Completion Audit Repair.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current first-party product page publishes 5.2m \u00d7 3.4m for this marketed 5.0m \u00d7 3.0m model. Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis, so the former 15m\u00b2 / half-the-allowance conclusion is withdrawn. This record must not be used to generalise planning areas across the eight-product Loghouse cohort. Check the required measurement basis and all other Class 3 conditions for the actual installation.",
         "evidenceScope": "Product-Specific"
       }
     },
     "rec66xKgPx0ipzfOQ": {
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 20 m2 against the 30 m2 back-garden allowance, raised from 25 m2 on 27 July 2026 (S.I. 338-344 of 2026). The allowance is COMBINED across all garden structures. Conditions: behind the front wall of the house, at least 25 m2 private open space retained, max 4 m height with a tiled or slated pitched roof or 3 m with any other roof, incidental use only, no human habitation. NOTE: Loghouse fits powder-coated steel roofing, which is NOT a tiled or slated pitched roof \u2014 the 3 m limit is the one that applies. Homeowner implication: inside the allowance on area, but confirm the finished ridge height against 3 m, not 4 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The supplier now publishes 5.2m \u00d7 4.4m for this marketed 5.0m \u00d7 4.0m model. Atlas does not hold evidence that those product dimensions equal the planning floor-area measurement basis, so the former 20m\u00b2 and remaining-allowance conclusions are withdrawn. Continue to check the relevant Class 3 siting, retained-open-space, use and height conditions against the actual installation.",
         "evidenceScope": "Product-Specific"
       }
     },
     "rec6pnA2GkdMzlmPf": {
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 18 m2 against the 30 m2 back-garden allowance (raised from 25 m2 on 27 July 2026). Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: inside the allowance with 12 m2 of headroom; confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier specification publishes 6.2m \u00d7 3.4m for this marketed 6.0m \u00d7 3.0m model. Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis, so the former 18m\u00b2 and 12m\u00b2 remaining-allowance conclusions are withdrawn. Other Class 3 conditions must be checked separately.",
         "evidenceScope": "Product-Specific"
       }
     },
     "recDHVxszqcxMTrXs": {
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 24 m2 against a 30 m2 allowance, leaving 6 m2. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: inside the allowance, but an existing shed of more than 6 m2 puts you over \u2014 audit the garden before ordering.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The current supplier specification publishes 6.2m \u00d7 4.4m for this marketed 6.0m \u00d7 4.0m model. Atlas does not hold evidence that these dimensions equal the planning floor-area measurement basis, so the former 24m\u00b2 / 6m\u00b2 remaining-allowance conclusion is withdrawn. Check all Class 3 conditions against the actual installation and site.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2374,7 +2374,7 @@
     },
     "recJ3HPVMPrYzaXvH": {
       "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 24.4 m2 against a 30 m2 allowance, leaving 5.6 m2. The largest Loghouse Garden Room in Atlas and the closest to the limit. Under the pre-27-July-2026 25 m2 rule it sat within 0.6 m2 of the old threshold. Steel roofing means the 3 m height limit applies. Conditions: behind the front wall, 25 m2 private open space retained, incidental use, no human habitation. Homeowner implication: the tightest margin in this range \u2014 measure existing structures and confirm ridge height against 3 m.",
+        "text": "PLANNING AREA REQUIRES VERIFICATION. The Studio supplier page publishes 5.2m \u00d7 4.7m plus a 2200mm wall height and 2900mm ridge height. Atlas does not hold evidence that the 5.2m \u00d7 4.7m product dimensions are the planning floor-area measurement basis, so the former 24.44m\u00b2 / 5.56m\u00b2 remaining-allowance calculation is not retained as planning certainty. The published 2900mm ridge height removes the former product-height uncertainty, but all other planning conditions remain site-specific checks.",
         "evidenceScope": "Product-Specific"
       }
     },
