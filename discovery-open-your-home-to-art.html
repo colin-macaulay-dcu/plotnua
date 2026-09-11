@@ -14,8 +14,8 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Host an Art Exhibition at Home | PlotNua Discoveries</title>
-<meta name="description" content="What is involved in opening an Irish home to visitors for an exhibition of a local artist's work: what to agree with the artist, what your insurer needs to know, and where the planning line sits.">
+<title>Open Your Home to Art | PlotNua Discoveries</title>
+<meta name="description" content="Space in an Irish home, and an artist with finished work and nowhere to put it: what you could offer, what to agree, and what your insurer needs to know. An exhibition is optional.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-open-your-home-to-art.html">
 
@@ -31,8 +31,8 @@
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
-<meta property="og:title" content="Host an Art Exhibition at Home | PlotNua Discoveries">
-<meta property="og:description" content="A room you already have, an artist who already has the work, and a weekend. What hosting an exhibition at home actually involves in Ireland.">
+<meta property="og:title" content="Open Your Home to Art | PlotNua Discoveries">
+<meta property="og:description" content="Space you already have, and an artist who already has the work. Keep it, hang it, or help it find somebody &mdash; nobody has to come to your door.">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -41,8 +41,8 @@
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Host an Art Exhibition at Home | PlotNua Discoveries">
-<meta name="twitter:description" content="Opening an Irish home to visitors for a local artist's exhibition: the arrangement, the insurance position, and where the planning line sits.">
+<meta name="twitter:title" content="Open Your Home to Art | PlotNua Discoveries">
+<meta name="twitter:description" content="A wall, a spare room, a dry corner. What an Irish homeowner could offer an artist, and what to agree before anything arrives.">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -424,6 +424,284 @@
   @media (max-width:640px){
     .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
   }
+  /* ==================================================================
+     PORTED FROM THE FROZEN DISCOVERIES, lifted verbatim by the builder so it
+     cannot drift from the donors by transcription. The decision board, the
+     evidence layer and the early-journey panel come from DISC-014; the
+     no-crop Potential Asset frame is DISC-014's RULE 6; the .is-four
+     mechanism modifier comes from DISC-022, because this Discovery also has
+     four mechanism tiles rather than three. Still copied rather than shared:
+     the shared-stylesheet decision comes after the rollout, not during it.
+     ================================================================== */
+/* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+  /* ---- RESPONSIVE COLLAPSE. The donor's own 720px rule, lifted, plus the
+     two lines it could not have known about: .is-three is a HIGHER-SPECIFICITY
+     selector (0,2,0) than the donor's .rule-cards (0,1,0), so it must be named
+     explicitly or it would win and stay three-up on a phone. The 900px step
+     drops the three routes to two columns before they get too narrow to
+     read. ---- */
+  @media (max-width:900px){
+    .rule-cards.is-three{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:720px){
+    .rule-cards, .check-rows{ grid-template-columns:1fr; }
+    .rule-card{ padding:20px 20px 18px; }
+  }
+  @media (max-width:720px){
+    .rule-cards.is-three{ grid-template-columns:1fr; }
+  }
+
+  
+/* ---- HIDDEN CARS MODIFIER (DISC-022). One, and only one: there are FOUR
+     approaches here, not three, and they are genuinely different answers to
+     different constraints -- collapsing them to three would be a technical
+     inaccuracy, not a design simplification. .is-four is (0,2,0) against the
+     base (0,1,0), so it is named again in the stack queries or it would
+     outrank the collapse and stay 2-up on a phone. ---- */
+  .dq-adv-cols.is-four{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  @media (max-width:720px){
+    .dq-adv-cols.is-four{ grid-template-columns:1fr; gap:8px; }
+  }
+
+/* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
+     markup, unchanged behaviour.
+
+     These now sit slightly off the page too, but at the LOWEST elevation on
+     the board -- a 16px ambient against the opportunity's 64px. They read as
+     physical, tappable strips without ever competing with the centrepiece.
+     Opening one raises it a step and gives the evidence a contained reading
+     surface at a controlled measure.
+
+     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
+     so Planning, Tax and Insurance separate with no markup change. ---- */
+  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
+    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
+    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
+    box-shadow:0 1px 1px rgba(31,59,46,.04),
+               0 10px 16px -14px rgba(31,59,46,.30); }
+  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
+  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
+    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
+  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
+  .faq-item.is-inline[open]{ background:var(--paper);
+    border-color:rgba(31,59,46,.16);
+    border-left-color:rgba(31,59,46,.42);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 18px 30px -20px rgba(31,59,46,.36); }
+
+  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
+  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--soft); }
+  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
+  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
+
+  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(31,59,46,.22); }
+  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
+  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
+  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
+  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
+
+  /* the reading surface */
+  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
+    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
+    margin:0 0 20px; padding:22px 24px;
+    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
+  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
+
+  @media (hover:hover) and (pointer:fine){
+    .faq-item.is-inline{ transition:transform .22s ease-out,
+      box-shadow .22s ease-out, border-color .22s ease-out; }
+    .faq-item.is-inline:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -18px rgba(31,59,46,.36); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-item.is-inline{ transition:none; }
+    .faq-item.is-inline:hover{ transform:none; }
+  }
+  @media (max-width:720px){
+    .faq-item.is-inline{ padding:0 16px 0 14px; }
+    .faq-item.is-inline .faq-a{ padding:18px 18px; }
+  }
+
+  
+/* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
+     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
+     heading rather than a 40px one, and a STATIC status pill rather than a
+     control. It carries no href and no form, because the Driveway journey
+     does not exist yet. When it does, this panel and the closing panel take
+     the same governed route. ---- */
+  .pb-early{ background:var(--paper); padding:38px 7vw;
+    border-top:1px solid rgba(31,59,46,.10);
+    border-bottom:1px solid rgba(31,59,46,.10); }
+  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
+  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
+  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
+    max-width:44ch; margin:0 auto 18px; }
+  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:11px; font-weight:500; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--soft);
+    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
+  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  @media (max-width:720px){
+    .pb-early{ padding:30px 7vw; }
+  }
+
+  
+  /* ---- RULE 6 (DISC-014), for the annotated plate. This Discovery's
+     annotation is burned into the JPEG rather than drawn over it, so it
+     cannot re-register with a crop. The frame therefore takes its height
+     from the plate at every width and nothing is cropped. ---- */
+  .imagine-photo.pa-frame{ height:auto; min-height:0; }
+  .imagine-photo.pa-frame img{ height:auto; }
+  @media (max-width:820px){
+    .imagine-photo.pa-frame::before,
+    .imagine-photo.pa-frame::after{ height:18px; }
+    .imagine-photo.pa-frame .caption{ padding:26px 8vw 20px; }
+  }
 </style>
 </head>
 <body>
@@ -446,11 +724,23 @@
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
-    <h1>Host an Art Exhibition at Home</h1>
-    <p class="subtitle">For one weekend, the room becomes somewhere people come to see something.</p>
-    <p class="intro">You already have the space. An artist already has the work.</p>
+    <h1>Open Your Home to Art</h1>
+    <p class="subtitle">You already have the space. An artist already has the work.</p>
+    <p class="intro">How far that goes is entirely your decision.</p>
   </div>
 </header>
+
+<section class="pb-early reveal" id="early-property-check">
+  <!-- EARLY JOURNEY ENTRY. FUTURE variant: no Open Your Home to Art journey
+       exists, so no link, no form, no disabled control, and it routes
+       nowhere. -->
+  <div class="pb-early-inner">
+    <h2>Could this work in your home?</h2>
+    <p>PlotNua is designing a property check for this Discovery.</p>
+    <span class="pb-early-status">This property check is being prepared</span>
+    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
+  </div>
+</section>
 
 <section class="spark reveal">
   <p>Most homes have a room that is used properly twice a year.</p>
@@ -459,175 +749,229 @@
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">Why This Discovery?</div>
-    <h2>People already visit houses like yours.</h2>
-    <p>Irish homeowners open their doors more often than they think. Open House Dublin puts private homes on public tour for nine days every October, free, alongside two hundred other buildings. Culture Night fills the country with open studios one Friday in September.</p>
-    <p>What almost never happens is the simplest version of the same thing: a homeowner with a wall, an artist living a few miles away with work nobody has seen, and an evening.</p>
-  </section>
+    <div class="kicker">The Opportunity</div>
+    <h2>What if the space you are not using is the thing somebody cannot get?</h2>
+    <p>Making the work is rarely an artist&rsquo;s hardest problem. What happens to it afterwards is: where it lives, and who ever sees it.</p>
 
+    <!-- 1 · WHAT YOU HAVE, AND WHAT THEY DO NOT. The page's single unbroken
+         surface and highest elevation. Left: the homeowner's asset, in four
+         senses, not just a wall. Right: the artist's problem and the range of
+         answers. Neither column is money, and the reassurance that stops a
+         homeowner ruling themselves out sits directly beneath. -->
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">What you have</span>
+        <span class="dq-fig">Space.</span>
+        <p class="dq-earn-caveat">A wall you walk past. A spare room. A dry corner nothing is in.</p>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">And what they do not</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact">Finished work. Made, framed, and stacked against a studio wall.</span>
+              <span class="dq-note">It needs somewhere to go.</span></li>
+          <li><span class="dq-fact">Somewhere to keep it. Somewhere to hang it. Somewhere to photograph it. Somewhere it might eventually find a buyer.</span>
+              <span class="dq-note">Not all of those need the same thing from you.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="dq-note"><strong>Nobody has to come to your door.</strong> You can take part without a single visitor entering your home, and you can change your mind between one arrangement and the next.</p>
+
+    <!-- 2 · THE LADDER. Four tiles, ordered by how much of your home and your
+         time the arrangement asks for. Above the advisory in elevation,
+         because this is the thing itself rather than a condition on it.
+         DISPLAY is deliberately the easiest to say yes to. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Four ways in, and you decide how far it goes</span>
+      <ul class="dq-adv-cols is-four">
+        <li>
+          <span class="dq-adv-label">Store</span>
+          <span class="dq-fact">Finished work kept safely in space you are not using.</span>
+          <span class="dq-note">Nobody sees it. Somewhere dry, out of the way, and agreed in advance &mdash; which to an artist with a small studio is worth more than it sounds.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Display</span>
+          <span class="dq-fact">Selected work hangs where you live, and you live with it.</span>
+          <span class="dq-note">It can also be photographed there, and work seen in a real room reads differently from work on a studio wall. Still no visitors.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Open</span>
+          <span class="dq-fact">You choose to let somebody in.</span>
+          <span class="dq-note">One viewing, a few people, or an occasional short exhibition. The only rung that puts anybody on your doorstep, and the only one you can skip.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Help sell</span>
+          <span class="dq-fact">You help the work find somebody.</span>
+          <span class="dq-note">Share the artist&rsquo;s link, offer the photographs, mention it to somebody who would want it. The artist stays the seller.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- COMMERCIAL LADDER. Direction, never magnitude, and obligation rises
+         with return so the ladder reads as a decision aid rather than a
+         pitch. No rate, no percentage, no expected earnings, no example. -->
+    <p class="dq-note"><strong>The more involved you choose to become, the greater the potential return may be</strong> &mdash; and the more there is to agree. You could be paid for providing the space. If a work sells, you and the artist could agree that you receive a share. Neither is a rate: every arrangement is settled between two people, in advance.</p>
+
+  </section>
 </main>
 
-<section class="imagine-photo reveal">
-  <img src="assets/img/046ec577a454599b.jpg" alt="The same living room with its large wall empty, annotated by PlotNua as a potential asset.">
+<section class="imagine-photo pa-frame reveal">
+  <!-- POTENTIAL ASSET. The annotation is burned into this JPEG, so the plate
+       carries .pa-frame and takes its height from the image at every width.
+       Nothing is cropped: not the label, not the leader, not the dot, and not
+       the wall the whole picture is about. -->
+  <img src="assets/img/046ec577a454599b.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="The same living room with its large wall empty, annotated by PlotNua as a potential asset.">
   <div class="caption"><p>A wall, a floor, and a door that opens.</p></div>
 </section>
 
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">What It Actually Is</div>
-    <h2>A weekend, or something longer.</h2>
-    <p>An artist from your own area hangs a body of work in your house. People come, look, talk, and some of them buy.</p>
-    <ul class="planning-conditions">
-      <li><strong>The work is the artist&rsquo;s,</strong> before, during and after. You are lending wall space, not taking stock.</li>
-      <li><strong>The scale is domestic.</strong> Twenty or thirty people across an afternoon, not a queue down the road.</li>
-      <li><strong>It ends when you decide it ends.</strong> A weekend, a season, or as long as the work suits the room.</li>
-      <li><strong>Nobody has to sell anything.</strong> Some hosts do it purely to give an artist a room.</li>
-    </ul>
-    <div class="planning-sub">How involved you want to be</div>
-    <ul class="planning-conditions">
-      <li><strong>Open the house.</strong> An afternoon, an evening or a weekend, with you there for it.</li>
-      <li><strong>Or not.</strong> The work simply hangs in a room you already live in. The artist photographs it in a real home, handles enquiries and arranges collection when something sells. Nobody comes to your door unless you invite them.</li>
-      <li><strong>Or somewhere between.</strong> Show a piece to an interested buyer, pack work carefully, introduce someone you know.</li>
-    </ul>
-    <p>You decide which, and you can change between one show and the next.</p>
-    <p class="planning-note">There is no organised scheme in Ireland for this. Hosts and artists who do it arrange it directly between themselves.</p>
-  </section>
+    <div class="kicker">Before Anything Arrives</div>
+    <h2>Three things to settle first.</h2>
 
+    <!-- 3 · ADVISORY. Three tiles at the quiet elevation. Custody comes
+         first because it is the real risk on this Discovery: somebody else's
+         valuable property, in your house, possibly for months. -->
+    <ul class="dq-qual">
+      <li>
+        <span class="dq-cat">Custody</span>
+        <span class="dq-fact">Agree what is coming, and who is covering it.</span>
+        <span class="dq-note">What work, how many pieces, what each is worth, and the condition it arrives in. Do not assume a home policy protects somebody else&rsquo;s artwork.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Your home</span>
+        <span class="dq-fact">Tell your insurer what you intend to do.</span>
+        <span class="dq-note">The more routine or commercial the activity becomes, the more important it is to check. A Section 5 declaration gives a formal answer for &euro;80, decided within four weeks.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Money</span>
+        <span class="dq-fact">If money changes hands, it is income.</span>
+        <span class="dq-note">Rent-a-Room Relief does not apply &mdash; that scheme is for letting a room as living accommodation. The artist remains the seller and takes the buyer&rsquo;s payment; anything you receive is a separate agreed amount, and income in the normal way.</span>
+      </li>
+    </ul>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What to agree with the artist</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>The space.</strong> Which wall, which room, which corner &mdash; and what is not included. Mark it out before anything arrives.<br><br><strong>Access and duration.</strong> When the artist can come, how they get in, and how long the arrangement runs. A season is a natural unit. Agree the notice either of you gives, and what happens to work still in the house when it ends.<br><br><strong>An inventory, with values.</strong> What is coming, how many pieces, what each is worth, and the condition each arrives in. Photograph them on the day. This is the single most useful thing you can do, and it takes twenty minutes.<br><br><strong>Photographs.</strong> Whether work may be photographed in your home, whether your rooms may appear in those images, and where the artist may use them.<br><br><strong>Fee or share.</strong> Whether anything is being paid for the space, and whether you receive a share if a piece sells as a result of your involvement. Agree it in advance and write it down &mdash; one page, signed by both, costs nothing and prevents most disagreements.<br><br><strong>Responsibility.</strong> Who insures the work, and what happens if something is damaged.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Insurance, custody and your home</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Do not assume you are covered.</strong> Allianz lists visitors&rsquo; property as a standard benefit on its Irish home policy, covered to &euro;2,000 &mdash; but only where contents cover is held, and only for loss or damage the policy already covers. That is a benefit for a visitor&rsquo;s belongings. It is not storage cover for somebody&rsquo;s finished work, and it should not be read as one.<br><br><strong>The artist&rsquo;s cover does not close the gap either.</strong> Visual Artists Ireland advises artists to hold their own public liability insurance for an exhibition even where the venue is insured &mdash; because if a visitor is injured by an artwork, that can be the artist&rsquo;s responsibility rather than the venue&rsquo;s. It also notes that most such policies do not cover work in transit. Public liability is about harm to people, not damage to the work.<br><br><strong>Tell your own insurer first.</strong> Bringing somebody else&rsquo;s property into your home, for money, is exactly the kind of change an insurer expects to hear about. Ask before anything arrives, not after.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Money, selling and the planning line</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>The artist is the seller.</strong> They own the work, set the price, deal with the buyer and receive the payment. Anything you are paid is a separate agreement between you and the artist. Keeping it that way is simpler for everybody, and it is the arrangement this page describes.<br><br><strong>What you receive is income.</strong> A fee for the space, or a share when something sells, is income and is taxable in the normal way. Rent-a-Room Relief does not apply &mdash; Revenue&rsquo;s scheme covers letting a room as residential accommodation, with a minimum letting period, and not for commercial purposes. There is no tax-free allowance here. If your non-PAYE income for the year reaches &euro;5,000, Revenue treats you as a chargeable person and a different return applies.<br><br><strong>Where the planning line sits.</strong> Planning permission is needed only where a change of use is material, and whether a change is material depends on the facts. Keeping a few pieces is a long way from running a sales business out of a dwelling. The more regular or commercial the activity becomes, the more important it is to check &mdash; and a Section 5 declaration is how you get a formal answer rather than an opinion. Nothing here is legal or tax advice, and the judgement is your local authority&rsquo;s, not ours.<br><br><strong>One thing worth knowing about the artist&rsquo;s side.</strong> Under Revenue&rsquo;s Artists&rsquo; Exemption, income from the sale of original artistic work &mdash; paintings and sculpture among the qualifying categories &mdash; can be exempt from Income Tax up to &euro;50,000 a year, but only where Revenue has made a determination for that artist&rsquo;s work. It is the artist&rsquo;s relief, never the host&rsquo;s.</div>
+    </details>
+
+  </section>
 </main>
 
 <section class="imagine-photo reveal">
-  <img src="assets/img/dfb125ba9dd7cd87.jpg" alt="The same living room hung with large, bold contemporary canvases, with half a dozen visitors talking and looking at the work.">
-  <div class="caption"><p>The same room, on a Saturday.</p></div>
-</section>
-
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">The Arrangement</div>
-    <h2>What to agree with the artist, before anything goes on a wall.</h2>
-    <div class="practical-group">
-      <div class="practical-item">
-        <h3>Who insures the work</h3>
-        <p>Decide this first and write it down. Visual Artists Ireland is explicit that the responsibility must be agreed rather than assumed &mdash; including who covers the work in transit, at what value, and what happens if something is damaged.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Whether you take a share</h3>
-        <p>Many hosts take nothing, and there is nothing wrong with taking something. A commercial gallery would take half &mdash; Visual Artists Ireland describes a 50/50 split as standard &mdash; so a host&rsquo;s share should be agreed in advance and sit well below that.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Who hangs it, and how</h3>
-        <p>Large work needs proper fixings. Agree who brings what, who puts holes in your walls, and who makes them good afterwards.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Who invites people</h3>
-        <p>The artist usually has the mailing list. You have the neighbours. Be clear which of you is asking whom.</p>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<section class="imagine-photo reveal">
-  <img src="assets/img/6442d19ec2dd1df0.jpg" alt="An artist working on a large canvas in a bright studio, surrounded by finished paintings in the same bold style.">
+  <!-- THE ARTIST'S PROBLEM. Placed after the ladder on purpose: the homeowner
+       now knows what they could offer, and this is what it would answer. -->
+  <img src="assets/img/6442d19ec2dd1df0.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="An artist working on a large canvas in a bright studio, surrounded by finished paintings in the same bold style.">
   <div class="caption"><p>The work exists already. What it lacks is a room.</p></div>
 </section>
 
+<!-- ==================================================================
+     RESERVED SLOT · THE DISPLAY PLATE.
+
+     The one narrative role this page cannot yet fill: work hanging in a
+     real home, lived with, WITH NOBODY IN THE ROOM. Every existing asset
+     showing art on walls also shows visitors, which makes it the OPEN rung
+     and re-centres the exhibition this rebuild deliberately demoted.
+
+     When a plate exists, insert it HERE - between the artist's problem and
+     the payoff - as a plain full-bleed plate built exactly like the outcome
+     plate further down: a section carrying class "imagine-photo reveal", one
+     image at 1408x768 with lazy loading and real alt text, and a caption div.
+
+     Copy the outcome plate below and change the src, the alt and the caption.
+     Do NOT add pa-frame: there is no burned-in annotation to protect here,
+     and the no-crop frame exists only for annotated plates.
+
+     No markup is written by this note and no layout changes anywhere else.
+     The page reads correctly without the plate.
+     ================================================================== -->
+
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">Before You Host</div>
-    <h2>Three things to settle first.</h2>
-    <div class="considerations">
-      <p><strong>Tell your insurer.</strong> This is the one that catches people. Liability to visitors is standard on an Irish household policy, but Allianz states plainly that <em>visitors to your home for business purposes are not covered on a standard home policy</em>, and that visitors&rsquo; property is covered only to &euro;2,000. An exhibition with work for sale is not an ordinary social visit. One phone call settles it.</p>
-      <p><strong>Check where the planning line sits.</strong> Planning permission is needed only where a change of use is <em>material</em>. An occasional afternoon is a long way from running a gallery; work hanging all year with viewings sits closer to the line. The judgement is your local authority&rsquo;s, not ours, and a Section 5 declaration gives a formal answer for &euro;80.</p>
-      <p><strong>Think about the practical house.</strong> Where people park, whether there is a downstairs toilet, and who is watching the front door.</p>
-    </div>
-  </section>
+    <div class="kicker">And afterwards</div>
+    <h2>Three people are better off.</h2>
 
+    <!-- 4 · THE PAYOFF, at the quietest elevation on the page: no tile, no
+         background, no shadow, one hairline rule. It must not compete with
+         the surface above. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">What everyone gets</span>
+      <ul class="dq-rows">
+        <li><span class="dq-fact"><strong>The artist.</strong> Somewhere for the work to be, and somewhere it can be seen.</span>
+            <span class="dq-note">Wall space is the scarcest thing in an artist&rsquo;s year.</span></li>
+        <li><span class="dq-fact"><strong>You.</strong> A room with something in it worth looking at, and possibly something for the space.</span></li>
+        <li><span class="dq-fact"><strong>Whoever buys it.</strong> Work seen beside a sofa rather than under gallery lighting &mdash; the hardest thing to picture, and the easiest thing to judge.</span></li>
+      </ul>
+    </div>
+
+    <p>Nothing has to happen twice. But the artist now knows your wall.</p>
+  </section>
 </main>
 
 <section class="imagine-photo reveal">
-  <img src="assets/img/05cab54ac0af83d0.jpg" alt="Two visitors holding a framed painting between them in the same living room, the rest of the group looking on.">
+  <!-- OUTCOME. -->
+  <img src="assets/img/05cab54ac0af83d0.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="Two visitors holding a framed painting between them in the same living room, the rest of the group looking on.">
   <div class="caption"><p>A work leaves with somebody who saw it in a real room.</p></div>
 </section>
 
 <main class="article">
 
-<section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Common questions.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary><h3>How do I find an artist who would want to do this?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Open studios, Culture Night and local exhibitions are where artists are already meeting the public, and most are reachable directly through their own website. No register of artists looking for a room exists, which is part of why this is rare.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Does the whole house have to be open?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. One room is enough, and most hosts close the rest. Deciding the route through the house in advance &mdash; in, around, out &mdash; matters more than how much of it is open.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What if nothing sells?</h3><span class="icon"></span></summary>
-        <div class="faq-a">That is a normal outcome and worth agreeing in advance so it does not feel like one. The artist has still shown the work to people who would never have walked into a gallery.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Is this the same as running a gallery from home?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No, and the difference matters for both insurance and planning. An occasional exhibition is a one-off event in a private house. Doing it regularly, advertised and open to all, starts to look like a business, and both your insurer and your local authority would see it that way.</div>
-      </details>
-    </div>
-  </section>
-
   <section class="article-section reveal">
-    <div class="kicker">What Everyone Gets</div>
-    <h2>Three people are better off.</h2>
-    <ul class="planning-conditions">
-      <li><strong>The artist gets a room and an audience.</strong> Wall space is the scarcest thing in an artist&rsquo;s year, and a direct sale means the full price reaches them &mdash; exempt from income tax up to &euro;50,000 a year under the Artists&rsquo; Exemption.</li>
-      <li><strong>The visitor sees work in a real room,</strong> at domestic scale, beside a sofa rather than under gallery lighting. It is the hardest thing to picture and the easiest thing to judge.</li>
-      <li><strong>You spend nothing and keep everything.</strong> The room is yours again, the artist knows your wall, and your road has met somebody who makes things.</li>
-    </ul>
-    <p>Nothing about this has to happen twice. But the artist now knows your wall, the neighbours know your door opens, and a second one starts from a conversation you have already had.</p>
+    <div class="kicker">Where this could go</div>
+    <h2>What if PlotNua could help you find each other?</h2>
+    <p>All of this can be arranged today between two people who have already met. Finding each other is the difficult part.</p>
+    <p>Starting with an Eircode, a future version of PlotNua could work out what space a property has, ask how involved you would want to be, and show whether an artist nearby needs exactly that. If both sides were interested, PlotNua could help make an introduction.</p>
+    <p class="dq-note">This matching service is not live yet.</p>
   </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Where this is going.</h2>
-    <p>Everything above can be arranged today between a homeowner and an artist. What follows cannot. It is where PlotNua is going, and none of it exists yet.</p>
-    <ul class="planning-conditions">
-      <li><strong>Being found.</strong> Work in a private house is invisible to anyone who does not already know the host. Making it discoverable, and passing a share to the host when a piece sells, is not something the two of them can arrange alone.</li>
-      <li><strong>Starting with your Eircode.</strong> Future versions could show you artists working near you, exhibitions and host homes close by, and introduce you to people you would have no way of finding otherwise.</li>
-    </ul>
-    <p class="planning-note">This forms part of our long-term vision for <strong>PlotArt</strong> &mdash; connecting local artists, local homes and local buyers through trusted spaces, physical and digital.</p>
-  </section>
-
-  
-
 </main>
 
 <section class="pb-preview reveal" id="discover-your-property">
-    <!-- FOUNDER CORRECTION — this was a working journey with everything
-         switched off: a headline inviting the homeowner to start, a subhead
-         telling them to enter an Eircode, a DISABLED Eircode field they could
-         click into and not type in, and three present-tense boxes describing
-         a service this page cannot yet provide.
-         It now says one true thing and offers four ways onward. The disabled
-         input is gone rather than greyed out — a control a homeowner cannot
-         use is worse than no control at all. -->
+    <!-- CLOSING JOURNEY PANEL. Prepared, not live. No form, no disabled
+         control, no matching. Stage one is deliberately two-part: space and
+         level, because a match made without knowing the level fails both
+         sides. There is no specialist stage and this Discovery must never
+         grow one. -->
     <div class="pn-wordmark">PlotNua</div>
     <h2 class="pb-headline">This journey is being prepared</h2>
-    <!-- FINAL UX — the founder's approved sentence, used verbatim. It
-         supersedes the Phase A wording, which named the number of questions:
-         accurate, but still a description of the form rather than of the
-         opportunity. This puts the property first and the questionnaire
-         nowhere. "There is plenty to explore" is kept, as it has been
-         throughout. -->
-    <p class="pb-subhead">When this Discovery is ready, you&rsquo;ll be able to explore whether
-      it could work for your property. In the meantime, there is plenty to explore.</p>
+    <p class="pb-subhead">When it is ready, this check will look at the space you have and how far you
+      would want this to go.</p>
+
+    <div class="pb-steps">
+      <div class="pb-step">
+        <div class="n">Your space, your level</div>
+        <p>A wall, a room, dry storage &mdash; and how involved you would want to be.</p>
+      </div>
+      <div class="pb-step">
+        <div class="n">Who is nearby</div>
+        <p>Whether an artist within reach needs that space, at that level.</p>
+      </div>
+      <div class="pb-step">
+        <div class="n">Introduction</div>
+        <p>Only if both sides want one. Nothing shared before that.</p>
+      </div>
+    </div>
+
+    <p class="pb-note">None of this is running yet, and nothing on this page sends your details anywhere.</p>
 
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-a-home-for-art.html">Explore Buy Original Irish Art &rarr;</a>
-      <a class="cs-exit" href="discovery-the-borrowed-garden.html">Explore Share Your Spare Garden &rarr;</a>
-      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
       <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
+      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
     </div>
 
     <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
@@ -642,7 +986,7 @@
     <a class="related-card" href="discovery-the-borrowed-garden.html">
       <div class="thumb"><img src="assets/img/e5ecf61c22bb13db.jpg" loading="lazy" decoding="async" alt="An Irish back garden with raised vegetable beds along one side, a grower tending them, and the homeowner reading on the patio by the house."></div>
       <div class="r-kicker">Underused Ground</div>
-      <h3>Share Your Spare Garden</h3>
+      <h3>The Borrowed Garden</h3>
     </a>
     <a class="related-card" href="discovery-living-in-the-garden.html">
       <div class="thumb"><img src="assets/img/8c60a8f27eb9c697.jpg" loading="lazy" decoding="async" alt="An ordinary Irish back garden behind a suburban house, with a small single-storey home standing at the far end, its door open."></div>

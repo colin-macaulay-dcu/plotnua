@@ -404,6 +404,28 @@
     .cmp,.cmp *{ transition:none !important; }
   }
 
+  /* ---- THE OPENING IS THE EXCHANGE. The .cmp component already in this page
+     moves into .d-hero. These five rules are lifted verbatim from DISC-008,
+     where the same component already runs inside a hero: they make it fill the
+     hero rather than stand as its own plate, stop the single-photograph
+     entrance animation being applied to two clipped plates, and make the scrim
+     and the copy pointer-transparent so a drag anywhere in the frame reaches
+     the slider instead of landing on them. ---- */
+  .d-hero .cmp{ position:absolute; inset:0; height:100%; min-height:0; }
+  .d-hero .cmp::before, .d-hero .cmp::after{ content:none; }
+  .d-hero .cmp img{ opacity:1; transform:none; transition:none; }
+  .d-hero .d-hero-scrim{ z-index:3; pointer-events:none; }
+  .d-hero .d-hero-copy{ z-index:7; pointer-events:none; }
+
+  /* IMAGE-SPECIFIC FRAMING. Both photographs put their subject right of centre
+     -- the Irish house, and the Spanish house with its terrace. At hero widths
+     the image scales to width and these have no effect; on a phone, where the
+     frame crops hard to the horizontal centre, they keep each house inside the
+     visible band instead of leaving a lawn and a horizon. Positioning only:
+     neither file is modified. ---- */
+  .d-hero .cmp .cmp-over{ object-position:62% 50%; }
+  .d-hero .cmp .cmp-base{ object-position:68% 50%; }
+
   /* ---- THE ONE NEW SUB-COMPONENT.
      Twenty statutory conditions read as one undifferentiated list unless they
      are grouped. The blueprint allows a group heading and spacing built from
@@ -433,6 +455,263 @@
   .faq-item summary:hover .icon::before, .faq-item summary:hover .icon::after{ opacity:1; }
   .faq-item[open] .icon::after{ transform:rotate(90deg); opacity:0; }
   .faq-item .faq-a{ padding:0 0 24px; color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch; }
+
+  /* ==================================================================
+     PORTED FROM DISC-014 (frozen donor), lifted verbatim by the builder
+     so it cannot drift from the donor by transcription. Batch 2 of the
+     rollout still copies rather than shares: the shared-stylesheet
+     decision comes after a third page has proved the system.
+     ================================================================== */
+
+  /* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+  /* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
+     markup, unchanged behaviour.
+
+     These now sit slightly off the page too, but at the LOWEST elevation on
+     the board -- a 16px ambient against the opportunity's 64px. They read as
+     physical, tappable strips without ever competing with the centrepiece.
+     Opening one raises it a step and gives the evidence a contained reading
+     surface at a controlled measure.
+
+     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
+     so Planning, Tax and Insurance separate with no markup change. ---- */
+  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
+    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
+    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
+    box-shadow:0 1px 1px rgba(31,59,46,.04),
+               0 10px 16px -14px rgba(31,59,46,.30); }
+  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
+  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
+    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
+  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
+  .faq-item.is-inline[open]{ background:var(--paper);
+    border-color:rgba(31,59,46,.16);
+    border-left-color:rgba(31,59,46,.42);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 18px 30px -20px rgba(31,59,46,.36); }
+
+  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
+  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--soft); }
+  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
+  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
+
+  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(31,59,46,.22); }
+  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
+  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
+  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
+  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
+
+  /* the reading surface */
+  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
+    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
+    margin:0 0 20px; padding:22px 24px;
+    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
+  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
+
+  @media (hover:hover) and (pointer:fine){
+    .faq-item.is-inline{ transition:transform .22s ease-out,
+      box-shadow .22s ease-out, border-color .22s ease-out; }
+    .faq-item.is-inline:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -18px rgba(31,59,46,.36); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-item.is-inline{ transition:none; }
+    .faq-item.is-inline:hover{ transform:none; }
+  }
+  @media (max-width:720px){
+    .faq-item.is-inline{ padding:0 16px 0 14px; }
+    .faq-item.is-inline .faq-a{ padding:18px 18px; }
+  }
+
+  /* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
+     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
+     heading rather than a 40px one, and a STATIC status pill rather than a
+     control. It carries no href and no form, because the Driveway journey
+     does not exist yet. When it does, this panel and the closing panel take
+     the same governed route. ---- */
+  .pb-early{ background:var(--paper); padding:38px 7vw;
+    border-top:1px solid rgba(31,59,46,.10);
+    border-bottom:1px solid rgba(31,59,46,.10); }
+  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
+  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
+  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
+    max-width:44ch; margin:0 auto 18px; }
+  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:11px; font-weight:500; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--soft);
+    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
+  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  @media (max-width:720px){
+    .pb-early{ padding:30px 7vw; }
+  }
+
+
+  /* ---- HOME EXCHANGE MODIFIERS (DISC-005). Two, and only two.
+
+     .is-solo  Home Exchange has no currency figures, so the dominant surface
+               carries ONE editorial statement rather than a pair. The donor's
+               two-column figure grid becomes a single full-width slot, and the
+               dividing rule that separated the pair is removed with it.
+     .is-pairs Four advisory conditions rather than three, at 2x2, because the
+               fourth -- what is NOT settled -- is the one PlotNua most wants
+               visible rather than filed in a drawer.
+
+     Both are (0,2,0) against a (0,1,0) base, so each is named again in the
+     stack queries below or it would outrank the collapse on a phone. ---- */
+  .dq-figs.is-solo{ grid-template-columns:1fr; }
+  .dq-figs.is-solo > li:last-child{ padding:26px 30px 4px 0; border-left:none; }
+  .dq-figs.is-solo .dq-fig{ font-size:clamp(26px,2.9vw,38px); }
+  .dq-figs.is-solo .dq-src{ max-width:44ch; }
+  .dq-qual.is-pairs{ grid-template-columns:repeat(2,1fr); }
+  @media (max-width:720px){
+    .dq-figs.is-solo{ grid-template-columns:1fr; }
+    .dq-qual.is-pairs{ grid-template-columns:1fr; }
+  }
 
   /* ---- quiet tier — used on FAQ (and shares its language with Partners
      and Related): muted kicker, smaller heading, so these sections recede
@@ -643,8 +922,29 @@
 </a>
 
 <header class="d-hero">
-  <!-- IMAGE 01 - Home Exchange. Rule 1: eyebrow colour set against this image. -->
-  <img id="dHeroImg" class="on" src="assets/img/f373883b2d23d27b.jpg" width="1376" height="768" fetchpriority="high" decoding="async" alt="A split view of two kitchen tables, each with a mug and a travel book: one looking out to a lush Irish garden, the other to a sunlit Mediterranean harbour.">
+  <!-- THE OPENING IS THE EXCHANGE. The composed Irish/Spanish diptych that
+       used to sit here is retired from the page: it argued the idea in one
+       frame, and a homeowner could not do anything with it. The same idea is
+       now something they pull.
+
+       CLIP DIRECTION. .cmp clips the OVERLAY to the left --pos of the frame,
+       so the overlay is the side you start on and the base is the side you
+       reveal: an ordinary Irish home on the left, the home it could be
+       exchanged with on the right, opening at 65% so the familiar side is
+       what a homeowner meets first.
+
+       This is an exchange, not a transformation. Nothing is done to the Irish
+       house; there is simply a different house on the other side. -->
+  <section class="imagine-photo cmp" id="exchangeCompare">
+    <img class="cmp-base" draggable="false" width="1376" height="768" src="assets/img/1ce6a296e2cd1b22.jpg" alt="A terrace outside a Mediterranean house with wooden shutters and bougainvillea, a table and chairs looking out over a bay towards a coastal village.">
+    <img class="cmp-over" draggable="false" fetchpriority="high" width="1376" height="768" src="assets/img/eb31144c7faca94f.jpg" alt="The back garden of an ordinary Irish semi-detached house, with a weathered patio table and chairs, a mown lawn and hydrangeas along the boundary." aria-hidden="true">
+    <span class="cmp-tag cmp-tag-a" aria-hidden="true">Your home</span>
+    <span class="cmp-tag cmp-tag-b" aria-hidden="true">Their home</span>
+    <input class="cmp-range" type="range" min="0" max="100" value="65" step="1"
+           aria-label="Compare an ordinary Irish home with a home it could be exchanged with"
+           aria-valuetext="Mostly showing the Irish home">
+    <div class="cmp-divider" aria-hidden="true"><span class="cmp-handle"><i class="cmp-chev cmp-chev-l"></i><i class="cmp-chev cmp-chev-r"></i></span></div>
+  </section>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
@@ -655,73 +955,142 @@
 </header>
 
 
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Why This Discovery?</div>
-    <h2>Who is this for?</h2>
-    <p>Somebody whose house is empty for a week or two most years.</p>
-    <p>Somebody who has wondered, vaguely, whether that matters &mdash; and never had a reason to find out.</p>
-    <p>This is not about letting your house. Nobody pays anybody. <strong>It is about swapping the use of your home for the use of somebody else&rsquo;s, for the same fortnight or a different one.</strong></p>
-  </section>
-</main>
-
-<section class="imagine-photo pa-frame reveal">
-  <!-- IMAGE 02 - Potential Asset. RULE 6: annotation supplied by the .pa-annot overlay below.
-       The hidden asset here is THE HOME ITSELF - location, sleeping capacity, availability - so the
-       leader terminates on the centre mass of the front elevation, not on a driveway, door, window
-       or room. The label sits in the clear sky deliberately left open in the upper left of the plate.
-       The image file is unmodified; the alt text names the annotation. -->
-  <img src="assets/img/2dd27e2c7c8018d4.jpg" width="1376" height="768" loading="lazy" decoding="async"
-       alt="An ordinary Irish semi-detached house seen from the footpath on a quiet estate road, the driveway empty and the curtains open, the whole house annotated by PlotNua as a potential asset.">
-
-  <div class="pa-annot" aria-hidden="true">
-    <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <circle class="pa-dot" cx="838" cy="350" r="7"/>
-      <path class="pa-line" d="M832 344 L348 194"/>
-      <rect class="pa-wash" x="60" y="110" width="280" height="76" rx="2"/>
-      <text class="pa-kicker" x="80" y="139">PLOTNUA DISCOVERY</text>
-      <text class="pa-label"  x="80" y="172">Potential Asset</text>
-    </svg>
+<section class="pb-early reveal" id="early-property-check">
+  <!-- EARLY JOURNEY ENTRY. FUTURE variant: no Home Exchange journey exists,
+       so there is deliberately no link, no form and no disabled control. Kept
+       short so it does not repeat the closing panel, which is where the
+       detail of what the check will examine belongs. -->
+  <div class="pb-early-inner">
+    <h2>Could this work for your property?</h2>
+    <p>PlotNua is designing a property check for this Discovery.</p>
+    <span class="pb-early-status">This property check is being prepared</span>
+    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
   </div>
-  <div class="caption"><p>An ordinary house, standing available.</p></div>
 </section>
 
 <main class="article">
 
+  <!-- ============================================================
+       ONE DECISION SECTION. The old page ran nine sections and an
+       eight-question FAQ. These are the same governed facts, redistributed
+       into the order a homeowner decides in: could this be my house, what
+       would it actually give me, how would it work, what must I settle
+       first, and only then the detail.
+       ============================================================ -->
   <section class="article-section reveal">
     <div class="kicker">The Opportunity</div>
-    <h2>What does this actually mean?</h2>
-    <p><strong>Your house is worth something to somebody else on exactly the days it is worth nothing to you.</strong></p>
-    <p>That is the whole idea. <strong>You stay in their home, they stay in yours, and no money changes hands in either direction.</strong> Nobody is renting anything. Nobody becomes a landlord.</p>
-    <p><strong>What makes your home useful in an exchange is usually not how impressive it is. It is where it is, how many people it sleeps and when it is available.</strong></p>
-    <p>Those three things are close to the whole list, and the first two came with the house.</p>
-    <p><strong>It also means you do not need to live somewhere remarkable.</strong> A three-bedroom semi twenty minutes from the coast is a straightforward exchange, because what another household needs is a place near whatever they came for and enough beds for everyone.</p>
-  </section>
+    <h2>Could your house be exchanged?</h2>
+    <p>Nobody pays anybody. You stay in their home, they stay in yours &mdash; or, on some platforms, at a different time entirely.</p>
 
-  <section class="article-section reveal">
-    <div class="kicker">Why Now</div>
-    <h2>Why does this come up now?</h2>
-    <p><strong>Two things have changed.</strong></p>
-    <p><strong>The date problem eased.</strong> Home exchange used to mean finding one household who wanted your house on precisely the fortnight you wanted theirs. That is a hard match. <strong>Points or credits have removed that constraint on some platforms:</strong> you host somebody in June, and use what you earn to stay somewhere else in October, with a different household. The two halves no longer have to line up.</p>
-    <p><strong>And short-term letting is about to be regulated properly.</strong> Ireland&rsquo;s short-term letting register opens on 1 December 2026, and anyone letting accommodation short-term has to be registered by the end of that month. Anyone who hears about that could reasonably assume it closes the door on any arrangement involving their house and a stranger.</p>
-    <p><strong>It is worth understanding why a straight swap is a different arrangement</strong> &mdash; and worth knowing where that is clear and where it is not.</p>
-  </section>
+    <!-- 1 · QUALIFICATION. The third tile is the real gate, and the old page
+         already said so plainly: some people will never be comfortable with
+         it, and that is a perfectly good answer to reach early. -->
+    <ul class="dq-qual">
+      <li>
+        <span class="dq-cat">Empty weeks</span>
+        <span class="dq-fact">A week or two most years when the house is genuinely empty.</span>
+        <span class="dq-note">How many, and whether they are fixed by school terms, decides more than the house does.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Beds</span>
+        <span class="dq-fact">How many people it can sleep &mdash; really, not at a push.</span>
+        <span class="dq-note">Parking matters too, depending on where you are.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Comfort</span>
+        <span class="dq-fact">Whether you would be comfortable with another family living in your home for a fortnight.</span>
+        <span class="dq-note">Some people are, immediately. Some are not, and never will be. That is a perfectly good answer to reach early.</span>
+      </li>
+    </ul>
 
-  <section class="article-section reveal">
-    <div class="kicker">Today</div>
-    <h2>What can you do today?</h2>
-    <p>Three ways, and the one that suits you depends on your dates more than your house.</p>
-    <h3>If you can both travel at the same time &mdash; a straight swap</h3>
-    <p>The simplest version. You agree a fortnight with another household, you stay in their home, they stay in yours, and everybody goes home afterwards.</p>
-    <p>No money moves. The arrangement is between the two households, and a platform handles the introductions, the profiles and the record of what was agreed.</p>
-    <p><strong>The catch is the matching.</strong> Both households have to want the same two weeks.</p>
-    <h3>If your dates do not line up &mdash; points or credits</h3>
-    <p>Some platforms let you host without going anywhere yourself. <strong>A night at your home is worth a set number of points</strong>; hosting for a few nights earns you a few nights&rsquo; worth. You spend them later, somewhere else, with somebody who has never seen your house.</p>
-    <p><strong>One honest warning.</strong> Points are not money, but they have value. <strong>Ireland&rsquo;s new letting rules are written around accommodation provided for payment, and whether points count as payment has not been decided or written down anywhere we could find.</strong> A straight swap sits more clearly outside those rules than a points arrangement does. See Looking Ahead, below.</p>
-    <h3>If you have a second property &mdash; exchanging the one you are not in</h3>
-    <p>If you own a holiday home or an inherited house, it can be exchanged without anyone entering your own home at all.</p>
-    <p><strong>It removes the question of somebody staying in your own home.</strong> And it makes a house that sits empty for much of the year genuinely useful.</p>
+    <!-- 2 · THE EXCHANGE. The page's single unbroken surface. Home Exchange
+         has no earnings, so where the donor puts two currency figures this
+         puts one editorial statement -- and the statement is the honest one:
+         no money reaches you. -->
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">What your home unlocks</span>
+        <p class="dq-earn-lead">Your house is worth something to somebody else on exactly the days it is worth nothing to you.</p>
+        <p class="dq-earn-caveat">Nobody is renting anything, and nobody becomes a landlord.</p>
+        <ul class="dq-figs is-solo">
+          <li><span class="dq-fig">Somewhere to stay that you did not have to pay for.</span><span class="dq-src">No money reaches you. You pay an annual membership to the platform, and what you get back is accommodation you avoid paying for rather than income.</span></li>
+        </ul>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">What makes a home exchangeable</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact"><strong>Where it is.</strong> Near whatever the other household came for.</span>
+              <span class="dq-note">It does not have to be somewhere remarkable. People exchange to visit family, to walk, to work somewhere for a month.</span></li>
+          <li><span class="dq-fact"><strong>How many it sleeps.</strong> Enough beds for everyone is most of the requirement.</span></li>
+          <li><span class="dq-fact"><strong>When it is free.</strong> The weeks the house is standing empty anyway.</span>
+              <span class="dq-note">Close to the whole list &mdash; and the first two came with the house.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3 · THE THREE ROUTES. Above the advisory tiles in elevation, because
+         this is how the thing actually works, not a condition on it. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">How it could work</span>
+      <ul class="dq-adv-cols">
+        <li>
+          <span class="dq-adv-label">A straight swap</span>
+          <span class="dq-fact">You agree a fortnight with another household. You stay in their home, they stay in yours, and everybody goes home afterwards.</span>
+          <span class="dq-note">The catch is the matching: both households have to want the same two weeks. A platform handles the introductions, the profiles and the record of what was agreed.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Points or credits</span>
+          <span class="dq-fact">A night at your home is worth a set number of points. Host now, and spend what you earn later, somewhere else.</span>
+          <span class="dq-note">Your dates and theirs never have to line up. Whether points count as payment under the new rules is a separate question &mdash; see below.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">A second property</span>
+          <span class="dq-fact">A holiday home or an inherited house can be exchanged without anyone entering your own home at all.</span>
+          <span class="dq-note">And it makes a house that sits empty for much of the year genuinely useful.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 4 · BEFORE YOU START. Four, at 2x2, because the fourth is the one
+         PlotNua least wants hidden: the things nobody has ruled on. -->
+    <ul class="dq-qual is-pairs">
+      <li>
+        <span class="dq-cat">Insurance</span>
+        <span class="dq-fact">Irish policies commonly restrict cover once a house has stood empty for a prolonged period.</span>
+        <span class="dq-note">Whether an exchange counts as the house being occupied is not something we could establish for the Irish market. Ask your own insurer, in writing, before you agree dates. Any protection a platform offers sits on top of your policy, not instead of it.</span>
+      </li>
+      <li>
+        <span class="dq-cat">The register</span>
+        <span class="dq-fact">Ireland&rsquo;s short-term letting register opens on 1 December 2026 and applies to accommodation offered for payment.</span>
+        <span class="dq-note">In a straight swap nobody pays anybody, so on the wording of the rules there is no host and nothing to register. Nobody has published a ruling on home exchange specifically, so treat that as a reading of the rules rather than a settled position.</span>
+      </li>
+      <li>
+        <span class="dq-cat">What is not settled</span>
+        <span class="dq-fact">Whether points count as payment has not been decided, and no Revenue guidance addressing reciprocal home exchange was found.</span>
+        <span class="dq-note">That is not the same as being told there is nothing to consider, and it should not be treated as it. Guidance from F&aacute;ilte Ireland or the Department naming home exchange would settle it.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Mortgage and lease</span>
+        <span class="dq-fact">Mortgage conditions and management-company rules can both restrict who may occupy a property.</span>
+        <span class="dq-note">We have not verified what any particular lender or management company allows. Both are worth checking before you list.</span>
+      </li>
+    </ul>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Why this is not letting your house</h3><span class="icon"></span></summary>
+      <div class="faq-a">In an exchange nobody pays anybody. You are not a landlord, no rent passes between the households, and the arrangement is that each of you gets somewhere to stay. That is a different thing from a short-term let, where a guest pays to stay.<br><br><strong>The register.</strong> It opens on 1 December 2026, and anyone letting accommodation short-term has to be registered by the end of that month. The rules define a host as somebody providing accommodation for payment, for periods up to 21 nights. On the wording of the rules a no-payment exchange is a different arrangement from a short-term let &mdash; but nobody has published a ruling on home exchange specifically, so this is a reading of the rules rather than a settled position. <strong>If money ever changes hands, it stops being an exchange and all the ordinary rules apply.</strong><br><br><strong>Points.</strong> The rules are built around accommodation provided for payment. Points are not money, but they do have value: you earn them by hosting and spend them on somewhere to stay. Whether that counts as payment has not been decided, and nothing published answers it. A straight swap sits more clearly outside these rules than a points arrangement does. If you are exchanging on points, that is worth asking about rather than assuming.<br><br><strong>Tax.</strong> No Revenue guidance addressing reciprocal home exchange was found. That is not the same as being told there is nothing to consider. Take your own advice rather than relying on the absence of a rule.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What the fortnight actually involves</h3><span class="icon"></span></summary>
+      <div class="faq-a">Nothing at all changes until the fortnight arrives. Then it is mostly preparation: emptying a shelf or two, putting away what you would rather not have handled, leaving instructions for the heating and the bins, and arranging how the keys get from you to them.<br><br><strong>You may never meet them.</strong> Keys can pass through a neighbour, a lockbox or a key safe, and the two households can travel in opposite directions on the same day.<br><br>What changes is smaller than it sounds and stranger than it sounds. Somebody is living in your house &mdash; cooking in your kitchen, sleeping in your bed &mdash; while you are doing exactly the same in theirs.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What a platform does, and what it does not</h3><span class="icon"></span></summary>
+      <div class="faq-a">A platform handles the introductions, the profiles and the record of what was agreed, and you pay it an annual membership. It may hold a deposit and offer cover for accidental damage, cancellation, and homes that turn out not to match their listing. <strong>Read what yours actually covers, and remember it is separate from your household insurance.</strong><br><br>Apartments can be exchanged, subject to the management-company and mortgage conditions above.<br><br>PlotNua does not arrange exchanges, does not take a share of anything, and cannot tell you whether your house will be wanted.</div>
+    </details>
+
   </section>
 </main>
 
@@ -733,84 +1102,21 @@
   <div class="caption"><p>The same house, a fortnight later, with somebody else in it.</p></div>
 </section>
 
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Day to Day</div>
-    <h2>What does it change day to day?</h2>
-    <p>Nothing at all, until the fortnight arrives.</p>
-    <p>Then it is mostly preparation: emptying a shelf or two, putting away what you would rather not have handled, leaving instructions for the heating and the bins, and arranging how the keys get from you to them.</p>
-    <p><strong>You may never meet them.</strong> Keys can pass through a neighbour, a lockbox or a key safe, and the two households can travel in opposite directions on the same day.</p>
-    <p><strong>What changes is smaller than it sounds and stranger than it sounds.</strong> Somebody is living in your house &mdash; cooking in your kitchen, sleeping in your bed &mdash; while you are doing exactly the same in theirs.</p>
-  </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Before You Start</div>
-    <h2>What should you think about before you start?</h2>
-    <p><strong>Start with the one that is not about the house.</strong></p>
-    <p>Would you be comfortable with another family living in your home for a fortnight? Some people are, immediately. Some are not, and never will be. <strong>If that is you, this Discovery is not for your house, and that is a perfectly good answer to reach early.</strong></p>
-    <p>Then the practical ones. How many weeks a year is the house genuinely empty? Are those weeks fixed by school terms? How many people can it sleep &mdash; really, not at a push? Is there parking, and does that matter where you are?</p>
-    <p><strong>Then the four that need proper thought.</strong></p>
-    <p><strong>Insurance, and it runs the opposite way to expectation.</strong> Irish home policies commonly restrict cover once a house has stood empty for a prolonged period, with the exact period depending on the policy. <strong>An empty house is the insurance question.</strong> But another household living in your home during an exchange raises a separate question again, and whether that counts as the house being occupied is not something we could establish for the Irish market. <strong>Ask your own insurer, in writing, before you agree dates.</strong> Any protection a platform offers sits on top of your policy &mdash; it does not replace it.</p>
-    <p><strong>The short-term letting register.</strong> It opens on 1 December 2026. The rules define a host as somebody providing accommodation for payment, and the register applies to accommodation offered for rent. In a straight swap nobody pays anybody. <strong>On the wording of the rules, a no-payment exchange is a different arrangement from a short-term let</strong> &mdash; but nobody has published a ruling on home exchange specifically, so this is a reading of the rules rather than a settled position. If money ever changes hands, it stops being an exchange and all the ordinary rules apply.</p>
-    <p><strong>Tax.</strong> No Revenue guidance addressing reciprocal home exchange was found. <strong>That is not the same as being told there is nothing to consider</strong>, and it should not be treated as it. Take your own advice rather than relying on the absence of a rule.</p>
-    <p><strong>Your mortgage, and your lease if you have one.</strong> Mortgage conditions and apartment or management-company rules can both restrict who may occupy a property. <strong>We have not verified what any particular lender or management company allows.</strong> Both are worth checking before you list.</p>
-    <p>PlotNua does not arrange exchanges, does not take a share of anything, and cannot tell you whether your house will be wanted.</p>
-  </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Looking Ahead</h2>
-    <p class="quarantine-lede">Everything above can be done in Ireland today. What follows is less settled.</p>
-    <h3>The points question</h3>
-    <p>The rules coming into force in December are built around accommodation provided for payment. <strong>Points are not money, but they do have value</strong> &mdash; you earn them by hosting and spend them on somewhere to stay.</p>
-    <p><strong>Whether that counts as payment has not been decided, and nothing published answers it.</strong> A straight swap sits more clearly outside these rules than a points arrangement does. <strong>If you are exchanging on points, that is worth asking about rather than assuming.</strong></p>
-    <h3>What would settle it</h3>
-    <p>Guidance from F&aacute;ilte Ireland or the Department naming home exchange, one way or the other.</p>
-    <p>Until then this stays a question rather than a rule, and <strong>we would rather tell you that than tidy it away.</strong></p>
-    <h3>Why the house keeps its value either way</h3>
-    <p>Whatever happens to the rules, the thing that makes a house worth exchanging does not move. <strong>It is where the house is, how many it sleeps and when it is free</strong> &mdash; and none of those depends on a register.</p>
-  </section>
-
-  <section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Questions this Discovery tends to raise.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary><h3>Is this the same as renting out my house?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. In an exchange nobody pays anybody. You are not a landlord, no rent passes between the households, and the arrangement is that each of you gets somewhere to stay. That is a different thing from a short-term let, where a guest pays to stay.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Do I get paid?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No, and it is worth being clear about it. No money reaches you. You pay an annual membership to the platform, and what you get back is somewhere to stay that you did not have to pay for. The benefit is real, but it is accommodation you avoid paying for rather than income.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Do we have to travel on the same dates?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Not necessarily. Some platforms run on points: you host somebody at a time that suits you, and spend what you earn later, somewhere else, with a different household. On those platforms your dates and theirs do not have to match.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What about insurance?</h3><span class="icon"></span></summary>
-        <div class="faq-a">This is the one to sort first. Irish policies commonly restrict cover once a house has been empty for a prolonged period &mdash; how long depends on your policy. Another household staying in your home raises a separate question again, and we could not establish how Irish insurers treat it. Ask yours in writing before you agree anything. Platform protection sits on top of your own cover, not instead of it.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What if something gets damaged?</h3><span class="icon"></span></summary>
-        <div class="faq-a">A platform may hold a deposit and offer cover for accidental damage, cancellation and homes that turn out not to match their listing. Read what yours actually covers, and remember it is separate from your household insurance.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Does the new short-term letting register apply to me?</h3><span class="icon"></span></summary>
-        <div class="faq-a">The register opens on 1 December 2026 and applies to hosts offering accommodation for payment, for periods up to 21 nights. In a straight swap nobody pays anybody, so on the wording of the rules there is no host and nothing to register. Nobody has published a ruling on home exchange specifically, so treat that as a reading of the rules rather than settled. Points are a separate question &mdash; see Looking Ahead.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Does my house need to be somewhere remarkable?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. What another household needs is a place near whatever they came for and enough beds. People exchange to visit family, to walk, to work somewhere for a month.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What if I live in an apartment, or still have a mortgage?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Apartments can be exchanged. But management-company rules and mortgage conditions can both restrict who is allowed to occupy a property, and we have not verified what any particular lender or management company permits. Check both before you list.</div>
-      </details>
-    </div>
-  </section>
-</main>
+<section class="imagine-photo reveal">
+  <!-- THE PAYOFF. Deliberately the last thing before the journey panel, and
+       deliberately uncaptioned: the decision has already been made in words
+       above, and this is the part that does not need any. It is a different
+       photograph from the hero's Spanish side and does a different job --
+       that one is a specific house you could be staying in, this one is the
+       reason anyone would want to. No claim is attached to it. -->
+  <img src="assets/img/7958d59a4ba26f4c.jpg" width="1376" height="768" loading="lazy" decoding="async"
+       alt="A Mediterranean bay at golden hour: a curving sandy beach, small boats on calm water and a white coastal village on the headland above.">
+  <!-- The one line the payoff needed. On the page's own .caption
+       component, the same treatment the other plates use, so it reads as
+       an editorial closing thought rather than a promise. It claims
+       nothing: it says what the value is NOT, and leaves the rest open. -->
+  <div class="caption"><p>The value may not be what your home earns. It may be where it lets you go.</p></div>
+</section>
 
 <section class="pb-preview reveal" id="discover-your-property">
     <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
@@ -836,7 +1142,7 @@
   <h2>Related Discoveries</h2>
   <div class="related-grid">
     <a class="related-card" href="discovery-driveway-income.html">
-      <div class="thumb"><img src="assets/img/d143a33914986b02.jpg" loading="lazy" decoding="async" alt="An ordinary Irish street where cars are parked bumper to bumper along both kerbs, while the driveway of one semi-detached house stands completely empty."></div>
+      <div class="thumb"><img src="assets/img/b5cbac3fff9072d4.jpg" loading="lazy" decoding="async" alt="An Irish semi-detached house on a suburban street, its two-space driveway standing completely empty, while cars line the kerb opposite and one is parked up on the grass verge, with an office and apartment development a short walk away."></div>
       <span class="related-kicker">Income</span>
       <span class="related-title">Driveway Income</span>
       <span class="related-line">Your driveway is empty for most of the day. Someone nearby may already need it.</span>
@@ -931,7 +1237,7 @@
    DOM writes are batched to one per animation frame; the value itself is never
    eased, so the divider tracks the pointer directly. */
 (function(){
-  var el = document.getElementById('gardenCompare');
+  var el = document.getElementById('exchangeCompare');
   if(!el || !window.PointerEvent) return;              /* graceful: stays static */
   var range = el.querySelector('.cmp-range');
   if(!range) return;
@@ -940,9 +1246,9 @@
   var pos = 65, rect = null, activeId = null, queued = false;
 
   function describe(v){
-    if(v <= 2)  return 'Showing the same garden with a detached home';
-    if(v >= 98) return 'Showing the garden as it is today';
-    return 'Comparing the garden as it is today with the same garden containing a detached home, divider at ' + v + ' per cent';
+    if(v <= 2)  return 'Showing the home it could be exchanged with';
+    if(v >= 98) return 'Showing the Irish home';
+    return 'Comparing an ordinary Irish home with a home it could be exchanged with, divider at ' + v + ' per cent';
   }
   function paint(){
     queued = false;

@@ -232,6 +232,9 @@
   }
 
   .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+  /* On the hero the annotation sits UNDER the headline, not over it: the
+     component's own z-index:3 outranks .d-hero-copy (z-index:2). */
+  .d-hero .pa-annot{ z-index:1; }
   .pa-annot svg{ width:100%; height:100%; display:block; }
   .pa-line{ stroke:rgba(15,14,10,.78); stroke-width:1.6; fill:none; }
   .pa-dot{ fill:none; stroke:rgba(15,14,10,.85); stroke-width:2.2; }
@@ -415,6 +418,287 @@
     letter-spacing:.15em; text-transform:uppercase; color:var(--accent);
     margin:0 0 10px; }
   .rule-group .planning-conditions{ margin-top:0; }
+
+  /* ---- PREMIUM FACT CARDS. Lifted verbatim from the merged Garden
+     Discovery (discovery-living-in-the-garden.html) by build-disc014-density.py.
+     Not a new design system: the same .rule-card / .rule-fact / .rule-note
+     vocabulary, against a :root token block proven identical to the donor's.
+     .is-three is a LOCAL modifier for the three routes in section B; the base
+     two-column rule is untouched. ---- */
+  .rule-cards{ list-style:none; padding:0; margin:26px 0 0;
+    display:grid; gap:16px; grid-template-columns:repeat(2,1fr); }
+  .rule-cards > li{ margin:0; }
+  .rule-card{ height:100%; background:var(--paper);
+    border:1px solid rgba(31,59,46,.14); border-radius:4px;
+    padding:22px 24px 20px; }
+  .rule-card > h3{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--accent);
+    margin:0 0 14px; }
+  .rule-list{ list-style:none; padding:0; margin:0; }
+  .rule-list > li{ padding:11px 0; border-top:1px solid rgba(31,59,46,.09); }
+  .rule-list > li:first-child{ padding-top:0; border-top:none; }
+  .rule-list > li:last-child{ padding-bottom:0; }
+  .rule-fact{ display:block; font-size:15px; line-height:1.45; font-weight:600;
+    color:var(--ink); }
+  .rule-note{ display:block; margin-top:4px; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  .rule-cards.is-three{ grid-template-columns:repeat(3,1fr); }
+  .check-head{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--soft);
+    margin:34px 0 12px; }
+  .check-rows{ list-style:none; padding:0; margin:0;
+    display:grid; gap:12px; grid-template-columns:repeat(2,1fr); }
+  .check-rows > li{ margin:0; }
+  .check-row{ height:100%; border:1px solid rgba(31,59,46,.10); border-radius:4px;
+    padding:16px 18px; }
+  .check-row .rule-fact{ font-size:14px; }
+  .check-row .rule-note{ font-size:13px; }
+  .check-note{ margin-top:14px; font-size:13.5px; line-height:1.6; color:var(--soft);
+    max-width:58ch; }
+
+  /* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+  /* ---- RESPONSIVE COLLAPSE. The donor's own 720px rule, lifted, plus the
+     two lines it could not have known about: .is-three is a HIGHER-SPECIFICITY
+     selector (0,2,0) than the donor's .rule-cards (0,1,0), so it must be named
+     explicitly or it would win and stay three-up on a phone. The 900px step
+     drops the three routes to two columns before they get too narrow to
+     read. ---- */
+  @media (max-width:900px){
+    .rule-cards.is-three{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:720px){
+    .rule-cards, .check-rows{ grid-template-columns:1fr; }
+    .rule-card{ padding:20px 20px 18px; }
+  }
+  @media (max-width:720px){
+    .rule-cards.is-three{ grid-template-columns:1fr; }
+  }
+
+  /* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
+     markup, unchanged behaviour.
+
+     These now sit slightly off the page too, but at the LOWEST elevation on
+     the board -- a 16px ambient against the opportunity's 64px. They read as
+     physical, tappable strips without ever competing with the centrepiece.
+     Opening one raises it a step and gives the evidence a contained reading
+     surface at a controlled measure.
+
+     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
+     so Planning, Tax and Insurance separate with no markup change. ---- */
+  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
+    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
+    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
+    box-shadow:0 1px 1px rgba(31,59,46,.04),
+               0 10px 16px -14px rgba(31,59,46,.30); }
+  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
+  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
+    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
+  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
+  .faq-item.is-inline[open]{ background:var(--paper);
+    border-color:rgba(31,59,46,.16);
+    border-left-color:rgba(31,59,46,.42);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 18px 30px -20px rgba(31,59,46,.36); }
+
+  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
+  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--soft); }
+  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
+  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
+
+  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(31,59,46,.22); }
+  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
+  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
+  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
+  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
+
+  /* the reading surface */
+  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
+    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
+    margin:0 0 20px; padding:22px 24px;
+    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
+  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
+
+  @media (hover:hover) and (pointer:fine){
+    .faq-item.is-inline{ transition:transform .22s ease-out,
+      box-shadow .22s ease-out, border-color .22s ease-out; }
+    .faq-item.is-inline:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -18px rgba(31,59,46,.36); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-item.is-inline{ transition:none; }
+    .faq-item.is-inline:hover{ transform:none; }
+  }
+  @media (max-width:720px){
+    .faq-item.is-inline{ padding:0 16px 0 14px; }
+    .faq-item.is-inline .faq-a{ padding:18px 18px; }
+  }
+
+  /* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
+     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
+     heading rather than a 40px one, and a STATIC status pill rather than a
+     control. It carries no href and no form, because the Driveway journey
+     does not exist yet. When it does, this panel and the closing panel take
+     the same governed route. ---- */
+  .pb-early{ background:var(--paper); padding:38px 7vw;
+    border-top:1px solid rgba(31,59,46,.10);
+    border-bottom:1px solid rgba(31,59,46,.10); }
+  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
+  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
+  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
+    max-width:44ch; margin:0 auto 18px; }
+  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:11px; font-weight:500; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--soft);
+    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
+  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  @media (max-width:720px){
+    .pb-early{ padding:30px 7vw; }
+  }
 
   /* ---- FAQ — elegant native accordion. No JS required for the
      interaction itself, keeping this section resilient and fast; the
@@ -644,7 +928,37 @@
 
 <header class="d-hero">
   <!-- IMAGE 01 - Driveway Income. Founder-approved existing asset. Rule 1: eyebrow colour set against this image. -->
-  <img id="dHeroImg" class="on" src="assets/img/d143a33914986b02.jpg" width="1376" height="768" fetchpriority="high" decoding="async" alt="An ordinary Irish street where cars are parked bumper to bumper along both kerbs, while the driveway of one semi-detached house stands completely empty.">
+  <img id="dHeroImg" class="on" src="assets/img/b5cbac3fff9072d4.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="An Irish semi-detached house on a suburban street, its two-space driveway standing completely empty, while cars line the kerb opposite and one is parked up on the grass verge, with an office and apartment development a short walk away.">
+
+  <!-- POTENTIAL ASSET ANNOTATION, ON THE HERO.
+       The separate annotated plate is retired, so this is the page's single
+       Potential Asset moment. Same .pa-annot component as DISC-026 and
+       DISC-022 -- unchanged classes, strokes, wash and type.
+
+       GEOMETRY, MEASURED AGAINST THE PLATE, NOT ESTIMATED. The hero crops
+       (object-fit:cover at 88svh), and at 390x743 only image x 502..905 of
+       1408 survives. The two driveway spaces run out to x 1290, so an anchor
+       spanning them would be half off-screen on a phone.
+
+       The anchor therefore sits at (840, 545), on the gravel of the driveway
+       itself -- private parking surface, not the kerb, the footpath, the
+       lawn, the pillars, the house or the parked car. Three lower candidates
+       were rejected on inspection: (868,598) landed on the apron by the kerb,
+       (800,552) and (770,568) on the lawn.
+
+       The label is centred in the phone-visible band (555..845, margins 53
+       and 60) so it cannot bleed off a phone edge, and sits in clear sky well
+       above the roofline. Both were checked by simulating the cover crop at
+       1440x845 and 390x743. -->
+  <div class="pa-annot" aria-hidden="true">
+    <svg viewBox="0 0 1408 768" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <circle class="pa-dot" cx="840" cy="545" r="7"/>
+      <path class="pa-line" d="M833 536 L800 192"/>
+      <rect class="pa-wash" x="555" y="96" width="290" height="84" rx="2"/>
+      <text class="pa-kicker" x="577" y="128">PLOTNUA DISCOVERY</text>
+      <text class="pa-label"  x="577" y="164">Two unused spaces</text>
+    </svg>
+  </div>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
@@ -656,171 +970,132 @@
 
 
 
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Why This Discovery?</div>
-    <h2>Who is this for?</h2>
-    <p>Somebody whose driveway sits empty for most of the day.</p>
-    <p>Somebody who lives near a place other people need to get to, and has never thought of that as a feature of the house.</p>
-    <p>This Discovery is for anyone who has wondered whether that empty space might be worth something.</p>
-    <p>It is not about building anything. The asset is already there, and it is already paved.</p>
-  </section>
-</main>
-
-<section class="imagine-photo pa-frame reveal">
-  <!-- IMAGE 02 - Potential Asset. Approved production plate.
-       RULE 6: annotation supplied by the .pa-annot overlay below, the same component
-       DISC-026 and DISC-022 use. The image file is unmodified.
-       Threshold geometry frozen by the founder: the leader terminates where the private
-       driveway meets the public footpath, centred between the two brick entrance pillars.
-       It does not point at the surface, the vehicle, the charger, the house or the road. -->
-  <img src="assets/img/be0bd59e87bdad94.jpg" width="1376" height="768" loading="lazy" decoding="async"
-       alt="The same Irish street and semi-detached house, the driveway now in use by a visiting car, with the property threshold between the brick entrance pillars annotated by PlotNua as a potential asset.">
-
-  <div class="pa-annot" aria-hidden="true">
-    <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <circle class="pa-dot" cx="700" cy="618" r="7"/>
-      <path class="pa-line" d="M694 611 L348 194"/>
-      <rect class="pa-wash" x="60" y="110" width="280" height="76" rx="2"/>
-      <text class="pa-kicker" x="80" y="139">PLOTNUA DISCOVERY</text>
-      <text class="pa-label"  x="80" y="172">Potential Asset</text>
-    </svg>
+<section class="pb-early reveal" id="early-property-check">
+  <!-- EARLY JOURNEY ENTRY. Establishes the intended dual-entry Discovery
+       architecture: a compact invitation here, the full closing invitation at
+       #discover-your-property. Both currently report the SAME honest state,
+       because the Driveway journey is not live -- your-plot.html defines
+       'garden-room' and 'residential' and nothing else. There is deliberately
+       no link and no form here: a control a homeowner cannot use is worse than
+       no control at all, which is why the Eircode field was removed from the
+       closing panel. When a Driveway journey exists, this panel and the
+       closing panel take the same governed route. -->
+  <div class="pb-early-inner">
+    <h2>Think this could work for your property?</h2>
+    <p>PlotNua is building a property check for this Discovery &mdash; your location, what is within walking distance, and whether a driver could reach the space.</p>
+    <span class="pb-early-status">This property check is being prepared</span>
+    <p class="pb-early-more">Until it is ready, keep reading to understand what matters.</p>
   </div>
-  <div class="caption"><p>Parking is hard to find here. This driveway could be useful to someone working nearby.</p></div>
 </section>
 
 <main class="article">
 
+  <!-- ONE DECISION SECTION. Six cards, 3x2 on desktop, collapsing to 2-up
+       below 900px and 1-up below 720px on the existing .is-three modifier.
+       No new CSS, no new component. -->
   <section class="article-section reveal">
     <div class="kicker">The Opportunity</div>
-    <h2>What does this actually mean?</h2>
-    <p><strong>Your driveway is not worth money because it is a driveway. It is worth money because of where it is.</strong></p>
-    <p>Two houses can have the same paving, the same gate, the same width. One space is worth fifty euro a week and the other is worth nothing at all. The ground is identical. What differs is what sits within walking distance of it.</p>
-    <p>That is the whole thing, and it is worth sitting with, because it inverts how people usually think about property. Most of what a house can do depends on the house &mdash; how big the garden is, which way the roof faces, what the walls will take. <strong>This depends on the map.</strong></p>
-    <p>Two Irish homeowners have already shown what that looks like.</p>
-    <p>A woman in Santry has been letting her driveway to Dublin Airport passengers since 2019, at about fifty euro a week &mdash; roughly half what the airport charges. She is also close to Beaumont Hospital, where parking is expensive and scarce. A Dublin homeowner told the Irish Times in 2023 that she lets her space at thirteen euro a day, or sixty-five a week. She started because people kept parking across her frontage anyway.</p>
-    <p>Neither of them built anything. Neither of them bought anything. <strong>The value was already there, in the ground in front of the house, and it had been there the whole time.</strong></p>
-    <p>And here is the part that makes this a property fact rather than a market fact. Location is the one thing about a house you cannot add, cannot improve and cannot lose. It transfers entirely with the deeds. <strong>If your driveway is worth something today, it will still be worth something to whoever owns it next.</strong></p>
-    <blockquote class="pull-quote">Nobody had ever asked to use it.</blockquote>
-  </section>
+    <h2>Is your driveway suitable?</h2>
+    <p>An empty driveway can have value when it is close to somewhere people need to reach.</p>
 
-  <section class="article-section reveal">
-    <div class="kicker">Why Now</div>
-    <h2>Why does this come up now?</h2>
-    <p>Because the shortage is now well documented, and because the asking finally became easy.</p>
-    <p>Dublin Airport&rsquo;s car parks are regularly fully booked. The Irish Times reported in 2024 that the overflow was putting pressure on the estates nearby &mdash; with residents describing ambulances that could not get through. In 2025, Dublin City Council was considering a pilot scheme to discourage what it called increasingly problematic match day parking on the residential streets around Croke Park.</p>
-    <p>Hospitals, stations and stadiums generate the same pressure on a smaller scale, every week, in a lot of ordinary places.</p>
-    <p>What changed is not the shortage. It is that a parking marketplace now operates here, and both of the main property portals list parking spaces. Ten years ago, letting your driveway meant knowing somebody who needed it. Now it does not.</p>
-    <p><strong>One thing to be honest about, because it is the same story from the other side.</strong> The pressure that makes your driveway valuable is being reported as a nuisance. Councils are discussing how to reduce it. Residents near the airport are not describing an opportunity &mdash; they are describing blocked roads. Both of those things are true at once, and a road that is already tense about parking is a road to think carefully on.</p>
-  </section>
+    <!-- ============================================================
+         THE DECISION BOARD. The 3x2 grid is retired: these are the same
+         governed strings, redistributed into the hierarchy a homeowner
+         actually decides in -- qualify, see the opportunity, understand the
+         conditions, then read the evidence.
+         ============================================================ -->
 
-  <section class="article-section reveal">
-    <div class="kicker">Today</div>
-    <h2>What can you do today?</h2>
-    <p>Three routes. They are not three versions of the same thing &mdash; each one is opened by a different fact about your property, and it is the property that decides which, if any, is available to you.</p>
-    <h3>If the space is empty on weekdays &mdash; regular parking</h3>
-    <p>The simplest of the three, and the one most houses can do.</p>
-    <p>A commuter, a shift worker or somebody working nearby takes the space while you are out, by the day, the week or the month. You set the hours, the price and who is allowed. Nothing is built and nothing is fixed. If you stop enjoying it, you stop.</p>
-    <p>It earns the least, and it is the easiest to stop.</p>
-    <h3>If you live within walking distance of somewhere people must reach &mdash; premium parking</h3>
-    <p>An airport, a hospital, a stadium, a station, a busy town centre.</p>
-    <p>Same driveway, same arrangement, materially more money &mdash; because the alternative your driver is comparing you against is expensive. The Santry example is the clearest version: half the airport&rsquo;s price, and still several times what the same space would earn a mile further out.</p>
-    <p><strong>Walking distance is the whole test.</strong> If somebody would not walk from your gate to the thing, this pathway is not open to you, however close it looks on a map.</p>
-    <h3>If you have off-street parking and a supply that will take a charger &mdash; EV charging</h3>
-    <p>The secondary pathway, and the only one that changes the property.</p>
-    <p>A home charger is fixed to the house, needs an electrician, and is worth doing on its own terms. SEAI offers a grant of up to three hundred euro towards one. You do not need to own an electric car to claim it, but you do need off-street parking &mdash; and the grant is <strong>once per address, not once per person.</strong> If a previous owner claimed it, it is gone.</p>
-    <p>For this Discovery the relevance is narrower than it first appears: a space with a charger is worth more to the right driver than a space without one. That is a real difference, and it is still a smaller one than moving your house closer to an airport.</p>
+    <!-- 1 · QUALIFICATION. Three compact markers on a ruled strip. -->
+    <ul class="dq-qual">
+      <li>
+        <span class="dq-cat">Location</span>
+        <span class="dq-fact">Near somewhere people need to reach.</span>
+        <span class="dq-note">An airport, hospital, station, stadium, town centre or employment area.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Space</span>
+        <span class="dq-fact">A genuine off-street parking space.</span>
+        <span class="dq-note">Available regularly, at times when you do not need it yourself.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Access</span>
+        <span class="dq-fact">Simple to enter, park and leave.</span>
+        <span class="dq-note">Straightforward for a driver to use without help.</span>
+      </li>
+    </ul>
+
+    <!-- 2 · OPPORTUNITY. Deliberately asymmetric: the earnings evidence is
+         the revelation of this Discovery and carries roughly 62% of the
+         width; the mechanism supports it at roughly 38%. They share one
+         hairline ground so they read as a single feature. -->
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">What could it earn?</span>
+        <p class="dq-earn-lead">It depends mainly on local demand.</p>
+        <p class="dq-earn-caveat">These are reported examples, not guaranteed values.</p>
+        <ul class="dq-figs">
+          <li><span class="dq-fig">About &euro;50 a week</span><span class="dq-src">Reported near Dublin Airport.</span></li>
+          <li><span class="dq-fig">&euro;13 a day, or &euro;65 a week</span><span class="dq-src">Reported by a Dublin homeowner, Irish Times 2023.</span></li>
+        </ul>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">How it could be used</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact">By the day, week or month, depending on local demand.</span>
+              <span class="dq-note">Someone working nearby regularly, or shorter stays near an airport, hospital or stadium.</span></li>
+          <li><span class="dq-fact">A space with charging could be worth more to the right driver.</span>
+              <span class="dq-note">A commuter or worker with an EV may value charging while the car is parked.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3 · ADVISORY BAND. Three things to know before acting, as calm
+         columns rather than a fourth card. No warning colour. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Before you start</span>
+      <ul class="dq-adv-cols">
+        <li>
+          <span class="dq-adv-label">Tax</span>
+          <span class="dq-fact">This income is taxable and must be declared.</span>
+          <span class="dq-note"><strong>Rent-a-Room Relief does not apply.</strong></span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Insurance</span>
+          <span class="dq-fact">Check the arrangement with your insurer.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Planning</span>
+          <span class="dq-fact">The specific Irish planning position has not been determined.</span>
+          <span class="dq-note"><strong>English guidance on this does not apply in Ireland.</strong></span>
+        </li>
+      </ul>
+    </div>
+
+    <details class="faq-item is-inline">
+      <summary><h3>How an arrangement works</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Through a parking marketplace.</strong> You list the space, choose when it is available and set a price. The driver books and pays through the platform, and the platform pays you. YourParkingSpace currently offers this service in Ireland.<br><br><strong>Through a classified ad.</strong> Daft.ie and Rent.ie both list parking spaces, but do not handle booking or payment.<br><br><strong>Privately.</strong> A direct arrangement with someone who works or lives nearby.<br><br><strong>Charging.</strong> A home charger is a separate job: fixed to the house, and it needs an electrician. SEAI offers up to three hundred euro towards one, and you need off-street parking &mdash; the grant is <strong>once per address, not once per person</strong>, so if a previous owner claimed it, it is gone.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Planning, tax and insurance in detail</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Planning.</strong> The exemption that covers a driveway is for a hard surface, to the front or side, for parking not more than two cars, used for a purpose incidental to the enjoyment of the house as such. Whether paid parking is still incidental has never been publicly determined in Ireland &mdash; we could find no guidance, no published declaration and no enforcement case either way. In England the government issued guidance that letting a single space normally needs no permission where it causes no nuisance, while turning a garden into a car park does. <strong>That is English guidance and it does not apply here.</strong> A Section 5 Declaration from your local authority is how you get certainty for your own address.<br><br><strong>Tax.</strong> If your net non-PAYE income is under five thousand euro it goes on a Form 12; at five thousand or more you register for self-assessment and file a Form 11. The fourteen-thousand-euro allowance people often assume covers this is Rent-a-Room Relief, and it does not apply to a parking space.<br><br><strong>Insurance.</strong> Not declaring it can give an insurer grounds to void a policy. Ordinary buildings and contents cover is not written for letting space to the public, and the exposure is liability rather than damage. Ask your own insurer directly what they will and will not cover.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Where the demand comes from</h3><span class="icon"></span></summary>
+      <div class="faq-a">Dublin Airport&rsquo;s car parks are regularly fully booked, and the Irish Times reported in 2024 that the overflow was putting pressure on the estates nearby. In 2025, Dublin City Council was considering a pilot scheme to discourage what it called increasingly problematic match day parking on the residential streets around Croke Park. Hospitals, stations and stadiums generate the same pressure on a smaller scale, in a lot of ordinary places.</div>
+    </details>
+
   </section>
 </main>
 
 <section class="imagine-photo reveal">
   <!-- IMAGE 03 - Outcome. Approved production plate. The homeowner indoors while the
        visiting car uses the driveway outside. No annotation on this slot. -->
-  <img src="assets/img/c2c0e74147b16d38.jpg" width="1376" height="768" loading="lazy" decoding="async"
-       alt="A homeowner standing at her kitchen window with a phone in hand, while a visiting car occupies the driveway outside." >
+  <img src="assets/img/4a4a1e4b08edaada.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="The same Irish semi-detached house and street, with two cars now parked in the two driveway spaces that stood empty.">
   <div class="caption"><p>Someone parks here while they work nearby. The homeowner earns from the space.</p></div>
 </section>
-
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Day to Day</div>
-    <h2>What does it change day to day?</h2>
-    <p>Less than you would expect, and one thing more than you would expect.</p>
-    <p>Most of the time you will not meet the driver. A car arrives while you are out and is gone before you think about it. There is no key, no meeting, no conversation. The booking platforms handle the money, so nobody hands you cash at the door.</p>
-    <p>Nothing about the house changes. Nobody comes inside.</p>
-    <p><strong>What changes is that the front of your house is in use when you are not there</strong> &mdash; and your neighbours will notice that before you do. A car they do not recognise, parked outside a house they do. On most roads that is nothing. On a road that is already short of parking, it is a conversation, and it is better to have it early than to be surprised by it.</p>
-  </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Before You Start</div>
-    <h2>What should you think about before you start?</h2>
-    <p><strong>Start with where you are, because that decides most of it.</strong></p>
-    <p>Is there anywhere people are trying to get to within walking distance of your gate? If there is not, this Discovery is not for your house, and that is a perfectly good answer to have early.</p>
-    <p>Then the practical ones. Can a stranger reach the space without going through the house or past a window you would rather they did not? Can a car get in and out without a three-point turn into traffic? Is the space actually free when you would be letting it, or is it free only in theory?</p>
-    <p><strong>Then planning, tax and insurance.</strong></p>
-    <p><strong>Planning &mdash; and this one has no Irish answer.</strong> The exemption that covers a driveway is for a hard surface, to the front or side, for parking not more than two cars, <strong>used for a purpose incidental to the enjoyment of the house as such</strong>. That last phrase describes domestic parking. Whether a stranger paying to leave a car there is still incidental to your enjoyment of the house has never been publicly determined in Ireland &mdash; we could find no guidance, no published declaration and no enforcement case either way. In England the government issued guidance that letting a single space normally needs no permission where it causes no nuisance, while turning a garden into a car park does. <strong>That is English guidance and it does not apply here.</strong> If you want certainty for your own address, a Section 5 Declaration from your local authority is how you get it.</p>
-    <p><strong>Tax &mdash; this is income, and Revenue treats it as such.</strong> Parking income is taxable and must be declared. If your net non-PAYE income is under five thousand euro it goes on a Form 12; at five thousand or more you register for self-assessment and file a Form 11. <strong>Rent-a-Room Relief does not apply.</strong> That scheme is for residential accommodation in your home, and a parking space is not accommodation, so the fourteen-thousand-euro tax-free allowance people often assume covers this does not.</p>
-    <p><strong>Insurance &mdash; tell your insurer before, not after.</strong> Earning money from the property is a change of circumstances, and not declaring it can give an insurer grounds to void a policy. Ordinary buildings and contents cover is not written for letting space to the public, and the real exposure is liability rather than damage: somebody slipping, falling or hitting something on your ground. Ask your own insurer directly what they will and will not cover.</p>
-    <p><strong>And what you are willing to be asked.</strong> How often, at what hours, which vehicles, and who you would rather not have calling. It is your gate. You choose, and you can change your mind.</p>
-    <p>PlotNua does not arrange this, does not take a share of it, and cannot tell you what your driveway is worth.</p>
-  </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Looking Ahead</h2>
-    <p class="quarantine-lede">Everything above can be done in Ireland today. What follows cannot.</p>
-    <h3>Nothing comparable here yet</h3>
-    <p>The obvious next step would be your driveway becoming part of something larger &mdash; a car club vehicle kept on it, a shared car for the road, a small hub for something other than parking.</p>
-    <p><strong>That does not exist here.</strong> Car sharing in Ireland is fleet-based: the operators keep their own vehicles in their own bays, and none of them uses residential driveways. We could find no Irish service of any kind that pays a householder to host anything on their drive except a parked car.</p>
-    <h3>What would have to change</h3>
-    <p>What is missing is not demand. It is a company willing to do it.</p>
-    <p>Somebody would have to decide that a thousand ordinary driveways in the right places are worth more than a hundred bays in the wrong ones. Nobody has, and until somebody does, this is a paragraph about a thing that does not exist.</p>
-    <h3>Your location will not change</h3>
-    <p>None of that changes the basic point.</p>
-    <p>Your driveway is close to what it is close to. That was true before any platform existed and it will be true after. <strong>The value is in the ground and the map, not in whoever happens to be arranging the introduction this year.</strong></p>
-  </section>
-
-  <section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Questions this Discovery tends to raise.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary><h3>Do I need planning permission to rent out my driveway?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Nobody in Ireland has published an answer. The exemption for a driveway covers a hard surface for parking not more than two cars used for a purpose incidental to the enjoyment of the house &mdash; and whether paid parking for a stranger is still incidental has not been determined here, in guidance or in a published case. In England, the government&rsquo;s position is that letting a single space normally needs no permission where there is no nuisance, but that is English guidance. A Section 5 Declaration from your local authority is how you get a determination for your own address.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Do I have to pay tax on it?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Yes. Parking income is taxable and must be declared. Net non-PAYE income under five thousand euro goes on a Form 12; five thousand or more and you register for self-assessment and file a Form 11.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Does Rent-a-Room Relief cover it?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. That scheme is for residential accommodation in your home. A parking space is not accommodation, so the fourteen-thousand-euro allowance does not apply here.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What will it actually earn?</h3><span class="icon"></span></summary>
-        <div class="faq-a">That depends entirely on where you are, and there is no Irish dataset. What we can tell you is what two Irish homeowners have said publicly: about fifty euro a week beside Dublin Airport, and thirteen euro a day or sixty-five a week in Dublin city. A driveway with nothing within walking distance earns nothing, whatever a platform&rsquo;s headline says.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Do I need to tell my insurer?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Yes, before you start. Earning money from the property is a change of circumstances, and not declaring it can give an insurer grounds to void the policy. Ordinary home cover is not written for letting space to the public. Ask yours directly.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What will the neighbours think?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Ask them first, particularly if your road is already short of parking. A car they do not recognise outside a house they do is noticed. On most roads it is nothing; on a tense road it is worth a conversation you start rather than one you are handed.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>How would someone find my space, and how would I get paid?</h3><span class="icon"></span></summary>
-        <div class="faq-a">There are a few ways to do it.<br><br><strong>Through a parking marketplace.</strong> You list your driveway, choose when it is available and set a price. A driver finds the space, books and pays through the platform, and the platform pays you. YourParkingSpace currently offers this service in Ireland.<br><br><strong>Through a classified ad.</strong> Daft.ie and Rent.ie both list parking spaces, but they do not handle the booking or payment. You arrange that directly with the driver.<br><br><strong>Privately.</strong> You can also make an arrangement directly with someone who works or lives nearby.<br><br>PlotNua does not currently list parking spaces, take bookings or handle payments.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Is the EV charger grant worth claiming?</h3><span class="icon"></span></summary>
-        <div class="faq-a">It is up to three hundred euro from SEAI towards a home charger, you do not need to own an electric car to claim it, and you do need off-street parking. Two things to know: it is once per address rather than once per person, so a previous owner may have used it &mdash; and a charger makes a space more attractive to some drivers, but it will never matter as much as where the space is.</div>
-      </details>
-    </div>
-  </section>
-</main>
 
 <section class="pb-preview reveal" id="discover-your-property">
     <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
@@ -832,14 +1107,13 @@
          Component, styling and independence statement are the existing ones. -->
     <div class="pn-wordmark">PlotNua</div>
     <h2 class="pb-headline">This property check is being prepared</h2>
-    <p class="pb-subhead">The Driveway Income check will look at your location, what is within walking distance, and whether a driver could reach the space without going through your home. It is not ready yet. In the meantime, there is plenty to explore.</p>
+    <p class="pb-subhead">The Driveway Income check will look at your location, what is within walking distance, and whether the parking space is accessible and practical to use. It is not ready yet. In the meantime, there is plenty to explore.</p>
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-hidden-cars.html">Explore Hidden Cars &rarr;</a>
       <a class="cs-exit" href="discovery-house-as-power-station.html">Explore The House as a Power Station &rarr;</a>
       <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
       <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
     </div>
-    <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
   </section>
 
 <section class="related reveal">

@@ -127,6 +127,15 @@
     transition:opacity 1.8s ease-out, transform 6s cubic-bezier(.22,.61,.36,1);
   }
   .d-hero img.on{ opacity:1; transform:scale(1); }
+  /* THE ANNOTATION IS BURNED INTO THE HERO FILE, so it cannot be moved and
+     the crop has to be held around it. It occupies roughly x 300..525,
+     y 85..215 of the 1408x768 plate -- upper left, which is where a hero crop
+     bites hardest. Measured: at 360x900 centre framing leaves only image
+     x 529..879 visible, losing the annotation completely; at 2560x1080 only
+     y 123..645, clipping the POTENTIAL ASSET line off the top. 27% 30% keeps
+     the annotation and the porch door in frame at every width tested.
+     Positioning only: the file is not modified. */
+  .d-hero #dHeroImg{ object-position:27% 30%; }
   .d-hero-scrim{ position:absolute; inset:0;
     background:linear-gradient(180deg, rgba(15,14,10,.14) 0%, rgba(15,14,10,0) 32%, rgba(15,14,10,.10) 60%, rgba(15,14,10,.60) 100%); }
   .d-hero-scrim{ background:linear-gradient(180deg,
@@ -402,6 +411,242 @@
   .faq-item[open] .icon::after{ transform:rotate(90deg); opacity:0; }
   .faq-item .faq-a{ padding:0 0 24px; color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch; }
 
+  /* ==================================================================
+     PORTED FROM DISC-014 (frozen donor), lifted verbatim by the builder so
+     it cannot drift from the donor by transcription. Batch 3 still copies
+     rather than shares; the shared-stylesheet decision comes after the
+     rollout, not during it. This page needs NO modifiers -- its three tile
+     sets are 2-up, 3-up and 3-up, all of which the donor already defines.
+     ================================================================== */
+
+  /* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+  /* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
+     markup, unchanged behaviour.
+
+     These now sit slightly off the page too, but at the LOWEST elevation on
+     the board -- a 16px ambient against the opportunity's 64px. They read as
+     physical, tappable strips without ever competing with the centrepiece.
+     Opening one raises it a step and gives the evidence a contained reading
+     surface at a controlled measure.
+
+     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
+     so Planning, Tax and Insurance separate with no markup change. ---- */
+  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
+    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
+    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
+    box-shadow:0 1px 1px rgba(31,59,46,.04),
+               0 10px 16px -14px rgba(31,59,46,.30); }
+  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
+  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
+    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
+  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
+  .faq-item.is-inline[open]{ background:var(--paper);
+    border-color:rgba(31,59,46,.16);
+    border-left-color:rgba(31,59,46,.42);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 18px 30px -20px rgba(31,59,46,.36); }
+
+  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
+  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--soft); }
+  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
+  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
+
+  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(31,59,46,.22); }
+  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
+  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
+  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
+  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
+
+  /* the reading surface */
+  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
+    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
+    margin:0 0 20px; padding:22px 24px;
+    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
+  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
+
+  @media (hover:hover) and (pointer:fine){
+    .faq-item.is-inline{ transition:transform .22s ease-out,
+      box-shadow .22s ease-out, border-color .22s ease-out; }
+    .faq-item.is-inline:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -18px rgba(31,59,46,.36); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-item.is-inline{ transition:none; }
+    .faq-item.is-inline:hover{ transform:none; }
+  }
+  @media (max-width:720px){
+    .faq-item.is-inline{ padding:0 16px 0 14px; }
+    .faq-item.is-inline .faq-a{ padding:18px 18px; }
+  }
+
+  /* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
+     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
+     heading rather than a 40px one, and a STATIC status pill rather than a
+     control. It carries no href and no form, because the Driveway journey
+     does not exist yet. When it does, this panel and the closing panel take
+     the same governed route. ---- */
+  .pb-early{ background:var(--paper); padding:38px 7vw;
+    border-top:1px solid rgba(31,59,46,.10);
+    border-bottom:1px solid rgba(31,59,46,.10); }
+  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
+  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
+  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
+    max-width:44ch; margin:0 auto 18px; }
+  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:11px; font-weight:500; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--soft);
+    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
+  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  @media (max-width:720px){
+    .pb-early{ padding:30px 7vw; }
+  }
+
+
   /* ---- quiet tier — used on FAQ (and shares its language with Partners
      and Related): muted kicker, smaller heading, so these sections recede
      rather than compete with the emotional/editorial moments above them. ---- */
@@ -611,8 +856,14 @@
 </a>
 
 <header class="d-hero">
-  <!-- IMAGE 01 - The Neighbourhood Parcel House. Rule 1: eyebrow colour set against this image. -->
-  <img id="dHeroImg" class="on" src="assets/img/8b20a0968b1fc5a1.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="An Irish house on a summer afternoon with a timber porch over the front door, a car in the gravel driveway and neighbouring houses beyond.">
+  <!-- IMAGE 01 (was IMAGE 02) - the annotated Potential Asset plate, promoted
+       to the hero. The plain hero showed the same house and the same porch and
+       sat directly above this one; one of them had to go, and the annotated
+       frame is the one that carries the revelation. The annotation is burned
+       into the file, so it travels with the image and cannot be repositioned
+       independently -- see the object-position note in the stylesheet for how
+       the hero crop is held around it. Asset unchanged and unedited. -->
+  <img id="dHeroImg" class="on" src="assets/img/b52ce590d9e0e41a.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="The same house and porch, annotated by PlotNua as a potential asset: a secure, sheltered entrance that could become a trusted neighbourhood parcel collection point.">
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
@@ -622,85 +873,132 @@
   </div>
 </header>
 
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Why This Discovery?</div>
-    <h2>Who is this for?</h2>
-    <p>Somebody who is usually at home. Somebody with a porch, a storm door or a
-      covered step. Somebody the neighbours already know by name.</p>
-    <p>This Discovery is for anyone who wants to know what their house could be for the
-      people living around it.</p>
-    <p>It is not about buying anything. It is about something the property can already do.</p>
-  </section>
-</main>
-
-<section class="imagine-photo reveal">
-  <!-- IMAGE 02 - Potential Asset. RULE 6 annotation is burned into the image file; the alt text names it. -->
-  <img src="assets/img/b52ce590d9e0e41a.jpg" width="1408" height="768" loading="lazy" decoding="async"
-       alt="The same house and porch, annotated by PlotNua as a potential asset: a secure, sheltered entrance that could become a trusted neighbourhood parcel collection point.">
+<section class="pb-early reveal" id="early-property-check">
+  <!-- EARLY JOURNEY ENTRY. FUTURE variant: there is no Parcel House journey,
+       so no link, no form and no disabled control. Kept short so it does not
+       repeat the closing panel, which carries the detail of what the check
+       will examine. It routes nowhere: not to Garden Buildings, not to any
+       other Discovery. -->
+  <div class="pb-early-inner">
+    <h2>Could this work for your property?</h2>
+    <p>PlotNua is designing a property check for this Discovery.</p>
+    <span class="pb-early-status">This property check is being prepared</span>
+    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
+  </div>
 </section>
 
 <main class="article">
 
+  <!-- ============================================================
+       ONE DECISION SECTION. The old page ran eight sections and a
+       six-question FAQ. These are the same governed facts in the order a
+       homeowner decides in: could this work here, how would it actually go,
+       what must I settle first, and only then the detail.
+
+       THE DOMINANT SURFACE CARRIES SUITABILITY, not money. The page's own
+       two-part test -- a place, and a presence -- is the strongest thing it
+       says, and it was buried in a paragraph.
+       ============================================================ -->
   <section class="article-section reveal">
     <div class="kicker">The Opportunity</div>
-    <h2>What does this actually mean?</h2>
-    <p>Your front door is the only part of your property a stranger is expected to reach.</p>
-    <p>For a parcel to be safe at a house, two things have to be true at the same time.</p>
-    <ul class="planning-conditions">
-      <li><strong>A place.</strong> Dry, inside your boundary, reachable without going through the house, and easy to describe in one sentence.</li>
-      <li><strong>A presence.</strong> Somebody usually in, in a house the road already knows.</li>
+    <h2>Could your door be the one?</h2>
+    <p>Your front door is the only part of your property a stranger is expected to reach. A few houses on every road are better placed than the rest to take what arrives.</p>
+
+    <!-- WHY NOW, in one paragraph and no more. Volumes: ComReg 24/88,
+         "Parcel data for Ireland 2018-2023", 30 October 2024 -- the seven
+         declared providers, 140.73m parcels in 2023 against 91.0m in 2018,
+         domestic up 6%. Senders: An Post's own spokesperson, Irish Examiner,
+         21 November 2025. This paragraph is about DEMAND only. Nothing here
+         says a homeowner can host parcels in Ireland; that boundary lives in
+         the advisory tiles, the quarantine section and the evidence drawer,
+         and it is unchanged. -->
+    <p>Ireland&rsquo;s seven main delivery companies handled 140.73 million parcels in 2023 &mdash; up from 91 million five years earlier &mdash; and domestic parcels rose 6% in a single year. Households now send as well as receive: An Post says Vinted is driving footfall into post offices with people posting and collecting packages. More parcels are moving through Irish neighbourhoods, and they need somewhere convenient to land.</p>
+
+    <!-- 1 · SUITABILITY. The page's single unbroken surface and its highest
+         elevation, because "could this work at my house" is the question. The
+         two figures are not amounts -- they are the two conditions, and the
+         caveat says plainly that one without the other is no use. -->
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">Could this work at your house?</span>
+        <p class="dq-earn-lead">For a parcel to be safe at a house, two things have to be true at the same time.</p>
+        <p class="dq-earn-caveat">Neither is much use on its own. A good porch at an empty house is no use to anybody, and a house with somebody always in and nowhere dry to put anything is no use either.</p>
+        <ul class="dq-figs">
+          <li><span class="dq-fig">A place.</span><span class="dq-src">Dry, inside your boundary, reachable without going through the house, and easy to describe in one sentence.</span></li>
+          <li><span class="dq-fig">A presence.</span><span class="dq-src">Somebody usually in, in a house the road already knows.</span></li>
+        </ul>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">And the practical ones</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact"><strong>A van can stop.</strong></span>
+              <span class="dq-note">A courier who cannot pull in will not come back.</span></li>
+          <li><span class="dq-fact"><strong>You would leave your own delivery there.</strong></span>
+              <span class="dq-note">If you would not, neither would anybody else.</span></li>
+          <li><span class="dq-fact"><strong>It stays outside the house.</strong></span>
+              <span class="dq-note">Nobody needs to be let in, and nothing about the house changes.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2 · HOW IT WOULD WORK. Above the advisory in elevation, because this
+         is the thing itself rather than a condition on it. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">How it would work</span>
+      <ul class="dq-adv-cols">
+        <li>
+          <span class="dq-adv-label">The spot</span>
+          <span class="dq-fact">Somewhere dry, inside your boundary, that a person can reach without going through the house.</span>
+          <span class="dq-note">A porch. A storm porch. A covered step behind a gate. A shelf inside a hall door that is open when you are in.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">The message</span>
+          <span class="dq-fact">A parcel arrives, you send a message, and somebody calls in on the way home from work.</span>
+          <span class="dq-note">The door goes a bit more often. There is a shelf that fills up and empties again.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">What to agree</span>
+          <span class="dq-fact">Which neighbours, how they will know it has come, when they can call, how long you will hold it, and what you will not take.</span>
+          <span class="dq-note">Before anything arrives, not after. Say that last one out loud &mdash; nobody wants to mind a fridge.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 3 · BEFORE YOU START. The conditions that bear on deciding, at the
+         quiet elevation. No warning colour anywhere. -->
+    <ul class="dq-qual">
+      <li>
+        <span class="dq-cat">Who is responsible</span>
+        <span class="dq-fact">If your neighbour asked the shop to leave it with you, the shop&rsquo;s responsibility ends the moment you take it in.</span>
+        <span class="dq-note">If a courier leaves it and nobody asked, the shop stays responsible until your neighbour has it. Neither is a reason not to do it. It is a reason to know which one you are doing.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Insurance</span>
+        <span class="dq-fact">Ordinary home cover is not written for holding other people&rsquo;s goods.</span>
+        <span class="dq-note">Worth asking your own insurer, because the answer depends on your policy.</span>
+      </li>
+      <li>
+        <span class="dq-cat">If money is involved</span>
+        <span class="dq-fact">Doing it as a favour and doing it for payment are not the same thing.</span>
+        <span class="dq-note">As a favour it is a private arrangement between neighbours. Once you are paid, planning, insurance and data protection can all come into it. That does not make it impossible &mdash; it makes it a different decision.</span>
+      </li>
     </ul>
-    <p>Neither one is much use on its own. A good porch at an empty house is no use to
-      anybody. A house with somebody always in, and nowhere dry to put anything, is no
-      use either.</p>
-    <p>Together they make something couriers and neighbours both need and neither can
-      buy. A dependable address.</p>
-  </section>
 
-  <section class="article-section reveal">
-    <div class="kicker">Why Now</div>
-    <h2>Why does this come up now?</h2>
-    <p>More parcels, and fewer places to put them.</p>
-    <p>An Post is signing up shops around the country as parcel collection points, and
-      says it is because of the growth in online shopping.</p>
-    <p>At the same time the network got smaller. Fastway Ireland, which ran the Parcel
-      Connect collection network, ceased trading in October 2025.</p>
-    <p>More is arriving, and there are fewer counters to take it. The most reliable place
-      on most roads is a house with somebody in it. It has never been counted as one.</p>
-  </section>
+    <details class="faq-item is-inline">
+      <summary><h3>Responsibility, insurance and being paid, in detail</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>If something goes missing.</strong> If your neighbour asked the shop to leave it with you, the shop&rsquo;s responsibility for it ends the moment you take it in; after that it is between you and them. If a courier leaves it with you and nobody asked, that is different &mdash; the shop stays responsible until your neighbour actually has it.<br><br><strong>Insurance.</strong> Ordinary home cover is not written for holding other people&rsquo;s goods, and whether yours stretches to it depends on the policy. Ask before anything arrives.<br><br><strong>Planning.</strong> Doing it as a favour is ordinary household activity and needs no permission. It only becomes a planning question if part of the house is being used for a business, and that does need permission.<br><br><strong>Data protection.</strong> The rules that leave ordinary household activity alone stop applying once money is involved. A list of neighbours&rsquo; names and addresses becomes something you are answerable for.</div>
+    </details>
 
-  <section class="article-section reveal">
-    <div class="kicker">Today</div>
-    <h2>What can you do today?</h2>
-    <p>One thing, and it is smaller than it sounds. <strong>You can take parcels in for
-      your neighbours on purpose, with somewhere proper to put them.</strong></p>
-    <p>Most roads already do a version of this by accident. Doing it on purpose is mostly
-      a matter of deciding three things.</p>
+    <details class="faq-item is-inline">
+      <summary><h3>What it changes day to day</h3><span class="icon"></span></summary>
+      <div class="faq-a">Less than you would think. The door goes a bit more often. You send a message. Somebody calls in on the way home from work, and you have a chat you would not have had.<br><br>Nothing about the house changes. Nobody needs to be let in. There is a shelf that fills up and empties again.<br><br><strong>It is your door.</strong> You choose who is on the list, you decide the sizes and the hours you are happy to be called to, and you can change your mind. If nobody is usually in during the day, this is not for your house &mdash; and that is a perfectly good answer to reach early.<br><br>What changes is not really the day. It is where your house sits on the road.</div>
+    </details>
 
-    <h3>The spot</h3>
-    <p>Somewhere dry, inside your boundary, that a person can reach without going through
-      the house.</p>
-    <p>A porch. A storm porch. A covered step behind a gate. A shelf inside a hall door
-      that is open when you are in.</p>
-    <p>Two tests. Can you describe it in one sentence? And would you be happy leaving your
-      own delivery there?</p>
+    <details class="faq-item is-inline">
+      <summary><h3>Where this exists, and where it does not</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Ireland runs on shops and lockers, not houses.</strong> An Post is signing up shops around the country as parcel collection points, and says it is because of the growth in online shopping. The locker companies sign up businesses and landlords &mdash; InPost in the UK recruits hosts openly, describing them as &ldquo;landlords and businesses, whatever your size or sector.&rdquo; We could not find anyone offering it to private houses here.<br><br><strong>And the network got smaller.</strong> Fastway Ireland, which ran the Parcel Connect collection network, ceased trading in October 2025. More is arriving, and there are fewer counters to take it.<br><br><strong>In Singapore</strong>, an online shopping company has been paying householders since 2023 to receive parcels for people living nearby, usually within a couple of hundred metres. Customers collect from a neighbour&rsquo;s house instead of waiting in for a van. It works, and it is not popular with everybody: residents raised the things you would expect &mdash; strangers calling, noise at the door, and worries about things going missing. Both halves of that are worth knowing.<br><br>PlotNua does not arrange this, does not introduce you to couriers, and cannot tell you what your neighbours will ask of you.</div>
+    </details>
 
-    <h3>What to agree</h3>
-    <p>Before anything arrives, not after.</p>
-    <p>Which neighbours. How they will know it has come. When they can call. How long you
-      will hold it. And what you will not take.</p>
-    <p>Say that last one out loud. Nobody wants to mind a fridge.</p>
-
-    <h3>What you take on</h3>
-    <p>This is the part most people do not know.</p>
-    <p>If your neighbour tells the shop to leave a parcel with you, <strong>the shop&rsquo;s
-      responsibility for it ends the moment you take it in.</strong> After that it is
-      between you and them.</p>
-    <p>If a courier leaves it with you and nobody asked, that is different. The shop stays
-      responsible until your neighbour actually has it.</p>
-    <p>Neither is a reason not to do it. It is a reason to know which one you are doing.</p>
   </section>
 </main>
 
@@ -713,108 +1011,11 @@
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">Day to Day</div>
-    <h2>What does it change day to day?</h2>
-    <p>Less than you would think.</p>
-    <p>The door goes a bit more often. You send a message. Somebody calls in on the way
-      home from work, and you have a chat you would not have had.</p>
-    <p>Nothing about the house changes. Nobody needs to be let in. There is a shelf that
-      fills up and empties again.</p>
-    <p>What changes is not really the day. It is where your house sits on the road.</p>
-  </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Before You Start</div>
-    <h2>What should you think about before you start?</h2>
-    <p>None of this is technical. It is about your house and your street.</p>
-    <p><strong>Whether there is anywhere dry.</strong> If there is not, this is not for
-      your house, and that is a perfectly good answer.</p>
-    <p><strong>Whether anybody is usually in.</strong> The place and the presence go
-      together.</p>
-    <p><strong>Whether a van can stop.</strong> A courier who cannot pull in will not
-      come back.</p>
-    <p><strong>What you are willing to be asked for.</strong> Size, how often, and the
-      hours you are happy to be called to the door.</p>
-    <p><strong>Who you would rather not have calling.</strong> It is your door. You choose
-      the list, and you can change it.</p>
-    <p>And one that changes everything:</p>
-    <p><strong>Whether money is involved.</strong> Doing it as a favour and doing it for
-      payment are not the same thing.</p>
-    <p>As a favour it is a private arrangement between neighbours, and nothing else
-      applies.</p>
-    <p>Once you are paid, three sets of rules can come into it. <strong>Planning</strong>,
-      because using part of a home for a business can count as changing what the house is
-      used for, and that needs permission. <strong>Insurance</strong>, because ordinary
-      home cover is not written for holding other people&rsquo;s goods. And
-      <strong>data protection</strong>, because the rules that leave ordinary household
-      activity alone stop applying once money is involved &mdash; a list of
-      neighbours&rsquo; names and addresses becomes something you are answerable for.</p>
-    <p>None of that makes it impossible. It makes it a different decision.</p>
-    <p class="planning-note">PlotNua does not arrange this, does not introduce you to
-      couriers, and cannot tell you what your neighbours will ask of you.</p>
-  </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Looking Ahead</h2>
-    <p class="quarantine-lede">Everything above can be arranged in Ireland today.
-      Everything below cannot.</p>
-
-    <h3>Close, but not here yet</h3>
-    <p><strong>Doing it as an arrangement rather than a favour.</strong></p>
-    <p>The obvious next step is being paid something to hold parcels for the road.</p>
-    <p>That is not available in Ireland. The collection networks here are built on shops:
-      An Post signs up stores, and the locker companies sign up businesses and landlords.
-      We could not find anyone offering it to private houses.</p>
-    <p>If somebody does offer you this, read carefully what you would be signing up to.</p>
-
-    <h3>Beginning elsewhere</h3>
-    <p>One example, and it is real.</p>
-    <p><strong>In Singapore</strong>, an online shopping company has been paying
-      householders since 2023 to receive parcels for people living nearby, usually within
-      a couple of hundred metres. Customers collect from a neighbour&rsquo;s house instead
-      of waiting in for a van.</p>
-    <p>It works. It is not popular with everybody. Residents raised the things you would
-      expect: strangers calling, noise at the door, and worries about things going
-      missing.</p>
-    <p>Both halves of that are worth knowing.</p>
-
-    <h3>Why this might matter later</h3>
-    <p>There is a house on every road already, and nothing has to be built.</p>
-    <p>Whether anything comes of that here is not known. What is clear is that the things
-      that would make a house ready &mdash; somewhere dry, somebody in, and a street that
-      trusts you &mdash; are worth having anyway.</p>
-  </section>
-
-  <section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Common questions.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary><h3>Do I need planning permission to take in a neighbour&rsquo;s parcel?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. Doing it as a favour is ordinary household activity. It only becomes a planning question if part of the house is being used for a business, and that needs permission.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Am I responsible if it goes missing?</h3><span class="icon"></span></summary>
-        <div class="faq-a">If your neighbour asked the shop to leave it with you, yes &mdash; the shop&rsquo;s responsibility ends once you take it in. If it was left with you and nobody asked, the shop stays responsible until your neighbour has it.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Can I be paid for it?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Not through any Irish scheme we could find. And being paid changes what it is, for planning, insurance and data protection.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Should I tell my insurer?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Worth asking. Ordinary home cover is not written for holding other people&rsquo;s goods, and the answer depends on your policy.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What if I am not there during the day?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Then this is not for your house. The place and the presence only work together.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Do I have to say yes to everybody?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. It is your door, and you can change your mind.</div>
-      </details>
-    </div>
+    <div class="kicker">Where this stands</div>
+    <h2>Not here yet.</h2>
+    <p class="quarantine-lede">Everything above can be done in Ireland today, as a favour between neighbours. Being paid to do it cannot.</p>
+    <p>The collection networks here are built on shops and lockers: An Post signs up stores, and the locker companies sign up businesses and landlords. We could not find anyone offering it to private houses.</p>
+    <p>Elsewhere they have. In Singapore an online shopping company has been paying householders since 2023 to take in parcels for people living nearby &mdash; and residents there raised the things you would expect. There is a house on every road already, and nothing has to be built. Whether anything comes of that here is not known.</p>
   </section>
 </main>
 
@@ -830,7 +1031,7 @@
     <h2 class="pb-headline">This property check is being prepared</h2>
     <p class="pb-subhead">The Neighbourhood Parcel House check will look at your front door and boundary, whether there is a dry place a parcel could safely sit, whether somebody can reach it without coming through the house, and whether anyone is usually at home. It is not ready yet. In the meantime, there is plenty to explore.</p>
     <div class="cs-exits">
-      <a class="cs-exit" href="discovery-the-borrowed-garden.html">Explore Share Your Spare Garden &rarr;</a>
+      <a class="cs-exit" href="discovery-the-borrowed-garden.html">Explore The Borrowed Garden &rarr;</a>
       <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
       <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
       <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
@@ -844,7 +1045,7 @@
     <a class="related-card" href="discovery-the-borrowed-garden.html">
       <div class="thumb"><img src="assets/img/e5ecf61c22bb13db.jpg" loading="lazy" decoding="async" alt="An Irish back garden with raised vegetable beds along one side and a grower tending them."></div>
       <span class="related-kicker">Garden</span>
-      <span class="related-title">Share Your Spare Garden</span>
+      <span class="related-title">The Borrowed Garden</span>
       <span class="related-line">Let someone nearby grow food on a small part of your garden.</span>
     </a>
     <a class="related-card" href="discovery-living-in-the-garden.html">

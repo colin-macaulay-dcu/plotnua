@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hidden Cars | PlotNua Discoveries</title>
-<meta name="description" content="Stacked, lowered and concealed parking for properties where the cars have taken the front of the house. What Irish planning allows, what the ground decides, and what it costs to do properly.">
+<meta name="description" content="Stacked, lowered and concealed parking: ways to hold two cars in the space normally used by one. What Irish planning allows, what the ground decides, and what it costs to do properly.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-hidden-cars.html">
 
@@ -32,7 +32,7 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
 <meta property="og:title" content="Hidden Cars | PlotNua Discoveries">
-<meta property="og:description" content="Somewhere along the way, the cars became the first thing you see.">
+<meta property="og:description" content="Two cars. One parking space. What if they could both fit?">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -42,7 +42,7 @@
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hidden Cars | PlotNua Discoveries">
-<meta name="twitter:description" content="Somewhere along the way, the cars became the first thing you see.">
+<meta name="twitter:description" content="Two cars. One parking space. What if they could both fit?">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -232,6 +232,9 @@
   }
 
   .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+  /* On the hero the annotation sits BENEATH the scrim and the copy,
+     so the headline never reads through a wash. */
+  .d-hero .pa-annot{ z-index:1; }
   .pa-annot svg{ width:100%; height:100%; display:block; }
   .pa-line{ stroke:rgba(15,14,10,.78); stroke-width:1.6; fill:none; }
   .pa-dot{ fill:none; stroke:rgba(15,14,10,.85); stroke-width:2.2; }
@@ -433,6 +436,252 @@
   .faq-item summary:hover .icon::before, .faq-item summary:hover .icon::after{ opacity:1; }
   .faq-item[open] .icon::after{ transform:rotate(90deg); opacity:0; }
   .faq-item .faq-a{ padding:0 0 24px; color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch; }
+
+  /* ==================================================================
+     PORTED FROM DISC-014 (frozen donor), lifted verbatim by the builder so
+     it cannot drift from the donor by transcription. Batch 4 still copies
+     rather than shares; the shared-stylesheet decision comes after the
+     rollout, not during it.
+     ================================================================== */
+
+  /* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+  /* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
+     markup, unchanged behaviour.
+
+     These now sit slightly off the page too, but at the LOWEST elevation on
+     the board -- a 16px ambient against the opportunity's 64px. They read as
+     physical, tappable strips without ever competing with the centrepiece.
+     Opening one raises it a step and gives the evidence a contained reading
+     surface at a controlled measure.
+
+     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
+     so Planning, Tax and Insurance separate with no markup change. ---- */
+  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
+    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
+    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
+    box-shadow:0 1px 1px rgba(31,59,46,.04),
+               0 10px 16px -14px rgba(31,59,46,.30); }
+  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
+  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
+    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
+  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
+  .faq-item.is-inline[open]{ background:var(--paper);
+    border-color:rgba(31,59,46,.16);
+    border-left-color:rgba(31,59,46,.42);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 18px 30px -20px rgba(31,59,46,.36); }
+
+  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
+  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--soft); }
+  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
+  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
+
+  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(31,59,46,.22); }
+  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
+  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
+  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
+  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
+
+  /* the reading surface */
+  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
+    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
+    margin:0 0 20px; padding:22px 24px;
+    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
+  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
+
+  @media (hover:hover) and (pointer:fine){
+    .faq-item.is-inline{ transition:transform .22s ease-out,
+      box-shadow .22s ease-out, border-color .22s ease-out; }
+    .faq-item.is-inline:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -18px rgba(31,59,46,.36); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-item.is-inline{ transition:none; }
+    .faq-item.is-inline:hover{ transform:none; }
+  }
+  @media (max-width:720px){
+    .faq-item.is-inline{ padding:0 16px 0 14px; }
+    .faq-item.is-inline .faq-a{ padding:18px 18px; }
+  }
+
+  /* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
+     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
+     heading rather than a 40px one, and a STATIC status pill rather than a
+     control. It carries no href and no form, because the Driveway journey
+     does not exist yet. When it does, this panel and the closing panel take
+     the same governed route. ---- */
+  .pb-early{ background:var(--paper); padding:38px 7vw;
+    border-top:1px solid rgba(31,59,46,.10);
+    border-bottom:1px solid rgba(31,59,46,.10); }
+  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
+  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
+  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
+    max-width:44ch; margin:0 auto 18px; }
+  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:11px; font-weight:500; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--soft);
+    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
+  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  @media (max-width:720px){
+    .pb-early{ padding:30px 7vw; }
+  }
+
+
+  /* ---- HIDDEN CARS MODIFIER (DISC-022). One, and only one: there are FOUR
+     approaches here, not three, and they are genuinely different answers to
+     different constraints -- collapsing them to three would be a technical
+     inaccuracy, not a design simplification. .is-four is (0,2,0) against the
+     base (0,1,0), so it is named again in the stack queries or it would
+     outrank the collapse and stay 2-up on a phone. ---- */
+  .dq-adv-cols.is-four{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  @media (max-width:720px){
+    .dq-adv-cols.is-four{ grid-template-columns:1fr; gap:8px; }
+  }
 
   /* ---- quiet tier — used on FAQ (and shares its language with Partners
      and Related): muted kicker, smaller heading, so these sections recede
@@ -643,86 +892,211 @@
 </a>
 
 <header class="d-hero">
-  <!-- IMAGE 01 - Hidden Cars. Rule 1: eyebrow colour set against this image. -->
-  <img id="dHeroImg" class="on" src="assets/img/9aa6c362d5486001.jpg" width="1448" height="1086" fetchpriority="high" decoding="async" alt="A car raised on a platform lift above an open chamber in the driveway of an Irish period house, a second car parked in the lit space below.">
-  <div class="d-hero-scrim"></div>
-  <div class="d-hero-copy in" id="dHeroCopy">
-    <div class="eyebrow">A PlotNua Discovery</div>
-    <h1>Hidden Cars</h1>
-    <p class="subtitle">Somewhere along the way, the cars became the first thing you see.</p>
-    <p class="intro">The driveway did not get any bigger. The parking did.</p>
-  </div>
-</header>
+  <!-- IMAGE 01 (was IMAGE 02) - the annotated street, promoted to the hero so
+       the page shows the problem before it shows the answer. The lift
+       photograph that used to sit here has moved down to the four approaches,
+       where it illustrates what it actually depicts. Asset unchanged.
 
-
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Why This Discovery?</div>
-    <h2>Who is this for?</h2>
-    <p>Somebody whose front garden is now mostly parking. Two cars, or three. Something that has to be charged. A car worth protecting with nowhere protected to put it.</p>
-    <p>This Discovery is for anyone who has stopped seeing the front of their own house.</p>
-    <p>It is not about buying a car lift. It is about the ground the cars are standing on.</p>
-  </section>
-</main>
-
-<section class="imagine-photo pa-frame reveal">
-  <!-- IMAGE 02 - Potential Asset. RULE 6: annotation supplied by the .pa-annot overlay below,
-       the same component DISC-026 uses. The image file is unmodified; the alt text names the annotation. -->
-  <img src="assets/img/458728c46951cf14.jpg" width="1376" height="768" loading="lazy" decoding="async"
-       alt="An ordinary evening on an Irish street: the family car on the driveway, others pushed out to the kerb, the frontage annotated by PlotNua as a potential asset.">
+       ANNOTATION GEOMETRY, MEASURED AGAINST THE PLATE. The overlay travels
+       with the image, but its label sat at x 64..344, y 18..94 -- far
+       top-left, and a hero crops. At 360x900 only image x 513..863 survives,
+       so the label would have vanished; at 2560x1080 only y 129..639, so it
+       would have been clipped off the top. The ANCHOR DOT does not move: at
+       (605,537) it is on the driveway hardstanding and already inside both
+       bands. Only the label block and the leader move -- the wash re-centred
+       on the image centre at x 548..828 and dropped to y 150..226, the leader
+       redrawn as a straight vertical run to the dot. Same wash size, same
+       type, same anchor. Checked at 1440, 1024, 768, 390 and 360. -->
+  <img id="dHeroImg" class="on" src="assets/img/458728c46951cf14.jpg" width="1376" height="768" fetchpriority="high" decoding="async" alt="An ordinary evening on an Irish street: the family car on the driveway, others pushed out to the kerb, the frontage annotated by PlotNua as a potential asset.">
 
   <div class="pa-annot" aria-hidden="true">
     <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid slice" focusable="false">
       <circle class="pa-dot" cx="605" cy="537" r="7"/>
-      <path class="pa-line" d="M599 531 L352 100"/>
-      <rect class="pa-wash" x="64" y="18" width="280" height="76" rx="2"/>
-      <text class="pa-kicker" x="84" y="47">PLOTNUA DISCOVERY</text>
-      <text class="pa-label"  x="84" y="80">Potential Asset</text>
+      <path class="pa-line" d="M605 530 L605 234"/>
+      <rect class="pa-wash" x="548" y="150" width="280" height="76" rx="2"/>
+      <text class="pa-kicker" x="568" y="179">PLOTNUA DISCOVERY</text>
+      <text class="pa-label"  x="568" y="212">Potential Asset</text>
     </svg>
   </div>
-  <div class="caption"><p>The house was composed to be seen. It is now seen past the cars.</p></div>
+  <div class="d-hero-scrim"></div>
+  <div class="d-hero-copy in" id="dHeroCopy">
+    <div class="eyebrow">A PlotNua Discovery</div>
+    <h1>Hidden Cars</h1>
+    <p class="subtitle">Two cars. One parking space.</p>
+    <p class="intro">What if they could both fit?</p>
+  </div>
+</header>
+
+
+<section class="pb-early reveal" id="early-property-check">
+  <!-- EARLY JOURNEY ENTRY. FUTURE variant: no Hidden Cars journey exists, so
+       no link, no form, no disabled control, and it routes nowhere. -->
+  <div class="pb-early-inner">
+    <h2>Could this work for your property?</h2>
+    <p>PlotNua is designing a property check for this Discovery.</p>
+    <span class="pb-early-status">This property check is being prepared</span>
+    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
+  </div>
+</section>
+
+<main class="article">
+
+  <!-- ============================================================
+       ONE DECISION SECTION. The old page ran eight sections, 57 paragraphs
+       and a ten-question FAQ. Same governed facts, reordered into the
+       question a homeowner actually has: what am I giving up, where else
+       could the cars go, and what would stop me.
+
+       THE DOMINANT SURFACE IS A SWAP OF POSITION, not a price. This is the
+       page's own thesis sentence, promoted out of the middle of a paragraph.
+       ============================================================ -->
+  <section class="article-section reveal">
+    <div class="kicker">The Opportunity</div>
+    <h2>What if your driveway could hold more?</h2>
+    <p>When another car arrives, finding room for it usually means finding more ground. Some parking systems offer another possibility.</p>
+
+    <!-- 1 · THE SWAP. The page's single unbroken surface and highest
+         elevation. Left figure: the ground. Right figure: where the cars
+         could go instead. Neither is money, and a gate keeps it that way. -->
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">The same space, twice</span>
+        <ul class="dq-figs">
+          <li><span class="dq-cat">One space</span><span class="dq-fig">One car.</span><span class="dq-src">What the parking space does today, and the limit almost every driveway runs into.</span></li>
+          <li><span class="dq-cat">The same space</span><span class="dq-fig">Two cars.</span><span class="dq-src">What it could do, without taking another metre of ground from the property.</span></li>
+        </ul>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">How the same space holds two</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact">Some systems stack one car above another. Others lower a car below the driveway.</span></li>
+          <li><span class="dq-fact">Actual capacity depends on the system and the property.</span>
+              <span class="dq-note">A specialist survey is needed to know what could work at yours.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2 · THE FOUR APPROACHES. Four, not three, and kept distinct: they
+         answer different constraints and a planning authority regards them
+         very differently. Above the advisory in elevation, because this is
+         the thing itself rather than a condition on it. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Where the cars could go</span>
+      <ul class="dq-adv-cols is-four">
+        <li>
+          <span class="dq-adv-label">Parking stackers</span>
+          <span class="dq-fact">One car rests on a platform above another.</span>
+          <span class="dq-note">The outdoor type used at houses stands about a metre and a half above ground &mdash; lower than many garden walls &mdash; because most of it sits in a shallow pit. It asks least of the site, and it is the one option that still looks like machinery.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Concealed parking lifts</span>
+          <span class="dq-fact">The car is lowered a short distance and the surface closes over it, so the approach reads as paving.</span>
+          <span class="dq-note">The dig is shallower than a full chamber. Where a stacker adds a space, a concealed lift removes a car from the view.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Underground garages</span>
+          <span class="dq-fact">A platform carries the car into a sealed room beneath the property and the ground closes above it.</span>
+          <span class="dq-note">The most complete answer and by a distance the most demanding. It returns the surface entirely, and it is a construction project.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Automated systems</span>
+          <span class="dq-fact">You leave the car on a platform and the system moves, stores and returns it.</span>
+          <span class="dq-note">For several cars in a footprint that will never hold them side by side. Long established in European buildings, now specified at house scale, with the servicing to match.</span>
+        </li>
+      </ul>
+    </div>
+
+  </section>
+</main>
+
+<section class="imagine-photo reveal">
+  <!-- IMAGE 02 (was IMAGE 01) - the lift, moved out of the hero to sit with
+       the four approaches. Its job here is narrow and honest: this is what ONE
+       of these unfamiliar systems can look like on an ordinary frontage. It
+       does not represent all four. No caption: none exists for it, and
+       inventing technical detail to label a photograph would be worse than
+       letting it stand. -->
+  <img src="assets/img/9aa6c362d5486001.jpg" width="1448" height="1086" loading="lazy" decoding="async" alt="A car raised on a platform lift above an open chamber in the driveway of an Irish period house, a second car parked in the lit space below.">
 </section>
 
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">The Opportunity</div>
-    <h2>What does this actually mean?</h2>
-    <p>The parking took the best ground you own.</p>
-    <p>A front garden is usually thirty or forty square metres &mdash; the most visible, best-oriented ground on the property. It is also the part nobody counts as land any more, because a car has been standing on it for years.</p>
-    <p>Here is the part most people have never been told. <strong>A car does not have to sit beside another car at ground level.</strong> It can rest above one. It can go below one. It can go inside something built to receive it.</p>
-    <p>Every one of those takes the car out of the view instead of adding to it. And the ground comes back.</p>
-    <p>That is the whole Discovery. Not more parking. The same parking, somewhere else, and your front garden returned to you.</p>
-  </section>
 
-  <section class="article-section reveal">
-    <div class="kicker">Why Now</div>
-    <h2>Why does this come up now?</h2>
-    <p>Nothing changed all at once. That is why it went unnoticed.</p>
-    <p>A second car arrived, then a third. The hardstanding was extended to meet them. What was garden became standing, and standing became the first thing anyone sees.</p>
-    <p>The usual answers each spend the thing you are trying to keep. More hardstanding uses up more garden and makes the cars more prominent, not less. A garage puts a large blank structure exactly where the house is most exposed &mdash; and asks planning for it in the least favourable position on the site. Leaving it alone quietly hands the front of the house to whatever is parked there.</p>
-    <p>The engineering that avoids all three is not new. Stacked and lowered parking has been ordinary in Tokyo, Munich and Zurich for decades, developed where land was scarce and buildings were worth protecting. What is newer is anyone in Ireland treating the front of an ordinary house as something worth defending.</p>
-  </section>
+    <!-- REAL-WORLD PROOF. Placed after the lift photograph and before the
+         cautions on purpose: the page had ample evidence of difficulty and
+         none that anyone completes these. Same .dq-adv-cols family as the
+         four approaches, deliberately compact.
 
-  <section class="article-section reveal">
-    <div class="kicker">Today</div>
-    <h2>What can you do today?</h2>
-    <p>Four approaches, from the least invasive to the most substantial. They are not four versions of the same thing. They answer different constraints, and a planning authority will regard them very differently.</p>
-    <p>None of them is cheap. None should be assumed permitted.</p>
-    <h3>Parking stackers</h3>
-    <p>One car rests on a platform above another. The outdoor type used at houses stands about a metre and a half above ground &mdash; lower than many garden walls &mdash; because most of it sits in a shallow pit.</p>
-    <p>It asks least of the site. It is also the one option that still looks like machinery.</p>
-    <h3>Concealed parking lifts</h3>
-    <p>For when the intention is that nothing should be visible at all. The car is lowered a short distance and the surface closes over it, so the approach reads as paving.</p>
-    <p>The dig is shallower than a full chamber. Where a stacker adds a space, a concealed lift removes a car from the view.</p>
-    <h3>Underground garages</h3>
-    <p>The most complete answer, and by a distance the most demanding. A platform carries the car into a sealed room beneath the property and the ground closes above it.</p>
-    <p>This is the one that returns the surface entirely. It is also a construction project, and should be entered into as one.</p>
-    <h3>Automated parking systems</h3>
-    <p>For several cars in a footprint that will never hold them side by side. You leave the car on a platform and the system moves, stores and returns it.</p>
-    <p>Long established in European buildings, now specified at house scale. The most mechanically involved option here, with the servicing to match.</p>
-    <p><strong>One thing carries into every conversation that follows.</strong> The mechanism is seldom the expensive part. The structure that holds it almost always is.</p>
+         PROVENANCE, held here rather than shown: all four locations are
+         photographed installations in Cardok SA's own project gallery
+         (cardok.com/projects), not renders. The UK rollout figures are
+         Cardok's, reported by PHPD Online. NONE OF THESE IS IRISH, and the
+         copy does not suggest otherwise. No price, no link, no logo, no
+         partnership language -- PlotNua has no relationship with any of
+         them. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Real homes. Real systems.</span>
+      <ul class="dq-adv-cols">
+        <li>
+          <span class="dq-adv-label">United Kingdom</span>
+          <span class="dq-fact">Cardok reports eight underground garages built, four in production and more than ten on order.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Amstelveen</span>
+          <span class="dq-fact">A residential installation documented across eight photographs in the manufacturer&rsquo;s own gallery.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">In their own words</span>
+          <span class="dq-fact">&ldquo;It&rsquo;s like having double the parking space without any hassle.&rdquo;</span>
+          <span class="dq-note">A Cardok owner in Australia, quoted on the manufacturer&rsquo;s own site.</span>
+        </li>
+      </ul>
+      <!-- EVIDENCE ACCESS, not a supplier route. One attribution line, one link,
+           to the published gallery. PlotNua has no relationship with Cardok, does
+           not recommend them, and they do not serve Ireland as far as we know.
+           No logo, no photograph, no tile is clickable. -->
+      <p class="dq-note">Projects and figures published by Cardok SA. <a href="https://cardok.com/projects/" target="_blank" rel="noopener noreferrer">See the gallery &#8599;</a></p>
+    </div>
+
+    <!-- 3 · BEFORE YOU START. Three, at the quiet elevation. Everything
+         procedural sits in the drawers. No score, no eligibility, no
+         estimate, no recommendation. -->
+    <ul class="dq-qual">
+      <li>
+        <span class="dq-cat">Planning</span>
+        <span class="dq-fact">Planning is almost certainly engaged.</span>
+        <span class="dq-note">The exemption covers a hard surface, to the front or side, for parking no more than two cars, and only where ground level changes by no more than one metre. A lift pit is typically two to three metres &mdash; and the exemption covers the surface, not the machinery standing in it.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Ground</span>
+        <span class="dq-fact">Groundwater is the first conversation, not a late one.</span>
+        <span class="dq-note">A chamber under an Irish garden is a permanently buoyant box in ground that is wet for much of the year. This is the constraint most likely to end a project, and it should be asked about on day one.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Cost</span>
+        <span class="dq-fact">The excavation sets the budget, not the equipment.</span>
+        <span class="dq-note">The mechanism is seldom the expensive part; the structure that holds it almost always is. No Irish supplier publishes prices, and we are not going to invent a range. Every Irish installer quotes after a survey, and they are right to.</span>
+      </li>
+    </ul>
+
+    <p class="dq-note">This is a major property project &mdash; closer to an extension than a parking accessory.</p>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Planning, ground and the professionals</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>The exemption, and why it runs out.</strong> The exemption covering car parking spaces and hard surfaces applies to a hard surface to the front or side of the house, for parking no more than two cars, and only where ground level changes by no more than one metre. A lift pit is typically two to three metres, so the exemption is exceeded several times over before anything else is considered &mdash; and a lift is machinery, not a surface, so the exemption does not extend to it. The common outdoor stacker sits in a pit deep enough to break the same one-metre limit; surface-mounted versions avoid the pit, but the exemption still covers a hard surface for parking, not a machine placed on it. <strong>A Section 5 Declaration from your local authority gives a formal determination for your specific proposal.</strong><br><br><strong>Your development plan carries as much weight as the regulations.</strong> Dublin City, for example, requires a Basement Impact Assessment with every application including a basement, and a ground investigation report as part of it. It does not in general support basements close to protected structures, applies a general presumption against basements in Zones of Archaeological Interest, and applies a general restriction against basements below the estimated flood levels for Flood Zones A or B. It also expects a domestic basement to stay within the footprint of the original house, no deeper than one storey, and generally over no more than half the garden. Other authorities set their own &mdash; check the plan that governs your address, not Dublin&rsquo;s.<br><br><strong>Groundwater.</strong> A chamber below ground in wet Irish soil needs tanking, drainage and sometimes permanent pumping. Where the winter table sits close to the surface the engineering escalates sharply. A ground investigation answers this, not an opinion.<br><br><strong>A neighbour&rsquo;s foundations are closer than they look.</strong> On terraced and semi-detached houses the dig happens within metres of the house next door. That is a professional question and a neighbour question at the same time.<br><br><strong>Water that used to soak away needs somewhere to go.</strong> Replacing permeable ground with a sealed chamber changes how the site drains.<br><br><strong>Who you would need.</strong> An architect or planning consultant, a structural engineer, drainage input, and a specialist installer. Building Regulations apply whether or not planning permission is needed, and ESB Networks must be contacted before any work near overhead lines &mdash; the minimum clearance is six metres for lines up to 38kV and ten metres at 110kV and above.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What it costs, and why nobody will quote you yet</h3><span class="icon"></span></summary>
+      <div class="faq-a">No Irish supplier publishes prices, and we are not going to invent a range. Published international figures for lift units alone have run from roughly $12,000 to $60,000 and above depending on type, and one reported UK quotation came to &pound;33,000 plus VAT plus groundworks &mdash; and that last phrase is where the real number lives. <strong>Both are indicative, neither is Irish, and neither is recent enough to quote at a supplier.</strong> Every Irish installer quotes after a survey.<br><br>Equipment prices are broadly knowable. Digging, structure, waterproofing and drainage are specific to your site and are frequently the larger number. Any quote for a lift on its own is a fraction of a total.<br><br><strong>Two things make the numbers meaningfully better.</strong> A sloping site, where a lift or garage can be driven into a level change that already exists instead of dug out of flat ground; and work already underway, where plant and access are being paid for anyway.<br><br>It tends to make sense where the frontage, the architecture or the cars themselves are worth protecting. The engineering is the same wherever it goes, and the sites that need it most are tight urban and suburban ones where a conventional garage is impossible &mdash; but the excavation alone puts it beyond most domestic budgets.<br><br>PlotNua does not sell or install these systems. What we&rsquo;re building is a way to help you understand whether one could work at your property &mdash; and, when that part is ready, connect you with the specialists who can take it further.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Living with it, and will the car even fit</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Measure the car before pricing the system.</strong> Specifications differ sharply, so check against the model rather than the category. Capacity is commonly around 2,000kg per space and lengths sit near five metres, but height limits range from about 1.5m on some systems to over two metres on others. Many SUVs are near the ceiling on the generous ones and beyond it on the rest, most vans exceed it, and a large electric car can approach the weight limit.<br><br><strong>Day to day it is a machine.</strong> It needs power, it needs servicing on a schedule, and it needs a plan for the day it stops with a car inside. Systems are specified with manual or backup release and servicing contracts exist for this, but it has to be designed in and asked about before purchase. Ask any supplier directly what happens on power loss.<br><br><strong>The surface above.</strong> The platform closes flush and the surface can be finished to match its surroundings, including as parking for another car. What that surface can carry, and how planting works over a sealed structure, are design questions to settle early rather than assume.<br><br><strong>Ask what they have actually built.</strong> The technology is mature; the Irish experience of it is not. Very few people in this country have done this work at a private house. That is not a reason against it &mdash; it is a reason to ask any supplier what they have built, and to see it.</div>
+    </details>
+
   </section>
 </main>
 
@@ -736,95 +1110,28 @@
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">Day to Day</div>
-    <h2>What does it change day to day?</h2>
-    <p>Less than you would expect, and more than you would expect.</p>
-    <p>Day to day, it is a machine. It needs power, it needs servicing on a schedule, and it needs a plan for the day it stops with a car inside. That is a solvable problem, but only if it was designed in beforehand.</p>
-    <p>What changes is the ground. Whatever the cars were occupying is available again &mdash; as garden, as planting, or simply as somewhere to walk to the door without turning sideways.</p>
-    <p>The frontage reads differently. A house whose first impression is its own architecture, rather than two parked cars, looks like a different house.</p>
-    <p>A car that is enclosed or below ground is not on the road and not on view. Weather stops mattering.</p>
-  </section>
+    <div class="kicker">And afterwards</div>
+    <h2>There can be other benefits too.</h2>
+    <p>They are real, but they are not the reason. The reason is that the cars fit.</p>
 
-  <section class="article-section reveal">
-    <div class="kicker">Before You Start</div>
-    <h2>What should you think about before you start?</h2>
-    <p>Start with five questions about your own property.</p>
-    <p>How much of the frontage is now given over to standing cars? Are any of them cars you would rather not leave in open view? Would you accept a garage in the position a garage would have to occupy? Does the ground fall away anywhere, or is there already a basement level? And if the cars were not visible from the road, what would you want to be?</p>
-    <p>Then the things that decide it.</p>
-    <p><strong>Groundwater is the first conversation, not a late one.</strong> A chamber under an Irish garden is a permanently buoyant box in ground that is wet for much of the year. Where the winter water table sits high, keeping a pit dry and in place stops being routine. This is the constraint most likely to end a project, and it should be asked about on day one.</p>
-    <p><strong>The excavation sets the budget, not the equipment.</strong> Equipment prices are broadly knowable. Digging, structure, waterproofing and drainage are specific to your site and are frequently the larger number. Any quote for a lift on its own is a fraction of a total.</p>
-    <p><strong>Planning is almost certainly engaged.</strong> The exemption that covers a driveway is for a hard surface &mdash; to the front or side of the house, for parking no more than two cars &mdash; and it holds only where ground level changes by no more than one metre. A lift pit is typically two to three metres, so the exemption is exceeded several times over before anything else is considered. And it exempts the surface, not the machinery standing in it. A Section 5 Declaration from your local authority gives a formal determination for your specific proposal.</p>
-    <p><strong>Your development plan carries as much weight as the regulations.</strong> Dublin City, for example, requires a Basement Impact Assessment with every application including a basement, and a ground investigation report as part of it. It does not in general support basements close to protected structures, applies a general presumption against basements in Zones of Archaeological Interest, and applies a general restriction against basements below the estimated flood levels for Flood Zones A or B. It also expects a domestic basement to stay within the footprint of the original house, no deeper than one storey, and generally over no more than half the garden. Other authorities set their own. Check the plan that governs your address, not Dublin&rsquo;s.</p>
-    <p><strong>A neighbour&rsquo;s foundations are closer than they look.</strong> On terraced and semi-detached houses the dig happens within metres of the house next door. That is a professional question and a neighbour question at the same time.</p>
-    <p><strong>Water that used to soak away needs somewhere to go.</strong> Replacing permeable ground with a sealed chamber changes how the site drains.</p>
-    <p><strong>Measure the car before pricing the system.</strong> Specifications differ sharply between systems, so check against the model rather than the category. Capacity is commonly around 2,000kg per space and lengths sit near five metres, but height limits range from about 1.5m on some systems to over two metres on others. Many SUVs are near the ceiling on the generous ones and beyond it on the rest, most vans exceed it, and a large electric car can approach the weight limit.</p>
-    <p><strong>On cost, plainly.</strong> No Irish supplier publishes prices, and we are not going to invent a range. Published international figures for lift units alone have run from roughly $12,000 to $60,000 and above depending on type, and one reported UK quotation came to &pound;33,000 plus VAT plus groundworks &mdash; and that last phrase is where the real number lives. Both are indicative, neither is Irish, and neither is recent enough to quote at a supplier. Every Irish installer quotes after a survey, and they are right to.</p>
-    <p>Two things make the numbers meaningfully better: a sloping site, where a lift or garage can be driven into a level change that already exists instead of dug out of flat ground; and work already underway, where plant and access are being paid for anyway.</p>
-    <p>Treat this as a major property investment, on the scale of an extension rather than a parking accessory.</p>
-    <p><strong>And the honest limit.</strong> This is the most permission-dependent and most site-dependent thing PlotNua covers. For a great many houses the answer will be no, and that is a perfectly good answer to have early rather than late.</p>
-    <p>PlotNua does not sell, install or arrange any of this.</p>
-  </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Looking Ahead</h2>
-    <p class="quarantine-lede">Everything above can be done in Ireland today. What follows is less settled.</p>
-    <h3>The market here is thin</h3>
-    <p>The technology is mature. The Irish experience of it is not.</p>
-    <p>Very few people in this country have done this work at a private house. That is not a reason against it. It is a reason to ask any supplier what they have actually built, and to see it.</p>
-    <h3>Where it came from</h3>
-    <p>Stacked and lowered parking was developed in cities where land ran out first &mdash; Tokyo, Munich, Zurich &mdash; and it has been ordinary engineering there for decades.</p>
-    <p>What was built for dense city centres is now being specified at the scale of a single house.</p>
-    <h3>Why this might matter later</h3>
-    <p>Irish plots are not getting bigger and cars are not getting fewer.</p>
-    <p>The question a homeowner asks about the front garden has been the same for thirty years: how much more hardstanding can I add? The useful question may turn out to be a different one. Whether the cars need to be visible at all.</p>
-  </section>
-
-  <section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Questions this Discovery tends to raise.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary><h3>Can I really fit two cars in one space?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Yes, and it is the most established of these technologies. A stacker parks one car above another, and the outdoor type used at houses stands only about a metre and a half above ground because most of it sits in a shallow pit. Of the approaches here it asks least of the site. It is not, however, a way around planning &mdash; see the next question.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Can I install an underground car lift without planning permission?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Almost certainly not. The exemption covering car parking spaces and hard surfaces applies only where ground level changes by no more than one metre, and a lift pit is typically two to three metres. That exemption covers a hard surface for no more than two cars to the front or side &mdash; and a lift is machinery, not a surface, so the exemption does not extend to it. A Section 5 Declaration from your local authority gives a formal determination for your specific proposal.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>How much does one cost in Ireland?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No Irish supplier publishes prices, and we are not going to invent a range. Published international figures for lift units alone have run from roughly $12,000 to $60,000 and above depending on type &mdash; indicative, not Irish. The excavation, structure, waterproofing and drainage around that unit are specific to your site and often cost more than the equipment. Every Irish installer quotes after a survey.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What happens if the lift fails with the car underground?</h3><span class="icon"></span></summary>
-        <div class="faq-a">A real scenario and a solvable one. Systems are specified with manual or backup release, and servicing contracts exist for this. The point is that it has to be designed in and asked about before purchase. Ask any supplier directly what happens on power loss.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Can this work where the water table is high?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Sometimes, and it is the question to ask first. A chamber below ground in wet Irish soil needs tanking, drainage and sometimes permanent pumping. Where the winter table sits close to the surface the engineering escalates sharply. A ground investigation answers this, not an opinion.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Is this only suitable for luxury homes?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Not by address, but realistically by budget. The engineering is the same wherever it goes, and the sites that need it most are tight urban and suburban ones where a conventional garage is impossible. But the excavation alone puts it beyond most domestic budgets. It tends to make sense where the frontage, the architecture or the cars themselves are worth protecting.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Could a parking stacker be a cheaper alternative?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Cheaper and far less disruptive, yes &mdash; but not exempt. The common outdoor type sits in a pit, and a pit deep enough to take one breaks the one-metre ground-level limit the hard-surface exemption depends on. Surface-mounted versions avoid the pit, but the exemption covers a hard surface for parking, not a machine placed on it. A Section 5 Declaration gives a formal determination for your specific proposal.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Will my car actually fit?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Check before anything else, and check against the model rather than the category. Capacity is commonly around 2,000kg per space and lengths sit near five metres, but height limits vary widely &mdash; some systems take a car over two metres tall, others cap at about 1.5m. Many SUVs are near the ceiling on the generous ones and beyond it on the rest, most vans exceed it, and a large electric car can approach the weight limit.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>What professionals would I need?</h3><span class="icon"></span></summary>
-        <div class="faq-a">An architect or planning consultant, a structural engineer, drainage input, and a specialist installer. Building Regulations apply whether or not planning permission is needed, and ESB Networks must be contacted before any work near overhead lines &mdash; the minimum clearance is six metres for lines up to 38kV and ten metres at 110kV and above.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Can the surface above still be used as a garden or driveway?</h3><span class="icon"></span></summary>
-        <div class="faq-a">That is the entire proposition. The platform closes flush and the surface above can be finished to match its surroundings, including as parking for another car. What that surface can carry, and how planting works over a sealed structure, are design questions to settle early rather than assume.</div>
-      </details>
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Secondary effects</span>
+      <ul class="dq-rows">
+        <li><span class="dq-fact"><strong>The ground.</strong> Whatever the second car was occupying is available again.</span>
+            <span class="dq-note">A front garden is usually thirty or forty square metres &mdash; the most visible, best-oriented ground on the property, and the part of it a visitor sees first.</span></li>
+        <li><span class="dq-fact"><strong>The frontage.</strong> A house whose first impression is its own architecture, rather than two parked cars, looks like a different house.</span></li>
+        <li><span class="dq-fact"><strong>The car itself.</strong> A car that is enclosed or below ground is not on the road and not on view.</span>
+            <span class="dq-note">Weather stops mattering.</span></li>
+      </ul>
     </div>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Where this stands</div>
+    <h2>Ordinary engineering, in an unusual place.</h2>
+    <p class="quarantine-lede">Everything above can be done in Ireland today. What is unsettled is how rarely it has been.</p>
+    <p>Stacked and lowered parking was developed in cities where land ran out first &mdash; Tokyo, Munich, Zurich &mdash; and it has been ordinary engineering there for decades.</p>
+    <p>Irish plots are not getting bigger and cars are not getting fewer. The question has been the same for thirty years: where do I find room for another car? The useful question may be a different one &mdash; whether the room is already there.</p>
   </section>
 </main>
 

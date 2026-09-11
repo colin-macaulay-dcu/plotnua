@@ -232,6 +232,9 @@
   }
 
   .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+  /* On the hero the annotation sits BENEATH the scrim and the hero copy,
+     so the headline never reads through a wash. Same rule as DISC-014. */
+  .d-hero .pa-annot{ z-index:1; }
   .pa-annot svg{ width:100%; height:100%; display:block; }
   .pa-line{ stroke:rgba(15,14,10,.78); stroke-width:1.6; fill:none; }
   .pa-dot{ fill:none; stroke:rgba(15,14,10,.85); stroke-width:2.2; }
@@ -433,6 +436,260 @@
   .faq-item summary:hover .icon::before, .faq-item summary:hover .icon::after{ opacity:1; }
   .faq-item[open] .icon::after{ transform:rotate(90deg); opacity:0; }
   .faq-item .faq-a{ padding:0 0 24px; color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch; }
+
+  /* ==================================================================
+     PORTED FROM DISC-014 (frozen donor). Batch 1 of the Discovery
+     Standard rollout deliberately copies the donor's CSS into this page
+     rather than extracting a shared stylesheet: we are proving the system
+     transfers before canonising it. These three blocks are lifted
+     verbatim by the builder, so they cannot drift from the donor by
+     transcription error. They use only tokens this page already defines.
+     ================================================================== */
+
+  /* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+
+  /* ---- REBALANCE MODIFIERS (DISC-026). Two grid widths the donor never
+     needed: four international evidence tiles, and the four-step Irish
+     mechanism strip. .is-four is (0,2,0) against the base (0,1,0), so it is
+     named again in every stack query below -- otherwise it would outrank the
+     collapse and stay multi-column on a phone. ---- */
+  .dq-adv-cols.is-four{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .dq-qual.is-four{ grid-template-columns:repeat(4,1fr); }
+  .dq-qual.is-quiet{ margin-top:36px; }
+  @media (max-width:900px){
+    .dq-qual.is-four{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:720px){
+    .dq-adv-cols.is-four{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual.is-four{ grid-template-columns:1fr; }
+  }
+
+  /* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
+     markup, unchanged behaviour.
+
+     These now sit slightly off the page too, but at the LOWEST elevation on
+     the board -- a 16px ambient against the opportunity's 64px. They read as
+     physical, tappable strips without ever competing with the centrepiece.
+     Opening one raises it a step and gives the evidence a contained reading
+     surface at a controlled measure.
+
+     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
+     so Planning, Tax and Insurance separate with no markup change. ---- */
+  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
+    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
+    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
+    box-shadow:0 1px 1px rgba(31,59,46,.04),
+               0 10px 16px -14px rgba(31,59,46,.30); }
+  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
+  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
+    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
+  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
+  .faq-item.is-inline[open]{ background:var(--paper);
+    border-color:rgba(31,59,46,.16);
+    border-left-color:rgba(31,59,46,.42);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 18px 30px -20px rgba(31,59,46,.36); }
+
+  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
+  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--soft); }
+  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
+  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
+
+  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(31,59,46,.22); }
+  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
+  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
+  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
+  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
+
+  /* the reading surface */
+  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
+    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
+    margin:0 0 20px; padding:22px 24px;
+    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
+  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
+
+  @media (hover:hover) and (pointer:fine){
+    .faq-item.is-inline{ transition:transform .22s ease-out,
+      box-shadow .22s ease-out, border-color .22s ease-out; }
+    .faq-item.is-inline:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -18px rgba(31,59,46,.36); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-item.is-inline{ transition:none; }
+    .faq-item.is-inline:hover{ transform:none; }
+  }
+  @media (max-width:720px){
+    .faq-item.is-inline{ padding:0 16px 0 14px; }
+    .faq-item.is-inline .faq-a{ padding:18px 18px; }
+  }
+
+  /* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
+     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
+     heading rather than a 40px one, and a STATIC status pill rather than a
+     control. It carries no href and no form, because the Driveway journey
+     does not exist yet. When it does, this panel and the closing panel take
+     the same governed route. ---- */
+  .pb-early{ background:var(--paper); padding:38px 7vw;
+    border-top:1px solid rgba(31,59,46,.10);
+    border-bottom:1px solid rgba(31,59,46,.10); }
+  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
+  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
+  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
+    max-width:44ch; margin:0 auto 18px; }
+  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:11px; font-weight:500; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--soft);
+    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
+  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  @media (max-width:720px){
+    .pb-early{ padding:30px 7vw; }
+  }
+
 
   /* ---- quiet tier — used on FAQ (and shares its language with Partners
      and Related): muted kicker, smaller heading, so these sections recede
@@ -649,191 +906,216 @@
 </a>
 
 <header class="d-hero">
-  <!-- IMAGE 01 · Powering the Future from Home. Final asset in place. Original brief: an ordinary Irish house seen from the road, panels on the roof,
-       a car charging in the driveway, lights on inside at dusk.
-       Rule 1: set the eyebrow colour against the real image before freeze. -->
-  <img id="dHeroImg" class="on" src="assets/img/ce9da2e51c945693.jpg" width="1376" height="768" fetchpriority="high" decoding="async" alt="An Irish family outside their home at dusk: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.">
+  <!-- IMAGE 01 (was IMAGE 02) - Potential Asset. The founder's image-rhythm
+       correction: the hero and the annotated plate were the same house in the
+       same composition, one directly under the other. The bare roof now opens
+       the Discovery and the equipped house pays it off at IMAGE 03, so the
+       homeowner sees the potential before the outcome instead of twice over.
+       Asset unchanged and unedited; only its position moved. -->
+  <img id="dHeroImg" class="on" src="assets/img/fec77c3f0bae107a.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="The same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset.">
+
+  <!-- POTENTIAL ASSET ANNOTATION, ON THE HERO. The separate plate is retired,
+       so this is the page's single Potential Asset moment -- the same
+       .pa-annot component as DISC-014 and DISC-022, unchanged classes,
+       strokes, wash and type.
+
+       GEOMETRY. The plate never cropped sideways; the hero does. At 360x900
+       only image x 529.5..878.5 survives, and the authored label ran to
+       x=902, so it would have been cut. The whole group is translated 74px
+       left -- rigidly, nothing rescaled -- landing at x 576..828, centred on
+       the image centre within 2px. The anchor moves with it to (626,196),
+       which is bare tile: the roof at that column runs from the ridge at
+       y~114 to the eaves at y~228. Checked by simulating the cover crop at
+       1440x845, 1920x1080, 390x844 and 360x900. -->
+<div class="pa-annot" aria-hidden="true">
+    <svg viewBox="0 0 1408 768" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <circle class="pa-dot" cx="626" cy="196" r="7"/>
+      <path class="pa-line" d="M626 189 L626 150"/>
+      <rect class="pa-wash" x="576" y="78" width="252" height="70" rx="2"/>
+      <text class="pa-kicker" x="594" y="105">PLOTNUA DISCOVERY</text>
+      <text class="pa-label"  x="594" y="136">Potential Asset</text>
+    </svg>
+  </div>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
     <h1>The House as a Power Station</h1>
     <p class="subtitle">What if your home could help power the future?</p>
-    <p class="intro">Most houses only use electricity. A growing number of Irish homes now make some of their own, and are paid for what they do not use.</p>
+    <p class="intro">Your home already uses energy. In the future, it could do something much more unexpected with it.</p>
   </div>
 </header>
 
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Why This Discovery?</div>
-    <h2>Who is this for?</h2>
-    <p>Somebody with a roof that gets the sun for most of the day. Somebody whose car
-      charges in the driveway overnight. Somebody who had a new meter fitted and never
-      thought about it again.</p>
-    <p>This Discovery is for anyone who wants to know what their own house could do
-      &mdash; and what is worth doing now rather than later.</p>
-    <p>It is not about buying panels. It is about understanding what your property is
-      already capable of.</p>
-  </section>
-</main>
-
-<section class="imagine-photo pa-frame reveal">
-  <!-- IMAGE 02 · Potential Asset. Final asset in place. RULE 6: the same view as the hero with nothing installed. Thin charcoal leader
-       line, circular anchor, uppercase PLOTNUA DISCOVERY, italic Potential Asset,
-       translucent white wash, positioned away from the roof itself.
-       Intended alt must name the annotation:
-       "The same house with a bare roof, annotated by PlotNua as a potential asset." -->
-  <img src="assets/img/fec77c3f0bae107a.jpg" width="1376" height="768" loading="lazy" decoding="async" alt="The same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset.">
-
-  <div class="pa-annot" aria-hidden="true">
-    <svg viewBox="0 0 1408 768" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <circle class="pa-dot" cx="700" cy="196" r="7"/>
-      <path class="pa-line" d="M700 189 L700 150"/>
-      <rect class="pa-wash" x="650" y="78" width="252" height="70" rx="2"/>
-      <text class="pa-kicker" x="668" y="105">PLOTNUA DISCOVERY</text>
-      <text class="pa-label"  x="668" y="136">Potential Asset</text>
-    </svg>
+<section class="pb-early reveal" id="early-property-check">
+  <!-- EARLY JOURNEY ENTRY. The FUTURE variant: there is no DISC-026 journey,
+       so there is deliberately no link, no form and no disabled control -- a
+       control a homeowner cannot use is worse than no control at all. It is
+       kept short on purpose so it introduces the qualification idea without
+       repeating the closing panel at #discover-your-property, which is where
+       the detail of what the check will examine belongs. -->
+  <div class="pb-early-inner">
+    <h2>Could this work for your property?</h2>
+    <p>PlotNua is designing a property check for this Discovery.</p>
+    <span class="pb-early-status">This property check is being prepared</span>
+    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
   </div>
 </section>
 
 <main class="article">
 
+  <!-- ============================================================
+       THE DISCOVERY. Solar is no longer the subject of this page; it is the
+       evidence that the infrastructure is arriving. The boundary -- none of
+       this is available in Ireland -- is stated once, plainly, at the top,
+       so the rest can be told confidently instead of hedged sentence by
+       sentence.
+       ============================================================ -->
   <section class="article-section reveal">
-    <div class="kicker">The Opportunity</div>
-    <h2>What does this actually mean?</h2>
-    <p>Your house does one thing with electricity today. It buys it.</p>
-    <p>It could do four.</p>
-    <ul class="planning-conditions">
-      <li><strong>Make it.</strong> The roof turns daylight into electricity the house uses straight away.</li>
-      <li><strong>Time it.</strong> With a smart meter, some hours of the day cost far less than others.</li>
-      <li><strong>Sell it.</strong> Whatever the roof makes and the house does not use goes back out, and you are paid for it.</li>
-      <li><strong>Store it.</strong> A battery holds the afternoon&rsquo;s electricity until the evening.</li>
-    </ul>
-    <p>The first three are easier to arrange than the last one, and that is the order we
-      will take them in.</p>
-  </section>
+    <div class="kicker">The Discovery</div>
+    <h2>Could a house help power AI?</h2>
+    <p>A house has always been somewhere electricity arrives. Computing is beginning to move the other way.</p>
+    <p>Emerging models are beginning to spread computing across many smaller sites &mdash; and some of those sites are ordinary homes. A property could contribute electricity, battery capacity, connectivity, secure space, or even make use of the heat that computing produces.</p>
+    <p>None of this is available to an Irish homeowner today. What follows is what is being built elsewhere.</p>
 
-  <section class="article-section reveal">
-    <div class="kicker">Why Now</div>
-    <h2>Why are people talking about this now?</h2>
-    <p>Not because the technology changed. Because the roof and the meter did.</p>
-    <p><strong>The rules on the roof relaxed.</strong> You no longer need planning
-      permission for solar panels on a house, and there is no limit on how much of the
-      roof they cover. There is no VAT on them either.</p>
-    <p><strong>The meter arrived.</strong> More than four in five Irish homes now have a
-      smart meter, fitted by ESB Networks.</p>
-    <p><strong>And the meter is the part that matters.</strong> Without one, nobody can
-      measure what your house sends back, so nobody can pay you for it.</p>
-    <p>More than 140,000 households in Ireland are already being paid for the electricity
-      their roofs produce. This is not a trial. It is running.</p>
-  </section>
+    <!-- INTERNATIONAL EVIDENCE. Four tiles, 2x2. Each one is a real,
+         named, dated programme; each carries what the household actually
+         receives, because "paid" is wrong for two of the four. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Already being built</span>
+      <ul class="dq-adv-cols is-four">
+        <li>
+          <span class="dq-adv-label">Britain</span>
+          <span class="dq-fact">A boiler-sized unit holds 450&ndash;500 compute modules, and the heat they produce warms the household&rsquo;s water.</span>
+          <span class="dq-note">Thermify&rsquo;s HeatHub. The company pays for the electricity and sells the computing. Deployed through the SHIELD trial with UK Power Networks.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">United States</span>
+          <span class="dq-fact">Sixteen NVIDIA GPUs installed at a home beside a smart panel and battery, using power the house is not consuming.</span>
+          <span class="dq-note">SPAN&rsquo;s XFRA, backed by NVIDIA and the homebuilder PulteGroup, rolling out from Q3 2026. Households are not paid cash: they receive the equipment, the installation, and discounted electricity and internet.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">United States</span>
+          <span class="dq-fact">Home solar and batteries supplying capacity into the programmes that serve AI data centres.</span>
+          <span class="dq-note">Sunrun with Voltus, announced August 2026, in the PJM and MISO grid regions. Participating households are compensated.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Europe</span>
+          <span class="dq-fact">One European platform describes household nodes as a layer of its network: homes with rooftop solar and batteries becoming compute sites.</span>
+          <span class="dq-note">CYANIS AI, Hamburg. Its specified household unit is 500W and desktop-sized, behind the meter. The architecture is published; the household layer is not an open programme.</span>
+        </li>
+      </ul>
+    </div>
 
-  <section class="article-section reveal">
-    <div class="kicker">Today</div>
-    <h2>What can an Irish home do today?</h2>
+    <!-- WHAT MIGHT MATTER. The page's single unbroken surface and its
+         highest elevation, because this is the Discovery. It is a LENS, not
+         a test: there is no Irish programme to qualify for, nothing is
+         scored, and the copy says so inside the feature itself. -->
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">What might matter</span>
+        <p class="dq-earn-lead">If a home were ever part of a network like this, these are the pieces the emerging models keep naming.</p>
+        <p class="dq-earn-caveat">What would matter will depend on the technology and the provider. For now, these are simply the features appearing again and again in the models being developed.</p>
+        <ul class="dq-figs">
+          <li><span class="dq-fig">500W</span><span class="dq-src">The household unit CYANIS specifies: desktop form factor, silent, behind the meter.</span></li>
+          <li><span class="dq-fig">450&ndash;500</span><span class="dq-src">Compute modules inside a single Thermify HeatHub, heating a household&rsquo;s water.</span></li>
+        </ul>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">The pieces</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact"><strong>Energy.</strong> The ability to generate or provide electricity.</span></li>
+          <li><span class="dq-fact"><strong>Storage.</strong> Battery capacity that can shift when electricity is used.</span></li>
+          <li><span class="dq-fact"><strong>Connectivity.</strong> A reliable high-speed connection for computing equipment.</span></li>
+          <li><span class="dq-fact"><strong>Space.</strong> A secure physical place to put it.</span></li>
+          <li><span class="dq-fact"><strong>Heat.</strong> Some models make use of the heat computing produces.</span></li>
+        </ul>
+      </div>
+    </div>
 
-    <h3>Make it</h3>
-    <p>There is a grant of up to <strong>&euro;1,800</strong> towards panels, and no VAT
-      to pay on them.</p>
-    <p><strong>Not every house qualifies.</strong> It has to have been built and lived in
-      before 2021. And the grant can only be claimed once at any address, so if a previous
-      owner claimed it, it has already been used.</p>
-    <p>It gets smaller each year and finishes in 2029, so waiting costs you some of it.</p>
-
-    <h3>Time it</h3>
-    <p>A smart meter lets your supplier charge different prices at different hours. Night
-      is cheaper than evening.</p>
-    <p>If you have an immersion, a dishwasher or a car in the driveway, moving them to the
-      cheap hours costs nothing and changes the bill.</p>
-    <p>Which hours are cheap, and how cheap, depends on your supplier. It is worth
-      checking what yours offers.</p>
-
-    <h3>Sell it</h3>
-    <p>On a bright day the roof usually makes more than the house is using. Whatever is
-      left over goes back out to the grid.</p>
-    <p>Every electricity supplier in Ireland has to pay you for it. How much they pay is
-      up to them, and it can change, so it is worth seeing what others offer.</p>
-    <p>The first <strong>&euro;400 a year</strong> you earn this way is free of income
-      tax, up to the end of 2028. Above that it is taxed like any other income. You do not
-      need to declare the exempt amount at all.</p>
-
-    <h3>Store it</h3>
-    <p>A battery holds what the roof makes in the afternoon so the house can use it that
-      evening.</p>
-    <p><strong>There is no grant for a home battery.</strong> There is one for the panels,
-      but not for storing what they make. Worth knowing, because it is easy to assume
-      otherwise.</p>
   </section>
 </main>
 
+<section class="spark reveal">
+  <!-- THE TRANSITION. The page's one dramatic beat, on the existing .spark
+       component -- the largest, quietest type in the system. It earns the
+       drama from the sequence of evidence above it, not from punctuation. -->
+  <p>Not here yet. But some of the pieces already are.</p>
+</section>
+
 <section class="imagine-photo reveal">
-  <!-- IMAGE 03 - Future Ready. Present-day section: panels, storage and charging
-       already in place, supporting Make it / Time it / Sell it / Store it. -->
-  <img src="assets/img/20f1df521da06eb9.jpg" width="1408" height="768" loading="lazy" decoding="async"
-       alt="The same house at dusk with solar panels across the roof, two battery units in the open garage and a car charging in the driveway.">
+  <!-- IMAGE 03 (was IMAGE 01) - the former hero, moved here by the founder's
+       image-rhythm correction. It shows the same house as the hero with panels,
+       storage and charging in place, so it now reads as the outcome of the
+       decision section above rather than as a near-repeat of the opening.
+       Asset unchanged and unedited. -->
+  <img src="assets/img/ce9da2e51c945693.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="An Irish family outside their home at dusk: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.">
+
 </section>
 
 <main class="article">
 
+  <!-- ============================================================
+       TODAY IN IRELAND. Everything that used to be the Discovery, now
+       serving it. Deliberately built from the QUIET tile (elevation 20)
+       rather than a second opportunity surface, so nothing here competes
+       with "What might matter" above.
+       ============================================================ -->
   <section class="article-section reveal">
-    <div class="kicker">Day to Day</div>
-    <h2>What does it change day to day?</h2>
-    <p>Less than people expect, and that is the point.</p>
-    <p>The kettle still boils. The heating works the way it always did. Nothing in the
-      house has to be used differently.</p>
-    <p>What changes is quieter. The immersion comes on at three in the morning instead of
-      six in the evening. The car charges while everybody sleeps. On a bright Saturday the
-      house runs itself for a few hours and the meter turns the other way.</p>
-    <p>Once it is set up, there is very little to think about. The app is interesting for
-      a while, and then it is just there.</p>
-  </section>
+    <div class="kicker">Today in Ireland</div>
+    <h2>The first pieces are already here.</h2>
+    <p>More than 140,000 Irish households are already paid for the electricity their roofs produce. This is not a trial.</p>
 
-  <section class="article-section reveal">
-    <div class="kicker">Before You Start</div>
-    <h2>What should you think about before you start?</h2>
-    <p>None of this is technical. It is all about your own property.</p>
-    <p><strong>Which way the roof faces, and what shades it.</strong> A roof in shade for
-      half the day makes less than the same roof in the open. This decides more than the
-      equipment does.</p>
-    <p><strong>Whether you have a smart meter.</strong> Without one, everything still
-      works &mdash; you just will not be paid for what you send back.</p>
-    <p><strong>Whether the grant has already been used on the house.</strong> It can only
-      be claimed once at any address.</p>
-    <p><strong>The age of the house.</strong> Built and lived in before 2021, or the grant
-      does not apply.</p>
-    <p><strong>How long it takes.</strong> Your installer applies to ESB Networks before
-      anything goes on the roof, and that takes a few weeks. Afterwards the house needs a
-      new BER assessment before the grant is paid.</p>
-    <p><strong>If you live close to an airport.</strong> There are areas near airports and
-      helipads where roof limits still apply, because of glare. Most homes are nowhere
-      near one.</p>
-    <p>And one that is not about your property at all:</p>
-    <blockquote class="pull-quote">SEAI&rsquo;s own words: it &ldquo;does not approve,
-      guarantee, or warranty a company or their works.&rdquo;</blockquote>
-    <p>The State pays part of the cost. It does not stand behind whoever does the job.
-      Choosing the installer is still entirely yours.</p>
-    <p class="planning-note">PlotNua does not size systems, quote for equipment, or estimate
-      what you would earn. Export rates are set by suppliers and change, so we do not
-      print one.</p>
-  </section>
+    <ul class="dq-qual is-four">
+      <li>
+        <span class="dq-cat">Make</span>
+        <span class="dq-fact">The roof turns daylight into electricity the house uses straight away.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Time</span>
+        <span class="dq-fact">A smart meter lets some hours of the day cost far less than others.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Store</span>
+        <span class="dq-fact">A battery holds the afternoon&rsquo;s electricity until the evening.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Sell</span>
+        <span class="dq-fact">What the house does not use goes back out, and you are paid for it.</span>
+      </li>
+    </ul>
 
-  <section class="article-section reveal">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Looking Ahead</h2>
-    <p class="quarantine-lede">Everything above can be arranged in Ireland today.
-      Everything below cannot.</p>
+    <ul class="dq-qual is-quiet">
+      <li>
+        <span class="dq-cat">Grant</span>
+        <span class="dq-fact">Up to &euro;1,800 towards panels, and no VAT on them.</span>
+        <span class="dq-note">The house must have been built and lived in before 2021, and it can be claimed once at any address. It shrinks each year and finishes in 2029.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Export</span>
+        <span class="dq-fact">The first &euro;400 a year is free of income tax, to the end of 2028.</span>
+        <span class="dq-note">Every supplier must pay you for what you send back, though how much is up to them. You need a smart meter &mdash; four in five Irish homes now have one.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Permission</span>
+        <span class="dq-fact">No planning permission for panels on a house, and no limit on the area.</span>
+        <span class="dq-note">Roof limits still apply near a small number of airports and helipads. There is no grant for a home battery.</span>
+      </li>
+    </ul>
 
-    <h3>Close, but not here yet</h3>
-    <p><strong>Using the car as a battery.</strong> An electric car holds far more
-      electricity than a home battery, so sending some of it back to the house is an
-      obvious idea.</p>
-    <p>It is not available here. Powering your house from your car is not approved for
-      Irish homes, and selling power from a car back to the grid is not expected here for
-      a few years yet. If an installer tells you otherwise, ask them to show you the
-      approval.</p>
-    <p><strong>Homes working together.</strong> Streets of houses with panels and
-      batteries can be coordinated to behave like one small power station. It has been
-      tested in Ireland. It is not yet something a homeowner can join.</p>
+    <details class="faq-item is-inline">
+      <summary><h3>Grant, tax and permission in detail</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>The grant.</strong> Up to &euro;1,800 towards panels, and no VAT to pay on them. The house has to have been built and lived in before 2021, and the grant can only be claimed once at any address &mdash; if a previous owner claimed it, it has already been used. It gets smaller each year and finishes in 2029, so waiting costs you some of it. Your installer applies to ESB Networks before anything goes on the roof, and that takes a few weeks; afterwards the house needs a new BER assessment before the grant is paid.<br><br><strong>Tax.</strong> The first &euro;400 a year you earn from exporting is free of income tax, up to the end of 2028. Above that it is taxed like any other income. You do not need to declare the exempt amount at all.<br><br><strong>Permission.</strong> Panels on the roof of a house are exempt, with no limit on area. The only exception is a small number of areas near airports and helipads, where roof limits still apply because of glare. Most homes are nowhere near one.<br><br><strong>Who stands behind the work.</strong> SEAI&rsquo;s own words: it &ldquo;does not approve, guarantee, or warranty a company or their works.&rdquo; The State pays part of the cost. It does not stand behind whoever does the job. Choosing the installer is still entirely yours.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What it changes day to day</h3><span class="icon"></span></summary>
+      <div class="faq-a">Less than people expect, and that is the point. The kettle still boils. The heating works the way it always did. Nothing in the house has to be used differently.<br><br>What changes is quieter. The immersion comes on at three in the morning instead of six in the evening. The car charges while everybody sleeps. On a bright Saturday the house runs itself for a few hours and the meter turns the other way.<br><br>If you have an immersion, a dishwasher or a car in the driveway, moving them to the cheap hours costs nothing and changes the bill. Which hours are cheap, and how cheap, depends on your supplier. Once it is set up, there is very little to think about.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What is not possible in Ireland yet</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Hosting computing.</strong> There is no Irish residential compute programme. None of the British, American or European models above is open to an Irish homeowner, and none of them transfers automatically: each depends on a provider, a grid arrangement and a market that would have to exist here first.<br><br><strong>Using the car as a battery.</strong> An electric car holds far more electricity than a home battery, but powering your house from your car is not approved for Irish homes, and export from a car is not expected here for a few years.<br><br><strong>Homes working together.</strong> Streets of houses with panels and batteries can be coordinated to behave like one small power station. It has been tested in Ireland. It is not yet something a homeowner can join.<br><br>PlotNua is watching all of it. We will say so plainly if and when any of it becomes something an Irish homeowner can actually do.</div>
+    </details>
 
   </section>
 </main>
@@ -846,70 +1128,17 @@
   <img src="assets/img/bae47ddb8d4598ec.jpg" width="1376" height="768" loading="lazy" decoding="async" alt="A family kitchen in the morning with the doors open to the garden, and a small wall display showing the home&rsquo;s energy status.">
 </section>
 
-<main class="article">
-
-  <section class="article-section reveal">
-    <h3>Beginning elsewhere</h3>
-    <p>Three examples. None of them Irish, all of them real.</p>
-    <p><strong>In Britain</strong>, a unit about the size of a boiler holds hundreds of
-      small computers. They do paid work for other companies, and the heat that produces
-      warms the household&rsquo;s water.</p>
-    <p><strong>In the United States</strong>, a company installs computing equipment at
-      houses alongside a battery, using the electricity the house is not using. The owners
-      are not paid in cash &mdash; they get the equipment and cheaper electricity
-      instead.</p>
-    <p><strong>Also in the United States</strong>, a solar company now lets the batteries
-      in its customers&rsquo; homes help supply large data centres at busy times. Those
-      households are paid for it.</p>
-
-    <h3>Why this is happening</h3>
-    <p>Computing uses a lot of electricity, and the amount is rising. New power stations
-      take years to build. Houses already have roofs, connections and space.</p>
-    <p>It is too early to say whether any of it reaches Ireland. What is clear is that the
-      things that would make a house ready for it &mdash; a working roof, a battery, a
-      smart meter &mdash; are the same things worth having anyway.</p>
-  </section>
-</main>
+<section class="closing-line reveal">
+  <!-- FINAL ANTICIPATION. Not a promise and not a prediction: the three
+       things the house can already do, and the one question left open. -->
+  <p>Your roof can already make electricity. Your battery can already store it. Your meter can already measure what leaves the house. What PlotNua is watching for is the model that connects those pieces to computing.</p>
+</section>
 
 <section class="imagine-photo reveal">
   <!-- IMAGE 05 · The Future. Final asset in place. Original brief: an ordinary Irish housing estate from above at dusk, panels on
        many of the roofs, the street lit and unremarkable. -->
   <img src="assets/img/f0e99db16cefc470.jpg" width="1376" height="768" loading="lazy" decoding="async" alt="An Irish housing estate seen from above at dusk, with solar panels on several of the roofs.">
 </section>
-
-<main class="article">
-
-  <section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Common questions.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary><h3>Do I need planning permission for solar panels?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. Panels on the roof of a house are exempt, with no limit on area. The only exception is a small number of areas near airports and helipads.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Do I need a smart meter?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Not to have panels. Yes, to be paid for what you send back. More than four in five Irish homes already have one.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Will I actually be paid?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Yes. Every supplier has to pay you for it, and more than 140,000 households are already getting it. How much depends on who you are with.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Is that money taxed?</h3><span class="icon"></span></summary>
-        <div class="faq-a">The first &euro;400 a year is not, up to the end of 2028. Above that it is taxed as normal income.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Is there a grant for a battery?</h3><span class="icon"></span></summary>
-        <div class="faq-a">No. There is one for panels, but not for batteries.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Can I charge my car from my panels?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Yes, if the sun is out while the car is plugged in. Sending electricity the other way &mdash; from the car back to the house or the grid &mdash; is not available in Ireland yet.</div>
-      </details>
-    </div>
-  </section>
-</main>
 
 <section class="pb-preview reveal" id="discover-your-property">
     <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to

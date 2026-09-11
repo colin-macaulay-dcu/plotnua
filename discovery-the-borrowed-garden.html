@@ -14,8 +14,8 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Share Your Spare Garden | PlotNua Discoveries</title>
-<meta name="description" content="Sharing a small part of an Irish garden with someone nearby who grows food: what you decide, what to agree, and why keeping your own access keeps it a licence rather than a tenancy.">
+<title>The Borrowed Garden | PlotNua Discoveries</title>
+<meta name="description" content="Lending a small part of an Irish garden to somebody nearby who wants to grow food: what you decide, what to agree, and why keeping your own access keeps it your garden.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-the-borrowed-garden.html">
 
@@ -31,8 +31,8 @@
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
-<meta property="og:title" content="Share Your Spare Garden | PlotNua Discoveries">
-<meta property="og:description" content="A corner of lawn nobody uses, and someone nearby with a ten-year wait for an allotment. It stays your garden throughout.">
+<meta property="og:title" content="The Borrowed Garden | PlotNua Discoveries">
+<meta property="og:description" content="A corner of lawn nobody uses, and somebody nearby who cannot get ground to grow on. It stays your garden throughout.">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -41,8 +41,8 @@
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Share Your Spare Garden | PlotNua Discoveries">
-<meta name="twitter:description" content="Lending a small part of your garden to a local grower. You choose the corner, the crop, the hours and the terms.">
+<meta name="twitter:title" content="The Borrowed Garden | PlotNua Discoveries">
+<meta name="twitter:description" content="Lending a small part of your garden to a local grower. You choose the corner, the crop, the hours and when it ends.">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -430,6 +430,287 @@
   @media (max-width:640px){
     .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
   }
+  /* ==================================================================
+     PORTED FROM THE FROZEN DISCOVERIES, lifted verbatim by the builder so
+     it cannot drift from the donors by transcription. The decision board,
+     the evidence layer and the early-journey panel come from DISC-014; the
+     no-crop Potential Asset frame comes from DISC-014's RULE 6; the .is-four
+     mechanism modifier comes from DISC-022, because this Discovery also has
+     four mechanism tiles rather than three. Still copied rather than shared:
+     the shared-stylesheet decision comes after the rollout, not during it.
+     ================================================================== */
+/* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+  /* ---- RESPONSIVE COLLAPSE. The donor's own 720px rule, lifted, plus the
+     two lines it could not have known about: .is-three is a HIGHER-SPECIFICITY
+     selector (0,2,0) than the donor's .rule-cards (0,1,0), so it must be named
+     explicitly or it would win and stay three-up on a phone. The 900px step
+     drops the three routes to two columns before they get too narrow to
+     read. ---- */
+  @media (max-width:900px){
+    .rule-cards.is-three{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:720px){
+    .rule-cards, .check-rows{ grid-template-columns:1fr; }
+    .rule-card{ padding:20px 20px 18px; }
+  }
+  @media (max-width:720px){
+    .rule-cards.is-three{ grid-template-columns:1fr; }
+  }
+
+  
+/* ---- HIDDEN CARS MODIFIER (DISC-022). One, and only one: there are FOUR
+     approaches here, not three, and they are genuinely different answers to
+     different constraints -- collapsing them to three would be a technical
+     inaccuracy, not a design simplification. .is-four is (0,2,0) against the
+     base (0,1,0), so it is named again in the stack queries or it would
+     outrank the collapse and stay 2-up on a phone. ---- */
+  .dq-adv-cols.is-four{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  @media (max-width:720px){
+    .dq-adv-cols.is-four{ grid-template-columns:1fr; gap:8px; }
+  }
+
+/* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
+     markup, unchanged behaviour.
+
+     These now sit slightly off the page too, but at the LOWEST elevation on
+     the board -- a 16px ambient against the opportunity's 64px. They read as
+     physical, tappable strips without ever competing with the centrepiece.
+     Opening one raises it a step and gives the evidence a contained reading
+     surface at a controlled measure.
+
+     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
+     so Planning, Tax and Insurance separate with no markup change. ---- */
+  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
+    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
+    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
+    box-shadow:0 1px 1px rgba(31,59,46,.04),
+               0 10px 16px -14px rgba(31,59,46,.30); }
+  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
+  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
+    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
+  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
+  .faq-item.is-inline[open]{ background:var(--paper);
+    border-color:rgba(31,59,46,.16);
+    border-left-color:rgba(31,59,46,.42);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 18px 30px -20px rgba(31,59,46,.36); }
+
+  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
+  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--soft); }
+  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
+  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
+
+  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(31,59,46,.22); }
+  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
+  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
+  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
+  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
+
+  /* the reading surface */
+  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
+    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
+    margin:0 0 20px; padding:22px 24px;
+    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
+  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
+
+  @media (hover:hover) and (pointer:fine){
+    .faq-item.is-inline{ transition:transform .22s ease-out,
+      box-shadow .22s ease-out, border-color .22s ease-out; }
+    .faq-item.is-inline:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -18px rgba(31,59,46,.36); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-item.is-inline{ transition:none; }
+    .faq-item.is-inline:hover{ transform:none; }
+  }
+  @media (max-width:720px){
+    .faq-item.is-inline{ padding:0 16px 0 14px; }
+    .faq-item.is-inline .faq-a{ padding:18px 18px; }
+  }
+
+  
+/* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
+     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
+     heading rather than a 40px one, and a STATIC status pill rather than a
+     control. It carries no href and no form, because the Driveway journey
+     does not exist yet. When it does, this panel and the closing panel take
+     the same governed route. ---- */
+  .pb-early{ background:var(--paper); padding:38px 7vw;
+    border-top:1px solid rgba(31,59,46,.10);
+    border-bottom:1px solid rgba(31,59,46,.10); }
+  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
+  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
+  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
+    max-width:44ch; margin:0 auto 18px; }
+  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:11px; font-weight:500; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--soft);
+    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
+  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
+    color:var(--soft); }
+  @media (max-width:720px){
+    .pb-early{ padding:30px 7vw; }
+  }
+
+  
+  /* ---- RULE 6 (DISC-014), for the annotated plate. This Discovery's
+     annotation is burned into the JPEG rather than drawn over it, so it
+     cannot re-register with a crop the way DISC-022's SVG overlay does.
+     The frame therefore takes its height from the plate at every width and
+     nothing is cropped -- which is also why the annotated plate is NOT the
+     hero: a hero is a fixed 88vh frame, and measured, the label is clipped
+     at 768 and below. ---- */
+  .imagine-photo.pa-frame{ height:auto; min-height:0; }
+  .imagine-photo.pa-frame img{ height:auto; }
+  @media (max-width:820px){
+    .imagine-photo.pa-frame::before,
+    .imagine-photo.pa-frame::after{ height:18px; }
+    .imagine-photo.pa-frame .caption{ padding:26px 8vw 20px; }
+  }
 </style>
 </head>
 <body>
@@ -448,190 +729,231 @@
 </a>
 
 <header class="d-hero">
-  <img id="dHeroImg" class="on" src="assets/img/e5ecf61c22bb13db.jpg" alt="An Irish back garden with raised vegetable beds along one side, a grower tending them, and the homeowner reading on the patio by the house.">
+  <img id="dHeroImg" class="on" src="assets/img/faeb58a1d6a8ed1a.jpg" alt="An Irish back garden with raised timber beds, gravel paths, herbs and vegetables occupying one side, and the lawn and patio unchanged.">
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
-    <h1>Share Your Spare Garden</h1>
-    <p class="subtitle">A corner of it grows food. The rest of it is exactly as it was.</p>
-    <p class="intro">Somebody within a few streets of you is on a waiting list for ground like yours.</p>
+    <h1>The Borrowed Garden</h1>
+    <p class="subtitle">A corner of your garden could be exactly what somebody nearby is looking for.</p>
+    <p class="intro">Somebody a few streets away may be looking for ground to grow on.</p>
   </div>
 </header>
 
+<section class="pb-early reveal" id="early-property-check">
+  <!-- EARLY JOURNEY ENTRY. FUTURE variant: no Borrowed Garden journey exists,
+       so no link, no form, no disabled control, and it routes nowhere. -->
+  <div class="pb-early-inner">
+    <h2>Could this work for your garden?</h2>
+    <p>PlotNua is designing a property check for this Discovery.</p>
+    <span class="pb-early-status">This property check is being prepared</span>
+    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
+  </div>
+</section>
+
 <section class="spark reveal">
-  <p>Most lawns are mown far more often than they are used.</p>
+  <p>The hardest thing to find, if you want to grow food, is somewhere to do it.</p>
 </section>
 
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">Why This Discovery?</div>
-    <h2>The demand is real, and it is close by.</h2>
-    <p>Council allotment waiting lists in Ireland run from one to ten years. In Dublin, more than a million people share fewer than four hundred council plots across four local authorities, and several waiting lists have simply stopped taking names.</p>
-    <p>Meanwhile a great deal of good, sheltered, south-facing ground sits behind ordinary houses, cut every fortnight and walked across on the way to the bins.</p>
-  </section>
+    <div class="kicker">The Opportunity</div>
+    <h2>What if the quiet corner was the part somebody needed?</h2>
+    <p>Most gardens have a corner that is barely used. Somebody nearby may have been looking for exactly that.</p>
 
+    <!-- 1 · THE CONTRAST. The page's single unbroken surface and highest
+         elevation. Left figure: the homeowner's routine. Right figure: the
+         verified scarcity. Neither is money, and the right-hand column keeps
+         the reassurance beside the revelation, because the first question a
+         homeowner asks is whether they are giving away their garden. -->
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">You have the ground</span>
+        <span class="dq-fig">A small part of your garden may barely be used.</span>
+        <p class="dq-earn-caveat">You do not have to give up the garden. You choose the part you are comfortable sharing, you decide whether to start at all, and it stays yours to end.</p>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">Somebody nearby may need it</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact">For somebody without a garden, it could be somewhere to grow.</span></li>
+          <li><span class="dq-fact">They may live only a few streets away.</span>
+              <span class="dq-note">Neither of you currently knows the other exists.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EVIDENCE, first-party and dated. The earlier version of this page
+         carried a Dublin plot-count figure taken from a third party's summary.
+         It was false by more than threefold -- Fingal alone publishes about
+         900 -- and it is retired, not paraphrased. Councils are
+         quoted here directly, and no national or Dublin-wide total is
+         constructed, because no council publishes one. -->
+    <p class="dq-note">Fingal County Council manages approximately 900 allotments across four sites, and did not accept new applications for Powerstown or Turvey for the 2026 season because those waiting lists were full. D&uacute;n Laoghaire-Rathdown closed both of its sites &mdash; 136 plots at Goatstown, 95 at Shankill &mdash; to new applications in September 2024.</p>
+
+    <!-- 2 · HOW IT WORKS. Four tiles carrying the six things, above the
+         advisory in elevation, because this is the thing itself rather than
+         a condition on it. The homeowner decides every one of them. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Six things to settle between you &mdash; starting with the part you are willing to share</span>
+      <ul class="dq-adv-cols is-four">
+        <li>
+          <span class="dq-adv-label">Which part</span>
+          <span class="dq-fact">You decide what part of the garden you are comfortable sharing.</span>
+          <span class="dq-note">Together you agree the practical boundaries, access and how the space will work. A useful growing space is smaller than people expect, and it is worth saying early if you would rather nothing permanent went up.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Coming and going</span>
+          <span class="dq-fact">Agreed hours, and an agreed way in.</span>
+          <span class="dq-note">Side access matters more than anything here. If the only route is through the kitchen, choose a different corner.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">How long</span>
+          <span class="dq-fact">A growing season is the natural unit.</span>
+          <span class="dq-note">Agree the notice either of you gives, and what happens to anything still growing.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Produce and costs</span>
+          <span class="dq-fact">A share of the harvest is the commonest arrangement.</span>
+          <span class="dq-note">Agree who provides compost and timber, and whether there is an outside tap.</span>
+        </li>
+      </ul>
+    </div>
+
+  </section>
 </main>
 
-<section class="imagine-photo reveal">
-  <img src="assets/img/59d566ff7c3a50e8.jpg" alt="The same Irish back garden before anything is planted: an open lawn running from the patio to the boundary, annotated by PlotNua as a potential asset.">
+<section class="imagine-photo pa-frame reveal">
+  <!-- POTENTIAL ASSET. The annotation is burned into this JPEG, so the plate
+       carries .pa-frame and takes its height from the image at every width.
+       Nothing is cropped: not the label, not the leader, not the dot, and not
+       the lawn the whole picture is about. This is why it is not the hero. -->
+  <img src="assets/img/59d566ff7c3a50e8.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="The same Irish back garden before anything is planted: an open lawn running from the patio to the boundary, annotated by PlotNua as a potential asset.">
   <div class="caption"><p>Cut every fortnight. Used twice a year.</p></div>
 </section>
 
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">What It Actually Is</div>
-    <h2>A corner of the garden, not the garden.</h2>
-    <p>Someone living nearby grows vegetables on a part of your garden that you agree. You keep the rest, you keep the use of it, and you keep the key to the side gate.</p>
-    <ul class="planning-conditions">
-      <li><strong>You pick the ground.</strong> A strip along one boundary, the far corner, the patch behind the shed. It is a decision, not a negotiation.</li>
-      <li><strong>You keep walking through it.</strong> The garden does not divide.</li>
-      <li><strong>It ends when you decide it ends.</strong> A season, a year, or for as long as it suits you both.</li>
-      <li><strong>Nobody has to be paid.</strong> Money is one option among several.</li>
+    <div class="kicker">Before You Agree</div>
+    <h2>Three things worth settling first.</h2>
+
+    <!-- 3 · ADVISORY. Three tiles at the quiet elevation. Money is one of
+         three and deliberately last: this is not an earnings Discovery, and
+         plenty of these arrangements involve no money at all. Everything
+         procedural sits in the drawers. -->
+    <ul class="dq-qual">
+      <li>
+        <span class="dq-cat">Access</span>
+        <span class="dq-fact">Keep using the garden, and it stays your garden.</span>
+        <span class="dq-note">What matters is how the arrangement actually works rather than what it is called. Walking through your own ground is the protection.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Insurance</span>
+        <span class="dq-fact">Tell your insurer before anyone starts.</span>
+        <span class="dq-note">Cover for visitors is standard on an Irish household policy, but somebody growing food in your garden is not an ordinary social visit. One phone call settles it.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Money</span>
+        <span class="dq-fact">Payment is optional, and it is income.</span>
+        <span class="dq-note">Plenty of arrangements involve no money at all. If you do take a seasonal payment, it is income and is taxable in the normal way.</span>
+      </li>
     </ul>
 
-    <div class="planning-sub">How involved you want to be</div>
-    <ul class="planning-conditions">
-      <li><strong>Barely at all.</strong> The grower comes at agreed times, does their own work, and you carry on as you were.</li>
-      <li><strong>Or properly.</strong> Plenty of homeowners end up in the beds themselves.</li>
-    </ul>
-    <p>You decide which, and the answer is allowed to change.</p>
+    <details class="faq-item is-inline">
+      <summary><h3>Finding somebody, and what to write down</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Where growers already are.</strong> Community gardens, local growing groups and council allotment lists are where people looking for ground are already looking.<br><br><strong>An early Irish attempt at the same problem.</strong> Homegrown.ie is a free Irish service that registers growers and garden owners separately and introduces them only when both sides agree, with exact addresses kept private. It is early and unproven: on its own published figures it had 78 grower requests, three offers of space and no completed matches, with demand last reviewed in August 2026, and it is still recruiting its first ten hosts. The insurance cover it hopes to arrange is not in place. Worth knowing about, not yet a working route, and PlotNua has no relationship with it.<br><br><strong>Write it down anyway.</strong> Nothing obliges you to, but the six things you agreed, on one page, signed by both of you, costs nothing, prevents most disagreements, and puts on record that this is permission to use ground rather than a letting.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>Access, and telling your insurer</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>The distinction that matters.</strong> A letting gives the other party the right to exclude you from the ground. Permission to use a part of a garden you still walk through is a different thing, and Irish courts look at how an arrangement works in practice rather than at the words on the page. So the protection is not a form of words &mdash; it is continuing to use your own garden.<br><br><strong>In practice.</strong> Keep the route through, keep the rest of the garden in normal use, and agree visiting hours rather than handing over a key to the whole property. None of this is a guarantee of any particular legal classification, and nothing here is legal advice.<br><br><strong>Your insurer.</strong> Liability to visitors is standard on an Irish household policy, but Allianz states plainly that visitors to your home for business purposes are not covered on a standard home policy, and money changing hands is exactly the sort of detail an insurer will want to know about. Ask before anyone starts, not after.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>The garden itself, and getting it back</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Growing is not development.</strong> Growing vegetables in a garden is not development, so no planning question arises. Anything built &mdash; a shed, a polytunnel &mdash; is treated exactly as if you had put it there yourself, and the usual rules apply.<br><br><strong>Beds lift.</strong> Raised beds sit on top of the ground and can be taken away. Ask for beds rather than dug ground if you want the lawn back, and agree at the start who restores the area.<br><br><strong>Ending it.</strong> A growing season is the natural unit. Agree the notice either of you gives and what happens to anything still in the ground, and the end of the arrangement is a conversation rather than a dispute.</div>
+    </details>
+
   </section>
-
 </main>
 
 <section class="imagine-photo reveal">
-  <img src="assets/img/faeb58a1d6a8ed1a.jpg" alt="The same garden with raised timber beds, gravel paths, herbs, flowers and vegetables occupying one side, the lawn and patio unchanged.">
-  <div class="caption"><p>The lawn is still there. So is the washing line.</p></div>
-</section>
-
-<main class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">The Arrangement</div>
-    <h2>Six things to settle, and you decide all six.</h2>
-    <div class="practical-group">
-      <div class="practical-item">
-        <h3>Which part, and how big</h3>
-        <p>Mark it out before anyone starts. A bed or two is a real growing space; most people overestimate how much ground a household needs.</p>
-      </div>
-      <div class="practical-item">
-        <h3>What may be grown</h3>
-        <p>Vegetables and herbs are the usual answer. Say early if you would rather not have a polytunnel or anything permanent.</p>
-      </div>
-      <div class="practical-item">
-        <h3>When they come, and how they get in</h3>
-        <p>Set hours and a route. Side access matters more than anything else here; if the only way in is through the kitchen, choose a different corner.</p>
-      </div>
-      <div class="practical-item">
-        <h3>How long, and how it ends</h3>
-        <p>A growing season is the natural unit. Agree the notice either of you gives, and what happens to plants still in the ground.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Water, and small costs</h3>
-        <p>An outside tap or a water butt matters more than it sounds. Agree who provides compost and timber.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Produce, and payment if any</h3>
-        <p>A share of the harvest is commonest. Some hosts take a seasonal payment, some take help with the rest of the garden, some take neither. Any money you receive is income and is taxable in the normal way.</p>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<section class="imagine-photo reveal">
-  <img src="assets/img/75f721f0513e4f37.jpg" alt="A grower crouching beside the raised beds picking tomatoes into a basket, with the homeowner reading on the patio in the background.">
+  <!-- HUMAN / POSSIBILITY. What the arrangement actually looks like on an
+       ordinary afternoon: one person, working, and the homeowner where they
+       always were. -->
+  <img src="assets/img/75f721f0513e4f37.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="A grower crouching beside the raised beds picking tomatoes into a basket, with the homeowner reading on the patio in the background.">
   <div class="caption"><p>One person, a few hours a week, a basket at the end of it.</p></div>
 </section>
 
 <main class="article">
 
   <section class="article-section reveal">
-    <div class="kicker">Before You Agree</div>
-    <h2>Two things worth understanding first.</h2>
-    <div class="considerations">
-      <p><strong>Keep your access, and you keep your garden.</strong> Irish law distinguishes a lease from a licence by <em>exclusive possession</em>. A lease gives the other party the right to exclude you; a licence is permission to use ground you still share, and shared possession means no tenancy arises. Courts look at how an arrangement works rather than what it is called, so the protection is not a form of words &mdash; it is continuing to use your own garden.</p>
-      <p><strong>Tell your insurer.</strong> Liability to visitors is standard on an Irish household policy, but Allianz states plainly that <em>visitors to your home for business purposes are not covered on a standard home policy</em>. Someone growing food in your garden, particularly if money changes hands, is not an ordinary social visit. One phone call settles it.</p>
+    <div class="kicker">And afterwards</div>
+    <h2>Three people are better off.</h2>
+    <!-- 4 · THE PAYOFF, at the quietest elevation on the page: no tile, no
+         background, no shadow, one hairline rule. It must not compete with
+         the contrast surface above. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">What everyone gets</span>
+      <ul class="dq-rows">
+        <li><span class="dq-fact"><strong>The grower.</strong> Ground now rather than a place on a list.</span></li>
+        <li><span class="dq-fact"><strong>You.</strong> A garden that is looked after, more interesting to stand in, and producing something.</span>
+            <span class="dq-note">The vegetables can be the smaller half of it.</span></li>
+        <li><span class="dq-fact"><strong>The road.</strong> Ground that produced nothing is producing something.</span></li>
+      </ul>
     </div>
-  </section>
 
+    <p>Nothing has to continue past one season. But the beds are built by then, and next spring is a much shorter conversation.</p>
+  </section>
 </main>
 
 <section class="imagine-photo reveal">
-  <img src="assets/img/ba3fbcc7a04da889.jpg" alt="The same garden in evening light with the beds in full growth and a basket of vegetables on the patio beside the homeowner.">
+  <!-- OUTCOME. -->
+  <img src="assets/img/ba3fbcc7a04da889.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="The same garden in evening light with the beds in full growth and a basket of vegetables on the patio beside the homeowner.">
   <div class="caption"><p>The garden did not get smaller. It got busier.</p></div>
 </section>
 
 <main class="article">
 
-  <section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Common questions.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary><h3>How would I find somebody?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Community gardens, local growing groups and council waiting lists are where people already are. Homegrown.ie, an Irish listings pilot launched in 2026, matches hosts with growers directly &mdash; it is new, and had recorded no completed match at the time of writing.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Do we need something in writing?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Not legally, but write it down anyway. The six things you agreed, on one page, signed by both. It costs nothing, prevents most disagreements, and puts on record that this is permission to use ground rather than a letting.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Will it damage the garden?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Raised beds sit on top of the ground and can be lifted. Ask for beds rather than dug ground if you want the lawn back, and agree who restores the area.</div>
-      </details>
-      <details class="faq-item">
-        <summary><h3>Does anyone need permission for this?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Growing vegetables in a garden is not development, so no planning question arises. Anything built &mdash; a shed, a polytunnel &mdash; is treated the same as if you had put it there yourself.</div>
-      </details>
-    </div>
-  </section>
-
   <section class="article-section reveal">
-    <div class="kicker">What Everyone Gets</div>
-    <h2>Three people are better off.</h2>
-    <ul class="planning-conditions">
-      <li><strong>The grower gets ground now,</strong> rather than in eight years, and within walking distance instead of across the city.</li>
-      <li><strong>You get a garden that is looked after,</strong> more interesting to stand in, and producing something. Most hosts report the vegetables as the smaller half of it.</li>
-      <li><strong>The road gets a bit more food and a few more conversations.</strong> Ground that produces nothing is the only thing anybody loses.</li>
-    </ul>
-    <p>Nothing about this has to continue past one season. But the beds are built by then, the grower knows the ground, and next spring is a much shorter conversation.</p>
+    <div class="kicker">Where this could go</div>
+    <h2>What if PlotNua could help you find each other?</h2>
+    <p>Starting with an Eircode, a future version of PlotNua could identify whether a property has potentially shareable growing space, and show that people nearby are looking for somewhere to grow.</p>
+    <p>You would decide whether to explore it. If both sides were interested, PlotNua could help make a safe introduction.</p>
+    <p class="dq-note">This matching service is not live yet.</p>
   </section>
-
-  <section class="article-section reveal">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Where this is going.</h2>
-    <p>Everything above can be arranged today between two people who have found each other. Finding each other is the hard part, and that is where PlotNua is going. None of it exists yet.</p>
-    <ul class="planning-conditions">
-      <li><strong>Knowing who is nearby.</strong> A homeowner has no way of knowing that somebody four streets away has waited six years for a plot. That person has no way of knowing about the lawn.</li>
-      <li><strong>Starting with your Eircode.</strong> Future versions could show you growers looking for space near you, community gardens and food initiatives already running in your area, and the gardening experience sitting on your own road.</li>
-    </ul>
-    <p class="planning-note">This is part of the same long-term idea as our other Discoveries: connecting what a property already has with the people nearby who could use it.</p>
-  </section>
-
 </main>
 
 <section class="pb-preview reveal" id="discover-your-property">
-    <!-- FOUNDER CORRECTION — this was a working journey with everything
-         switched off: a headline inviting the homeowner to start, a subhead
-         telling them to enter an Eircode, a DISABLED Eircode field they could
-         click into and not type in, and three present-tense boxes describing
-         a service this page cannot yet provide.
-         It now says one true thing and offers four ways onward. The disabled
-         input is gone rather than greyed out — a control a homeowner cannot
-         use is worse than no control at all. -->
+    <!-- CLOSING JOURNEY PANEL. Prepared, not live. No form, no disabled
+         control, no matching. The three stages are described so the homeowner
+         knows what is coming; none of them is a control, and the third is an
+         introduction between two households rather than a route to a trade.
+         This Discovery has no specialist stage and must never grow one. -->
     <div class="pn-wordmark">PlotNua</div>
     <h2 class="pb-headline">This journey is being prepared</h2>
-    <!-- FINAL UX — the founder's approved sentence, used verbatim. It
-         supersedes the Phase A wording, which named the number of questions:
-         accurate, but still a description of the form rather than of the
-         opportunity. This puts the property first and the questionnaire
-         nowhere. "There is plenty to explore" is kept, as it has been
-         throughout. -->
-    <p class="pb-subhead">When this Discovery is ready, you&rsquo;ll be able to explore whether
-      it could work for your property. In the meantime, there is plenty to explore.</p>
+    <p class="pb-subhead">When it is ready, this check will look at the ground you have and whether anyone
+      nearby is looking. In the meantime, there is plenty to explore.</p>
+
+    <div class="pb-steps">
+      <div class="pb-step">
+        <div class="n">Property check</div>
+        <p>Which part could work, how somebody reaches it, and what you keep.</p>
+      </div>
+      <div class="pb-step">
+        <div class="n">Who is nearby</div>
+        <p>Whether anyone within walking distance is looking, and what is already running locally.</p>
+      </div>
+      <div class="pb-step">
+        <div class="n">Introduction</div>
+        <p>Only if both sides want one. Nothing is shared before that.</p>
+      </div>
+    </div>
+
+    <p class="pb-note">None of this is running yet, and nothing on this page sends your details anywhere.</p>
 
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore What Could You Build in Your Garden? &rarr;</a>
