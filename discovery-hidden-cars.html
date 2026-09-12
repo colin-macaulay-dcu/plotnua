@@ -874,6 +874,48 @@
   @media (max-width:640px){
     .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
   }
+
+  /* ---- JOURNEY BRIDGE + CONTINUE ROUTE (Hidden Cars pilot).
+     The Garden prototype's grammar, not its component. Hidden Cars has one
+     future route, so there are no choice cards here and nothing to press --
+     the bridge introduces a STATUS, and the continue route is the only thing
+     on this stretch of page that can actually be clicked.
+
+     Scoped to .pn-* names that exist nowhere else on this page. Nothing
+     selects a bare .pb-early or .pb-preview, so the panel's own styling and
+     the closing canonical panel are untouched. ---- */
+  .pn-bridge{ background:var(--cream); padding:7vh 7vw 0; text-align:center; }
+  .pn-bridge-h{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .pn-bridge-p{ font-family:'Work Sans',sans-serif; font-size:13px;
+    line-height:1.7; color:var(--soft); margin:8px auto 0; max-width:52ch; }
+
+  /* The status panel sits in the bridge's cream field rather than opening a
+     new one, so cue and status read as one moment. Only a .pb-early that
+     FOLLOWS a bridge is selected; a bare one is not. */
+  .pn-bridge + .pb-early{ background:var(--cream); padding:3vh 7vw 0;
+    border-top:none; }
+
+  /* The continue route, at the weight approved on the Garden prototype:
+     visible, dark, semibold, 44px hit area, clearly clickable, no fill, no
+     new colour. Subordinate to the status surface above it. */
+  .pn-continue{ background:var(--cream); padding:1vh 7vw 7vh;
+    text-align:center; }
+  .pn-continue a{ display:inline-flex; align-items:center; gap:9px;
+    min-height:44px; padding:9px 4px;
+    font-family:'Work Sans',sans-serif; font-size:15.5px; font-weight:600;
+    line-height:1.5; color:var(--ink); text-decoration:none;
+    border-bottom:1.5px solid rgba(31,59,46,.38);
+    transition:border-color .2s ease, gap .2s ease; }
+  .pn-continue a span{ font-size:1.05em; line-height:1; }
+  .pn-continue a:hover, .pn-continue a:focus-visible{
+    border-bottom-color:rgba(31,59,46,.75); gap:12px; }
+
+  @media (max-width:720px){
+    .pn-bridge{ padding:6vh 7vw 0; }
+    .pn-continue{ padding:1vh 7vw 6vh; }
+  }
+
 </style>
 </head>
 <body>
@@ -926,18 +968,6 @@
     <p class="intro">What if they could both fit?</p>
   </div>
 </header>
-
-
-<section class="pb-early reveal" id="early-property-check">
-  <!-- EARLY JOURNEY ENTRY. FUTURE variant: no Hidden Cars journey exists, so
-       no link, no form, no disabled control, and it routes nowhere. -->
-  <div class="pb-early-inner">
-    <h2>Could this work for your property?</h2>
-    <p>PlotNua is designing a property check for this Discovery.</p>
-    <span class="pb-early-status">This property check is being prepared</span>
-    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
-  </div>
-</section>
 
 <main class="article">
 
@@ -1008,6 +1038,37 @@
 
   </section>
 </main>
+
+<!-- THE BRIDGE. The revelation has landed: two cars, one space, and the
+     systems that make it possible. Only now is it honest to raise the
+     homeowner's own frontage. Deliberately not a section -- no kicker, no
+     card, no button. It states what PlotNua is DOING, not what the homeowner
+     can do, because the check is not live. -->
+<section class="pn-bridge reveal">
+  <p class="pn-bridge-h">Could your frontage have more potential?</p>
+  <p class="pn-bridge-p">PlotNua is preparing a property check for this Discovery.</p>
+</section>
+
+<!-- EARLY JOURNEY ENTRY, MOVED from between the hero and the revelation and
+     reduced to its truthful core. The bridge above now asks the question its
+     heading asked and states what its paragraph stated, and the continue route
+     below does what the "more" line described in prose. What is left is the
+     status,
+     which is the only part that was ever load-bearing. FUTURE variant,
+     unchanged in substance: no link, no form, no disabled control, routes
+     nowhere. -->
+<section class="pb-early reveal" id="early-property-check">
+  <div class="pb-early-inner">
+    <span class="pb-early-status">This property check is being prepared</span>
+  </div>
+</section>
+
+<!-- THE CONTINUE ROUTE. "Keep exploring", not "Not ready yet? Keep exploring":
+     there is no live action here to decline. A plain anchor to a plain id --
+     the page already sets html{scroll-behavior:smooth}, so no JavaScript. -->
+<section class="pn-continue reveal">
+  <a href="#and-afterwards">Keep exploring <span aria-hidden="true">&darr;</span></a>
+</section>
 
 <section class="imagine-photo reveal">
   <!-- IMAGE 02 (was IMAGE 01) - the lift, moved out of the hero to sit with
@@ -1109,7 +1170,7 @@
 
 <main class="article">
 
-  <section class="article-section reveal">
+  <section class="article-section reveal" id="and-afterwards">
     <div class="kicker">And afterwards</div>
     <h2>There can be other benefits too.</h2>
     <p>They are real, but they are not the reason. The reason is that the cars fit.</p>
