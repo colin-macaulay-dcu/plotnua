@@ -905,6 +905,18 @@
     transition:color .3s ease, border-color .3s ease; }
   .d-all a:hover{ color:#fff; border-color:rgba(255,255,255,.6); }
 
+  /* ---- the Atlas section's onward route. The .d-all COMPONENT is reused
+     unchanged -- same type, size, letter-spacing, uppercase and underline --
+     but .d-all a is coloured for .discover, which is var(--ink). On the
+     Atlas section's var(--cream) that colour measures 1.87:1 and its #fff
+     hover 1.15:1, so only the colour is re-scoped here, to tokens this
+     section already uses: var(--accent) at 5.17:1, var(--ink) at 10.60:1.
+     The stylesheet already overrides this component by context one line
+     above (.discover .d-all); this is the same move, not a new component. */
+  .atlas .d-all{ margin-top:44px; text-align:left; }
+  .atlas .d-all a{ color:var(--accent); border-bottom-color:rgba(79,107,74,.35); }
+  .atlas .d-all a:hover{ color:var(--ink); border-bottom-color:rgba(31,59,46,.55); }
+
   /* ---- closing statement — quiet bridge between Your Plot and the
      footer, so the page settles rather than stopping abruptly. ---- */
   .closing-line{ padding:18vh 7vw 16vh; text-align:center; background:var(--paper); }
@@ -1336,6 +1348,7 @@
           Atlas expands.</p>
       </div>
     </div>
+    <div class="d-all"><a href="discoveries.html">Explore the Discovery Library &rarr;</a></div>
   </div>
 </section>
 
