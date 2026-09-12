@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What Could You Build in Your Garden? | PlotNua Discoveries</title>
-<meta name="description" content="A separate building at the end of your own garden: an office, a studio, a room for the kids &mdash; or, since July 2026, a detached home of 32 to 45 m&sup2; built without planning permission. What the rules are, and whether your garden has room.">
+<meta name="description" content="A separate building at the end of your own garden: an office, a studio, a room for the kids &mdash; or, since July 2026, a detached home of 32 to 45 m&sup2; as exempted development. What the rules are, and whether your garden has room.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-living-in-the-garden.html">
 
@@ -646,6 +646,211 @@
   @media (max-width:720px){
     .gb-choose{ grid-template-columns:1fr; }
   }
+/* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
+     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
+     Fraunces, Work Sans, tints of the brand green.
+
+     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
+     advisory are SETS OF TILES -- discrete objects you could pick up. The
+     earnings feature is the one UNBROKEN surface, and the only one that
+     dominates. Elevation supports that reading rather than carrying it:
+       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
+       >  evidence drawers 16px
+
+     Type roles are shared across every zone so the board stays one object:
+       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
+       .dq-note Work Sans/--soft ---- */
+
+  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
+     rule spans the whole stage, so they still read as one qualification step
+     rather than three unrelated cards. */
+  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    border-top:2px solid rgba(31,59,46,.55); background:none;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:none; border-radius:0; }
+  .dq-qual > li{ margin:0; padding:20px 22px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.09);
+    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32); }
+  .dq-qual > li:first-child{ padding-left:22px; }
+  .dq-qual > li:not(:first-child){ padding-left:22px; }
+
+  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
+    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:12px; }
+  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
+  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
+    font-size:12.5px; line-height:1.7; color:var(--soft); }
+
+  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
+  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
+    gap:1px; background:rgba(31,59,46,.15);
+    border:1px solid rgba(31,59,46,.15);
+    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
+    box-shadow:0 2px 4px rgba(31,59,46,.07),
+               0 30px 64px -30px rgba(31,59,46,.42); }
+  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
+  .dq-use{ background:var(--cream); padding:36px 30px 40px;
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
+
+  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
+    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
+
+  /* the two reported examples: separated by a rule, with real air around
+     them. Never boxed -- boxing them would make them price cards. */
+  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
+  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
+    border-top:1px solid rgba(31,59,46,.22); }
+  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
+    border-left:1px solid rgba(31,59,46,.13); }
+  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
+    letter-spacing:-.022em; color:var(--ink); }
+  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
+    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
+
+  /* the mechanism steps down in type as well as width */
+  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
+  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .dq-use .dq-fact{ font-size:15px; }
+  .dq-use .dq-note{ font-size:12px; }
+
+  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
+  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
+    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
+    box-shadow:none; }
+  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
+  .dq-adv-cols{ list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
+    background:var(--cream); border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34); }
+  .dq-adv-cols > li:first-child{ padding-left:24px; }
+  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .dq-adv .dq-fact{ font-size:15px; }
+
+  /* MOTION — pointer devices only; tiles lift individually, the feature
+     lifts as one object. */
+  @media (hover:hover) and (pointer:fine){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
+      transition:transform .22s ease-out, box-shadow .22s ease-out,
+                 border-color .22s ease-out; }
+    .dq-qual > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.14);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 16px 26px -16px rgba(31,59,46,.38); }
+    .dq-opp:hover{ transform:translateY(-3px);
+      border-color:rgba(31,59,46,.20);
+      box-shadow:0 3px 6px rgba(31,59,46,.08),
+                 0 40px 76px -30px rgba(31,59,46,.48); }
+    .dq-adv-cols > li:hover{ transform:translateY(-2px);
+      border-color:rgba(31,59,46,.16);
+      box-shadow:0 2px 4px rgba(31,59,46,.06),
+                 0 20px 32px -18px rgba(31,59,46,.40); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
+    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
+  }
+
+  @media (max-width:900px){
+    .dq-opp{ grid-template-columns:1fr; }
+    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+    .dq-earn{ padding:32px 30px 34px; }
+  }
+  @media (max-width:720px){
+    .dq-qual{ grid-template-columns:1fr; gap:8px; }
+    .dq-qual > li{ padding:18px 20px 20px; }
+    .dq-earn{ padding:26px 22px 28px; }
+    .dq-use{ padding:26px 22px 28px; }
+    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
+    .dq-figs > li{ padding:22px 0 4px; }
+    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
+      border-top:1px solid rgba(31,59,46,.13); }
+    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols > li{ padding:18px 20px 20px; }
+  }
+
+  /* GARDEN ROOM / GARDEN HOME. Two routes, so the qualification tier runs at
+     two columns rather than three. .is-two is (0,2,0) against the (0,1,0)
+     base, so the stack query below has to name it again or the two-column
+     grid survives the stack. */
+  .dq-qual.is-two{ grid-template-columns:repeat(2,1fr); }
+  @media (max-width:720px){
+    .dq-qual.is-two{ grid-template-columns:1fr; }
+  }
+
+
+  /* ---- THE UPPER CHECK (garden Discovery, pattern candidate).
+
+     A compact decision component, not a landing page: cue, question, two
+     choices, disclaimer, escape route. The two choices are deliberately the
+     tallest and heaviest things in it -- everything above them steps down so
+     that they, and not the heading, are the action surface.
+
+     SCOPING. Every rule below is either a .pn-* class of its own or carries
+     .is-compact. Nothing here selects a bare .pb-preview, .pb-headline,
+     .gb-choose or .pb-note, so the canonical closing panel on this page and
+     every journey panel on every other Discovery are untouched. That is also
+     what makes the component portable: it describes itself rather than
+     depending on what sits before it. ---- */
+
+  .pn-bridge{ background:var(--cream); padding:7vh 7vw 0; text-align:center; }
+  .pn-bridge-h{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
+  .pn-bridge-p{ font-family:'Work Sans',sans-serif; font-size:13px;
+    line-height:1.7; color:var(--soft); margin:8px auto 0; max-width:52ch; }
+
+  /* the panel, compact. Padding down from 12vh to 5vh/4vh, and the hairline
+     dropped because the bridge above is the same cream field. */
+  .pb-preview.is-compact{ padding:5vh 7vw 4vh; border-top:none; }
+
+  /* the question steps down from clamp(26px,5vw,40px) so it introduces the
+     choices rather than behaving like a second hero line. Wider measure so it
+     sits on one line instead of stacking to three. */
+  .pb-preview.is-compact .pb-headline{ font-size:clamp(20px,2.2vw,26px);
+    line-height:1.3; font-weight:500; max-width:30ch; margin:0; }
+
+  .pb-preview.is-compact .gb-choose{ margin:22px auto 0; }
+
+  .pb-preview.is-compact .pb-note{ margin:18px auto 0; font-size:13px;
+    line-height:1.7; max-width:48ch; }
+
+  .pn-continue{ background:var(--cream); padding:0 7vw 7vh; text-align:center; }
+  /* SECONDARY ACTION, not small print. Larger, darker and semibold, with a
+     44px hit area and a rule heavy enough to read as clickable. Still plainly
+     below the cards: Work Sans 15.5px with no fill and no box, against
+     Fraunces 600 at 20px inside a filled, bordered tile. No new colour and no
+     new icon -- --ink and the green tint are already on the page, and the
+     arrow is the one already in the markup. */
+  .pn-continue a{ display:inline-flex; align-items:center; gap:9px;
+    min-height:44px; padding:9px 4px;
+    font-family:'Work Sans',sans-serif; font-size:15.5px; font-weight:600;
+    line-height:1.5; color:var(--ink); text-decoration:none;
+    border-bottom:1.5px solid rgba(31,59,46,.38);
+    transition:border-color .2s ease, gap .2s ease; }
+  .pn-continue a span{ font-size:1.05em; line-height:1; }
+  .pn-continue a:hover, .pn-continue a:focus-visible{
+    border-bottom-color:rgba(31,59,46,.75); gap:12px; }
+
+  @media (max-width:720px){
+    .pn-bridge{ padding:6vh 7vw 0; }
+    .pb-preview.is-compact{ padding:4vh 7vw 3vh; }
+    .pn-continue{ padding:0 7vw 6vh; }
+  }
+
 </style>
 </head>
 <body>
@@ -685,23 +890,131 @@
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
     <h1>What Could You Build in Your Garden?</h1>
-    <p class="subtitle">An office, a studio, a room for the kids &mdash; or, since 2026, a home.</p>
-    <p class="intro">The house filled up long before the property did.</p>
+    <p class="subtitle">The house filled up long before the property did.</p>
+    <p class="intro">Pull the handle. That is the same garden.</p>
   </div>
 </header>
 
 <main class="article">
-  <!-- 1 · THE POSSIBILITY. One heading, one paragraph. This was two
-       sections making one point, and the hero has already shown the
-       homeowner the point being made. Everything the old copy explained
-       about off-site construction and the size of the Atlas catalogue is
-       either shown by the page or waiting on the other side of the
-       hand-off; none of it needs to be argued here. -->
+  <!-- 1 · THE DOMINANT SURFACE. The page's single unbroken surface and its
+       highest elevation, and the thing the old page never had at all. The
+       revelation is not that a new regulation exists. It is that the
+       homeowner has been measuring the wrong thing. -->
   <section class="article-section reveal">
-    <div class="kicker">The Possibility</div>
-    <h2>Your garden might have room for more.</h2>
-    <p>A corner of an ordinary back garden &mdash; flat already, and already yours &mdash;
-      could become a building of its own, without changing the house at all.</p>
+    <div class="kicker">The Opportunity</div>
+    <h2>What if the room you need is already inside the property line?</h2>
+    <p>Most of us measure the house. When its rooms run out, we think about the
+      house again.</p>
+
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">The house</span>
+        <span class="dq-fig">Is full.</span>
+        <p class="dq-earn-caveat">Every room already has a job.</p>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">The property</span>
+        <span class="dq-fig">Is not.</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact">A flat corner at the far end of the garden. Already
+                yours, already level, with nothing on it.</span>
+              <span class="dq-note">Ground is the one thing a full house cannot make
+                more of.</span></li>
+          <li><span class="dq-fact">A building there stands on its own.</span>
+              <span class="dq-note">Nothing about the house has to change.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- THE BRIDGE. The homeowner has just been shown that the house is full and
+     the property is not. Two things can honestly follow, and this says so in two
+     lines: check the address now, or read on. Deliberately not a section -- no
+     kicker, no h2, no card, no button. It shares the panel's cream field so the
+     cue and the action read as one moment. -->
+<section class="pn-bridge reveal">
+  <p class="pn-bridge-h">Ready to check your garden?</p>
+  <p class="pn-bridge-p">See what may be possible at your address now.</p>
+</section>
+
+<!-- UPPER JOURNEY PANEL. The same panel that closes the page, offered once
+     the Opportunity has landed: a homeowner who has just seen that the house is
+     full and the property is not can act on it here, without reading to the
+     end. It sits OUTSIDE the article wrapper because it is full-bleed, which is
+     the same reason the photo plates and the closing panel do. Copy, classes and
+     both destinations are identical to the closing instance; only the id is
+     absent, because "discover-your-property" is the site-wide anchor for this
+     route and belongs to the one panel that has always carried it. Prepared,
+     not live: neither route is a form, and neither reserves anything. -->
+<section class="pb-preview is-compact reveal">
+    <h2 class="pb-headline">What are you considering?</h2>
+
+    <ul class="gb-choose" role="list">
+      <li>
+        <a class="gb-choose-btn is-home" href="your-plot.html?discovery=residential">
+          <span class="gb-choose-name">A home</span>
+          <span class="gb-choose-sub">Somebody will live there. The residential conditions apply.</span>
+        </a>
+      </li>
+      <li>
+        <a class="gb-choose-btn" href="your-plot.html?discovery=garden-room">
+          <span class="gb-choose-name">A room</span>
+          <span class="gb-choose-sub">An office, studio, kids&rsquo; space, extra room, gym or other
+            non-residential garden space.</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="pb-note">Nothing is bought or reserved here. This is an early property check, not
+      planning permission.</p>
+  </section>
+
+<!-- THE CONTINUE ROUTE. The other half of the choice, given equal standing by
+     being offered at all. A plain anchor to a plain id: the page already sets
+     html{scroll-behavior:smooth}, so this needs no JavaScript. -->
+<section class="pn-continue reveal">
+  <a href="#the-same-building">Not ready yet? Keep exploring <span aria-hidden="true">&darr;</span></a>
+</section>
+
+<main class="article">
+
+  <!-- 2 · THE THREE POSSIBILITIES. Three, not six. The old list was the
+       residue of five Discoveries merged into this one, and it diluted the
+       single thing the page is now for. Advisory elevation: clearly below
+       the surface above, clearly above the drawers below. -->
+  <section class="article-section reveal" id="the-same-building">
+    <div class="kicker">The Same Building</div>
+    <h2>One building. Very different lives.</h2>
+    <p>What changes is not the building. It is what you need it for.</p>
+
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Three of many</span>
+      <ul class="dq-adv-cols">
+        <li>
+          <span class="dq-adv-label">Somewhere to work</span>
+          <span class="dq-fact">Thirty steps to work.</span>
+          <span class="dq-note">A home office, a desk, a room to make things in. A door
+            that closes.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Somewhere for the family to spread into</span>
+          <span class="dq-fact">Loud enough to be theirs. Close enough to still be
+            home.</span>
+          <span class="dq-note">Teenagers, music, somewhere that is not the
+            kitchen.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Somewhere for somebody to live</span>
+          <span class="dq-fact">An adult child who cannot afford to move out. A parent
+            who would rather be near than far.</span>
+          <span class="dq-note">This one is new. Until 2026 it was the single thing a
+            garden building could not do.</span>
+        </li>
+      </ul>
+    </div>
+
+    <p>The building does not decide what happens inside it.</p>
   </section>
 </main>
 
@@ -718,209 +1031,193 @@
 </section>
 
 <main class="article">
-  <!-- 3 · WHAT COULD IT BECOME? The possibility list. -->
+  <!-- 3 · THE ENABLER, NOT THE SUBJECT. The 2026 change earns two short
+       paragraphs and no more. Its job on this page is to explain why the
+       third possibility above became possible. -->
   <section class="article-section reveal">
-    <div class="kicker">What Could It Become?</div>
-    <h2>The same building. Very different lives.</h2>
-    <p>What changes is not the building. It is what you need it for.</p>
+    <div class="kicker">What Changed</div>
+    <h2>Since July 2026, somebody can live in it.</h2>
+    <p>For years a garden building could be anything except somewhere to sleep. That
+      is what the <a href="https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-no-3-regulations-2026-si-340-of-2026/" target="_blank" rel="noopener">2026
+      regulations</a> changed. Since 27&nbsp;July&nbsp;2026 a detached home of 32 to
+      45&nbsp;m&sup2; can be built in the rear garden of a principal house as
+      exempted development &mdash; no planning application, and a set of conditions
+      instead.</p>
+    <p>The exemption is temporary. The work has to be both started and finished by
+      31&nbsp;December&nbsp;2030.</p>
+  </section>
 
-    <ul class="gb-poss" role="list">
+  <!-- 4 · TWO ROUTES. The page serves both journeys and always has -- its own
+       journey panel forks on exactly this -- but it used to explain only one
+       set of rules, leaving a homeowner who wants an office to assume the
+       32 m2 minimum applied to them. It does not. -->
+  <section class="article-section reveal">
+    <div class="kicker">Two Different Rules</div>
+    <h2>A room and a home are not the same project.</h2>
+    <p>Which rules apply comes down to one question: will anybody sleep
+      there?</p>
+
+    <ul class="dq-qual is-two">
       <li>
-        <span class="gb-poss-card">
-          <span class="gb-poss-copy">
-            <span class="gb-poss-name">Work from home</span>
-            <span class="gb-poss-line">Thirty steps to work.</span>
-          </span>
-        </span>
+        <span class="dq-cat">A garden room</span>
+        <span class="dq-fact">Up to 30&nbsp;m&sup2;, and nobody sleeps there.</span>
+        <span class="dq-note">The older garden-structure exemption, raised from
+          25&nbsp;m&sup2; to 30&nbsp;m&sup2; in July 2026, counting everything already
+          built under it. No notice to the council. Human habitation is expressly
+          excluded, and the use must be incidental to the enjoyment of the house
+          &mdash; a home office or a gym, not premises.</span>
       </li>
       <li>
-        <span class="gb-poss-card">
-          <span class="gb-poss-copy">
-            <span class="gb-poss-name">Start something</span>
-            <span class="gb-poss-line">A workshop, a treatment room, or somewhere to build a business.</span>
-          </span>
-        </span>
-      </li>
-      <li>
-        <span class="gb-poss-card">
-          <span class="gb-poss-copy">
-            <span class="gb-poss-name">Make art</span>
-            <span class="gb-poss-line">Paint, make, photograph, record. Make a mess and close the door.</span>
-          </span>
-        </span>
-      </li>
-      <li>
-        <span class="gb-poss-card">
-          <span class="gb-poss-copy">
-            <span class="gb-poss-name">Give the kids their own place</span>
-            <span class="gb-poss-line">Loud enough to be theirs. Close enough to still be home.</span>
-          </span>
-        </span>
-      </li>
-      <li>
-        <span class="gb-poss-card">
-          <span class="gb-poss-copy">
-            <span class="gb-poss-name">Make space for yourself</span>
-            <span class="gb-poss-line">A gym, a music room, or somewhere quiet.</span>
-          </span>
-        </span>
-      </li>
-      <li>
-        <span class="gb-poss-card">
-          <span class="gb-poss-copy">
-            <span class="gb-poss-name">Something you haven&rsquo;t thought of yet</span>
-            <span class="gb-poss-line">The building does not decide what happens inside it.</span>
-          </span>
-        </span>
+        <span class="dq-cat">A garden home</span>
+        <span class="dq-fact">At least 32&nbsp;m&sup2;, and somebody can live
+          there.</span>
+        <span class="dq-note">The new exemption. At least 32&nbsp;m&sup2;, and no more
+          than 45&nbsp;m&sup2; counting anything already built under the
+          garden-structure exemption. It may only be occupied in conjunction with the
+          main house, and cannot be sold or subdivided.</span>
       </li>
     </ul>
   </section>
 
-  <!-- 4 · THE FLAGSHIP REVELATION. The HOME chapter opens here; everything
-       below it, including the slider, is the shipped Discovery. -->
-  <section class="article-section reveal" id="the-home">
-    <div class="kicker">The One That Changed</div>
-    <h2>Since 2026, somebody can live in it.</h2>
-    <p>For years a garden building could be anything except somewhere to live. That is
-      the part the 2026 regulations changed: a detached home of 32 to 45 m&sup2; can now
-      be built in an ordinary Irish back garden without planning permission.</p>
-    <p>An adult child who cannot afford to move out, or a parent who would rather be
-      near than far. A carer. A guest room that is really a small home.</p>
-  </section>
-
-
-  <!-- MOVEMENT 2 · What Changes.  Sprint 3.  The pivot. -->
-  <section class="article-section reveal">
-    <div class="kicker">What Changes</div>
-    <h2>What changes if somebody lives there?</h2>
-    <p>If somebody is going to live there, different rules apply.</p>
-    <!-- The Services / Ownership / Time list that used to sit here is gone.
-         Every one of those three facts is stated in full in the rule cards
-         below, and saying them twice in eight hundred pixels made the page
-         read like a notice rather than a Discovery. Nothing was dropped;
-         one of the two places it was said was. -->
-    <p>A garden home has to be between 32 m&sup2; and 45 m&sup2;, stay part of your
-      property, and run its services off the main house. There are a few other
-      conditions too &mdash; here is what matters.</p>
-  </section>
-
-  <!-- MOVEMENT 3 · The Rules.  Sprint 3.  Twenty conditions, four groups. -->
-  <section class="article-section reveal">
-    <div class="kicker">The Rules</div>
-    <h2>What exactly is allowed?</h2>
-    <p>The conditions fall into four groups, and they are set out in the
-      <a href="https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-no-3-regulations-2026-si-340-of-2026/" target="_blank" rel="noopener">2026 auxiliary dwelling
-      regulations</a>.</p>
-          <ul class="rule-cards" role="list">
-      <li>
-        <div class="rule-card">
-          <h3>The building</h3>
-          <ul class="rule-list">
-          <li><span class="rule-fact">Between 32 m&sup2; and 45 m&sup2;.</span><span class="rule-note">A minimum as well as a maximum.</span></li>
-          <li><span class="rule-fact">45 m&sup2; is the ceiling for everything.</span><span class="rule-note">Sheds and garages already in the garden count towards it. A 12 m&sup2; shed leaves 33 m&sup2;; more than 13 m&sup2; and the 32 m&sup2; minimum is out of reach.</span></li>
-          <li><span class="rule-fact">Up to 4 m high</span><span class="rule-note">with a tiled or slated pitched roof. 3 m for any other roof.</span></li>
-          <li><span class="rule-fact">Permanent.</span><span class="rule-note">A caravan or a mobile home does not qualify.</span></li>
-          <li><span class="rule-fact">At least 0.6 m from any wall or boundary,</span><span class="rule-note">and windows at least 0.6 m from the boundary they face.</span></li>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <div class="rule-card">
-          <h3>The garden</h3>
-          <ul class="rule-list">
-          <li><span class="rule-fact">25 m&sup2; of private open space stays.</span><span class="rule-note">Reserved for the main house.</span></li>
-          <li><span class="rule-fact">No new entrance onto a road.</span><span class="rule-note">The way in stays as it is.</span></li>
-          <li><span class="rule-fact">A way in on foot and by wheelchair,</span><span class="rule-note">within your own property.</span></li>
-          <li><span class="rule-fact">No separate water or wastewater connection.</span><span class="rule-note">Both run off the main house.</span></li>
-          <li><span class="rule-fact">Where there is a septic tank,</span><span class="rule-note">the building keeps off the percolation area.</span></li>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <div class="rule-card">
-          <h3>How it can be used</h3>
-          <ul class="rule-list">
-          <li><span class="rule-fact">Occupied in conjunction with the main house.</span><span class="rule-note">The regulations&rsquo; own words.</span></li>
-          <li><span class="rule-fact">Not sold, not subdivided.</span><span class="rule-note">It stays part of the same property.</span></li>
-          <li><span class="rule-fact">No short-term letting.</span></li>
-          <li><span class="rule-fact">The main house is your own home.</span><span class="rule-note">You own it and live there when the work starts.</span></li>
-          <li><span class="rule-fact">Not available</span><span class="rule-note">if the house has already been divided into two.</span></li>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <div class="rule-card">
-          <h3>Before you start</h3>
-          <ul class="rule-list">
-          <li><span class="rule-fact">Fourteen days&rsquo; notice</span><span class="rule-note">to the planning authority, with the address, the Eircode and the reason.</span></li>
-          <li><span class="rule-fact">Building Regulations, Building Control and fire safety apply,</span><span class="rule-note">as they do to any new home. <a href="https://assets.gov.ie/static/documents/e39ca58b/Auxiliary_Dwelling_Information_Note.pdf" target="_blank" rel="noopener">The Department&rsquo;s guidance</a> sets out what that means.</span></li>
-          <li><span class="rule-fact">Started and finished by 31 December 2030.</span></li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-    <div class="check-head">Two things to check</div>
-    <ul class="check-rows" role="list">
-      <li>
-        <div class="check-row">
-          <span class="rule-fact">A protected structure.</span><span class="rule-note">If the house is on the council&rsquo;s
-        protected list, work in its grounds may not be exempt. The council will tell you
-        in writing what would and would not affect its character, and it has twelve weeks
-        to answer. <a href="https://www.citizensinformation.ie/en/housing/building-or-altering-a-home/protected-structures/" target="_blank" rel="noopener">Protected structures &mdash;
-        Citizens Information</a></span>
-        </div>
-      </li>
-      <li>
-        <div class="check-row">
-          <span class="rule-fact">A conservation area.</span><span class="rule-note">Extra controls can apply where the work
-        would materially affect the character of the area. The council will confirm
-        whether your address is in one.</span>
-        </div>
-      </li>
-    </ul>
-    <p class="check-note">One call to the council settles which applies to you.</p>
-</section>
-
-  <!-- MOVEMENT 4 · Your Garden.  Sprint 4.  Runs straight into the Property Brain. -->
+  <!-- 5 · THE SELF-CHECK. Measurements a homeowner takes themselves, not
+       conditions they have to satisfy. The 0.6 m item is the most useful
+       thing on the page: the legal minimum and the sensible minimum are
+       different numbers, and the difference is windows. -->
   <section class="article-section reveal">
     <div class="kicker">Your Garden</div>
-    <h2>Does your garden have room?</h2>
-    <p>Four things are worth checking, and none of them needs a professional. Pace the
-      garden and see what is left.</p>
-    <ul class="planning-conditions">
-      <li><strong>How much ground it takes.</strong> About 5.7 m square at 32 m&sup2;,
-        or 6 m by 7.5 m at 45 m&sup2;. Add the 0.6 m gap on every side.</li>
-      <li><strong>What the house has to keep.</strong> The 25 m&sup2; of open space is
-        about 5 m by 5 m. On a small garden this is the one that decides it, so take it
-        first.</li>
-      <li><strong>What is already out there.</strong> Sheds and garages count towards
-        the 45 m&sup2;, so measure them before you settle on a size.</li>
-      <li><strong>Getting to it.</strong> A way in on foot and by wheelchair, inside
-        your own property.</li>
+    <h2>Could your garden do this?</h2>
+    <p>Five things decide it, and a tape measure settles all five in an
+      evening.</p>
+
+    <ul class="dq-rows">
+      <li><span class="dq-fact">What the house has to keep.</span>
+          <span class="dq-note">25&nbsp;m&sup2; of private open space must stay for
+            the main house &mdash; 5&nbsp;m by 5&nbsp;m, say. On a small garden this
+            is the one that decides it, so pace it first.</span></li>
+      <li><span class="dq-fact">What the building takes.</span>
+          <span class="dq-note">At least 32&nbsp;m&sup2; for a home: roughly
+            5.7&nbsp;m square, before the gap around it.</span></li>
+      <li><span class="dq-fact">What is already out there.</span>
+          <span class="dq-note">Anything built under the garden-structure exemption
+            counts against a 45&nbsp;m&sup2; ceiling &mdash; more than about
+            13&nbsp;m&sup2; and the minimum is out of reach.</span></li>
+      <li><span class="dq-fact">How close to the wall.</span>
+          <span class="dq-note">The planning minimum is 0.6&nbsp;m from a wall or
+            boundary. But below 1&nbsp;m the fire-safety requirements tighten sharply
+            and very little window area is allowed on that side.</span></li>
+      <li><span class="dq-fact">Getting to it.</span>
+          <span class="dq-note">A way in on foot or by wheelchair, inside your own
+            property. No new entrance onto the road.</span></li>
     </ul>
-    <p>If those four come out in your favour, the next question is your own address.</p>
+
+    <p>If those come out in your favour, the next question is your own address.</p>
   </section>
 
-  <!-- MOVEMENT 5 · FAQs.  Sprint 4.  Five questions, from the blueprint. -->
+  <!-- 6 · THE TWO NOTICES. The Department is explicit that the Building
+       Control commencement process is separate from the planning
+       notification. The old page carried neither clearly. -->
+  <section class="article-section reveal">
+    <div class="kicker">Before You Start</div>
+    <h2>Two notices, not one.</h2>
+    <p>Exempted development means no planning application. It does not mean nothing
+      to file.</p>
+
+    <ul class="dq-rows">
+      <li><span class="dq-fact">Tell the planning authority, at least 14 days before
+            work starts.</span>
+          <span class="dq-note">The notice gives the location, the Eircode and the
+            reason.</span></li>
+      <li><span class="dq-fact">Separately, tell Building Control.</span>
+          <span class="dq-note">A Commencement Notice with Additional Documentation,
+            naming a competent builder and an assigned certifier.</span></li>
+    </ul>
+
+    <p>And at the end of it, a Certificate of Compliance on Completion has to be
+      registered by the Building Control Authority before anybody can move in. That is
+      the real finish line, and it is worth knowing at the start.</p>
+  </section>
+
+  <!-- 7 · THE EVIDENCE LAYER. Every condition the old page carried in its
+       body is here, in full, closed. Nothing legally material was dropped in
+       the rebuild -- it was demoted. -->
   <section class="article-section quiet-section reveal" style="border-bottom:none;">
-    <div class="kicker">Frequently Asked Questions</div>
-    <h2>Common questions.</h2>
+    <div class="kicker">The Detail</div>
+    <h2>If you want the conditions in full.</h2>
     <div class="faq-list">
       <details class="faq-item">
-        <summary><h3>Who can live in it?</h3><span class="icon"></span></summary>
-        <div class="faq-a">The regulations say it must be occupied in conjunction with the main house, and they do not define that phrase. Somebody from your own household &mdash; an adult child, a parent, a carer &mdash; sits comfortably inside it. Short-term letting is ruled out expressly. Beyond that the position is not settled: the Government has said the tax treatment of these homes will be clarified in the Budget, and we will not guess ahead of it.</div>
+        <summary><h3>The conditions, as written</h3><span class="icon"></span></summary>
+        <div class="faq-a"><strong>The building.</strong> Between 32&nbsp;m&sup2; and
+          45&nbsp;m&sup2;, the ceiling counting anything previously built in the
+          curtilage under the garden-structure exemption. Up to 4&nbsp;m high with a
+          tiled or slated pitched roof, 3&nbsp;m for any other roof. Permanent &mdash;
+          a caravan or a mobile home does not qualify. At least 0.6&nbsp;m from any
+          wall or party boundary, with windows at least 0.6&nbsp;m from the boundary
+          they face.<br><br><strong>The garden.</strong> At least 25&nbsp;m&sup2; of
+          private open space stays, reserved exclusively for the occupants of the main
+          house. No new vehicular or pedestrian entrance onto a road. Independent
+          access on foot or by wheelchair, within your own property. No separate
+          connection to utilities, including water and wastewater. Where there is a
+          septic tank, the building must keep off the approved percolation area and
+          the system must have capacity for the extra load.<br><br><strong>Ownership
+          and use.</strong> It may only be occupied in conjunction with the main
+          house, and cannot be sold or subdivided separately from it. No short-term
+          letting. The main house must be the owner&rsquo;s sole or main residence
+          when the work starts. Not available where the principal house has already
+          been subdivided.<br><br><strong>Time.</strong> Started and finished by
+          31&nbsp;December&nbsp;2030.<br><br>The conditions are set out in full in the
+          <a href="https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-no-3-regulations-2026-si-340-of-2026/" target="_blank" rel="noopener">2026 regulations</a>.</div>
       </details>
       <details class="faq-item">
-        <summary><h3>What happens if I already have a shed or garage?</h3><span class="icon"></span></summary>
-        <div class="faq-a">It counts. The garden-structure exemption and this one share a 45 m&sup2; ceiling, and this one has a 32 m&sup2; floor, so anything over 13 m&sup2; already built takes the option off the table while it stands. Removing it before work starts should return the allowance, and the council is the one to confirm that.</div>
+        <summary><h3>Who can live there</h3><span class="icon"></span></summary>
+        <div class="faq-a">The regulations say the dwelling may only be occupied
+          &ldquo;in conjunction with the main dwelling house&rdquo;, and they do not
+          define that phrase. Somebody from your own household &mdash; an adult child,
+          a parent &mdash; sits comfortably inside it. Short-term letting is ruled out
+          expressly, and the dwelling cannot be sold or subdivided separately from the
+          main house. Beyond that the regulations are silent, and we are not going to
+          invent a definition they do not contain.</div>
       </details>
       <details class="faq-item">
-        <summary><h3>Do I need a builder, or can I buy one ready-made?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Either. A factory-built or modular home is fine, and the Department expects those systems to be certified. What does not change is that a competent builder and a competent construction professional are needed either way &mdash; this is a new home, not a garden building.</div>
+        <summary><h3>Building it: builder or ready-made</h3><span class="icon"></span></summary>
+        <div class="faq-a">Either. A factory-built or modular home is fine. The
+          Department&rsquo;s guidance says Modern Methods of Construction should be
+          certified by NSAI Agr&eacute;ment, and that a competent builder and a
+          competent construction professional are required whichever route you take
+          &mdash; this is a new home, not a garden building. The Building Regulations
+          apply to it in the same way they apply to any new dwelling. One small mercy:
+          no BER certificate is required for a standalone building under
+          50&nbsp;m&sup2;. The
+          <a href="https://assets.gov.ie/static/documents/e39ca58b/Auxiliary_Dwelling_Information_Note.pdf" target="_blank" rel="noopener">Department&rsquo;s
+          information note</a> sets out what compliance involves.</div>
       </details>
       <details class="faq-item">
-        <summary><h3>When can somebody actually move in?</h3><span class="icon"></span></summary>
-        <div class="faq-a">Not the day the building is finished. A Certificate of Compliance on Completion has to be signed and registered with the Building Control Authority before the home can be occupied. That is the real finish line, and it is worth knowing at the start.</div>
+        <summary><h3>Protected structures and conservation areas</h3><span class="icon"></span></summary>
+        <div class="faq-a">If your house is a protected structure, the protection
+          extends to the land in its curtilage and to other structures on that land,
+          and work that would materially affect its character is not exempt. You can
+          ask the council for a declaration on what would and would not affect the
+          character: it is free, and the council has twelve weeks to answer. A
+          declaration cannot exempt work that would need permission
+          anyway.<br><br>Extra controls can also apply in an Architectural
+          Conservation Area. The council will confirm whether your address is in one
+          &mdash; but confirming which category you are in is not the same as settling
+          whether your particular work is exempt, and that second question is the one
+          that takes a written answer.
+          <a href="https://www.citizensinformation.ie/en/housing/building-or-altering-a-home/protected-structures/" target="_blank" rel="noopener">Citizens Information
+          &mdash; protected structures</a>.</div>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Money, and what is not settled</h3><span class="icon"></span></summary>
+        <div class="faq-a">Anything you receive is income, and is taxable in the normal
+          way.<br><br><strong>Rent-a-Room Relief does not apply.</strong> As
+          Revenue&rsquo;s guidance stands in September 2026, a self-contained unit that
+          is not attached to the property cannot qualify for the relief &mdash; and a
+          garden home is detached by definition. Revenue&rsquo;s own worked example
+          has a converted garage failing on exactly that point.
+          <a href="https://www.revenue.ie/en/personal-tax-credits-reliefs-and-exemptions/land-and-property/rent-a-room-relief/what-type-of-residence-qualifies.aspx" target="_blank" rel="noopener">Revenue &mdash; what
+          type of residence qualifies</a>.<br><br>If the dwelling is let, the Housing
+          (Standards for Rented Houses) Regulations 2019 apply to it, and the local
+          authority may inspect. Nothing here is tax or legal advice.</div>
       </details>
     </div>
   </section>
