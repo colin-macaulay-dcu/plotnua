@@ -10300,10 +10300,17 @@
      page directly and was never on DISC-006. The parameter is the only
      evidence that they actually came from the Garden route.
 
-     Deliberately not generalised: no other Discovery context declares a
-     return label, and none should inherit this one by accident. */
+     TWO VALUES, ONE CHOOSER. The Garden Discovery asks one either/or —
+     "A home" or "A room" — and its two buttons emit garden-room and
+     residential from the same list on the same page. Both arrivals came
+     from the page this link points at, so both are offered the way back.
+     Widened to exactly those two, not generalised: the test names the
+     values rather than asking whether DISCOVERY_CONTENT declares one, so
+     a future Discovery context cannot inherit this return link by
+     appearing in that map. */
   (function(){
-    if (requestedDiscovery !== GARDEN_ROOM_CONTEXT) return;
+    if (requestedDiscovery !== GARDEN_ROOM_CONTEXT
+        && requestedDiscovery !== RESIDENTIAL_CONTEXT) return;
     var back = document.getElementById('entryDiscoveryBack');
     if (back) back.hidden = false;
   })();
