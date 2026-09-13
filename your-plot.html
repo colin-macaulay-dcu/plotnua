@@ -7522,6 +7522,90 @@
     max-width:860px; margin:0 auto;
     padding:var(--pn-space-xl) var(--pn-space-lg) 120px;
   }
+
+  /* ---- SUPPLIER ENQUIRY (test screen).
+     Built from the page's existing tokens and the .ask-own-field input
+     vocabulary. No new palette, no new type scale, no new component family:
+     this is the Resolve/Progress shell with a form in it. ---- */
+  /* THE SCREEN'S OWN GROUND. It had none: #screen-enquiry carried zero
+     rules, so it rendered transparent over the dark hero and its type — set
+     in --ink and --soft, the LIGHT-ground tokens — sat at 1.00:1 against
+     what was behind it.
+
+     Copied from #screen-progress except for the ground itself. That screen
+     uses background:var(--pn-ground) (#F5F2E8, warm ivory); this one keeps
+     the approved dark-green action stage, so the ground is --brand-green and
+     the type is lifted to the on-dark tokens below.
+
+     justify-content:flex-start matters as much as the colour: the base
+     .screen rule centres its content, and centred content taller than the
+     viewport is clipped at the top with no way to scroll back up. That is
+     what put the supplier card above the fold on direct entry. */
+  #screen-enquiry{
+    background:var(--brand-green);
+    z-index:50; overflow-y:auto;
+    align-items:center; justify-content:flex-start;
+    padding:24px 24px 140px; text-align:left;
+    color:var(--pn-on-dark);
+  }
+  /* Scoped, so the shared Back control is unchanged on My Plot and Compare. */
+  #screen-enquiry .myplot-close{ color:var(--brand-sage); }
+  .enq-eyebrow{ font-family:'Work Sans',sans-serif; font-size:12px;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage);
+    margin-bottom:var(--pn-space-sm); }
+  .enq-h1{ font-family:'Fraunces',serif; font-weight:400;
+    font-size:clamp(26px,3.4vw,40px); line-height:1.15; color:var(--pn-on-dark);
+    margin:0 0 var(--pn-space-md); max-width:22ch; }
+  .enq-intro{ font-family:'Work Sans',sans-serif; font-size:16px;
+    line-height:1.65; color:var(--brand-ivory); max-width:60ch;
+    margin:0 0 var(--pn-space-lg); }
+  .enq-ident{ border:1px solid var(--pn-hair, rgba(31,59,46,.14));
+    background:var(--paper); border-radius:10px;
+    padding:var(--pn-space-md); margin-bottom:var(--pn-space-lg); }
+  .enq-ident-org{ font-family:'Work Sans',sans-serif; font-size:15px;
+    font-weight:600; color:var(--ink); }
+  .enq-ident-product{ font-family:'Work Sans',sans-serif; font-size:15px;
+    color:var(--soft); margin-top:4px; }
+  .enq-testflag{ display:inline-block; margin-top:10px; padding:4px 9px;
+    border-radius:4px; background:rgba(139,111,78,.12); color:var(--pn-fact);
+    font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; }
+  .enq-section-label{ font-family:'Work Sans',sans-serif; font-size:12px;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--brand-sage);
+    margin:var(--pn-space-lg) 0 8px; }
+  .enq-review{ font-family:'Work Sans',sans-serif; font-size:15px;
+    line-height:1.65; color:var(--brand-ivory); max-width:60ch;
+    margin:0 0 var(--pn-space-sm); }
+  .enq-field{ display:block; width:100%; margin-top:10px; padding:12px 14px;
+    font-family:'Work Sans',sans-serif; font-size:15px; line-height:1.55;
+    color:var(--ink); background:var(--paper);
+    border:1px solid var(--pn-hair, rgba(31,59,46,.14)); border-radius:8px; }
+  .enq-message{ min-height:240px; resize:vertical; }
+  .enq-label{ display:block; font-family:'Work Sans',sans-serif; font-size:14px;
+    color:var(--pn-on-dark); margin-top:var(--pn-space-md); }
+  .enq-hint{ font-family:'Work Sans',sans-serif; font-size:13px;
+    color:var(--brand-sage); margin-top:4px; }
+  .enq-opts{ margin:var(--pn-space-md) 0 0; padding:0; border:0; }
+  .enq-opt{ display:flex; gap:10px; align-items:flex-start; margin-top:10px;
+    font-family:'Work Sans',sans-serif; font-size:14px; color:var(--pn-on-dark); }
+  .enq-consent{ display:flex; gap:10px; align-items:flex-start;
+    margin-top:var(--pn-space-lg); font-family:'Work Sans',sans-serif;
+    font-size:14px; line-height:1.6; color:var(--pn-on-dark); max-width:60ch; }
+  .enq-actions{ display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+    margin-top:var(--pn-space-lg); }
+  .enq-send[disabled]{ opacity:.45; cursor:not-allowed; }
+  .enq-pending{ font-family:'Work Sans',sans-serif; font-size:13px;
+    line-height:1.6; color:var(--brand-ivory); max-width:60ch;
+    margin-top:var(--pn-space-sm); }
+  /* A calm inline failure. Ivory type carries the contrast; the
+     terracotta rule is the only signal, so nothing shouts. */
+  .enq-error{ font-family:'Work Sans',sans-serif; font-size:14px;
+    line-height:1.6; color:var(--brand-ivory); max-width:60ch;
+    margin-top:var(--pn-space-md); padding-left:12px;
+    border-left:2px solid var(--terracotta); }
+  .enq-secondary{ font-family:'Work Sans',sans-serif; font-size:14px;
+    color:var(--brand-ivory); background:none; border:0; padding:0; cursor:pointer;
+    text-decoration:underline; text-underline-offset:3px; }
   #screen-resolve .rsv-kicker, #screen-progress .rsv-kicker{
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-meta);
     letter-spacing:.14em; text-transform:uppercase; color:var(--pn-meta);
@@ -9801,6 +9885,80 @@
     <div id="progressView"></div>
   </div>
 </section>
+<!-- SUPPLIER ENQUIRY — TEST SCREEN ONLY.
+     There is deliberately NO form action, NO endpoint and NO supplier email
+     address anywhere in this markup. The screen cannot transmit. The Send
+     control is disabled here and disabled again in script, and the only
+     organisation that can reach it is the synthetic test record below.
+     Nothing here carries an Eircode, an address, a coordinate, another
+     supplier's product, a ranking position or a score. -->
+<section id="screen-enquiry" class="screen is-hidden" aria-labelledby="enqH1">
+  <div class="resolve-shell">
+    <button type="button" class="myplot-close" id="enquiryBackBtn">&larr; Back</button>
+    <div id="enqBody">
+    <div class="enq-eyebrow">Your enquiry</div>
+    <h2 class="enq-h1" id="enqH1">Send this to <span id="enqOrgName"></span>.</h2>
+    <p class="enq-intro">We&rsquo;ve put together what you&rsquo;ve told us so far. Read it, change anything you want, and send it when you&rsquo;re ready. Nothing goes anywhere until you press send.</p>
+
+    <div class="enq-ident">
+      <div class="enq-ident-org" id="enqIdentOrg"></div>
+      <div class="enq-ident-product" id="enqIdentProduct"></div>
+      <span class="enq-testflag" id="enqTestFlag" hidden>Test mode &mdash; not forwarded to a supplier</span>
+    </div>
+
+    <div class="enq-section-label">How they should reply</div>
+    <label class="enq-label" for="enqName">Your name</label>
+    <input class="enq-field" type="text" id="enqName" autocomplete="off" value="">
+    <label class="enq-label" for="enqEmail">Your email</label>
+    <input class="enq-field" type="email" id="enqEmail" autocomplete="off" value="">
+    <label class="enq-label" for="enqLocation">Roughly where is the property?</label>
+    <input class="enq-field" type="text" id="enqLocation" autocomplete="off" value="">
+    <p class="enq-hint">A town or county is enough. We never send your address.</p>
+    <p class="enq-hint">They&rsquo;ll reply to you directly, and we may check in afterwards to ask how it went.</p>
+
+    <div class="enq-section-label">What will be sent</div>
+    <p class="enq-review">Everything that will be sent is in the box below. That is the whole message &mdash; there is nothing behind it. Edit it as you like, or untick anything you&rsquo;d rather not include.</p>
+
+    <fieldset class="enq-opts">
+      <legend class="sr-only">Optional information</legend>
+      <label class="enq-opt"><input type="checkbox" id="enqOptQuestions" checked> Include my questions</label>
+      <label class="enq-opt"><input type="checkbox" id="enqOptTimeframe"> Include my rough timeframe</label>
+      <label class="enq-opt"><input type="checkbox" id="enqOptUnsure"> Include what I&rsquo;m unsure about</label>
+    </fieldset>
+
+    <textarea class="enq-field enq-message" id="enqMessage" rows="12"
+              aria-label="Your enquiry message"></textarea>
+
+    <p class="enq-pending" id="enqPending">Nothing is sent until you press send. Everything that will go is in the box above, and you can change or remove any of it first.</p>
+    <label class="enq-consent">
+      <input type="checkbox" id="enqConsent">
+      <span>I&rsquo;d like PlotNua to send this enquiry to <strong id="enqConsentOrg"></strong> on my behalf, and I&rsquo;m happy for them to use my name and email to reply to it.</span>
+    </label>
+
+    <div class="enq-actions">
+      <button type="button" class="btn-primary enq-send" id="enqSendBtn" disabled>Send my enquiry</button>
+      <button type="button" class="enq-secondary" id="enqCancelBtn">Not yet &mdash; go back</button>
+    </div>
+    <p class="enq-error" id="enqError" role="alert" hidden></p>
+    <!-- Honeypot. Uses the page's existing sr-only class so no new CSS is
+         introduced; hidden from assistive technology and from tab order,
+         so only an automated filler reaches it. -->
+    <label class="sr-only" aria-hidden="true">Leave this field empty
+      <input type="text" id="enqGotcha" tabindex="-1" autocomplete="off" value="">
+    </label>
+    </div>
+    <!-- TEST success state. It reuses .enq-eyebrow / .enq-h1 / .enq-intro,
+         so it needs no styling of its own and cannot drift from the
+         approved hierarchy. The wording says this is a test and does NOT
+         claim the enquiry will be passed to a supplier. -->
+    <div id="enqSent" hidden>
+      <div class="enq-eyebrow">Sent</div>
+      <h2 class="enq-h1">That&rsquo;s with us.</h2>
+      <p class="enq-intro" id="enqSentBody">We&rsquo;ve received your enquiry. This is a PlotNua test, so it will not be forwarded to a supplier.</p>
+      <button type="button" class="btn-primary" id="enqSentBackBtn">Back to My Plot</button>
+    </div>
+  </div>
+</section>
 
 <section id="screen-product-detail" class="screen is-hidden is-overlay">
   <div class="pd-panel interactive" id="productDetailPanel">
@@ -10093,6 +10251,30 @@
     myPlotResolveView: document.getElementById('myPlotResolveView'),
     // PROG-001 Phase 2 — Progress.
     progressScreen: document.getElementById('screen-progress'),
+    enquiryScreen: document.getElementById('screen-enquiry'),
+    enquiryBackBtn: document.getElementById('enquiryBackBtn'),
+    enqOrgName: document.getElementById('enqOrgName'),
+    enqIdentOrg: document.getElementById('enqIdentOrg'),
+    enqIdentProduct: document.getElementById('enqIdentProduct'),
+    enqTestFlag: document.getElementById('enqTestFlag'),
+    enqConsentOrg: document.getElementById('enqConsentOrg'),
+    enqMessage: document.getElementById('enqMessage'),
+    enqOptQuestions: document.getElementById('enqOptQuestions'),
+    enqOptTimeframe: document.getElementById('enqOptTimeframe'),
+    enqOptUnsure: document.getElementById('enqOptUnsure'),
+    enqName: document.getElementById('enqName'),
+    enqEmail: document.getElementById('enqEmail'),
+    enqLocation: document.getElementById('enqLocation'),
+    enqConsent: document.getElementById('enqConsent'),
+    enqSendBtn: document.getElementById('enqSendBtn'),
+    enqCancelBtn: document.getElementById('enqCancelBtn'),
+    enqPending: document.getElementById('enqPending'),
+    enqBody: document.getElementById('enqBody'),
+    enqGotcha: document.getElementById('enqGotcha'),
+    enqError: document.getElementById('enqError'),
+    enqSent: document.getElementById('enqSent'),
+    enqSentBackBtn: document.getElementById('enqSentBackBtn'),
+    enqSentBody: document.getElementById('enqSentBody'),
     progressView: document.getElementById('progressView'),
     myPlotProgressBtn: document.getElementById('myPlotProgressBtn'),
     myPlotProgressView: document.getElementById('myPlotProgressView'),
@@ -10432,7 +10614,7 @@
   // SPRINT 1C — CONTROLLED OPENING: els.plotScreen (#screen-plot) and
   // els.discoveryRevealScreen (#screen-discovery-reveal) are both retired
   // — removed from this list along with the rest of their teardown.
-  const ALL_SCREENS = [els.entry, els.reveal, els.matchInputScreen, els.homeJourneyScreen, els.atlasSearchScreen, els.matchResultsScreen, els.myPlotScreen, els.productDetailScreen, els.plotTopicScreen, els.compareScreen, els.resolveScreen, els.progressScreen].filter(Boolean);
+  const ALL_SCREENS = [els.entry, els.reveal, els.matchInputScreen, els.homeJourneyScreen, els.atlasSearchScreen, els.matchResultsScreen, els.myPlotScreen, els.productDetailScreen, els.plotTopicScreen, els.compareScreen, els.resolveScreen, els.progressScreen, els.enquiryScreen].filter(Boolean);
   // STAGE 0 — ACCESSIBILITY: overlay focus management. Before this, opening a
   // screen left focus on the control behind it, so a keyboard or screen-reader
   // user stayed in the previous screen while the new one covered it. showScreen()
@@ -10685,6 +10867,9 @@
        borrowed the Reveal's entry, and one Back press spent it: the
        homeowner landed on the Eircode screen having skipped the Reveal. */
     'home-journey': els.homeJourneyScreen,
+    /* The enquiry screen is tracked for the same reason Compare and
+       Resolve are: it carries state a Back press should return to. */
+    'enquiry': els.enquiryScreen,
   };
   function historyKeyForScreen(el){
     for (const key in HISTORY_SCREEN_MAP) {
@@ -12214,6 +12399,240 @@
   // developer can still open the file with no JSON present — and which sets
   // the fallback flag loudly rather than hiding it.
   const ATLAS_DEMO_MODE = new URLSearchParams(location.search).get('atlasDemo') === '1';
+
+  /* =====================================================================
+     SUPPLIER ENQUIRY — TEST SCREEN.
+
+     ENQUIRY_ENABLED_ORGS IS EMPTY AND FROZEN. Nothing is on it, so no real
+     organisation can reach the enquiry screen. It is not a feature flag to
+     be flipped casually: adding a name here is the act that makes a real
+     supplier reachable, and it must not happen until the pilot suppliers are
+     approved and the endpoint exists.
+
+     THE SCREEN CANNOT TRANSMIT. There is no form action, no endpoint
+     constant, no fetch and no supplier email address anywhere in this file
+     for this feature. sendEnquiry() does not exist. The Send control is
+     disabled in the markup and disabled again here, so a hand-edited DOM
+     still has nowhere to post to.
+     ===================================================================== */
+  const ENQUIRY_ENABLED_ORGS = Object.freeze([]);
+  const ENQUIRY_TEST_MODE = new URLSearchParams(location.search).get('enquiry') === 'test';
+  const ENQUIRY_TEST_ORG = 'PlotNua Test Supplier (not a real company)';
+  const ENQUIRY_TEST_PRODUCT = 'Test Garden Room \u2014 internal testing only';
+  /* The screen it was opened from, so Back returns where the homeowner was
+     rather than to a fixed destination. */
+  let enquiryReturnScreen = null;
+  /* The organisation currently on screen. Display only — it is the same
+     synthetic constant the screen was opened with, never a stored record. */
+  let enquiryCurrentOrg = null;
+
+  function enquiryOrgIsEnabled(org){
+    return typeof org === 'string' && ENQUIRY_ENABLED_ORGS.indexOf(org) !== -1;
+  }
+
+  /* Composes the whole message. WHAT THIS RETURNS IS WHAT WOULD BE SENT —
+     there is no second, richer payload assembled elsewhere. Nothing here
+     reads an Eircode, an address, a coordinate, another supplier's product,
+     a ranking position or a score. */
+  function enquiryComposeMessage(){
+    const lines = [];
+    lines.push('Hello,');
+    lines.push('');
+    lines.push('I found this option through PlotNua and I would like to ask about it.');
+    lines.push('');
+    lines.push('Option: ' + (els.enqIdentProduct ? els.enqIdentProduct.textContent : ''));
+    if (els.enqOptQuestions && els.enqOptQuestions.checked) {
+      lines.push('');
+      lines.push('What I would like to know:');
+      lines.push('- Is this available, and what is included?');
+      lines.push('- What would delivery and installation involve?');
+    }
+    if (els.enqOptTimeframe && els.enqOptTimeframe.checked) {
+      lines.push('');
+      lines.push('Rough timeframe: no fixed date yet.');
+    }
+    if (els.enqOptUnsure && els.enqOptUnsure.checked) {
+      lines.push('');
+      lines.push('Still deciding on: size and finish.');
+    }
+    lines.push('');
+    lines.push('Thanks very much.');
+    return lines.join('\n');
+  }
+
+  function enquiryRender(org, product){
+    enquiryCurrentOrg = org;
+    if (els.enqOrgName) els.enqOrgName.textContent = org;
+    if (els.enqIdentOrg) els.enqIdentOrg.textContent = org;
+    if (els.enqIdentProduct) els.enqIdentProduct.textContent = product;
+    if (els.enqConsentOrg) els.enqConsentOrg.textContent = org;
+    if (els.enqTestFlag) els.enqTestFlag.hidden = !ENQUIRY_TEST_MODE;
+    if (els.enqMessage) els.enqMessage.value = enquiryComposeMessage();
+    /* Live ONLY in test mode. The markup ships the control disabled, so a
+       page whose script never runs cannot present a live button, and
+       production — where ENQUIRY_TEST_MODE is false — leaves it disabled. */
+    if (els.enqSendBtn) els.enqSendBtn.disabled = !ENQUIRY_TEST_MODE;
+    /* The pending note now describes the homeowner's control rather than
+       the state of the feature, so it is true in both modes and is always
+       shown. It is no longer hidden on the test route. */
+    /* Reopening the screen returns it to the form, never to a stale
+       success state from an earlier send. */
+    if (els.enqBody) els.enqBody.hidden = false;
+    if (els.enqSent) els.enqSent.hidden = true;
+    enquiryClearError();
+  }
+
+  function openEnquiryScreen(org, product){
+    if (!els.enquiryScreen) return;
+    enquiryReturnScreen = currentScreenEl || els.myPlotScreen || els.entry;
+    enquiryRender(org, product);
+    showScreen(els.enquiryScreen);
+    syncHistoryForScreen('enquiry');
+  }
+
+  function closeEnquiryScreen(){
+    showScreen(enquiryReturnScreen || els.myPlotScreen || els.entry);
+  }
+
+  if (els.enquiryBackBtn) els.enquiryBackBtn.addEventListener('click', closeEnquiryScreen);
+  if (els.enqCancelBtn)   els.enqCancelBtn.addEventListener('click', closeEnquiryScreen);
+  [els.enqOptQuestions, els.enqOptTimeframe, els.enqOptUnsure].forEach(function(cb){
+    if (cb) cb.addEventListener('change', function(){
+      if (els.enqMessage) els.enqMessage.value = enquiryComposeMessage();
+    });
+  });
+
+  /* The ONLY route to this screen today. A synthetic record whose name says
+     what it is, reachable at ?enquiry=test and nowhere else. */
+  if (ENQUIRY_TEST_MODE) {
+    window.PLOTNUA_OPEN_TEST_ENQUIRY = function(){
+      openEnquiryScreen(ENQUIRY_TEST_ORG, ENQUIRY_TEST_PRODUCT);
+    };
+  }
+
+  /* =====================================================================
+     TEST SUBMISSION.
+
+     One endpoint, dedicated to supplier enquiries. Submission is gated on
+     ENQUIRY_TEST_MODE inside enquirySubmit() as well as by the route, so the
+     transport cannot outlive the route it was built for.
+
+     WHAT TRAVELS. enquiryPayload() below is the WHOLE request body. The
+     message field is the textarea verbatim — whatever the homeowner can read
+     on screen is exactly what is sent. No Eircode, no address, no
+     coordinates, no imagery, no shortlist, no competitor product, no ranking
+     or score, and nothing from Resolve reaches this object. The supplier,
+     product and productId are synthetic constants declared above; consent and
+     mode are fixed strings.
+     ===================================================================== */
+  const ENQUIRY_ENDPOINT = 'https://formspree.io/f/xjyvqepz';
+  const ENQUIRY_TEST_PRODUCT_ID = 'pn-test-synthetic-0001';
+
+  function enquiryPayload(){
+    return {
+      _subject: 'PlotNua TEST enquiry \u2014 ' + ENQUIRY_TEST_ORG,
+      message: els.enqMessage ? els.enqMessage.value : '',
+      name: els.enqName ? els.enqName.value.trim() : '',
+      email: els.enqEmail ? els.enqEmail.value.trim() : '',
+      location: els.enqLocation ? els.enqLocation.value.trim() : '',
+      supplier: ENQUIRY_TEST_ORG,
+      product: ENQUIRY_TEST_PRODUCT,
+      productId: ENQUIRY_TEST_PRODUCT_ID,
+      consent: 'Yes',
+      mode: 'test',
+      _gotcha: els.enqGotcha ? els.enqGotcha.value : ''
+    };
+  }
+
+  /* Deliberately permissive on shape and strict on presence: the homeowner
+     is told what is missing, never lectured about format. */
+  function enquiryValidate(){
+    const name = els.enqName ? els.enqName.value.trim() : '';
+    const email = els.enqEmail ? els.enqEmail.value.trim() : '';
+    const place = els.enqLocation ? els.enqLocation.value.trim() : '';
+    const body = els.enqMessage ? els.enqMessage.value.trim() : '';
+    if (!body) return 'The message is empty. Add a line or two before sending.';
+    if (!name) return 'Please add your name so they know who is asking.';
+    if (!email) return 'Please add an email address for them to reply to.';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return 'That email address does not look right. Please check it.';
+    if (!place) return 'Please add a town or county.';
+    if (!els.enqConsent || !els.enqConsent.checked) return 'Please tick the box to confirm you are happy for this to be sent.';
+    return null;
+  }
+
+  function enquiryShowError(text){
+    if (!els.enqError) return;
+    els.enqError.textContent = text;
+    els.enqError.hidden = false;
+  }
+
+  function enquiryClearError(){
+    if (!els.enqError) return;
+    els.enqError.textContent = '';
+    els.enqError.hidden = true;
+  }
+
+  /* Success. The three reply fields are cleared from the DOM because they
+     have served their purpose; they are not written anywhere on the way out. */
+  /* THE SUCCESS WORDING IS AN EXPLICIT TWO-WAY BRANCH.
+
+     The markup ships the TEST sentence, so a page whose script never runs
+     cannot claim an enquiry was forwarded. The LIVE sentence is written here
+     and only on the branch where ENQUIRY_TEST_MODE is false — the test route
+     cannot reach it, and cannot display a forwarding claim.
+
+     The eyebrow and headline are identical in both modes; only this sentence
+     differs, because only this sentence makes a claim about what happens
+     next. */
+  function enquirySentMessage(){
+    if (ENQUIRY_TEST_MODE) {
+      return 'We\u2019ve received your enquiry. This is a PlotNua test, so it '
+           + 'will not be forwarded to a supplier.';
+    }
+    return 'We\u2019ve received your enquiry and will pass it to '
+         + (enquiryCurrentOrg || 'the supplier you chose')
+         + '. They can reply to you directly using the details you provided.';
+  }
+
+  function enquiryShowSent(){
+    if (els.enqSentBody) els.enqSentBody.textContent = enquirySentMessage();
+    [els.enqName, els.enqEmail, els.enqLocation].forEach(function(f){
+      if (f) f.value = '';
+    });
+    if (els.enqBody) els.enqBody.hidden = true;
+    if (els.enqSent) els.enqSent.hidden = false;
+    enquiryClearError();
+  }
+
+  async function enquirySubmit(){
+    if (!ENQUIRY_TEST_MODE) return;
+    const problem = enquiryValidate();
+    if (problem) { enquiryShowError(problem); return; }
+    enquiryClearError();
+    const btn = els.enqSendBtn;
+    const label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
+    try {
+      const res = await fetch(ENQUIRY_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(enquiryPayload())
+      });
+      if (!res.ok) throw new Error('status ' + res.status);
+      enquiryShowSent();
+    } catch (err) {
+      /* Nothing is cleared and nothing claims success. The homeowner keeps
+         everything they typed and can simply press send again. */
+      enquiryShowError('That did not send. Nothing has been lost \u2014 please try again in a moment.');
+      if (btn) { btn.disabled = false; btn.textContent = label; }
+    }
+  }
+
+  if (els.enqSendBtn) els.enqSendBtn.addEventListener('click', enquirySubmit);
+  if (els.enqSentBackBtn) els.enqSentBackBtn.addEventListener('click', closeEnquiryScreen);
+  [els.enqName, els.enqEmail, els.enqLocation, els.enqConsent].forEach(function(f){
+    if (f) f.addEventListener('input', enquiryClearError);
+  });
   function atlasPoolIsUsable(){
     return !atlasMatchPoolLoadFailed && atlasMatchPool.length > 0;
   }
@@ -32441,6 +32860,25 @@
 
   if (reviewModeParam === 'results') {
     enterResultsReviewMode();
+  }
+
+  /* THE TEST ROUTE — ?enquiry=test must OPEN the screen, not merely make it
+     openable. The first implementation defined
+     window.PLOTNUA_OPEN_TEST_ENQUIRY and stopped, which is a hook, not a
+     route: the page booted to the landing screen and the enquiry screen was
+     reachable only from a console call.
+
+     The call belongs here, beside the review-mode entry above, because this
+     is the end of the module: everything the screen needs is defined, and
+     nothing after this point changes the visible screen.
+
+     THE HOOK'S EXISTENCE IS THE GATE. It is assigned only inside
+     if (ENQUIRY_TEST_MODE), so testing for it cannot drift away from the
+     flag the way a second copy of the condition could. Without the
+     parameter the hook is undefined, nothing is called, and the landing
+     screen behaves exactly as it did before. */
+  if (typeof window.PLOTNUA_OPEN_TEST_ENQUIRY === 'function') {
+    window.PLOTNUA_OPEN_TEST_ENQUIRY();
   }
   // ==========================================================================
   // LOCAL DEVELOPMENT REVIEW MODE — END (RESULTS R1.2)
