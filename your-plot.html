@@ -31535,9 +31535,25 @@
   let geocodedResult = null; // { lat, lon, locationType, placeId, isRooftop, formattedAddress }
   const googleKeyIsPlaceholder = !window.PLOTNUA_GOOGLE_MAPS_KEY || window.PLOTNUA_GOOGLE_MAPS_KEY === 'YOUR_GOOGLE_MAPS_API_KEY';
 
+  /* WHY THE FAILURE KIND IS CARRIED BESIDE THE RESULT, NOT INSIDE IT.
+
+     geocodeEircode() still returns exactly what it returned before: the
+     same object on success, null on every failure. Encoding the kind in
+     the return value (false for one, null for the other; or an
+     {ok,reason} envelope) would put the SUCCESS path and all six
+     downstream consumers of geocodedResult back in scope for this
+     change. They are not in scope, and this is what keeps them out.
+
+     Read only immediately after a null return, by the one caller. */
+  let lastGeocodeFailure = null; // null | 'invalid' | 'unavailable'
+
   async function geocodeEircode(query){
+    /* Reset FIRST, before any exit can run. A stale kind from a previous
+       attempt must never describe this one. */
+    lastGeocodeFailure = null;
     if (!window.PLOTNUA_GEOCODE_ENDPOINT) {
       console.warn('Geocoding skipped — no PlotNua geocode endpoint configured.');
+      lastGeocodeFailure = 'unavailable';
       return null;
     }
     try {
@@ -31551,6 +31567,15 @@
         // Status only. The proxy already returns a fixed error code and never
         // forwards Google's body, and the homeowner's Eircode is not logged.
         console.warn('Geocode request failed:', res.status);
+        /* ONLY 400 and 404 blame the homeowner's Eircode: 400 is the
+           proxy's own pattern rejection, 404 is Google finding no match.
+           403, 405, 429 and every 5xx are faults on our side of the
+           request and are not the homeowner's doing. Everything else
+           falls to 'unavailable' by default, so a status added to the
+           proxy later is treated as a service fault rather than
+           silently blamed on a valid address. */
+        lastGeocodeFailure =
+          (res.status === 400 || res.status === 404) ? 'invalid' : 'unavailable';
         return null;
       }
 
@@ -31558,6 +31583,7 @@
       try { d = await res.json(); } catch (parseErr) { /* handled below */ }
       if (!d || typeof d.lat !== 'number' || typeof d.lon !== 'number') {
         console.warn('Geocode response was not usable.');
+        lastGeocodeFailure = 'unavailable';
         return null;
       }
 
@@ -31575,6 +31601,7 @@
       };
     } catch (err) {
       console.warn('Geocoding failed:', err);
+      lastGeocodeFailure = 'unavailable';
       return null;
     }
   }
@@ -32008,7 +32035,14 @@
       // this the message below is set on an element the CSS is holding at
       // display:none and the homeowner sees a blank page.
       document.documentElement.classList.remove('pn-skip-entry');
-      els.eircodeStatus.textContent = "We couldn't locate that Eircode — please check it and try again.";
+      /* Two true sentences instead of one that is sometimes false. A
+         homeowner whose Eircode is fine, during an outage, was being told
+         to check an address that was never wrong. Nothing above this line
+         changes: the pill, the button and the entry screen are restored
+         identically on both paths. */
+      els.eircodeStatus.textContent = (lastGeocodeFailure === 'invalid')
+        ? "We couldn't locate that Eircode — please check it and try again."
+        : "We can't complete that lookup right now — please try again in a moment.";
       return;
     }
     geocodedResult = geocoded;
