@@ -10670,6 +10670,14 @@
        could travel, which is a property of the frozen model rather than a
        simplification. */
     'progress': els.progressScreen,
+    /* B2 — the residential journey. It stores NOTHING, unlike Compare,
+       Resolve and Progress above: its answers are the values in its own
+       form fields, the history layer never calls a reset, and restoring
+       is the handler's plain showScreen() path — so a restored journey
+       comes back with every answer still in it. Untracked, the journey
+       borrowed the Reveal's entry, and one Back press spent it: the
+       homeowner landed on the Eircode screen having skipped the Reveal. */
+    'home-journey': els.homeJourneyScreen,
   };
   function historyKeyForScreen(el){
     for (const key in HISTORY_SCREEN_MAP) {
