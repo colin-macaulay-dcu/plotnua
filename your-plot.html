@@ -32070,8 +32070,8 @@
     // correctly, rather than implying the whole reveal is degraded.
     if (!tilesetLoaded) {
       els.fallbackNote.textContent = worldImageryReady
-        ? 'Full 3D buildings aren’t available for this session (check that Google Photorealistic 3D Tiles is enabled as an asset in your Cesium ion account) — showing real aerial imagery instead.'
-        : 'Photorealistic 3D coverage or access could not be loaded for this session (check that Google Photorealistic 3D Tiles is enabled as an asset in your Cesium ion account) — showing the reveal moment without live 3D imagery.';
+        ? 'Full 3D buildings aren’t available for this session — showing real aerial imagery instead.'
+        : 'The live 3D view couldn’t be loaded for this session — showing the reveal moment without it.';
       els.fallbackNote.classList.add('is-visible');
       // FA-01 — reserve the space it will occupy over the results panel.
       if (els.matchResultsPanel) els.matchResultsPanel.classList.add('has-fallback-note');
