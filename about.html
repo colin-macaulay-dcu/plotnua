@@ -152,6 +152,18 @@
      one-to-one visual continuity between the two pages) ---- */
   .closing-line{ padding:18vh 7vw 16vh; text-align:center; background:var(--paper); }
   .closing-line p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400; font-size:clamp(19px,2.15vw,25px); color:var(--soft); max-width:29ch; margin:0 auto; line-height:1.65; }
+  /* ---- the one onward route off this page. The .d-all COMPONENT is the
+     homepage's, unchanged in type, size, letter-spacing, uppercase and
+     underline. Only the COLOUR differs from the homepage's base rule, and
+     it has to: that base is #B8B0A0, written for the dark --ink section,
+     and it measures 1.97:1 on this section's var(--paper) ground -- below
+     the 4.5:1 WCAG AA threshold. var(--accent) measures 5.45:1 here, and
+     is the same choice the homepage already makes for .d-all on a light
+     ground (.atlas .d-all a). Scoped to .closing-line so it cannot reach
+     anything else on this page. ---- */
+  .closing-line .d-all{ text-align:center; margin-top:52px; }
+  .closing-line .d-all a{ font-family:'Work Sans',sans-serif; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); padding-bottom:4px; transition:color .3s ease, border-color .3s ease; }
+  .closing-line .d-all a:hover{ color:var(--ink); border-bottom-color:rgba(31,59,46,.55); }
 
   /* ---- footer (identical to homepage) ---- */
   footer{ background:linear-gradient(180deg, var(--paper) 0%, var(--ink) 110px, var(--ink) 100%); color:#B7AF9C; padding:72px 7vw 40px; }
@@ -292,6 +304,7 @@
 
 <section class="closing-line reveal">
   <p>Sometimes the biggest opportunity isn't somewhere else. It's already yours.</p>
+  <div class="d-all"><a href="discoveries.html">Explore the Discovery Library &rarr;</a></div>
 </section>
 
 <footer>
