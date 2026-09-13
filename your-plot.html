@@ -453,6 +453,13 @@
   // is a SEPARATE credential from the Cesium ion token above. The Planning
   // History feature below uses a THIRD, separate, keyless public Irish
   // Government ArcGIS service — no additional credential required.
+
+  window.PLOTNUA_GEOCODE_ENDPOINT = "https://plotnua-geocode.colin-a41.workers.dev/geocode";
+  // The PlotNua geocoding proxy. Eircode lookup is NOT done in the browser:
+  // Google treats Geocoding as a server-to-server API, so the credential for
+  // it lives in a Cloudflare Worker secret and never reaches this page. The
+  // key above is a different credential and is still used, by the Maps
+  // JavaScript API and Places — referrer restriction protects those.
 </script>
 
 <script src="https://cesium.com/downloads/cesiumjs/releases/1.144/Build/Cesium/Cesium.js"></script>
@@ -31529,39 +31536,42 @@
   const googleKeyIsPlaceholder = !window.PLOTNUA_GOOGLE_MAPS_KEY || window.PLOTNUA_GOOGLE_MAPS_KEY === 'YOUR_GOOGLE_MAPS_API_KEY';
 
   async function geocodeEircode(query){
-    if (googleKeyIsPlaceholder) {
-      console.warn('Geocoding skipped — no Google Maps API key configured (placeholder still present).');
+    if (!window.PLOTNUA_GEOCODE_ENDPOINT) {
+      console.warn('Geocoding skipped — no PlotNua geocode endpoint configured.');
       return null;
     }
     try {
-      const url = 'https://geocode.googleapis.com/v4/geocode/address/' +
-        encodeURIComponent(query) + '?regionCode=IE';
-
-      const res = await fetch(url, {
-        headers: { 'X-Goog-Api-Key': window.PLOTNUA_GOOGLE_MAPS_KEY },
+      const res = await fetch(window.PLOTNUA_GEOCODE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eircode: query }),
       });
 
-      let body = null;
-      try { body = await res.json(); } catch (parseErr) { /* ignore — logged below */ }
-
       if (!res.ok) {
-        console.warn('Geocoding API v4 request failed:', res.status, body);
+        // Status only. The proxy already returns a fixed error code and never
+        // forwards Google's body, and the homeowner's Eircode is not logged.
+        console.warn('Geocode request failed:', res.status);
         return null;
       }
 
-      const result = body && body.results && body.results[0];
-      if (!result) {
-        console.warn('Geocoding API v4 returned no results for:', query);
+      let d = null;
+      try { d = await res.json(); } catch (parseErr) { /* handled below */ }
+      if (!d || typeof d.lat !== 'number' || typeof d.lon !== 'number') {
+        console.warn('Geocode response was not usable.');
         return null;
       }
 
+      // The SAME shape the direct call returned. locationType and placeId are
+      // carried as null: the proxy deliberately does not forward them, and
+      // nothing in this file reads either (0 direct reads, measured), but the
+      // keys stay so geocodedResult's contract is unchanged for every consumer.
       return {
-        lat: result.location.latitude,
-        lon: result.location.longitude,
-        locationType: result.granularity,
-        placeId: result.placeId,
-        formattedAddress: result.formattedAddress,
-        isRooftop: result.granularity === 'ROOFTOP',
+        lat: d.lat,
+        lon: d.lon,
+        locationType: null,
+        placeId: null,
+        formattedAddress: typeof d.formattedAddress === 'string' ? d.formattedAddress : '',
+        isRooftop: d.isRooftop === true,
       };
     } catch (err) {
       console.warn('Geocoding failed:', err);
