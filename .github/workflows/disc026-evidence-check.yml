@@ -1,0 +1,146 @@
+name: DISC-026 evidence check
+
+# Protects the DISC-026 evidence substrate, and nothing else.
+#
+# The manifest the homeowner's browser will fetch is a GENERATED artefact. Its
+# source of record is generate_disc026_evidence.py. This workflow exists to
+# make one thing impossible: a committed manifest that its own generator would
+# not produce. A hand-edit to disc026-evidence.json — however well meant, and
+# however small — fails here.
+#
+# DELIBERATELY NARROW. It does no research, contacts no authority, fetches
+# nothing from SEAI, CRU or ESB Networks, and never auto-updates evidence.
+# Verification of the underlying facts is a human act with a review interval;
+# it is not something CI should quietly do on a homeowner's behalf.
+#
+# There is no schedule. A cron job here would imply the evidence refreshes
+# itself, which is exactly the impression the temporal model exists to prevent.
+# Evidence goes stale on its own, in the open, and the resolved_status says so.
+
+on:
+  pull_request:
+    paths:
+      - 'disc026-evidence.json'
+      - '.github/scripts/generate_disc026_evidence.py'
+      - '.github/scripts/validate_disc026_evidence.py'
+      - '.github/workflows/disc026-evidence-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'disc026-evidence.json'
+      - '.github/scripts/generate_disc026_evidence.py'
+      - '.github/scripts/validate_disc026_evidence.py'
+      - '.github/workflows/disc026-evidence-check.yml'
+  workflow_dispatch:
+
+# Least privilege: this job reads the tree and writes nothing.
+permissions:
+  contents: read
+
+concurrency:
+  group: disc026-evidence-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+        # Standard library only. Nothing to install, nothing to pin.
+
+      # The committed manifest records the date it was generated for. Regenerate
+      # for THAT date, not for today, or a correct file would fail this check
+      # every morning simply because the clock moved.
+      - name: Regenerate the manifest to a temporary path
+        id: regen
+        run: |
+          set -euo pipefail
+          test -s disc026-evidence.json || { echo "::error::manifest missing"; exit 1; }
+          AS_OF="$(python3 -c "import json;print(json.load(open('disc026-evidence.json'))['generated'])")"
+          echo "Committed manifest was generated as-of: $AS_OF"
+          python3 .github/scripts/generate_disc026_evidence.py \
+            --out "${RUNNER_TEMP}/candidate.json" --as-of "$AS_OF"
+
+      # THE CENTRAL GATE. If these differ, the committed artefact is not what its
+      # own source of record produces — someone edited the JSON by hand, or the
+      # generator changed without the artefact being regenerated.
+      - name: Prove the committed manifest matches its generator
+        run: |
+          set -euo pipefail
+          if ! diff -u disc026-evidence.json "${RUNNER_TEMP}/candidate.json" > "${RUNNER_TEMP}/drift.diff"; then
+            echo "::error::disc026-evidence.json does not match generator output."
+            echo "The manifest is GENERATED. Edit .github/scripts/generate_disc026_evidence.py,"
+            echo "re-run it, and commit the regenerated artefact. Do not hand-edit the JSON."
+            echo "--- drift ---"
+            head -80 "${RUNNER_TEMP}/drift.diff"
+            exit 1
+          fi
+          echo "Committed manifest is byte-identical to generator output."
+
+      - name: Validate the committed manifest
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/validate_disc026_evidence.py \
+            --candidate disc026-evidence.json \
+            --summary-out "${RUNNER_TEMP}/validation.txt"
+
+      # The two proofs that the temporal model is real rather than decorative.
+      # No network, no new facts: the same records, resolved at future dates.
+      - name: Temporal proof — expiry withholds without a code change
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/generate_disc026_evidence.py \
+            --out "${RUNNER_TEMP}/ev2027.json" --as-of 2027-01-01
+          python3 .github/scripts/generate_disc026_evidence.py \
+            --out "${RUNNER_TEMP}/ev2029.json" --as-of 2029-01-01
+          python3 - "${RUNNER_TEMP}/ev2027.json" "${RUNNER_TEMP}/ev2029.json" <<'PY'
+          import json, sys
+          fails = []
+
+          d27 = json.load(open(sys.argv[1]))
+          g = next(r for r in d27["records"] if r["claim_key"] == "grant_max_eur")
+          if g["resolved_status"] != "WITHHOLD":
+              fails.append(f"2027: grant_max_eur is {g['resolved_status']}, expected WITHHOLD")
+          if g["homeowner_safe_resolved"] or g["logic_safe_resolved"]:
+              fails.append("2027: an expired grant maximum is still servable")
+          years = {(r.get("value") or {}).get("year")
+                   for r in d27["records"] if r["claim_key"] == "grant_max_eur"}
+          if years - {2026}:
+              fails.append(f"2027: a grant-maximum year was invented: {years}")
+
+          d29 = json.load(open(sys.argv[2]))
+          t = next(r for r in d29["records"]
+                   if r["claim_key"] == "microgen_income_tax_exemption")
+          if t["resolved_status"] != "WITHHOLD":
+              fails.append(f"2029: tax exemption is {t['resolved_status']}, expected WITHHOLD")
+          if t["homeowner_safe_resolved"] or t["logic_safe_resolved"]:
+              fails.append("2029: an expired tax exemption is still servable")
+          if any(r["claim_key"] == "microgen_income_tax_exemption"
+                 and (r.get("valid_until") or "") > "2028-12-31" for r in d29["records"]):
+              fails.append("2029: a replacement tax exemption was invented")
+
+          for f in fails:
+              print(f"::error::{f}")
+          print("2027 grant expiry  : WITHHOLD, no 2027 value invented"
+                if not any("2027" in f for f in fails) else "2027 PROOF FAILED")
+          print("2029 tax expiry    : WITHHOLD, no replacement invented"
+                if not any("2029" in f for f in fails) else "2029 PROOF FAILED")
+          sys.exit(1 if fails else 0)
+          PY
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### DISC-026 evidence check"
+            echo ""
+            cat "${RUNNER_TEMP}/validation.txt" 2>/dev/null || echo "validation did not run"
+          } >> "$GITHUB_STEP_SUMMARY"
