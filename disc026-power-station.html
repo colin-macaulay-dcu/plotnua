@@ -271,8 +271,9 @@ details.ps-drawer[open] summary::after{content:"–"}
   <section class="ps-screen" id="s2">
     <h2 class="ps-h">Your property</h2>
     <div class="ps-view"><div id="psCesium"></div></div>
-    <p class="ps-viewnote">This is your property as it appears in 3D imagery. We use it so you
-      can see the house we&rsquo;re talking about &mdash; not to assess the roof.</p>
+    <p class="ps-viewnote">The marker sits on the location your Eircode returns, not on a
+      building we have identified. This is your property as it appears in 3D imagery. We use it so
+      you can see the house we&rsquo;re talking about &mdash; not to assess the roof.</p>
 
     <fieldset class="ps-q" data-q="ownership">
       <legend>Do you own this home?</legend>
@@ -853,7 +854,167 @@ details.ps-drawer[open] summary::after{content:"–"}
   /* =====================================================================
      PROPERTY · Eircode -> Worker -> Cesium. Memory only, never persisted.
      ===================================================================== */
-  var viewerStarted=false;
+  /* =====================================================================
+     THE PLOTNUA P — lifted verbatim from your-plot.html at build time.
+     Not retyped, not restyled, not a third-party pin: the builder copies the
+     block out of the live file through this placeholder, so the two pages
+     cannot drift and a gate proves the bytes match.
+     ===================================================================== */
+  const P_MARK_SVG = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 3000 3000">
+      <circle cx="1500" cy="1500" r="1420" fill="#F8F5EC" opacity="0.97"/>
+      <g transform="translate(0,3000) scale(0.1,-0.1)">
+        <path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#1F3B2E"/>
+        <path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#4F6B4A"/>
+      </g>
+    </svg>`;
+  const P_MARK_DATA_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(P_MARK_SVG.trim());
+
+  const CHEVRON_SVG = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" viewBox="0 0 40 30">
+      <path d="M 6 4 L 20 22 L 34 4" fill="none" stroke="#1F3B2E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  const CHEVRON_DATA_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(CHEVRON_SVG.trim());
+
+  /* =====================================================================
+     PROPERTY VIEW — the same camera treatment as Your Plot.
+
+     WHAT WAS WRONG. This flew the CAMERA to the homeowner's coordinates
+     (flyTo destination = lon/lat/260) and then pitched it 38 degrees off
+     horizontal, which puts the centre of frame ~260/tan(38) = 333 m north
+     of the house. The house was in shot but never the subject.
+
+     WHAT YOUR PLOT DOES, and now this does: frame a one-metre bounding
+     sphere AT the property with a HeadingPitchRange offset. The target is
+     centred whatever the pitch, because the pitch orbits the target rather
+     than tilting away from it.
+
+     The composition — heading 20 deg, pitch -33 deg — is Your Plot's,
+     unchanged. The range is Your Plot's own 190 m value (its
+     moveCloserForPlotIntelligence step), which sits between its 225 m
+     arrival and its 95 m Results framing: closer than the broad arrival,
+     while the neighbouring houses that make a roof recognisable stay in
+     frame. ===================================================== */
+  /* PLAIN NUMBERS. These must not touch Cesium at parse time: Cesium.js is
+     deferred, so it has not executed when this inline script runs, and a
+     top-level Cesium.Math call here throws and takes the entire journey down
+     with it. The conversion happens at use time, inside functions that only
+     run once a viewer exists. */
+  var HEADING_DEG = 20, PITCH_DEG = -33, RANGE_M = 190;
+  function cameraOffset(){
+    var pitch = Cesium.Math.toRadians(PITCH_DEG);
+    return new Cesium.HeadingPitchRange(
+      Cesium.Math.toRadians(HEADING_DEG), pitch, RANGE_M / Math.sin(Math.abs(pitch)));
+  }
+
+  var viewerStarted=false, viewer=null, markerEntities=[], surfaceLocked=false;
+
+  /* Ellipsoidal altitude is not ground level — in Ireland the geoid sits
+     tens of metres from the ellipsoid, so a marker pinned to height 0 is
+     underground and a camera framed there looks below the house. Your Plot
+     samples the loaded tileset instead. Tiles stream, so this can fail
+     early and succeed a moment later; the caller retries. */
+  function tryResolveSurfaceHeight(lat, lon){
+    if (!viewer || !viewer.scene.sampleHeightSupported) return {height:0, resolved:false};
+    try{
+      var h = viewer.scene.sampleHeight(Cesium.Cartographic.fromDegrees(lon, lat));
+      if (typeof h === 'number' && !isNaN(h)) return {height:h, resolved:true};
+      return {height:0, resolved:false};
+    }catch(e){ return {height:0, resolved:false}; }
+  }
+
+  function clearMarkerEntities(){
+    markerEntities.forEach(function(e){ viewer.entities.remove(e); });
+    markerEntities = [];
+  }
+
+  /* Your Plot's showLocationMarker(), carried over: ring, stem, chevron, P.
+     THE MARKER IS THE LOCATION THE EIRCODE RETURNED. It is not a building
+     outline and not a roof — nothing in this stack derives either. */
+  function showLocationMarker(rc){
+    if (!viewer || !rc) return;
+    clearMarkerEntities();
+
+    var groundPosition  = Cesium.Cartesian3.fromDegrees(rc.lon, rc.lat, rc.height);
+    var chevronPosition = Cesium.Cartesian3.fromDegrees(rc.lon, rc.lat, rc.height + 8);
+    var markPosition    = Cesium.Cartesian3.fromDegrees(rc.lon, rc.lat, rc.height + 18);
+    var startTime = performance.now();
+
+    function pulseScale(){
+      var elapsed = performance.now() - startTime;
+      if (elapsed > 2600) return 1;
+      return 1 + 0.18 * Math.sin(((elapsed % 1300) / 1300) * Math.PI);
+    }
+
+    var ring = viewer.entities.add({
+      position: groundPosition,
+      ellipse: {
+        semiMinorAxis: new Cesium.CallbackProperty(function(){ return 3 * pulseScale(); }, false),
+        semiMajorAxis: new Cesium.CallbackProperty(function(){ return 3 * pulseScale(); }, false),
+        material: new Cesium.ColorMaterialProperty(new Cesium.CallbackProperty(function(){
+          return Cesium.Color.fromCssColorString('#BD6A46').withAlpha(0.4); }, false)),
+        heightReference: Cesium.HeightReference.NONE
+      }
+    });
+    var stem = viewer.entities.add({
+      polyline: {
+        positions: [groundPosition, markPosition], width: 1.5,
+        material: new Cesium.ColorMaterialProperty(new Cesium.CallbackProperty(function(){
+          return Cesium.Color.fromCssColorString('#F2EFE6').withAlpha(0.55); }, false))
+      }
+    });
+    var chevron = viewer.entities.add({
+      position: chevronPosition,
+      billboard: {
+        image: CHEVRON_DATA_URI,
+        width:  new Cesium.CallbackProperty(function(){ return 20 * pulseScale(); }, false),
+        height: new Cesium.CallbackProperty(function(){ return 15 * pulseScale(); }, false),
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM
+      }
+    });
+    var mark = viewer.entities.add({
+      position: markPosition,
+      billboard: {
+        image: P_MARK_DATA_URI,
+        width:  new Cesium.CallbackProperty(function(){ return 46 * pulseScale(); }, false),
+        height: new Cesium.CallbackProperty(function(){ return 46 * pulseScale(); }, false),
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM
+      }
+    });
+    markerEntities = [ring, stem, chevron, mark];
+  }
+
+  function settleOnProperty(lat, lon, height, duration, done){
+    viewer.camera.flyToBoundingSphere(
+      new Cesium.BoundingSphere(Cesium.Cartesian3.fromDegrees(lon, lat, height), 1), {
+        offset: cameraOffset(),
+        duration: duration,
+        easingFunction: Cesium.EasingFunction.QUADRATIC_OUT,
+        complete: done, cancel: done
+      });
+  }
+
+  /* Show the P immediately at the best height known, then upgrade it as tiles
+     arrive, and re-frame ONCE when the real surface first resolves. Failing
+     open matters more than failing accurately here: the billboards carry
+     disableDepthTestDistance, so the P is visible even if the height never
+     resolves — the homeowner is never left without a marker. */
+  function anchorToProperty(lat, lon, attempt){
+    var h = tryResolveSurfaceHeight(lat, lon);
+    showLocationMarker({lat:lat, lon:lon, height:h.height});
+    if (h.resolved && !surfaceLocked){
+      surfaceLocked = true;
+      settleOnProperty(lat, lon, h.height, 1.2, function(){
+        viewer.camera.lookDown(Cesium.Math.toRadians(4));
+      });
+      return;
+    }
+    if (!h.resolved && attempt < 12)
+      setTimeout(function(){ anchorToProperty(lat, lon, attempt + 1); }, 400);
+  }
+
   function startViewer(lat, lon){
     if (viewerStarted) return;
     var host=document.getElementById('psCesium');
@@ -869,15 +1030,31 @@ details.ps-drawer[open] summary::after{content:"–"}
     viewerStarted=true;
     try{
       Cesium.Ion.defaultAccessToken = window.PLOTNUA_CESIUM_TOKEN;
-      var viewer = new Cesium.Viewer('psCesium', {
+      viewer = new Cesium.Viewer('psCesium', {
         baseLayerPicker:false, geocoder:false, homeButton:false, sceneModePicker:false,
         navigationHelpButton:false, animation:false, timeline:false, fullscreenButton:false,
         infoBox:false, selectionIndicator:false });
+      /* At 190 m the target is close enough that collision detection pushes
+         the camera back off the tileset surface, undoing the framing. Your
+         Plot disables it for the same reason. */
+      viewer.scene.screenSpaceCameraController.enableCollisionDetection = false;
+      if (viewer.imageryLayers.length === 0)
+        viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#DDD8C8');
+
+      var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+      /* Frame only once the tileset is attached — the old code flew while the
+         promise was still pending, so the camera settled before there was
+         anything to settle onto and sampleHeight had nothing to sample. */
       Cesium.createGooglePhotorealistic3DTileset().then(function(ts){
         viewer.scene.primitives.add(ts);
-      }).catch(function(){});
-      viewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, 260),
-        orientation:{ heading:0, pitch:Cesium.Math.toRadians(-38) }, duration:2.0 });
+      }).catch(function(){ /* imagery may still carry the view; frame anyway */ })
+        .then(function(){
+          settleOnProperty(lat, lon, 0, reduced ? 0 : 2.2, function(){
+            viewer.camera.lookDown(Cesium.Math.toRadians(4));
+            anchorToProperty(lat, lon, 0);
+          });
+        });
     }catch(e){
       host.innerHTML='<div class="ps-viewfail">The 3D view isn’t available right now. It doesn’t affect your result.</div>';
     }
