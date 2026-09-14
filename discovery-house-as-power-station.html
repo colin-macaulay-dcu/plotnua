@@ -850,6 +850,7 @@
   .pn-eircode-field input:disabled{ opacity:.55; cursor:not-allowed; }
   .btn-primary{
     display:inline-block; background:var(--ink); color:var(--brand-ivory); border:none;
+    text-decoration:none;
     font-family:'Work Sans',sans-serif; padding:16px 30px; font-size:14px;
     letter-spacing:.08em; text-transform:uppercase; border-radius:2px; margin-top:24px;
   }
@@ -1114,16 +1115,27 @@
 </section>
 
 <section class="pb-preview reveal" id="discover-your-property">
-    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
-         your-plot.html, whose journey is hard-coded to discoveryContext =
-         'artist-studio'. Whatever this page said, the homeowner arrived in the
-         Garden Room journey. The interaction is removed rather than disabled,
-         for the reason already recorded on the three pages that did this first:
-         a control a homeowner cannot use is worse than no control at all.
-         Component, styling and independence statement are the existing ones. -->
+    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — HISTORY, AND ITS RESOLUTION.
+
+         The Eircode form that once stood here submitted to your-plot.html,
+         whose journey is hard-coded to discoveryContext='artist-studio', so
+         whatever this page said the homeowner arrived in the Garden Room
+         journey. The interaction was removed rather than disabled: a control
+         a homeowner cannot use is worse than no control at all.
+
+         GATE 7A. That reason is now spent. disc026-power-station.html exists,
+         is frozen, and is this Discovery's own journey — it asks for the
+         Eircode itself, on its own screen, and keeps it in memory only. So the
+         control returns as ONE link, in the component's own .btn-primary
+         style, and the two sentences that said the check did not exist are
+         corrected. No Eircode field is restored here: the journey collects it,
+         and a build gate forbids that page from reading a query string, so an
+         Eircode captured on this page could not be handed over. The four exit
+         links below are untouched. -->
     <div class="pn-wordmark">PlotNua</div>
-    <h2 class="pb-headline">This property check is being prepared</h2>
-    <p class="pb-subhead">The House as a Power Station check will look at your roof, your electricity connection and meter, and which energy options are available to your home now. It is not ready yet. In the meantime, there is plenty to explore.</p>
+    <h2 class="pb-headline">Check this against your own home</h2>
+    <p class="pb-subhead">A few short questions about this home, and we&rsquo;ll set out which of the four could apply here &mdash; and what&rsquo;s worth checking next.</p>
+    <a class="btn-primary" href="disc026-power-station.html">See what your home could do</a>
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
       <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore What Could You Build in Your Garden? &rarr;</a>
