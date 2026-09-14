@@ -17,13 +17,35 @@
     --accent:#4F6B4A; --oak:#8B6F4E;
     --line:rgba(31,59,46,.12);
     --line-soft:rgba(31,59,46,.07);
+
+    /* ---- V2 · A TONE SCALE, NOT ONE PLANE --------------------------------
+       The page was #F8F5EC from masthead to footer, separated only by
+       hairlines. Hairlines on a single plane is the grammar of a spec sheet.
+       Three warm steps, ~10% luminance apart, let the reveal and the actions
+       sit on their own ground without a single card or shadow. */
+    --stone:#EFE9DA;        /* the reveal band, and the actions field */
+    --stone-soft:#F4F0E3;   /* alternating section tint, barely there */
+
+    /* ---- V2 · TWO TEXT TONES ---------------------------------------------
+       --soft (#55605A) was carrying body copy, labels and footnotes alike at
+       6.01:1 — passing, but doing three jobs at one weight. Split in two:
+       --body for anything meant to be READ, --muted for what is genuinely
+       secondary. Both measured on all three surfaces; worst case 5.01:1. */
+    --body:#3A453F;         /* 9.16:1 on paper, 8.24:1 on stone */
+    --muted:#5A655F;        /* 5.57:1 on paper, 5.01:1 on stone */
+    --rule:rgba(31,59,46,.18);
+    --rule-soft:rgba(31,59,46,.10);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--paper); color:var(--ink);
     font-family:'Work Sans',-apple-system,BlinkMacSystemFont,sans-serif;
-    font-weight:300; font-size:16px; line-height:1.65;
+    /* V2 · 300 -> 400. This one declaration set EVERY label and paragraph on
+       the page in Light. It is the single largest reason the result read as a
+       wireframe, and it was never a contrast problem: the ratios already
+       passed AA. Work Sans 400 is already loaded. */
+    font-weight:400; font-size:16px; line-height:1.65;
     -webkit-font-smoothing:antialiased;
   }
   .dw-wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
@@ -81,23 +103,53 @@
   .dw-cta:hover{background:var(--accent);}
 
   /* ---- the four-part reveal -------------------------------------------- */
-  /* ONE DOMINANT MOMENT. The reveal headline is the largest thing on the
-     page by a clear margin — everything below it is read as consequence
-     rather than as a competing claim. */
+  /* ================= V2 · THE REVEAL IS A SURFACE =======================
+     Previously the largest type on the page, on the same cream as everything
+     else. Now it sits in its own full-bleed warm stone band with a rule above
+     and below — so the answer is REVEALED rather than merely set large.
+     Editorial, not a card: it spans the viewport, has no radius, no shadow
+     and no border on three sides, and its only ornament is a hairline and an
+     oversized quiet numeral. */
+  .dw-revealband{
+    background:var(--stone);
+    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    margin:0 calc(50% - 50vw) 64px; padding:78px calc(50vw - 50%) 72px;
+    position:relative;
+    /* Kept as a safety net. A full-bleed band computed from 50vw can exceed
+       the viewport by the scrollbar width on some platforms; clipping means
+       this band can never be the thing that puts a horizontal scrollbar on
+       the page. Measured at all six widths: no overflow. */
+    overflow:hidden;
+  }
+  /* NO DECORATIVE MARK. An oversized ghost numeral was built here and then
+     removed after looking at it: clipped to the band it read as a stray rule
+     at the top-right on mobile — an artifact, not a device. The band earns
+     its presence from tone, rule and space alone, which is what "restrained
+     materiality" actually means. Decoration that needs defending is
+     decoration that should go. */
+  .dw-revealband .dw-eyebrow{color:var(--accent);font-weight:600;
+    letter-spacing:.2em;margin:0 0 22px;}
   .dw-reveal-h{font-family:'Fraunces',Georgia,serif;font-weight:400;
-    font-size:clamp(38px,6.1vw,72px);line-height:1.04;margin:0 0 22px;
-    max-width:15ch;letter-spacing:-.015em;}
-  .dw-reveal-sub{font-size:19px;line-height:1.62;color:var(--soft);
-    margin:0 0 60px;max-width:46ch;}
-  /* SAVE. Present, calm, and clearly secondary to the revelation. */
-  .dw-save{margin:44px 0 52px;}
+    font-size:clamp(40px,6.4vw,76px);line-height:1.02;margin:0 0 26px;
+    max-width:15ch;letter-spacing:-.022em;position:relative;}
+  .dw-reveal-sub{font-size:19.5px;line-height:1.6;color:var(--body);
+    margin:0;max-width:44ch;position:relative;}
+  /* ================= V2 · SAVE BELONGS TO THE CLOSE ====================
+     It read as a utility button dropped into whitespace. It now shares the
+     actions field — same ground, separated by a rule — so keeping the result
+     is the end of the same gesture as reading what to do about it. */
+  .dw-save{background:var(--stone);margin:0 calc(50% - 50vw) 64px;
+    padding:0 calc(50vw - 50%) 60px;}
+  .dw-saveinner{border-top:1px solid var(--rule-soft);padding-top:34px;}
+  .dw-savekicker{font-family:'Fraunces',Georgia,serif;font-size:19px;
+    color:var(--ink);margin:0 0 6px;}
   .dw-savebtn{display:inline-block;background:var(--ink);color:var(--brand-ivory);
     border:none;font-family:'Work Sans',sans-serif;padding:16px 30px;
     font-size:13.5px;letter-spacing:.09em;text-transform:uppercase;
     border-radius:2px;cursor:pointer;text-decoration:none;}
   .dw-savebtn[data-saved]{background:transparent;color:var(--ink);
     box-shadow:inset 0 0 0 1px var(--line);cursor:default;}
-  .dw-savenote{font-size:14px;line-height:1.6;color:var(--soft);
+  .dw-savenote{font-size:14.5px;line-height:1.6;color:var(--body);
     margin:14px 0 0;max-width:46ch;}
   /* Secondary by construction: a rule under text, not a second button. */
   .dw-savelink{display:inline-block;margin:16px 0 0;font-size:12.5px;
@@ -121,45 +173,83 @@
      left in the DOM as hooks but given nothing to paint: a border colour
      that encodes CLEAR or BLOCKED is a traffic light however quietly it is
      drawn, and this result does not rank or grade anything. */
-  .dw-parts{margin:0 0 8px;border-top:1px solid var(--line);}
-  .dw-part{padding:32px 0 30px;border-bottom:1px solid var(--line-soft);}
-  .dw-part:last-child{border-bottom:1px solid var(--line);}
-  .dw-plabel{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--soft);margin:0 0 12px;}
+  /* ================= V2 · THE FOUR, WITH RHYTHM ========================
+     Still editorial rows, still one answer in four parts — but no longer four
+     identical bands of pale text. Three changes carry it: an INDEX numeral
+     doing quietly what a status chip would do loudly, a label that is finally
+     legible (ink, 600, larger), and an alternating tint so the eye has
+     something to step on. No boxes: the tint is full-bleed and the only
+     boundary is a hairline. */
+  .dw-parts{margin:0 0 4px;border-top:1px solid var(--rule);}
+  .dw-part{padding:40px 0 38px;border-bottom:1px solid var(--rule-soft);
+    position:relative;}
+  .dw-part:last-child{border-bottom:1px solid var(--rule);}
+  /* NO ALTERNATING TINT. It was tried and removed. Inside a 1080px column a
+     tint has to be full-bleed or it reads as a box, and the only way to bleed
+     a grid child is a zero-blur box-shadow spread — a trick, and one that
+     trips every "no shadows" guard for the right reason. The rhythm instead
+     comes from the index numeral, a label with real weight, generous padding,
+     and the two genuine surfaces above and below. Restraint beat cleverness
+     here. */
+  .dw-pindex{font-family:'Fraunces',Georgia,serif;font-size:13px;
+    color:var(--accent);letter-spacing:.04em;margin:0 0 6px;font-weight:500;}
+  .dw-plabel{font-size:12.5px;letter-spacing:.17em;text-transform:uppercase;
+    color:var(--ink);font-weight:600;margin:0 0 14px;}
   @media (min-width:834px){
-    /* The label steps into its own column and the reading measure narrows.
-       This is the whole responsive behaviour of the block: typography, not
-       a second layout. */
-    .dw-part{display:grid;grid-template-columns:150px minmax(0,1fr);
-      column-gap:40px;align-items:start;}
-    .dw-plabel{margin:5px 0 0;}
-    .dw-pbody{max-width:60ch;}
+    /* The index and label step into their own column and the reading measure
+       narrows. The whole responsive behaviour of the block is typographic. */
+    .dw-part{display:grid;grid-template-columns:166px minmax(0,1fr);
+      column-gap:48px;align-items:start;}
+    .dw-pmeta{margin-top:6px;}
+    .dw-plabel{margin:0;}
+    .dw-pbody{max-width:58ch;}
   }
-  .dw-ph{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:23px;
+  .dw-ph{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:26px;
     line-height:1.24;margin:0 0 12px;}
-  .dw-pb{font-size:15.5px;line-height:1.62;color:var(--soft);margin:0 0 18px;}
-  .dw-because{list-style:none;margin:0 0 18px;padding:0;}
-  .dw-because li{font-size:14.5px;line-height:1.55;color:var(--soft);
+  .dw-pb{font-size:16.5px;line-height:1.6;color:var(--body);margin:0 0 20px;}
+  .dw-because{list-style:none;margin:0 0 20px;padding:0;}
+  .dw-because li{font-size:15px;line-height:1.55;color:var(--body);
     padding-left:16px;position:relative;margin-bottom:7px;}
   .dw-because li:before{content:'';position:absolute;left:0;top:9px;
     width:5px;height:1px;background:var(--line);}
-  .dw-pnext{border-top:1px solid var(--line-soft);padding-top:14px;}
+  .dw-pnext{border-top:1px solid var(--rule-soft);padding-top:16px;}
   .dw-pnexth{font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:600;
     color:var(--soft);margin:0 0 8px;}
   .dw-pnext ul{list-style:none;margin:0;padding:0;}
   .dw-pnext li{font-size:15px;line-height:1.5;margin-bottom:7px;}
 
   /* ---- closing action -------------------------------------------------- */
-  .dw-next{border-top:1px solid var(--line);padding-top:40px;margin:0 0 48px;}
-  .dw-nexth{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:26px;
+  /* ================= V2 · WHAT TO CHECK NEXT ===========================
+     The most useful part of the result was the weakest thing on the page: a
+     rule, a heading and three quiet lines. It is now a warm inset field with
+     numbered actions — a place, not a leftover. Restrained: one ground, one
+     rule, numerals in accent. Nothing here is a checkbox, a chip or a task
+     manager; these are things to ask someone, not things to tick. */
+  .dw-next{background:var(--stone);border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    margin:0 calc(50% - 50vw) 0;padding:56px calc(50vw - 50%) 52px;}
+  .dw-nexth{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:30px;
     margin:0 0 18px;}
-  .dw-nextl{list-style:none;margin:0;padding:0;max-width:56ch;}
-  .dw-nextl li{font-size:16.5px;line-height:1.5;padding:12px 0;
+  .dw-nextl{list-style:none;margin:0;padding:0;max-width:62ch;
+    counter-reset:dwnext;}
+  .dw-nextl li{font-size:17px;line-height:1.5;padding:16px 0 16px 52px;
+    position:relative;counter-increment:dwnext;color:var(--ink);}
+  /* The numeral is generated, so the count follows the engine's action list
+     however many it produces — nothing here hard-codes three. */
+  .dw-nextl li:before{content:counter(dwnext,decimal-leading-zero);
+    position:absolute;left:0;top:16px;font-family:'Fraunces',Georgia,serif;
+    font-size:14px;color:var(--accent);font-weight:500;letter-spacing:.04em;}
+  .dw-nextl li.__unused{font-size:16.5px;line-height:1.5;padding:12px 0;
     border-bottom:1px solid var(--line-soft);}
 
   /* ---- evidence drawer ------------------------------------------------- */
-  .dw-drawer{border-top:1px solid var(--line);padding-top:12px;}
-  .dw-drawer summary{cursor:pointer;list-style:none;padding:14px 0;
+  /* The evidence stays the quiet final layer — but quiet is not invisible.
+     Weight and tone only; it does not compete with the result and it does not
+     open itself. */
+  .dw-drawer{border-top:1px solid var(--rule);padding-top:12px;}
+  .dw-drawer summary{cursor:pointer;list-style:none;padding:18px 0;
+    font-weight:500;
     font-size:14px;letter-spacing:.06em;text-transform:uppercase;
     color:var(--soft);}
   .dw-drawer summary::-webkit-details-marker{display:none;}
@@ -170,11 +260,12 @@
     color:var(--soft);margin:0 0 10px;}
   .dw-evitem{border-left:1px solid var(--line);padding:0 0 0 16px;
     margin-bottom:14px;}
-  .dw-evclaim{font-size:14.5px;line-height:1.55;margin:0 0 5px;}
-  .dw-evmeta{font-size:12.5px;color:var(--soft);}
+  .dw-evclaim{font-size:14.5px;line-height:1.55;margin:0 0 5px;
+    color:var(--body);}
+  .dw-evmeta{font-size:12.5px;color:var(--muted);}
   .dw-evmeta a{color:var(--soft);}
   .dw-evnone{font-size:14.5px;color:var(--soft);}
-  .dw-foot{font-size:13.5px;line-height:1.6;color:var(--soft);
+  .dw-foot{font-size:13.5px;line-height:1.6;color:var(--muted);
     border-top:1px solid var(--line-soft);padding-top:22px;margin-top:8px;
     max-width:62ch;}
 
@@ -185,9 +276,14 @@
     .dw-topin{padding:18px 20px;}
     .dw-screen{padding:44px 0 72px;}
     .dw-part{padding:26px 0 24px;}
+    .dw-revealband{padding:52px calc(50vw - 50%) 46px;margin-bottom:44px;}
+    .dw-next{padding:42px calc(50vw - 50%) 38px;}
+    .dw-save{padding:0 calc(50vw - 50%) 46px;margin-bottom:48px;}
+    .dw-nextl li{padding:14px 0 14px 44px;font-size:16px;}
     .dw-reveal-sub{margin-bottom:34px;}
     .dw-savebtn{width:100%;}
   }
+
 </style>
 </head>
 <body>
@@ -201,6 +297,7 @@
 </header>
 
 <main class="dw-wrap">
+
 
   <section class="dw-screen is-on" id="dwIntro">
     <p class="dw-eyebrow">A property check</p>
@@ -221,15 +318,20 @@
   </section>
 
   <section class="dw-screen" id="dwReveal">
-    <p class="dw-eyebrow">Your driveway</p>
-    <h2 class="dw-reveal-h" id="dwRevealH"></h2>
-    <p class="dw-reveal-sub" id="dwRevealSub"></p>
+    <div class="dw-revealband">
+      <p class="dw-eyebrow">Your driveway</p>
+      <h2 class="dw-reveal-h" id="dwRevealH"></h2>
+      <p class="dw-reveal-sub" id="dwRevealSub"></p>
+    </div>
     <div class="dw-parts" id="dwParts"></div>
     <div class="dw-next" id="dwNext"></div>
     <div class="dw-save">
-      <button class="dw-savebtn" type="button" id="dwSave" hidden>Save to My Plot</button>
-      <p class="dw-savenote" id="dwSaveNote"></p>
-      <a class="dw-savelink" id="dwSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot &rarr;</a>
+      <div class="dw-saveinner">
+        <p class="dw-savekicker">Keep this with your property</p>
+        <button class="dw-savebtn" type="button" id="dwSave" hidden>Save to My Plot</button>
+        <p class="dw-savenote" id="dwSaveNote"></p>
+        <a class="dw-savelink" id="dwSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot &rarr;</a>
+      </div>
     </div>
     <details class="dw-drawer">
       <summary>Why PlotNua is saying this</summary>
@@ -989,15 +1091,151 @@
         answers: p.answers,
         resultKeys: p.resultKeys
       });
-      if (r === 'saved') { paint(true); return; }
+      if (r === 'saved') { paint(true);
+        if (typeof cfg.onSaved === 'function') cfg.onSaved();
+        return; }
       if (note) {
         note.textContent = 'We could not keep this in your browser just now.';
       }
     };
   }
 
+  /* How much My Plot is holding, through the SAME reader. A journey page
+     asking "is there anything in My Plot?" must not grow its own opinion of
+     the store's shape; this is the one place that knows. */
+  function count() {
+    var d = readRaw();
+    if (!d) return 0;
+    var n = 0, seen = {};
+    (Array.isArray(d.saved) ? d.saved : []).forEach(function (r) {
+      if (r && typeof r.productId === 'string' && r.productId && !seen[r.productId]) {
+        seen[r.productId] = 1; n++;
+      }
+    });
+    (Array.isArray(d.added) ? d.added : []).forEach(function (r) {
+      var k = r && String(r.url || r.name || '').trim().toLowerCase();
+      if (k && !seen[k]) { seen[k] = 1; n++; }
+    });
+    n += list().length;
+    return n;
+  }
+
+
+  /* ---- MY PLOT, THE PLATFORM'S FLOATING ROUTE -------------------------
+     Navigation, never a call to action: the inline Save is the real action
+     on a journey page and this only says "there is somewhere your things
+     live". It builds its own markup and injects its own styles so that two
+     journeys can never hold two slightly different pills.
+
+     WHEN: whenever My Plot holds anything at all — a saved product, an added
+     item, or a kept journey — and never while My Plot itself is on screen.
+     That is the rule your-plot.html already applies to its own control:
+
+         els.myPlotAccessWrap.hidden = count === 0 || myPlotIsOpen();
+
+     SELF-CONTAINED STYLES. Literal colours, not var(), because a shared
+     component cannot assume its host defines the same tokens — DISC-026 has
+     no --stone or --body, and the pill must look the same on both. */
+  var PILL_ID = 'pnPlotPill';
+  var PILL_CSS_ID = 'pnPlotPillCss';
+  var PILL_HREF = 'your-plot.html?myplot=1';
+
+  var PILL_STYLE = [
+    '.pn-plotpill{position:fixed;top:18px;right:18px;z-index:60;',
+    'display:inline-flex;align-items:center;gap:14px;',
+    'background:#1F3B2E;color:#F2EFE6;border-radius:44px;',
+    'padding:9px 20px 9px 9px;text-decoration:none;',
+    'font-family:"Work Sans",-apple-system,BlinkMacSystemFont,sans-serif;',
+    'box-shadow:0 10px 26px rgba(31,59,46,.26),0 2px 6px rgba(0,0,0,.14);',
+    'transition:transform .22s cubic-bezier(.2,.85,.32,1.1),box-shadow .22s ease;}',
+    /* The attribute must win over the class. An author display:inline-flex
+       beats the user-agent [hidden]{display:none} on ORIGIN, which is exactly
+       how the save link once stayed visible while hidden was true. */
+    '.pn-plotpill[hidden]{display:none;}',
+    '.pn-plotpill:hover{transform:translateY(-1px);',
+    'box-shadow:0 14px 32px rgba(31,59,46,.32),0 3px 8px rgba(0,0,0,.16);}',
+    '.pn-plotpill:focus-visible{outline:2px solid #F2EFE6;outline-offset:3px;}',
+    '.pn-plotmark{width:34px;height:34px;border-radius:50%;',
+    'background:rgba(242,239,230,.13);display:flex;align-items:center;',
+    'justify-content:center;font-family:"Fraunces",Georgia,serif;',
+    'font-size:15px;color:#F2EFE6;flex:0 0 34px;}',
+    '.pn-plotlabel{display:flex;flex-direction:column;line-height:1.15;}',
+    '.pn-plottitle{font-size:13.5px;font-weight:500;letter-spacing:.02em;}',
+    '.pn-plotcount{font-size:11px;opacity:.72;letter-spacing:.04em;margin-top:2px;}',
+    '.pn-plotchev{font-size:14px;opacity:.8;margin-left:2px;}',
+    /* Bottom-right on phones. Both journeys put their masthead and their
+       reveal at the top, and a pill over either is a pill in the way. */
+    '@media (max-width:820px){.pn-plotpill{top:auto;bottom:16px;right:14px;',
+    'padding:8px 17px 8px 8px;}',
+    '.pn-plotmark{width:30px;height:30px;flex:0 0 30px;font-size:14px;}',
+    '.pn-plottitle{font-size:12.5px;}.pn-plotcount{font-size:10.5px;}}'
+  ].join('');
+
+  /* My Plot is where the pill would send you, so it has no purpose there.
+     Matched on the filename rather than a flag, because any page that is
+     your-plot.html IS My Plot however it was reached. */
+  function insideMyPlot() {
+    try {
+      return /(^|\/)your-plot\.html$/.test(window.location.pathname);
+    } catch (e) { return false; }
+  }
+
+  function buildPill() {
+    if (!document.getElementById(PILL_CSS_ID)) {
+      var st = document.createElement('style');
+      st.id = PILL_CSS_ID;
+      st.textContent = PILL_STYLE;
+      document.head.appendChild(st);
+    }
+    var a = document.getElementById(PILL_ID);
+    if (a) return a;
+    a = document.createElement('a');
+    a.id = PILL_ID;
+    a.className = 'pn-plotpill';
+    a.setAttribute('href', PILL_HREF);
+    a.hidden = true;
+
+    var mark = document.createElement('span');
+    mark.className = 'pn-plotmark';
+    mark.setAttribute('aria-hidden', 'true');
+    mark.textContent = '☉';
+
+    var label = document.createElement('span');
+    label.className = 'pn-plotlabel';
+    var t = document.createElement('span');
+    t.className = 'pn-plottitle';
+    t.textContent = 'My Plot';
+    var c = document.createElement('span');
+    c.className = 'pn-plotcount';
+    label.appendChild(t); label.appendChild(c);
+
+    var chev = document.createElement('span');
+    chev.className = 'pn-plotchev';
+    chev.setAttribute('aria-hidden', 'true');
+    chev.textContent = '→';
+
+    a.appendChild(mark); a.appendChild(label); a.appendChild(chev);
+    document.body.appendChild(a);
+    return a;
+  }
+
+  /* Idempotent: safe to call on every reveal and after every save. */
+  function mountPill() {
+    if (!works() || insideMyPlot()) {
+      var existing = document.getElementById(PILL_ID);
+      if (existing) existing.hidden = true;
+      return;
+    }
+    var a = buildPill();
+    var n = count();
+    a.hidden = !(n > 0);
+    var c = a.querySelector('.pn-plotcount');
+    if (c) c.textContent = (n === 1) ? '1 thing kept' : n + ' things kept';
+  }
+
   root.PlotNuaJourneySave = {
-    KEY: KEY, works: works, has: has, save: save, list: list, mount: mount
+    KEY: KEY, works: works, has: has, save: save, list: list, count: count,
+    mount: mount, mountPill: mountPill
   };
 })(window);
 /* PLOTNUA-JOURNEY-SAVE-END */
@@ -1231,6 +1469,20 @@
     if (next) renderQuestion(next); else reveal();
   }
 
+
+  /* ---- floating My Plot navigation ------------------------------------
+     Counted through the save block's OWN reader, so there is exactly one
+     piece of code in this page that knows how to read plotnua.myplot.v1.
+     Shown whenever My Plot holds anything, which is the rule your-plot.html
+     already applies to its own pill. Refreshed after a save so keeping a
+     result makes the route appear immediately. */
+  /* The pill is the shared component's now: it builds its own markup, owns
+     its own styles and knows its own visibility rule. This page supplies
+     nothing but the call. */
+  function dwUpdatePlotPill(){
+    if (window.PlotNuaJourneySave) window.PlotNuaJourneySave.mountPill();
+  }
+
   /* ---- reveal ---------------------------------------------------------- */
   function reveal(){
     var d = ENG.decide(answers, EVIDENCE);
@@ -1270,8 +1522,8 @@
 
     var parts = $('dwParts');
     parts.innerHTML = '';
-    ['PERMISSION','TAX','INSURANCE','THE_DRIVEWAY'].forEach(function(name){
-      parts.appendChild(renderPart(byName[name]));
+    ['PERMISSION','TAX','INSURANCE','THE_DRIVEWAY'].forEach(function(name, i){
+      parts.appendChild(renderPart(byName[name], i));
     });
 
     renderNext(res);
@@ -1288,6 +1540,7 @@
         buttonId: 'dwSave',
         noteId: 'dwSaveNote',
         linkId: 'dwSaveLink',
+        onSaved: dwUpdatePlotPill,
         journeyId: 'disc014-driveway-income',
         title: 'Driveway Income',
         payload: function(){
@@ -1302,16 +1555,23 @@
         }
       });
     }
+    dwUpdatePlotPill();
   }
 
-  function renderPart(r){
+  function renderPart(r, idx){
     var art = document.createElement('article');
     art.className = 'dw-part ' + (TONE[r.state] || '');
     art.setAttribute('data-result', r.result);
 
     var h = HEADLINES[r.headline_key] || ['', ''];
     var html = '';
+    /* V2 · the index. Presentation only: the order is the fixed
+       PERMISSION/TAX/INSURANCE/THE_DRIVEWAY order the reveal already
+       renders, numbered for the eye. It ranks nothing. */
+    html += '<div class="dw-pmeta">';
+    html += '<p class="dw-pindex">' + ('0' + (idx + 1)) + '</p>';
     html += '<p class="dw-plabel">' + (LABELS[r.result] || r.result) + '</p>';
+    html += '</div>';
     /* Everything but the label sits in one wrapper, so the label can step
        into its own column at wider widths without the row becoming a grid
        of four unrelated cells. */
