@@ -128,6 +128,42 @@ fieldset{border:0;margin:0;padding:0}
 .ps-reveal-h{font-size:clamp(32px,4.6vw,54px);line-height:1.14;max-width:17ch;
   margin-bottom:18px;letter-spacing:-.015em}
 .ps-reveal-sub{color:var(--soft);font-size:18px;max-width:46ch;margin:0 0 8px}
+/* =====================================================================
+   THE REVELATION LAYER. One surface, four parts — not four widgets. The
+   grouping is carried by two hairlines and the column rules between them,
+   so the four read as one idea before any of them reads as an item. No
+   fill, no chip, no icon, no gradient, no shadow, no tile.
+   ===================================================================== */
+.ps-set{display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  margin:46px 0 0}
+
+.ps-set-item{padding:30px 26px 28px;border-left:1px solid var(--line-soft)}
+
+.ps-set-item:first-child{border-left:0;padding-left:0}
+
+.ps-set-item:last-child{padding-right:0}
+
+.ps-set-verb{font-family:'Fraunces',serif;font-weight:600;font-size:23px;
+  line-height:1.2;margin:0 0 10px;color:var(--ink)}
+
+.ps-set-cap{font-size:15px;line-height:1.5;color:var(--ink);margin:0 0 16px;
+  max-width:22ch}
+
+.ps-set-state{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--soft);line-height:1.5;display:block}
+
+.ps-set-state i{font-style:normal;display:inline-block;width:5px;height:5px;
+  border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle}
+
+.ps-set-state.is-change i{background:var(--oak)}
+
+.ps-set-state.is-unknown i{background:rgba(85,96,90,.45)}
+
+/* The real dependency, in one sentence. Not a diagram. */
+.ps-rel{font-size:16px;line-height:1.65;color:var(--soft);max-width:62ch;
+  margin:26px 0 0}
+
 .ps-cards{display:flex;flex-direction:column;gap:22px;margin:52px 0 46px}
 
 /* One full-width surface per capability. Deliberately large: the payoff must
@@ -138,7 +174,11 @@ fieldset{border:0;margin:0;padding:0}
   gap:24px;flex-wrap:wrap;margin-bottom:6px}
 .ps-card-verb{font-family:'Fraunces',serif;font-size:clamp(28px,3vw,38px);
   font-weight:600;letter-spacing:-.01em;line-height:1.1}
-.ps-card-cap{color:var(--soft);font-size:16px;line-height:1.6;max-width:44ch;margin:0 0 22px}
+/* GATE 6G measured the hierarchy inverted: the capability statement — the
+   line that carries the revelation — was 16px under a 19px situational
+   outcome, so the eye landed on the grant detail rather than on what the
+   house can do. Reading order is now CAPABILITY, then what PlotNua found. */
+.ps-card-cap{color:var(--ink);font-size:21px;line-height:1.5;max-width:40ch;margin:0 0 18px}
 
 /* A quiet factual state. Not a control, not a chip, not a button. */
 .ps-state{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
@@ -148,7 +188,7 @@ fieldset{border:0;margin:0;padding:0}
 .ps-state.is-change i{background:var(--oak)}
 .ps-state.is-unknown i{background:rgba(85,96,90,.45)}
 
-.ps-outcome{font-size:19px;line-height:1.62;margin:0 0 26px;max-width:58ch;color:var(--ink)}
+.ps-outcome{font-size:17px;line-height:1.65;margin:0 0 26px;max-width:62ch;color:var(--soft)}
 
 /* The interactive element is the ACTION, never the state. */
 .ps-act{appearance:none;background:none;border:0;padding:0;cursor:pointer;
@@ -165,8 +205,8 @@ fieldset{border:0;margin:0;padding:0}
 .ps-step[hidden]{display:none}
 
 /* Subordinate: comes AFTER the four capabilities, never before. */
-.ps-start{border-top:1px solid var(--line);padding-top:26px;margin-bottom:34px;
-  font-size:16px;color:var(--soft);max-width:56ch}
+.ps-start{margin:14px 0 0;font-size:16px;line-height:1.65;
+  color:var(--soft);max-width:56ch}
 .ps-start b{color:var(--ink);font-weight:600}
 
 /* ---------- drawers ---------- */
@@ -197,6 +237,13 @@ details.ps-drawer[open] summary::after{content:"–"}
 
 @media (max-width:900px){
   .ps-verbs{grid-template-columns:repeat(2,1fr)}
+  /* Two up. The row rule keeps the four reading as one group rather than
+     as two unrelated pairs. */
+  .ps-set{grid-template-columns:repeat(2,1fr)}
+  .ps-set-item{padding:26px 22px}
+  .ps-set-item:nth-child(odd){border-left:0;padding-left:0}
+  .ps-set-item:nth-child(even){padding-right:0}
+  .ps-set-item:nth-child(n+3){border-top:1px solid var(--line-soft)}
   .ps-card{padding:32px 30px}
   .ps-view{height:min(46vh,400px)}
 }
@@ -205,11 +252,24 @@ details.ps-drawer[open] summary::after{content:"–"}
   .ps-top{padding:18px 6vw}
   .ps-ctx{display:none}
   .ps-verbs{grid-template-columns:1fr;gap:12px}
+  /* Stacked, and TIGHTENED so the whole set still lands in one phone screen.
+     A four-column grid at this width would be unreadable, and a set the
+     homeowner has to scroll to finish is not a set — it is a list again.
+     Every saving here is spacing and scale, never a removed capability. */
+  .ps-set{grid-template-columns:1fr;margin-top:34px}
+  .ps-set-item{padding:15px 0;border-left:0}
+  .ps-set-item + .ps-set-item{border-top:1px solid var(--line-soft)}
+  .ps-set-verb{font-size:20px;margin-bottom:4px}
+  .ps-set-cap{max-width:34ch;font-size:14.5px;margin-bottom:8px}
+  .ps-set-state{letter-spacing:.1em}
+  .ps-rel{font-size:15px;margin-top:20px}
+  .ps-start{font-size:15px}
   .ps-verb{padding:22px 20px}
   .ps-card{padding:28px 22px;border-radius:14px}
   .ps-card-top{gap:10px}
   .ps-state{padding-top:0}
-  .ps-outcome{font-size:17px}
+  .ps-card-cap{font-size:19px}
+  .ps-outcome{font-size:16px}
   .ps-step{padding:20px 20px}
   .ps-q-sub{padding-left:16px;margin-top:-16px}
   .ps-q-sub legend{font-size:18px}
@@ -387,8 +447,15 @@ details.ps-drawer[open] summary::after{content:"–"}
     <h2 class="ps-reveal-h">Your home can do more than consume electricity.</h2>
     <p class="ps-reveal-sub">Here&rsquo;s what looks possible at this property. Not all of it involves solar.</p>
     <div id="psDegraded"></div>
-    <div class="ps-cards" id="psCards"></div>
+
+    <!-- REVELATION LAYER. All four, together, before any detail. Rendered
+         from the same result array the cards below use. -->
+    <div class="ps-set" id="psSet"></div>
+    <p class="ps-rel" id="psRelation"></p>
     <div class="ps-start" id="psStartHere"></div>
+
+    <!-- DETAIL LAYER. Unchanged in behaviour. -->
+    <div class="ps-cards" id="psCards"></div>
     <p class="ps-foot">PlotNua does not size systems, quote for equipment, or estimate what you
       would earn. Export rates are set by suppliers and change &mdash; we will not print one.</p>
   </section>
@@ -585,6 +652,14 @@ details.ps-drawer[open] summary::after{content:"–"}
     SELL:'Your home can send electricity back to the grid, and be paid for it.'
   };
   var VERB = {MAKE:'Make', TIME:'Time', STORE:'Store', SELL:'Sell'};
+  /* The overview says the same thing in fewer words. PRESENTATION ONLY —
+     no engine function reads this, and nothing branches on it. */
+  var SHORT = {
+    MAKE:'Generate electricity here',
+    TIME:'Change when electricity is drawn',
+    STORE:'Hold electricity for later',
+    SELL:'Send electricity back'
+  };
   /* THE ACTION LABEL MUST DESCRIBE WHAT IS BEHIND IT.
 
      The four labels this replaces invited the homeowner to explore, to
@@ -601,8 +676,14 @@ details.ps-drawer[open] summary::after{content:"–"}
      advice to give — PlotNua's source needs rechecking — so it must not offer
      to explain what something means for this home. PRESENTATION ONLY: the
      result object is read, never written, and no engine function calls this. */
-  function actionLabel(r){
-    return r.state==='WITHHELD' ? 'Why we can’t say yet' : 'What this means here';
+  /* GATE 6G measured what the four panels actually contain: 101, 72, 381 and
+     154 characters. Two of them held nothing but a next check, because the
+     engine had returned a single sentence and splitOutcome left no remainder
+     — so "What this means here" was untrue on exactly those two. The label
+     now follows the content. `hasMore` is whether any explanation remains. */
+  function actionLabel(r, hasMore){
+    if (r.state==='WITHHELD') return 'Why we can’t say yet';
+    return hasMore ? 'What this means here' : 'What to check next';
   }
   /* First view carries one short explanation. The engine's full text is kept,
      entire, behind the action — progressive disclosure, not truncation. */
@@ -744,6 +825,32 @@ details.ps-drawer[open] summary::after{content:"–"}
         + 'Nothing here is your doing, and there’s nothing for you to check. Please try again shortly.</div>'
       : '';
 
+    /* ---- REVELATION LAYER -------------------------------------------
+       Built from the SAME `results` array the cards below use. There is no
+       second engine, no second call, and no state that the four result
+       functions did not produce. */
+    var setHtml='';
+    results.forEach(function(r){
+      setHtml += '<div class="ps-set-item" data-key="'+r.key+'" data-band="'+esc(r.band)+'">'
+        + '<h3 class="ps-set-verb">'+VERB[r.key]+'</h3>'
+        + '<p class="ps-set-cap">'+esc(SHORT[r.key])+'</p>'
+        + '<span class="ps-set-state'+bandClass(r.band)+'"><i></i>'+esc(statusLine(r))+'</span>'
+        + '</div>';
+    });
+    var setEl = document.getElementById('psSet');
+    setEl.innerHTML = (EV_STATE==='failed') ? '' : setHtml;
+    setEl.hidden = (EV_STATE==='failed');
+
+    /* THE REAL DEPENDENCY, in one sentence. MAKE can lead to SELL because a
+       home can only export what it generates; TIME and STORE do not depend
+       on generation at all. Stated, not drawn — a flowchart would make an
+       ordinary relationship look like an engineering diagram. */
+    var relEl = document.getElementById('psRelation');
+    relEl.innerHTML = (EV_STATE==='failed') ? ''
+      : '<b>Time</b> and <b>Store</b> stand on their own — neither needs solar. '
+      + '<b>Sell</b> follows <b>Make</b>, because a home can only send back what it generates.';
+    relEl.hidden = (EV_STATE==='failed');
+
     var html='';
     results.forEach(function(r, i){
       var na = nextAction(r), sp = splitOutcome(r.text), sid = 'psStep'+i;
@@ -755,7 +862,7 @@ details.ps-drawer[open] summary::after{content:"–"}
         + '<p class="ps-card-cap">'+MEANING[r.key]+'</p>'
         + '<p class="ps-outcome">'+esc(sp.head)+'</p>'
         + '<button class="ps-act" type="button" aria-expanded="false" aria-controls="'+sid+'" '
-        +   'data-step="'+sid+'">'+esc(actionLabel(r))+'<span class="ps-arw">&darr;</span></button>'
+        +   'data-step="'+sid+'">'+esc(actionLabel(r, !!sp.rest))+'<span class="ps-arw">&darr;</span></button>'
         + '<div class="ps-step" id="'+sid+'" hidden>'
         +   (sp.rest ? '<p style="margin:0 0 18px">'+esc(sp.rest)+'</p>' : '')
         +   '<b>'+esc(na.label)+'</b>'+esc(na.text)
@@ -774,18 +881,18 @@ details.ps-drawer[open] summary::after{content:"–"}
       });
     });
 
-    /* Where to start — a starting point, not a recommendation. */
+    /* Where to start — orientation, not a recommendation engine. The
+       precedence is unchanged from Gate 6; only its POSITION moves. Gate 6G
+       measured it sitting beyond 2,600px of scroll, where a line may as well
+       not exist. It now sits under the set it refers to. */
     var start='', t=results[1], m=results[0];
-    /* PRESENTATION ONLY. Engine precedence is unchanged; this line now sits
-       AFTER the four capabilities, because the reveal matters more than the
-       recommended first move. */
     if (EV_STATE==='failed') start='';
     else if (t.band===READY) start='If you want somewhere to begin, <b>Time</b> is the one that needs nothing installed.';
     else if (m.band===READY && m.note==='GRANT_MAY_BE_AVAILABLE') start='If you want somewhere to begin, <b>Make</b> &mdash; the grant looks open here.';
     else {
       var first=null; results.forEach(function(r){ if(!first && r.band===READY) first=r; });
       start = first ? 'If you want somewhere to begin, <b>'+VERB[first.key]+'</b>.'
-                    : 'Start with the one check in the cards above &mdash; it resolves the most.';
+                    : 'Start with the one check below &mdash; it resolves the most.';
     }
     var el=document.getElementById('psStartHere');
     el.innerHTML = start; el.hidden = !start;
