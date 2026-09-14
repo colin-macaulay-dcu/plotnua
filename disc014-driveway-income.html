@@ -52,12 +52,30 @@
 
   /* ---- quiet header + return route ------------------------------------ */
   .dw-top{border-bottom:1px solid var(--line-soft);}
-  .dw-topin{max-width:1080px;margin:0 auto;padding:22px 28px;
-    display:flex;align-items:baseline;gap:14px;}
-  .dw-brand{font-family:'Fraunces',Georgia,serif;font-size:17px;
-    letter-spacing:.01em;color:var(--ink);}
-  .dw-ctx{font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--soft);}
+  .dw-topin{max-width:1080px;margin:0 auto;padding:20px 28px;
+    display:flex;align-items:center;gap:16px;}
+  /* V2.1 · THE GARDEN MARK, PORTED.
+     your-plot.html carries PlotNua as a MEDALLION, not as text:
+       .brand-mark 46x46, radius 12, ivory, 0 1px 3px rgba(31,59,46,.16)
+                                            + 0 0 0 1px rgba(31,59,46,.07)
+     The asset is a self-contained rounded dark tile, so it needs no wrapper
+     of its own here. Placed in the existing header row rather than floating,
+     because this page HAS a masthead and the Garden journey does not — that
+     is the one place an exact port is not practical. */
+  .dw-mark{display:flex;flex:0 0 auto;border-radius:12px;text-decoration:none;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07);
+    transition:transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;}
+  .dw-mark:hover{transform:scale(1.06);
+    box-shadow:0 5px 16px rgba(31,59,46,.20), 0 0 0 1px rgba(31,59,46,.09);}
+  .dw-mark:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+  .dw-mark img{display:block;width:44px;height:44px;border-radius:12px;}
+  .dw-ident{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  /* 17px -> 27px. PlotNua leads the masthead; the journey name is the
+     caption under it, not its equal on the same baseline. */
+  .dw-brand{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:27px;
+    line-height:1.05;letter-spacing:-.005em;color:var(--ink);}
+  .dw-ctx{font-size:11.5px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);}
   .dw-back{margin-left:auto;font-size:13px;color:var(--soft);
     text-decoration:none;border-bottom:1px solid var(--line);}
   .dw-back:hover{color:var(--ink);}
@@ -273,7 +291,11 @@
 
   @media (max-width:780px){
     .dw-wrap{padding:0 20px;}
-    .dw-topin{padding:18px 20px;}
+    .dw-topin{padding:16px 20px;gap:13px;}
+    .dw-mark img{width:38px;height:38px;}
+    .dw-brand{font-size:22px;}
+    .dw-ctx{font-size:10.5px;letter-spacing:.14em;}
+    .dw-back{font-size:12px;}
     .dw-screen{padding:44px 0 72px;}
     .dw-part{padding:26px 0 24px;}
     .dw-revealband{padding:52px calc(50vw - 50%) 46px;margin-bottom:44px;}
@@ -290,8 +312,13 @@
 
 <header class="dw-top">
   <div class="dw-topin">
-    <span class="dw-brand">PlotNua</span>
-    <span class="dw-ctx">Driveway Income</span>
+    <a class="dw-mark" href="index.html" aria-label="PlotNua &mdash; home">
+      <img src="assets/brand/plotnua-mark-master.svg" alt="" width="44" height="44">
+    </a>
+    <span class="dw-ident">
+      <span class="dw-brand">PlotNua</span>
+      <span class="dw-ctx">Driveway Income</span>
+    </span>
     <a class="dw-back" href="discovery-driveway-income.html">Back to the story</a>
   </div>
 </header>
@@ -1121,54 +1148,145 @@
   }
 
 
-  /* ---- MY PLOT, THE PLATFORM'S FLOATING ROUTE -------------------------
-     Navigation, never a call to action: the inline Save is the real action
-     on a journey page and this only says "there is somewhere your things
-     live". It builds its own markup and injects its own styles so that two
-     journeys can never hold two slightly different pills.
+  /* ---- THE GARDEN MY PLOT PILL ------------------------------------------
+     Ported from your-plot.html, which is the platform's reference
+     implementation of this control. The Garden composes it as
 
-     WHEN: whenever My Plot holds anything at all — a saved product, an added
-     item, or a kept journey — and never while My Plot itself is on screen.
-     That is the rule your-plot.html already applies to its own control:
+       .my-plot-access-wrap  fixed positioning + z-index
+         .my-plot-access     the surface: paper, fine border, soft shadow
+           .pn-mark-heart    the 64px medallion carrying the real mark
+           .my-plot-access-label   Fraunces title + uppercase caption
+           .my-plot-access-chevron the arrow that advances on hover
 
-         els.myPlotAccessWrap.hidden = count === 0 || myPlotIsOpen();
+     A journey has one control rather than a control plus an info trigger,
+     so the wrap collapses into the anchor itself: .pn-plotpill carries the
+     positioning the wrap used to, and .my-plot-access carries every visual
+     property verbatim. That split is deliberate — it keeps the ported
+     surface rules a straight copy of the Garden's, so the next person to
+     compare the two files can do it by eye.
 
-     SELF-CONTAINED STYLES. Literal colours, not var(), because a shared
-     component cannot assume its host defines the same tokens — DISC-026 has
-     no --stone or --body, and the pill must look the same on both. */
+     LITERAL COLOURS, NOT var(). A shared component cannot assume its host
+     defines the same tokens — DISC-026 has no --paper and no --accent — so
+     the Garden's :root values are inlined. */
   var PILL_ID = 'pnPlotPill';
   var PILL_CSS_ID = 'pnPlotPillCss';
   var PILL_HREF = 'your-plot.html?myplot=1';
 
+  /* The real mark, exactly as plotIcon() draws it in your-plot.html: the
+     same three paths, the same coordinate transform, the same fills. These
+     are not re-fitted approximations — they are the approved geometry. */
+  var MARK_P = 'M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0';
+  var MARK_HOUSE = 'M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0';
+  var MARK_HEART = 'M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z';
+  var markClipSeq = 0;
+
   var PILL_STYLE = [
-    '.pn-plotpill{position:fixed;top:18px;right:18px;z-index:60;',
-    'display:inline-flex;align-items:center;gap:14px;',
-    'background:#1F3B2E;color:#F2EFE6;border-radius:44px;',
-    'padding:9px 20px 9px 9px;text-decoration:none;',
-    'font-family:"Work Sans",-apple-system,BlinkMacSystemFont,sans-serif;',
-    'box-shadow:0 10px 26px rgba(31,59,46,.26),0 2px 6px rgba(0,0,0,.14);',
-    'transition:transform .22s cubic-bezier(.2,.85,.32,1.1),box-shadow .22s ease;}',
-    /* The attribute must win over the class. An author display:inline-flex
-       beats the user-agent [hidden]{display:none} on ORIGIN, which is exactly
-       how the save link once stayed visible while hidden was true. */
-    '.pn-plotpill[hidden]{display:none;}',
-    '.pn-plotpill:hover{transform:translateY(-1px);',
-    'box-shadow:0 14px 32px rgba(31,59,46,.32),0 3px 8px rgba(0,0,0,.16);}',
-    '.pn-plotpill:focus-visible{outline:2px solid #F2EFE6;outline-offset:3px;}',
-    '.pn-plotmark{width:34px;height:34px;border-radius:50%;',
-    'background:rgba(242,239,230,.13);display:flex;align-items:center;',
-    'justify-content:center;font-family:"Fraunces",Georgia,serif;',
-    'font-size:15px;color:#F2EFE6;flex:0 0 34px;}',
-    '.pn-plotlabel{display:flex;flex-direction:column;line-height:1.15;}',
-    '.pn-plottitle{font-size:13.5px;font-weight:500;letter-spacing:.02em;}',
-    '.pn-plotcount{font-size:11px;opacity:.72;letter-spacing:.04em;margin-top:2px;}',
-    '.pn-plotchev{font-size:14px;opacity:.8;margin-left:2px;}',
-    /* Bottom-right on phones. Both journeys put their masthead and their
-       reveal at the top, and a pill over either is a pill in the way. */
-    '@media (max-width:820px){.pn-plotpill{top:auto;bottom:16px;right:14px;',
-    'padding:8px 17px 8px 8px;}',
-    '.pn-plotmark{width:30px;height:30px;flex:0 0 30px;font-size:14px;}',
-    '.pn-plottitle{font-size:12.5px;}.pn-plotcount{font-size:10.5px;}}'
+    /* POSITIONING — the Garden's .my-plot-access-wrap, moved to the opposite
+       corner, and this is the one place the port deliberately departs from
+       your-plot.html.
+
+       The Garden puts its pill at top:20/right:20 because nothing else is up
+       there: its own identity mark is a 46px tile at top-LEFT, so the
+       top-right corner is empty. Both journeys instead run a full-width
+       masthead across the top — 91px on Driveway, 88px on Power Station —
+       and Power Station's is position:sticky at z-index 20, so it is in that
+       corner permanently, not just at scroll-top. Measured at 1440, 1024 and
+       834, a top-aligned pill overlapped the masthead on both journeys and
+       the "Back to the story" link on Driveway.
+
+       Bottom-right was then measured on both journeys at 1440/1024/834 and
+       at five scroll positions each: zero overlaps with the masthead, the
+       Back link, the reveal copy, the section copy or the save controls.
+
+       So the treatment is the Garden's exactly and only the anchor corner
+       differs, because the host page differs. This also makes one placement
+       rule for every width instead of a desktop rule and a phone rule. */
+    '.pn-plotpill{position:fixed;bottom:20px;right:20px;z-index:60;',
+    'display:flex;align-items:center;text-decoration:none;',
+    'font-family:"Work Sans",-apple-system,BlinkMacSystemFont,sans-serif;}',
+    /* The attribute must win over the class. An author display:flex beats
+       the user-agent [hidden]{display:none} on ORIGIN, which is exactly how
+       the save link once stayed visible while hidden was true. Class plus
+       attribute is (0,2,0) and restores the attribute's meaning. */
+    '.pn-plotpill[hidden],.my-plot-access[hidden]{display:none;}',
+
+    /* surface — the Garden's .my-plot-access, after its PB-029 override */
+    '.my-plot-access{display:flex;align-items:center;gap:0;',
+    'border-radius:44px;padding:10px 26px 10px 10px;text-align:left;',
+    'background:#F8F5EC;color:#1F3B2E;',
+    'border:1px solid rgba(31,59,46,.16);',
+    'box-shadow:0 1px 2px rgba(31,59,46,.05),0 10px 28px rgba(31,59,46,.10);',
+    'transition:transform .22s cubic-bezier(.2,.85,.32,1.1),',
+    'box-shadow .22s ease,background .22s ease;}',
+    '.my-plot-access:hover{transform:translateY(-1px);',
+    'box-shadow:0 2px 4px rgba(31,59,46,.07),0 16px 38px rgba(31,59,46,.14);}',
+    '.pn-plotpill:focus-visible{outline:2px solid #1F3B2E;outline-offset:3px;}',
+    '.pn-plotpill:focus-visible .my-plot-access{box-shadow:0 2px 4px ',
+    'rgba(31,59,46,.07),0 16px 38px rgba(31,59,46,.14);}',
+
+    /* the medallion — the Garden's .pn-mark-heart at its pill size */
+    '.pn-mark-heart{position:relative;display:inline-flex;flex:0 0 auto;',
+    'vertical-align:middle;}',
+    '.pn-mark-heart .pmh-svg{width:100%;height:100%;display:block;}',
+    '.pn-mark-heart .pmh-heart-path{opacity:0;transform:scale(1.6);',
+    'transform-origin:1595px 1573px;transition:opacity .38s ease,',
+    'transform .38s cubic-bezier(.2,.85,.32,1.25);}',
+    '.pn-mark-heart.is-plot-active .pmh-heart-path{opacity:1;',
+    'transform:scale(3.2);}',
+    '.my-plot-access .pn-mark-heart{width:64px;height:64px;margin-right:18px;',
+    'padding:7px;background:#F2EFE6;border-radius:22px;',
+    'box-shadow:0 4px 12px rgba(31,59,46,.26),',
+    'inset 0 0 0 1px rgba(31,59,46,.07);transition:box-shadow .22s ease;}',
+    '.my-plot-access:hover .pn-mark-heart{',
+    'box-shadow:0 6px 16px rgba(31,59,46,.32),',
+    'inset 0 0 0 1px rgba(31,59,46,.09);}',
+    '.my-plot-access .pn-mark-heart.is-plot-active .pmh-heart-path{',
+    'transform:scale(4.1);}',
+
+    /* the label — Fraunces title over an uppercase caption */
+    '.my-plot-access-label{display:flex;flex-direction:column;gap:1px;',
+    'min-width:0;}',
+    '.my-plot-access-title{font-family:"Fraunces",Georgia,serif;',
+    'font-weight:500;font-size:19px;line-height:1.15;letter-spacing:.005em;',
+    'color:#1F3B2E;}',
+    '.my-plot-access-count{font-size:11.5px;font-weight:600;',
+    'letter-spacing:.07em;text-transform:uppercase;line-height:1.2;',
+    'color:#4F6B4A;opacity:.85;}',
+
+    /* the arrow, which advances on hover */
+    '.my-plot-access-chevron{margin-left:16px;font-size:17px;line-height:1;',
+    'color:#4F6B4A;opacity:.75;',
+    'transition:transform .22s ease,opacity .22s ease;}',
+    '.my-plot-access:hover .my-plot-access-chevron{transform:translateX(3px);',
+    'opacity:.95;}',
+
+    /* PHONES — THE COMPACT PILL.
+       The full Garden pill is 224x72 at phone widths. Measured at 430, 390
+       and 360 across five result states and twenty-one scroll positions, it
+       covered the CENTRE of the "Save to My Plot" button in 10 of 15 cases:
+       elementFromPoint returned the pill, not the button, so the journey's
+       primary action was not clickable. The pill that shipped before this
+       port was smaller and only ever touched the button's edge (0 of 15),
+       so the Garden pill's size is what introduced this.
+
+       The control therefore collapses to the medallion and the arrow on
+       phones. It keeps the Garden surface, the Garden medallion and the
+       Garden arrow; it drops only the two text lines, and it stays in the
+       same corner. 116x70 instead of 224x72, which clears every action
+       centre on both journeys.
+
+       The text is hidden with display:none rather than a clip-rect, because
+       its meaning is carried instead by an explicit aria-label that
+       mountPill() writes with the live count — see mountPill below. A
+       screen reader gets "Open My Plot - 3 things kept" at every width;
+       only sighted phone users get the shorter object. */
+    '@media (max-width:560px){',
+    '.pn-plotpill{bottom:16px;right:14px;}',
+    '.my-plot-access{padding:7px 14px 7px 7px;border-radius:38px;}',
+    '.my-plot-access .pn-mark-heart{width:54px;height:54px;margin-right:0;',
+    'padding:6px;border-radius:19px;}',
+    '.my-plot-access-label{display:none;}',
+    '.my-plot-access-chevron{margin-left:10px;}}'
   ].join('');
 
   /* My Plot is where the pill would send you, so it has no purpose there.
@@ -1178,6 +1296,26 @@
     try {
       return /(^|\/)your-plot\.html$/.test(window.location.pathname);
     } catch (e) { return false; }
+  }
+
+  /* The mark, composed exactly as plotIcon(true) composes it. The clip id is
+     sequenced because a document may legitimately hold more than one. */
+  function markHtml() {
+    markClipSeq += 1;
+    var id = 'pnJourneyMarkClip' + markClipSeq;
+    return '<svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg"' +
+      ' class="pmh-svg" aria-hidden="true">' +
+      '<defs><clipPath id="' + id + '">' +
+        '<rect width="3000" height="3000" rx="666.5"/></clipPath></defs>' +
+      '<rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/>' +
+      '<g clip-path="url(#' + id + ')">' +
+        '<g transform="translate(0,3000) scale(0.1,-0.1)">' +
+          '<path d="' + MARK_P + '" fill="#F2EFE6"/>' +
+          '<path d="' + MARK_HOUSE + '" fill="#8FAF8A"/>' +
+        '</g>' +
+      '</g>' +
+      '<path class="pmh-heart-path" fill="#C57A5A" d="' + MARK_HEART + '"/>' +
+    '</svg>';
   }
 
   function buildPill() {
@@ -1195,26 +1333,35 @@
     a.setAttribute('href', PILL_HREF);
     a.hidden = true;
 
+    var surface = document.createElement('span');
+    surface.className = 'my-plot-access';
+
+    /* is-plot-active is the Garden's own state here: the pill represents My
+       Plot as a place that already holds something, which is the only
+       condition under which it is shown at all. */
     var mark = document.createElement('span');
-    mark.className = 'pn-plotmark';
+    mark.className = 'pn-mark-heart is-plot-active';
     mark.setAttribute('aria-hidden', 'true');
-    mark.textContent = '☉';
+    mark.innerHTML = markHtml();
 
     var label = document.createElement('span');
-    label.className = 'pn-plotlabel';
+    label.className = 'my-plot-access-label';
     var t = document.createElement('span');
-    t.className = 'pn-plottitle';
+    t.className = 'my-plot-access-title';
     t.textContent = 'My Plot';
     var c = document.createElement('span');
-    c.className = 'pn-plotcount';
+    c.className = 'my-plot-access-count';
     label.appendChild(t); label.appendChild(c);
 
     var chev = document.createElement('span');
-    chev.className = 'pn-plotchev';
+    chev.className = 'my-plot-access-chevron';
     chev.setAttribute('aria-hidden', 'true');
-    chev.textContent = '→';
+    chev.textContent = '\u2192';
 
-    a.appendChild(mark); a.appendChild(label); a.appendChild(chev);
+    surface.appendChild(mark);
+    surface.appendChild(label);
+    surface.appendChild(chev);
+    a.appendChild(surface);
     document.body.appendChild(a);
     return a;
   }
@@ -1229,8 +1376,18 @@
     var a = buildPill();
     var n = count();
     a.hidden = !(n > 0);
-    var c = a.querySelector('.pn-plotcount');
-    if (c) c.textContent = (n === 1) ? '1 thing kept' : n + ' things kept';
+    var kept = (n === 1) ? '1 thing kept' : n + ' things kept';
+    var c = a.querySelector('.my-plot-access-count');
+    if (c) c.textContent = kept;
+    /* THE ACCESSIBLE NAME IS WRITTEN HERE, not in the markup, because it
+       carries the live count and must therefore be rewritten every time
+       mountPill runs — on reveal, after a save, and after a repeat save.
+       On phones the two text lines are display:none and so are out of the
+       accessibility tree entirely; this is what keeps the control named.
+       It contains the visible label text verbatim ("My Plot", and the same
+       count string), so the visible name is a subset of the accessible one
+       at the widths where the text is on screen. */
+    a.setAttribute('aria-label', 'Open My Plot \u2014 ' + kept);
   }
 
   root.PlotNuaJourneySave = {
@@ -1254,7 +1411,7 @@
   var HEADLINES = {
     'driveway_more_to_tell_us': ['One or two things still worth checking', 'A practical detail decides whether this is straightforward or awkward. Worth knowing before you go any further.'],
     'driveway_no_offstreet_space': ['There is no off-street space here', 'Letting needs parking that belongs to this home and sits off the public road. From what you have told us, that is not the case.'],
-    'driveway_practically_usable': ['This looks workable', 'Space of your own, a driver who could come and go, and hours when nobody needs it.'],
+    'driveway_practically_usable': ['The driveway itself works', 'Space of your own, a driver who could come and go, and hours when nobody needs it.'],
     'driveway_rarely_free': ['The space is rarely free', 'Letting works on the hours when nobody at home needs the space. On your own account of the week, there are not many.'],
     'driveway_space_unknown': ['Tell us about the space', 'Everything practical turns on what kind of parking belongs to this home.'],
     'driveway_usable_with_arranging': ['Workable, with something to arrange', 'Nothing you have told us stops this. There is a practical detail to sort out first.'],
@@ -1328,33 +1485,35 @@
      apart into two different accounts of the same result. */
   var REVEAL = {
     'driveway_practically_usable': [
-      'This looks workable.',
-      'That is about the space itself \u2014 parking of your own, a driver who ' +
-      'could come and go, and hours when nobody needs it. Permission, tax and ' +
-      'insurance are separate questions, and each has its own answer below.'],
+      'The space is there. The details come next.',
+      'That is about the parking itself \u2014 your own, reachable, and ' +
+      'free when you need it to be. Permission, tax and insurance are ' +
+      'separate questions, and each has its own answer below.'],
     'driveway_usable_with_arranging': [
-      'Workable, with something to arrange.',
-      'Nothing you have told us stops this, and there is one practical detail ' +
-      'to sort out first. Permission, tax and insurance are separate questions, ' +
-      'and each has its own answer below.'],
+      'The space is there. One thing to sort out first.',
+      'Nothing you have told us stops this, and one practical detail ' +
+      'needs settling before anyone parks. Permission, tax and insurance ' +
+      'are separate questions, and each has its own answer below.'],
     'driveway_more_to_tell_us': [
-      'Nearly there, with one or two things to check.',
-      'A practical detail decides whether this is straightforward or awkward, ' +
-      'and it is worth knowing before you go further. Permission, tax and ' +
-      'insurance are separate questions, and each has its own answer below.'],
+      'The space is there. Not everything is settled.',
+      'A practical detail decides whether this is straightforward or ' +
+      'awkward, and it is worth knowing before you go further. ' +
+      'Permission, tax and insurance are separate questions, and each has ' +
+      'its own answer below.'],
     'driveway_rarely_free': [
-      'The space is rarely free.',
-      'Letting works on the hours when nobody at home needs the space, and on ' +
-      'your own account of the week there are not many. That is a practical ' +
-      'point about your household, not a rule about what you may do.'],
+      'You have the parking. You do not have the hours.',
+      'Letting works on the time when nobody at home needs the space, and ' +
+      'on your own account of the week there is very little. That is a ' +
+      'practical point about your household, not a rule about what you ' +
+      'may do.'],
     'driveway_space_unknown': [
-      'It starts with the space.',
-      'Until we know what kind of parking belongs to this home, two of the ' +
-      'four questions below cannot say much.'],
+      'One answer decides the rest.',
+      'Until we know what kind of parking belongs to this home, two of ' +
+      'the four questions below cannot say much.'],
     'driveway_no_offstreet_space': [
-      'There is nothing here to let.',
-      'Letting needs off-street parking that belongs to this home. The other ' +
-      'three questions only start once that exists.']
+      'This one begins with a driveway.',
+      'Letting needs off-street parking that belongs to this home. The ' +
+      'other three questions only start once that exists.'],
   };
 
   var TONE = {
