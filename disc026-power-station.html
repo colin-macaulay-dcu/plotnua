@@ -286,6 +286,30 @@ details.ps-drawer[open] summary::after{content:"–"}
   .ps-cards{gap:16px;margin:38px 0 34px}
   .ps-view{height:min(40vh,320px)}
 }
+
+  /* SAVE TO MY PLOT — the platform standard control, in this page's own
+     vocabulary. Deliberately not a new component: same ink, same measure,
+     same restraint as everything else on the reveal. */
+  .ps-save{ margin:46px 0 34px; }
+  .ps-savebtn{ display:inline-block; background:var(--ink,#1F3B2E); color:#F2EFE6;
+    border:none; font-family:'Work Sans',sans-serif; padding:16px 30px;
+    font-size:13.5px; letter-spacing:.09em; text-transform:uppercase;
+    border-radius:2px; cursor:pointer; text-decoration:none; }
+  .ps-savebtn[data-saved]{ background:transparent; color:var(--ink,#1F3B2E);
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.28); cursor:default; }
+  .ps-savenote{ font-size:14px; line-height:1.6; margin:14px 0 0;
+    max-width:46ch; opacity:.75; }
+  /* Secondary by construction: a rule under text, not a second button. */
+  .ps-savelink{ display:inline-block; margin:16px 0 0; font-size:12.5px;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--ink,#1F3B2E);
+    text-decoration:none; border-bottom:1px solid rgba(31,59,46,.28);
+    padding-bottom:3px; }
+  .ps-savelink:hover{ border-bottom-color:rgba(31,59,46,.7); }
+  /* THE ATTRIBUTE MUST WIN — see the same rule in disc014. An author
+     display:inline-block beats the user-agent [hidden]{display:none} on
+     origin, which made `hidden` inert on both controls. */
+  .ps-savebtn[hidden],.ps-savelink[hidden]{display:none;}
+  @media (max-width:560px){ .ps-savebtn{ width:100%; } }
 </style>
 </head>
 <body>
@@ -469,11 +493,229 @@ details.ps-drawer[open] summary::after{content:"–"}
 
     <!-- DETAIL LAYER. Unchanged in behaviour. -->
     <div class="ps-cards" id="psCards"></div>
+    <div class="ps-save">
+      <button class="ps-savebtn" type="button" id="psSave" hidden>Save to My Plot</button>
+      <p class="ps-savenote" id="psSaveNote"></p>
+      <a class="ps-savelink" id="psSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot &rarr;</a>
+    </div>
     <p class="ps-foot">PlotNua does not size systems, quote for equipment, or estimate what you
       would earn. Export rates are set by suppliers and change &mdash; we will not print one.</p>
   </section>
 
 </main>
+
+<script>
+/* PLOTNUA-JOURNEY-SAVE-BEGIN */
+/* PLOTNUA — SAVE TO MY PLOT · the reusable journey pattern, v1
+ * ============================================================================
+ * FROZEN PLATFORM PRINCIPLE
+ *   EVERY PROPERTY-SPECIFIC JOURNEY MUST OFFER SAVE TO MY PLOT AFTER THE
+ *   RESULT HAS BEEN REVEALED, USING plotnua.myplot.v1.
+ *
+ * This block is IDENTICAL, byte for byte, in every journey that carries it.
+ * A journey supplies configuration; it never supplies behaviour. If two
+ * journeys ever need different save behaviour, that is a signal to change
+ * this block once, not to fork it.
+ *
+ * ONE STORE, ONE SCHEMA, NO SECOND MODEL
+ *   plotnua.myplot.v1 already exists and My Plot owns it. A journey page is a
+ *   GUEST in that store. It therefore reads the whole record, changes exactly
+ *   one array, and writes the whole record back. saved[] and added[] are
+ *   carried through untouched: a homeowner must never lose a product they
+ *   kept months ago because they saved a journey today.
+ *
+ *   The schema is NOT bumped. My Plot discards any record whose schema is
+ *   higher than it knows, so bumping would make every saved product invisible
+ *   to an earlier build. An unknown extra field costs an earlier build
+ *   nothing. This is the same reasoning recorded at RS-2b in your-plot.html.
+ *
+ * WHAT A JOURNEY RECORD MAY CONTAIN
+ *   journeyId, title, savedAt, answers, resultKeys — and nothing else.
+ *   Answers and result KEYS, never result PROSE. The source of truth stays
+ *   answers + engine + governed evidence, so a saved result re-derives
+ *   against today's evidence rather than replaying yesterday's wording. That
+ *   matters most when evidence goes stale or is withheld: a stored paragraph
+ *   would keep asserting something PlotNua has stopped standing over.
+ *
+ *   Never stored: evidence or regulatory prose, location, Eircode,
+ *   coordinates, inferred property facts, prices, earnings, tracking.
+ *   sanitise() below enforces that by construction — it builds a new object
+ *   from a fixed key list rather than filtering a supplied one, so a future
+ *   caller cannot widen it by accident.
+ *
+ * IDENTITY IS journeyId
+ *   A repeat save REPLACES that journey's record. There is no accumulation
+ *   and no duplicate list.
+ *
+ * NOTHING IS LOGGED. This block contains no console call of any kind: a
+ * homeowner's answers are not debug output.
+ * ========================================================================== */
+(function (root) {
+  'use strict';
+
+  var KEY = 'plotnua.myplot.v1';
+  var SCHEMA = 1;
+
+  /* Probed once with a REAL write. `'localStorage' in window` is true in
+     Safari private mode right up until the moment you use it, so presence is
+     not availability. Same test My Plot applies, deliberately. */
+  var store = (function () {
+    try {
+      var k = KEY + '.probe';
+      window.localStorage.setItem(k, '1');
+      window.localStorage.removeItem(k);
+      return window.localStorage;
+    } catch (e) { return null; }
+  })();
+
+  function works() { return !!store; }
+
+  /* A journey record is valid if it can be identified. Everything else is
+     optional, because a partially-written record is still the homeowner's. */
+  function valid(r) {
+    return !!r && typeof r === 'object' && !Array.isArray(r) &&
+           typeof r.journeyId === 'string' && r.journeyId.length > 0;
+  }
+
+  /* Build the record from a FIXED key list. Anything the caller passes that
+     is not on this list never reaches the store. */
+  function sanitise(rec) {
+    var out = {
+      journeyId: String(rec.journeyId),
+      title: typeof rec.title === 'string' ? rec.title : '',
+      savedAt: typeof rec.savedAt === 'string' ? rec.savedAt
+                                               : new Date().toISOString(),
+      answers: {},
+      resultKeys: {}
+    };
+    var a = rec.answers, k;
+    if (a && typeof a === 'object' && !Array.isArray(a)) {
+      for (k in a) {
+        if (Object.prototype.hasOwnProperty.call(a, k) &&
+            (typeof a[k] === 'string' || typeof a[k] === 'boolean' ||
+             a[k] === null)) out.answers[k] = a[k];
+      }
+    }
+    var rk = rec.resultKeys;
+    if (rk && typeof rk === 'object' && !Array.isArray(rk)) {
+      for (k in rk) {
+        if (Object.prototype.hasOwnProperty.call(rk, k) &&
+            typeof rk[k] === 'string') out.resultKeys[k] = rk[k];
+      }
+    }
+    return out;
+  }
+
+  /* Read the WHOLE record. A record from a newer schema is left completely
+     alone — an older build must not edit, and must not destroy, data it does
+     not understand. */
+  function readRaw() {
+    if (!store) return null;
+    var raw;
+    try { raw = store.getItem(KEY); } catch (e) { return null; }
+    if (!raw) return null;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return null; }
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return null;
+    if (typeof d.schema === 'number' && d.schema > SCHEMA) return null;
+    return d;
+  }
+
+  function list() {
+    var d = readRaw();
+    var j = (d && Array.isArray(d.journeys)) ? d.journeys : [];
+    return j.filter(valid);
+  }
+
+  function has(id) {
+    var j = list(), i;
+    for (i = 0; i < j.length; i++) { if (j[i].journeyId === id) return true; }
+    return false;
+  }
+
+  /* READ · MODIFY · WRITE. Only `journeys` is touched. */
+  function save(rec) {
+    if (!store || !valid(rec)) return 'unavailable';
+    var clean = sanitise(rec);
+    var d = readRaw();
+    if (!d) d = { schema: SCHEMA, saved: [], added: [] };
+    if (typeof d.schema !== 'number') d.schema = SCHEMA;
+    if (!Array.isArray(d.saved)) d.saved = [];
+    if (!Array.isArray(d.added)) d.added = [];
+    var keep = (Array.isArray(d.journeys) ? d.journeys : []).filter(function (r) {
+      return valid(r) && r.journeyId !== clean.journeyId;
+    });
+    keep.push(clean);
+    d.journeys = keep;
+    d.updatedAt = new Date().toISOString();
+    try { store.setItem(KEY, JSON.stringify(d)); } catch (e) { return 'unavailable'; }
+    return 'saved';
+  }
+
+  /* ---- the control ------------------------------------------------------
+     Mounted by the journey only AFTER its reveal. This block never decides
+     when a result exists; it only knows how to keep one. */
+  function mount(cfg) {
+    var btn = document.getElementById(cfg.buttonId);
+    var note = document.getElementById(cfg.noteId);
+    /* THE ROUTE ONWARD, hidden until there is something at the other end.
+       Offering "View in My Plot" before a save would send a homeowner to a
+       page with nothing of theirs on it, which makes the link a small lie.
+       The destination is the platform's EXISTING one — your-plot.html?myplot=1
+       — not a route invented here; My Plot already opens itself on that
+       parameter when it has something restored to show. */
+    var link = cfg.linkId ? document.getElementById(cfg.linkId) : null;
+    if (!btn) return;
+
+    /* PlotNua never promises a persistence it does not have. */
+    if (!works()) {
+      btn.hidden = true;
+      if (link) link.hidden = true;
+      if (note) {
+        note.textContent = 'This browser will not let us keep anything, ' +
+          'so there is nothing to save to here.';
+      }
+      return;
+    }
+    btn.hidden = false;
+
+    function paint(saved) {
+      btn.textContent = saved ? 'Saved to My Plot' : 'Save to My Plot';
+      btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+      if (saved) { btn.setAttribute('data-saved', 'true'); }
+      else { btn.removeAttribute('data-saved'); }
+      if (link) link.hidden = !saved;
+      if (note) {
+        note.textContent = saved
+          ? 'Kept with the possibilities you’re exploring for your property.'
+          : 'Keep this result with the possibilities you’re exploring for your property.';
+      }
+    }
+
+    paint(has(cfg.journeyId));
+
+    btn.onclick = function () {
+      var p = cfg.payload ? (cfg.payload() || {}) : {};
+      var r = save({
+        journeyId: cfg.journeyId,
+        title: cfg.title,
+        savedAt: new Date().toISOString(),
+        answers: p.answers,
+        resultKeys: p.resultKeys
+      });
+      if (r === 'saved') { paint(true); return; }
+      if (note) {
+        note.textContent = 'We could not keep this in your browser just now.';
+      }
+    };
+  }
+
+  root.PlotNuaJourneySave = {
+    KEY: KEY, works: works, has: has, save: save, list: list, mount: mount
+  };
+})(window);
+/* PLOTNUA-JOURNEY-SAVE-END */
+</script>
 
 <script>
 (function(){
@@ -885,6 +1127,7 @@ details.ps-drawer[open] summary::after{content:"–"}
     });
     var host = document.getElementById('psCards');
     host.innerHTML = html;
+    psMountSave(results);
     host.querySelectorAll('.ps-act').forEach(function(btn){
       btn.addEventListener('click', function(){
         var step = document.getElementById(btn.getAttribute('data-step'));
@@ -920,6 +1163,31 @@ details.ps-drawer[open] summary::after{content:"–"}
     document.getElementById('psBack').hidden = (id==='s0');
     window.scrollTo(0,0);
   }
+  /* SAVE — the platform standard, mounted only where a result exists.
+     render() is called for screen s6 and nowhere else, so this is the single
+     point at which the homeowner has actually been shown an answer. The
+     control ships hidden and is revealed by mount(), so it cannot appear
+     before this runs.
+
+     ANSWERS + RESULT KEYS ONLY. The four bands are structured tokens, not
+     prose, and PROP (lat / lon / Eircode) is never read here: it is memory
+     only by design, and an address has no business in a saved record. */
+  function psMountSave(results){
+    if (!window.PlotNuaJourneySave) return;
+    window.PlotNuaJourneySave.mount({
+      buttonId: 'psSave',
+      noteId: 'psSaveNote',
+      linkId: 'psSaveLink',
+      journeyId: 'disc026-power-station',
+      title: 'The House as a Power Station',
+      payload: function(){
+        var rk = {};
+        results.forEach(function(r){ rk[r.key] = r.band; });
+        return { answers: A, resultKeys: rk };
+      }
+    });
+  }
+
   function go(id){ hist.push(document.querySelector('.ps-screen.is-on').id); if(id==='s6') render(); show(id); }
   document.getElementById('psBack').addEventListener('click', function(){
     var p=hist.pop(); if(p) show(p);

@@ -1894,6 +1894,16 @@
       var k = r && String(r.url || r.name || '').trim().toLowerCase();
       if (k && !seen[k]) { seen[k] = 1; n++; }
     });
+    /* A saved journey is an idea waiting, exactly like a saved product.
+       Counted the same defensive way: identified by journeyId, deduplicated,
+       anything malformed ignored. Still read-only, still fails closed — this
+       adds a term to a sum and changes nothing else about the panel. */
+    var journeys = Array.isArray(data.journeys) ? data.journeys : [];
+    var seenJourney = {};
+    journeys.forEach(function(r){
+      if (r && typeof r.journeyId === 'string' && r.journeyId &&
+          !seenJourney[r.journeyId]) { seenJourney[r.journeyId] = 1; n++; }
+    });
   } catch (e) { return; }
   if (n < 1) return;
   sub.textContent = n === 1

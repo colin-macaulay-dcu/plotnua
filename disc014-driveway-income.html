@@ -81,23 +81,60 @@
   .dw-cta:hover{background:var(--accent);}
 
   /* ---- the four-part reveal -------------------------------------------- */
+  /* ONE DOMINANT MOMENT. The reveal headline is the largest thing on the
+     page by a clear margin — everything below it is read as consequence
+     rather than as a competing claim. */
   .dw-reveal-h{font-family:'Fraunces',Georgia,serif;font-weight:400;
-    font-size:clamp(32px,4.4vw,52px);line-height:1.1;margin:0 0 18px;
-    max-width:18ch;}
-  .dw-reveal-sub{font-size:18px;line-height:1.6;color:var(--soft);
-    margin:0 0 54px;max-width:50ch;}
-  .dw-parts{display:grid;grid-template-columns:repeat(2,1fr);
-    gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
-    margin:0 0 56px;}
-  .dw-part{background:var(--paper);padding:34px 32px 32px;
-    border-left:2px solid transparent;}
-  .dw-part.is-open{border-left-color:var(--brand-sage);}
-  .dw-part.is-homework{border-left-color:var(--accent);}
-  .dw-part.is-ask{border-left-color:var(--soft);}
-  .dw-part.is-pause{border-left-color:var(--line);}
-  .dw-part.is-stop{border-left-color:var(--oak);}
+    font-size:clamp(38px,6.1vw,72px);line-height:1.04;margin:0 0 22px;
+    max-width:15ch;letter-spacing:-.015em;}
+  .dw-reveal-sub{font-size:19px;line-height:1.62;color:var(--soft);
+    margin:0 0 60px;max-width:46ch;}
+  /* SAVE. Present, calm, and clearly secondary to the revelation. */
+  .dw-save{margin:44px 0 52px;}
+  .dw-savebtn{display:inline-block;background:var(--ink);color:var(--brand-ivory);
+    border:none;font-family:'Work Sans',sans-serif;padding:16px 30px;
+    font-size:13.5px;letter-spacing:.09em;text-transform:uppercase;
+    border-radius:2px;cursor:pointer;text-decoration:none;}
+  .dw-savebtn[data-saved]{background:transparent;color:var(--ink);
+    box-shadow:inset 0 0 0 1px var(--line);cursor:default;}
+  .dw-savenote{font-size:14px;line-height:1.6;color:var(--soft);
+    margin:14px 0 0;max-width:46ch;}
+  /* Secondary by construction: a rule under text, not a second button. */
+  .dw-savelink{display:inline-block;margin:16px 0 0;font-size:12.5px;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink);
+    text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px;}
+  .dw-savelink:hover{border-bottom-color:var(--ink);}
+  /* THE ATTRIBUTE MUST WIN. [hidden]{display:none} is a USER-AGENT rule, and
+     the author rules above set display:inline-block, which beats it on origin
+     — so `hidden` was inert and the unsaved state showed both the button and
+     the link. Class+attribute is (0,2,0) and restores the attribute's meaning.
+     Measured, not theorised: computed display was inline-block with .hidden
+     true and an empty store. */
+  .dw-savebtn[hidden],.dw-savelink[hidden]{display:none;}
+  /* THE FOUR, AS EDITORIAL ROWS — not cards.
+     No box, no fill, no shadow, no border. One hair rule between them and a
+     narrow label column that names each one. The old design put all four in
+     equal boxes, which told a homeowner that four things mattered equally
+     and that none of them was the answer.
+
+     NO STATE COLOUR. The .is-open / .is-stop classes the renderer sets are
+     left in the DOM as hooks but given nothing to paint: a border colour
+     that encodes CLEAR or BLOCKED is a traffic light however quietly it is
+     drawn, and this result does not rank or grade anything. */
+  .dw-parts{margin:0 0 8px;border-top:1px solid var(--line);}
+  .dw-part{padding:32px 0 30px;border-bottom:1px solid var(--line-soft);}
+  .dw-part:last-child{border-bottom:1px solid var(--line);}
   .dw-plabel{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--soft);margin:0 0 12px;}
+  @media (min-width:834px){
+    /* The label steps into its own column and the reading measure narrows.
+       This is the whole responsive behaviour of the block: typography, not
+       a second layout. */
+    .dw-part{display:grid;grid-template-columns:150px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .dw-plabel{margin:5px 0 0;}
+    .dw-pbody{max-width:60ch;}
+  }
   .dw-ph{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:23px;
     line-height:1.24;margin:0 0 12px;}
   .dw-pb{font-size:15.5px;line-height:1.62;color:var(--soft);margin:0 0 18px;}
@@ -147,9 +184,9 @@
     .dw-wrap{padding:0 20px;}
     .dw-topin{padding:18px 20px;}
     .dw-screen{padding:44px 0 72px;}
-    .dw-parts{grid-template-columns:1fr;}
-    .dw-part{padding:28px 22px;}
+    .dw-part{padding:26px 0 24px;}
     .dw-reveal-sub{margin-bottom:34px;}
+    .dw-savebtn{width:100%;}
   }
 </style>
 </head>
@@ -184,11 +221,16 @@
   </section>
 
   <section class="dw-screen" id="dwReveal">
-    <p class="dw-eyebrow">What this comes down to</p>
+    <p class="dw-eyebrow">Your driveway</p>
     <h2 class="dw-reveal-h" id="dwRevealH"></h2>
     <p class="dw-reveal-sub" id="dwRevealSub"></p>
     <div class="dw-parts" id="dwParts"></div>
     <div class="dw-next" id="dwNext"></div>
+    <div class="dw-save">
+      <button class="dw-savebtn" type="button" id="dwSave" hidden>Save to My Plot</button>
+      <p class="dw-savenote" id="dwSaveNote"></p>
+      <a class="dw-savelink" id="dwSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot &rarr;</a>
+    </div>
     <details class="dw-drawer">
       <summary>Why PlotNua is saying this</summary>
       <div class="dw-ev" id="dwEv"></div>
@@ -749,6 +791,219 @@
 </script>
 
 <script>
+/* PLOTNUA-JOURNEY-SAVE-BEGIN */
+/* PLOTNUA — SAVE TO MY PLOT · the reusable journey pattern, v1
+ * ============================================================================
+ * FROZEN PLATFORM PRINCIPLE
+ *   EVERY PROPERTY-SPECIFIC JOURNEY MUST OFFER SAVE TO MY PLOT AFTER THE
+ *   RESULT HAS BEEN REVEALED, USING plotnua.myplot.v1.
+ *
+ * This block is IDENTICAL, byte for byte, in every journey that carries it.
+ * A journey supplies configuration; it never supplies behaviour. If two
+ * journeys ever need different save behaviour, that is a signal to change
+ * this block once, not to fork it.
+ *
+ * ONE STORE, ONE SCHEMA, NO SECOND MODEL
+ *   plotnua.myplot.v1 already exists and My Plot owns it. A journey page is a
+ *   GUEST in that store. It therefore reads the whole record, changes exactly
+ *   one array, and writes the whole record back. saved[] and added[] are
+ *   carried through untouched: a homeowner must never lose a product they
+ *   kept months ago because they saved a journey today.
+ *
+ *   The schema is NOT bumped. My Plot discards any record whose schema is
+ *   higher than it knows, so bumping would make every saved product invisible
+ *   to an earlier build. An unknown extra field costs an earlier build
+ *   nothing. This is the same reasoning recorded at RS-2b in your-plot.html.
+ *
+ * WHAT A JOURNEY RECORD MAY CONTAIN
+ *   journeyId, title, savedAt, answers, resultKeys — and nothing else.
+ *   Answers and result KEYS, never result PROSE. The source of truth stays
+ *   answers + engine + governed evidence, so a saved result re-derives
+ *   against today's evidence rather than replaying yesterday's wording. That
+ *   matters most when evidence goes stale or is withheld: a stored paragraph
+ *   would keep asserting something PlotNua has stopped standing over.
+ *
+ *   Never stored: evidence or regulatory prose, location, Eircode,
+ *   coordinates, inferred property facts, prices, earnings, tracking.
+ *   sanitise() below enforces that by construction — it builds a new object
+ *   from a fixed key list rather than filtering a supplied one, so a future
+ *   caller cannot widen it by accident.
+ *
+ * IDENTITY IS journeyId
+ *   A repeat save REPLACES that journey's record. There is no accumulation
+ *   and no duplicate list.
+ *
+ * NOTHING IS LOGGED. This block contains no console call of any kind: a
+ * homeowner's answers are not debug output.
+ * ========================================================================== */
+(function (root) {
+  'use strict';
+
+  var KEY = 'plotnua.myplot.v1';
+  var SCHEMA = 1;
+
+  /* Probed once with a REAL write. `'localStorage' in window` is true in
+     Safari private mode right up until the moment you use it, so presence is
+     not availability. Same test My Plot applies, deliberately. */
+  var store = (function () {
+    try {
+      var k = KEY + '.probe';
+      window.localStorage.setItem(k, '1');
+      window.localStorage.removeItem(k);
+      return window.localStorage;
+    } catch (e) { return null; }
+  })();
+
+  function works() { return !!store; }
+
+  /* A journey record is valid if it can be identified. Everything else is
+     optional, because a partially-written record is still the homeowner's. */
+  function valid(r) {
+    return !!r && typeof r === 'object' && !Array.isArray(r) &&
+           typeof r.journeyId === 'string' && r.journeyId.length > 0;
+  }
+
+  /* Build the record from a FIXED key list. Anything the caller passes that
+     is not on this list never reaches the store. */
+  function sanitise(rec) {
+    var out = {
+      journeyId: String(rec.journeyId),
+      title: typeof rec.title === 'string' ? rec.title : '',
+      savedAt: typeof rec.savedAt === 'string' ? rec.savedAt
+                                               : new Date().toISOString(),
+      answers: {},
+      resultKeys: {}
+    };
+    var a = rec.answers, k;
+    if (a && typeof a === 'object' && !Array.isArray(a)) {
+      for (k in a) {
+        if (Object.prototype.hasOwnProperty.call(a, k) &&
+            (typeof a[k] === 'string' || typeof a[k] === 'boolean' ||
+             a[k] === null)) out.answers[k] = a[k];
+      }
+    }
+    var rk = rec.resultKeys;
+    if (rk && typeof rk === 'object' && !Array.isArray(rk)) {
+      for (k in rk) {
+        if (Object.prototype.hasOwnProperty.call(rk, k) &&
+            typeof rk[k] === 'string') out.resultKeys[k] = rk[k];
+      }
+    }
+    return out;
+  }
+
+  /* Read the WHOLE record. A record from a newer schema is left completely
+     alone — an older build must not edit, and must not destroy, data it does
+     not understand. */
+  function readRaw() {
+    if (!store) return null;
+    var raw;
+    try { raw = store.getItem(KEY); } catch (e) { return null; }
+    if (!raw) return null;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return null; }
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return null;
+    if (typeof d.schema === 'number' && d.schema > SCHEMA) return null;
+    return d;
+  }
+
+  function list() {
+    var d = readRaw();
+    var j = (d && Array.isArray(d.journeys)) ? d.journeys : [];
+    return j.filter(valid);
+  }
+
+  function has(id) {
+    var j = list(), i;
+    for (i = 0; i < j.length; i++) { if (j[i].journeyId === id) return true; }
+    return false;
+  }
+
+  /* READ · MODIFY · WRITE. Only `journeys` is touched. */
+  function save(rec) {
+    if (!store || !valid(rec)) return 'unavailable';
+    var clean = sanitise(rec);
+    var d = readRaw();
+    if (!d) d = { schema: SCHEMA, saved: [], added: [] };
+    if (typeof d.schema !== 'number') d.schema = SCHEMA;
+    if (!Array.isArray(d.saved)) d.saved = [];
+    if (!Array.isArray(d.added)) d.added = [];
+    var keep = (Array.isArray(d.journeys) ? d.journeys : []).filter(function (r) {
+      return valid(r) && r.journeyId !== clean.journeyId;
+    });
+    keep.push(clean);
+    d.journeys = keep;
+    d.updatedAt = new Date().toISOString();
+    try { store.setItem(KEY, JSON.stringify(d)); } catch (e) { return 'unavailable'; }
+    return 'saved';
+  }
+
+  /* ---- the control ------------------------------------------------------
+     Mounted by the journey only AFTER its reveal. This block never decides
+     when a result exists; it only knows how to keep one. */
+  function mount(cfg) {
+    var btn = document.getElementById(cfg.buttonId);
+    var note = document.getElementById(cfg.noteId);
+    /* THE ROUTE ONWARD, hidden until there is something at the other end.
+       Offering "View in My Plot" before a save would send a homeowner to a
+       page with nothing of theirs on it, which makes the link a small lie.
+       The destination is the platform's EXISTING one — your-plot.html?myplot=1
+       — not a route invented here; My Plot already opens itself on that
+       parameter when it has something restored to show. */
+    var link = cfg.linkId ? document.getElementById(cfg.linkId) : null;
+    if (!btn) return;
+
+    /* PlotNua never promises a persistence it does not have. */
+    if (!works()) {
+      btn.hidden = true;
+      if (link) link.hidden = true;
+      if (note) {
+        note.textContent = 'This browser will not let us keep anything, ' +
+          'so there is nothing to save to here.';
+      }
+      return;
+    }
+    btn.hidden = false;
+
+    function paint(saved) {
+      btn.textContent = saved ? 'Saved to My Plot' : 'Save to My Plot';
+      btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+      if (saved) { btn.setAttribute('data-saved', 'true'); }
+      else { btn.removeAttribute('data-saved'); }
+      if (link) link.hidden = !saved;
+      if (note) {
+        note.textContent = saved
+          ? 'Kept with the possibilities you’re exploring for your property.'
+          : 'Keep this result with the possibilities you’re exploring for your property.';
+      }
+    }
+
+    paint(has(cfg.journeyId));
+
+    btn.onclick = function () {
+      var p = cfg.payload ? (cfg.payload() || {}) : {};
+      var r = save({
+        journeyId: cfg.journeyId,
+        title: cfg.title,
+        savedAt: new Date().toISOString(),
+        answers: p.answers,
+        resultKeys: p.resultKeys
+      });
+      if (r === 'saved') { paint(true); return; }
+      if (note) {
+        note.textContent = 'We could not keep this in your browser just now.';
+      }
+    };
+  }
+
+  root.PlotNuaJourneySave = {
+    KEY: KEY, works: works, has: has, save: save, list: list, mount: mount
+  };
+})(window);
+/* PLOTNUA-JOURNEY-SAVE-END */
+</script>
+
+<script>
 (function(){
   'use strict';
 
@@ -829,6 +1084,41 @@
     'TAX': 'Tax',
     'THE_DRIVEWAY': 'The driveway'
   };
+  /* THE DOMINANT LINE, per practical state. Presentation only: the engine
+     decides WHICH key, this decides how it reads. Keyed to the same
+     headline_key THE_DRIVEWAY's own row uses, so the two can never drift
+     apart into two different accounts of the same result. */
+  var REVEAL = {
+    'driveway_practically_usable': [
+      'This looks workable.',
+      'That is about the space itself \u2014 parking of your own, a driver who ' +
+      'could come and go, and hours when nobody needs it. Permission, tax and ' +
+      'insurance are separate questions, and each has its own answer below.'],
+    'driveway_usable_with_arranging': [
+      'Workable, with something to arrange.',
+      'Nothing you have told us stops this, and there is one practical detail ' +
+      'to sort out first. Permission, tax and insurance are separate questions, ' +
+      'and each has its own answer below.'],
+    'driveway_more_to_tell_us': [
+      'Nearly there, with one or two things to check.',
+      'A practical detail decides whether this is straightforward or awkward, ' +
+      'and it is worth knowing before you go further. Permission, tax and ' +
+      'insurance are separate questions, and each has its own answer below.'],
+    'driveway_rarely_free': [
+      'The space is rarely free.',
+      'Letting works on the hours when nobody at home needs the space, and on ' +
+      'your own account of the week there are not many. That is a practical ' +
+      'point about your household, not a rule about what you may do.'],
+    'driveway_space_unknown': [
+      'It starts with the space.',
+      'Until we know what kind of parking belongs to this home, two of the ' +
+      'four questions below cannot say much.'],
+    'driveway_no_offstreet_space': [
+      'There is nothing here to let.',
+      'Letting needs off-street parking that belongs to this home. The other ' +
+      'three questions only start once that exists.']
+  };
+
   var TONE = {
     'ACTION_NEEDED': 'is-homework',
     'BLOCKED': 'is-stop',
@@ -961,26 +1251,22 @@
     var byName = {};
     res.forEach(function(r){ byName[r.result] = r; });
 
-    /* DOMINANT REVELATION. Orientation, not a verdict: it says what the
-       answer is made of, never how good it is. There is no score here and
-       nothing is ranked. */
-    var noSpace = answers.offstreet_space === 'none';
-    var unknownSpace = answers.offstreet_space === 'unknown';
-    if (noSpace){
-      $('dwRevealH').textContent = 'There is nothing here to let';
-      $('dwRevealSub').textContent = 'Letting needs off-street parking that ' +
-        'belongs to this home. The other three questions only start once ' +
-        'that exists.';
-    } else if (unknownSpace){
-      $('dwRevealH').textContent = 'It starts with the space';
-      $('dwRevealSub').textContent = 'Until we know what kind of parking ' +
-        'belongs to this home, two of the four parts below cannot say much.';
-    } else {
-      $('dwRevealH').textContent = 'Four things decide this';
-      $('dwRevealSub').textContent = 'The important questions come before ' +
-        'price. Here is where each one stands for your home, and what is ' +
-        'worth doing about it.';
+    /* DOMINANT REVELATION — DERIVED, NOT INVENTED.
+       It is THE_DRIVEWAY's own headline_key, promoted to the top of the
+       page. THE_DRIVEWAY is the PRACTICAL result: it binds zero evidence and
+       makes no legal claim, so promoting it asserts nothing PlotNua was not
+       already saying. It is deliberately NOT a verdict over the other three,
+       and the sentence under it says so in words rather than leaving the
+       reader to assume. No score, no ranking, no combined yes or no. */
+    var dominant = REVEAL[byName.THE_DRIVEWAY.headline_key];
+    if (!dominant){
+      /* An unrecognised key means the engine has grown a state this copy map
+         has not been taught. Say the neutral thing rather than guess. */
+      dominant = ['Here is where this stands',
+                  'Four separate questions, each with its own answer below.'];
     }
+    $('dwRevealH').textContent = dominant[0];
+    $('dwRevealSub').textContent = dominant[1];
 
     var parts = $('dwParts');
     parts.innerHTML = '';
@@ -991,6 +1277,31 @@
     renderNext(res);
     renderEvidence(res);
     show('dwReveal');
+
+    /* SAVE — mounted here and nowhere else, which is what makes "only after
+       the reveal" true rather than merely intended. The error branch above
+       returns before this line, so a result that could not be produced can
+       never be kept. The control also ships hidden and is only revealed by
+       mount(), so it cannot flash into view earlier. */
+    if (window.PlotNuaJourneySave){
+      window.PlotNuaJourneySave.mount({
+        buttonId: 'dwSave',
+        noteId: 'dwSaveNote',
+        linkId: 'dwSaveLink',
+        journeyId: 'disc014-driveway-income',
+        title: 'Driveway Income',
+        payload: function(){
+          /* ANSWERS + RESULT KEYS. Never the prose: what is written to My
+             Plot is what the homeowner told us and which headline the engine
+             reached, so reopening re-derives against today's evidence rather
+             than replaying a sentence PlotNua may have stopped standing
+             over. */
+          var rk = {};
+          res.forEach(function(r){ rk[r.result] = r.headline_key; });
+          return { answers: answers, resultKeys: rk };
+        }
+      });
+    }
   }
 
   function renderPart(r){
@@ -1001,6 +1312,10 @@
     var h = HEADLINES[r.headline_key] || ['', ''];
     var html = '';
     html += '<p class="dw-plabel">' + (LABELS[r.result] || r.result) + '</p>';
+    /* Everything but the label sits in one wrapper, so the label can step
+       into its own column at wider widths without the row becoming a grid
+       of four unrelated cells. */
+    html += '<div class="dw-pbody">';
     html += '<h3 class="dw-ph">' + h[0] + '</h3>';
     html += '<p class="dw-pb">' + h[1] + '</p>';
 
@@ -1023,6 +1338,7 @@
       acts.forEach(function(t){ html += '<li>' + t + '</li>'; });
       html += '</ul></div>';
     }
+    html += '</div>';
     art.innerHTML = html;
     return art;
   }

@@ -8163,6 +8163,35 @@
   details.hm-open-ev > summary:hover{ color:var(--ink); }
   details.hm-open-ev > summary:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   details.hm-open-ev .hm-ev{ padding-bottom:4px; }
+
+/* PROPERTY CHECKS KEPT — editorial rows, in PlotNua's own voice.
+   No shadow, no icon, no badge, no status colour, no card. What separates one
+   from the next is a hair rule and the space around it; what ranks the three
+   lines inside one is type size and weight, nothing else. The same discipline
+   the Driveway reveal now uses, at a quieter scale — because this is a list
+   of things to return to, not the thing itself. */
+.mp-journeys{ margin:0 0 34px; }
+.mp-jh{ font-family:'Fraunces',serif; font-weight:400; font-size:21px;
+  letter-spacing:-.01em; margin:0 0 4px; color:var(--ink,#1F3B2E); }
+.mp-jlist{ list-style:none; margin:0; padding:0;
+  border-top:1px solid rgba(31,59,46,.16); }
+.mp-jitem{ padding:22px 0 20px; border-bottom:1px solid rgba(31,59,46,.10); }
+.mp-jitem:last-child{ border-bottom:1px solid rgba(31,59,46,.16); }
+.mp-jtitle{ font-family:'Fraunces',serif; font-weight:400; font-size:18.5px;
+  line-height:1.3; margin:0 0 6px; color:var(--ink,#1F3B2E); }
+.mp-jsum{ font-size:15px; line-height:1.6; margin:0 0 10px;
+  color:rgba(31,59,46,.72); max-width:52ch; }
+.mp-jwhen{ font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(31,59,46,.45); margin:0 0 14px; }
+.mp-jopen{ font-size:12.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--ink,#1F3B2E); border-bottom:1px solid rgba(31,59,46,.3);
+  padding-bottom:3px; text-decoration:none; display:inline-block; }
+.mp-jopen:hover{ border-bottom-color:rgba(31,59,46,.7); }
+@media (max-width:560px){
+  .mp-jh{ font-size:19px; }
+  .mp-jitem{ padding:20px 0 18px; }
+  .mp-jtitle{ font-size:17.5px; }
+}
 </style>
 </head>
 <body>
@@ -9756,7 +9785,8 @@
          their phone. Hidden entirely when storage is unavailable, because in
          that case it would be claiming something untrue. -->
     <p class="myplot-storage-note" id="myPlotStorageNote" hidden></p>
-    <div id="myPlotSavedList"></div>
+    <div id="myPlotJourneys" class="mp-journeys" hidden></div>
+      <div id="myPlotSavedList"></div>
 
     <div class="myplot-actions" id="myPlotActions">
       <button type="button" class="btn-primary small myplot-compare-btn" id="myPlotCompareBtn" hidden>Compare My Options →</button>
@@ -15754,6 +15784,14 @@
   const MYPLOT_KEY = 'plotnua.myplot.v1';
   const MYPLOT_SCHEMA = 1;
 
+  /* JOURNEY RECORDS. A property-specific journey (Driveway Income, House as a
+     Power Station) saves its result here after the homeowner has seen it.
+     My Plot does not produce these and never edits them — it keeps them,
+     shows them, and hands the homeowner back to the journey that made them.
+     Held in memory so myPlotSnapshot() can write them back unchanged; the
+     store is the only place they are authored. */
+  let myPlotJourneys = [];
+
   // Private browsing, disabled storage and full quotas all throw. Probed once
   // with a real write, because `'localStorage' in window` is true in Safari
   // private mode right up until the moment you try to use it.
@@ -15886,6 +15924,10 @@
     return {
       schema: MYPLOT_SCHEMA,
       updatedAt: new Date().toISOString(),
+      /* CARRY-THROUGH. My Plot did not write these and must not drop them.
+         Before this line existed, every My Plot write silently deleted the
+         homeowner's saved journeys — measured, not theorised. */
+      journeys: myPlotJourneys.slice(),
       saved: saved,
       // External products the homeowner brought to PlotNua themselves. Same
       // record, same key: section 3's "do not create separate persistence
@@ -15933,11 +15975,11 @@
   // of them may break the journey or say anything technical to a homeowner.
   // ---------------------------------------------------------------------
   function myPlotRead(){
-    if (!myPlotStorage) return { saved: [], added: [], recovered: false };
+    if (!myPlotStorage) return { saved: [], added: [], journeys: [], recovered: false };
     let raw;
     try { raw = myPlotStorage.getItem(MYPLOT_KEY); }
-    catch (e) { return { saved: [], added: [], recovered: false }; }
-    if (!raw) return { saved: [], added: [], recovered: false };
+    catch (e) { return { saved: [], added: [], journeys: [], recovered: false }; }
+    if (!raw) return { saved: [], added: [], journeys: [], recovered: false };
 
     let data;
     try { data = JSON.parse(raw); }
@@ -15945,7 +15987,7 @@
       // Malformed JSON. Nothing is recoverable from it and leaving it in place
       // would make every future load fail the same way.
       myPlotDiscard('unparseable');
-      return { saved: [], added: [], recovered: false };
+      return { saved: [], added: [], journeys: [], recovered: false };
     }
     // An ARRAY is the legitimate schema-0 shape — a bare list of product ids,
     // which is what a pre-versioned build wrote. It is explicitly allowed
@@ -15954,13 +15996,13 @@
     // and quietly discarded exactly the legacy records it was written to
     // rescue.
     if (!data || typeof data !== 'object') {
-      myPlotDiscard('not an object'); return { saved: [], added: [], recovered: false };
+      myPlotDiscard('not an object'); return { saved: [], added: [], journeys: [], recovered: false };
     }
 
     // Version. A record from a FUTURE schema is left untouched rather than
     // destroyed — an older build should not delete a newer build's data.
     const ver = (!Array.isArray(data) && typeof data.schema === 'number') ? data.schema : 0;
-    if (ver > MYPLOT_SCHEMA) return { saved: [], added: [], recovered: false };
+    if (ver > MYPLOT_SCHEMA) return { saved: [], added: [], journeys: [], recovered: false };
     const migrated = myPlotMigrate(data, ver);
 
     // Per-record validation. One bad record loses one card, never the list.
@@ -15980,7 +16022,21 @@
       seenAdded[k] = 1;
       return true;
     });
-    return { saved: saved, added: added, recovered: ver < MYPLOT_SCHEMA };
+    /* JOURNEYS — the additive record type. Same per-record discipline the
+       two arrays above get: one bad journey loses one card, never the list.
+       Identity is journeyId, and a duplicate collapses to the first, exactly
+       as a duplicate productId does. */
+    const seenJourney = {};
+    const journeys = (Array.isArray(migrated.journeys) ? migrated.journeys : [])
+      .filter(function(r){
+        if (!r || typeof r !== 'object' || Array.isArray(r)) return false;
+        if (typeof r.journeyId !== 'string' || !r.journeyId) return false;
+        if (seenJourney[r.journeyId]) return false;
+        seenJourney[r.journeyId] = 1;
+        return true;
+      });
+    return { saved: saved, added: added, journeys: journeys,
+             recovered: ver < MYPLOT_SCHEMA };
   }
 
   // Forward migration. Schema 0 is the shape written by any pre-versioned
@@ -16013,12 +16069,17 @@
   let myPlotOrphans = 0;
   function myPlotRestore(){
     const state = myPlotRead();
+    /* BEFORE the early return below, deliberately. That branch fires when
+       saved[] and added[] are both empty — which is exactly the state of a
+       homeowner whose only kept thing is a journey. Hydrating after it would
+       lose their journey on the next write. */
+    myPlotJourneys = Array.isArray(state.journeys) ? state.journeys : [];
     if (!state.saved.length && !state.added.length) {
       // A first-time visitor. The store has still been READ, which is the
       // only condition writing depends on.
       myPlotHydrated = true;
       myPlotUpdateNotice();
-      return 0;
+      return myPlotJourneys.length;
     }
     myPlotRestoring = true;
     const pool = getActiveAtlasPool();
@@ -16066,7 +16127,7 @@
     // A migrated or partially-recovered record is written back in the current
     // schema so the next load has nothing to repair.
     if (state.recovered || myPlotOrphans) myPlotPersist();
-    return ids.length + state.added.length;
+    return ids.length + state.added.length + myPlotJourneys.length;
   }
 
   // ---------------------------------------------------------------------
@@ -16094,8 +16155,121 @@
   // Called once, after the Universe resolves. Everything downstream of the
   // saved state is refreshed from the same functions the live journey uses —
   // no parallel rendering path exists for restored items.
+  /* =====================================================================
+     SAVED JOURNEYS, RENDERED.
+     Four lines per journey: what it was, when it was kept, where it stands
+     now, and a way back into it. No dashboard, no chrome, no second
+     architecture — the same list discipline the saved products use.
+
+     THE SUMMARY IS DERIVED, NOT STORED. What is on disk is answers and
+     result KEYS. The sentence below is written here, from those keys, at the
+     moment of display. That is the whole point of storing keys: if PlotNua's
+     position changes, or evidence goes stale, a saved journey does not keep
+     repeating a sentence PlotNua has stopped standing over. Reopening the
+     journey re-derives the real result against today's evidence.
+     ===================================================================== */
+  const MYPLOT_JOURNEY_HREF = {
+    'disc014-driveway-income': 'disc014-driveway-income.html',
+    'disc026-power-station': 'disc026-power-station.html',
+  };
+
+  /* One safe line per journey, from result KEYS only. An unrecognised key
+     falls through to the neutral sentence rather than guessing. */
+  function myPlotJourneySummary(rec){
+    const rk = (rec && rec.resultKeys && typeof rec.resultKeys === 'object')
+      ? rec.resultKeys : {};
+    if (rec && rec.journeyId === 'disc014-driveway-income') {
+      const d = rk.THE_DRIVEWAY;
+      if (d === 'driveway_practically_usable') return 'The space itself looks workable, with three things to check.';
+      if (d === 'driveway_usable_with_arranging') return 'Workable, with something practical to arrange first.';
+      if (d === 'driveway_more_to_tell_us') return 'A couple of practical details still to check.';
+      if (d === 'driveway_rarely_free') return 'The space is rarely free, on your own account of the week.';
+      if (d === 'driveway_no_offstreet_space') return 'No off-street parking belongs to this home.';
+      if (d === 'driveway_space_unknown') return 'Still to pin down what kind of parking belongs here.';
+    }
+    if (rec && rec.journeyId === 'disc026-power-station') {
+      const n = ['MAKE','TIME','STORE','SELL'].filter(function(k){
+        return rk[k] === 'READY TO EXPLORE'; }).length;
+      if (n === 1) return 'One of the four looks ready to explore.';
+      if (n > 1) return n + ' of the four look ready to explore.';
+      return 'Where each of the four stands for this home.';
+    }
+    return 'Your result, kept as you left it.';
+  }
+
+  function myPlotJourneyDate(rec){
+    const s = rec && rec.savedAt;
+    if (typeof s !== 'string' || !s) return '';
+    const d = new Date(s);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('en-IE',
+      { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  /* Built as DOM nodes with textContent, not concatenated HTML — the same
+     discipline renderMyPlotSavedList() already uses. Disk content is
+     untrusted input, and this is where it enters the page. A title written
+     by a journey can therefore never be markup.
+
+     The REOPEN href comes from the map above, never from the record: a
+     journeyId off disk selects a known destination or none at all, so a
+     tampered store cannot point a homeowner anywhere PlotNua did not choose. */
+  function renderMyPlotJourneys(){
+    const host = document.getElementById('myPlotJourneys');
+    if (!host) return;
+    host.textContent = '';
+    if (!myPlotJourneys.length) { host.hidden = true; return; }
+
+    const h = document.createElement('h3');
+    h.className = 'mp-jh';
+    h.textContent = 'Property checks you\u2019ve kept';
+    host.appendChild(h);
+
+    const ul = document.createElement('ul');
+    ul.className = 'mp-jlist';
+    myPlotJourneys.forEach(function(rec){
+      const li = document.createElement('li');
+      li.className = 'mp-jitem';
+      li.setAttribute('data-journey', rec.journeyId);
+
+      const t = document.createElement('p');
+      t.className = 'mp-jtitle';
+      t.textContent = (typeof rec.title === 'string' && rec.title)
+        ? rec.title : 'A saved journey';
+      li.appendChild(t);
+
+      /* SUMMARY FIRST, DATE SECOND. Where it stands now is what a homeowner
+         came back for; when they left it is context, not headline. */
+      const s = document.createElement('p');
+      s.className = 'mp-jsum';
+      s.textContent = myPlotJourneySummary(rec);
+      li.appendChild(s);
+
+      const when = myPlotJourneyDate(rec);
+      if (when) {
+        const w = document.createElement('p');
+        w.className = 'mp-jwhen';
+        w.textContent = 'Kept ' + when;
+        li.appendChild(w);
+      }
+
+      const href = MYPLOT_JOURNEY_HREF[rec.journeyId] || null;
+      if (href) {
+        const a = document.createElement('a');
+        a.className = 'mp-jopen';
+        a.setAttribute('href', href);
+        a.textContent = 'Reopen this journey \u2192';
+        li.appendChild(a);
+      }
+      ul.appendChild(li);
+    });
+    host.appendChild(ul);
+    host.hidden = false;
+  }
+
   function myPlotRestoreOnLoad(){
     const n = myPlotRestore();
+    renderMyPlotJourneys();
     if (els.myPlotSavedList) renderMyPlotSavedList();
     if (typeof renderAddedItems === 'function') renderAddedItems();
     if (typeof renderResultsFoundCards === 'function') renderResultsFoundCards();
