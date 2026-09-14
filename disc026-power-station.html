@@ -160,11 +160,18 @@ fieldset{border:0;margin:0;padding:0}
 
 .ps-set-state.is-unknown i{background:rgba(85,96,90,.45)}
 
+/* THE INTERPRETATION BLOCK. How the four relate, then where to begin —
+   read as one thought. Nothing encloses it: the grouping is done by spacing
+   contrast alone. Ten pixels between the two sentences against sixty-four
+   below the block is what makes them one paragraph and makes the paragraph
+   the end of the overview rather than a stray line above the first card. */
+.ps-read{margin:26px 0 0;max-width:62ch}
+
 /* The real dependency, in one sentence. Not a diagram. */
 .ps-rel{font-size:16px;line-height:1.65;color:var(--soft);max-width:62ch;
-  margin:26px 0 0}
+  margin:0}
 
-.ps-cards{display:flex;flex-direction:column;gap:22px;margin:52px 0 46px}
+.ps-cards{display:flex;flex-direction:column;gap:22px;margin:64px 0 46px}
 
 /* One full-width surface per capability. Deliberately large: the payoff must
    outweigh the questions that produced it. */
@@ -205,8 +212,8 @@ fieldset{border:0;margin:0;padding:0}
 .ps-step[hidden]{display:none}
 
 /* Subordinate: comes AFTER the four capabilities, never before. */
-.ps-start{margin:14px 0 0;font-size:16px;line-height:1.65;
-  color:var(--soft);max-width:56ch}
+.ps-start{margin:10px 0 0;font-size:16px;line-height:1.65;
+  color:var(--soft);max-width:62ch}
 .ps-start b{color:var(--ink);font-weight:600}
 
 /* ---------- drawers ---------- */
@@ -262,8 +269,10 @@ details.ps-drawer[open] summary::after{content:"–"}
   .ps-set-verb{font-size:20px;margin-bottom:4px}
   .ps-set-cap{max-width:34ch;font-size:14.5px;margin-bottom:8px}
   .ps-set-state{letter-spacing:.1em}
-  .ps-rel{font-size:15px;margin-top:20px}
-  .ps-start{font-size:15px}
+  .ps-read{margin-top:20px}
+  .ps-rel{font-size:15px;margin-top:0}
+  .ps-start{font-size:15px;margin-top:9px}
+  .ps-cards{margin-top:44px}
   .ps-verb{padding:22px 20px}
   .ps-card{padding:28px 22px;border-radius:14px}
   .ps-card-top{gap:10px}
@@ -451,8 +460,12 @@ details.ps-drawer[open] summary::after{content:"–"}
     <!-- REVELATION LAYER. All four, together, before any detail. Rendered
          from the same result array the cards below use. -->
     <div class="ps-set" id="psSet"></div>
-    <p class="ps-rel" id="psRelation"></p>
-    <div class="ps-start" id="psStartHere"></div>
+    <!-- RELATIONSHIP + ORIENTATION. One block: how the four relate, then
+         where to begin. The overview ends here; the detail begins below. -->
+    <div class="ps-read" id="psRead">
+      <p class="ps-rel" id="psRelation"></p>
+      <p class="ps-start" id="psStartHere"></p>
+    </div>
 
     <!-- DETAIL LAYER. Unchanged in behaviour. -->
     <div class="ps-cards" id="psCards"></div>
