@@ -1,0 +1,157 @@
+name: Driveway Income evidence check
+
+# Protects the Driveway Income evidence substrate, and nothing else.
+#
+# The manifest the homeowner's browser will fetch is a GENERATED artefact. Its
+# source of record is generate_driveway_evidence.py. This workflow exists to
+# make one thing impossible: a committed manifest that its own generator would
+# not produce. A hand-edit to driveway-evidence.json — however well meant, and
+# however small — fails here.
+#
+# DELIBERATELY NARROW. It does no research, contacts no authority, searches no
+# planning register, and never auto-updates evidence. Verification is a human
+# act with a review interval; it is not something CI should quietly do on a
+# homeowner's behalf.
+#
+# There is no schedule. A cron job here would imply the evidence refreshes
+# itself, which is exactly the impression the temporal model exists to prevent.
+# Evidence goes stale on its own, in the open, and verification_status says so.
+#
+# ONE THING THIS JOURNEY ADDS beyond DISC-026. Two of these records are
+# ABSENCE_OF_RECORD: they say PlotNua looked and did not find. An absence is
+# easier to get wrong than a source, because nothing in the world has to change
+# for it to stop being true. The validator therefore holds absences to a
+# shorter review interval, refuses one that has no search_scope, and refuses
+# one that has gone stale while still claiming to be current.
+
+on:
+  pull_request:
+    paths:
+      - 'driveway-evidence.json'
+      - '.github/scripts/generate_driveway_evidence.py'
+      - '.github/scripts/validate_driveway_evidence.py'
+      - '.github/workflows/driveway-evidence-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'driveway-evidence.json'
+      - '.github/scripts/generate_driveway_evidence.py'
+      - '.github/scripts/validate_driveway_evidence.py'
+      - '.github/workflows/driveway-evidence-check.yml'
+  workflow_dispatch:
+
+# Least privilege: this job reads the tree and writes nothing.
+permissions:
+  contents: read
+
+concurrency:
+  group: driveway-evidence-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+        # Standard library only. Nothing to install, nothing to pin.
+
+      # The committed manifest records the date it was generated FOR.
+      # Regenerate for that date, not for today, or a correct file would fail
+      # this check simply because time passed — which would train everyone to
+      # ignore a red build.
+      - name: Read the generated-for date from the committed manifest
+        id: asof
+        run: |
+          set -euo pipefail
+          AS_OF=$(python3 -c "import json;print(json.load(open('driveway-evidence.json'))['generated'])")
+          echo "Manifest was generated for: $AS_OF"
+          echo "as_of=$AS_OF" >> "$GITHUB_OUTPUT"
+
+      - name: Regenerate the manifest from its source of record
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/generate_driveway_evidence.py \
+            --as-of "${{ steps.asof.outputs.as_of }}" \
+            --out /tmp/driveway-evidence.regenerated.json
+
+      # Byte-identity. Not "equivalent JSON" — identical bytes. Anything less
+      # leaves room for a hand-edit that round-trips through a parser.
+      - name: Prove the committed manifest is byte-identical to its generator's output
+        run: |
+          set -euo pipefail
+          if ! diff -u driveway-evidence.json /tmp/driveway-evidence.regenerated.json; then
+            echo ""
+            echo "::error::driveway-evidence.json is not what its generator produces."
+            echo "This file is generated. Edit .github/scripts/generate_driveway_evidence.py,"
+            echo "regenerate, and commit both."
+            exit 1
+          fi
+          echo "Byte-identical to generator output."
+
+      - name: Validate the committed manifest
+        run: python3 .github/scripts/validate_driveway_evidence.py driveway-evidence.json
+
+      # The validator must be able to say no. A validator that has never been
+      # seen to reject anything is decoration, so CI proves on every run that
+      # it still rejects the two propositions this journey exists to prevent.
+      - name: Prove the validator still rejects a universal negative
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          d = json.load(open('driveway-evidence.json'))
+          for r in d['records']:
+              if r['claim_key'] == 'planning_no_exact_decision_located':
+                  r['claim'] = ('Whether paid driveway parking is incidental has '
+                                'never been determined in Ireland.')
+          json.dump(d, open('/tmp/mutated-universal.json', 'w'), indent=2)
+          PY
+          if python3 .github/scripts/validate_driveway_evidence.py /tmp/mutated-universal.json; then
+            echo "::error::The validator accepted a universal negative. The gate is not working."
+            exit 1
+          fi
+          echo "Rejected, as it must be."
+
+      - name: Prove the validator still rejects an unscoped absence
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          d = json.load(open('driveway-evidence.json'))
+          for r in d['records']:
+              if r['evidence_type'] == 'ABSENCE_OF_RECORD':
+                  r['search_scope'] = None
+          json.dump(d, open('/tmp/mutated-unscoped.json', 'w'), indent=2)
+          PY
+          if python3 .github/scripts/validate_driveway_evidence.py /tmp/mutated-unscoped.json; then
+            echo "::error::The validator accepted an absence with no search scope. The gate is not working."
+            exit 1
+          fi
+          echo "Rejected, as it must be."
+
+      - name: Summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open('driveway-evidence.json'))
+          by = {}
+          for r in d['records']:
+              by[r['result']] = by.get(r['result'], 0) + 1
+          absences = [r for r in d['records']
+                      if r['evidence_type'] == 'ABSENCE_OF_RECORD']
+          print(f"schema        : {d['schema']}")
+          print(f"generated for : {d['generated']}")
+          print(f"records       : {d['recordCount']}")
+          print(f"by result     : {by}")
+          print(f"absences      : {len(absences)} "
+                f"(each scoped, each WITHHOLD-on-stale)")
+          PY
