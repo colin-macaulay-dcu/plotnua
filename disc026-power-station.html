@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The House as a Power Station — PlotNua</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://plotnua.ie/disc026-power-station.html">
+
+<script>
+  /* Reused from the existing Your Plot capability. Same Worker, same Cesium ion
+     asset, same origin. Nothing new is provisioned by this page. */
+  window.PLOTNUA_GEOCODE_ENDPOINT = "https://plotnua-geocode.colin-a41.workers.dev/geocode";
+  window.PLOTNUA_CESIUM_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjlzcjlQQmVJX0FEWWx5TTMiLCJqdGkiOiIxOWQ5NzY2ZS1jNTkwLTRkZTUtOTRmNy1jNWI0YTMyMTVjYTMiLCJpZCI6NDY3MDc0LCJzdWIiOiJwbG90bnVhIiwiaXNzIjoiaHR0cHM6Ly9hcGkuY2VzaXVtLmNvbSIsImF1ZCI6InBsb3RudWEtd2ViLXByb2QiLCJpYXQiOjE3ODkyODk0NTF9._imqDvPzBEyKb_micoc2yYCZ1uARkDLQ3jAM_qsJ-II";
+  window.PLOTNUA_EVIDENCE_URL = "disc026-evidence.json";
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.144/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+<style>
+:root{
+  /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
+  --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+  --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+  --accent:#4F6B4A; --oak:#8B6F4E;
+  --line:rgba(31,59,46,.12);
+  --line-soft:rgba(31,59,46,.07);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:'Work Sans',sans-serif;background:var(--paper);color:var(--ink);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0}
+button{font-family:inherit}
+
+/* ---------- shell ---------- */
+.ps-top{display:flex;align-items:center;justify-content:space-between;
+  padding:26px 7vw;border-bottom:1px solid var(--line-soft);
+  background:var(--paper);position:sticky;top:0;z-index:20}
+.ps-brand{display:flex;align-items:baseline;gap:14px;min-width:0}
+.ps-word{font-family:'Fraunces',serif;font-weight:600;font-size:22px;letter-spacing:.005em}
+.ps-ctx{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);
+  padding-left:14px;border-left:1px solid var(--line);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.ps-back{background:none;border:0;color:var(--soft);font-size:14px;cursor:pointer;padding:8px 0}
+.ps-back:hover{color:var(--ink)}
+.ps-wrap{max-width:920px;margin:0 auto;padding:0 7vw 16vh}
+.ps-screen{display:none;padding-top:9vh}
+.ps-screen.is-on{display:block}
+.ps-eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--soft);margin-bottom:18px}
+.ps-h{font-size:clamp(30px,4vw,48px);line-height:1.2;max-width:19ch;margin-bottom:20px;
+  letter-spacing:-.01em}
+.ps-sub{color:var(--soft);font-size:17px;max-width:54ch;margin:0 0 34px}
+
+/* ---------- primary action ---------- */
+.ps-cta{appearance:none;border:0;border-radius:6px;background:var(--brand-green);
+  color:var(--brand-ivory);font-size:16px;font-weight:500;padding:15px 30px;
+  cursor:pointer;transition:opacity .2s ease}
+.ps-cta:hover{opacity:.9}
+.ps-cta[disabled]{opacity:.35;cursor:not-allowed}
+.ps-ghost{background:none;border:0;color:var(--soft);font-size:14px;
+  cursor:pointer;padding:14px 4px;text-decoration:underline}
+.ps-ghost:hover{color:var(--ink)}
+.ps-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:30px}
+
+/* ---------- the four verbs ---------- */
+.ps-verbs{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:44px 0 10px}
+.ps-verb{background:var(--cream);border:1px solid var(--line-soft);border-radius:12px;padding:28px 24px}
+.ps-verb b{display:block;font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:10px}
+.ps-verb span{color:var(--soft);font-size:14px;line-height:1.55}
+
+/* ---------- questions ---------- */
+.ps-q{margin-bottom:46px}
+.ps-q legend, .ps-qlabel{font-family:'Fraunces',serif;font-size:22px;line-height:1.38;
+  margin-bottom:18px;display:block;max-width:38ch}
+.ps-opts{display:flex;flex-wrap:wrap;gap:10px}
+.ps-opt{appearance:none;background:#fff;border:1px solid var(--line);border-radius:8px;
+  padding:14px 22px;font-size:16px;color:var(--ink);cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.ps-opt:hover{border-color:var(--accent)}
+.ps-opt[aria-pressed="true"]{background:var(--brand-green);border-color:var(--brand-green);color:var(--brand-ivory)}
+.ps-opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+fieldset{border:0;margin:0;padding:0}
+
+/* ---------- property view ---------- */
+.ps-view{height:min(58vh,520px);border-radius:14px;overflow:hidden;background:var(--cream);
+  border:1px solid var(--line-soft);position:relative;
+  box-shadow:0 1px 2px rgba(31,59,46,.04), 0 18px 44px -28px rgba(31,59,46,.28)}
+#psCesium{width:100%;height:100%}
+.ps-viewnote{color:var(--soft);font-size:13px;margin:12px 0 30px;max-width:56ch}
+/* THE CONDITIONAL IS NOT A FOURTH EQUAL QUESTION.
+
+   Peer questions are 46px apart. This one is pulled to 26px — nearer to the
+   flow it follows than any two peers are to each other — inset behind a rule,
+   with a smaller legend and smaller options. Proximity, indentation and scale
+   all say the same thing, so none of them has to carry the meaning alone. */
+.ps-q-sub{border-left:2px solid var(--line);padding:2px 0 2px 24px;
+  margin:-20px 0 46px 2px}
+
+.ps-q-sub legend{font-size:19px;max-width:34ch;margin-bottom:14px}
+
+.ps-q-sub .ps-opt{padding:12px 18px;font-size:15px}
+
+.ps-qeyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--soft);margin:0 0 10px;opacity:.8}
+
+.ps-qnote{margin:0 0 16px;font-size:14px;line-height:1.6;color:var(--soft);max-width:50ch}
+
+.ps-preview{margin:10px 0 0;font-size:12px;line-height:1.6;letter-spacing:.04em;
+  color:var(--oak);border-left:2px solid var(--oak);padding-left:12px;max-width:56ch}
+
+.ps-viewfail{display:flex;align-items:center;justify-content:center;height:100%;
+  color:var(--soft);font-size:14px;text-align:center;padding:0 24px}
+.cesium-viewer-bottom,.cesium-viewer-toolbar,.cesium-viewer-animationContainer,
+.cesium-viewer-timelineContainer,.cesium-viewer-fullscreenContainer{display:none!important}
+
+/* ---------- eircode ---------- */
+.ps-field{display:block;max-width:320px}
+.ps-input{width:100%;padding:14px 16px;font-size:16px;font-family:inherit;color:var(--ink);
+  background:#fff;border:1px solid var(--line);border-radius:6px;text-transform:uppercase}
+.ps-input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.ps-err{color:var(--oak);font-size:14px;margin-top:12px;min-height:1.2em}
+
+/* ---------- result · four large capability surfaces ---------- */
+.ps-reveal-h{font-size:clamp(32px,4.6vw,54px);line-height:1.14;max-width:17ch;
+  margin-bottom:18px;letter-spacing:-.015em}
+.ps-reveal-sub{color:var(--soft);font-size:18px;max-width:46ch;margin:0 0 8px}
+.ps-cards{display:flex;flex-direction:column;gap:22px;margin:52px 0 46px}
+
+/* One full-width surface per capability. Deliberately large: the payoff must
+   outweigh the questions that produced it. */
+.ps-card{background:#fff;border:1px solid var(--line-soft);border-radius:16px;
+  padding:40px 44px;box-shadow:0 1px 2px rgba(31,59,46,.04), 0 12px 32px -20px rgba(31,59,46,.18)}
+.ps-card-top{display:flex;align-items:baseline;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;margin-bottom:6px}
+.ps-card-verb{font-family:'Fraunces',serif;font-size:clamp(28px,3vw,38px);
+  font-weight:600;letter-spacing:-.01em;line-height:1.1}
+.ps-card-cap{color:var(--soft);font-size:16px;line-height:1.6;max-width:44ch;margin:0 0 22px}
+
+/* A quiet factual state. Not a control, not a chip, not a button. */
+.ps-state{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
+  font-weight:500;padding-top:6px;max-width:24ch;text-align:right;line-height:1.5}
+.ps-state i{font-style:normal;display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--accent);margin-right:9px;vertical-align:middle}
+.ps-state.is-change i{background:var(--oak)}
+.ps-state.is-unknown i{background:rgba(85,96,90,.45)}
+
+.ps-outcome{font-size:19px;line-height:1.62;margin:0 0 26px;max-width:58ch;color:var(--ink)}
+
+/* The interactive element is the ACTION, never the state. */
+.ps-act{appearance:none;background:none;border:0;padding:0;cursor:pointer;
+  font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;color:var(--accent);
+  display:inline-flex;align-items:center;gap:10px}
+.ps-act:hover{color:var(--brand-green)}
+.ps-act:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:3px}
+.ps-act .ps-arw{transition:transform .18s ease}
+.ps-act[aria-expanded="true"] .ps-arw{transform:rotate(180deg)}
+.ps-step{margin-top:22px;padding:24px 26px;background:var(--cream);border-radius:12px;
+  font-size:16px;line-height:1.62;max-width:60ch}
+.ps-step b{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--soft);font-weight:600;margin-bottom:10px}
+.ps-step[hidden]{display:none}
+
+/* Subordinate: comes AFTER the four capabilities, never before. */
+.ps-start{border-top:1px solid var(--line);padding-top:26px;margin-bottom:34px;
+  font-size:16px;color:var(--soft);max-width:56ch}
+.ps-start b{color:var(--ink);font-weight:600}
+
+/* ---------- drawers ---------- */
+details.ps-drawer{border-top:1px solid var(--line-soft);margin-top:28px}
+details.ps-drawer summary{cursor:pointer;padding:16px 0;font-size:13px;color:var(--soft);
+  list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.ps-drawer summary::-webkit-details-marker{display:none}
+details.ps-drawer summary::after{content:"+";font-size:15px;color:var(--soft)}
+details.ps-drawer[open] summary::after{content:"–"}
+.ps-ev{font-size:14px;line-height:1.6;color:var(--soft);padding-bottom:16px}
+.ps-ev p{margin:0 0 10px}
+.ps-ev .ps-auth{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);
+  opacity:.65;display:block;margin-top:12px}
+.ps-ev a{color:var(--accent)}
+
+/* ---------- honesty panel ---------- */
+.ps-honest{background:var(--cream);border-radius:8px;padding:18px 20px;margin:10px 0 0;
+  font-size:14px;line-height:1.6;color:var(--soft)}
+.ps-honest b{color:var(--ink);font-weight:600}
+
+/* ---------- evidence failure ---------- */
+.ps-degraded{background:var(--cream);border:1px solid var(--line);border-radius:8px;
+  padding:22px 24px;margin-bottom:26px}
+.ps-degraded b{display:block;font-family:'Fraunces',serif;font-size:18px;margin-bottom:8px}
+
+.ps-foot{color:var(--soft);font-size:13px;border-top:1px solid var(--line-soft);
+  padding-top:22px;margin-top:40px;line-height:1.6}
+
+@media (max-width:900px){
+  .ps-verbs{grid-template-columns:repeat(2,1fr)}
+  .ps-card{padding:32px 30px}
+  .ps-view{height:min(46vh,400px)}
+}
+@media (max-width:560px){
+  .ps-wrap{padding:0 6vw 14vh}
+  .ps-top{padding:18px 6vw}
+  .ps-ctx{display:none}
+  .ps-verbs{grid-template-columns:1fr;gap:12px}
+  .ps-verb{padding:22px 20px}
+  .ps-card{padding:28px 22px;border-radius:14px}
+  .ps-card-top{gap:10px}
+  .ps-state{padding-top:0}
+  .ps-outcome{font-size:17px}
+  .ps-step{padding:20px 20px}
+  .ps-q-sub{padding-left:16px;margin-top:-16px}
+  .ps-q-sub legend{font-size:18px}
+  .ps-qnote{font-size:13.5px;line-height:1.58}
+  .ps-cards{gap:16px;margin:38px 0 34px}
+  .ps-view{height:min(40vh,320px)}
+}
+</style>
+</head>
+<body>
+
+<header class="ps-top">
+  <div class="ps-brand">
+    <span class="ps-word">PlotNua</span>
+    <span class="ps-ctx">The House as a Power Station</span>
+  </div>
+  <button class="ps-back" id="psBack" hidden>&larr; Back</button>
+</header>
+
+<main class="ps-wrap">
+
+  <!-- S0 · REVELATION BEFORE EXPLANATION. Asks nothing. -->
+  <section class="ps-screen is-on" id="s0">
+    <div class="ps-eyebrow">The House as a Power Station</div>
+    <h1 class="ps-h">Your home, and four things a house can do</h1>
+    <p class="ps-sub">We&rsquo;ll show you your property, ask a few short questions, and set
+      out which of these could apply here &mdash; and what&rsquo;s worth checking next.</p>
+    <div class="ps-verbs">
+      <div class="ps-verb"><b>Make</b><span>Turn daylight into electricity the house uses straight away.</span></div>
+      <div class="ps-verb"><b>Time</b><span>Shift when you use electricity, so some hours cost less.</span></div>
+      <div class="ps-verb"><b>Store</b><span>Hold the afternoon&rsquo;s electricity until the evening.</span></div>
+      <div class="ps-verb"><b>Sell</b><span>Be paid for what the house doesn&rsquo;t use.</span></div>
+    </div>
+    <p class="ps-sub" style="margin-top:26px">Your home may already be able to do more than one of these.</p>
+    <div class="ps-actions">
+      <button class="ps-cta" id="psStart">See what your home could do</button>
+      <span style="color:var(--soft);font-size:14px">Nothing is sent to anyone. There is no quote at the end.</span>
+    </div>
+  </section>
+
+  <!-- S1 · Eircode -->
+  <section class="ps-screen" id="s1">
+    <div class="ps-eyebrow">Your property</div>
+    <h2 class="ps-h">Which home are we looking at?</h2>
+    <p class="ps-sub">Your Eircode stays in this browser. It isn&rsquo;t stored and it isn&rsquo;t sent to anyone.</p>
+    <label class="ps-field">
+      <input class="ps-input" id="psEircode" type="text" inputmode="text"
+             autocomplete="postal-code" placeholder="D02 AF30" maxlength="8" aria-label="Eircode">
+    </label>
+    <p class="ps-err" id="psEircodeErr" role="status"></p>
+    <p class="ps-preview" id="psPreviewNote" role="status" hidden></p>
+    <div class="ps-actions">
+      <button class="ps-cta" id="psFind">Find my home</button>
+      <button class="ps-ghost" id="psSkipAddr">Continue without the map</button>
+    </div>
+  </section>
+
+  <!-- S2 · property view + Q1 Q2 -->
+  <section class="ps-screen" id="s2">
+    <h2 class="ps-h">Your property</h2>
+    <div class="ps-view"><div id="psCesium"></div></div>
+    <p class="ps-viewnote">This is your property as it appears in 3D imagery. We use it so you
+      can see the house we&rsquo;re talking about &mdash; not to assess the roof.</p>
+
+    <fieldset class="ps-q" data-q="ownership">
+      <legend>Do you own this home?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="yes" aria-pressed="false">Yes</button>
+        <button class="ps-opt" type="button" data-v="rent" aria-pressed="false">No, I rent</button>
+        <button class="ps-opt" type="button" data-v="buying" aria-pressed="false">I&rsquo;m buying it</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="ps-q" data-q="dwelling">
+      <legend>Is it a house or an apartment?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="house" aria-pressed="false">House</button>
+        <button class="ps-opt" type="button" data-v="apartment" aria-pressed="false">Apartment</button>
+        <button class="ps-opt" type="button" data-v="other" aria-pressed="false">Something else</button>
+      </div>
+    </fieldset>
+
+    <div class="ps-actions"><button class="ps-cta" data-next="s3" disabled>Continue</button></div>
+  </section>
+
+  <!-- S3 · solar at this address: build period, what is here now, and
+       — only where it can still change the answer — the grant history. -->
+  <section class="ps-screen" id="s3">
+    <div class="ps-eyebrow">Solar at this home</div>
+    <h2 class="ps-h">What&rsquo;s here now, and what came before</h2>
+    <p class="ps-sub">Not sure is a real answer. It costs you nothing here.</p>
+
+    <fieldset class="ps-q" data-q="built">
+      <legend>Roughly when was the house built?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="pre2021" aria-pressed="false">Before 2021</button>
+        <button class="ps-opt" type="button" data-v="post2021" aria-pressed="false">2021 or later</button>
+        <button class="ps-opt" type="button" data-v="unknown" aria-pressed="false">Not sure</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="ps-q" data-q="generation_exists_now">
+      <legend>Are there solar panels on the house now?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="yes" aria-pressed="false">Yes</button>
+        <button class="ps-opt" type="button" data-v="no" aria-pressed="false">No</button>
+        <button class="ps-opt" type="button" data-v="unknown" aria-pressed="false">Not sure</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="ps-q ps-q-sub" data-q="grant_consumed_at_mprn" id="psQ3b" hidden>
+      <p class="ps-qeyebrow">Follow-up</p>
+      <p class="ps-qnote">The SEAI solar grant can only be claimed once for this home&rsquo;s MPRN
+        &mdash; including if a previous owner claimed it. That&rsquo;s why this one is worth asking.</p>
+      <legend>Has a solar grant ever been claimed at this address &mdash; including by a previous owner?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="yes" aria-pressed="false">Yes</button>
+        <button class="ps-opt" type="button" data-v="no" aria-pressed="false">No</button>
+        <button class="ps-opt" type="button" data-v="unknown" aria-pressed="false">Not sure</button>
+      </div>
+    </fieldset>
+
+    <div class="ps-actions"><button class="ps-cta" data-next="s4" disabled>Continue</button></div>
+  </section>
+
+  <!-- S4 · the meter, and its one conditional follow-up -->
+  <section class="ps-screen" id="s4">
+    <div class="ps-eyebrow">How the house uses electricity</div>
+    <h2 class="ps-h">Your meter</h2>
+
+    <fieldset class="ps-q" data-q="meter">
+      <legend>Do you have a smart meter?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="yes" aria-pressed="false">Yes</button>
+        <button class="ps-opt" type="button" data-v="no" aria-pressed="false">No</button>
+        <button class="ps-opt" type="button" data-v="unknown" aria-pressed="false">Not sure</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="ps-q" data-q="meter_offer" id="psQ5b" hidden>
+      <legend>Has ESB Networks offered to fit one?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="declined" aria-pressed="false">Yes, and we said no</button>
+        <button class="ps-opt" type="button" data-v="not_offered" aria-pressed="false">Not that I know of</button>
+        <button class="ps-opt" type="button" data-v="unknown" aria-pressed="false">Not sure</button>
+      </div>
+    </fieldset>
+
+    <div class="ps-actions"><button class="ps-cta" data-next="s5" disabled>Continue</button></div>
+  </section>
+
+  <!-- S5 · Q7 -->
+  <section class="ps-screen" id="s5">
+    <div class="ps-eyebrow">Your roof</div>
+    <h2 class="ps-h">One thing we need from you</h2>
+    <p class="ps-sub">Have a look at your property above. We don&rsquo;t use the 3D image to
+      make assumptions about your roof, so there is just one thing we&rsquo;d like you to tell us.</p>
+
+    <fieldset class="ps-q" data-q="shading">
+      <legend>Is the roof shaded by trees or a taller building for much of the day?</legend>
+      <div class="ps-opts">
+        <button class="ps-opt" type="button" data-v="yes" aria-pressed="false">Yes</button>
+        <button class="ps-opt" type="button" data-v="no" aria-pressed="false">No</button>
+        <button class="ps-opt" type="button" data-v="unknown" aria-pressed="false">Not sure</button>
+      </div>
+    </fieldset>
+
+    <div class="ps-actions"><button class="ps-cta" id="psFinish" disabled>See what your home could do</button></div>
+  </section>
+
+  <!-- S6 · result -->
+  <section class="ps-screen" id="s6">
+    <div class="ps-eyebrow">What your home could do</div>
+    <h2 class="ps-reveal-h">Your home can do more than consume electricity.</h2>
+    <p class="ps-reveal-sub">Here&rsquo;s what looks possible at this property. Not all of it involves solar.</p>
+    <div id="psDegraded"></div>
+    <div class="ps-cards" id="psCards"></div>
+    <div class="ps-start" id="psStartHere"></div>
+    <p class="ps-foot">PlotNua does not size systems, quote for equipment, or estimate what you
+      would earn. Export rates are set by suppliers and change &mdash; we will not print one.</p>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  /* =====================================================================
+     LAYER 1 · EVIDENCE
+     Loaded, never authored here. The engine binds by claim_key and reads
+     resolved_status. No scheme fact is embedded in this file.
+     ===================================================================== */
+  var EV = null;            // claim_key -> record, CURRENT records only
+  var EV_ALL = null;        // claim_key -> record, every record
+  var EV_STATE = 'loading'; // loading | ok | failed
+  var SCHEMA = 'plotnua.disc026.evidence.v1';
+
+  /* Every claim_key this journey binds to. If one is missing or not CURRENT,
+     the dependent step degrades — it never falls back to a hard-coded fact. */
+  var NEEDED = ['grant_structure','grant_max_eur','grant_requires_pre_2021',
+    'grant_once_per_mprn','grant_requires_mprn','grant_eligible_applicants',
+    'planning_exempt_houses','planning_no_area_limit_houses',
+    'planning_protected_structure_aca','seai_does_not_warranty_contractor',
+    'meter_enables_time_of_use','meter_is_not_tariff','battery_grant_exists',
+    'ac_battery_treated_as_microgeneration','battery_requires_esbn_notification',
+    'battery_requires_safe_electric_rec','battery_route_by_capacity',
+    'supplier_must_pay_for_export','export_state_metered','export_state_waiting',
+    'export_state_calculated','export_state_declined','export_requires_registration',
+    'export_rates_unregulated','microgen_income_tax_exemption','mss_eligibility'];
+
+  function loadEvidence(){
+    return fetch(window.PLOTNUA_EVIDENCE_URL)
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(function(doc){
+        if (doc.schema !== SCHEMA) throw new Error('schema mismatch');
+        if (!Array.isArray(doc.records) || !doc.records.length) throw new Error('no records');
+        EV = {}; EV_ALL = {};
+        doc.records.forEach(function(rec){
+          EV_ALL[rec.claim_key] = rec;
+          if (rec.resolved_status === 'CURRENT') EV[rec.claim_key] = rec;
+        });
+        EV_STATE = 'ok';
+      })
+      .catch(function(e){ console.warn('Evidence unavailable:', e.message); EV_STATE='failed'; });
+  }
+  /* current(key) is the ONLY way the engine reaches evidence. A key that is
+     absent, or present but not CURRENT, returns null and the caller degrades. */
+  function current(k){ return (EV_STATE==='ok' && EV[k]) ? EV[k] : null; }
+  function val(k, field){ var r=current(k); return r && r.value ? r.value[field] : undefined; }
+  /* Money is formatted for a homeowner, never printed raw. The VALUE still
+     comes from the manifest — this only decides how it is written. */
+  function money(n){ return (typeof n==='number') ? n.toLocaleString('en-IE') : ''; }
+
+  /* =====================================================================
+     ANSWERS · session only, never persisted
+     ===================================================================== */
+  var A = { ownership:null, dwelling:null, built:null, grant_consumed_at_mprn:null,
+            meter:null, meter_offer:null, generation_exists_now:null, shading:null };
+  var PROP = { lat:null, lon:null, eircode:null };   /* memory only */
+
+  var REQUIRED_BY_SCREEN = {
+    s2:['ownership','dwelling'], s3:['built','generation_exists_now'],
+    s4:['meter'], s5:['shading']
+  };
+  /* A conditional answer is required only while its question is on screen.
+     Declared, not special-cased, so a future conditional inherits the rule. */
+  var CONDITIONAL_REQUIRED = { grant_consumed_at_mprn:'psQ3b' };
+
+  /* =====================================================================
+     LAYER 2 · ENGINE — deterministic, from the frozen Gate 5 decision table
+     UNKNOWN != FALSE != WITHHELD
+     ===================================================================== */
+  var READY='READY TO EXPLORE', CHANGE='POSSIBLE WITH A CHANGE', NOINFO='NOT ENOUGH INFORMATION YET';
+
+  function notOwner(){ return A.ownership === 'rent' || A.ownership === 'buying'; }
+
+  function makeResult(){
+    var band, reason=null;
+    if (notOwner())                       { band=CHANGE; reason='TENANT_OR_NOT_OWNER'; }
+    else if (A.dwelling!=='house')        { band=CHANGE; reason='APARTMENT_ROOF_CONTROL'; }
+    else                                   { band=READY; }
+    /* MAKE never returns FALSE and never returns NOT ENOUGH INFORMATION YET. */
+
+    var note, state='OK', text;
+    if (!current('grant_max_eur')) {
+      note='GRANT_AMOUNT_NEEDS_CONFIRMING'; state='WITHHELD';
+      text='A grant scheme is in place, but we can’t state this year’s amount until we’ve rechecked SEAI. Nothing for you to do.';
+    } else if (A.built==='post2021') {
+      note='GRANT_DOES_NOT_APPLY'; state='FALSE';
+      text='The roof can still generate. The SEAI grant is for homes built and occupied before 2021, so it isn’t open here.';
+    } else if (A.grant_consumed_at_mprn==='yes') {
+      note='GRANT_ALREADY_USED'; state='FALSE';
+      text='Solar has already been grant-funded at this address. The grant can only be claimed once for a home’s MPRN, so it has been used.';
+    } else if (A.generation_exists_now==='yes' && A.grant_consumed_at_mprn==='no') {
+      /* C3. The homeowner has been asked about the GRANT specifically and has
+         said no. Telling them it is "worth confirming whether the grant was
+         claimed" would contradict the answer they just gave. PlotNua still
+         cannot verify it — only SEAI can, by MPRN — so the state stays
+         UNKNOWN and the result names that authority instead of doubting them. */
+      note='GRANT_NOT_CLAIMED_BUT_UNVERIFIED'; state='UNKNOWN';
+      text='You’re already generating, and you’ve said no grant has been claimed here. Only SEAI can confirm that against your MPRN, so it is worth one call before you rely on it.';
+    } else if (A.generation_exists_now==='yes') {
+      note='GRANT_LIKELY_ALREADY_USED'; state='UNKNOWN';
+      text='You’re already generating. Whether the grant was claimed here is worth confirming.';
+    } else if (A.built==='unknown' || A.grant_consumed_at_mprn==='unknown') {
+      note='GRANT_NEEDS_ONE_CHECK'; state='UNKNOWN';
+      text='The roof can generate either way. Whether a grant of up to €'+money(val('grant_max_eur','amount'))+
+           ' comes with it depends on one thing you can check.';
+    } else {
+      note='GRANT_MAY_BE_AVAILABLE'; state='OK';
+      text='No planning permission is needed for panels on a house, and a grant of up to €'+
+           money(val('grant_max_eur','amount'))+' looks open here.';
+    }
+    if (A.shading==='yes') text += ' Shading is the thing most likely to change the answer, and it needs someone on site.';
+    /* POSSIBLE WITH A CHANGE must NAME the change. Without this, MAKE told an
+       apartment owner or a tenant that something was "possible with a change"
+       and never said which change — the one band that is meaningless unsaid. */
+    if (reason === 'TENANT_OR_NOT_OWNER')
+      text = 'This is real for this house — it needs the owner’s decision. ' + text;
+    else if (reason === 'APARTMENT_ROOF_CONTROL')
+      text = 'The roof is usually the management company’s rather than yours. The grant is open to owner management companies, so this is a conversation with them. ' + text;
+    return {key:'MAKE', band:band, reason:reason, note:note, state:state, text:text};
+  }
+
+  function timeResult(){
+    if (!current('meter_enables_time_of_use'))
+      return {key:'TIME', band:NOINFO, note:'WITHHELD', state:'WITHHELD',
+        text:'We can’t stand over this right now — our source needs rechecking.'};
+    if (notOwner())
+      return {key:'TIME', band:CHANGE, note:'TENANT_OR_NOT_OWNER', state:'OK',
+        text:'Changing tariff is usually the bill-payer’s decision, so this may still be open to you.'};
+    if (A.meter==='yes')
+      return {key:'TIME', band:READY, note:'TARIFF_CHOICE_AVAILABLE', state:'OK',
+        text:'You have the meter. Having a smart meter doesn’t mean you’re on a time-of-use tariff — that’s a separate choice you make with your supplier.'};
+    if (A.meter==='no')
+      return {key:'TIME', band:CHANGE, note:'NEEDS_A_METER', state:'OK',
+        text:'Time-of-use tariffs need a smart meter.'};
+    return {key:'TIME', band:NOINFO, note:'NEEDS_A_METER_CHECK', state:'UNKNOWN',
+      text:'This depends on whether the house has a smart meter.'};
+  }
+
+  function storeResult(){
+    if (!current('battery_grant_exists'))
+      return {key:'STORE', band:NOINFO, note:'WITHHELD', state:'WITHHELD',
+        text:'We can’t stand over this right now — our source needs rechecking.'};
+    if (notOwner())
+      return {key:'STORE', band:CHANGE, note:'TENANT_OR_NOT_OWNER', state:'OK',
+        text:'A battery is the owner’s decision. It does not depend on there being solar here — a battery can charge from the grid on its own.'};
+    return {key:'STORE', band:READY, note:'NO_GRANT_SELF_FUNDED', state:'OK',
+      text:'A battery does not need solar. It can charge from the grid and run the house later, and it can hold what a roof generates if there is one. There’s no SEAI grant for a home battery, so this one is self-funded. ESB Networks is told before it goes in, and the work is done and certified by a Safe Electric registered electrician.'};
+  }
+
+  function sellResult(){
+    if (!current('supplier_must_pay_for_export'))
+      return {key:'SELL', band:NOINFO, note:'WITHHELD', state:'WITHHELD',
+        text:'We can’t stand over this right now — our source needs rechecking.'};
+
+    var band, note, state='OK', text;
+    if (notOwner())              { band=CHANGE; note='TENANT_OR_NOT_OWNER'; text='This follows the owner’s decision to generate.'; }
+    else if (A.generation_exists_now==='yes')     { band=READY; }
+    else if (A.generation_exists_now==='no')      { band=CHANGE; note='NEEDS_GENERATION_FIRST';
+      text='Every supplier has to pay you for what you send back. That starts once there’s something to export.'; }
+    else { band=NOINFO; note='NEEDS_GENERATION_FIRST'; state='UNKNOWN';
+      text='The payment route is open. Whether it applies here depends on whether the house already generates.'; }
+
+    if (band===READY){
+      if (A.meter==='yes'){ note='PAYMENT_ROUTE_OPEN';
+        text='You can be paid on the meter reading. It’s worth confirming your installation is registered with ESB Networks — that’s what switches payment on.'; }
+      else if (A.meter==='no' && A.meter_offer==='declined'){ note='NOT_ELIGIBLE_WHILE_METER_DECLINED'; state='FALSE';
+        text='Export payment needs a smart meter, and where one has been offered and declined it isn’t available. If you’d reconsider, that reopens it.'; }
+      else if (A.meter==='no'){ note='PAID_BUT_ASK_HOW';
+        text='You can still be paid. How depends on where your address is in the meter rollout — your supplier can tell you.'; }
+      else { note='NEEDS_A_METER_CHECK'; state='UNKNOWN';
+        text='You can be paid for what you send back. How you’re paid depends on your meter.'; }
+      var tax = current('microgen_income_tax_exemption');
+      if (tax && state!=='FALSE') text += ' The first €'+money(tax.value&&tax.value.amount)+' a year is free of income tax, to the end of 2028.';
+    }
+    if (state!=='FALSE') text += ' Every supplier must pay you for what you send back, though how much is up to them, and it changes.';
+    return {key:'SELL', band:band, reason:null, note:note, state:state, text:text};
+  }
+
+  /* =====================================================================
+     LAYER 3 · PRESENTATION
+     ===================================================================== */
+  /* Four distinct property energy capabilities, not four solar features.
+     Each says what the HOUSE gains the ability to do. */
+  var MEANING = {
+    MAKE:'Your home can generate its own electricity, from its own roof.',
+    TIME:'Your home can change when it draws electricity, so some hours cost far less.',
+    STORE:'Your home can hold electricity and use it later \u2014 bought from the grid, generated on the roof, or both.',
+    SELL:'Your home can send electricity back to the grid, and be paid for it.'
+  };
+  var VERB = {MAKE:'Make', TIME:'Time', STORE:'Store', SELL:'Sell'};
+  /* THE ACTION LABEL MUST DESCRIBE WHAT IS BEHIND IT.
+
+     The four labels this replaces invited the homeowner to explore, to
+     understand options, to see what something makes possible. They named
+     TOOLS. What the control does is expand a panel in place: the remainder of
+     what this means for this home, and the one thing worth checking. A
+     homeowner who presses a button offering to explore solar and receives two
+     paragraphs has been told something untrue by the button, however good the
+     paragraphs are. (The retired strings are deliberately not reproduced here:
+     a build gate forbids them anywhere in the page, and a gate that cannot
+     tell a comment from live code is not worth having.)
+
+     It varies only where the content genuinely differs. A WITHHELD card has no
+     advice to give — PlotNua's source needs rechecking — so it must not offer
+     to explain what something means for this home. PRESENTATION ONLY: the
+     result object is read, never written, and no engine function calls this. */
+  function actionLabel(r){
+    return r.state==='WITHHELD' ? 'Why we can’t say yet' : 'What this means here';
+  }
+  /* First view carries one short explanation. The engine's full text is kept,
+     entire, behind the action — progressive disclosure, not truncation. */
+  function splitOutcome(t){
+    var parts = String(t).match(/[^.]+\.(\s|$)/g) || [String(t)];
+    var head = parts[0].trim(), rest = parts.slice(1).join('').trim();
+    if (head.length < 70 && parts.length > 1){
+      head = (parts[0]+parts[1]).trim(); rest = parts.slice(2).join('').trim();
+    }
+    return {head:head, rest:rest};
+  }
+
+  /* =====================================================================
+     RESULT STATE \u2014 PRESENTATION TRANSLATION.
+
+     The engine's three bands are deterministic and they do not change. But
+     READY TO EXPLORE describes the state of PlotNua's workflow, not the state
+     of the homeowner's house, and a homeowner reading it learns nothing about
+     their property. This function is the ONLY place that turns a band into
+     something the homeowner can learn from.
+
+     STRICTLY PRESENTATION. No engine function calls it, nothing branches on
+     its output, and the band it was given is still carried on the card as a
+     data-band attribute and returned unchanged by the test hook \u2014 so
+     deterministic QA still asserts against the engine, not against copy.
+
+     Specific beats generic: the per-capability table is consulted first, and
+     the band/state rules below it are the total fallback, so every possible
+     result resolves to a line. =================================== */
+  function statusLine(r){
+    /* PlotNua's own gap always wins. It is never the homeowner's doing. */
+    if (r.state==='WITHHELD') return 'PlotNua needs to recheck this';
+
+    if (r.key==='MAKE'){
+      if (r.reason==='TENANT_OR_NOT_OWNER')     return 'Needs the owner\u2019s decision';
+      if (r.reason==='APARTMENT_ROOF_CONTROL')  return 'Needs the management company';
+      if (r.note==='GRANT_DOES_NOT_APPLY')      return 'Worth exploring \u2014 without a grant';
+      if (r.note==='GRANT_ALREADY_USED')        return 'Worth exploring \u2014 the grant is used up';
+      if (r.note==='GRANT_LIKELY_ALREADY_USED'
+          || r.note==='GRANT_NOT_CLAIMED_BUT_UNVERIFIED') return 'This home already generates';
+      if (r.note==='GRANT_NEEDS_ONE_CHECK')     return 'One thing still needs checking';
+      if (r.note==='GRANT_MAY_BE_AVAILABLE')    return 'Solar is worth exploring here';
+    }
+    if (r.key==='TIME'){
+      if (r.note==='TENANT_OR_NOT_OWNER')       return 'Usually the bill-payer\u2019s to change';
+      if (r.note==='TARIFF_CHOICE_AVAILABLE')   return 'Your smart meter opens this';
+      if (r.note==='NEEDS_A_METER')             return 'Opens with a smart meter';
+      if (r.note==='NEEDS_A_METER_CHECK')       return 'One thing still needs checking';
+    }
+    if (r.key==='STORE'){
+      if (r.note==='TENANT_OR_NOT_OWNER')       return 'Needs the owner\u2019s decision';
+      if (r.note==='NO_GRANT_SELF_FUNDED')      return 'Available to this home';
+    }
+    if (r.key==='SELL'){
+      if (r.note==='TENANT_OR_NOT_OWNER')       return 'Follows the owner\u2019s decision';
+      if (r.note==='NOT_ELIGIBLE_WHILE_METER_DECLINED') return 'Closed while the meter is declined';
+      if (r.note==='PAYMENT_ROUTE_OPEN')        return 'Available \u2014 you\u2019re generating';
+      if (r.note==='PAID_BUT_ASK_HOW')          return 'Available \u2014 ask how you\u2019re paid';
+      if (r.note==='NEEDS_A_METER_CHECK')       return 'One thing still needs checking';
+      if (r.note==='NEEDS_GENERATION_FIRST')
+        return r.band===CHANGE ? 'Available once you\u2019re generating'
+                               : 'One thing still needs checking';
+    }
+
+    /* TOTAL FALLBACK. A note added to the engine later still reads as a
+       sentence about the property rather than falling through to blank. */
+    if (r.state==='UNKNOWN' || r.band===NOINFO) return 'One thing still needs checking';
+    if (r.band===CHANGE) return 'Possible, with one change';
+    return 'Available to this home';
+  }
+
+  function nextAction(r){
+    if (r.state==='WITHHELD') return {label:'Nothing to do', text:'We’ll update this when we’ve rechecked our source.'};
+    if (r.key==='MAKE'){
+      if (r.note==='GRANT_NEEDS_ONE_CHECK' || r.note==='GRANT_LIKELY_ALREADY_USED'
+          || r.note==='GRANT_NOT_CLAIMED_BUT_UNVERIFIED')
+        return {label:'One thing to check', text:'Call SEAI with your MPRN — it’s on your electricity bill — and ask whether a solar grant has ever been paid at this address.'};
+      if (A.shading==='yes')
+        return {label:'One thing to check', text:'Ask an installer to look at the shading before you commission anything.'};
+      if (r.note==='GRANT_DOES_NOT_APPLY' || r.note==='GRANT_ALREADY_USED')
+        return {label:'Worth knowing', text:'Solar without grant support is still a decision you can price. Ask for quotes that show the cost on its own.'};
+      return {label:'One thing to check', text:'Get quotes from SEAI-registered companies, and check the roof is looked at on site.'};
+    }
+    if (r.key==='TIME'){
+      if (r.note==='NEEDS_A_METER_CHECK') return {label:'One thing to check', text:'Look at your meter, or your bill — it says whether it’s a smart meter.'};
+      if (r.note==='NEEDS_A_METER') return {label:'One thing to check', text:'Ask ESB Networks when a smart meter is due at your address.'};
+      return {label:'One thing to check', text:'Ask your supplier what time-of-use options they offer.'};
+    }
+    if (r.key==='STORE') return {label:'One thing to check', text:'Talk to a Safe Electric registered electrical contractor about what a battery would involve here. You do not need solar first, and you do not need to decide about solar to ask.'};
+    if (r.note==='NOT_ELIGIBLE_WHILE_METER_DECLINED')
+      return {label:'One thing to check', text:'If you’d reconsider the meter, ESB Networks can arrange one — that’s what reopens export payment.'};
+    if (r.note==='PAID_BUT_ASK_HOW')
+      return {label:'One thing to check', text:'Ask your supplier how your export would be paid while you’re waiting for a meter.'};
+    if (r.note==='NEEDS_GENERATION_FIRST')
+      return {label:'One thing to check', text:'Nothing yet — this follows generation.'};
+    return {label:'One thing to check', text:'Ask your supplier whether your installation is registered for export payment.'};
+  }
+
+  /* Evidence drawer. Renders CURRENT records only, never internal notes. */
+  function drawer(keys, extraHtml){
+    var out='', n=0;
+    keys.forEach(function(k){
+      var r = current(k); if (!r || !r.homeowner_safe_resolved) return;
+      n++;
+      out += '<p>'+esc(r.claim)+'<span class="ps-auth">'+esc(r.authority.replace(/_/g,' '))+
+             ' &middot; <a href="'+esc(r.source_url)+'" target="_blank" rel="noopener">'+esc(r.source_title)+'</a></span></p>';
+    });
+    if (extraHtml) { out += extraHtml; n++; }
+    if (!n) return '';
+    return '<details class="ps-drawer"><summary>What this is based on</summary><div class="ps-ev">'+out+'</div></details>';
+  }
+
+  var HONEST = '<div class="ps-honest"><b>What we can’t tell you about your roof.</b> We can show you '+
+    'your house, but we can’t measure which way the roof faces, how steep it is, how big it is, or what '+
+    'shades it. Those need someone on site. Anyone quoting you should be looking at the roof, not at a map.</div>';
+
+  var DRAWER_KEYS = {
+    MAKE:['grant_structure','grant_max_eur','grant_requires_pre_2021','grant_once_per_mprn',
+          'planning_exempt_houses','planning_no_area_limit_houses','planning_protected_structure_aca',
+          'seai_does_not_warranty_contractor'],
+    TIME:['meter_enables_time_of_use','meter_is_not_tariff'],
+    STORE:['battery_grant_exists','ac_battery_treated_as_microgeneration',
+           'battery_requires_esbn_notification','battery_requires_safe_electric_rec','battery_route_by_capacity'],
+    SELL:['supplier_must_pay_for_export','export_requires_registration','export_rates_unregulated',
+          'export_state_calculated','microgen_income_tax_exemption']
+  };
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function bandClass(b){ return b===READY?'':(b===CHANGE?' is-change':' is-unknown'); }
+
+  function render(){
+    var results = [makeResult(), timeResult(), storeResult(), sellResult()];  /* FIXED ORDER */
+    var deg = document.getElementById('psDegraded');
+    deg.innerHTML = (EV_STATE==='failed')
+      ? '<div class="ps-degraded"><b>We can’t show your result right now</b>'
+        + 'Our evidence file didn’t load, so we can’t stand over what we’d tell you. '
+        + 'Nothing here is your doing, and there’s nothing for you to check. Please try again shortly.</div>'
+      : '';
+
+    var html='';
+    results.forEach(function(r, i){
+      var na = nextAction(r), sp = splitOutcome(r.text), sid = 'psStep'+i;
+      html += '<section class="ps-card" data-key="'+r.key+'" data-band="'+esc(r.band)+'">'
+        + '<div class="ps-card-top">'
+        +   '<h3 class="ps-card-verb">'+VERB[r.key]+'</h3>'
+        +   '<span class="ps-state'+bandClass(r.band)+'"><i></i>'+esc(statusLine(r))+'</span>'
+        + '</div>'
+        + '<p class="ps-card-cap">'+MEANING[r.key]+'</p>'
+        + '<p class="ps-outcome">'+esc(sp.head)+'</p>'
+        + '<button class="ps-act" type="button" aria-expanded="false" aria-controls="'+sid+'" '
+        +   'data-step="'+sid+'">'+esc(actionLabel(r))+'<span class="ps-arw">&darr;</span></button>'
+        + '<div class="ps-step" id="'+sid+'" hidden>'
+        +   (sp.rest ? '<p style="margin:0 0 18px">'+esc(sp.rest)+'</p>' : '')
+        +   '<b>'+esc(na.label)+'</b>'+esc(na.text)
+        + '</div>'
+        + drawer(DRAWER_KEYS[r.key], r.key==='MAKE'?HONEST:'')
+        + '</section>';
+    });
+    var host = document.getElementById('psCards');
+    host.innerHTML = html;
+    host.querySelectorAll('.ps-act').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var step = document.getElementById(btn.getAttribute('data-step'));
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+        step.hidden = open;
+      });
+    });
+
+    /* Where to start — a starting point, not a recommendation. */
+    var start='', t=results[1], m=results[0];
+    /* PRESENTATION ONLY. Engine precedence is unchanged; this line now sits
+       AFTER the four capabilities, because the reveal matters more than the
+       recommended first move. */
+    if (EV_STATE==='failed') start='';
+    else if (t.band===READY) start='If you want somewhere to begin, <b>Time</b> is the one that needs nothing installed.';
+    else if (m.band===READY && m.note==='GRANT_MAY_BE_AVAILABLE') start='If you want somewhere to begin, <b>Make</b> &mdash; the grant looks open here.';
+    else {
+      var first=null; results.forEach(function(r){ if(!first && r.band===READY) first=r; });
+      start = first ? 'If you want somewhere to begin, <b>'+VERB[first.key]+'</b>.'
+                    : 'Start with the one check in the cards above &mdash; it resolves the most.';
+    }
+    var el=document.getElementById('psStartHere');
+    el.innerHTML = start; el.hidden = !start;
+  }
+
+  /* =====================================================================
+     NAVIGATION
+     ===================================================================== */
+  var order=['s0','s1','s2','s3','s4','s5','s6'], hist=[];
+  function show(id){
+    order.forEach(function(s){ var e=document.getElementById(s); if(e) e.classList.toggle('is-on', s===id); });
+    document.getElementById('psBack').hidden = (id==='s0');
+    window.scrollTo(0,0);
+  }
+  function go(id){ hist.push(document.querySelector('.ps-screen.is-on').id); if(id==='s6') render(); show(id); }
+  document.getElementById('psBack').addEventListener('click', function(){
+    var p=hist.pop(); if(p) show(p);
+  });
+
+  function syncGate(screenId){
+    var btn=document.querySelector('#'+screenId+' .ps-cta[data-next], #'+screenId+' #psFinish');
+    if(!btn) return;
+    var need=(REQUIRED_BY_SCREEN[screenId]||[]).slice();
+    Object.keys(CONDITIONAL_REQUIRED).forEach(function(k){
+      var el=document.getElementById(CONDITIONAL_REQUIRED[k]);
+      if (el && !el.hidden && el.closest('.ps-screen').id===screenId) need.push(k);
+    });
+    btn.disabled = need.some(function(k){ return A[k]===null; });
+  }
+
+  document.querySelectorAll('.ps-opt').forEach(function(b){
+    b.addEventListener('click', function(){
+      var fs=b.closest('[data-q]'), q=fs.getAttribute('data-q');
+      fs.querySelectorAll('.ps-opt').forEach(function(o){ o.setAttribute('aria-pressed', o===b?'true':'false'); });
+      A[q]=b.getAttribute('data-v');
+      /* C3 · THE CONDITIONAL. The grant-history question is asked when the
+         build period is Before 2021 or Not sure. It is NOT asked when the
+         house is 2021 or later, because the build-date rule has already
+         closed the grant there and the answer could not change a V1 decision.
+         When it is not asked its variable is cleared to null — it is never
+         given an invented value, and the MAKE grant branch never reads it on
+         that path. */
+      if (q==='built'){
+        var q3b=document.getElementById('psQ3b');
+        if (A.built==='post2021'){
+          q3b.hidden=true; A.grant_consumed_at_mprn=null;
+          q3b.querySelectorAll('.ps-opt').forEach(function(o){o.setAttribute('aria-pressed','false');});
+        } else { q3b.hidden=false; }
+      }
+      if (q==='meter'){
+        var q5b=document.getElementById('psQ5b');
+        if (A.meter==='no'){ q5b.hidden=false; }
+        else { q5b.hidden=true; A.meter_offer=null;
+               q5b.querySelectorAll('.ps-opt').forEach(function(o){o.setAttribute('aria-pressed','false');}); }
+      }
+      syncGate(fs.closest('.ps-screen').id);
+    });
+  });
+  document.querySelectorAll('.ps-cta[data-next]').forEach(function(b){
+    b.addEventListener('click', function(){ go(b.getAttribute('data-next')); });
+  });
+  document.getElementById('psFinish').addEventListener('click', function(){ go('s6'); });
+  document.getElementById('psStart').addEventListener('click', function(){ go('s1'); });
+  document.getElementById('psSkipAddr').addEventListener('click', function(){ go('s2'); });
+
+  /* =====================================================================
+     PROPERTY · Eircode -> Worker -> Cesium. Memory only, never persisted.
+     ===================================================================== */
+  var viewerStarted=false;
+  function startViewer(lat, lon){
+    if (viewerStarted) return;
+    var host=document.getElementById('psCesium');
+    /* Cesium.js is deferred, so on a fast click it may not have executed yet.
+       The flag is set only once a viewer actually exists: setting it first
+       (as this did) meant one early click disabled the 3D view for the whole
+       session with no way back. Retry briefly, then give up honestly. */
+    if (typeof Cesium === 'undefined'){
+      if (startViewer.tries === undefined) startViewer.tries = 0;
+      if (startViewer.tries++ < 40){ setTimeout(function(){ startViewer(lat, lon); }, 100); return; }
+      host.innerHTML='<div class="ps-viewfail">The 3D view isn’t available right now. It doesn’t affect your result.</div>'; return;
+    }
+    viewerStarted=true;
+    try{
+      Cesium.Ion.defaultAccessToken = window.PLOTNUA_CESIUM_TOKEN;
+      var viewer = new Cesium.Viewer('psCesium', {
+        baseLayerPicker:false, geocoder:false, homeButton:false, sceneModePicker:false,
+        navigationHelpButton:false, animation:false, timeline:false, fullscreenButton:false,
+        infoBox:false, selectionIndicator:false });
+      Cesium.createGooglePhotorealistic3DTileset().then(function(ts){
+        viewer.scene.primitives.add(ts);
+      }).catch(function(){});
+      viewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, 260),
+        orientation:{ heading:0, pitch:Cesium.Math.toRadians(-38) }, duration:2.0 });
+    }catch(e){
+      host.innerHTML='<div class="ps-viewfail">The 3D view isn’t available right now. It doesn’t affect your result.</div>';
+    }
+  }
+
+  /* =====================================================================
+     WHY A LOOKUP CAN FAIL HERE, AND WHY THAT IS NOT A BUG IN THIS PAGE.
+
+     The geocode Worker allows exactly ONE browser origin:
+
+         const ALLOWED_ORIGIN = 'https://plotnua.ie';
+
+     and it emits Access-Control-Allow-Origin only for that origin. So from
+     any other origin the CORS PREFLIGHT is refused and fetch() rejects with
+     a TypeError before the POST is ever sent. Measured, not assumed:
+
+         from https://plotnua.ie   -> HTTP 400 invalid_eircode (reached)
+         from an opaque origin     -> TypeError: Failed to fetch (blocked)
+
+     The request this page sends is identical to Your Plot's. Your Plot works
+     because Your Plot runs on plotnua.ie. This page has never been deployed,
+     so every review of it so far has been off-origin, and a refusal was
+     certain. Nothing about the Worker is broken and nothing needs rotating.
+
+     PREVIEW is therefore an ORIGIN test, not a query parameter: on plotnua.ie
+     the fixture below is unreachable no matter what anyone types in the URL
+     bar, and the boundary that decides it is the SAME boundary the Worker
+     enforces, so the two can never drift apart. The real call is still
+     attempted first, so the day the Worker's allowlist widens this page uses
+     the real path with no code change. */
+  var PREVIEW = !/^(www\.)?plotnua\.ie$/.test(location.hostname);
+
+  /* One fixed, clearly-labelled, NON-CUSTOMER Dublin-area coordinate pair,
+     following the review-mode precedent already in your-plot.html. It stands
+     in for a resolved Eircode so the 3D view can be seen working locally. It
+     is never a real homeowner's address and it can never be reached in
+     production. */
+  var PREVIEW_FIXTURE = { lat:53.2905, lon:-6.2413 };
+
+  function previewNotice(why){
+    var el=document.getElementById('psPreviewNote');
+    if(!el) return;
+    el.textContent='LOCAL PREVIEW \u2014 '+why+' Showing a fixed non-customer Dublin '+
+      'location so the 3D view can be reviewed. Not this Eircode.';
+    el.hidden=false;
+  }
+
+  var findBtn=document.getElementById('psFind'), errEl=document.getElementById('psEircodeErr');
+  findBtn.addEventListener('click', function(){
+    var q=(document.getElementById('psEircode').value||'').trim().toUpperCase();
+    errEl.textContent='';
+    /* The SAME pattern the Worker validates against, reproduced exactly so the
+       page and the Worker cannot disagree about what an Eircode is. A string
+       that fails here would fail there: rejecting it locally saves a round
+       trip and gives a better message than the proxy's fixed error code. */
+    if (!/^[A-Z]\d{2}\s?[A-Z0-9]{4}$/.test(q)){
+      errEl.textContent='That doesn’t look like a full Eircode. It’s seven characters, like D02 AF30.'; return; }
+    findBtn.disabled=true; findBtn.textContent='Finding…';
+    fetch(window.PLOTNUA_GEOCODE_ENDPOINT, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ eircode:q })
+    }).then(function(r){
+      if(!r.ok) throw new Error(r.status===400||r.status===404 ? 'invalid' : 'unavailable');
+      return r.json();
+    }).then(function(d){
+      if (!d || typeof d.lat!=='number' || typeof d.lon!=='number') throw new Error('unavailable');
+      PROP.lat=d.lat; PROP.lon=d.lon; PROP.eircode=q;      /* memory only */
+      go('s2'); startViewer(d.lat, d.lon);
+    }).catch(function(e){
+      /* OFF-ORIGIN PREVIEW. The refusal is expected and is not the homeowner's
+         doing, so it must not be dressed up as a service outage. Fall through
+         to the labelled fixture instead, and say plainly that that is what
+         happened. In production this branch does not exist. */
+      if (PREVIEW && e.message!=='invalid'){
+        previewNotice('the geocoder only answers requests from plotnua.ie, so no lookup was made.');
+        PROP.lat=PREVIEW_FIXTURE.lat; PROP.lon=PREVIEW_FIXTURE.lon; PROP.eircode=null;
+        go('s2'); startViewer(PREVIEW_FIXTURE.lat, PREVIEW_FIXTURE.lon);
+        return;
+      }
+      errEl.textContent = (e.message==='invalid')
+        ? 'We couldn’t find that Eircode. Check it and try again.'
+        : 'We couldn’t look that up just now. You can continue without the map.';
+    }).then(function(){ findBtn.disabled=false; findBtn.textContent='Find my home'; });
+  });
+  document.getElementById('psEircode').addEventListener('keydown', function(e){
+    if (e.key==='Enter'){ e.preventDefault(); findBtn.click(); }
+  });
+
+  loadEvidence();
+  window.PLOTNUA_PS_TEST = { answers:A, prop:PROP, evState:function(){return EV_STATE;},
+    setAnswers:function(o){ Object.keys(o).forEach(function(k){ A[k]=o[k]; }); },
+    result:function(){ return [makeResult(),timeResult(),storeResult(),sellResult()]; },
+    goto:function(id){ if(id==='s6') render(); show(id); },
+    forceEvidenceFailure:function(){ EV_STATE='failed'; EV={}; },
+    dropKey:function(k){ if(EV) delete EV[k]; }
+  };
+})();
+</script>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.144/Build/Cesium/Cesium.js" defer></script>
+</body>
+</html>
