@@ -871,6 +871,7 @@
   .pn-eircode-field input:disabled{ opacity:.55; cursor:not-allowed; }
   .btn-primary{
     display:inline-block; background:var(--ink); color:var(--brand-ivory); border:none;
+    text-decoration:none;
     font-family:'Work Sans',sans-serif; padding:16px 30px; font-size:14px;
     letter-spacing:.08em; text-transform:uppercase; border-radius:2px; margin-top:24px;
   }
@@ -971,20 +972,28 @@
 
 
 <section class="pb-early reveal" id="early-property-check">
-  <!-- EARLY JOURNEY ENTRY. Establishes the intended dual-entry Discovery
-       architecture: a compact invitation here, the full closing invitation at
-       #discover-your-property. Both currently report the SAME honest state,
-       because the Driveway journey is not live -- your-plot.html defines
-       'garden-room' and 'residential' and nothing else. There is deliberately
-       no link and no form here: a control a homeowner cannot use is worse than
-       no control at all, which is why the Eircode field was removed from the
-       closing panel. When a Driveway journey exists, this panel and the
-       closing panel take the same governed route. -->
+  <!-- EARLY SIGNPOST. Not a second entry point.
+
+       This panel used to say PlotNua was building a property check, with a
+       BEING PREPARED badge beneath it. That was true when it was written and
+       is false now: the check exists and sits at #discover-your-property.
+
+       It could have become a second link to the journey — the original
+       dual-entry idea — and that was considered and rejected. This Discovery
+       carries ONE live control, at the end, where a homeowner has read enough
+       to answer the questions honestly. A second button earlier in the page
+       competes with it and invites a colder start.
+
+       So the panel points downward in words and offers no interaction: no
+       link, no button, no badge, no status. It describes what the check does
+       in the same terms the closing panel uses, and nothing else.
+
+       The .pb-early-status and .pb-early-more rules in the stylesheet are now
+       unused. They are left alone rather than swept up here, because this
+       gate's bounds are these two panels and one declaration. -->
   <div class="pb-early-inner">
     <h2>Think this could work for your property?</h2>
-    <p>PlotNua is building a property check for this Discovery.</p>
-    <span class="pb-early-status">This property check is being prepared</span>
-    <p class="pb-early-more">Until it is ready, keep reading to understand what matters.</p>
+    <p>There&rsquo;s a short property check at the end of this Discovery. It asks about the space itself and helps you see what looks workable, what still needs checking, and what to do next.</p>
   </div>
 </section>
 
@@ -1098,16 +1107,35 @@
 </section>
 
 <section class="pb-preview reveal" id="discover-your-property">
-    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — the Eircode form here submitted to
-         your-plot.html, whose journey is hard-coded to discoveryContext =
-         'artist-studio'. Whatever this page said, the homeowner arrived in the
-         Garden Room journey. The interaction is removed rather than disabled,
-         for the reason already recorded on the three pages that did this first:
-         a control a homeowner cannot use is worse than no control at all.
-         Component, styling and independence statement are the existing ones. -->
+    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — HISTORY, AND ITS RESOLUTION.
+
+         The Eircode form that once stood here submitted to your-plot.html,
+         whose journey is hard-coded to discoveryContext='artist-studio', so
+         whatever this page said the homeowner arrived in the Garden Room
+         journey. The interaction was removed rather than disabled: a control
+         a homeowner cannot use is worse than no control at all.
+
+         GATE 7. That reason is now spent. disc014-driveway-income.html exists,
+         is committed, and is this Discovery's own journey. So the control
+         returns as ONE link, in the component's own .btn-primary style, and
+         the sentences that described a check PlotNua is not building are
+         replaced.
+
+         WHAT THOSE SENTENCES PROMISED, AND WHY THEY HAD TO GO. They said the
+         check would look at your location, what is within walking distance,
+         and whether the space is accessible and practical to use. PlotNua
+         does none of those. The journey asks four short questions about the
+         space itself and sets out where permission, tax, insurance and the
+         driveway each stand. It measures no distance, reads no imagery, knows
+         no address, and puts no number on anything.
+
+         NO EIRCODE FIELD RETURNS. The journey does not take an address, so
+         there is nothing for a field here to hand over. The four exit links
+         below are untouched. -->
     <div class="pn-wordmark">PlotNua</div>
-    <h2 class="pb-headline">This property check is being prepared</h2>
-    <p class="pb-subhead">The Driveway Income check will look at your location, what is within walking distance, and whether the parking space is accessible and practical to use. It is not ready yet. In the meantime, there is plenty to explore.</p>
+    <h2 class="pb-headline">Check this against your own home</h2>
+    <p class="pb-subhead">A few short questions about the space itself, and we&rsquo;ll set out what looks workable, what still needs checking, and what to do next.</p>
+    <a class="btn-primary" href="disc014-driveway-income.html">Check your driveway</a>
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-hidden-cars.html">Explore Hidden Cars &rarr;</a>
       <a class="cs-exit" href="discovery-house-as-power-station.html">Explore The House as a Power Station &rarr;</a>
