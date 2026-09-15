@@ -16174,7 +16174,20 @@
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
-     falls through to the neutral sentence rather than guessing. */
+     falls through to the neutral sentence rather than guessing.
+
+     THE KEYS ARE THE JOURNEY'S, NOT MY PLOT'S. Every line below is chosen by
+     an identifier the Driveway engine produced and says what that result
+     already said. My Plot reads the decision; it does not take one, and it
+     holds no second copy of the reasoning that reached it. When the engine's
+     vocabulary changes, this list has to follow it — which is exactly what
+     went wrong once already, and what the test beside it now prevents.
+
+     RETIRED NAMES ARE KEPT, NOT DELETED. A homeowner's record is written on
+     the day they save it, so the store still holds names the engine has
+     stopped producing. Dropping one would blank the summary for a record that
+     was correct when it was made. Each is marked with the version it came
+     from so the list stays readable rather than merely long. */
   function myPlotJourneySummary(rec){
     const rk = (rec && rec.resultKeys && typeof rec.resultKeys === 'object')
       ? rec.resultKeys : {};
@@ -16182,7 +16195,12 @@
       const d = rk.THE_DRIVEWAY;
       if (d === 'driveway_practically_usable') return 'The space itself looks workable, with three things to check.';
       if (d === 'driveway_usable_with_arranging') return 'Workable, with something practical to arrange first.';
+      if (d === 'driveway_access_needs_sorting') return 'The space is there, but access needs sorting first.';
       if (d === 'driveway_more_to_tell_us') return 'A couple of practical details still to check.';
+      if (d === 'driveway_occasionally_free') return 'Free only occasionally, on your own account of the week.';
+      /* V1 name, retired at Driveway decision architecture V2. Still the name
+         production writes until V2 deploys, so records carrying it are the
+         common case rather than the edge one. */
       if (d === 'driveway_rarely_free') return 'The space is rarely free, on your own account of the week.';
       if (d === 'driveway_no_offstreet_space') return 'No off-street parking belongs to this home.';
       if (d === 'driveway_space_unknown') return 'Still to pin down what kind of parking belongs here.';
