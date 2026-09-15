@@ -147,9 +147,15 @@
      decoration that should go. */
   .dw-revealband .dw-eyebrow{color:var(--accent);font-weight:600;
     letter-spacing:.2em;margin:0 0 22px;}
-  .dw-reveal-h{font-family:'Fraunces',Georgia,serif;font-weight:400;
+  /* PASS 1 — WEIGHT. At 76px, Fraunces 400 has thin enough stems that the
+     line reads sketched rather than set, which is most of what "not premium"
+     meant here. 500 is the page's answer, not the Garden's: it was compared
+     against 400 at the same size, and the tracking was opened from -.022 to
+     -.018 because the heavier cut closes the counters at display size and
+     needs the room back. Scale, line-height and measure are unchanged. */
+  .dw-reveal-h{font-family:'Fraunces',Georgia,serif;font-weight:500;
     font-size:clamp(40px,6.4vw,76px);line-height:1.02;margin:0 0 26px;
-    max-width:15ch;letter-spacing:-.022em;position:relative;}
+    max-width:15ch;letter-spacing:-.018em;position:relative;}
   .dw-reveal-sub{font-size:19.5px;line-height:1.6;color:var(--body);
     margin:0;max-width:44ch;position:relative;}
   /* ================= V2 · SAVE BELONGS TO THE CLOSE ====================
@@ -247,8 +253,8 @@
   .dw-next{background:var(--stone);border-top:1px solid var(--rule);
     border-bottom:1px solid var(--rule);
     margin:0 calc(50% - 50vw) 0;padding:56px calc(50vw - 50%) 52px;}
-  .dw-nexth{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:30px;
-    margin:0 0 18px;}
+  .dw-nexth{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:30px;
+    margin:0 0 18px;letter-spacing:-.01em;}
   .dw-nextl{list-style:none;margin:0;padding:0;max-width:62ch;
     counter-reset:dwnext;}
   .dw-nextl li{font-size:17px;line-height:1.5;padding:16px 0 16px 52px;
@@ -260,6 +266,103 @@
     font-size:14px;color:var(--accent);font-weight:500;letter-spacing:.04em;}
   .dw-nextl li.__unused{font-size:16.5px;line-height:1.5;padding:12px 0;
     border-bottom:1px solid var(--line-soft);}
+
+  /* ---- PASS 1 · THE PRIMARY FINDING ------------------------------------
+     The driveway result, lifted out of the four-row rail. It is the page's
+     second display moment: clearly below the hero, clearly above the three
+     advisories.
+
+     The scale is chosen against the page's own ladder rather than copied from
+     the Garden journey. Hero 76 / primary 44 / advisory 20 gives roughly 1.7x
+     between steps, which is enough for each to read as its own tier without
+     the primary competing with the line above it.
+
+     The asymmetric grid is the point. Every other block on this page is a
+     stacked full-width band or the same 166px rail, which is what made four
+     different results look like one repeated thing. 1.55/1 is a different
+     ratio from anything else here and from the Garden's 1.62 — it is set for
+     this content, which is a long finding on the left and a short list of
+     reasons on the right. */
+  .dw-primary{margin:0 0 4px;padding:52px 0 46px;
+    border-top:1px solid var(--rule);}
+  .dw-plab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 20px;}
+  .dw-primary-h{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(30px,3.6vw,44px);line-height:1.1;letter-spacing:-.018em;
+    color:var(--ink);margin:0 0 16px;max-width:20ch;}
+  .dw-primary-b{font-size:17.5px;line-height:1.62;color:var(--body);
+    margin:0;max-width:52ch;}
+  .dw-primary-why{list-style:none;margin:0;padding:0;}
+  .dw-primary-why li{font-size:15px;line-height:1.55;color:var(--body);
+    padding:0 0 0 18px;margin:0 0 14px;position:relative;}
+  .dw-primary-why li:last-child{margin-bottom:0;}
+  /* A hairline tick rather than a bullet glyph: it marks the line without
+     adding a shape the reader has to interpret. */
+  .dw-primary-why li:before{content:'';position:absolute;left:0;top:10px;
+    width:8px;height:1px;background:var(--rule);}
+  @media (min-width:834px){
+    .dw-primary-grid{display:grid;
+      grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
+      column-gap:clamp(40px,4.6vw,76px);align-items:start;}
+    .dw-primary-why{padding-top:7px;}
+  }
+
+  /* ---- PASS 1 · THE ADVISORY TIER --------------------------------------
+     Permission, tax and insurance keep every word the engine gave them and
+     lose only their claim to equal weight. The shared label says what the
+     group is, so each item no longer has to announce itself.
+
+     The index numerals are gone. They were there to number four peers; three
+     subordinate items under one heading do not need counting, and the numerals
+     were competing with the labels for the same small-type attention. */
+  .dw-adv{margin:0 0 56px;padding:44px 0 0;border-top:1px solid var(--rule);}
+  .dw-advlab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 10px;}
+  .dw-advintro{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:21px;line-height:1.3;letter-spacing:-.01em;color:var(--ink);
+    margin:0 0 30px;max-width:34ch;}
+  .dw-item{padding:26px 0 24px;border-top:1px solid var(--rule-soft);}
+  .dw-item:first-of-type{border-top:none;padding-top:0;}
+  .dw-itemlab{font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 10px;}
+  .dw-itemh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:20px;line-height:1.28;letter-spacing:-.008em;color:var(--ink);
+    margin:0 0 8px;}
+  .dw-itemb{font-size:15.5px;line-height:1.6;color:var(--body);margin:0;
+    max-width:60ch;}
+  .dw-itemwhy{list-style:none;margin:12px 0 0;padding:0;}
+  .dw-itemwhy li{font-size:14px;line-height:1.55;color:var(--muted);
+    margin:0 0 8px;}
+  .dw-itemwhy li:last-child{margin-bottom:0;}
+  /* CONDITIONAL is the engine saying "true, and not yet yours to act on".
+     The page should sound the same way: present, legible, not calling for
+     attention. Tone only — no content is withheld and nothing is hidden. */
+  .dw-item.is-pause .dw-itemh{color:var(--body);}
+  .dw-item.is-pause .dw-itemb,
+  .dw-item.is-pause .dw-itemwhy li{color:var(--muted);}
+  @media (min-width:834px){
+    .dw-item{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .dw-itemlab{margin:3px 0 0;}
+  }
+
+  /* ---- PASS 1 · THE CONCLUSION (LIMITED, zero actions) ------------------
+     Not an action surface. The homeowner has told us the space is only
+     occasionally free; there is no task that changes that, and inventing one
+     would be worse than saying nothing. What can honestly be said is that the
+     answer rests on their own account of their week. */
+  /* The attribute must win here too — .dw-reveal-sub is a <p> with no author
+     display rule, but the save controls taught us not to rely on that. */
+  .dw-reveal-sub[hidden]{display:none;}
+  .dw-concl{max-width:52ch;}
+  .dw-conclh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:21px;line-height:1.3;color:var(--ink);margin:0 0 10px;}
+  .dw-conclb{font-size:16.5px;line-height:1.62;color:var(--body);margin:0;}
+  /* THE ATTRIBUTE MUST WIN. Same origin problem the save controls hit: an
+     author display rule of equal specificity beats the user-agent
+     [hidden]{display:none}. Class+attribute is (0,2,0). Without this the
+     CLOSED case would keep rendering the empty band it exists to remove. */
+  .dw-next[hidden]{display:none;}
 
   /* ---- evidence drawer ------------------------------------------------- */
   /* The evidence stays the quiet final layer — but quiet is not invisible.
@@ -350,8 +453,12 @@
       <h2 class="dw-reveal-h" id="dwRevealH"></h2>
       <p class="dw-reveal-sub" id="dwRevealSub"></p>
     </div>
-    <div class="dw-parts" id="dwParts"></div>
+    <div class="dw-primary" id="dwPrimary"></div>
     <div class="dw-next" id="dwNext"></div>
+    <div class="dw-adv" id="dwAdvisory">
+      <p class="dw-advlab">The other three</p>
+      <div class="dw-parts" id="dwParts"></div>
+    </div>
     <div class="dw-save">
       <div class="dw-saveinner">
         <p class="dw-savekicker">Keep this with your property</p>
@@ -1540,16 +1647,16 @@
      that adjusts one hairline rule and nothing else.
      ===================================================================== */
   var HEADLINES = {
-    'driveway_more_to_tell_us': ['One or two things still worth checking', 'A practical detail decides whether this is straightforward or awkward. Worth knowing before you go any further.'],
-    'driveway_no_offstreet_space': ['There is no off-street space here', 'Letting needs parking that belongs to this home and sits off the public road. From what you have told us, that is not the case.'],
-    'driveway_practically_usable': ['The driveway itself works', 'Space of your own, a driver who could come and go, and hours when nobody needs it.'],
-    'driveway_access_needs_sorting': ['Access is the thing to sort', 'The space itself is fine. Someone would have to move a car or open something before a driver could use it, and that is worth solving before anything else.'],
-    'driveway_occasionally_free': ['Free only occasionally', 'Letting runs on the hours nobody at home needs the space. On your own account there are not many, which makes this hard to offer anyone regularly. Nothing forbids it &mdash; it is a question of whether there is enough there to be worth it, and that is your call, not ours.'],
+    'driveway_more_to_tell_us': ['One or two things still worth checking', ''],
+    'driveway_no_offstreet_space': ['There is no off-street space here', 'Letting needs parking that belongs to this home and sits off the public road.'],
+    'driveway_practically_usable': ['The driveway itself works', ''],
+    'driveway_access_needs_sorting': ['Access is the thing to sort', 'Someone would have to move a car or open something before a driver could use it.'],
+    'driveway_occasionally_free': ['Free only occasionally', 'Letting runs on the hours nobody at home needs the space, and on your own account there are not many. That limits how regularly it could be offered to anyone.'],
     'insurance_conditional_not_yet': ['Worth knowing, not worth doing yet', 'If this became something you were going ahead with, the call to your insurer would be the first one to make. It is not a call to make today.'],
     'permission_conditional_not_yet': ['This part waits', 'The planning question is real and the way to settle it is clear, but it only becomes yours to act on once the driveway itself is workable.'],
     'tax_conditional_not_yet': ['This part waits', 'Money from letting a parking space is taxable, and that would matter from the first payment. There is nothing to declare while this is not going ahead.'],
-    'driveway_space_unknown': ['Tell us about the space', 'Everything practical turns on what kind of parking belongs to this home.'],
-    'driveway_usable_with_arranging': ['Workable, with something to arrange', 'Nothing you have told us stops this. There is a practical detail to sort out first.'],
+    'driveway_space_unknown': ['Tell us about the space', 'Whether it is yours alone, shared with others, or not there at all.'],
+    'driveway_usable_with_arranging': ['Workable, with something to arrange', ''],
     'insurance_check_with_your_insurer': ['One call, before anyone parks', 'Whether a stranger&rsquo;s car on your driveway is covered is a question about your own policy, and only your insurer can answer it. We found no Irish guidance dealing specifically with paid driveway parking.'],
     'insurance_question_does_not_arise_no_space': ['This starts once there is a space', 'There is no arrangement here for a policy to cover. If off-street parking is added later, that call is the first one to make.'],
     'insurance_reasoning_withheld': ['We are re-checking our reasoning', 'The material behind our explanation is past its review date. The call to make is unchanged.'],
@@ -1625,57 +1732,62 @@
 
      Keys prefixed hero_ are chosen by heroKey() below; the rest are still
      keyed to the driveway headline they describe. */
+  /* PASS 1B — the hero is PlotNua's reading. One short qualification, then
+     stop. The facts underneath it belong to the finding below, and the
+     structure of the page belongs to the page, not to a sentence. */
   var REVEAL = {
     'driveway_practically_usable': [
       'Your driveway could work for this.',
-      'Your own space, a driver who could come and go, and hours when ' +
-      'nobody needs it. That is the practical side answered. Permission, ' +
-      'tax and insurance are separate questions, and each has its own ' +
-      'answer below.'],
+      'On the practical side, nothing you have told us stands in the way.'],
     'hero_workable_rented': [
       'The driveway could work. The owner comes first.',
-      'Nothing you have told us about the space itself stops this. You ' +
-      'rent, so this is not yours alone to decide \u2014 agreeing it with ' +
-      'the owner is the thing to do before anything else below.'],
+      'You rent, so the owner has to agree before anything else here.'],
     'hero_workable_buying': [
       'The driveway could work. The rest waits for the sale.',
-      'The practical side is worth knowing now, and it holds. The ' +
-      'permission questions belong to whoever owns the place, so they are ' +
-      'worth coming back to once the purchase completes.'],
+      'The permission questions belong to whoever owns the place.'],
     'hero_workable_shared': [
       'The driveway could work. The shared space needs settling.',
-      'The parking itself is usable. It is shared, though, so whether you ' +
-      'are entitled to let it is the open question \u2014 and it is the ' +
-      'one to settle first.'],
+      'Because the parking is shared, whether you may let it is the open ' +
+      'question.'],
     'driveway_usable_with_arranging': [
       'The driveway could work. There is one thing to settle first.',
-      'Nothing you have told us stops this, and one thing needs settling ' +
-      'before anyone parks. Permission, tax and insurance are separate ' +
-      'questions, and each has its own answer below.'],
+      'Nothing you have told us about the space itself stands in the way.'],
     'driveway_access_needs_sorting': [
       'The space is there, but access needs sorting.',
-      'A driver would need someone to move a car or open something, and ' +
-      'that is the thing to work out first. Until it is solved, the ' +
-      'paperwork below is not yet yours to start.'],
+      'Everything else about the space is fine.'],
+    /* Replaced at render time by the specific missing fact — see MISSING_HERO
+       below. This entry is the safe fallback if the engine ever produces a
+       gap this page has not been taught. */
     'driveway_more_to_tell_us': [
-      'One answer will tell us whether this works.',
-      'There is a practical fact we do not have yet, and it decides this ' +
-      'more than anything else on the page. Everything below waits on it.'],
+      'One or two answers still to give us.',
+      ''],
     'driveway_occasionally_free': [
       'The driveway works \u2014 but it may not be free often enough.',
-      'Letting runs on the hours nobody at home needs the space. On your ' +
-      'own account there are not many. Nothing forbids it; it is a ' +
-      'question of whether there is enough there to be worth your while, ' +
-      'and that is yours to judge, not ours.'],
+      'How often the space is free is what limits this. Whether that suits ' +
+      'you is your call.'],
     'driveway_space_unknown': [
-      'One answer will tell us whether this works.',
-      'Until we know what kind of parking belongs to this home, nothing ' +
-      'below can say much. That one answer is the place to start.'],
+      'What kind of parking is it?',
+      'Everything else here waits on that.'],
     'driveway_no_offstreet_space': [
       'This one needs off-street parking.',
-      'Letting needs parking that belongs to this home and sits off the ' +
-      'public road. From what you have told us there is none, so there is ' +
-      'nothing here to permit, tax or insure.'],
+      'You have told us there is none here.'],
+  };
+
+  /* THE UNKNOWN STATES NAME WHAT IS MISSING.
+     "One answer will tell us whether this works" never said which answer, and
+     was untrue whenever two facts were missing at once. These are keyed on the
+     reason keys the engine itself produced, so the page reports the gap rather
+     than guessing at it. Nothing is inferred and no engine logic is added. */
+  var MISSING_HERO = {
+    'independent_access_unknown': [
+      'Could a driver get in and out on their own?',
+      'That one answer decides how practical this is.'],
+    'availability_unknown': [
+      'Is the space regularly free?',
+      'That one answer decides how practical this is.'],
+    'both': [
+      'Two answers still to give us.',
+      ''],
   };
 
   var TONE = {
@@ -1860,16 +1972,41 @@
       dominant = ['Here is where this stands',
                   'Four separate questions, each with its own answer below.'];
     }
+    /* The unknown state names the fact it is missing, read from the reason
+       keys the engine produced. Two gaps get the pair form; one gets the
+       specific question. Presentation only — nothing is inferred. */
+    if (heroKey(answers, byName) === 'driveway_more_to_tell_us'){
+      var gaps = (byName.THE_DRIVEWAY.reason_keys || []).filter(function(k){
+        return MISSING_HERO[k];
+      });
+      if (gaps.length > 1) dominant = MISSING_HERO['both'];
+      else if (gaps.length === 1) dominant = MISSING_HERO[gaps[0]];
+    }
     $('dwRevealH').textContent = dominant[0];
-    $('dwRevealSub').textContent = dominant[1];
+    /* An empty lede is a deliberate choice, not a missing value: where the
+       finding below carries the facts, the hero says its piece and stops. The
+       paragraph is hidden rather than left standing as an empty box with
+       margins. */
+    var sub = $('dwRevealSub');
+    sub.textContent = dominant[1] || '';
+    sub.hidden = !dominant[1];
 
+    /* THE PRIMARY FINDING, lifted out of the rail. It is the same engine
+       result with the same identity, reasons and evidence — only its place on
+       the page has changed, from fourth of four to first after the hero. */
+    var primary = $('dwPrimary');
+    primary.innerHTML = '';
+    primary.appendChild(renderPrimary(byName.THE_DRIVEWAY));
+
+    /* The three that follow from it. Same results, same words, one tier
+       quieter. */
     var parts = $('dwParts');
     parts.innerHTML = '';
-    ['PERMISSION','TAX','INSURANCE','THE_DRIVEWAY'].forEach(function(name, i){
-      parts.appendChild(renderPart(byName[name], i));
+    ['PERMISSION','TAX','INSURANCE'].forEach(function(name){
+      parts.appendChild(renderAdvisory(byName[name]));
     });
 
-    renderNext(res);
+    renderNext(res, d.posture);
     renderEvidence(res);
     show('dwReveal');
 
@@ -1899,6 +2036,63 @@
       });
     }
     dwUpdatePlotPill();
+  }
+
+  /* THE PRIMARY FINDING.
+     Editorial rather than a card: a micro-label, a display headline, the
+     finding, and the reasons set beside it at wider widths. It carries no
+     action list — the single "What to check next" surface below owns actions,
+     and printing them here as well is how the page came to say everything
+     twice. */
+  function renderPrimary(r){
+    var box = document.createElement('div');
+    if (!r) return box;
+    var h = HEADLINES[r.headline_key] || ['', ''];
+    var because = r.reason_keys.filter(function(k){ return !DEFERRED[k]; })
+                               .map(function(k){ return REASONS[k]; })
+                               .filter(Boolean);
+    var html = '<p class="dw-plab">' + (LABELS[r.result] || r.result) + '</p>';
+    html += '<div class="dw-primary-grid">';
+    html += '<div><h3 class="dw-primary-h">' + h[0] + '</h3>';
+    /* Where the reasons already carry the proof, the finding does not repeat
+       it in paragraph form. No empty paragraph is emitted. */
+    if (h[1]) html += '<p class="dw-primary-b">' + h[1] + '</p>';
+    html += '</div>';
+    if (because.length){
+      html += '<ul class="dw-primary-why">';
+      because.forEach(function(t){ html += '<li>' + t + '</li>'; });
+      html += '</ul>';
+    }
+    html += '</div>';
+    box.innerHTML = html;
+    box.className = 'dw-primary-in ' + (TONE[r.state] || '');
+    return box;
+  }
+
+  /* ONE OF THE THREE THAT FOLLOW.
+     Every word the engine produced, at one tier down. No index numeral and no
+     action list: the numerals counted four peers that no longer exist, and the
+     actions are printed once, below, in decision order. */
+  function renderAdvisory(r){
+    var el = document.createElement('div');
+    if (!r) return el;
+    el.className = 'dw-item ' + (TONE[r.state] || '');
+    el.setAttribute('data-result', r.result);
+    var h = HEADLINES[r.headline_key] || ['', ''];
+    var because = r.reason_keys.filter(function(k){ return !DEFERRED[k]; })
+                               .map(function(k){ return REASONS[k]; })
+                               .filter(Boolean);
+    var html = '<p class="dw-itemlab">' + (LABELS[r.result] || r.result) + '</p>';
+    html += '<div><h3 class="dw-itemh">' + h[0] + '</h3>';
+    html += '<p class="dw-itemb">' + h[1] + '</p>';
+    if (because.length){
+      html += '<ul class="dw-itemwhy">';
+      because.forEach(function(t){ html += '<li>' + t + '</li>'; });
+      html += '</ul>';
+    }
+    html += '</div>';
+    el.innerHTML = html;
+    return el;
   }
 
   function renderPart(r, idx){
@@ -1956,7 +2150,20 @@
      Deduplication is unchanged: the same action emitted by two results still
      appears once, at its earliest position. */
   var NEXT_ORDER = ['THE_DRIVEWAY', 'PERMISSION', 'TAX', 'INSURANCE'];
-  function renderNext(res){
+
+  /* THE CONCLUSION, for a LIMITED result with nothing to do.
+     Not a task. The homeowner has told us the space is only occasionally free
+     and no step of theirs changes that, so the page says what the answer rests
+     on instead of inventing work. It claims nothing about demand, value or
+     whether the hours are worth anything — PlotNua holds no evidence of that
+     kind and this surface is not where it would start. */
+  var LIMITED_CONCLUSION = [
+    'If that changes',
+    'This rests on what you have told us about your own week. If the space ' +
+    'starts being free more regularly, come back and answer again.'
+  ];
+
+  function renderNext(res, posture){
     var seen = {}, list = [];
     var byResult = {};
     res.forEach(function(r){ byResult[r.result] = r; });
@@ -1968,7 +2175,31 @@
       });
     });
     var box = $('dwNext');
-    if (!list.length){ box.innerHTML = ''; return; }
+
+    /* ZERO ACTIONS. The old page emptied this element and left it standing —
+       measured at 110px of full-bleed stone with both borders and nothing
+       inside. What replaces it depends on whether there is anything honest
+       left to say.
+
+         CLOSED   there is no off-street space, so nothing follows. The band
+                  is removed, not emptied. The hero and the finding have
+                  already said it once, and saying it again more quietly is
+                  not better than stopping.
+         LIMITED  the possibility is real and narrow. The band stays and
+                  carries a conclusion. */
+    if (!list.length){
+      box.innerHTML = '';
+      if (posture === 'LIMITED'){
+        box.hidden = false;
+        box.innerHTML = '<div class="dw-concl">' +
+          '<h3 class="dw-conclh">' + LIMITED_CONCLUSION[0] + '</h3>' +
+          '<p class="dw-conclb">' + LIMITED_CONCLUSION[1] + '</p></div>';
+        return;
+      }
+      box.hidden = true;
+      return;
+    }
+    box.hidden = false;
     var html = '<h3 class="dw-nexth">What to check next</h3><ul class="dw-nextl">';
     list.forEach(function(t){ html += '<li>' + t + '</li>'; });
     html += '</ul>';
