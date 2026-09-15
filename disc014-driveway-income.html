@@ -400,6 +400,247 @@
      CLOSED case would keep rendering the empty band it exists to remove. */
   .dw-next[hidden]{display:none;}
 
+  /* =====================================================================
+     PLOTNUA-PROPERTY-CHECK-SHELL-BEGIN
+     The reusable presentation grammar for every PlotNua Property Check.
+
+     PORTABLE BY CONSTRUCTION. Nothing below names a driveway, a result key
+     or a question. A new Property Check copies this block byte for byte,
+     puts pc- classes on its own markup, and inherits the system. The only
+     thing a journey supplies is content.
+
+     It reuses the Garden journey's established language rather than
+     inventing a second one — the answer control, the progress dots, the
+     save medallion and the P/heart identity are all the Garden's, renamed
+     into pc- so they can travel.
+     ===================================================================== */
+
+  /* ---- PC · IDENTITY ---------------------------------------------------
+     The P/heart mark, as the two SHIPPED brand assets. The master mark has
+     no heart; the My Plot mark has it. Saving turns the heart on, which is
+     the PlotNua product moment the close was missing. No path data is
+     duplicated anywhere: both files are already deployed. */
+  .pc-mark{display:inline-flex;flex:0 0 auto;position:relative;
+    border-radius:22%;overflow:hidden;}
+  .pc-mark img{width:100%;height:100%;display:block;}
+  .pc-mark .pc-mark-on{position:absolute;inset:0;opacity:0;
+    transition:opacity .42s cubic-bezier(.2,.85,.32,1.1);}
+  .pc-mark.is-kept .pc-mark-on{opacity:1;}
+
+  /* ---- PC · COMPOSITION -----------------------------------------------
+     Measured, not asserted: before this rule the intro and the question both
+     ended around 600px inside a 980px viewport, leaving a third of the canvas
+     empty below the fold line. That is what reads as sparse rather than
+     spacious — not the amount of whitespace, but whitespace all collected at
+     one end. Both screens now fill the viewport and set their content on its
+     optical centre, so the space is composed instead of left over.
+
+     The screen's own display rule still governs visibility: only .is-on
+     becomes a flex column, so nothing about show()/hide() changes. */
+  .pc-intro.is-on,.pc-qscreen.is-on{display:flex;flex-direction:column;
+    justify-content:center;min-height:calc(100vh - 210px);}
+
+  /* ---- PC · INTRO ------------------------------------------------------ */
+  .pc-intro{padding:clamp(40px,6vh,72px) 0 clamp(40px,6vh,72px);}
+  .pc-crest{display:flex;align-items:center;gap:16px;margin:0 0 30px;}
+  .pc-crest .pc-mark{width:56px;height:56px;}
+  .pc-crestlab{display:flex;flex-direction:column;gap:2px;}
+  .pc-crestlab b{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:19px;letter-spacing:-.01em;color:var(--ink);}
+  .pc-crestlab span{font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--soft);font-weight:600;}
+  .pc-introh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(38px,5.4vw,64px);line-height:1.06;letter-spacing:-.02em;
+    color:var(--ink);margin:0 0 24px;max-width:16ch;}
+  .pc-introsub{font-size:19px;line-height:1.6;color:var(--body);
+    margin:0 0 40px;max-width:50ch;}
+
+  /* ---- PC · PRIMARY ACTION --------------------------------------------
+     A pill, not a rectangle. The Garden's chosen-option fill is the
+     platform's "this is the action" language; the square dark block was
+     generic form furniture. */
+  /* Contained at every width. The full-width phone rule is what made this
+     read as a banner rather than as a deliberate action. */
+  .pc-cta{display:inline-flex;align-items:center;gap:11px;align-self:flex-start;
+    background:var(--ink);color:var(--brand-ivory);border:none;
+    font-family:'Work Sans',sans-serif;padding:16px 28px;font-size:13.5px;
+    letter-spacing:.09em;text-transform:uppercase;border-radius:32px;
+    cursor:pointer;text-decoration:none;
+    box-shadow:0 10px 26px rgba(31,59,46,.22);
+    transition:transform .22s cubic-bezier(.2,.85,.32,1.1),
+      box-shadow .22s ease, background .22s ease;}
+  .pc-cta:hover{background:var(--accent);transform:translateY(-2px);
+    box-shadow:0 16px 34px rgba(31,59,46,.28);}
+  .pc-cta:active{transform:translateY(0);}
+  .pc-cta .pc-arrow{font-size:16px;line-height:1;
+    transition:transform .22s ease;}
+  .pc-cta:hover .pc-arrow{transform:translateX(3px);}
+
+  /* ---- PC · QUESTION --------------------------------------------------
+     Vertical composition, not a form. Progress is a device rather than a
+     sentence; the category names the subject; the question is the largest
+     thing on screen and is allowed to be. */
+  .pc-qscreen{padding:clamp(40px,6vh,72px) 0 clamp(48px,7vh,80px);
+    max-width:760px;}
+  .pc-dots{display:flex;gap:9px;margin:0 0 34px;}
+  .pc-dot{width:8px;height:8px;border-radius:50%;
+    background:rgba(31,59,46,.18);
+    transition:background .3s ease, transform .3s ease, box-shadow .3s ease;}
+  .pc-dot.is-done{background:var(--brand-sage);}
+  .pc-dot.is-on{background:var(--accent);transform:scale(1.3);
+    box-shadow:0 0 0 4px rgba(79,107,74,.16);}
+  .pc-qlab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 16px;}
+  .pc-qh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(30px,4.2vw,46px);line-height:1.1;letter-spacing:-.018em;
+    color:var(--ink);margin:0 0 16px;max-width:19ch;}
+  .pc-qnote{font-size:16px;line-height:1.6;color:var(--body);
+    margin:0 0 34px;max-width:48ch;}
+
+  /* ---- PC · ANSWER CONTROL -------------------------------------------
+     The Garden's .match-option, exactly: white, 1.5px at .18, a 22px pill,
+     14.5px Work Sans at .02em, a one-pixel lift on hover and an ink fill
+     when chosen. The rectangle at 3px with no chosen state is what made
+     the journey read as a questionnaire. */
+  .pc-opts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 36px;}
+  .pc-opt{background:#fff;border:1.5px solid rgba(31,59,46,.18);
+    cursor:pointer;color:var(--ink);padding:13px 22px;font-size:14.5px;
+    letter-spacing:.02em;border-radius:22px;
+    font-family:'Work Sans',sans-serif;
+    box-shadow:0 1px 2px rgba(31,59,46,.04);
+    transition:border-color .2s ease, background .2s ease,
+      box-shadow .2s ease, transform .2s ease, color .2s ease;}
+  .pc-opt:hover{border-color:var(--accent);
+    box-shadow:0 4px 14px rgba(31,59,46,.1);transform:translateY(-1px);}
+  .pc-opt:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .pc-opt.is-chosen{background:var(--ink);border-color:var(--ink);
+    color:var(--brand-ivory);transform:none;}
+
+  /* ---- PC · THE CHOICE MARKER ------------------------------------------
+     A white row with a hairline border is an input field; what makes it a
+     choice is something that can be selected. The marker is a ring, not an
+     icon: it fills sage under the pointer and becomes a solid ivory dot when
+     the answer is taken. It is drawn with a pseudo-element so no journey has
+     to add markup for it, and it is the ONLY affordance added — there is no
+     card, no tick glyph and no second colour. */
+  .pc-opts.is-stacked .pc-opt{position:relative;}
+  .pc-opts.is-stacked .pc-opt::before{content:'';position:absolute;
+    left:22px;top:50%;width:16px;height:16px;margin-top:-8px;
+    border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(31,59,46,.26);
+    background:transparent;
+    transition:box-shadow .2s ease, background .2s ease;}
+  .pc-opts.is-stacked .pc-opt:hover::before{
+    box-shadow:inset 0 0 0 1.5px var(--accent);
+    background:rgba(143,175,138,.32);}
+  .pc-opts.is-stacked .pc-opt.is-chosen::before{
+    box-shadow:inset 0 0 0 1.5px var(--brand-ivory);
+    background:var(--brand-ivory);}
+  /* The marker is centred on the label when a helper note makes the row
+     two lines, so it never floats against the note. */
+  .pc-opts.is-stacked .pc-opt:has(.pc-optn)::before{top:26px;margin-top:0;}
+  /* Long answers are sentences, not chips. The Garden already solved this
+     for its budget step: stack them, stretch them, left-align them and drop
+     the pill to a soft rectangle. Same rule, same numbers. */
+  /* 470, not 560: at the wider measure a single answer spanned most of the
+     column and read as a banner rather than as one of several choices. */
+  .pc-opts.is-stacked{flex-direction:column;align-items:stretch;
+    max-width:470px;}
+  .pc-opts.is-stacked .pc-opt{text-align:left;border-radius:12px;
+    padding:16px 22px 16px 56px;font-size:16px;letter-spacing:0;}
+  /* ---- PC · COMPACT CHOICES -------------------------------------------
+     Where every answer is short and none carries a helper note, the Garden's
+     pills are the better treatment: they sit together as a set the eye can
+     compare, instead of three near-identical rows. The renderer chooses by
+     content, so a future Property Check inherits the behaviour rather than
+     configuring it. */
+  .pc-opts.is-inline{flex-direction:row;flex-wrap:wrap;max-width:620px;
+    gap:12px;}
+  .pc-opts.is-inline .pc-opt{padding:14px 26px;font-size:15.5px;}
+  .pc-optn{display:block;margin-top:5px;font-size:13.5px;color:var(--muted);
+    letter-spacing:0;}
+  .pc-opt.is-chosen .pc-optn{color:rgba(242,239,230,.72);}
+  .pc-back{background:none;border:none;padding:0;cursor:pointer;
+    font-family:inherit;font-size:13px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--soft);
+    border-bottom:1px solid var(--line);}
+  .pc-back:hover{color:var(--ink);border-bottom-color:var(--ink);}
+
+  /* ---- PC · THE CLOSE -------------------------------------------------
+     Saving is a product moment, not a form submit. The mark sits at the
+     head of the row and gains its heart at the moment of keeping; the
+     control is a pill in the platform's action language; the receipt is
+     My Plot's own micro-caps. Unsaved and saved are both designed, and the
+     headline swaps in place so nothing under it jumps. */
+  .pc-saveband{background:var(--stone);margin:0 calc(50% - 50vw) 64px;
+    padding:0 calc(50vw - 50%) 60px;}
+  .pc-saveinner{border-top:1px solid var(--rule);padding-top:44px;}
+  .pc-savelab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 14px;}
+  .pc-savehead{display:flex;align-items:flex-start;gap:20px;margin:0 0 20px;}
+  .pc-savehead .pc-mark{width:64px;height:64px;
+    box-shadow:0 8px 22px rgba(31,59,46,.18);}
+  .pc-saveh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(26px,3.4vw,34px);line-height:1.14;letter-spacing:-.014em;
+    color:var(--ink);margin:0;max-width:24ch;}
+  /* The kept line is the confirmation, so it is set to be read rather than
+     noticed: it sits directly under the headline, carries a short rule, and
+     takes the body ink instead of the muted tint. A homeowner should know
+     this is kept before they interpret the state of a button. */
+  .pc-savemeta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--body);font-weight:600;margin:0 0 26px;
+    padding-left:34px;position:relative;}
+  .pc-savemeta::before{content:'';position:absolute;left:0;top:50%;
+    width:22px;height:1px;background:var(--accent);}
+  .pc-savenote{font-size:15px;line-height:1.6;color:var(--body);
+    margin:16px 0 0;max-width:46ch;}
+  .pc-savelink{display:inline-flex;align-items:center;gap:8px;
+    margin:24px 0 0;font-size:12.5px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink);text-decoration:none;
+    border-bottom:1px solid var(--line);padding-bottom:4px;
+    transition:border-color .2s ease;}
+  .pc-savelink:hover{border-bottom-color:var(--ink);}
+  /* KEPT reads as arrival, not as a disabled control: the fill goes, the
+     mark carries the state, and the label stops competing. */
+  /* A spent control should recede. It stays a real, operable button — a
+     repeat save still replaces the record — but it stops being the largest
+     thing in the row once the headline and the kept line have said so. */
+  .pc-cta[data-saved]{background:transparent;color:var(--muted);
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.18);cursor:default;
+    padding:11px 22px;font-size:12px;letter-spacing:.1em;
+    min-height:44px;}
+  .pc-cta[data-saved]:hover{background:transparent;transform:none;
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.18);}
+  @media (max-width:780px){
+    .pc-cta[data-saved]{padding:13px 22px;}
+    /* DEFECT 2 — at 360 the close headline broke to two lines: 25 characters
+       at the clamp's 26px floor exceeded a 320px content column. Measured in
+       the browser, not predicted. The floor steps down just enough to hold
+       one line at the narrowest width the journey supports. */
+    .pc-saveh{font-size:clamp(23px,6.2vw,34px);}
+  }
+  .pc-saveh[hidden],.pc-savemeta[hidden],.pc-cta[hidden],
+  .pc-savelink[hidden],.pc-savehead[hidden]{display:none;}
+
+  @media (min-width:834px){
+    .pc-saveinner{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .pc-savelab{margin:9px 0 0;}
+  }
+  @media (max-width:780px){
+    /* On a phone the viewport is short and the content is tall; forcing a
+       full-height centre would push the first answer below the fold. The
+       screens keep their rhythm and let the page scroll. */
+    .pc-intro.is-on,.pc-qscreen.is-on{min-height:0;display:block;}
+    .pc-intro{padding-top:36px;}
+    .pc-crest .pc-mark{width:46px;height:46px;}
+    .pc-savehead{gap:14px;}
+    .pc-savehead .pc-mark{width:50px;height:50px;}
+    .pc-opts.is-stacked{max-width:none;}
+    /* Contained on phones too — never the full measure. */
+    .pc-cta{width:auto;padding:15px 26px;}
+  }
+  /* PLOTNUA-PROPERTY-CHECK-SHELL-END */
+
   /* ---- evidence drawer ------------------------------------------------- */
   /* The evidence stays the quiet final layer — but quiet is not invisible.
      Weight and tone only; it does not compete with the result and it does not
@@ -465,22 +706,32 @@
 <main class="dw-wrap">
 
 
-  <section class="dw-screen is-on" id="dwIntro">
-    <p class="dw-eyebrow">A property check</p>
-    <h1 class="dw-h">Could you actually let your driveway?</h1>
-    <p class="dw-sub">A few short questions about the space itself. Nothing
+  <section class="dw-screen pc-intro is-on" id="dwIntro">
+    <div class="pc-crest">
+      <span class="pc-mark" aria-hidden="true">
+        <img src="assets/brand/plotnua-mark-master.svg" alt="" width="56" height="56">
+      </span>
+      <span class="pc-crestlab">
+        <b>Driveway Income</b>
+        <span>Property Check</span>
+      </span>
+    </div>
+    <h1 class="pc-introh">Could you actually let your driveway?</h1>
+    <p class="pc-introsub">A few short questions about the space itself. Nothing
       about the address, and nothing about money &mdash; we will not put a
       number on this, because we cannot know it.</p>
-    <button class="dw-cta" id="dwStart">Start</button>
+    <button class="pc-cta" id="dwStart">Start the check
+      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
   </section>
 
-  <section class="dw-screen" id="dwQ">
-    <p class="dw-prog" id="dwProg"></p>
-    <p class="dw-eyebrow" id="dwQEyebrow"></p>
-    <h2 class="dw-q" id="dwQText"></h2>
-    <p class="dw-qnote" id="dwQNote"></p>
-    <div class="dw-opts" id="dwOpts"></div>
-    <p class="dw-nav"><button type="button" id="dwBack">Back</button></p>
+  <section class="dw-screen pc-qscreen" id="dwQ">
+    <div class="pc-dots" id="dwDots" aria-hidden="true"></div>
+    <p class="dw-prog sr-only" id="dwProg"></p>
+    <p class="pc-qlab" id="dwQEyebrow"></p>
+    <h2 class="pc-qh" id="dwQText"></h2>
+    <p class="pc-qnote" id="dwQNote"></p>
+    <div class="pc-opts is-stacked" id="dwOpts"></div>
+    <p class="dw-nav"><button type="button" class="pc-back" id="dwBack">Back</button></p>
   </section>
 
   <section class="dw-screen" id="dwReveal">
@@ -495,15 +746,21 @@
       <p class="dw-advlab">The other three</p>
       <div class="dw-parts" id="dwParts"></div>
     </div>
-    <div class="dw-save">
-      <div class="dw-saveinner">
-        <p class="dw-savelab">My Plot</p>
+    <div class="dw-save pc-saveband">
+      <div class="dw-saveinner pc-saveinner">
+        <p class="pc-savelab">My Plot</p>
         <div class="dw-savebody">
-          <p class="dw-saveh" id="dwSaveHead">Somewhere to come back to</p>
-          <p class="dw-savemeta" id="dwSaveMeta" hidden></p>
-          <button class="dw-savebtn" type="button" id="dwSave" hidden>Save to My Plot</button>
-          <p class="dw-savenote" id="dwSaveNote"></p>
-          <a class="dw-savelink" id="dwSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot &rarr;</a>
+          <div class="pc-savehead" id="dwSaveCrest">
+            <span class="pc-mark" id="dwSaveMark" aria-hidden="true">
+              <img src="assets/brand/plotnua-mark-master.svg" alt="" width="64" height="64">
+              <img class="pc-mark-on" src="assets/brand/plotnua-mark-myplot-saved.svg" alt="" width="64" height="64">
+            </span>
+            <p class="pc-saveh" id="dwSaveHead">Somewhere to come back to</p>
+          </div>
+          <p class="pc-savemeta" id="dwSaveMeta" hidden></p>
+          <button class="pc-cta" type="button" id="dwSave" hidden>Save to My Plot</button>
+          <p class="pc-savenote" id="dwSaveNote"></p>
+          <a class="pc-savelink" id="dwSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
@@ -1923,6 +2180,18 @@
     var total = askedCount();
     var idx = QUESTIONS.filter(applicable).indexOf(q) + 1;
     $('dwProg').textContent = 'Question ' + idx + ' of ' + total;
+    /* PC · PROGRESS AS A DEVICE. The sentence stays for screen readers;
+       sighted readers get the Garden's dots. Presentation only — the count
+       and the index are the ones the flow already computed. */
+    var dots = $('dwDots');
+    if (dots){
+      dots.innerHTML = '';
+      for (var di = 1; di <= total; di++){
+        var dot = document.createElement('span');
+        dot.className = 'pc-dot' + (di === idx ? ' is-on' : (di < idx ? ' is-done' : ''));
+        dots.appendChild(dot);
+      }
+    }
     $('dwQEyebrow').textContent = q.eyebrow;
     $('dwQText').innerHTML = q.q;
     var note = $('dwQNote');
@@ -1930,11 +2199,22 @@
     else { note.textContent=''; note.style.display='none'; }
     var box = $('dwOpts');
     box.innerHTML = '';
+    /* PC · THE TREATMENT IS CHOSEN BY THE CONTENT, not configured by the
+       journey: a set of short answers with no helper note reads better as
+       compact choices; anything longer keeps the stacked rows. Presentation
+       only — the options, their order and their values are untouched. */
+    var compact = q.opts.every(function(o){
+      return !o.n && o.l.replace(/&[a-z]+;/g, 'x').length <= 24;
+    });
+    box.className = 'pc-opts ' + (compact ? 'is-inline' : 'is-stacked');
     q.opts.forEach(function(o){
       var b = document.createElement('button');
       b.type = 'button';
-      b.className = 'dw-opt';
-      b.innerHTML = o.l + (o.n ? '<span class="dw-optn">'+o.n+'</span>' : '');
+      b.className = 'pc-opt';
+      b.innerHTML = o.l + (o.n ? '<span class="pc-optn">'+o.n+'</span>' : '');
+      /* The chosen fill is shown for the moment before the flow advances,
+         so the answer is acknowledged rather than simply disappearing. */
+      b.addEventListener('click', function(){ this.classList.add('is-chosen'); });
       b.addEventListener('click', function(){ choose(q, o.v); });
       box.appendChild(b);
     });
@@ -2017,9 +2297,19 @@
        control and explained itself in the note. A headline offering somewhere
        to come back to, above a browser that will not keep anything, would be
        the page saying something it cannot stand over. */
-    if (btn.hidden){ head.hidden = true; meta.hidden = true; return; }
+    var crest = $('dwSaveCrest'), mark = $('dwSaveMark');
+    if (btn.hidden){
+      head.hidden = true; meta.hidden = true;
+      if (crest) crest.hidden = true;
+      return;
+    }
     head.hidden = false;
+    if (crest) crest.hidden = false;
     var saved = btn.getAttribute('data-saved') === 'true';
+    /* THE PRODUCT MOMENT. The mark is the platform's own identity and it
+       gains its heart at the moment of keeping — the same device the
+       floating My Plot control uses, and the same two shipped assets. */
+    if (mark) mark.className = 'pc-mark' + (saved ? ' is-kept' : '');
     head.textContent = saved ? CLOSE_SAVED : CLOSE_UNSAVED;
     var when = saved ? dwKeptOn() : '';
     meta.textContent = when ? ('Kept ' + when) : '';
