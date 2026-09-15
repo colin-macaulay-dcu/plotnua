@@ -446,8 +446,12 @@
     offstreet_space:    ['own_exclusive', 'shared', 'none', 'unknown'],
     estate_rules:       ['yes', 'no', 'unknown'],     // conditional on shared
     independent_access: ['yes', 'no', 'unknown'],
-    availability:       ['weekdays', 'evenings_weekends', 'most_of_the_time',
-                         'rarely', 'unknown']
+    // V2 · one decision-bearing question instead of five options, three of
+    // which produced an identical result. "Regularly free" is about whether
+    // there are hours to offer at all. It is NOT a claim about demand, about
+    // what any pattern of hours is worth, or about one pattern being better
+    // than another — PlotNua holds no evidence of that kind and states none.
+    availability:       ['yes', 'occasionally', 'unknown']
   };
 
   const ALWAYS_REQUIRED = ['authority_to_let', 'offstreet_space',
@@ -458,7 +462,30 @@
   // the engine disagree about which question was asked.
   const CONDITIONAL = { estate_rules: a => a.offstreet_space === 'shared' };
 
-  const STATES = ['CLEAR', 'ACTION_NEEDED', 'BLOCKED', 'UNKNOWN', 'WITHHELD'];
+  // V2 adds two postures the old five could not express.
+  //
+  //   CONSTRAINED  the space exists and may be let, but on the homeowner's
+  //                own account it is free only occasionally. That is a
+  //                practical limit on offering it regularly. It is NOT
+  //                BLOCKED: nothing forbids it, and the engine does not
+  //                pretend to know whether occasional hours are worth
+  //                anything, because it holds no evidence either way.
+  //
+  //   CONDITIONAL  this result is true, and it is not yet the homeowner's
+  //                problem. Used when the driveway itself is closed or a
+  //                practical fact is still missing: the reasoning and the
+  //                evidence stand, the homework does not start.
+  //
+  // CONDITIONAL is not UNDETERMINED and not WITHHELD. WITHHELD means PlotNua
+  // has stopped standing over its own evidence. CONDITIONAL means the
+  // evidence is sound and the moment is wrong.
+  const STATES = ['CLEAR', 'ACTION_NEEDED', 'CONSTRAINED', 'CONDITIONAL',
+                  'BLOCKED', 'UNKNOWN', 'WITHHELD'];
+
+  // The four postures, declared so the set is closed and reviewable in one
+  // place. A posture is not a result state: it is the answer to "is this
+  // homeowner at a point where the other three results are their next move?"
+  const POSTURES = ['OPEN', 'LIMITED', 'PENDING', 'CLOSED'];
   const RESULTS = ['PERMISSION', 'TAX', 'INSURANCE', 'THE_DRIVEWAY'];
 
   // =========================================================================
@@ -577,7 +604,7 @@
   // What it does say: PlotNua found no published Irish decision in the records
   // it searched that settles the exact question; related decisions do exist;
   // and a Section 5 declaration is the route to certainty for one address.
-  function permission(a, idx) {
+  function permission(a, idx, posture) {
     const used = ['authority_to_let', 'offstreet_space'];
     if (a.offstreet_space === 'shared') used.push('estate_rules');
 
@@ -605,7 +632,7 @@
       // finding it can no longer stand over. The action survives.
       return result('PERMISSION', 'WITHHELD', 'permission_finding_withheld',
                     ['planning_finding_not_currently_relied_on'],
-                    section5 ? ['get_section5_declaration'] : [],
+                    (section5 && posture === 'OPEN') ? ['get_section5_declaration'] : [],
                     shown(idx, ['planning_section5_route']), used);
     }
 
@@ -627,7 +654,9 @@
       evidence.push('planning_england_guidance_not_applicable');
     }
     if (section5) {
-      actions.push('get_section5_declaration');
+      // The action is collected here and ordered below. The evidence is
+      // attached either way: the route exists whether or not this homeowner
+      // is at the point of using it.
       evidence.push('planning_section5_route');
     }
 
@@ -641,6 +670,7 @@
       reasons.push('authority_purchase_not_completed');
       actions.push('revisit_once_the_purchase_completes');
     }
+    // actions[] now leads with the tenure step, if there is one.
 
     if (a.offstreet_space === 'shared') {
       reasons.push('offstreet_space_shared');
@@ -651,8 +681,26 @@
         reasons.push('estate_rules_unknown');
         actions.push('find_out_if_estate_rules_apply');
       } else {
+        // No manufactured action. "No rules that I know of" removes one
+        // uncertainty; it does not establish an entitlement to let a space
+        // the homeowner shares, and the engine does not let it pretend to.
         reasons.push('estate_rules_none_reported');
       }
+    }
+
+    // ORDER. Whoever else has to agree comes before the paperwork: a renter
+    // who rings the council before asking the owner has done the second
+    // thing first. The tenure action was pushed at the top of this block, so
+    // it already leads; the Section 5 route follows it.
+    if (section5) actions.push('get_section5_declaration');
+
+    // CLOSURE. When the driveway itself is closed, or a practical fact is
+    // still missing, this result is still TRUE and is no longer the
+    // homeowner's next move. The reasoning and the evidence survive intact;
+    // the homework does not start.
+    if (posture !== 'OPEN') {
+      return result('PERMISSION', 'CONDITIONAL', 'permission_conditional_not_yet',
+                    reasons, [], evidence, used);
     }
 
     return result('PERMISSION', 'ACTION_NEEDED', 'permission_section5_is_the_route',
@@ -669,7 +717,7 @@
   // question does not arise. It must never be read as "no tax is due" — that
   // would be a false proposition of tax law, and it is why the headline key is
   // named for the absence of the opportunity and not for the absence of tax.
-  function tax(a, idx) {
+  function tax(a, idx, posture) {
     const used = ['offstreet_space'];
 
     if (a.offstreet_space === 'none') {
@@ -703,6 +751,16 @@
       }
     }
 
+    // CLOSURE. The tax position is unchanged and unchallenged — letting
+    // income is taxable whatever else is true. What changes is whether this
+    // homeowner is being asked to act on it today. Presenting "declare the
+    // income" to someone who has just been told the driveway is closed is
+    // not caution, it is noise.
+    if (posture !== 'OPEN') {
+      return result('TAX', 'CONDITIONAL', 'tax_conditional_not_yet',
+                    reasons, [], evidence, used);
+    }
+
     return result('TAX', 'ACTION_NEEDED', 'tax_income_is_taxable',
                   reasons, actions, evidence, used);
   }
@@ -717,7 +775,7 @@
   // guaranteed cover, guaranteed exclusion. The two CICA records that would
   // tempt a renderer toward those propositions are homeowner_safe:false and
   // are filtered out by `usable`, so they cannot reach evidence_claim_keys.
-  function insurance(a, idx) {
+  function insurance(a, idx, posture) {
     const used = ['authority_to_let', 'offstreet_space'];
 
     if (a.offstreet_space === 'none') {
@@ -731,20 +789,30 @@
                       'insurance_no_irish_guidance_located'];
     const coreUsable = coreKeys.every(k => usable(idx, k));
 
-    const actions = [ACTION];
+    // Tenure leads here too, for the same reason it leads in PERMISSION.
+    const actions = [];
     if (a.authority_to_let === 'rent') actions.push('agree_it_with_the_owner_first');
     else if (a.authority_to_let === 'buying') actions.push('revisit_once_the_purchase_completes');
+    actions.push(ACTION);
 
     if (!coreUsable) {
       return result('INSURANCE', 'WITHHELD', 'insurance_reasoning_withheld',
                     ['insurance_evidence_not_currently_relied_on'],
-                    actions, shown(idx, coreKeys), used);
+                    posture === 'OPEN' ? actions : [],
+                    shown(idx, coreKeys), used);
     }
 
     const reasons = ['insurance_no_duty_to_volunteer_beyond_questions_asked',
                      'insurance_no_irish_guidance_on_this_arrangement'];
     if (a.authority_to_let === 'rent') reasons.push('authority_home_is_rented');
     else if (a.authority_to_let === 'buying') reasons.push('authority_purchase_not_completed');
+
+    // CLOSURE. The call to the insurer is the right call before anyone parks.
+    // Nobody is parking yet.
+    if (posture !== 'OPEN') {
+      return result('INSURANCE', 'CONDITIONAL', 'insurance_conditional_not_yet',
+                    reasons, [], coreKeys.slice(), used);
+    }
 
     return result('INSURANCE', 'ACTION_NEEDED', 'insurance_check_with_your_insurer',
                   reasons, actions, coreKeys.slice(), used);
@@ -769,15 +837,10 @@
                     ['offstreet_space_unknown'], ['tell_us_about_the_space'],
                     [], used);
     }
-    // "Rarely free" is not a step anyone can take. It closes the practical
-    // route, on the homeowner's own account of their own week.
-    if (a.availability === 'rarely') {
-      return result('THE_DRIVEWAY', 'BLOCKED', 'driveway_rarely_free',
-                    ['availability_rarely'], [], [], used);
-    }
-
-    // An unanswered question is never resolved into a "no". It stays open,
-    // and the engine says which question it is.
+    // AN UNANSWERED QUESTION IS NEVER RESOLVED INTO A "NO", and it is asked
+    // before anything else is concluded. A homeowner who has not told us
+    // whether a driver can get in should be asked that, not handed a verdict
+    // built around the gap.
     const missing = [];
     if (a.independent_access === 'unknown') missing.push('independent_access');
     if (a.availability === 'unknown') missing.push('availability');
@@ -788,26 +851,86 @@
                     [], used);
     }
 
-    const reasons = [];
-    const actions = [];
-    if (a.independent_access === 'no') {
-      reasons.push('independent_access_no');
-      actions.push('work_out_how_a_driver_gets_in_and_out');
-    }
-    if (a.offstreet_space === 'shared') {
-      reasons.push('offstreet_space_shared');
-      actions.push('confirm_you_can_let_a_shared_space');
+    // OCCASIONALLY FREE. Letting runs on the hours nobody at home needs the
+    // space. On the homeowner's own account there are few of them, which
+    // makes this hard to offer to anyone regularly.
+    //
+    // This is CONSTRAINED, not BLOCKED, and the difference is deliberate:
+    // nothing prohibits letting an occasionally-free space, and PlotNua has
+    // no evidence about what occasional hours are worth — so it says that
+    // the practical route is narrow, and stops there. No demand, no
+    // earnings, no comparison between patterns of hours.
+    if (a.availability === 'occasionally') {
+      const conReasons = ['availability_occasionally'];
+      if (a.offstreet_space === 'shared') conReasons.push('offstreet_space_shared');
+      if (a.independent_access === 'no') conReasons.push('independent_access_no');
+      return result('THE_DRIVEWAY', 'CONSTRAINED', 'driveway_occasionally_free',
+                    conReasons, [], [], used);
     }
 
-    if (actions.length) {
-      reasons.push('availability_' + a.availability);
+    // ACCESS IS ITS OWN FINDING. It used to share a headline with the
+    // shared-space case, which made two different situations read the same.
+    // A driver who cannot get in or out is a practical problem to solve
+    // before any paperwork is worth starting.
+    if (a.independent_access === 'no') {
+      const accReasons = ['independent_access_no', 'availability_yes'];
+      const accActions = ['work_out_how_a_driver_gets_in_and_out'];
+      if (a.offstreet_space === 'shared') {
+        accReasons.push('offstreet_space_shared');
+        accActions.push('confirm_you_can_let_a_shared_space');
+      }
+      return result('THE_DRIVEWAY', 'ACTION_NEEDED', 'driveway_access_needs_sorting',
+                    accReasons, accActions, [], used);
+    }
+
+    // SHARED SPACE, everything else in order. The space works; whether this
+    // homeowner may let it is the open question, and it is a permission
+    // question, so the paperwork below stays live.
+    if (a.offstreet_space === 'shared') {
       return result('THE_DRIVEWAY', 'ACTION_NEEDED', 'driveway_usable_with_arranging',
-                    reasons, actions, [], used);
+                    ['offstreet_space_shared', 'independent_access_yes',
+                     'availability_yes'],
+                    ['confirm_you_can_let_a_shared_space'], [], used);
     }
 
     return result('THE_DRIVEWAY', 'CLEAR', 'driveway_practically_usable',
                   ['offstreet_space_own_exclusive', 'independent_access_yes',
-                   'availability_' + a.availability], [], [], used);
+                   'availability_yes'], [], [], used);
+  }
+
+  // ------------------------------------------------------------- POSTURE
+  //
+  // Whether the homeowner is at a point where the other three results are
+  // their next move. DERIVED FROM the driveway result, never recomputed from
+  // the answers: two implementations of the same question drift, one cannot.
+  //
+  //   OPEN     the driveway is usable, or the only thing to arrange is the
+  //            shared-space entitlement — which IS a permission question, so
+  //            the permission homework is exactly the right next move.
+  //   LIMITED  the possibility exists and the homeowner has named a practical
+  //            limit on it. Today that is a space free only occasionally.
+  //            LIMITED is not CLOSED: nothing forbids letting an
+  //            occasionally-free driveway, and the engine says nothing about
+  //            whether it is worth doing, because it holds no evidence either
+  //            way. It also does not mean READY: a homeowner who has just
+  //            told us the space is rarely free has not asked for three
+  //            pieces of regulatory homework, so the actions stay suppressed
+  //            and the reasoning stays available as CONDITIONAL.
+  //   PENDING  a practical fact is missing, or a driver cannot get in and out
+  //            yet. Resolve that before starting anything else. access=no and
+  //            access=unknown are different findings with different copy and
+  //            different immediate actions; they share this posture because
+  //            they share the same correct governance, and a fifth posture to
+  //            separate things that behave identically would be vocabulary
+  //            without meaning.
+  //   CLOSED   no qualifying space. There is nothing to permit, tax or
+  //            insure, and this is the only posture that means that.
+  function postureOf(dw) {
+    if (dw.state === 'BLOCKED') return 'CLOSED';
+    if (dw.state === 'CONSTRAINED') return 'LIMITED';
+    if (dw.state === 'UNKNOWN') return 'PENDING';
+    if (dw.headline_key === 'driveway_access_needs_sorting') return 'PENDING';
+    return 'OPEN';
   }
 
   // =========================================================================
@@ -821,13 +944,21 @@
     }
     const idx = indexEvidence(evidenceDoc);
     const a = answers;
+    // The practical finding is computed FIRST, because it decides whether the
+    // other three are this homeowner's next move or background they may need
+    // later. The returned ORDER is unchanged — presentation is not affected.
+    const dw = theDriveway(a);
+    const p = postureOf(dw);
     const results = [
-      permission(a, idx),
-      tax(a, idx),
-      insurance(a, idx),
-      theDriveway(a)
+      permission(a, idx, p),
+      tax(a, idx, p),
+      insurance(a, idx, p),
+      dw
     ];
-    return { ok: true, errors: [], results: results };
+    // The posture is returned as well as applied. A test that re-derived it
+    // would be a second implementation of the same rule, and two
+    // implementations drift; this way the rule can be asserted directly.
+    return { ok: true, errors: [], posture: p, results: results };
   }
 
   // =========================================================================
@@ -1412,7 +1543,11 @@
     'driveway_more_to_tell_us': ['One or two things still worth checking', 'A practical detail decides whether this is straightforward or awkward. Worth knowing before you go any further.'],
     'driveway_no_offstreet_space': ['There is no off-street space here', 'Letting needs parking that belongs to this home and sits off the public road. From what you have told us, that is not the case.'],
     'driveway_practically_usable': ['The driveway itself works', 'Space of your own, a driver who could come and go, and hours when nobody needs it.'],
-    'driveway_rarely_free': ['The space is rarely free', 'Letting works on the hours when nobody at home needs the space. On your own account of the week, there are not many.'],
+    'driveway_access_needs_sorting': ['Access is the thing to sort', 'The space itself is fine. Someone would have to move a car or open something before a driver could use it, and that is worth solving before anything else.'],
+    'driveway_occasionally_free': ['Free only occasionally', 'Letting runs on the hours nobody at home needs the space. On your own account there are not many, which makes this hard to offer anyone regularly. Nothing forbids it &mdash; it is a question of whether there is enough there to be worth it, and that is your call, not ours.'],
+    'insurance_conditional_not_yet': ['Worth knowing, not worth doing yet', 'If this became something you were going ahead with, the call to your insurer would be the first one to make. It is not a call to make today.'],
+    'permission_conditional_not_yet': ['This part waits', 'The planning question is real and the way to settle it is clear, but it only becomes yours to act on once the driveway itself is workable.'],
+    'tax_conditional_not_yet': ['This part waits', 'Money from letting a parking space is taxable, and that would matter from the first payment. There is nothing to declare while this is not going ahead.'],
     'driveway_space_unknown': ['Tell us about the space', 'Everything practical turns on what kind of parking belongs to this home.'],
     'driveway_usable_with_arranging': ['Workable, with something to arrange', 'Nothing you have told us stops this. There is a practical detail to sort out first.'],
     'insurance_check_with_your_insurer': ['One call, before anyone parks', 'Whether a stranger&rsquo;s car on your driveway is covered is a question about your own policy, and only your insurer can answer it. We found no Irish guidance dealing specifically with paid driveway parking.'],
@@ -1429,11 +1564,9 @@
   var REASONS = {
     'authority_home_is_rented': 'You rent, so the owner is part of this decision.',
     'authority_purchase_not_completed': 'You are buying, so this is worth settling once the sale completes.',
-    'availability_evenings_weekends': 'Free evenings and weekends, from what you have told us.',
-    'availability_most_of_the_time': 'Free most of the time, from what you have told us.',
-    'availability_rarely': 'Rarely genuinely free.',
-    'availability_unknown': 'When the space is genuinely free is still to pin down.',
-    'availability_weekdays': 'Free on weekdays, from what you have told us.',
+    'availability_occasionally': 'Free only occasionally, from what you have told us.',
+    'availability_unknown': 'Whether the space is regularly free is still to pin down.',
+    'availability_yes': 'Regularly free when someone else could use it, from what you have told us.',
     'estate_rules_exist': 'There are estate or management rules about parking here.',
     'estate_rules_none_reported': 'No estate or management rules reported.',
     'estate_rules_unknown': 'Whether estate or management rules apply is still to find out.',
@@ -1468,7 +1601,7 @@
     'get_section5_declaration': 'Ask your local authority for a Section 5 Declaration.',
     'read_the_estate_or_management_rules': 'Read the estate or management rules on parking.',
     'revisit_once_the_purchase_completes': 'Come back to this once the purchase completes.',
-    'tell_us_about_availability': 'Tell us when the space is genuinely free.',
+    'tell_us_about_availability': 'Tell us whether the space is regularly free.',
     'tell_us_about_independent_access': 'Tell us whether a driver could come and go unaided.',
     'tell_us_about_the_space': 'Tell us what kind of parking belongs to this home.',
     'work_out_how_a_driver_gets_in_and_out': 'Work out how a driver would get in and out.'
@@ -1483,43 +1616,74 @@
      decides WHICH key, this decides how it reads. Keyed to the same
      headline_key THE_DRIVEWAY's own row uses, so the two can never drift
      apart into two different accounts of the same result. */
+  /* V2 HERO FAMILIES. The dominant line used to be keyed to THE_DRIVEWAY's
+     headline alone, which meant a renter and an owner read exactly the same
+     sentence. Tenure does not change the practical driveway state — a rented
+     driveway is physically the same driveway — so the engine is unchanged.
+     What changed is that the hero now reads the practical finding TOGETHER
+     with tenure and shared-space, which is a presentation question.
+
+     Keys prefixed hero_ are chosen by heroKey() below; the rest are still
+     keyed to the driveway headline they describe. */
   var REVEAL = {
     'driveway_practically_usable': [
-      'The space is there. The details come next.',
-      'That is about the parking itself \u2014 your own, reachable, and ' +
-      'free when you need it to be. Permission, tax and insurance are ' +
-      'separate questions, and each has its own answer below.'],
+      'Your driveway could work for this.',
+      'Your own space, a driver who could come and go, and hours when ' +
+      'nobody needs it. That is the practical side answered. Permission, ' +
+      'tax and insurance are separate questions, and each has its own ' +
+      'answer below.'],
+    'hero_workable_rented': [
+      'The driveway could work. The owner comes first.',
+      'Nothing you have told us about the space itself stops this. You ' +
+      'rent, so this is not yours alone to decide \u2014 agreeing it with ' +
+      'the owner is the thing to do before anything else below.'],
+    'hero_workable_buying': [
+      'The driveway could work. The rest waits for the sale.',
+      'The practical side is worth knowing now, and it holds. The ' +
+      'permission questions belong to whoever owns the place, so they are ' +
+      'worth coming back to once the purchase completes.'],
+    'hero_workable_shared': [
+      'The driveway could work. The shared space needs settling.',
+      'The parking itself is usable. It is shared, though, so whether you ' +
+      'are entitled to let it is the open question \u2014 and it is the ' +
+      'one to settle first.'],
     'driveway_usable_with_arranging': [
-      'The space is there. One thing to sort out first.',
-      'Nothing you have told us stops this, and one practical detail ' +
-      'needs settling before anyone parks. Permission, tax and insurance ' +
-      'are separate questions, and each has its own answer below.'],
+      'The driveway could work. There is one thing to settle first.',
+      'Nothing you have told us stops this, and one thing needs settling ' +
+      'before anyone parks. Permission, tax and insurance are separate ' +
+      'questions, and each has its own answer below.'],
+    'driveway_access_needs_sorting': [
+      'The space is there, but access needs sorting.',
+      'A driver would need someone to move a car or open something, and ' +
+      'that is the thing to work out first. Until it is solved, the ' +
+      'paperwork below is not yet yours to start.'],
     'driveway_more_to_tell_us': [
-      'The space is there. Not everything is settled.',
-      'A practical detail decides whether this is straightforward or ' +
-      'awkward, and it is worth knowing before you go further. ' +
-      'Permission, tax and insurance are separate questions, and each has ' +
-      'its own answer below.'],
-    'driveway_rarely_free': [
-      'You have the parking. You do not have the hours.',
-      'Letting works on the time when nobody at home needs the space, and ' +
-      'on your own account of the week there is very little. That is a ' +
-      'practical point about your household, not a rule about what you ' +
-      'may do.'],
+      'One answer will tell us whether this works.',
+      'There is a practical fact we do not have yet, and it decides this ' +
+      'more than anything else on the page. Everything below waits on it.'],
+    'driveway_occasionally_free': [
+      'The driveway works \u2014 but it may not be free often enough.',
+      'Letting runs on the hours nobody at home needs the space. On your ' +
+      'own account there are not many. Nothing forbids it; it is a ' +
+      'question of whether there is enough there to be worth your while, ' +
+      'and that is yours to judge, not ours.'],
     'driveway_space_unknown': [
-      'One answer decides the rest.',
-      'Until we know what kind of parking belongs to this home, two of ' +
-      'the four questions below cannot say much.'],
+      'One answer will tell us whether this works.',
+      'Until we know what kind of parking belongs to this home, nothing ' +
+      'below can say much. That one answer is the place to start.'],
     'driveway_no_offstreet_space': [
-      'This one begins with a driveway.',
-      'Letting needs off-street parking that belongs to this home. The ' +
-      'other three questions only start once that exists.'],
+      'This one needs off-street parking.',
+      'Letting needs parking that belongs to this home and sits off the ' +
+      'public road. From what you have told us there is none, so there is ' +
+      'nothing here to permit, tax or insure.'],
   };
 
   var TONE = {
     'ACTION_NEEDED': 'is-homework',
     'BLOCKED': 'is-stop',
     'CLEAR': 'is-open',
+    'CONDITIONAL': 'is-pause',
+    'CONSTRAINED': 'is-stop',
     'UNKNOWN': 'is-ask',
     'WITHHELD': 'is-pause'
   };
@@ -1528,9 +1692,29 @@
     {var:'offstreet_space', eyebrow:'The space', q:'Is there off-street parking that belongs to this home alone?', note:'Off the public road, and part of this property.', opts:[{v:'own_exclusive',l:'Yes, ours alone',n:null}, {v:'shared',l:'Shared with others',n:'A communal or estate car park'}, {v:'none',l:'No off-street parking',n:null}, {v:'unknown',l:'I&rsquo;m not sure',n:null}]},
     {var:'estate_rules', eyebrow:'The space', q:'Is there a management company or estate rule about parking?', note:null, opts:[{v:'yes',l:'Yes, there are rules',n:null}, {v:'no',l:'No rules that I know of',n:null}, {v:'unknown',l:'I&rsquo;m not sure',n:null}]},
     {var:'independent_access', eyebrow:'In practice', q:'Could a driver arrive and leave without you moving a car or opening anything?', note:null, opts:[{v:'yes',l:'Yes, they could come and go',n:null}, {v:'no',l:'No, someone would have to help',n:null}, {v:'unknown',l:'I&rsquo;m not sure',n:null}]},
-    {var:'availability', eyebrow:'In practice', q:'When is the space genuinely free?', note:null, opts:[{v:'weekdays',l:'Weekdays',n:null}, {v:'evenings_weekends',l:'Evenings and weekends',n:null}, {v:'most_of_the_time',l:'Most of the time',n:null}, {v:'rarely',l:'Rarely',n:null}, {v:'unknown',l:'I&rsquo;m not sure',n:null}]}
+    {var:'availability', eyebrow:'In practice', q:'Is the space regularly free when someone else could use it?', note:'We are asking whether there are hours to offer at all.', opts:[{v:'yes',l:'Yes, it is regularly free',n:null}, {v:'occasionally',l:'Only occasionally',n:null}, {v:'unknown',l:'I&rsquo;m not sure',n:null}]}
   ];
   var DEFERRED = {'insurance_evidence_not_currently_relied_on': 1, 'insurance_no_duty_to_volunteer_beyond_questions_asked': 1, 'insurance_no_irish_guidance_on_this_arrangement': 1, 'no_offstreet_space': 1, 'offstreet_space_unknown': 1, 'planning_current_class_applies': 1, 'planning_english_guidance_does_not_apply': 1, 'planning_finding_not_currently_relied_on': 1, 'planning_incidental_test_is_the_hinge': 1, 'planning_no_published_decision_in_records_searched': 1, 'planning_related_decisions_exist': 1, 'rent_a_room_limit_is_a_scheme_threshold': 1, 'rent_a_room_relief_is_broad_but_not_this': 1, 'rent_a_room_scope_is_residential_rooms': 1, 'tax_evidence_not_currently_relied_on': 1, 'tax_letting_income_is_taxable': 1};
+
+  /* WHICH HERO. The practical finding decides the family; tenure and shared
+     space decide which of the workable variants is used. This is the only
+     place tenure reaches the dominant line, and it changes no state: the
+     driveway result underneath is identical for an owner and a renter,
+     because the driveway is. */
+  function heroKey(a, byName) {
+    var dw = byName.THE_DRIVEWAY;
+    var k = dw.headline_key;
+    /* Closed, constrained, unknown or access-bound: the practical finding is
+       the whole story and tenure does not soften or worsen it. */
+    if (k !== 'driveway_practically_usable' &&
+        k !== 'driveway_usable_with_arranging') return k;
+    /* Workable. Whoever else has to agree leads, then the shared-space
+       entitlement, then the plain owner case. */
+    if (a.authority_to_let === 'rent') return 'hero_workable_rented';
+    if (a.authority_to_let === 'buying') return 'hero_workable_buying';
+    if (a.offstreet_space === 'shared') return 'hero_workable_shared';
+    return k;
+  }
 
   var ENG = window.PlotNuaDrivewayEngine;
   var EVIDENCE = null;
@@ -1669,7 +1853,7 @@
        already saying. It is deliberately NOT a verdict over the other three,
        and the sentence under it says so in words rather than leaving the
        reader to assume. No score, no ranking, no combined yes or no. */
-    var dominant = REVEAL[byName.THE_DRIVEWAY.headline_key];
+    var dominant = REVEAL[heroKey(answers, byName)];
     if (!dominant){
       /* An unrecognised key means the engine has grown a state this copy map
          has not been taught. Say the neutral thing rather than guess. */
@@ -1762,9 +1946,23 @@
     return art;
   }
 
+  /* ORDER FOLLOWS THE DECISION, not the engine's array. The practical thing
+     comes first, then whoever else has to agree, then the obligations that
+     only start once the homeowner is going ahead. Sending someone to the
+     council before they have worked out how a driver gets in is the right
+     list in the wrong order, and a list in the wrong order is a worse answer
+     than a shorter one.
+
+     Deduplication is unchanged: the same action emitted by two results still
+     appears once, at its earliest position. */
+  var NEXT_ORDER = ['THE_DRIVEWAY', 'PERMISSION', 'TAX', 'INSURANCE'];
   function renderNext(res){
     var seen = {}, list = [];
-    res.forEach(function(r){
+    var byResult = {};
+    res.forEach(function(r){ byResult[r.result] = r; });
+    NEXT_ORDER.forEach(function(name){
+      var r = byResult[name];
+      if (!r) return;
       r.action_keys.forEach(function(k){
         if (!seen[k] && ACTIONS[k]){ seen[k] = 1; list.push(ACTIONS[k]); }
       });
