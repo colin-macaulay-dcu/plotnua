@@ -1964,6 +1964,19 @@ if (typeof globalThis !== 'undefined') globalThis.PlotNuaDisc022Check = DISC022;
   $('hcBack').addEventListener('click', back);
   mountPill();
 
+  /* --- entry from the Discovery -------------------------------------------
+   * The Discovery now makes this introduction itself — same crest, same
+   * question, same promise — so meeting it again here is a screen the
+   * homeowner has already read. `?start=1` skips straight to Question 1.
+   *
+   * ONE implementation, not two: this calls the same advance() the intro CTA
+   * calls, so the flow, the engine and every downstream state are identical
+   * whichever way the homeowner arrived. A direct visit to the bare URL still
+   * meets the intro, because nothing else has introduced the check to them. */
+  if (/(?:^|[?&])start=1(?:&|$)/.test(location.search.replace(/^\?/, '?'))) {
+    advance();
+  }
+
   /* Test hook. Reads nothing, decides nothing, and is used by the QA harness to
      drive every combination without clicking. */
   window.__disc022 = {
