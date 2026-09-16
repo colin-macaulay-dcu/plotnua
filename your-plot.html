@@ -16191,6 +16191,47 @@
   function myPlotJourneySummary(rec){
     const rk = (rec && rec.resultKeys && typeof rec.resultKeys === 'object')
       ? rec.resultKeys : {};
+    /* DISC-029 THE HIDDEN BINS — Property Check V1.
+       Fifteen headline keys, one per result. The summary leads on the three
+       interventions, because that is the homeowner's conclusion; PLANNING and
+       MARKET_EVIDENCE are context they can re-read on the page.
+
+       BY FOUNDER DECISION the twelve reason keys are NOT mapped here. My Plot
+       preserves the homeowner conclusion, not the whole decision trace. They
+       stay governed by engine declaration, reachability and the 576-combination
+       regression instead.
+
+       Every one of the fifteen is mapped. The contract test derives the emitted
+       vocabulary by EXECUTING the engine across all 576 combinations rather
+       than reading a list, which is the check Driveway did not have. */
+    if (rec && rec.journeyId === 'disc029-hidden-bins-check') {
+      const h = rk.HIDE, g = rk.INTEGRATE, u = rk.DISAPPEAR;
+      /* Ground the homeowner does not control is the one finding that changes
+         what can proceed at all, so it leads. */
+      if (u === 'disappear_not_your_ground' || g === 'integrate_not_your_ground')
+        return 'Not this home’s ground to build into or excavate.';
+      if (h === 'hide_needs_agreement')
+        return 'An enclosure looks workable, if whoever looks after the ground agrees.';
+      if (h === 'hide_more_to_tell_us' || g === 'integrate_more_to_tell_us' ||
+          u === 'disappear_more_to_tell_us')
+        return 'A couple of things still to tell us about the space.';
+      if (u === 'disappear_property_looks_plausible')
+        return 'Your ground does not appear to rule out going underground — no verified Irish route yet.';
+      if (u === 'disappear_site_checks_first')
+        return 'Concealment looks workable; underground would need site checks, and has no verified Irish route.';
+      if (u === 'disappear_space_looks_short')
+        return 'The space looks short for an underground platform.';
+      if (h === 'hide_space_is_tight' || g === 'integrate_space_is_tight')
+        return 'Space is tight, but an enclosure may still suit.';
+      if (h === 'hide_looks_workable' || g === 'integrate_frontage_could_take_it')
+        return 'The frontage looks able to take concealed bin storage.';
+      /* PLANNING and MARKET_EVIDENCE are constants and never lead a summary,
+         but they are mapped so no emitted key is ever unmapped. */
+      if (rk.PLANNING === 'planning_depends_on_which_route' ||
+          rk.MARKET_EVIDENCE === 'market_route_not_verified')
+        return 'Your Hidden Bins check, with the planning and evidence position.';
+      return 'Your Hidden Bins property check.';
+    }
     if (rec && rec.journeyId === 'disc014-driveway-income') {
       const d = rk.THE_DRIVEWAY;
       if (d === 'driveway_practically_usable') return 'The space itself looks workable, with three things to check.';
