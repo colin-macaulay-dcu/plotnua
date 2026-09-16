@@ -8187,6 +8187,26 @@
   color:var(--ink,#1F3B2E); border-bottom:1px solid rgba(31,59,46,.3);
   padding-bottom:3px; text-decoration:none; display:inline-block; }
 .mp-jopen:hover{ border-bottom-color:rgba(31,59,46,.7); }
+/* The actions row. Same 12.5px uppercase link the item already used, now
+   in a row with a quieter sibling and the way out. Remove borrows the
+   saved-option control exactly: plain text, terracotta, underlined. It is
+   not a button object, because a kept check is not a product card.
+   44px minimum height on every control, so a thumb can hit them. */
+.mp-jactions{ display:flex; flex-wrap:wrap; align-items:center;
+  gap:12px 22px; }
+.mp-jactions .mp-jopen,
+.mp-jremove{ min-height:44px; display:inline-flex; align-items:center; }
+.mp-jopen.is-quiet{ color:rgba(31,59,46,.62);
+  border-bottom-color:rgba(31,59,46,.18); }
+.mp-jopen.is-quiet:hover{ color:var(--ink,#1F3B2E);
+  border-bottom-color:rgba(31,59,46,.5); }
+.mp-jremove{ background:none; border:none; padding:0; cursor:pointer;
+  font-family:inherit; font-size:13.5px; color:var(--terracotta,#C57A5A);
+  text-decoration:underline; margin-left:auto; }
+@media (max-width:560px){
+  .mp-jactions{ gap:10px 18px; }
+  .mp-jremove{ margin-left:0; }
+}
 @media (max-width:560px){
   .mp-jh{ font-size:19px; }
   .mp-jitem{ padding:20px 0 18px; }
@@ -16171,6 +16191,22 @@
   const MYPLOT_JOURNEY_HREF = {
     'disc014-driveway-income': 'disc014-driveway-income.html',
     'disc026-power-station': 'disc026-power-station.html',
+    'disc029-hidden-bins-check': 'disc029-hidden-bins-check.html',
+  };
+
+  /* THE PARENT DISCOVERY. A kept check is the answer to a story the
+     homeowner read, and this is the way back to it. Same discipline as
+     the map above: the destination is chosen HERE by journeyId, never
+     read from the record, so a tampered store cannot point anyone
+     anywhere PlotNua did not choose.
+
+     Each pairing was proved from the Discovery side before it was
+     written: every page below links exactly one Property Check, and it
+     is the one this map sends the homeowner back from. */
+  const MYPLOT_JOURNEY_DISCOVERY = {
+    'disc014-driveway-income': 'discovery-driveway-income.html',
+    'disc026-power-station': 'discovery-house-as-power-station.html',
+    'disc029-hidden-bins-check': 'discovery-hidden-bins.html',
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
@@ -16312,18 +16348,81 @@
         li.appendChild(w);
       }
 
+      /* THE WAYS ON, AND THE WAY OUT. Both routes come from the maps
+         above by journeyId; a record with no known destination simply
+         renders no link rather than an invented one. */
+      const actions = document.createElement('div');
+      actions.className = 'mp-jactions';
+
       const href = MYPLOT_JOURNEY_HREF[rec.journeyId] || null;
       if (href) {
         const a = document.createElement('a');
         a.className = 'mp-jopen';
         a.setAttribute('href', href);
-        a.textContent = 'Reopen this journey \u2192';
-        li.appendChild(a);
+        /* 'Check' is what the homeowner was offered and what they ran.
+           'Journey' is our word for it, not theirs. */
+        a.textContent = 'Reopen this check \u2192';
+        actions.appendChild(a);
       }
+
+      const dhref = MYPLOT_JOURNEY_DISCOVERY[rec.journeyId] || null;
+      if (dhref) {
+        const d = document.createElement('a');
+        d.className = 'mp-jopen is-quiet';
+        d.setAttribute('href', dhref);
+        d.textContent = 'View the Discovery \u2192';
+        actions.appendChild(d);
+      }
+
+      /* REMOVE. One record, by journeyId. It touches nothing else: saved
+         Atlas options, added items and every other kept check are left
+         exactly as they were, and the write goes through the same queue
+         every other My Plot mutation uses. The accessible name carries
+         the title, because a list of identical 'Remove' buttons is not a
+         choice a screen-reader user can make. */
+      const rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'mp-jremove';
+      rm.textContent = 'Remove';
+      rm.setAttribute('aria-label',
+        'Remove ' + (rec.title || 'this check') + ' from My Plot');
+      rm.addEventListener('click', function(){
+        myPlotRemoveJourney(rec.journeyId);
+      });
+      actions.appendChild(rm);
+
+      li.appendChild(actions);
       ul.appendChild(li);
     });
     host.appendChild(ul);
     host.hidden = false;
+  }
+
+  /* REMOVE ONE KEPT CHECK.
+
+     myPlotJourneys is the in-memory copy that myPlotSnapshot() writes
+     back verbatim, so filtering it here and queueing a write is the whole
+     operation — there is no second store and no journey-specific write
+     path to keep in step.
+
+     It removes by journeyId, which is the record's identity, so it cannot
+     take two. Re-render first, then the access count, because the pill
+     counts journeys and would otherwise keep claiming one that is gone.
+
+     The empty state needs no code: renderMyPlotJourneys() hides the whole
+     section when the list is empty, which is the same state a homeowner
+     who never kept a check sees. */
+  function myPlotRemoveJourney(journeyId){
+    if (typeof journeyId !== 'string' || !journeyId) return false;
+    const before = myPlotJourneys.length;
+    myPlotJourneys = myPlotJourneys.filter(function(r){
+      return !r || r.journeyId !== journeyId;
+    });
+    if (myPlotJourneys.length === before) return false;
+    myPlotQueueWrite();
+    renderMyPlotJourneys();
+    updateMyPlotAccess();
+    return true;
   }
 
   function myPlotRestoreOnLoad(){
