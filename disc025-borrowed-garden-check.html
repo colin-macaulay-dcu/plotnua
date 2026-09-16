@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://plotnua.ie/disc025-borrowed-garden-check.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>The Borrowed Garden &mdash; Property Check | PlotNua</title>
+<style>
+  /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
+  :root{
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
+    --line:rgba(31,59,46,.12);
+    --line-soft:rgba(31,59,46,.07);
+
+    /* ---- V2 · A TONE SCALE, NOT ONE PLANE --------------------------------
+       The page was #F8F5EC from masthead to footer, separated only by
+       hairlines. Hairlines on a single plane is the grammar of a spec sheet.
+       Three warm steps, ~10% luminance apart, let the reveal and the actions
+       sit on their own ground without a single card or shadow. */
+    --stone:#EFE9DA;        /* the reveal band, and the actions field */
+    --stone-soft:#F4F0E3;   /* alternating section tint, barely there */
+
+    /* ---- V2 · TWO TEXT TONES ---------------------------------------------
+       --soft (#55605A) was carrying body copy, labels and footnotes alike at
+       6.01:1 — passing, but doing three jobs at one weight. Split in two:
+       --body for anything meant to be READ, --muted for what is genuinely
+       secondary. Both measured on all three surfaces; worst case 5.01:1. */
+    --body:#3A453F;         /* 9.16:1 on paper, 8.24:1 on stone */
+    --muted:#5A655F;        /* 5.57:1 on paper, 5.01:1 on stone */
+    --rule:rgba(31,59,46,.18);
+    --rule-soft:rgba(31,59,46,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:'Work Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    /* V2 · 300 -> 400. This one declaration set EVERY label and paragraph on
+       the page in Light. It is the single largest reason the result read as a
+       wireframe, and it was never a contrast problem: the ratios already
+       passed AA. Work Sans 400 is already loaded. */
+    font-weight:400; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .bg-wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* ---- quiet header + return route ------------------------------------ */
+  .bg-top{border-bottom:1px solid var(--line-soft);}
+  .bg-topin{max-width:1080px;margin:0 auto;padding:20px 28px;
+    display:flex;align-items:center;gap:16px;}
+  /* V2.1 · THE GARDEN MARK, PORTED.
+     your-plot.html carries PlotNua as a MEDALLION, not as text:
+       .brand-mark 46x46, radius 12, ivory, 0 1px 3px rgba(31,59,46,.16)
+                                            + 0 0 0 1px rgba(31,59,46,.07)
+     The asset is a self-contained rounded dark tile, so it needs no wrapper
+     of its own here. Placed in the existing header row rather than floating,
+     because this page HAS a masthead and the Garden journey does not — that
+     is the one place an exact port is not practical. */
+  .bg-mark{display:flex;flex:0 0 auto;border-radius:12px;text-decoration:none;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07);
+    transition:transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;}
+  .bg-mark:hover{transform:scale(1.06);
+    box-shadow:0 5px 16px rgba(31,59,46,.20), 0 0 0 1px rgba(31,59,46,.09);}
+  .bg-mark:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+  .bg-mark img{display:block;width:44px;height:44px;border-radius:12px;}
+  .bg-ident{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  /* 17px -> 27px. PlotNua leads the masthead; the journey name is the
+     caption under it, not its equal on the same baseline. */
+  .bg-brand{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:27px;
+    line-height:1.05;letter-spacing:-.005em;color:var(--ink);}
+  .bg-ctx{font-size:11.5px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);}
+  .bg-back{margin-left:auto;font-size:13px;color:var(--soft);
+    text-decoration:none;border-bottom:1px solid var(--line);}
+  .bg-back:hover{color:var(--ink);}
+
+  /* ---- screens --------------------------------------------------------- */
+  .bg-screen{display:none;padding:64px 0 96px;}
+  .bg-screen.is-on{display:block;}
+  .bg-eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 18px;}
+  .bg-h{font-family:'Fraunces',Georgia,serif;font-weight:400;
+    font-size:clamp(30px,4vw,48px);line-height:1.12;letter-spacing:-.01em;
+    margin:0 0 20px;max-width:20ch;}
+  .bg-sub{font-size:18px;line-height:1.6;color:var(--soft);
+    margin:0 0 40px;max-width:52ch;}
+
+  /* ---- questions ------------------------------------------------------- */
+  .bg-prog{font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 26px;}
+  .bg-q{font-family:'Fraunces',Georgia,serif;font-weight:400;
+    font-size:clamp(26px,3.2vw,38px);line-height:1.18;margin:0 0 14px;
+    max-width:22ch;}
+  .bg-qnote{font-size:15px;color:var(--soft);margin:0 0 30px;max-width:46ch;}
+  .bg-opts{display:flex;flex-direction:column;gap:12px;max-width:560px;
+    margin:0 0 36px;}
+  .bg-opt{display:block;width:100%;text-align:left;cursor:pointer;
+    background:#fff;border:1px solid var(--line);border-radius:3px;
+    padding:18px 22px;font-family:inherit;font-size:16px;color:var(--ink);
+    transition:border-color .15s ease, transform .15s ease;}
+  .bg-opt:hover{border-color:var(--accent);transform:translateX(2px);}
+  .bg-opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .bg-optn{display:block;font-size:13.5px;color:var(--soft);margin-top:3px;}
+  .bg-nav{font-size:13.5px;color:var(--soft);}
+  .bg-nav button{background:none;border:none;padding:0;cursor:pointer;
+    font-family:inherit;font-size:13.5px;color:var(--soft);
+    border-bottom:1px solid var(--line);}
+  .bg-nav button:hover{color:var(--ink);}
+
+  /* ---- start ----------------------------------------------------------- */
+  .bg-cta{display:inline-block;background:var(--ink);color:var(--brand-ivory);
+    border:none;text-decoration:none;font-family:'Work Sans',sans-serif;
+    padding:16px 30px;font-size:14px;letter-spacing:.08em;
+    text-transform:uppercase;border-radius:2px;cursor:pointer;}
+  .bg-cta:hover{background:var(--accent);}
+
+  /* ---- the four-part reveal -------------------------------------------- */
+  /* ================= V2 · THE REVEAL IS A SURFACE =======================
+     Previously the largest type on the page, on the same cream as everything
+     else. Now it sits in its own full-bleed warm stone band with a rule above
+     and below — so the answer is REVEALED rather than merely set large.
+     Editorial, not a card: it spans the viewport, has no radius, no shadow
+     and no border on three sides, and its only ornament is a hairline and an
+     oversized quiet numeral. */
+  .bg-revealband{
+    background:var(--stone);
+    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    margin:0 calc(50% - 50vw) 64px; padding:78px calc(50vw - 50%) 72px;
+    position:relative;
+    /* Kept as a safety net. A full-bleed band computed from 50vw can exceed
+       the viewport by the scrollbar width on some platforms; clipping means
+       this band can never be the thing that puts a horizontal scrollbar on
+       the page. Measured at all six widths: no overflow. */
+    overflow:hidden;
+  }
+  /* NO DECORATIVE MARK. An oversized ghost numeral was built here and then
+     removed after looking at it: clipped to the band it read as a stray rule
+     at the top-right on mobile — an artifact, not a device. The band earns
+     its presence from tone, rule and space alone, which is what "restrained
+     materiality" actually means. Decoration that needs defending is
+     decoration that should go. */
+  .bg-revealband .bg-eyebrow{color:var(--accent);font-weight:600;
+    letter-spacing:.2em;margin:0 0 22px;}
+  /* PASS 1 — WEIGHT. At 76px, Fraunces 400 has thin enough stems that the
+     line reads sketched rather than set, which is most of what "not premium"
+     meant here. 500 is the page's answer, not the Garden's: it was compared
+     against 400 at the same size, and the tracking was opened from -.022 to
+     -.018 because the heavier cut closes the counters at display size and
+     needs the room back. Scale, line-height and measure are unchanged. */
+  .bg-reveal-h{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(40px,6.4vw,76px);line-height:1.02;margin:0 0 26px;
+    max-width:15ch;letter-spacing:-.018em;position:relative;}
+  .bg-reveal-sub{font-size:19.5px;line-height:1.6;color:var(--body);
+    margin:0;max-width:44ch;position:relative;}
+  /* ================= V2 · SAVE BELONGS TO THE CLOSE ====================
+     It read as a utility button dropped into whitespace. It now shares the
+     actions field — same ground, separated by a rule — so keeping the result
+     is the end of the same gesture as reading what to do about it. */
+  .bg-save{background:var(--stone);margin:0 calc(50% - 50vw) 64px;
+    padding:0 calc(50vw - 50%) 60px;}
+  /* ---- THE CLOSE, AS THE PAGE'S LAST ROW --------------------------------
+     The rule opening this tier was --rule-soft (.10) while .bg-primary and
+     .bg-adv both open on --rule (.18). At the lighter weight the close read
+     as one more advisory row rather than as a new and final tier, which is
+     part of why it disappeared. Same hairline as the other two now.
+
+     The grid is the page's OWN row grammar — the 132px label column and the
+     content column .bg-item already uses — rather than a ratio invented for
+     this block. The close is the last row of the row system, so it is set as
+     one. It also stops the content sitting in 36% of the measure with the
+     rest of the row empty, which was the measured fault. */
+  .bg-saveinner{border-top:1px solid var(--rule);padding-top:44px;}
+  .bg-savelab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 14px;}
+  /* 30px is not a new step in the ladder: it is exactly the size the page
+     already gives "What to check next". The close and the action surface are
+     peers and are now set as peers. Hero 76 and the primary finding 44 are
+     untouched and still govern everything under them. */
+  /* THE MEASURE IS SET FROM THE SENTENCE, not from a habit. At 22ch the
+     first build broke "Somewhere to come back to" after "back", leaving a
+     two-letter line under a 30px display face — measured in the browser, not
+     guessed. 28ch clears both states on one line at every width from 834 up,
+     and the ramp brings the face to 24px before the column gets narrow
+     enough to break it below that. */
+  .bg-saveh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(24px,3.6vw,30px);line-height:1.18;letter-spacing:-.012em;
+    color:var(--ink);margin:0 0 22px;max-width:28ch;}
+  /* WHEN IT WAS KEPT — the one fact that makes this a receipt and not a
+     claim. Set in My Plot's own micro-caps (.mp-jwhen: 11.5px / .14em) so the
+     two surfaces speak the same way, at --muted rather than My Plot's lighter
+     tint because this line sits on stone and must still be read. */
+  .bg-savemeta{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 22px;}
+  @media (min-width:834px){
+    .bg-saveinner{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .bg-savelab{margin:9px 0 0;}
+  }
+  .bg-savebtn{display:inline-block;background:var(--ink);color:var(--brand-ivory);
+    border:none;font-family:'Work Sans',sans-serif;padding:16px 30px;
+    font-size:13.5px;letter-spacing:.09em;text-transform:uppercase;
+    border-radius:2px;cursor:pointer;text-decoration:none;}
+  .bg-savebtn[data-saved]{background:transparent;color:var(--ink);
+    box-shadow:inset 0 0 0 1px var(--line);cursor:default;}
+  .bg-savenote{font-size:14.5px;line-height:1.6;color:var(--body);
+    margin:14px 0 0;max-width:46ch;}
+  /* Secondary by construction: a rule under text, not a second button. */
+  .bg-savelink{display:inline-block;margin:24px 0 0;font-size:12.5px;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink);
+    text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px;}
+  .bg-savelink:hover{border-bottom-color:var(--ink);}
+  /* THE ATTRIBUTE MUST WIN. [hidden]{display:none} is a USER-AGENT rule, and
+     the author rules above set display:inline-block, which beats it on origin
+     — so `hidden` was inert and the unsaved state showed both the button and
+     the link. Class+attribute is (0,2,0) and restores the attribute's meaning.
+     Measured, not theorised: computed display was inline-block with .hidden
+     true and an empty store. */
+  .bg-savebtn[hidden],.bg-savelink[hidden],
+  .bg-saveh[hidden],.bg-savemeta[hidden]{display:none;}
+  /* THE FOUR, AS EDITORIAL ROWS — not cards.
+     No box, no fill, no shadow, no border. One hair rule between them and a
+     narrow label column that names each one. The old design put all four in
+     equal boxes, which told a homeowner that four things mattered equally
+     and that none of them was the answer.
+
+     NO STATE COLOUR. The .is-open / .is-stop classes the renderer sets are
+     left in the DOM as hooks but given nothing to paint: a border colour
+     that encodes CLEAR or BLOCKED is a traffic light however quietly it is
+     drawn, and this result does not rank or grade anything. */
+  /* ================= V2 · THE FOUR, WITH RHYTHM ========================
+     Still editorial rows, still one answer in four parts — but no longer four
+     identical bands of pale text. Three changes carry it: an INDEX numeral
+     doing quietly what a status chip would do loudly, a label that is finally
+     legible (ink, 600, larger), and an alternating tint so the eye has
+     something to step on. No boxes: the tint is full-bleed and the only
+     boundary is a hairline. */
+  .bg-parts{margin:0 0 4px;border-top:1px solid var(--rule);}
+  .bg-part{padding:40px 0 38px;border-bottom:1px solid var(--rule-soft);
+    position:relative;}
+  .bg-part:last-child{border-bottom:1px solid var(--rule);}
+  /* NO ALTERNATING TINT. It was tried and removed. Inside a 1080px column a
+     tint has to be full-bleed or it reads as a box, and the only way to bleed
+     a grid child is a zero-blur box-shadow spread — a trick, and one that
+     trips every "no shadows" guard for the right reason. The rhythm instead
+     comes from the index numeral, a label with real weight, generous padding,
+     and the two genuine surfaces above and below. Restraint beat cleverness
+     here. */
+  .bg-pindex{font-family:'Fraunces',Georgia,serif;font-size:13px;
+    color:var(--accent);letter-spacing:.04em;margin:0 0 6px;font-weight:500;}
+  .bg-plabel{font-size:12.5px;letter-spacing:.17em;text-transform:uppercase;
+    color:var(--ink);font-weight:600;margin:0 0 14px;}
+  @media (min-width:834px){
+    /* The index and label step into their own column and the reading measure
+       narrows. The whole responsive behaviour of the block is typographic. */
+    .bg-part{display:grid;grid-template-columns:166px minmax(0,1fr);
+      column-gap:48px;align-items:start;}
+    .bg-pmeta{margin-top:6px;}
+    .bg-plabel{margin:0;}
+    .bg-pbody{max-width:58ch;}
+  }
+  .bg-ph{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:26px;
+    line-height:1.24;margin:0 0 12px;}
+  .bg-pb{font-size:16.5px;line-height:1.6;color:var(--body);margin:0 0 20px;}
+  .bg-because{list-style:none;margin:0 0 20px;padding:0;}
+  .bg-because li{font-size:15px;line-height:1.55;color:var(--body);
+    padding-left:16px;position:relative;margin-bottom:7px;}
+  .bg-because li:before{content:'';position:absolute;left:0;top:9px;
+    width:5px;height:1px;background:var(--line);}
+  .bg-pnext{border-top:1px solid var(--rule-soft);padding-top:16px;}
+  .bg-pnexth{font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:600;
+    color:var(--soft);margin:0 0 8px;}
+  .bg-pnext ul{list-style:none;margin:0;padding:0;}
+  .bg-pnext li{font-size:15px;line-height:1.5;margin-bottom:7px;}
+
+  /* ---- closing action -------------------------------------------------- */
+  /* ================= V2 · WHAT TO CHECK NEXT ===========================
+     The most useful part of the result was the weakest thing on the page: a
+     rule, a heading and three quiet lines. It is now a warm inset field with
+     numbered actions — a place, not a leftover. Restrained: one ground, one
+     rule, numerals in accent. Nothing here is a checkbox, a chip or a task
+     manager; these are things to ask someone, not things to tick. */
+  .bg-next{background:var(--stone);border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    margin:0 calc(50% - 50vw) 0;padding:56px calc(50vw - 50%) 52px;}
+  .bg-nexth{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:30px;
+    margin:0 0 18px;letter-spacing:-.01em;}
+  .bg-nextl{list-style:none;margin:0;padding:0;max-width:62ch;
+    counter-reset:dwnext;}
+  .bg-nextl li{font-size:17px;line-height:1.5;padding:16px 0 16px 52px;
+    position:relative;counter-increment:dwnext;color:var(--ink);}
+  /* The numeral is generated, so the count follows the engine's action list
+     however many it produces — nothing here hard-codes three. */
+  .bg-nextl li:before{content:counter(dwnext,decimal-leading-zero);
+    position:absolute;left:0;top:16px;font-family:'Fraunces',Georgia,serif;
+    font-size:14px;color:var(--accent);font-weight:500;letter-spacing:.04em;}
+  .bg-nextl li.__unused{font-size:16.5px;line-height:1.5;padding:12px 0;
+    border-bottom:1px solid var(--line-soft);}
+
+  /* ---- PASS 1 · THE PRIMARY FINDING ------------------------------------
+     The driveway result, lifted out of the four-row rail. It is the page's
+     second display moment: clearly below the hero, clearly above the three
+     advisories.
+
+     The scale is chosen against the page's own ladder rather than copied from
+     the Garden journey. Hero 76 / primary 44 / advisory 20 gives roughly 1.7x
+     between steps, which is enough for each to read as its own tier without
+     the primary competing with the line above it.
+
+     The asymmetric grid is the point. Every other block on this page is a
+     stacked full-width band or the same 166px rail, which is what made four
+     different results look like one repeated thing. 1.55/1 is a different
+     ratio from anything else here and from the Garden's 1.62 — it is set for
+     this content, which is a long finding on the left and a short list of
+     reasons on the right. */
+  .bg-primary{margin:0 0 4px;padding:52px 0 46px;
+    border-top:1px solid var(--rule);}
+  .bg-plab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 20px;}
+  .bg-primary-h{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(30px,3.6vw,44px);line-height:1.1;letter-spacing:-.018em;
+    color:var(--ink);margin:0 0 16px;max-width:20ch;}
+  .bg-primary-b{font-size:17.5px;line-height:1.62;color:var(--body);
+    margin:0;max-width:52ch;}
+  .bg-primary-why{list-style:none;margin:0;padding:0;}
+  .bg-primary-why li{font-size:15px;line-height:1.55;color:var(--body);
+    padding:0 0 0 18px;margin:0 0 14px;position:relative;}
+  .bg-primary-why li:last-child{margin-bottom:0;}
+  /* A hairline tick rather than a bullet glyph: it marks the line without
+     adding a shape the reader has to interpret. */
+  .bg-primary-why li:before{content:'';position:absolute;left:0;top:10px;
+    width:8px;height:1px;background:var(--rule);}
+  @media (min-width:834px){
+    .bg-primary-grid{display:grid;
+      grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
+      column-gap:clamp(40px,4.6vw,76px);align-items:start;}
+    .bg-primary-why{padding-top:7px;}
+  }
+
+  /* ---- PASS 1 · THE ADVISORY TIER --------------------------------------
+     Permission, tax and insurance keep every word the engine gave them and
+     lose only their claim to equal weight. The shared label says what the
+     group is, so each item no longer has to announce itself.
+
+     The index numerals are gone. They were there to number four peers; three
+     subordinate items under one heading do not need counting, and the numerals
+     were competing with the labels for the same small-type attention. */
+  .bg-adv{margin:0 0 56px;padding:44px 0 0;border-top:1px solid var(--rule);}
+  .bg-advlab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 10px;}
+  .bg-advintro{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:21px;line-height:1.3;letter-spacing:-.01em;color:var(--ink);
+    margin:0 0 30px;max-width:34ch;}
+  .bg-item{padding:26px 0 24px;border-top:1px solid var(--rule-soft);}
+  .bg-item:first-of-type{border-top:none;padding-top:0;}
+  .bg-itemlab{font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 10px;}
+  .bg-itemh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:20px;line-height:1.28;letter-spacing:-.008em;color:var(--ink);
+    margin:0 0 8px;}
+  .bg-itemb{font-size:15.5px;line-height:1.6;color:var(--body);margin:0;
+    max-width:60ch;}
+  .bg-itemwhy{list-style:none;margin:12px 0 0;padding:0;}
+  .bg-itemwhy li{font-size:14px;line-height:1.55;color:var(--muted);
+    margin:0 0 8px;}
+  .bg-itemwhy li:last-child{margin-bottom:0;}
+  /* CONDITIONAL is the engine saying "true, and not yet yours to act on".
+     The page should sound the same way: present, legible, not calling for
+     attention. Tone only — no content is withheld and nothing is hidden. */
+  .bg-item.is-pause .bg-itemh{color:var(--body);}
+  .bg-item.is-pause .bg-itemb,
+  .bg-item.is-pause .bg-itemwhy li{color:var(--muted);}
+  @media (min-width:834px){
+    .bg-item{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .bg-itemlab{margin:3px 0 0;}
+  }
+
+  /* ---- PASS 1 · THE CONCLUSION (LIMITED, zero actions) ------------------
+     Not an action surface. The homeowner has told us the space is only
+     occasionally free; there is no task that changes that, and inventing one
+     would be worse than saying nothing. What can honestly be said is that the
+     answer rests on their own account of their week. */
+  /* The attribute must win here too — .bg-reveal-sub is a <p> with no author
+     display rule, but the save controls taught us not to rely on that. */
+  .bg-reveal-sub[hidden]{display:none;}
+  .bg-concl{max-width:52ch;}
+  .bg-conclh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:21px;line-height:1.3;color:var(--ink);margin:0 0 10px;}
+  .bg-conclb{font-size:16.5px;line-height:1.62;color:var(--body);margin:0;}
+  /* THE ATTRIBUTE MUST WIN. Same origin problem the save controls hit: an
+     author display rule of equal specificity beats the user-agent
+     [hidden]{display:none}. Class+attribute is (0,2,0). Without this the
+     CLOSED case would keep rendering the empty band it exists to remove. */
+  .bg-next[hidden]{display:none;}
+
+  
+
+/* =====================================================================
+     PLOTNUA-PROPERTY-CHECK-SHELL-BEGIN
+     The reusable presentation grammar for every PlotNua Property Check.
+
+     PORTABLE BY CONSTRUCTION. Nothing below names a driveway, a result key
+     or a question. A new Property Check copies this block byte for byte,
+     puts pc- classes on its own markup, and inherits the system. The only
+     thing a journey supplies is content.
+
+     It reuses the Garden journey's established language rather than
+     inventing a second one — the answer control, the progress dots, the
+     save medallion and the P/heart identity are all the Garden's, renamed
+     into pc- so they can travel.
+     ===================================================================== */
+
+  /* ---- PC · IDENTITY ---------------------------------------------------
+     The P/heart mark, as the two SHIPPED brand assets. The master mark has
+     no heart; the My Plot mark has it. Saving turns the heart on, which is
+     the PlotNua product moment the close was missing. No path data is
+     duplicated anywhere: both files are already deployed. */
+  .pc-mark{display:inline-flex;flex:0 0 auto;position:relative;
+    border-radius:22%;overflow:hidden;}
+  .pc-mark img{width:100%;height:100%;display:block;}
+  .pc-mark .pc-mark-on{position:absolute;inset:0;opacity:0;
+    transition:opacity .42s cubic-bezier(.2,.85,.32,1.1);}
+  .pc-mark.is-kept .pc-mark-on{opacity:1;}
+
+  /* ---- PC · COMPOSITION -----------------------------------------------
+     Measured, not asserted: before this rule the intro and the question both
+     ended around 600px inside a 980px viewport, leaving a third of the canvas
+     empty below the fold line. That is what reads as sparse rather than
+     spacious — not the amount of whitespace, but whitespace all collected at
+     one end. Both screens now fill the viewport and set their content on its
+     optical centre, so the space is composed instead of left over.
+
+     The screen's own display rule still governs visibility: only .is-on
+     becomes a flex column, so nothing about show()/hide() changes. */
+  .pc-intro.is-on,.pc-qscreen.is-on{display:flex;flex-direction:column;
+    justify-content:center;min-height:calc(100vh - 210px);}
+
+  /* ---- PC · INTRO ------------------------------------------------------ */
+  .pc-intro{padding:clamp(40px,6vh,72px) 0 clamp(40px,6vh,72px);}
+  .pc-crest{display:flex;align-items:center;gap:16px;margin:0 0 30px;}
+  .pc-crest .pc-mark{width:56px;height:56px;}
+  .pc-crestlab{display:flex;flex-direction:column;gap:2px;}
+  .pc-crestlab b{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:19px;letter-spacing:-.01em;color:var(--ink);}
+  .pc-crestlab span{font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--soft);font-weight:600;}
+  .pc-introh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(38px,5.4vw,64px);line-height:1.06;letter-spacing:-.02em;
+    color:var(--ink);margin:0 0 24px;max-width:16ch;}
+  .pc-introsub{font-size:19px;line-height:1.6;color:var(--body);
+    margin:0 0 40px;max-width:50ch;}
+
+  /* ---- PC · PRIMARY ACTION --------------------------------------------
+     A pill, not a rectangle. The Garden's chosen-option fill is the
+     platform's "this is the action" language; the square dark block was
+     generic form furniture. */
+  /* Contained at every width. The full-width phone rule is what made this
+     read as a banner rather than as a deliberate action. */
+  .pc-cta{display:inline-flex;align-items:center;gap:11px;align-self:flex-start;
+    background:var(--ink);color:var(--brand-ivory);border:none;
+    font-family:'Work Sans',sans-serif;padding:16px 28px;font-size:13.5px;
+    letter-spacing:.09em;text-transform:uppercase;border-radius:32px;
+    cursor:pointer;text-decoration:none;
+    box-shadow:0 10px 26px rgba(31,59,46,.22);
+    transition:transform .22s cubic-bezier(.2,.85,.32,1.1),
+      box-shadow .22s ease, background .22s ease;}
+  .pc-cta:hover{background:var(--accent);transform:translateY(-2px);
+    box-shadow:0 16px 34px rgba(31,59,46,.28);}
+  .pc-cta:active{transform:translateY(0);}
+  .pc-cta .pc-arrow{font-size:16px;line-height:1;
+    transition:transform .22s ease;}
+  .pc-cta:hover .pc-arrow{transform:translateX(3px);}
+
+  /* ---- PC · QUESTION --------------------------------------------------
+     Vertical composition, not a form. Progress is a device rather than a
+     sentence; the category names the subject; the question is the largest
+     thing on screen and is allowed to be. */
+  .pc-qscreen{padding:clamp(40px,6vh,72px) 0 clamp(48px,7vh,80px);
+    max-width:760px;}
+  .pc-dots{display:flex;gap:9px;margin:0 0 34px;}
+  .pc-dot{width:8px;height:8px;border-radius:50%;
+    background:rgba(31,59,46,.18);
+    transition:background .3s ease, transform .3s ease, box-shadow .3s ease;}
+  .pc-dot.is-done{background:var(--brand-sage);}
+  .pc-dot.is-on{background:var(--accent);transform:scale(1.3);
+    box-shadow:0 0 0 4px rgba(79,107,74,.16);}
+  .pc-qlab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 16px;}
+  .pc-qh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(30px,4.2vw,46px);line-height:1.1;letter-spacing:-.018em;
+    color:var(--ink);margin:0 0 16px;max-width:19ch;}
+  .pc-qnote{font-size:16px;line-height:1.6;color:var(--body);
+    margin:0 0 34px;max-width:48ch;}
+
+  /* ---- PC · ANSWER CONTROL -------------------------------------------
+     The Garden's .match-option, exactly: white, 1.5px at .18, a 22px pill,
+     14.5px Work Sans at .02em, a one-pixel lift on hover and an ink fill
+     when chosen. The rectangle at 3px with no chosen state is what made
+     the journey read as a questionnaire. */
+  .pc-opts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 36px;}
+  .pc-opt{background:#fff;border:1.5px solid rgba(31,59,46,.18);
+    cursor:pointer;color:var(--ink);padding:13px 22px;font-size:14.5px;
+    letter-spacing:.02em;border-radius:22px;
+    font-family:'Work Sans',sans-serif;
+    box-shadow:0 1px 2px rgba(31,59,46,.04);
+    transition:border-color .2s ease, background .2s ease,
+      box-shadow .2s ease, transform .2s ease, color .2s ease;}
+  .pc-opt:hover{border-color:var(--accent);
+    box-shadow:0 4px 14px rgba(31,59,46,.1);transform:translateY(-1px);}
+  .pc-opt:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .pc-opt.is-chosen{background:var(--ink);border-color:var(--ink);
+    color:var(--brand-ivory);transform:none;}
+
+  /* ---- PC · THE CHOICE MARKER ------------------------------------------
+     A white row with a hairline border is an input field; what makes it a
+     choice is something that can be selected. The marker is a ring, not an
+     icon: it fills sage under the pointer and becomes a solid ivory dot when
+     the answer is taken. It is drawn with a pseudo-element so no journey has
+     to add markup for it, and it is the ONLY affordance added — there is no
+     card, no tick glyph and no second colour. */
+  .pc-opts.is-stacked .pc-opt{position:relative;}
+  .pc-opts.is-stacked .pc-opt::before{content:'';position:absolute;
+    left:22px;top:50%;width:16px;height:16px;margin-top:-8px;
+    border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(31,59,46,.26);
+    background:transparent;
+    transition:box-shadow .2s ease, background .2s ease;}
+  .pc-opts.is-stacked .pc-opt:hover::before{
+    box-shadow:inset 0 0 0 1.5px var(--accent);
+    background:rgba(143,175,138,.32);}
+  .pc-opts.is-stacked .pc-opt.is-chosen::before{
+    box-shadow:inset 0 0 0 1.5px var(--brand-ivory);
+    background:var(--brand-ivory);}
+  /* The marker is centred on the label when a helper note makes the row
+     two lines, so it never floats against the note. */
+  .pc-opts.is-stacked .pc-opt:has(.pc-optn)::before{top:26px;margin-top:0;}
+  /* Long answers are sentences, not chips. The Garden already solved this
+     for its budget step: stack them, stretch them, left-align them and drop
+     the pill to a soft rectangle. Same rule, same numbers. */
+  /* 470, not 560: at the wider measure a single answer spanned most of the
+     column and read as a banner rather than as one of several choices. */
+  .pc-opts.is-stacked{flex-direction:column;align-items:stretch;
+    max-width:470px;}
+  .pc-opts.is-stacked .pc-opt{text-align:left;border-radius:12px;
+    padding:16px 22px 16px 56px;font-size:16px;letter-spacing:0;}
+  /* ---- PC · COMPACT CHOICES -------------------------------------------
+     Where every answer is short and none carries a helper note, the Garden's
+     pills are the better treatment: they sit together as a set the eye can
+     compare, instead of three near-identical rows. The renderer chooses by
+     content, so a future Property Check inherits the behaviour rather than
+     configuring it. */
+  .pc-opts.is-inline{flex-direction:row;flex-wrap:wrap;max-width:620px;
+    gap:12px;}
+  .pc-opts.is-inline .pc-opt{padding:14px 26px;font-size:15.5px;}
+  .pc-optn{display:block;margin-top:5px;font-size:13.5px;color:var(--muted);
+    letter-spacing:0;}
+  .pc-opt.is-chosen .pc-optn{color:rgba(242,239,230,.72);}
+  .pc-back{background:none;border:none;padding:0;cursor:pointer;
+    font-family:inherit;font-size:13px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--soft);
+    border-bottom:1px solid var(--line);}
+  .pc-back:hover{color:var(--ink);border-bottom-color:var(--ink);}
+
+  /* ---- PC · THE CLOSE -------------------------------------------------
+     Saving is a product moment, not a form submit. The mark sits at the
+     head of the row and gains its heart at the moment of keeping; the
+     control is a pill in the platform's action language; the receipt is
+     My Plot's own micro-caps. Unsaved and saved are both designed, and the
+     headline swaps in place so nothing under it jumps. */
+  .pc-saveband{background:var(--stone);margin:0 calc(50% - 50vw) 64px;
+    padding:0 calc(50vw - 50%) 60px;}
+  .pc-saveinner{border-top:1px solid var(--rule);padding-top:44px;}
+  .pc-savelab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 14px;}
+  .pc-savehead{display:flex;align-items:flex-start;gap:20px;margin:0 0 20px;}
+  .pc-savehead .pc-mark{width:64px;height:64px;
+    box-shadow:0 8px 22px rgba(31,59,46,.18);}
+  .pc-saveh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(26px,3.4vw,34px);line-height:1.14;letter-spacing:-.014em;
+    color:var(--ink);margin:0;max-width:24ch;}
+  /* The kept line is the confirmation, so it is set to be read rather than
+     noticed: it sits directly under the headline, carries a short rule, and
+     takes the body ink instead of the muted tint. A homeowner should know
+     this is kept before they interpret the state of a button. */
+  .pc-savemeta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--body);font-weight:600;margin:0 0 26px;
+    padding-left:34px;position:relative;}
+  .pc-savemeta::before{content:'';position:absolute;left:0;top:50%;
+    width:22px;height:1px;background:var(--accent);}
+  .pc-savenote{font-size:15px;line-height:1.6;color:var(--body);
+    margin:16px 0 0;max-width:46ch;}
+  .pc-savelink{display:inline-flex;align-items:center;gap:8px;
+    margin:24px 0 0;font-size:12.5px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink);text-decoration:none;
+    border-bottom:1px solid var(--line);padding-bottom:4px;
+    transition:border-color .2s ease;}
+  .pc-savelink:hover{border-bottom-color:var(--ink);}
+  /* KEPT reads as arrival, not as a disabled control: the fill goes, the
+     mark carries the state, and the label stops competing. */
+  /* A spent control should recede. It stays a real, operable button — a
+     repeat save still replaces the record — but it stops being the largest
+     thing in the row once the headline and the kept line have said so. */
+  .pc-cta[data-saved]{background:transparent;color:var(--muted);
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.18);cursor:default;
+    padding:11px 22px;font-size:12px;letter-spacing:.1em;
+    min-height:44px;}
+  .pc-cta[data-saved]:hover{background:transparent;transform:none;
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.18);}
+  @media (max-width:780px){
+    .pc-cta[data-saved]{padding:13px 22px;}
+    /* DEFECT 2 — at 360 the close headline broke to two lines: 25 characters
+       at the clamp's 26px floor exceeded a 320px content column. Measured in
+       the browser, not predicted. The floor steps down just enough to hold
+       one line at the narrowest width the journey supports. */
+    .pc-saveh{font-size:clamp(23px,6.2vw,34px);}
+  }
+  .pc-saveh[hidden],.pc-savemeta[hidden],.pc-cta[hidden],
+  .pc-savelink[hidden],.pc-savehead[hidden]{display:none;}
+
+  @media (min-width:834px){
+    .pc-saveinner{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .pc-savelab{margin:9px 0 0;}
+  }
+  @media (max-width:780px){
+    /* On a phone the viewport is short and the content is tall; forcing a
+       full-height centre would push the first answer below the fold. The
+       screens keep their rhythm and let the page scroll. */
+    .pc-intro.is-on,.pc-qscreen.is-on{min-height:0;display:block;}
+    .pc-intro{padding-top:36px;}
+    .pc-crest .pc-mark{width:46px;height:46px;}
+    .pc-savehead{gap:14px;}
+    .pc-savehead .pc-mark{width:50px;height:50px;}
+    .pc-opts.is-stacked{max-width:none;}
+    /* Contained on phones too — never the full measure. */
+    .pc-cta{width:auto;padding:15px 26px;}
+  }
+  /* PLOTNUA-PROPERTY-CHECK-SHELL-END */
+
+  /* ---- evidence drawer ------------------------------------------------- */
+  /* The evidence stays the quiet final layer — but quiet is not invisible.
+     Weight and tone only; it does not compete with the result and it does not
+     open itself. */
+  .bg-drawer{border-top:1px solid var(--rule);padding-top:12px;}
+  .bg-drawer summary{cursor:pointer;list-style:none;padding:18px 0;
+    font-weight:500;
+    font-size:14px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--soft);}
+  .bg-drawer summary::-webkit-details-marker{display:none;}
+  .bg-drawer summary:hover{color:var(--ink);}
+  .bg-ev{padding:8px 0 28px;}
+  .bg-evgroup{margin-bottom:26px;}
+  .bg-evgh{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 10px;}
+  .bg-evitem{border-left:1px solid var(--line);padding:0 0 0 16px;
+    margin-bottom:14px;}
+  .bg-evclaim{font-size:14.5px;line-height:1.55;margin:0 0 5px;
+    color:var(--body);}
+  .bg-evmeta{font-size:12.5px;color:var(--muted);}
+  .bg-evmeta a{color:var(--soft);}
+  .bg-evnone{font-size:14.5px;color:var(--soft);}
+  .bg-foot{font-size:13.5px;line-height:1.6;color:var(--muted);
+    border-top:1px solid var(--line-soft);padding-top:22px;margin-top:8px;
+    max-width:62ch;}
+
+  .bg-load{font-size:15px;color:var(--soft);}
+
+  @media (max-width:780px){
+    .bg-wrap{padding:0 20px;}
+    .bg-topin{padding:16px 20px;gap:13px;}
+    .bg-mark img{width:38px;height:38px;}
+    .bg-brand{font-size:22px;}
+    .bg-ctx{font-size:10.5px;letter-spacing:.14em;}
+    .bg-back{font-size:12px;}
+    .bg-screen{padding:44px 0 72px;}
+    .bg-part{padding:26px 0 24px;}
+    .bg-revealband{padding:52px calc(50vw - 50%) 46px;margin-bottom:44px;}
+    .bg-next{padding:42px calc(50vw - 50%) 38px;}
+    .bg-save{padding:0 calc(50vw - 50%) 46px;margin-bottom:48px;}
+    .bg-nextl li{padding:14px 0 14px 44px;font-size:16px;}
+    .bg-reveal-sub{margin-bottom:34px;}
+    .bg-savebtn{width:100%;}
+  }
+
+</style>
+<style>
+  /* ============================================================
+     DISC-025 PROPERTY CHECK — RESULT COMPOSITION (bg-res-*, bg-ctx-*)
+     Journey-specific only. No pc-* primitive is altered, extended or
+     overridden here; the shell owns the intro, the questions, the choices,
+     Back, the progress dots and the My Plot close.
+
+     ONE FINDING, NOT THREE. There is no grid here and no `is-three`, because
+     there is one computed property result. A row of parallel cards would be
+     the manufactured symmetry this architecture was chosen to avoid.
+
+     CONTEXT IS QUIETER THAN THE FINDING, deliberately: no fill, no top rule,
+     no posture, and a label that cannot read as a verdict. Planning, legal,
+     insurance, tax and market are evidence around the reading, not readings
+     of their own.
+     ============================================================ */
+  .bg-res{margin:0 0 30px;}
+  .bg-res-item{background:var(--cream);border:1px solid rgba(31,59,46,.11);
+    border-top:2px solid rgba(31,59,46,.42);border-radius:2px;
+    padding:24px 26px 26px;}
+  .bg-res-lab{display:block;font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 10px;}
+  .bg-res-phys{margin:0;font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(16px,1.8vw,18px);line-height:1.45;color:var(--ink);}
+  .bg-res-posture{display:inline-block;margin:14px 0 0;
+    font-family:'Work Sans',sans-serif;font-size:10px;font-weight:500;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--soft);}
+  /* The OPEN bound. It exists so property readiness can never be read as a
+     match, and it is set as prose rather than a warning: this is a boundary,
+     not an alarm. */
+  .bg-res-bound{margin:14px 0 0;padding:14px 0 0;
+    border-top:1px solid rgba(31,59,46,.12);
+    font-size:14px;line-height:1.6;color:var(--soft);}
+  .bg-res-why{list-style:none;margin:14px 0 0;padding:0;}
+  .bg-res-why li{position:relative;padding-left:16px;margin:9px 0 0;
+    font-size:14.5px;line-height:1.6;color:var(--body);}
+  .bg-res-why li::before{content:'';position:absolute;left:0;top:10px;
+    width:6px;height:1px;background:rgba(31,59,46,.42);}
+  .bg-ctx-item{padding:18px 0 4px;border-top:1px solid rgba(31,59,46,.12);}
+  .bg-ctx-item + .bg-ctx-item{margin-top:6px;}
+  .bg-sep{margin:30px 0 26px;border:0;border-top:1px solid rgba(31,59,46,.12);}
+</style>
+</head>
+<body>
+
+<header class="bg-top">
+  <div class="bg-topin">
+    <a class="bg-mark" href="index.html" aria-label="PlotNua &mdash; home">
+      <img src="assets/brand/plotnua-mark-master.svg" alt="" width="44" height="44">
+    </a>
+    <span class="bg-ident">
+      <span class="bg-brand">PlotNua</span>
+      <span class="bg-ctx">The Borrowed Garden</span>
+    </span>
+    <a class="bg-back" href="discovery-the-borrowed-garden.html">Back to the story</a>
+  </div>
+</header>
+
+<main class="bg-wrap">
+
+  <section class="bg-screen pc-intro is-on" id="bgIntro">
+    <div class="pc-crest">
+      <span class="pc-mark" aria-hidden="true">
+        <img src="assets/brand/plotnua-mark-master.svg" alt="" width="56" height="56">
+      </span>
+      <span class="pc-crestlab">
+        <b>The Borrowed Garden</b>
+        <span>Property Check</span>
+      </span>
+    </div>
+    <h1 class="pc-introh">Which part of your garden could work, how would somebody
+      reach it, and what do you keep?</h1>
+    <p class="pc-introsub">Four short questions about the part of your garden you
+      could share, how somebody would reach it, and how you would use it yourself.
+      We&rsquo;ll tell you what looks workable, what needs sorting, and what we
+      cannot yet stand over.</p>
+    <button class="pc-cta" id="bgStart">Start the check
+      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+  </section>
+
+  <section class="bg-screen pc-qscreen" id="bgQ">
+    <div class="pc-dots" id="bgDots" aria-hidden="true"></div>
+    <p class="bg-prog sr-only" id="bgProg"></p>
+    <p class="pc-qlab" id="bgQEyebrow"></p>
+    <h2 class="pc-qh" id="bgQText"></h2>
+    <p class="pc-qnote" id="bgQNote"></p>
+    <div class="pc-opts is-stacked" id="bgOpts"></div>
+    <p class="bg-nav"><button type="button" class="pc-back" id="bgBack">Back</button></p>
+  </section>
+
+  <section class="bg-screen" id="bgReveal">
+    <div class="bg-revealband">
+      <p class="bg-eyebrow">This property</p>
+      <h2 class="bg-reveal-h" id="bgRevealH"></h2>
+      <p class="bg-reveal-sub" id="bgRevealSub"></p>
+    </div>
+
+    <div class="bg-res" id="bgFinding"></div>
+    <hr class="bg-sep" id="bgSep">
+    <div id="bgContext"></div>
+
+    <div class="bg-save pc-saveband">
+      <div class="bg-saveinner pc-saveinner">
+        <p class="pc-savelab">My Plot</p>
+        <div class="bg-savebody">
+          <div class="pc-savehead" id="bgSaveCrest">
+            <span class="pc-mark" id="bgSaveMark" aria-hidden="true">
+              <img src="assets/brand/plotnua-mark-master.svg" alt="" width="64" height="64">
+              <img class="pc-mark-on" src="assets/brand/plotnua-mark-myplot-saved.svg" alt="" width="64" height="64">
+            </span>
+            <p class="pc-saveh" id="bgSaveHead">Somewhere to come back to</p>
+          </div>
+          <p class="pc-savemeta" id="bgSaveMeta" hidden></p>
+          <button class="pc-cta" type="button" id="bgSave" hidden>Save to My Plot</button>
+          <p class="pc-savenote" id="bgSaveNote"></p>
+          <a class="pc-savelink" id="bgSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <details class="bg-drawer">
+      <summary>Why PlotNua is saying this</summary>
+      <div class="bg-ev" id="bgEv"></div>
+    </details>
+
+    <p class="bg-foot">PlotNua does the homework. You make the decision. We do not
+      arrange this, we do not introduce anybody, and nothing on this page sends
+      your details anywhere. What happens next is a conversation between two
+      neighbours.</p>
+  </section>
+
+</main>
+
+<script>
+(function(){
+var module = { exports: {} };
+/* PLOTNUA-DISC025-ENGINE-BEGIN */
+/* PLOTNUA — DISC-025 THE BORROWED GARDEN — PROPERTY CHECK V1 — PURE ENGINE
+ * ============================================================================
+ * Frozen contract: DISC-025-BORROWED-GARDEN-DECISION-CONTRACT.md
+ *
+ * ONE computed property result: ARRANGEMENT.
+ *
+ * The proposition, frozen:
+ *   "Which part of your garden could work, how would somebody reach it, and
+ *    what do you keep?"
+ *
+ * WHAT THIS FILE IS NOT. No DOM. No storage. No network. No presentation. No
+ * supplier, product, price or Atlas. No matching call. No location, address or
+ * Eircode. It takes four answers and returns a payload of KEYS. Copy lives in
+ * the journey layer, which does not exist yet.
+ *
+ * THE TWO RULES THAT GOVERN EVERYTHING HERE
+ *
+ *   1. PENDING means the homeowner has not supplied enough PROPERTY
+ *      information. It never means PlotNua is missing research, a matching
+ *      route, an insurance position or a legal answer. Those are governed
+ *      context, and context never becomes a posture.
+ *
+ *   2. The engine may say an arrangement needs checking. It may never say what
+ *      the arrangement IS. Licence, lease, tenancy and letting are words this
+ *      engine does not get to apply to a homeowner's situation.
+ * ========================================================================== */
+
+'use strict';
+
+/* ---------------------------------------------------------------------------
+ * QUESTIONS — 3 x 5 x 4 x 4 = 240
+ * ------------------------------------------------------------------------- */
+
+var QUESTIONS = [
+  { id: 'tenure',       values: ['own', 'rent', 'buying'] },
+  { id: 'spare_corner', values: ['yes_a_clear_corner', 'maybe_part_of_the_lawn',
+                                 'no_it_is_all_in_use', 'no_garden', 'not_sure'] },
+  { id: 'way_in',       values: ['side_or_rear_access', 'its_own_gate',
+                                 'through_the_house_only', 'not_sure'] },
+  { id: 'your_own_use', values: ['yes_regularly', 'now_and_then',
+                                 'i_would_leave_them_to_it', 'not_sure'] }
+];
+
+var RESULTS = ['ARRANGEMENT'];
+
+var PERMITTED_POSTURES = {
+  ARRANGEMENT: ['OPEN', 'CONDITIONAL', 'PENDING']
+};
+
+var FINDINGS = ['workable', 'access_is_the_question',
+                'separation_is_the_question', 'not_established'];
+
+var HEADLINES = {
+  workable:                   'arrangement_looks_workable',
+  access_is_the_question:     'arrangement_access_is_the_question',
+  separation_is_the_question: 'arrangement_separation_is_the_question',
+  not_established:            'arrangement_not_established'
+};
+
+var EXIT_HEADLINE = 'exit_starts_from_a_garden';
+
+/* Declared standing reasons. Emitted on every assessment, never on an exit,
+   and never dependent on an answer. Declared here so the certification suite
+   can tell "standing" apart from "unreachable". */
+var STANDING_REASONS = [
+  'scope_a_part_not_the_garden',
+  'practical_a_growing_season_is_the_unit',
+  'practical_raised_beds_lift'
+];
+
+var CONDITIONAL_REASONS = [
+  'authority_the_decision_is_yours',
+  'authority_permission_from_the_owner',
+  'scope_a_clear_corner_identified',
+  'scope_part_of_the_lawn',
+  'scope_no_part_identified_yet',
+  'check_a_way_in_that_is_not_the_home',
+  'check_agree_how_the_space_is_used',
+  'check_what_we_still_need'
+];
+
+var REASONS = CONDITIONAL_REASONS.concat(STANDING_REASONS);
+
+/* GOVERNED CONTEXT. Standing, identical on every assessment, reads no answer.
+   `market_no_verified_irish_matching_route` is the one the whole architecture
+   turns on: it is why the absence of a matching route can never become a
+   property posture, and why OPEN cannot be read as a promise. */
+var CONTEXT = [
+  { category: 'planning',  key: 'planning_growing_is_not_development' },
+  { category: 'planning',  key: 'planning_anything_built_is_treated_as_yours' },
+  { category: 'legal',     key: 'legal_keep_using_your_own_garden' },
+  { category: 'insurance', key: 'insurance_tell_your_insurer_first' },
+  { category: 'tax',       key: 'tax_any_payment_is_income' },
+  { category: 'market',    key: 'market_growing_space_is_scarce' },
+  { category: 'market',    key: 'market_no_verified_irish_matching_route' }
+];
+
+var CONTEXT_KEYS = CONTEXT.map(function (c) { return c.key; });
+
+/* ---------------------------------------------------------------------------
+ * VALIDATION — unknown values throw. Silence would be worse than a crash:
+ * a typo'd answer would otherwise fall through to a finding nobody chose.
+ * ------------------------------------------------------------------------- */
+
+function validate(a) {
+  if (a === null || typeof a !== 'object' || Array.isArray(a)) {
+    throw new Error('disc025: answers must be an object');
+  }
+  QUESTIONS.forEach(function (q) {
+    if (!Object.prototype.hasOwnProperty.call(a, q.id)) {
+      throw new Error('disc025: missing answer: ' + q.id);
+    }
+    if (q.values.indexOf(a[q.id]) === -1) {
+      throw new Error('disc025: unknown value for ' + q.id + ': ' + String(a[q.id]));
+    }
+  });
+  Object.keys(a).forEach(function (k) {
+    if (!QUESTIONS.some(function (q) { return q.id === k; })) {
+      throw new Error('disc025: undeclared answer: ' + k);
+    }
+  });
+}
+
+/* ---------------------------------------------------------------------------
+ * PHYSICAL FINDING — explicit precedence, first match wins.
+ *
+ * P1 BEFORE P2, AND THE REASON IS A RULING, NOT AN ACCIDENT.
+ * DISC-022 let "not sure" dominate unconditionally, because none of its
+ * property answers was a STATED blocking condition. This journey has one. When
+ * the homeowner has said plainly that the whole garden is in use, that is an
+ * answer, not a gap — and returning "tell us a little more" would make PENDING
+ * mean something it does not mean. Separation is also PRIOR to access: there
+ * is no point solving the route to a part that has not been identified.
+ * ------------------------------------------------------------------------- */
+
+function physicalFinding(a) {
+  if (a.spare_corner === 'no_it_is_all_in_use') return 'separation_is_the_question';
+  if (a.spare_corner === 'not_sure' ||
+      a.way_in === 'not_sure' ||
+      a.your_own_use === 'not_sure') return 'not_established';
+  if (a.way_in === 'through_the_house_only') return 'access_is_the_question';
+  return 'workable';
+}
+
+/* ---------------------------------------------------------------------------
+ * POSTURE — first match wins.
+ *
+ * PENDING iff the finding is not_established. That biconditional is the whole
+ * guarantee that a PlotNua evidence gap can never surface as a posture.
+ *
+ * R4 is the arrangement check, and it is the closest this engine comes to the
+ * legal question. It returns CONDITIONAL — "something to sort first" — and
+ * nothing else. It does not decide what the arrangement is.
+ * ------------------------------------------------------------------------- */
+
+function posture(a, finding) {
+  if (finding === 'not_established') return 'PENDING';
+  if (finding !== 'workable') return 'CONDITIONAL';
+  if (a.tenure !== 'own') return 'CONDITIONAL';
+  if (a.your_own_use === 'i_would_leave_them_to_it') return 'CONDITIONAL';
+  return 'OPEN';
+}
+
+/* ---------------------------------------------------------------------------
+ * REASONS
+ * ------------------------------------------------------------------------- */
+
+function reasons(a, finding) {
+  var out = [];
+
+  out.push(a.tenure === 'own'
+    ? 'authority_the_decision_is_yours'
+    : 'authority_permission_from_the_owner');
+
+  if (a.spare_corner === 'yes_a_clear_corner')     out.push('scope_a_clear_corner_identified');
+  if (a.spare_corner === 'maybe_part_of_the_lawn') out.push('scope_part_of_the_lawn');
+  if (a.spare_corner === 'no_it_is_all_in_use')    out.push('scope_no_part_identified_yet');
+
+  if (a.way_in === 'through_the_house_only')       out.push('check_a_way_in_that_is_not_the_home');
+  if (a.your_own_use === 'i_would_leave_them_to_it') out.push('check_agree_how_the_space_is_used');
+  if (finding === 'not_established')               out.push('check_what_we_still_need');
+
+  return out.concat(STANDING_REASONS);
+}
+
+/* ---------------------------------------------------------------------------
+ * DECIDE — pure. Same input, same output. Input is never mutated.
+ * ------------------------------------------------------------------------- */
+
+function decide(answers) {
+  validate(answers);
+
+  var a = {};
+  QUESTIONS.forEach(function (q) { a[q.id] = answers[q.id]; });
+
+  /* EARLY EXIT. The Borrowed Garden begins with a garden. Without open ground
+     the proposition does not apply — which is a statement about the PlotNua
+     possibility, not about the property. No finding is manufactured, no
+     posture is produced, and no context is attached, because nothing was
+     assessed. The payload carries no `posture` key at all: an absent key
+     cannot be misread, where a null one can. */
+  if (a.spare_corner === 'no_garden') {
+    return {
+      kind: 'early_exit',
+      exit: { headline: EXIT_HEADLINE },
+      results: [],
+      context: []
+    };
+  }
+
+  var finding = physicalFinding(a);
+
+  return {
+    kind: 'assessment',
+    results: [{
+      key: 'ARRANGEMENT',
+      physical_finding: finding,
+      posture: posture(a, finding),
+      headline: HEADLINES[finding],
+      reasons: reasons(a, finding)
+    }],
+    context: CONTEXT.map(function (c) {
+      return { category: c.category, key: c.key };
+    })
+  };
+}
+
+/* ---------------------------------------------------------------------------
+ * ENUMERATION — used by the certification suite, not by the journey.
+ * ------------------------------------------------------------------------- */
+
+function combinations() {
+  var out = [];
+  (function build(i, acc) {
+    if (i === QUESTIONS.length) { out.push(Object.assign({}, acc)); return; }
+    QUESTIONS[i].values.forEach(function (v) {
+      acc[QUESTIONS[i].id] = v;
+      build(i + 1, acc);
+    });
+  })(0, {});
+  return out;
+}
+
+module.exports = {
+  QUESTIONS: QUESTIONS,
+  RESULTS: RESULTS,
+  PERMITTED_POSTURES: PERMITTED_POSTURES,
+  FINDINGS: FINDINGS,
+  HEADLINES: HEADLINES,
+  EXIT_HEADLINE: EXIT_HEADLINE,
+  REASONS: REASONS,
+  STANDING_REASONS: STANDING_REASONS,
+  CONDITIONAL_REASONS: CONDITIONAL_REASONS,
+  CONTEXT: CONTEXT,
+  CONTEXT_KEYS: CONTEXT_KEYS,
+  decide: decide,
+  combinations: combinations
+};
+
+/* PLOTNUA-DISC025-ENGINE-END */
+window.PlotNuaDisc025Check = module.exports;
+})();
+</script>
+
+<script>
+/* PLOTNUA-JOURNEY-SAVE-BEGIN */
+/* PLOTNUA — SAVE TO MY PLOT · the reusable journey pattern, v1
+ * ============================================================================
+ * FROZEN PLATFORM PRINCIPLE
+ *   EVERY PROPERTY-SPECIFIC JOURNEY MUST OFFER SAVE TO MY PLOT AFTER THE
+ *   RESULT HAS BEEN REVEALED, USING plotnua.myplot.v1.
+ *
+ * This block is IDENTICAL, byte for byte, in every journey that carries it.
+ * A journey supplies configuration; it never supplies behaviour. If two
+ * journeys ever need different save behaviour, that is a signal to change
+ * this block once, not to fork it.
+ *
+ * ONE STORE, ONE SCHEMA, NO SECOND MODEL
+ *   plotnua.myplot.v1 already exists and My Plot owns it. A journey page is a
+ *   GUEST in that store. It therefore reads the whole record, changes exactly
+ *   one array, and writes the whole record back. saved[] and added[] are
+ *   carried through untouched: a homeowner must never lose a product they
+ *   kept months ago because they saved a journey today.
+ *
+ *   The schema is NOT bumped. My Plot discards any record whose schema is
+ *   higher than it knows, so bumping would make every saved product invisible
+ *   to an earlier build. An unknown extra field costs an earlier build
+ *   nothing. This is the same reasoning recorded at RS-2b in your-plot.html.
+ *
+ * WHAT A JOURNEY RECORD MAY CONTAIN
+ *   journeyId, title, savedAt, answers, resultKeys — and nothing else.
+ *   Answers and result KEYS, never result PROSE. The source of truth stays
+ *   answers + engine + governed evidence, so a saved result re-derives
+ *   against today's evidence rather than replaying yesterday's wording. That
+ *   matters most when evidence goes stale or is withheld: a stored paragraph
+ *   would keep asserting something PlotNua has stopped standing over.
+ *
+ *   Never stored: evidence or regulatory prose, location, Eircode,
+ *   coordinates, inferred property facts, prices, earnings, tracking.
+ *   sanitise() below enforces that by construction — it builds a new object
+ *   from a fixed key list rather than filtering a supplied one, so a future
+ *   caller cannot widen it by accident.
+ *
+ * IDENTITY IS journeyId
+ *   A repeat save REPLACES that journey's record. There is no accumulation
+ *   and no duplicate list.
+ *
+ * NOTHING IS LOGGED. This block contains no console call of any kind: a
+ * homeowner's answers are not debug output.
+ * ========================================================================== */
+(function (root) {
+  'use strict';
+
+  var KEY = 'plotnua.myplot.v1';
+  var SCHEMA = 1;
+
+  /* Probed once with a REAL write. `'localStorage' in window` is true in
+     Safari private mode right up until the moment you use it, so presence is
+     not availability. Same test My Plot applies, deliberately. */
+  var store = (function () {
+    try {
+      var k = KEY + '.probe';
+      window.localStorage.setItem(k, '1');
+      window.localStorage.removeItem(k);
+      return window.localStorage;
+    } catch (e) { return null; }
+  })();
+
+  function works() { return !!store; }
+
+  /* A journey record is valid if it can be identified. Everything else is
+     optional, because a partially-written record is still the homeowner's. */
+  function valid(r) {
+    return !!r && typeof r === 'object' && !Array.isArray(r) &&
+           typeof r.journeyId === 'string' && r.journeyId.length > 0;
+  }
+
+  /* Build the record from a FIXED key list. Anything the caller passes that
+     is not on this list never reaches the store. */
+  function sanitise(rec) {
+    var out = {
+      journeyId: String(rec.journeyId),
+      title: typeof rec.title === 'string' ? rec.title : '',
+      savedAt: typeof rec.savedAt === 'string' ? rec.savedAt
+                                               : new Date().toISOString(),
+      answers: {},
+      resultKeys: {}
+    };
+    var a = rec.answers, k;
+    if (a && typeof a === 'object' && !Array.isArray(a)) {
+      for (k in a) {
+        if (Object.prototype.hasOwnProperty.call(a, k) &&
+            (typeof a[k] === 'string' || typeof a[k] === 'boolean' ||
+             a[k] === null)) out.answers[k] = a[k];
+      }
+    }
+    var rk = rec.resultKeys;
+    if (rk && typeof rk === 'object' && !Array.isArray(rk)) {
+      for (k in rk) {
+        if (Object.prototype.hasOwnProperty.call(rk, k) &&
+            typeof rk[k] === 'string') out.resultKeys[k] = rk[k];
+      }
+    }
+    return out;
+  }
+
+  /* Read the WHOLE record. A record from a newer schema is left completely
+     alone — an older build must not edit, and must not destroy, data it does
+     not understand. */
+  function readRaw() {
+    if (!store) return null;
+    var raw;
+    try { raw = store.getItem(KEY); } catch (e) { return null; }
+    if (!raw) return null;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return null; }
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return null;
+    if (typeof d.schema === 'number' && d.schema > SCHEMA) return null;
+    return d;
+  }
+
+  function list() {
+    var d = readRaw();
+    var j = (d && Array.isArray(d.journeys)) ? d.journeys : [];
+    return j.filter(valid);
+  }
+
+  function has(id) {
+    var j = list(), i;
+    for (i = 0; i < j.length; i++) { if (j[i].journeyId === id) return true; }
+    return false;
+  }
+
+  /* READ · MODIFY · WRITE. Only `journeys` is touched. */
+  function save(rec) {
+    if (!store || !valid(rec)) return 'unavailable';
+    var clean = sanitise(rec);
+    var d = readRaw();
+    if (!d) d = { schema: SCHEMA, saved: [], added: [] };
+    if (typeof d.schema !== 'number') d.schema = SCHEMA;
+    if (!Array.isArray(d.saved)) d.saved = [];
+    if (!Array.isArray(d.added)) d.added = [];
+    var keep = (Array.isArray(d.journeys) ? d.journeys : []).filter(function (r) {
+      return valid(r) && r.journeyId !== clean.journeyId;
+    });
+    keep.push(clean);
+    d.journeys = keep;
+    d.updatedAt = new Date().toISOString();
+    try { store.setItem(KEY, JSON.stringify(d)); } catch (e) { return 'unavailable'; }
+    return 'saved';
+  }
+
+  /* ---- the control ------------------------------------------------------
+     Mounted by the journey only AFTER its reveal. This block never decides
+     when a result exists; it only knows how to keep one. */
+  function mount(cfg) {
+    var btn = document.getElementById(cfg.buttonId);
+    var note = document.getElementById(cfg.noteId);
+    /* THE ROUTE ONWARD, hidden until there is something at the other end.
+       Offering "View in My Plot" before a save would send a homeowner to a
+       page with nothing of theirs on it, which makes the link a small lie.
+       The destination is the platform's EXISTING one — your-plot.html?myplot=1
+       — not a route invented here; My Plot already opens itself on that
+       parameter when it has something restored to show. */
+    var link = cfg.linkId ? document.getElementById(cfg.linkId) : null;
+    if (!btn) return;
+
+    /* PlotNua never promises a persistence it does not have. */
+    if (!works()) {
+      btn.hidden = true;
+      if (link) link.hidden = true;
+      if (note) {
+        note.textContent = 'This browser will not let us keep anything, ' +
+          'so there is nothing to save to here.';
+      }
+      return;
+    }
+    btn.hidden = false;
+
+    function paint(saved) {
+      btn.textContent = saved ? 'Saved to My Plot' : 'Save to My Plot';
+      btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+      if (saved) { btn.setAttribute('data-saved', 'true'); }
+      else { btn.removeAttribute('data-saved'); }
+      if (link) link.hidden = !saved;
+      if (note) {
+        note.textContent = saved
+          ? 'Kept with the possibilities you’re exploring for your property.'
+          : 'Keep this result with the possibilities you’re exploring for your property.';
+      }
+    }
+
+    paint(has(cfg.journeyId));
+
+    btn.onclick = function () {
+      var p = cfg.payload ? (cfg.payload() || {}) : {};
+      var r = save({
+        journeyId: cfg.journeyId,
+        title: cfg.title,
+        savedAt: new Date().toISOString(),
+        answers: p.answers,
+        resultKeys: p.resultKeys
+      });
+      if (r === 'saved') { paint(true);
+        if (typeof cfg.onSaved === 'function') cfg.onSaved();
+        return; }
+      if (note) {
+        note.textContent = 'We could not keep this in your browser just now.';
+      }
+    };
+  }
+
+  /* How much My Plot is holding, through the SAME reader. A journey page
+     asking "is there anything in My Plot?" must not grow its own opinion of
+     the store's shape; this is the one place that knows. */
+  function count() {
+    var d = readRaw();
+    if (!d) return 0;
+    var n = 0, seen = {};
+    (Array.isArray(d.saved) ? d.saved : []).forEach(function (r) {
+      if (r && typeof r.productId === 'string' && r.productId && !seen[r.productId]) {
+        seen[r.productId] = 1; n++;
+      }
+    });
+    (Array.isArray(d.added) ? d.added : []).forEach(function (r) {
+      var k = r && String(r.url || r.name || '').trim().toLowerCase();
+      if (k && !seen[k]) { seen[k] = 1; n++; }
+    });
+    n += list().length;
+    return n;
+  }
+
+
+  /* ---- THE GARDEN MY PLOT PILL ------------------------------------------
+     Ported from your-plot.html, which is the platform's reference
+     implementation of this control. The Garden composes it as
+
+       .my-plot-access-wrap  fixed positioning + z-index
+         .my-plot-access     the surface: paper, fine border, soft shadow
+           .pn-mark-heart    the 64px medallion carrying the real mark
+           .my-plot-access-label   Fraunces title + uppercase caption
+           .my-plot-access-chevron the arrow that advances on hover
+
+     A journey has one control rather than a control plus an info trigger,
+     so the wrap collapses into the anchor itself: .pn-plotpill carries the
+     positioning the wrap used to, and .my-plot-access carries every visual
+     property verbatim. That split is deliberate — it keeps the ported
+     surface rules a straight copy of the Garden's, so the next person to
+     compare the two files can do it by eye.
+
+     LITERAL COLOURS, NOT var(). A shared component cannot assume its host
+     defines the same tokens — DISC-026 has no --paper and no --accent — so
+     the Garden's :root values are inlined. */
+  var PILL_ID = 'pnPlotPill';
+  var PILL_CSS_ID = 'pnPlotPillCss';
+  var PILL_HREF = 'your-plot.html?myplot=1';
+
+  /* The real mark, exactly as plotIcon() draws it in your-plot.html: the
+     same three paths, the same coordinate transform, the same fills. These
+     are not re-fitted approximations — they are the approved geometry. */
+  var MARK_P = 'M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0';
+  var MARK_HOUSE = 'M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0';
+  var MARK_HEART = 'M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z';
+  var markClipSeq = 0;
+
+  var PILL_STYLE = [
+    /* POSITIONING — the Garden's .my-plot-access-wrap, moved to the opposite
+       corner, and this is the one place the port deliberately departs from
+       your-plot.html.
+
+       The Garden puts its pill at top:20/right:20 because nothing else is up
+       there: its own identity mark is a 46px tile at top-LEFT, so the
+       top-right corner is empty. Both journeys instead run a full-width
+       masthead across the top — 91px on Driveway, 88px on Power Station —
+       and Power Station's is position:sticky at z-index 20, so it is in that
+       corner permanently, not just at scroll-top. Measured at 1440, 1024 and
+       834, a top-aligned pill overlapped the masthead on both journeys and
+       the "Back to the story" link on Driveway.
+
+       Bottom-right was then measured on both journeys at 1440/1024/834 and
+       at five scroll positions each: zero overlaps with the masthead, the
+       Back link, the reveal copy, the section copy or the save controls.
+
+       So the treatment is the Garden's exactly and only the anchor corner
+       differs, because the host page differs. This also makes one placement
+       rule for every width instead of a desktop rule and a phone rule. */
+    '.pn-plotpill{position:fixed;bottom:20px;right:20px;z-index:60;',
+    'display:flex;align-items:center;text-decoration:none;',
+    'font-family:"Work Sans",-apple-system,BlinkMacSystemFont,sans-serif;}',
+    /* The attribute must win over the class. An author display:flex beats
+       the user-agent [hidden]{display:none} on ORIGIN, which is exactly how
+       the save link once stayed visible while hidden was true. Class plus
+       attribute is (0,2,0) and restores the attribute's meaning. */
+    '.pn-plotpill[hidden],.my-plot-access[hidden]{display:none;}',
+
+    /* surface — the Garden's .my-plot-access, after its PB-029 override */
+    '.my-plot-access{display:flex;align-items:center;gap:0;',
+    'border-radius:44px;padding:10px 26px 10px 10px;text-align:left;',
+    'background:#F8F5EC;color:#1F3B2E;',
+    'border:1px solid rgba(31,59,46,.16);',
+    'box-shadow:0 1px 2px rgba(31,59,46,.05),0 10px 28px rgba(31,59,46,.10);',
+    'transition:transform .22s cubic-bezier(.2,.85,.32,1.1),',
+    'box-shadow .22s ease,background .22s ease;}',
+    '.my-plot-access:hover{transform:translateY(-1px);',
+    'box-shadow:0 2px 4px rgba(31,59,46,.07),0 16px 38px rgba(31,59,46,.14);}',
+    '.pn-plotpill:focus-visible{outline:2px solid #1F3B2E;outline-offset:3px;}',
+    '.pn-plotpill:focus-visible .my-plot-access{box-shadow:0 2px 4px ',
+    'rgba(31,59,46,.07),0 16px 38px rgba(31,59,46,.14);}',
+
+    /* the medallion — the Garden's .pn-mark-heart at its pill size */
+    '.pn-mark-heart{position:relative;display:inline-flex;flex:0 0 auto;',
+    'vertical-align:middle;}',
+    '.pn-mark-heart .pmh-svg{width:100%;height:100%;display:block;}',
+    '.pn-mark-heart .pmh-heart-path{opacity:0;transform:scale(1.6);',
+    'transform-origin:1595px 1573px;transition:opacity .38s ease,',
+    'transform .38s cubic-bezier(.2,.85,.32,1.25);}',
+    '.pn-mark-heart.is-plot-active .pmh-heart-path{opacity:1;',
+    'transform:scale(3.2);}',
+    '.my-plot-access .pn-mark-heart{width:64px;height:64px;margin-right:18px;',
+    'padding:7px;background:#F2EFE6;border-radius:22px;',
+    'box-shadow:0 4px 12px rgba(31,59,46,.26),',
+    'inset 0 0 0 1px rgba(31,59,46,.07);transition:box-shadow .22s ease;}',
+    '.my-plot-access:hover .pn-mark-heart{',
+    'box-shadow:0 6px 16px rgba(31,59,46,.32),',
+    'inset 0 0 0 1px rgba(31,59,46,.09);}',
+    '.my-plot-access .pn-mark-heart.is-plot-active .pmh-heart-path{',
+    'transform:scale(4.1);}',
+
+    /* the label — Fraunces title over an uppercase caption */
+    '.my-plot-access-label{display:flex;flex-direction:column;gap:1px;',
+    'min-width:0;}',
+    '.my-plot-access-title{font-family:"Fraunces",Georgia,serif;',
+    'font-weight:500;font-size:19px;line-height:1.15;letter-spacing:.005em;',
+    'color:#1F3B2E;}',
+    '.my-plot-access-count{font-size:11.5px;font-weight:600;',
+    'letter-spacing:.07em;text-transform:uppercase;line-height:1.2;',
+    'color:#4F6B4A;opacity:.85;}',
+
+    /* the arrow, which advances on hover */
+    '.my-plot-access-chevron{margin-left:16px;font-size:17px;line-height:1;',
+    'color:#4F6B4A;opacity:.75;',
+    'transition:transform .22s ease,opacity .22s ease;}',
+    '.my-plot-access:hover .my-plot-access-chevron{transform:translateX(3px);',
+    'opacity:.95;}',
+
+    /* PHONES — THE COMPACT PILL.
+       The full Garden pill is 224x72 at phone widths. Measured at 430, 390
+       and 360 across five result states and twenty-one scroll positions, it
+       covered the CENTRE of the "Save to My Plot" button in 10 of 15 cases:
+       elementFromPoint returned the pill, not the button, so the journey's
+       primary action was not clickable. The pill that shipped before this
+       port was smaller and only ever touched the button's edge (0 of 15),
+       so the Garden pill's size is what introduced this.
+
+       The control therefore collapses to the medallion and the arrow on
+       phones. It keeps the Garden surface, the Garden medallion and the
+       Garden arrow; it drops only the two text lines, and it stays in the
+       same corner. 116x70 instead of 224x72, which clears every action
+       centre on both journeys.
+
+       The text is hidden with display:none rather than a clip-rect, because
+       its meaning is carried instead by an explicit aria-label that
+       mountPill() writes with the live count — see mountPill below. A
+       screen reader gets "Open My Plot - 3 things kept" at every width;
+       only sighted phone users get the shorter object. */
+    '@media (max-width:560px){',
+    '.pn-plotpill{bottom:16px;right:14px;}',
+    '.my-plot-access{padding:7px 14px 7px 7px;border-radius:38px;}',
+    '.my-plot-access .pn-mark-heart{width:54px;height:54px;margin-right:0;',
+    'padding:6px;border-radius:19px;}',
+    '.my-plot-access-label{display:none;}',
+    '.my-plot-access-chevron{margin-left:10px;}}'
+  ].join('');
+
+  /* My Plot is where the pill would send you, so it has no purpose there.
+     Matched on the filename rather than a flag, because any page that is
+     your-plot.html IS My Plot however it was reached. */
+  function insideMyPlot() {
+    try {
+      return /(^|\/)your-plot\.html$/.test(window.location.pathname);
+    } catch (e) { return false; }
+  }
+
+  /* The mark, composed exactly as plotIcon(true) composes it. The clip id is
+     sequenced because a document may legitimately hold more than one. */
+  function markHtml() {
+    markClipSeq += 1;
+    var id = 'pnJourneyMarkClip' + markClipSeq;
+    return '<svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg"' +
+      ' class="pmh-svg" aria-hidden="true">' +
+      '<defs><clipPath id="' + id + '">' +
+        '<rect width="3000" height="3000" rx="666.5"/></clipPath></defs>' +
+      '<rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/>' +
+      '<g clip-path="url(#' + id + ')">' +
+        '<g transform="translate(0,3000) scale(0.1,-0.1)">' +
+          '<path d="' + MARK_P + '" fill="#F2EFE6"/>' +
+          '<path d="' + MARK_HOUSE + '" fill="#8FAF8A"/>' +
+        '</g>' +
+      '</g>' +
+      '<path class="pmh-heart-path" fill="#C57A5A" d="' + MARK_HEART + '"/>' +
+    '</svg>';
+  }
+
+  function buildPill() {
+    if (!document.getElementById(PILL_CSS_ID)) {
+      var st = document.createElement('style');
+      st.id = PILL_CSS_ID;
+      st.textContent = PILL_STYLE;
+      document.head.appendChild(st);
+    }
+    var a = document.getElementById(PILL_ID);
+    if (a) return a;
+    a = document.createElement('a');
+    a.id = PILL_ID;
+    a.className = 'pn-plotpill';
+    a.setAttribute('href', PILL_HREF);
+    a.hidden = true;
+
+    var surface = document.createElement('span');
+    surface.className = 'my-plot-access';
+
+    /* is-plot-active is the Garden's own state here: the pill represents My
+       Plot as a place that already holds something, which is the only
+       condition under which it is shown at all. */
+    var mark = document.createElement('span');
+    mark.className = 'pn-mark-heart is-plot-active';
+    mark.setAttribute('aria-hidden', 'true');
+    mark.innerHTML = markHtml();
+
+    var label = document.createElement('span');
+    label.className = 'my-plot-access-label';
+    var t = document.createElement('span');
+    t.className = 'my-plot-access-title';
+    t.textContent = 'My Plot';
+    var c = document.createElement('span');
+    c.className = 'my-plot-access-count';
+    label.appendChild(t); label.appendChild(c);
+
+    var chev = document.createElement('span');
+    chev.className = 'my-plot-access-chevron';
+    chev.setAttribute('aria-hidden', 'true');
+    chev.textContent = '\u2192';
+
+    surface.appendChild(mark);
+    surface.appendChild(label);
+    surface.appendChild(chev);
+    a.appendChild(surface);
+    document.body.appendChild(a);
+    return a;
+  }
+
+  /* Idempotent: safe to call on every reveal and after every save. */
+  function mountPill() {
+    if (!works() || insideMyPlot()) {
+      var existing = document.getElementById(PILL_ID);
+      if (existing) existing.hidden = true;
+      return;
+    }
+    var a = buildPill();
+    var n = count();
+    a.hidden = !(n > 0);
+    var kept = (n === 1) ? '1 thing kept' : n + ' things kept';
+    var c = a.querySelector('.my-plot-access-count');
+    if (c) c.textContent = kept;
+    /* THE ACCESSIBLE NAME IS WRITTEN HERE, not in the markup, because it
+       carries the live count and must therefore be rewritten every time
+       mountPill runs — on reveal, after a save, and after a repeat save.
+       On phones the two text lines are display:none and so are out of the
+       accessibility tree entirely; this is what keeps the control named.
+       It contains the visible label text verbatim ("My Plot", and the same
+       count string), so the visible name is a subset of the accessible one
+       at the widths where the text is on screen. */
+    a.setAttribute('aria-label', 'Open My Plot \u2014 ' + kept);
+  }
+
+  root.PlotNuaJourneySave = {
+    KEY: KEY, works: works, has: has, save: save, list: list, count: count,
+    mount: mount, mountPill: mountPill
+  };
+})(window);
+/* PLOTNUA-JOURNEY-SAVE-END */
+</script>
+
+<script>
+/* PLOTNUA — DISC-025 THE BORROWED GARDEN — PROPERTY CHECK V1 — JOURNEY LAYER
+ * ============================================================================
+ * Flow, copy translation and save mounting. The ENGINE decides; this layer only
+ * renders. Every homeowner-facing string lives here, so raw engine vocabulary
+ * is never exposed.
+ *
+ * ONE COMPUTED PROPERTY FINDING — ARRANGEMENT. Not three. Borrowed Garden has
+ * no mechanism and no product, so there is nothing to lay out in parallel.
+ * Planning, legal, insurance, tax and market sit BELOW it as governed context,
+ * quieter, with no posture and no label that could read as a verdict.
+ *
+ * THE TWO THINGS THIS FILE MUST NOT DO
+ *   1. Let OPEN read as "somebody is waiting". OPEN is about the GROUND. The
+ *      bound paragraph below says so on the card itself, and the standing
+ *      market context says it again underneath.
+ *   2. Let PENDING read as failure. 90 of 192 assessments are legitimately
+ *      PENDING, so the card keeps its label honest — "What we have so far" —
+ *      and still prints everything the homeowner has already established.
+ * ========================================================================== */
+
+(function () {
+  'use strict';
+  var ENG = window.PlotNuaDisc025Check;
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* --- the four questions frozen in the decision contract ------------------ */
+
+  var QUESTIONS = [
+    { var: 'tenure', eyebrow: 'About you',
+      q: 'Do you own this home?',
+      note: 'This decides who would have to agree &mdash; not what the garden can take.',
+      opts: [ { v: 'own', l: 'I own it', n: null },
+              { v: 'rent', l: 'I rent it', n: null },
+              { v: 'buying', l: 'I&rsquo;m buying it', n: 'Sale not completed yet' } ] },
+
+    { var: 'spare_corner', eyebrow: 'The ground',
+      q: 'Is there a part of your garden you would be comfortable sharing?',
+      note: 'You choose the part. You do not have to give up the garden.',
+      opts: [ { v: 'yes_a_clear_corner', l: 'Yes &mdash; a corner that is barely used', n: null },
+              { v: 'maybe_part_of_the_lawn', l: 'Maybe &mdash; part of the lawn', n: null },
+              { v: 'no_it_is_all_in_use', l: 'No &mdash; it is all in use', n: null },
+              { v: 'no_garden', l: 'There is not really a garden here', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'way_in', eyebrow: 'The way in',
+      q: 'Could somebody reach that part without coming through the house?',
+      note: 'A side passage, or a gate of its own. This matters more here than anything else.',
+      opts: [ { v: 'side_or_rear_access', l: 'Yes &mdash; down the side or the back', n: null },
+              { v: 'its_own_gate', l: 'Yes &mdash; that part has its own gate', n: null },
+              { v: 'through_the_house_only', l: 'No &mdash; only through the house', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'your_own_use', eyebrow: 'What you keep',
+      q: 'Would you still be using that part of the garden yourself?',
+      note: 'Walking through your own ground is what keeps it your garden.',
+      opts: [ { v: 'yes_regularly', l: 'Yes &mdash; I would still be in and out of it', n: null },
+              { v: 'now_and_then', l: 'Now and then', n: null },
+              { v: 'i_would_leave_them_to_it', l: 'No &mdash; I would leave them to it', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] }
+  ];
+
+  /* --- copy tables — every emitted key has homeowner-facing copy ----------- */
+
+  var HEADLINE = {
+    arrangement_looks_workable:             'A corner of your garden looks workable',
+    arrangement_access_is_the_question:     'The way in is the question here',
+    arrangement_separation_is_the_question: 'The part to share is the question here',
+    arrangement_not_established:            'A couple of things still to tell us',
+    exit_starts_from_a_garden:              'This check starts from garden ground'
+  };
+
+  var PHYSICAL = {
+    workable:
+      'A part you are comfortable sharing, a way in that is not through the house, ' +
+      'and you still using it yourself.',
+    access_is_the_question:
+      'You have the part in mind. Getting to it without crossing the house is the ' +
+      'thing to solve.',
+    separation_is_the_question:
+      'Nothing here is spare yet. Which part could be shared is the thing to settle ' +
+      'before anything else.',
+    not_established:
+      'We could not read this from your answers yet.'
+  };
+
+  var POSTURE_LABEL = {
+    OPEN:        'Looks open',
+    CONDITIONAL: 'Something to sort first',
+    PENDING:     'Tell us a little more'
+  };
+
+  /* The card label carries the posture's honesty. A PENDING result is not a
+     verdict withheld, it is a reading still open — so it is labelled as what it
+     is, and it still prints everything already established underneath. */
+  var CARD_LABEL = {
+    OPEN:        'The arrangement',
+    CONDITIONAL: 'The arrangement',
+    PENDING:     'What we have so far'
+  };
+
+  /* Shown ONLY on OPEN. The single most important sentence on the page: it is
+     what stops property readiness being read as a match. */
+  var OPEN_BOUND =
+    'This is about the ground, and only the ground. It does not mean somebody nearby ' +
+    'is looking, that anyone has been found, or that anything is agreed, insured or ' +
+    'settled. Those are separate questions, and the first of them is not one this ' +
+    'check can answer yet.';
+
+  var REASON = {
+    authority_the_decision_is_yours:
+      'You own the home, so the decision about the garden is yours to make.',
+    authority_permission_from_the_owner:
+      'You have told us you are not the owner, so the owner would have to agree before ' +
+      'anything started. We do not assume they would.',
+
+    scope_a_clear_corner_identified:
+      'You have a corner in mind that is barely used. That is the part this reading is about.',
+    scope_part_of_the_lawn:
+      'Part of the lawn could work. A useful growing space is smaller than most people expect.',
+    scope_no_part_identified_yet:
+      'You have told us the garden is all in use, so there is no spare part for this to ' +
+      'be about yet. That is a decision about your own garden, not a limit on it.',
+
+    check_a_way_in_that_is_not_the_home:
+      'The only route is through the house. Side access matters more than anything else ' +
+      'here &mdash; if that is the only way in, a different corner is worth looking at.',
+    check_agree_how_the_space_is_used:
+      'You would leave them to it. Agree clearly how the space will be used, and keep ' +
+      'using your own garden &mdash; that is the part worth being deliberate about.',
+    check_what_we_still_need:
+      'There is something you were not sure about. Come back to it and we can read the rest.',
+
+    scope_a_part_not_the_garden:
+      'This is about a part of the garden, not the garden. You choose which part, you ' +
+      'decide whether to start at all, and it stays yours to end.',
+    practical_a_growing_season_is_the_unit:
+      'A growing season is the natural unit. Agree the notice either of you gives, and ' +
+      'what happens to anything still in the ground.',
+    practical_raised_beds_lift:
+      'Raised beds sit on top of the ground and lift out again. Ask for beds rather than ' +
+      'dug ground if you want the lawn back.'
+  };
+
+  /* GOVERNED CONTEXT. Standing on every assessment, reading no answer, carrying
+     no posture. The market pair is deliberately two separate statements: the
+     scarcity is real AND the route does not exist. Collapsing them into one
+     line is how an evidence gap turns into an implied promise. */
+  var CONTEXT_LABEL = {
+    planning:  'Planning',
+    legal:     'Keeping it your garden',
+    insurance: 'Insurance',
+    tax:       'Money',
+    market:    'What we can and cannot stand over'
+  };
+
+  var CONTEXT_COPY = {
+    planning_growing_is_not_development:
+      'Growing vegetables in a garden is not development, so no planning question arises ' +
+      'from the growing itself.',
+    planning_anything_built_is_treated_as_yours:
+      'Anything built &mdash; a shed, a polytunnel &mdash; is treated exactly as if you had ' +
+      'put it there yourself, and the usual rules apply.',
+    legal_keep_using_your_own_garden:
+      'Keep using the garden and it stays your garden. What matters is how the arrangement ' +
+      'actually works rather than what it is called, and Irish courts look at practice rather ' +
+      'than at the words on a page. None of this is a guarantee of any particular legal ' +
+      'classification, and nothing here is legal advice.',
+    insurance_tell_your_insurer_first:
+      'Tell your insurer before anyone starts. Cover for visitors is standard on an Irish ' +
+      'household policy, but somebody growing food in your garden is not an ordinary social ' +
+      'visit. One phone call settles it.',
+    tax_any_payment_is_income:
+      'Payment is optional, and plenty of arrangements involve none at all. If you do take a ' +
+      'seasonal payment, it is income and is taxable in the normal way.',
+    market_growing_space_is_scarce:
+      'Ground to grow on is genuinely scarce. Council allotment lists across Dublin and Cork ' +
+      'are long, and several have closed to new applications entirely.',
+    market_no_verified_irish_matching_route:
+      'PlotNua has not verified a live Irish route that matches growers to gardens. We are not ' +
+      'going to tell you somebody nearby is looking when we cannot stand over it. Finding each ' +
+      'other is the hard part, and it is not something this check does.'
+  };
+
+  /* --- flow ---------------------------------------------------------------- */
+
+  var answers = {}, trail = [], lastEval = null;
+
+  function show(id) {
+    ['bgIntro', 'bgQ', 'bgReveal'].forEach(function (s) {
+      $(s).classList.toggle('is-on', s === id);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function pending() {
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      if (!(QUESTIONS[i].var in answers)) return QUESTIONS[i];
+    }
+    return null;
+  }
+
+  function renderDots(q) {
+    var box = $('bgDots'); box.innerHTML = '';
+    var idx = QUESTIONS.indexOf(q);
+    QUESTIONS.forEach(function (_, i) {
+      var s = document.createElement('span');
+      s.className = 'pc-dot' + (i < idx ? ' is-done' : (i === idx ? ' is-on' : ''));
+      box.appendChild(s);
+    });
+    $('bgProg').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
+  }
+
+  function renderQuestion(q) {
+    renderDots(q);
+    $('bgQEyebrow').textContent = q.eyebrow;
+    $('bgQText').innerHTML = q.q;
+    var note = $('bgQNote');
+    if (q.note) { note.innerHTML = q.note; note.style.display = ''; }
+    else { note.textContent = ''; note.style.display = 'none'; }
+
+    var box = $('bgOpts');
+    box.innerHTML = '';
+    /* The shell chooses the treatment from the CONTENT, not from the journey. */
+    var compact = q.opts.every(function (o) {
+      return !o.n && o.l.replace(/&[a-z]+;/g, 'x').length <= 24;
+    });
+    box.className = 'pc-opts ' + (compact ? 'is-inline' : 'is-stacked');
+    q.opts.forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pc-opt';
+      b.innerHTML = o.l + (o.n ? '<span class="pc-optn">' + o.n + '</span>' : '');
+      b.addEventListener('click', function () { this.classList.add('is-chosen'); });
+      b.addEventListener('click', function () { choose(q, o.v); });
+      box.appendChild(b);
+    });
+    $('bgBack').style.display = trail.length ? '' : 'none';
+    show('bgQ');
+  }
+
+  function choose(q, value) { answers[q.var] = value; trail.push(q.var); advance(); }
+
+  function back() {
+    if (!trail.length) return;
+    var last = trail.pop();
+    delete answers[last];
+    var q = QUESTIONS.filter(function (x) { return x.var === last; })[0];
+    if (q) renderQuestion(q); else advance();
+  }
+
+  function advance() {
+    var next = pending();
+    if (next) renderQuestion(next); else reveal();
+  }
+
+  /* --- rendering ----------------------------------------------------------- */
+
+  function findingNode(r) {
+    var el = document.createElement('div');
+    el.className = 'bg-res-item';
+    var h = '<span class="bg-res-lab">' + (CARD_LABEL[r.posture] || 'The arrangement') + '</span>';
+    if (PHYSICAL[r.physical_finding]) {
+      h += '<p class="bg-res-phys">' + PHYSICAL[r.physical_finding] + '</p>';
+    }
+    h += '<span class="bg-res-posture">' + (POSTURE_LABEL[r.posture] || '') + '</span>';
+    if (r.posture === 'OPEN') {
+      h += '<p class="bg-res-bound">' + OPEN_BOUND + '</p>';
+    }
+    if (r.reasons.length) {
+      h += '<ul class="bg-res-why">';
+      r.reasons.forEach(function (k) { if (REASON[k]) h += '<li>' + REASON[k] + '</li>'; });
+      h += '</ul>';
+    }
+    el.innerHTML = h;
+    return el;
+  }
+
+  function contextNode(label, keys) {
+    var el = document.createElement('div');
+    el.className = 'bg-ctx-item';
+    var h = '<span class="bg-res-lab">' + label + '</span><ul class="bg-res-why">';
+    keys.forEach(function (k) { if (CONTEXT_COPY[k]) h += '<li>' + CONTEXT_COPY[k] + '</li>'; });
+    el.innerHTML = h + '</ul>';
+    return el;
+  }
+
+  var SUB = {
+    OPEN:
+      'Read against the ground you have described. What follows is about your property ' +
+      'and nothing else.',
+    CONDITIONAL:
+      'Read against the ground you have described. There is something worth settling ' +
+      'first, and it is below.',
+    PENDING:
+      'Here is what your answers already establish. One more thing about the property ' +
+      'and we can stand over the rest.'
+  };
+
+  function reveal() {
+    lastEval = ENG.decide(answers);
+    var grid = $('bgFinding'), ctx = $('bgContext'), sep = $('bgSep');
+    grid.innerHTML = ''; ctx.innerHTML = '';
+
+    if (lastEval.kind === 'early_exit') {
+      /* NOT a rejection, a failure, an ineligibility or a statement about what
+         this property could take. The proposition starts somewhere this
+         property does not, and the page says so plainly and stops. */
+      $('bgRevealH').textContent = HEADLINE[lastEval.exit.headline];
+      $('bgRevealSub').textContent =
+        'The Borrowed Garden begins with a part of a garden somebody could grow in. ' +
+        'You have told us there is not really a garden here, so there is nothing for ' +
+        'us to read.';
+      sep.hidden = true;
+      var note = document.createElement('div');
+      note.className = 'bg-ctx-item';
+      note.innerHTML =
+        '<span class="bg-res-lab">What this does and does not mean</span>' +
+        '<ul class="bg-res-why">' +
+        '<li>It is not a finding about what your property could or could not do. ' +
+        'We have not assessed that, and this is not a planning answer of any kind.</li>' +
+        '<li>Plenty of the other Discoveries begin somewhere else entirely. This one ' +
+        'happens to begin with open ground.</li>' +
+        '<li>If that changes, come back. The check will read it then.</li>' +
+        '</ul>';
+      ctx.appendChild(note);
+    } else {
+      var r = lastEval.results[0];
+      $('bgRevealH').textContent = HEADLINE[r.headline] || '';
+      $('bgRevealSub').textContent = SUB[r.posture] || SUB.CONDITIONAL;
+      sep.hidden = false;
+      grid.appendChild(findingNode(r));
+
+      /* Context, grouped by the five governed categories, in declared order. */
+      var byCat = {};
+      lastEval.context.forEach(function (c) {
+        (byCat[c.category] = byCat[c.category] || []).push(c.key);
+      });
+      ['planning', 'legal', 'insurance', 'tax', 'market'].forEach(function (cat) {
+        if (byCat[cat]) ctx.appendChild(contextNode(CONTEXT_LABEL[cat], byCat[cat]));
+      });
+    }
+
+    $('bgEv').innerHTML =
+      '<p>This check reads your four answers against the evidence behind ' +
+      '<a href="discovery-the-borrowed-garden.html">The Borrowed Garden</a>: the Irish ' +
+      'planning position on growing and on anything built in a garden, what the law ' +
+      'actually turns on when somebody else uses part of your ground, and published ' +
+      'Irish allotment and community-growing evidence.</p>' +
+      '<p>It holds evidence about the arrangement, not about your site, and not about ' +
+      'whether anybody nearby is looking. Where the two differ, this check says so ' +
+      'rather than filling the gap.</p>';
+
+    mountSave();
+    show('bgReveal');
+  }
+
+  /* --- save — the existing contract, unchanged ----------------------------- */
+
+  var CLOSE_UNSAVED = 'Somewhere to come back to';
+  var CLOSE_SAVED   = 'You can come back to this';
+  var JOURNEY_ID    = 'disc025-borrowed-garden-check';
+
+  function payloadKeys() {
+    var rk = {};
+    if (lastEval.kind === 'early_exit') rk.EXIT = lastEval.exit.headline;
+    else lastEval.results.forEach(function (r) { rk[r.key] = r.headline; });
+    return rk;
+  }
+
+  function mountSave() {
+    if (!window.PlotNuaJourneySave) return;
+    window.PlotNuaJourneySave.mount({
+      buttonId: 'bgSave',
+      noteId: 'bgSaveNote',
+      linkId: 'bgSaveLink',
+      journeyId: JOURNEY_ID,
+      title: 'The Borrowed Garden',
+      payload: function () { return { answers: answers, resultKeys: payloadKeys() }; },
+      onSaved: function () { paintClose(); mountPill(); }
+    });
+    paintClose();
+    mountPill();
+  }
+
+  function paintClose() {
+    var kept = window.PlotNuaJourneySave &&
+               window.PlotNuaJourneySave.has &&
+               window.PlotNuaJourneySave.has(JOURNEY_ID);
+    $('bgSaveHead').textContent = kept ? CLOSE_SAVED : CLOSE_UNSAVED;
+    var mark = $('bgSaveMark');
+    if (mark) mark.classList.toggle('is-kept', !!kept);
+  }
+
+  function mountPill() {
+    if (window.PlotNuaJourneySave && window.PlotNuaJourneySave.mountPill) {
+      window.PlotNuaJourneySave.mountPill();
+    }
+  }
+
+  $('bgStart').addEventListener('click', function () { advance(); });
+  $('bgBack').addEventListener('click', back);
+  mountPill();
+
+  /* --- entry from the Discovery -------------------------------------------
+   * `?start=1` skips straight to Question 1, for the hand-off that will
+   * eventually introduce this check on the Discovery itself. ONE
+   * implementation, not two: this calls the same advance() the intro CTA
+   * calls, so flow, engine and every downstream state are identical whichever
+   * way the homeowner arrived. A direct visit to the bare URL still meets the
+   * introduction, because nothing else has introduced the check to them. */
+  if (/(?:^|[?&])start=1(?:&|$)/.test(location.search.replace(/^\?/, '?'))) {
+    advance();
+  }
+
+  /* Test hook. Reads nothing, decides nothing; the QA harness uses it to drive
+     every combination without clicking through four screens 240 times. */
+  window.__disc025 = {
+    questions: QUESTIONS,
+    answer: function (a) {
+      answers = {}; trail = [];
+      Object.keys(a).forEach(function (k) { answers[k] = a[k]; trail.push(k); });
+      reveal();
+    },
+    copyFor: function (k) { return HEADLINE[k] || REASON[k] || CONTEXT_COPY[k] || null; }
+  };
+})();
+
+</script>
+
+</body>
+</html>

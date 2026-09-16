@@ -16193,6 +16193,7 @@
     'disc026-power-station': 'disc026-power-station.html',
     'disc029-hidden-bins-check': 'disc029-hidden-bins-check.html',
     'disc022-hidden-cars-check': 'disc022-hidden-cars-check.html',
+    'disc025-borrowed-garden-check': 'disc025-borrowed-garden-check.html',
   };
 
   /* THE PARENT DISCOVERY. A kept check is the answer to a story the
@@ -16209,6 +16210,7 @@
     'disc026-power-station': 'discovery-house-as-power-station.html',
     'disc029-hidden-bins-check': 'discovery-hidden-bins.html',
     'disc022-hidden-cars-check': 'discovery-hidden-cars.html',
+    'disc025-borrowed-garden-check': 'discovery-the-borrowed-garden.html',
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
@@ -16286,6 +16288,33 @@
        BY FOUNDER DECISION no reason key is mapped. My Plot preserves the
        homeowner conclusion, not the decision trace. Planning and market
        evidence are contextual on the page and never enter a saved record. */
+    /* DISC-025 THE BORROWED GARDEN — Property Check V1.
+
+       ONE computed property result, ARRANGEMENT, so this is a straight lookup
+       rather than the cross-result reasoning the three-finding journeys need.
+
+       The early exit is NOT a failure and must never be summarised as one: the
+       proposition begins with garden ground, and this homeowner has told us
+       there is not any. PENDING is not a failure either — it is a reading still
+       open, and the sentence says so.
+
+       No reason key is mapped, by the same founder decision that governs every
+       other journey here: My Plot preserves the homeowner conclusion, not the
+       decision trace. */
+    if (rec && rec.journeyId === 'disc025-borrowed-garden-check') {
+      if (rk.EXIT === 'exit_starts_from_a_garden')
+        return 'This check starts from garden ground, and there is not any here yet.';
+      const a = rk.ARRANGEMENT;
+      if (a === 'arrangement_looks_workable')
+        return 'A corner of your garden looks workable for this.';
+      if (a === 'arrangement_access_is_the_question')
+        return 'The part is there; how somebody reaches it is the question.';
+      if (a === 'arrangement_separation_is_the_question')
+        return 'Which part could be shared is the thing to settle first.';
+      if (a === 'arrangement_not_established')
+        return 'A couple of things still to tell us about the garden.';
+      return 'Your Borrowed Garden property check.';
+    }
     if (rec && rec.journeyId === 'disc022-hidden-cars-check') {
       if (rk.EXIT === 'exit_starts_from_existing_space')
         return 'This check starts from an off-street space, and there is not one here yet.';
