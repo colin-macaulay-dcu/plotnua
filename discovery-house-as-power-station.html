@@ -590,13 +590,20 @@
      named again in every stack query below -- otherwise it would outrank the
      collapse and stay multi-column on a phone. ---- */
   .dq-adv-cols.is-four{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  /* FIVE PROOF POINTS. Two columns leave the fifth alone in an empty row, so
+     it takes the full width instead of sitting beside a gap. Two rules, the
+     same grid, no new visual system — and the 720px collapse below is
+     inherited rather than rewritten. */
+  .dq-adv-cols.is-five{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .dq-adv-cols.is-five > li:last-child{ grid-column:1 / -1; }
   .dq-qual.is-four{ grid-template-columns:repeat(4,1fr); }
   .dq-qual.is-quiet{ margin-top:36px; }
   @media (max-width:900px){
     .dq-qual.is-four{ grid-template-columns:repeat(2,1fr); }
   }
   @media (max-width:720px){
-    .dq-adv-cols.is-four{ grid-template-columns:1fr; gap:8px; }
+    .dq-adv-cols.is-four,
+    .dq-adv-cols.is-five{ grid-template-columns:1fr; gap:8px; }
     .dq-qual.is-four{ grid-template-columns:1fr; }
   }
 
@@ -967,7 +974,7 @@
          receives, because "paid" is wrong for two of the four. -->
     <div class="dq-adv">
       <span class="dq-cat dq-adv-cat">Already being built</span>
-      <ul class="dq-adv-cols is-four">
+      <ul class="dq-adv-cols is-five">
         <li>
           <span class="dq-adv-label">Britain</span>
           <span class="dq-fact">A boiler-sized unit holds 450&ndash;500 compute modules, and the heat they produce warms the household&rsquo;s water.</span>
@@ -987,6 +994,11 @@
           <span class="dq-adv-label">Europe</span>
           <span class="dq-fact">One European platform describes household nodes as a layer of its network: homes with rooftop solar and batteries becoming compute sites.</span>
           <span class="dq-note">CYANIS AI, Hamburg. Its specified household unit is 500W and desktop-sized, behind the meter. The architecture is published; the household layer is not an open programme.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Australia</span>
+          <span class="dq-fact">Computing installed in the home, the household paid for the power and space it uses, and the heat it produces put back into the house.</span>
+          <span class="dq-note">Zai Node. The company installs, owns and maintains the equipment; the household provides the space, the electricity and the connection. Recovered heat is used for hot water, heating or a pool. An Australian proposition, open to Australian homeowners &mdash; not an Irish programme.</span>
         </li>
       </ul>
     </div>
@@ -1012,7 +1024,7 @@
           <li><span class="dq-fact"><strong>Storage.</strong> Battery capacity that can shift when electricity is used.</span></li>
           <li><span class="dq-fact"><strong>Connectivity.</strong> A reliable high-speed connection for computing equipment.</span></li>
           <li><span class="dq-fact"><strong>Space.</strong> A secure physical place to put it.</span></li>
-          <li><span class="dq-fact"><strong>Heat.</strong> Some models make use of the heat computing produces.</span></li>
+          <li><span class="dq-fact"><strong>Heat.</strong> Some models make use of the heat computing produces. At least one now does both at once: paying the household for the resources the computing uses, and returning its heat as hot water or heating.</span></li>
         </ul>
       </div>
     </div>
