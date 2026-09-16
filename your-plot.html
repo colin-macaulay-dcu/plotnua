@@ -16192,6 +16192,7 @@
     'disc014-driveway-income': 'disc014-driveway-income.html',
     'disc026-power-station': 'disc026-power-station.html',
     'disc029-hidden-bins-check': 'disc029-hidden-bins-check.html',
+    'disc022-hidden-cars-check': 'disc022-hidden-cars-check.html',
   };
 
   /* THE PARENT DISCOVERY. A kept check is the answer to a story the
@@ -16207,6 +16208,7 @@
     'disc014-driveway-income': 'discovery-driveway-income.html',
     'disc026-power-station': 'discovery-house-as-power-station.html',
     'disc029-hidden-bins-check': 'discovery-hidden-bins.html',
+    'disc022-hidden-cars-check': 'discovery-hidden-cars.html',
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
@@ -16267,6 +16269,42 @@
           rk.MARKET_EVIDENCE === 'market_route_not_verified')
         return 'Your Hidden Bins check, with the planning and evidence position.';
       return 'Your Hidden Bins property check.';
+    }
+    /* DISC-022 HIDDEN CARS — Property Check V1.
+       Thirteen headline keys: twelve assessment keys, three results by four
+       findings, plus the one early-exit key.
+
+       THE EARLY EXIT LEADS, and it is not a refusal. A homeowner with no
+       off-street space has not failed anything; the Discovery simply starts
+       from a space this property does not have yet. The sentence says that and
+       stops.
+
+       Otherwise the summary leads on the least-resolved finding, because that
+       is what the homeowner has to act on: what we could not establish, then
+       what needs checking, then what looks possible.
+
+       BY FOUNDER DECISION no reason key is mapped. My Plot preserves the
+       homeowner conclusion, not the decision trace. Planning and market
+       evidence are contextual on the page and never enter a saved record. */
+    if (rec && rec.journeyId === 'disc022-hidden-cars-check') {
+      if (rk.EXIT === 'exit_starts_from_existing_space')
+        return 'This check starts from an off-street space, and there is not one here yet.';
+      const s = rk.STACK, c = rk.CONCEAL, u = rk.UNDERGROUND;
+      if (s === 'stack_more_to_tell_us' || c === 'conceal_more_to_tell_us' ||
+          u === 'underground_more_to_tell_us')
+        return 'A couple of things still to tell us about the space.';
+      if (s === 'stack_site_checks_first' || c === 'conceal_site_checks_first' ||
+          u === 'underground_site_checks_first')
+        return 'Your ground would need checking before anything goes under it.';
+      if (s === 'stack_looks_workable' &&
+          (c === 'conceal_looks_plausible' || u === 'underground_looks_plausible'))
+        return 'Your ground does not appear to rule any of the three out.';
+      if (s === 'stack_looks_workable')
+        return 'A stacker looks workable; the excavated options look tighter.';
+      if (s === 'stack_space_is_tight' && c === 'conceal_space_is_tight' &&
+          u === 'underground_space_is_tight')
+        return 'Space looks tight for all three.';
+      return 'Your Hidden Cars property check.';
     }
     if (rec && rec.journeyId === 'disc014-driveway-income') {
       const d = rk.THE_DRIVEWAY;
