@@ -994,6 +994,16 @@
   .step p{ margin-top:8px; color:var(--soft); font-size:16px; line-height:1.75;
     max-width:52ch; padding-left:calc(15px + 16px); }
   .steps-after{ margin-top:36px; }
+
+  /* PATTERN C ENTRY POINT. One quiet text route into the Property Check.
+     Deliberately NOT a filled button: Pattern C forbids button chrome in
+     this section, and the exits beneath it are text links too. */
+  .pb-cta-line{ margin:26px 0 0; }
+  .pb-cta{ font-family:'Work Sans',sans-serif; font-size:15px; font-weight:500;
+    letter-spacing:.02em; color:var(--accent); text-decoration:none;
+    border-bottom:1px solid rgba(79,107,74,.38); padding-bottom:2px;
+    transition:border-color .2s ease; }
+  .pb-cta:hover{ border-bottom-color:var(--accent); }
   @media(max-width:560px){
     .step p{ padding-left:0; margin-top:6px; }
   }
@@ -1419,8 +1429,9 @@
      worse than no control at all. -->
 <section class="pb-preview reveal" id="discover-your-property">
   <div class="pn-wordmark">PlotNua</div>
-  <h2 class="pb-headline">This property check is being prepared</h2>
-  <p class="pb-subhead">The Hidden Bins check will look at where your bins sit now, how many you have, what your frontage and side access are like, how much room there is to work with, and whether you want to hide them, design them in, or look into putting them underground. It is not ready yet. In the meantime, there is plenty to explore.</p>
+  <h2 class="pb-headline">What could your property support?</h2>
+  <p class="pb-subhead">Five short questions about the ground your bins stand on. The check reads your answers against the evidence on this page and tells you what looks possible there, what needs checking, and what PlotNua cannot yet stand over. No address, no measuring, and no price.</p>
+  <p class="pb-cta-line"><a class="pb-cta" href="disc029-hidden-bins-check.html">Start the property check &rarr;</a></p>
   <div class="cs-exits">
     <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
     <a class="cs-exit" href="discovery-hidden-cars.html">Explore Hidden Cars &rarr;</a>
