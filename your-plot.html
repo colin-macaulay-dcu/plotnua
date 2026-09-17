@@ -16194,6 +16194,7 @@
     'disc029-hidden-bins-check': 'disc029-hidden-bins-check.html',
     'disc022-hidden-cars-check': 'disc022-hidden-cars-check.html',
     'disc025-borrowed-garden-check': 'disc025-borrowed-garden-check.html',
+    'disc023-buy-original-irish-art': 'disc023-buy-original-irish-art.html',
   };
 
   /* THE PARENT DISCOVERY. A kept check is the answer to a story the
@@ -16211,6 +16212,7 @@
     'disc029-hidden-bins-check': 'discovery-hidden-bins.html',
     'disc022-hidden-cars-check': 'discovery-hidden-cars.html',
     'disc025-borrowed-garden-check': 'discovery-the-borrowed-garden.html',
+    'disc023-buy-original-irish-art': 'discovery-a-home-for-art.html',
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
@@ -16355,6 +16357,30 @@
       if (n === 1) return 'One of the four looks ready to explore.';
       if (n > 1) return n + ' of the four look ready to explore.';
       return 'Where each of the four stands for this home.';
+    }
+    /* DISC-023 · BUY ORIGINAL IRISH ART.
+       Founder ruling 1, 17 September 2026: the journey stores art_state and
+       NOTHING ELSE about the result. The homeowner-facing sentence is written
+       HERE, from the key, at the moment of display — the same discipline as
+       every branch above, and the reason the frozen save block was not widened
+       to carry prose.
+
+       Five keys, five sentences, and a default that says less rather than
+       guessing. The key is compared against a closed list: a tampered store
+       cannot make this function say something PlotNua did not write. */
+    if (rec && rec.journeyId === 'disc023-buy-original-irish-art') {
+      const s = rk.art_state;
+      if (s === 'clear_brief')
+        return 'A wall with a clear brief \u2014 size it, then go looking.';
+      if (s === 'wall_awaiting_direction')
+        return 'The wall is settled. What goes on it is the part to take time over.';
+      if (s === 'direction_without_wall')
+        return 'You know what you like. Choosing the wall comes first.';
+      if (s === 'light_first')
+        return 'Direct sun on that wall \u2014 worth settling before you choose a piece.';
+      if (s === 'start_by_looking')
+        return 'Nothing settled yet. Start by looking, which costs nothing.';
+      return 'Your result, kept as you left it.';
     }
     return 'Your result, kept as you left it.';
   }
