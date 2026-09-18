@@ -1604,6 +1604,39 @@ if (typeof module !== 'undefined' && module.exports) {
       'with a small studio, this is worth more than it sounds.'
   };
 
+  /* =====================================================================
+     WHEN THE CONDITION WAS NOT STATED — founder ruling, 18 September 2026,
+     after production verification.
+
+     Two of the seven states describe the SPACE in their established sentence,
+     and P3 lets a "not sure" answer through to both. Until this correction,
+     both said "you report a dry, stable space" to a homeowner who had said
+     they were NOT sure — putting a report in their mouth that they never
+     gave, and then contradicting it one sentence later.
+
+     A later correction does not undo a false attribution. So the established
+     copy itself now depends on the answer: these variants are used whenever
+     the engine's condition posture is reported_unknown, and the positive
+     attribution above is reachable ONLY from condition = dry_stable.
+
+     The prominent condition_unknown consequence is unaffected and still
+     fires; this fixes what the result ATTRIBUTES, not what it warns about.
+     ===================================================================== */
+  var ESTABLISHED_UNSTATED = {
+    'storage_first':
+      'You would use the space for storage, with no display and no visitors. ' +
+      'What you have not established yet is whether it is dry, stable and out ' +
+      'of direct sun. Settle that, and the Discovery&rsquo;s own observation ' +
+      'applies: to an artist with a small studio, this is worth more than it ' +
+      'sounds.',
+    'open_workable':
+      'You would let somebody in, and you say they could reach the space ' +
+      'without crossing the parts of the house you consider private. What you ' +
+      'have not established yet is whether the space is dry, stable and out of ' +
+      'direct sun. This is the most involved rung of the four and the one with ' +
+      'the most to agree in advance.'
+  };
+
   /* THE CONDITION LINE. Four values, and every one of them names the homeowner
      as the source. There is no value meaning "PlotNua checked", because PlotNua
      did not check. */
@@ -2000,8 +2033,14 @@ if (typeof module !== 'undefined' && module.exports) {
     $('hoRevealH').innerHTML = HEADLINES[r.state];
     $('hoRevealSub').innerHTML = SUBS[r.state];
 
-    /* 1 · WHAT PLOTNUA HAS ESTABLISHED — answers and published evidence only */
-    var est = '<p class="ho-primarybody">' + ESTABLISHED[r.state] + '</p>';
+    /* 1 · WHAT PLOTNUA HAS ESTABLISHED — answers and published evidence only.
+       ATTRIBUTION FOLLOWS THE ANSWER. A positive self-report is only ever
+       rendered when the homeowner actually gave one; where the condition was
+       left unstated the variant above is used instead. */
+    var estText = (r.condition === 'reported_unknown' &&
+                   ESTABLISHED_UNSTATED[r.state]) ?
+                  ESTABLISHED_UNSTATED[r.state] : ESTABLISHED[r.state];
+    var est = '<p class="ho-primarybody">' + estText + '</p>';
     if (CONDITION[r.condition]){
       est += '<p class="ho-primarybody">' + CONDITION[r.condition] + '</p>';
     }
