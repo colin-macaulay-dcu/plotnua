@@ -16195,6 +16195,7 @@
     'disc022-hidden-cars-check': 'disc022-hidden-cars-check.html',
     'disc025-borrowed-garden-check': 'disc025-borrowed-garden-check.html',
     'disc023-buy-original-irish-art': 'disc023-buy-original-irish-art.html',
+    'disc024-open-your-home-to-art': 'disc024-open-your-home-to-art.html',
   };
 
   /* THE PARENT DISCOVERY. A kept check is the answer to a story the
@@ -16213,6 +16214,7 @@
     'disc022-hidden-cars-check': 'discovery-hidden-cars.html',
     'disc025-borrowed-garden-check': 'discovery-the-borrowed-garden.html',
     'disc023-buy-original-irish-art': 'discovery-a-home-for-art.html',
+    'disc024-open-your-home-to-art': 'discovery-open-your-home-to-art.html',
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
@@ -16380,6 +16382,33 @@
         return 'Direct sun on that wall \u2014 worth settling before you choose a piece.';
       if (s === 'start_by_looking')
         return 'Nothing settled yet. Start by looking, which costs nothing.';
+      return 'Your result, kept as you left it.';
+    }
+    /* DISC-024 · OPEN YOUR HOME TO ART.
+       Same discipline, and the same reason. The journey stores host_state and
+       nothing else about the result; the sentence is written here, from a key
+       checked against a closed list of seven.
+
+       SELF-REPORT IS NOT A PLOTNUA FINDING — founder ruling, 18 September 2026.
+       PlotNua has not seen the space. Every line below that mentions it says
+       whose description it is, because a summary is exactly where that
+       attribution gets quietly dropped. */
+    if (rec && rec.journeyId === 'disc024-open-your-home-to-art') {
+      const h = rk.host_state;
+      if (h === 'help_only')
+        return 'Nothing needs to come to your house \u2014 you would help the work find a buyer.';
+      if (h === 'not_settled')
+        return 'How far this would go is the thing still to decide.';
+      if (h === 'condition_first')
+        return 'The space you described needs sorting before anything arrives.';
+      if (h === 'open_needs_a_route')
+        return 'Willing to open \u2014 the way in is the part to settle.';
+      if (h === 'open_workable')
+        return 'Opening the door looks workable, on your own account of the space.';
+      if (h === 'display_no_visitors')
+        return 'Living with it on the wall, and nobody at the door.';
+      if (h === 'storage_first')
+        return 'The simplest version \u2014 dry storage, and nobody sees it.';
       return 'Your result, kept as you left it.';
     }
     return 'Your result, kept as you left it.';
