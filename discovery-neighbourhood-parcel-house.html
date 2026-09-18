@@ -873,19 +873,14 @@
   </div>
 </header>
 
-<section class="pb-early reveal" id="early-property-check">
-  <!-- EARLY JOURNEY ENTRY. FUTURE variant: there is no Parcel House journey,
-       so no link, no form and no disabled control. Kept short so it does not
-       repeat the closing panel, which carries the detail of what the check
-       will examine. It routes nowhere: not to Garden Buildings, not to any
-       other Discovery. -->
-  <div class="pb-early-inner">
-    <h2>Could this work for your property?</h2>
-    <p>PlotNua is designing a property check for this Discovery.</p>
-    <span class="pb-early-status">This property check is being prepared</span>
-    <p class="pb-early-more">Until it is ready, keep reading to see what matters.</p>
-  </div>
-</section>
+<!-- EARLY JOURNEY ENTRY REMOVED, 18 September 2026, when DISC-027 Property
+     Check V1 went live. The panel existed to say the check was being
+     prepared; it is prepared. It is removed rather than rewritten into a
+     second route, because the closing panel below carries the route and the
+     detail, and two entries to one journey inside one article is exactly the
+     repetition this Discovery's freeze record rejected the journey-pattern
+     experiment over. The .pb-early rules stay in the stylesheet, unused, as
+     they do on every other Discovery whose check is live. -->
 
 <main class="article">
 
@@ -1028,8 +1023,21 @@
          a control a homeowner cannot use is worse than no control at all.
          Component, styling and independence statement are the existing ones. -->
     <div class="pn-wordmark">PlotNua</div>
-    <h2 class="pb-headline">This property check is being prepared</h2>
-    <p class="pb-subhead">The Neighbourhood Parcel House check will look at your front door and boundary, whether there is a dry place a parcel could safely sit, whether somebody can reach it without coming through the house, and whether anyone is usually at home. It is not ready yet. In the meantime, there is plenty to explore.</p>
+    <h2 class="pb-headline">Check this against your own door</h2>
+    <!-- DISC-027 PROPERTY CHECK V1 IS LIVE. Four questions, six results, and
+         no address: this check reads a door, a week and a road, all of them
+         on the homeowner's own account, and PlotNua sees none of them. There
+         is deliberately no field and no control beyond the one link, for the
+         reason the Driveway Income and Open Your Home to Art panels already
+         record: a Property Check that takes no location must not carry a
+         surface that implies it takes one.
+
+         IT IS ALSO NOT A ROUTE TO ANYTHING. The check registers nobody,
+         introduces nobody, and asks for nothing. The article above is
+         already plain that being paid to do this is not available here, and
+         the wording below does not quietly soften that. -->
+    <p class="pb-subhead">Four short questions about your own door, your week and your road &mdash; then what you would have to settle before the first parcel arrived. No address, no contact details, and nothing sent anywhere.</p>
+    <a class="btn-primary" href="disc027-neighbourhood-parcel-house.html">Start the property check</a>
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-the-borrowed-garden.html">Explore The Borrowed Garden &rarr;</a>
       <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>

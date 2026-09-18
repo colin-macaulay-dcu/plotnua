@@ -16196,6 +16196,7 @@
     'disc025-borrowed-garden-check': 'disc025-borrowed-garden-check.html',
     'disc023-buy-original-irish-art': 'disc023-buy-original-irish-art.html',
     'disc024-open-your-home-to-art': 'disc024-open-your-home-to-art.html',
+    'disc027-neighbourhood-parcel-house': 'disc027-neighbourhood-parcel-house.html',
   };
 
   /* THE PARENT DISCOVERY. A kept check is the answer to a story the
@@ -16215,6 +16216,7 @@
     'disc025-borrowed-garden-check': 'discovery-the-borrowed-garden.html',
     'disc023-buy-original-irish-art': 'discovery-a-home-for-art.html',
     'disc024-open-your-home-to-art': 'discovery-open-your-home-to-art.html',
+    'disc027-neighbourhood-parcel-house': 'discovery-neighbourhood-parcel-house.html',
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
@@ -16409,6 +16411,36 @@
         return 'Living with it on the wall, and nobody at the door.';
       if (h === 'storage_first')
         return 'The simplest version \u2014 dry storage, and nobody sees it.';
+      return 'Your result, kept as you left it.';
+    }
+    /* DISC-027 · THE NEIGHBOURHOOD PARCEL HOUSE.
+       Same discipline again: the journey stores parcel_state and nothing else
+       about the result, and the sentence is written here from a key checked
+       against a closed list of six.
+
+       SELF-REPORT IS NOT A PLOTNUA FINDING. PlotNua has not seen the door, the
+       road or the week, so every line below that describes the place says
+       whose description it is.
+
+       MONEY IS NOT HERE, AND CANNOT BE — founder ruling D1, 18 September 2026.
+       The money answer selects no state, so it never reaches a result key and
+       never reaches this summary. Nothing below reads as interest, a lead,
+       consent, availability, or a route to joining anything, because a
+       one-line summary is the easiest place in PlotNua to imply all four. */
+    if (rec && rec.journeyId === 'disc027-neighbourhood-parcel-house') {
+      const p = rk.parcel_state;
+      if (p === 'place_first')
+        return 'You told us there is nowhere for it to sit yet \u2014 usually the solvable half.';
+      if (p === 'presence_first')
+        return 'A place, on your own account, and a house you told us is empty most of the day.';
+      if (p === 'cover_first')
+        return 'The spot you described is outside, and not covered yet.';
+      if (p === 'door_bound')
+        return 'Inside the hall door, as you described it \u2014 it works while you are in.';
+      if (p === 'van_first')
+        return 'Both halves there, on your own account. The road is the blocker.';
+      if (p === 'workable')
+        return 'Your door could take this, on your own account of the place.';
       return 'Your result, kept as you left it.';
     }
     return 'Your result, kept as you left it.';
