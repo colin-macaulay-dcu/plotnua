@@ -411,6 +411,31 @@ def category_exclusion(feat_rows):
 
 PRICE_VERIFIED_STATUSES = ("Verified",)
 
+# QUALIFICATION v2 — PRICE AXIS. Published "priced by quotation" markers.
+# Matched lower-cased and exactly: a marker must be the whole field value, so
+# no free-text note can be read as a commercial state. Absence of a marker is
+# never quote-only — it is `missing`.
+QUOTE_ONLY_MARKERS = (
+    "custom quote", "quote only", "quote-only", "on application",
+    "price on application", "poa", "quotation", "by quotation",
+)
+
+# QUALIFICATION v2 — EXPORT HYGIENE. Homeowner-facing evidence text must not
+# carry internal directives, governance/debt commentary or raw record IDs.
+# A sentence is dropped only when it OPENS with one of these internal lead
+# phrases; ordinary evidence sentences that merely mention a word are kept.
+INTERNAL_LEAD_PHRASES = (
+    "integrity:", "integrity issue", "integrity note", "do not rank",
+    "do not use", "supplier status", "repair:", "gap:", "limitation:",
+    "unresolved,", "recorded as standing technical debt",
+    "standing technical debt", "attribution caution", "scope note",
+    "domain note", "duplicate-organisation note", "related-entity finding",
+    "registration cluster", "co-location note", "recency note",
+    "candidates tested and rejected", "dissolved-registration finding",
+    "note, recorded not acted upon", "recorded once and not collapsed",
+)
+_REC_ID_RE = re.compile(r"\brec[A-Za-z0-9]{14}\b")
+
 
 def redact(msg) -> str:
     """Defence in depth on the one path a credential could conceivably travel.
@@ -491,6 +516,55 @@ def links(rec, field) -> list:
 
 def txt(v) -> str:
     return (v or "").strip() if isinstance(v, str) else ""
+
+
+def homeowner_text(s: str):
+    """QUALIFICATION v2 — EXPORT HYGIENE.
+
+    Atlas evidence text is written for two readers at once: the homeowner and
+    the next researcher. The researcher's half — integrity notes, governance
+    directives, technical-debt commentary and raw Airtable record IDs — was
+    reaching the published artefact verbatim. A homeowner has no use for
+    'DO NOT RANK on any basis' or 'recUhAgdKiDdJ3fLz', and an instruction
+    written into a data field was never a control anyway.
+
+    Sentence-level, and deliberately conservative: a sentence is dropped only
+    when it OPENS with a known internal lead phrase. Ordinary evidence keeps
+    every word. Record IDs are stripped wherever they survive, because they are
+    never homeowner-facing in prose. Structural id fields are untouched — this
+    function is applied to rendered text only.
+
+    Returns None when nothing publishable remains, so the caller omits the key
+    rather than emitting an empty string.
+    """
+    s = txt(s)
+    if not s:
+        return None
+    # Directives written INSIDE a sentence, e.g. "…nothing estimated. DO NOT
+    # RANK on internal area. PLANNING — MATERIAL: …". Remove the clause, keep
+    # the evidence either side of it.
+    s = re.sub(r"(?:^|(?<=[.!?]))\s*DO NOT (?:RANK|USE)\b[^.!?]*[.!?]", " ", s,
+               flags=re.IGNORECASE)
+    # Internal LABELS attached to genuinely useful evidence. The label goes;
+    # the sentence stays. "CATEGORY INTEGRITY: Auroom supplies wellness
+    # cabins…" is real homeowner information wearing a researcher's badge, and
+    # deleting the sentence would throw away the best evidence in the record.
+    s = re.sub(r"\b(?:[A-Z][A-Z \-]{0,24}\s)?INTEGRITY(?:\s+ISSUE)?\s*[:—-]\s*",
+               "", s)
+    s = re.sub(r"\bflagged as an integrity issue\b", "flagged", s,
+               flags=re.IGNORECASE)
+    parts = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9\"'])", s)
+    kept = []
+    for part in parts:
+        probe = part.strip().lstrip("—-• ").lower()
+        if any(probe.startswith(p) for p in INTERNAL_LEAD_PHRASES):
+            continue
+        kept.append(part.strip())
+    out = " ".join(p for p in kept if p)
+    out = _REC_ID_RE.sub("", out)
+    out = re.sub(r"\(\s*[,;]?\s*\)", "", out)
+    out = re.sub(r"\s{2,}", " ", out).strip(" ,;—-")
+    return out or None
 
 
 # ── the Match-compatible contract ───────────────────────────────────────────
@@ -744,23 +818,50 @@ def adjudicate_price(price_rows: list) -> tuple:
     return ("ambiguous", None, numeric)
 
 
-def usable_price(price_rows: list) -> tuple:
-    """(state, record) — verified | present-unverified | missing.
+def _positive_number(v) -> bool:
+    """A real, usable money figure. QUALIFICATION v2 — PRICE HARDENING.
 
-    UNCHANGED by 2G, deliberately. Its only consumer is the qualification
-    evidence block, which reads the STATE and not the record; and the state is
-    already order-independent for all 33 multi-record Products (both candidates
-    share a status band in every one of them). Leaving it alone keeps
-    qualification byte-identical, which 2G is required not to touch."""
+    `is not None` used to stand here, so a governed 0 (a Draft or Custom Quote
+    placeholder that was never filled in) counted as a published price and
+    carried its product into the top tier. match_price() has guarded `v > 0`
+    since Batch 2 Piece 1; this function is the same rule applied one layer
+    earlier, where the qualification STATE is decided. A zero is a record that
+    was never completed, not a price."""
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0
+
+
+def _is_quote_only(price_rec) -> bool:
+    """Has the supplier PUBLISHED that this is priced by quotation?
+
+    QUALIFICATION v2. Quote-only is a legitimate commercial state, not a
+    missing price: the supplier has told us how the product is priced. It is
+    recorded only where Atlas holds a positive marker — never inferred from the
+    absence of a number, which stays `missing`."""
+    if not price_rec:
+        return False
+    for field in ("Price Type", "Status"):
+        if txt(cell(price_rec, field)).strip().lower() in QUOTE_ONLY_MARKERS:
+            return True
+    return False
+
+
+def usable_price(price_rows: list) -> tuple:
+    """(state, record) — verified | present-unverified | quote-only | missing.
+
+    QUALIFICATION v2. Two corrections, both demonstrated defects:
+      1. a zero/negative figure no longer counts as a published price;
+      2. quote-only is separated from "no price found".
+    The state no longer participates in PRODUCT evidence confidence at all —
+    see qualify(). It describes the PRICE axis and nothing else."""
     if not price_rows:
         return ("missing", None)
     primary = [r for r in price_rows if cell(r, "Primary Price")] or price_rows
     verified = [r for r in primary if cell(r, "Status") in PRICE_VERIFIED_STATUSES]
     pick = (verified or primary)[0]
-    has_number = any(cell(pick, f) is not None
+    has_number = any(_positive_number(cell(pick, f))
                      for f in ("Base Price", "Price From", "Price To"))
     if not has_number:
-        return ("missing", pick)
+        return ("quote-only" if _is_quote_only(pick) else "missing", pick)
     return ("verified" if verified else "present-unverified", pick)
 
 
@@ -879,6 +980,10 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows,
         reasons.append("Irish availability is confirmed by recorded evidence.")
     if price_state == "present-unverified":
         caveats.append("A published price is recorded but has not been verified.")
+    elif price_state == "quote-only":
+        # QUALIFICATION v2 — a published commercial state, not a gap. It is a
+        # reason, not a caveat: the supplier HAS told us how this is priced.
+        reasons.append("This product is priced by quotation, as the supplier publishes.")
     elif price_state == "missing":
         caveats.append("No usable price is recorded.")
     else:
@@ -897,28 +1002,54 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows,
     if org_ids:
         reasons.append(f"Supplier attribution is confirmed: {', '.join(n for n in org_names if n)}.")
 
-    # ---- tier ----
+    # ---- tier — UNCHANGED, AND DELIBERATELY SO -----------------------------
+    # QUALIFICATION v2 CALIBRATION, RECORDED SO IT IS NOT RE-ATTEMPTED BLIND.
+    # Separating PRODUCT EVIDENCE from PRICE and IRISH AVAILABILITY is right,
+    # and the price half of it ships in this batch. The PRODUCT half does not,
+    # because none of the signals this artefact carries can measure it:
+    #
+    #   source_level              only ever takes two values here (314
+    #                             product-level / 173 supplier-level), so the
+    #                             axis collapses to "has a Product URL". The 25
+    #                             URL-only Ecohouse records prove that is not
+    #                             product evidence.
+    #   featureValueCount         binary 0/1, and it is an Irish-availability
+    #                             proxy: fvc=0 <=> irishAvailability unknown,
+    #                             in all 487. Using it would leak availability
+    #                             straight back into the product axis.
+    #   contradiction             "none" for all 487 — contradictions are hard
+    #                             blockers, so they never reach this branch.
+    #   productEvidenceCompleteness  embeds Pricing (82% vs 30%) and
+    #                             Availability (62% vs 30%) — the same leak.
+    #   Evidence Scope = Product-Specific, counted per product, was tested as a
+    #                             fifth candidate: 56.8% of its variance is
+    #                             explained by WHICH ORGANISATION a product
+    #                             belongs to. Loghouse scores 3 on all 8
+    #                             products, Big Man 2 on all 4, Ecohouse 0.14
+    #                             across 29 — it measures which intake session
+    #                             populated the record, not the evidence. Oeco
+    #                             Soundproof, with a live configurator and a
+    #                             verified price, scores 0.
+    #
+    # A confidence axis built on any of these would rank suppliers by how
+    # thoroughly PlotNua happened to research them, and call it product
+    # evidence. The tier therefore stays exactly as it was until Atlas holds a
+    # field that measures product-specific evidence directly.
     strong_identity = bool(org_ids and name)
     if (ie_state == "confirmed" and price_state in ("verified", "present-unverified")
             and source_level in ("product-level", "supplier-level") and strong_identity):
         tier, status = "HIGH_CONFIDENCE", "ELIGIBLE — HIGH CONFIDENCE"
     elif source_level == "missing":
-        # FIX 3 — LIMITED EVIDENCE means the product evidence itself is weak,
-        # not that a price is absent. Price uncertainty and evidence
-        # confidence are separate concepts: a well-sourced product with no
-        # published price is WITH CAVEAT, and says so.
-        #
-        # The remaining evidence-based distinction available from the current
-        # structured data is whether Atlas holds ANY usable source for the
-        # product at any scope — no Product URL, no Sources text, no
-        # product-specific price evidence and no recorded evidence scope. If
-        # that population turns out to be empty, it stays empty. A tier is not
-        # filled to make a distribution look balanced.
         tier, status = "LIMITED_EVIDENCE", "ELIGIBLE — LIMITED EVIDENCE"
     else:
         tier, status = "WITH_CAVEAT", "ELIGIBLE — WITH CAVEAT"
 
-    return {"status": status, "confidenceTier": tier, "reasons": reasons,
+    return {"status": status, "confidenceTier": tier,
+            # PRICE AXIS ONLY. Additive, and nothing reads it yet: it makes the
+            # quote-only population visible in the artefact instead of hiding
+            # it inside "missing". It does not participate in the tier.
+            "priceEvidence": price_state,
+            "reasons": reasons,
             "caveats": caveats, "hardBlockers": [], "evidenceSignals": signals}
 
 
@@ -1126,7 +1257,9 @@ def main():
                 key = FEATURES_WANTED.get(fname.lower())
                 if not key:
                     continue
-                one = {"text": txt(cell(r, "Value Text")) or None,
+                # QUALIFICATION v2 — EXPORT HYGIENE. Rendered text only; the
+                # number, unit and scope are structural and untouched.
+                one = {"text": homeowner_text(cell(r, "Value Text")),
                        "number": cell(r, "Value Number"),
                        "unit": cell(r, "Unit"),
                        "evidenceScope": cell(r, "Evidence Scope")}
@@ -1164,7 +1297,8 @@ def main():
                 key = DETAIL_FEATURES_WANTED.get(fname.lower())
                 if not key:
                     continue
-                one = {"text": txt(cell(r, "Value Text")) or None,
+                # QUALIFICATION v2 — EXPORT HYGIENE, detail artefact.
+                one = {"text": homeowner_text(cell(r, "Value Text")),
                        "evidenceScope": cell(r, "Evidence Scope")}
                 conf = cell(r, "Confirmation State")
                 stat = cell(r, "Status")
@@ -1191,7 +1325,7 @@ def main():
             # that is the only attribution the schema supports. No URL parsing,
             # no per-field attribution, no invented relationship between a
             # source and a particular Feature Value.
-            src = txt(cell(p, "    Sources"))
+            src = homeowner_text(cell(p, "    Sources"))
             if src:
                 detail_products.setdefault(pid, {})[DETAIL_PROVENANCE_KEY] = {
                     "text": src, "evidenceScope": None}
@@ -1233,6 +1367,11 @@ def main():
                      if txt(cell(r, "Availability"))), None),
                 "noPublishedIrishRoute": bool(sig.get("noPublishedIrishRoute")),
                 "qualificationTier": q["confidenceTier"],
+                # PRICE AXIS, additive and currently unread. The key is
+                # priceEvidenceSTATE: `priceEvidence` is already taken by the
+                # structured price-record object set above, and overwriting it
+                # would destroy Product Detail's evidence.
+                "priceEvidenceState": q["priceEvidence"],
                 "qualificationCaveats": q["caveats"],
             })
             emitted.append(rec)
@@ -1241,6 +1380,11 @@ def main():
 
     tiers = {t: sum(1 for e in emitted if e["qualification"]["confidenceTier"] == t)
              for t in ("HIGH_CONFIDENCE", "WITH_CAVEAT", "LIMITED_EVIDENCE")}
+    # QUALIFICATION v2 — the price axis, counted in its own right so the
+    # quote-only population is visible rather than buried inside "missing".
+    price_axis = {s: sum(1 for e in emitted
+                         if e["qualification"]["evidenceSignals"]["price"] == s)
+                  for s in ("verified", "present-unverified", "quote-only", "missing")}
     ie = {s: sum(1 for e in emitted + excluded
                  if e["qualification"]["evidenceSignals"]["irishAvailability"] == s)
           for s in ("confirmed", "unknown", "unavailable")}
@@ -1282,8 +1426,12 @@ def main():
         "confirmedUnavailableCount": ie["unavailable"],
         "unclassifiedIrishAvailabilityCount": unclassified_ie,
         "noPublishedIrishRouteCount": no_route_count,
-        "missingPriceCount": sum(1 for e in emitted
-                                 if e["qualification"]["evidenceSignals"]["price"] == "missing"),
+        "missingPriceCount": price_axis["missing"],
+        # QUALIFICATION v2 — the price axis reported separately from product
+        # evidence. quote-only is a published commercial state and is counted
+        # as such; it is no longer folded into "missing".
+        "priceEvidenceSummary": price_axis,
+        "quoteOnlyPriceCount": price_axis["quote-only"],
         "missingProductUrlCount": sum(1 for e in emitted + excluded
                                       if not e.get("productUrl")),
         "products": emitted,
