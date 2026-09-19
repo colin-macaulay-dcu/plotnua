@@ -453,7 +453,22 @@ with tempfile.TemporaryDirectory() as td:
     print("\n--- the guard must be able to fail: reintroduce the exact bug ---")
     broken = td / "broken_generator.py"
     text = GEN.read_text(encoding="utf-8")
-    hit = '            src = txt(cell(p, "    Sources"))'
+    # THE LOCATOR IS THE PROVENANCE READ, NOT THE LINE AROUND IT.
+    #
+    # This used to search for the whole assignment, `src = txt(cell(p, "
+    # Sources"))`. Qualification Batch 1 wrapped that read in homeowner_text()
+    # instead of txt() — a legitimate change to what happens to the value,
+    # which did not touch the provenance read at all — and the literal stopped
+    # matching. The guard then reported "not uniquely locatable" and failed the
+    # refresh, while the protection it exists to test was completely intact.
+    #
+    # Anchoring on `cell(p, "    Sources")` fixes that permanently: it is
+    # exactly the expression the original NameError corrupted, it appears once
+    # in the file, and it survives any future change to how the value is
+    # cleaned, formatted or stored. The mutation below is unchanged — `p`
+    # becomes `product`, which is undefined in main(), and the generator must
+    # still die with the identical production NameError.
+    hit = 'cell(p, "    Sources")'
     if text.count(hit) != 1:
         ck("the provenance line is uniquely locatable for the negative test",
            False, text.count(hit))
