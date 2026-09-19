@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-11T11:16:46Z",
+  "generated": "2026-09-19T22:55:17Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "bestFor"
@@ -385,7 +385,7 @@
     },
     "reckmUiP9cOyZqvWX": {
       "bestFor": {
-        "text": "AN OUTDOOR-LIVING PAVILION WITH A LARGE COVERED AREA \u2014 AND THE CLEAREST EXAMPLE IN THE CATALOGUE OF WHY INTERNAL AREA MUST NEVER BE USED FOR THE PLANNING TEST. The published figures do not reconcile as a rectangle: 850 \u00d7 450 cm is 38.25 m2 EXTERNALLY against a 19.01 m2 enclosed floor, so ROUGHLY HALF THE ENVELOPE IS OPEN OR COVERED OUTDOOR SPACE, and Lasita does not itemise the split. ON THE ACTUAL ENVELOPE THIS BUILDING EXCEEDS the 30 m2 combined back-garden allowance outright, before any existing shed is counted. NAMING INTEGRITY: the '10' is a MODEL DESIGNATOR, NOT AN AREA \u2014 the floor is 19.01 m2, nearly double it. HOMEOWNER IMPLICATION: read 19.01 m2 and you would assume comfortable exemption; on the real structure it is not exempt at all.",
+        "text": "AN OUTDOOR-LIVING PAVILION WITH A LARGE COVERED AREA \u2014 AND THE CLEAREST EXAMPLE IN THE CATALOGUE OF WHY INTERNAL AREA MUST NEVER BE USED FOR THE PLANNING TEST. The published figures do not reconcile as a rectangle: 850 \u00d7 450 cm is 38.25 m2 EXTERNALLY against a 19.01 m2 enclosed floor, so ROUGHLY HALF THE ENVELOPE IS OPEN OR COVERED OUTDOOR SPACE, and Lasita does not itemise the split. ON THE ACTUAL ENVELOPE THIS BUILDING EXCEEDS the 30 m2 combined back-garden allowance outright, before any existing shed is counted. the '10' is a MODEL DESIGNATOR, NOT AN AREA \u2014 the floor is 19.01 m2, nearly double it. HOMEOWNER IMPLICATION: read 19.01 m2 and you would assume comfortable exemption; on the real structure it is not exempt at all.",
         "evidenceScope": "Product-Specific"
       }
     },
