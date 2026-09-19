@@ -687,6 +687,39 @@
     .hc-savebtn{width:100%;}
   }
 
+
+/* --- V2 · result continuation and the Hidden Cars brief -------------------
+   No new colour, no new font. Everything below reuses tokens the page
+   already defines, because this is a continuation of the result, not a
+   different kind of surface. */
+.hc-next, .hc-brief{ max-width:760px; margin:0 auto; padding:34px 0 6px; }
+.hc-next-h{ font-family:'Fraunces',Georgia,serif; font-weight:600;
+  font-size:clamp(20px,2.4vw,26px); line-height:1.3; margin:10px 0 12px; }
+.hc-next-lede{ color:var(--soft); font-size:15.5px; line-height:1.75;
+  max-width:60ch; margin-bottom:22px; }
+.hc-next-note{ color:var(--soft); font-size:13.5px; line-height:1.7;
+  max-width:60ch; margin-top:14px; opacity:.9; }
+.hc-next-list{ display:grid; gap:10px; margin-bottom:24px; }
+.hc-next-item{ border:1px solid rgba(31,59,46,.12); border-left:2px solid rgba(31,59,46,.26);
+  background:var(--paper); padding:16px 18px; border-radius:2px; }
+.hc-next-item .hc-next-name{ display:block; font-size:10px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--soft); margin-bottom:7px; }
+.hc-next-item .hc-next-line{ display:block; font-size:15px; line-height:1.7; color:var(--ink); }
+.hc-next-item .hc-next-why{ display:block; font-size:13.5px; line-height:1.65;
+  color:var(--soft); margin-top:7px; }
+.hc-brief-open{ margin-top:4px; }
+.hc-brief-grp{ margin-bottom:24px; }
+.hc-brief-grp h4{ font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--soft); margin-bottom:10px; font-weight:500; }
+.hc-brief-grp ul{ list-style:none; padding:0; margin:0; }
+.hc-brief-grp li{ font-size:15px; line-height:1.75; color:var(--ink);
+  padding:7px 0; border-bottom:1px solid rgba(31,59,46,.07); }
+.hc-brief-grp li:last-child{ border-bottom:none; }
+.hc-brief-grp li span{ color:var(--soft); }
+@media print{
+  .hc-next, .pc-saveband, .hc-drawer, .hc-foot{ display:none !important; }
+  .hc-brief{ display:block !important; }
+}
 </style>
 <style>
   /* ============================================================
@@ -785,6 +818,28 @@
     <div class="hc-res is-three" id="hcFindings"></div>
     <hr class="hc-sep" id="hcSep">
     <div id="hcContext"></div>
+
+    <section class="hc-next" id="hcNext" hidden>
+      <p class="hc-eyebrow">From here</p>
+      <h3 class="hc-next-h">What could you investigate from here?</h3>
+      <p class="hc-next-lede">These are routes to understand, taken from what you have just
+        told us. They are not recommendations, they are not ranked, and none of them is a
+        finding that the route would work at your property.</p>
+      <div class="hc-next-list" id="hcNextList"></div>
+      <button class="pc-cta hc-brief-open" type="button" id="hcBriefOpen">Build your Hidden Cars brief</button>
+      <p class="hc-next-note">It stays in this browser. Nothing is sent anywhere, and PlotNua
+        does not pass your answers to anybody.</p>
+    </section>
+
+    <section class="hc-brief" id="hcBrief" hidden>
+      <p class="hc-eyebrow">Prepare</p>
+      <h3 class="hc-next-h">Your Hidden Cars brief</h3>
+      <p class="hc-next-lede">You have already told PlotNua several of the things a specialist
+        would need to understand. This brings them together so you can take them with you.</p>
+      <div id="hcBriefBody"></div>
+      <p class="hc-next-note">PlotNua does not send this to anyone. Print it, or keep the
+        result in My Plot and come back to it.</p>
+    </section>
 
     <div class="hc-save pc-saveband">
       <div class="hc-saveinner pc-saveinner">
@@ -1747,8 +1802,9 @@ if (typeof globalThis !== 'undefined') globalThis.PlotNuaDisc022Check = DISC022;
       'We have not verified an Irish installed price. Every installer here quotes after a survey, ' +
       'and we are not going to invent a range.',
     market_no_verified_irish_automated_route:
-      'Fully automated parking &mdash; the kind that moves and returns a car for you &mdash; has no ' +
-      'verified Irish residential route at all, so this check does not assess it.'
+      'Fully automated parking &mdash; the kind that moves and returns a car for you &mdash; is ' +
+      'available through suppliers serving Ireland, but PlotNua has not verified a completed ' +
+      'automated installation at a private home in Ireland, so this check does not assess it.'
   };
 
   /* --- flow ---------------------------------------------------------------- */
@@ -1910,8 +1966,173 @@ if (typeof globalThis !== 'undefined') globalThis.PlotNuaDisc022Check = DISC022;
       '<p>It holds equipment evidence, not evidence about your site. Where the two differ, ' +
       'this check says so rather than filling the gap.</p>';
 
+    renderNext();
     mountSave();
     show('hcReveal');
+  }
+
+  /* --- V2 · RESULT CONTINUATION AND THE HIDDEN CARS BRIEF ------------------
+     READ-ONLY over the engine. Nothing here can change lastEval, a posture, a
+     physical finding or a headline — it only re-describes them as things worth
+     understanding. The word "recommend" appears nowhere by design, and the
+     builder's firewall fails if it ever does. */
+
+  var ROUTE_NAME = {
+    STACK:       'Parking stacker',
+    CONCEAL:     'Concealed lift',
+    UNDERGROUND: 'Underground garage'
+  };
+
+  var ROUTE_WHAT = {
+    STACK:       'One car above another, within the space you already park on.',
+    CONCEAL:     'A car lowered below the surface, with paving closing over it.',
+    UNDERGROUND: 'Parking built beneath the property, reached by a lift.'
+  };
+
+  /* Posture -> what it is reasonable to say about investigating. Deliberately
+     about the STATE OF KNOWLEDGE, never about whether it would work. */
+  var ROUTE_LINE = {
+    OPEN:        'Nothing you have told us stands in the way of understanding this one first.',
+    CONDITIONAL: 'Worth understanding, with the conditions above attached to it.',
+    PENDING:     'Cannot be placed yet. The answers above would need filling in first.'
+  };
+
+  function nextItem(name, what, line, why) {
+    var el = document.createElement('div');
+    el.className = 'hc-next-item';
+    var h = '<span class="hc-next-name">' + name + '</span>' +
+            '<span class="hc-next-line">' + what + '</span>' +
+            '<span class="hc-next-why">' + line + '</span>';
+    if (why) h += '<span class="hc-next-why">' + why + '</span>';
+    el.innerHTML = h;
+    return el;
+  }
+
+  function renderNext() {
+    var box = $('hcNext'), list = $('hcNextList');
+    if (!box || !list) return;
+    list.innerHTML = '';
+
+    /* An early exit assessed nothing, so there is nothing to continue from. */
+    if (!lastEval || lastEval.kind === 'early_exit') { box.hidden = true; return; }
+
+    ENG.RESULTS.forEach(function (key) {
+      var r = lastEval.results.filter(function (x) { return x.key === key; })[0];
+      if (!r) return;
+      list.appendChild(nextItem(ROUTE_NAME[key], ROUTE_WHAT[key],
+                                ROUTE_LINE[r.posture] || ''));
+    });
+
+    /* Movement solutions are explained in the Discovery and are NOT assessed by
+       this check. Saying so is more honest than leaving the homeowner to assume
+       the three above are the whole field. */
+    list.appendChild(nextItem(
+      'Moving the car',
+      'Turntables and lateral platforms move a car around rather than up.',
+      'This check does not assess movement solutions.',
+      'The Discovery explains where they can matter more than capacity.'));
+
+    box.hidden = false;
+  }
+
+  /* --- the brief ---------------------------------------------------------- */
+
+  var ANSWER_SAY = {
+    tenure: {
+      own:    'You own the property.',
+      rent:   'You rent, so the owner would have to agree to any of this.',
+      buying: 'You are buying, so this sits behind the purchase.'
+    },
+    parking_today: {
+      none:             'There is no off-street parking space today.',
+      one:              'There is one off-street space today.',
+      two_tandem:       'Two cars park today, one behind the other.',
+      two_side_by_side: 'Two cars park today, side by side.'
+    },
+    working_room: {
+      room_around:  'There is room around the car as well as under it.',
+      just_the_car: 'The space takes the car and not much else.',
+      tight:        'The space is tight.',
+      not_sure:     'You were not sure how much working room there is.'
+    },
+    ground_level: {
+      level:                  'The ground is level.',
+      slopes_down_from_road:  'The ground falls away from the road.',
+      slopes_up_from_road:    'The ground rises from the road.',
+      not_sure:               'You were not sure about the fall of the ground.'
+    },
+    ground_below: {
+      nothing_known:  'You know of nothing buried under the parking area.',
+      services_below: 'There are services under the parking area.',
+      wet_or_floods:  'The ground is wet, or it floods.',
+      not_sure:       'You were not sure what is under the surface.'
+    }
+  };
+
+  var STILL_TO_ESTABLISH = [
+    'Accurate dimensions of the space, measured rather than estimated.',
+    'The vehicles themselves &mdash; length, width, height and weight.',
+    'Buried services: water, gas, electricity, drainage, telecoms.',
+    'Ground conditions, and what the ground can carry.',
+    'Groundwater and how the site drains.',
+    'What any structure would bear on, or tie into.',
+    'The electrical supply the system would need.',
+    'The planning position for this specific proposal at this address.',
+    'Access for installation plant, not just for a car.',
+    'Servicing and maintenance, and who does it.'
+  ];
+
+  function briefGroup(title, items) {
+    var el = document.createElement('div');
+    el.className = 'hc-brief-grp';
+    var h = '<h4>' + title + '</h4><ul>';
+    items.forEach(function (t) { h += '<li>' + t + '</li>'; });
+    el.innerHTML = h + '</ul>';
+    return el;
+  }
+
+  function renderBrief() {
+    var body = $('hcBriefBody');
+    if (!body || !lastEval || lastEval.kind === 'early_exit') return;
+    body.innerHTML = '';
+
+    var prop = [];
+    ENG.QUESTIONS.forEach(function (q) {
+      var say = ANSWER_SAY[q.id] && ANSWER_SAY[q.id][answers[q.id]];
+      if (say) prop.push(say);
+    });
+    body.appendChild(briefGroup('Your property, as you described it', prop));
+
+    var found = lastEval.results.map(function (r) {
+      return '<span>' + ROUTE_NAME[r.key] + '</span> &mdash; ' +
+             (HEADLINE[r.headline] || '') + ' ' +
+             '<span>(' + (POSTURE_LABEL[r.posture] || r.posture) + ')</span>';
+    });
+    body.appendChild(briefGroup('What PlotNua found', found));
+
+    var poss = lastEval.results.map(function (r) {
+      return '<span>' + ROUTE_NAME[r.key] + '</span> &mdash; ' +
+             (ROUTE_LINE[r.posture] || '');
+    });
+    poss.push('<span>Moving the car</span> &mdash; not assessed by this check.');
+    body.appendChild(briefGroup(
+      'Possibilities worth understanding (not recommendations)', poss));
+
+    body.appendChild(briefGroup('Still to establish', STILL_TO_ESTABLISH));
+  }
+
+  var briefBtn = $('hcBriefOpen');
+  if (briefBtn) {
+    briefBtn.addEventListener('click', function () {
+      renderBrief();
+      var b = $('hcBrief');
+      if (b) { b.hidden = false; b.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      try {
+        if (typeof gtag === 'function') {
+          gtag('event', 'hidden_cars_brief_open', { journey: 'disc022-hidden-cars-check' });
+        }
+      } catch (e) {}
+    });
   }
 
   /* --- save — the existing contract, unchanged ----------------------------- */
@@ -1973,6 +2194,30 @@ if (typeof globalThis !== 'undefined') globalThis.PlotNuaDisc022Check = DISC022;
    * calls, so the flow, the engine and every downstream state are identical
    * whichever way the homeowner arrived. A direct visit to the bare URL still
    * meets the intro, because nothing else has introduced the check to them. */
+  /* --- V2 · arriving from My Plot, straight to the brief -------------------
+     The record is DATA, never instructions and never markup. Its answers go to
+     the frozen engine, which validates them and throws on anything outside its
+     own vocabulary, so a tampered store cannot manufacture a result. Any
+     failure falls through to the ordinary opening screen. */
+  if (/(?:^|[?&])brief=1(?:&|$)/.test(location.search.replace(/^\?/, '?'))) {
+    try {
+      var api = window.PlotNuaJourneySave;
+      var rec = api && api.list ? api.list().filter(function (r) {
+        return r && r.journeyId === JOURNEY_ID;
+      })[0] : null;
+      if (rec && rec.answers) {
+        /* copy only the five keys the engine declares — never the record wholesale */
+        var restored = {};
+        ENG.QUESTIONS.forEach(function (q) { restored[q.id] = rec.answers[q.id]; });
+        ENG.decide(restored);            /* throws on anything unrecognised */
+        QUESTIONS.forEach(function (q) { answers[q.var] = restored[q.var]; });
+        reveal();
+        var btn = $('hcBriefOpen');
+        if (btn) btn.click();
+      }
+    } catch (e) { /* stale or tampered record: the ordinary start is correct */ }
+  }
+
   if (/(?:^|[?&])start=1(?:&|$)/.test(location.search.replace(/^\?/, '?'))) {
     advance();
   }

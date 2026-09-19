@@ -16209,6 +16209,17 @@
      Each pairing was proved from the Discovery side before it was
      written: every page below links exactly one Property Check, and it
      is the one this map sends the homeowner back from. */
+  /* THE BRIEF. A third destination, and the only one that is not a page in
+     its own right: it is the saved check, reopened at the point where it
+     gathers what the homeowner already told us into something they can take
+     to a specialist. Only Hidden Cars has one, so only Hidden Cars is listed.
+
+     Same discipline as the two maps around it: the destination is written
+     HERE, chosen by journeyId, never read from the record. */
+  const MYPLOT_JOURNEY_BRIEF = {
+    'disc022-hidden-cars-check': 'disc022-hidden-cars-check.html?brief=1',
+  };
+
   const MYPLOT_JOURNEY_DISCOVERY = {
     'disc014-driveway-income': 'discovery-driveway-income.html',
     'disc026-power-station': 'discovery-house-as-power-station.html',
@@ -16558,6 +16569,19 @@
         d.setAttribute('href', dhref);
         d.textContent = 'View the Discovery \u2192';
         actions.appendChild(d);
+      }
+
+      /* THE BRIEF. Offered only where one exists AND the kept record still
+         carries the answers it is built from. The href comes from the map
+         above, chosen by journeyId; nothing about the destination is read
+         from the record. */
+      const bhref = MYPLOT_JOURNEY_BRIEF[rec.journeyId] || null;
+      if (bhref && rec.answers && Object.keys(rec.answers).length) {
+        const bl = document.createElement('a');
+        bl.className = 'mp-jopen is-quiet';
+        bl.setAttribute('href', bhref);
+        bl.textContent = 'Open your brief \u2192';
+        actions.appendChild(bl);
       }
 
       /* REMOVE. One record, by journeyId. It touches nothing else: saved
