@@ -10501,6 +10501,35 @@
      disagreeing derivation. */
   window.__PN_INTENDED_USE__ = intendedUse;
 
+  /* GARDEN ROOM FUNNEL ANALYTICS v1 — observational, consent-safe.
+     Same primitive as the nine Property Checks: a no-op unless gtag is
+     callable, so with no statistics consent nothing is sent and the journey
+     is unaffected. Reads the route state DERIVED ABOVE rather than the URL.
+     Emits only for garden-room; residential emits nothing by design. */
+  window.PlotNuaGardenRoomFunnel = (function () {
+    var fired = {};
+    function on() { return window.__PN_INTENDED_USE__ === 'garden-room'; }
+    function send(name) {
+      if (!on()) return false;
+      try {
+        if (typeof gtag === 'function') gtag('event', name, { journey: 'garden-room' });
+      } catch (e) {}
+      return true;
+    }
+    function once(name) {
+      if (fired[name]) return false;
+      fired[name] = true;
+      return send(name);
+    }
+    return {
+      start:   function () { if (!fired['property_check_complete']) once('property_check_start'); },
+      done:    function () { once('property_check_complete'); },
+      saved:   function () { send('product_save'); },
+      failed:  false,
+      _fired:  fired
+    };
+  })();
+
   function applyDiscoveryContextCopy(){
     if (!discoveryContext) return;
     const content = DISCOVERY_CONTENT[discoveryContext];
@@ -10700,6 +10729,15 @@
 
   function showScreen(el){
     syncFallbackNoteVisibility(el);
+    /* First genuine arrival at Garden Room Results. Once per load, so a
+       re-render or a back/forward return cannot re-count it, and never
+       from the Atlas load-failure state. */
+    try {
+      if (el === els.matchResultsScreen && window.PlotNuaGardenRoomFunnel
+          && !window.PlotNuaGardenRoomFunnel.failed) {
+        window.PlotNuaGardenRoomFunnel.done();
+      }
+    } catch (e) {}
     // RESULTS R1.2: read BEFORE currentScreenEl is reassigned below, so
     // this only ever fires on the actual Results→elsewhere transition —
     // never on Results→Results (recompute) or any transition that never
@@ -18756,6 +18794,7 @@
       if (nowSaved) {
         savedProductIds.add(product.id);
         recordSaveProvenance(product);
+    try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.saved(); } catch (e) {}
       } else {
         savedProductIds.delete(product.id);
         savedMeta.delete(product.id);
@@ -26816,7 +26855,8 @@
     syncSaveBtn();
     saveBtn.addEventListener('click', () => {
       const nowSaved = !savedProductIds.has(product.id);
-      if (nowSaved) { savedProductIds.add(product.id); recordSaveProvenance(product); }
+      if (nowSaved) { savedProductIds.add(product.id); recordSaveProvenance(product);
+    try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.saved(); } catch (e) {} }
       else { savedProductIds.delete(product.id); savedMeta.delete(product.id); }
       syncSaveBtn();
       updateMyPlotAccess();
@@ -29902,6 +29942,7 @@
       evidence: myPlotEvidenceSummary(p),
     });
     savedProductIds.add(productId);
+    try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.saved(); } catch (e) {}
     renderMyPlotSavedList();
     updateMyPlotAccess();
     updateCompareVisibility();
@@ -30435,6 +30476,10 @@
   }
 
   function showAtlasLoadFailure(){
+    /* A journey that produced no result is not a completion. Set before
+       this function's own showScreen() call, which is why the emitter
+       below sees it. Narrow and structural, not a general framework. */
+    try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.failed = true; } catch (e) {}
     // #matchResultsPanel was never in the els registry — nothing needed it
     // until this failure path, and reading the undefined entry made the
     // whole function return before rendering anything.
@@ -31751,6 +31796,9 @@
 
   function selectMatchOption(field, value, btnEl){
     matchState[field] = value;
+    /* The first substantive decision. Eircode entry is property setup and
+       is deliberately NOT counted. */
+    try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.start(); } catch (e) {}
     // PATCH 1A — EVIDENCE MODEL FOUNDATION: additive only, see
     // recordDiscoveryEvidence() above — does not affect matchState,
     // selection styling or step-advance logic below.
@@ -32202,7 +32250,9 @@
         const syncFound = () => { saveBtn.textContent = savedProductIds.has(pp2.id) ? 'Saved to My Plot ✓' : 'Save to My Plot'; };
         syncFound();
         saveBtn.addEventListener('click', () => {
-          if (savedProductIds.has(pp2.id)) savedProductIds.delete(pp2.id); else savedProductIds.add(pp2.id);
+          if (savedProductIds.has(pp2.id)) { savedProductIds.delete(pp2.id); }
+          else { savedProductIds.add(pp2.id);
+    try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.saved(); } catch (e) {} }
           syncFound();
           renderMyPlotSavedList();
           updateMyPlotAccess();
