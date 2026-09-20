@@ -1,6 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8a5219c1-0f84-4a7e-9c17-d22fab76adc1" data-blockingmode="auto" type="text/javascript"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PKKJ0RK6N8');
+</script>
+
+<script>
+/* PLOTNUA FUNNEL ANALYTICS v1 — three anonymous funnel events.
+   Consent-identical to every other PlotNua page: Cookiebot loads first in
+   auto blocking mode, so with no statistics consent gtag never sends.
+   pnTrack is a no-op in that case and the journey is unaffected either way.
+
+   The journey is identified by the page's own filename. No answers, no
+   result, no Eircode, no address, no name, no email, no My Plot contents and
+   no product or supplier selection is read here or sent anywhere. */
+window.PlotNuaFunnel = (function () {
+  var fired = {};
+  function journey() {
+    try {
+      var f = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+      return f || 'unknown';
+    } catch (e) { return 'unknown'; }
+  }
+  function track(name) {
+    if (fired[name]) return false;          /* once per page load, by contract */
+    fired[name] = true;
+    try {
+      if (typeof gtag === 'function') gtag('event', name, { journey: journey() });
+    } catch (e) {}
+    return true;
+  }
+  return {
+    start:    function () { if (!fired['property_check_complete']) track('property_check_start'); },
+    complete: function () { track('property_check_complete'); },
+    saved:    function () { track('my_plot_save'); },
+    _fired:   fired
+  };
+})();
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
@@ -1149,6 +1194,7 @@ if (typeof module !== 'undefined' && module.exports) {
     d.journeys = keep;
     d.updatedAt = new Date().toISOString();
     try { store.setItem(KEY, JSON.stringify(d)); } catch (e) { return 'unavailable'; }
+    try { if (window.PlotNuaFunnel) window.PlotNuaFunnel.saved(); } catch (e) {}
     return 'saved';
   }
 
@@ -1156,6 +1202,9 @@ if (typeof module !== 'undefined' && module.exports) {
      Mounted by the journey only AFTER its reveal. This block never decides
      when a result exists; it only knows how to keep one. */
   function mount(cfg) {
+    /* The journey calls mount() only AFTER its reveal, in all nine
+       Property Checks. That makes it the one uniform completion signal. */
+    try { if (window.PlotNuaFunnel) window.PlotNuaFunnel.complete(); } catch (e) {}
     var btn = document.getElementById(cfg.buttonId);
     var note = document.getElementById(cfg.noteId);
     /* THE ROUTE ONWARD, hidden until there is something at the other end.
@@ -1714,6 +1763,7 @@ if (typeof module !== 'undefined' && module.exports) {
                     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
   function show(id){
+    try { if (window.PlotNuaFunnel) window.PlotNuaFunnel.start(); } catch (e) {}
     ['arIntro','arQ','arReveal'].forEach(function(s){
       $(s).classList.toggle('is-on', s === id);
     });
