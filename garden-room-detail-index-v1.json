@@ -1,35 +1,35 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail.index",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-11T11:16:46Z",
+  "generated": "2026-09-19T22:55:17Z",
   "partitions": [
     {
       "category": "alternatives",
       "file": "garden-room-detail-alternatives-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 422892
+      "rawBytes": 416454
     },
     {
       "category": "bestFor",
       "file": "garden-room-detail-bestfor-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 331923
+      "rawBytes": 331905
     },
     {
       "category": "considerations",
       "file": "garden-room-detail-considerations-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 389253
+      "rawBytes": 388618
     },
     {
       "category": "planningConsiderations",
       "file": "garden-room-detail-planningconsiderations-v1.json",
       "productCount": 462,
       "recordCount": 462,
-      "rawBytes": 489719
+      "rawBytes": 478303
     },
     {
       "category": "strengths",
