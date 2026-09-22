@@ -1,34 +1,16 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-19T22:55:17Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "strengths"
   ],
-  "productCount": 462,
+  "productCount": 431,
   "recordCounts": {
-    "strengths": 462
+    "strengths": 431
   },
   "products": {
-    "rec6erGeW5wf5SDgT": {
-      "strengths": {
-        "text": "IT IS THE BEST-POSITIONED SIZE IN THE CATALOGUE FOR THE CLASS 3A ROUTE. 33.00 m2 is above the 32 m2 minimum and well below the 45 m2 maximum, so minor variation in the as-built figure will not push it out of the band \u2014 which cannot be said of the 45 m2 model. A ONE-BEDROOM LAYOUT IS ALSO THE COMMON REQUIREMENT for an elderly parent or a single adult, making this the range's mainstream product rather than an edge case. THE AREA IS PUBLISHED AND VERIFIED. NOT ESTABLISHED: no height, U-value, warranty, price, room dimensions or specification detail is published for this product.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recZojzhYoRcierlv": {
-      "strengths": {
-        "text": "IT EXTRACTS THE MAXIMUM PERMITTED SPACE FROM THE 2026 PROVISION. 45.00 m2 is 12 m2 more than the 1 Bed and, unlike the 48 m2 model, it remains inside the qualifying band \u2014 a well-judged product position. THE ONE-OR-TWO-BEDROOM FLEXIBILITY is a real advantage at this size: the same shell can house a couple or a parent with a visiting family, which materially widens who the building works for. THE AREA IS PUBLISHED IN THE PRODUCT NAME AND VERIFIED in the certified layers. NOT ESTABLISHED: no height, U-value, warranty, price or room dimensions are published, so the two layouts cannot be compared on evidence.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPodhux5TC0rg39": {
-      "strengths": {
-        "text": "IT IS THE LARGEST HABITABLE UNIT IN THE RANGE AND THE ONLY UNAMBIGUOUS TWO-BEDROOM ONE. Where the 45 m2 model offers one or two bedrooms within a fixed shell, this is designed for two, which matters to a household housing a couple with a child or two adults who each need a room. ONCE FULL PLANNING IS ACCEPTED AS THE ROUTE, the Class 3A ceiling stops constraining the design at all \u2014 the 3 m2 overrun costs nothing further. THE AREA IS PUBLISHED AND VERIFIED. NOT ESTABLISHED: no height, U-value, warranty, price or room dimensions are published.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recpZW4echDhHtEVv": {
       "strengths": {
         "text": "PURPOSE-BUILT FOR SAUNA USE, AS WITH THE REST OF THE RANGE \u2014 a cabin designed around heat, steam and ventilation rather than a general garden building adapted to it. That specialism is the one established advantage. NOTHING FURTHER IS ESTABLISHED, AND THAT INCLUDES ANY ADVANTAGE OVER THE QUU: no floor area, footprint, height, wall build-up, heater specification, warranty term, installation scope or price is held for the Aurea, and no distinction between the two Auroom models has been drawn from the model names or from brand positioning. WHAT HAS DELIBERATELY NOT BEEN DONE: with two undifferentiated records, it would be easy to present one as the premium option. Nothing supports that. HOMEOWNER IMPLICATION: ask Auroom directly what separates the Aurea from the Quu \u2014 size, heater, timber, glazing and price \u2014 because Atlas records no difference at all.",
@@ -218,12 +200,6 @@
     "recK8PQar4pJiEW29": {
       "strengths": {
         "text": "50-year structural warranty, the longest in Atlas. 100mm galvanised box steel frame with 100mm insulated floor, walls and roof \u2014 a maintenance-free envelope with no timber to treat. Aluminium plate cladding, aluminium Low-E tempered double glazing and SPC flooring standard. Wired and plumbed, ready for connection, which is a step beyond the wired-shell specification on the smaller cabins in the range. 25m\u00b2 delivered factory-finished.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPirZWLtauzxACc": {
-      "strengths": {
-        "text": "Best cost per square metre in the Concept Modular range at roughly EUR 1,481/m\u00b2, and EUR 11,250 less than the 25m\u00b2 cabin despite being a square metre larger. 50-year structural warranty, the longest in Atlas. 100mm galvanised box steel frame with 100mm insulated floor, walls and roof; aluminium plate cladding, aluminium Low-E tempered double glazing, SPC flooring. Wired with smart-home technology. 26m\u00b2 is enough for a studio with a distinct working and living zone.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -830,24 +806,6 @@
     "rechdMnIn9PcHJI1U": {
       "strengths": {
         "text": "HAVING TWO MODELS IN A DESIGN-LED LINE MEANS THE LINE IS A REAL PRODUCT FAMILY rather than a one-off showpiece, which matters for parts, support and the likelihood that it stays in production. FOR A BUYER COMMITTING TO AN ARCHITECTURAL GARDEN BUILDING, that continuity has value. NOT ESTABLISHED: no audited area, dimensions, height, roof form, glazing or insulation specification, warranty or price is held, and no recorded difference from the Modern Art 1 \u2014 so no advantage over it has been claimed, including on size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recChE87PRdyLZxNe": {
-      "strengths": {
-        "text": "THE RANGE IS ORGANISED BY BEDROOM COUNT, WHICH IS THE RIGHT ORGANISING PRINCIPLE FOR HABITABLE BUILDINGS \u2014 a buyer housing one person can identify the relevant product immediately. That clarity of purpose is the one established advantage. NOTHING ELSE IS ESTABLISHED: no floor area, dimensions, height, construction system, insulation value, warranty, installation scope or price is held in Atlas, and no superiority over the Studio or Two-Bedroom Annexe has been inferred from the bedroom count alone.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "reciTMB2ldkUYNzib": {
-      "strengths": {
-        "text": "THE NAMING IS HONEST: calling the product an annexe rather than a studio tells a buyer immediately that this is habitable accommodation, which puts them on the correct regulatory track from the outset. Several products in this catalogue obscure the same fact. NOTHING ELSE IS ESTABLISHED \u2014 no floor area, dimensions, height, wall build-up, insulation value, glazing, warranty, installation scope or price is held in Atlas, and nothing has been inferred from the supplier's name or from the annexe category.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recVMDB49pKVr2Kpj": {
-      "strengths": {
-        "text": "IT COMPLETES A COHERENT LADDER: studio, one bedroom, two bedrooms. A supplier that organises its range by occupancy is answering the question a habitable-building buyer actually asks, and this is the top of that ladder \u2014 the only option here for more than one occupant. NOTHING ELSE IS ESTABLISHED: no floor area, dimensions, height, construction system, insulation value, glazing, warranty, installation scope or price is held in Atlas. No advantage over the smaller annexes has been inferred beyond the additional bedroom the name states.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1481,66 +1439,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recX6ppza7by2keWQ": {
-      "strengths": {
-        "text": "FIVE STRENGTHS. ONE, UNIQUE TO THIS MODEL: the certified thermal layer records the Signature 28 as the smallest of the ten and the ONLY ONE in the Collection that sits under the 30 m2 back-garden threshold held in this Atlas \u2014 which makes it the only model in the range where the exemption question is even worth asking. TWO: HEATING INCLUDED AS STANDARD. Only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell; here that means electric heating and LED lighting throughout, plus a fitted kitchen with integrated appliances and a full bathroom, at one price with 'no staged extras'. THREE: FULL-HEIGHT SLIDING DOORS and double glazing are published as part of the specification \u2014 a specific, checkable feature rather than a general claim. FOUR: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for 30+ years; the smallest model carries exactly the term the largest does. FIVE: TURNKEY DELIVERY at a published entry point of GBP 32,800 for the Collection. HOMEOWNER IMPLICATION: the most complete small building in the catalogue \u2014 heated, fitted and plumbed on arrival.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmp0a0V2RFcQ4s7": {
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD \u2014 the certified thermal layer records that only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell. Electric heating and LED lighting throughout, plus a fitted kitchen and full bathroom, at one price with 'no staged extras'. TWO: the specification does not thin out at the small end of the Collection \u2014 the supplier states the Signature models share 'the same steel frame and turnkey finish', so this model carries the same standing seam roof, composite cladding, double glazing and full fit-out as the largest. THREE: a 10-YEAR STRUCTURAL WARRANTY, published company-wide and recorded in the certified AM-004 layer as covering buildings 'built to last 30+ years with minimal maintenance using materials selected for Irish and UK weather'. The certified layer draws the distinction precisely: TEN YEARS IS THE OBLIGATION, 30+ YEARS IS THE EXPECTATION \u2014 two different kinds of statement. FOUR: TURNKEY DELIVERY, built offsite and installed in days, from a Collection entry point of GBP 32,800. HOMEOWNER IMPLICATION: a complete small building, with a warranty term that meets the market norm.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recOH15fQUsuYeDW6": {
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD. The certified thermal layer records that only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell \u2014 electric heating and LED lighting throughout, plus a fitted kitchen and full bathroom, at one price with 'no staged extras'. Every other insulated supplier in the catalogue hands over a shell. TWO: TURNKEY INSTALLATION, built offsite and delivered and installed in days \u2014 at the smaller end of this Collection that means a complete, serviced building arriving with minimal site work. THREE: a 10-YEAR STRUCTURAL WARRANTY, published company-wide and therefore applying to this model exactly as it does to the largest, on a light gauge steel frame engineered for 30+ years. FOUR: STEEL FRAME construction removes rot and insect attack as failure modes \u2014 the reason a 30+ year engineered life can be offered at all. HOMEOWNER IMPLICATION: for a buyer who wants a small annexe finished to a single price rather than a shell to fit out, the completeness of this package is genuinely unusual in the catalogue.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxOmZUOZT0pmY2u": {
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD. The certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers in this entire Atlas layer that sell a heated building rather than an unheated shell \u2014 electric heating, LED lighting throughout, a fitted kitchen and bathroom and flooring, at one price with 'no staged extras'. Every other insulated supplier in the catalogue hands over a shell to fit out and heat. TWO: TURNKEY DELIVERY, built offsite and 'delivered and installed in days' \u2014 a complete, serviced building rather than a construction project. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide, applying to this model exactly as to the largest in the range, on a light gauge steel frame engineered for a 30+ year lifespan; steel construction removes rot and insect attack as failure modes. FOUR: SINGLE TRANSPARENT PRICING across the Collection from GBP 32,800, which is what makes a delivered-total comparison against base-excluded, shell-only competitors possible at all. HOMEOWNER IMPLICATION: on what actually arrives, this is one of the most complete packages in the catalogue; every reservation attaches to documentation and to planning, not to the building.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmNgeJVF3Fvasrk": {
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD \u2014 the certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers across this Atlas layer that sell a heated building rather than an unheated shell. Here that comes with LED lighting throughout, a FITTED KITCHEN WITH INTEGRATED APPLIANCES and a FULL BATHROOM WITH SHOWER, at one price with 'no staged extras'. TWO: this is the most specifically documented model in the Collection. The certified layer records a matching 11 m x 4 m, 44 sqm Emerald listing in one and two bedroom layouts \u2014 the only dimensional figure of any kind that appears anywhere near this range, even though it is recorded as unresolved rather than transferred. THREE: TURNKEY DELIVERY, built offsite and 'delivered and installed in days'. FOUR: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for a 30+ year lifespan; steel construction removes rot and insect attack as failure modes. HOMEOWNER IMPLICATION: the most complete specification in the mid-range of this catalogue \u2014 the questions are all about documentation, not about what arrives.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recRhbN66JUgay0Md": {
-      "strengths": {
-        "text": "STRENGTHS ARE RECORDED AT COLLECTION LEVEL ONLY, because the certified AM-001 layer cannot match this record to a published model and therefore no product-specific strength can be stated. WHAT THE COLLECTION ESTABLISHES. ONE: HEATING INCLUDED AS STANDARD \u2014 the certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers in this Atlas layer selling a heated building rather than an unheated shell, with electric heating, LED lighting throughout, a fitted kitchen with integrated appliances and a full bathroom at one price with 'no staged extras'. TWO: TURNKEY DELIVERY, built offsite and installed in days. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for a 30+ year lifespan. FOUR: STEEL FRAME construction removes rot and insect attack as failure modes. THE ONE PRODUCT-LEVEL FACT AVAILABLE, and it is a price rather than a specification: the page at the /signature-48/ address publishes 'Executive 44' from GBP 47,650 PLUS DELIVERY. HOMEOWNER IMPLICATION: everything above is worth having, but none of it is confirmed to attach to a building called Signature 48.",
-        "evidenceScope": "Range-Level"
-      }
-    },
-    "recCjtdouL1VeUhC5": {
-      "strengths": {
-        "text": "FOUR STRENGTHS, all traceable to the certified layers. ONE, AND IT IS THE SUPPLIER-LEVEL FINDING: HEATING IS INCLUDED AS STANDARD. The certified thermal layer records that Luxury Garden Studios and Sprout Pod are the ONLY TWO suppliers in this entire Atlas layer that sell a heated building rather than an unheated shell \u2014 electric heating and LED lighting throughout, alongside a fitted kitchen with integrated appliances, a full bathroom and flooring, at one price with 'no staged extras'. TWO: TURNKEY DELIVERY \u2014 built offsite and installed in days, so the disruption on site is measured in days rather than weeks. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for a 30+ year lifespan. Ten years on the structure is the market norm and this supplier meets it. FOUR: STEEL FRAME construction removes rot and insect attack as failure modes, which is what makes the 30+ year engineered life offerable. HOMEOWNER IMPLICATION: the completeness of the package is the real strength here \u2014 very little in this catalogue arrives heated, fitted and plumbed under a single price.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recUNSJmWfIxyYKyo": {
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD, and the certified thermal layer records that only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell \u2014 here alongside LED lighting throughout, a fitted kitchen with integrated appliances, a full bathroom and flooring, at one price with 'no staged extras'. Every other insulated supplier hands over a shell for the buyer to fit out and heat. TWO: OFFSITE MANUFACTURE with turnkey delivery and installation 'in days' \u2014 at this scale that is the difference between a delivery and a construction project. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide, so the same term covers this model as covers the smallest in the range, on a light gauge steel frame engineered for a 30+ year lifespan. FOUR: SINGLE TRANSPARENT PRICING is the supplier's stated model across the Collection, which is what makes any comparison against shell-only, base-excluded competitors meaningful. HOMEOWNER IMPLICATION: on completeness of package this supplier is at the front of the catalogue; the gaps are all in what is documented, not in what is supplied.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCp7TnMyHxZnXpJ": {
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING, KITCHEN AND BATHROOM ARE ALL INCLUDED AS STANDARD. The certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers in this Atlas layer that sell a heated building rather than an unheated shell, and this supplier goes further \u2014 electric heating, LED lighting throughout, a fitted kitchen with integrated appliances, a full bathroom and flooring, all at one price with 'no staged extras'. At the upper end of the range that completeness is the whole proposition. TWO: OFFSITE MANUFACTURE with turnkey delivery and installation 'in days', so a building of this scale does not translate into months of site disruption. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide, on a light gauge steel frame engineered for a 30+ year lifespan \u2014 the same term applies to the smallest model in the range, so scale does not reduce the cover. FOUR: SINGLE TRANSPARENT PRICING is the supplier's stated model across the Collection, which makes a like-for-like comparison against base-excluded, shell-only competitors possible in principle. HOMEOWNER IMPLICATION: the least assembly-required route to a fully serviced building in this catalogue.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec3NU9qqLPuxbpdN": {
-      "strengths": {
-        "text": "98m2 of four-bedroom accommodation across a 14m x 7m footprint \u2014 by far the largest building in this review set. Light gauge steel frame engineered for a 30+ year lifespan, fully built offsite and delivered turnkey, with installation possible in as little as 10 weeks from order. Single transparent turnkey price of GBP 142,000 including VAT, with the manufacturer stating no hidden extras. 10-year structural warranty applied company-wide rather than model by model.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recbCzoK4cORY3W4c": {
       "strengths": {
         "text": "A PITCHED ROOF GIVES HEIGHT AT THE RIDGE AND SHEDS WATER FROM TWO FACES, and where the covering is tiled or slated it also unlocks the 4 m Class 3 height limit rather than 3 m \u2014 the only route in the Irish rules to a genuinely tall garden building. That is a real potential advantage, and it is the reason the roof form is worth naming. IT IS ONLY POTENTIAL, HOWEVER: the covering is not published, so the 4 m limit cannot be claimed. NOTHING ELSE IS ESTABLISHED \u2014 no area, dimensions, height, insulation, warranty, installation scope or price is held.",
@@ -1820,12 +1718,6 @@
     "recs6rMHh99U2iXVP": {
       "strengths": {
         "text": "SOLID-LOG CONSTRUCTION IS A REAL AND DURABLE BUILD METHOD, and for a buyer who wants a timber cabin rather than a clad frame it is the point of the product. Thick log walls also carry more thermal mass than a thin-panel cabin, which is a genuine characteristic of the construction rather than a supplier claim. THE PRODUCT IS SOLD BY AN IRISH-FACING RETAILER, which shortens the supply chain compared with the direct-import records in this catalogue. NOT ESTABLISHED: no floor area, dimensions, height, log thickness, U-value, warranty or price is published, so the thermal benefit cannot be quantified and no advantage over the sister models has been recorded.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxZcEXwgG0z2Oj8": {
-      "strengths": {
-        "text": "Published strengths, stated without comparison: a separate bedroom within the enclosed area; a 70 mm log wall, the thickest specification the supplier publishes; a room-to-footprint ratio of 1.12; and a 24.68 m2 footprint that remains inside the statutory allowance on area, unlike the larger multi-room models.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2375,12 +2267,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recfI08WIE6SfvlsE": {
-      "strengths": {
-        "text": "IT IS SOLD AS A DWELLING RATHER THAN A ROOM, AND THAT HONESTY IS ITSELF USEFUL. Where several suppliers in this catalogue market habitable-looking pods while relying on the incidental exemption, this range names the accommodation \u2014 studio, one bed, two bed \u2014 so a buyer is not misled about what they are applying for. THE FLOOR AREA IS PUBLISHED IN THE PRODUCT NAME, verified in the certified layers as 25.00 m2, which makes the Class 3A arithmetic checkable. IT IS ALSO THE SMALLEST AND PRESUMABLY LEAST COSTLY OPTION for a single occupant. NOT ESTABLISHED: no height, U-value, warranty or price is published.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recrfXlRTCNCf8VB5": {
       "strengths": {
         "text": "TWO THINGS CAN BE SAID, AND ONLY TWO. FIRST, THE PRODUCT IS HONEST ABOUT WHAT IT IS: the name states living accommodation rather than dressing it up as a studio or annexe, which is more than several habitable products in this catalogue do. That clarity is useful, because it puts the buyer on the right regulatory track immediately. SECOND, THE '25m2 +' STARTING SIZE IS SUBSTANTIAL: whatever the final figure, this is not a token pod \u2014 it starts at a size that can hold a real room, a bathroom and services. BEYOND THAT, NOTHING IS ESTABLISHED. No construction specification, insulation data, glazing, warranty, installation scope or confirmed dimension is held in Atlas, and the only URL is a pricing page rather than a product specification page. Nothing has been inferred.",
@@ -2459,21 +2345,9 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recmAUmTuDN3NAhTv": {
-      "strengths": {
-        "text": "Lowest cost per square metre of all eleven models at roughly EUR 291/m2, combined with the range's thickest 80mm walls \u2014 an unusual pairing, since value and specification normally trade off. Fully resolved house layout: entrance 2.7m x 1.9m, lounge 6.0m x 4.5m, bedrooms 4.0m x 4.0m and 4.0m x 3.0m, bathroom 2.0m x 2.5m, kitchen 4.0m x 3.5m. Eleven windows including eight at 71cm x 152cm. The supplier itself describes it as 'incredibly competitively priced' \u2014 the numbers support that.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recuyH8VrmIzd3zxC": {
       "strengths": {
         "text": "Lowest headline price in the whole All In One Cabins range at EUR 10,047, and the best value per m2 of the Single Room tier. 26.25 m2 across a 7.5m x 3.5m footprint suits narrow or boundary-hugging sites where a square cabin will not fit. Low 2.45m ridge \u2014 the lowest in the range \u2014 which is helpful against Irish exempted-development height limits and less visually intrusive. Four large 71cm x 152cm windows. Flatpack kit with installation guide, damp proof membrane and premium windows included.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recO17811xKx4D2d8": {
-      "strengths": {
-        "text": "70mm walls at EUR 13,389 \u2014 a step up from the 44mm Single Room models for only about EUR 1,000 more than the Kilglass. Complete small-dwelling layout: bedroom 2.2m x 2.5m, bathroom 1m x 2.6m, kitchen 3.3m x 2.4m, plus additional loft bed space the headline area does not count. Zero-cold-bridge tilt-and-turn double glazed windows. 4m ridge gives the volume for the loft. Free Home Delivery. Flatpack kit with installation guide, damp proof membrane and premium windows.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2495,33 +2369,15 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recVLlHgnLdE0y1Ro": {
-      "strengths": {
-        "text": "70mm walls against the Ree's 44mm \u2014 a genuinely better thermal envelope for year-round two-bedroom use. Glulam zero-cold-bridging tilt-and-turn 28mm double glazed windows with German-built door hardware, the highest-specified glazing description in the range. Lowest ridge of any Two Bed model at 2.75m, useful where planning height or neighbour overlooking is an issue. Two equal 3.0m x 3.0m bedrooms. Free Home Delivery. Supplier states the model can be extended to individual requirements.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rechlK4GR8rJceNhR": {
       "strengths": {
         "text": "THE PUBLISHED FIGURES ARE INTERNALLY CONSISTENT, WHICH IS RARER IN THIS CATALOGUE THAN IT SHOULD BE. The certified AM-001 layer checked all three of the supplier's own numbers against each other: 4.27 m x 2.44 m is 10.42 m2, 112 ft2 is 10.41 m2, and the metric pair is a direct conversion of the primary 14 x 8 ft designation. They agree. Several suppliers in this Atlas publish figures that contradict themselves; this one does not. A PUBLISHED PRICE IN BOTH CURRENCIES is the second strength \u2014 GBP 10,000 or EUR 11,765 as a starting point \u2014 which lets an Irish buyer make a real comparison rather than requesting a quotation. THIRD, THE SIZE IS PLANNING-QUIET: about 10.42 m2 leaves roughly 20 m2 of the combined allowance untouched. NOT ESTABLISHED: wall build-up, insulation values, glazing, warranty and what the starting price includes.",
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI4CCDJVu7CezhW": {
-      "strengths": {
-        "text": "Complete one-bedroom layout in a narrow 4.0m x 8.0m footprint that fits alongside a boundary: main room 3.3m x 2.1m, bedroom 3.3m x 2.5m, bathroom 1.2m x 1.4m, kitchen 2.0m x 2.5m. Glulam zero-cold-bridging tilt-and-turn 28mm double glazed windows and insulated 28mm plated doors \u2014 among the best-described glazing in the range. 70mm walls. Nine windows. Free Home Delivery.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recz1fNk9SoCzF2QN": {
       "strengths": {
         "text": "Twelve windows in total \u2014 six at 152cm x 71cm, four at 115cm x 55cm and two at 60cm x 57cm \u2014 comfortably the most glazed Single Room model, which matters for a room used as a daytime office. 3.6m ridge gives real head height and volume for a 25 m2 plan. Square 5m x 5m footprint is easy to furnish as one open space. Free Home Delivery. Better value per m2 than the Corry at roughly EUR 493 against EUR 640.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recAOoRiH7fHmRcUt": {
-      "strengths": {
-        "text": "An 8.5m x 5.5m kitchen-lounge \u2014 roughly 47m2 of open living space, larger than the entire Ree cabin. Two proper double bedrooms at 3.0m x 4.5m and 2.9m x 4.5m and a large 2.1m x 3.1m bathroom. 80mm walls, the thickest in the range. Eleven windows including eight at 1.31m x 1.13m, so the living space is genuinely bright. Outside decking areas included. Second-best value in the range at roughly EUR 311/m2, and 3.7m ridge gives real volume.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2534,36 +2390,6 @@
     "recBVDyal8VGGVEZM": {
       "strengths": {
         "text": "A SUN ROOM IS A DIFFERENT PROPOSITION FROM A GARDEN OFFICE, and this is one of the few records in the catalogue built around that idea: a glazed pavilion for sitting in the garden across more of the year, rather than a working room. FOR A HOUSEHOLD WHOSE REQUIREMENT IS LEISURE RATHER THAN WORK, that focus is legitimate and under-served here. IT ALSO CARRIES A NUMERAL, which at least gives a starting point for the conversation. NOT ESTABLISHED: the numeral's unit is contradictory, no dimensions or height are published, and no glazing specification, U-value, warranty or price is held \u2014 which matters more than usual on a glazed building.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recSy67Vn2TH51ENG": {
-      "strengths": {
-        "text": "Extraordinary value: 48m2 and a genuine two-bedroom plan for EUR 16,176, less than the 32m2 one-bedroom Grange at EUR 29,255. Two equal 3.0m x 3.5m double bedrooms, a 1.8m x 2.0m bathroom and an open 6.0m x 4.5m kitchen-lounge \u2014 a properly resolved layout rather than a subdivided box. Free Home Delivery. Flatpack kit with installation guide, damp proof membrane and premium windows included.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recKFWluu0vDEHn81": {
-      "strengths": {
-        "text": "120m2 and three bedrooms for EUR 36,439 \u2014 third-best value per m2 in the range at about EUR 304, and by a wide margin the most accommodation All In One Cabins sells. Genuinely complete house plan: three bedrooms, a 3.4m x 6.8m lounge, kitchen, bathroom, a separate cloakroom and a dedicated storage room. Sixteen windows. Lowest ridge of the large models at 3.3m. Notably, it costs EUR 16,889 LESS than the 28.14m2 one-bedroom Shannon.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recFmEJwf6fFHpscC": {
-      "strengths": {
-        "text": "80mm walls, the thickest specification All In One Cabins offers. Generous room proportions for a compact cabin: main room 3.1m x 3.7m and bedroom 3.0m x 2.5m, better balanced than the Bofin's tighter plan. Decking area of 4.1m x 1.5m and a 1.55m overhang included. Nine windows, six of them at 75cm x 113cm, on a 4m ridge \u2014 the supplier's stated design intent is a bright, modern, sleek cabin, and the glazing supports that.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec34rHUaz7l3jDe1": {
-      "strengths": {
-        "text": "THE NAMING IS HONEST, AND THAT IS WORTH MORE THAN IT SOUNDS. Calling the product an ANNEXE tells a buyer, before any specification is read, that this is accommodation rather than a garden office \u2014 which is more than several habitable-looking pods elsewhere in this catalogue manage, and it points at the correct consent route immediately. IT IS ALSO THE LARGEST-INTENT PRODUCT BOOTHS OFFERS, aimed at a genuine housing requirement rather than a workspace one. NOT ESTABLISHED: no floor area, dimensions, height, services specification, insulation figure, warranty or price is published, so Class 3A eligibility cannot even be tested.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recce4t2fTLJVmO75": {
-      "strengths": {
-        "text": "FIVE STRENGTHS. ONE, AND IT IS THE SUPPLIER-LEVEL FINDING: BOOTHS PUBLISHES THE MOST COMPLETE ENVELOPE DISCLOSURE recorded in the certified thermal layer. It names the insulation PRODUCTS and their THICKNESSES for every element \u2014 90 mm Ecotherm to the floor, 90 mm Actis to walls and ceiling \u2014 states the glazing performance comparatively, names the steel supplier, and backs the structure with 25 YEARS where one to ten is typical elsewhere. That is an unusually specific and checkable set of claims. TWO: NO CONCRETE BASE IS REQUIRED \u2014 the building sits on an adjustable chassis on composite feet, removing the single most commonly excluded cost in this catalogue. THREE, SPECIFIC TO THE ANNEXE: a PLASTERED internal finish and FULL ELECTRICS rather than the MDF lining used on the studio range \u2014 a residential-grade interior, appropriate to a building with a kitchen and bathroom. FOUR: MADE TO WIDTH. The annexe is built to the buyer's dimension rather than to a fixed model size, which very few suppliers in this catalogue offer at this specification. FIVE: the supplier ABANDONED TIMBER ENTIRELY IN 2012 on the stated grounds that 'timber windows move, draught and need regular repainting' \u2014 a deliberate, published material position rather than a default.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2621,12 +2447,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI11umptgnSn2zE": {
-      "strengths": {
-        "text": "IT IS HONESTLY NAMED AND FULLY DIMENSIONED, WHICH IS MORE THAN MOST HABITABLE PRODUCTS IN THIS CATALOGUE MANAGE. 'Two Bedroom' and 'Residential' tell a buyer exactly what the building is before any specification is read, and 7.94 m \u00d7 6.08 m is a precise published figure rather than a marketing label \u2014 which is why the certified layers could reach a definite conclusion rather than leaving the question open. AS ACCOMMODATION, 48.28 m2 across two bedrooms is a genuine small dwelling, and MyCabin.ie's Irish base and showrooms make it inspectable. NOT ESTABLISHED: no height, U-value, services specification, warranty or price is published.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recPmdokw4KU1uSCb": {
       "strengths": {
         "text": "Published strengths, stated without comparison: a two-room internal layout, published on only a small number of rows in this catalogue; a large 45.87 m2 published envelope; and euro pricing at EUR 14,300 with delivery included from an Irish trading entity.",
@@ -2654,12 +2474,6 @@
     "recRkL1MMvRKWjgYA": {
       "strengths": {
         "text": "Maintenance-free composite cladding in five colours (Granite, Stone, Silver Birch, Oak, Walnut). Approximate U-values published for the Urban range \u2014 walls 0.27, floor 0.25-0.3, roof 0.2, windows 1.7 \u2014 which almost no competitor in Atlas publishes at all, though the supplier's own qualifier is 'Approx' and no test standard is cited. PIR sandwich-panel construction of no fewer than five materials in walls, floor and roof. Composite metal panel roof with a 200mm overhang front and both sides. Engineer-designed adjustable steel base foundation included; no concrete required. Internal electrics itemised and included. GBP 15,995 including delivery, installation and VAT. Trading Standards Approved, 7-year comprehensive warranty. Installed in 2 days.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPRGtH0ycJzbxYw": {
-      "strengths": {
-        "text": "IT IS POSITIONED AS THE RANGE'S LARGER FAMILY-SCALE CABIN, which for a household needing a room several people can use at once is the model to enquire about. SOLID TIMBER CONSTRUCTION and a retailer with an Irish-facing route are the same practical advantages as across this supplier's range. THAT IS POSITIONING, NOT MEASUREMENT: the certified layers record that 'XL' and 'Family' convey no figure, and no area, dimension, height, wall thickness, U-value, warranty or price is published. No size advantage over the other cabins has been recorded, because none is evidenced.",
         "evidenceScope": "Product-Specific"
       }
     },

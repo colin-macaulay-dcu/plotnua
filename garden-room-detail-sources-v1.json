@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-19T22:55:17Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "sources"
   ],
-  "productCount": 355,
+  "productCount": 352,
   "recordCounts": {
-    "sources": 355
+    "sources": 352
   },
   "products": {
     "recMYX68xsyrwVoR1": {
@@ -1487,12 +1487,6 @@
         "evidenceScope": null
       }
     },
-    "recxZcEXwgG0z2Oj8": {
-      "sources": {
-        "text": "https://summerhouse24.ie/one-bedroom-log-cabin-sweden-c-g0267/",
-        "evidenceScope": null
-      }
-    },
     "recCHp7HhaDdDm2dG": {
       "sources": {
         "text": "https://www.lasita.com/products-gb/outdoor-cooking",
@@ -2036,18 +2030,6 @@
     "recn7Scwt64Udigb5": {
       "sources": {
         "text": "https://www.waltons.co.uk/products/the-classic-insulated-garden-room",
-        "evidenceScope": null
-      }
-    },
-    "rec34rHUaz7l3jDe1": {
-      "sources": {
-        "text": "https://boothsgardenstudios.co.uk/garden-annexes",
-        "evidenceScope": null
-      }
-    },
-    "recce4t2fTLJVmO75": {
-      "sources": {
-        "text": "https://boothsgardenstudios.co.uk/garden-annexes",
         "evidenceScope": null
       }
     },

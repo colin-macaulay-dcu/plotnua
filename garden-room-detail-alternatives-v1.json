@@ -1,34 +1,16 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-19T22:55:17Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "alternatives"
   ],
-  "productCount": 462,
+  "productCount": 431,
   "recordCounts": {
-    "alternatives": 462
+    "alternatives": 431
   },
   "products": {
-    "rec6erGeW5wf5SDgT": {
-      "alternatives": {
-        "text": "WITHIN THE RANGE, the 45 m2 model offers 12 m2 more but sits EXACTLY on the Class 3A ceiling with no tolerance, and the 48 m2 model is over it \u2014 so this is the safe end of the range and the step up carries real regulatory risk. ELSEWHERE, All About Outdoors' habitable units and Rayco Modular Homes face the same 32\u201345 m2 arithmetic; \u00d6\u00d6D House's glass units are habitable-use products with the same exclusion from the incidental exemption. IF THE REQUIREMENT IS DAY SPACE ONLY, an exempt garden room is far simpler. HOMEOWNER IMPLICATION: within Class 3A, choose the size with margin rather than the size at the limit.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recZojzhYoRcierlv": {
-      "alternatives": {
-        "text": "THE 33 m2 MODEL IS THE RISK-AVERSE ALTERNATIVE: 12 m2 smaller, but with 12 m2 of margin inside the band rather than none. THE 48 m2 MODEL IS THE OPPOSITE TRADE \u2014 3 m2 more space at the cost of leaving Class 3A entirely and requiring a full application. ELSEWHERE IN THE CATALOGUE, Rayco Modular Homes and All About Outdoors market habitable units in the same size territory and face identical arithmetic; Yardbox's Bothan is the record whose published living space exceeds its own stated footprint, and is not a safe comparator on area. HOMEOWNER IMPLICATION: at 45 m2 the choice is between maximum space and margin for error \u2014 there is no option that offers both.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPodhux5TC0rg39": {
-      "alternatives": {
-        "text": "THE 45 m2 MODEL IS THE OBVIOUS COMPARISON AND FOR MOST HOUSEHOLDS THE BETTER ONE: 3 m2 smaller, but inside Class 3A and therefore a notice rather than an application. ELSEWHERE, Rayco Modular Homes and All About Outdoors market habitable units of similar scale and face the same threshold; \u00d6\u00d6D House's glass units are habitable-use products excluded from the incidental exemption on the same principle. All four are HABITABLE DWELLINGS and therefore excluded from the 30 m2 incidental garden-structure exemption at any size, which permits no human habitation. Against the Class 3A Detached Auxiliary Dwelling provision of S.I. 338 of 2026 the four fall into three distinct positions: the Studio at 25.00 m2 is BELOW the 32 m2 floor; the 1 Bed at 33.00 m2 and the 1 or 2 Bed at 45.00 m2 are WITHIN the 32\u201345 m2 band, the latter EXACTLY on the ceiling with zero tolerance; and the 2 Bed at 48.00 m2 EXCEEDS it. Every floor area is published in the product name and verified. THE CATALOGUE LIMITATION APPLYING TO ALL FOUR: no height, U-value, warranty, price, room dimensions or measurement basis is published, so the products are distinguished on area and bedroom count alone and evidence neutrality is preserved on build quality. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
     "recpZW4echDhHtEVv": {
       "alternatives": {
         "text": "THE WELLNESS COHORT IN THIS CATALOGUE IS SMALL AND UNIFORMLY UNDOCUMENTED ON SIZE. TimberIN offers four products \u2014 a wood-fired hot tub, a cold plunge tub, a made-to-order barrel sauna and a sauna-and-hot-tub combo \u2014 of which only the enclosed ones are structures for planning purposes. MyCabin.ie's Cube Sauna M is the Irish-supplier alternative. None publishes a footprint. THE MORE USEFUL COMPARISON MAY BE OUTSIDE THE CATEGORY: if the sauna is intended to share a garden with a future office, look at what the office will need \u2014 Adman's nine named Multiroom sizes from 9.60 m2 upward, or Yardbox's published footprints \u2014 and reserve the allowance now. HOMEOWNER IMPLICATION: plan the whole garden, not the next purchase. Neither the Quu nor the Aurea publishes an area, footprint, height, specification, warranty or price, and Atlas records no distinguishing evidence between the two models \u2014 recorded once as a catalogue limitation. CATEGORY ISSUE carried forward once: both are wellness and sauna cabins held under Garden Rooms because no correct Product Category exists, and they should not be compared like-for-like against work-use garden rooms. Nothing inferred.",
@@ -218,12 +200,6 @@
     "recK8PQar4pJiEW29": {
       "alternatives": {
         "text": "Concept Modular Cabin 26m\u00b2 Studio \u2014 EUR 38,500 for 26m\u00b2: more space for EUR 11,250 less, if you do not need plumbing. Concept Modular Signature Cabin 36m\u00b2 \u2014 EUR 67,950 with a full designer kitchen and bathroom fitted, the better buy if plumbing is the whole point. SIPS Garden Room MINT \u2014 41.2m\u00b2 one-bedroom kit from EUR 21,490 if you will appoint your own contractor.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPirZWLtauzxACc": {
-      "alternatives": {
-        "text": "Concept Modular Cabin 19m\u00b2 Studio \u2014 EUR 31,000 for 19.1m\u00b2 if the budget or the site will not stretch. Concept Modular Signature Cabin 36m\u00b2 \u2014 EUR 67,950 with kitchen, bathroom and plumbed water if the room needs to function as accommodation. SIPS Garden Room POPPY \u2014 24.8m\u00b2 from EUR 12,750 as a self-assembly kit, the honest illustration of how much of the Concept Modular price is delivery, finish and warranty rather than floor area.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -831,24 +807,6 @@
       "alternatives": {
         "text": "THE MODERN ART 1 IS THE ONLY DIRECT COMPARISON AND CANNOT BE DISTINGUISHED FROM THIS ONE. WITHIN BERTILO, the Cubo and Cubus Lounge variants are the conventional alternatives if the architectural styling is not essential. ELSEWHERE, Koto, Iglucraft, NOOK and \u00d6\u00d6D occupy the design-led category with similarly thin documentation; Yardbox is the record that publishes footprint, living space and a 2.5 m height while remaining Irish-routed. HOMEOWNER IMPLICATION: design-led buying almost always means accepting less published detail \u2014 worth knowing before, rather than after, the deposit.",
         "evidenceScope": "Product-Specific"
-      }
-    },
-    "recChE87PRdyLZxNe": {
-      "alternatives": {
-        "text": "THE DIRECT IRISH EQUIVALENTS PUBLISH WHAT THIS RECORD DOES NOT. All In One Cabins' Bofin, Grange and Shannon one-bed cabins carry dimensions and prices and are the most documented habitable set in the catalogue. Granny Flats Dublin's 1 Bed at 33 m2 sits inside the Class 3A band and shows exactly what that route requires. The Pod Factory's Pod 22 One-Bed shares this record's weakness, publishing no confirmed area. HOMEOWNER IMPLICATION: for a one-bedroom garden dwelling, a published area is worth more than any other single disclosure.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "reciTMB2ldkUYNzib": {
-      "alternatives": {
-        "text": "FOR HABITABLE GARDEN ACCOMMODATION WITH PUBLISHED AREAS, Granny Flats Dublin gives four sizes \u2014 25, 33, 45 and 48 m2 \u2014 so a buyer can see exactly where each falls against the 32-45 m2 Class 3A band. All In One Cabins publishes a full one, two and three bedroom range with dimensions and prices. Live in Garden Pods' Studio Living Pod is the closest Irish equivalent but publishes only an open-ended '25m2 +'. HOMEOWNER IMPLICATION: on a habitable project the published area decides the consent route, so prefer a supplier that states one.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recVMDB49pKVr2Kpj": {
-      "alternatives": {
-        "text": "FOR A TWO-BEDROOM GARDEN DWELLING WITH REAL FIGURES, All In One Cabins' Two Bed range \u2014 the Derg, Allen, Ree and Meelagh \u2014 publishes dimensions, ridge heights, wall thicknesses and prices, and is the most documented habitable set in this catalogue. Granny Flats Dublin's 2 Bed at 48 m2 is a worked example of what happens above every exempt route. MyCabin.ie's Two Bedroom H at 48.28 m2 is the same story from an Irish supplier with showrooms. HOMEOWNER IMPLICATION: for a two-bedroom build, choose the supplier who tells you the area, because the area decides the consent route. All three are ANNEXES \u2014 Studio, One-Bedroom and Two-Bedroom \u2014 organised by occupancy, which is the right structure for habitable buildings, and none publishes an area, dimension, height, specification, warranty or price. THE SUPPLIER-LEVEL FINDING carried from the certified layers: the floor-area test is the wrong test for this whole range, because habitable use puts every product outside Class 3 regardless of size, and the only potentially applicable route, Class 3A at 32-45 m2, cannot be tested for any of the three. Evidence neutrality preserved: the three records are distinguished only by the bedroom counts the supplier itself states. AVAILABILITY: South East England only; none is purchasable in Ireland. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
       }
     },
     "recXjnThLhyeZxRH4": {
@@ -1481,66 +1439,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recX6ppza7by2keWQ": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: this is the entry model of the Collection, so the alternatives run upward \u2014 Signature 32, 37 and 40 \u2014 and every one of them is recorded by the certified thermal layer as sitting ABOVE the 30 m2 back-garden allowance. If area matters to you, this model is the range. All ten share the same steel frame and the same turnkey finish from GBP 32,800, and no dimensions are held for any of them, so Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so given that Republic of Ireland delivery is unconfirmed: Sprout Pod is the only other Atlas supplier including heating as standard, installs island-wide, requires no crane and no concrete foundation \u2014 the closest comparator to this proposition at a comparable scale. Modern Garden Rooms, an Irish company, holds the highest insulation specification in the Atlas at 150 mm total wall build-up with foundations inside scope. Gardenhouse24 Ireland publishes the strongest structured measurement disclosure in the catalogue, six of eight products safe to rank on internal floor area \u2014 the direct remedy where a footprint decides whether a building is exempt. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmp0a0V2RFcQ4s7": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS, AND THIS IS THE COMPARISON THAT MATTERS: the SIGNATURE 28 is recorded by the certified thermal layer as the smallest of the ten and the ONLY model in the Collection sitting under the 30 m2 back-garden threshold held in this Atlas. If exempted development is your route, that is the model to ask about, not this one. Above it sit the 37, 40 and 44, all on the same steel frame and turnkey finish from GBP 32,800; because no dimensions are held for any of the ten, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so if Republic of Ireland delivery cannot be confirmed: Sprout Pod is the only other Atlas supplier including heating as standard, installs island-wide, and requires no crane and no concrete foundation. Modern Garden Rooms is an Irish company holding the highest insulation specification in the Atlas at 150 mm total wall build-up, with foundations inside its turnkey scope. Gardenhouse24 Ireland publishes the strongest structured measurement disclosure in the catalogue, with six of eight products safe to rank on internal floor area \u2014 the direct remedy where a footprint decides the planning route. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recOH15fQUsuYeDW6": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature 28 and 32 sit below this model in the Collection, and the certified thermal layer records the Signature 28 as the smallest of the ten and, on the supplier's own scale statement, the only one that could sit under the 30 m2 back-garden threshold \u2014 the relevant comparison if exemption matters to you. All ten share the same steel frame and the same turnkey finish from GBP 32,800, and because the certified AM-001 layer holds no dimensions for any of them, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so if Republic of Ireland delivery cannot be confirmed: Sprout Pod is the only other Atlas supplier that includes heating as standard, and it installs island-wide with no crane and no concrete foundation. Modern Garden Rooms is an Irish company holding the highest insulation specification in the Atlas at 150 mm total wall build-up, with foundations inside its turnkey scope. Pineca Ireland is the only supplier publishing U-values, if thermal performance is what you want evidenced. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxOmZUOZT0pmY2u": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the SIGNATURE 28 is the only model in the Collection the certified thermal layer places under the 30 m2 back-garden threshold, so it is the one to ask about if exempted development is your route. The 37 and 44 sit either side of this model on the same steel frame and turnkey finish. OUTSIDE: Sprout Pod is the only other Atlas supplier including heating as standard and installs island-wide with no concrete foundation; Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue; Gardenhouse24 Ireland publishes the strongest structured measurement disclosure held anywhere in the Atlas. NEUTRALITY: no ranking is created between these routes. All 10 now carry the full five-Feature AM-007 set: Signature 28, 32, 37, 40, 44, 48, 58, 66, 84 and 98 (the 98 retaining its legacy set). THE SUPPLIER-LEVEL SYNTHESIS: this is a ONE-SPECIFICATION COLLECTION differentiating on SCALE ALONE \u2014 'same steel frame, same turnkey finish', from GBP 32,800 \u2014 and because the certified AM-001 layer holds NO area and NO dimensions for ANY of the ten, Atlas has created NO ranking between them and no cost-per-square-metre comparison anywhere in this range. THE GENUINE STRENGTH, and it is a real one: this is one of only TWO suppliers in the entire Atlas \u2014 with Sprout Pod \u2014 that sells a HEATED building rather than an unheated shell, and it goes further than any competitor on fit-out, with electric heating, LED lighting, a fitted kitchen with integrated appliances and a full bathroom at one price with 'no staged extras', under a 10-year structural warranty on a frame engineered for 30+ years. FOUR LIMITATIONS, each restated once and not re-raised. ONE, THE NAMING DEFECT: the 'Signature NN' numerals look like square metres and are not \u2014 a number that is present and misleading is more dangerous than one that is absent, which is why the certified planning layer calls this supplier the worst case in that layer. TWO, PRODUCT IDENTITY UNRESOLVED: Atlas holds 'Signature 48' against a published 'Executive 44'; and the Signature 44 may or may not be the Emerald Collection's 11 m x 4 m, 44 sqm building under another name. THREE, THE PLANNING CLAIM CONFLICT: the supplier publishes that the Irish exemption 'covers garden buildings up to 45 sqm', which collapses the 30 m2 incidental back-garden route and the separate 32-45 m2 Class 3A auxiliary-dwelling route into one. ATLAS MAKES NO DETERMINATION; the conflict is recorded so a homeowner asks the right question, and the supplier itself advises confirming with the local authority. FOUR, THERMAL: 'Fully Insulated' with no material, thickness or U-value anywhere, on a LIGHT GAUGE STEEL frame with no published thermal break. AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED on all 10 \u2014 the supplier is at Dungiven, Co. Londonderry, NORTHERN IRELAND, publishes an Ireland-facing page but no delivery or installation coverage for either jurisdiction, and prices in GBP. CATEGORY NOTE, carried forward as intelligence: seven of the ten exceed 45 m2 or contain full domestic accommodation, and the company describes itself as a modular home company; they sit in Atlas under Garden Rooms. OUTSTANDING INTEGRITY ISSUE CARRIED FORWARD, NOT NEW: the Session 4 range-level inference across this supplier remains unresolved, and no product-specific specification exists to confirm or correct it.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmNgeJVF3Fvasrk": {
-      "alternatives": {
-        "text": "THE FIRST COMPARISON IS INSIDE THE SUPPLIER AND IT IS AN IDENTITY QUESTION, NOT A PRICE ONE: the EMERALD COLLECTION is published at 11 m x 4 m and 44 sqm in one and two bedroom layouts, and the certified layer records that it MAY BE THE SAME BUILDING as this model under a different collection name \u2014 recorded, not resolved. Ask the supplier directly. Related: the Atlas 'Signature 48' record could not be reconciled against a published 'Executive 44' from GBP 47,650 plus delivery, which shares this model's numeral. WITHIN THE COLLECTION: the Signature 40 sits below and the 48 and 58 above, all on the same steel frame and turnkey finish from GBP 32,800; no dimensions are held for any of the ten, so Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS: Concept Modular publishes a 50-year STRUCTURAL-ONLY warranty on steel-framed buildings with a designer kitchen and bathroom, excluding base pads, installation, craneage and haulage at EUR 3,000 to 4,000 plus VAT. Sprout Pod is the only other Atlas supplier including heating as standard and installs island-wide with no concrete foundation. Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue. NEUTRALITY: no ranking is created between these routes.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recRhbN66JUgay0Md": {
-      "alternatives": {
-        "text": "THE FIRST ALTERNATIVE IS THE SAME SUPPLIER, CORRECTLY IDENTIFIED: ask for the 'Executive 44' the supplier actually publishes at this address, from GBP 47,650 plus delivery, and compare it against the Signature 44 held separately in Atlas \u2014 the certified AM-001 record on Signature 44 notes that 44 is the very numeral appearing in that published Executive listing, and that the two must be matched to a live listing before any figure is attached to either. WITHIN THE COLLECTION: all ten models share the same steel frame and the same turnkey finish from GBP 32,800, and because no dimensions are held for any of them, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so given that Republic of Ireland delivery is unconfirmed: Sprout Pod is the only other Atlas supplier including heating as standard and installs island-wide with no concrete foundation; Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue including foundations; Gardenhouse24 Ireland publishes the strongest structured measurement disclosure held anywhere in the Atlas, with six of eight products safe to rank on internal floor area \u2014 the direct remedy for what has gone wrong here. NEUTRALITY: no ranking is created between these routes.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCjtdouL1VeUhC5": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature Collection runs across ten models on the SAME steel frame and the SAME turnkey finish, from GBP 32,800, so the range differentiates on scale alone and Atlas can create no performance ranking between them \u2014 the certified AM-001 layer holds no dimensions for any of the ten. The Signature 28 is the smallest and, on the supplier's own scale statement, the only one that could sit under the 30 m2 back-garden threshold; the Signature 98 is published at GBP 142,000 including VAT for a four-bedroom building. WHERE ELSE TO LOOK, given that Republic of Ireland delivery is unconfirmed here: Sprout Pod is the only other supplier in this Atlas that includes heating as standard, and it delivers and installs island-wide with no crane and no concrete foundation. Modern Garden Rooms carries the highest insulation specification held anywhere in the Atlas at 150 mm total wall build-up, with the widest turnkey scope including foundations, from an Irish company at a Dublin address. Pineca Ireland is the only Atlas supplier publishing U-values \u2014 the only route on which the running cost of a building this size can be estimated at all. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recUNSJmWfIxyYKyo": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature 58 sits below this model and the 84 and 98 above it, the 98 published at GBP 142,000 including VAT for four-bedroom accommodation with delivery quoted separately. All ten models share the SAME steel frame and the SAME turnkey finish from GBP 32,800, so the Collection differentiates on scale alone \u2014 and because the certified AM-001 layer holds no dimensions for any of the ten, Atlas creates no ranking between them and no cost-per-square-metre comparison is possible. OUTSIDE LUXURY GARDEN STUDIOS: Concept Modular publishes a 50-year STRUCTURAL-ONLY warranty on galvanised steel-framed buildings with a designer kitchen and bathroom \u2014 a longer term over a narrower scope \u2014 but excludes base pads, installation, craneage and haulage at a stated EUR 3,000 to 4,000 plus VAT, so the comparison must be made on delivered totals rather than headline prices. Sprout Pod is the only other Atlas supplier including heating as standard, installing island-wide with no concrete foundation. Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue, foundations included. NEUTRALITY: no ranking is created between these routes; they differ on published evidence and scope, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCp7TnMyHxZnXpJ": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature 98 sits above this model and is published at GBP 142,000 including VAT for four-bedroom accommodation, with delivery quoted separately from that figure; the Signature 66 and 58 sit below it. All ten models share the SAME steel frame and the SAME turnkey finish, from GBP 32,800, so the Collection differentiates on scale alone \u2014 and because the certified AM-001 layer holds no dimensions for any of them, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS: Concept Modular publishes a 50-year STRUCTURAL-ONLY warranty on galvanised steel-framed buildings with a designer kitchen and bathroom \u2014 a longer term over a narrower scope, and it excludes base pads, installation, craneage and haulage at a stated EUR 3,000 to 4,000 plus VAT. Sprout Pod is the only other supplier in this Atlas including heating as standard and installs island-wide with no concrete foundation. Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue, foundations included. NEUTRALITY: no ranking is created between these routes; they differ on published evidence and on scope, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec3NU9qqLPuxbpdN": {
-      "alternatives": {
-        "text": "SIPS Garden Room LOTUS \u2014 48.4m\u00b2 two-bedroom kit from EUR 23,990 ex VAT: half the floor area but a small fraction of the cost, if you will appoint your own contractor. Concept Modular Signature Cabin 36m\u00b2 \u2014 EUR 67,950 ex VAT delivered with kitchen and bathroom fitted and a 50-year structural warranty against Signature 98's 10 years. 2 Bed Granny Flat 48m\u00b2 (Granny Flats Dublin) \u2014 the Irish turnkey route if the brief is accommodation rather than maximum size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recbCzoK4cORY3W4c": {
       "alternatives": {
         "text": "FOR A PITCHED-ROOF GARDEN BUILDING WITH REAL FIGURES, Lugarde's \u00d8300cm Arran and Helensburgh publish a diameter that yields about 7.1 m2, and Lasita Maja publishes external wall dimensions and internal floor sizes that reconcile to the centimetre \u2014 though the certified layers note Lasita roofs are SHINGLED, so the 3 m limit applies there too. Loghouse publishes eight sizes from 9 to 24.44 m2, with the same steel-roof height caveat recorded. HOMEOWNER IMPLICATION: very few suppliers in this catalogue actually qualify for the 4 m limit, because tiled and slated roofs are rare on garden rooms \u2014 assume 3 m until a supplier confirms otherwise in writing.",
@@ -1820,12 +1718,6 @@
     "recs6rMHh99U2iXVP": {
       "alternatives": {
         "text": "FOR LOG CABINS WITH PUBLISHED FIGURES, Loghouse, Lugarde, Hansa24 and Gardenhouse24 Ireland are the better-documented records in this catalogue and cover the same traditional construction. WITHIN ALL ABOUT OUTDOORS, the Ontario XL is the only model with any published area \u2014 useful as a benchmark, though its basis is unstated. IF THE PRIORITY IS A CONFIRMED EXEMPTION rather than the cabin aesthetic, Yardbox and Adman Steel Sheds publish external footprints and heights that can be tested directly. HOMEOWNER IMPLICATION: in a category where wall thickness is the whole issue, prefer the supplier who tells you which side they measured from.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxZcEXwgG0z2Oj8": {
-      "alternatives": {
-        "text": "The Sweden family is three fit-outs on one 628 x 393 cm shell at 70 mm: Sweden A with shower room at 23 m2 for EUR 13,180, Sweden B with sleeping loft at 23 m2 for EUR 18,000, and this one bedroom version at 22 m2 for EUR 15,500. Buyers who do not need sleeping accommodation should compare Granada (two rooms, 26.64 m2 footprint, EUR 14,730), which avoids the habitation conflict. EVIDENCE NEUTRALITY: the three Sweden fit-outs share a published shell and differ only in internal arrangement and price.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2375,12 +2267,6 @@
         "evidenceScope": "Organisation-Wide"
       }
     },
-    "recfI08WIE6SfvlsE": {
-      "alternatives": {
-        "text": "THE MOST USEFUL ALTERNATIVE IS THE NEXT SIZE UP IN THE SAME RANGE: the 1 Bed at 33.00 m2 clears the Class 3A floor by 1 m2 and so reaches a route this one cannot, for 8 m2 more building. IF THE OCCUPANT DOES NOT ACTUALLY NEED TO SLEEP THERE, a 25 m2 exempt garden room \u2014 Yardbox's Vancouver, Adman's larger Multirooms, Green Retreats \u2014 solves a day-space requirement with no application at all, at far lower cost. ELSEWHERE IN THE CATALOGUE, All About Outdoors and Rayco Modular Homes market habitable units subject to the same Class 3A arithmetic. HOMEOWNER IMPLICATION: decide first whether the building must be slept in; everything follows from that.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recrfXlRTCNCf8VB5": {
       "alternatives": {
         "text": "FOR HABITABLE GARDEN ACCOMMODATION WITH REAL PUBLISHED AREAS, Granny Flats Dublin is the closest Irish comparison: four products at 25, 33, 45 and 48 m2, so a buyer can see exactly where each one falls against the 32-45 m2 Class 3A band \u2014 25 m2 below it, 33 and 45 m2 inside it, 48 m2 beyond every route. All In One Cabins publishes a full one, two and three bedroom cabin range with dimensions and prices, which is the most documented habitable set in this catalogue. MyCabin.ie's Two Bedroom H at 7.94 m x 6.08 m is a worked example of what happens above the limits. FOR A SMALLER SELF-CONTAINED UNIT, Garden Office Buildings offers Studio, One-Bedroom and Two-Bedroom annexes \u2014 but publishes no areas and serves South East England only. HOMEOWNER IMPLICATION: on a habitable project the published AREA is the single most valuable disclosure, because it decides the consent route. The single record holds an open-ended '25m2 +' starting size, no specification, no confirmed area and a pricing-page URL only; habitable use places it outside the ordinary garden-room exemption. Nothing inferred.",
@@ -2459,21 +2345,9 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recmAUmTuDN3NAhTv": {
-      "alternatives": {
-        "text": "The Meelagh \u2014 EUR 31,127 for 100m2, same 80mm walls, with a much larger 8.5m x 5.5m kitchen-lounge and decking: EUR 4,903 more for a better living space. The Scannal \u2014 EUR 36,439 for 120m2 and three bedrooms, if the brief needs a third room. SIPS Garden Room LOTUS \u2014 48.4m2 two-bedroom kit from EUR 23,990 ex VAT: half the area at similar money but a 0.031 W/mK SIPS envelope, the choice if thermal performance outranks floor area.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recuyH8VrmIzd3zxC": {
       "alternatives": {
         "text": "SIPS Garden Room ALOE \u2014 20.8m2 from EUR 9,990 ex VAT: near-identical money for a far stronger SIPS envelope (0.031 W/mK core) if year-round warmth matters more than floor area. The Kilglass \u2014 EUR 12,335 for a squarer 5m x 5m plan with free delivery, if your garden suits a square rather than a strip. Multiroom Garden Room 4m x 4.2m (Adman Steel Sheds) \u2014 EUR 13,150 for a finished maintenance-free Irish unit with doors and windows fitted rather than a flatpack.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recO17811xKx4D2d8": {
-      "alternatives": {
-        "text": "The Ree \u2014 EUR 16,176 for 48m2 and TWO bedrooms: barely EUR 2,800 more for more than double the area, though with 44mm walls instead of 70mm. Check this first. The Grange \u2014 EUR 29,255 for 32m2 and the same 70mm walls, which is more than double the price for 40% more space. SIPS Garden Office DAISY \u2014 16.9m2 from EUR 9,390 ex VAT with a 0.031 W/mK envelope if you need a warm workspace rather than sleeping accommodation.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2495,33 +2369,15 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recVLlHgnLdE0y1Ro": {
-      "alternatives": {
-        "text": "The Allen \u2014 EUR 26,224 for 90m2 with 80mm walls: EUR 2,148 more for more than double the area and a thicker envelope. Compare these two directly before anything else. The Ree \u2014 EUR 16,176 for 48m2 if budget dominates and you will upgrade the 44mm walls yourself. The Meelagh \u2014 EUR 31,127 for 100m2 with 80mm walls and a large 8.5m x 5.5m kitchen-lounge if the site allows.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rechlK4GR8rJceNhR": {
       "alternatives": {
         "text": "AT ROUGHLY 10 m2 THE OBVIOUS COMPARISON IS YARDBOX'S WHISTLER: a 3.2 m x 3.2 m published FOOTPRINT of 10.24 m2 with 9 m2 of separately published living space and a 2.5 m height, from a Co. Down supplier serving both jurisdictions. It is almost the same area in a SQUARE plan rather than a long narrow one, which is materially more usable, and it is the better-documented record of the two. NOOK's Base at 9.75 m2 is the same size again but Spanish-produced with no Irish route. Waltons' Classic Insulated 3m x 3m at 9.00 m2 is smaller and explicitly insulated. Garden Solutions 4U's THE HOP 12ft x 8ft at about 8.92 m2 is the cheaper, simpler end of the same size band. IF DEPTH IS THE PROBLEM, step up to Home Modular's 18 m2 or Adman's 4m x 4.2m at 16.80 m2. HOMEOWNER IMPLICATION: at this size, plan shape matters more than area \u2014 compare depth, not just square metres. The single record carries mutually consistent published dimensions and a dual-currency starting price, but no construction specification, insulation data, warranty or stated inclusions. Nothing inferred.",
         "evidenceScope": "Organisation-Wide"
       }
     },
-    "recI4CCDJVu7CezhW": {
-      "alternatives": {
-        "text": "The Bofin \u2014 EUR 13,389 for 22.8m2 with the same 70mm walls and the same bedroom, bathroom and kitchen brief, plus loft space: less than half the price. Check this first. The Ree \u2014 EUR 16,176 for 48m2 and two bedrooms if the site can take 6m x 8m. The Allen \u2014 EUR 26,224 for 90m2, less money than the Grange for nearly three times the space.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recz1fNk9SoCzF2QN": {
       "alternatives": {
         "text": "SIPS Garden Room ALOE \u2014 20.8m2 from EUR 9,990 ex VAT with a 0.031 W/mK SIPS envelope: less glass, less money, far warmer. The Boderg \u2014 EUR 10,047 for 26.25m2 if footprint shape is flexible and budget is tight. Urban Cubed Composite Garden Studio (Sanctum) \u2014 GBP 19,195 inc VAT: much smaller at 9.83m2 but publishes full U-values and arrives with electrics fitted, the better choice if verified warmth is the priority. All 11 carry the full five-Feature AM-007 set. THE SUPPLIER-LEVEL SYNTHESIS: an Irish-facing log-cabin range named after Irish places, published with model-by-model sizes and prices \u2014 which puts it ahead of much of this catalogue on basic disclosure. The range differentiates on FOOTPRINT AND GLAZING AREA rather than on envelope performance, and Atlas has created no performance ranking between the eleven. THREE LIMITATIONS, restated once and not re-raised: the base is priced separately from the published figures; no U-value is published for any model, so the envelope is not numerically rankable against the SIPS-House 0.031 W/mK figure or against Sanctum's published values; and heavily glazed models carry a thermal penalty that cannot be quantified from what is published. No new outstanding integrity issues.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recAOoRiH7fHmRcUt": {
-      "alternatives": {
-        "text": "The Allen \u2014 EUR 26,224 for 90m2, same 80mm walls, EUR 4,903 less: the better buy unless the larger kitchen-lounge specifically matters to you. The Scannal \u2014 EUR 36,439 for 120m2 and a third bedroom, though it drops to 70mm walls. Concept Modular Signature Cabin 36m2 \u2014 EUR 67,950 ex VAT: far smaller and dearer, but delivered factory-finished with kitchen and bathroom fitted and a 50-year structural warranty rather than a flatpack shell.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2534,36 +2390,6 @@
     "recBVDyal8VGGVEZM": {
       "alternatives": {
         "text": "THE SISTER MODEL, THE NOVA 17.8m, CARRIES THE IDENTICAL UNIT DEFECT \u2014 the certified layers record that the ambiguity runs across the Nova line rather than being a single typo, so it is not a way out. FOR A GLAZED GARDEN BUILDING WITH PUBLISHED FIGURES, \u00d6\u00d6D and Iglucraft are design-led but equally undimensioned, while Yardbox and Loghouse publish areas for conventional rooms that can be heavily glazed to order. WITHIN THE SUPPLIER, the ModPod pods at 18.7, 22.5 and 26.18 m2 are the models with reliable published areas. HOMEOWNER IMPLICATION: if the figure cannot be confirmed, prefer a product whose area is not in doubt.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recSy67Vn2TH51ENG": {
-      "alternatives": {
-        "text": "The Derg \u2014 EUR 24,076 for 42m2 with 70mm walls: EUR 7,900 more and slightly smaller, but a materially better envelope for year-round use. The Allen \u2014 EUR 26,224 for 90m2 with 80mm walls, the best value per m2 in the entire range at about EUR 291/m2 if the site can take it. SIPS Garden Room MINT \u2014 41.2m2 one-bedroom kit from EUR 21,490 ex VAT with a 0.031 W/mK SIPS envelope, if thermal performance outranks bedroom count.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recKFWluu0vDEHn81": {
-      "alternatives": {
-        "text": "The Meelagh \u2014 EUR 31,127 for 100m2 with THICKER 80mm walls and a far better 8.5m x 5.5m living space, if two bedrooms are enough. The Allen \u2014 EUR 26,224 for 90m2, also 80mm walls, the value pick of the range. Luxury Garden Studios Signature 98 \u2014 GBP 142,000 turnkey for 98m2 and four bedrooms: vastly more expensive, but delivered finished with a 10-year structural warranty rather than as a flatpack shell.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recFmEJwf6fFHpscC": {
-      "alternatives": {
-        "text": "The Bofin \u2014 EUR 13,389 for 22.8m2 with a bedroom, bathroom, kitchen AND loft space: a quarter of the price for a comparable brief. Start here. The Allen \u2014 EUR 26,224 for 90m2 with the same 80mm walls, half the price for three times the space. The Scannal \u2014 EUR 36,439 for 120m2 and three bedrooms, still EUR 16,889 cheaper. On the evidence Atlas holds, all three are better buys than The Shannon.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec34rHUaz7l3jDe1": {
-      "alternatives": {
-        "text": "FOR HABITABLE ACCOMMODATION WITH A PUBLISHED AREA AND A TESTABLE ROUTE, Granny Flats Dublin's 1 Bed at 33.00 m2 sits inside the Class 3A band with margin and its 1 or 2 Bed at 45.00 m2 exactly on the ceiling \u2014 the decisive difference being that both state their floor areas. WITHIN BOOTHS, The Straight is the other annexe-intent model. FOR AN EXEMPT DAY ROOM INSTEAD, the QC9 Garden Office at about 7.43 m2 is the range's documented option. THE RANGE SPLITS CLEANLY ON EVIDENCE. THREE MODELS CARRY IMPERIAL NOMINAL DESIGNATIONS \u2014 QCB5 Garden Office and QCB5 Retreat at approximately 4.46 m2 on a 6 x 8 ft designation, and QC9 Garden Office at approximately 7.43 m2 on 8 x 10 ft \u2014 all comfortably inside the 30 m2 allowance, where the certified layers record that AREA IS NOWHERE NEAR THE BINDING CONSTRAINT. TWO GYM MODELS, QCB5 Gym and QC8 Gym, publish NO AREA AT ALL, and the certified layers are explicit that the sibling 6 x 8 ft figure has NOT been carried across to the QCB5 Gym \u2014 that inference was refused. TWO ANNEXE MODELS, this Squire and The Straight, are habitable-intent and therefore excluded from Class 3 on USE at any size. THE STANDING CAVEAT: imperial nominal designations are rounded shed-trade product names, not measured areas, and no height, U-value, insulation specification, warranty or price is published for ANY of the seven \u2014 so evidence neutrality is preserved on envelope throughout and nothing has been ranked on build quality. THE DECISION-RELEVANT PATTERN: on the small models the constraint is height, siting and use rather than area; on the gyms it is internal clear height, which nothing published addresses. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recce4t2fTLJVmO75": {
-      "alternatives": {
-        "text": "WITHIN BOOTHS: the Annexe is offered in STRAIGHT or L-SHAPE, so the L-shape is the direct alternative where the garden suits a wrapped plan; The Squire is the other annexe record held in Atlas. If accommodation is not actually needed, the QCB5 and QC9 studios carry the SAME thermal envelope without the kitchen, bathroom, plastered finish or the groundworks and guarantee conditions that come with plumbing \u2014 the QCB5 from GBP 9,995 including VAT, delivery and installation in England. NEUTRALITY: the studios and the annexe share one envelope specification, so no thermal ranking exists between them; the difference is fit-out and consent. OUTSIDE BOOTHS, and necessarily so for an Irish buyer since no Irish route is published: Luxury Garden Studios delivers heated, fitted units with a kitchen and full bathroom at one price with no staged extras on a 10-year structural warranty, though Republic of Ireland delivery is itself unconfirmed. Big Man Tiny Homes, an Irish manufacturer in Co. Cork, builds a Home Office with Bathroom & Kitchenette in SIPS with EcoTherm PIR, engineer-certified before dispatch, on a published 20-year guarantee. Concept Modular publishes a 50-year structural warranty with a designer kitchen and bathroom. NEUTRALITY: no ranking is created between these routes; each raises the same habitation question in Ireland.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2621,12 +2447,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI11umptgnSn2zE": {
-      "alternatives": {
-        "text": "IF THE AIM IS ACCOMMODATION WITHOUT A FULL APPLICATION, THE CLASS 3A BAND IS THE ONLY ROUTE AND THIS PRODUCT IS ABOVE IT: Granny Flats Dublin's 1 Bed at 33.00 m2 sits inside with margin and its 1 or 2 Bed at 45.00 m2 exactly on the ceiling. FOR AN EXEMPT DAY ROOM INSTEAD, the Longford at 23.60 m2 is the largest model in this range that qualifies. The range straddles the threshold more widely than any other Irish supplier in this catalogue: TWO sit inside the 30 m2 allowance (Laois 3m x 3m at 9.00 m2 comfortably; Longford 5.9m x 4m at 23.60 m2 with only 6.40 m2 of headroom), TWO are over it (Donegal 5.9m x 5.9m at 34.81 m2; this Two Bedroom H at 48.28 m2, which exceeds every route and is habitable besides), and ONE, the Cube Sauna M, publishes no footprint and could not be tested on area. STANDING QUALIFICATION carried from the certified layers: MyCabin.ie never states whether its quoted dimensions are internal or external \u2014 the single unanswered question across the whole range, mattering most on the Longford. THE DECISION-RELEVANT POINT: because MyCabin.ie is Irish, based in Blessington, Co. Wicklow with showrooms in Wicklow, Cork and Wexford, a homeowner can buy any of these products locally and immediately \u2014 including the two that are not exempt. EVIDENCE NEUTRALITY IS PRESERVED ON SPECIFICATION: no height, U-value, warranty or price is published for any of the five, so nothing has been ranked on build quality. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
     "recPmdokw4KU1uSCb": {
       "alternatives": {
         "text": "The direct comparison is Granada, also two-room, at 21 m2 on a 26.64 m2 footprint at 70 mm for EUR 14,730 \u2014 a thicker wall, a similar room area and a footprint that stays inside the statutory allowance. The Sweden family offers subdivided log cabins at 22\u201323 m2 on 628 x 393 cm. EVIDENCE NEUTRALITY: these differ in published size, wall thickness, internal arrangement and planning position; no published evidence establishes any as the better build.",
@@ -2654,12 +2474,6 @@
     "recRkL1MMvRKWjgYA": {
       "alternatives": {
         "text": "Urban Cubed Composite (Sanctum) \u2014 same range and specification with an EPDM rubber cubed roof instead of the overhanging composite metal panel; GBP 1,000 more at equivalent sizes. Hampton Garden Room 2.4m x 2.4m (Sanctum) \u2014 same footprint from GBP 8,995, roughly GBP 7,000 less, trading maintenance-free composite cladding for a clad timber finish. Concept Modular Standard Office \u2014 EUR 16,950 ex VAT, a similar price band but euro-priced, Irish-supplied and carrying a 50-year structural warranty. SIPS-House SIPS Garden Office DAISY \u2014 16.9 m2 from EUR 9,390 ex VAT with published core conductivity of 0.031 W/mK, far more space for less money but supplied as a kit.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPRGtH0ycJzbxYw": {
-      "alternatives": {
-        "text": "IF THE USE IS OVERNIGHT, THE RIGHT PRODUCTS ARE THE ONES BUILT FOR IT: Granny Flats Dublin's 33 m2 and 45 m2 units are designed around the Class 3A band and publish their areas, which this cabin does not. IF THE USE IS INCIDENTAL DAY SPACE, Yardbox, Waltons and Adman Steel Sheds publish footprints that can be tested against the 30 m2 allowance. WITHIN THIS RANGE, the Ontario XL is the only model with a published area. HOMEOWNER IMPLICATION: the choice is between two different regulatory routes, and no cabin marketed ambiguously will resolve which one you are on.",
         "evidenceScope": "Product-Specific"
       }
     },

@@ -1,34 +1,16 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-19T22:55:17Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "planningConsiderations"
   ],
-  "productCount": 462,
+  "productCount": 431,
   "recordCounts": {
-    "planningConsiderations": 462
+    "planningConsiderations": 431
   },
   "products": {
-    "rec6erGeW5wf5SDgT": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published figure, preserved as stated in the product name: 33 m2 against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2). That is 3 m2 over the limit BEFORE any other shed, garage or garden structure already in the garden is counted, and the 30 m2 is a combined total. The certified AM-001 Measurement Basis record notes the supplier does not state whether 33 m2 is internal or external; if it is internal the external footprint is larger still, so the overrun can only widen, never close. Nothing estimated. TWO INDEPENDENT REASONS THE CLASS 3 GARDEN-STRUCTURE ROUTE IS UNAVAILABLE: the area exceeds 30 m2, AND a one-bedroom flat is habitable accommodation, which the Class 3 exemption excludes at any size. THE ROUTE THAT MAY APPLY INSTEAD: the Class 3A Detached Auxiliary Dwelling exemption introduced by the 2026 Regulations covers 32-45 m2, and 33 m2 sits inside that band. It requires siting to the rear, services linked to the main house, 14 days' written notice to the planning authority, and Building and Fire Regulations compliance, and the provision expires on 31 December 2030. Whether this product qualifies has NOT been determined and cannot be from published information. HOMEOWNER IMPLICATION: this cannot be treated as a normal exempt garden room. Speak to your local authority planning office about the Class 3A notice route, and obtain from Granny Flats Dublin in writing whether 33 m2 is internal or external, the heights, and how water, drainage and electrical services connect to the house.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recZojzhYoRcierlv": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published figure, preserved: 45 m2 against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) \u2014 15 m2 over. Class 3 is unavailable twice over: on area, and because a one or two bedroom flat is habitable accommodation, which Class 3 excludes at any size. THE CLASS 3A ROUTE IS AVAILABLE ONLY AT ITS ABSOLUTE OUTER EDGE, AND THE MEASUREMENT BASIS DECIDES IT. The Class 3A Detached Auxiliary Dwelling exemption runs from 32 m2 to 45 m2, so 45 m2 sits EXACTLY on the ceiling with zero headroom. The certified AM-001 Measurement Basis record states the supplier does not say whether 45 m2 is internal or external. If it is EXTERNAL the product just reaches the top of the band. If it is INTERNAL \u2014 and for a serviced dwelling with insulated walls the external footprint is materially larger \u2014 the true figure exceeds 45 m2 and Class 3A fails too, leaving no exempt route at all. Nothing estimated; no wall thickness added or deducted. Class 3A also requires siting to the rear, services linked to the principal house, at least 14 days' written notice to the planning authority, and Building and Fire Regulations compliance, and the provision expires 31 December 2030. CATALOGUE ISSUE: the product name spans '1 or 2 Bed' at a single 45 m2 figure, so a homeowner cannot tell whether both configurations share that footprint; the variant question is unresolved in the supplier's own material and no reading has been assumed. HOMEOWNER IMPLICATION: this is the product in the range where one unanswered question \u2014 internal or external \u2014 is the difference between a 14-day notice and a full planning application. Get it in writing before anything else.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPodhux5TC0rg39": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published figure, preserved: 48 m2. That is 18 m2 over the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) and it ALSO exceeds the upper bound of the 32-45 m2 Class 3A Detached Auxiliary Dwelling band, so NEITHER exempt route is available on area alone. As a two-bedroom flat it is habitable accommodation and is excluded from the Class 3 garden-structure route at any size in any event. Full planning permission is indicated. Nothing estimated; the certified AM-001 Measurement Basis record notes the internal-versus-external basis is unstated, which cannot help here because the figure already exceeds every threshold. CROSS-LAYER INTEGRITY ISSUE recorded once, without altering certified data: the certified AM-004 Insulation record for this product states that 48 m2 exceeds a 40 m2 threshold. That 40 m2 figure is the HOUSE-EXTENSION allowance, which was itself raised to 45 m2 by the 2026 Regulations and does not apply to a detached garden structure. The conclusion in that record \u2014 that planning permission is likely to be required \u2014 remains correct; only the threshold cited is superseded. HOMEOWNER IMPLICATION: assume a full planning application. Engage your local authority planning office and a designer before committing to a purchase, and treat any supplier suggestion that this is exempt with caution. The pattern across the four is the more important finding: EVERY one is habitable accommodation, so not one of them can use the Class 3 garden-structure exemption regardless of area, and the range straddles every statutory threshold Atlas holds \u2014 25 m2 falls below the Class 3A minimum, 33 and 45 m2 sit inside the Class 3A band, and 48 m2 exceeds every route. This also makes the Garden Rooms category placement itself questionable; recorded, not corrected, architecture frozen. PLANNING LAYER COMPLETE.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
     "recpZW4echDhHtEVv": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. Auroom publishes no internal floor area and no footprint for the Aurea; the certified AM-001 Measurement Basis record confirms nothing has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. As a garden structure a sauna cabin counts toward that combined allowance in full. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: obtain the external footprint and overall height in writing before ordering, and count the sauna toward your 30 m2 total. CATEGORY ISSUE recorded once: both are wellness and sauna cabins held under Garden Rooms because Atlas has no correct Product Category, and they should not be compared like-for-like against work-use garden rooms; recorded, not corrected, architecture frozen. THE PLANNING POINT WORTH CARRYING FORWARD FROM THIS SUPPLIER AND THE OTHER WELLNESS RANGES IN THIS LAYER: sauna cabins, hot-tub enclosures and similar wellness buildings are treated by buyers as equipment and by the Regulations as structures. Their footprints count toward the same 30 m2 as a garden office, and because none of these suppliers publishes a footprint, a homeowner cannot even total their own garden without asking. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
@@ -218,12 +200,6 @@
     "recK8PQar4pJiEW29": {
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 25 m2 against a 30 m2 allowance, leaving 5 m2. This product sat EXACTLY ON the old 25 m2 threshold until 27 July 2026. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. Homeowner implication: a small existing shed consumes the remaining margin; audit the garden and keep the use non-residential.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPirZWLtauzxACc": {
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ONLY SINCE 27 JULY 2026 \u2014 26 m2 against the new 30 m2 allowance, leaving 4 m2. UNDER THE PREVIOUS 25 m2 RULE THIS PRODUCT REQUIRED PLANNING PERMISSION. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. Homeowner implication: newly exempt and only just \u2014 any existing garden structure over 4 m2 puts you back into the permission process.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -830,24 +806,6 @@
     "rechdMnIn9PcHJI1U": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 QUESTION CURRENTLY MOOT. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, no human habitation. Bertilo model numerals are nominal names, not m2 (Session 4); no audited area held; Estonia-only shipping. Homeowner implication: the test cannot be run on held data, and there is no Irish purchasing route. All 47 hold the verification classification: not one product in the range carries an audited floor area, and the certified AM-001 layer records that Bertilo's model numerals (Cubo 2, Cubus 3, Pentus 2, Pent Modern 4 and so on) are nominal model names rather than square metres and have not been read as areas. Nothing estimated across the range. THIS IS THE LARGEST SINGLE BLOCK OF UNTESTABLE PRODUCTS IN THE LAYER \u2014 47 of 385 Garden Room products, more than one in eight \u2014 and it arises from one repeated naming convention rather than from 47 separate omissions. WHY IT MATTERS LESS THAN THE COUNT SUGGESTS: Atlas records Bertilo as shipping to Estonia only, with no Irish purchasing route, so for an Irish homeowner the availability question precedes the planning question on every one of these products. WHAT WOULD CLOSE IT: a single published dimensions table from Bertilo would make the whole range testable at once. STATUS FOR CHANGE CONTROL: these 47 records qualify for update under the factual-evidence-update route if Bertilo publishes external footprints. Recorded at the AM-006 Layer Completion Audit Repair.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recChE87PRdyLZxNe": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area or dimensions are published for the One-Bedroom Annexe; the certified AM-001 Measurement Basis record confirms nothing has been estimated, so the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. THE DECISIVE POINT IS USE, NOT SIZE: a one-bedroom annexe is habitable accommodation and is excluded from the Class 3 garden-structure exemption regardless of area. No footprint figure could change that. The Class 3A Detached Auxiliary Dwelling route (32-45 m2, sited to the rear, services linked to the principal house, 14 days' written notice, Building and Fire Regulations compliance, expiring 31 December 2030) is the route that could in principle apply, but it cannot be tested without a confirmed area and it carries a MINIMUM of 32 m2 \u2014 a compact one-bedroom annexe could fall below that and qualify under neither route. VOCABULARY LIMITATION: the approved set is floor-area-based and cannot express exclusion on use; the closest approved value is retained and the position is explained here. AVAILABILITY: South East England only, no Irish route published. HOMEOWNER IMPLICATION: obtain the external footprint, the intended occupancy and the service connections in writing, and put all three to your local authority planning office before assuming any exemption.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "reciTMB2ldkUYNzib": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area, dimensions or derivable footprint are published for the Studio Annexe; the certified AM-001 Measurement Basis record confirms nothing has been estimated and no wall thickness subtracted, so the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. THE USE QUESTION IS ALREADY DECIDED AGAINST THE CLASS 3 ROUTE: an ANNEXE is habitable accommodation, and the Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and excludes human habitation at any size. This product therefore falls outside Class 3 on use alone, whatever its footprint turns out to be. THE ALTERNATIVE ROUTE CANNOT BE TESTED: the Class 3A Detached Auxiliary Dwelling exemption covers 32-45 m2 with rear siting, services linked to the principal house, 14 days' written notice to the planning authority and Building and Fire Regulations compliance, expiring 31 December 2030 \u2014 but without a published area it is impossible to say whether a Studio Annexe would even reach the 32 m2 minimum. VOCABULARY LIMITATION: the approved classification set is floor-area-based and cannot express exclusion on use; the closest approved value is retained and the exclusion is stated here in full. AVAILABILITY: this supplier serves South East England only (Kent, Surrey, Sussex, Essex, Greater London, Hampshire, Berkshire) and publishes no Irish route, so the Irish planning test is academic for an Irish buyer. HOMEOWNER IMPLICATION: do not treat any annexe as an exempt garden room. If an auxiliary dwelling is the intention, the Class 3A notice route is the conversation to have with your local authority planning office.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recVMDB49pKVr2Kpj": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area, dimensions or derivable footprint are published for the Two-Bedroom Annexe; the certified AM-001 Measurement Basis record confirms nothing has been estimated, so the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. A two-bedroom annexe is habitable accommodation and is excluded from the Class 3 garden-structure exemption regardless of size, so the use question settles the Class 3 position before any measurement does. The Class 3A Detached Auxiliary Dwelling route (32-45 m2, rear siting, linked services, 14 days' written notice, expiring 31 December 2030) is the only exempt route that could apply, and a two-bedroom unit is more likely than the smaller annexes in this range to reach the 32 m2 minimum \u2014 but equally more likely to pass the 45 m2 ceiling, and neither can be determined without a published area. Nothing has been inferred. HOMEOWNER IMPLICATION: obtain the external footprint, the heights and the service arrangements in writing, and treat this as a dwelling proposal rather than a garden-room purchase. Not one publishes an area, a dimension or a height. THE SUPPLIER-LEVEL FINDING IS THAT THE AREA TEST IS THE WRONG TEST FOR THIS WHOLE RANGE: every product is habitable accommodation, so Class 3 is unavailable across the board on use, and the only potentially applicable route is Class 3A with its 32-45 m2 band \u2014 which cannot be tested for any of the three because no area is published. VOCABULARY LIMITATION recorded once: the approved classification set is floor-area-based and cannot express exclusion on use, so the closest approved value is retained on all three and the exclusion is explained in each. CATEGORY ISSUE: all three were previously flagged as category misclassifications lacking a correct Product Category option; recorded, not corrected, architecture frozen. AVAILABILITY: the supplier serves South East England only and publishes no Irish route, so none of the three is purchasable in Ireland and the Irish planning analysis is academic. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
         "evidenceScope": "Organisation-Wide"
       }
     },
@@ -1481,66 +1439,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recX6ppza7by2keWQ": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The 30 m2 combined back-garden allowance applies to a Republic of Ireland site (raised from 25 m2 on 27 July 2026), with conditions: behind the front wall, 25 m2 private open space retained, 3 m height for a flat or non-tiled roof and 4 m for a tiled or slated pitched roof, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds NO area and NO dimensions for this product and nothing has been estimated. THE MODEL NUMERAL IS NOT AN AREA: '28' must not be read as 28 m2 \u2014 the range-level naming defect recorded across this supplier means the numerals do not map reliably to published models. HOMEOWNER IMPLICATION: ask for the external footprint in square metres; do not infer it from the model name.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmp0a0V2RFcQ4s7": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing before any assumption about exemption.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recOH15fQUsuYeDW6": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA \u2014 and if '37' were read as square metres it would sit ABOVE the allowance, which is precisely why the guess must not be made. HOMEOWNER IMPLICATION: request the external footprint in writing.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxOmZUOZT0pmY2u": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing before any assumption about exemption.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmNgeJVF3Fvasrk": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recRhbN66JUgay0Md": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. PRODUCT IDENTITY UNRESOLVED, restated once and not corrected here: Atlas holds 'Signature 48' against a published 'Executive 44' \u2014 the model this record names may not exist in the supplier's current catalogue. HOMEOWNER IMPLICATION: confirm both the model name and its external footprint with the supplier before treating this as a real specification.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCjtdouL1VeUhC5": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA \u2014 read as square metres it would sit well above the allowance, which is exactly the inference this layer forbids. HOMEOWNER IMPLICATION: request the external footprint in writing.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recUNSJmWfIxyYKyo": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing before any assumption about exemption.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCp7TnMyHxZnXpJ": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing. If the building does turn out to be large, note that habitable use is excluded from this exemption entirely, and the separate Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) would be a different application.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec3NU9qqLPuxbpdN": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. All 10 REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA, all Tier A, recorded product-specific. THE SUPPLIER-LEVEL FINDING: the entire range is named 'Signature NN' and Atlas holds NO area and NO dimensions for any of the ten. The numerals look like square metres and are not \u2014 the certified AM-001 layer records a range-level naming defect, and the numbers run from 28 to 98, far beyond any plausible garden-room footprint. Treating them as areas would put half the range outside the allowance on nothing but a guess. WHY THIS SUPPLIER IS THE WORST CASE IN THE LAYER SO FAR: with other suppliers a dimension is missing; here a number is present and misleading, which is more dangerous. PRODUCT IDENTITY UNRESOLVED, restated once: Atlas holds 'Signature 48' against a published 'Executive 44'. JURISDICTION NOTE: the certified AM-S01 layer places this supplier at Dungiven, Co. Londonderry, NORTHERN IRELAND, and the certified AM-005 layer records Republic of Ireland availability as unconfirmed. The exempted-development test above applies to a Republic site; a Northern Ireland site is governed by a different regime entirely. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: get a dimensioned drawing before any other conversation.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recbCzoK4cORY3W4c": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. MCD Garden Sheds publishes no floor area and no dimensions for the Apex Cabin; the certified AM-001 Measurement Basis record confirms nothing has been estimated and records that 'Apex' denotes the roof TYPE, not a size, and has not been read as one. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. A HEIGHT POINT THAT IS EASILY GOT WRONG: an apex roof does NOT automatically attract the more generous 4 m Class 3 height limit. That limit applies only where the pitched roof is TILED OR SLATED. A pitched roof finished in felt, shingle or steel sheet falls under the 3 m limit, and a pitched roof is taller at the ridge than a pent roof of the same wall height, so an apex cabin with a non-tiled covering is more likely to breach the height condition than a pent one. The roof covering must therefore be established alongside the dimensions. Other conditions: behind the front wall of the house; 25 m2 of private open space retained; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: ask MCD in writing for the external footprint, the RIDGE height above finished ground level, and the roof covering material \u2014 all three, because any one of them can decide the outcome.",
@@ -1823,12 +1721,6 @@
     "recs6rMHh99U2iXVP": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. All About Outdoors publishes no floor area and no dimensions for the Ohrid; the certified AM-001 Measurement Basis record confirms nothing has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. Conditions applying regardless of area: sited behind the front wall of the house; at least 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; use incidental to the enjoyment of the house; NO HUMAN HABITATION. SUPPLIER OMISSION: no published footprint and no published height. A POINT PARTICULAR TO LOG CABINS: solid-log walls are thick, so if the supplier later quotes an INTERNAL floor area the external footprint used by the planning test will be materially larger. Always establish which basis any figure is on \u2014 the sister product Ontario XL sits at exactly 30 m2 on an unstated basis, and that single unanswered question is the difference between exempt and not exempt. HOMEOWNER IMPLICATION: obtain the measured EXTERNAL footprint and the ridge height in writing before ordering, and check the footprint against the combined 30 m2 alongside every other structure in the back garden.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxZcEXwgG0z2Oj8": {
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 82% OF THE COMBINED ALLOWANCE \u2014 BUT THE NAMED USE CONFLICTS WITH IT. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures; this footprint is 24.68 m2, leaving 5.32 m2. However the exemption requires use INCIDENTAL to the dwelling with NO HUMAN HABITATION, and this product is published as a one bedroom cabin. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house and 25 m2 of private open space must remain. HOMEOWNER IMPLICATION: the footprint fits the exemption but sleeping accommodation does not. A buyer intending overnight use should assume planning permission is required, or consider the separate Class 3A detached auxiliary dwelling provision (32\u201345 m2, rear garden, linked services, 14 days' notice, expiring 31 December 2030) \u2014 for which this structure's 24.68 m2 footprint is below the 32 m2 minimum.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2378,12 +2270,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recfI08WIE6SfvlsE": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. This classification rests on USE, not on area, and the reason must be read carefully because the area figure looks reassuring. Supplier's published figure, preserved: 25 m2, which does sit inside the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) with about 5 m2 of nominal headroom, and the certified AM-001 Measurement Basis record notes the internal-versus-external basis is unstated so even that headroom is not assured. BUT THE AREA TEST IS NOT THE TEST THAT DECIDES THIS PRODUCT. A studio granny flat is habitable accommodation. The Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and expressly excludes human habitation, so this product falls outside Class 3 at any size, and 25 m2 buys nothing. THE ALTERNATIVE ROUTE IS ALSO CLOSED ON SIZE: the Class 3A Detached Auxiliary Dwelling exemption runs from 32 m2 to 45 m2, and 25 m2 falls BELOW that minimum. Neither exempt route is therefore available \u2014 one excluded by use, the other by being too small \u2014 which is why the approved classification EXCEEDS THE EXEMPTION LIMIT is applied. VOCABULARY LIMITATION recorded once: the approved set is floor-area-based and has no value for 'excluded on use while inside the area limit'; the closest approved classification is retained and the full reasoning is stated here. HOMEOWNER IMPLICATION: a 25 m2 granny flat will in practice need planning permission. Do not let the sub-30 m2 figure suggest otherwise, and put the intended occupancy to your local authority planning office before ordering.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recrfXlRTCNCf8VB5": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The certified AM-001 Measurement Basis record classifies this NO AREA PUBLISHED and records that the only URL held is a pricing page rather than a product specification page, so no measurement could be attributed and nothing has been estimated. A legacy Atlas Floor Area entry carries the supplier's own string '25m2 +', which is a STARTING SIZE rather than a figure \u2014 it states a minimum and no maximum, so it cannot be tested against a threshold and has not been read as an area. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) therefore cannot be applied. WHAT THE '25 m2 +' DOES TELL A HOMEOWNER, WITHOUT ANY INFERENCE ABOUT THE EXACT SIZE: the range STARTS above the pre-27 July 2026 limit of 25 m2 and has an open upper end running toward and past the current 30 m2 allowance, so this is a product where the area test is live rather than academic and the specification chosen decides the outcome. A SEPARATE AND LIKELY DECISIVE POINT ON USE: the 'Studio LIVING Pod' designation implies habitable accommodation, and the Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and excludes human habitation at any size \u2014 so on the supplier's own naming this product sits outside Class 3 whatever its footprint. The Class 3A Detached Auxiliary Dwelling route (32-45 m2, sited to the rear, services linked to the principal house, 14 days' written notice, expiring 31 December 2030) may be the applicable route instead but cannot be tested without a confirmed area. VOCABULARY LIMITATION: the approved classification set is floor-area-based and cannot express exclusion on use; the closest approved value is retained and the position is explained here in full. HOMEOWNER IMPLICATION: treat this as a dwelling proposal. Obtain the as-specified external footprint, the heights and the service connections in writing, and put the intended occupancy to your local authority planning office before ordering. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
@@ -2462,21 +2348,9 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recmAUmTuDN3NAhTv": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recuyH8VrmIzd3zxC": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A single-room cabin can be exempt while used incidentally to the house; sleeping accommodation removes the exemption regardless of size. HOMEOWNER IMPLICATION: get the external footprint in writing and be clear about intended use.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recO17811xKx4D2d8": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A ONE-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2498,33 +2372,15 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recVLlHgnLdE0y1Ro": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rechlK4GR8rJceNhR": {
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA. Supplier's published figures, preserved exactly as given: 'Measurements: 4.27m x 2.44m (10m2)' and 'Measurements: 14x8ft (112 ft2)'. Against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) that is comfortably inside, and it was equally inside the previous 25 m2 limit, so the position is unchanged by the 2026 increase; roughly 20 m2 remains for other structures. THE SUPPLIER'S OWN FIGURES ARE INTERNALLY CONSISTENT, WHICH IS RARE IN THIS LAYER AND WORTH STATING: the certified AM-001 Measurement Basis record confirms 4.27 m \u00d7 2.44 m is 10.42 m2 and 112 ft2 is 10.41 m2, so the metric pair is a direct conversion of the primary 14 \u00d7 8 ft designation and all three published figures agree. The only discrepancy is that the headline '10m2' is ROUNDED DOWN from the supplier's own dimensions \u2014 recorded, not corrected, and immaterial at this size, though a homeowner near a threshold should always work from the dimensions rather than a rounded headline. Elevate Modular does not state whether the dimensions are external or internal, and 14 \u00d7 8 ft is a standard modular envelope size, so the figures are treated as a nominal designation; nothing estimated, no wall thickness subtracted. Conditions applying in addition to area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. JURISDICTIONAL NOTE: the dual-currency listing and Belfast telephone code indicate a Northern Ireland base quoting into both jurisdictions, so confirm which planning regime applies to your SITE rather than to the supplier. PLANNING LAYER COMPLETE.",
         "evidenceScope": "Organisation-Wide"
       }
     },
-    "recI4CCDJVu7CezhW": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A ONE-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined; its 32 m2 FLOOR means a smaller cabin can fall between both routes and need full permission. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recz1fNk9SoCzF2QN": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A single-room cabin can be exempt while used incidentally to the house; sleeping accommodation removes the exemption regardless of size. HOMEOWNER IMPLICATION: get the external footprint in writing and be clear about intended use.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recAOoRiH7fHmRcUt": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined \u2014 and a two-bedroom unit is more likely than a one-bedroom to exceed the 45 m2 CEILING, which would put it outside that route as well. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2537,36 +2393,6 @@
     "recBVDyal8VGGVEZM": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. THE SUPPLIER'S PUBLISHED FIGURE IS NOT INTERNALLY CONSISTENT. The product name states '21.5m', a LINEAR METRE unit, but 21.5 linear metres is implausible for a garden pavilion while 21.5 SQUARE METRES would be plausible as an area. The published unit and the only plausible reading therefore contradict one another, and the certified AM-001 Measurement Basis record states that resolving this by assuming m2 would be an inference and has NOT been made. No dimensions are published from which a footprint could be checked. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2) therefore cannot be reliably tested. THRESHOLD SENSITIVITY: if the figure is in fact 21.5 m2 the pavilion sits 8.5 m2 inside the allowance on its own, but that headroom disappears if any other shed, garage or garden structure already stands in the back garden, because the 30 m2 is a COMBINED total across all such structures. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: do not rely on the catalogue figure. Ask Outdoor Living in writing to confirm the external footprint in metres and whether 21.5 is an area or a dimension, and confirm the roof height, before ordering.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recSy67Vn2TH51ENG": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recKFWluu0vDEHn81": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A THREE-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. INTEGRITY, restated once from AM-001: the record name itself carries an unresolved inconsistency \u2014 a 3-bedroom cabin listed under Two Bed. All 11 REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA, all Tier A, recorded product-specific. THE SUPPLIER-LEVEL FINDING: Atlas holds NO published area for any of the eleven, so the area test cannot be run anywhere in this range. More importantly, EIGHT of the eleven are bedroom cabins \u2014 one, two and three bed \u2014 and habitable accommodation is excluded from the Class 3 garden-structure exemption whatever its size. For those eight the 30 m2 allowance is simply the wrong test. THE GAP BETWEEN THE TWO ROUTES IS THE REAL RISK: Class 3 excludes habitation; Class 3A covers habitable units only from 32 m2 upward. A one-bedroom cabin below 32 m2 falls between them and needs full planning permission. Atlas cannot say which of these products land there, because no areas are published. THE THREE SINGLE-ROOM CABINS \u2014 Corry, Boderg, Kilglass \u2014 can be exempt if used incidentally to the house, so for those three the area figure would settle it. VOCABULARY LIMITATION, restated once for the Layer Completion Audit: the approved classification set is expressed in floor-area terms and cannot represent exclusion on use; the verification value is used and the exclusion stated in full. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: this is a habitable-cabin range, not a garden-office range. Take planning advice before choosing a model.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recFmEJwf6fFHpscC": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds NO area and NO dimensions; nothing estimated. THE USE CONDITION DECIDES THIS PRODUCT: a ONE-BEDROOM cabin is habitable accommodation, and habitable use is EXCLUDED from the Class 3 back-garden structure exemption REGARDLESS OF SIZE. The 30 m2 allowance (raised from 25 m2 on 27 July 2026) is therefore not the operative test. A SEPARATE ROUTE MAY APPLY: the Class 3A detached auxiliary dwelling exemption covers habitable units of 32-45 m2 to the rear, on 14 days' notice to the planning authority, expiring 31 December 2030. Whether this product qualifies is NOT determined and is not inferred \u2014 and note it has a FLOOR of 32 m2, so a small cabin can fall between the two routes and need full permission. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec34rHUaz7l3jDe1": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer records NO AREA PUBLISHED: no floor area, no dimensions, no derivable footprint. Nothing estimated. THE USE CONDITION DECIDES THIS PRODUCT: an ANNEXE implies habitable accommodation, and habitable use is excluded from the Class 3 back-garden structure exemption REGARDLESS OF SIZE. The 30 m2 allowance (raised from 25 m2 on 27 July 2026) is therefore not the operative test. A SEPARATE ROUTE MAY APPLY: the new Class 3A detached auxiliary dwelling exemption covers habitable units of 32-45 m2 to the rear, on 14 days' notice to the planning authority, and expires 31 December 2030. Whether this product qualifies has NOT been determined and is not inferred. HOMEOWNER IMPLICATION: do not buy this expecting garden-office exemption \u2014 establish the intended use and the correct consent route first.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recce4t2fTLJVmO75": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND NO FIXED AREA EXISTS TO VERIFY. The certified AM-001 layer records this product as MADE-TO-WIDTH: the footprint is set per commission, not published as a product figure. Nothing estimated. FOR THIS PRODUCT THE SIZE DECISION AND THE PLANNING DECISION ARE THE SAME DECISION \u2014 a made-to-width annexe can be specified either side of the 30 m2 threshold. Separately, an ANNEXE implies habitable accommodation, excluded from the Class 3 exemption regardless of size; the Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. Three sit within the exemption on floor area and four require product-specific verification, all Tier A, recorded product-specific. THE SUPPLIER-LEVEL FINDING: this range splits cleanly in two. The QC-coded garden offices and retreat carry IMPERIAL NOMINAL sizes (6x8 ft, 8x10 ft) that convert to roughly 4.5-7.5 m2 \u2014 far below the allowance, so area is never the constraint. The gyms and the two annexes carry NO published area at all. WHY THE ANNEXES ARE A DIFFERENT QUESTION ENTIRELY: habitable accommodation falls outside the Class 3 garden-structure exemption whatever its size, so for The Squire and The Straight the area test is beside the point. This is the first supplier in the layer where the USE condition, not the area condition, decides the outcome. VOCABULARY GAP, recorded once for the audit: the approved AM-006 classification set is expressed in floor-area terms and has no value for a product excluded on use rather than size. The verification value has been used and the use exclusion stated in full rather than a new value invented. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: the offices are straightforward on area; the annexes need a consent conversation before a size conversation. AUDIT NOTE: supplier-status prose reworded at the AM-006 Layer Completion Audit so that only this record's own classification appears in approved-vocabulary form; classifications unchanged.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2624,12 +2450,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI11umptgnSn2zE": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published dimensions, preserved exactly: 7.94 m \u00d7 6.08 m = 48.28 m2 against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) \u2014 more than 18 m2 over. Nothing estimated. NEITHER EXEMPT ROUTE IS AVAILABLE, ON TWO INDEPENDENT GROUNDS EACH. On area: 48.28 m2 exceeds the 30 m2 Class 3 allowance AND exceeds the 45 m2 ceiling of the Class 3A Detached Auxiliary Dwelling band, so no exemption reaches it. On use: the supplier's own designation is TWO BEDROOM and RESIDENTIAL, which is habitable accommodation, and the Class 3 garden-structure exemption excludes human habitation at any size. Full planning permission is indicated. The certified AM-001 Measurement Basis record reaches the same conclusion and notes the internal-versus-external basis is unstated, which cannot help here because the figure already exceeds every threshold. CATEGORY ISSUE: a two-bedroom residential cabin held under Garden Rooms is a category mismatch; recorded, not corrected, architecture frozen. HOMEOWNER IMPLICATION: this is a house, not a garden room, and should be approached as a full planning application with a designer and your local authority planning office from the outset. TWO sit inside the 30 m2 allowance (Laois 3m x 3m at 9.00 m2 comfortably, Longford 5.9m x 4m at 23.60 m2 with only 6.40 m2 of headroom and only 1.40 m2 under the pre-2026 rule), TWO are over it (Donegal 5.9m x 5.9m at 34.81 m2, and this Two Bedroom H at 48.28 m2 which exceeds every route and is habitable besides), and ONE, the Cube Sauna M, publishes no footprint at all and so could not be tested on area. STANDING QUALIFICATION: MyCabin.ie never states whether its quoted dimensions are internal or external, which is the single unanswered question across the whole range and matters most on the Longford. WHY THIS SUPPLIER CARRIES MORE RISK THAN A FOREIGN ONE: MyCabin.ie is Irish, based in Blessington, Co. Wicklow, with showrooms in Wicklow, Cork and Wexford, so an Irish homeowner can buy any of these products locally and immediately \u2014 including the two that are not exempt. PLANNING LAYER COMPLETE. AUDIT NOTE: supplier-status prose reworded at the AM-006 Layer Completion Audit so that only this record's own classification appears in approved-vocabulary form; classifications unchanged.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
     "recPmdokw4KU1uSCb": {
       "planningConsiderations": {
         "text": "EXCEEDS THE EXEMPTION ON FOOTPRINT. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 45.87 m2 \u2014 153% of the allowance \u2014 before any existing shed or store is counted. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: planning permission would be required. The 45.87 m2 footprint also exceeds the 32\u201345 m2 range of the separate Class 3A detached auxiliary dwelling provision, so that route does not accommodate it as published either. A two-room layout can read as habitable accommodation, which the exemption does not permit whatever the internal arrangement.",
@@ -2657,12 +2477,6 @@
     "recRkL1MMvRKWjgYA": {
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 5.76 m2 nominal against the 30 m2 combined back-garden allowance, raised from 25 m2 on 27 July 2026. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. THE OVERHANG IS WORTH ASKING ABOUT: the model name indicates a projecting roof, and the roofed footprint can be larger than the nominal size. Nothing has been added or assumed. AVAILABILITY CONTEXT: the certified AM-005 layer records Sanctum as UK ONLY. HOMEOWNER IMPLICATION: area is comfortable; confirm what the overhang adds to the roofed footprint if the plot is tight.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPRGtH0ycJzbxYw": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. All About Outdoors publishes no floor area and no dimensions for this cabin; the certified AM-001 Measurement Basis record confirms nothing has been estimated and records that 'XL' and 'Family' are marketing labels, NOT measurements, and have not been treated as such. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) therefore cannot be tested. A SEPARATE POINT ON USE THAT MAY MATTER MORE THAN THE AREA: a cabin the supplier itself describes as FAMILY accommodation implies habitable use, and the Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and excludes human habitation at any size. If the cabin is intended as living or sleeping accommodation it falls outside Class 3 regardless of how small it is. VOCABULARY LIMITATION: the approved classification set is floor-area-based and cannot express exclusion on use, so the closest approved value is retained and the use question is stated here in full. Conditions applying regardless: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof. HOMEOWNER IMPLICATION: establish first what the cabin will be used for, because that may settle the planning position before any measurement does. Then obtain the external footprint and the ridge height from the supplier in writing.",
         "evidenceScope": "Product-Specific"
       }
     },

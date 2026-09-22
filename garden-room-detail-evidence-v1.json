@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-19T22:55:17Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "alternatives",
@@ -12,95 +12,17 @@
     "typicalHomeowner",
     "sources"
   ],
-  "productCount": 487,
+  "productCount": 456,
   "recordCounts": {
-    "alternatives": 462,
-    "bestFor": 462,
-    "considerations": 462,
-    "planningConsiderations": 462,
-    "strengths": 462,
-    "typicalHomeowner": 462,
-    "sources": 355
+    "alternatives": 431,
+    "bestFor": 431,
+    "considerations": 431,
+    "planningConsiderations": 431,
+    "strengths": 431,
+    "typicalHomeowner": 431,
+    "sources": 352
   },
   "products": {
-    "rec6erGeW5wf5SDgT": {
-      "considerations": {
-        "text": "CLEARING THE FLOOR AREA IS THE EASY PART. The Class 3A route also demands a REAR location, services LINKED to the main house, and 14 days' notice \u2014 and the provision EXPIRES ON 31 DECEMBER 2030, so it is a window, not a permanent right. A SIDE-GARDEN SITE OR AN INDEPENDENT CONNECTION WOULD PUT THE PROJECT BACK INTO FULL PLANNING at any size. SECOND, this is a dwelling: Building Regulations, drainage and services apply as they would to a house extension. THIRD, no height, U-value, warranty or price is published, so thermal performance and cover cannot be compared with other suppliers. HOMEOWNER IMPLICATION: confirm siting and services with the planning authority before ordering.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN THE RANGE, the 45 m2 model offers 12 m2 more but sits EXACTLY on the Class 3A ceiling with no tolerance, and the 48 m2 model is over it \u2014 so this is the safe end of the range and the step up carries real regulatory risk. ELSEWHERE, All About Outdoors' habitable units and Rayco Modular Homes face the same 32\u201345 m2 arithmetic; \u00d6\u00d6D House's glass units are habitable-use products with the same exclusion from the incidental exemption. IF THE REQUIREMENT IS DAY SPACE ONLY, an exempt garden room is far simpler. HOMEOWNER IMPLICATION: within Class 3A, choose the size with margin rather than the size at the limit.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A DUBLIN FAMILY BRINGING A PARENT HOME. They have a rear garden of a reasonable size, an existing house they can link services to, and a relative who needs a bedroom, a bathroom and a front door of their own. The 2026 provision is what makes the project feasible for them, and they are working within its window rather than treating it as permanent. THEY WILL BE COMPARING TIMELINES AS MUCH AS PRICES. NOT FOR: a household whose only available space is to the side or front of the house, where the route does not apply; nor for a couple needing two bedrooms.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "IT IS THE BEST-POSITIONED SIZE IN THE CATALOGUE FOR THE CLASS 3A ROUTE. 33.00 m2 is above the 32 m2 minimum and well below the 45 m2 maximum, so minor variation in the as-built figure will not push it out of the band \u2014 which cannot be said of the 45 m2 model. A ONE-BEDROOM LAYOUT IS ALSO THE COMMON REQUIREMENT for an elderly parent or a single adult, making this the range's mainstream product rather than an edge case. THE AREA IS PUBLISHED AND VERIFIED. NOT ESTABLISHED: no height, U-value, warranty, price, room dimensions or specification detail is published for this product.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "THE ONE PRODUCT IN THIS RANGE THAT SITS COMFORTABLY INSIDE THE NEW AUXILIARY-DWELLING ROUTE. At a verified 33.00 m2 it clears the 32 m2 floor of the Class 3A Detached Auxiliary Dwelling provision introduced by S.I. 338 of 2026 and sits 12 m2 under its 45 m2 ceiling \u2014 the only model here with headroom at both ends. THAT ROUTE REQUIRES the unit to be to the REAR of the house, to have services LINKED to the main dwelling, and 14 DAYS' NOTICE to the planning authority; it also EXPIRES ON 31 DECEMBER 2030. HOMEOWNER IMPLICATION: on floor area this is the natural choice \u2014 but the conditions, not just the size, decide whether it qualifies.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published figure, preserved as stated in the product name: 33 m2 against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2). That is 3 m2 over the limit BEFORE any other shed, garage or garden structure already in the garden is counted, and the 30 m2 is a combined total. The certified AM-001 Measurement Basis record notes the supplier does not state whether 33 m2 is internal or external; if it is internal the external footprint is larger still, so the overrun can only widen, never close. Nothing estimated. TWO INDEPENDENT REASONS THE CLASS 3 GARDEN-STRUCTURE ROUTE IS UNAVAILABLE: the area exceeds 30 m2, AND a one-bedroom flat is habitable accommodation, which the Class 3 exemption excludes at any size. THE ROUTE THAT MAY APPLY INSTEAD: the Class 3A Detached Auxiliary Dwelling exemption introduced by the 2026 Regulations covers 32-45 m2, and 33 m2 sits inside that band. It requires siting to the rear, services linked to the main house, 14 days' written notice to the planning authority, and Building and Fire Regulations compliance, and the provision expires on 31 December 2030. Whether this product qualifies has NOT been determined and cannot be from published information. HOMEOWNER IMPLICATION: this cannot be treated as a normal exempt garden room. Speak to your local authority planning office about the Class 3A notice route, and obtain from Granny Flats Dublin in writing whether 33 m2 is internal or external, the heights, and how water, drainage and electrical services connect to the house.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recZojzhYoRcierlv": {
-      "bestFor": {
-        "text": "THE LARGEST UNIT THE CLASS 3A ROUTE PERMITS \u2014 AND IT SITS EXACTLY ON THE LIMIT. At a verified 45.00 m2 it meets the ceiling of the Detached Auxiliary Dwelling provision precisely, with ZERO HEADROOM: 45 m2 qualifies, 45.5 m2 does not. FOR A COUPLE, OR A PARENT WHO NEEDS A SPARE ROOM, this is the most space obtainable without a full planning application, and the flexible one-or-two-bedroom layout is what makes 45 m2 worth having. THE CONDITIONS STILL APPLY: rear siting, linked services, 14 days' notice, and expiry on 31 December 2030. HOMEOWNER IMPLICATION: excellent size, no tolerance \u2014 the as-built figure must be confirmed in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "IT EXTRACTS THE MAXIMUM PERMITTED SPACE FROM THE 2026 PROVISION. 45.00 m2 is 12 m2 more than the 1 Bed and, unlike the 48 m2 model, it remains inside the qualifying band \u2014 a well-judged product position. THE ONE-OR-TWO-BEDROOM FLEXIBILITY is a real advantage at this size: the same shell can house a couple or a parent with a visiting family, which materially widens who the building works for. THE AREA IS PUBLISHED IN THE PRODUCT NAME AND VERIFIED in the certified layers. NOT ESTABLISHED: no height, U-value, warranty, price or room dimensions are published, so the two layouts cannot be compared on evidence.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published figure, preserved: 45 m2 against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) \u2014 15 m2 over. Class 3 is unavailable twice over: on area, and because a one or two bedroom flat is habitable accommodation, which Class 3 excludes at any size. THE CLASS 3A ROUTE IS AVAILABLE ONLY AT ITS ABSOLUTE OUTER EDGE, AND THE MEASUREMENT BASIS DECIDES IT. The Class 3A Detached Auxiliary Dwelling exemption runs from 32 m2 to 45 m2, so 45 m2 sits EXACTLY on the ceiling with zero headroom. The certified AM-001 Measurement Basis record states the supplier does not say whether 45 m2 is internal or external. If it is EXTERNAL the product just reaches the top of the band. If it is INTERNAL \u2014 and for a serviced dwelling with insulated walls the external footprint is materially larger \u2014 the true figure exceeds 45 m2 and Class 3A fails too, leaving no exempt route at all. Nothing estimated; no wall thickness added or deducted. Class 3A also requires siting to the rear, services linked to the principal house, at least 14 days' written notice to the planning authority, and Building and Fire Regulations compliance, and the provision expires 31 December 2030. CATALOGUE ISSUE: the product name spans '1 or 2 Bed' at a single 45 m2 figure, so a homeowner cannot tell whether both configurations share that footprint; the variant question is unresolved in the supplier's own material and no reading has been assumed. HOMEOWNER IMPLICATION: this is the product in the range where one unanswered question \u2014 internal or external \u2014 is the difference between a 14-day notice and a full planning application. Get it in writing before anything else.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE 33 m2 MODEL IS THE RISK-AVERSE ALTERNATIVE: 12 m2 smaller, but with 12 m2 of margin inside the band rather than none. THE 48 m2 MODEL IS THE OPPOSITE TRADE \u2014 3 m2 more space at the cost of leaving Class 3A entirely and requiring a full application. ELSEWHERE IN THE CATALOGUE, Rayco Modular Homes and All About Outdoors market habitable units in the same size territory and face identical arithmetic; Yardbox's Bothan is the record whose published living space exceeds its own stated footprint, and is not a safe comparator on area. HOMEOWNER IMPLICATION: at 45 m2 the choice is between maximum space and margin for error \u2014 there is no option that offers both.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD ACCOMMODATING TWO PEOPLE RATHER THAN ONE \u2014 both parents, or an adult child and partner \u2014 with a large rear garden and a long-term intention. They want the unit to work for years, not as a stopgap, which is why the extra 12 m2 over the 1 Bed matters to them. THEY ARE ALSO THE BUYER MOST EXPOSED TO THE CEILING RISK, and should be the most insistent on written confirmation of the as-built area and measurement basis. NOT FOR: a small garden, where 45 m2 plus the retained private open space will not fit; nor for a buyer who wants certainty above space.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "SITTING EXACTLY ON A STATUTORY CEILING IS A RISK IN ITSELF. The Class 3A maximum is 45 m2 and this product is 45.00 m2 \u2014 so any as-built variation upward, any measurement convention that includes wall thickness differently, or any addition such as a porch could take it outside the provision and into full planning. THE CERTIFIED LAYERS DO NOT PUBLISH WHICH MEASUREMENT BASIS THE 45 m2 REFERS TO, which is precisely the question that matters at the limit. SECOND, the rear-siting, linked-services and 14-day-notice conditions apply, and the provision expires 31 December 2030. THIRD, no height, U-value, warranty or price is published. HOMEOWNER IMPLICATION: get the measurement basis and the as-built area confirmed in writing before proceeding.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPodhux5TC0rg39": {
-      "considerations": {
-        "text": "THREE SQUARE METRES CHANGE THE ENTIRE PROCESS. Above the 45 m2 Class 3A ceiling there is no notice route, no 14-day path and no exemption: a full planning application is required, with the fees, drawings, timeline and refusal risk that involves \u2014 and the 45 m2 model in the same range avoids all of it for 3 m2 less. SECOND, a dwelling of this size brings Building Regulations, drainage, services and likely a fire and access assessment. THIRD, no height, U-value, warranty or price is published, so nothing about the build quality can be compared. HOMEOWNER IMPLICATION: be certain the extra 3 m2 is worth a full application before choosing this over the 45 m2 unit.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A GENUINE TWO-BEDROOM HOME IN THE GARDEN \u2014 AND THE ONE PRODUCT HERE THAT REQUIRES FULL PLANNING PERMISSION ON AREA. At a verified 48.00 m2 it EXCEEDS the 45 m2 Class 3A ceiling by 3 m2, so the fast auxiliary-dwelling route is unavailable regardless of siting or services; and as a habitable dwelling it was never eligible for the 30 m2 incidental exemption. FOR A FAMILY WHOSE REQUIREMENT IS ACTUALLY TWO BEDROOMS, that may be the right trade: apply properly, and build the size the household needs. HOMEOWNER IMPLICATION: the largest unit is the one with the longest timeline \u2014 plan for a full application from the outset.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published figure, preserved: 48 m2. That is 18 m2 over the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) and it ALSO exceeds the upper bound of the 32-45 m2 Class 3A Detached Auxiliary Dwelling band, so NEITHER exempt route is available on area alone. As a two-bedroom flat it is habitable accommodation and is excluded from the Class 3 garden-structure route at any size in any event. Full planning permission is indicated. Nothing estimated; the certified AM-001 Measurement Basis record notes the internal-versus-external basis is unstated, which cannot help here because the figure already exceeds every threshold. CROSS-LAYER INTEGRITY ISSUE recorded once, without altering certified data: the certified AM-004 Insulation record for this product states that 48 m2 exceeds a 40 m2 threshold. That 40 m2 figure is the HOUSE-EXTENSION allowance, which was itself raised to 45 m2 by the 2026 Regulations and does not apply to a detached garden structure. The conclusion in that record \u2014 that planning permission is likely to be required \u2014 remains correct; only the threshold cited is superseded. HOMEOWNER IMPLICATION: assume a full planning application. Engage your local authority planning office and a designer before committing to a purchase, and treat any supplier suggestion that this is exempt with caution. The pattern across the four is the more important finding: EVERY one is habitable accommodation, so not one of them can use the Class 3 garden-structure exemption regardless of area, and the range straddles every statutory threshold Atlas holds \u2014 25 m2 falls below the Class 3A minimum, 33 and 45 m2 sit inside the Class 3A band, and 48 m2 exceeds every route. This also makes the Garden Rooms category placement itself questionable; recorded, not corrected, architecture frozen. PLANNING LAYER COMPLETE.",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "strengths": {
-        "text": "IT IS THE LARGEST HABITABLE UNIT IN THE RANGE AND THE ONLY UNAMBIGUOUS TWO-BEDROOM ONE. Where the 45 m2 model offers one or two bedrooms within a fixed shell, this is designed for two, which matters to a household housing a couple with a child or two adults who each need a room. ONCE FULL PLANNING IS ACCEPTED AS THE ROUTE, the Class 3A ceiling stops constraining the design at all \u2014 the 3 m2 overrun costs nothing further. THE AREA IS PUBLISHED AND VERIFIED. NOT ESTABLISHED: no height, U-value, warranty, price or room dimensions are published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A FAMILY SOLVING A LONG-TERM HOUSING PROBLEM RATHER THAN A TEMPORARY ONE \u2014 an adult child with a partner and a child of their own, or two relatives who each need a bedroom. They have a large rear garden, a multi-year horizon, and have accepted that the project is a building rather than a purchase. THEY ARE WILLING TO GO THROUGH PLANNING, which is what distinguishes them from every other buyer in this range. NOT FOR: anyone whose priority is speed or certainty; the 45 m2 or 33 m2 models exist for them. NOT FOR a small garden, where 48 m2 plus retained open space will not fit.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE 45 m2 MODEL IS THE OBVIOUS COMPARISON AND FOR MOST HOUSEHOLDS THE BETTER ONE: 3 m2 smaller, but inside Class 3A and therefore a notice rather than an application. ELSEWHERE, Rayco Modular Homes and All About Outdoors market habitable units of similar scale and face the same threshold; \u00d6\u00d6D House's glass units are habitable-use products excluded from the incidental exemption on the same principle. All four are HABITABLE DWELLINGS and therefore excluded from the 30 m2 incidental garden-structure exemption at any size, which permits no human habitation. Against the Class 3A Detached Auxiliary Dwelling provision of S.I. 338 of 2026 the four fall into three distinct positions: the Studio at 25.00 m2 is BELOW the 32 m2 floor; the 1 Bed at 33.00 m2 and the 1 or 2 Bed at 45.00 m2 are WITHIN the 32\u201345 m2 band, the latter EXACTLY on the ceiling with zero tolerance; and the 2 Bed at 48.00 m2 EXCEEDS it. Every floor area is published in the product name and verified. THE CATALOGUE LIMITATION APPLYING TO ALL FOUR: no height, U-value, warranty, price, room dimensions or measurement basis is published, so the products are distinguished on area and bedroom count alone and evidence neutrality is preserved on build quality. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
     "recpZW4echDhHtEVv": {
       "considerations": {
         "text": "THE PLANNING CONSEQUENCE IS THE SAME AS FOR ANY GARDEN BUILDING AND IS EASILY OVERLOOKED: the footprint of a sauna cabin counts toward the 30 m2 combined back-garden allowance in full, so it reduces what remains for a future office, shed or studio. Neither the footprint nor the height is published, so neither statutory test could be run in the certified AM-006 layer. SECOND, THE TWO-MODEL PROBLEM: Aurea and Quu carry identical evidence positions, so a homeowner cannot rank them, and any comparison presented between them would be empty. Recorded once as a catalogue limitation; not corrected, architecture frozen. THIRD, PRACTICAL SAUNA-SPECIFIC POINTS THAT ATLAS CANNOT ANSWER: electrical supply for the heater, ventilation, and the base \u2014 all matter more for a sauna than for a dry office and none is held. HOMEOWNER IMPLICATION: treat the electrical and base requirements as part of the price, and get the footprint in writing.",
@@ -1002,32 +924,6 @@
       },
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 25 m2 against a 30 m2 allowance, leaving 5 m2. This product sat EXACTLY ON the old 25 m2 threshold until 27 July 2026. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. Homeowner implication: a small existing shed consumes the remaining margin; audit the garden and keep the use non-residential.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPirZWLtauzxACc": {
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ONLY SINCE 27 JULY 2026 \u2014 26 m2 against the new 30 m2 allowance, leaving 4 m2. UNDER THE PREVIOUS 25 m2 RULE THIS PRODUCT REQUIRED PLANNING PERMISSION. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. Homeowner implication: newly exempt and only just \u2014 any existing garden structure over 4 m2 puts you back into the permission process.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "Concept Modular Cabin 19m\u00b2 Studio \u2014 EUR 31,000 for 19.1m\u00b2 if the budget or the site will not stretch. Concept Modular Signature Cabin 36m\u00b2 \u2014 EUR 67,950 with kitchen, bathroom and plumbed water if the room needs to function as accommodation. SIPS Garden Room POPPY \u2014 24.8m\u00b2 from EUR 12,750 as a self-assembly kit, the honest illustration of how much of the Concept Modular price is delivery, finish and warranty rather than floor area.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Best cost per square metre in the Concept Modular range at roughly EUR 1,481/m\u00b2, and EUR 11,250 less than the 25m\u00b2 cabin despite being a square metre larger. 50-year structural warranty, the longest in Atlas. 100mm galvanised box steel frame with 100mm insulated floor, walls and roof; aluminium plate cladding, aluminium Low-E tempered double glazing, SPC flooring. Wired with smart-home technology. 26m\u00b2 is enough for a studio with a distinct working and living zone.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "EUR 38,500 excludes VAT and is a Starting From price. Mains electrical connection is excluded. Concept Modular costs concrete base, installation, craneage and haulage separately on its larger cabins at typically EUR 3,000-5,000 plus VAT \u2014 assume that applies here and confirm it. At 26m\u00b2 check the footprint against Irish exempted-development limits. Atlas holds no evidence of what separates this Studio from the dearer 25m\u00b2 and Signature 25m\u00b2 cabins, so ask the supplier to justify the difference before ruling this one out.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "The value pick of the Concept Modular range. 26m\u00b2 at EUR 38,500 works out around EUR 1,481 per m\u00b2 \u2014 the lowest of the eight Concept Modular products in Atlas, and EUR 11,250 cheaper than the smaller 25m\u00b2 cabin. Best for a homeowner who wants a large, delivered, factory-finished Irish steel cabin.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "An Irish homeowner with roughly EUR 45k-55k available once VAT, base and connections are counted, who wants a substantial delivered studio without managing a build. Suits a large home office, garden lounge or studio in daily year-round use, and someone who has compared the range and spotted that this is where the value sits.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -4048,84 +3944,6 @@
       },
       "strengths": {
         "text": "HAVING TWO MODELS IN A DESIGN-LED LINE MEANS THE LINE IS A REAL PRODUCT FAMILY rather than a one-off showpiece, which matters for parts, support and the likelihood that it stays in production. FOR A BUYER COMMITTING TO AN ARCHITECTURAL GARDEN BUILDING, that continuity has value. NOT ESTABLISHED: no audited area, dimensions, height, roof form, glazing or insulation specification, warranty or price is held, and no recorded difference from the Modern Art 1 \u2014 so no advantage over it has been claimed, including on size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recChE87PRdyLZxNe": {
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD PROVIDING A HOME FOR ONE PERSON \u2014 an adult child staying local, or a parent moving closer. They are commissioning a small dwelling, not buying a garden building, and their decision turns on occupancy, services and consent rather than on square metres per pound. THEY MUST BUDGET FOR PROCESS: drainage, heating, fire safety and a planning route are all in scope. NOT FOR: a workspace buyer, or anyone outside the supplier's South East England service area.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A ONE-PERSON DWELLING IN THE GARDEN, FOR A SOUTH EAST ENGLAND BUYER. The bedroom in the name settles the regulatory position: habitable accommodation, outside the Class 3 exemption at any area, per the certified AM-006 layer. What distinguishes this from the Studio Annexe in Atlas is only the bedroom count \u2014 no area, height or specification is published for either, so evidence neutrality is preserved and no ranking between them has been created. HOMEOWNER IMPLICATION: choose between the annexes on room count and quotation, not on anything Atlas can tell you; and confirm availability, as no Irish route is held.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "THE CONSENT ROUTE IS THE WHOLE QUESTION. A one-bedroom annexe is habitable and therefore outside Class 3 at any size; the Class 3A route covers 32-45 m2 with rear siting, linked services, 14 days' notice and Building and Fire Regulations compliance, expiring 31 December 2030. Without a published area it cannot be established whether this product even reaches the 32 m2 minimum \u2014 a compact one-bedroom unit could fall below it and qualify under neither route. SECOND, no height, specification, warranty or price is held. THIRD, the supplier serves South East England only. HOMEOWNER IMPLICATION: get the external footprint and the service arrangements in writing, then speak to the planning authority.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE DIRECT IRISH EQUIVALENTS PUBLISH WHAT THIS RECORD DOES NOT. All In One Cabins' Bofin, Grange and Shannon one-bed cabins carry dimensions and prices and are the most documented habitable set in the catalogue. Granny Flats Dublin's 1 Bed at 33 m2 sits inside the Class 3A band and shows exactly what that route requires. The Pod Factory's Pod 22 One-Bed shares this record's weakness, publishing no confirmed area. HOMEOWNER IMPLICATION: for a one-bedroom garden dwelling, a published area is worth more than any other single disclosure.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "THE RANGE IS ORGANISED BY BEDROOM COUNT, WHICH IS THE RIGHT ORGANISING PRINCIPLE FOR HABITABLE BUILDINGS \u2014 a buyer housing one person can identify the relevant product immediately. That clarity of purpose is the one established advantage. NOTHING ELSE IS ESTABLISHED: no floor area, dimensions, height, construction system, insulation value, warranty, installation scope or price is held in Atlas, and no superiority over the Studio or Two-Bedroom Annexe has been inferred from the bedroom count alone.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area or dimensions are published for the One-Bedroom Annexe; the certified AM-001 Measurement Basis record confirms nothing has been estimated, so the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. THE DECISIVE POINT IS USE, NOT SIZE: a one-bedroom annexe is habitable accommodation and is excluded from the Class 3 garden-structure exemption regardless of area. No footprint figure could change that. The Class 3A Detached Auxiliary Dwelling route (32-45 m2, sited to the rear, services linked to the principal house, 14 days' written notice, Building and Fire Regulations compliance, expiring 31 December 2030) is the route that could in principle apply, but it cannot be tested without a confirmed area and it carries a MINIMUM of 32 m2 \u2014 a compact one-bedroom annexe could fall below that and qualify under neither route. VOCABULARY LIMITATION: the approved set is floor-area-based and cannot express exclusion on use; the closest approved value is retained and the position is explained here. AVAILABILITY: South East England only, no Irish route published. HOMEOWNER IMPLICATION: obtain the external footprint, the intended occupancy and the service connections in writing, and put all three to your local authority planning office before assuming any exemption.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "reciTMB2ldkUYNzib": {
-      "bestFor": {
-        "text": "A SOUTH EAST ENGLAND HOUSEHOLD NEEDING SELF-CONTAINED LIVING SPACE \u2014 not an Irish one. The certified AM-006 layer records that an ANNEXE is habitable accommodation, excluded from the Class 3 garden-structure exemption at any floor area, so this is a dwelling project rather than a garden-office purchase. The supplier serves Kent, Surrey, Sussex, Essex, Greater London, Hampshire and Berkshire only; Atlas holds no Irish route. HOMEOWNER IMPLICATION: for an Irish reader this record is catalogue completeness, not a live option. Within its own market it suits someone housing a family member and prepared for a consent process.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "THE NAMING IS HONEST: calling the product an annexe rather than a studio tells a buyer immediately that this is habitable accommodation, which puts them on the correct regulatory track from the outset. Several products in this catalogue obscure the same fact. NOTHING ELSE IS ESTABLISHED \u2014 no floor area, dimensions, height, wall build-up, insulation value, glazing, warranty, installation scope or price is held in Atlas, and nothing has been inferred from the supplier's name or from the annexe category.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area, dimensions or derivable footprint are published for the Studio Annexe; the certified AM-001 Measurement Basis record confirms nothing has been estimated and no wall thickness subtracted, so the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. THE USE QUESTION IS ALREADY DECIDED AGAINST THE CLASS 3 ROUTE: an ANNEXE is habitable accommodation, and the Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and excludes human habitation at any size. This product therefore falls outside Class 3 on use alone, whatever its footprint turns out to be. THE ALTERNATIVE ROUTE CANNOT BE TESTED: the Class 3A Detached Auxiliary Dwelling exemption covers 32-45 m2 with rear siting, services linked to the principal house, 14 days' written notice to the planning authority and Building and Fire Regulations compliance, expiring 31 December 2030 \u2014 but without a published area it is impossible to say whether a Studio Annexe would even reach the 32 m2 minimum. VOCABULARY LIMITATION: the approved classification set is floor-area-based and cannot express exclusion on use; the closest approved value is retained and the exclusion is stated here in full. AVAILABILITY: this supplier serves South East England only (Kent, Surrey, Sussex, Essex, Greater London, Hampshire, Berkshire) and publishes no Irish route, so the Irish planning test is academic for an Irish buyer. HOMEOWNER IMPLICATION: do not treat any annexe as an exempt garden room. If an auxiliary dwelling is the intention, the Class 3A notice route is the conversation to have with your local authority planning office.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "USE DECIDES THIS PRODUCT, NOT SIZE. Habitable accommodation sits outside the Class 3 exemption whatever the footprint, so a smaller annexe is no more exempt than a larger one. The Class 3A Detached Auxiliary Dwelling route \u2014 32 to 45 m2, rear siting, services linked to the principal house, 14 days' written notice, Building and Fire Regulations compliance, expiring 31 December 2030 \u2014 is the only alternative, and it cannot be tested because no area is published; a compact studio annexe could fall below the 32 m2 minimum and qualify under neither. SECOND, no Irish purchasing route is held. HOMEOWNER IMPLICATION: establish the area and the consent route before anything else.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A SOUTH EAST ENGLAND FAMILY CREATING INDEPENDENT ACCOMMODATION \u2014 typically for an adult child or an ageing parent who needs proximity without sharing the house. The driver is occupancy, and the building follows. They must accept a heavier process than a garden-office buyer: services, drainage, fire and building standards, and a consent route. NOT FOR: anyone wanting a workspace, or an Irish buyer, since no Irish route is published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "FOR HABITABLE GARDEN ACCOMMODATION WITH PUBLISHED AREAS, Granny Flats Dublin gives four sizes \u2014 25, 33, 45 and 48 m2 \u2014 so a buyer can see exactly where each falls against the 32-45 m2 Class 3A band. All In One Cabins publishes a full one, two and three bedroom range with dimensions and prices. Live in Garden Pods' Studio Living Pod is the closest Irish equivalent but publishes only an open-ended '25m2 +'. HOMEOWNER IMPLICATION: on a habitable project the published area decides the consent route, so prefer a supplier that states one.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recVMDB49pKVr2Kpj": {
-      "considerations": {
-        "text": "THE MISSING AREA MATTERS MORE HERE THAN ANYWHERE ELSE IN THE RANGE. Class 3 is unavailable on use; Class 3A runs from 32 to 45 m2, and a two-bedroom unit sits precisely where that band could be met or exceeded. Without a published figure a buyer cannot tell whether they face a 14-day notice or a full planning application \u2014 two materially different projects. SECOND, SERVICES SCALE WITH OCCUPANCY: two bedrooms implies greater demand on water, drainage and heating, none of which is specified in Atlas. THIRD, no height, warranty or price is held. FOURTH, no Irish route. HOMEOWNER IMPLICATION: the external area is the first question, and everything else follows from it.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A TWO-PERSON HOUSEHOLD IN THE GARDEN \u2014 THE LARGEST STEP THIS SUPPLIER OFFERS, AND THE ONE MOST LIKELY TO REACH THE CLASS 3A BAND. Two bedrooms means habitable accommodation, outside the Class 3 exemption at any size. Of the three annexes it is the most likely to reach the 32 m2 Class 3A minimum, and equally the most likely to pass the 45 m2 ceiling \u2014 but the certified layers record no published area, so neither can be established. HOMEOWNER IMPLICATION: a couple or a small family unit could live here, but the consent route depends entirely on a figure the supplier does not publish. South East England service area only.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area, dimensions or derivable footprint are published for the Two-Bedroom Annexe; the certified AM-001 Measurement Basis record confirms nothing has been estimated, so the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. A two-bedroom annexe is habitable accommodation and is excluded from the Class 3 garden-structure exemption regardless of size, so the use question settles the Class 3 position before any measurement does. The Class 3A Detached Auxiliary Dwelling route (32-45 m2, rear siting, linked services, 14 days' written notice, expiring 31 December 2030) is the only exempt route that could apply, and a two-bedroom unit is more likely than the smaller annexes in this range to reach the 32 m2 minimum \u2014 but equally more likely to pass the 45 m2 ceiling, and neither can be determined without a published area. Nothing has been inferred. HOMEOWNER IMPLICATION: obtain the external footprint, the heights and the service arrangements in writing, and treat this as a dwelling proposal rather than a garden-room purchase. Not one publishes an area, a dimension or a height. THE SUPPLIER-LEVEL FINDING IS THAT THE AREA TEST IS THE WRONG TEST FOR THIS WHOLE RANGE: every product is habitable accommodation, so Class 3 is unavailable across the board on use, and the only potentially applicable route is Class 3A with its 32-45 m2 band \u2014 which cannot be tested for any of the three because no area is published. VOCABULARY LIMITATION recorded once: the approved classification set is floor-area-based and cannot express exclusion on use, so the closest approved value is retained on all three and the exclusion is explained in each. CATEGORY ISSUE: all three were previously flagged as category misclassifications lacking a correct Product Category option; recorded, not corrected, architecture frozen. AVAILABILITY: the supplier serves South East England only and publishes no Irish route, so none of the three is purchasable in Ireland and the Irish planning analysis is academic. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "strengths": {
-        "text": "IT COMPLETES A COHERENT LADDER: studio, one bedroom, two bedrooms. A supplier that organises its range by occupancy is answering the question a habitable-building buyer actually asks, and this is the top of that ladder \u2014 the only option here for more than one occupant. NOTHING ELSE IS ESTABLISHED: no floor area, dimensions, height, construction system, insulation value, glazing, warranty, installation scope or price is held in Atlas. No advantage over the smaller annexes has been inferred beyond the additional bedroom the name states.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "FOR A TWO-BEDROOM GARDEN DWELLING WITH REAL FIGURES, All In One Cabins' Two Bed range \u2014 the Derg, Allen, Ree and Meelagh \u2014 publishes dimensions, ridge heights, wall thicknesses and prices, and is the most documented habitable set in this catalogue. Granny Flats Dublin's 2 Bed at 48 m2 is a worked example of what happens above every exempt route. MyCabin.ie's Two Bedroom H at 48.28 m2 is the same story from an Irish supplier with showrooms. HOMEOWNER IMPLICATION: for a two-bedroom build, choose the supplier who tells you the area, because the area decides the consent route. All three are ANNEXES \u2014 Studio, One-Bedroom and Two-Bedroom \u2014 organised by occupancy, which is the right structure for habitable buildings, and none publishes an area, dimension, height, specification, warranty or price. THE SUPPLIER-LEVEL FINDING carried from the certified layers: the floor-area test is the wrong test for this whole range, because habitable use puts every product outside Class 3 regardless of size, and the only potentially applicable route, Class 3A at 32-45 m2, cannot be tested for any of the three. Evidence neutrality preserved: the three records are distinguished only by the bedroom counts the supplier itself states. AVAILABILITY: South East England only; none is purchasable in Ireland. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "typicalHomeowner": {
-        "text": "A FAMILY HOUSING TWO PEOPLE, OR ONE PERSON WHO NEEDS A SPARE ROOM. A couple, a parent with a visiting grandchild, or an adult child with a home office of their own. This is a small house in the garden and should be planned as one, with a designer and a consent strategy from the outset rather than a delivery date. NOT FOR: a workspace buyer; a garden that could not physically take a two-bedroom footprint; or an Irish buyer, since the supplier serves South East England only.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -7315,266 +7133,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recX6ppza7by2keWQ": {
-      "strengths": {
-        "text": "FIVE STRENGTHS. ONE, UNIQUE TO THIS MODEL: the certified thermal layer records the Signature 28 as the smallest of the ten and the ONLY ONE in the Collection that sits under the 30 m2 back-garden threshold held in this Atlas \u2014 which makes it the only model in the range where the exemption question is even worth asking. TWO: HEATING INCLUDED AS STANDARD. Only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell; here that means electric heating and LED lighting throughout, plus a fitted kitchen with integrated appliances and a full bathroom, at one price with 'no staged extras'. THREE: FULL-HEIGHT SLIDING DOORS and double glazing are published as part of the specification \u2014 a specific, checkable feature rather than a general claim. FOUR: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for 30+ years; the smallest model carries exactly the term the largest does. FIVE: TURNKEY DELIVERY at a published entry point of GBP 32,800 for the Collection. HOMEOWNER IMPLICATION: the most complete small building in the catalogue \u2014 heated, fitted and plumbed on arrival.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: this is the entry model of the Collection, so the alternatives run upward \u2014 Signature 32, 37 and 40 \u2014 and every one of them is recorded by the certified thermal layer as sitting ABOVE the 30 m2 back-garden allowance. If area matters to you, this model is the range. All ten share the same steel frame and the same turnkey finish from GBP 32,800, and no dimensions are held for any of them, so Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so given that Republic of Ireland delivery is unconfirmed: Sprout Pod is the only other Atlas supplier including heating as standard, installs island-wide, requires no crane and no concrete foundation \u2014 the closest comparator to this proposition at a comparable scale. Modern Garden Rooms, an Irish company, holds the highest insulation specification in the Atlas at 150 mm total wall build-up with foundations inside scope. Gardenhouse24 Ireland publishes the strongest structured measurement disclosure in the catalogue, six of eight products safe to rank on internal floor area \u2014 the direct remedy where a footprint decides whether a building is exempt. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "THE MOST INTERESTING MODEL IN THIS RANGE FOR AN IRISH GARDEN, and the certified evidence says why: the AM-002 record states that at 28 m2 this is the SMALLEST Signature model and THE ONLY ONE that sits under the 30 m2 back-garden threshold recorded in this Atlas. Every other model in the Collection is a dwelling-scale building; this one is at least arguably a garden building. WHAT IS ESTABLISHED, recorded exactly as published: the Signature Collection is 'Ten further models, 28 to 98 square metres... Same steel frame, same turnkey finish. From GBP 32,800' \u2014 light gauge steel frame, FULLY INSULATED, full-height sliding doors and double glazing, ELECTRIC HEATING and LED lighting throughout, standing seam roof and composite cladding, fitted kitchen with integrated appliances, full bathroom, 10-year structural warranty, frame engineered for 30+ years, delivered turnkey with 'one price, no staged extras'. THE CONDITION THAT STILL BITES: the exemption requires INCIDENTAL use and NO HUMAN HABITATION, and a kitchen and full bathroom point the other way. HOMEOWNER IMPLICATION: area may fit; use is the live question.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Someone who wants a compact, genuinely self-contained unit \u2014 a garden annexe, a studio flat for an adult child, a short-let \u2014 and who values arriving-complete over specifying every detail themselves. They are attracted by heating, lighting, a kitchen and a bathroom all included at one price, and they are realistic that a building with those things in it is a small dwelling rather than a garden office, whatever its footprint. They will obtain a dimensioned drawing rather than trusting the numeral, and they will take advice on whether the use test can be met before relying on any exemption. A Republic of Ireland buyer will confirm cross-border delivery, installation and VAT treatment in writing before committing. NOT THIS BUYER: anyone who wants a plain heated garden office and would be paying for a kitchen and bathroom they will never use; anyone who needs the exemption to hold, since the use condition is the likely obstacle; anyone who needs a U-value.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, THE USE CONDITION, WHICH MATTERS MOST PRECISELY BECAUSE THE AREA MIGHT FIT: the 30 m2 back-garden exemption requires the structure to be INCIDENTAL to the enjoyment of the house and applies NO HUMAN HABITATION. This model is published with a fitted kitchen and a full bathroom. Area is only one of the conditions, and it is not the one likely to fail. TWO, MEASUREMENT: the certified AM-001 layer holds no area and no dimensions and records the standing naming defect \u2014 'the Signature 48 held in Atlas does not correspond to any supplier listing, the closest published model being an Executive 44', and until the numbering is reconciled NO numeral in this range may be treated as a square-metre figure. So even the 28 must be confirmed by drawing, not read off the name. THREE, THERMAL: 'Fully Insulated' with no material, thickness or U-value for wall, roof or floor, and no thermal break published for the LIGHT GAUGE STEEL frame \u2014 the same caution the certified layer records against Concept Modular, Adman and Sprout Pod. FOUR, AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED. The supplier is at Dungiven, Co. Londonderry, NORTHERN IRELAND, publishes an Ireland-facing page but states NO delivery or installation coverage for either jurisdiction, and prices in GBP. FIVE, WARRANTY SCOPE: 'structural' is undefined against glazing, electrics and finishes.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The 30 m2 combined back-garden allowance applies to a Republic of Ireland site (raised from 25 m2 on 27 July 2026), with conditions: behind the front wall, 25 m2 private open space retained, 3 m height for a flat or non-tiled roof and 4 m for a tiled or slated pitched roof, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds NO area and NO dimensions for this product and nothing has been estimated. THE MODEL NUMERAL IS NOT AN AREA: '28' must not be read as 28 m2 \u2014 the range-level naming defect recorded across this supplier means the numerals do not map reliably to published models. HOMEOWNER IMPLICATION: ask for the external footprint in square metres; do not infer it from the model name.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmp0a0V2RFcQ4s7": {
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, PLANNING: the certified AM-002 record states that at 32 m2 this EXCEEDS the 30 m2 back-garden exempted-development allowance held in this Atlas. No determination is made \u2014 but a buyer should not assume an exemption. TWO, MEASUREMENT, WHICH CUTS THE OTHER WAY: the certified AM-001 layer holds no area and no dimensions and records that the 'Signature NN' numeral MUST NOT BE READ AS AN AREA, referring to the range-level naming defect. So the 32 m2 reading above is itself the supplier's scale statement rather than a measured footprint, and the real number could fall either side of the threshold. The only fix is a dimensioned drawing. THREE, USE: this model is published with a fitted kitchen and a full bathroom, and the exemption requires INCIDENTAL use with NO HUMAN HABITATION \u2014 so even if the area came under 30 m2, the use condition would remain the harder test. FOUR, THERMAL: 'Fully Insulated' with no material, thickness or U-value published, and no thermal break for the LIGHT GAUGE STEEL frame. FIVE, WARRANTY SCOPE and AVAILABILITY: the certified AM-004 layer records that exclusions, start date, transferability and the scope of 'structural' against glazing, electrics and finishes are not published; and REPUBLIC OF IRELAND AVAILABILITY IS UNCONFIRMED from a Northern Ireland base with GBP pricing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS, AND THIS IS THE COMPARISON THAT MATTERS: the SIGNATURE 28 is recorded by the certified thermal layer as the smallest of the ten and the ONLY model in the Collection sitting under the 30 m2 back-garden threshold held in this Atlas. If exempted development is your route, that is the model to ask about, not this one. Above it sit the 37, 40 and 44, all on the same steel frame and turnkey finish from GBP 32,800; because no dimensions are held for any of the ten, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so if Republic of Ireland delivery cannot be confirmed: Sprout Pod is the only other Atlas supplier including heating as standard, installs island-wide, and requires no crane and no concrete foundation. Modern Garden Rooms is an Irish company holding the highest insulation specification in the Atlas at 150 mm total wall build-up, with foundations inside its turnkey scope. Gardenhouse24 Ireland publishes the strongest structured measurement disclosure in the catalogue, with six of eight products safe to rank on internal floor area \u2014 the direct remedy where a footprint decides the planning route. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD \u2014 the certified thermal layer records that only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell. Electric heating and LED lighting throughout, plus a fitted kitchen and full bathroom, at one price with 'no staged extras'. TWO: the specification does not thin out at the small end of the Collection \u2014 the supplier states the Signature models share 'the same steel frame and turnkey finish', so this model carries the same standing seam roof, composite cladding, double glazing and full fit-out as the largest. THREE: a 10-YEAR STRUCTURAL WARRANTY, published company-wide and recorded in the certified AM-004 layer as covering buildings 'built to last 30+ years with minimal maintenance using materials selected for Irish and UK weather'. The certified layer draws the distinction precisely: TEN YEARS IS THE OBLIGATION, 30+ YEARS IS THE EXPECTATION \u2014 two different kinds of statement. FOUR: TURNKEY DELIVERY, built offsite and installed in days, from a Collection entry point of GBP 32,800. HOMEOWNER IMPLICATION: a complete small building, with a warranty term that meets the market norm.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer who wants the smallest self-contained unit in this Collection above the entry model \u2014 heated, fitted with a kitchen and bathroom, and delivered turnkey. The certified thermal layer establishes the shared Signature specification, stated by the supplier as sharing 'the same steel frame and turnkey finish' as the Emerald: light gauge steel frame, fully insulated, double glazing, ELECTRIC HEATING and LED lighting throughout, standing seam roof, composite cladding, fitted kitchen, full bathroom, 10-year structural warranty on a frame engineered for 30+ years. The certified installation layer records TURNKEY INSTALLATION INCLUDED, built offsite and 'delivered and installed in days'. THE PLANNING POSITION, recorded in the certified AM-002 record as intelligence and not as a determination: at 32 m2 this EXCEEDS the 30 m2 back-garden exempted-development allowance held in this Atlas \u2014 and separately, the model numeral must not be treated as an area at all, since the certified AM-001 layer holds no dimensions. HOMEOWNER IMPLICATION: on both readings this needs a planning conversation, not an assumption.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing before any assumption about exemption.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Someone adding a compact independent unit \u2014 a studio annexe for a family member, a home-and-work combination, or a small let \u2014 who wants the building complete on arrival rather than a shell to fit out. They are drawn to a single price covering heating, lighting, kitchen, bathroom and installation, and they have the budget to treat foundations and service connections as a separate line. They understand that this model sits on the boundary of the exemption on the supplier's own scale statement, and that the honest position is unresolved until a dimensioned drawing exists \u2014 so they will ask for one before anything else, and they will take advice on the use condition given the kitchen and bathroom. A Republic of Ireland buyer will confirm cross-border delivery, installation and VAT in writing first. NOT THIS BUYER: anyone needing certainty on exempted development before ordering; anyone wanting a plain garden office; anyone who needs a U-value.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recOH15fQUsuYeDW6": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA \u2014 and if '37' were read as square metres it would sit ABOVE the allowance, which is precisely why the guess must not be made. HOMEOWNER IMPLICATION: request the external footprint in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Someone adding a small independent annexe \u2014 an adult child staying at home, an elderly parent moving closer, or a short-let unit \u2014 who wants it to arrive heated and fitted rather than as a shell they must finish. They are budgeting separately for groundworks and service connections, and they understand that a kitchen and a bathroom make the use non-incidental, so they are prepared for a planning conversation rather than assuming an exemption. Crucially, they will ask for the external footprint in writing before anything else, because on this model the difference between under and over the 30 m2 threshold cannot be read off the name. NOT THIS BUYER: anyone who wants a garden office and would be paying for a kitchen and bathroom they will not use; anyone in the Republic needing delivery confirmed now; anyone comparing on cost per square metre, which cannot be calculated without an area.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer who wants a small self-contained annexe \u2014 heated, fitted and finished \u2014 rather than a garden office, and who will establish the actual footprint before assuming anything about planning. The certified thermal layer establishes the shared Signature Collection specification: light gauge steel frame, fully insulated, double glazing, ELECTRIC HEATING and LED lighting throughout, standing seam roof, composite cladding, fitted kitchen, full bathroom, turnkey delivery at one price with no staged extras, 10-year structural warranty on a frame engineered for 30+ years. The certified installation layer records TURNKEY INSTALLATION INCLUDED, built offsite and 'delivered and installed in days'. THE CRITICAL POINT ON THIS MODEL SPECIFICALLY, from the certified AM-006 record: if '37' were read as square metres it would sit ABOVE the 30 m2 back-garden allowance \u2014 which is precisely why the guess must not be made, and why the certified AM-001 layer holds no area at all. HOMEOWNER IMPLICATION: the specification is complete; the footprint is the unknown, and on this model the unknown is decisive.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature 28 and 32 sit below this model in the Collection, and the certified thermal layer records the Signature 28 as the smallest of the ten and, on the supplier's own scale statement, the only one that could sit under the 30 m2 back-garden threshold \u2014 the relevant comparison if exemption matters to you. All ten share the same steel frame and the same turnkey finish from GBP 32,800, and because the certified AM-001 layer holds no dimensions for any of them, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so if Republic of Ireland delivery cannot be confirmed: Sprout Pod is the only other Atlas supplier that includes heating as standard, and it installs island-wide with no crane and no concrete foundation. Modern Garden Rooms is an Irish company holding the highest insulation specification in the Atlas at 150 mm total wall build-up, with foundations inside its turnkey scope. Pineca Ireland is the only supplier publishing U-values, if thermal performance is what you want evidenced. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD. The certified thermal layer records that only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell \u2014 electric heating and LED lighting throughout, plus a fitted kitchen and full bathroom, at one price with 'no staged extras'. Every other insulated supplier in the catalogue hands over a shell. TWO: TURNKEY INSTALLATION, built offsite and delivered and installed in days \u2014 at the smaller end of this Collection that means a complete, serviced building arriving with minimal site work. THREE: a 10-YEAR STRUCTURAL WARRANTY, published company-wide and therefore applying to this model exactly as it does to the largest, on a light gauge steel frame engineered for 30+ years. FOUR: STEEL FRAME construction removes rot and insect attack as failure modes \u2014 the reason a 30+ year engineered life can be offered at all. HOMEOWNER IMPLICATION: for a buyer who wants a small annexe finished to a single price rather than a shell to fit out, the completeness of this package is genuinely unusual in the catalogue.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, AND IT IS SHARPEST ON THIS MODEL: the certified AM-006 record states that if '37' were read as square metres the building would sit ABOVE the 30 m2 back-garden allowance. The certified AM-001 layer holds NO area and NO dimensions and records a range-level NAMING DEFECT \u2014 the numeral is not an area. So the single fact that would decide whether this building is exempt is the one fact Atlas does not hold. TWO, PLANNING CLAIM CONFLICT: the supplier publishes that the Irish exemption 'covers garden buildings up to 45 sqm'. The statutory position recorded Tier A here is that the incidental back-garden exemption is 30 m2 combined and excludes human habitation, while the separate Class 3A auxiliary-dwelling route covers 32-45 m2 with its own conditions and a 31 December 2030 expiry. Recorded as an evidenced conflict; ATLAS MAKES NO DETERMINATION. THREE, THERMAL: 'Fully Insulated' with no material, thickness or U-value, and no thermal break published for the light gauge steel frame. FOUR, AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED \u2014 Northern Ireland base, GBP pricing, no published cross-border coverage. FIVE, WARRANTY SCOPE: 'structural' is undefined; glazing, electrics and internal finishes are not addressed, and on a building sold with a kitchen and bathroom that gap covers a lot of value.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxOmZUOZT0pmY2u": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing before any assumption about exemption.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD. The certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers in this entire Atlas layer that sell a heated building rather than an unheated shell \u2014 electric heating, LED lighting throughout, a fitted kitchen and bathroom and flooring, at one price with 'no staged extras'. Every other insulated supplier in the catalogue hands over a shell to fit out and heat. TWO: TURNKEY DELIVERY, built offsite and 'delivered and installed in days' \u2014 a complete, serviced building rather than a construction project. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide, applying to this model exactly as to the largest in the range, on a light gauge steel frame engineered for a 30+ year lifespan; steel construction removes rot and insect attack as failure modes. FOUR: SINGLE TRANSPARENT PRICING across the Collection from GBP 32,800, which is what makes a delivered-total comparison against base-excluded, shell-only competitors possible at all. HOMEOWNER IMPLICATION: on what actually arrives, this is one of the most complete packages in the catalogue; every reservation attaches to documentation and to planning, not to the building.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, PLANNING, ON TWO INDEPENDENT GROUNDS: the certified AM-002 record states that at 40 m2 this exceeds the 30 m2 back-garden allowance held in this Atlas, AND that it contains a kitchen and bathroom so its use is not incidental. Either alone takes it outside the exemption. The separate Class 3A auxiliary-dwelling route (32-45 m2, rear siting, linked services, 14 days' notice, expiring 31 December 2030) is a different application on different terms. No determination is made here. TWO, THE SUPPLIER'S OWN CLAIM CONFLICTS with that, restated once as evidence: the published statement that the Irish exemption 'covers garden buildings up to 45 sqm' collapses the 30 m2 incidental route and the 32-45 m2 habitable route into one. THREE, MEASUREMENT: the certified AM-001 layer holds no area or dimensions and records that the numeral is NOT an area \u2014 so even the 40 m2 reading is the supplier's scale statement, not a measured footprint. FOUR, THERMAL: no material, thickness or U-value, and no thermal break published for the LIGHT GAUGE STEEL frame. FIVE, WARRANTY AND AVAILABILITY: exclusions, start date, transferability and the scope of 'structural' are not published \u2014 the certified AM-004 record's own instruction is to get the exclusions in writing before ordering \u2014 and REPUBLIC OF IRELAND AVAILABILITY IS UNCONFIRMED.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the SIGNATURE 28 is the only model in the Collection the certified thermal layer places under the 30 m2 back-garden threshold, so it is the one to ask about if exempted development is your route. The 37 and 44 sit either side of this model on the same steel frame and turnkey finish. OUTSIDE: Sprout Pod is the only other Atlas supplier including heating as standard and installs island-wide with no concrete foundation; Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue; Gardenhouse24 Ireland publishes the strongest structured measurement disclosure held anywhere in the Atlas. NEUTRALITY: no ranking is created between these routes. All 10 now carry the full five-Feature AM-007 set: Signature 28, 32, 37, 40, 44, 48, 58, 66, 84 and 98 (the 98 retaining its legacy set). THE SUPPLIER-LEVEL SYNTHESIS: this is a ONE-SPECIFICATION COLLECTION differentiating on SCALE ALONE \u2014 'same steel frame, same turnkey finish', from GBP 32,800 \u2014 and because the certified AM-001 layer holds NO area and NO dimensions for ANY of the ten, Atlas has created NO ranking between them and no cost-per-square-metre comparison anywhere in this range. THE GENUINE STRENGTH, and it is a real one: this is one of only TWO suppliers in the entire Atlas \u2014 with Sprout Pod \u2014 that sells a HEATED building rather than an unheated shell, and it goes further than any competitor on fit-out, with electric heating, LED lighting, a fitted kitchen with integrated appliances and a full bathroom at one price with 'no staged extras', under a 10-year structural warranty on a frame engineered for 30+ years. FOUR LIMITATIONS, each restated once and not re-raised. ONE, THE NAMING DEFECT: the 'Signature NN' numerals look like square metres and are not \u2014 a number that is present and misleading is more dangerous than one that is absent, which is why the certified planning layer calls this supplier the worst case in that layer. TWO, PRODUCT IDENTITY UNRESOLVED: Atlas holds 'Signature 48' against a published 'Executive 44'; and the Signature 44 may or may not be the Emerald Collection's 11 m x 4 m, 44 sqm building under another name. THREE, THE PLANNING CLAIM CONFLICT: the supplier publishes that the Irish exemption 'covers garden buildings up to 45 sqm', which collapses the 30 m2 incidental back-garden route and the separate 32-45 m2 Class 3A auxiliary-dwelling route into one. ATLAS MAKES NO DETERMINATION; the conflict is recorded so a homeowner asks the right question, and the supplier itself advises confirming with the local authority. FOUR, THERMAL: 'Fully Insulated' with no material, thickness or U-value anywhere, on a LIGHT GAUGE STEEL frame with no published thermal break. AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED on all 10 \u2014 the supplier is at Dungiven, Co. Londonderry, NORTHERN IRELAND, publishes an Ireland-facing page but no delivery or installation coverage for either jurisdiction, and prices in GBP. CATEGORY NOTE, carried forward as intelligence: seven of the ten exceed 45 m2 or contain full domestic accommodation, and the company describes itself as a modular home company; they sit in Atlas under Garden Rooms. OUTSTANDING INTEGRITY ISSUE CARRIED FORWARD, NOT NEW: the Session 4 range-level inference across this supplier remains unresolved, and no product-specific specification exists to confirm or correct it.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Someone adding a genuine second living space on their own site \u2014 accommodation for a family member, a long-term let, or a home-and-studio combination \u2014 who wants the building to arrive heated, wired, plumbed and fitted rather than as a shell. They have already accepted that this is a planning application rather than an exemption, on both the area and the use grounds, and they are budgeting foundations, drainage, water and power separately from the building price. They will obtain a dimensioned drawing before signing, because the model numeral is not a measurement, and a Republic of Ireland buyer will confirm cross-border delivery, installation and VAT treatment in writing first. NOT THIS BUYER: anyone wanting an exempted garden room \u2014 this model fails that test twice over; anyone wanting a plain office and paying for a kitchen and bathroom they will not use; anyone who needs published thermal performance before committing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer wanting a mid-sized self-contained unit \u2014 heated, fitted with a kitchen and bathroom, delivered turnkey and installed in days. The certified thermal layer establishes the shared Signature specification: light gauge steel frame, fully insulated, double glazing, ELECTRIC HEATING and LED lighting, standing seam roof, composite cladding, fitted kitchen and bathroom, turnkey delivery, 10-year structural warranty on a frame engineered for 30+ years. The certified installation layer records TURNKEY INSTALLATION INCLUDED. THE PLANNING POSITION IS THE DECIDING FACT AND THE CERTIFIED AM-002 RECORD STATES IT PLAINLY: at 40 m2 this exceeds the 30 m2 back-garden allowance held in this Atlas, AND it contains a kitchen and bathroom, SO ITS USE IS NOT INCIDENTAL. Two independent reasons the back-garden exemption does not reach it; no determination is made here. Separately, the certified AM-001 layer holds no dimensions and records that the numeral is not an area. HOMEOWNER IMPLICATION: buy this as a small dwelling with a planning application, not as a garden room.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmNgeJVF3Fvasrk": {
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD \u2014 the certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers across this Atlas layer that sell a heated building rather than an unheated shell. Here that comes with LED lighting throughout, a FITTED KITCHEN WITH INTEGRATED APPLIANCES and a FULL BATHROOM WITH SHOWER, at one price with 'no staged extras'. TWO: this is the most specifically documented model in the Collection. The certified layer records a matching 11 m x 4 m, 44 sqm Emerald listing in one and two bedroom layouts \u2014 the only dimensional figure of any kind that appears anywhere near this range, even though it is recorded as unresolved rather than transferred. THREE: TURNKEY DELIVERY, built offsite and 'delivered and installed in days'. FOUR: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for a 30+ year lifespan; steel construction removes rot and insect attack as failure modes. HOMEOWNER IMPLICATION: the most complete specification in the mid-range of this catalogue \u2014 the questions are all about documentation, not about what arrives.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE FIRST COMPARISON IS INSIDE THE SUPPLIER AND IT IS AN IDENTITY QUESTION, NOT A PRICE ONE: the EMERALD COLLECTION is published at 11 m x 4 m and 44 sqm in one and two bedroom layouts, and the certified layer records that it MAY BE THE SAME BUILDING as this model under a different collection name \u2014 recorded, not resolved. Ask the supplier directly. Related: the Atlas 'Signature 48' record could not be reconciled against a published 'Executive 44' from GBP 47,650 plus delivery, which shares this model's numeral. WITHIN THE COLLECTION: the Signature 40 sits below and the 48 and 58 above, all on the same steel frame and turnkey finish from GBP 32,800; no dimensions are held for any of the ten, so Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS: Concept Modular publishes a 50-year STRUCTURAL-ONLY warranty on steel-framed buildings with a designer kitchen and bathroom, excluding base pads, installation, craneage and haulage at EUR 3,000 to 4,000 plus VAT. Sprout Pod is the only other Atlas supplier including heating as standard and installs island-wide with no concrete foundation. Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue. NEUTRALITY: no ranking is created between these routes.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, THE PLANNING CLAIM SITS DIRECTLY ON THIS MODEL and must be read carefully. The supplier publishes: 'From 27th July 2026 the Irish exemption covers garden buildings up to 45 sqm, and the Emerald is built at 44 sqm to sit inside it.' The Tier A statutory position recorded in this Atlas is different \u2014 the back-garden exemption for INCIDENTAL structures rose to 30 m2 COMBINED across all garden structures, conditional on NO HUMAN HABITATION; the separate Class 3A auxiliary-dwelling route covers 32-45 m2 for habitable use but carries rear siting, linked services, 14 days' notice, and EXPIRES 31 DECEMBER 2030. The supplier's phrasing collapses two routes into one, and a buyer could believe a 44 m2 building with a kitchen and bathroom is exempt on the same basis as a garden office. ATLAS MAKES NO DETERMINATION; the conflict is recorded so the right question is asked, and the supplier itself advises confirming with the local authority. TWO, MEASUREMENT: no area or dimensions held; 44 is the very numeral appearing in the supplier's published 'Executive 44', against which the Atlas 'Signature 48' could not be reconciled \u2014 so this record in particular must be matched to a live listing before any figure is attached. THREE, OUTSTANDING INTEGRITY ISSUE, restated once: this product sits in the cohort where an earlier session applied range-level inference flagged as unsafe and NOT RESOLVED. FOUR, THERMAL: no thickness, no U-value, no thermal break for a steel frame. FIVE, AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED \u2014 NI base, GBP pricing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer wanting a mid-range, fully finished, heated annexe delivered offsite as one contract \u2014 and this is the model that sits closest to the supplier's own published planning claim, which makes it the one where that claim must be examined most carefully. The certified thermal layer establishes the shared Signature specification: light gauge steel frame, fully insulated, double glazing, ELECTRIC HEATING and LED lighting, standing seam roof, composite cladding, fitted kitchen WITH INTEGRATED APPLIANCES, full bathroom WITH SHOWER, turnkey delivery, 10-year structural warranty on a frame engineered for 30+ years. RECORDED AND NOT RESOLVED, from the certified AM-002 record: at 44 m2 this shares its floor area with the supplier's Emerald Collection, published at 11 m x 4 m and 44 sqm in one and two bedroom layouts \u2014 the two MAY BE THE SAME BUILDING under different collection names, or distinct models. HOMEOWNER IMPLICATION: establish which collection you are actually buying, then the footprint, then the planning route \u2014 in that order.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Someone creating a one or two bedroom independent unit on their own site \u2014 family accommodation, a long-stay guest annexe, or a let \u2014 who wants it to arrive heated, wired, plumbed and fitted rather than as a shell. They are attracted by the single price and the short installation, and they are budgeting separately for foundations, drainage, water and power. Critically, they are the buyer most likely to have READ THE SUPPLIER'S PLANNING CLAIM and taken it at face value, so they are the buyer who most needs to test it: a kitchen and a bathroom make the use non-incidental, which takes the building outside the 30 m2 exemption regardless of area, and the 32-45 m2 auxiliary-dwelling route is a different application with its own conditions and an end date. NOT THIS BUYER: anyone wanting a garden office; anyone who cannot get a definitive answer on which collection and which model they are buying; a Republic of Ireland buyer who needs delivery confirmed before committing.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recRhbN66JUgay0Md": {
-      "typicalHomeowner": {
-        "text": "NO TYPICAL HOMEOWNER CAN BE DESCRIBED FOR THIS RECORD, and describing one would be an invention the evidence does not support. The certified AM-001 layer records the product as UNMATCHED to any published model, so there is no confirmed size, no confirmed layout and no confirmed price to match a buyer against. WHAT CAN BE SAID: a buyer drawn to the Signature Collection generally is someone who wants a heated, fitted, offsite-built annexe delivered turnkey rather than a shell to finish, who is budgeting separately for groundworks and services, and who expects a planning conversation rather than an exemption where the building carries a kitchen and bathroom. WHAT THIS PARTICULAR BUYER MUST DO FIRST: ask the supplier which model the /signature-48/ page actually sells, obtain a dimensioned drawing, and get the delivery charge quantified against the GBP 47,650 'plus delivery' figure. Until then no purchasing decision rests on anything Atlas can certify.",
-        "evidenceScope": "Range-Level"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. PRODUCT IDENTITY UNRESOLVED, restated once and not corrected here: Atlas holds 'Signature 48' against a published 'Executive 44' \u2014 the model this record names may not exist in the supplier's current catalogue. HOMEOWNER IMPLICATION: confirm both the model name and its external footprint with the supplier before treating this as a real specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS, THE FIRST OF WHICH OUTRANKS EVERYTHING ELSE. ONE, PRODUCT IDENTITY UNRESOLVED: the certified AM-001 layer records 'Signature 48' as an UNMATCHED RECORD at the centre of this supplier's standing naming defect \u2014 it corresponds to no model in the published range, and the supplier's own page at /signature-48/ is titled 'Executive 44'. The certified layer's instruction is that this record should not surface to homeowners until reconciled. Recorded, NOT corrected. TWO, PRICE BASIS: the closest published figure is GBP 47,650 PLUS DELIVERY \u2014 so the supplier's stated 'one price, no staged extras' model does not hold on this listing, and delivery is an unquantified addition. THREE, MEASUREMENT: no area and no dimensions held; the numeral is not a square-metre figure. FOUR, PLANNING: the certified AM-006 record restates that the model this record names may not exist in the current catalogue, so no exemption test can be run at all; the 30 m2 combined allowance, the 3 m / 4 m height limits, the 25 m2 open-space condition and the NO HUMAN HABITATION condition all apply once a real footprint exists. FIVE, AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED \u2014 Northern Ireland base, GBP pricing, no published cross-border coverage; thermal specification is also unpublished. HOMEOWNER IMPLICATION: do not treat this as a real specification until the supplier confirms the model.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE FIRST ALTERNATIVE IS THE SAME SUPPLIER, CORRECTLY IDENTIFIED: ask for the 'Executive 44' the supplier actually publishes at this address, from GBP 47,650 plus delivery, and compare it against the Signature 44 held separately in Atlas \u2014 the certified AM-001 record on Signature 44 notes that 44 is the very numeral appearing in that published Executive listing, and that the two must be matched to a live listing before any figure is attached to either. WITHIN THE COLLECTION: all ten models share the same steel frame and the same turnkey finish from GBP 32,800, and because no dimensions are held for any of them, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS, and necessarily so given that Republic of Ireland delivery is unconfirmed: Sprout Pod is the only other Atlas supplier including heating as standard and installs island-wide with no concrete foundation; Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue including foundations; Gardenhouse24 Ireland publishes the strongest structured measurement disclosure held anywhere in the Atlas, with six of eight products safe to rank on internal floor area \u2014 the direct remedy for what has gone wrong here. NEUTRALITY: no ranking is created between these routes.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "BEST FOR NOBODY UNTIL THE PRODUCT IDENTITY IS RESOLVED \u2014 and that is the honest answer the certified evidence supports. The certified AM-001 layer records this as an UNMATCHED RECORD: 'Signature 48' does not correspond to any model found in the supplier's published range; the closest published listing is an 'Executive 44' at the /signature-48/ URL, priced from GBP 47,650 PLUS DELIVERY. The certified layer states plainly that until this record is reconciled to a live listing it should not surface to homeowners at all, let alone carry a measurement. WHAT IS ESTABLISHED, if the underlying building is a Signature Collection model: light gauge steel frame, fully insulated, double glazing, electric heating and LED lighting, standing seam roof, composite cladding, fitted kitchen, full bathroom, turnkey delivery, 10-year structural warranty, frame engineered for 30+ years. HOMEOWNER IMPLICATION: confirm the MODEL NAME first, then the external footprint, then the price and what delivery adds. Nothing else in this record can be relied on until the first of those is settled.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "STRENGTHS ARE RECORDED AT COLLECTION LEVEL ONLY, because the certified AM-001 layer cannot match this record to a published model and therefore no product-specific strength can be stated. WHAT THE COLLECTION ESTABLISHES. ONE: HEATING INCLUDED AS STANDARD \u2014 the certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers in this Atlas layer selling a heated building rather than an unheated shell, with electric heating, LED lighting throughout, a fitted kitchen with integrated appliances and a full bathroom at one price with 'no staged extras'. TWO: TURNKEY DELIVERY, built offsite and installed in days. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for a 30+ year lifespan. FOUR: STEEL FRAME construction removes rot and insect attack as failure modes. THE ONE PRODUCT-LEVEL FACT AVAILABLE, and it is a price rather than a specification: the page at the /signature-48/ address publishes 'Executive 44' from GBP 47,650 PLUS DELIVERY. HOMEOWNER IMPLICATION: everything above is worth having, but none of it is confirmed to attach to a building called Signature 48.",
-        "evidenceScope": "Range-Level"
-      }
-    },
-    "recCjtdouL1VeUhC5": {
-      "strengths": {
-        "text": "FOUR STRENGTHS, all traceable to the certified layers. ONE, AND IT IS THE SUPPLIER-LEVEL FINDING: HEATING IS INCLUDED AS STANDARD. The certified thermal layer records that Luxury Garden Studios and Sprout Pod are the ONLY TWO suppliers in this entire Atlas layer that sell a heated building rather than an unheated shell \u2014 electric heating and LED lighting throughout, alongside a fitted kitchen with integrated appliances, a full bathroom and flooring, at one price with 'no staged extras'. TWO: TURNKEY DELIVERY \u2014 built offsite and installed in days, so the disruption on site is measured in days rather than weeks. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide on a light gauge steel frame engineered for a 30+ year lifespan. Ten years on the structure is the market norm and this supplier meets it. FOUR: STEEL FRAME construction removes rot and insect attack as failure modes, which is what makes the 30+ year engineered life offerable. HOMEOWNER IMPLICATION: the completeness of the package is the real strength here \u2014 very little in this catalogue arrives heated, fitted and plumbed under a single price.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature Collection runs across ten models on the SAME steel frame and the SAME turnkey finish, from GBP 32,800, so the range differentiates on scale alone and Atlas can create no performance ranking between them \u2014 the certified AM-001 layer holds no dimensions for any of the ten. The Signature 28 is the smallest and, on the supplier's own scale statement, the only one that could sit under the 30 m2 back-garden threshold; the Signature 98 is published at GBP 142,000 including VAT for a four-bedroom building. WHERE ELSE TO LOOK, given that Republic of Ireland delivery is unconfirmed here: Sprout Pod is the only other supplier in this Atlas that includes heating as standard, and it delivers and installs island-wide with no crane and no concrete foundation. Modern Garden Rooms carries the highest insulation specification held anywhere in the Atlas at 150 mm total wall build-up, with the widest turnkey scope including foundations, from an Irish company at a Dublin address. Pineca Ireland is the only Atlas supplier publishing U-values \u2014 the only route on which the running cost of a building this size can be estimated at all. NEUTRALITY: no ranking is created between these routes; they differ on published evidence, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, MEASUREMENT: the certified AM-001 layer holds NO area and NO dimensions for this product and records a RANGE-LEVEL NAMING DEFECT \u2014 the 'Signature NN' numeral must NOT be read as a square-metre figure. TWO, PLANNING, and this is the most consequential item recorded against this supplier: the supplier publishes that 'from 27th July 2026 the Irish exemption covers garden buildings up to 45 sqm'. The statutory position recorded Tier A in this Atlas is different \u2014 the back-garden exemption for structures INCIDENTAL to the house rose to 30 m2 combined across all garden structures, conditional on NO HUMAN HABITATION; the separate Class 3A auxiliary-dwelling route covers 32 to 45 m2 for habitable use but carries rear siting, linked services, 14 days' notice, and expires 31 December 2030. The supplier's phrasing collapses two different routes into one. ATLAS MAKES NO PLANNING DETERMINATION; the conflict is recorded so the right question gets asked. THREE, THERMAL: 'Fully Insulated' is a one-line entry \u2014 no material, no thickness, no U-value \u2014 and the frame is LIGHT GAUGE STEEL with NO THERMAL BREAK published; steel members conduct heat around insulation, and at this scale that matters more, not less. FOUR, AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED \u2014 Northern Ireland base at Dungiven, Co. Londonderry, GBP pricing, no published cross-border delivery commitment. FIVE, WARRANTY SCOPE: 'structural' is undefined and glazing, electrics and finishes are not addressed.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA \u2014 read as square metres it would sit well above the allowance, which is exactly the inference this layer forbids. HOMEOWNER IMPLICATION: request the external footprint in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer who wants a fully finished, heated, self-contained building delivered as one contract and is prepared to treat it as a DWELLING PROJECT rather than a garden room. The certified thermal layer establishes the Signature Collection specification: light gauge steel frame, fully insulated, double glazing, ELECTRIC HEATING and LED lighting throughout, standing seam roof, composite cladding, FITTED KITCHEN and FULL BATHROOM, delivered turnkey at one price with 'no staged extras', on a 10-year structural warranty and a frame engineered for 30+ years. The certified installation layer records TURNKEY INSTALLATION INCLUDED, built offsite and 'delivered and installed in days'. THE DECISIVE QUALIFIER, from the certified layers: at this scale, with a kitchen and a bathroom, the building's use is NOT INCIDENTAL to the house, and the AM-006 layer records that habitable use is excluded from the 30 m2 back-garden exemption entirely. HOMEOWNER IMPLICATION: this is a house-scale purchase. Assume a planning application, and assume separate water, drainage and power works.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Someone housing a family member, creating a long-stay guest annexe or adding rentable accommodation \u2014 not someone buying a garden office. They want a building that arrives heated, fitted with a kitchen and a bathroom and finished to a single price, and they have the site and the budget to treat services and groundworks as a separate project. They are prepared to go through a planning application rather than rely on an exemption, and to obtain a DIMENSIONED DRAWING before any other conversation, because the model numeral tells them nothing about the footprint. NOT THIS BUYER: anyone wanting an incidental garden room, since the use test excludes habitation; anyone in the Republic of Ireland who needs delivery confirmed today, as cross-border coverage is unconfirmed; anyone who needs a U-value to model running cost on a building of this size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recUNSJmWfIxyYKyo": {
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature 58 sits below this model and the 84 and 98 above it, the 98 published at GBP 142,000 including VAT for four-bedroom accommodation with delivery quoted separately. All ten models share the SAME steel frame and the SAME turnkey finish from GBP 32,800, so the Collection differentiates on scale alone \u2014 and because the certified AM-001 layer holds no dimensions for any of the ten, Atlas creates no ranking between them and no cost-per-square-metre comparison is possible. OUTSIDE LUXURY GARDEN STUDIOS: Concept Modular publishes a 50-year STRUCTURAL-ONLY warranty on galvanised steel-framed buildings with a designer kitchen and bathroom \u2014 a longer term over a narrower scope \u2014 but excludes base pads, installation, craneage and haulage at a stated EUR 3,000 to 4,000 plus VAT, so the comparison must be made on delivered totals rather than headline prices. Sprout Pod is the only other Atlas supplier including heating as standard, installing island-wide with no concrete foundation. Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue, foundations included. NEUTRALITY: no ranking is created between these routes; they differ on published evidence and scope, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing before any assumption about exemption.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Someone building a second home on their own site \u2014 family accommodation, a long-term let, or a downsizing move within the same plot \u2014 who wants the building itself to arrive complete rather than to run a construction project. They accept that groundworks, drainage, water and power are a separate job, and they expect to apply for planning rather than rely on an exemption, because a kitchen and a bathroom put the use outside 'incidental'. They will get a dimensioned drawing and a written installation scope before signing, and a Republic of Ireland buyer will confirm cross-border delivery, installation and VAT treatment in writing first. NOT THIS BUYER: anyone wanting a garden office or studio \u2014 wrong scale and wrong specification; anyone depending on exempted development; anyone who needs published U-values to model running cost before committing at this size.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, MEASUREMENT: the certified AM-001 layer holds NO area and NO dimensions and records a range-level NAMING DEFECT \u2014 'Signature NN' numerals are not square-metre figures. The certified AM-006 record for this product states the same and directs the buyer to request the external footprint in writing before any assumption about exemption. TWO, PLANNING CLAIM CONFLICT, restated once as evidence and not as determination: the supplier publishes that the Irish exemption 'covers garden buildings up to 45 sqm'; the Tier A statutory position recorded here is a 30 m2 combined back-garden allowance for INCIDENTAL structures excluding human habitation, with a separate Class 3A auxiliary-dwelling route at 32-45 m2 carrying rear siting, linked services, 14 days' notice and a 31 December 2030 expiry. Two routes, not one. THREE, THERMAL: no material, thickness or U-value published, and no thermal break for a LIGHT GAUGE STEEL frame \u2014 steel conducts heat around insulation, and on a building of this size running cost is the largest lifetime figure. FOUR, AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED \u2014 Dungiven, Co. Londonderry base, GBP pricing, an Ireland-facing page but no stated delivery or installation coverage for either jurisdiction. FIVE, INSTALLATION SCOPE not published per model: confirm in writing whether groundworks and service connections sit inside 'installed'.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer wanting a large, fully finished, heated dwelling delivered offsite as one contract \u2014 sitting in the upper half of this supplier's Collection, above the 58 and below the 84. The certified thermal layer establishes the shared Signature specification: light gauge steel frame, fully insulated, double glazing, ELECTRIC HEATING and LED lighting throughout, standing seam roof, composite cladding, fitted kitchen with integrated appliances, full bathroom, turnkey delivery at one price with 'no staged extras', 10-year structural warranty on a frame engineered for 30+ years. The certified installation layer records TURNKEY INSTALLATION INCLUDED \u2014 built offsite and 'delivered and installed in days'. THE DECISIVE QUALIFIER, from the certified AM-006 record: the model numeral is NOT an area, no footprint is held, and a building carrying a kitchen and a bathroom is not incidental to the house \u2014 which the 30 m2 back-garden exemption requires. HOMEOWNER IMPLICATION: a house-scale purchase requiring a dimensioned drawing, a planning conversation and separate provision for foundations and services.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING INCLUDED AS STANDARD, and the certified thermal layer records that only Luxury Garden Studios and Sprout Pod, across this entire Atlas layer, sell a heated building rather than an unheated shell \u2014 here alongside LED lighting throughout, a fitted kitchen with integrated appliances, a full bathroom and flooring, at one price with 'no staged extras'. Every other insulated supplier hands over a shell for the buyer to fit out and heat. TWO: OFFSITE MANUFACTURE with turnkey delivery and installation 'in days' \u2014 at this scale that is the difference between a delivery and a construction project. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide, so the same term covers this model as covers the smallest in the range, on a light gauge steel frame engineered for a 30+ year lifespan. FOUR: SINGLE TRANSPARENT PRICING is the supplier's stated model across the Collection, which is what makes any comparison against shell-only, base-excluded competitors meaningful. HOMEOWNER IMPLICATION: on completeness of package this supplier is at the front of the catalogue; the gaps are all in what is documented, not in what is supplied.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCp7TnMyHxZnXpJ": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. THE MODEL NUMERAL IS NOT AN AREA. HOMEOWNER IMPLICATION: request the external footprint in writing. If the building does turn out to be large, note that habitable use is excluded from this exemption entirely, and the separate Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) would be a different application.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer at the top of this supplier's range who wants a complete, heated, offsite-built dwelling delivered as one contract \u2014 second only to the Signature 98 in the Collection. The certified thermal layer establishes the shared Signature specification: light gauge steel frame, fully insulated, double glazing, electric heating and LED lighting throughout, standing seam roof, composite cladding, fitted kitchen with integrated appliances, full bathroom, delivered turnkey at one price with no staged extras, 10-year structural warranty, frame engineered for 30+ years. The certified installation layer records TURNKEY INSTALLATION INCLUDED, built offsite and installed in days. THE DECISIVE QUALIFIER: at this position in the range the building carries full domestic accommodation, and the certified AM-006 layer records that habitable use is excluded from the 30 m2 back-garden exemption entirely \u2014 the separate Class 3A auxiliary-dwelling route caps at 45 m2 and carries its own conditions and a 31 December 2030 expiry. HOMEOWNER IMPLICATION: treat this as a house, not a garden building, and start with a dimensioned drawing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN LUXURY GARDEN STUDIOS: the Signature 98 sits above this model and is published at GBP 142,000 including VAT for four-bedroom accommodation, with delivery quoted separately from that figure; the Signature 66 and 58 sit below it. All ten models share the SAME steel frame and the SAME turnkey finish, from GBP 32,800, so the Collection differentiates on scale alone \u2014 and because the certified AM-001 layer holds no dimensions for any of them, Atlas creates no ranking between them. OUTSIDE LUXURY GARDEN STUDIOS: Concept Modular publishes a 50-year STRUCTURAL-ONLY warranty on galvanised steel-framed buildings with a designer kitchen and bathroom \u2014 a longer term over a narrower scope, and it excludes base pads, installation, craneage and haulage at a stated EUR 3,000 to 4,000 plus VAT. Sprout Pod is the only other supplier in this Atlas including heating as standard and installs island-wide with no concrete foundation. Modern Garden Rooms is an Irish company with the widest turnkey scope in the catalogue, foundations included. NEUTRALITY: no ranking is created between these routes; they differ on published evidence and on scope, not on measured performance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, MEASUREMENT: the certified AM-001 layer holds NO area and NO dimensions, and records a range-level NAMING DEFECT \u2014 the numeral is not a square-metre figure and must not be read as one. TWO, PLANNING: the certified AM-006 record for this product states that if the building is large, HABITABLE USE IS EXCLUDED FROM THE BACK-GARDEN EXEMPTION ENTIRELY, and the separate Class 3A auxiliary-dwelling route (32-45 m2, rear siting, linked services, 14 days' notice, expiring 31 December 2030) would be a different application on different terms. The supplier's own published claim that the exemption 'covers garden buildings up to 45 sqm' collapses those two routes into one; the conflict is recorded as evidence and ATLAS MAKES NO DETERMINATION. THREE, THERMAL: no material, thickness or U-value for wall, roof or floor, and no thermal break published for a LIGHT GAUGE STEEL frame \u2014 on a building at the top of this range, running cost is the largest lifetime number and it cannot be estimated from what is published. FOUR, AVAILABILITY: REPUBLIC OF IRELAND UNCONFIRMED. Northern Ireland base at Dungiven, Co. Londonderry; an Ireland-facing page exists but no delivery or installation coverage is stated for either jurisdiction, and pricing is in GBP. FIVE, INSTALLATION SCOPE is not published per model \u2014 what 'installed' includes, and whether groundworks and service connections sit inside it, must be confirmed in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "FOUR STRENGTHS. ONE: HEATING, KITCHEN AND BATHROOM ARE ALL INCLUDED AS STANDARD. The certified thermal layer records Luxury Garden Studios and Sprout Pod as the only two suppliers in this Atlas layer that sell a heated building rather than an unheated shell, and this supplier goes further \u2014 electric heating, LED lighting throughout, a fitted kitchen with integrated appliances, a full bathroom and flooring, all at one price with 'no staged extras'. At the upper end of the range that completeness is the whole proposition. TWO: OFFSITE MANUFACTURE with turnkey delivery and installation 'in days', so a building of this scale does not translate into months of site disruption. THREE: a 10-YEAR STRUCTURAL WARRANTY published company-wide, on a light gauge steel frame engineered for a 30+ year lifespan \u2014 the same term applies to the smallest model in the range, so scale does not reduce the cover. FOUR: SINGLE TRANSPARENT PRICING is the supplier's stated model across the Collection, which makes a like-for-like comparison against base-excluded, shell-only competitors possible in principle. HOMEOWNER IMPLICATION: the least assembly-required route to a fully serviced building in this catalogue.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A buyer commissioning a second dwelling on their own land \u2014 multigenerational family accommodation, a long-term let, or a replacement for building an extension. They have the site area, they expect to make a planning application rather than rely on an exemption, and they are budgeting separately for foundations, water, drainage and power. What draws them to this supplier is that the building itself arrives finished: heated, wired, lit, kitchen and bathroom fitted, at one stated price. They will insist on a dimensioned drawing and a written installation scope before signing, and if they are in the Republic they will get cross-border delivery, installation and VAT treatment confirmed in writing first. NOT THIS BUYER: anyone wanting a garden office or studio, for whom this scale is wrong in every respect; anyone relying on exempted development; anyone who needs published thermal performance before committing to a building this size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec3NU9qqLPuxbpdN": {
-      "strengths": {
-        "text": "98m2 of four-bedroom accommodation across a 14m x 7m footprint \u2014 by far the largest building in this review set. Light gauge steel frame engineered for a 30+ year lifespan, fully built offsite and delivered turnkey, with installation possible in as little as 10 weeks from order. Single transparent turnkey price of GBP 142,000 including VAT, with the manufacturer stating no hidden extras. 10-year structural warranty applied company-wide rather than model by model.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "At 98m2 and four bedrooms this is a dwelling, not an exempted garden structure \u2014 full planning permission should be assumed, and connection to water, drainage and power will be a separate project of its own. Delivery is quoted separately from the GBP 142,000, so the single transparent price is not quite the final number. No insulation specification or U-values are recorded in Atlas for this product, which is a notable gap at this price point. Priced in GBP: Irish buyers must confirm delivery to Ireland, siting and currency terms.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance on a Republic of Ireland site (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. All 10 REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA, all Tier A, recorded product-specific. THE SUPPLIER-LEVEL FINDING: the entire range is named 'Signature NN' and Atlas holds NO area and NO dimensions for any of the ten. The numerals look like square metres and are not \u2014 the certified AM-001 layer records a range-level naming defect, and the numbers run from 28 to 98, far beyond any plausible garden-room footprint. Treating them as areas would put half the range outside the allowance on nothing but a guess. WHY THIS SUPPLIER IS THE WORST CASE IN THE LAYER SO FAR: with other suppliers a dimension is missing; here a number is present and misleading, which is more dangerous. PRODUCT IDENTITY UNRESOLVED, restated once: Atlas holds 'Signature 48' against a published 'Executive 44'. JURISDICTION NOTE: the certified AM-S01 layer places this supplier at Dungiven, Co. Londonderry, NORTHERN IRELAND, and the certified AM-005 layer records Republic of Ireland availability as unconfirmed. The exempted-development test above applies to a Republic site; a Northern Ireland site is governed by a different regime entirely. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: get a dimensioned drawing before any other conversation.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Homeowners who are not really buying a garden room at all \u2014 at 98m2 and four bedrooms this is a full detached dwelling delivered turnkey, suited to multigenerational living or a permanent annexe rather than a home office.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "SIPS Garden Room LOTUS \u2014 48.4m\u00b2 two-bedroom kit from EUR 23,990 ex VAT: half the floor area but a small fraction of the cost, if you will appoint your own contractor. Concept Modular Signature Cabin 36m\u00b2 \u2014 EUR 67,950 ex VAT delivered with kitchen and bathroom fitted and a 50-year structural warranty against Signature 98's 10 years. 2 Bed Granny Flat 48m\u00b2 (Granny Flats Dublin) \u2014 the Irish turnkey route if the brief is accommodation rather than maximum size.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with substantial site space and a six-figure budget solving a housing problem rather than a workspace one \u2014 typically accommodating adult children or ageing parents, or adding a long-term rental unit. Expects to run a planning application and a services connection alongside the purchase, and values a fixed offsite build and a 10-week programme over a traditional extension.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recbCzoK4cORY3W4c": {
       "alternatives": {
         "text": "FOR A PITCHED-ROOF GARDEN BUILDING WITH REAL FIGURES, Lugarde's \u00d8300cm Arran and Helensburgh publish a diameter that yields about 7.1 m2, and Lasita Maja publishes external wall dimensions and internal floor sizes that reconcile to the centimetre \u2014 though the certified layers note Lasita roofs are SHINGLED, so the 3 m limit applies there too. Loghouse publishes eight sizes from 9 to 24.44 m2, with the same steel-roof height caveat recorded. HOMEOWNER IMPLICATION: very few suppliers in this catalogue actually qualify for the 4 m limit, because tiled and slated roofs are rare on garden rooms \u2014 assume 3 m until a supplier confirms otherwise in writing.",
@@ -8905,36 +8463,6 @@
       },
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. All About Outdoors publishes no floor area and no dimensions for the Ohrid; the certified AM-001 Measurement Basis record confirms nothing has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. Conditions applying regardless of area: sited behind the front wall of the house; at least 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; use incidental to the enjoyment of the house; NO HUMAN HABITATION. SUPPLIER OMISSION: no published footprint and no published height. A POINT PARTICULAR TO LOG CABINS: solid-log walls are thick, so if the supplier later quotes an INTERNAL floor area the external footprint used by the planning test will be materially larger. Always establish which basis any figure is on \u2014 the sister product Ontario XL sits at exactly 30 m2 on an unstated basis, and that single unanswered question is the difference between exempt and not exempt. HOMEOWNER IMPLICATION: obtain the measured EXTERNAL footprint and the ridge height in writing before ordering, and check the footprint against the combined 30 m2 alongside every other structure in the back garden.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxZcEXwgG0z2Oj8": {
-      "sources": {
-        "text": "https://summerhouse24.ie/one-bedroom-log-cabin-sweden-c-g0267/",
-        "evidenceScope": null
-      },
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 82% OF THE COMBINED ALLOWANCE \u2014 BUT THE NAMED USE CONFLICTS WITH IT. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures; this footprint is 24.68 m2, leaving 5.32 m2. However the exemption requires use INCIDENTAL to the dwelling with NO HUMAN HABITATION, and this product is published as a one bedroom cabin. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house and 25 m2 of private open space must remain. HOMEOWNER IMPLICATION: the footprint fits the exemption but sleeping accommodation does not. A buyer intending overnight use should assume planning permission is required, or consider the separate Class 3A detached auxiliary dwelling provision (32\u201345 m2, rear garden, linked services, 14 days' notice, expiring 31 December 2030) \u2014 for which this structure's 24.68 m2 footprint is below the 32 m2 minimum.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "Considerations from published evidence: the named bedroom use conflicts with the no-habitation condition of the S.I. 338 of 2026 exemption, and the footprint is below the Class 3A minimum, so neither route accommodates it as published; no insulation, heating or services provision is published despite the bedroom designation; the split of the 22 m2 between bedroom and living space is not published; the supplier publishes 23 m2 for Sweden A and Sweden B on the identical envelope and wall thickness, 1 m2 more, without explanation; no warranty duration is published; and no installation service is published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer who wants a separated sleeping space within a compact 24.68 m2 footprint and is prepared to resolve the planning position before ordering. The middle price point of the three Sweden fit-outs on a common shell.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Sweden family is three fit-outs on one 628 x 393 cm shell at 70 mm: Sweden A with shower room at 23 m2 for EUR 13,180, Sweden B with sleeping loft at 23 m2 for EUR 18,000, and this one bedroom version at 22 m2 for EUR 15,500. Buyers who do not need sleeping accommodation should compare Granada (two rooms, 26.64 m2 footprint, EUR 14,730), which avoids the habitation conflict. EVIDENCE NEUTRALITY: the three Sweden fit-outs share a published shell and differ only in internal arrangement and price.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Published strengths, stated without comparison: a separate bedroom within the enclosed area; a 70 mm log wall, the thickest specification the supplier publishes; a room-to-footprint ratio of 1.12; and a 24.68 m2 footprint that remains inside the statutory allowance on area, unlike the larger multi-room models.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner wanting a garden building with a separated sleeping room \u2014 typically for occasional guests \u2014 who understands that overnight accommodation falls outside the exemption and that the footprint is too small for the Class 3A route, is prepared to seek planning permission and arrange services, and is budgeting around EUR 15,500 for the delivered kit before groundworks.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -11616,32 +11144,6 @@
         "evidenceScope": null
       }
     },
-    "recfI08WIE6SfvlsE": {
-      "typicalHomeowner": {
-        "text": "A FAMILY HOUSING ONE RELATIVE \u2014 USUALLY A PARENT WHO NEEDS INDEPENDENCE AND PROXIMITY AT THE SAME TIME, or an adult child who cannot find a rental. They are Dublin-based, dealing with a genuine housing problem rather than a lifestyle upgrade, and they need a kitchen and bathroom rather than a desk. THEY ARE ALSO ENTERING A PLANNING PROCESS, not buying a delivered product, and should budget time as well as money. NOT FOR: anyone hoping to avoid planning \u2014 that is the one thing this size does not deliver. NOT FOR two occupants; the larger models exist for that.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE MOST USEFUL ALTERNATIVE IS THE NEXT SIZE UP IN THE SAME RANGE: the 1 Bed at 33.00 m2 clears the Class 3A floor by 1 m2 and so reaches a route this one cannot, for 8 m2 more building. IF THE OCCUPANT DOES NOT ACTUALLY NEED TO SLEEP THERE, a 25 m2 exempt garden room \u2014 Yardbox's Vancouver, Adman's larger Multirooms, Green Retreats \u2014 solves a day-space requirement with no application at all, at far lower cost. ELSEWHERE IN THE CATALOGUE, All About Outdoors and Rayco Modular Homes market habitable units subject to the same Class 3A arithmetic. HOMEOWNER IMPLICATION: decide first whether the building must be slept in; everything follows from that.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A SELF-CONTAINED HOME FOR ONE PERSON \u2014 AND THE ONE SIZE IN THIS RANGE THAT FALLS BETWEEN BOTH IRISH EXEMPTIONS. At 25.00 m2 it is a habitable dwelling, so the 30 m2 incidental garden-structure exemption does not apply to it at all: exempted garden structures permit NO HUMAN HABITATION, whatever their size. Nor does it reach the Class 3A Detached Auxiliary Dwelling route introduced by S.I. 338 of 2026, which starts at 32 m2 \u2014 this product sits 7 m2 below that floor. HOMEOWNER IMPLICATION: the smallest flat in the range is the one that needs FULL PLANNING PERMISSION, because it is too small to qualify for the new fast route and too habitable for the old one.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "IT IS SOLD AS A DWELLING RATHER THAN A ROOM, AND THAT HONESTY IS ITSELF USEFUL. Where several suppliers in this catalogue market habitable-looking pods while relying on the incidental exemption, this range names the accommodation \u2014 studio, one bed, two bed \u2014 so a buyer is not misled about what they are applying for. THE FLOOR AREA IS PUBLISHED IN THE PRODUCT NAME, verified in the certified layers as 25.00 m2, which makes the Class 3A arithmetic checkable. IT IS ALSO THE SMALLEST AND PRESUMABLY LEAST COSTLY OPTION for a single occupant. NOT ESTABLISHED: no height, U-value, warranty or price is published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "THE PLANNING POSITION IS THE WHOLE CONSIDERATION. Because it is habitable it cannot use the 30 m2 garden-structure exemption at any size, and at 25.00 m2 it is BELOW the 32 m2 minimum for the Class 3A Detached Auxiliary Dwelling route \u2014 so a full planning application is the realistic path, with the cost, delay and uncertainty that carries. GOING SLIGHTLY LARGER IS THE COUNTER-INTUITIVE FIX: the 33 m2 model clears the Class 3A floor. SECOND, a dwelling brings Building Regulations, services and connection requirements a garden room does not. THIRD, no height, U-value, warranty or price is published. HOMEOWNER IMPLICATION: take planning advice before assuming the smallest unit is the simplest.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. This classification rests on USE, not on area, and the reason must be read carefully because the area figure looks reassuring. Supplier's published figure, preserved: 25 m2, which does sit inside the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) with about 5 m2 of nominal headroom, and the certified AM-001 Measurement Basis record notes the internal-versus-external basis is unstated so even that headroom is not assured. BUT THE AREA TEST IS NOT THE TEST THAT DECIDES THIS PRODUCT. A studio granny flat is habitable accommodation. The Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and expressly excludes human habitation, so this product falls outside Class 3 at any size, and 25 m2 buys nothing. THE ALTERNATIVE ROUTE IS ALSO CLOSED ON SIZE: the Class 3A Detached Auxiliary Dwelling exemption runs from 32 m2 to 45 m2, and 25 m2 falls BELOW that minimum. Neither exempt route is therefore available \u2014 one excluded by use, the other by being too small \u2014 which is why the approved classification EXCEEDS THE EXEMPTION LIMIT is applied. VOCABULARY LIMITATION recorded once: the approved set is floor-area-based and has no value for 'excluded on use while inside the area limit'; the closest approved classification is retained and the full reasoning is stated here. HOMEOWNER IMPLICATION: a 25 m2 granny flat will in practice need planning permission. Do not let the sub-30 m2 figure suggest otherwise, and put the intended occupancy to your local authority planning office before ordering.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recrfXlRTCNCf8VB5": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The certified AM-001 Measurement Basis record classifies this NO AREA PUBLISHED and records that the only URL held is a pricing page rather than a product specification page, so no measurement could be attributed and nothing has been estimated. A legacy Atlas Floor Area entry carries the supplier's own string '25m2 +', which is a STARTING SIZE rather than a figure \u2014 it states a minimum and no maximum, so it cannot be tested against a threshold and has not been read as an area. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) therefore cannot be applied. WHAT THE '25 m2 +' DOES TELL A HOMEOWNER, WITHOUT ANY INFERENCE ABOUT THE EXACT SIZE: the range STARTS above the pre-27 July 2026 limit of 25 m2 and has an open upper end running toward and past the current 30 m2 allowance, so this is a product where the area test is live rather than academic and the specification chosen decides the outcome. A SEPARATE AND LIKELY DECISIVE POINT ON USE: the 'Studio LIVING Pod' designation implies habitable accommodation, and the Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and excludes human habitation at any size \u2014 so on the supplier's own naming this product sits outside Class 3 whatever its footprint. The Class 3A Detached Auxiliary Dwelling route (32-45 m2, sited to the rear, services linked to the principal house, 14 days' written notice, expiring 31 December 2030) may be the applicable route instead but cannot be tested without a confirmed area. VOCABULARY LIMITATION: the approved classification set is floor-area-based and cannot express exclusion on use; the closest approved value is retained and the position is explained here in full. HOMEOWNER IMPLICATION: treat this as a dwelling proposal. Obtain the as-specified external footprint, the heights and the service connections in writing, and put the intended occupancy to your local authority planning office before ordering. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
@@ -12028,32 +11530,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recmAUmTuDN3NAhTv": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "The best value building in the entire All In One Cabins range \u2014 90m2 with 80mm walls for EUR 26,224, about EUR 291/m2. Best for a homeowner with a large site creating full independent two-bedroom accommodation who has done the arithmetic across the range.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Meelagh \u2014 EUR 31,127 for 100m2, same 80mm walls, with a much larger 8.5m x 5.5m kitchen-lounge and decking: EUR 4,903 more for a better living space. The Scannal \u2014 EUR 36,439 for 120m2 and three bedrooms, if the brief needs a third room. SIPS Garden Room LOTUS \u2014 48.4m2 two-bedroom kit from EUR 23,990 ex VAT: half the area at similar money but a 0.031 W/mK SIPS envelope, the choice if thermal performance outranks floor area.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Lowest cost per square metre of all eleven models at roughly EUR 291/m2, combined with the range's thickest 80mm walls \u2014 an unusual pairing, since value and specification normally trade off. Fully resolved house layout: entrance 2.7m x 1.9m, lounge 6.0m x 4.5m, bedrooms 4.0m x 4.0m and 4.0m x 3.0m, bathroom 2.0m x 2.5m, kitchen 4.0m x 3.5m. Eleven windows including eight at 71cm x 152cm. The supplier itself describes it as 'incredibly competitively priced' \u2014 the numbers support that.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with substantial land solving a real housing need \u2014 an adult child, ageing parents, or a long-term rental \u2014 with roughly EUR 35k-50k available once services and planning are counted. Running this as a proper construction project with a contractor, and choosing All In One Cabins to keep the shell cost down on what is effectively a small house.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "At 90m2 with two bedrooms and a kitchen this is a house, not a garden room \u2014 assume full planning permission, and budget separately for water, drainage and power connections, none of which are included. The 10m x 9m footprint needs a large site with delivery access for a flatpack of this scale. Shows 'Home Delivery' rather than 'Free Home Delivery' \u2014 confirm whether delivery is charged. 90m2 is the external footprint. Services are chargeable extras at EUR 4,800-18,900 on the supplier's own guide. VAT status not stated.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recuyH8VrmIzd3zxC": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A single-room cabin can be exempt while used incidentally to the house; sleeping accommodation removes the exemption regardless of size. HOMEOWNER IMPLICATION: get the external footprint in writing and be clear about intended use.",
@@ -12077,32 +11553,6 @@
       },
       "strengths": {
         "text": "Lowest headline price in the whole All In One Cabins range at EUR 10,047, and the best value per m2 of the Single Room tier. 26.25 m2 across a 7.5m x 3.5m footprint suits narrow or boundary-hugging sites where a square cabin will not fit. Low 2.45m ridge \u2014 the lowest in the range \u2014 which is helpful against Irish exempted-development height limits and less visually intrusive. Four large 71cm x 152cm windows. Flatpack kit with installation guide, damp proof membrane and premium windows included.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recO17811xKx4D2d8": {
-      "bestFor": {
-        "text": "The best-balanced small cabin in the range and the cheapest route to a full one-bedroom layout. At EUR 13,389 it delivers a bedroom, bathroom, kitchen, loft bed space and 70mm walls \u2014 a materially better building than the Single Room models for barely more money.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "70mm walls at EUR 13,389 \u2014 a step up from the 44mm Single Room models for only about EUR 1,000 more than the Kilglass. Complete small-dwelling layout: bedroom 2.2m x 2.5m, bathroom 1m x 2.6m, kitchen 3.3m x 2.4m, plus additional loft bed space the headline area does not count. Zero-cold-bridge tilt-and-turn double glazed windows. 4m ridge gives the volume for the loft. Free Home Delivery. Flatpack kit with installation guide, damp proof membrane and premium windows.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Ree \u2014 EUR 16,176 for 48m2 and TWO bedrooms: barely EUR 2,800 more for more than double the area, though with 44mm walls instead of 70mm. Check this first. The Grange \u2014 EUR 29,255 for 32m2 and the same 70mm walls, which is more than double the price for 40% more space. SIPS Garden Office DAISY \u2014 16.9m2 from EUR 9,390 ex VAT with a 0.031 W/mK envelope if you need a warm workspace rather than sleeping accommodation.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A ONE-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner adding compact guest accommodation or a small independent unit for roughly EUR 18k-28k all-in, who has a builder and plumber lined up. Suits occasional guests, a visiting family member or a teenager wanting independence. Too tight for permanent full-time living for more than one person.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "22.8 m2 is the external footprint (4m x 5.7m), not verified internal area \u2014 and fitting a bedroom, bathroom and kitchen into it leaves very little living space. A kitchen and bathroom in the plan does not mean either is installed: the supplier's Service Price Guide prices the kitchen at EUR 800-4,600 and the bathroom at EUR 1,200-4,600, plus plumbing EUR 800-2,200 and mains water and sewage EUR 1,200-3,000. Realistically this is a EUR 18k-28k project, not a EUR 13,389 one. VAT status not stated. The 4m ridge is tall \u2014 check it against exempted-development limits.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -12192,32 +11642,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recVLlHgnLdE0y1Ro": {
-      "bestFor": {
-        "text": "A two-bedroom cabin for a homeowner who wants a better envelope than the cheaper Ree and a low profile on site. 70mm walls, German-hardware doors and the lowest ridge of any Two Bed model at 2.75m, which helps where height is constrained or overlooking is a concern.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with a height-restricted or closely overlooked site who needs two bedrooms and a warmer building than the entry-level Ree, budgeting roughly EUR 30k-43k all-in. Choosing this over the Allen or Meelagh only makes sense if the garden genuinely cannot take a larger footprint \u2014 otherwise both are better buildings for similar or less money.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "70mm walls against the Ree's 44mm \u2014 a genuinely better thermal envelope for year-round two-bedroom use. Glulam zero-cold-bridging tilt-and-turn 28mm double glazed windows with German-built door hardware, the highest-specified glazing description in the range. Lowest ridge of any Two Bed model at 2.75m, useful where planning height or neighbour overlooking is an issue. Two equal 3.0m x 3.0m bedrooms. Free Home Delivery. Supplier states the model can be extended to individual requirements.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "Poor value per m2 against its siblings: roughly EUR 573/m2, nearly double the Allen at EUR 291/m2 and the Meelagh at EUR 311/m2, both of which have THICKER 80mm walls and far more space. THE PUBLISHED ROOM SCHEDULE CONTAINS AN ERROR: Kitchen & Lounge is listed as 1.5m x 2.5m, identical to the bathroom and implausible for a 42m2 two-bedroom cabin. Get the real layout confirmed before ordering. 42m2 is the external footprint. Services are chargeable extras (EUR 4,800-18,900 on the supplier's guide). VAT status not stated. Assume full planning permission at this size with bedrooms.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Allen \u2014 EUR 26,224 for 90m2 with 80mm walls: EUR 2,148 more for more than double the area and a thicker envelope. Compare these two directly before anything else. The Ree \u2014 EUR 16,176 for 48m2 if budget dominates and you will upgrade the 44mm walls yourself. The Meelagh \u2014 EUR 31,127 for 100m2 with 80mm walls and a large 8.5m x 5.5m kitchen-lounge if the site allows.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rechlK4GR8rJceNhR": {
       "bestFor": {
         "text": "A FIRST GARDEN ROOM AT A PUBLISHED ENTRY PRICE, FROM A SUPPLIER QUOTING IN BOTH CURRENCIES. The Ember is a compact 4.27 m x 2.44 m unit \u2014 about 10.42 m2 \u2014 published from GBP 10,000 or EUR 11,765, and the dual-currency listing with a Belfast dialling code indicates a Northern Ireland base selling into both jurisdictions. WHAT MAKES IT A SENSIBLE STARTING POINT: at roughly 10 m2 it sits comfortably inside the 30 m2 combined back-garden allowance and was equally inside the old 25 m2 limit, so the planning question is genuinely quiet \u2014 about 20 m2 of the allowance remains for anything else in the garden. It is a single-purpose room: a desk, a chair, a bookcase. HOMEOWNER IMPLICATION: best for someone who wants a defined workspace and a published starting price rather than a large multi-use building.",
@@ -12244,32 +11668,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI4CCDJVu7CezhW": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A ONE-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined; its 32 m2 FLOOR means a smaller cabin can fall between both routes and need full permission. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Difficult to recommend on the evidence Atlas holds. At EUR 29,255 for 32m2 it is roughly EUR 914/m2 \u2014 more than three times the Allen's rate, and EUR 3,000 more than the Allen's 90m2 two-bedroom cabin. Only right where the site cannot take a larger footprint and a one-bedroom layout is specifically required.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "The value case is weak and should be tested with the supplier. EUR 29,255 for 32m2 is about EUR 914/m2, against EUR 587/m2 for the Bofin which shares the same 70mm walls and the same one-bedroom brief, and EUR 291/m2 for the Allen. Atlas holds no evidence explaining the premium. 32m2 is the external footprint. Kitchen and bathroom appear in the plan but are chargeable to fit out (EUR 800-4,600 and EUR 1,200-4,600 respectively) on top of plumbing and mains connection. 4m ridge \u2014 check against exempted-development limits. VAT status not stated.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with a long narrow garden strip who needs a self-contained one-bedroom unit and cannot fit anything wider, budgeting roughly EUR 34k-46k all-in. Should ask the supplier directly what justifies the price against the Bofin before committing. Anyone with space for a larger footprint will get considerably more building elsewhere in this range.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Complete one-bedroom layout in a narrow 4.0m x 8.0m footprint that fits alongside a boundary: main room 3.3m x 2.1m, bedroom 3.3m x 2.5m, bathroom 1.2m x 1.4m, kitchen 2.0m x 2.5m. Glulam zero-cold-bridging tilt-and-turn 28mm double glazed windows and insulated 28mm plated doors \u2014 among the best-described glazing in the range. 70mm walls. Nine windows. Free Home Delivery.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Bofin \u2014 EUR 13,389 for 22.8m2 with the same 70mm walls and the same bedroom, bathroom and kitchen brief, plus loft space: less than half the price. Check this first. The Ree \u2014 EUR 16,176 for 48m2 and two bedrooms if the site can take 6m x 8m. The Allen \u2014 EUR 26,224 for 90m2, less money than the Grange for nearly three times the space.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recz1fNk9SoCzF2QN": {
       "considerations": {
         "text": "44mm walls with twelve windows is a difficult combination for winter heat retention \u2014 lots of glazing and the thinnest wall specification in the range. Budget for the supplier's thicker-wall customisation if this will be a year-round office. The 25 m2 figure is the external footprint (5.0 x 5.0), not verified internal area. No bathroom in the plan. Electrics and plumbing are chargeable add-ons. VAT status not stated. The 3.6m ridge is high enough to warrant checking against Irish exempted-development limits for your site.",
@@ -12293,32 +11691,6 @@
       },
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A single-room cabin can be exempt while used incidentally to the house; sleeping accommodation removes the exemption regardless of size. HOMEOWNER IMPLICATION: get the external footprint in writing and be clear about intended use.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recAOoRiH7fHmRcUt": {
-      "typicalHomeowner": {
-        "text": "A homeowner building permanent independent accommodation on a large rural or semi-rural site, budgeting roughly EUR 40k-55k once services and planning are counted. Prioritises quality of living space over raw square metres \u2014 this is the model to pick if the occupants will actually live there rather than just sleep there.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Allen \u2014 EUR 26,224 for 90m2, same 80mm walls, EUR 4,903 less: the better buy unless the larger kitchen-lounge specifically matters to you. The Scannal \u2014 EUR 36,439 for 120m2 and a third bedroom, though it drops to 70mm walls. Concept Modular Signature Cabin 36m2 \u2014 EUR 67,950 ex VAT: far smaller and dearer, but delivered factory-finished with kitchen and bathroom fitted and a 50-year structural warranty rather than a flatpack shell.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "A 10m x 10m two-bedroom dwelling \u2014 full planning permission should be assumed, and water, drainage and power are all separate projects. The footprint needs a large, accessible site: this is a substantial flatpack to deliver and erect. Shows 'Home Delivery' rather than 'Free Home Delivery' \u2014 confirm whether delivery is charged. 100m2 is the external footprint, not verified internal area. Services are chargeable extras at EUR 4,800-18,900 on the supplier's guide. VAT status not stated. 3.7m ridge is among the tallest in the range.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A homeowner who wants the best living space in the range rather than simply the most floor area. 100m2 with an exceptional 8.5m x 5.5m open kitchen-lounge, 80mm walls, eleven windows and outside decking \u2014 the most generous shared living area All In One Cabins offers.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined \u2014 and a two-bedroom unit is more likely than a one-bedroom to exceed the 45 m2 CEILING, which would put it outside that route as well. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "An 8.5m x 5.5m kitchen-lounge \u2014 roughly 47m2 of open living space, larger than the entire Ree cabin. Two proper double bedrooms at 3.0m x 4.5m and 2.9m x 4.5m and a large 2.1m x 3.1m bathroom. 80mm walls, the thickest in the range. Eleven windows including eight at 1.31m x 1.13m, so the living space is genuinely bright. Outside decking areas included. Second-best value in the range at roughly EUR 311/m2, and 3.7m ridge gives real volume.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -12371,144 +11743,6 @@
       },
       "considerations": {
         "text": "AN UNRESOLVED UNIT IS WORSE THAN NO FIGURE AT ALL, BECAUSE IT INVITES A GUESS. A homeowner who reads '21.5m' as 21.5 m2 will conclude they have 8.5 m2 of headroom; if the figure means something else, that conclusion is unfounded \u2014 and the certified layers refused to make the assumption for exactly that reason. THE HEADROOM ALSO DISAPPEARS if any shed or garage already stands in the garden, since the allowance is COMBINED. SECOND, no height is published, so the 3 m and 4 m limits cannot be tested. THIRD, on a glazed sun room, the absence of any glazing or thermal specification leaves both winter heat loss and summer overheating unassessed. HOMEOWNER IMPLICATION: get the external footprint in metres, in writing, before anything else.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recSy67Vn2TH51ENG": {
-      "typicalHomeowner": {
-        "text": "A homeowner creating family or guest accommodation on a genuinely constrained budget \u2014 realistically EUR 25k-40k once walls are upgraded, services connected and planning obtained. Willing to trade insulation depth for space and to manage a multi-trade project. Suits seasonal or guest use out of the box; needs the upgrade for permanent occupation.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A TWO-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. The Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Maximum floor area for minimum money \u2014 48m2 with two double bedrooms from EUR 16,176, or roughly EUR 337/m2. Best for a homeowner who needs real accommodation space on a tight budget and will upgrade the wall specification separately.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Extraordinary value: 48m2 and a genuine two-bedroom plan for EUR 16,176, less than the 32m2 one-bedroom Grange at EUR 29,255. Two equal 3.0m x 3.5m double bedrooms, a 1.8m x 2.0m bathroom and an open 6.0m x 4.5m kitchen-lounge \u2014 a properly resolved layout rather than a subdivided box. Free Home Delivery. Flatpack kit with installation guide, damp proof membrane and premium windows included.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "44mm walls on a 48m2 two-bedroom cabin \u2014 thinner than the 70mm on the far smaller Bofin, and the single biggest reason this model is so cheap. For year-round or residential use the thicker-wall upgrade is close to essential, and its cost is not published. 48m2 is the external footprint, not verified internal area. At this size and with bedrooms, assume full planning permission rather than exempted development. Kitchen, bathroom, plumbing, heating and mains connection are all chargeable extras totalling EUR 4,800-18,900 on the supplier's own guide. VAT status not stated.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Derg \u2014 EUR 24,076 for 42m2 with 70mm walls: EUR 7,900 more and slightly smaller, but a materially better envelope for year-round use. The Allen \u2014 EUR 26,224 for 90m2 with 80mm walls, the best value per m2 in the entire range at about EUR 291/m2 if the site can take it. SIPS Garden Room MINT \u2014 41.2m2 one-bedroom kit from EUR 21,490 ex VAT with a 0.031 W/mK SIPS envelope, if thermal performance outranks bedroom count.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recKFWluu0vDEHn81": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area and no dimensions; nothing estimated. A THREE-BEDROOM cabin is habitable accommodation and is EXCLUDED from the Class 3 exemption REGARDLESS OF SIZE. INTEGRITY, restated once from AM-001: the record name itself carries an unresolved inconsistency \u2014 a 3-bedroom cabin listed under Two Bed. All 11 REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA, all Tier A, recorded product-specific. THE SUPPLIER-LEVEL FINDING: Atlas holds NO published area for any of the eleven, so the area test cannot be run anywhere in this range. More importantly, EIGHT of the eleven are bedroom cabins \u2014 one, two and three bed \u2014 and habitable accommodation is excluded from the Class 3 garden-structure exemption whatever its size. For those eight the 30 m2 allowance is simply the wrong test. THE GAP BETWEEN THE TWO ROUTES IS THE REAL RISK: Class 3 excludes habitation; Class 3A covers habitable units only from 32 m2 upward. A one-bedroom cabin below 32 m2 falls between them and needs full planning permission. Atlas cannot say which of these products land there, because no areas are published. THE THREE SINGLE-ROOM CABINS \u2014 Corry, Boderg, Kilglass \u2014 can be exempt if used incidentally to the house, so for those three the area figure would settle it. VOCABULARY LIMITATION, restated once for the Layer Completion Audit: the approved classification set is expressed in floor-area terms and cannot represent exclusion on use; the verification value is used and the exclusion stated in full. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: this is a habitable-cabin range, not a garden-office range. Take planning advice before choosing a model.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "The only three-bedroom model All In One Cabins offers, and the largest at 120m2. Best for a homeowner housing a whole family independently \u2014 three bedrooms, lounge, kitchen, bathroom, storage room and separate cloakroom \u2014 at roughly EUR 304/m2.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "TAXONOMY CONFLICT: the supplier's own copy calls this a three-bedroom cabin, yet it is listed under the Two Bed Cabins category. Unresolved on the vendor's site \u2014 confirm the specification in writing. It also drops to 70mm walls, thinner than the smaller Allen and Meelagh at 80mm, which is counter-intuitive on the largest model. The bathroom is small for a three-bedroom house at 1.2m x 1.4m, as is the 2.0m x 2.5m kitchen. A 10m x 12m three-bedroom dwelling needs full planning permission and full services. Shows 'Home Delivery' not 'Free Home Delivery'. 120m2 is the external footprint. VAT status not stated.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Meelagh \u2014 EUR 31,127 for 100m2 with THICKER 80mm walls and a far better 8.5m x 5.5m living space, if two bedrooms are enough. The Allen \u2014 EUR 26,224 for 90m2, also 80mm walls, the value pick of the range. Luxury Garden Studios Signature 98 \u2014 GBP 142,000 turnkey for 98m2 and four bedrooms: vastly more expensive, but delivered finished with a 10-year structural warranty rather than as a flatpack shell.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with significant land providing a full family home \u2014 relatives, multigenerational living or a three-bed rental \u2014 with roughly EUR 45k-60k available once services and planning are counted. Running it as a full construction project with a contractor, architect and planner, and using the flatpack route to control shell cost on what is unambiguously a house.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "120m2 and three bedrooms for EUR 36,439 \u2014 third-best value per m2 in the range at about EUR 304, and by a wide margin the most accommodation All In One Cabins sells. Genuinely complete house plan: three bedrooms, a 3.4m x 6.8m lounge, kitchen, bathroom, a separate cloakroom and a dedicated storage room. Sixteen windows. Lowest ridge of the large models at 3.3m. Notably, it costs EUR 16,889 LESS than the 28.14m2 one-bedroom Shannon.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recFmEJwf6fFHpscC": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds NO area and NO dimensions; nothing estimated. THE USE CONDITION DECIDES THIS PRODUCT: a ONE-BEDROOM cabin is habitable accommodation, and habitable use is EXCLUDED from the Class 3 back-garden structure exemption REGARDLESS OF SIZE. The 30 m2 allowance (raised from 25 m2 on 27 July 2026) is therefore not the operative test. A SEPARATE ROUTE MAY APPLY: the Class 3A detached auxiliary dwelling exemption covers habitable units of 32-45 m2 to the rear, on 14 days' notice to the planning authority, expiring 31 December 2030. Whether this product qualifies is NOT determined and is not inferred \u2014 and note it has a FLOOR of 32 m2, so a small cabin can fall between the two routes and need full permission. HOMEOWNER IMPLICATION: establish the consent route before the specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "Unknown on the evidence Atlas holds. Every homeowner profile this cabin would suit is served better and more cheaply by another model in the same range. If the supplier can evidence a specification difference that justifies roughly EUR 1,895 per square metre, that profile may exist \u2014 but Atlas will not describe one until the evidence is there.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "80mm walls, the thickest specification All In One Cabins offers. Generous room proportions for a compact cabin: main room 3.1m x 3.7m and bedroom 3.0m x 2.5m, better balanced than the Bofin's tighter plan. Decking area of 4.1m x 1.5m and a 1.55m overhang included. Nine windows, six of them at 75cm x 113cm, on a 4m ridge \u2014 the supplier's stated design intent is a bright, modern, sleek cabin, and the glazing supports that.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The Bofin \u2014 EUR 13,389 for 22.8m2 with a bedroom, bathroom, kitchen AND loft space: a quarter of the price for a comparable brief. Start here. The Allen \u2014 EUR 26,224 for 90m2 with the same 80mm walls, half the price for three times the space. The Scannal \u2014 EUR 36,439 for 120m2 and three bedrooms, still EUR 16,889 cheaper. On the evidence Atlas holds, all three are better buys than The Shannon.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "SEVERE PRICING ANOMALY, VERIFIED AS THE SUPPLIER'S PUBLISHED PRICE. EUR 53,328 for 28.14m2 is about EUR 1,895/m2 against EUR 291/m2 for The Allen (90m2, same 80mm walls) and EUR 304/m2 for the 120m2 three-bedroom Scannal, which costs EUR 16,889 LESS. The only stated differentiator is the 80mm wall thickness, which the Allen and Meelagh also have at a fraction of the rate. The measurement schedule lists NO kitchen, while the cheaper EUR 29,255 Grange does. 28.14m2 is the external footprint. Shows 'Home Delivery' not 'Free Home Delivery'. Services chargeable at EUR 4,800-18,900. VAT status not stated.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Atlas cannot currently identify a homeowner for whom this is the right choice, and says so rather than inventing one. At EUR 53,328 for 28.14m2 it is roughly EUR 1,895/m2 \u2014 6.5 times The Allen's rate, and EUR 16,889 MORE than the 120m2 three-bedroom Scannal. Do not buy this without asking the supplier directly what justifies the price.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec34rHUaz7l3jDe1": {
-      "sources": {
-        "text": "https://boothsgardenstudios.co.uk/garden-annexes",
-        "evidenceScope": null
-      },
-      "bestFor": {
-        "text": "HABITABLE ACCOMMODATION \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified record is explicit: an ANNEXE implies habitable accommodation, and habitable use is excluded from the Class 3 back-garden structure exemption REGARDLESS OF SIZE, so the 30 m2 allowance is not the operative test here. THE CLASS 3A DETACHED AUXILIARY DWELLING ROUTE MAY APPLY INSTEAD \u2014 habitable units of 32\u201345 m2 to the rear, on 14 days' notice, expiring 31 December 2030 \u2014 but whether this product qualifies has NOT been determined and is not inferred, and no area is published to test it. HOMEOWNER IMPLICATION: do not buy this expecting garden-office exemption.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "FOR HABITABLE ACCOMMODATION WITH A PUBLISHED AREA AND A TESTABLE ROUTE, Granny Flats Dublin's 1 Bed at 33.00 m2 sits inside the Class 3A band with margin and its 1 or 2 Bed at 45.00 m2 exactly on the ceiling \u2014 the decisive difference being that both state their floor areas. WITHIN BOOTHS, The Straight is the other annexe-intent model. FOR AN EXEMPT DAY ROOM INSTEAD, the QC9 Garden Office at about 7.43 m2 is the range's documented option. THE RANGE SPLITS CLEANLY ON EVIDENCE. THREE MODELS CARRY IMPERIAL NOMINAL DESIGNATIONS \u2014 QCB5 Garden Office and QCB5 Retreat at approximately 4.46 m2 on a 6 x 8 ft designation, and QC9 Garden Office at approximately 7.43 m2 on 8 x 10 ft \u2014 all comfortably inside the 30 m2 allowance, where the certified layers record that AREA IS NOWHERE NEAR THE BINDING CONSTRAINT. TWO GYM MODELS, QCB5 Gym and QC8 Gym, publish NO AREA AT ALL, and the certified layers are explicit that the sibling 6 x 8 ft figure has NOT been carried across to the QCB5 Gym \u2014 that inference was refused. TWO ANNEXE MODELS, this Squire and The Straight, are habitable-intent and therefore excluded from Class 3 on USE at any size. THE STANDING CAVEAT: imperial nominal designations are rounded shed-trade product names, not measured areas, and no height, U-value, insulation specification, warranty or price is published for ANY of the seven \u2014 so evidence neutrality is preserved on envelope throughout and nothing has been ranked on build quality. THE DECISION-RELEVANT PATTERN: on the small models the constraint is height, siting and use rather than area; on the gyms it is internal clear height, which nothing published addresses. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "considerations": {
-        "text": "THE ONE ROUTE THAT MIGHT WORK CANNOT BE TESTED, BECAUSE NO AREA IS PUBLISHED. Class 3A requires 32\u201345 m2, rear siting, services linked to the principal house and 14 days' notice \u2014 and with no floor area held, a homeowner cannot tell whether this annexe even reaches the 32 m2 floor. A HABITABLE UNIT BELOW THAT THRESHOLD HAS NO FAST ROUTE AT ALL and needs full planning permission. SECOND, a dwelling brings Building Regulations, drainage and services obligations a garden room does not. THIRD, no height, insulation or price is published. HOMEOWNER IMPLICATION: establish the intended use and the confirmed floor area, then put both to your planning authority before ordering.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "THE NAMING IS HONEST, AND THAT IS WORTH MORE THAN IT SOUNDS. Calling the product an ANNEXE tells a buyer, before any specification is read, that this is accommodation rather than a garden office \u2014 which is more than several habitable-looking pods elsewhere in this catalogue manage, and it points at the correct consent route immediately. IT IS ALSO THE LARGEST-INTENT PRODUCT BOOTHS OFFERS, aimed at a genuine housing requirement rather than a workspace one. NOT ESTABLISHED: no floor area, dimensions, height, services specification, insulation figure, warranty or price is published, so Class 3A eligibility cannot even be tested.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A FAMILY HOUSING A RELATIVE WHO NEEDS THEIR OWN FRONT DOOR. An elderly parent, or an adult child who cannot find a rental \u2014 a genuine housing problem rather than a workspace one, and the reason annexes exist as a category. THEY ARE ENTERING A CONSENT PROCESS, not making a retail purchase, and should budget time and professional advice accordingly. NOT FOR: anyone shopping in the garden-room category expecting exempt development \u2014 which is exactly the confusion this product's placement invites, and the reason the record states the position plainly.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer records NO AREA PUBLISHED: no floor area, no dimensions, no derivable footprint. Nothing estimated. THE USE CONDITION DECIDES THIS PRODUCT: an ANNEXE implies habitable accommodation, and habitable use is excluded from the Class 3 back-garden structure exemption REGARDLESS OF SIZE. The 30 m2 allowance (raised from 25 m2 on 27 July 2026) is therefore not the operative test. A SEPARATE ROUTE MAY APPLY: the new Class 3A detached auxiliary dwelling exemption covers habitable units of 32-45 m2 to the rear, on 14 days' notice to the planning authority, and expires 31 December 2030. Whether this product qualifies has NOT been determined and is not inferred. HOMEOWNER IMPLICATION: do not buy this expecting garden-office exemption \u2014 establish the intended use and the correct consent route first.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recce4t2fTLJVmO75": {
-      "sources": {
-        "text": "https://boothsgardenstudios.co.uk/garden-annexes",
-        "evidenceScope": null
-      },
-      "strengths": {
-        "text": "FIVE STRENGTHS. ONE, AND IT IS THE SUPPLIER-LEVEL FINDING: BOOTHS PUBLISHES THE MOST COMPLETE ENVELOPE DISCLOSURE recorded in the certified thermal layer. It names the insulation PRODUCTS and their THICKNESSES for every element \u2014 90 mm Ecotherm to the floor, 90 mm Actis to walls and ceiling \u2014 states the glazing performance comparatively, names the steel supplier, and backs the structure with 25 YEARS where one to ten is typical elsewhere. That is an unusually specific and checkable set of claims. TWO: NO CONCRETE BASE IS REQUIRED \u2014 the building sits on an adjustable chassis on composite feet, removing the single most commonly excluded cost in this catalogue. THREE, SPECIFIC TO THE ANNEXE: a PLASTERED internal finish and FULL ELECTRICS rather than the MDF lining used on the studio range \u2014 a residential-grade interior, appropriate to a building with a kitchen and bathroom. FOUR: MADE TO WIDTH. The annexe is built to the buyer's dimension rather than to a fixed model size, which very few suppliers in this catalogue offer at this specification. FIVE: the supplier ABANDONED TIMBER ENTIRELY IN 2012 on the stated grounds that 'timber windows move, draught and need regular repainting' \u2014 a deliberate, published material position rather than a default.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "An ENGLISH homeowner housing a family member \u2014 an adult child, an elderly parent \u2014 or creating a long-stay guest annexe, who wants residential-grade accommodation with a kitchen and bathroom and a plastered interior, built to a width that suits their garden rather than to a catalogue size. They value that the building needs no concrete base and can in principle be moved later, and they are the kind of buyer who reads a specification: named insulation products with thicknesses, a named steel supplier, a 25-year structural guarantee. Crucially, they will let BOOTHS fit the kitchen and bathroom rather than their own tradesperson, because doing otherwise cuts the guarantee to one year and fixes the building in place permanently. They accept that heating is a separate purchase and that a site visit and groundworks quotation follow from the plumbing. NOT THIS BUYER: an Irish purchaser \u2014 no Irish delivery is published, and the Caravan Act route the supplier relies on does not exist here; anyone who needs a U-value; anyone wanting an incidental garden room rather than accommodation.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "WITHIN BOOTHS: the Annexe is offered in STRAIGHT or L-SHAPE, so the L-shape is the direct alternative where the garden suits a wrapped plan; The Squire is the other annexe record held in Atlas. If accommodation is not actually needed, the QCB5 and QC9 studios carry the SAME thermal envelope without the kitchen, bathroom, plastered finish or the groundworks and guarantee conditions that come with plumbing \u2014 the QCB5 from GBP 9,995 including VAT, delivery and installation in England. NEUTRALITY: the studios and the annexe share one envelope specification, so no thermal ranking exists between them; the difference is fit-out and consent. OUTSIDE BOOTHS, and necessarily so for an Irish buyer since no Irish route is published: Luxury Garden Studios delivers heated, fitted units with a kitchen and full bathroom at one price with no staged extras on a 10-year structural warranty, though Republic of Ireland delivery is itself unconfirmed. Big Man Tiny Homes, an Irish manufacturer in Co. Cork, builds a Home Office with Bathroom & Kitchenette in SIPS with EcoTherm PIR, engineer-certified before dispatch, on a published 20-year guarantee. Concept Modular publishes a 50-year structural warranty with a designer kitchen and bathroom. NEUTRALITY: no ranking is created between these routes; each raises the same habitation question in Ireland.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "FIVE CONSIDERATIONS. ONE, THE PLANNING CLAIM MUST NOT BE RELIED ON IN IRELAND: the supplier describes the Annexe as self-contained living with kitchen and bathroom, 'installable under the CARAVAN ACT with no planning permission'. That is a UK legal route. It does not apply in Ireland, where the position on a habitable garden building is different \u2014 the Class 3 back-garden exemption requires incidental use with NO HUMAN HABITATION, and a kitchen-and-bathroom annexe falls outside it on use, whatever its width. Recorded as intelligence; Atlas makes no determination. TWO, AVAILABILITY: free delivery and installation in ENGLAND, GBP 899 to Scotland within 100 miles of Edinburgh or Glasgow, NO IRISH DELIVERY PUBLISHED. Corby, Northamptonshire. THREE, THE GUARANTEE HAS A CONDITION THAT CAN DESTROY IT: Booths-installed bathrooms and kitchens preserve portability AND the guarantee; THIRD-PARTY INSTALLATIONS REDUCE THE GUARANTEE TO ONE YEAR and prevent the building being moved. On an annexe \u2014 the one configuration where a buyer might be tempted to use their own plumber \u2014 that is the most consequential contractual term this supplier publishes. FOUR, GROUNDWORKS RETURN: a SITE VISIT IS REQUIRED where a bathroom, kitchen or sink is installed, because groundworks are then quoted \u2014 so the no-concrete-base advantage weakens on precisely this model. FIVE: HEATING IS NOT INCLUDED (air conditioning roughly GBP 1,700 plus a two-yearly service); NO U-VALUE is published; and an unreconciled inconsistency stands \u2014 90 mm of wall insulation stated alongside a 75 mm panel thickness. No dimensions or area are held: DO NOT RANK.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA \u2014 AND NO FIXED AREA EXISTS TO VERIFY. The certified AM-001 layer records this product as MADE-TO-WIDTH: the footprint is set per commission, not published as a product figure. Nothing estimated. FOR THIS PRODUCT THE SIZE DECISION AND THE PLANNING DECISION ARE THE SAME DECISION \u2014 a made-to-width annexe can be specified either side of the 30 m2 threshold. Separately, an ANNEXE implies habitable accommodation, excluded from the Class 3 exemption regardless of size; the Class 3A auxiliary-dwelling route (32-45 m2, 14 days' notice, expiring 31 December 2030) may apply but qualification is undetermined. Three sit within the exemption on floor area and four require product-specific verification, all Tier A, recorded product-specific. THE SUPPLIER-LEVEL FINDING: this range splits cleanly in two. The QC-coded garden offices and retreat carry IMPERIAL NOMINAL sizes (6x8 ft, 8x10 ft) that convert to roughly 4.5-7.5 m2 \u2014 far below the allowance, so area is never the constraint. The gyms and the two annexes carry NO published area at all. WHY THE ANNEXES ARE A DIFFERENT QUESTION ENTIRELY: habitable accommodation falls outside the Class 3 garden-structure exemption whatever its size, so for The Squire and The Straight the area test is beside the point. This is the first supplier in the layer where the USE condition, not the area condition, decides the outcome. VOCABULARY GAP, recorded once for the audit: the approved AM-006 classification set is expressed in floor-area terms and has no value for a product excluded on use rather than size. The verification value has been used and the use exclusion stated in full rather than a new value invented. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: the offices are straightforward on area; the annexes need a consent conversation before a size conversation. AUDIT NOTE: supplier-status prose reworded at the AM-006 Layer Completion Audit so that only this record's own classification appears in approved-vocabulary form; classifications unchanged.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for an ENGLISH buyer wanting self-contained annexe accommodation \u2014 kitchen and bathroom \u2014 built to a width of their choosing on a well-documented steel envelope, WITHOUT a concrete base. The certified thermal layer establishes the specification: 90 mm ECOTHERM floor insulation and 90 mm ACTIS in walls and ceiling, A-rated double glazing described as thermally equivalent to triple glazing, 75 mm galvanised steel-clad panels, corrugated bitumen roof, PLASTERED internal finish, FULL ELECTRICS, and a 25-YEAR STRUCTURAL GUARANTEE. The Annexe is offered straight or L-shape; this is the straight, made to width. NOT FOR AN IRISH BUYER AS A LIVE PURCHASE, on two grounds: free delivery and installation are ENGLAND only, GBP 899 to Scotland, NO IRISH ROUTE PUBLISHED, from a Corby, Northamptonshire base; and the supplier's own claim that it is 'installable under the Caravan Act with no planning permission' is a UK legal route that DOES NOT APPLY IN IRELAND. HOMEOWNER IMPLICATION: excellent envelope disclosure; the consent claim must be ignored on this island.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -12762,32 +11996,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI11umptgnSn2zE": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT. Supplier's published dimensions, preserved exactly: 7.94 m \u00d7 6.08 m = 48.28 m2 against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) \u2014 more than 18 m2 over. Nothing estimated. NEITHER EXEMPT ROUTE IS AVAILABLE, ON TWO INDEPENDENT GROUNDS EACH. On area: 48.28 m2 exceeds the 30 m2 Class 3 allowance AND exceeds the 45 m2 ceiling of the Class 3A Detached Auxiliary Dwelling band, so no exemption reaches it. On use: the supplier's own designation is TWO BEDROOM and RESIDENTIAL, which is habitable accommodation, and the Class 3 garden-structure exemption excludes human habitation at any size. Full planning permission is indicated. The certified AM-001 Measurement Basis record reaches the same conclusion and notes the internal-versus-external basis is unstated, which cannot help here because the figure already exceeds every threshold. CATEGORY ISSUE: a two-bedroom residential cabin held under Garden Rooms is a category mismatch; recorded, not corrected, architecture frozen. HOMEOWNER IMPLICATION: this is a house, not a garden room, and should be approached as a full planning application with a designer and your local authority planning office from the outset. TWO sit inside the 30 m2 allowance (Laois 3m x 3m at 9.00 m2 comfortably, Longford 5.9m x 4m at 23.60 m2 with only 6.40 m2 of headroom and only 1.40 m2 under the pre-2026 rule), TWO are over it (Donegal 5.9m x 5.9m at 34.81 m2, and this Two Bedroom H at 48.28 m2 which exceeds every route and is habitable besides), and ONE, the Cube Sauna M, publishes no footprint at all and so could not be tested on area. STANDING QUALIFICATION: MyCabin.ie never states whether its quoted dimensions are internal or external, which is the single unanswered question across the whole range and matters most on the Longford. WHY THIS SUPPLIER CARRIES MORE RISK THAN A FOREIGN ONE: MyCabin.ie is Irish, based in Blessington, Co. Wicklow, with showrooms in Wicklow, Cork and Wexford, so an Irish homeowner can buy any of these products locally and immediately \u2014 including the two that are not exempt. PLANNING LAYER COMPLETE. AUDIT NOTE: supplier-status prose reworded at the AM-006 Layer Completion Audit so that only this record's own classification appears in approved-vocabulary form; classifications unchanged.",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "strengths": {
-        "text": "IT IS HONESTLY NAMED AND FULLY DIMENSIONED, WHICH IS MORE THAN MOST HABITABLE PRODUCTS IN THIS CATALOGUE MANAGE. 'Two Bedroom' and 'Residential' tell a buyer exactly what the building is before any specification is read, and 7.94 m \u00d7 6.08 m is a precise published figure rather than a marketing label \u2014 which is why the certified layers could reach a definite conclusion rather than leaving the question open. AS ACCOMMODATION, 48.28 m2 across two bedrooms is a genuine small dwelling, and MyCabin.ie's Irish base and showrooms make it inspectable. NOT ESTABLISHED: no height, U-value, services specification, warranty or price is published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "IF THE AIM IS ACCOMMODATION WITHOUT A FULL APPLICATION, THE CLASS 3A BAND IS THE ONLY ROUTE AND THIS PRODUCT IS ABOVE IT: Granny Flats Dublin's 1 Bed at 33.00 m2 sits inside with margin and its 1 or 2 Bed at 45.00 m2 exactly on the ceiling. FOR AN EXEMPT DAY ROOM INSTEAD, the Longford at 23.60 m2 is the largest model in this range that qualifies. The range straddles the threshold more widely than any other Irish supplier in this catalogue: TWO sit inside the 30 m2 allowance (Laois 3m x 3m at 9.00 m2 comfortably; Longford 5.9m x 4m at 23.60 m2 with only 6.40 m2 of headroom), TWO are over it (Donegal 5.9m x 5.9m at 34.81 m2; this Two Bedroom H at 48.28 m2, which exceeds every route and is habitable besides), and ONE, the Cube Sauna M, publishes no footprint and could not be tested on area. STANDING QUALIFICATION carried from the certified layers: MyCabin.ie never states whether its quoted dimensions are internal or external \u2014 the single unanswered question across the whole range, mattering most on the Longford. THE DECISION-RELEVANT POINT: because MyCabin.ie is Irish, based in Blessington, Co. Wicklow with showrooms in Wicklow, Cork and Wexford, a homeowner can buy any of these products locally and immediately \u2014 including the two that are not exempt. EVIDENCE NEUTRALITY IS PRESERVED ON SPECIFICATION: no height, U-value, warranty or price is published for any of the five, so nothing has been ranked on build quality. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "bestFor": {
-        "text": "A HOUSE, NOT A GARDEN ROOM \u2014 AND THE CERTIFIED LAYERS SAY SO IN THOSE TERMS. Published dimensions of 7.94 m \u00d7 6.08 m give 48.28 m2: more than 18 m2 over the 30 m2 combined allowance, AND above the 45 m2 ceiling of the Class 3A Detached Auxiliary Dwelling band, so no exemption route reaches it on area. ON USE IT FAILS INDEPENDENTLY: the supplier's own designation is TWO BEDROOM and RESIDENTIAL, which is habitable accommodation, and the Class 3 exemption excludes human habitation at any size. FULL PLANNING PERMISSION IS INDICATED. HOMEOWNER IMPLICATION: approach this with a designer and your local authority planning office from the outset.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "IT FAILS EVERY EXEMPT ROUTE ON TWO INDEPENDENT GROUNDS EACH, AND THAT IS THE WHOLE CONSIDERATION. On area, 48.28 m2 exceeds both the 30 m2 Class 3 allowance and the 45 m2 Class 3A ceiling. On use, a two-bedroom residential cabin is habitation, which Class 3 excludes at any size. THE UNSTATED MEASUREMENT BASIS CANNOT HELP, because the published figure already exceeds every threshold. SECOND, a dwelling of this scale brings Building Regulations, drainage, services and fire and access considerations. THIRD, the certified layers record the category placement issue once; recorded, not corrected. HOMEOWNER IMPLICATION: budget for drawings, fees and a planning timeline, and do not treat the Garden Rooms category label as any guide to the regulatory position.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "SOMEONE BUILDING A SECOND DWELLING ON THEIR SITE AND TREATING IT AS SUCH. A family housing two relatives, a rural landowner adding accommodation, or a self-builder using a log kit as the shell \u2014 all legitimate, all requiring a full application. THEY HAVE OR WILL ENGAGE A DESIGNER, and the building is one component of a project rather than a purchase. NOT FOR: anyone shopping in the garden-room category expecting exempt development \u2014 which is precisely the confusion this product's placement invites, and the reason the record spells the position out.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recPmdokw4KU1uSCb": {
       "sources": {
         "text": "https://summerhouse24.ie/two-room-garden-house-amelia-g0361/",
@@ -12936,32 +12144,6 @@
       "bestFor": {
         "text": "UK homeowners who never want to paint, stain or treat a garden building again. The Urban range is composite clad and the supplier states the cladding holds its colour year after year with no repainting or staining. Best for a small garden where the building will be highly visible and expected to look new in ten years.",
         "evidenceScope": "Range-Level"
-      }
-    },
-    "recPRGtH0ycJzbxYw": {
-      "alternatives": {
-        "text": "IF THE USE IS OVERNIGHT, THE RIGHT PRODUCTS ARE THE ONES BUILT FOR IT: Granny Flats Dublin's 33 m2 and 45 m2 units are designed around the Class 3A band and publish their areas, which this cabin does not. IF THE USE IS INCIDENTAL DAY SPACE, Yardbox, Waltons and Adman Steel Sheds publish footprints that can be tested against the 30 m2 allowance. WITHIN THIS RANGE, the Ontario XL is the only model with a published area. HOMEOWNER IMPLICATION: the choice is between two different regulatory routes, and no cabin marketed ambiguously will resolve which one you are on.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "A PRODUCT MARKETED FOR FAMILY USE INVITES EXACTLY THE USE THE EXEMPTION FORBIDS. Sleeping accommodation is habitation, and habitation removes the Class 3 exemption at any floor area \u2014 so a homeowner attracted by the family framing can end up needing full planning permission for a building they assumed was exempt. IF THE INTENDED USE IS GENUINELY OVERNIGHT, the Class 3A auxiliary-dwelling route is the relevant one, and it carries a MINIMUM of 32 m2, rear siting, linked services and 14 days' notice. SECOND, no area, dimensions or height are published, so neither the 30 m2 allowance nor the height limits can be tested. HOMEOWNER IMPLICATION: put the intended use in writing to your planning authority before ordering.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A LARGER FAMILY CABIN \u2014 AND THE USE QUESTION MAY SETTLE ITS PLANNING POSITION BEFORE ANY MEASUREMENT DOES. The certified record makes the point directly: a cabin the supplier itself describes as FAMILY accommodation implies habitable use, and the Class 3 exemption requires use incidental to the enjoyment of the house and EXCLUDES HUMAN HABITATION AT ANY SIZE. If it is intended as living or sleeping accommodation it falls outside Class 3 however small it is. 'XL' AND 'FAMILY' ARE MARKETING LABELS, NOT MEASUREMENTS, and have not been treated as such \u2014 no area, dimension or height is published. HOMEOWNER IMPLICATION: decide what the building is for first; the tape measure comes second.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. All About Outdoors publishes no floor area and no dimensions for this cabin; the certified AM-001 Measurement Basis record confirms nothing has been estimated and records that 'XL' and 'Family' are marketing labels, NOT measurements, and have not been treated as such. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) therefore cannot be tested. A SEPARATE POINT ON USE THAT MAY MATTER MORE THAN THE AREA: a cabin the supplier itself describes as FAMILY accommodation implies habitable use, and the Class 3 garden-structure exemption requires use incidental to the enjoyment of the house and excludes human habitation at any size. If the cabin is intended as living or sleeping accommodation it falls outside Class 3 regardless of how small it is. VOCABULARY LIMITATION: the approved classification set is floor-area-based and cannot express exclusion on use, so the closest approved value is retained and the use question is stated here in full. Conditions applying regardless: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof. HOMEOWNER IMPLICATION: establish first what the cabin will be used for, because that may settle the planning position before any measurement does. Then obtain the external footprint and the ridge height from the supplier in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "IT IS POSITIONED AS THE RANGE'S LARGER FAMILY-SCALE CABIN, which for a household needing a room several people can use at once is the model to enquire about. SOLID TIMBER CONSTRUCTION and a retailer with an Irish-facing route are the same practical advantages as across this supplier's range. THAT IS POSITIONING, NOT MEASUREMENT: the certified layers record that 'XL' and 'Family' convey no figure, and no area, dimension, height, wall thickness, U-value, warranty or price is published. No size advantage over the other cabins has been recorded, because none is evidenced.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A FAMILY LOOKING FOR EXTRA ROOM AND NOT YET SURE WHETHER ANYONE WILL SLEEP IN IT. That ambiguity is the defining feature of this buyer, and it is the thing they most need resolved \u2014 a day room for teenagers or guests is incidental use and permitted; a bedroom is not, at any size. THEY ARE PRICE-CONSCIOUS AND BUYING FROM A RETAILER, so they will not have a designer to raise the question for them. NOT FOR: anyone planning overnight accommodation while relying on the garden-structure exemption \u2014 that is the specific mistake this record exists to prevent.",
-        "evidenceScope": "Product-Specific"
       }
     },
     "recltnkyhJrkUdBiA": {

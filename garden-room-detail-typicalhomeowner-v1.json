@@ -1,34 +1,16 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-19T22:55:17Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "typicalHomeowner"
   ],
-  "productCount": 462,
+  "productCount": 431,
   "recordCounts": {
-    "typicalHomeowner": 462
+    "typicalHomeowner": 431
   },
   "products": {
-    "rec6erGeW5wf5SDgT": {
-      "typicalHomeowner": {
-        "text": "A DUBLIN FAMILY BRINGING A PARENT HOME. They have a rear garden of a reasonable size, an existing house they can link services to, and a relative who needs a bedroom, a bathroom and a front door of their own. The 2026 provision is what makes the project feasible for them, and they are working within its window rather than treating it as permanent. THEY WILL BE COMPARING TIMELINES AS MUCH AS PRICES. NOT FOR: a household whose only available space is to the side or front of the house, where the route does not apply; nor for a couple needing two bedrooms.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recZojzhYoRcierlv": {
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD ACCOMMODATING TWO PEOPLE RATHER THAN ONE \u2014 both parents, or an adult child and partner \u2014 with a large rear garden and a long-term intention. They want the unit to work for years, not as a stopgap, which is why the extra 12 m2 over the 1 Bed matters to them. THEY ARE ALSO THE BUYER MOST EXPOSED TO THE CEILING RISK, and should be the most insistent on written confirmation of the as-built area and measurement basis. NOT FOR: a small garden, where 45 m2 plus the retained private open space will not fit; nor for a buyer who wants certainty above space.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPodhux5TC0rg39": {
-      "typicalHomeowner": {
-        "text": "A FAMILY SOLVING A LONG-TERM HOUSING PROBLEM RATHER THAN A TEMPORARY ONE \u2014 an adult child with a partner and a child of their own, or two relatives who each need a bedroom. They have a large rear garden, a multi-year horizon, and have accepted that the project is a building rather than a purchase. THEY ARE WILLING TO GO THROUGH PLANNING, which is what distinguishes them from every other buyer in this range. NOT FOR: anyone whose priority is speed or certainty; the 45 m2 or 33 m2 models exist for them. NOT FOR a small garden, where 48 m2 plus retained open space will not fit.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recpZW4echDhHtEVv": {
       "typicalHomeowner": {
         "text": "A HOUSEHOLD BUILDING A WELLNESS CORNER IN THE GARDEN. Often the same buyer who is also looking at a cold plunge or hot tub, and who thinks of the sauna as equipment rather than as a building. They are choosing on heat, timber and appearance, and they will be guided by the supplier's own material because Atlas holds nothing technical for this model. THE ADVICE THAT MATTERS MOST TO THEM is structural rather than thermal: because the sauna counts toward the same 30 m2 allowance as any other garden building, they should decide now whether a garden office or studio might follow, and reserve the allowance accordingly. NOT FOR: anyone whose primary need is a work or study room.",
@@ -218,12 +200,6 @@
     "recK8PQar4pJiEW29": {
       "typicalHomeowner": {
         "text": "A homeowner who needs plumbing in the garden building \u2014 a shower room, WC or kitchenette \u2014 and is therefore not really comparing it against the dry studios in the range. Budgeting roughly EUR 57k-67k once VAT, base and connections are added. Anyone who does not need water should look hard at the 26m\u00b2 Studio instead.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPirZWLtauzxACc": {
-      "typicalHomeowner": {
-        "text": "An Irish homeowner with roughly EUR 45k-55k available once VAT, base and connections are counted, who wants a substantial delivered studio without managing a build. Suits a large home office, garden lounge or studio in daily year-round use, and someone who has compared the range and spotted that this is where the value sits.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -830,24 +806,6 @@
     "rechdMnIn9PcHJI1U": {
       "typicalHomeowner": {
         "text": "A DESIGN-CONSCIOUS BUYER WHO HAS ALREADY DECIDED ON THE LINE AND IS NOW CHOOSING BETWEEN TWO MODELS. That is the decision this record exists to be honest about: the catalogue cannot separate them, so the comparison has to be made from the supplier's own drawings. THEY ARE SPENDING ON APPEARANCE and will accept a longer conversation to get the right one. NOT FOR: an Irish homeowner, on availability; nor for a buyer whose priority is a defensible exemption position, where a dimensioned Irish product is the sounder choice.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recChE87PRdyLZxNe": {
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD PROVIDING A HOME FOR ONE PERSON \u2014 an adult child staying local, or a parent moving closer. They are commissioning a small dwelling, not buying a garden building, and their decision turns on occupancy, services and consent rather than on square metres per pound. THEY MUST BUDGET FOR PROCESS: drainage, heating, fire safety and a planning route are all in scope. NOT FOR: a workspace buyer, or anyone outside the supplier's South East England service area.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "reciTMB2ldkUYNzib": {
-      "typicalHomeowner": {
-        "text": "A SOUTH EAST ENGLAND FAMILY CREATING INDEPENDENT ACCOMMODATION \u2014 typically for an adult child or an ageing parent who needs proximity without sharing the house. The driver is occupancy, and the building follows. They must accept a heavier process than a garden-office buyer: services, drainage, fire and building standards, and a consent route. NOT FOR: anyone wanting a workspace, or an Irish buyer, since no Irish route is published.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recVMDB49pKVr2Kpj": {
-      "typicalHomeowner": {
-        "text": "A FAMILY HOUSING TWO PEOPLE, OR ONE PERSON WHO NEEDS A SPARE ROOM. A couple, a parent with a visiting grandchild, or an adult child with a home office of their own. This is a small house in the garden and should be planned as one, with a designer and a consent strategy from the outset rather than a delivery date. NOT FOR: a workspace buyer; a garden that could not physically take a two-bedroom footprint; or an Irish buyer, since the supplier serves South East England only.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1481,66 +1439,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recX6ppza7by2keWQ": {
-      "typicalHomeowner": {
-        "text": "Someone who wants a compact, genuinely self-contained unit \u2014 a garden annexe, a studio flat for an adult child, a short-let \u2014 and who values arriving-complete over specifying every detail themselves. They are attracted by heating, lighting, a kitchen and a bathroom all included at one price, and they are realistic that a building with those things in it is a small dwelling rather than a garden office, whatever its footprint. They will obtain a dimensioned drawing rather than trusting the numeral, and they will take advice on whether the use test can be met before relying on any exemption. A Republic of Ireland buyer will confirm cross-border delivery, installation and VAT treatment in writing before committing. NOT THIS BUYER: anyone who wants a plain heated garden office and would be paying for a kitchen and bathroom they will never use; anyone who needs the exemption to hold, since the use condition is the likely obstacle; anyone who needs a U-value.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmp0a0V2RFcQ4s7": {
-      "typicalHomeowner": {
-        "text": "Someone adding a compact independent unit \u2014 a studio annexe for a family member, a home-and-work combination, or a small let \u2014 who wants the building complete on arrival rather than a shell to fit out. They are drawn to a single price covering heating, lighting, kitchen, bathroom and installation, and they have the budget to treat foundations and service connections as a separate line. They understand that this model sits on the boundary of the exemption on the supplier's own scale statement, and that the honest position is unresolved until a dimensioned drawing exists \u2014 so they will ask for one before anything else, and they will take advice on the use condition given the kitchen and bathroom. A Republic of Ireland buyer will confirm cross-border delivery, installation and VAT in writing first. NOT THIS BUYER: anyone needing certainty on exempted development before ordering; anyone wanting a plain garden office; anyone who needs a U-value.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recOH15fQUsuYeDW6": {
-      "typicalHomeowner": {
-        "text": "Someone adding a small independent annexe \u2014 an adult child staying at home, an elderly parent moving closer, or a short-let unit \u2014 who wants it to arrive heated and fitted rather than as a shell they must finish. They are budgeting separately for groundworks and service connections, and they understand that a kitchen and a bathroom make the use non-incidental, so they are prepared for a planning conversation rather than assuming an exemption. Crucially, they will ask for the external footprint in writing before anything else, because on this model the difference between under and over the 30 m2 threshold cannot be read off the name. NOT THIS BUYER: anyone who wants a garden office and would be paying for a kitchen and bathroom they will not use; anyone in the Republic needing delivery confirmed now; anyone comparing on cost per square metre, which cannot be calculated without an area.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxOmZUOZT0pmY2u": {
-      "typicalHomeowner": {
-        "text": "Someone adding a genuine second living space on their own site \u2014 accommodation for a family member, a long-term let, or a home-and-studio combination \u2014 who wants the building to arrive heated, wired, plumbed and fitted rather than as a shell. They have already accepted that this is a planning application rather than an exemption, on both the area and the use grounds, and they are budgeting foundations, drainage, water and power separately from the building price. They will obtain a dimensioned drawing before signing, because the model numeral is not a measurement, and a Republic of Ireland buyer will confirm cross-border delivery, installation and VAT treatment in writing first. NOT THIS BUYER: anyone wanting an exempted garden room \u2014 this model fails that test twice over; anyone wanting a plain office and paying for a kitchen and bathroom they will not use; anyone who needs published thermal performance before committing.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recmNgeJVF3Fvasrk": {
-      "typicalHomeowner": {
-        "text": "Someone creating a one or two bedroom independent unit on their own site \u2014 family accommodation, a long-stay guest annexe, or a let \u2014 who wants it to arrive heated, wired, plumbed and fitted rather than as a shell. They are attracted by the single price and the short installation, and they are budgeting separately for foundations, drainage, water and power. Critically, they are the buyer most likely to have READ THE SUPPLIER'S PLANNING CLAIM and taken it at face value, so they are the buyer who most needs to test it: a kitchen and a bathroom make the use non-incidental, which takes the building outside the 30 m2 exemption regardless of area, and the 32-45 m2 auxiliary-dwelling route is a different application with its own conditions and an end date. NOT THIS BUYER: anyone wanting a garden office; anyone who cannot get a definitive answer on which collection and which model they are buying; a Republic of Ireland buyer who needs delivery confirmed before committing.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recRhbN66JUgay0Md": {
-      "typicalHomeowner": {
-        "text": "NO TYPICAL HOMEOWNER CAN BE DESCRIBED FOR THIS RECORD, and describing one would be an invention the evidence does not support. The certified AM-001 layer records the product as UNMATCHED to any published model, so there is no confirmed size, no confirmed layout and no confirmed price to match a buyer against. WHAT CAN BE SAID: a buyer drawn to the Signature Collection generally is someone who wants a heated, fitted, offsite-built annexe delivered turnkey rather than a shell to finish, who is budgeting separately for groundworks and services, and who expects a planning conversation rather than an exemption where the building carries a kitchen and bathroom. WHAT THIS PARTICULAR BUYER MUST DO FIRST: ask the supplier which model the /signature-48/ page actually sells, obtain a dimensioned drawing, and get the delivery charge quantified against the GBP 47,650 'plus delivery' figure. Until then no purchasing decision rests on anything Atlas can certify.",
-        "evidenceScope": "Range-Level"
-      }
-    },
-    "recCjtdouL1VeUhC5": {
-      "typicalHomeowner": {
-        "text": "Someone housing a family member, creating a long-stay guest annexe or adding rentable accommodation \u2014 not someone buying a garden office. They want a building that arrives heated, fitted with a kitchen and a bathroom and finished to a single price, and they have the site and the budget to treat services and groundworks as a separate project. They are prepared to go through a planning application rather than rely on an exemption, and to obtain a DIMENSIONED DRAWING before any other conversation, because the model numeral tells them nothing about the footprint. NOT THIS BUYER: anyone wanting an incidental garden room, since the use test excludes habitation; anyone in the Republic of Ireland who needs delivery confirmed today, as cross-border coverage is unconfirmed; anyone who needs a U-value to model running cost on a building of this size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recUNSJmWfIxyYKyo": {
-      "typicalHomeowner": {
-        "text": "Someone building a second home on their own site \u2014 family accommodation, a long-term let, or a downsizing move within the same plot \u2014 who wants the building itself to arrive complete rather than to run a construction project. They accept that groundworks, drainage, water and power are a separate job, and they expect to apply for planning rather than rely on an exemption, because a kitchen and a bathroom put the use outside 'incidental'. They will get a dimensioned drawing and a written installation scope before signing, and a Republic of Ireland buyer will confirm cross-border delivery, installation and VAT treatment in writing first. NOT THIS BUYER: anyone wanting a garden office or studio \u2014 wrong scale and wrong specification; anyone depending on exempted development; anyone who needs published U-values to model running cost before committing at this size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCp7TnMyHxZnXpJ": {
-      "typicalHomeowner": {
-        "text": "A buyer commissioning a second dwelling on their own land \u2014 multigenerational family accommodation, a long-term let, or a replacement for building an extension. They have the site area, they expect to make a planning application rather than rely on an exemption, and they are budgeting separately for foundations, water, drainage and power. What draws them to this supplier is that the building itself arrives finished: heated, wired, lit, kitchen and bathroom fitted, at one stated price. They will insist on a dimensioned drawing and a written installation scope before signing, and if they are in the Republic they will get cross-border delivery, installation and VAT treatment confirmed in writing first. NOT THIS BUYER: anyone wanting a garden office or studio, for whom this scale is wrong in every respect; anyone relying on exempted development; anyone who needs published thermal performance before committing to a building this size.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec3NU9qqLPuxbpdN": {
-      "typicalHomeowner": {
-        "text": "A homeowner with substantial site space and a six-figure budget solving a housing problem rather than a workspace one \u2014 typically accommodating adult children or ageing parents, or adding a long-term rental unit. Expects to run a planning application and a services connection alongside the purchase, and values a fixed offsite build and a 10-week programme over a traditional extension.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recbCzoK4cORY3W4c": {
       "typicalHomeowner": {
         "text": "SOMEONE WHO WANTS THE BUILDING TO LOOK LIKE A SMALL HOUSE RATHER THAN A BOX. A pitched roof reads as traditional and sits comfortably in an older garden, and the extra ridge height gives a more generous feeling inside. They are choosing on appearance and volume, and they are comfortable dealing directly with a shed maker for the details. THEY MUST ASK ABOUT THE ROOF COVERING, because that single answer moves the applicable height limit between 3 m and 4 m. NOT FOR: a buyer who needs certainty on paper before enquiring.",
@@ -1820,12 +1718,6 @@
     "recs6rMHh99U2iXVP": {
       "typicalHomeowner": {
         "text": "SOMEONE WHO WANTS A TIMBER CABIN FOR ITS OWN SAKE \u2014 the look, the smell of the wood, the traditional build \u2014 rather than the most efficient enclosure per euro. They are usually flexible on exact size, which is fortunate, because none is published; and they are buying from a retailer rather than commissioning a design. THEY MUST STILL DO THE MEASUREMENT WORK THEMSELVES, since this supplier's own catalogue shows how easily the internal-versus-external question decides an exemption. NOT FOR: a buyer who needs to confirm compliance before enquiring; nor for a garden already close to the combined 30 m2.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recxZcEXwgG0z2Oj8": {
-      "typicalHomeowner": {
-        "text": "A homeowner wanting a garden building with a separated sleeping room \u2014 typically for occasional guests \u2014 who understands that overnight accommodation falls outside the exemption and that the footprint is too small for the Class 3A route, is prepared to seek planning permission and arrange services, and is budgeting around EUR 15,500 for the delivered kit before groundworks.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2375,12 +2267,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recfI08WIE6SfvlsE": {
-      "typicalHomeowner": {
-        "text": "A FAMILY HOUSING ONE RELATIVE \u2014 USUALLY A PARENT WHO NEEDS INDEPENDENCE AND PROXIMITY AT THE SAME TIME, or an adult child who cannot find a rental. They are Dublin-based, dealing with a genuine housing problem rather than a lifestyle upgrade, and they need a kitchen and bathroom rather than a desk. THEY ARE ALSO ENTERING A PLANNING PROCESS, not buying a delivered product, and should budget time as well as money. NOT FOR: anyone hoping to avoid planning \u2014 that is the one thing this size does not deliver. NOT FOR two occupants; the larger models exist for that.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recrfXlRTCNCf8VB5": {
       "typicalHomeowner": {
         "text": "A FAMILY SOLVING A HOUSING PROBLEM RATHER THAN A SPACE PROBLEM. Typically a parent creating independent accommodation for an adult child, or an adult child creating it for a parent who needs to be close but not in the house. The decision is driven by who will live there, and the building follows. THEY NEED A HIGHER TOLERANCE FOR PROCESS THAN A GARDEN-OFFICE BUYER: services, drainage, fire and building standards and a consent route all come into play, and none of them applies to a workspace. THEY ALSO NEED TO BE COMFORTABLE ASKING FOR NUMBERS THE SUPPLIER HAS NOT PUBLISHED \u2014 the as-built area, the construction specification and what the quoted price actually covers, because Atlas holds a pricing page rather than a specification.",
@@ -2459,21 +2345,9 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recmAUmTuDN3NAhTv": {
-      "typicalHomeowner": {
-        "text": "A homeowner with substantial land solving a real housing need \u2014 an adult child, ageing parents, or a long-term rental \u2014 with roughly EUR 35k-50k available once services and planning are counted. Running this as a proper construction project with a contractor, and choosing All In One Cabins to keep the shell cost down on what is effectively a small house.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recuyH8VrmIzd3zxC": {
       "typicalHomeowner": {
         "text": "A budget-conscious homeowner wanting a summerhouse, hobby room or seasonal workspace for around EUR 10k-15k all-in, with a long narrow strip of garden and no appetite for a big build. Comfortable with a flatpack and hiring a local electrician if the room ever needs power. Not the right pick for daily year-round working \u2014 44mm walls will show in winter heating.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recO17811xKx4D2d8": {
-      "typicalHomeowner": {
-        "text": "A homeowner adding compact guest accommodation or a small independent unit for roughly EUR 18k-28k all-in, who has a builder and plumber lined up. Suits occasional guests, a visiting family member or a teenager wanting independence. Too tight for permanent full-time living for more than one person.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2495,33 +2369,15 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recVLlHgnLdE0y1Ro": {
-      "typicalHomeowner": {
-        "text": "A homeowner with a height-restricted or closely overlooked site who needs two bedrooms and a warmer building than the entry-level Ree, budgeting roughly EUR 30k-43k all-in. Choosing this over the Allen or Meelagh only makes sense if the garden genuinely cannot take a larger footprint \u2014 otherwise both are better buildings for similar or less money.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rechlK4GR8rJceNhR": {
       "typicalHomeowner": {
         "text": "A FIRST-TIME BUYER WITH A CLEAR SINGLE PURPOSE AND A CAP ON SPEND. Someone who works from home two or three days a week and needs to get out of the kitchen \u2014 not someone building a second living space. They are price-led, they want a number on a page rather than a consultation, and a five-figure entry point is what brings them to this supplier. THEY BENEFIT FROM THE CROSS-BORDER QUOTING: an Irish buyer near the border, or anyone comparing sterling and euro pricing, gets a straight comparison here that most suppliers in this catalogue do not offer. THEY MUST BE HONEST WITH THEMSELVES ABOUT DEPTH: at 2.44 m, this is a one-function room, and buying it expecting two functions is the commonest way to be disappointed by a small garden building.",
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI4CCDJVu7CezhW": {
-      "typicalHomeowner": {
-        "text": "A homeowner with a long narrow garden strip who needs a self-contained one-bedroom unit and cannot fit anything wider, budgeting roughly EUR 34k-46k all-in. Should ask the supplier directly what justifies the price against the Bofin before committing. Anyone with space for a larger footprint will get considerably more building elsewhere in this range.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recz1fNk9SoCzF2QN": {
       "typicalHomeowner": {
         "text": "Someone working from home three to five days a week who values light and volume over insulation depth, with a square garden position and roughly EUR 12k-18k once electrics are added. Willing to pay for the thicker-wall upgrade if they intend to use it through an Irish winter.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recAOoRiH7fHmRcUt": {
-      "typicalHomeowner": {
-        "text": "A homeowner building permanent independent accommodation on a large rural or semi-rural site, budgeting roughly EUR 40k-55k once services and planning are counted. Prioritises quality of living space over raw square metres \u2014 this is the model to pick if the occupants will actually live there rather than just sleep there.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2534,36 +2390,6 @@
     "recBVDyal8VGGVEZM": {
       "typicalHomeowner": {
         "text": "A HOUSEHOLD BUYING GARDEN LEISURE RATHER THAN WORKSPACE. Somewhere bright to sit in April and October, entertain in, or watch the garden from \u2014 the sun-room requirement, which is genuinely different from an office brief and is why the product exists. THEY ARE MORE LIKELY THAN AN OFFICE BUYER TO SKIP THE PLANNING QUESTION ENTIRELY, treating a glazed pavilion as garden furniture rather than a structure \u2014 which is precisely the mistake to avoid, since a roofed structure counts toward the 30 m2 whatever it is called. NOT FOR: year-round working use on current evidence, since no thermal specification is published.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recSy67Vn2TH51ENG": {
-      "typicalHomeowner": {
-        "text": "A homeowner creating family or guest accommodation on a genuinely constrained budget \u2014 realistically EUR 25k-40k once walls are upgraded, services connected and planning obtained. Willing to trade insulation depth for space and to manage a multi-trade project. Suits seasonal or guest use out of the box; needs the upgrade for permanent occupation.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recKFWluu0vDEHn81": {
-      "typicalHomeowner": {
-        "text": "A homeowner with significant land providing a full family home \u2014 relatives, multigenerational living or a three-bed rental \u2014 with roughly EUR 45k-60k available once services and planning are counted. Running it as a full construction project with a contractor, architect and planner, and using the flatpack route to control shell cost on what is unambiguously a house.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recFmEJwf6fFHpscC": {
-      "typicalHomeowner": {
-        "text": "Unknown on the evidence Atlas holds. Every homeowner profile this cabin would suit is served better and more cheaply by another model in the same range. If the supplier can evidence a specification difference that justifies roughly EUR 1,895 per square metre, that profile may exist \u2014 but Atlas will not describe one until the evidence is there.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec34rHUaz7l3jDe1": {
-      "typicalHomeowner": {
-        "text": "A FAMILY HOUSING A RELATIVE WHO NEEDS THEIR OWN FRONT DOOR. An elderly parent, or an adult child who cannot find a rental \u2014 a genuine housing problem rather than a workspace one, and the reason annexes exist as a category. THEY ARE ENTERING A CONSENT PROCESS, not making a retail purchase, and should budget time and professional advice accordingly. NOT FOR: anyone shopping in the garden-room category expecting exempt development \u2014 which is exactly the confusion this product's placement invites, and the reason the record states the position plainly.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recce4t2fTLJVmO75": {
-      "typicalHomeowner": {
-        "text": "An ENGLISH homeowner housing a family member \u2014 an adult child, an elderly parent \u2014 or creating a long-stay guest annexe, who wants residential-grade accommodation with a kitchen and bathroom and a plastered interior, built to a width that suits their garden rather than to a catalogue size. They value that the building needs no concrete base and can in principle be moved later, and they are the kind of buyer who reads a specification: named insulation products with thicknesses, a named steel supplier, a 25-year structural guarantee. Crucially, they will let BOOTHS fit the kitchen and bathroom rather than their own tradesperson, because doing otherwise cuts the guarantee to one year and fixes the building in place permanently. They accept that heating is a separate purchase and that a site visit and groundworks quotation follow from the plumbing. NOT THIS BUYER: an Irish purchaser \u2014 no Irish delivery is published, and the Caravan Act route the supplier relies on does not exist here; anyone who needs a U-value; anyone wanting an incidental garden room rather than accommodation.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2621,12 +2447,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recI11umptgnSn2zE": {
-      "typicalHomeowner": {
-        "text": "SOMEONE BUILDING A SECOND DWELLING ON THEIR SITE AND TREATING IT AS SUCH. A family housing two relatives, a rural landowner adding accommodation, or a self-builder using a log kit as the shell \u2014 all legitimate, all requiring a full application. THEY HAVE OR WILL ENGAGE A DESIGNER, and the building is one component of a project rather than a purchase. NOT FOR: anyone shopping in the garden-room category expecting exempt development \u2014 which is precisely the confusion this product's placement invites, and the reason the record spells the position out.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recPmdokw4KU1uSCb": {
       "typicalHomeowner": {
         "text": "A homeowner with a large open garden, prepared to seek planning permission, who needs two distinct enclosed spaces and is willing to ask the supplier for the internal dimensions and for what occupies the remainder of the envelope before ordering, budgeting around EUR 14,300 for the delivered kit before groundworks.",
@@ -2654,12 +2474,6 @@
     "recRkL1MMvRKWjgYA": {
       "typicalHomeowner": {
         "text": "A UK homeowner who has costed the whole life of the building rather than just the purchase, and who would rather pay more once than re-stain timber every few years. Often someone with a small, overlooked garden where the studio is permanently in view from the house. Comfortable at roughly GBP 16,000 for a compact room, and more interested in finish quality and thermal specification than in maximising square metres.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recPRGtH0ycJzbxYw": {
-      "typicalHomeowner": {
-        "text": "A FAMILY LOOKING FOR EXTRA ROOM AND NOT YET SURE WHETHER ANYONE WILL SLEEP IN IT. That ambiguity is the defining feature of this buyer, and it is the thing they most need resolved \u2014 a day room for teenagers or guests is incidental use and permitted; a bedroom is not, at any size. THEY ARE PRICE-CONSCIOUS AND BUYING FROM A RETAILER, so they will not have a designer to raise the question for them. NOT FOR: anyone planning overnight accommodation while relying on the garden-structure exemption \u2014 that is the specific mistake this record exists to prevent.",
         "evidenceScope": "Product-Specific"
       }
     },

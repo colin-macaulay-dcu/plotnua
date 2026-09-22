@@ -1,63 +1,63 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail.index",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-19T22:55:17Z",
+  "generated": "2026-09-22T21:40:32Z",
   "partitions": [
     {
       "category": "alternatives",
       "file": "garden-room-detail-alternatives-v1.json",
-      "productCount": 462,
-      "recordCount": 462,
-      "rawBytes": 416454
+      "productCount": 431,
+      "recordCount": 431,
+      "rawBytes": 383344
     },
     {
       "category": "bestFor",
       "file": "garden-room-detail-bestfor-v1.json",
-      "productCount": 462,
-      "recordCount": 462,
-      "rawBytes": 331905
+      "productCount": 431,
+      "recordCount": 431,
+      "rawBytes": 307455
     },
     {
       "category": "considerations",
       "file": "garden-room-detail-considerations-v1.json",
-      "productCount": 462,
-      "recordCount": 462,
-      "rawBytes": 388618
+      "productCount": 431,
+      "recordCount": 431,
+      "rawBytes": 356653
     },
     {
       "category": "planningConsiderations",
       "file": "garden-room-detail-planningconsiderations-v1.json",
-      "productCount": 462,
-      "recordCount": 462,
-      "rawBytes": 478303
+      "productCount": 431,
+      "recordCount": 431,
+      "rawBytes": 440649
     },
     {
       "category": "strengths",
       "file": "garden-room-detail-strengths-v1.json",
-      "productCount": 462,
-      "recordCount": 462,
-      "rawBytes": 341280
+      "productCount": 431,
+      "recordCount": 431,
+      "rawBytes": 314785
     },
     {
       "category": "typicalHomeowner",
       "file": "garden-room-detail-typicalhomeowner-v1.json",
-      "productCount": 462,
-      "recordCount": 462,
-      "rawBytes": 299937
+      "productCount": 431,
+      "recordCount": 431,
+      "rawBytes": 276980
     },
     {
       "category": "sources",
       "file": "garden-room-detail-sources-v1.json",
-      "productCount": 355,
-      "recordCount": 355,
-      "rawBytes": 57352
+      "productCount": 352,
+      "recordCount": 352,
+      "rawBytes": 56861
     },
     {
       "category": "suppliers",
       "file": "garden-room-detail-suppliers-v1.json",
-      "productCount": 61,
-      "recordCount": 788,
-      "rawBytes": 60674
+      "productCount": 63,
+      "recordCount": 787,
+      "rawBytes": 61679
     }
   ]
 }
