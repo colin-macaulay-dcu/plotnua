@@ -85,18 +85,36 @@ jobs:
           echo "path=$OUT" >> "$GITHUB_OUTPUT"
           echo "Output directory: $OUT"
 
-      # ONE read of Atlas. The snapshot and the candidate come from the SAME
-      # read, which is the whole point — they are guaranteed consistent with
-      # each other, so the candidate is exactly what this snapshot reproduces.
-      - name: Read Atlas once — write the snapshot and the candidate (read-only)
+      # THE COMPLETE SNAPSHOT — the output that matters.
+      #
+      # The first run of this workflow used the Garden Room generator's own
+      # --write-snapshot, which inherited its PRODUCT_FIELDS list and therefore
+      # carried no habitation fields. snapshot_atlas.py requests the governed
+      # fields Additional Home needs and fails closed if any is absent.
+      #
+      # The Garden Room PRODUCT_FIELDS contract is NOT widened to serve this.
+      - name: Read Atlas — complete snapshot for Additional Home (read-only)
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: |
+          set -euo pipefail
+          OUT="${{ steps.outdir.outputs.path }}"
+          python .github/scripts/snapshot_atlas.py \
+            --out "$OUT/atlas-snapshot-complete.json" \
+            --manifest "$OUT/atlas-snapshot-manifest.txt"
+
+      # Retained for provenance only: it proves the Garden Room universe is
+      # unchanged at the moment this snapshot was taken. Gate S1 has already
+      # passed; a differing `generated` timestamp here is expected and is NOT
+      # material drift.
+      - name: Garden Room candidate, for provenance (read-only)
         env:
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
         run: |
           set -euo pipefail
           OUT="${{ steps.outdir.outputs.path }}"
           python .github/scripts/generate_garden_room_universe.py \
-            --out-dir "$OUT" \
-            --write-snapshot "$OUT/atlas-snapshot-s1.json"
+            --out-dir "$OUT"
 
       - name: Verify the repository was not modified
         run: |
@@ -115,7 +133,7 @@ jobs:
         run: |
           set -euo pipefail
           OUT="${{ steps.outdir.outputs.path }}"
-          HITS=$(grep -c -E 'pat[A-Za-z0-9]{14}\.|key[A-Za-z0-9]{14}|Bearer ' "$OUT/atlas-snapshot-s1.json" || true)
+          HITS=$(grep -c -E 'pat[A-Za-z0-9]{14}\.|key[A-Za-z0-9]{14}|Bearer ' "$OUT/atlas-snapshot-complete.json" || true)
           if [ "$HITS" != "0" ]; then
             echo "::error::Credential-shaped material found in the snapshot ($HITS). Refusing to upload."
             exit 1
@@ -127,12 +145,13 @@ jobs:
         run: |
           set -euo pipefail
           OUT="${{ steps.outdir.outputs.path }}"
-          for f in atlas-snapshot-s1.json garden-room-recommendation-universe-v1.json; do
+          for f in atlas-snapshot-complete.json atlas-snapshot-manifest.txt \
+                   garden-room-recommendation-universe-v1.json; do
             test -s "$OUT/$f" || { echo "::error::missing or empty: $f"; exit 1; }
           done
 
           CAND="$OUT/garden-room-recommendation-universe-v1.json"
-          SNAP="$OUT/atlas-snapshot-s1.json"
+          SNAP="$OUT/atlas-snapshot-complete.json"
           CAND_SHA=$(sha256sum "$CAND" | cut -d' ' -f1)
           CAND_BYTES=$(wc -c < "$CAND")
           SNAP_SHA=$(sha256sum "$SNAP" | cut -d' ' -f1)
@@ -150,7 +169,7 @@ jobs:
             echo "  sha256               ${CAND_SHA}"
             echo "  bytes                ${CAND_BYTES}"
             echo ""
-            echo "atlas-snapshot-s1.json"
+            echo "atlas-snapshot-complete.json"
             echo "  sha256               ${SNAP_SHA}"
             echo "  bytes                ${SNAP_BYTES}"
             echo ""
@@ -173,7 +192,8 @@ jobs:
         with:
           name: atlas-s1-snapshot
           path: |
-            ${{ steps.outdir.outputs.path }}/atlas-snapshot-s1.json
+            ${{ steps.outdir.outputs.path }}/atlas-snapshot-complete.json
+            ${{ steps.outdir.outputs.path }}/atlas-snapshot-manifest.txt
             ${{ steps.outdir.outputs.path }}/garden-room-recommendation-universe-v1.json
             ${{ steps.outdir.outputs.path }}/s1-manifest.txt
           if-no-files-found: error
