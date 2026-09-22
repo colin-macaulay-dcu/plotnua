@@ -1,0 +1,194 @@
+# PlotNua — GATE S1 SNAPSHOT ACQUISITION. TEMPORARY. MANUAL ONLY.
+#
+# WHY THIS EXISTS.
+#   The Additional Home implementation requires extracting shared logic out of
+#   generate_garden_room_universe.py. That generator produced the live
+#   production universe, so the extraction must be proven to change nothing.
+#   The only honest proof is a DIFFERENTIAL: run the pre-refactor generator and
+#   the post-refactor generator against THE SAME INPUT and compare byte for
+#   byte. Comparing against live Airtable instead would confuse a broken
+#   refactor with ordinary Atlas drift, and the two must never be confused.
+#
+#   This workflow produces that frozen input, once, and nothing else.
+#
+# WHY IT IS NOT THE DRY-RUN WORKFLOW.
+#   atlas-match-qualification-dry-run.yml is safe and could have been extended
+#   with --write-snapshot. It was deliberately not. The raw snapshot contains
+#   internal Atlas governance material — Habitation Classification Basis,
+#   research notes, evidence-management instructions — and adding it there
+#   would put that material into every future routine preview artefact,
+#   permanently. It belongs in a single-purpose workflow that can be deleted.
+#
+# WHY IT IS NOT THE REFRESH WORKFLOW.
+#   atlas-match-universe-refresh.yml holds contents:write and commits to
+#   production. Using a publication workflow to fetch a snapshot would mean
+#   running a commit-capable job for a read-only purpose. It is untouched.
+#
+# DELETE THIS FILE once Gate S1 has passed. It has no recurring purpose.
+#
+# WHAT IT DOES NOT DO.
+#   No schedule. No commit. No push. No deployment. No Airtable write. No
+#   production artefact is read for modification or written. It requests no
+#   write scope, so it could not commit even if a step tried to.
+#
+# THE TOKEN.
+#   ${{ secrets.AIRTABLE_TOKEN }} — the same repository secret already used by
+#   atlas-stats.yml, atlas-match-universe-refresh.yml and the dry run. It is
+#   handed to one step as an environment variable, exactly as those workflows
+#   do. It is never echoed, never written to a file, never passed as an
+#   argument, and never reaches the artefact. A guard below fails the job if
+#   anything token-shaped appears in the snapshot.
+#
+# THE SNAPSHOT IS NOT A WEBSITE ARTEFACT.
+#   It must never be committed to this repository and never served from
+#   plotnua.ie. It exists only as a short-retention workflow artefact for one
+#   controlled exercise.
+name: Atlas — Gate S1 snapshot (temporary, manual)
+
+on:
+  workflow_dispatch:
+
+# Read-only. No write scope is requested.
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-s1-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # 3.12 deliberately: this is the interpreter the production refresh
+      # workflow uses, and the candidate produced here is compared against a
+      # production artefact. Matching the publication path removes one variable.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+        # Standard library only. Nothing to install, nothing to pin.
+
+      - name: Create a temporary output directory outside the repository
+        id: outdir
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/atlas-s1-snapshot"
+          mkdir -p "$OUT"
+          echo "path=$OUT" >> "$GITHUB_OUTPUT"
+          echo "Output directory: $OUT"
+
+      # ONE read of Atlas. The snapshot and the candidate come from the SAME
+      # read, which is the whole point — they are guaranteed consistent with
+      # each other, so the candidate is exactly what this snapshot reproduces.
+      - name: Read Atlas once — write the snapshot and the candidate (read-only)
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: |
+          set -euo pipefail
+          OUT="${{ steps.outdir.outputs.path }}"
+          python .github/scripts/generate_garden_room_universe.py \
+            --out-dir "$OUT" \
+            --write-snapshot "$OUT/atlas-snapshot-s1.json"
+
+      - name: Verify the repository was not modified
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::The working tree was modified. This workflow must not write to the repository."
+            git status --porcelain
+            exit 1
+          fi
+          echo "Working tree clean — nothing was written to the repository."
+
+      # Defensive, not decorative. The generator does not put the token in the
+      # snapshot; this proves it rather than trusting it. Only a COUNT is
+      # printed — never a match, so nothing sensitive can reach the log.
+      - name: Guard — no credential may appear in the snapshot
+        run: |
+          set -euo pipefail
+          OUT="${{ steps.outdir.outputs.path }}"
+          HITS=$(grep -c -E 'pat[A-Za-z0-9]{14}\.|key[A-Za-z0-9]{14}|Bearer ' "$OUT/atlas-snapshot-s1.json" || true)
+          if [ "$HITS" != "0" ]; then
+            echo "::error::Credential-shaped material found in the snapshot ($HITS). Refusing to upload."
+            exit 1
+          fi
+          echo "No credential-shaped material in the snapshot."
+
+      - name: Confirm the expected files exist and build the manifest
+        id: manifest
+        run: |
+          set -euo pipefail
+          OUT="${{ steps.outdir.outputs.path }}"
+          for f in atlas-snapshot-s1.json garden-room-recommendation-universe-v1.json; do
+            test -s "$OUT/$f" || { echo "::error::missing or empty: $f"; exit 1; }
+          done
+
+          CAND="$OUT/garden-room-recommendation-universe-v1.json"
+          SNAP="$OUT/atlas-snapshot-s1.json"
+          CAND_SHA=$(sha256sum "$CAND" | cut -d' ' -f1)
+          CAND_BYTES=$(wc -c < "$CAND")
+          SNAP_SHA=$(sha256sum "$SNAP" | cut -d' ' -f1)
+          SNAP_BYTES=$(wc -c < "$SNAP")
+
+          {
+            echo "PLOTNUA — GATE S1 SNAPSHOT MANIFEST"
+            echo ""
+            echo "repository commit      ${GITHUB_SHA}"
+            echo "workflow run           ${GITHUB_RUN_ID}"
+            echo "generated (UTC)        $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "python                 $(python -c 'import sys;print(sys.version.split()[0])')"
+            echo ""
+            echo "garden-room-recommendation-universe-v1.json"
+            echo "  sha256               ${CAND_SHA}"
+            echo "  bytes                ${CAND_BYTES}"
+            echo ""
+            echo "atlas-snapshot-s1.json"
+            echo "  sha256               ${SNAP_SHA}"
+            echo "  bytes                ${SNAP_BYTES}"
+            echo ""
+            echo "PRODUCTION BASELINE FOR COMPARISON"
+            echo "  8e4c58b5af9e902d42805afbef901e4c5352a5110f991a73f2f2c2b3bd537d42"
+            echo ""
+            echo "If the candidate sha256 equals the production baseline, Atlas has not"
+            echo "drifted since 12f260f. If it differs, that is DATA DRIFT, not a defect —"
+            echo "the snapshot is still the correct frozen input for the S1 differential."
+            echo ""
+            echo "THE SNAPSHOT CONTAINS INTERNAL ATLAS GOVERNANCE MATERIAL."
+            echo "Do not commit it. Do not deploy it. Do not serve it from plotnua.ie."
+          } > "$OUT/s1-manifest.txt"
+
+          cat "$OUT/s1-manifest.txt"
+          echo "cand_sha=${CAND_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the S1 input bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-s1-snapshot
+          path: |
+            ${{ steps.outdir.outputs.path }}/atlas-snapshot-s1.json
+            ${{ steps.outdir.outputs.path }}/garden-room-recommendation-universe-v1.json
+            ${{ steps.outdir.outputs.path }}/s1-manifest.txt
+          if-no-files-found: error
+          # Short, because this bundle carries internal governance material.
+          retention-days: 7
+
+      - name: Print the manifest into the job summary
+        run: |
+          set -euo pipefail
+          {
+            echo '## Gate S1 snapshot — acquired'
+            echo ''
+            echo 'Read-only. Nothing committed, nothing deployed, nothing written to Airtable.'
+            echo ''
+            echo '```'
+            cat "${{ steps.outdir.outputs.path }}/s1-manifest.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
