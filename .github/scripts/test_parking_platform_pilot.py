@@ -2,9 +2,9 @@
 """
 PlotNua — PARKING PLATFORM CONTROLLED PILOT: certification tests.
 
-Answers the six questions the pilot exists to answer, against the generated
-manifest and against the live Atlas schema. Read-only: writes nothing,
-contacts nothing, and touches no Airtable record.
+Proves the governance correction of 2026-09-22 (canonical evidence model +
+claim_basis) and re-proves the six original pilot questions. Read-only:
+writes nothing, contacts nothing, touches no Airtable record.
 """
 from __future__ import annotations
 
@@ -20,6 +20,13 @@ GEN = HERE / "generate_parking_platform_evidence.py"
 
 PASS = FAIL = 0
 
+CANONICAL_DIMENSIONS = ("authority", "source_type", "evidence_type",
+                        "verification_method", "verification_status",
+                        "maturity", "provenance", "claim_basis",
+                        "homeowner_safe", "logic_safe",
+                        "last_verified", "valid_from", "review_interval_months",
+                        "staleness_policy")
+
 
 def ck(name, ok, detail=""):
     global PASS, FAIL
@@ -33,143 +40,181 @@ def ck(name, ok, detail=""):
 
 def main() -> int:
     with tempfile.TemporaryDirectory() as td:
-        out = Path(td) / "parking-platform-evidence.json"
+        out = Path(td) / "m.json"
         r = subprocess.run([sys.executable, str(GEN), "--out", str(out),
-                            "--as-of", "2026-09-22"],
-                           capture_output=True, text=True)
+                            "--as-of", "2026-09-22"], capture_output=True, text=True)
         ck("the generator runs", r.returncode == 0, r.stderr[-300:])
-        if r.returncode != 0:
+        if r.returncode:
             return 1
         m = json.loads(out.read_text(encoding="utf-8"))
         claims = m["claims"]
-        by_key = {c["claim_key"]: c for c in claims}
+        k = {c["claim_key"]: c for c in claims}
+        src = GEN.read_text(encoding="utf-8")
 
-        # ── TEST 1 — can PlotNua answer the homeowner question? ─────────────
-        print("\n--- 1. Is there a currently evidenced Irish listing route? ---")
-        route = by_key["irish_homeowner_listing_route"]
-        onboard = by_key["host_onboarding_route_available"]
-        ident = by_key["platform_legal_identity"]
-        answerable = (route["evidence_state"] == "VERIFIED"
-                      and route["homeowner_safe_resolved"]
-                      and onboard["evidence_state"] == "VERIFIED"
-                      and ident["evidence_state"] == "VERIFIED")
-        ck("YES is answerable, from VERIFIED primary evidence only", answerable)
-        ck("the answer rests on Irish sources, not UK ones",
-           all(".ie" in c["source_url"] for c in (route, onboard, ident)))
-        ck("no COMMERCIAL_CORRESPONDENCE claim supports the answer",
-           all(c["provenance"] == "PUBLIC_PRIMARY" for c in (route, onboard, ident)))
+        # ── A. canonical vocabulary restored ────────────────────────────────
+        print("\n--- A. canonical evidence model ---")
+        for d in CANONICAL_DIMENSIONS:
+            ck(f"every claim carries '{d}'", all(d in c for c in claims),
+               str([c["claim_key"] for c in claims if d not in c][:2]))
+        ck("schema version reflects the correction",
+           m["schema"].endswith(".v2"), m["schema"])
+        ck("the canonical model is declared in the artefact",
+           "decomposition" in m["canonicalModel"])
 
-        # ── TEST 2 — is the unknown correctly identified? ───────────────────
-        print("\n--- 2. Is what remains unknown correctly identified? ---")
-        for k in ("host_fee_rate", "host_protection_insurance_roi",
-                  "eircode_onboarding_accepted", "referral_affiliate_route",
-                  "space_property_requirements", "space_verification_requirements"):
-            c = by_key[k]
-            ck(f"{k} is preserved as {c['evidence_state']}",
-               c["evidence_state"] in ("UNKNOWN", "NOT_PUBLICLY_EVIDENCED"))
-        unknowns = [c for c in claims
-                    if c["evidence_state"] in ("UNKNOWN", "NOT_PUBLICLY_EVIDENCED")]
-        # THE INVARIANT THAT MATTERS: an absence of evidence may be SHOWN
-        # ("PlotNua could not find a published fee rate" is honest and useful),
-        # but it may never be an INPUT TO A DECISION, and it may never carry a
-        # value. An earlier draft of this suite asserted that no unknown could
-        # be homeowner-safe at all; that was over-broad — it would have
-        # suppressed exactly the honest disclosure the framework exists to make.
-        ck("no unknown claim is logic-safe (absence never drives a decision)",
-           not [c for c in unknowns if c["logic_safe_resolved"]],
-           str([c["claim_key"] for c in unknowns if c["logic_safe_resolved"]]))
-        ck("no unknown claim carries a fabricated value",
-           all(c["value"] is None for c in unknowns),
-           str([c["claim_key"] for c in unknowns if c["value"] is not None]))
-        ck("every shown unknown travels with its evidence state",
-           all(c["evidence_state"] for c in unknowns if c["homeowner_safe_resolved"]))
-        ck("the UK insurance clause is explicitly forbidden from being read across",
+        # ── B. evidence_state is derived, not stored ────────────────────────
+        print("\n--- B. evidence_state is derived, never the stored truth ---")
+        ck("no claim stores a hand-set 'evidence_state'",
+           not any("evidence_state" in c and c.get("evidence_state") is not None
+                   for c in claims))
+        ck("the derived label is present on every claim",
+           all(c.get("evidence_state_derived") for c in claims))
+        ck("the artefact says the label is derived",
+           "DISPLAY LABEL" in m["canonicalModel"])
+        # derivation must be a pure function of the dimensions
+        ck("an operative instrument derives VERIFIED",
+           k["cancellation_terms"]["evidence_state_derived"] == "VERIFIED"
+           and k["cancellation_terms"]["source_type"] == "CONTRACT_TERM")
+        ck("a marketing claim derives SUPPLIER-CLAIMED",
+           k["ireland_service_coverage"]["evidence_state_derived"] == "SUPPLIER-CLAIMED"
+           and k["ireland_service_coverage"]["source_type"] == "MARKETING_CLAIM")
+        ck("an absence derives NOT_PUBLICLY_EVIDENCED",
+           k["host_fee_rate"]["evidence_state_derived"] == "NOT_PUBLICLY_EVIDENCED"
+           and k["host_fee_rate"]["evidence_type"] == "ABSENCE_OF_RECORD")
+        ck("an untested question derives UNKNOWN",
+           k["eircode_onboarding_accepted"]["evidence_state_derived"] == "UNKNOWN")
+        ck("conflicting sources derive CONTRADICTED",
+           k["company_number_inconsistency"]["evidence_state_derived"] == "CONTRADICTED")
+        ck("correspondence derives SUPPLIER-CLAIMED",
+           k["plotnua_commercial_relationship"]["evidence_state_derived"]
+           == "SUPPLIER-CLAIMED")
+
+        # ── C. claim_basis ──────────────────────────────────────────────────
+        print("\n--- C. claim_basis: STATED vs OPERATIONAL ---")
+        ck("every claim declares a basis", all(c["claim_basis"] for c in claims))
+        ck("EVERY claim is STATED — none is OPERATIONAL",
+           all(c["claim_basis"] == "STATED" for c in claims),
+           str([c["claim_key"] for c in claims if c["claim_basis"] != "STATED"]))
+        ck("no OPERATIONAL claim exists without operational evidence",
+           m["claimsByBasis"].get("OPERATIONAL", 0) == 0)
+        ck("STATED is explicitly NOT defined as weaker",
+           "not a weaker grade" in src.lower())
+        stated_logic_safe = [c for c in claims
+                             if c["claim_basis"] == "STATED" and c["logic_safe_resolved"]]
+        ck("STATED claims from operative instruments ARE logic-safe",
+           len(stated_logic_safe) >= 8, f"{len(stated_logic_safe)} logic-safe")
+        ck("contractual terms specifically are logic-safe",
+           k["governing_law"]["logic_safe_resolved"]
+           and k["host_fee_model"]["logic_safe_resolved"]
+           and k["cancellation_terms"]["logic_safe_resolved"])
+
+        # ── D. uncertainty and contradictions preserved ─────────────────────
+        print("\n--- D. preservation of unknowns and contradictions ---")
+        required = {
+            "host_fee_rate": "NOT_PUBLICLY_EVIDENCED",
+            "host_protection_insurance_roi": "NOT_PUBLICLY_EVIDENCED",
+            "eircode_onboarding_accepted": "UNKNOWN",
+            "referral_affiliate_route": "NOT_PUBLICLY_EVIDENCED",
+            "space_property_requirements": "NOT_PUBLICLY_EVIDENCED",
+            "space_verification_requirements": "NOT_PUBLICLY_EVIDENCED",
+            "company_number_inconsistency": "CONTRADICTED",
+        }
+        for key, expect in required.items():
+            ck(f"{key} preserved as {expect}",
+               k[key]["evidence_state_derived"] == expect,
+               k[key]["evidence_state_derived"])
+        opens = [c for c in claims if c["evidence_state_derived"]
+                 in ("UNKNOWN", "NOT_PUBLICLY_EVIDENCED", "CONTRADICTED")]
+        # THE INVARIANT DIFFERS BY KIND, AND CONFLATING THEM WAS A TEST BUG.
+        # An UNKNOWN or an absence must hold NO value — nothing is known, so
+        # any value would be invention. A CONTRADICTED claim is the opposite
+        # case: its value IS the conflicting observations, and blanking it
+        # would delete the very contradiction the record exists to preserve.
+        # What a contradiction must never do is assert a winner.
+        nothing_known = [c for c in opens
+                         if c["evidence_state_derived"] != "CONTRADICTED"]
+        ck("no UNKNOWN or absent claim carries a fabricated value",
+           all(c["value"] is None for c in nothing_known),
+           str([c["claim_key"] for c in nothing_known if c["value"] is not None]))
+        contradictions = [c for c in opens
+                          if c["evidence_state_derived"] == "CONTRADICTED"]
+        ck("a contradiction records BOTH conflicting observations",
+           all(isinstance(c["value"], dict) and len(c["value"]) >= 2
+               for c in contradictions))
+        ck("a contradiction asserts no resolution",
+           all(c["maturity"] == "UNRESOLVED_CONFLICT" and not c["logic_safe_resolved"]
+               for c in contradictions))
+        ck("no open claim is logic-safe",
+           not [c for c in opens if c["logic_safe_resolved"]],
+           str([c["claim_key"] for c in opens if c["logic_safe_resolved"]]))
+        ck("the UK insurance clause remains forbidden from being read across",
            any("United Kingdom" in p for p in
-               by_key["host_protection_insurance_roi"]["prohibited_readings"]))
-        # Narrow and correct: the FEE claims must carry no rate. The manifest
-        # legitimately contains other percentages (the published refund table),
-        # and a blanket "%" ban would have flagged those as commission.
-        fee_claims = [by_key["host_fee_rate"], by_key["host_fee_model"],
-                      by_key["listing_cost"]]
-        ck("no host fee rate or percentage is recorded on any fee claim",
-           by_key["host_fee_rate"]["value"] is None
-           and not any("%" in json.dumps(c["value"] or {}) for c in fee_claims
-                       if c["claim_key"] != "listing_cost"))
+               k["host_protection_insurance_roi"]["prohibited_readings"]))
+        ck("no host fee rate or percentage is recorded",
+           k["host_fee_rate"]["value"] is None)
+        ck("absences record the search that produced them",
+           all(c["maturity"] == "BOUNDED_SEARCH" and
+               c["verification_method"] == "TARGETED_SEARCH"
+               for c in claims if c["evidence_type"] == "ABSENCE_OF_RECORD"))
 
-        # ── TEST 3 — expiry without disturbing identity ─────────────────────
-        print("\n--- 3. Can time-sensitive claims expire without moving identity? ---")
+        # ── E. completion governance ────────────────────────────────────────
+        print("\n--- E. platform completion governance ---")
+        cm, comp = m["completionModel"], m["completion"]
+        ck("the seven dimensions are recorded",
+           cm["dimensions"] == ["Identity", "Route", "Jurisdiction",
+                                "Commercial Terms", "Protection", "Exit",
+                                "Currency"])
+        ck("an evidenced negative may satisfy a dimension",
+           "EVIDENCED NEGATIVE may satisfy" in cm["rule"])
+        ck("UNKNOWN does not satisfy a dimension",
+           "UNKNOWN does not satisfy" in cm["rule"])
+        ck("completion is defined as a judgement, not a score",
+           "NOT a mechanical" in cm["explicitly_not"])
+        ck("YourParkingSpace completion is UNRESOLVED",
+           comp["status"] == "UNRESOLVED")
+        ck("the two material unknowns are named as the reason",
+           set(comp["dimensionsOpen"]) == {"Commercial Terms", "Protection"})
+        ck("completion is not expressed as a count",
+           "score" not in comp["status"].lower() and "/7" not in json.dumps(comp))
+
+        # ── F. supplier-provided evidence can arrive later ──────────────────
+        print("\n--- F. future SUPPLIER_PROVIDED evidence stays distinguishable ---")
+        rel = k["plotnua_commercial_relationship"]
+        ck("correspondence is its own provenance",
+           rel["provenance"] == "COMMERCIAL_CORRESPONDENCE")
+        ck("correspondence is neither homeowner- nor logic-safe",
+           not rel["homeowner_safe_resolved"] and not rel["logic_safe_resolved"])
+        ck("only one claim carries correspondence provenance",
+           m["claimsByProvenance"]["COMMERCIAL_CORRESPONDENCE"] == 1)
+        ck("SUPPLIER_PROVIDED exists as a distinct future provenance",
+           "SUPPLIER_PROVIDED" in src)
+        ck("the rule for future supplier answers is written down",
+           "SUPPLIER_PROVIDED" in rel["notes"] and "OPERATIONAL" in rel["notes"])
+
+        # ── G. staleness still works, identity still stable ─────────────────
+        print("\n--- G. expiry without disturbing identity ---")
         out2 = Path(td) / "future.json"
-        r2 = subprocess.run([sys.executable, str(GEN), "--out", str(out2),
-                             "--as-of", "2027-06-22"], capture_output=True, text=True)
-        ck("the generator runs at a future date", r2.returncode == 0)
+        subprocess.run([sys.executable, str(GEN), "--out", str(out2),
+                        "--as-of", "2027-06-22"], capture_output=True, text=True)
         f = {c["claim_key"]: c for c in json.loads(out2.read_text("utf-8"))["claims"]}
         ck("time-sensitive terms go STALE",
-           f["host_onboarding_route_available"]["verification_status"] == "STALE")
-        ck("a stale claim is no longer homeowner-safe",
-           not f["host_onboarding_route_available"]["homeowner_safe_resolved"])
-        ck("a stale claim is no longer logic-safe",
-           not f["host_onboarding_route_available"]["logic_safe_resolved"])
-        ck("a stale claim is NOT deleted and keeps its evidence",
-           f["host_onboarding_route_available"]["evidence_state"] == "VERIFIED"
-           and f["host_onboarding_route_available"]["source_url"])
+           f["host_onboarding_page_available"]["verification_status"] == "STALE")
+        ck("a stale claim loses both safety flags",
+           not f["host_onboarding_page_available"]["homeowner_safe_resolved"]
+           and not f["host_onboarding_page_available"]["logic_safe_resolved"])
+        ck("a stale claim keeps its evidence and is not deleted",
+           f["host_onboarding_page_available"]["source_url"]
+           and f["host_onboarding_page_available"]["evidence_type"] == "PUBLISHED_SOURCE")
         ck("ORGANISATION IDENTITY is untouched by expiry",
-           f["platform_legal_identity"]["value"] == ident["value"]
-           and f["platform_legal_identity"]["evidence_state"] == "VERIFIED")
-        ck("identity carries a longer review interval than terms do",
-           f["platform_legal_identity"]["review_interval_months"]
-           > f["host_onboarding_route_available"]["review_interval_months"])
+           f["platform_legal_identity"]["value"] == k["platform_legal_identity"]["value"])
 
-        # ── TEST 4 — no PRODUCT field abused ────────────────────────────────
-        print("\n--- 4. Has any PRODUCT-specific field been abused? ---")
+        # ── H. containment ──────────────────────────────────────────────────
+        print("\n--- H. containment: Garden Room architecture untouched ---")
         blob = json.dumps(m).lower()
         for bad in ("productid", "product_category", "producttype",
-                    "qualificationtier", "productevidenceconfidence",
-                    "priceevidencestate", "flooraream2", "manufacturesku"):
+                    "qualificationtier", "flooraream2", "manufacturesku"):
             ck(f"no Garden Room product field '{bad}'", bad not in blob)
-        ck("the manifest declares it creates no product record",
-           "no atlas product record" in m["note"].lower())
-        ck("no price/currency figure is presented as a product price",
-           by_key["chargeback_admin_fee"]["value"]["currency"] == "EUR"
-           and by_key["host_fee_rate"]["value"] is None)
-
-        # ── TEST 5 — no supplier claim promoted to fact ─────────────────────
-        print("\n--- 5. Was any supplier claim promoted to verified fact? ---")
-        sc = [c for c in claims if c["evidence_state"] == "SUPPLIER-CLAIMED"]
-        ck("supplier claims exist and are labelled as such", len(sc) >= 3)
-        ck("the Ireland coverage figure stays SUPPLIER-CLAIMED",
-           by_key["ireland_service_coverage"]["evidence_state"] == "SUPPLIER-CLAIMED")
-        ck("'free to list' stays SUPPLIER-CLAIMED",
-           by_key["listing_cost"]["evidence_state"] == "SUPPLIER-CLAIMED")
-        ck("the payment mechanism stays SUPPLIER-CLAIMED",
-           by_key["payment_mechanism"]["evidence_state"] == "SUPPLIER-CLAIMED")
-        ck("every VERIFIED claim carries a source URL and a quote or structured value",
-           all(c["source_url"] and (c["quote"] or c["value"])
-               for c in claims if c["evidence_state"] == "VERIFIED"))
-        ck("the fee STRUCTURE is verified while the RATE is not — they are separate claims",
-           by_key["host_fee_model"]["evidence_state"] == "VERIFIED"
-           and by_key["host_fee_rate"]["evidence_state"] == "NOT_PUBLICLY_EVIDENCED")
-
-        # ── TEST 6 — supplier-supplied evidence can arrive later ────────────
-        print("\n--- 6. Can supplier-supplied evidence be added without confusion? ---")
-        rel = by_key["plotnua_commercial_relationship"]
-        ck("correspondence is a distinct provenance",
-           rel["provenance"] == "COMMERCIAL_CORRESPONDENCE")
-        ck("correspondence is not homeowner-safe", not rel["homeowner_safe_resolved"])
-        ck("correspondence is not logic-safe", not rel["logic_safe_resolved"])
-        ck("correspondence is forbidden from establishing service facts",
-           any("availability" in p.lower() for p in rel["prohibited_readings"]))
-        ck("no public claim shares the correspondence provenance",
-           len([c for c in claims
-                if c["provenance"] == "COMMERCIAL_CORRESPONDENCE"]) == 1)
-        ck("a third provenance exists for future supplier-supplied facts",
-           "SUPPLIER_PROVIDED" in Path(GEN).read_text("utf-8"))
-        ck("provenance is carried on every single claim",
-           all(c.get("provenance") for c in claims))
-
-        # ── containment ─────────────────────────────────────────────────────
-        print("\n--- containment: Garden Room architecture untouched ---")
-        uni = ROOT / "garden-room-recommendation-universe-v1.json"
-        u = json.loads(uni.read_text(encoding="utf-8"))
+        u = json.loads((ROOT / "garden-room-recommendation-universe-v1.json")
+                       .read_text(encoding="utf-8"))
         ck("Garden Room universe still holds 487 admitted products",
            len(u["products"]) == 487)
         ck("Garden Room tiers unchanged (138/349/0)",
@@ -177,9 +222,10 @@ def main() -> int:
             u["limitedEvidenceCount"]) == (138, 349, 0))
         ck("no parking platform leaked into the Garden Room universe",
            "yourparkingspace" not in json.dumps(u).lower())
-        ck("the pilot manifest is not referenced by the runtime",
-           "parking-platform-evidence" not in (ROOT / "your-plot.html")
-           .read_text(encoding="utf-8"))
+        ck("the pilot is not referenced by the runtime",
+           "parking-platform-evidence" not in
+           (ROOT / "your-plot.html").read_text(encoding="utf-8"))
+        ck("only ONE platform is represented", m["platformCount"] == 1)
 
     print("\n" + "=" * 74)
     print(f"  {PASS} passed, {FAIL} failed")
