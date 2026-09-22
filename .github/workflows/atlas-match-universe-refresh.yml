@@ -37,10 +37,25 @@ name: Atlas Match universe refresh
 # The manual trigger stays. It is how the next person reproduces a scheduled
 # run when they need to see one.
 on:
-  schedule:
-    # 06:15 UTC. Atlas statistics runs at 06:00; the quarter-hour stagger keeps
-    # two jobs off the same Airtable rate-limit window.
-    - cron: '15 6 * * *'
+  # PAUSED 2026-09-22 — ADDITIONAL HOME TAXONOMY MIGRATION.
+  #
+  # The Additional Home migration changes the Product Category of 31 confirmed
+  # dwellings in Atlas. This workflow regenerates from Atlas and COMMITS when
+  # the result differs, and the site is served from this repository — so the
+  # next scheduled run would publish that migration to production before the
+  # founder had reviewed it. The schedule is therefore paused for the duration
+  # of the migration review, by founder decision.
+  #
+  # NOTHING ELSE IS CHANGED. The generator, the validator, the secret handling,
+  # the artefact destination and the commit logic are all untouched, and
+  # workflow_dispatch below remains available so the refresh can be run by hand
+  # and watched. Restoring the timer is a one-line uncomment and is a separate,
+  # explicit founder decision.
+  #
+  #  schedule:
+  #    # 06:15 UTC. Atlas statistics runs at 06:00; the quarter-hour stagger keeps
+  #    # two jobs off the same Airtable rate-limit window.
+  #    - cron: '15 6 * * *'
   workflow_dispatch:
 
 # Least privilege. The job pushes one file; it needs nothing else.
