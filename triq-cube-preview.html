@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<title>TRIQ CUBE — private preview for TRIQBRIQ AG · PlotNua</title>
+<meta name="description" content="Private, unlisted preview prepared for TRIQBRIQ AG. Not a public PlotNua page.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pn-ground:#F5F2E8; --pn-voice:#24351F; --pn-fact:#16190F; --pn-body:#474B3B;
+  --pn-stone:#8B8971; --pn-meta:#9E9C86; --pn-hair:#DBD7C5;
+  --pn-wash:rgba(36,53,31,.05); --pn-on-dark:#F5F2E8;
+  --pn-edge:rgba(139,137,113,.42); --pn-panel:rgba(139,137,113,.09);
+  --pn-surface:#E3DECB; --pn-wild:#44573F;
+  --pn-s-hero:53px; --pn-s-section:36px; --pn-s-statement:27px; --pn-s-quote:20px;
+  --pn-w-body-lg:16.5px; --pn-w-body:14.5px; --pn-w-body-sm:13px;
+  --pn-w-caption:11.5px; --pn-w-meta:10px;
+  --pn-space-xs:8px; --pn-space-sm:16px; --pn-space-md:24px;
+  --pn-space-lg:32px; --pn-space-xl:48px; --pn-space-section:64px;
+}
+@media (max-width:1100px){ :root{
+  --pn-s-hero:clamp(33px,4.6vw,53px); --pn-s-section:clamp(26px,3.2vw,36px);
+  --pn-s-statement:clamp(21px,2.7vw,27px); } }
+*{box-sizing:border-box;}
+body{ margin:0; background:var(--pn-ground); color:var(--pn-body);
+  font-family:'Work Sans',system-ui,sans-serif; font-size:var(--pn-w-body);
+  line-height:1.62; -webkit-font-smoothing:antialiased; }
+.wrap{ max-width:1080px; margin:0 auto; padding:0 24px; }
+h1,h2,h3,.serif{ font-family:'Fraunces',Georgia,serif; font-weight:400;
+  color:var(--pn-voice); letter-spacing:-.01em; }
+p{ margin:0 0 14px; max-width:68ch; }
+a{ color:var(--pn-voice); }
+.eyebrow{ font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--pn-stone); margin:0 0 10px; }
+.rule{ border:0; border-top:1px solid var(--pn-hair); margin:var(--pn-space-section) 0; }
+
+/* ── PREVIEW FRAME ───────────────────────────────────────────── */
+.pv-bar{ background:var(--pn-voice); color:var(--pn-on-dark); padding:14px 0; }
+.pv-bar .wrap{ display:flex; gap:20px; align-items:baseline; flex-wrap:wrap; }
+.pv-bar strong{ font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.18em;
+  text-transform:uppercase; }
+.pv-bar span{ font-size:var(--pn-w-body-sm); opacity:.86; }
+
+header.masthead{ padding:var(--pn-space-xl) 0 var(--pn-space-md); }
+.masthead-row{ display:flex; justify-content:space-between; align-items:baseline;
+  gap:var(--pn-space-md); padding-bottom:var(--pn-space-md);
+  border-bottom:1px solid var(--pn-hair); flex-wrap:wrap; }
+.brand{ font-family:'Fraunces',serif; font-size:var(--pn-s-quote); color:var(--pn-voice); }
+h1{ font-size:var(--pn-s-hero); line-height:1.08; margin:var(--pn-space-lg) 0 var(--pn-space-sm); }
+.standfirst{ font-size:var(--pn-w-body-lg); max-width:60ch; }
+
+/* ── STAGE RAIL ──────────────────────────────────────────────── */
+.rail{ display:flex; flex-wrap:wrap; gap:var(--pn-space-xs); margin:var(--pn-space-lg) 0; }
+.rail li{ list-style:none; font-size:var(--pn-w-caption); letter-spacing:.06em;
+  text-transform:uppercase; color:var(--pn-stone); border:1px solid var(--pn-edge);
+  border-radius:2px; padding:6px 11px; }
+.rail li.own{ color:var(--pn-voice); border-color:var(--pn-voice); }
+.rail li.theirs{ color:var(--pn-on-dark); background:var(--pn-wild); border-color:var(--pn-wild); }
+.rail li.hand{ background:var(--pn-panel); color:var(--pn-fact); }
+
+section{ padding:var(--pn-space-section) 0 0; }
+.stage-no{ font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--pn-meta); }
+h2{ font-size:var(--pn-s-section); line-height:1.16; margin:6px 0 var(--pn-space-sm); }
+h3{ font-size:var(--pn-s-quote); margin:0 0 10px; }
+
+/* ── CARDS ───────────────────────────────────────────────────── */
+.card{ background:var(--pn-surface); border-radius:3px; padding:var(--pn-space-md); }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:var(--pn-space-md); }
+.grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--pn-space-md); }
+@media (max-width:820px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+
+/* ── IMAGERY + MANDATORY CREDIT ──────────────────────────────── */
+figure{ margin:0; }
+figure img{ width:100%; height:auto; display:block; border-radius:3px;
+  background:var(--pn-panel); }
+figcaption{ font-size:var(--pn-w-caption); color:var(--pn-stone);
+  margin-top:8px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.credit{ font-weight:600; letter-spacing:.04em; color:var(--pn-body); white-space:nowrap; }
+
+/* ── FACTS ───────────────────────────────────────────────────── */
+.facts{ width:100%; border-collapse:collapse; margin-top:var(--pn-space-sm); }
+.facts th,.facts td{ text-align:left; padding:11px 0; border-bottom:1px solid var(--pn-hair);
+  vertical-align:top; font-size:var(--pn-w-body); }
+.facts th{ width:38%; font-weight:500; color:var(--pn-stone); }
+.facts td{ color:var(--pn-fact); }
+.price{ font-family:'Fraunces',serif; font-size:var(--pn-s-statement); color:var(--pn-fact); }
+.price-note{ font-size:var(--pn-w-body-sm); color:var(--pn-body); margin-top:4px; }
+.chips{ display:flex; flex-wrap:wrap; gap:7px; margin:var(--pn-space-sm) 0 0; padding:0; }
+.chips li{ list-style:none; font-size:var(--pn-w-caption); padding:5px 10px;
+  border:1px solid var(--pn-edge); border-radius:2px; color:var(--pn-body); }
+.chips li.known{ border-color:var(--pn-wild); color:var(--pn-wild); }
+.chips li.open{ border-style:dashed; color:var(--pn-stone); }
+
+/* ── UNESTABLISHED PANEL ─────────────────────────────────────── */
+.open-panel{ border:1px solid var(--pn-edge); border-radius:3px;
+  padding:var(--pn-space-md); background:var(--pn-panel); }
+.open-panel ul{ margin:10px 0 0; padding-left:18px; }
+.open-panel li{ margin-bottom:7px; }
+
+/* ── HANDOFF ─────────────────────────────────────────────────── */
+.handoff{ background:var(--pn-voice); color:var(--pn-on-dark);
+  border-radius:3px; padding:var(--pn-space-lg); }
+.handoff h2,.handoff h3{ color:var(--pn-on-dark); }
+.handoff p{ color:rgba(245,242,232,.88); }
+.demo-btn{ display:inline-block; border:1px solid rgba(245,242,232,.55);
+  border-radius:2px; padding:13px 22px; margin-top:var(--pn-space-sm);
+  font-size:var(--pn-w-body); color:var(--pn-on-dark); text-decoration:none; }
+.demo-label{ display:block; font-size:var(--pn-w-meta); font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:rgba(245,242,232,.62);
+  margin-top:10px; }
+
+footer{ margin-top:var(--pn-space-section); padding:var(--pn-space-lg) 0 var(--pn-space-section);
+  border-top:1px solid var(--pn-hair); font-size:var(--pn-w-body-sm); color:var(--pn-stone); }
+footer p{ max-width:76ch; }
+</style>
+</head>
+<body>
+
+<div class="pv-bar"><div class="wrap">
+  <strong>Private preview</strong>
+  <span>Prepared for Christian Klerner and TRIQBRIQ Product Management. Unlisted and not indexed. Nothing here is live on PlotNua.</span>
+</div></div>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="masthead-row">
+    <div class="brand">PlotNua</div>
+    <div class="eyebrow" style="margin:0">Garden Room · preview only</div>
+  </div>
+  <h1>How the TRIQ&nbsp;CUBE would be represented on PlotNua</h1>
+  <p class="standfirst">PlotNua is an independent Irish decision platform for homeowners. It is not a shop and not a sales channel. This preview shows the journey a homeowner would travel before they ever reach TRIQBRIQ — and the point at which PlotNua hands them over.</p>
+
+  <ul class="rail">
+    <li class="own">1 · Discover</li>
+    <li class="own">2 · Evidence</li>
+    <li class="own">3 · Save to My Plot</li>
+    <li class="own">4 · Compare</li>
+    <li class="own">5 · Decide</li>
+    <li class="hand">→ Attributable handoff</li>
+    <li class="theirs">TRIQ · consultation</li>
+    <li class="theirs">TRIQ · purchase</li>
+    <li class="theirs">TRIQ · fulfilment</li>
+  </ul>
+  <p style="font-size:var(--pn-w-body-sm);color:var(--pn-stone)">Green stages are PlotNua's. Dark stages are TRIQBRIQ's, and stay TRIQBRIQ's. PlotNua does not advise on the TRIQ&nbsp;CUBE and does not sell it.</p>
+</header>
+
+<hr class="rule">
+
+<!-- 1 ─────────────────────────────────────────────────────── -->
+<section>
+  <div class="stage-no">Stage one</div>
+  <h2>A homeowner discovers it</h2>
+  <p>Homeowners arrive at PlotNua with a question about their property — not a product in mind. Someone exploring additional space in the garden would meet the TRIQ&nbsp;CUBE among other approaches, presented as what it is: a different answer to the same question, built from solid timber rather than panels.</p>
+
+  <div class="grid2" style="margin-top:var(--pn-space-md)">
+    <figure>
+      <img src="https://triqbriq.de/wp-content/uploads/2025/12/Exterior-3x3-1-scaled.jpg"
+           alt="TRIQ Office 3×3 garden office, exterior" loading="lazy">
+      <figcaption><span>TRIQ Office 3×3 — exterior</span><span class="credit">© TRIQBRIQ AG</span></figcaption>
+    </figure>
+    <figure>
+      <img src="https://triqbriq.de/wp-content/uploads/2025/12/Interior-3x3-1-scaled.jpg"
+           alt="TRIQ Office 3×3 garden office, interior" loading="lazy">
+      <figcaption><span>TRIQ Office 3×3 — interior</span><span class="credit">© TRIQBRIQ AG</span></figcaption>
+    </figure>
+  </div>
+  <p style="font-size:var(--pn-w-caption);color:var(--pn-meta);margin-top:12px">Both images are official TRIQBRIQ website imagery, used with written permission from Christian Klerner (22 September 2026) and credited as required. No image has been altered.</p>
+</section>
+
+<!-- 2 ─────────────────────────────────────────────────────── -->
+<section>
+  <div class="stage-no">Stage two</div>
+  <h2>Factual product information</h2>
+  <p>PlotNua publishes what the manufacturer publishes, attributed to the manufacturer. Everything below is taken from the official TRIQ&nbsp;Office&nbsp;3×3 product page. PlotNua adds no interpretation, no rating and no opinion on the product.</p>
+
+  <div class="grid2" style="margin-top:var(--pn-space-md)">
+    <div class="card">
+      <h3>Published price</h3>
+      <div class="price">€22,700.00</div>
+      <p class="price-note">Complete kit of TRIQBRIQ timber blocks. The published price states that it includes VAT and logistics costs.</p>
+      <p class="price-note" style="color:var(--pn-stone)">The product page also lists three configurable options at published additional prices: PV system, battery and lighting <strong>+€2,300.00</strong> · air-to-air heat pump <strong>+€1,300.00</strong> · interior desk and shelf <strong>+€1,600.00</strong>.</p>
+      <p class="price-note" style="color:var(--pn-stone)">This is the price as published on the German site. PlotNua does not restate it as an Irish delivered price, because no Irish price has been established.</p>
+    </div>
+    <div class="card">
+      <h3>What Atlas records</h3>
+      <table class="facts">
+        <tr><th>Manufacturer</th><td>TRIQBRIQ AG, Stuttgart</td></tr>
+        <tr><th>Product</th><td>TRIQ Office 3×3 (Gartenoffice)</td></tr>
+        <tr><th>Country of manufacture</th><td>Germany</td></tr>
+        <tr><th>Footprint</th><td>3.00 × 3.00 m — 9 m²</td></tr>
+        <tr><th>External with façade</th><td>3.03 × 3.03 m</td></tr>
+        <tr><th>Internal dimensions</th><td>2.50 × 2.50 m</td></tr>
+        <tr><th>Height</th><td>2.85 m overall, excluding foundation</td></tr>
+        <tr><th>Internal clear height</th><td>2.45 m</td></tr>
+        <tr><th>Construction</th><td>Circular solid-timber, fully insulated</td></tr>
+        <tr><th>Roof</th><td>Modern flat-roof design</td></tr>
+        <tr><th>Glazing</th><td>Pine frames, double glazed, Ug 1.1 W/m²K</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:var(--pn-space-md)">
+    <h3>Published equipment</h3>
+    <table class="facts">
+      <tr><th>Solar</th><td>DAH Solar Frame 500 W</td></tr>
+      <tr><th>Storage</th><td>Ecoflow Delta 3 Max — 2 kWh capacity, maximum solar input 500 W</td></tr>
+      <tr><th>Heating / cooling</th><td>Trotec air-to-air heat pump</td></tr>
+      <tr><th>Interior</th><td>Modular — desk and shelf</td></tr>
+    </table>
+    <ul class="chips">
+      <li class="known">Insulated</li>
+      <li class="known">Double glazed</li>
+      <li class="known">Verified dimensions</li>
+      <li class="known">Published price</li>
+      <li class="known">Made in Germany</li>
+      <li class="open">Irish availability not yet confirmed</li>
+    </ul>
+  </div>
+
+  <div class="open-panel" style="margin-top:var(--pn-space-md)">
+    <h3 style="margin-bottom:4px">What PlotNua has not established</h3>
+    <p style="margin:0">PlotNua states gaps as plainly as it states facts. A homeowner sees this panel too. These are questions for TRIQBRIQ, and PlotNua will not answer them on TRIQBRIQ's behalf.</p>
+    <ul>
+      <li><strong>Irish availability is not yet confirmed.</strong> PlotNua holds no confirmation that the TRIQ&nbsp;CUBE can be supplied to the Republic of Ireland.</li>
+      <li><strong>Delivery to Ireland is not established.</strong> Atlas records where a building is made, not who will deliver and install it here. Those are different facts and PlotNua will not treat one as the other.</li>
+      <li><strong>No Irish price.</strong> The published price is a German-market price stated as including VAT and logistics. What an Irish buyer would pay, and under which VAT treatment, is not established.</li>
+      <li><strong>Installation.</strong> Whether the kit is self-assembled or installed, and by whom in Ireland, is not established.</li>
+      <li><strong>Configuration.</strong> Whether the published headline price includes the three listed options is not stated unambiguously on the page, so PlotNua does not assert either reading.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3 ─────────────────────────────────────────────────────── -->
+<section>
+  <div class="stage-no">Stage three</div>
+  <h2>The homeowner saves it to My Plot</h2>
+  <p>My Plot is the homeowner's own shortlist, held in their browser. Saving is a private act of interest — nothing is sent to a supplier, and no contact details are captured. It is the first real signal that a homeowner is considering the TRIQ&nbsp;CUBE seriously.</p>
+  <div class="card" style="margin-top:var(--pn-space-md);max-width:520px">
+    <div class="eyebrow">My Plot · saved</div>
+    <h3 style="margin-bottom:2px">TRIQ Office 3×3</h3>
+    <p style="font-size:var(--pn-w-body-sm);color:var(--pn-stone);margin:0">TRIQBRIQ AG · 9 m² · €22,700.00 as published</p>
+  </div>
+</section>
+
+<!-- 4 ─────────────────────────────────────────────────────── -->
+<section>
+  <div class="stage-no">Stage four</div>
+  <h2>They compare it against the alternatives</h2>
+  <p>PlotNua compares on recorded evidence only, never on preference, and never on a commercial relationship. The TRIQ&nbsp;CUBE is compared on exactly the fields PlotNua holds for every other building — and where a field is not established for TRIQ, Compare says so rather than leaving a persuasive blank.</p>
+  <div class="grid3" style="margin-top:var(--pn-space-md)">
+    <div class="card">
+      <div class="eyebrow">Compared on</div>
+      <p style="font-size:var(--pn-w-body-sm);margin:0">Price as published · floor area · dimensions · insulation · glazing · country of manufacture · construction method</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Stated as open</div>
+      <p style="font-size:var(--pn-w-body-sm);margin:0">Irish availability · delivery to Ireland · installation · Irish price and VAT treatment</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Never used</div>
+      <p style="font-size:var(--pn-w-body-sm);margin:0">Commercial relationship · payment · placement. No supplier can buy position in a PlotNua comparison.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 ─────────────────────────────────────────────────────── -->
+<section>
+  <div class="stage-no">Stage five</div>
+  <h2>The homeowner decides</h2>
+  <p>PlotNua's work ends with a decided homeowner — someone who has understood their property, weighed the alternatives and chosen to pursue the TRIQ&nbsp;CUBE. That is the person who would arrive at TRIQBRIQ: informed, self-selected, and already past the questions a general enquiry has to start with.</p>
+</section>
+
+<!-- HANDOFF ────────────────────────────────────────────────── -->
+<section>
+  <div class="handoff">
+    <div class="eyebrow" style="color:rgba(245,242,232,.62)">Proposed · not yet agreed</div>
+    <h2>The handoff to TRIQBRIQ</h2>
+    <p>At the point of decision, PlotNua would pass the homeowner to TRIQBRIQ by an agreed, attributable route. <strong>TRIQBRIQ handles all product-specific and technical consultation, the transaction and fulfilment</strong> — exactly as Christian set out, and purchases complete on the official TRIQ product page.</p>
+    <p>PlotNua's role stops here. It does not advise on the TRIQ&nbsp;CUBE, does not quote for it, and does not take payment.</p>
+
+    <a class="demo-btn" href="#" onclick="return false;">Continue to TRIQBRIQ →</a>
+    <span class="demo-label">Illustration only · this control is inert in this preview</span>
+
+    <p style="margin-top:var(--pn-space-lg);font-size:var(--pn-w-body-sm)">
+      <strong>Nothing about this route is agreed or operational.</strong> No attribution mechanism has been built or selected. No commercial arrangement, commission, lead fee, homeowner discount or partnership exists between PlotNua and TRIQBRIQ. How the handoff would be attributed and measured is a conversation still to have, and this preview does not presume its outcome.
+    </p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section style="padding-top:0">
+  <h2>What this preview is, and is not</h2>
+  <div class="grid2" style="margin-top:var(--pn-space-md)">
+    <div class="open-panel">
+      <h3>It is</h3>
+      <p style="margin:0">A private, unlisted page prepared at Christian's request, so TRIQBRIQ Product Management can see how the TRIQ&nbsp;CUBE would sit inside PlotNua's existing homeowner journey before anything is published.</p>
+    </div>
+    <div class="open-panel">
+      <h3>It is not</h3>
+      <p style="margin:0">Not live on PlotNua. Not reachable from PlotNua navigation, the Discovery catalogue or the sitemap. Not indexed by search engines. Not an advertisement, and not a claim of partnership.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Imagery.</strong> The two photographs above are official TRIQBRIQ website imagery, reproduced with written permission granted by Christian Klerner on 22 September 2026 and credited “© TRIQBRIQ AG” as required. Sources: <a href="https://triqbriq.de/wp-content/uploads/2025/12/Exterior-3x3-1-scaled.jpg">Exterior-3x3-1</a> and <a href="https://triqbriq.de/wp-content/uploads/2025/12/Interior-3x3-1-scaled.jpg">Interior-3x3-1</a>, both published on the official product page <a href="https://triqbriq.de/produkt/triq-gartenoffice-3x3/">triqbriq.de/produkt/triq-gartenoffice-3x3</a>. Images are served from TRIQBRIQ's own website and are unmodified.</p>
+  <p><strong>Product information.</strong> Every figure and specification on this page is taken from that same official product page, read on 22 September 2026. PlotNua has added nothing to it.</p>
+  <p><strong>Status.</strong> Private preview prepared by PlotNua for TRIQBRIQ AG. PlotNua is an independent platform operated by Colin MacAulay. TRIQBRIQ is not a PlotNua partner, and PlotNua does not describe it as approved, recommended or preferred.</p>
+</footer>
+
+</div>
+</body>
+</html>
