@@ -8,6 +8,8 @@ writes nothing, contacts nothing, touches no Airtable record.
 """
 from __future__ import annotations
 
+import datetime as dt
+import importlib.util
 import json
 import subprocess
 import sys
@@ -17,6 +19,18 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 GEN = HERE / "generate_parking_platform_evidence.py"
+
+# The generator is imported so the PROVENANCE MODEL can be unit-tested
+# directly. The private correspondence INSTANCE was removed from the public
+# artefact by the disclosure firewall, so the model can no longer be tested
+# through the emitted JSON — it must be tested at the function.
+_spec = importlib.util.spec_from_file_location("parking_gen_uut", GEN)
+gen = importlib.util.module_from_spec(_spec)
+sys.modules["parking_gen_uut"] = gen
+try:
+    _spec.loader.exec_module(gen)
+except SystemExit:
+    pass
 
 PASS = FAIL = 0
 
@@ -84,8 +98,20 @@ def main() -> int:
            k["eircode_onboarding_accepted"]["evidence_state_derived"] == "UNKNOWN")
         ck("conflicting sources derive CONTRADICTED",
            k["company_number_inconsistency"]["evidence_state_derived"] == "CONTRADICTED")
-        ck("correspondence derives SUPPLIER-CLAIMED",
-           k["plotnua_commercial_relationship"]["evidence_state_derived"]
+        # The private instance was removed from this PUBLIC artefact by the
+        # disclosure firewall, so the derivation is unit-tested against the
+        # function directly. The model must still work, or a supplier-supplied
+        # fact could not be added later without being mistaken for one PlotNua
+        # verified independently.
+        ck("correspondence still derives SUPPLIER-CLAIMED (model unit-test)",
+           gen.derive_state({"evidence_type": "CORRESPONDENCE",
+                             "provenance": "COMMERCIAL_CORRESPONDENCE",
+                             "source_type": "OUTREACH_RECORD"})
+           == "SUPPLIER-CLAIMED")
+        ck("a future SUPPLIER_PROVIDED fact derives SUPPLIER-CLAIMED, not VERIFIED",
+           gen.derive_state({"evidence_type": "PUBLISHED_SOURCE",
+                             "provenance": "SUPPLIER_PROVIDED",
+                             "source_type": "MARKETING_CLAIM"})
            == "SUPPLIER-CLAIMED")
 
         # ── C. claim_basis ──────────────────────────────────────────────────
@@ -177,18 +203,38 @@ def main() -> int:
            "score" not in comp["status"].lower() and "/7" not in json.dumps(comp))
 
         # ── F. supplier-provided evidence can arrive later ──────────────────
-        print("\n--- F. future SUPPLIER_PROVIDED evidence stays distinguishable ---")
-        rel = k["plotnua_commercial_relationship"]
-        ck("correspondence is its own provenance",
-           rel["provenance"] == "COMMERCIAL_CORRESPONDENCE")
-        ck("correspondence is neither homeowner- nor logic-safe",
-           not rel["homeowner_safe_resolved"] and not rel["logic_safe_resolved"])
-        ck("only one claim carries correspondence provenance",
-           m["claimsByProvenance"]["COMMERCIAL_CORRESPONDENCE"] == 1)
-        ck("SUPPLIER_PROVIDED exists as a distinct future provenance",
-           "SUPPLIER_PROVIDED" in src)
-        ck("the rule for future supplier answers is written down",
-           "SUPPLIER_PROVIDED" in rel["notes"] and "OPERATIONAL" in rel["notes"])
+        print("\n--- F. public disclosure firewall + provenance model intact ---")
+        # THIS ARTEFACT IS PUBLICLY FETCHABLE from the site root. Labelling a
+        # claim COMMERCIAL_CORRESPONDENCE stops it reaching a HOMEOWNER; it
+        # does nothing to stop the FILE being fetched. Private relationship
+        # material must therefore be absent entirely, not merely flagged.
+        ck("NO claim carries COMMERCIAL_CORRESPONDENCE provenance",
+           not [c for c in claims
+                if c["provenance"] == "COMMERCIAL_CORRESPONDENCE"])
+        ck("NO claim cites a private outreach record as its source",
+           not [c for c in claims if c["source_type"] == "OUTREACH_RECORD"])
+        ck("NO claim is verified by correspondence",
+           not [c for c in claims if c["verification_method"] == "CORRESPONDENCE"])
+        ck("every published claim is PUBLIC_PRIMARY",
+           {c["provenance"] for c in claims} == {"PUBLIC_PRIMARY"},
+           str(m["claimsByProvenance"]))
+        ck("every published claim cites a checkable source",
+           all(c["source_url"] for c in claims))
+        # ...while the MODEL survives, so a fact supplied later can still be
+        # classified without being mistaken for independent verification.
+        ck("SUPPLIER_PROVIDED remains a defined provenance",
+           "SUPPLIER_PROVIDED" in gen.PROVENANCE)
+        ck("COMMERCIAL_CORRESPONDENCE remains a defined provenance",
+           "COMMERCIAL_CORRESPONDENCE" in gen.PROVENANCE)
+        ck("correspondence would still be barred from driving logic",
+           not gen.resolve(dt.date(2026, 9, 22),
+                           {"last_verified": "2026-09-22",
+                            "review_interval_months": 3, "logic_safe": True,
+                            "homeowner_safe": True,
+                            "evidence_type": "CORRESPONDENCE",
+                            "provenance": "COMMERCIAL_CORRESPONDENCE",
+                            "source_type": "OUTREACH_RECORD"}
+                           )["logic_safe_resolved"])
 
         # ── G. staleness still works, identity still stable ─────────────────
         print("\n--- G. expiry without disturbing identity ---")

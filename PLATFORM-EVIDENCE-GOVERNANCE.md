@@ -57,19 +57,51 @@ covered.
 
 ## 4 · Supplier-provided evidence
 
-Christophe Doye (Head of Partnerships) is expected to contact PlotNua through
-the existing commercial route. **PlotNua does not initiate contact.** If fee
-mechanics or ROI host protection are answered, those answers are recorded as
-new claims with `provenance: SUPPLIER_PROVIDED` and `claim_basis: STATED` —
-never promoted to OPERATIONAL, never merged into a PUBLIC_PRIMARY claim.
+Where a platform answers a question directly, that answer is recorded as a new
+claim with `provenance: SUPPLIER_PROVIDED` and `claim_basis: STATED` — never
+promoted to OPERATIONAL, and never merged into a `PUBLIC_PRIMARY` claim.
+
+**Private commercial correspondence and relationship status are maintained
+separately from publicly served evidence artefacts.**
+
+## 4a · PUBLIC DISCLOSURE FIREWALL
+
+Evidence artefacts in this repository are served from the site root and are
+**publicly fetchable**. Publication is therefore a disclosure decision, not
+only an engineering one.
+
+> **PUBLIC EVIDENCE ARTEFACTS MUST NOT CONTAIN PRIVATE COMMERCIAL
+> CORRESPONDENCE OR INTERNAL RELATIONSHIP STATUS.**
+>
+> Where commercial correspondence contributes to internal knowledge, it
+> remains separately governed and must not become publicly fetchable merely
+> because an evidence artefact is published.
+
+A publicly served artefact **may** carry: public primary-source evidence,
+governed claim states, public organisation and platform facts, public source
+URLs, evidence limitations, and public provenance.
+
+It **must not** carry, merely because PlotNua knows it internally: private
+correspondence, negotiation or outreach status, expected third-party contact,
+individuals named from private commercial conversations, internal Airtable
+record IDs, or other non-public relationship intelligence.
+
+The `COMMERCIAL_CORRESPONDENCE` provenance correctly stops such a claim
+reaching a *homeowner*. It does not stop a published file being *fetched* —
+which is why placement, not only labelling, is governed. Enforced by the
+public-disclosure firewall tests in
+`.github/scripts/test_public_disclosure_firewall.py`.
 
 ## 5 · Deferred governance debt — not addressed here
 
-`Organisation Atlas Certification Audit v1` (`fldsmSYpVRJMkVjsW`) references
-only `Notes` and `Status`. It restates a hand-set field and **has no completed
-state for any Organisation** — product or platform. It is not product-
-dependent; it is simply unimplemented. Requires later governance attention.
-Deliberately not redesigned in this task.
+The `Organisation Atlas Certification Audit v1` formula references only the
+Organisation's `Notes` and `Status` fields. It restates a hand-set field and
+**has no completed state for any Organisation** — product or platform. It is
+not product-dependent; it is simply unimplemented. Requires later governance
+attention. Deliberately not redesigned in this task.
+
+*(Internal field identifiers are omitted here by the public disclosure
+firewall in §4a. They are held in the internal Atlas schema record.)*
 
 ## 6 · Scale gate — ACTIVE
 

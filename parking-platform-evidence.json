@@ -10,7 +10,6 @@
       "platform_key": "yourparkingspace-ie",
       "platform_name": "YourParkingSpace",
       "legal_entity": "YourParkingSpace (Ireland) Limited",
-      "atlas_organisation_id": "recl6ldLEXNGbZsPL",
       "atlas_organisation_code": "ORG-YPS-IE",
       "jurisdiction": "IE-ROI",
       "route": "Homeowner lists a private parking space",
@@ -18,42 +17,39 @@
       "pilot_note": "Controlled architectural pilot. One platform only. Not a catalogue entry, not a recommendation, not runtime-connected, and not homeowner-facing."
     }
   ],
-  "claimCount": 23,
+  "claimCount": 22,
   "claimsByBasis": {
-    "STATED": 23
+    "STATED": 22
   },
   "claimsByEvidenceType": {
     "PUBLISHED_SOURCE": 15,
     "CONFLICTING_SOURCES": 1,
     "UNTESTED": 1,
-    "ABSENCE_OF_RECORD": 5,
-    "CORRESPONDENCE": 1
+    "ABSENCE_OF_RECORD": 5
   },
   "claimsBySourceType": {
     "CORPORATE_REGISTER": 1,
     "PROVIDER_PAGE": 3,
     "CONTRACT_TERM": 14,
     "SUPPORT_CONTENT": 1,
-    "MARKETING_CLAIM": 3,
-    "OUTREACH_RECORD": 1
+    "MARKETING_CLAIM": 3
   },
   "claimsByMaturity": {
     "IN_FORCE": 10,
     "UNRESOLVED_CONFLICT": 1,
-    "CURRENT_PUBLISHED": 6,
+    "CURRENT_PUBLISHED": 5,
     "NOT_ESTABLISHABLE": 1,
     "BOUNDED_SEARCH": 5
   },
   "claimsByProvenance": {
-    "PUBLIC_PRIMARY": 22,
-    "COMMERCIAL_CORRESPONDENCE": 1
+    "PUBLIC_PRIMARY": 22
   },
   "claimsByDerivedState": {
     "VERIFIED": 11,
     "CONTRADICTED": 1,
     "UNKNOWN": 1,
     "NOT_PUBLICLY_EVIDENCED": 5,
-    "SUPPLIER-CLAIMED": 5
+    "SUPPLIER-CLAIMED": 4
   },
   "homeownerSafeCount": 20,
   "logicSafeCount": 14,
@@ -813,42 +809,6 @@
       "verification_status": "CURRENT",
       "logic_safe_resolved": false,
       "homeowner_safe_resolved": true
-    },
-    {
-      "claim_key": "plotnua_commercial_relationship",
-      "claim": "PlotNua's outreach received a positive response and was escalated internally to a Head of Partnerships; contact is awaited.",
-      "value": {
-        "state": "POSITIVE RESPONSE — ESCALATED INTERNALLY TO HEAD OF PARTNERSHIPS — AWAITING CONTACT",
-        "escalated_to_role": "Head of Partnerships"
-      },
-      "claim_basis": "STATED",
-      "authority": "PlotNua",
-      "source_type": "OUTREACH_RECORD",
-      "evidence_type": "CORRESPONDENCE",
-      "maturity": "CURRENT_PUBLISHED",
-      "provenance": "COMMERCIAL_CORRESPONDENCE",
-      "verification_method": "CORRESPONDENCE",
-      "source_title": "PlotNua outreach record (not a public source)",
-      "source_url": null,
-      "quote": null,
-      "last_verified": "2026-09-22",
-      "valid_from": "2026-09-22",
-      "valid_until": null,
-      "review_interval_months": 3,
-      "staleness_policy": "DOWNGRADE",
-      "recheck_triggers": [],
-      "prohibited_readings": [
-        "Any reading that this establishes service availability, fees, insurance, eligibility, coverage or any homeowner-facing claim.",
-        "Any homeowner-facing use whatsoever."
-      ],
-      "homeowner_safe": false,
-      "logic_safe": false,
-      "notes": "Relationship evidence only. If contact occurs and fee mechanics or ROI host protection are answered, those answers are recorded as new claims with provenance SUPPLIER_PROVIDED and basis STATED — never promoted to OPERATIONAL, and never merged into a PUBLIC_PRIMARY claim.",
-      "evidence_state_derived": "SUPPLIER-CLAIMED",
-      "months_since_verified": 0,
-      "verification_status": "CURRENT",
-      "logic_safe_resolved": false,
-      "homeowner_safe_resolved": false
     }
   ]
 }

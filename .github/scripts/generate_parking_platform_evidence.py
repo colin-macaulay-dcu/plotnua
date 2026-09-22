@@ -111,13 +111,17 @@ S_HOME = ("YourParkingSpace.ie — Home / platform FAQ",
 S_SUPPORT = ("YourParkingSpace.ie — Space Owner FAQs",
              "https://www.yourparkingspace.ie/support/space-owners-201159225/"
              "listing-my-space-202613485/")
-S_OUTREACH = ("PlotNua outreach record (not a public source)", None)
+   # (No outreach source is referenced. Private correspondence is not a source
+   # for a publicly served artefact — see the note in CLAIMS below.)
 
 PLATFORM = {
     "platform_key": "yourparkingspace-ie",
     "platform_name": "YourParkingSpace",
     "legal_entity": ENTITY,
-    "atlas_organisation_id": "recl6ldLEXNGbZsPL",
+    # Airtable record IDs are internal join keys and are deliberately NOT
+    # emitted into a publicly fetchable artefact. PlotNua's own scheme code is
+    # kept: it identifies the organisation without exposing anything about the
+    # internal base.
     "atlas_organisation_code": "ORG-YPS-IE",
     "jurisdiction": JURISDICTION,
     "route": "Homeowner lists a private parking space",
@@ -410,26 +414,23 @@ CLAIMS = [
                   "without verifying the number.")),
 
     # ── Relationship, kept strictly apart ───────────────────────────────────
-    claim("plotnua_commercial_relationship",
-          "PlotNua's outreach received a positive response and was escalated "
-          "internally to a Head of Partnerships; contact is awaited.",
-          {"state": "POSITIVE RESPONSE — ESCALATED INTERNALLY TO HEAD OF "
-                    "PARTNERSHIPS — AWAITING CONTACT",
-           "escalated_to_role": "Head of Partnerships"},
-          basis="STATED", evidence_type="CORRESPONDENCE",
-          source_type="OUTREACH_RECORD",
-          provenance="COMMERCIAL_CORRESPONDENCE", maturity="CURRENT_PUBLISHED",
-          authority="PlotNua", source=S_OUTREACH, method="CORRESPONDENCE",
-          months=3, homeowner_safe=False, logic_safe=False,
-          prohibited=[
-              "Any reading that this establishes service availability, fees, "
-              "insurance, eligibility, coverage or any homeowner-facing claim.",
-              "Any homeowner-facing use whatsoever."],
-          notes=("Relationship evidence only. If contact occurs and fee "
-                 "mechanics or ROI host protection are answered, those answers "
-                 "are recorded as new claims with provenance SUPPLIER_PROVIDED "
-                 "and basis STATED — never promoted to OPERATIONAL, and never "
-                 "merged into a PUBLIC_PRIMARY claim.")),
+    # ── NO COMMERCIAL CORRESPONDENCE CLAIM APPEARS HERE, DELIBERATELY ───────
+    # This manifest is served from the repository root of a GitHub Pages site,
+    # so every claim in it is publicly fetchable at plotnua.ie. PlotNua's
+    # relationship with a platform — outreach status, negotiating position,
+    # who at that company is expected to make contact — is private commercial
+    # intelligence. It is not evidence about the platform's service, and it
+    # must not become world-readable merely because an evidence artefact is
+    # published.
+    #
+    # The PROVENANCE MODEL still carries COMMERCIAL_CORRESPONDENCE and
+    # SUPPLIER_PROVIDED, and derive_state() and resolve() still handle both
+    # correctly, so the firewall remains testable and a supplier-supplied fact
+    # can still be added later without being mistaken for one PlotNua verified
+    # independently. What is absent is the private INSTANCE, not the model.
+    #
+    # Relationship status stays where it already legitimately lives, in the
+    # governed private record. Nothing was deleted from it by this file.
 ]
 
 

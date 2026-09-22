@@ -266,8 +266,14 @@ def main() -> int:
                              "energia", "flogas")))
         pk = json.loads((ROOT / "parking-platform-evidence.json")
                         .read_text(encoding="utf-8"))
-        ck("Parking Platform pilot unchanged (23 claims, 1 platform)",
-           pk["claimCount"] == 23 and pk["platformCount"] == 1)
+        # 22, not the original 23: the public disclosure firewall removed the
+        # private commercial-correspondence claim from this publicly fetchable
+        # artefact. The platform count and the evidence itself are untouched.
+        ck("Parking Platform pilot intact (22 claims, 1 platform)",
+           pk["claimCount"] == 22 and pk["platformCount"] == 1,
+           f"{pk['claimCount']} claims / {pk['platformCount']} platform")
+        ck("Parking pilot carries no correspondence provenance either",
+           "COMMERCIAL_CORRESPONDENCE" not in pk["claimsByProvenance"])
         d26 = json.loads((ROOT / "disc026-evidence.json").read_text(encoding="utf-8"))
         ck("DISC-026 authority manifest unchanged (38 records)",
            len(d26["records"]) == 38)
