@@ -10834,12 +10834,143 @@
      or els. This is the whole interface: a results array of the shape the
      ranking already produces, a use, and the property-fit payload. No
      ranking function is exposed and none is called. */
+  /* DEFECT 1 — SECTION OWNERSHIP, CORRECTED.
+
+     The property result and the product result are independent answers, and a
+     product-side emptiness may never suppress a property-side one. Before this
+     change `resultsDecide` and `hmrNextSteps` were filed as product sections,
+     so a homeowner with a POSITIVE verdict and no matching product was told
+     their property looked workable and then shown nothing at all — no
+     buildings, no "what to establish next", and no explanation.
+
+     THREE MOVES:
+       resultsDecide  product -> DECISION. It is "Before You Decide". Hiding it
+                      took next steps with it.
+       hmrNextSteps   product -> DECISION. "What to establish next" is property
+                      guidance, not a product list.
+       hmrLeadEvidence stays a PRODUCT section. It is the lead product's own
+                      evidence; with no product it is genuinely empty.
+
+     `bydPoints` is product-derived and is now hidden on its own, WITHOUT
+     hiding its decision-level container.
+
+     The disjointness assertion below is the class-level fix. The three moves
+     are the instance. */
   const PN_PRODUCT_SECTIONS = ['matchPrimary','aboutSupplier','matchAlternativesHeading',
     'altRailNote','altRailWrap','altResultsHeading','altResultsNote','altResults',
-    'resultsDecide','resultsSunlightCentrepiece','yourProperty',
-    /* P4 — both relocated blocks live inside sections above, but naming
-       them keeps the no-buildings branch explicit rather than incidental. */
-    'hmrLeadEvidence','hmrNextSteps'];
+    'resultsSunlightCentrepiece','yourProperty',
+    'hmrLeadEvidence','bydPoints'];
+
+  /* Never hidden by product emptiness. */
+  const PN_DECISION_SECTIONS = ['hmrPropertyFit','hmrFitVerdict','dhWhy','dhCalc',
+    'dhCheck','resultsDecide','hmrNextSteps','dhNextList','dhNextSub','bydClose',
+    'hmrMatchState'];
+
+  /* A section cannot be both. A future edit that files a decision section as a
+     product section fails here rather than in front of a homeowner. */
+  (function(){
+    var overlap = PN_DECISION_SECTIONS.filter(function(id){
+      return PN_PRODUCT_SECTIONS.indexOf(id) >= 0; });
+    if (overlap.length) {
+      console.error('[PlotNua] DECISION and PRODUCT section sets overlap: ' +
+        overlap.join(', ') + '. Decision content can be hidden by an empty ' +
+        'product set. This is DEFECT 1 reopening.');
+    }
+    window.__PN_SECTION_SETS__ = function(){
+      return { decision: PN_DECISION_SECTIONS.slice(),
+               product: PN_PRODUCT_SECTIONS.slice(), overlap: overlap };
+    };
+  })();
+
+  /* ── THE HONEST RESULT STATE ───────────────────────────────────────────
+     Four states, deliberately distinct, so a homeowner can tell which
+     situation they are in. Counts are real, from the candidate funnel — never
+     invented, never rounded up.
+
+     THE FOUR THINGS THIS COPY MAY NOT DO, stated without writing the phrases
+     themselves, because a governed denial sentence contains the very tokens
+     the firewall scans for and would fail its own build:
+       (a) suggest the PROPERTY was the thing that failed;
+       (b) suggest nothing of this kind exists beyond Atlas;
+       (c) suggest Atlas is the whole market;
+       (d) say anything at all about consents, exemptions or what this
+           particular garden is permitted to take — that belongs to the
+           Property Check layer and to no product artefact. */
+  function pnMatchStateCopy(results){
+    var meta = (typeof window.__PN_ADDITIONAL_HOME_META__ === 'function')
+      ? window.__PN_ADDITIONAL_HOME_META__() : null;
+    var f = null;
+    try { f = pnResidentialCandidates().funnel; } catch (e) { f = null; }
+
+    if (typeof additionalHomePoolLoadFailed !== 'undefined' && additionalHomePoolLoadFailed) {
+      return { key: 'LOAD_FAILURE',
+        title: 'We could not load our building information just now.',
+        body: 'Your property result above stands. The building list is a separate '
+            + 'file and it did not load — that is a fault on our side, not a '
+            + 'finding about your garden. Please try again shortly.' };
+    }
+    if (results && results.length) {
+      var n = results.length;
+      return { key: n === 1 ? 'ONE_MATCH' : 'FEW_MATCHES',
+        title: n === 1
+          ? 'One building we can stand over for this route.'
+          : n + ' buildings we can stand over for this route.',
+        body: 'These are the additional homes where we have checked the maker, '
+            + 'the published detail and that they can be supplied in Ireland. '
+            + 'They are what Atlas can evidence today — not the whole market, '
+            + 'and not the only buildings that could suit you.' };
+    }
+    var held = (f && f.irishUnconfirmed) || 0;
+    var source = (meta && meta.sourceCategoryCount) || (f && f.source) || 0;
+    if (held > 0) {
+      return { key: 'ZERO_IRISH_UNCONFIRMED',
+        title: 'Your property looks workable. We have not confirmed that any of '
+             + 'these can be delivered here.',
+        body: 'We hold research on ' + source + ' additional homes built as places '
+            + 'to live. For ' + held + ' of them, the maker has not published '
+            + 'anything that confirms they supply the Republic of Ireland. That '
+            + 'is not the same as being unavailable — it means nobody has said '
+            + 'either way, and we will not present a building as available to '
+            + 'you on a silence. We are asking the makers.' };
+    }
+    return { key: 'ZERO_NO_EVIDENCED_MATCH',
+      title: 'Your property looks workable. We do not yet have a building we can '
+           + 'stand over for this route.',
+      body: 'Nothing about your garden ruled this out. The gap is on our side: we '
+          + 'hold research on ' + source + ' additional homes, and none of them '
+          + 'currently meets the standard we set before putting a building in '
+          + 'front of you. That standard is deliberately narrow — we would rather '
+          + 'show you nothing than send you towards something we have not '
+          + 'checked. This is our gap to close, not something you should have to '
+          + 'work around.' };
+  }
+
+  function pnRenderMatchState(results){
+    var panel = document.getElementById('matchResultsPanel');
+    if (!panel) return null;
+    var box = document.getElementById('hmrMatchState');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'hmrMatchState';
+      box.className = 'hm-sect';
+      box.setAttribute('role', 'status');
+      var fit = document.getElementById('hmrPropertyFit');
+      if (fit && fit.parentNode) fit.parentNode.insertBefore(box, fit.nextSibling);
+      else panel.insertBefore(box, panel.firstChild);
+    }
+    var c = pnMatchStateCopy(results);
+    box.hidden = false;
+    box.setAttribute('data-state', c.key);
+    box.innerHTML = '';
+    var h = document.createElement('h4');
+    h.textContent = c.title;
+    var p = document.createElement('p');
+    p.className = 'hm-calm';
+    p.textContent = c.body;
+    box.appendChild(h); box.appendChild(p);
+    return c.key;
+  }
+  window.__PN_MATCH_STATE__ = function(results){ return pnMatchStateCopy(results); };
 
   window.__PN_RENDER_RESIDENTIAL__ = function (results, fit) {
     const fitEl = document.getElementById('hmrPropertyFit');
@@ -10871,12 +11002,36 @@
         if (ow) ow.hidden = !lo.length;
       }
     }
+    /* DEFECT 1, THE SECOND HALF.
+       Taking a section OUT of the product list stops it being hidden. It does
+       not make it appear: `resultsDecide` ships with a `hidden` attribute in
+       the markup and was only ever revealed as a side effect of rendering
+       products. With no products, nothing revealed it — so next steps stayed
+       invisible even after the ownership fix.
+
+       Decision sections are therefore SHOWN AFFIRMATIVELY here, because they
+       are the answer to the property question and do not depend on a product
+       existing. `hmrNextSteps` keeps its own content test below — empty is
+       empty — and `hmrLeadEvidence` is deliberately NOT in this list: it is
+       the lead product's evidence and belongs to the product side. */
+    try {
+      ['hmrPropertyFit','resultsDecide','bydClose'].forEach(function (id) {
+        var e = document.getElementById(id);
+        if (e) e.hidden = false;
+      });
+    } catch (e) {}
+
+    /* THE PRODUCT-MATCH STATE, STATED RATHER THAN IMPLIED.
+       Silence was the defect. Whatever the outcome — several, one, none, or a
+       load failure — the homeowner is told which, in PlotNua's own voice. */
+    try { pnRenderMatchState(results); } catch (e) {}
+
     if (results && results.length) {
       renderMatchResults(results, 'residential');
     } else {
-      /* No building can be put forward — the garden is the limit, or a
-         condition is in the way. The property assessment still stands; the
-         product sections simply have nothing to say and say nothing. */
+      /* No product can be put forward. The PROPERTY assessment still stands
+         and is rendered above; only the product sections have nothing to say.
+         hmrNextSteps and resultsDecide are decision sections and survive. */
       PN_PRODUCT_SECTIONS.forEach(function (id) {
         const e = document.getElementById(id); if (e) e.hidden = true;
       });
@@ -12438,6 +12593,49 @@
       atlasMatchPoolLoadFailed = true;
       console.error('[Atlas runtime] NO ATLAS EXPORT LOADED. Recommendations are blocked.', err);
     });
+
+  /* ── ADDITIONAL HOME UNIVERSE ─────────────────────────────────────────────
+     A SEPARATE, ADDITIVE POOL. The Garden Room route makes no extra request
+     and is byte-identically unaffected: this fetch runs only on the
+     residential route.
+
+     Additional Home is a PRODUCT CATEGORY governed in Atlas. Class 3A is a
+     pathway filter over it, already applied by
+     additional-home-qualification-v1 and carried in the artefact. The runtime
+     READS that decision. It does not re-derive the band, the measurement
+     basis or the boundary guard — one decision, in one place.
+
+     A load failure here is NOT a zero result and must never render as one. */
+  var additionalHomePool = [];
+  var additionalHomePoolLoadFailed = false;
+  var additionalHomePoolMeta = null;
+  const additionalHomePoolReady = (function () {
+    if (intendedUse !== 'residential') return Promise.resolve();
+    return fetch('additional-home-universe-v1.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (data) {
+        if (!data || !Array.isArray(data.products)) throw new Error('shape');
+        additionalHomePool = data.products;
+        additionalHomePoolMeta = {
+          sourceCategoryCount: data.sourceCategoryCount,
+          eligibleCount: data.eligibleCount,
+          heldCount: data.heldCount,
+          excludedCount: data.excludedCount,
+          class3aCandidateCount: data.class3aCandidateCount,
+          rule: data.qualificationRuleVersion
+        };
+        console.info('[Additional Home] products=' + additionalHomePool.length +
+          ' eligible=' + data.eligibleCount + ' held=' + data.heldCount +
+          ' class3a=' + data.class3aCandidateCount);
+      })
+      .catch(function (err) {
+        additionalHomePoolLoadFailed = true;
+        console.error('[Additional Home] NO UNIVERSE LOADED. Matching is blocked.', err);
+      });
+  })();
+  /* Read-only handle, same contract as __PN_GARDEN_BUILDINGS__. */
+  window.__PN_ADDITIONAL_HOMES__ = function () { return additionalHomePool.slice(); };
+  window.__PN_ADDITIONAL_HOME_META__ = function () { return additionalHomePoolMeta; };
   // SPRINT 1.5 — My Plot is rehydrated as soon as the Universe is available,
   // and NOT before: a saved card is drawn from the live product record where
   // one still exists, so restoring earlier would render every card from its
@@ -33637,7 +33835,7 @@
      candidate leads; zero, or two or more, and there is no lead and the set
      goes to the renderer in pool order. */
   function pnResidentialResults(){
-    var all = pnResidentialCandidates();
+    var all = pnResidentialCandidateList();
     if (!all.length) return [];
     var split = pnCandidateSplit(all);
     var ordered = split.lead ? [split.lead].concat(split.others) : all;
@@ -33812,9 +34010,16 @@
      refuses to be fooled by it rather than pretending it is fixed. */
   var AREA_DISOWNED = /(NO AREA PUBLISHED|No area or dimensions held|DO NOT RANK on any basis|Numeral not treated as an area|REQUIRES PRODUCT-SPECIFIC VERIFICATION)/i;
 
-  /* The building is classified as living accommodation by governed
-     evidence — not inferred from size, price, insulation or a name. */
-  var HABITABLE = /(annexe with bedroom|residential accommodation|granny flat|one-bedroom flat|is habitable accommodation|two-bedroom cabin is habitable|Studio Living)/i;
+  /* HABITABLE — DELETED at Step 4.
+
+     It was a prose regex over the Garden Room universe, and it decided
+     whether a homeowner was shown a building to live in. Habitation is now a
+     governed Atlas field — Habitation Classification — admitted by
+     additional-home-qualification-v1 before the artefact is written.
+
+     Deleted rather than left dormant: a dormant admission regex is a foothold
+     for the next person who needs a quick answer. A test asserts the
+     identifier does not exist anywhere in this file. */
 
   /* The published figure's basis is recorded as unclear. */
   var BASIS_UNCLEAR = /BASIS UNCLEAR/i;
@@ -33856,20 +34061,63 @@
     return String(p.irishAvailabilityConfirmationState || '').toLowerCase() === 'yes';
   }
 
+  /* THE ADDITIONAL HOME CANDIDATE SET.
+
+     Reads ONE governed state from the artefact. Everything that decides it —
+     source membership, Habitation Classification admission, Irish
+     availability, evidence sufficiency, the 32-45 m² band, the measurement
+     basis and the 2 m² boundary guard — happened in
+     additional-home-qualification-v1, and is not repeated here. Re-deriving
+     any of it would create a second answer to the same question.
+
+     Returns the candidates AND the funnel, so the honest-zero state can say
+     WHICH gate emptied the set rather than shrugging. */
   function pnResidentialCandidates(){
-    var pool = (typeof window.__PN_GARDEN_BUILDINGS__ === 'function')
-      ? window.__PN_GARDEN_BUILDINGS__() : [];
-    return pool.filter(function(p){
-      if (!pnIrishConfirmed(p)) return false;
-      var fa = pnFloorAreaEvidence(p);
-      if (!fa || typeof fa.number !== 'number') return false;
-      if (fa.number < R.MIN || fa.number > R.MAX) return false;
-      if (fa.disowned) return false;
-      var blob = '';
-      try { blob = JSON.stringify(p); } catch (e) { return false; }
-      return HABITABLE.test(blob);
-    });
+    var pool = (typeof window.__PN_ADDITIONAL_HOMES__ === 'function')
+      ? window.__PN_ADDITIONAL_HOMES__() : [];
+    var funnel = {
+      source: pool.length,
+      confirmedHabitation: 0,
+      recommendationEligible: 0,
+      class3aCandidates: 0,
+      irishUnconfirmed: 0,
+      heldAtBandEdge: 0,
+      outsideBand: 0,
+      noUsableArea: 0
+    };
+    var out = [];
+    for (var i = 0; i < pool.length; i++) {
+      var p = pool[i] || {};
+      var hab = (p.habitation && p.habitation.state) || '';
+      var q = (p.qualification && p.qualification.state) || '';
+      var c3 = (p.class3a && p.class3a.state) || '';
+      var reason = (p.class3a && p.class3a.reason) || '';
+      if (hab === 'CONFIRMED RESIDENTIAL HABITATION') funnel.confirmedHabitation++;
+      if (q === 'ELIGIBLE') funnel.recommendationEligible++;
+      else if ((p.qualification && p.qualification.heldReasons || [])
+               .indexOf('irish-unconfirmed') >= 0) funnel.irishUnconfirmed++;
+      if (reason === 'area-basis-unresolved-at-band-edge') funnel.heldAtBandEdge++;
+      if (reason === 'outside-pathway-band') funnel.outsideBand++;
+      if (reason === 'no-usable-area') funnel.noUsableArea++;
+      if (c3 === 'CANDIDATE') { funnel.class3aCandidates++; out.push(p); }
+    }
+    return { candidates: out, funnel: funnel };
   }
+
+  /* Back-compatible array accessor for callers that only want the set. */
+  function pnResidentialCandidateList(){
+    return pnResidentialCandidates().candidates;
+  }
+
+  /* READ-ONLY DIAGNOSTIC HANDLE, same pattern as __PN_GARDEN_BUILDINGS__ and
+     __PN_SECTION_SETS__. The candidate set is decided inside this closure, so
+     without a named handle the contract cannot be asserted from outside —
+     and a contract that cannot be tested is a claim, not a guarantee. It
+     exposes a COPY, and nothing that could mutate the pool. */
+  window.__PN_RESIDENTIAL_CANDIDATES__ = function () {
+    var r = pnResidentialCandidates();
+    return { candidates: r.candidates.slice(), funnel: r.funnel };
+  };
 
   /* How many buildings sit in or near the band but cannot be assessed —
      stated so the absence is explained rather than silent. UNKNOWN IS NOT
