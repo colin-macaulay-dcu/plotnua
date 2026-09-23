@@ -1,9 +1,9 @@
 {
   "source": "PlotNua Atlas Core",
-  "generated": "2026-09-11T10:07:58Z",
+  "generated": "2026-09-23T10:23:47Z",
   "counts": {
     "gardenRooms": {
-      "count": 490,
+      "count": 480,
       "definition": "Products where Product Category = Garden Rooms"
     },
     "suppliers": {
@@ -11,7 +11,7 @@
       "definition": "Organisations where Organisation Type = Supplier"
     },
     "verifiedPrices": {
-      "count": 386,
+      "count": 390,
       "definition": "Product Pricing where Status = Verified",
       "ofTotalPricingRecords": 488
     }
