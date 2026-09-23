@@ -28,7 +28,12 @@ import re
 
 from atlas_common import cell, txt, classify_irish_availability
 
-RULE_VERSION = "additional-home-qualification-v1"
+# BUMPED at the measurement evidence ruling (23 Sep 2026). One version string
+# must not describe two different rules: the Class 3A upper-edge admission test
+# changed materially, so the identifier changes with it. Membership,
+# habitation admission, Irish availability and evidence sufficiency are all
+# untouched — only the pathway filter moved.
+RULE_VERSION = "additional-home-qualification-v1.1"
 ADDITIONAL_HOME = "Additional Home"
 
 CONFIRMED_HABITATION = "CONFIRMED RESIDENTIAL HABITATION"
@@ -49,6 +54,36 @@ BAND_MIN, BAND_MAX = 32.0, 45.0
 # Founder ruling Q1, provisional. A PlotNua uncertainty guard, NOT a regulatory
 # threshold and NOT part of Additional Home membership.
 BAND_EDGE_TOLERANCE_M2 = 2.0
+
+# ── THE MEASUREMENT EVIDENCE RULING (founder, 23 September 2026) ─────────────
+# S.I. No. 340 of 2026 Class 3A condition 7 applies a maximum of 45 square
+# metres to "the total area of such structures". The enacted wording does not
+# expressly say whether that is supplier internal floor area or external
+# building footprint, and the Information Note located through local-authority
+# and building-control sources does not resolve it authoritatively. Historic
+# Class 3 material using materially similar wording does not either.
+#
+# SO PLOTNUA DOES NOT MAKE THAT INFERENCE. This is an EVIDENCE rule, not an
+# interpretation of planning law: a supplier's VERIFIED_INTERNAL figure is
+# evidence of what the SUPPLIER measured, and is not by itself treated as
+# establishing the measurement the statutory ceiling is expressed in.
+#
+# WHAT IT DOES NOT SAY. It does not say, assert or imply that any held product
+# exceeds 45 m². Nothing here concludes non-compliance. The reason is missing
+# measurement evidence, and the vocabulary below is written so that it cannot
+# be read as anything else.
+#
+# UPPER BOUNDARY ONLY. The founder's ruling is explicit that the lower
+# boundary must not inherit this logic until the evidence issue is shown to be
+# equivalent there, and it is not: at 32 m² the internal/external difference
+# moves a product AWAY from the floor, not across the ceiling, so an internal
+# figure at or near 32 is the conservative reading rather than the risky one.
+#
+# Only a measurement of the whole structure can answer the ceiling question,
+# so only VERIFIED_EXTERNAL admits at the upper edge. NOMINAL is a published
+# designation rather than a verified measurement, and UNRESOLVED is already
+# held by the Q1 guard below.
+STATUTORY_AREA_BASES = frozenset({"VERIFIED_EXTERNAL"})
 
 # ── area: a usable number and a verified measurement are different facts ────
 AREA_FEATURES = ("internal floor area", "floor area")
@@ -230,8 +265,9 @@ def class_3a(q):
     if not (BAND_MIN <= n <= BAND_MAX):
         return {"state": "NOT_A_CANDIDATE", "reason": "outside-pathway-band",
                 "caveats": []}
+    basis = q["area"]["measurementBasis"]
     caveats = []
-    if q["area"]["measurementBasis"] == "UNRESOLVED":
+    if basis == "UNRESOLVED":
         near = (abs(n - BAND_MIN) <= BAND_EDGE_TOLERANCE_M2 or
                 abs(n - BAND_MAX) <= BAND_EDGE_TOLERANCE_M2)
         if near:
@@ -240,4 +276,20 @@ def class_3a(q):
                     "reason": "area-basis-unresolved-at-band-edge",
                     "caveats": ["area-basis-unresolved"]}
         caveats.append("area-basis-unresolved")
+
+    # THE UPPER-EDGE MEASUREMENT EVIDENCE RULE. Tested AFTER the Q1 guard, so
+    # an unresolved basis keeps its own, older and more specific reason rather
+    # than being relabelled by this one.
+    #
+    # Asymmetric BY EVIDENCE, not by preference: BAND_MAX only. See the note on
+    # STATUTORY_AREA_BASES. `abs()` is deliberately not used — a product below
+    # the ceiling by more than the tolerance is not at the edge, and one above
+    # the ceiling never reaches here at all.
+    if (BAND_MAX - n) <= BAND_EDGE_TOLERANCE_M2 and basis not in STATUTORY_AREA_BASES:
+        # HELD FROM THE PATHWAY ONLY. The product remains an Additional Home,
+        # remains CONFIRMED RESIDENTIAL HABITATION, remains ELIGIBLE, and keeps
+        # its Irish availability and price evidence untouched.
+        return {"state": "HELD",
+                "reason": "statutory-area-not-established-at-upper-band-edge",
+                "caveats": ["statutory-area-not-established"]}
     return {"state": "CANDIDATE", "reason": None, "caveats": caveats}

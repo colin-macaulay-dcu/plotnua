@@ -2,7 +2,7 @@
   "schema": "plotnua.additional-home-universe",
   "version": "1.0.0-candidate",
   "generated": "2026-09-22T22:55:36Z",
-  "qualificationRuleVersion": "additional-home-qualification-v1",
+  "qualificationRuleVersion": "additional-home-qualification-v1.1",
   "sourceCategory": "Additional Home",
   "sourceCategoryCount": 46,
   "confirmedHabitationCount": 46,
@@ -11,7 +11,7 @@
   "eligibleCount": 23,
   "heldCount": 23,
   "excludedCount": 0,
-  "class3aCandidateCount": 4,
+  "class3aCandidateCount": 2,
   "class3aBand": {
     "minM2": 32.0,
     "maxM2": 45.0,
@@ -69,7 +69,7 @@
       ],
       "description": "28sqm, 1-bedroom turnkey Signature Collection model; falls within NI's under-30sqm permitted-development threshold per manufacturer's own FAQ.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -135,7 +135,7 @@
       ],
       "description": "32sqm, 1-bedroom turnkey Signature Collection model.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -200,7 +200,7 @@
       ],
       "description": "37sqm, 1-bedroom turnkey Signature Collection model.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -265,7 +265,7 @@
       ],
       "description": "40sqm, 1-bedroom turnkey Signature Collection model. Note: price (£68,900) jumps sharply above the 37sqm model (£42,550) despite similar bed count — evidenced as published, not adjusted; possible spec-tier difference not explained on source page.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -331,7 +331,7 @@
       ],
       "description": "44sqm (11m x 4m), turnkey Signature Collection model. CONFLICT NOTE: the dedicated product page (signature-44) visible content says '1 bedroom' and heading 'The Signature 44'; the site's collection/FAQ listing page says '2 BED'; the product page's own meta title/description (likely stale cache) says 'Executive 44' at 'From £47,650 + delivery' — a different name and a different price to the £72,000 shown in the page body and matching the collection listing. Recorded as evidenced: name 'Signature 44', price £72,000 (matches collection listing, used on 2 independent pages), bedroom count genuinely conflicting (1 vs 2) — left as a flagged conflict, not resolved by inference. Full turnkey spec: designer kitchen w/ integrated appliances, full bathroom premium fixtures, electric heating throughout, built-in wardrobe, premium flooring, uPVC double-glazed windows, steel frame, fully insulated, 10-year warranty.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -396,7 +396,7 @@
       ],
       "description": "48sqm, 2-bedroom turnkey Signature Collection model.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -461,7 +461,7 @@
       ],
       "description": "58sqm, 2-bedroom turnkey Signature Collection model.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -526,7 +526,7 @@
       ],
       "description": "66sqm, 2-bedroom turnkey Signature Collection model.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -591,7 +591,7 @@
       ],
       "description": "84sqm, 3-bedroom turnkey Signature Collection model.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -660,7 +660,7 @@
       ],
       "description": "98sqm, 4-bedroom flagship turnkey Signature Collection model.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -723,7 +723,7 @@
       ],
       "description": "Compact entry-level self-contained garden annexe: double bedroom, fitted kitchen (IKEA-compatible units) and full bathroom, insulated for year-round living. 16ft x 17ft (4.9m x 5.2m). Supplied to comply with Section 13(2) of the Caravan Sites Act 1968 — no planning permission needed for a family member.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -784,7 +784,7 @@
       ],
       "description": "Made-to-width annexe, 16ft-32ft wide x 8ft deep, self-contained with kitchen and bathroom, same Caravan Act permitted-development route as other annexes in the range.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -850,7 +850,7 @@
       ],
       "description": "Family timber cabin, building area approx. 39m2, living area approx. 33m2. 2 bedrooms, 1 bathroom, open-plan kitchen/living, covered front porch. Wall height 2295mm, wall thickness options 34mm and 44mm, dual-pitched roof.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -907,7 +907,7 @@
       ],
       "description": "One bed cabin, 22.8m2 total, 4m x 5.7m, ridge height 4m, 70mm wall thickness, zero-cold-bridge tilt-and-turn double glazed windows. Bedroom 2.2x2.5m, bathroom 1x2.6m, kitchen 3.3x2.4m.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -964,7 +964,7 @@
       ],
       "description": "One bed cabin, 32m2 total, 4.0m x 8.0m, ridge height 4m, 70mm wall thickness. Glulam zero-cold-bridging tilt-and-turn 28mm double glazed windows and insulated 28mm doors. Bedroom 3.3x2.5m, bathroom 1.2x1.4m, kitchen 2.0x2.5m.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1021,7 +1021,7 @@
       ],
       "description": "High-end one bed cabin, 28.14m2 total, 6.7m x 4.2m, ridge height 4m, 80mm wall thickness. Bedroom 3.0x2.5m, bathroom 1.9x1.1m, decking 4.1x1.5m.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1078,7 +1078,7 @@
       ],
       "description": "Two bed cabin, 48m2 total, 6.0m x 8.0m, ridge height 3.4m, 44mm wall thickness. 2 bedrooms 3.0x3.5m each, bathroom 1.8x2.0m, kitchen & lounge 6.0x4.5m open-plan. 'Ideal for residential use, guest accommodation.'",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1135,7 +1135,7 @@
       ],
       "description": "Two bed cabin, 42m2 total, 6.0m x 7.0m, ridge height 2.75m, 70mm wall thickness. Glulam zero-cold-bridging tilt-and-turn 28mm double glazed windows, German-hardware doors. 2 bedrooms 3.0x3.0m each, bathroom 1.5x2.5m.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1192,7 +1192,7 @@
       ],
       "description": "Two bed cabin, 90m2 total, 10.0m x 9.0m, ridge height 3.4m, 80mm wall thickness. Entrance 2.7x1.9m, lounge 6.0x4.5m, bedroom 1 4.0x4.0m, bedroom 2 4.0x3.0m, bathroom 2.0x2.5m, kitchen 4.0x3.5m.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1249,7 +1249,7 @@
       ],
       "description": "Two bed cabin, 100m2 total, 10.0m x 10.0m, ridge height 3.7m, 80mm wall thickness. Bedroom 1 3.0x4.5m, bedroom 2 2.9x4.5m, bathroom 2.1x3.1m, kitchen & lounge 8.5x5.5m, 8 windows.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1306,7 +1306,7 @@
       ],
       "description": "Spacious 3-bedroom residential cabin (vendor's own product copy explicitly says '3 bedroom' despite being listed under the 'Two Bed Cabins' page/nav category - unresolved taxonomy conflict). 120m2 total, 10.0m x 12.0m, ridge height 3.3m, 70mm wall thickness. 3 bedrooms, bathroom, lounge, kitchen, storage room, separate cloakroom.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1363,7 +1363,7 @@
       ],
       "description": "SKU TWO BED H 7961-45. 7.94m x 6.08m external, 45m2 internal. Log thickness 45mm (page text conflictingly says '44mm standard' - unresolved), wall height 2.60m, ridge height 3.380m. Open-plan kitchen/living, two double bedrooms, bathroom. External wall insulation package included as standard (unlike the Garden Room range where it's optional).",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1375,9 +1375,11 @@
         }
       },
       "class3a": {
-        "state": "CANDIDATE",
-        "reason": null,
-        "caveats": []
+        "state": "HELD",
+        "reason": "statutory-area-not-established-at-upper-band-edge",
+        "caveats": [
+          "statutory-area-not-established"
+        ]
       }
     },
     {
@@ -1423,7 +1425,7 @@
       ],
       "description": "11.5m x 2.25m x 2.45m, 26m2. Fully fitted bathroom and kitchenette, configurable 1- or 2-bedroom layout. Underfloor heating. Marketed for guest accommodation, rental use, independent living.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1478,7 +1480,7 @@
       ],
       "description": "Off-the-shelf, single-storey architect-designed home for open-plan, indoor-outdoor living. Available in 2-bedroom or 3-bedroom layouts within the same refined timber envelope, with curated finishes. Sustainably sourced mass timber structure (carbon-storing), built off-site in precision-crafted modules, delivered and assembled on land within a couple of weeks. All-electric heating and hot water, heat-recovery ventilation (MVHR), dimmable lighting, double-glazed windows. Tiered planning-application support available (self-service pack, site-specific drawing pack, or full Koto-managed planning service). 'Available to purchase today in the UK and across Europe.'",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -1535,7 +1537,7 @@
       ],
       "description": "Pocket-size KODA, under 20m². The smallest model in the KODA Loft family: a fully finished, relocatable timber-frame micro-house delivered in one piece on a trailer and installed within a working day. Nordic minimalist interior with high ceiling; can operate as a residence, home office, guest cabin, retail/café space or studio. External dimensions per manufacturer: L19'5\" x W11'6\" x H13'1\" (approx. 5.92m x 3.51m x 3.99m).",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1590,7 +1592,7 @@
       ],
       "description": "A movable timber-frame house — the original/classic KODA size. Fully finished, relocatable micro-house delivered in one piece on a trailer and installed within a working day. Nordic minimalist interior with high ceiling; multi-functional use (residence, home office, retail/café, hotel/guest cabin). External dimensions per manufacturer: L24'5\" x W12'11\" x H13'1\" (approx. 7.44m x 3.94m x 3.99m).",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1645,7 +1647,7 @@
       ],
       "description": "A movable timber-frame house with extra space — the largest model in the KODA Loft family (family floor-area range stated as 19-50m² depending on model). Fully finished, relocatable micro-house delivered in one piece on a trailer and installed within a working day. External dimensions per manufacturer: L39'9\"/42'10\" x W12'11\" x H13'1\" (approx. 12.12m/13.06m x 3.94m x 3.99m) — two length variants stated.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1715,7 +1717,7 @@
       ],
       "description": "BIOBUILDS' smallest catalogued 'Homes' model: a 48m², 1-2 bedroom Passivhaus-certified modular home. Built on the same certified MODULAR wall system as the rest of the range (Passivhaus Institut Darmstadt-certified, ≤0.4 ACH@50 airtightness, ~15 kWh/m²/year energy demand, EPD carbon-negative). Sold Turnkey (fully finished, from €112,700+VAT) or Exterior Finished (shell only, price not separately confirmed for this model). Ground-screw foundation (no cement), ~3-week move-in from order. Ireland is a selectable delivery country on the order configurator; full room-by-room floorplan and finish-option detail was verified directly for the Sanctuary (142m²) configurator view only — Wanderlust's own configurator detail (exact floorplan layout, cladding/window choices) was not separately verified beyond the catalog-level size/bed-count/price figures.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1785,7 +1787,7 @@
       ],
       "description": "A 95m², 3-bedroom Passivhaus-certified modular home — BIOBUILDS' second-smallest catalogued 'Homes' model, comparable in scale to Atlas's existing Koto Hytti Home (101m² external / 81m² GIA). Built on the same certified MODULAR wall system as the rest of the range (Passivhaus Institut Darmstadt-certified, ≤0.4 ACH@50 airtightness, ~15 kWh/m²/year energy demand, EPD carbon-negative). Sold Turnkey (fully finished, from €208,500+VAT) or Exterior Finished (shell only, price not separately confirmed for this model). Ground-screw foundation (no cement), ~3-week move-in from order. Ireland is a selectable delivery country on the order configurator; full room-by-room floorplan and finish-option detail was verified directly for the Sanctuary (142m²) configurator view only — Serenity's own configurator detail was not separately verified beyond the catalog-level size/bed-count/price figures.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -1852,7 +1854,7 @@
       ],
       "description": "A frame-modular timber tiny house model measuring 5.1m x 4.4m with a 22.44m² external build footprint and 16.5m² internal living area, plus a 29.4m² exterior terrace. Layout comprises a 4m² bathroom and a 12.5m² combined kitchen-living space. Built using HSB (timber-frame) construction with 150-200mm insulation. Offered in two finishing tiers: Basic (€25,533 excl. VAT) and Optima (€29,103 excl. VAT).",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -1921,7 +1923,7 @@
       ],
       "description": "A frame-modular timber tiny house model measuring 6.5m x 3.0m with a 19.5m² external build footprint and 14.2m² internal living area. Layout comprises a 2.96m² bathroom and an 11.24m² combined kitchen-living space, offered in two internal layout options. Built using HSB (timber-frame) construction with 150-200mm insulation, matching the Baby model's construction specification. Offered in two finishing tiers: Basic (€28,070 excl. VAT) and Optima (€32,830 excl. VAT).",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -1983,7 +1985,7 @@
       ],
       "description": "Entry-tier self-contained garden annexe: open-plan studio layout with kitchen, bathroom and living area, 150mm insulation, turnkey (design, planning, foundations, utilities, decoration included), 10-year warranty.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2045,7 +2047,7 @@
       ],
       "description": "Self-contained one-bedroom garden annexe: separate bedroom, kitchen, bathroom and living area, 150mm insulation, turnkey scope, 10-year warranty.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2107,7 +2109,7 @@
       ],
       "description": "Largest self-contained garden annexe tier: two bedrooms, kitchen, bathroom and living area, 150mm insulation, turnkey scope, 10-year warranty. Largest example on the published price matrix (12.0m x 6.0m external) reaches £144,000.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2166,7 +2168,7 @@
       ],
       "description": "Compact entry model, road-legal tiny house on wheels. 5.0m length, 12.5m² area, sleeps 2 adults. \"Compact freedom... precision-packed design for singles, nomads or weekend escapes.\" Off-grid capable, custom-built to order.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2225,7 +2227,7 @@
       ],
       "description": "Family-sized road-legal tiny house on wheels. 7.2m length, 25m² area, sleeps 4 adults, under 3.5t. \"Spacious, smart, road-legal... natural materials, ready for on or off-grid living.\" Two named variants (Jupiter, Saturn) within this series.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2284,7 +2286,7 @@
       ],
       "description": "Largest model, road-legal tiny house on wheels. 7.2-7.8m length, 25-28m² area, sleeps 4 adults, under 3.5t. \"Extra length, extra luxury... family-sized footprint with extended lounge and full-height storage.\"",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2350,7 +2352,7 @@
       ],
       "description": "Compact 30 sqm turnkey Scandinavian house, the entry size in Sommarnöjen's core Sommar range. Available in Wide (398 x 753 cm) or Narrow (330 x 909 cm) footprint, in three architectural styles (Original/Tidlös, Klassisk, Modern) plus a lower-profile Modern shed-roof variant (height 320 cm vs 390 cm). Fully turnkey: winter-insulated, solid pine floors treated with hard wax oil, bespoke Sommarnöjen-design kitchen with integrated Electrolux appliances, bathroom with underfloor heating and natural granite ceramics, hand-crafted indoors in Sweden and delivered complete on a trailer, lifted onto a prepared foundation by crane.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2415,7 +2417,7 @@
       ],
       "description": "40 sqm turnkey Scandinavian house, the mid-size model in Sommarnöjen's core Sommar range and its natural flagship for full-time Scandinavian living. Dimensions 398 x 1005 cm, offered in three architectural styles (Original/Tidlös, Klassisk, Modern). Fully turnkey: winter-insulated, solid pine floors treated with hard wax oil, bespoke Sommarnöjen-design kitchen with integrated Electrolux appliances, bathroom with underfloor heating and natural granite ceramics, hand-crafted indoors in Sweden and delivered complete on a trailer, lifted onto a prepared foundation by crane.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "HELD",
         "heldReasons": [
           "irish-unconfirmed"
@@ -2481,7 +2483,7 @@
       ],
       "description": "Smallest model, 25m² — studio or small one-bedroom layout. On-site built to full residential standard (not prefabricated). Marketed by the supplier as 'ideal for home office, rental or guest use.' Includes design, build and full project management. Dublin & commuter areas only.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -2545,7 +2547,7 @@
       ],
       "description": "33m², one bedroom. Supplier's own copy: 'a great unit for more long term use... enough space to live and yet keep plenty of garden space.' On-site built to full residential standard. Includes design, build and full project management. Dublin & commuter areas only.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -2610,7 +2612,7 @@
       ],
       "description": "45m², configurable as one larger bedroom or two bedrooms. Supplier's own copy: 'spacious living with modern design, creating a comfortable home for independent living. Possible 2 Bedroom if required.' On-site built to full residential standard. Includes design, build and full project management. Dublin & commuter areas only.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -2675,7 +2677,7 @@
       ],
       "description": "Largest model, 48m², two bedrooms. Supplier's own copy: 'for long term living this makes a comfortable apartment.' On-site built to full residential standard. Includes design, build and full project management. Dublin & commuter areas only.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -2726,7 +2728,7 @@
       "sources": [],
       "description": null,
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -2790,7 +2792,7 @@
       ],
       "description": "32 m² Dublin-manufactured light-gauge steel-frame modular living unit described for auxiliary dwelling, guest-suite and one-bedroom uses. Published dimensions: 8.0 m × 4.0 m. Supplier states kitchen and bathroom are included for this range, excluding appliances.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -2854,7 +2856,7 @@
       ],
       "description": "45 m² Dublin-manufactured light-gauge steel-frame modular unit described for self-contained apartment, multi-room workspace and two-bedroom uses. Published dimensions: 9.0 m × 5.0 m or 7.5 m × 6.0 m. Supplier states kitchen and bathroom are included, excluding appliances.",
       "qualification": {
-        "rule": "additional-home-qualification-v1",
+        "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": [],
@@ -2866,9 +2868,11 @@
         }
       },
       "class3a": {
-        "state": "CANDIDATE",
-        "reason": null,
-        "caveats": []
+        "state": "HELD",
+        "reason": "statutory-area-not-established-at-upper-band-edge",
+        "caveats": [
+          "statutory-area-not-established"
+        ]
       }
     }
   ]

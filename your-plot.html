@@ -10434,6 +10434,20 @@
        journey states its own governed conditions from published sources. */
     'residential': {
       label: 'Home in the Garden',
+      /* THE CATEGORY THESE RESULTS BELONG TO — declared at the pre-deployment
+         truth review, on the condition this entry's own note set: it arrives
+         with the Residential Qualification layer, and that layer is now here
+         (additional-home-qualification-v1 + the Class 3A candidate contract).
+
+         Plot Twist excludes this category before selecting, so a homeowner
+         being told whether their garden can hold a home is never offered
+         'a home in your garden' as the surprise. It is the same token Garden
+         Room declares, which is correct: neither route may offer a building
+         in the garden as its Plot Twist.
+
+         `views` REMAINS DELIBERATELY ABSENT. Residential ranks nothing, and
+         declaring it would describe a capability that does not exist. */
+      category: 'garden-building',
       entryHeadline: "Let's start with your property",
       entrySubhead: "Enter your Eircode and we'll begin with the place you already have.",
       matchKicker: 'Your Home in the Garden',
@@ -34352,6 +34366,12 @@
       class3aCandidates: 0,
       irishUnconfirmed: 0,
       heldAtBandEdge: 0,
+      /* The measurement evidence ruling's own hold, counted separately from
+         the Q1 unresolved-basis hold. Two different evidence gaps must not be
+         added together: one is "we do not know what the supplier measured",
+         the other is "we do know, and it is not the measurement the ceiling
+         is expressed in". Diagnostic only; no homeowner copy reads it. */
+      heldStatutoryArea: 0,
       outsideBand: 0,
       noUsableArea: 0
     };
@@ -34367,6 +34387,8 @@
       else if ((p.qualification && p.qualification.heldReasons || [])
                .indexOf('irish-unconfirmed') >= 0) funnel.irishUnconfirmed++;
       if (reason === 'area-basis-unresolved-at-band-edge') funnel.heldAtBandEdge++;
+      if (reason === 'statutory-area-not-established-at-upper-band-edge')
+        funnel.heldStatutoryArea++;
       if (reason === 'outside-pathway-band') funnel.outsideBand++;
       if (reason === 'no-usable-area') funnel.noUsableArea++;
       if (c3 === 'CANDIDATE') { funnel.class3aCandidates++; out.push(p); }
