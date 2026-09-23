@@ -10922,27 +10922,29 @@
     }
     var held = (f && f.irishUnconfirmed) || 0;
     var source = (meta && meta.sourceCategoryCount) || (f && f.source) || 0;
+    /* UNCONFIRMED IS NOT UNAVAILABLE. This state exists precisely to keep
+       those two apart, and the copy says so in as many words. */
     if (held > 0) {
       return { key: 'ZERO_IRISH_UNCONFIRMED',
-        title: 'Your property looks workable. We have not confirmed that any of '
+        title: 'Your property looks workable. We haven\'t confirmed that any of '
              + 'these can be delivered here.',
-        body: 'We hold research on ' + source + ' additional homes built as places '
-            + 'to live. For ' + held + ' of them, the maker has not published '
-            + 'anything that confirms they supply the Republic of Ireland. That '
-            + 'is not the same as being unavailable — it means nobody has said '
-            + 'either way, and we will not present a building as available to '
-            + 'you on a silence. We are asking the makers.' };
+        body: 'That doesn\'t mean the option isn\'t available. We hold research on '
+            + source + ' additional homes built as places to live. For ' + held
+            + ' of them, the maker hasn\'t published anything confirming they '
+            + 'supply the Republic of Ireland — nobody has said either way. '
+            + 'Not confirmed is not the same as not available, and we won\'t '
+            + 'present a building to you as available on a silence. We\'re '
+            + 'asking the makers.' };
     }
     return { key: 'ZERO_NO_EVIDENCED_MATCH',
-      title: 'Your property looks workable. We do not yet have a building we can '
-           + 'stand over for this route.',
-      body: 'Nothing about your garden ruled this out. The gap is on our side: we '
-          + 'hold research on ' + source + ' additional homes, and none of them '
-          + 'currently meets the standard we set before putting a building in '
-          + 'front of you. That standard is deliberately narrow — we would rather '
-          + 'show you nothing than send you towards something we have not '
-          + 'checked. This is our gap to close, not something you should have to '
-          + 'work around.' };
+      title: 'Your property looks workable. We don\'t yet have a building that '
+           + 'meets our evidence standard for this route.',
+      body: 'That doesn\'t mean the option isn\'t available. It means we don\'t yet '
+          + 'have enough verified information to put a specific building in front '
+          + 'of you with confidence. We hold research on ' + source + ' additional '
+          + 'homes built as places to live, and we would rather show you nothing '
+          + 'than send you towards something we haven\'t checked properly. That is '
+          + 'our gap to close, not yours to work around.' };
   }
 
   function pnRenderMatchState(results){
@@ -10954,8 +10956,22 @@
       box.id = 'hmrMatchState';
       box.className = 'hm-sect';
       box.setAttribute('role', 'status');
+      /* RESULT ORDER, CORRECTED AT VISUAL QA.
+           PROPERTY CONCLUSION  →  ATLAS MATCH STATE  →  DETAILED PROPERTY
+           CHECK  →  WHAT TO ESTABLISH NEXT  →  closing material.
+
+         The match state was previously inserted after the WHOLE
+         #hmrPropertyFit chapter, which put it below the entire property-check
+         disclosure. A homeowner reached the long regulatory evidence before
+         learning what Atlas could actually put in front of them. The anchor is
+         now the verdict sentence itself, so the match state sits directly
+         under the property conclusion and directly above the detailed check.
+         Nothing in the Property Check is hidden, shortened or reordered. */
+      var verdict = document.getElementById('hmrFitVerdict');
       var fit = document.getElementById('hmrPropertyFit');
-      if (fit && fit.parentNode) fit.parentNode.insertBefore(box, fit.nextSibling);
+      if (verdict && verdict.parentNode)
+        verdict.parentNode.insertBefore(box, verdict.nextSibling);
+      else if (fit && fit.parentNode) fit.parentNode.insertBefore(box, fit.nextSibling);
       else panel.insertBefore(box, panel.firstChild);
     }
     var c = pnMatchStateCopy(results);
@@ -11021,10 +11037,21 @@
       });
     } catch (e) {}
 
-    /* THE PRODUCT-MATCH STATE, STATED RATHER THAN IMPLIED.
-       Silence was the defect. Whatever the outcome — several, one, none, or a
-       load failure — the homeowner is told which, in PlotNua's own voice. */
-    try { pnRenderMatchState(results); } catch (e) {}
+    /* THE ZERO EXPLANATION, AND ONLY AT ZERO.
+       Silence at zero was the defect: a positive property verdict followed by
+       nothing. An explanation where products ARE shown is not a fix, it is an
+       extra panel on a journey that already works — so one match and several
+       matches use the original Results journey untouched.
+
+       A load failure also reaches here with an empty set, and is a different
+       sentence, not a zero result. */
+    try {
+      if (!results || !results.length) pnRenderMatchState(results);
+      else {
+        var msBox = document.getElementById('hmrMatchState');
+        if (msBox) { msBox.hidden = true; msBox.innerHTML = ''; }
+      }
+    } catch (e) {}
 
     if (results && results.length) {
       renderMatchResults(results, 'residential');
@@ -12636,6 +12663,125 @@
   /* Read-only handle, same contract as __PN_GARDEN_BUILDINGS__. */
   window.__PN_ADDITIONAL_HOMES__ = function () { return additionalHomePool.slice(); };
   window.__PN_ADDITIONAL_HOME_META__ = function () { return additionalHomePoolMeta; };
+
+  /* ── LOCAL-ONLY VISUAL REVIEW HARNESS ─────────────────────────────────────
+     WHY IT EXISTS. The Eircode lookup goes through the PlotNua geocode Worker,
+     which allows exactly one Origin (the live apex). From localhost the
+     browser sends a different Origin, the Worker answers 403, and the journey
+     stops at Entry — correctly, and for a security reason that must not be
+     weakened to make a laptop convenient. Without this, the Step 4 result
+     states cannot be seen at all before deployment.
+
+     WHAT IT DOES. Supplies ONLY the property-assessment payload the Entry
+     screen would have produced, then calls the REAL renderer with the REAL
+     Additional Home candidates from the REAL artefact. No mock page, no
+     fake cards, no second renderer.
+
+     FAIL-CLOSED. Three independent conditions, all required:
+       1. hostname is localhost / 127.0.0.1 / ::1
+       2. the page is served over http:, not https:
+       3. ?review=additional-home is present
+     On the live site condition 1 fails and this block does nothing at all.
+
+     REMOVABLE. One contiguous block; deleting it leaves the runtime intact. */
+  (function () {
+    var h = location.hostname;
+    var isLocal = (h === 'localhost' || h === '127.0.0.1' || h === '::1');
+    if (!isLocal) return;
+    if (location.protocol !== 'http:') return;
+    var qs = new URLSearchParams(location.search);
+    if (qs.get('review') !== 'additional-home') return;
+    /* FOURTH GATE, ADDED AT VISUAL QA.
+       The harness was gated on host, protocol and parameter but NOT on the
+       journey. ?discovery=garden-room&review=additional-home therefore forced
+       the residential fixture and the Additional Home match state onto a
+       Garden Room page. Local-only, but it is still one journey reaching into
+       another, which this programme does not allow anywhere. */
+    if (intendedUse !== 'residential') return;
+
+    var want = (qs.get('state') || 'normal').toLowerCase();
+
+    function fixture(){
+      return {
+        verdict: 'Your garden can take a home — worth taking further. '
+               + 'The conditions look workable.',
+        whyHtml: '<p>REVIEW FIXTURE. This paragraph stands in for the property '
+               + 'assessment that the Eircode journey would have produced.</p>',
+        calcHtml: '<p>REVIEW FIXTURE. Calculations stand in for the real '
+               + 'measurement output.</p>',
+        checkHtml: '<p>REVIEW FIXTURE. Limitations stand in for the real '
+               + 'uncertainty statement.</p>',
+        nextHtml: '<li>Confirm the exact position and separation on site.</li>'
+                + '<li>Establish services — water, drainage and power.</li>'
+                + '<li>Run a Property Check before approaching anyone.</li>'
+      };
+    }
+
+    function banner(state, n){
+      var b = document.getElementById('pnReviewBanner');
+      if (!b) {
+        b = document.createElement('div');
+        b.id = 'pnReviewBanner';
+        b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;'
+          + 'background:#7a2f12;color:#fff;font:600 12px/1.5 system-ui,sans-serif;'
+          + 'letter-spacing:.06em;padding:8px 16px;text-align:center;';
+        document.body.appendChild(b);
+      }
+      b.textContent = 'LOCAL REVIEW MODE · state=' + state + ' · '
+        + n + ' real Additional Home candidate(s) · '
+        + 'THE PROPERTY ASSESSMENT ABOVE IS A FIXTURE. THE PRODUCT DATA IS REAL.';
+    }
+
+    additionalHomePoolReady.then(function () {
+    /* THE ADDRESS THE REAL JOURNEY WOULD HAVE PRODUCED.
+
+       STEP 5B. The harness supplied the property assessment but NOT the
+       geocode, and several parts of the SHIPPED Results journey read the
+       geocode rather than the assessment:
+         pnHomeownerCounty()      -> the Local Option lens
+         pickHiddenPotential()    -> the Plot Twist lens
+       With no address both answered null, every lens fell to its not-yet
+       card, renderLensRail()'s own P2 rule counted zero RESOLVED lenses and
+       wiped the rail. The lens rail was therefore invisible in review while
+       being perfectly healthy in production. A harness that hides a shipped
+       section is not a review instrument, it is a second bug.
+
+       This is the EXISTING review fixture, reused verbatim from
+       enterResultsReviewMode() so there is one review address on this page and
+       not two. Its shape is load-bearing and is documented there: the
+       'Co. Dublin' segment is what pnHomeownerCounty() reads, and the trailing
+       parenthetical is what it and simplifyLocalityDisplay() already strip.
+       Nothing about Plot Twist, the Local Option or the rail is changed —
+       they are simply given the input the real journey gives them.
+
+       IT IS SET HERE, INSIDE THE ASYNC CALLBACK, NOT IN THE BLOCK BODY.
+       `geocodedResult` is a `let` declared far below this point in the same
+       module, so assigning it synchronously reads it inside its temporal dead
+       zone and throws before the harness runs. Measured, not assumed: the
+       first attempt did exactly that. */
+    geocodedResult = {
+      lat: 53.2905, lon: -6.2413,
+      formattedAddress: 'Dundrum, Co. Dublin (LOCAL DEV REVIEW — not a real customer address)',
+      locationType: 'ROOFTOP', placeId: null, isRooftop: true
+    };
+
+      var all = [];
+      try {
+        all = (typeof window.__PN_RESIDENTIAL_RESULTS__ === 'function')
+          ? window.__PN_RESIDENTIAL_RESULTS__() : [];
+      } catch (e) { console.error('[REVIEW] results failed', e); all = []; }
+      var results = all;
+      if (want === 'zero') results = [];
+      else if (want === 'one') results = all.slice(0, 1);
+      try {
+        window.__PN_RENDER_RESIDENTIAL__(results, fixture());
+        banner(want, results.length);
+        console.info('[REVIEW] state=' + want + ' candidates=' + results.length);
+      } catch (e) {
+        console.error('[REVIEW] harness failed', e);
+      }
+    });
+  })();
   // SPRINT 1.5 — My Plot is rehydrated as soon as the Universe is available,
   // and NOT before: a saved card is drawn from the live product record where
   // one still exists, so restoring earlier would render every card from its
@@ -13134,7 +13280,24 @@
     }
     // In review mode the fallback is stated on screen. A warning in a console
     // nobody opens is how this went unnoticed for four sprints.
-    if (typeof LEDGER_REVIEW_MODE !== 'undefined' && LEDGER_REVIEW_MODE) {
+    /* STEP 4 VISUAL QA CORRECTION — DIAGNOSTIC OWNERSHIP.
+       This panel describes the GARDEN ROOM recommendation universe. It is
+       gated on LEDGER_REVIEW_MODE, which is true for any ?review= value, so
+       the Additional Home review harness inherited it and displayed Garden
+       Room metadata beside an Additional Home result.
+
+       The panel is retained in full for the review modes it actually
+       describes. It is withheld from ?review=additional-home, where it would
+       describe the wrong universe. The homeowner experience is unchanged: with
+       no ?review= parameter LEDGER_REVIEW_MODE is false and this block has
+       never run. */
+    var pnReviewParam = null;
+    try { pnReviewParam = new URLSearchParams(location.search).get('review'); }
+    catch (e) { pnReviewParam = null; }
+    var pnRuntimePanelAllowed =
+      (typeof LEDGER_REVIEW_MODE !== 'undefined' && LEDGER_REVIEW_MODE)
+      && pnReviewParam !== 'additional-home';
+    if (pnRuntimePanelAllowed) {
       // PB041 PART 6 — the review-mode ATLAS RUNTIME panel. Every line the
       // brief asked for, read from the runtime rather than from a report.
       const bar = document.createElement('div');
@@ -30770,6 +30933,11 @@
      Neither shows a number. That is the only thing they have in common. */
   const PB046_AMBIGUOUS_PRICE = 'Price not confirmed';
 
+  /* THE THIRD UNPRICED STATE — evidenced quote-only.
+     Set ONLY from a governed price state that says so. A null price is still
+     "not published"; the two never merge. */
+  const PB046_QUOTE_PRICE = 'Priced on enquiry';
+
   /* The same state, said in a full sentence where a reason needs one. It says
      what is true and stops: no candidate figures, no count, no record ids, no
      talk of adjudication or verification ladders. */
@@ -30914,6 +31082,15 @@
       return { known: false, kind: 'ambiguous',
                amount: null, ceiling: null, currency: cur, scopeNote: scope,
                figure: null, display: PB046_AMBIGUOUS_PRICE, tail: null };
+    }
+    /* Tested BEFORE the no-usable-price branch, for the same reason
+       'ambiguous' is: that branch reads a missing number as a missing price
+       and would tell the homeowner this maker publishes no price, when the
+       governed evidence says the maker quotes each build. */
+    if (e.quoteOnly === true) {
+      return { known: false, kind: 'quote-only',
+               amount: null, ceiling: null, currency: cur, scopeNote: scope,
+               figure: null, display: PB046_QUOTE_PRICE, tail: 'on enquiry' };
     }
     if (amount == null) {
       return { known: false, kind: pnZeroPriceRecord(P) ? 'zero-record' : 'none',
@@ -33834,6 +34011,80 @@
      qualification sits unambiguously inside the band. Exactly one such
      candidate leads; zero, or two or more, and there is no lead and the set
      goes to the renderer in pool order. */
+  /* THE PRODUCT VIEW — DATA INPUT ONLY, NO NEW COMPONENT.
+
+     The shipped Results components (hero, supplier line, evidence drawer,
+     alternatives rail, Compare, My Plot) read a product under the key names
+     the Garden Room universe uses. Additional Home holds the same facts under
+     its own governed names. This presents each governed record to those
+     components under the names they already read.
+
+     IT IS A RENAME, NOT AN INVENTION. Every value below comes from the
+     governed record. A Garden Room key with no honest Additional Home
+     equivalent — designLanguage, glazing, insulation, manufactureCountry,
+     productType, availabilityStatus, verificationStatus, priceBasis,
+     priceEvidence, organisationEvidence, the features tree, and the Garden
+     Room qualification/tier/caveats — is ABSENT, not filled with a default.
+     Absent is how the shipped components already handle a sparse product.
+
+     The Garden Room `qualification` key is deliberately NOT populated from
+     the Additional Home `qualification` object: they are different rules with
+     different vocabularies, and one must never be read as the other. The
+     governed record travels intact under its own key instead.
+
+     The internal research prose behind the habitation decision is governance
+     material. It is not in the artefact and is not reachable from this view at
+     any depth; a guard over the whole built file asserts that the phrase
+     naming that field appears nowhere in the runtime. */
+  function pnAdditionalHomeView(p){
+    if (!p || !p.area || !p.class3a) return p;   /* not an Additional Home record */
+    var v = {
+      id: p.id,
+      productId: p.id,
+      productCode: p.productCode,
+      name: p.productName,
+      productName: p.productName,
+      organisation: p.organisation,
+      productCategory: p.productCategory,
+      productUrl: p.productUrl || null,
+      /* Governed area, under the name the components read. */
+      floorAreaM2: (p.area && typeof p.area.number === 'number') ? p.area.number : null,
+      area: p.area,
+      /* A FIGURE ONLY WHEN ONE IS VERIFIED. POA and not-published both leave
+         this null, because there is no number to show and inventing one is
+         the failure this contract exists to prevent. */
+      price: (p.price && p.price.state === 'VERIFIED_NUMERIC_PRICE' &&
+              typeof p.price.amount === 'number') ? p.price.amount : null,
+      currency: (p.price && p.price.currency) || null,
+      /* The governed price, in the shape the ONE price presentation contract
+         already reads. `priceType` is Atlas's own token, carried across so
+         "Starting From" still prints as "From" and a standard price still
+         prints as itself. `quoteOnly` is set ONLY by the governed state that
+         means it; a not-published price sets nothing and falls through to the
+         not-published sentence, which is the true one for it.
+         No range is asserted: the Additional Home contract carries a single
+         figure, so from/to stay absent rather than being invented. */
+      priceEvidence: (p.price ? {
+        priceType: p.price.priceType || null,
+        currency: p.price.currency || null,
+        base: (p.price.state === 'VERIFIED_NUMERIC_PRICE' &&
+               typeof p.price.amount === 'number') ? p.price.amount : null,
+        from: null, to: null,
+        quoteOnly: p.price.state === 'EVIDENCED_POA_QUOTE'
+      } : null),
+      /* Irish availability, in the shape pnIrishConfirmed already reads. */
+      irishAvailability: !!(p.irish && p.irish.state === 'CONFIRMED'),
+      irishAvailabilityConfirmationState:
+        (p.irish && p.irish.state === 'CONFIRMED') ? 'Yes' : 'No',
+      noPublishedIrishRoute: !!(p.irish && p.irish.noPublishedRoute),
+      /* The governed record, intact, under a name that cannot be mistaken for
+         a Garden Room field. */
+      additionalHome: p,
+      class3a: p.class3a
+    };
+    return v;
+  }
+
   function pnResidentialResults(){
     var all = pnResidentialCandidateList();
     if (!all.length) return [];
@@ -33844,7 +34095,7 @@
       var ev = pnCandidateEvidence(p, lead);
       return {
         role: 'residential',
-        product: p,
+        product: pnAdditionalHomeView(p),
         ctx: {
           discoveryContext: 'residential',
           intendedUse: 'residential',
@@ -34030,6 +34281,25 @@
   var TOP_OF_BAND = /(outer edge of that route|TOP of the 32-45|will exceed 45)/i;
 
   function pnFloorAreaEvidence(p){
+    /* ADDITIONAL HOME CONTRACT FIRST.
+       Additional Home records carry `area.number` and a GOVERNED
+       `area.measurementBasis`, decided by additional-home-qualification-v1.
+       They carry no Garden Room `features` tree at all, which is why this
+       function returned null and the caller threw.
+
+       The basis is CARRIED, never re-decided: nothing here re-tests the band,
+       re-reads the 2 m² guard or re-derives internal versus external. The
+       decision was made once, upstream.
+
+       `disowned` is false by construction: a record whose area was disowned
+       never reaches a governed candidate state, so there is nothing here to
+       refuse. */
+    var ah = p && p.area;
+    if (ah && typeof ah.number === 'number') {
+      return { number: ah.number, unit: ah.unit || 'm²',
+               text: ah.text || '', disowned: false,
+               basis: ah.measurementBasis || null };
+    }
     var fa = (p && p.features && p.features.floorArea) || null;
     if (!fa) return null;
     var recs = fa.records || [];
@@ -34119,14 +34389,45 @@
     return { candidates: r.candidates.slice(), funnel: r.funnel };
   };
 
+  /* The residential result set, in the {role, product, ctx} shape the
+     production renderer consumes. Exposed for the same reason: this function
+     lives in the HOME module scope, which the page script cannot see — the
+     boundary this file already documents for renderMatchResults and els. */
+  window.__PN_RESIDENTIAL_RESULTS__ = function () { return pnResidentialResults(); };
+
   /* How many buildings sit in or near the band but cannot be assessed —
      stated so the absence is explained rather than silent. UNKNOWN IS NOT
      FALSE: these are unmeasured or unclassified, not unsuitable. */
 
+  /* THREE PRICE STATES, KEPT APART.
+     Additional Home carries `price.state`, and the three states mean three
+     different things. A missing price is NOT a quote-only position, and
+     neither is ever upgraded into the other by inference. pnMoney returns a
+     figure ONLY for a verified numeric price; pnPriceNote says, in homeowner
+     language, what is actually known when there is no figure. */
+  function pnPriceState(p){
+    return (p && p.price && typeof p.price === 'object' && p.price.state) || null;
+  }
+
   function pnMoney(p){
+    var st = pnPriceState(p);
+    if (st) {
+      if (st !== 'VERIFIED_NUMERIC_PRICE') return null;
+      if (typeof p.price.amount !== 'number') return null;
+      var c = (p.price.currency === 'GBP') ? '£' : '€';
+      return c + Number(p.price.amount).toLocaleString('en-IE');
+    }
     if (p.price == null) return null;
     var cur = (p.currency === 'GBP') ? '£' : '€';
     return cur + Number(p.price).toLocaleString('en-IE');
+  }
+
+  /* What to say when there is no number. Never "POA" by inference. */
+  function pnPriceNote(p){
+    var st = pnPriceState(p);
+    if (st === 'EVIDENCED_POA_QUOTE') return 'Priced on enquiry — the maker quotes each build';
+    if (st === 'PRICE_NOT_PUBLISHED') return 'No price published';
+    return null;
   }
 
   /* THE FLAGSHIP PARTITION — GOVERNED EVIDENCE, NOT A RANKING.
@@ -34150,6 +34451,17 @@
   function pnCandidateSplit(list){
     var clear = [], qualified = [];
     list.forEach(function(p){
+      /* ONE AUTHORITATIVE SOURCE FOR THE CAVEAT.
+         Garden Room detected the top-of-band qualification from the
+         floor-area record's own prose. Additional Home carries the
+         equivalent as GOVERNED caveats on class3a, decided upstream. The
+         governed list is read when present; it is not re-derived, and the
+         band is not re-tested here. */
+      var c3 = p && p.class3a;
+      if (c3 && Object.prototype.toString.call(c3.caveats) === '[object Array]') {
+        (c3.caveats.length ? qualified : clear).push(p);
+        return;
+      }
       var fa = pnFloorAreaEvidence(p);
       (fa && TOP_OF_BAND.test(String(fa.text)) ? qualified : clear).push(p);
     });
@@ -34161,26 +34473,49 @@
      flagship hero and the rail card can never disagree about what Atlas
      holds. Every string below is the shipped wording; `lead` changes one
      sentence and nothing else. */
+  /* THE EVIDENCE FOR ONE CANDIDATE, from whichever contract the candidate
+     carries. Every sentence below is the SHIPPED wording; only the field the
+     sentence reads has changed. Nothing new is introduced, and a datum with
+     no honest Additional Home equivalent is left out rather than invented.
+
+     FAIL-SOFT, NOT FAIL-LOUD. A candidate with no usable area is already
+     impossible under the governed rule, but reading `fa.number` off a null
+     was exactly the defect that emptied this page, so nothing here assumes a
+     field exists. A missing datum removes its own sentence and nothing else. */
   function pnCandidateEvidence(p, lead){
     var fa = pnFloorAreaEvidence(p);
     var price = pnMoney(p);
+    var priceNote = pnPriceNote(p);
+    var areaStr = fa && typeof fa.number === 'number'
+      ? (fa.number + ' ' + (fa.unit || 'm²')) : null;
+    var basisUnresolved = fa
+      ? (fa.basis === 'UNRESOLVED' || BASIS_UNCLEAR.test(String(fa.text || '')))
+      : false;
+    /* Governed caveats when the candidate carries them; the Garden Room prose
+       test only when it does not. One decision, read, never re-made. */
+    var c3 = (p && p.class3a) || null;
+    var govCaveats = (c3 && Object.prototype.toString.call(c3.caveats) === '[object Array]')
+      ? c3.caveats : null;
+    var topOfBand = govCaveats
+      ? false
+      : !!(fa && TOP_OF_BAND.test(String(fa.text || '')));
 
       var known = [];
       known.push('Sold in Ireland as living accommodation');
-      known.push('Published floor area ' + fa.number + ' ' + fa.unit
-                 + ', inside the ' + R.MIN + '–' + R.MAX + ' m² range');
+      if (areaStr)
+        known.push('Published floor area ' + areaStr
+                   + ', inside the ' + R.MIN + '–' + R.MAX + ' m² range');
       if (price) known.push('Price recorded by Atlas: ' + price);
-      if (p.insulation && /INSULATED/i.test(String(p.insulation)))
-        known.push('Built for year-round use');
+      else if (priceNote) known.push(priceNote);
 
       var open = [];
       /* This is the governed record's own wording, and it is the single most
          important thing on the card. */
       open.push('Whether it meets the Building and Fire Regulations the auxiliary-dwelling '
                 + 'route requires — Atlas records this as not determined');
-      if (BASIS_UNCLEAR.test(fa.text))
+      if (basisUnresolved)
         open.push('Whether the published area is measured inside or outside the walls');
-      if (TOP_OF_BAND.test(fa.text))
+      if (topOfBand)
         open.push('This sits at the very top of the range. If the published figure is an '
                   + 'internal measurement, the outside footprint would be over ' + R.MAX
                   + ' m² and this route would not be open');
@@ -34190,19 +34525,23 @@
        the evidence. The flagship sentence is true BECAUSE TOP_OF_BAND did
        not match its floor-area record — it is not a claim that the
        building is better, and it names no other product. */
-    var say = lead
-      ? 'Sold in Ireland as living accommodation. Its published ' + fa.number + ' '
-        + fa.unit + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden '
+    var say = !areaStr
+      ? 'Sold in Ireland as living accommodation.'
+      : (lead
+      ? 'Sold in Ireland as living accommodation. Its published ' + areaStr
+        + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden '
         + 'could take with room to spare, so no question arises about whether the '
         + 'finished footprint would exceed the ' + R.MAX + ' m² ceiling.'
-      : 'Sold in Ireland as living accommodation, and its published ' + fa.number + ' '
-        + fa.unit + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden could take.';
+      : 'Sold in Ireland as living accommodation, and its published ' + areaStr
+        + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden could take.');
 
-    return { fa:fa, price:price, known:known, open:open, say:say,
-             meta:[p.organisation || 'Supplier not recorded',
-                   price || 'price not recorded',
-                   fa.number + ' ' + fa.unit,
-                   'Available in Ireland'].join(' · ') };
+    var meta = [p.organisation || 'Supplier not recorded',
+                price || priceNote || 'price not recorded'];
+    if (areaStr) meta.push(areaStr);
+    meta.push('Available in Ireland');
+
+    return { fa:fa, price:price, priceNote:priceNote, known:known, open:open, say:say,
+             meta:meta.join(' · ') };
   }
 
   /* =================================================================
