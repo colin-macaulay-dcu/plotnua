@@ -117,9 +117,20 @@
   .flow li::before{counter-increment:f;content:counter(f,decimal-leading-zero);
     font-family:'Work Sans',sans-serif;font-size:9.5px;font-weight:500;
     letter-spacing:.18em;color:var(--accent);}
-  .flow b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:500;
-    font-size:16.5px;line-height:1.35;color:var(--ink);margin:0 0 5px;}
-  .flow span{display:block;font-size:14px;line-height:1.65;color:var(--soft);}
+  
+  .flow b{display:block;grid-column:2;font-family:'Fraunces',Georgia,serif;
+    font-weight:500;font-size:16.5px;line-height:1.35;color:var(--ink);
+    margin:0 0 5px;}
+  
+  .flow span{display:block;grid-column:2;font-size:14px;line-height:1.65;
+    color:var(--soft);max-width:72ch;}
+  @media(max-width:560px){
+    
+    .flow li{grid-template-columns:1fr;gap:4px;}
+    .flow li::before{grid-column:1;}
+    .flow b,.flow span{grid-column:1;}
+    .flow span{max-width:none;}
+  }
 
   
   figure{margin:0;}
