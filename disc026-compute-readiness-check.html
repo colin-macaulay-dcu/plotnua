@@ -1,0 +1,2698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8a5219c1-0f84-4a7e-9c17-d22fab76adc1" data-blockingmode="auto" type="text/javascript"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PKKJ0RK6N8');
+</script>
+
+<script>
+/* PLOTNUA FUNNEL ANALYTICS v1 — three anonymous funnel events.
+   Consent-identical to every other PlotNua page: Cookiebot loads first in
+   auto blocking mode, so with no statistics consent gtag never sends.
+   pnTrack is a no-op in that case and the journey is unaffected either way.
+
+   The journey is identified by the page's own filename. No answers, no
+   result, no Eircode, no address, no name, no email, no My Plot contents and
+   no product or supplier selection is read here or sent anywhere. */
+window.PlotNuaFunnel = (function () {
+  var fired = {};
+  function journey() {
+    try {
+      var f = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+      return f || 'unknown';
+    } catch (e) { return 'unknown'; }
+  }
+  function track(name) {
+    if (fired[name]) return false;          /* once per page load, by contract */
+    fired[name] = true;
+    try {
+      if (typeof gtag === 'function') gtag('event', name, { journey: journey() });
+    } catch (e) {}
+    return true;
+  }
+  return {
+    start:    function () { if (!fired['property_check_complete']) track('property_check_start'); },
+    complete: function () { track('property_check_complete'); },
+    saved:    function () { track('my_plot_save'); },
+    _fired:   fired
+  };
+})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://plotnua.ie/disc026-compute-readiness-check.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Residential Compute Readiness &mdash; Property Check | PlotNua</title>
+<style>
+  /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
+  :root{
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
+    --line:rgba(31,59,46,.12);
+    --line-soft:rgba(31,59,46,.07);
+
+    /* ---- V2 · A TONE SCALE, NOT ONE PLANE --------------------------------
+       The page was #F8F5EC from masthead to footer, separated only by
+       hairlines. Hairlines on a single plane is the grammar of a spec sheet.
+       Three warm steps, ~10% luminance apart, let the reveal and the actions
+       sit on their own ground without a single card or shadow. */
+    --stone:#EFE9DA;        /* the reveal band, and the actions field */
+    --stone-soft:#F4F0E3;   /* alternating section tint, barely there */
+
+    /* ---- V2 · TWO TEXT TONES ---------------------------------------------
+       --soft (#55605A) was carrying body copy, labels and footnotes alike at
+       6.01:1 — passing, but doing three jobs at one weight. Split in two:
+       --body for anything meant to be READ, --muted for what is genuinely
+       secondary. Both measured on all three surfaces; worst case 5.01:1. */
+    --body:#3A453F;         /* 9.16:1 on paper, 8.24:1 on stone */
+    --muted:#5A655F;        /* 5.57:1 on paper, 5.01:1 on stone */
+    --rule:rgba(31,59,46,.18);
+    --rule-soft:rgba(31,59,46,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:'Work Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    /* V2 · 300 -> 400. This one declaration set EVERY label and paragraph on
+       the page in Light. It is the single largest reason the result read as a
+       wireframe, and it was never a contrast problem: the ratios already
+       passed AA. Work Sans 400 is already loaded. */
+    font-weight:400; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .rc-wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* ---- quiet header + return route ------------------------------------ */
+  .rc-top{border-bottom:1px solid var(--line-soft);}
+  .rc-topin{max-width:1080px;margin:0 auto;padding:20px 28px;
+    display:flex;align-items:center;gap:16px;}
+  /* V2.1 · THE GARDEN MARK, PORTED.
+     your-plot.html carries PlotNua as a MEDALLION, not as text:
+       .brand-mark 46x46, radius 12, ivory, 0 1px 3px rgba(31,59,46,.16)
+                                            + 0 0 0 1px rgba(31,59,46,.07)
+     The asset is a self-contained rounded dark tile, so it needs no wrapper
+     of its own here. Placed in the existing header row rather than floating,
+     because this page HAS a masthead and the Garden journey does not — that
+     is the one place an exact port is not practical. */
+  .rc-mark{display:flex;flex:0 0 auto;border-radius:12px;text-decoration:none;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07);
+    transition:transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;}
+  .rc-mark:hover{transform:scale(1.06);
+    box-shadow:0 5px 16px rgba(31,59,46,.20), 0 0 0 1px rgba(31,59,46,.09);}
+  .rc-mark:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+  .rc-mark img{display:block;width:44px;height:44px;border-radius:12px;}
+  .rc-ident{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  /* 17px -> 27px. PlotNua leads the masthead; the journey name is the
+     caption under it, not its equal on the same baseline. */
+  .rc-brand{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:27px;
+    line-height:1.05;letter-spacing:-.005em;color:var(--ink);}
+  .rc-ctx{font-size:11.5px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);}
+  .rc-back{margin-left:auto;font-size:13px;color:var(--soft);
+    text-decoration:none;border-bottom:1px solid var(--line);}
+  .rc-back:hover{color:var(--ink);}
+
+  /* ---- screens --------------------------------------------------------- */
+  .rc-screen{display:none;padding:64px 0 96px;}
+  .rc-screen.is-on{display:block;}
+  .rc-eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 18px;}
+  .rc-h{font-family:'Fraunces',Georgia,serif;font-weight:400;
+    font-size:clamp(30px,4vw,48px);line-height:1.12;letter-spacing:-.01em;
+    margin:0 0 20px;max-width:20ch;}
+  .rc-sub{font-size:18px;line-height:1.6;color:var(--soft);
+    margin:0 0 40px;max-width:52ch;}
+
+  /* ---- questions ------------------------------------------------------- */
+  .rc-prog{font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 26px;}
+  .rc-q{font-family:'Fraunces',Georgia,serif;font-weight:400;
+    font-size:clamp(26px,3.2vw,38px);line-height:1.18;margin:0 0 14px;
+    max-width:22ch;}
+  .rc-qnote{font-size:15px;color:var(--soft);margin:0 0 30px;max-width:46ch;}
+  .rc-opts{display:flex;flex-direction:column;gap:12px;max-width:560px;
+    margin:0 0 36px;}
+  .rc-opt{display:block;width:100%;text-align:left;cursor:pointer;
+    background:#fff;border:1px solid var(--line);border-radius:3px;
+    padding:18px 22px;font-family:inherit;font-size:16px;color:var(--ink);
+    transition:border-color .15s ease, transform .15s ease;}
+  .rc-opt:hover{border-color:var(--accent);transform:translateX(2px);}
+  .rc-opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .rc-optn{display:block;font-size:13.5px;color:var(--soft);margin-top:3px;}
+  .rc-nav{font-size:13.5px;color:var(--soft);}
+  .rc-nav button{background:none;border:none;padding:0;cursor:pointer;
+    font-family:inherit;font-size:13.5px;color:var(--soft);
+    border-bottom:1px solid var(--line);}
+  .rc-nav button:hover{color:var(--ink);}
+
+  /* ---- start ----------------------------------------------------------- */
+  .rc-cta{display:inline-block;background:var(--ink);color:var(--brand-ivory);
+    border:none;text-decoration:none;font-family:'Work Sans',sans-serif;
+    padding:16px 30px;font-size:14px;letter-spacing:.08em;
+    text-transform:uppercase;border-radius:2px;cursor:pointer;}
+  .rc-cta:hover{background:var(--accent);}
+
+  /* ---- the four-part reveal -------------------------------------------- */
+  /* ================= V2 · THE REVEAL IS A SURFACE =======================
+     Previously the largest type on the page, on the same cream as everything
+     else. Now it sits in its own full-bleed warm stone band with a rule above
+     and below — so the answer is REVEALED rather than merely set large.
+     Editorial, not a card: it spans the viewport, has no radius, no shadow
+     and no border on three sides, and its only ornament is a hairline and an
+     oversized quiet numeral. */
+  .rc-revealband{
+    background:var(--stone);
+    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    margin:0 calc(50% - 50vw) 64px; padding:78px calc(50vw - 50%) 72px;
+    position:relative;
+    /* Kept as a safety net. A full-bleed band computed from 50vw can exceed
+       the viewport by the scrollbar width on some platforms; clipping means
+       this band can never be the thing that puts a horizontal scrollbar on
+       the page. Measured at all six widths: no overflow. */
+    overflow:hidden;
+  }
+  /* NO DECORATIVE MARK. An oversized ghost numeral was built here and then
+     removed after looking at it: clipped to the band it read as a stray rule
+     at the top-right on mobile — an artifact, not a device. The band earns
+     its presence from tone, rule and space alone, which is what "restrained
+     materiality" actually means. Decoration that needs defending is
+     decoration that should go. */
+  .rc-revealband .rc-eyebrow{color:var(--accent);font-weight:600;
+    letter-spacing:.2em;margin:0 0 22px;}
+  /* PASS 1 — WEIGHT. At 76px, Fraunces 400 has thin enough stems that the
+     line reads sketched rather than set, which is most of what "not premium"
+     meant here. 500 is the page's answer, not the Garden's: it was compared
+     against 400 at the same size, and the tracking was opened from -.022 to
+     -.018 because the heavier cut closes the counters at display size and
+     needs the room back. Scale, line-height and measure are unchanged. */
+  .rc-reveal-h{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(40px,6.4vw,76px);line-height:1.02;margin:0 0 26px;
+    max-width:15ch;letter-spacing:-.018em;position:relative;}
+  .rc-reveal-sub{font-size:19.5px;line-height:1.6;color:var(--body);
+    margin:0;max-width:44ch;position:relative;}
+  /* ================= V2 · SAVE BELONGS TO THE CLOSE ====================
+     It read as a utility button dropped into whitespace. It now shares the
+     actions field — same ground, separated by a rule — so keeping the result
+     is the end of the same gesture as reading what to do about it. */
+  .rc-save{background:var(--stone);margin:0 calc(50% - 50vw) 64px;
+    padding:0 calc(50vw - 50%) 60px;}
+  /* ---- THE CLOSE, AS THE PAGE'S LAST ROW --------------------------------
+     The rule opening this tier was --rule-soft (.10) while .rc-primary and
+     .rc-adv both open on --rule (.18). At the lighter weight the close read
+     as one more advisory row rather than as a new and final tier, which is
+     part of why it disappeared. Same hairline as the other two now.
+
+     The grid is the page's OWN row grammar — the 132px label column and the
+     content column .rc-item already uses — rather than a ratio invented for
+     this block. The close is the last row of the row system, so it is set as
+     one. It also stops the content sitting in 36% of the measure with the
+     rest of the row empty, which was the measured fault. */
+  .rc-saveinner{border-top:1px solid var(--rule);padding-top:44px;}
+  .rc-savelab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 14px;}
+  /* 30px is not a new step in the ladder: it is exactly the size the page
+     already gives "What to check next". The close and the action surface are
+     peers and are now set as peers. Hero 76 and the primary finding 44 are
+     untouched and still govern everything under them. */
+  /* THE MEASURE IS SET FROM THE SENTENCE, not from a habit. At 22ch the
+     first build broke "Somewhere to come back to" after "back", leaving a
+     two-letter line under a 30px display face — measured in the browser, not
+     guessed. 28ch clears both states on one line at every width from 834 up,
+     and the ramp brings the face to 24px before the column gets narrow
+     enough to break it below that. */
+  .rc-saveh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(24px,3.6vw,30px);line-height:1.18;letter-spacing:-.012em;
+    color:var(--ink);margin:0 0 22px;max-width:28ch;}
+  /* WHEN IT WAS KEPT — the one fact that makes this a receipt and not a
+     claim. Set in My Plot's own micro-caps (.mp-jwhen: 11.5px / .14em) so the
+     two surfaces speak the same way, at --muted rather than My Plot's lighter
+     tint because this line sits on stone and must still be read. */
+  .rc-savemeta{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 22px;}
+  @media (min-width:834px){
+    .rc-saveinner{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .rc-savelab{margin:9px 0 0;}
+  }
+  .rc-savebtn{display:inline-block;background:var(--ink);color:var(--brand-ivory);
+    border:none;font-family:'Work Sans',sans-serif;padding:16px 30px;
+    font-size:13.5px;letter-spacing:.09em;text-transform:uppercase;
+    border-radius:2px;cursor:pointer;text-decoration:none;}
+  .rc-savebtn[data-saved]{background:transparent;color:var(--ink);
+    box-shadow:inset 0 0 0 1px var(--line);cursor:default;}
+  .rc-savenote{font-size:14.5px;line-height:1.6;color:var(--body);
+    margin:14px 0 0;max-width:46ch;}
+  /* Secondary by construction: a rule under text, not a second button. */
+  .rc-savelink{display:inline-block;margin:24px 0 0;font-size:12.5px;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink);
+    text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px;}
+  .rc-savelink:hover{border-bottom-color:var(--ink);}
+  /* THE ATTRIBUTE MUST WIN. [hidden]{display:none} is a USER-AGENT rule, and
+     the author rules above set display:inline-block, which beats it on origin
+     — so `hidden` was inert and the unsaved state showed both the button and
+     the link. Class+attribute is (0,2,0) and restores the attribute's meaning.
+     Measured, not theorised: computed display was inline-block with .hidden
+     true and an empty store. */
+  .rc-savebtn[hidden],.rc-savelink[hidden],
+  .rc-saveh[hidden],.rc-savemeta[hidden]{display:none;}
+  /* THE FOUR, AS EDITORIAL ROWS — not cards.
+     No box, no fill, no shadow, no border. One hair rule between them and a
+     narrow label column that names each one. The old design put all four in
+     equal boxes, which told a homeowner that four things mattered equally
+     and that none of them was the answer.
+
+     NO STATE COLOUR. The .is-open / .is-stop classes the renderer sets are
+     left in the DOM as hooks but given nothing to paint: a border colour
+     that encodes CLEAR or BLOCKED is a traffic light however quietly it is
+     drawn, and this result does not rank or grade anything. */
+  /* ================= V2 · THE FOUR, WITH RHYTHM ========================
+     Still editorial rows, still one answer in four parts — but no longer four
+     identical bands of pale text. Three changes carry it: an INDEX numeral
+     doing quietly what a status chip would do loudly, a label that is finally
+     legible (ink, 600, larger), and an alternating tint so the eye has
+     something to step on. No boxes: the tint is full-bleed and the only
+     boundary is a hairline. */
+  .rc-parts{margin:0 0 4px;border-top:1px solid var(--rule);}
+  .rc-part{padding:40px 0 38px;border-bottom:1px solid var(--rule-soft);
+    position:relative;}
+  .rc-part:last-child{border-bottom:1px solid var(--rule);}
+  /* NO ALTERNATING TINT. It was tried and removed. Inside a 1080px column a
+     tint has to be full-bleed or it reads as a box, and the only way to bleed
+     a grid child is a zero-blur box-shadow spread — a trick, and one that
+     trips every "no shadows" guard for the right reason. The rhythm instead
+     comes from the index numeral, a label with real weight, generous padding,
+     and the two genuine surfaces above and below. Restraint beat cleverness
+     here. */
+  .rc-pindex{font-family:'Fraunces',Georgia,serif;font-size:13px;
+    color:var(--accent);letter-spacing:.04em;margin:0 0 6px;font-weight:500;}
+  .rc-plabel{font-size:12.5px;letter-spacing:.17em;text-transform:uppercase;
+    color:var(--ink);font-weight:600;margin:0 0 14px;}
+  @media (min-width:834px){
+    /* The index and label step into their own column and the reading measure
+       narrows. The whole responsive behaviour of the block is typographic. */
+    .rc-part{display:grid;grid-template-columns:166px minmax(0,1fr);
+      column-gap:48px;align-items:start;}
+    .rc-pmeta{margin-top:6px;}
+    .rc-plabel{margin:0;}
+    .rc-pbody{max-width:58ch;}
+  }
+  .rc-ph{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:26px;
+    line-height:1.24;margin:0 0 12px;}
+  .rc-pb{font-size:16.5px;line-height:1.6;color:var(--body);margin:0 0 20px;}
+  .rc-because{list-style:none;margin:0 0 20px;padding:0;}
+  .rc-because li{font-size:15px;line-height:1.55;color:var(--body);
+    padding-left:16px;position:relative;margin-bottom:7px;}
+  .rc-because li:before{content:'';position:absolute;left:0;top:9px;
+    width:5px;height:1px;background:var(--line);}
+  .rc-pnext{border-top:1px solid var(--rule-soft);padding-top:16px;}
+  .rc-pnexth{font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:600;
+    color:var(--soft);margin:0 0 8px;}
+  .rc-pnext ul{list-style:none;margin:0;padding:0;}
+  .rc-pnext li{font-size:15px;line-height:1.5;margin-bottom:7px;}
+
+  /* ---- closing action -------------------------------------------------- */
+  /* ================= V2 · WHAT TO CHECK NEXT ===========================
+     The most useful part of the result was the weakest thing on the page: a
+     rule, a heading and three quiet lines. It is now a warm inset field with
+     numbered actions — a place, not a leftover. Restrained: one ground, one
+     rule, numerals in accent. Nothing here is a checkbox, a chip or a task
+     manager; these are things to ask someone, not things to tick. */
+  .rc-next{background:var(--stone);border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    margin:0 calc(50% - 50vw) 0;padding:56px calc(50vw - 50%) 52px;}
+  .rc-nexth{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:30px;
+    margin:0 0 18px;letter-spacing:-.01em;}
+  .rc-nextl{list-style:none;margin:0;padding:0;max-width:62ch;
+    counter-reset:dwnext;}
+  .rc-nextl li{font-size:17px;line-height:1.5;padding:16px 0 16px 52px;
+    position:relative;counter-increment:dwnext;color:var(--ink);}
+  /* The numeral is generated, so the count follows the engine's action list
+     however many it produces — nothing here hard-codes three. */
+  .rc-nextl li:before{content:counter(dwnext,decimal-leading-zero);
+    position:absolute;left:0;top:16px;font-family:'Fraunces',Georgia,serif;
+    font-size:14px;color:var(--accent);font-weight:500;letter-spacing:.04em;}
+  .rc-nextl li.__unused{font-size:16.5px;line-height:1.5;padding:12px 0;
+    border-bottom:1px solid var(--line-soft);}
+
+  /* ---- PASS 1 · THE PRIMARY FINDING ------------------------------------
+     The driveway result, lifted out of the four-row rail. It is the page's
+     second display moment: clearly below the hero, clearly above the three
+     advisories.
+
+     The scale is chosen against the page's own ladder rather than copied from
+     the Garden journey. Hero 76 / primary 44 / advisory 20 gives roughly 1.7x
+     between steps, which is enough for each to read as its own tier without
+     the primary competing with the line above it.
+
+     The asymmetric grid is the point. Every other block on this page is a
+     stacked full-width band or the same 166px rail, which is what made four
+     different results look like one repeated thing. 1.55/1 is a different
+     ratio from anything else here and from the Garden's 1.62 — it is set for
+     this content, which is a long finding on the left and a short list of
+     reasons on the right. */
+  .rc-primary{margin:0 0 4px;padding:52px 0 46px;
+    border-top:1px solid var(--rule);}
+  .rc-plab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 20px;}
+  .rc-primary-h{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(30px,3.6vw,44px);line-height:1.1;letter-spacing:-.018em;
+    color:var(--ink);margin:0 0 16px;max-width:20ch;}
+  .rc-primary-b{font-size:17.5px;line-height:1.62;color:var(--body);
+    margin:0;max-width:52ch;}
+  .rc-primary-why{list-style:none;margin:0;padding:0;}
+  .rc-primary-why li{font-size:15px;line-height:1.55;color:var(--body);
+    padding:0 0 0 18px;margin:0 0 14px;position:relative;}
+  .rc-primary-why li:last-child{margin-bottom:0;}
+  /* A hairline tick rather than a bullet glyph: it marks the line without
+     adding a shape the reader has to interpret. */
+  .rc-primary-why li:before{content:'';position:absolute;left:0;top:10px;
+    width:8px;height:1px;background:var(--rule);}
+  @media (min-width:834px){
+    .rc-primary-grid{display:grid;
+      grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
+      column-gap:clamp(40px,4.6vw,76px);align-items:start;}
+    .rc-primary-why{padding-top:7px;}
+  }
+
+  /* ---- PASS 1 · THE ADVISORY TIER --------------------------------------
+     Permission, tax and insurance keep every word the engine gave them and
+     lose only their claim to equal weight. The shared label says what the
+     group is, so each item no longer has to announce itself.
+
+     The index numerals are gone. They were there to number four peers; three
+     subordinate items under one heading do not need counting, and the numerals
+     were competing with the labels for the same small-type attention. */
+  .rc-adv{margin:0 0 56px;padding:44px 0 0;border-top:1px solid var(--rule);}
+  .rc-advlab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 10px;}
+  .rc-advintro{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:21px;line-height:1.3;letter-spacing:-.01em;color:var(--ink);
+    margin:0 0 30px;max-width:34ch;}
+  .rc-item{padding:26px 0 24px;border-top:1px solid var(--rule-soft);}
+  .rc-item:first-of-type{border-top:none;padding-top:0;}
+  .rc-itemlab{font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 10px;}
+  .rc-itemh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:20px;line-height:1.28;letter-spacing:-.008em;color:var(--ink);
+    margin:0 0 8px;}
+  .rc-itemb{font-size:15.5px;line-height:1.6;color:var(--body);margin:0;
+    max-width:60ch;}
+  .rc-itemwhy{list-style:none;margin:12px 0 0;padding:0;}
+  .rc-itemwhy li{font-size:14px;line-height:1.55;color:var(--muted);
+    margin:0 0 8px;}
+  .rc-itemwhy li:last-child{margin-bottom:0;}
+  /* CONDITIONAL is the engine saying "true, and not yet yours to act on".
+     The page should sound the same way: present, legible, not calling for
+     attention. Tone only — no content is withheld and nothing is hidden. */
+  .rc-item.is-pause .rc-itemh{color:var(--body);}
+  .rc-item.is-pause .rc-itemb,
+  .rc-item.is-pause .rc-itemwhy li{color:var(--muted);}
+  @media (min-width:834px){
+    .rc-item{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .rc-itemlab{margin:3px 0 0;}
+  }
+
+  /* ---- PASS 1 · THE CONCLUSION (LIMITED, zero actions) ------------------
+     Not an action surface. The homeowner has told us the space is only
+     occasionally free; there is no task that changes that, and inventing one
+     would be worse than saying nothing. What can honestly be said is that the
+     answer rests on their own account of their week. */
+  /* The attribute must win here too — .rc-reveal-sub is a <p> with no author
+     display rule, but the save controls taught us not to rely on that. */
+  .rc-reveal-sub[hidden]{display:none;}
+  .rc-concl{max-width:52ch;}
+  .rc-conclh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:21px;line-height:1.3;color:var(--ink);margin:0 0 10px;}
+  .rc-conclb{font-size:16.5px;line-height:1.62;color:var(--body);margin:0;}
+  /* THE ATTRIBUTE MUST WIN. Same origin problem the save controls hit: an
+     author display rule of equal specificity beats the user-agent
+     [hidden]{display:none}. Class+attribute is (0,2,0). Without this the
+     CLOSED case would keep rendering the empty band it exists to remove. */
+  .rc-next[hidden]{display:none;}
+
+  /* =====================================================================
+     PLOTNUA-PROPERTY-CHECK-SHELL-BEGIN
+     The reusable presentation grammar for every PlotNua Property Check.
+
+     PORTABLE BY CONSTRUCTION. Nothing below names a driveway, a result key
+     or a question. A new Property Check copies this block byte for byte,
+     puts pc- classes on its own markup, and inherits the system. The only
+     thing a journey supplies is content.
+
+     It reuses the Garden journey's established language rather than
+     inventing a second one — the answer control, the progress dots, the
+     save medallion and the P/heart identity are all the Garden's, renamed
+     into pc- so they can travel.
+     ===================================================================== */
+
+  /* ---- PC · IDENTITY ---------------------------------------------------
+     The P/heart mark, as the two SHIPPED brand assets. The master mark has
+     no heart; the My Plot mark has it. Saving turns the heart on, which is
+     the PlotNua product moment the close was missing. No path data is
+     duplicated anywhere: both files are already deployed. */
+  .pc-mark{display:inline-flex;flex:0 0 auto;position:relative;
+    border-radius:22%;overflow:hidden;}
+  .pc-mark img{width:100%;height:100%;display:block;}
+  .pc-mark .pc-mark-on{position:absolute;inset:0;opacity:0;
+    transition:opacity .42s cubic-bezier(.2,.85,.32,1.1);}
+  .pc-mark.is-kept .pc-mark-on{opacity:1;}
+
+  /* ---- PC · COMPOSITION -----------------------------------------------
+     Measured, not asserted: before this rule the intro and the question both
+     ended around 600px inside a 980px viewport, leaving a third of the canvas
+     empty below the fold line. That is what reads as sparse rather than
+     spacious — not the amount of whitespace, but whitespace all collected at
+     one end. Both screens now fill the viewport and set their content on its
+     optical centre, so the space is composed instead of left over.
+
+     The screen's own display rule still governs visibility: only .is-on
+     becomes a flex column, so nothing about show()/hide() changes. */
+  .pc-intro.is-on,.pc-qscreen.is-on{display:flex;flex-direction:column;
+    justify-content:center;min-height:calc(100vh - 210px);}
+
+  /* ---- PC · INTRO ------------------------------------------------------ */
+  .pc-intro{padding:clamp(40px,6vh,72px) 0 clamp(40px,6vh,72px);}
+  .pc-crest{display:flex;align-items:center;gap:16px;margin:0 0 30px;}
+  .pc-crest .pc-mark{width:56px;height:56px;}
+  .pc-crestlab{display:flex;flex-direction:column;gap:2px;}
+  .pc-crestlab b{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:19px;letter-spacing:-.01em;color:var(--ink);}
+  .pc-crestlab span{font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--soft);font-weight:600;}
+  .pc-introh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(38px,5.4vw,64px);line-height:1.06;letter-spacing:-.02em;
+    color:var(--ink);margin:0 0 24px;max-width:16ch;}
+  .pc-introsub{font-size:19px;line-height:1.6;color:var(--body);
+    margin:0 0 40px;max-width:50ch;}
+
+  /* ---- PC · PRIMARY ACTION --------------------------------------------
+     A pill, not a rectangle. The Garden's chosen-option fill is the
+     platform's "this is the action" language; the square dark block was
+     generic form furniture. */
+  /* Contained at every width. The full-width phone rule is what made this
+     read as a banner rather than as a deliberate action. */
+  .pc-cta{display:inline-flex;align-items:center;gap:11px;align-self:flex-start;
+    background:var(--ink);color:var(--brand-ivory);border:none;
+    font-family:'Work Sans',sans-serif;padding:16px 28px;font-size:13.5px;
+    letter-spacing:.09em;text-transform:uppercase;border-radius:32px;
+    cursor:pointer;text-decoration:none;
+    box-shadow:0 10px 26px rgba(31,59,46,.22);
+    transition:transform .22s cubic-bezier(.2,.85,.32,1.1),
+      box-shadow .22s ease, background .22s ease;}
+  .pc-cta:hover{background:var(--accent);transform:translateY(-2px);
+    box-shadow:0 16px 34px rgba(31,59,46,.28);}
+  .pc-cta:active{transform:translateY(0);}
+  .pc-cta .pc-arrow{font-size:16px;line-height:1;
+    transition:transform .22s ease;}
+  .pc-cta:hover .pc-arrow{transform:translateX(3px);}
+
+  /* ---- PC · QUESTION --------------------------------------------------
+     Vertical composition, not a form. Progress is a device rather than a
+     sentence; the category names the subject; the question is the largest
+     thing on screen and is allowed to be. */
+  .pc-qscreen{padding:clamp(40px,6vh,72px) 0 clamp(48px,7vh,80px);
+    max-width:760px;}
+  .pc-dots{display:flex;gap:9px;margin:0 0 34px;}
+  .pc-dot{width:8px;height:8px;border-radius:50%;
+    background:rgba(31,59,46,.18);
+    transition:background .3s ease, transform .3s ease, box-shadow .3s ease;}
+  .pc-dot.is-done{background:var(--brand-sage);}
+  .pc-dot.is-on{background:var(--accent);transform:scale(1.3);
+    box-shadow:0 0 0 4px rgba(79,107,74,.16);}
+  .pc-qlab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 16px;}
+  .pc-qh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(30px,4.2vw,46px);line-height:1.1;letter-spacing:-.018em;
+    color:var(--ink);margin:0 0 16px;max-width:19ch;}
+  .pc-qnote{font-size:16px;line-height:1.6;color:var(--body);
+    margin:0 0 34px;max-width:48ch;}
+
+  /* ---- PC · ANSWER CONTROL -------------------------------------------
+     The Garden's .match-option, exactly: white, 1.5px at .18, a 22px pill,
+     14.5px Work Sans at .02em, a one-pixel lift on hover and an ink fill
+     when chosen. The rectangle at 3px with no chosen state is what made
+     the journey read as a questionnaire. */
+  .pc-opts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 36px;}
+  .pc-opt{background:#fff;border:1.5px solid rgba(31,59,46,.18);
+    cursor:pointer;color:var(--ink);padding:13px 22px;font-size:14.5px;
+    letter-spacing:.02em;border-radius:22px;
+    font-family:'Work Sans',sans-serif;
+    box-shadow:0 1px 2px rgba(31,59,46,.04);
+    transition:border-color .2s ease, background .2s ease,
+      box-shadow .2s ease, transform .2s ease, color .2s ease;}
+  .pc-opt:hover{border-color:var(--accent);
+    box-shadow:0 4px 14px rgba(31,59,46,.1);transform:translateY(-1px);}
+  .pc-opt:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .pc-opt.is-chosen{background:var(--ink);border-color:var(--ink);
+    color:var(--brand-ivory);transform:none;}
+
+  /* ---- PC · THE CHOICE MARKER ------------------------------------------
+     A white row with a hairline border is an input field; what makes it a
+     choice is something that can be selected. The marker is a ring, not an
+     icon: it fills sage under the pointer and becomes a solid ivory dot when
+     the answer is taken. It is drawn with a pseudo-element so no journey has
+     to add markup for it, and it is the ONLY affordance added — there is no
+     card, no tick glyph and no second colour. */
+  .pc-opts.is-stacked .pc-opt{position:relative;}
+  .pc-opts.is-stacked .pc-opt::before{content:'';position:absolute;
+    left:22px;top:50%;width:16px;height:16px;margin-top:-8px;
+    border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(31,59,46,.26);
+    background:transparent;
+    transition:box-shadow .2s ease, background .2s ease;}
+  .pc-opts.is-stacked .pc-opt:hover::before{
+    box-shadow:inset 0 0 0 1.5px var(--accent);
+    background:rgba(143,175,138,.32);}
+  .pc-opts.is-stacked .pc-opt.is-chosen::before{
+    box-shadow:inset 0 0 0 1.5px var(--brand-ivory);
+    background:var(--brand-ivory);}
+  /* The marker is centred on the label when a helper note makes the row
+     two lines, so it never floats against the note. */
+  .pc-opts.is-stacked .pc-opt:has(.pc-optn)::before{top:26px;margin-top:0;}
+  /* Long answers are sentences, not chips. The Garden already solved this
+     for its budget step: stack them, stretch them, left-align them and drop
+     the pill to a soft rectangle. Same rule, same numbers. */
+  /* 470, not 560: at the wider measure a single answer spanned most of the
+     column and read as a banner rather than as one of several choices. */
+  .pc-opts.is-stacked{flex-direction:column;align-items:stretch;
+    max-width:470px;}
+  .pc-opts.is-stacked .pc-opt{text-align:left;border-radius:12px;
+    padding:16px 22px 16px 56px;font-size:16px;letter-spacing:0;}
+  /* ---- PC · COMPACT CHOICES -------------------------------------------
+     Where every answer is short and none carries a helper note, the Garden's
+     pills are the better treatment: they sit together as a set the eye can
+     compare, instead of three near-identical rows. The renderer chooses by
+     content, so a future Property Check inherits the behaviour rather than
+     configuring it. */
+  .pc-opts.is-inline{flex-direction:row;flex-wrap:wrap;max-width:620px;
+    gap:12px;}
+  .pc-opts.is-inline .pc-opt{padding:14px 26px;font-size:15.5px;}
+  .pc-optn{display:block;margin-top:5px;font-size:13.5px;color:var(--muted);
+    letter-spacing:0;}
+  .pc-opt.is-chosen .pc-optn{color:rgba(242,239,230,.72);}
+  .pc-back{background:none;border:none;padding:0;cursor:pointer;
+    font-family:inherit;font-size:13px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--soft);
+    border-bottom:1px solid var(--line);}
+  .pc-back:hover{color:var(--ink);border-bottom-color:var(--ink);}
+
+  /* ---- PC · THE CLOSE -------------------------------------------------
+     Saving is a product moment, not a form submit. The mark sits at the
+     head of the row and gains its heart at the moment of keeping; the
+     control is a pill in the platform's action language; the receipt is
+     My Plot's own micro-caps. Unsaved and saved are both designed, and the
+     headline swaps in place so nothing under it jumps. */
+  .pc-saveband{background:var(--stone);margin:0 calc(50% - 50vw) 64px;
+    padding:0 calc(50vw - 50%) 60px;}
+  .pc-saveinner{border-top:1px solid var(--rule);padding-top:44px;}
+  .pc-savelab{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--soft);font-weight:600;margin:0 0 14px;}
+  .pc-savehead{display:flex;align-items:flex-start;gap:20px;margin:0 0 20px;}
+  .pc-savehead .pc-mark{width:64px;height:64px;
+    box-shadow:0 8px 22px rgba(31,59,46,.18);}
+  .pc-saveh{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(26px,3.4vw,34px);line-height:1.14;letter-spacing:-.014em;
+    color:var(--ink);margin:0;max-width:24ch;}
+  /* The kept line is the confirmation, so it is set to be read rather than
+     noticed: it sits directly under the headline, carries a short rule, and
+     takes the body ink instead of the muted tint. A homeowner should know
+     this is kept before they interpret the state of a button. */
+  .pc-savemeta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--body);font-weight:600;margin:0 0 26px;
+    padding-left:34px;position:relative;}
+  .pc-savemeta::before{content:'';position:absolute;left:0;top:50%;
+    width:22px;height:1px;background:var(--accent);}
+  .pc-savenote{font-size:15px;line-height:1.6;color:var(--body);
+    margin:16px 0 0;max-width:46ch;}
+  .pc-savelink{display:inline-flex;align-items:center;gap:8px;
+    margin:24px 0 0;font-size:12.5px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink);text-decoration:none;
+    border-bottom:1px solid var(--line);padding-bottom:4px;
+    transition:border-color .2s ease;}
+  .pc-savelink:hover{border-bottom-color:var(--ink);}
+  /* KEPT reads as arrival, not as a disabled control: the fill goes, the
+     mark carries the state, and the label stops competing. */
+  /* A spent control should recede. It stays a real, operable button — a
+     repeat save still replaces the record — but it stops being the largest
+     thing in the row once the headline and the kept line have said so. */
+  .pc-cta[data-saved]{background:transparent;color:var(--muted);
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.18);cursor:default;
+    padding:11px 22px;font-size:12px;letter-spacing:.1em;
+    min-height:44px;}
+  .pc-cta[data-saved]:hover{background:transparent;transform:none;
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.18);}
+  @media (max-width:780px){
+    .pc-cta[data-saved]{padding:13px 22px;}
+    /* DEFECT 2 — at 360 the close headline broke to two lines: 25 characters
+       at the clamp's 26px floor exceeded a 320px content column. Measured in
+       the browser, not predicted. The floor steps down just enough to hold
+       one line at the narrowest width the journey supports. */
+    .pc-saveh{font-size:clamp(23px,6.2vw,34px);}
+  }
+  .pc-saveh[hidden],.pc-savemeta[hidden],.pc-cta[hidden],
+  .pc-savelink[hidden],.pc-savehead[hidden]{display:none;}
+
+  @media (min-width:834px){
+    .pc-saveinner{display:grid;grid-template-columns:132px minmax(0,1fr);
+      column-gap:40px;align-items:start;}
+    .pc-savelab{margin:9px 0 0;}
+  }
+  @media (max-width:780px){
+    /* On a phone the viewport is short and the content is tall; forcing a
+       full-height centre would push the first answer below the fold. The
+       screens keep their rhythm and let the page scroll. */
+    .pc-intro.is-on,.pc-qscreen.is-on{min-height:0;display:block;}
+    .pc-intro{padding-top:36px;}
+    .pc-crest .pc-mark{width:46px;height:46px;}
+    .pc-savehead{gap:14px;}
+    .pc-savehead .pc-mark{width:50px;height:50px;}
+    .pc-opts.is-stacked{max-width:none;}
+    /* Contained on phones too — never the full measure. */
+    .pc-cta{width:auto;padding:15px 26px;}
+  }
+  /* PLOTNUA-PROPERTY-CHECK-SHELL-END */
+
+  /* ---- evidence drawer ------------------------------------------------- */
+  /* The evidence stays the quiet final layer — but quiet is not invisible.
+     Weight and tone only; it does not compete with the result and it does not
+     open itself. */
+  .rc-drawer{border-top:1px solid var(--rule);padding-top:12px;}
+  .rc-drawer summary{cursor:pointer;list-style:none;padding:18px 0;
+    font-weight:500;
+    font-size:14px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--soft);}
+  .rc-drawer summary::-webkit-details-marker{display:none;}
+  .rc-drawer summary:hover{color:var(--ink);}
+  .rc-ev{padding:8px 0 28px;}
+  .rc-evgroup{margin-bottom:26px;}
+  .rc-evgh{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 10px;}
+  .rc-evitem{border-left:1px solid var(--line);padding:0 0 0 16px;
+    margin-bottom:14px;}
+  .rc-evclaim{font-size:14.5px;line-height:1.55;margin:0 0 5px;
+    color:var(--body);}
+  .rc-evmeta{font-size:12.5px;color:var(--muted);}
+  .rc-evmeta a{color:var(--soft);}
+  .rc-evnone{font-size:14.5px;color:var(--soft);}
+  .rc-foot{font-size:13.5px;line-height:1.6;color:var(--muted);
+    border-top:1px solid var(--line-soft);padding-top:22px;margin-top:8px;
+    max-width:62ch;}
+
+  .rc-load{font-size:15px;color:var(--soft);}
+
+  @media (max-width:780px){
+    .rc-wrap{padding:0 20px;}
+    .rc-topin{padding:16px 20px;gap:13px;}
+    .rc-mark img{width:38px;height:38px;}
+    .rc-brand{font-size:22px;}
+    .rc-ctx{font-size:10.5px;letter-spacing:.14em;}
+    .rc-back{font-size:12px;}
+    .rc-screen{padding:44px 0 72px;}
+    .rc-part{padding:26px 0 24px;}
+    .rc-revealband{padding:52px calc(50vw - 50%) 46px;margin-bottom:44px;}
+    .rc-next{padding:42px calc(50vw - 50%) 38px;}
+    .rc-save{padding:0 calc(50vw - 50%) 46px;margin-bottom:48px;}
+    .rc-nextl li{padding:14px 0 14px 44px;font-size:16px;}
+    .rc-reveal-sub{margin-bottom:34px;}
+    .rc-savebtn{width:100%;}
+  }
+
+</style>
+
+<style>
+  /* ============================================================
+     RESIDENTIAL COMPUTE READINESS - RESULT COMPOSITION (rc-res-*)
+     Journey-specific only. No pc-* primitive is altered, extended or
+     overridden here; the shell owns intro, questions, choices, Back,
+     progress and the My Plot close, and this owns nothing but the way one
+     result is laid out.
+
+     THE PRESENTATION RULE THAT MATTERS. A result here carries three kinds
+     of finding and they must never blur into one another. A TICK is a
+     thing the property has. A QUESTION MARK is a thing the homeowner has
+     not established, and it must read as answerable rather than as a
+     failing. A DASH is a thing they have told us is not here - known, not
+     unknown. Same size, same weight, same ink; only the mark differs, so
+     nothing is dramatised and nothing is buried.
+     ============================================================ */
+  .rc-findings{list-style:none;margin:0 0 4px;padding:0;}
+  .rc-find{display:flex;gap:12px;align-items:baseline;padding:11px 0;
+    border-bottom:1px solid rgba(31,59,46,.09);}
+  .rc-find:last-child{border-bottom:0;}
+  .rc-mark{flex:0 0 18px;font-family:'Work Sans',sans-serif;font-size:13px;
+    font-weight:500;line-height:1.5;text-align:center;}
+  .rc-find.is-present .rc-mark{color:var(--accent);}
+  .rc-find.is-gap .rc-mark{color:var(--soft);}
+  .rc-find.is-absent .rc-mark{color:var(--soft);}
+  .rc-findtext{font-size:15px;line-height:1.55;color:var(--body);}
+  .rc-find.is-present .rc-findtext{color:var(--ink);}
+  .rc-gapnote{margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--soft);}
+
+  .rc-block{margin:34px 0 0;}
+  .rc-blocklab{display:block;font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 12px;}
+  .rc-conds{list-style:none;margin:0;padding:0;}
+  .rc-conds li{position:relative;padding-left:16px;margin:9px 0 0;
+    font-size:14.5px;line-height:1.6;color:var(--body);}
+  .rc-conds li::before{content:'';position:absolute;left:0;top:10px;
+    width:6px;height:1px;background:rgba(31,59,46,.42);}
+
+  /* THE TWO UNCONDITIONAL STATEMENTS. Given a ruled band of their own, at
+     reading size, above the call to action rather than below it. They are
+     not a disclaimer and they are not small print: they are the two things
+     most likely to be misunderstood about everything above them. */
+  .rc-market{margin:34px 0 0;padding:24px 26px 6px;background:var(--cream);
+    border:1px solid rgba(31,59,46,.11);border-top:2px solid rgba(31,59,46,.42);
+    border-radius:2px;}
+  .rc-market-p{margin:0 0 18px;font-size:14.5px;line-height:1.65;color:var(--body);}
+
+  .rc-ctablock{margin:34px 0 0;}
+  .rc-ctanote{margin:12px 0 0;font-size:13.5px;line-height:1.6;color:var(--soft);}
+
+  /* THE REGISTER STEP. A form, in the page's own type, never a modal. */
+  .rc-regnotice{margin:0 0 26px;padding:16px 20px;border-radius:2px;
+    background:rgba(197,122,90,.08);border:1px solid rgba(197,122,90,.3);
+    font-size:14.5px;line-height:1.6;color:var(--ink);}
+  .rc-fields{display:grid;gap:18px;margin:0 0 26px;max-width:560px;}
+  /* THE ATTRIBUTE MUST WIN - the same rule, for the same reason, as the one
+     the donor carries on its save controls. An author `display:grid` beats the
+     user-agent [hidden]{display:none} on origin, which made `hidden` inert on
+     the email row: the field showed before consent was given, on a page whose
+     whole point is that consent and channel move together. The browser QA
+     caught it only after it was taught to read COMPUTED DISPLAY rather than
+     el.hidden - the property was true the entire time the field was visible. */
+  .rc-fields[hidden]{display:none;}
+  @media(min-width:760px){ .rc-fields.is-pair{grid-template-columns:1fr 1fr;} }
+  .rc-field{display:flex;flex-direction:column;gap:6px;}
+  .rc-field label{font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--soft);}
+  .rc-field input,.rc-field select{font-family:'Work Sans',sans-serif;font-size:15px;
+    color:var(--ink);background:#fff;border:1.5px solid rgba(31,59,46,.18);
+    border-radius:8px;padding:12px 14px;min-height:44px;}
+  .rc-field input:focus-visible,.rc-field select:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px;}
+  .rc-hint{font-size:13px;line-height:1.5;color:var(--soft);}
+  .rc-consent{display:flex;gap:12px;align-items:flex-start;margin:0 0 22px;
+    max-width:560px;}
+  .rc-consent input{margin-top:3px;width:18px;height:18px;flex:0 0 18px;}
+  .rc-consent span{font-size:14.5px;line-height:1.6;color:var(--body);}
+  .rc-regstatus{margin:20px 0 0;padding:16px 20px;border-radius:2px;
+    font-size:14.5px;line-height:1.6;background:var(--cream);
+    border:1px solid rgba(31,59,46,.14);color:var(--ink);max-width:560px;}
+  .rc-regstatus.is-inactive{border-color:rgba(197,122,90,.34);}
+  .rc-regstatus.is-invalid{border-color:rgba(197,122,90,.5);}
+  .rc-regstatus[hidden]{display:none;}
+  .rc-regactions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+</style>
+</head>
+<body>
+
+<header class="rc-top">
+  <div class="rc-topin">
+    <a class="rc-mark" href="index.html" aria-label="PlotNua &mdash; home">
+      <img src="assets/brand/plotnua-mark-master.svg" alt="" width="44" height="44">
+    </a>
+    <span class="rc-ident">
+      <span class="rc-brand">PlotNua</span>
+      <span class="rc-ctx">Residential Compute</span>
+    </span>
+    <a class="rc-back" href="discovery-house-as-power-station.html">Back to the story</a>
+  </div>
+</header>
+
+<main class="rc-wrap">
+
+  <section class="rc-screen pc-intro is-on" id="rcIntro">
+    <div class="pc-crest">
+      <span class="pc-mark" aria-hidden="true">
+        <img src="assets/brand/plotnua-mark-master.svg" alt="" width="56" height="56">
+      </span>
+      <span class="pc-crestlab">
+        <b>Residential Compute</b>
+        <span>Property Check</span>
+      </span>
+    </div>
+    <h1 class="pc-introh">Could a house like yours ever host computing?</h1>
+    <p class="pc-introsub">Some homes abroad are starting to house small amounts of
+      computing alongside their own solar and batteries, and the companies doing it are
+      paying the households that host it. None of that happens in Ireland yet. Eleven
+      short questions, and we will tell you what your property has, what is still to
+      establish, and what nobody can answer yet.</p>
+    <button class="pc-cta" id="rcStart">Start the check
+      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+  </section>
+
+  <section class="rc-screen pc-qscreen" id="rcQ">
+    <div class="pc-dots" id="rcDots" aria-hidden="true"></div>
+    <p class="rc-prog sr-only" id="rcProg"></p>
+    <p class="pc-qlab" id="rcQEyebrow"></p>
+    <h2 class="pc-qh" id="rcQText"></h2>
+    <p class="pc-qnote" id="rcQNote"></p>
+    <div class="pc-opts is-stacked" id="rcOpts"></div>
+    <p class="rc-nav"><button type="button" class="pc-back" id="rcBack">Back</button></p>
+  </section>
+
+  <section class="rc-screen" id="rcReveal">
+    <div class="rc-revealband">
+      <p class="rc-eyebrow">This property</p>
+      <h2 class="rc-reveal-h" id="rcRevealH"></h2>
+      <p class="rc-reveal-sub" id="rcRevealSub"></p>
+    </div>
+
+    <ul class="rc-findings" id="rcFindings"></ul>
+    <p class="rc-gapnote" id="rcGapNote" hidden></p>
+
+    <div class="rc-block" id="rcCondBlock" hidden>
+      <span class="rc-blocklab">Who would have to agree, and what would have to happen</span>
+      <ul class="rc-conds" id="rcConditions"></ul>
+    </div>
+
+    <div class="rc-market" id="rcMarket"></div>
+
+    <div class="rc-ctablock" id="rcCtaBlock" hidden>
+      <button class="pc-cta" type="button" id="rcOpenRegister">Register my property for future developments
+        <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+      <p class="rc-ctanote">Optional, and it is a PlotNua register. You are not joining
+        anybody&rsquo;s list, no provider is told anything, and nobody will contact you
+        unless you ask us to.</p>
+    </div>
+
+    <div class="rc-save pc-saveband">
+      <div class="rc-saveinner pc-saveinner">
+        <p class="pc-savelab">My Plot</p>
+        <div class="rc-savebody">
+          <div class="pc-savehead" id="rcSaveCrest">
+            <span class="pc-mark" id="rcSaveMark" aria-hidden="true">
+              <img src="assets/brand/plotnua-mark-master.svg" alt="" width="64" height="64">
+              <img class="pc-mark-on" src="assets/brand/plotnua-mark-myplot-saved.svg" alt="" width="64" height="64">
+            </span>
+            <p class="pc-saveh" id="rcSaveHead">Somewhere to come back to</p>
+          </div>
+          <p class="pc-savemeta" id="rcSaveMeta" hidden></p>
+          <button class="pc-cta" type="button" id="rcSave" hidden>Save to My Plot</button>
+          <p class="pc-savenote" id="rcSaveNote"></p>
+          <a class="pc-savelink" id="rcSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <details class="rc-drawer">
+      <summary>Why PlotNua is saying this</summary>
+      <div class="rc-ev" id="rcEv">
+        <p>This check reads your eleven answers against what PlotNua can actually stand
+          over. It is built around five things: the property and who controls it, the
+          electricity supply, the energy already here, the connectivity, and the physical
+          space and access.</p>
+        <p>It holds no provider&rsquo;s technical requirements, because none have been
+          published. That is why there is no percentage and no compatibility finding
+          anywhere in this result: a score would need a standard to score against, and
+          there isn&rsquo;t one. Where PlotNua cannot know something, it says so rather
+          than filling the gap.</p>
+        <p>What your property could do with its own electricity is a different question,
+          and a longer one. It is set out in
+          <a href="discovery-house-as-power-station.html">The House as a Power Station</a>.</p>
+      </div>
+    </details>
+
+    <p class="rc-foot">PlotNua does not size equipment, quote for it, estimate what anyone
+      would be paid, or speak for any provider. If this model ever reaches Ireland, the
+      technical assessment would be the provider&rsquo;s to make, not ours.</p>
+  </section>
+
+  <section class="rc-screen" id="rcRegister">
+    <div class="rc-revealband">
+      <p class="rc-eyebrow">Optional</p>
+      <h2 class="rc-reveal-h">Put this property on the PlotNua register</h2>
+      <p class="rc-reveal-sub">So that PlotNua can understand the Irish position in
+        aggregate, and approach the question with evidence rather than assertion. Only
+        the first three are needed; the rest are useful if you happen to know them.</p>
+    </div>
+
+    <p class="rc-regnotice" id="rcRegNotice" hidden></p>
+
+    <div class="rc-fields">
+      <div class="rc-field">
+        <label for="rcCounty">County</label>
+        <select id="rcCounty"><option value="">Choose a county</option>
+          <option value="carlow">Carlow</option>
+          <option value="cavan">Cavan</option>
+          <option value="clare">Clare</option>
+          <option value="cork">Cork</option>
+          <option value="donegal">Donegal</option>
+          <option value="dublin">Dublin</option>
+          <option value="galway">Galway</option>
+          <option value="kerry">Kerry</option>
+          <option value="kildare">Kildare</option>
+          <option value="kilkenny">Kilkenny</option>
+          <option value="laois">Laois</option>
+          <option value="leitrim">Leitrim</option>
+          <option value="limerick">Limerick</option>
+          <option value="longford">Longford</option>
+          <option value="louth">Louth</option>
+          <option value="mayo">Mayo</option>
+          <option value="meath">Meath</option>
+          <option value="monaghan">Monaghan</option>
+          <option value="offaly">Offaly</option>
+          <option value="roscommon">Roscommon</option>
+          <option value="sligo">Sligo</option>
+          <option value="tipperary">Tipperary</option>
+          <option value="waterford">Waterford</option>
+          <option value="westmeath">Westmeath</option>
+          <option value="wexford">Wexford</option>
+          <option value="wicklow">Wicklow</option>
+          <option value="antrim">Antrim</option>
+          <option value="armagh">Armagh</option>
+          <option value="derry">Derry</option>
+          <option value="down">Down</option>
+          <option value="fermanagh">Fermanagh</option>
+          <option value="tyrone">Tyrone</option></select>
+      </div>
+      <div class="rc-field">
+        <label for="rcPropType">Property type</label>
+        <select id="rcPropType"><option value="">Choose a type</option>
+          <option value="detached">Detached</option>
+          <option value="semi_detached">Semi Detached</option>
+          <option value="terraced">Terraced</option>
+          <option value="apartment">Apartment</option>
+          <option value="other">Other</option></select>
+      </div>
+      <div class="rc-field">
+        <label for="rcPrefix">Eircode routing key</label>
+        <input id="rcPrefix" type="text" maxlength="3" inputmode="text" autocomplete="off">
+        <span class="rc-hint">The first three characters only &mdash; D02, T12, H91. Never
+          the full Eircode: the routing key covers thousands of homes, the full code
+          identifies one building.</span>
+      </div>
+    </div>
+
+    <div class="rc-fields is-pair">
+      <div class="rc-field">
+        <label for="rcMic">Connection capacity, kVA</label>
+        <input id="rcMic" type="number" min="1" max="200" step="0.1" autocomplete="off">
+      </div>
+      <div class="rc-field">
+        <label for="rcSmartMeter">Smart meter</label>
+        <select id="rcSmartMeter">
+          <option value="">Prefer not to say</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+          <option value="not_sure">Not sure</option>
+        </select>
+      </div>
+      <div class="rc-field">
+        <label for="rcSolarKwp">Solar, kWp</label>
+        <input id="rcSolarKwp" type="number" min="0.1" max="100" step="0.1" autocomplete="off">
+      </div>
+      <div class="rc-field">
+        <label for="rcBatteryKwh">Battery, kWh</label>
+        <input id="rcBatteryKwh" type="number" min="0.1" max="200" step="0.1" autocomplete="off">
+      </div>
+      <div class="rc-field">
+        <label for="rcHeatPump">Heat pump</label>
+        <select id="rcHeatPump">
+          <option value="">Prefer not to say</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+          <option value="not_sure">Not sure</option>
+        </select>
+      </div>
+      <div class="rc-field">
+        <label for="rcEvCharger">EV charger</label>
+        <select id="rcEvCharger">
+          <option value="">Prefer not to say</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+          <option value="not_sure">Not sure</option>
+        </select>
+      </div>
+      <div class="rc-field">
+        <label for="rcProvider">Broadband provider</label>
+        <input id="rcProvider" type="text" maxlength="60" autocomplete="off">
+      </div>
+      <div class="rc-field">
+        <label for="rcSpeed">Broadband speed, as advertised</label>
+        <input id="rcSpeed" type="text" maxlength="40" autocomplete="off">
+        <span class="rc-hint">Recorded as you report it. A download figure on its own does
+          not establish that a property could carry this kind of work.</span>
+      </div>
+    </div>
+
+    <div class="rc-fields">
+      <div class="rc-field">
+        <label for="rcOtherLoads">Other significant electrical loads</label>
+        <input id="rcOtherLoads" type="text" maxlength="120" autocomplete="off">
+      </div>
+    </div>
+
+    <label class="rc-consent">
+      <input type="checkbox" id="rcConsent">
+      <span>You may contact me if there is something worth telling me about this. Tick
+        this or leave it &mdash; the property goes on the register either way.</span>
+    </label>
+
+    <div class="rc-fields" id="rcEmailRow" hidden>
+      <div class="rc-field">
+        <label for="rcEmail">Email</label>
+        <input id="rcEmail" type="email" maxlength="120" autocomplete="email">
+        <span class="rc-hint">The only contact detail asked for anywhere here. No name, no
+          phone number, no address.</span>
+      </div>
+    </div>
+
+    <div class="rc-regactions">
+      <button class="pc-cta" type="button" id="rcRegSubmit">Add this property
+        <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+      <button type="button" class="pc-back" id="rcRegBack">Back to the result</button>
+    </div>
+
+    <p class="rc-regstatus" id="rcRegStatus" hidden></p>
+
+    <p class="rc-foot">Individual entries are never published and there is no public map of
+      participating homes. What PlotNua would ever show anyone is a count.</p>
+  </section>
+
+</main>
+
+
+<script>
+/* PLOTNUA-COMPUTE-READINESS-ENGINE-BEGIN */
+/* =========================================================================
+ * PLOTNUA RESIDENTIAL COMPUTE READINESS V1 · DECISION ENGINE
+ * DISC-026 · THIRD implementation of Property Check Premium Shell V1.
+ *
+ * Decision intelligence only. It holds no copy, emits keys, renders nothing,
+ * touches no storage and names no provider.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY THIS ENGINE REFUSES TO SCORE
+ *
+ * A percentage — "your house is 86% suitable" — is a claim that PlotNua knows
+ * what 100% would be. It does not. Every technical requirement a residential
+ * compute node would place on a property is currently UNPUBLISHED: continuous
+ * load, maximum load, 230V/50Hz compatibility, minimum connection capacity,
+ * phase, bandwidth, upload, latency, dimensions, certification. That is not a
+ * research gap PlotNua could close by trying harder; the provider states it is
+ * not yet sharing technical detail. With no denominator there can be no
+ * percentage, and a number invented to fill the gap would be false precision
+ * dressed as intelligence. So the engine emits STATES, never a score, and a
+ * guard fails the build if a percentage ever reaches the page.
+ *
+ * ---------------------------------------------------------------------------
+ * THREE STATES
+ *
+ *   POTENTIAL_CANDIDATE      Nothing identified rules the property out, no
+ *                            decision-relevant answer is unknown, and several
+ *                            relevant characteristics are present.
+ *   MORE_INFORMATION_NEEDED  The concept may be relevant, but something is
+ *                            not yet established.
+ *   NOT_CURRENTLY_SUITABLE   Reserved, and deliberately hard to reach. See
+ *                            the note on its own rule below.
+ *
+ * ---------------------------------------------------------------------------
+ * THREE FINDING TYPES, HELD APART AND NEVER MERGED
+ *
+ *   GAPS       things the homeowner has not established. The gap is THEIRS
+ *              and answering closes it. "I don't know" is a normal, expected,
+ *              first-class answer here and is never treated as a fault.
+ *   ABSENCES   things the homeowner has positively told us are not there.
+ *              KNOWN, not unknown. A property with no battery is a property
+ *              PlotNua knows something true about.
+ *   CONDITIONS things that would have to be arranged by somebody — permission,
+ *              a completed purchase, a decision to take part.
+ *
+ * Collapsing an ABSENCE into a GAP would tell a homeowner we need information
+ * they have already given us. Collapsing a GAP into an ABSENCE would record
+ * "no" where they said "I'm not sure", and that answer would then travel into
+ * the register as a fact nobody stated. They are never interchangeable.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY NOT_CURRENTLY_SUITABLE IS ALMOST UNREACHABLE IN V1
+ *
+ * To rule a property out you must know what it failed to meet. Every
+ * requirement is unpublished, so essentially nothing here can fail one. The
+ * single exception is not a technical judgement at all: it is the homeowner
+ * positively stating BOTH that there is nowhere on the property to put
+ * equipment AND that there is no safe, secure way to reach such a place. Two
+ * positive statements about their own property, neither of them "not sure",
+ * and no inference by PlotNua. Anything softer than that resolves to
+ * MORE_INFORMATION_NEEDED.
+ *
+ * Tenure NEVER reaches this state. Renting is a permission to seek, not a
+ * property that cannot host equipment — the distinction the Hidden Bins engine
+ * had to learn and this one inherits.
+ *
+ * ---------------------------------------------------------------------------
+ * TWO FINDINGS ARE UNCONDITIONAL
+ *
+ * Every single run emits `market_not_available_ireland` and
+ * `market_provider_requirements_unpublished`, reading no answers at all. They
+ * are statements about the WORLD and about PLOTNUA'S EVIDENCE, and no property
+ * fact can change either. They are the reason a POTENTIAL_CANDIDATE result can
+ * never be read as a promise.
+ *
+ * provider_technical_validation is emitted as 'NOT_ASSESSED' on every result
+ * without exception. It is a constant in this file because a value produced by
+ * a branch is a value some branch can produce differently; a homeowner's own
+ * account of their property must never become verified technical evidence, and
+ * the strongest form that promise can take is having no code path to any other
+ * value.
+ * ========================================================================= */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.PlotNuaComputeReadinessEngine = api;
+}(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  /* ----------------------------------------------------------- VOCABULARY */
+
+  var QUESTION_VARS = [
+    'tenure', 'new_build_existing', 'willingness_to_host',
+    'connection_capacity_known', 'phase', 'major_loads',
+    'solar_status', 'battery_status',
+    'fttp_status', 'equipment_space', 'service_access'
+  ];
+
+  /* The five evidence groups the check is built around. Declared here so the
+     grouping is testable rather than merely described in a heading. */
+  var EVIDENCE_GROUPS = {
+    PROPERTY:     ['tenure', 'new_build_existing', 'willingness_to_host'],
+    ELECTRICITY:  ['connection_capacity_known', 'phase', 'major_loads'],
+    ENERGY:       ['solar_status', 'battery_status'],
+    CONNECTIVITY: ['fttp_status'],
+    PHYSICAL:     ['equipment_space', 'service_access']
+  };
+
+  var ANSWER_VALUES = {
+    tenure:                    ['own', 'rent', 'buying', 'other'],
+    new_build_existing:        ['existing', 'new_build', 'planned_new_build', 'not_sure'],
+    willingness_to_host:       ['yes', 'no', 'not_sure'],
+    /* Two values only, and 'no' is not a failure: it is the ordinary answer.
+       Nobody should have to find their MIC to use this check. */
+    connection_capacity_known: ['yes', 'no'],
+    phase:                     ['single', 'three', 'not_sure'],
+    major_loads:               ['yes', 'no', 'not_sure'],
+    solar_status:              ['installed', 'none', 'planned', 'not_sure'],
+    battery_status:            ['installed', 'none', 'planned', 'not_sure'],
+    fttp_status:               ['fttp', 'other_broadband', 'no_broadband', 'not_sure'],
+    equipment_space:           ['outdoor', 'garage_utility', 'none_identified', 'not_sure'],
+    service_access:            ['yes', 'no', 'not_sure']
+  };
+
+  var STATES = ['POTENTIAL_CANDIDATE', 'MORE_INFORMATION_NEEDED',
+                'NOT_CURRENTLY_SUITABLE'];
+
+  var HEADLINE_KEYS = [
+    'candidate_worth_investigating',
+    'more_information_gaps_remain',
+    'more_information_little_in_place',
+    'not_currently_suitable_no_space_or_access'
+  ];
+
+  /* What the homeowner has not established. */
+  var GAP_KEYS = [
+    'gap_build_status', 'gap_connection_capacity', 'gap_phase',
+    'gap_major_loads', 'gap_solar', 'gap_battery', 'gap_connectivity',
+    'gap_equipment_space', 'gap_service_access'
+  ];
+
+  /* What the homeowner has told us is not there. */
+  var ABSENCE_KEYS = [
+    'absent_solar', 'absent_battery', 'absent_fttp', 'absent_broadband',
+    'absent_major_loads',
+    'absent_equipment_space', 'absent_service_access'
+  ];
+
+  /* What is present. Stated back so the result explains itself. */
+  var PRESENT_KEYS = [
+    'present_fttp', 'present_solar', 'present_battery',
+    'present_connection_capacity', 'present_phase_single', 'present_phase_three',
+    'present_major_loads',
+    'present_equipment_space_outdoor', 'present_equipment_space_indoor',
+    'present_service_access', 'present_new_build'
+  ];
+
+  /* THE SUBSET THAT COUNTS TOWARDS BEING CALLED A CANDIDATE.
+     Not every true thing about a property is a relevant characteristic.
+     Knowing your connection capacity, knowing your phase, and already running
+     a heat pump are all FACTS PlotNua is glad to have and states back — but
+     none of them is evidence that the property is readier, because no
+     requirement they could meet has been published. Counting them would let a
+     property become a "candidate" purely by having a well-informed owner.
+
+     Note also what is NOT ranked in here. Outdoor space and indoor space count
+     once each and equally; single phase and three phase are stated and neither
+     is scored. PlotNua has no published requirement against which one could be
+     better than the other, so it does not pretend to know. */
+  var CHARACTERISTIC_KEYS = [
+    'present_fttp', 'present_solar', 'present_battery',
+    'present_equipment_space_outdoor', 'present_equipment_space_indoor',
+    'present_service_access', 'present_new_build'
+  ];
+
+  /* What somebody would have to arrange. Never a suitability judgement. */
+  var CONDITION_KEYS = [
+    'condition_owner_permission', 'condition_deferred_until_purchase',
+    'condition_authority_unclear', 'condition_not_willing_to_host',
+    'condition_willingness_undecided', 'condition_planned_energy_works',
+    'condition_planned_new_build'
+  ];
+
+  /* Read no answers. True in every run. */
+  var MARKET_KEYS = [
+    'market_not_available_ireland',
+    'market_provider_requirements_unpublished'
+  ];
+
+  var PROVIDER_TECHNICAL_VALIDATION = 'NOT_ASSESSED';
+
+  /* Several relevant characteristics, not one. A single present signal is a
+     detail; three begin to describe a property worth someone looking at. The
+     number is a declared threshold rather than a hidden constant so that a
+     test can hold it and a future change has to be deliberate. */
+  var CANDIDATE_MIN_PRESENT = 3;
+
+  var RESULT_KEYS = HEADLINE_KEYS.slice();
+
+  /* ------------------------------------------------------------- HELPERS */
+
+  function has(list, v) { return list.indexOf(v) !== -1; }
+
+  function push(list, k) { if (list.indexOf(k) === -1) list.push(k); }
+
+  /* ------------------------------------------------------------ FINDINGS */
+
+  function gaps(a) {
+    var g = [];
+    if (a.new_build_existing === 'not_sure')        push(g, 'gap_build_status');
+    if (a.connection_capacity_known === 'no')       push(g, 'gap_connection_capacity');
+    if (a.phase === 'not_sure')                     push(g, 'gap_phase');
+    if (a.major_loads === 'not_sure')               push(g, 'gap_major_loads');
+    if (a.solar_status === 'not_sure')              push(g, 'gap_solar');
+    if (a.battery_status === 'not_sure')            push(g, 'gap_battery');
+    if (a.fttp_status === 'not_sure')               push(g, 'gap_connectivity');
+    if (a.equipment_space === 'not_sure')           push(g, 'gap_equipment_space');
+    if (a.service_access === 'not_sure')            push(g, 'gap_service_access');
+    return g;
+  }
+
+  function absences(a) {
+    var x = [];
+    if (a.solar_status === 'none')                  push(x, 'absent_solar');
+    if (a.battery_status === 'none')                push(x, 'absent_battery');
+    if (a.major_loads === 'no')                     push(x, 'absent_major_loads');
+    /* Two different absences, because they are two different facts. A house
+       with a copper line has broadband and not fibre; a house with nothing has
+       neither. Reporting both as "no fibre" would lose the second. */
+    if (a.fttp_status === 'other_broadband')        push(x, 'absent_fttp');
+    if (a.fttp_status === 'no_broadband')           push(x, 'absent_broadband');
+    if (a.equipment_space === 'none_identified')    push(x, 'absent_equipment_space');
+    if (a.service_access === 'no')                  push(x, 'absent_service_access');
+    return x;
+  }
+
+  function present(a) {
+    var p = [];
+    if (a.fttp_status === 'fttp')                   push(p, 'present_fttp');
+    if (a.solar_status === 'installed')             push(p, 'present_solar');
+    if (a.battery_status === 'installed')           push(p, 'present_battery');
+    if (a.connection_capacity_known === 'yes')      push(p, 'present_connection_capacity');
+    if (a.phase === 'single')                       push(p, 'present_phase_single');
+    if (a.phase === 'three')                        push(p, 'present_phase_three');
+    if (a.major_loads === 'yes')                    push(p, 'present_major_loads');
+    if (a.equipment_space === 'outdoor')            push(p, 'present_equipment_space_outdoor');
+    if (a.equipment_space === 'garage_utility')     push(p, 'present_equipment_space_indoor');
+    if (a.service_access === 'yes')                 push(p, 'present_service_access');
+    /* A HOUSE THAT EXISTS AND A HOUSE THAT IS PLANNED ARE NOT THE SAME FACT.
+       Only the built one is a present characteristic; the planned one is a
+       condition, for the same reason planned solar is. Nothing can be looked
+       at on a site that has not been built. */
+    if (a.new_build_existing === 'new_build')       push(p, 'present_new_build');
+    return p;
+  }
+
+  function conditions(a) {
+    var c = [];
+    /* AUTHORITY. Tenure decides who would have to agree and NEVER what the
+       property could physically support. PlotNua does not infer a landlord's
+       permission and does not grant authority ahead of a completed sale. */
+    if (a.tenure === 'rent')   push(c, 'condition_owner_permission');
+    if (a.tenure === 'buying') push(c, 'condition_deferred_until_purchase');
+    if (a.tenure === 'other')  push(c, 'condition_authority_unclear');
+
+    if (a.willingness_to_host === 'no')       push(c, 'condition_not_willing_to_host');
+    if (a.willingness_to_host === 'not_sure') push(c, 'condition_willingness_undecided');
+
+    /* Planned is neither present nor absent. It is a decision already taken
+       that has not happened yet, and it belongs with the other things that are
+       arranged rather than with the things that are here. */
+    if (a.solar_status === 'planned' || a.battery_status === 'planned') {
+      push(c, 'condition_planned_energy_works');
+    }
+    if (a.new_build_existing === 'planned_new_build') {
+      push(c, 'condition_planned_new_build');
+    }
+    return c;
+  }
+
+  /* --------------------------------------------------------------- STATE */
+
+  /* THE ONLY ROUTE OUT. Both statements positive, both about the property as
+     it stands, neither of them "not sure". */
+  function ruledOut(a) {
+    return a.equipment_space === 'none_identified' && a.service_access === 'no';
+  }
+
+  function evaluate(answers) {
+    var a = answers || {};
+
+    var g = gaps(a), x = absences(a), p = present(a), c = conditions(a);
+    var characteristics = p.filter(function (k) {
+      return has(CHARACTERISTIC_KEYS, k);
+    });
+
+    var state, headline_key;
+
+    if (ruledOut(a)) {
+      state = 'NOT_CURRENTLY_SUITABLE';
+      headline_key = 'not_currently_suitable_no_space_or_access';
+    } else if (g.length) {
+      state = 'MORE_INFORMATION_NEEDED';
+      headline_key = 'more_information_gaps_remain';
+    } else if (characteristics.length >= CANDIDATE_MIN_PRESENT) {
+      state = 'POTENTIAL_CANDIDATE';
+      headline_key = 'candidate_worth_investigating';
+    } else {
+      /* Everything is established and little of it is here. This is NOT a gap
+         in what the homeowner told us, and the copy bound to this key must not
+         ask them for anything. It is the honest statement that PlotNua does not
+         yet have enough to call the property a candidate. */
+      state = 'MORE_INFORMATION_NEEDED';
+      headline_key = 'more_information_little_in_place';
+    }
+
+    return {
+      state: state,
+      headline_key: headline_key,
+      gap_keys: g,
+      absence_keys: x,
+      present_keys: p,
+      characteristic_keys: characteristics,
+      condition_keys: c,
+      market_keys: MARKET_KEYS.slice(),
+      /* CONSTANT. Not a branch, not derived, not overridable. */
+      provider_technical_validation: PROVIDER_TECHNICAL_VALIDATION,
+      /* Registration is offered on willingness, never on the state. A property
+         PlotNua cannot yet call a candidate may still be one a provider would
+         want to look at, and an unwilling homeowner is not asked to join
+         anything however promising their property looks. */
+      offer_registration: a.willingness_to_host === 'yes'
+    };
+  }
+
+  return {
+    QUESTION_VARS: QUESTION_VARS,
+    EVIDENCE_GROUPS: EVIDENCE_GROUPS,
+    ANSWER_VALUES: ANSWER_VALUES,
+    STATES: STATES,
+    HEADLINE_KEYS: HEADLINE_KEYS,
+    GAP_KEYS: GAP_KEYS,
+    ABSENCE_KEYS: ABSENCE_KEYS,
+    PRESENT_KEYS: PRESENT_KEYS,
+    CHARACTERISTIC_KEYS: CHARACTERISTIC_KEYS,
+    CONDITION_KEYS: CONDITION_KEYS,
+    MARKET_KEYS: MARKET_KEYS,
+    RESULT_KEYS: RESULT_KEYS,
+    CANDIDATE_MIN_PRESENT: CANDIDATE_MIN_PRESENT,
+    PROVIDER_TECHNICAL_VALIDATION: PROVIDER_TECHNICAL_VALIDATION,
+    evaluate: evaluate
+  };
+}));
+/* PLOTNUA-COMPUTE-READINESS-ENGINE-END */
+</script>
+
+<script>
+/* PLOTNUA-RCR-REGISTER-CLIENT-BEGIN */
+/* =========================================================================
+ * PLOTNUA — RESIDENTIAL COMPUTE READINESS REGISTER CLIENT v1
+ *
+ * Certified standalone under Node, then embedded VERBATIM between markers in
+ * the journey page, exactly as the certified engines are.
+ *
+ * WHAT THIS FILE DOES NOT DO
+ *   It does not write to plotnua.myplot.v1 and has no save path at all. My
+ *   Plot is the homeowner's own store and this is a register submission; a
+ *   module with no write path cannot corrupt a store it never touches.
+ *
+ *   It contains no secret, no endpoint and no provider name. `runtime.endpoint`
+ *   arrives from the frozen contract and ships EMPTY.
+ *
+ *   It logs nothing. A person's county, property and email address are not
+ *   debug output.
+ *
+ * INACTIVE BY CONSTRUCTION
+ *   submit() refuses BEFORE it composes a request unless BOTH
+ *   runtime.writes_enabled is true AND runtime.endpoint is a non-empty https
+ *   URL. There is no code path from this file to the network while the shipped
+ *   configuration stands, and the tests prove the refusal rather than merely
+ *   observing that no call happened.
+ *
+ * THE RECORD IS BUILT, NEVER TRUSTED
+ *   buildRecord() composes the row from three sources that are kept apart:
+ *   the ENGINE (state and gap keys), the CHECK ANSWERS, and the REGISTER STEP
+ *   (what the homeowner volunteered afterwards). Every value is validated
+ *   against the frozen contract's vocabulary and REJECTED if it does not
+ *   match. Nothing is coerced, defaulted or repaired: a register row built on
+ *   a coerced answer would be a property fact nobody stated.
+ *
+ *   Provider_Technical_Validation is written as the constant NOT_ASSESSED and
+ *   there is no parameter, branch or override by which it can become anything
+ *   else. Self-reported data does not become verified technical evidence.
+ * ========================================================================= */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.PlotNuaComputeReadinessRegister = api;
+}(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var C = null;
+
+  function configure(contract) {
+    if (!contract || typeof contract !== 'object') {
+      throw new Error('register-client: no contract');
+    }
+    if (!contract.fields || !contract.vocabularies || !contract.runtime) {
+      throw new Error('register-client: contract is not the frozen shape');
+    }
+    C = contract;
+    return API;
+  }
+
+  function need() { if (!C) throw new Error('register-client: not configured'); }
+
+  /* ------------------------------------------------------------ IDENTITY */
+
+  var B32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+  function newPropertyId() {
+    var out = '', i, n;
+    var buf = null;
+    if (typeof self !== 'undefined' && self.crypto && self.crypto.getRandomValues) {
+      buf = new Uint8Array(10);
+      self.crypto.getRandomValues(buf);
+    }
+    for (i = 0; i < 10; i++) {
+      n = buf ? buf[i] : Math.floor(Math.random() * 256);
+      out += B32.charAt(n % 32);
+    }
+    return 'PN-RCR-' + out;
+  }
+
+  /* ---------------------------------------------------------- VOCABULARY */
+
+  function valuesFor(field) {
+    if (field.values) return field.values;
+    if (field.values_from) {
+      var path = field.values_from.split('.');
+      if (path[0] === 'vocabularies') return C.vocabularies[path[1]] || null;
+      /* engine.GAP_KEYS is resolved by the caller, which owns the engine. */
+      return null;
+    }
+    return null;
+  }
+
+  /* --------------------------------------------------------- VALIDATION */
+
+  function invalid(errors, field, why) { errors.push({ field: field, why: why }); }
+
+  function checkEmail(v) {
+    /* Deliberately permissive in shape and strict in length. An address that
+       looks wrong is the person's to correct, not this module's to reject on
+       a clever pattern. */
+    return typeof v === 'string' && v.length <= 120 &&
+           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  function validate(draft) {
+    need();
+    var errors = [];
+    var names = Object.keys(C.fields);
+
+    names.forEach(function (name) {
+      var f = C.fields[name];
+      var v = draft[name];
+      var missing = (v === undefined || v === null || v === '');
+
+      if (f.required && missing) { invalid(errors, name, 'required'); return; }
+
+      if (f.required_when) {
+        var parts = f.required_when.split(' ');
+        var other = draft[parts[0]];
+        var wanted = parts[2];
+        var applies = (wanted === 'true') ? other === true : String(other) === wanted;
+        if (applies && missing) { invalid(errors, name, 'required_when ' + f.required_when); return; }
+      }
+
+      if (missing) return;
+
+      if (f.type === 'enum') {
+        var vals = valuesFor(f);
+        if (vals && vals.indexOf(v) === -1) invalid(errors, name, 'not in vocabulary');
+      } else if (f.type === 'string') {
+        if (typeof v !== 'string') invalid(errors, name, 'not a string');
+        else if (f.max_length && v.length > f.max_length) invalid(errors, name, 'too long');
+        else if (f.pattern && !(new RegExp(f.pattern)).test(v)) invalid(errors, name, 'pattern');
+      } else if (f.type === 'number') {
+        if (typeof v !== 'number' || !isFinite(v)) invalid(errors, name, 'not a number');
+        else if (f.min !== undefined && v < f.min) invalid(errors, name, 'below min');
+        else if (f.max !== undefined && v > f.max) invalid(errors, name, 'above max');
+      } else if (f.type === 'boolean') {
+        if (typeof v !== 'boolean') invalid(errors, name, 'not a boolean');
+      } else if (f.type === 'email') {
+        if (!checkEmail(v)) invalid(errors, name, 'not an email address');
+      } else if (f.type === 'string_list') {
+        if (!Array.isArray(v) || v.some(function (k) { return typeof k !== 'string'; })) {
+          invalid(errors, name, 'not a list of strings');
+        }
+      }
+    });
+
+    /* Anything not in the contract does not travel. A field nobody declared is
+       a field nobody agreed to store. */
+    Object.keys(draft).forEach(function (k) {
+      if (names.indexOf(k) === -1) invalid(errors, k, 'not in contract');
+    });
+
+    /* CONSENT AND CHANNEL MOVE TOGETHER, IN BOTH DIRECTIONS. An email with no
+       consent is a contact detail nobody agreed to be reachable on. */
+    if (draft.Future_Contact_Consent !== true && draft.Contact_Email) {
+      invalid(errors, 'Contact_Email', 'supplied without consent');
+    }
+
+    return { ok: errors.length === 0, errors: errors };
+  }
+
+  /* -------------------------------------------------------- BUILD A ROW */
+
+  function buildRecord(input) {
+    need();
+    var answers  = (input && input.answers)  || {};
+    var result   = (input && input.result)   || {};
+    var extra    = (input && input.extra)    || {};
+
+    var rec = {};
+
+    Object.keys(C.fields).forEach(function (name) {
+      var f = C.fields[name];
+      if (f.source === 'check' && f.from_answer) {
+        if (answers[f.from_answer] !== undefined) rec[name] = answers[f.from_answer];
+      } else if (f.source === 'register_step') {
+        if (extra[name] !== undefined && extra[name] !== '') rec[name] = extra[name];
+      }
+    });
+
+    rec.Property_ID = newPropertyId();
+    rec.Submission_Date = new Date().toISOString().slice(0, 10);
+
+    /* FROM THE ENGINE, NEVER FROM THE FORM. */
+    rec.Readiness_Result = result.state;
+    rec.Evidence_Gaps = (result.gap_keys || []).slice();
+
+    if (rec.Future_Contact_Consent === undefined) rec.Future_Contact_Consent = false;
+
+    /* THE CONSTANT. Written here, from nothing, with no way in. */
+    rec.Provider_Technical_Validation = 'NOT_ASSESSED';
+
+    return rec;
+  }
+
+  /* ------------------------------------------------------------- SUBMIT */
+
+  function writesPossible() {
+    need();
+    var r = C.runtime || {};
+    return r.writes_enabled === true &&
+           typeof r.endpoint === 'string' &&
+           r.endpoint.length > 0 &&
+           r.endpoint.indexOf('https://') === 0;
+  }
+
+  function submit(record) {
+    need();
+    /* THE REFUSAL COMES FIRST. Before a body is composed, before a header is
+       set, before anything that could accidentally become a request. */
+    if (!writesPossible()) {
+      return Promise.resolve({
+        ok: false,
+        state: 'INACTIVE',
+        reason: 'The register is not accepting submissions.'
+      });
+    }
+    var v = validate(record);
+    if (!v.ok) {
+      return Promise.resolve({ ok: false, state: 'INVALID', errors: v.errors });
+    }
+    return fetch(C.runtime.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contract: C.contract, record: record })
+    }).then(function (res) {
+      return { ok: res.ok, state: res.ok ? 'SUBMITTED' : 'FAILED' };
+    }).catch(function () {
+      return { ok: false, state: 'FAILED' };
+    });
+  }
+
+  var API = {
+    configure: configure,
+    validate: validate,
+    buildRecord: buildRecord,
+    newPropertyId: newPropertyId,
+    writesPossible: writesPossible,
+    submit: submit
+  };
+  return API;
+}));
+/* PLOTNUA-RCR-REGISTER-CLIENT-END */
+</script>
+
+<script>
+/* PLOTNUA-RCR-CONTRACT-BEGIN */
+window.PLOTNUA_RCR_CONTRACT = {"_": "PLOTNUA RESIDENTIAL COMPUTE READINESS REGISTER — DATA CONTRACT v1. Frozen before the page was built, the order the DISC-025 Phase 2 Build Contract established. The builder, the client module, the aggregate instrument and the tests all read THIS FILE. There is no second copy of the field list anywhere.", "contract": "disc026-compute-readiness-register-v1", "version": 1, "privacy_version": "2026-09-COMPUTE-READINESS-DRAFT", "_privacy_version": "A DRAFT value. It must be replaced with the approved value before the notice is published and before any real submission is possible. Guard RCR-G8 fails the build if the string DRAFT survives into an ACTIVE configuration.", "runtime": {"_": "INACTIVE BY CONSTRUCTION, exactly as the DISC-025 register ships. Three independent switches plus an empty endpoint, because one switch is one mistake away from a live register holding real people's property details. The client refuses BEFORE it composes a request unless writes_enabled is true AND endpoint is a non-empty https URL. Tests prove the refusal, not merely the absence of a call.", "mode": "development", "writes_enabled": false, "email_enabled": false, "endpoint": "", "_endpoint": "Empty on purpose. With no endpoint there is no code path from this page to any network."}, "purpose": {"statement": "To record which Irish properties have characteristics that may be relevant to future distributed residential compute, so that PlotNua can understand the Irish position in aggregate and, if such a model ever reaches Ireland, approach it with evidence rather than assertion.", "not_purposes": ["It is not a waitlist. The provider PlotNua has read states it does not have one, and PlotNua has nothing to add anybody to.", "It is not a lead list sold or passed to anyone.", "It is not an application, an order, an expression of contractual interest, or a place in any queue.", "It does not cause any provider to contact anybody."]}, "identity": {"property_id": {"generated": "client", "shape": "PN-RCR-<10 random base32 characters>", "_": "RANDOM, NEVER DERIVED. An identifier computed from an Eircode or an address would re-identify the property every time it was seen, which is the opposite of what an identifier is for here."}}, "_field_list_provenance": "Every field in the founder brief of 23 September 2026 appears below with the brief's own name. ONE field is added and it is named here so the addition is visible rather than smuggled in: Contact_Email. Future_Contact_Consent is in the brief, and a consent to be contacted with no channel to contact anybody on is inert — it would record a permission PlotNua could never act on. Contact_Email is therefore collected ONLY when that consent is given, and is the only personal contact detail in the whole record.", "fields": {"Property_ID": {"type": "string", "source": "generated", "required": true}, "Submission_Date": {"type": "date", "source": "generated", "required": true}, "County": {"type": "enum", "source": "register_step", "required": true, "values_from": "vocabularies.county"}, "Eircode_prefix": {"type": "string", "source": "register_step", "required": false, "pattern": "^[A-Za-z][0-9][0-9Ww]$", "_": "THE ROUTING KEY ONLY — three characters, never the full Eircode. A routing key covers thousands of properties; a full Eircode identifies one building. The check itself never asks for it at all."}, "Property_Type": {"type": "enum", "source": "register_step", "required": true, "values_from": "vocabularies.property_type"}, "Ownership_Status": {"type": "enum", "source": "check", "from_answer": "tenure", "required": true, "values_from": "vocabularies.tenure"}, "New_Build_Existing": {"type": "enum", "source": "check", "from_answer": "new_build_existing", "required": true, "values_from": "vocabularies.new_build_existing"}, "MIC_Known": {"type": "enum", "source": "check", "from_answer": "connection_capacity_known", "required": true, "values_from": "vocabularies.yes_no"}, "MIC_kVA": {"type": "number", "source": "register_step", "required": false, "min": 1, "max": 200, "_": "OPTIONAL, ALWAYS, INCLUDING WHEN MIC_Known IS YES. A draft of this contract made it required_when MIC_Known == yes and the suite caught the contradiction against this very note. Saying you know your capacity is not the same as having the figure to hand, and nobody is stopped from registering because they cannot find a number on a bill."}, "Phase": {"type": "enum", "source": "check", "from_answer": "phase", "required": true, "values_from": "vocabularies.phase"}, "Solar_Status": {"type": "enum", "source": "check", "from_answer": "solar_status", "required": true, "values_from": "vocabularies.fitted_status"}, "Solar_kWp": {"type": "number", "source": "register_step", "required": false, "min": 0.1, "max": 100}, "Battery_Status": {"type": "enum", "source": "check", "from_answer": "battery_status", "required": true, "values_from": "vocabularies.fitted_status"}, "Battery_kWh": {"type": "number", "source": "register_step", "required": false, "min": 0.1, "max": 200}, "Smart_Meter": {"type": "enum", "source": "register_step", "required": false, "values_from": "vocabularies.yes_no_unsure", "_": "ASKED IN THE REGISTER, NOT IN THE CHECK. A smart meter changes no readiness finding — no published requirement mentions metering — so asking for it in the check would be a question whose answer PlotNua does nothing with. It is worth holding for a future Irish flexibility picture, so it is offered to somebody already registering."}, "Heat_Pump": {"type": "enum", "source": "register_step", "required": false, "values_from": "vocabularies.yes_no_unsure"}, "EV_Charger": {"type": "enum", "source": "register_step", "required": false, "values_from": "vocabularies.yes_no_unsure"}, "Other_Major_Loads": {"type": "string", "source": "register_step", "required": false, "max_length": 120, "_": "The check asks ONE question about significant loads because that is all its result can use. The specific list belongs here, where it is being volunteered by somebody who has chosen to be on a register."}, "FTTP_Status": {"type": "enum", "source": "check", "from_answer": "fttp_status", "required": true, "values_from": "vocabularies.fttp_status"}, "Broadband_Provider": {"type": "string", "source": "register_step", "required": false, "max_length": 60}, "Broadband_Speed": {"type": "string", "source": "register_step", "required": false, "max_length": 40, "_": "STORED AS THE HOMEOWNER STATED IT, as text, and labelled as reported. A download figure is not evidence of compute suitability and is never presented as one — upload and latency are the numbers that would matter, and neither the requirement nor the homeowner's figure for them is known."}, "Equipment_Space": {"type": "enum", "source": "check", "from_answer": "equipment_space", "required": true, "values_from": "vocabularies.equipment_space"}, "Service_Access": {"type": "enum", "source": "check", "from_answer": "service_access", "required": true, "values_from": "vocabularies.yes_no_unsure"}, "Readiness_Result": {"type": "enum", "source": "engine", "required": true, "values": ["POTENTIAL_CANDIDATE", "MORE_INFORMATION_NEEDED", "NOT_CURRENTLY_SUITABLE"], "_": "THE ENGINE'S STATE, NOT A SCORE. There is no numeric readiness field in this contract and there must never be one."}, "Evidence_Gaps": {"type": "string_list", "source": "engine", "required": true, "values_from": "engine.GAP_KEYS", "_": "KEYS, NOT PROSE. A stored sentence would keep repeating a position PlotNua may have stopped standing over; a key is re-read against today's copy. The same discipline the saved Property Checks use."}, "Future_Contact_Consent": {"type": "boolean", "source": "register_step", "required": true, "default": false, "_": "OPT-IN, UNTICKED, AND NEVER BUNDLED WITH SUBMITTING. Registering the property and agreeing to be contacted are two separate decisions."}, "Contact_Email": {"type": "email", "source": "register_step", "required": false, "required_when": "Future_Contact_Consent == true", "max_length": 120, "_": "THE ONLY PERSONAL CONTACT DETAIL IN THE RECORD. No name, no phone, no address. Collected only where the consent above makes it meaningful, and absent from every aggregate output."}, "Provider_Technical_Validation": {"type": "enum", "source": "constant", "required": true, "values": ["NOT_ASSESSED"], "default": "NOT_ASSESSED", "_": "A ONE-VALUE ENUM IN V1, ON PURPOSE. Self-reported homeowner data must never silently become verified technical evidence, and the strongest form that promise can take is a vocabulary with nothing else in it. Widening this enum is a deliberate schema change requiring a founder decision and a provider who has actually assessed something."}}, "_not_collected": "Named deliberately, because what a register does NOT hold is part of its design: full Eircode · street address · homeowner name · phone number · date of birth · household composition · income, tenancy or financial circumstances · photographs of the property · precise coordinates · anything about a neighbouring property. None of it is required for the readiness purpose, so none of it is asked for.", "vocabularies": {"yes_no": ["yes", "no"], "yes_no_unsure": ["yes", "no", "not_sure"], "tenure": ["own", "rent", "buying", "other"], "new_build_existing": ["existing", "new_build", "planned_new_build", "not_sure"], "phase": ["single", "three", "not_sure"], "fitted_status": ["installed", "none", "planned", "not_sure"], "fttp_status": ["fttp", "other_broadband", "no_broadband", "not_sure"], "equipment_space": ["outdoor", "garage_utility", "none_identified", "not_sure"], "property_type": ["detached", "semi_detached", "terraced", "apartment", "other"], "county": ["carlow", "cavan", "clare", "cork", "donegal", "dublin", "galway", "kerry", "kildare", "kilkenny", "laois", "leitrim", "limerick", "longford", "louth", "mayo", "meath", "monaghan", "offaly", "roscommon", "sligo", "tipperary", "waterford", "westmeath", "wexford", "wicklow", "antrim", "armagh", "derry", "down", "fermanagh", "tyrone"], "_county": "All 32. The Discovery is Irish and the infrastructure context is all-island; excluding the six would silently decide a market question this register exists to answer."}, "privacy": {"lawful_basis": "consent", "consent_is_separable": true, "individual_records_public": false, "_individual_records_public": "NO INDIVIDUAL SUBMISSION IS EVER PUBLISHED, in any form, at any level of aggregation small enough to identify one. There is no public map of participating homes and none may be built: a map of properties hosting or willing to host valuable equipment is a security problem PlotNua would have created.", "retention_months": 24, "_retention_months": "Reviewed rather than automatic. A register whose purpose is a market that may not arrive should not hold somebody's property details indefinitely because nobody revisited it.", "subject_rights": ["access", "rectification", "erasure", "withdrawal_of_consent"], "_subject_rights": "Erasure must remove the row, not flag it. A flagged row is still a row."}, "aggregate": {"_": "THE COMMERCIAL ASSET IS THE AGGREGATE, NEVER THE ROW. These are the only questions the register is built to answer outside PlotNua, and every one of them is a count.", "questions": ["how many properties are registered", "how many report FTTP", "how many have solar installed", "how many have a battery installed", "how many report a known connection capacity, and how many report three phase", "how they cluster geographically, by county and by Eircode routing key", "how many are existing homes and how many are new build", "how many carry unresolved evidence gaps, and which gaps"], "minimum_cell_size": 5, "_minimum_cell_size": "A count of one is a person. Any geographic or cross-tabulated cell below this is suppressed in every output, and the suppression is tested rather than remembered."}};
+/* PLOTNUA-RCR-CONTRACT-END */
+</script>
+
+<script>
+/* PLOTNUA-JOURNEY-SAVE-BEGIN */
+/* PLOTNUA — SAVE TO MY PLOT · the reusable journey pattern, v1
+ * ============================================================================
+ * FROZEN PLATFORM PRINCIPLE
+ *   EVERY PROPERTY-SPECIFIC JOURNEY MUST OFFER SAVE TO MY PLOT AFTER THE
+ *   RESULT HAS BEEN REVEALED, USING plotnua.myplot.v1.
+ *
+ * This block is IDENTICAL, byte for byte, in every journey that carries it.
+ * A journey supplies configuration; it never supplies behaviour. If two
+ * journeys ever need different save behaviour, that is a signal to change
+ * this block once, not to fork it.
+ *
+ * ONE STORE, ONE SCHEMA, NO SECOND MODEL
+ *   plotnua.myplot.v1 already exists and My Plot owns it. A journey page is a
+ *   GUEST in that store. It therefore reads the whole record, changes exactly
+ *   one array, and writes the whole record back. saved[] and added[] are
+ *   carried through untouched: a homeowner must never lose a product they
+ *   kept months ago because they saved a journey today.
+ *
+ *   The schema is NOT bumped. My Plot discards any record whose schema is
+ *   higher than it knows, so bumping would make every saved product invisible
+ *   to an earlier build. An unknown extra field costs an earlier build
+ *   nothing. This is the same reasoning recorded at RS-2b in your-plot.html.
+ *
+ * WHAT A JOURNEY RECORD MAY CONTAIN
+ *   journeyId, title, savedAt, answers, resultKeys — and nothing else.
+ *   Answers and result KEYS, never result PROSE. The source of truth stays
+ *   answers + engine + governed evidence, so a saved result re-derives
+ *   against today's evidence rather than replaying yesterday's wording. That
+ *   matters most when evidence goes stale or is withheld: a stored paragraph
+ *   would keep asserting something PlotNua has stopped standing over.
+ *
+ *   Never stored: evidence or regulatory prose, location, Eircode,
+ *   coordinates, inferred property facts, prices, earnings, tracking.
+ *   sanitise() below enforces that by construction — it builds a new object
+ *   from a fixed key list rather than filtering a supplied one, so a future
+ *   caller cannot widen it by accident.
+ *
+ * IDENTITY IS journeyId
+ *   A repeat save REPLACES that journey's record. There is no accumulation
+ *   and no duplicate list.
+ *
+ * NOTHING IS LOGGED. This block contains no console call of any kind: a
+ * homeowner's answers are not debug output.
+ * ========================================================================== */
+(function (root) {
+  'use strict';
+
+  var KEY = 'plotnua.myplot.v1';
+  var SCHEMA = 1;
+
+  /* Probed once with a REAL write. `'localStorage' in window` is true in
+     Safari private mode right up until the moment you use it, so presence is
+     not availability. Same test My Plot applies, deliberately. */
+  var store = (function () {
+    try {
+      var k = KEY + '.probe';
+      window.localStorage.setItem(k, '1');
+      window.localStorage.removeItem(k);
+      return window.localStorage;
+    } catch (e) { return null; }
+  })();
+
+  function works() { return !!store; }
+
+  /* A journey record is valid if it can be identified. Everything else is
+     optional, because a partially-written record is still the homeowner's. */
+  function valid(r) {
+    return !!r && typeof r === 'object' && !Array.isArray(r) &&
+           typeof r.journeyId === 'string' && r.journeyId.length > 0;
+  }
+
+  /* Build the record from a FIXED key list. Anything the caller passes that
+     is not on this list never reaches the store. */
+  function sanitise(rec) {
+    var out = {
+      journeyId: String(rec.journeyId),
+      title: typeof rec.title === 'string' ? rec.title : '',
+      savedAt: typeof rec.savedAt === 'string' ? rec.savedAt
+                                               : new Date().toISOString(),
+      answers: {},
+      resultKeys: {}
+    };
+    var a = rec.answers, k;
+    if (a && typeof a === 'object' && !Array.isArray(a)) {
+      for (k in a) {
+        if (Object.prototype.hasOwnProperty.call(a, k) &&
+            (typeof a[k] === 'string' || typeof a[k] === 'boolean' ||
+             a[k] === null)) out.answers[k] = a[k];
+      }
+    }
+    var rk = rec.resultKeys;
+    if (rk && typeof rk === 'object' && !Array.isArray(rk)) {
+      for (k in rk) {
+        if (Object.prototype.hasOwnProperty.call(rk, k) &&
+            typeof rk[k] === 'string') out.resultKeys[k] = rk[k];
+      }
+    }
+    return out;
+  }
+
+  /* Read the WHOLE record. A record from a newer schema is left completely
+     alone — an older build must not edit, and must not destroy, data it does
+     not understand. */
+  function readRaw() {
+    if (!store) return null;
+    var raw;
+    try { raw = store.getItem(KEY); } catch (e) { return null; }
+    if (!raw) return null;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return null; }
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return null;
+    if (typeof d.schema === 'number' && d.schema > SCHEMA) return null;
+    return d;
+  }
+
+  function list() {
+    var d = readRaw();
+    var j = (d && Array.isArray(d.journeys)) ? d.journeys : [];
+    return j.filter(valid);
+  }
+
+  function has(id) {
+    var j = list(), i;
+    for (i = 0; i < j.length; i++) { if (j[i].journeyId === id) return true; }
+    return false;
+  }
+
+  /* READ · MODIFY · WRITE. Only `journeys` is touched. */
+  function save(rec) {
+    if (!store || !valid(rec)) return 'unavailable';
+    var clean = sanitise(rec);
+    var d = readRaw();
+    if (!d) d = { schema: SCHEMA, saved: [], added: [] };
+    if (typeof d.schema !== 'number') d.schema = SCHEMA;
+    if (!Array.isArray(d.saved)) d.saved = [];
+    if (!Array.isArray(d.added)) d.added = [];
+    var keep = (Array.isArray(d.journeys) ? d.journeys : []).filter(function (r) {
+      return valid(r) && r.journeyId !== clean.journeyId;
+    });
+    keep.push(clean);
+    d.journeys = keep;
+    d.updatedAt = new Date().toISOString();
+    try { store.setItem(KEY, JSON.stringify(d)); } catch (e) { return 'unavailable'; }
+    try { if (window.PlotNuaFunnel) window.PlotNuaFunnel.saved(); } catch (e) {}
+    return 'saved';
+  }
+
+  /* ---- the control ------------------------------------------------------
+     Mounted by the journey only AFTER its reveal. This block never decides
+     when a result exists; it only knows how to keep one. */
+  function mount(cfg) {
+    /* The journey calls mount() only AFTER its reveal, in all nine
+       Property Checks. That makes it the one uniform completion signal. */
+    try { if (window.PlotNuaFunnel) window.PlotNuaFunnel.complete(); } catch (e) {}
+    var btn = document.getElementById(cfg.buttonId);
+    var note = document.getElementById(cfg.noteId);
+    /* THE ROUTE ONWARD, hidden until there is something at the other end.
+       Offering "View in My Plot" before a save would send a homeowner to a
+       page with nothing of theirs on it, which makes the link a small lie.
+       The destination is the platform's EXISTING one — your-plot.html?myplot=1
+       — not a route invented here; My Plot already opens itself on that
+       parameter when it has something restored to show. */
+    var link = cfg.linkId ? document.getElementById(cfg.linkId) : null;
+    if (!btn) return;
+
+    /* PlotNua never promises a persistence it does not have. */
+    if (!works()) {
+      btn.hidden = true;
+      if (link) link.hidden = true;
+      if (note) {
+        note.textContent = 'This browser will not let us keep anything, ' +
+          'so there is nothing to save to here.';
+      }
+      return;
+    }
+    btn.hidden = false;
+
+    function paint(saved) {
+      btn.textContent = saved ? 'Saved to My Plot' : 'Save to My Plot';
+      btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+      if (saved) { btn.setAttribute('data-saved', 'true'); }
+      else { btn.removeAttribute('data-saved'); }
+      if (link) link.hidden = !saved;
+      if (note) {
+        note.textContent = saved
+          ? 'Kept with the possibilities you’re exploring for your property.'
+          : 'Keep this result with the possibilities you’re exploring for your property.';
+      }
+    }
+
+    paint(has(cfg.journeyId));
+
+    btn.onclick = function () {
+      var p = cfg.payload ? (cfg.payload() || {}) : {};
+      var r = save({
+        journeyId: cfg.journeyId,
+        title: cfg.title,
+        savedAt: new Date().toISOString(),
+        answers: p.answers,
+        resultKeys: p.resultKeys
+      });
+      if (r === 'saved') { paint(true);
+        if (typeof cfg.onSaved === 'function') cfg.onSaved();
+        return; }
+      if (note) {
+        note.textContent = 'We could not keep this in your browser just now.';
+      }
+    };
+  }
+
+  /* How much My Plot is holding, through the SAME reader. A journey page
+     asking "is there anything in My Plot?" must not grow its own opinion of
+     the store's shape; this is the one place that knows. */
+  function count() {
+    var d = readRaw();
+    if (!d) return 0;
+    var n = 0, seen = {};
+    (Array.isArray(d.saved) ? d.saved : []).forEach(function (r) {
+      if (r && typeof r.productId === 'string' && r.productId && !seen[r.productId]) {
+        seen[r.productId] = 1; n++;
+      }
+    });
+    (Array.isArray(d.added) ? d.added : []).forEach(function (r) {
+      var k = r && String(r.url || r.name || '').trim().toLowerCase();
+      if (k && !seen[k]) { seen[k] = 1; n++; }
+    });
+    n += list().length;
+    return n;
+  }
+
+
+  /* ---- THE GARDEN MY PLOT PILL ------------------------------------------
+     Ported from your-plot.html, which is the platform's reference
+     implementation of this control. The Garden composes it as
+
+       .my-plot-access-wrap  fixed positioning + z-index
+         .my-plot-access     the surface: paper, fine border, soft shadow
+           .pn-mark-heart    the 64px medallion carrying the real mark
+           .my-plot-access-label   Fraunces title + uppercase caption
+           .my-plot-access-chevron the arrow that advances on hover
+
+     A journey has one control rather than a control plus an info trigger,
+     so the wrap collapses into the anchor itself: .pn-plotpill carries the
+     positioning the wrap used to, and .my-plot-access carries every visual
+     property verbatim. That split is deliberate — it keeps the ported
+     surface rules a straight copy of the Garden's, so the next person to
+     compare the two files can do it by eye.
+
+     LITERAL COLOURS, NOT var(). A shared component cannot assume its host
+     defines the same tokens — DISC-026 has no --paper and no --accent — so
+     the Garden's :root values are inlined. */
+  var PILL_ID = 'pnPlotPill';
+  var PILL_CSS_ID = 'pnPlotPillCss';
+  var PILL_HREF = 'your-plot.html?myplot=1';
+
+  /* The real mark, exactly as plotIcon() draws it in your-plot.html: the
+     same three paths, the same coordinate transform, the same fills. These
+     are not re-fitted approximations — they are the approved geometry. */
+  var MARK_P = 'M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0';
+  var MARK_HOUSE = 'M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0';
+  var MARK_HEART = 'M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z';
+  var markClipSeq = 0;
+
+  var PILL_STYLE = [
+    /* POSITIONING — the Garden's .my-plot-access-wrap, moved to the opposite
+       corner, and this is the one place the port deliberately departs from
+       your-plot.html.
+
+       The Garden puts its pill at top:20/right:20 because nothing else is up
+       there: its own identity mark is a 46px tile at top-LEFT, so the
+       top-right corner is empty. Both journeys instead run a full-width
+       masthead across the top — 91px on Driveway, 88px on Power Station —
+       and Power Station's is position:sticky at z-index 20, so it is in that
+       corner permanently, not just at scroll-top. Measured at 1440, 1024 and
+       834, a top-aligned pill overlapped the masthead on both journeys and
+       the "Back to the story" link on Driveway.
+
+       Bottom-right was then measured on both journeys at 1440/1024/834 and
+       at five scroll positions each: zero overlaps with the masthead, the
+       Back link, the reveal copy, the section copy or the save controls.
+
+       So the treatment is the Garden's exactly and only the anchor corner
+       differs, because the host page differs. This also makes one placement
+       rule for every width instead of a desktop rule and a phone rule. */
+    '.pn-plotpill{position:fixed;bottom:20px;right:20px;z-index:60;',
+    'display:flex;align-items:center;text-decoration:none;',
+    'font-family:"Work Sans",-apple-system,BlinkMacSystemFont,sans-serif;}',
+    /* The attribute must win over the class. An author display:flex beats
+       the user-agent [hidden]{display:none} on ORIGIN, which is exactly how
+       the save link once stayed visible while hidden was true. Class plus
+       attribute is (0,2,0) and restores the attribute's meaning. */
+    '.pn-plotpill[hidden],.my-plot-access[hidden]{display:none;}',
+
+    /* surface — the Garden's .my-plot-access, after its PB-029 override */
+    '.my-plot-access{display:flex;align-items:center;gap:0;',
+    'border-radius:44px;padding:10px 26px 10px 10px;text-align:left;',
+    'background:#F8F5EC;color:#1F3B2E;',
+    'border:1px solid rgba(31,59,46,.16);',
+    'box-shadow:0 1px 2px rgba(31,59,46,.05),0 10px 28px rgba(31,59,46,.10);',
+    'transition:transform .22s cubic-bezier(.2,.85,.32,1.1),',
+    'box-shadow .22s ease,background .22s ease;}',
+    '.my-plot-access:hover{transform:translateY(-1px);',
+    'box-shadow:0 2px 4px rgba(31,59,46,.07),0 16px 38px rgba(31,59,46,.14);}',
+    '.pn-plotpill:focus-visible{outline:2px solid #1F3B2E;outline-offset:3px;}',
+    '.pn-plotpill:focus-visible .my-plot-access{box-shadow:0 2px 4px ',
+    'rgba(31,59,46,.07),0 16px 38px rgba(31,59,46,.14);}',
+
+    /* the medallion — the Garden's .pn-mark-heart at its pill size */
+    '.pn-mark-heart{position:relative;display:inline-flex;flex:0 0 auto;',
+    'vertical-align:middle;}',
+    '.pn-mark-heart .pmh-svg{width:100%;height:100%;display:block;}',
+    '.pn-mark-heart .pmh-heart-path{opacity:0;transform:scale(1.6);',
+    'transform-origin:1595px 1573px;transition:opacity .38s ease,',
+    'transform .38s cubic-bezier(.2,.85,.32,1.25);}',
+    '.pn-mark-heart.is-plot-active .pmh-heart-path{opacity:1;',
+    'transform:scale(3.2);}',
+    '.my-plot-access .pn-mark-heart{width:64px;height:64px;margin-right:18px;',
+    'padding:7px;background:#F2EFE6;border-radius:22px;',
+    'box-shadow:0 4px 12px rgba(31,59,46,.26),',
+    'inset 0 0 0 1px rgba(31,59,46,.07);transition:box-shadow .22s ease;}',
+    '.my-plot-access:hover .pn-mark-heart{',
+    'box-shadow:0 6px 16px rgba(31,59,46,.32),',
+    'inset 0 0 0 1px rgba(31,59,46,.09);}',
+    '.my-plot-access .pn-mark-heart.is-plot-active .pmh-heart-path{',
+    'transform:scale(4.1);}',
+
+    /* the label — Fraunces title over an uppercase caption */
+    '.my-plot-access-label{display:flex;flex-direction:column;gap:1px;',
+    'min-width:0;}',
+    '.my-plot-access-title{font-family:"Fraunces",Georgia,serif;',
+    'font-weight:500;font-size:19px;line-height:1.15;letter-spacing:.005em;',
+    'color:#1F3B2E;}',
+    '.my-plot-access-count{font-size:11.5px;font-weight:600;',
+    'letter-spacing:.07em;text-transform:uppercase;line-height:1.2;',
+    'color:#4F6B4A;opacity:.85;}',
+
+    /* the arrow, which advances on hover */
+    '.my-plot-access-chevron{margin-left:16px;font-size:17px;line-height:1;',
+    'color:#4F6B4A;opacity:.75;',
+    'transition:transform .22s ease,opacity .22s ease;}',
+    '.my-plot-access:hover .my-plot-access-chevron{transform:translateX(3px);',
+    'opacity:.95;}',
+
+    /* PHONES — THE COMPACT PILL.
+       The full Garden pill is 224x72 at phone widths. Measured at 430, 390
+       and 360 across five result states and twenty-one scroll positions, it
+       covered the CENTRE of the "Save to My Plot" button in 10 of 15 cases:
+       elementFromPoint returned the pill, not the button, so the journey's
+       primary action was not clickable. The pill that shipped before this
+       port was smaller and only ever touched the button's edge (0 of 15),
+       so the Garden pill's size is what introduced this.
+
+       The control therefore collapses to the medallion and the arrow on
+       phones. It keeps the Garden surface, the Garden medallion and the
+       Garden arrow; it drops only the two text lines, and it stays in the
+       same corner. 116x70 instead of 224x72, which clears every action
+       centre on both journeys.
+
+       The text is hidden with display:none rather than a clip-rect, because
+       its meaning is carried instead by an explicit aria-label that
+       mountPill() writes with the live count — see mountPill below. A
+       screen reader gets "Open My Plot - 3 things kept" at every width;
+       only sighted phone users get the shorter object. */
+    '@media (max-width:560px){',
+    '.pn-plotpill{bottom:16px;right:14px;}',
+    '.my-plot-access{padding:7px 14px 7px 7px;border-radius:38px;}',
+    '.my-plot-access .pn-mark-heart{width:54px;height:54px;margin-right:0;',
+    'padding:6px;border-radius:19px;}',
+    '.my-plot-access-label{display:none;}',
+    '.my-plot-access-chevron{margin-left:10px;}}'
+  ].join('');
+
+  /* My Plot is where the pill would send you, so it has no purpose there.
+     Matched on the filename rather than a flag, because any page that is
+     your-plot.html IS My Plot however it was reached. */
+  function insideMyPlot() {
+    try {
+      return /(^|\/)your-plot\.html$/.test(window.location.pathname);
+    } catch (e) { return false; }
+  }
+
+  /* The mark, composed exactly as plotIcon(true) composes it. The clip id is
+     sequenced because a document may legitimately hold more than one. */
+  function markHtml() {
+    markClipSeq += 1;
+    var id = 'pnJourneyMarkClip' + markClipSeq;
+    return '<svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg"' +
+      ' class="pmh-svg" aria-hidden="true">' +
+      '<defs><clipPath id="' + id + '">' +
+        '<rect width="3000" height="3000" rx="666.5"/></clipPath></defs>' +
+      '<rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/>' +
+      '<g clip-path="url(#' + id + ')">' +
+        '<g transform="translate(0,3000) scale(0.1,-0.1)">' +
+          '<path d="' + MARK_P + '" fill="#F2EFE6"/>' +
+          '<path d="' + MARK_HOUSE + '" fill="#8FAF8A"/>' +
+        '</g>' +
+      '</g>' +
+      '<path class="pmh-heart-path" fill="#C57A5A" d="' + MARK_HEART + '"/>' +
+    '</svg>';
+  }
+
+  function buildPill() {
+    if (!document.getElementById(PILL_CSS_ID)) {
+      var st = document.createElement('style');
+      st.id = PILL_CSS_ID;
+      st.textContent = PILL_STYLE;
+      document.head.appendChild(st);
+    }
+    var a = document.getElementById(PILL_ID);
+    if (a) return a;
+    a = document.createElement('a');
+    a.id = PILL_ID;
+    a.className = 'pn-plotpill';
+    a.setAttribute('href', PILL_HREF);
+    a.hidden = true;
+
+    var surface = document.createElement('span');
+    surface.className = 'my-plot-access';
+
+    /* is-plot-active is the Garden's own state here: the pill represents My
+       Plot as a place that already holds something, which is the only
+       condition under which it is shown at all. */
+    var mark = document.createElement('span');
+    mark.className = 'pn-mark-heart is-plot-active';
+    mark.setAttribute('aria-hidden', 'true');
+    mark.innerHTML = markHtml();
+
+    var label = document.createElement('span');
+    label.className = 'my-plot-access-label';
+    var t = document.createElement('span');
+    t.className = 'my-plot-access-title';
+    t.textContent = 'My Plot';
+    var c = document.createElement('span');
+    c.className = 'my-plot-access-count';
+    label.appendChild(t); label.appendChild(c);
+
+    var chev = document.createElement('span');
+    chev.className = 'my-plot-access-chevron';
+    chev.setAttribute('aria-hidden', 'true');
+    chev.textContent = '\u2192';
+
+    surface.appendChild(mark);
+    surface.appendChild(label);
+    surface.appendChild(chev);
+    a.appendChild(surface);
+    document.body.appendChild(a);
+    return a;
+  }
+
+  /* Idempotent: safe to call on every reveal and after every save. */
+  function mountPill() {
+    if (!works() || insideMyPlot()) {
+      var existing = document.getElementById(PILL_ID);
+      if (existing) existing.hidden = true;
+      return;
+    }
+    var a = buildPill();
+    var n = count();
+    a.hidden = !(n > 0);
+    var kept = (n === 1) ? '1 thing kept' : n + ' things kept';
+    var c = a.querySelector('.my-plot-access-count');
+    if (c) c.textContent = kept;
+    /* THE ACCESSIBLE NAME IS WRITTEN HERE, not in the markup, because it
+       carries the live count and must therefore be rewritten every time
+       mountPill runs — on reveal, after a save, and after a repeat save.
+       On phones the two text lines are display:none and so are out of the
+       accessibility tree entirely; this is what keeps the control named.
+       It contains the visible label text verbatim ("My Plot", and the same
+       count string), so the visible name is a subset of the accessible one
+       at the widths where the text is on screen. */
+    a.setAttribute('aria-label', 'Open My Plot \u2014 ' + kept);
+  }
+
+  root.PlotNuaJourneySave = {
+    KEY: KEY, works: works, has: has, save: save, list: list, count: count,
+    mount: mount, mountPill: mountPill
+  };
+})(window);
+/* PLOTNUA-JOURNEY-SAVE-END */
+</script>
+
+<script>
+/* =========================================================================
+ * PLOTNUA RESIDENTIAL COMPUTE READINESS V1 — JOURNEY LAYER
+ *
+ * Presentation only. Every sentence here is bound to an engine key; this file
+ * decides nothing. The shell (pc-*) owns the intro, progress, question
+ * composition, adaptive choices, selected states, Back and the My Plot close,
+ * and is used exactly as the frozen donor uses it.
+ *
+ * THE LANGUAGE RULE THIS FILE EXISTS UNDER
+ *   PlotNua does the homework. The homeowner makes the decision.
+ *   No income. No availability. No compatibility. No provider. No score.
+ *   Every sentence below was written to be true on the day a homeowner reads
+ *   it, with no provider requirement published and no Irish market in
+ *   existence, and the build guards fail if any of them stops being so.
+ * ========================================================================= */
+(function () {
+  'use strict';
+  var ENG = window.PlotNuaComputeReadinessEngine;
+  var REG = window.PlotNuaComputeReadinessRegister;
+  var CONTRACT = window.PLOTNUA_RCR_CONTRACT;
+  var $ = function (id) { return document.getElementById(id); };
+
+  if (REG && CONTRACT) { try { REG.configure(CONTRACT); } catch (e) {} }
+
+  /* ------------------------------------------------------ THE QUESTIONS
+     Eleven, across the five evidence groups. Every one of them can change
+     what the result says — anything that could not was moved into the
+     register step, where it is volunteered rather than demanded. */
+  var QUESTIONS = [
+    { var: 'tenure', eyebrow: 'About you',
+      q: 'Do you own this home?',
+      note: 'This decides who would have to agree &mdash; not what the property can take.',
+      opts: [ { v: 'own', l: 'I own it', n: null },
+              { v: 'rent', l: 'I rent it', n: null },
+              { v: 'buying', l: 'I&rsquo;m buying it', n: 'Sale not completed yet' },
+              { v: 'other', l: 'Something else', n: null } ] },
+
+    { var: 'new_build_existing', eyebrow: 'The property',
+      q: 'Is this an existing home or a new build?',
+      note: null,
+      opts: [ { v: 'existing', l: 'An existing home', n: null },
+              { v: 'new_build', l: 'A new build, already built', n: null },
+              { v: 'planned_new_build', l: 'A new build, not built yet', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'willingness_to_host', eyebrow: 'About you',
+      q: 'If this ever became possible here, would you want equipment on your property?',
+      note: 'Nothing follows from saying yes. It decides whether we offer you the register at the end.',
+      opts: [ { v: 'yes', l: 'Yes, I&rsquo;d consider it', n: null },
+              { v: 'no', l: 'No', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure yet', n: null } ] },
+
+    { var: 'connection_capacity_known', eyebrow: 'Electricity',
+      q: 'Do you know this home&rsquo;s electrical connection capacity?',
+      note: 'Most people don&rsquo;t, and it costs you nothing here. It sits on an ESB Networks connection agreement rather than on your bill.',
+      opts: [ { v: 'yes', l: 'Yes', n: null },
+              { v: 'no', l: 'No', n: null } ] },
+
+    { var: 'phase', eyebrow: 'Electricity',
+      q: 'Is the supply single phase or three phase?',
+      note: 'Most Irish homes are single phase. Not sure is a real answer.',
+      opts: [ { v: 'single', l: 'Single phase', n: null },
+              { v: 'three', l: 'Three phase', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'major_loads', eyebrow: 'Electricity',
+      q: 'Does the home already run a heat pump, EV charging or an electric shower?',
+      note: null,
+      opts: [ { v: 'yes', l: 'Yes, one or more', n: null },
+              { v: 'no', l: 'None of those', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'solar_status', eyebrow: 'Energy here',
+      q: 'Is there solar on the roof?',
+      note: null,
+      opts: [ { v: 'installed', l: 'Yes, installed', n: null },
+              { v: 'none', l: 'No', n: null },
+              { v: 'planned', l: 'Not yet, but it&rsquo;s planned', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'battery_status', eyebrow: 'Energy here',
+      q: 'Is there a home battery?',
+      note: null,
+      opts: [ { v: 'installed', l: 'Yes, installed', n: null },
+              { v: 'none', l: 'No', n: null },
+              { v: 'planned', l: 'Not yet, but it&rsquo;s planned', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'fttp_status', eyebrow: 'Connectivity',
+      q: 'What kind of broadband reaches the house?',
+      note: 'Fibre to the home means the fibre comes into the building, not just to a cabinet on the road.',
+      opts: [ { v: 'fttp', l: 'Fibre to the home', n: null },
+              { v: 'other_broadband', l: 'Broadband, but not fibre to the home', n: null },
+              { v: 'no_broadband', l: 'No broadband here', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'equipment_space', eyebrow: 'Space and access',
+      q: 'Is there somewhere on the property equipment could stand?',
+      note: 'Outside, in a garage, or in a utility space. Nobody has published what size it would be, so tell us what you have rather than measuring anything.',
+      opts: [ { v: 'outdoor', l: 'Yes, outside', n: null },
+              { v: 'garage_utility', l: 'Yes, in a garage or utility space', n: null },
+              { v: 'none_identified', l: 'No, nowhere I can think of', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] },
+
+    { var: 'service_access', eyebrow: 'Space and access',
+      q: 'Could somebody reach that spot safely to install and service equipment, and would it be secure there?',
+      note: null,
+      opts: [ { v: 'yes', l: 'Yes', n: null },
+              { v: 'no', l: 'No', n: null },
+              { v: 'not_sure', l: 'I&rsquo;m not sure', n: null } ] }
+  ];
+
+  /* ------------------------------------------------------ PRESENTATION
+     One entry per engine key. Nothing is composed at runtime, so a key
+     without copy is a visible blank rather than a silent guess. */
+
+  var HEADLINE = {
+    candidate_worth_investigating:
+      'Your property could be worth investigating',
+    more_information_gaps_remain:
+      'A few things still to establish',
+    more_information_little_in_place:
+      'Not much of this is in place here yet',
+    not_currently_suitable_no_space_or_access:
+      'Nowhere here to put it, as things stand'
+  };
+
+  var SUBLINE = {
+    candidate_worth_investigating:
+      'We found several characteristics that may make this home relevant to future ' +
+      'residential-compute systems. A provider would still have to assess it themselves.',
+    more_information_gaps_remain:
+      'The idea may well be relevant here. A few answers we would need are not ' +
+      'settled yet, and they are all things you could find out.',
+    more_information_little_in_place:
+      'You have told us where this property stands, and little of what these systems ' +
+      'are built around is here today. That may change, and it is not a verdict on the ' +
+      'property.',
+    not_currently_suitable_no_space_or_access:
+      'You have told us there is nowhere on the property equipment could stand and no ' +
+      'safe way to reach such a place. On that basis this is not something to pursue ' +
+      'here today. It describes the property as it is now, not what it could become.'
+  };
+
+  var PRESENT = {
+    present_fttp:                    'Fibre to the home reported',
+    present_solar:                   'Solar installed',
+    present_battery:                 'Home battery installed',
+    present_connection_capacity:     'Connection capacity known',
+    present_phase_single:            'Single-phase supply',
+    present_phase_three:             'Three-phase supply',
+    present_major_loads:             'Heat pump, EV charging or electric shower already here',
+    present_equipment_space_outdoor: 'Outdoor space reported',
+    present_equipment_space_indoor:  'Garage or utility space reported',
+    present_service_access:          'Safe, secure access reported',
+    present_new_build:               'A new build'
+  };
+
+  var GAP = {
+    gap_build_status:      'Whether this is a new build or an existing home',
+    gap_connection_capacity: 'Your electrical connection capacity',
+    gap_phase:             'Whether the supply is single or three phase',
+    gap_major_loads:       'What significant electrical loads the home already runs',
+    gap_solar:             'Whether there is solar here',
+    gap_battery:           'Whether there is a home battery',
+    gap_connectivity:      'What kind of broadband reaches the house',
+    gap_equipment_space:   'Whether there is somewhere equipment could stand',
+    gap_service_access:    'Whether that spot could be reached safely and kept secure'
+  };
+
+  var ABSENCE = {
+    absent_solar:            'No solar here',
+    absent_battery:          'No home battery here',
+    absent_fttp:             'Broadband, but not fibre to the home',
+    absent_broadband:        'No broadband at the property',
+    absent_major_loads:      'No heat pump, EV charging or electric shower',
+    absent_equipment_space:  'Nowhere identified for equipment',
+    absent_service_access:   'No safe, secure access to such a spot'
+  };
+
+  var CONDITION = {
+    condition_owner_permission:
+      'You rent, so the owner would have to agree. We do not assume they would.',
+    condition_deferred_until_purchase:
+      'The sale is not complete, so this waits until the property is yours.',
+    condition_authority_unclear:
+      'Who would have to agree is not clear from what you have told us. It would need ' +
+      'settling before anything else.',
+    condition_not_willing_to_host:
+      'You have told us you would not want equipment here, so we have not offered you ' +
+      'the register. Everything above still stands as a reading of the property.',
+    condition_willingness_undecided:
+      'You have not decided whether you would want equipment here. That is the right ' +
+      'answer while so little is known.',
+    condition_planned_energy_works:
+      'Work you have planned but not done yet is not counted as being here. Come back ' +
+      'when it is in.',
+    condition_planned_new_build:
+      'The house is not built yet, so there is nothing on site to look at. Much of ' +
+      'this would be easier to answer once it is.'
+  };
+
+  /* READ NO ANSWERS. True in every run, for every property, today. */
+  var MARKET = {
+    market_not_available_ireland:
+      'Distributed residential computing is not currently commercially available ' +
+      'through PlotNua in Ireland. PlotNua is investigating what would be required ' +
+      'if this model enters the Irish market.',
+    market_provider_requirements_unpublished:
+      'Nobody has published the technical requirements a property would have to meet ' +
+      '&mdash; the electrical load, the connection capacity, the connectivity, the ' +
+      'certification. Until they do, no one can tell you whether a property is ' +
+      'technically compatible, and PlotNua will not pretend otherwise. A real ' +
+      'assessment would be a provider&rsquo;s to make.'
+  };
+
+  /* ---------------------------------------------------------- THE FLOW */
+  var answers = {}, trail = [], lastEval = null;
+
+  function show(id) {
+    ['rcIntro', 'rcQ', 'rcReveal', 'rcRegister'].forEach(function (s) {
+      var el = $(s); if (el) el.classList.toggle('is-on', s === id);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function pending() {
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      if (!(QUESTIONS[i].var in answers)) return QUESTIONS[i];
+    }
+    return null;
+  }
+
+  function renderDots(q) {
+    var box = $('rcDots'); box.innerHTML = '';
+    var idx = QUESTIONS.indexOf(q);
+    QUESTIONS.forEach(function (_, i) {
+      var s = document.createElement('span');
+      s.className = 'pc-dot' + (i < idx ? ' is-done' : (i === idx ? ' is-on' : ''));
+      box.appendChild(s);
+    });
+    $('rcProg').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
+  }
+
+  function renderQuestion(q) {
+    renderDots(q);
+    $('rcQEyebrow').textContent = q.eyebrow;
+    $('rcQText').innerHTML = q.q;
+    var note = $('rcQNote');
+    if (q.note) { note.innerHTML = q.note; note.style.display = ''; }
+    else { note.textContent = ''; note.style.display = 'none'; }
+
+    var box = $('rcOpts');
+    box.innerHTML = '';
+    /* Shell rule, used exactly as the donor uses it: the treatment is chosen
+       by the content, never configured by the journey. */
+    var compact = q.opts.every(function (o) {
+      return !o.n && o.l.replace(/&[a-z]+;/g, 'x').length <= 24;
+    });
+    box.className = 'pc-opts ' + (compact ? 'is-inline' : 'is-stacked');
+    q.opts.forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pc-opt';
+      b.innerHTML = o.l + (o.n ? '<span class="pc-optn">' + o.n + '</span>' : '');
+      b.addEventListener('click', function () { this.classList.add('is-chosen'); });
+      b.addEventListener('click', function () { choose(q, o.v); });
+      box.appendChild(b);
+    });
+    $('rcBack').style.display = trail.length ? '' : 'none';
+    show('rcQ');
+  }
+
+  function choose(q, value) {
+    answers[q.var] = value;
+    trail.push(q.var);
+    advance();
+  }
+
+  function back() {
+    if (!trail.length) return;
+    var last = trail.pop();
+    delete answers[last];
+    var q = QUESTIONS.filter(function (x) { return x.var === last; })[0];
+    if (q) renderQuestion(q); else advance();
+  }
+
+  function advance() {
+    var next = pending();
+    if (next) renderQuestion(next); else reveal();
+  }
+
+  /* -------------------------------------------------------- THE RESULT */
+
+  function findingRow(mark, text, cls) {
+    var li = document.createElement('li');
+    li.className = 'rc-find ' + cls;
+    li.innerHTML = '<span class="rc-mark" aria-hidden="true">' + mark + '</span>' +
+                   '<span class="rc-findtext">' + text + '</span>';
+    return li;
+  }
+
+  function reveal() {
+    lastEval = ENG.evaluate(answers);
+    var r = lastEval;
+
+    $('rcRevealH').innerHTML = HEADLINE[r.headline_key] || '';
+    $('rcRevealSub').innerHTML = SUBLINE[r.headline_key] || '';
+
+    /* THE THREE FINDING TYPES, IN THREE VISUALLY DISTINCT ROWS AND NEVER
+       MERGED. Present is a tick. A gap is a question mark and reads as
+       something the homeowner can answer. An absence is a dash and reads as
+       a fact, not a failing. */
+    var list = $('rcFindings'); list.innerHTML = '';
+    r.present_keys.forEach(function (k) {
+      if (PRESENT[k]) list.appendChild(findingRow('&#10003;', PRESENT[k], 'is-present'));
+    });
+    r.gap_keys.forEach(function (k) {
+      if (GAP[k]) list.appendChild(findingRow('?', GAP[k], 'is-gap'));
+    });
+    r.absence_keys.forEach(function (k) {
+      if (ABSENCE[k]) list.appendChild(findingRow('&ndash;', ABSENCE[k], 'is-absent'));
+    });
+
+    var gapNote = $('rcGapNote');
+    if (r.gap_keys.length) {
+      gapNote.innerHTML = 'The question marks are the things still to establish. ' +
+        'None of them needs an engineer &mdash; they are all questions about your own home.';
+      gapNote.hidden = false;
+    } else {
+      gapNote.hidden = true;
+    }
+
+    var cond = $('rcConditions'); cond.innerHTML = '';
+    if (r.condition_keys.length) {
+      r.condition_keys.forEach(function (k) {
+        if (!CONDITION[k]) return;
+        var li = document.createElement('li');
+        li.innerHTML = CONDITION[k];
+        cond.appendChild(li);
+      });
+      $('rcCondBlock').hidden = cond.children.length === 0;
+    } else {
+      $('rcCondBlock').hidden = true;
+    }
+
+    /* THE TWO UNCONDITIONAL STATEMENTS. Same weight as the finding above
+       them, never a footnote, and present in every single result. */
+    var mk = $('rcMarket'); mk.innerHTML = '';
+    r.market_keys.forEach(function (k) {
+      if (!MARKET[k]) return;
+      var p = document.createElement('p');
+      p.className = 'rc-market-p';
+      p.innerHTML = MARKET[k];
+      mk.appendChild(p);
+    });
+
+    /* REGISTRATION. Offered on willingness alone. */
+    $('rcCtaBlock').hidden = !r.offer_registration;
+
+    mountSave();
+    show('rcReveal');
+  }
+
+  /* ------------------------------------------------------ THE REGISTER */
+
+  function registerActive() {
+    return !!(REG && REG.writesPossible && REG.writesPossible());
+  }
+
+  function openRegister() {
+    var notice = $('rcRegNotice');
+    if (!registerActive()) {
+      notice.innerHTML = '<b>The register is not open yet.</b> We are putting it in ' +
+        'place. You can look at what it would ask for, but nothing you type here is ' +
+        'sent anywhere or kept.';
+      notice.hidden = false;
+    } else {
+      notice.hidden = true;
+    }
+    show('rcRegister');
+  }
+
+  function readExtra() {
+    var out = {};
+    var pick = function (id, field, cast) {
+      var el = $(id); if (!el) return;
+      var v = el.type === 'checkbox' ? el.checked : el.value;
+      if (v === '' || v === null || v === undefined) return;
+      out[field] = cast ? cast(v) : v;
+    };
+    pick('rcCounty', 'County');
+    pick('rcPrefix', 'Eircode_prefix', function (v) { return String(v).toUpperCase().trim(); });
+    pick('rcPropType', 'Property_Type');
+    pick('rcMic', 'MIC_kVA', Number);
+    pick('rcSolarKwp', 'Solar_kWp', Number);
+    pick('rcBatteryKwh', 'Battery_kWh', Number);
+    pick('rcSmartMeter', 'Smart_Meter');
+    pick('rcHeatPump', 'Heat_Pump');
+    pick('rcEvCharger', 'EV_Charger');
+    pick('rcOtherLoads', 'Other_Major_Loads');
+    pick('rcProvider', 'Broadband_Provider');
+    pick('rcSpeed', 'Broadband_Speed');
+    out.Future_Contact_Consent = !!($('rcConsent') && $('rcConsent').checked);
+    if (out.Future_Contact_Consent) pick('rcEmail', 'Contact_Email');
+    return out;
+  }
+
+  function submitRegister() {
+    var status = $('rcRegStatus');
+    if (!REG || !lastEval) return;
+
+    if (!registerActive()) {
+      /* THE HONEST DEAD END. It must never read as a completed registration,
+         and nothing is retained. */
+      status.className = 'rc-regstatus is-inactive';
+      status.innerHTML = '<b>Nothing has been sent.</b> The register is not open yet, ' +
+        'so there was nowhere for this to go. Your answers above are still on screen ' +
+        'and have not left this browser.';
+      status.hidden = false;
+      return;
+    }
+
+    var record = REG.buildRecord({
+      answers: answers, result: lastEval, extra: readExtra()
+    });
+    var v = REG.validate(record);
+    if (!v.ok) {
+      status.className = 'rc-regstatus is-invalid';
+      status.innerHTML = 'Something above needs a second look: ' +
+        v.errors.map(function (e) { return e.field.replace(/_/g, ' '); }).join(', ') + '.';
+      status.hidden = false;
+      return;
+    }
+    status.className = 'rc-regstatus';
+    status.textContent = 'Sending&hellip;';
+    status.hidden = false;
+    REG.submit(record).then(function (res) {
+      if (res.ok) {
+        status.className = 'rc-regstatus is-done';
+        status.innerHTML = '<b>Your property is on the register.</b> Nobody will contact ' +
+          'you unless you asked us to, and no provider has been told anything.';
+      } else {
+        status.className = 'rc-regstatus is-invalid';
+        status.innerHTML = 'That did not go through, and nothing has been recorded. ' +
+          'Please try again later.';
+      }
+    });
+  }
+
+  function toggleEmail() {
+    var on = !!($('rcConsent') && $('rcConsent').checked);
+    var row = $('rcEmailRow');
+    if (row) row.hidden = !on;
+  }
+
+  /* ---------------------------------------------------------- THE SAVE
+     The shared frozen component owns the button, note, link and state. This
+     supplies the payload and the sentence above them. */
+  var CLOSE_UNSAVED = 'Somewhere to come back to';
+  var CLOSE_SAVED   = 'You can come back to this';
+  var JOURNEY_ID    = 'disc026-compute-readiness';
+
+  function mountSave() {
+    if (!window.PlotNuaJourneySave) return;
+    window.PlotNuaJourneySave.mount({
+      buttonId: 'rcSave',
+      noteId: 'rcSaveNote',
+      linkId: 'rcSaveLink',
+      journeyId: JOURNEY_ID,
+      title: 'Residential Compute Readiness',
+      payload: function () {
+        /* ANSWERS AND THE RESULT KEY, never the prose and never the register
+           row. Reopening re-derives against today's evidence rather than
+           replaying a sentence PlotNua may have stopped standing over. */
+        return {
+          answers: answers,
+          resultKeys: { READINESS: lastEval.headline_key, STATE: lastEval.state }
+        };
+      },
+      onSaved: function () { paintClose(); mountPill(); }
+    });
+    paintClose();
+    mountPill();
+  }
+
+  function paintClose() {
+    var kept = window.PlotNuaJourneySave &&
+               window.PlotNuaJourneySave.has &&
+               window.PlotNuaJourneySave.has(JOURNEY_ID);
+    $('rcSaveHead').textContent = kept ? CLOSE_SAVED : CLOSE_UNSAVED;
+    var mark = $('rcSaveMark');
+    if (mark) mark.classList.toggle('is-kept', !!kept);
+  }
+
+  function mountPill() {
+    if (window.PlotNuaJourneySave && window.PlotNuaJourneySave.mountPill) {
+      window.PlotNuaJourneySave.mountPill();
+    }
+  }
+
+  /* ---------------------------------------------------------------- GO */
+  $('rcStart').addEventListener('click', function () { advance(); });
+  $('rcBack').addEventListener('click', back);
+  $('rcOpenRegister').addEventListener('click', openRegister);
+  $('rcRegBack').addEventListener('click', function () { show('rcReveal'); });
+  $('rcRegSubmit').addEventListener('click', submitRegister);
+  if ($('rcConsent')) $('rcConsent').addEventListener('change', toggleEmail);
+  toggleEmail();
+  mountPill();
+})();
+</script>
+</body>
+</html>

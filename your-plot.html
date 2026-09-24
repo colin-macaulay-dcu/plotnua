@@ -16604,6 +16604,7 @@
   const MYPLOT_JOURNEY_HREF = {
     'disc014-driveway-income': 'disc014-driveway-income.html',
     'disc026-power-station': 'disc026-power-station.html',
+    'disc026-compute-readiness': 'disc026-compute-readiness-check.html',
     'disc029-hidden-bins-check': 'disc029-hidden-bins-check.html',
     'disc022-hidden-cars-check': 'disc022-hidden-cars-check.html',
     'disc025-borrowed-garden-check': 'disc025-borrowed-garden-check.html',
@@ -16636,6 +16637,7 @@
   const MYPLOT_JOURNEY_DISCOVERY = {
     'disc014-driveway-income': 'discovery-driveway-income.html',
     'disc026-power-station': 'discovery-house-as-power-station.html',
+    'disc026-compute-readiness': 'discovery-house-as-power-station.html',
     'disc029-hidden-bins-check': 'discovery-hidden-bins.html',
     'disc022-hidden-cars-check': 'discovery-hidden-cars.html',
     'disc025-borrowed-garden-check': 'discovery-the-borrowed-garden.html',
@@ -16676,6 +16678,28 @@
        Every one of the fifteen is mapped. The contract test derives the emitted
        vocabulary by EXECUTING the engine across all 576 combinations rather
        than reading a list, which is the check Driveway did not have. */
+    /* RESIDENTIAL COMPUTE READINESS — Property Check V1.
+       Four headline keys, one per run, plus the state alongside them. The
+       summary leads on the STATE rather than the headline, because the state
+       is the thing that stays true: the wording above it may be rewritten as
+       PlotNua learns more, and a saved record re-derives against today's copy
+       when it is reopened.
+
+       NO SUMMARY HERE MAY IMPLY AVAILABILITY. A homeowner reading My Plot is
+       not inside the result's own context, so each line has to survive being
+       read on its own, months later, with nothing around it. */
+    if (rec && rec.journeyId === 'disc026-compute-readiness') {
+      const k = rk.READINESS, s = rk.STATE;
+      if (k === 'not_currently_suitable_no_space_or_access' || s === 'NOT_CURRENTLY_SUITABLE')
+        return 'Nowhere identified for equipment, on what you told us.';
+      if (k === 'more_information_gaps_remain')
+        return 'A few things about the property still to establish.';
+      if (k === 'more_information_little_in_place')
+        return 'Little of what these systems are built around is here yet.';
+      if (k === 'candidate_worth_investigating' || s === 'POTENTIAL_CANDIDATE')
+        return 'Several relevant characteristics here — not available in Ireland yet.';
+      return 'Your residential compute readiness check.';
+    }
     if (rec && rec.journeyId === 'disc029-hidden-bins-check') {
       const h = rk.HIDE, g = rk.INTEGRATE, u = rk.DISAPPEAR;
       /* Ground the homeowner does not control is the one finding that changes

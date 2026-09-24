@@ -354,6 +354,28 @@ details.ps-drawer[open] summary::after{content:"–"}
      display:inline-block beats the user-agent [hidden]{display:none} on
      origin, which made `hidden` inert on both controls. */
   .ps-savebtn[hidden],.ps-savelink[hidden]{display:none;}
+  /* PN-RCR-ENTRY-STYLE-BEGIN
+     ONE band, in the page's own vocabulary, not a second design system. It
+     sits after the save and before the footnote because it is a next step,
+     not a finding: everything above it is what this house can do today, and
+     this is a separate question about a market that does not exist here yet.
+     The label says so before the link does. */
+  .ps-nextcheck{ margin:40px 0 0; padding:26px 28px; border-radius:2px;
+    background:rgba(31,59,46,.03); border:1px solid rgba(31,59,46,.12);
+    border-top:2px solid rgba(31,59,46,.34); }
+  .ps-nextcheck-lab{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent,#4F6B4A); margin:0 0 10px; }
+  .ps-nextcheck-h{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:clamp(18px,2vw,21px); line-height:1.3; margin:0 0 10px; }
+  .ps-nextcheck-p{ font-size:14.5px; line-height:1.65; margin:0 0 16px;
+    max-width:56ch; }
+  .ps-nextcheck-a{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:12.5px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink,#1F3B2E); text-decoration:none;
+    border-bottom:1px solid rgba(31,59,46,.28); padding-bottom:3px; }
+  .ps-nextcheck-a:hover{ border-bottom-color:rgba(31,59,46,.7); }
+  /* PN-RCR-ENTRY-STYLE-END */
   @media (max-width:560px){ .ps-savebtn{ width:100%; } }
 </style>
 </head>
@@ -543,6 +565,18 @@ details.ps-drawer[open] summary::after{content:"–"}
       <p class="ps-savenote" id="psSaveNote"></p>
       <a class="ps-savelink" id="psSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot &rarr;</a>
     </div>
+    <!-- PN-RCR-ENTRY-BEGIN -->
+    <div class="ps-nextcheck">
+      <span class="ps-nextcheck-lab">A separate question</span>
+      <p class="ps-nextcheck-h">Could a house like this ever host computing?</p>
+      <p class="ps-nextcheck-p">Some homes abroad are beginning to house small amounts of
+        computing alongside their own solar and batteries. None of that happens in Ireland
+        yet, and nobody has published what a property would have to be able to do. There is
+        a separate check that reads your property against what PlotNua can actually stand
+        over, and tells you what is still to establish.</p>
+      <a class="ps-nextcheck-a" href="disc026-compute-readiness-check.html">Residential Compute Readiness &rarr;</a>
+    </div>
+    <!-- PN-RCR-ENTRY-END -->
     <p class="ps-foot">PlotNua does not size systems, quote for equipment, or estimate what you
       would earn. Export rates are set by suppliers and change &mdash; we will not print one.</p>
   </section>
