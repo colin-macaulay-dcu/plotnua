@@ -735,60 +735,299 @@ window.PlotNuaFunnel = (function () {
 
 <style>
   /* ============================================================
-     RESIDENTIAL COMPUTE READINESS - RESULT COMPOSITION (rc-res-*)
+     RESIDENTIAL COMPUTE READINESS - PREMIUM COMPOSITION (rc-*)
      Journey-specific only. No pc-* primitive is altered, extended or
      overridden here; the shell owns intro, questions, choices, Back,
-     progress and the My Plot close, and this owns nothing but the way one
-     result is laid out.
+     progress and the My Plot close.
 
-     THE PRESENTATION RULE THAT MATTERS. A result here carries three kinds
-     of finding and they must never blur into one another. A TICK is a
-     thing the property has. A QUESTION MARK is a thing the homeowner has
-     not established, and it must read as answerable rather than as a
-     failing. A DASH is a thing they have told us is not here - known, not
-     unknown. Same size, same weight, same ink; only the mark differs, so
-     nothing is dramatised and nothing is buried.
+     THE TYPE ROLES ARE NOT NEW. They are the ones the DISC-026 Discovery
+     already uses, by value, so a homeowner arriving from the article meets
+     the same voice rather than a second design system:
+
+       .rc-cat   Work Sans 9.5px / .22em / uppercase / --accent   (category)
+       .rc-findtext  Fraunces 500 / 15.5px / --ink                (the fact)
+       .rc-note  Work Sans 12.5px / 1.7 / --soft                  (the note)
+
+     THE ELEVATION SCALE IS THE ARTICLE'S TOO. One surface dominates and the
+     rest are calm and clearly subordinate:
+       the reveal plate  >  the evidence tiles  >  the finding groups
      ============================================================ */
-  .rc-findings{list-style:none;margin:0 0 4px;padding:0;}
-  .rc-find{display:flex;gap:12px;align-items:baseline;padding:11px 0;
-    border-bottom:1px solid rgba(31,59,46,.09);}
-  .rc-find:last-child{border-bottom:0;}
-  .rc-mark{flex:0 0 18px;font-family:'Work Sans',sans-serif;font-size:13px;
+
+  /* ---- 0 - A UTILITY THE DONOR REFERENCES AND NEVER DEFINES ---------
+     MEASURED, NOT ASSUMED: `.sr-only` has ZERO rules in disc014 and had zero
+     here. The donor marks its progress sentence `class="rc-prog sr-only"` and
+     the Property Check shell freeze record describes that sentence as
+     "retained for screen readers" - but with no rule the class is inert and
+     the sentence has been rendering visibly all along. The screen-reader
+     labels this result adds to its finding rows landed in the same hole and
+     printed "Here:" in front of every tick.
+
+     This is a REPAIR, not a restyle. It defines a missing utility; it alters
+     no pc-* primitive, and the shell-integrity guard still proves all seventy
+     of them byte-identical. The donor file itself is untouched - repairing a
+     frozen page is not a design pass - and the defect is reported. */
+  .sr-only{position:absolute !important;width:1px;height:1px;padding:0;
+    margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;
+    border:0;}
+
+  /* ---- 1 - THE REVEAL PLATE -----------------------------------------
+     RECOGNITION BEFORE REVELATION. An ordinary Irish street at dusk, with
+     solar on several of the roofs - the approved DISC-026 asset, unedited
+     and already in the repository. The homeowner should recognise it
+     before PlotNua says anything.
+
+     The annotation is the .pa-annot component from the Discovery, DISC-014
+     and DISC-022, by value: a ring on one roof, a leader, a wash, a kicker
+     and an italic label. It is the established way PlotNua points at
+     something in a photograph, and it is the whole reason this needs no
+     diagram, no network graphic and no glowing anything.
+
+     GEOMETRY, MEASURED AT EVERY SHIPPED WIDTH. A plate of
+     clamp(230px,38vw,420px) crops the 1408x768 asset in BOTH directions,
+     and in opposite directions at the two ends of the range:
+
+       1440  h420  visible image y  178 .. 589   (vertical crop is worst)
+       1280  h420  visible image y  153 .. 615
+       1024  h389  visible image y  117 .. 651
+        768  h292  visible image y  116 .. 652
+        430  h230  visible image y    7 .. 761
+        360  h230  visible image x  103 ..1305   (horizontal crop is worst)
+
+     So the safe window is y 200..570 AND x 130..1280. A first draft put the
+     label ABOVE the roof at y 118..188 - fine on a phone, and entirely cut
+     off at 1440, where it was the desktop reveal that lost its label. The
+     group now hangs BELOW the anchor at y 236..372, x 560..860, inside both
+     bounds at every width above. */
+  .rc-plate{position:relative;margin:0 calc(50% - 50vw);
+    height:clamp(230px,38vw,420px);overflow:hidden;background:var(--stone);}
+  .rc-plate img{width:100%;height:100%;object-fit:cover;display:block;}
+  .rc-plate-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,rgba(31,59,46,0) 46%,rgba(31,59,46,.30) 100%);}
+  .pa-annot{position:absolute;inset:0;z-index:3;pointer-events:none;}
+  .pa-annot svg{width:100%;height:100%;display:block;}
+  .pa-line{stroke:rgba(15,14,10,.78);stroke-width:1.6;fill:none;}
+  .pa-dot{fill:none;stroke:rgba(15,14,10,.85);stroke-width:2.2;}
+  .pa-wash{fill:rgba(255,255,255,.60);}
+  .pa-kicker{font-family:'Work Sans',system-ui,sans-serif;font-size:15px;
+    font-weight:500;letter-spacing:.18em;fill:rgba(15,14,10,.72);}
+  .pa-label{font-family:'Fraunces',Georgia,serif;font-style:italic;
+    font-size:27px;fill:rgba(15,14,10,.92);}
+
+  /* THE CHAIN. Four words and three rules - the relationship, not an
+     infographic. It is the caption of the photograph above it, which is
+     what it actually is, so it sits on the plate's own ground. */
+  .rc-chain{background:var(--stone);margin:0 calc(50% - 50vw);
+    padding:0 calc(50vw - 50%);border-bottom:1px solid var(--rule);}
+  .rc-chain ol{list-style:none;margin:0;padding:18px 0 19px;display:flex;
+    flex-wrap:wrap;align-items:center;gap:0 14px;}
+  .rc-chain li{font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--soft);display:flex;align-items:center;gap:14px;}
+  .rc-chain li:not(:last-child)::after{content:'';width:26px;height:1px;
+    background:rgba(31,59,46,.3);display:block;}
+  .rc-chain li:last-child{color:var(--accent);}
+
+  /* ---- 2 - THE RESULT STATEMENT -------------------------------------
+     The reveal itself, on the page's own paper, at full editorial measure.
+     The shell's reveal band is retired here in favour of the plate: two
+     full-bleed bands stacked would have been two announcements, and the
+     photograph is the stronger one. */
+  /* THE MEASURE BELONGS TO THE TYPE, NOT THE CONTAINER. A first draft put
+     max-width:24ch on .rc-statement, where `ch` resolves against the BODY
+     font size - so a 66px headline was squeezed into a measure computed from
+     16px text and broke one word per line. Each element now carries its own
+     measure, in its own em. */
+  .rc-statement{padding:clamp(48px,7vw,86px) 0 0;}
+  .rc-eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 20px;}
+  .rc-h{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(36px,5.4vw,66px);line-height:1.04;letter-spacing:-.018em;
+    color:var(--ink);margin:0 0 26px;max-width:17ch;}
+  .rc-sub{font-size:19px;line-height:1.62;color:var(--body);margin:0;
+    max-width:46ch;}
+
+  /* ---- 3 - WHAT WE FOUND, GROUPED -----------------------------------
+     FIVE GROUPS, THE SAME FIVE THE CHECK ASKED IN. One undifferentiated
+     checklist made the homeowner do the sorting; the groups do it for them
+     and let a whole area be read at a glance.
+
+     A group with nothing in it is not rendered. An empty labelled box is a
+     way of telling somebody they failed to fill something in.
+
+     THE THREE MARKS KEEP THE SEMANTICS THE ENGINE SEPARATED. A tick is a
+     thing the property has, and only a tick is set in Fraunces - the
+     present findings are the ones that carry the result. A question mark
+     is a thing still to establish and reads as answerable. A dash is a
+     stated absence: known, not unknown. Nothing is dramatised, nothing is
+     buried, and an unknown never wears the styling of a failure. */
+  .rc-found{margin:clamp(44px,6vw,72px) 0 0;padding:16px 0 0;
+    border-top:2px solid rgba(31,59,46,.42);}
+  .rc-found-cat{display:block;font-family:'Work Sans',sans-serif;
+    font-size:9.5px;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--soft);margin:0 0 18px;}
+  /* COLUMNS, NOT A GRID. Two attempts failed before this one and both are
+     worth remembering. A stretched grid made the shortest group a tall box
+     mostly full of nothing, which reads as something missing. A grid with
+     align-items:start fixed that but left ragged holes, because grid rows
+     stay aligned even when their contents do not. CSS columns let the five
+     groups pack by height, which is what the eye expects of tiles this
+     size. */
+  .rc-groups{list-style:none;margin:0;padding:0;}
+  @media(min-width:900px){
+    .rc-groups{columns:2;column-gap:10px;}
+    .rc-group{break-inside:avoid;-webkit-column-break-inside:avoid;}
+  }
+  .rc-group{margin:0 0 10px;padding:24px 26px 26px;background:var(--cream);
+    border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26);border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06),
+               0 14px 26px -16px rgba(31,59,46,.34);}
+  .rc-cat{display:block;font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 14px;}
+  .rc-findings{list-style:none;margin:0;padding:0;}
+  .rc-find{display:flex;gap:12px;align-items:baseline;padding:9px 0;}
+  .rc-find + .rc-find{border-top:1px solid rgba(31,59,46,.09);}
+  .rc-mark{flex:0 0 16px;font-family:'Work Sans',sans-serif;font-size:12.5px;
     font-weight:500;line-height:1.5;text-align:center;}
   .rc-find.is-present .rc-mark{color:var(--accent);}
-  .rc-find.is-gap .rc-mark{color:var(--soft);}
+  .rc-find.is-gap .rc-mark{color:var(--oak);}
   .rc-find.is-absent .rc-mark{color:var(--soft);}
-  .rc-findtext{font-size:15px;line-height:1.55;color:var(--body);}
-  .rc-find.is-present .rc-findtext{color:var(--ink);}
-  .rc-gapnote{margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--soft);}
+  .rc-findtext{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:15.5px;line-height:1.4;color:var(--ink);}
+  .rc-find.is-gap .rc-findtext,
+  .rc-find.is-absent .rc-findtext{font-family:'Work Sans',sans-serif;
+    font-weight:400;font-size:14.5px;line-height:1.5;color:var(--body);}
+  .rc-gapnote{margin:20px 0 0;font-family:'Work Sans',sans-serif;
+    font-size:12.5px;line-height:1.7;color:var(--soft);max-width:60ch;}
 
-  .rc-block{margin:34px 0 0;}
-  .rc-blocklab{display:block;font-family:'Work Sans',sans-serif;font-size:9.5px;
-    font-weight:500;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--accent);margin:0 0 12px;}
+  /* ---- 4 - WHAT WOULD HAVE TO HAPPEN --------------------------------
+     Conditions are neither findings nor evidence, so they get their own
+     step rather than a fourth mark inside the groups above. */
+  .rc-block{margin:clamp(40px,5vw,60px) 0 0;padding:16px 0 0;
+    border-top:2px solid rgba(31,59,46,.42);}
+  .rc-blocklab{display:block;font-family:'Work Sans',sans-serif;
+    font-size:9.5px;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--soft);margin:0 0 18px;}
   .rc-conds{list-style:none;margin:0;padding:0;}
-  .rc-conds li{position:relative;padding-left:16px;margin:9px 0 0;
-    font-size:14.5px;line-height:1.6;color:var(--body);}
-  .rc-conds li::before{content:'';position:absolute;left:0;top:10px;
-    width:6px;height:1px;background:rgba(31,59,46,.42);}
+  .rc-conds li{margin:0;padding:18px 0;font-family:'Work Sans',sans-serif;
+    font-size:14.5px;line-height:1.7;color:var(--body);max-width:68ch;}
+  .rc-conds li + li{border-top:1px solid rgba(31,59,46,.12);}
 
-  /* THE TWO UNCONDITIONAL STATEMENTS. Given a ruled band of their own, at
-     reading size, above the call to action rather than below it. They are
-     not a disclaimer and they are not small print: they are the two things
-     most likely to be misunderstood about everything above them. */
-  .rc-market{margin:34px 0 0;padding:24px 26px 6px;background:var(--cream);
-    border:1px solid rgba(31,59,46,.11);border-top:2px solid rgba(31,59,46,.42);
-    border-radius:2px;}
-  .rc-market-p{margin:0 0 18px;font-size:14.5px;line-height:1.65;color:var(--body);}
+  /* ---- 5 - WHERE THIS STANDS ----------------------------------------
+     THE TWO UNCONDITIONAL STATEMENTS, GIVEN THE ARTICLE'S EVIDENCE-TILE
+     TREATMENT. They were a single heavy caution box that read as a
+     warning; they are the two most load-bearing facts on the page and
+     they should read as EVIDENCE - calm, lettered, unmissable.
 
-  .rc-ctablock{margin:34px 0 0;}
-  .rc-ctanote{margin:12px 0 0;font-size:13.5px;line-height:1.6;color:var(--soft);}
+     Nothing is shortened, softened, abbreviated or moved behind a
+     disclosure. Two tiles under the page's heaviest rule, in Fraunces at
+     reading size, ABOVE the invitation rather than below it, so nobody
+     reaches the call to action without having passed them. */
+  .rc-market{margin:clamp(44px,6vw,72px) 0 0;padding:16px 0 0;
+    border-top:2px solid rgba(31,59,46,.55);}
+  .rc-market-cat{display:block;font-family:'Work Sans',sans-serif;
+    font-size:9.5px;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--soft);margin:0 0 18px;}
+  .rc-market-grid{display:grid;gap:10px;}
+  @media(min-width:900px){ .rc-market-grid{grid-template-columns:1fr 1fr;} }
+  .rc-market-p{margin:0;padding:28px 30px 30px;background:var(--paper);
+    border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.34);border-radius:2px;
+    font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:16px;
+    line-height:1.5;color:var(--ink);
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32);}
 
-  /* THE REGISTER STEP. A form, in the page's own type, never a modal. */
-  .rc-regnotice{margin:0 0 26px;padding:16px 20px;border-radius:2px;
-    background:rgba(197,122,90,.08);border:1px solid rgba(197,122,90,.3);
-    font-size:14.5px;line-height:1.6;color:var(--ink);}
-  .rc-fields{display:grid;gap:18px;margin:0 0 26px;max-width:560px;}
+  /* ---- 6 - THE INVITATION -------------------------------------------
+     POSSIBILITY, then OPTIONAL ACTION. It is the one place on the result
+     where PlotNua asks for anything, so it gets a quiet field of its own
+     and the contained shell CTA - never a full-width button. */
+  .rc-ctablock{margin:clamp(44px,6vw,72px) 0 0;padding:clamp(34px,4vw,46px) 0 0;
+    border-top:1px solid var(--rule);}
+  .rc-ctalead{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(20px,2.4vw,26px);line-height:1.28;color:var(--ink);
+    margin:0 0 14px;max-width:26ch;}
+  .rc-ctanote{margin:0 0 26px;font-family:'Work Sans',sans-serif;
+    font-size:14px;line-height:1.7;color:var(--soft);max-width:56ch;}
+  .rc-ctafoot{margin:16px 0 0;font-family:'Work Sans',sans-serif;
+    font-size:12.5px;line-height:1.7;color:var(--soft);max-width:56ch;}
+
+  /* THE LONGEST LABEL ON THE PAGE, CONTAINED AT THE NARROWEST WIDTHS.
+     Measured: "Register my property for future developments" renders 390px
+     wide at a 430px viewport - 91% of the screen, which is full width in
+     everything but name, and the shell's contained-CTA rule says never.
+     The label is founder-specified copy, so the label stays and the button
+     wraps instead. Scoped to this ONE control by id: adding a width rule to
+     .pc-cta would alter a frozen shell primitive for every journey that
+     inherits it.
+
+     `display:block` rather than the shell's flex, so the arrow flows inline
+     after the last word instead of being pushed onto a third line of its
+     own as a flex item. */
+  @media (max-width:560px){
+    #rcOpenRegister{display:block;max-width:292px;text-align:left;
+      line-height:1.5;padding-top:14px;padding-bottom:14px;}
+    #rcOpenRegister .pc-arrow{display:inline;margin-left:8px;}
+  }
+
+  /* THE CLOSE IS A CODA, NOT AN INTERRUPTION. The shell's save band is
+     frozen and untouched; what changed is the air before it, so the
+     result -> register -> My Plot order reads as three deliberate steps
+     instead of a band arriving in the middle of the argument. */
+  .rc-save{margin-top:clamp(52px,7vw,84px);}
+
+  /* ---- 7 - THE REGISTER ---------------------------------------------
+     A CONTINUATION OF THE RESULT, NOT A FORM APPENDED TO IT. Three
+     numbered steps, each under its own rule, each with a category label
+     and a note in the article's type roles. The essential three are
+     visibly separated from the optional enrichment, so nobody fills in
+     eleven fields believing they have to. */
+  .rc-regnotice{margin:0 0 clamp(34px,4vw,44px);padding:22px 26px;
+    border-radius:2px;background:var(--stone);
+    border:1px solid rgba(31,59,46,.14);
+    border-left:2px solid var(--oak);
+    font-family:'Work Sans',sans-serif;font-size:14.5px;line-height:1.7;
+    color:var(--ink);max-width:62ch;}
+  .rc-step{margin:clamp(40px,5vw,60px) 0 0;padding:16px 0 0;
+    border-top:2px solid rgba(31,59,46,.42);}
+  .rc-step.is-first{margin-top:0;}
+
+  /* TWO COLUMNS, ABOVE 1040. A first pass stacked the lead above the fields
+     and the whole register then occupied the left half of a 1440 page with
+     nothing in the right half - which reads as a form that has been dropped
+     onto an editorial page rather than written for one. The step's words now
+     sit beside its controls, which also halves the scroll. Below 1040 they
+     stack, because a 280px column of prose beside a 280px column of inputs
+     is worse than either. */
+  @media(min-width:1040px){
+    .rc-step-body{display:grid;grid-template-columns:minmax(260px,0.9fr) minmax(0,1.1fr);
+      gap:0 56px;align-items:start;}
+    .rc-step-intro{position:sticky;top:32px;}
+    .rc-step-note{margin-bottom:0;}
+  }
+  .rc-step-head{display:flex;align-items:baseline;gap:14px;margin:0 0 8px;}
+  .rc-step-n{font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.22em;color:var(--accent);}
+  .rc-step-cat{font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--soft);}
+  .rc-step-lead{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(18px,2vw,22px);line-height:1.32;color:var(--ink);
+    margin:0 0 12px;max-width:22ch;}
+  .rc-step-note{font-family:'Work Sans',sans-serif;font-size:13px;
+    line-height:1.75;color:var(--soft);margin:0 0 26px;max-width:42ch;}
+  /* A sub-category carries its own hairline, so the difference between "this
+     is a new group of fields" and "this is the label of one field" is
+     structural rather than a two-point change of letter-spacing. */
+  .rc-sub-cat{display:block;font-family:'Work Sans',sans-serif;
+    font-size:9.5px;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--accent);
+    margin:34px 0 16px;padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.14);}
+  .rc-sub-cat.is-first{margin-top:0;padding-top:0;border-top:0;}
+
+  .rc-fields{display:grid;gap:18px;margin:0 0 4px;max-width:560px;}
   /* THE ATTRIBUTE MUST WIN - the same rule, for the same reason, as the one
      the donor carries on its save controls. An author `display:grid` beats the
      user-agent [hidden]{display:none} on origin, which made `hidden` inert on
@@ -798,26 +1037,68 @@ window.PlotNuaFunnel = (function () {
      el.hidden - the property was true the entire time the field was visible. */
   .rc-fields[hidden]{display:none;}
   @media(min-width:760px){ .rc-fields.is-pair{grid-template-columns:1fr 1fr;} }
-  .rc-field{display:flex;flex-direction:column;gap:6px;}
-  .rc-field label{font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--soft);}
-  .rc-field input,.rc-field select{font-family:'Work Sans',sans-serif;font-size:15px;
-    color:var(--ink);background:#fff;border:1.5px solid rgba(31,59,46,.18);
-    border-radius:8px;padding:12px 14px;min-height:44px;}
+  .rc-field{display:flex;flex-direction:column;gap:7px;}
+  .rc-field label{font-family:'Work Sans',sans-serif;font-size:10.5px;
+    font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--soft);}
+  .rc-field input,.rc-field select{font-family:'Work Sans',sans-serif;
+    font-size:15px;color:var(--ink);background:var(--paper);
+    border:1px solid rgba(31,59,46,.2);
+    border-bottom:1.5px solid rgba(31,59,46,.34);
+    border-radius:2px;padding:13px 14px;min-height:46px;
+    transition:border-color .18s ease, background .18s ease;}
+  .rc-field input:hover,.rc-field select:hover{border-color:rgba(31,59,46,.34);}
   .rc-field input:focus-visible,.rc-field select:focus-visible{
-    outline:2px solid var(--accent);outline-offset:2px;}
-  .rc-hint{font-size:13px;line-height:1.5;color:var(--soft);}
-  .rc-consent{display:flex;gap:12px;align-items:flex-start;margin:0 0 22px;
-    max-width:560px;}
-  .rc-consent input{margin-top:3px;width:18px;height:18px;flex:0 0 18px;}
-  .rc-consent span{font-size:14.5px;line-height:1.6;color:var(--body);}
-  .rc-regstatus{margin:20px 0 0;padding:16px 20px;border-radius:2px;
-    font-size:14.5px;line-height:1.6;background:var(--cream);
-    border:1px solid rgba(31,59,46,.14);color:var(--ink);max-width:560px;}
-  .rc-regstatus.is-inactive{border-color:rgba(197,122,90,.34);}
-  .rc-regstatus.is-invalid{border-color:rgba(197,122,90,.5);}
+    outline:2px solid var(--accent);outline-offset:2px;background:#fff;}
+  .rc-hint{font-family:'Work Sans',sans-serif;font-size:12.5px;
+    line-height:1.6;color:var(--soft);}
+
+  /* CONSENT. A decision, given the weight of one, on its own ground. */
+  .rc-consent{display:flex;gap:14px;align-items:flex-start;margin:0;
+    padding:22px 24px;max-width:560px;background:var(--cream);
+    border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26);border-radius:2px;cursor:pointer;}
+  .rc-consent input{margin-top:2px;width:19px;height:19px;flex:0 0 19px;
+    accent-color:var(--accent);cursor:pointer;}
+  .rc-consent span{font-family:'Work Sans',sans-serif;font-size:14.5px;
+    line-height:1.65;color:var(--body);}
+
+  /* THE ACTION AREA. The end of the same gesture, not a toolbar. */
+  .rc-regact{margin:clamp(44px,6vw,64px) 0 0;padding:clamp(30px,4vw,40px) 0 0;
+    border-top:2px solid rgba(31,59,46,.55);}
+  .rc-regact-lead{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(18px,2vw,22px);line-height:1.3;color:var(--ink);
+    margin:0 0 22px;max-width:44ch;}
+  .rc-regactions{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:center;}
+  .rc-regstatus{margin:24px 0 0;padding:22px 26px;border-radius:2px;
+    font-family:'Work Sans',sans-serif;font-size:14.5px;line-height:1.7;
+    background:var(--stone);border:1px solid rgba(31,59,46,.14);
+    border-left:2px solid var(--oak);color:var(--ink);max-width:62ch;}
+  .rc-regstatus.is-done{border-left-color:var(--accent);}
   .rc-regstatus[hidden]{display:none;}
-  .rc-regactions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+
+  /* ---- 8 - MOBILE, DESIGNED RATHER THAN STACKED ---------------------
+     The register at 390 was a vertical run of controls. The steps keep
+     their rules and their labels, the air between them grows rather than
+     shrinks, and the paired fields become one column with real rhythm, so
+     the page still reads in sections instead of scrolling as one list. */
+  @media (max-width:760px){
+    .rc-statement{max-width:none;}
+    .rc-chain ol{padding:15px 0 16px;gap:0 10px;}
+    .rc-chain li{gap:10px;font-size:9px;letter-spacing:.18em;}
+    .rc-chain li:not(:last-child)::after{width:16px;}
+    .rc-group{padding:22px 22px 24px;}
+    .rc-market-p{padding:24px 24px 26px;font-size:15.5px;}
+    .rc-step{margin-top:44px;}
+    .rc-step-note{margin-bottom:22px;}
+    .rc-fields{gap:20px;}
+    .rc-consent{padding:20px;}
+    .rc-regactions{flex-direction:column;align-items:flex-start;gap:18px;}
+  }
+  @media (max-width:420px){
+    .rc-chain li{font-size:8.5px;letter-spacing:.14em;}
+    .rc-chain li:not(:last-child)::after{width:12px;}
+  }
 </style>
 </head>
 <body>
@@ -868,28 +1149,71 @@ window.PlotNuaFunnel = (function () {
   </section>
 
   <section class="rc-screen" id="rcReveal">
-    <div class="rc-revealband">
-      <p class="rc-eyebrow">This property</p>
-      <h2 class="rc-reveal-h" id="rcRevealH"></h2>
-      <p class="rc-reveal-sub" id="rcRevealSub"></p>
+
+    <!-- RECOGNITION. An ordinary Irish street at dusk, unedited, with the
+         Potential Asset annotation component pointing at one roof. The
+         homeowner recognises the place before PlotNua says anything, and the
+         annotation plants the idea the statement below then names. -->
+    <figure class="rc-plate">
+      <img src="assets/img/f0e99db16cefc470.jpg" width="1408" height="768"
+           fetchpriority="high" decoding="async"
+           alt="An Irish housing estate seen from above at dusk, with solar panels on several of the roofs.">
+      <div class="pa-annot" aria-hidden="true">
+        <svg viewBox="0 0 1408 768" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <circle class="pa-dot" cx="672" cy="236" r="7"/>
+          <path class="pa-line" d="M672 243 L672 300"/>
+          <rect class="pa-wash" x="560" y="300" width="300" height="72" rx="2"/>
+          <text class="pa-kicker" x="578" y="328">PLOTNUA READINESS</text>
+          <text class="pa-label"  x="578" y="359">A house in a network</text>
+        </svg>
+      </div>
+      <div class="rc-plate-scrim"></div>
+    </figure>
+
+    <!-- THE RELATIONSHIP, IN FOUR WORDS. Not a diagram, not an infographic
+         - the caption of the photograph above it, which is what it is. -->
+    <div class="rc-chain">
+      <ol>
+        <li>Home</li><li>Energy</li><li>Connectivity</li><li>Compute</li>
+      </ol>
     </div>
 
-    <ul class="rc-findings" id="rcFindings"></ul>
-    <p class="rc-gapnote" id="rcGapNote" hidden></p>
+    <!-- REVELATION. -->
+    <div class="rc-statement">
+      <p class="rc-eyebrow">This property</p>
+      <h2 class="rc-h" id="rcRevealH"></h2>
+      <p class="rc-sub" id="rcRevealSub"></p>
+    </div>
+
+    <!-- UNDERSTANDING. -->
+    <div class="rc-found" id="rcFoundBlock">
+      <span class="rc-found-cat">What we found here</span>
+      <ul class="rc-groups" id="rcGroups"></ul>
+      <p class="rc-gapnote" id="rcGapNote" hidden></p>
+    </div>
 
     <div class="rc-block" id="rcCondBlock" hidden>
       <span class="rc-blocklab">Who would have to agree, and what would have to happen</span>
       <ul class="rc-conds" id="rcConditions"></ul>
     </div>
 
-    <div class="rc-market" id="rcMarket"></div>
+    <!-- EVIDENCE. Two tiles, full wording, above the invitation. -->
+    <div class="rc-market">
+      <span class="rc-market-cat">Where this stands</span>
+      <div class="rc-market-grid" id="rcMarket"></div>
+    </div>
 
+    <!-- POSSIBILITY. -->
     <div class="rc-ctablock" id="rcCtaBlock" hidden>
-      <button class="pc-cta" type="button" id="rcOpenRegister">Register my property for future developments
-        <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+      <p class="rc-ctalead">If this ever reaches Ireland, PlotNua would like to know your
+        property exists.</p>
       <p class="rc-ctanote">Optional, and it is a PlotNua register. You are not joining
         anybody&rsquo;s list, no provider is told anything, and nobody will contact you
         unless you ask us to.</p>
+      <button class="pc-cta" type="button" id="rcOpenRegister">Register my property for future developments
+        <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+      <p class="rc-ctafoot">Individual entries are never published and there is no public
+        map of participating homes. What PlotNua would ever show anyone is a count.</p>
     </div>
 
     <div class="rc-save pc-saveband">
@@ -934,21 +1258,42 @@ window.PlotNuaFunnel = (function () {
       technical assessment would be the provider&rsquo;s to make, not ours.</p>
   </section>
 
+  <!-- ==================================================================
+       THE REGISTER. A continuation of the result, in three steps: the
+       three things PlotNua needs, whatever the homeowner happens to know,
+       and whether they want to hear anything back. Each step carries its
+       own rule and its own note, so the optional enrichment can never be
+       mistaken for a requirement.
+       ================================================================== -->
   <section class="rc-screen" id="rcRegister">
-    <div class="rc-revealband">
+
+    <div class="rc-statement">
       <p class="rc-eyebrow">Optional</p>
-      <h2 class="rc-reveal-h">Put this property on the PlotNua register</h2>
-      <p class="rc-reveal-sub">So that PlotNua can understand the Irish position in
-        aggregate, and approach the question with evidence rather than assertion. Only
-        the first three are needed; the rest are useful if you happen to know them.</p>
+      <h2 class="rc-h">Put this property on the register</h2>
+      <p class="rc-sub">So that PlotNua can understand the Irish position in aggregate,
+        and approach the question with evidence rather than assertion.</p>
     </div>
 
-    <p class="rc-regnotice" id="rcRegNotice" hidden></p>
+    <div style="margin-top:clamp(40px,5vw,60px)">
+      <p class="rc-regnotice" id="rcRegNotice" hidden></p>
 
-    <div class="rc-fields">
-      <div class="rc-field">
-        <label for="rcCounty">County</label>
-        <select id="rcCounty"><option value="">Choose a county</option>
+      <div class="rc-step is-first">
+        <div class="rc-step-head">
+          <span class="rc-step-n">01</span>
+          <span class="rc-step-cat">The property</span>
+        </div>
+        <div class="rc-step-body">
+        <div class="rc-step-intro">
+          <p class="rc-step-lead">Three things, and only these are needed.</p>
+          <p class="rc-step-note">Enough to place the property in the country and to see
+            how registered homes cluster. No address, no name, and never your full
+            Eircode.</p>
+        </div>
+        <div class="rc-step-fields">
+        <div class="rc-fields">
+          <div class="rc-field">
+            <label for="rcCounty">County</label>
+            <select id="rcCounty"><option value="">Choose a county</option>
           <option value="carlow">Carlow</option>
           <option value="cavan">Cavan</option>
           <option value="clare">Clare</option>
@@ -981,109 +1326,157 @@ window.PlotNuaFunnel = (function () {
           <option value="down">Down</option>
           <option value="fermanagh">Fermanagh</option>
           <option value="tyrone">Tyrone</option></select>
-      </div>
-      <div class="rc-field">
-        <label for="rcPropType">Property type</label>
-        <select id="rcPropType"><option value="">Choose a type</option>
+          </div>
+          <div class="rc-field">
+            <label for="rcPropType">Property type</label>
+            <select id="rcPropType"><option value="">Choose a type</option>
           <option value="detached">Detached</option>
           <option value="semi_detached">Semi Detached</option>
           <option value="terraced">Terraced</option>
           <option value="apartment">Apartment</option>
           <option value="other">Other</option></select>
+          </div>
+          <div class="rc-field">
+            <label for="rcPrefix">Eircode routing key</label>
+            <input id="rcPrefix" type="text" maxlength="3" inputmode="text" autocomplete="off" placeholder="D06">
+            <span class="rc-hint">The first three characters only. The routing key covers
+              thousands of homes; the full code identifies one building, so we never ask
+              for it.</span>
+          </div>
+        </div>
+        </div>
+        </div>
       </div>
-      <div class="rc-field">
-        <label for="rcPrefix">Eircode routing key</label>
-        <input id="rcPrefix" type="text" maxlength="3" inputmode="text" autocomplete="off">
-        <span class="rc-hint">The first three characters only &mdash; D02, T12, H91. Never
-          the full Eircode: the routing key covers thousands of homes, the full code
-          identifies one building.</span>
+
+      <div class="rc-step">
+        <div class="rc-step-head">
+          <span class="rc-step-n">02</span>
+          <span class="rc-step-cat">Anything you already know</span>
+        </div>
+        <div class="rc-step-body">
+        <div class="rc-step-intro">
+          <p class="rc-step-lead">Every one of these is optional.</p>
+          <p class="rc-step-note">You have already told us what matters for the result.
+            These are the numbers PlotNua could not sensibly ask a homeowner to go and
+            find, and they are useful only if you happen to have them.</p>
+        </div>
+        <div class="rc-step-fields">
+        <span class="rc-sub-cat is-first">Electricity</span>
+        <div class="rc-fields is-pair">
+          <div class="rc-field">
+            <label for="rcMic">Connection capacity, kVA</label>
+            <input id="rcMic" type="number" min="1" max="200" step="0.1" autocomplete="off">
+          </div>
+          <div class="rc-field">
+            <label for="rcSmartMeter">Smart meter</label>
+            <select id="rcSmartMeter">
+              <option value="">Prefer not to say</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="not_sure">Not sure</option>
+            </select>
+          </div>
+        </div>
+
+        <span class="rc-sub-cat">Energy here</span>
+        <div class="rc-fields is-pair">
+          <div class="rc-field">
+            <label for="rcSolarKwp">Solar, kWp</label>
+            <input id="rcSolarKwp" type="number" min="0.1" max="100" step="0.1" autocomplete="off">
+          </div>
+          <div class="rc-field">
+            <label for="rcBatteryKwh">Battery, kWh</label>
+            <input id="rcBatteryKwh" type="number" min="0.1" max="200" step="0.1" autocomplete="off">
+          </div>
+        </div>
+
+        <span class="rc-sub-cat">Connectivity</span>
+        <div class="rc-fields is-pair">
+          <div class="rc-field">
+            <label for="rcProvider">Broadband provider</label>
+            <input id="rcProvider" type="text" maxlength="60" autocomplete="off">
+          </div>
+          <div class="rc-field">
+            <label for="rcSpeed">Speed, as advertised</label>
+            <input id="rcSpeed" type="text" maxlength="40" autocomplete="off">
+            <span class="rc-hint">Recorded as you report it. A download figure on its own
+              does not establish that a property could carry this kind of work.</span>
+          </div>
+        </div>
+
+        <span class="rc-sub-cat">What the home already runs</span>
+        <div class="rc-fields is-pair">
+          <div class="rc-field">
+            <label for="rcHeatPump">Heat pump</label>
+            <select id="rcHeatPump">
+              <option value="">Prefer not to say</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="not_sure">Not sure</option>
+            </select>
+          </div>
+          <div class="rc-field">
+            <label for="rcEvCharger">EV charger</label>
+            <select id="rcEvCharger">
+              <option value="">Prefer not to say</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="not_sure">Not sure</option>
+            </select>
+          </div>
+        </div>
+        <div class="rc-fields" style="margin-top:18px">
+          <div class="rc-field">
+            <label for="rcOtherLoads">Anything else significant</label>
+            <input id="rcOtherLoads" type="text" maxlength="120" autocomplete="off">
+          </div>
+        </div>
+        </div>
+        </div>
       </div>
+
+      <div class="rc-step">
+        <div class="rc-step-head">
+          <span class="rc-step-n">03</span>
+          <span class="rc-step-cat">Hearing back</span>
+        </div>
+        <div class="rc-step-body">
+        <div class="rc-step-intro">
+          <p class="rc-step-lead">Two separate decisions.</p>
+          <p class="rc-step-note">Putting the property on the register and agreeing to be
+            contacted are not the same thing, so they are not the same tick.</p>
+        </div>
+        <div class="rc-step-fields">
+        <label class="rc-consent">
+          <input type="checkbox" id="rcConsent">
+          <span>You may contact me if there is something worth telling me about this.
+            Tick this or leave it &mdash; the property goes on the register either way.</span>
+        </label>
+        <div class="rc-fields" id="rcEmailRow" style="margin-top:22px" hidden>
+          <div class="rc-field">
+            <label for="rcEmail">Email</label>
+            <input id="rcEmail" type="email" maxlength="120" autocomplete="email">
+            <span class="rc-hint">The only contact detail asked for anywhere here. No name,
+              no phone number, no address.</span>
+          </div>
+        </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="rc-regact">
+        <p class="rc-regact-lead">That is everything. Nothing else is collected.</p>
+        <div class="rc-regactions">
+          <button class="pc-cta" type="button" id="rcRegSubmit">Add this property
+            <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+          <button type="button" class="pc-back" id="rcRegBack">Back to the result</button>
+        </div>
+        <p class="rc-regstatus" id="rcRegStatus" hidden></p>
+      </div>
+
+      <p class="rc-foot">Individual entries are never published and there is no public map
+        of participating homes. What PlotNua would ever show anyone is a count.</p>
     </div>
-
-    <div class="rc-fields is-pair">
-      <div class="rc-field">
-        <label for="rcMic">Connection capacity, kVA</label>
-        <input id="rcMic" type="number" min="1" max="200" step="0.1" autocomplete="off">
-      </div>
-      <div class="rc-field">
-        <label for="rcSmartMeter">Smart meter</label>
-        <select id="rcSmartMeter">
-          <option value="">Prefer not to say</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-          <option value="not_sure">Not sure</option>
-        </select>
-      </div>
-      <div class="rc-field">
-        <label for="rcSolarKwp">Solar, kWp</label>
-        <input id="rcSolarKwp" type="number" min="0.1" max="100" step="0.1" autocomplete="off">
-      </div>
-      <div class="rc-field">
-        <label for="rcBatteryKwh">Battery, kWh</label>
-        <input id="rcBatteryKwh" type="number" min="0.1" max="200" step="0.1" autocomplete="off">
-      </div>
-      <div class="rc-field">
-        <label for="rcHeatPump">Heat pump</label>
-        <select id="rcHeatPump">
-          <option value="">Prefer not to say</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-          <option value="not_sure">Not sure</option>
-        </select>
-      </div>
-      <div class="rc-field">
-        <label for="rcEvCharger">EV charger</label>
-        <select id="rcEvCharger">
-          <option value="">Prefer not to say</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-          <option value="not_sure">Not sure</option>
-        </select>
-      </div>
-      <div class="rc-field">
-        <label for="rcProvider">Broadband provider</label>
-        <input id="rcProvider" type="text" maxlength="60" autocomplete="off">
-      </div>
-      <div class="rc-field">
-        <label for="rcSpeed">Broadband speed, as advertised</label>
-        <input id="rcSpeed" type="text" maxlength="40" autocomplete="off">
-        <span class="rc-hint">Recorded as you report it. A download figure on its own does
-          not establish that a property could carry this kind of work.</span>
-      </div>
-    </div>
-
-    <div class="rc-fields">
-      <div class="rc-field">
-        <label for="rcOtherLoads">Other significant electrical loads</label>
-        <input id="rcOtherLoads" type="text" maxlength="120" autocomplete="off">
-      </div>
-    </div>
-
-    <label class="rc-consent">
-      <input type="checkbox" id="rcConsent">
-      <span>You may contact me if there is something worth telling me about this. Tick
-        this or leave it &mdash; the property goes on the register either way.</span>
-    </label>
-
-    <div class="rc-fields" id="rcEmailRow" hidden>
-      <div class="rc-field">
-        <label for="rcEmail">Email</label>
-        <input id="rcEmail" type="email" maxlength="120" autocomplete="email">
-        <span class="rc-hint">The only contact detail asked for anywhere here. No name, no
-          phone number, no address.</span>
-      </div>
-    </div>
-
-    <div class="rc-regactions">
-      <button class="pc-cta" type="button" id="rcRegSubmit">Add this property
-        <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
-      <button type="button" class="pc-back" id="rcRegBack">Back to the result</button>
-    </div>
-
-    <p class="rc-regstatus" id="rcRegStatus" hidden></p>
-
-    <p class="rc-foot">Individual entries are never published and there is no public map of
-      participating homes. What PlotNua would ever show anyone is a count.</p>
   </section>
 
 </main>
@@ -2326,6 +2719,61 @@ window.PLOTNUA_RCR_CONTRACT = {"_": "PLOTNUA RESIDENTIAL COMPUTE READINESS REGIS
       'here today. It describes the property as it is now, not what it could become.'
   };
 
+  /* ------------------------------------------------- THE FIVE GROUPS
+     The result used to be one undifferentiated checklist, which made the
+     homeowner do the sorting. These are the SAME FIVE GROUPS the check
+     asked its questions in — the engine declares them as EVIDENCE_GROUPS
+     — so what they were asked and what they are told back have the same
+     shape.
+
+     Every finding key belongs to exactly one group, and a test proves it
+     by executing the engine rather than reading this list. A group with
+     nothing in it is not rendered: an empty labelled box is a way of
+     telling somebody they failed to fill something in. */
+  var GROUP_ORDER = ['PROPERTY', 'ELECTRICITY', 'ENERGY', 'CONNECTIVITY', 'PHYSICAL'];
+
+  var GROUP_LABEL = {
+    PROPERTY:     'The property',
+    ELECTRICITY:  'Electricity',
+    ENERGY:       'Energy here',
+    CONNECTIVITY: 'Connectivity',
+    PHYSICAL:     'Space and access'
+  };
+
+  var GROUP_OF = {
+    present_new_build:               'PROPERTY',
+    gap_build_status:                'PROPERTY',
+
+    present_connection_capacity:     'ELECTRICITY',
+    present_phase_single:            'ELECTRICITY',
+    present_phase_three:             'ELECTRICITY',
+    present_major_loads:             'ELECTRICITY',
+    absent_major_loads:              'ELECTRICITY',
+    gap_connection_capacity:         'ELECTRICITY',
+    gap_phase:                       'ELECTRICITY',
+    gap_major_loads:                 'ELECTRICITY',
+
+    present_solar:                   'ENERGY',
+    present_battery:                 'ENERGY',
+    absent_solar:                    'ENERGY',
+    absent_battery:                  'ENERGY',
+    gap_solar:                       'ENERGY',
+    gap_battery:                     'ENERGY',
+
+    present_fttp:                    'CONNECTIVITY',
+    absent_fttp:                     'CONNECTIVITY',
+    absent_broadband:                'CONNECTIVITY',
+    gap_connectivity:                'CONNECTIVITY',
+
+    present_equipment_space_outdoor: 'PHYSICAL',
+    present_equipment_space_indoor:  'PHYSICAL',
+    present_service_access:          'PHYSICAL',
+    absent_equipment_space:          'PHYSICAL',
+    absent_service_access:           'PHYSICAL',
+    gap_equipment_space:             'PHYSICAL',
+    gap_service_access:              'PHYSICAL'
+  };
+
   var PRESENT = {
     present_fttp:                    'Fibre to the home reported',
     present_solar:                   'Solar installed',
@@ -2476,12 +2924,37 @@ window.PLOTNUA_RCR_CONTRACT = {"_": "PLOTNUA RESIDENTIAL COMPUTE READINESS REGIS
 
   /* -------------------------------------------------------- THE RESULT */
 
-  function findingRow(mark, text, cls) {
+  function findingRow(mark, text, cls, sr) {
     var li = document.createElement('li');
     li.className = 'rc-find ' + cls;
+    /* The mark is decoration; the meaning travels in words for anyone who
+       cannot see it. A screen reader must not be left to interpret a dash. */
     li.innerHTML = '<span class="rc-mark" aria-hidden="true">' + mark + '</span>' +
-                   '<span class="rc-findtext">' + text + '</span>';
+                   '<span class="rc-findtext"><span class="sr-only">' + sr +
+                   ': </span>' + text + '</span>';
     return li;
+  }
+
+  /* Collect every finding into its declared group, in one pass, keeping the
+     order present → gap → absence within each. Present leads because those
+     are the findings that carry the result; an unknown never opens a group. */
+  function collectGroups(r) {
+    var bucket = {};
+    GROUP_ORDER.forEach(function (g) { bucket[g] = []; });
+
+    var add = function (keys, copy, mark, cls, sr) {
+      keys.forEach(function (k) {
+        var g = GROUP_OF[k];
+        if (!g || !copy[k]) return;
+        bucket[g].push({ mark: mark, text: copy[k], cls: cls, sr: sr });
+      });
+    };
+    add(r.present_keys, PRESENT, '&#10003;', 'is-present', 'Here');
+    add(r.gap_keys, GAP, '?', 'is-gap', 'Still to establish');
+    add(r.absence_keys, ABSENCE, '&ndash;', 'is-absent', 'Not here');
+
+    return GROUP_ORDER.filter(function (g) { return bucket[g].length; })
+                      .map(function (g) { return { key: g, rows: bucket[g] }; });
   }
 
   function reveal() {
@@ -2492,24 +2965,32 @@ window.PLOTNUA_RCR_CONTRACT = {"_": "PLOTNUA RESIDENTIAL COMPUTE READINESS REGIS
     $('rcRevealSub').innerHTML = SUBLINE[r.headline_key] || '';
 
     /* THE THREE FINDING TYPES, IN THREE VISUALLY DISTINCT ROWS AND NEVER
-       MERGED. Present is a tick. A gap is a question mark and reads as
-       something the homeowner can answer. An absence is a dash and reads as
-       a fact, not a failing. */
-    var list = $('rcFindings'); list.innerHTML = '';
-    r.present_keys.forEach(function (k) {
-      if (PRESENT[k]) list.appendChild(findingRow('&#10003;', PRESENT[k], 'is-present'));
+       MERGED, NOW SORTED INTO THE FIVE GROUPS THE CHECK ASKED IN. Present
+       is a tick. A gap is a question mark and reads as something the
+       homeowner can answer. An absence is a dash and reads as a fact, not a
+       failing. A group with nothing in it is not rendered at all. */
+    var groups = collectGroups(r);
+    var host = $('rcGroups'); host.innerHTML = '';
+    groups.forEach(function (g) {
+      var li = document.createElement('li');
+      li.className = 'rc-group';
+      var ul = document.createElement('ul');
+      ul.className = 'rc-findings';
+      g.rows.forEach(function (row) {
+        ul.appendChild(findingRow(row.mark, row.text, row.cls, row.sr));
+      });
+      li.innerHTML = '<span class="rc-cat">' + GROUP_LABEL[g.key] + '</span>';
+      li.appendChild(ul);
+      host.appendChild(li);
     });
-    r.gap_keys.forEach(function (k) {
-      if (GAP[k]) list.appendChild(findingRow('?', GAP[k], 'is-gap'));
-    });
-    r.absence_keys.forEach(function (k) {
-      if (ABSENCE[k]) list.appendChild(findingRow('&ndash;', ABSENCE[k], 'is-absent'));
-    });
+    $('rcFoundBlock').hidden = groups.length === 0;
 
     var gapNote = $('rcGapNote');
     if (r.gap_keys.length) {
-      gapNote.innerHTML = 'The question marks are the things still to establish. ' +
-        'None of them needs an engineer &mdash; they are all questions about your own home.';
+      gapNote.innerHTML = 'A question mark is something still to establish, not something ' +
+        'wrong. None of them needs an engineer &mdash; they are all questions about your ' +
+        'own home. A dash is something you have told us is not here, which PlotNua counts ' +
+        'as knowing rather than not knowing.';
       gapNote.hidden = false;
     } else {
       gapNote.hidden = true;
