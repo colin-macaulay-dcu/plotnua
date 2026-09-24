@@ -574,8 +574,56 @@ details.ps-drawer[open] summary::after{content:"–"}
         yet, and nobody has published what a property would have to be able to do. There is
         a separate check that reads your property against what PlotNua can actually stand
         over, and tells you what is still to establish.</p>
-      <a class="ps-nextcheck-a" href="disc026-compute-readiness-check.html">Residential Compute Readiness &rarr;</a>
+      <a class="ps-nextcheck-a" href="disc026-compute-readiness-check.html" id="rcrGo">Residential Compute Readiness &rarr;</a>
     </div>
+    <script>
+    /* CONTINUITY, DISC-026 -> RESIDENTIAL COMPUTE.
+       DISC-026 keeps its answers in memory and never persisted them, so the
+       compute check could not know anything and asked all eleven questions.
+       It was not forgetting the homeowner; nothing was ever handed over.
+
+       TWO VALUES CROSS, both read from what the homeowner actually pressed:
+         ownership             -> tenure
+         generation_exists_now -> solar_status
+       and the smart meter, which the CHECK never asks. It belongs to the
+       register step and is carried only for that.
+
+       NOT CARRIED, deliberately: the Eircode (a full Eircode identifies one
+       building), roof shading, the grant question, the dwelling type, and the
+       build date. "2021 or later" is not "a new build" - a house finished in
+       2022 is an existing home today - so that question is still asked.
+
+       sessionStorage, not a query string: property answers should not land in
+       a URL or in history, and this dies with the tab. */
+    (function () {
+      var MAP = {
+        ownership:             { key: 'tenure',
+          v: { yes: 'own', rent: 'rent', buying: 'buying' } },
+        generation_exists_now: { key: 'solar_status',
+          v: { yes: 'installed', no: 'none', unknown: 'not_sure' } },
+        meter:                 { key: 'smart_meter',
+          v: { yes: 'yes', no: 'no', unknown: 'not_sure' } }
+      };
+      var link = document.getElementById('rcrGo');
+      if (!link) return;
+      link.addEventListener('click', function () {
+        try {
+          var out = {}, n = 0;
+          Object.keys(MAP).forEach(function (q) {
+            var fs = document.querySelector('[data-q="' + q + '"]');
+            if (!fs) return;
+            var sel = fs.querySelector('.ps-opt[aria-pressed="true"]');
+            if (!sel) return;
+            var mapped = MAP[q].v[sel.getAttribute('data-v')];
+            if (mapped === undefined) return;    /* unmapped is never guessed */
+            out[MAP[q].key] = mapped; n++;
+          });
+          if (n) sessionStorage.setItem('plotnua.disc026.handoff.v1',
+                 JSON.stringify({ v: 1, from: 'disc026', answers: out }));
+        } catch (e) { /* no storage, no handoff, the check asks everything */ }
+      });
+    }());
+    </script>
     <!-- PN-RCR-ENTRY-END -->
     <p class="ps-foot">PlotNua does not size systems, quote for equipment, or estimate what you
       would earn. Export rates are set by suppliers and change &mdash; we will not print one.</p>

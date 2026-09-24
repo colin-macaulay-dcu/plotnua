@@ -766,6 +766,36 @@ window.PlotNuaFunnel = (function () {
      no pc-* primitive, and the shell-integrity guard still proves all seventy
      of them byte-identical. The donor file itself is untouched - repairing a
      frozen page is not a design pass - and the defect is reported. */
+  .rc-carried{margin:0 0 26px;padding:20px 22px;background:var(--cream);
+    border:1px solid rgba(31,59,46,.12);border-left:2px solid var(--accent);
+    border-radius:2px;}
+  .rc-carried-lead{font-size:15px;line-height:1.7;color:var(--ink);margin:0 0 14px;}
+  .rc-carried-list{list-style:none;margin:0;padding:0;}
+  .rc-carried-list li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;
+    padding:9px 0;border-top:1px solid rgba(31,59,46,.09);}
+  .rc-carried-list li:first-child{border-top:0;}
+  .rc-carried-q{flex:1 1 220px;font-size:13.5px;color:var(--soft);}
+  .rc-carried-a{font-family:'Fraunces',Georgia,serif;font-size:15px;color:var(--ink);}
+  .rc-carried-edit{background:none;border:0;padding:6px 2px;min-height:44px;
+    font-family:'Work Sans',sans-serif;font-size:13px;color:var(--accent);
+    text-decoration:underline;cursor:pointer;}
+  @media(max-width:560px){ .rc-carried-q{flex:1 1 100%;} }
+  /* Carried answers. Same tokens as the rest of the check; not a new system. */
+  .rc-carried{margin:0 0 26px;padding:20px 22px;background:var(--cream);
+    border:1px solid rgba(31,59,46,.12);border-left:2px solid var(--accent);
+    border-radius:2px;}
+  .rc-carried[hidden]{display:none;}
+  .rc-carried-lead{font-size:15px;line-height:1.7;color:var(--ink);margin:0 0 14px;}
+  .rc-carried-list{list-style:none;margin:0;padding:0;}
+  .rc-carried-list li{display:flex;flex-wrap:wrap;align-items:baseline;
+    gap:4px 12px;padding:9px 0;border-top:1px solid rgba(31,59,46,.09);}
+  .rc-carried-list li:first-child{border-top:0;}
+  .rc-carried-q{flex:1 1 220px;font-size:13.5px;color:var(--soft);}
+  .rc-carried-a{font-family:'Fraunces',Georgia,serif;font-size:15px;color:var(--ink);}
+  .rc-carried-edit{background:none;border:0;padding:6px 2px;min-height:44px;
+    font-family:'Work Sans',sans-serif;font-size:13px;color:var(--accent);
+    text-decoration:underline;cursor:pointer;}
+  @media(max-width:560px){ .rc-carried-q{flex:1 1 100%;} }
   .sr-only{position:absolute !important;width:1px;height:1px;padding:0;
     margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;
     border:0;}
@@ -1134,6 +1164,8 @@ window.PlotNuaFunnel = (function () {
       paying the households that host it. None of that happens in Ireland yet. Eleven
       short questions, and we will tell you what your property has, what is still to
       establish, and what nobody can answer yet.</p>
+    <div class="rc-carried" id="rcCarried" hidden></div>
+    <div class="rc-carried" id="rcCarried" hidden></div>
     <button class="pc-cta" id="rcStart">Start the check
       <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
   </section>
@@ -2849,6 +2881,85 @@ window.PLOTNUA_RCR_CONTRACT = {"_": "PLOTNUA RESIDENTIAL COMPUTE READINESS REGIS
   /* ---------------------------------------------------------- THE FLOW */
   var answers = {}, trail = [], lastEval = null;
 
+  /* ------------------------------------------------- CARRIED FROM DISC-026
+     DISC-026 hands over at most three values when the homeowner clicks
+     through from its result. Two of them are questions this check would
+     otherwise ask again in almost the same words.
+
+     EVERY VALUE IS RE-VALIDATED HERE against this engine's own vocabulary.
+     The handoff is written by another page into a store a person can edit, so
+     it is treated as a claim rather than a fact: an unknown key or an unknown
+     value is dropped and the question is asked normally. Nothing is inferred,
+     nothing is widened, and no answer is ever manufactured.
+
+     smart_meter is carried for the REGISTER step, which is the only place it
+     is used. This check has no such question and gains no input from it. */
+  var CARRIED = {};
+  var CARRY_OK = {
+    tenure:       ['own', 'rent', 'buying', 'other'],
+    solar_status: ['installed', 'none', 'planned', 'not_sure']
+  };
+  var CARRY_LABEL = {
+    tenure: { q: 'Do you own this home?',
+              own: 'You own it', rent: 'You rent it',
+              buying: 'You are buying it', other: 'Something else' },
+    solar_status: { q: 'Is there solar on the roof?',
+              installed: 'Solar is installed', none: 'No solar',
+              planned: 'Solar is planned', not_sure: 'Not sure' }
+  };
+
+  (function readHandoff() {
+    var raw;
+    try { raw = sessionStorage.getItem('plotnua.disc026.handoff.v1'); }
+    catch (e) { return; }                      /* no storage, ask everything */
+    if (!raw) return;
+    var doc; try { doc = JSON.parse(raw); } catch (e) { return; }
+    if (!doc || doc.v !== 1 || doc.from !== 'disc026' || !doc.answers) return;
+    Object.keys(CARRY_OK).forEach(function (k) {
+      var v = doc.answers[k];
+      if (CARRY_OK[k].indexOf(v) === -1) return;    /* not a value we know */
+      answers[k] = v; CARRIED[k] = v;
+    });
+    var sm = doc.answers.smart_meter;
+    if (['yes', 'no', 'not_sure'].indexOf(sm) !== -1) {
+      window.PLOTNUA_RCR_CARRIED_SMART_METER = sm;
+    }
+  }());
+
+  /* Any carried answer can go back into the flow. It is removed from what is
+     known, so the next question asked is simply that one. No separate edit
+     screen, and nothing else has to be confirmed again. */
+  function unCarry(k) {
+    delete answers[k]; delete CARRIED[k];
+    renderCarried();
+  }
+
+  function renderCarried() {
+    var box = document.getElementById('rcCarried');
+    if (!box) return;
+    var ks = Object.keys(CARRIED);
+    if (!ks.length) { box.hidden = true; box.innerHTML = ''; return; }
+    box.hidden = false;
+    var h = '<p class="rc-carried-lead">We already know a little about your ' +
+            'property from your Property Check. There are a few more things ' +
+            'we&rsquo;d need to understand to explore residential compute.</p>' +
+            '<ul class="rc-carried-list">';
+    ks.forEach(function (k) {
+      var L = CARRY_LABEL[k];
+      h += '<li><span class="rc-carried-q">' + L.q + '</span>' +
+           '<span class="rc-carried-a">' + L[CARRIED[k]] + '</span>' +
+           '<button type="button" class="rc-carried-edit" data-carry="' + k +
+           '">Change</button></li>';
+    });
+    box.innerHTML = h + '</ul>';
+    Array.prototype.forEach.call(box.querySelectorAll('[data-carry]'),
+      function (b) {
+        b.addEventListener('click', function () {
+          unCarry(b.getAttribute('data-carry'));
+        });
+      });
+  }
+
   function show(id) {
     ['rcIntro', 'rcQ', 'rcReveal', 'rcRegister'].forEach(function (s) {
       var el = $(s); if (el) el.classList.toggle('is-on', s === id);
@@ -2871,7 +2982,11 @@ window.PLOTNUA_RCR_CONTRACT = {"_": "PLOTNUA RESIDENTIAL COMPUTE READINESS REGIS
       s.className = 'pc-dot' + (i < idx ? ' is-done' : (i === idx ? ' is-on' : ''));
       box.appendChild(s);
     });
-    $('rcProg').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
+    /* Counts what THIS homeowner is asked. Telling somebody "question 3 of 11"
+       when they will only ever see nine is its own small dishonesty. */
+    var asked = QUESTIONS.filter(function (x) { return !(x.var in CARRIED); });
+    var pos = asked.indexOf(q);
+    $('rcProg').textContent = 'Question ' + (pos + 1) + ' of ' + asked.length;
   }
 
   function renderQuestion(q) {
@@ -3165,6 +3280,7 @@ window.PLOTNUA_RCR_CONTRACT = {"_": "PLOTNUA RESIDENTIAL COMPUTE READINESS REGIS
   }
 
   /* ---------------------------------------------------------------- GO */
+  renderCarried();
   $('rcStart').addEventListener('click', function () { advance(); });
   $('rcBack').addEventListener('click', back);
   $('rcOpenRegister').addEventListener('click', openRegister);
