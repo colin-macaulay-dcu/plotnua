@@ -1,0 +1,56 @@
+name: Atlas figures agreement
+
+# One question, asked of two files already in the repository: do the Atlas
+# figures rendered in index.html agree with the generated record in
+# atlas-stats.json?
+#
+# The scheduled atlas-stats workflow writes both together, so it cannot
+# produce a disagreement. A hand-edit to index.html can. This catches that.
+#
+# No Atlas read, no token, no network, no schedule, and nothing written. It
+# does not check whether the figures are CURRENT — that is the scheduled
+# workflow's job, and duplicating it here would mean a second Atlas reader.
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'atlas-stats.json'
+      - '.github/scripts/atlas_stats.py'
+      - '.github/scripts/check_atlas_figures.py'
+      - '.github/workflows/atlas-figures-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'atlas-stats.json'
+      - '.github/scripts/atlas_stats.py'
+      - '.github/scripts/check_atlas_figures.py'
+      - '.github/workflows/atlas-figures-check.yml'
+  workflow_dispatch:
+
+# Least privilege: reads the tree, writes nothing.
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-figures-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+        # Standard library only. Nothing to install, nothing to pin.
+
+      - name: index.html must agree with atlas-stats.json
+        run: python .github/scripts/check_atlas_figures.py
