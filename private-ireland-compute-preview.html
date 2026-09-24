@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An Irish homeowner layer for residential compute &mdash; PlotNua</title>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="A private market-entry note prepared by PlotNua.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     SPX-001 - PRIVATE MARKET-ENTRY PREVIEW
+
+     THE DESIGN LANGUAGE IS PLOTNUA'S OWN, BY VALUE. Tokens, type roles and
+     elevation are lifted from the DISC-026 Discovery and the accepted
+     RCR-002 design pass rather than invented here, so a reader who opens
+     this and then opens plotnua.ie meets one company.
+     ============================================================ */
+  :root{
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
+    --stone:#EFE9DA; --body:#3A453F; --muted:#5A655F;
+    --rule:rgba(31,59,46,.18); --line:rgba(31,59,46,.12);
+    --line-soft:rgba(31,59,46,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Work Sans',sans-serif;background:var(--paper);
+    color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+  .sr-only{position:absolute !important;width:1px;height:1px;padding:0;
+    margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* ---- masthead ---- */
+  .top{border-bottom:1px solid var(--line-soft);}
+  .topin{max-width:1080px;margin:0 auto;padding:20px 28px;display:flex;
+    align-items:center;gap:16px;}
+  .mark{display:flex;align-items:center;justify-content:center;width:44px;
+    height:44px;flex:0 0 44px;}
+  .mark img{width:44px;height:44px;display:block;}
+  .ident{display:flex;flex-direction:column;gap:2px;}
+  .brand{font-family:'Fraunces',Georgia,serif;font-size:19px;font-weight:500;
+    line-height:1;}
+  .ctx{font-family:'Work Sans',sans-serif;font-size:10px;font-weight:500;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--soft);}
+  .privtag{margin-left:auto;font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--oak);border:1px solid rgba(139,111,78,.4);border-radius:2px;
+    padding:6px 12px;white-space:nowrap;}
+
+  /* ---- section rhythm ---- */
+  section{padding:clamp(56px,7vw,104px) 0 0;}
+  section:last-of-type{padding-bottom:clamp(64px,8vw,120px);}
+  .kick{display:block;font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 18px;}
+  .kick.is-accent{color:var(--accent);}
+  h1{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(38px,5.6vw,68px);line-height:1.04;letter-spacing:-.018em;
+    margin:0 0 28px;max-width:17ch;}
+  h2{font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:clamp(26px,3.2vw,38px);line-height:1.14;letter-spacing:-.012em;
+    margin:0 0 22px;max-width:22ch;}
+  h3{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:19px;
+    line-height:1.3;margin:0 0 10px;}
+  p{font-size:16.5px;line-height:1.72;color:var(--body);margin:0 0 18px;
+    max-width:62ch;}
+  p.lead{font-size:19px;line-height:1.62;max-width:52ch;}
+  p:last-child{margin-bottom:0;}
+  .rule{border-top:2px solid rgba(31,59,46,.42);padding-top:16px;}
+  .rule.is-heavy{border-top-width:2px;border-top-color:rgba(31,59,46,.55);}
+  em{font-style:italic;}
+  strong{font-weight:500;color:var(--ink);}
+
+  /* ---- the opening ---- */
+  .hero{padding-top:clamp(64px,9vw,128px);}
+  .hero-sub{font-size:19px;line-height:1.62;color:var(--body);max-width:54ch;
+    margin:0 0 30px;}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:10px 28px;padding-top:22px;
+    border-top:1px solid var(--rule);font-family:'Work Sans',sans-serif;
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--soft);}
+
+  /* ---- the credibility band: counts, never dramatised ---- */
+  .figs{list-style:none;display:grid;gap:10px;margin:0;padding:0;}
+  @media(min-width:760px){ .figs{grid-template-columns:repeat(2,1fr);} }
+  @media(min-width:1000px){ .figs{grid-template-columns:repeat(4,1fr);} }
+  .figs li{margin:0;padding:24px 24px 26px;background:var(--cream);
+    border:1px solid rgba(31,59,46,.11);border-top:1px solid rgba(31,59,46,.26);
+    border-radius:2px;box-shadow:0 1px 2px rgba(31,59,46,.06),
+      0 14px 26px -16px rgba(31,59,46,.34);}
+  .fig{display:block;font-family:'Fraunces',Georgia,serif;font-weight:400;
+    font-size:clamp(30px,3.4vw,42px);line-height:1;letter-spacing:-.022em;
+    color:var(--ink);}
+  .figlab{display:block;margin-top:12px;font-family:'Work Sans',sans-serif;
+    font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);}
+  .figdef{display:block;margin-top:9px;font-family:'Work Sans',sans-serif;
+    font-size:12.5px;line-height:1.6;color:var(--soft);}
+  /* THE SENTENCE THAT STOPS A COUNT BEING READ AS A CUSTOMER BASE. Same
+     weight as the figures, directly under them, never a footnote. */
+  .figs-note{margin:26px 0 0;padding:22px 26px;background:var(--stone);
+    border:1px solid rgba(31,59,46,.14);border-left:2px solid var(--oak);
+    border-radius:2px;font-size:15px;line-height:1.7;color:var(--ink);
+    max-width:none;}
+
+  /* ---- two-column editorial ---- */
+  .cols{display:grid;gap:34px 56px;align-items:start;}
+  @media(min-width:1000px){ .cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr);} }
+  .cols.is-lead{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);}
+  @media(max-width:999px){ .cols.is-lead{grid-template-columns:1fr;} }
+
+  /* ---- the flow ---- */
+  .flow{list-style:none;margin:0;padding:0;counter-reset:f;}
+  .flow li{margin:0;padding:20px 0;border-top:1px solid var(--line);
+    display:grid;grid-template-columns:34px 1fr;gap:18px;align-items:baseline;}
+  .flow li:first-child{border-top:0;padding-top:0;}
+  .flow li::before{counter-increment:f;content:counter(f,decimal-leading-zero);
+    font-family:'Work Sans',sans-serif;font-size:9.5px;font-weight:500;
+    letter-spacing:.18em;color:var(--accent);}
+  .flow b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:500;
+    font-size:16.5px;line-height:1.35;color:var(--ink);margin:0 0 5px;}
+  .flow span{display:block;font-size:14px;line-height:1.65;color:var(--soft);}
+
+  /* ---- captures of the real product ---- */
+  figure{margin:0;}
+  .shot{margin:0;border:1px solid var(--line);border-radius:2px;
+    overflow:hidden;background:var(--paper);
+    box-shadow:0 2px 4px rgba(31,59,46,.06),
+               0 26px 56px -30px rgba(31,59,46,.40);}
+  .shot img{width:100%;height:auto;display:block;}
+  .shot figcaption{padding:16px 22px 18px;border-top:1px solid var(--line);
+    font-family:'Work Sans',sans-serif;font-size:12.5px;line-height:1.65;
+    color:var(--soft);background:var(--cream);}
+  .shots{display:grid;gap:18px;margin:34px 0 0;}
+  @media(min-width:1000px){
+    .shots.is-pair{grid-template-columns:1fr 1fr;align-items:start;}
+    .shots.is-aside{grid-template-columns:1.55fr 1fr;align-items:start;}
+  }
+
+  /* ---- known / unknown ---- */
+  .kn{display:grid;gap:10px;margin:0;align-items:start;}
+  @media(min-width:900px){ .kn{grid-template-columns:1fr 1fr;} }
+  .kn-col{padding:26px 28px 28px;border-radius:2px;
+    border:1px solid rgba(31,59,46,.11);}
+  .kn-col.is-known{background:var(--cream);
+    border-top:1px solid rgba(31,59,46,.26);}
+  .kn-col.is-unknown{background:var(--paper);
+    border-top:2px solid var(--oak);}
+  .kn-col ul{list-style:none;margin:14px 0 0;padding:0;}
+  .kn-col li{margin:0;padding:11px 0;border-top:1px solid rgba(31,59,46,.09);
+    font-size:14.5px;line-height:1.6;color:var(--body);}
+  .kn-col li:first-child{border-top:0;}
+  .kn-col.is-unknown li{font-family:'Work Sans',sans-serif;}
+
+  /* ---- the hypothesis ---- */
+  .parts{list-style:none;display:grid;gap:10px;margin:0;padding:0;}
+  @media(min-width:900px){ .parts{grid-template-columns:repeat(4,1fr);} }
+  .parts li{margin:0;padding:22px 22px 24px;background:var(--paper);
+    border:1px solid rgba(31,59,46,.11);
+    border-top:1px solid rgba(31,59,46,.26);border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05),
+               0 10px 20px -14px rgba(31,59,46,.32);}
+  .parts li.is-us{border-top:2px solid var(--accent);background:var(--cream);}
+  .parts b{display:block;font-family:'Work Sans',sans-serif;font-size:9.5px;
+    font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 12px;}
+  .parts span{display:block;font-family:'Fraunces',Georgia,serif;
+    font-weight:500;font-size:15.5px;line-height:1.4;color:var(--ink);}
+
+  /* ---- the ask ---- */
+  .ask{background:var(--stone);margin:clamp(64px,8vw,110px) calc(50% - 50vw) 0;
+    padding:clamp(56px,7vw,92px) calc(50vw - 50%);
+    border-top:1px solid var(--rule);}
+  .ask h2{max-width:24ch;}
+  .ask p{max-width:56ch;}
+  .askmail{display:inline-block;margin-top:14px;font-family:'Work Sans',sans-serif;
+    font-size:15px;color:var(--ink);text-decoration:none;
+    border-bottom:1px solid rgba(31,59,46,.34);padding-bottom:3px;}
+  .askmail:hover{border-bottom-color:rgba(31,59,46,.8);}
+
+  /* ---- sources ---- */
+  .srcs{list-style:none;margin:16px 0 0;padding:0;}
+  .srcs li{margin:0;padding:13px 0;border-top:1px solid var(--line-soft);
+    font-family:'Work Sans',sans-serif;font-size:13px;line-height:1.65;
+    color:var(--soft);max-width:78ch;}
+  .foot{margin-top:clamp(48px,6vw,76px);padding:26px 0 0;
+    border-top:1px solid var(--line-soft);font-size:13px;line-height:1.7;
+    color:var(--muted);max-width:76ch;}
+
+  @media (max-width:760px){
+    .wrap{padding:0 20px;}
+    .topin{padding:16px 20px;}
+    .privtag{font-size:8.5px;padding:5px 9px;letter-spacing:.16em;}
+    .hero-meta{gap:8px 18px;font-size:10.5px;}
+    .figs li{padding:20px 20px 22px;}
+    .cols{gap:26px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="topin">
+    <span class="mark" aria-hidden="true">
+      <img src="assets/brand/plotnua-mark-master.svg" alt="" width="44" height="44">
+    </span>
+    <span class="ident">
+      <span class="brand">PlotNua</span>
+      <span class="ctx">Market-entry note</span>
+    </span>
+    <span class="privtag">Private &middot; not published</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1 · OPENING -->
+  <section class="hero">
+    <span class="kick">Prepared for SPAN &middot; XFRA</span>
+    <h1>An Irish homeowner layer for residential compute</h1>
+    <p class="hero-sub">PlotNua is an Irish property-decision platform. We have
+      built a homeowner readiness layer for this category already, before
+      approaching anyone, because it is the part we can build without you and the
+      part that takes longest. This note sets out what exists, what it cannot yet
+      do, and what we would need from SPAN to make it useful.</p>
+    <div class="hero-meta">
+      <span>Prepared 24 September 2026</span>
+      <span>Private link</span>
+      <span>No prior contact</span>
+    </div>
+  </section>
+
+  <!-- 2 · WHAT PLOTNUA IS -->
+  <section>
+    <div class="rule">
+      <span class="kick">What PlotNua is</span>
+    </div>
+    <div class="cols is-lead">
+      <div>
+        <h2>PlotNua does the homework. The homeowner makes the decision.</h2>
+      </div>
+      <div>
+        <p>Most Irish homeowners do not know what their property could become.
+          PlotNua helps them discover a possibility, then understand the evidence
+          they would need to evaluate it &mdash; before they talk to anyone selling
+          anything.</p>
+        <p>Each possibility is a <strong>Discovery</strong>: an editorial article
+          that explains what is genuinely happening, followed by a
+          <strong>Property Check</strong> that reads the homeowner's own answers
+          against evidence PlotNua holds and tells them where their property
+          actually stands.</p>
+        <p>The discipline that makes it work is the one we apply hardest to
+          ourselves: <strong>where PlotNua cannot stand over something, it says
+          so</strong> rather than filling the gap. That is why this note contains
+          as much about what we do not know as about what we have built.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · PLOTNUA ALREADY EXISTS -->
+  <section>
+    <div class="rule is-heavy">
+      <span class="kick">PlotNua already exists</span>
+    </div>
+    <div class="cols is-lead" style="margin-bottom:30px">
+      <div><h2>Behind the homeowner experience is a structured evidence platform.</h2></div>
+      <div><p>Atlas is PlotNua's property-intelligence base. It is where every
+        homeowner-facing finding comes from, and every fact in it carries the
+        source it came from and the date it was read. Counted directly from the
+        base on <strong>24 September 2026</strong>:</p></div>
+    </div>
+
+    <ul class="figs">
+      <li><span class="fig">930</span>
+          <span class="figlab">Products</span>
+          <span class="figdef">across 193 organisations</span></li>
+      <li><span class="fig">8,199</span>
+          <span class="figlab">Structured product facts</span>
+          <span class="figdef">recorded against 82 defined features</span></li>
+      <li><span class="fig">722</span>
+          <span class="figlab">Pricing records</span>
+          <span class="figdef">552 of them verified</span></li>
+      <li><span class="fig">963</span>
+          <span class="figlab">Evidence sources</span>
+          <span class="figdef">plus 379 availability records</span></li>
+    </ul>
+
+    <p class="figs-note"><strong>These are records in a product-intelligence
+      database.</strong> They are not users, customers, visitors, leads,
+      sign-ups or demand of any kind. PlotNua is not publishing a homeowner
+      audience figure here because it is not claiming one.</p>
+
+    <div style="margin-top:34px">
+      <p>On the public site today there are <strong>10
+        Discoveries</strong> and <strong>8 Property
+        Checks</strong> &mdash; live decision journeys, not prototypes. The
+        readiness work below is the ninth.</p>
+    </div>
+  </section>
+
+  <!-- 4 · WHY XFRA CAUGHT OUR ATTENTION -->
+  <section>
+    <div class="rule">
+      <span class="kick">Why XFRA caught our attention</span>
+    </div>
+    <div class="cols is-lead">
+      <div><h2>A compute architecture that begins at the house.</h2></div>
+      <div>
+        <p>From SPAN's own published material: XFRA places compute nodes in
+          residential and small-commercial locations; a SPAN Panel and a battery
+          are required; the nodes use liquid-cooled NVIDIA RTX PRO 6000 Blackwell
+          Server Edition GPUs in a closed-loop system targeting roughly 60&nbsp;dB;
+          the first proof of concept is 100 US new-construction homes, with
+          broader expansion planned from 2027.</p>
+        <p>From the Sunrun investor release: a behind-the-meter
+          residential compute arrangement beginning in new-construction
+          communities in Texas and other named markets, in which the host receives
+          a smart panel, multi-battery storage and solar on a pre-paid lease at no
+          cost, whole-home backup, and ongoing compensation for hosting &mdash;
+          with workloads scheduled by latency requirement and real-time energy
+          availability at each home.</p>
+        <p>SPAN also states plainly that <strong>XFRA is not currently available
+          outside the US</strong>, that there is no waitlist, and that it is not
+          yet sharing technical detail beyond its public resources. We have taken
+          all three at face value, and this note is built on that basis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · WHAT WE BUILT -->
+  <section>
+    <div class="rule is-heavy">
+      <span class="kick is-accent">What we built</span>
+    </div>
+    <div class="cols is-lead" style="margin-bottom:8px">
+      <div><h2>A provider-neutral residential compute readiness check, live in the product.</h2></div>
+      <div>
+        <p>It is a working Property Check on plotnua.ie, built on the same shell
+          as the eight before it. Eleven questions across five evidence groups
+          &mdash; the property, the electricity supply, the energy already there,
+          the connectivity, and the physical space and access.</p>
+        <p>It names no provider anywhere a homeowner can read. If a different
+          company reached Ireland first, not one sentence would need rewriting.
+          That is deliberate: a readiness layer that is really a funnel for one
+          company is worth nothing to the homeowner and not much to the company.</p>
+      </div>
+    </div>
+
+    <div class="shots is-aside">
+      <figure class="shot">
+        <img src="assets/img/c4259bc916d091bf.jpg" width="1200" height="917" loading="lazy" decoding="async"
+             alt="The readiness result opening on a photograph of an Irish suburban street at dusk, annotated by PlotNua, above the heading: Your property could be worth investigating.">
+        <figcaption>The result opens on an ordinary Irish street, then says what it
+          found. The strongest thing PlotNua can honestly say is
+          &ldquo;worth investigating&rdquo;.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/img/f769fdcd445be934.png" width="390" height="1185" loading="lazy" decoding="async"
+             alt="The optional register on a phone, showing a notice that the register is not open yet and that nothing typed is sent or kept.">
+        <figcaption>The optional register &mdash; and the notice it opens with.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cols" style="margin-top:44px">
+      <div>
+        <h3>There is no score, and that is the point</h3>
+        <p>PlotNua does not tell a homeowner their property is a given percentage suitable,
+          because a percentage claims we know what 100% would be. Every technical
+          requirement is unpublished, so there is no denominator. A number
+          invented to fill that gap would be false precision, and it would be the
+          first thing an engineer disproved.</p>
+        <p>So the engine returns one of three evidence-controlled states, and it
+          is built so that <strong>nothing a homeowner tells us can ever become
+          verified technical evidence</strong> &mdash; every stored record carries
+          <em>provider technical validation: not assessed</em>, in a field whose
+          vocabulary has no other value in it.</p>
+      </div>
+      <div>
+        <h3>What the homeowner actually sees</h3>
+        <p>Findings are grouped and separated by kind. A tick is something the
+          property has. A question mark is something still to establish &mdash;
+          <em>their</em> gap, which an answer closes. A dash is something they have
+          told us is <em>not</em> there, which is knowledge, not absence of it.</p>
+        <p>Underneath every result, unconditionally, sit the two facts most likely
+          to be misunderstood: that this is not commercially available through
+          PlotNua in Ireland, and that nobody has published what a property would
+          have to meet.</p>
+      </div>
+    </div>
+
+    <div class="shots is-pair">
+      <figure class="shot">
+        <img src="assets/img/dbd6a602f13e249b.png" width="1200" height="857" loading="lazy" decoding="async"
+             alt="Findings grouped under The property, Electricity, Energy here, Connectivity and Space and access, above two evidence panels headed Where this stands.">
+        <figcaption>Grouped findings, then the two unconditional statements
+          &mdash; above the invitation, never below it.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/img/7a7a29cc0ee29ff0.png" width="1200" height="1106" loading="lazy" decoding="async"
+             alt="A result headed A few things still to establish, with question marks against unknown property facts and a dash against a stated absence.">
+        <figcaption>The same engine when the homeowner does not know. Unknowns are
+          listed, never penalised.</figcaption>
+      </figure>
+    </div>
+
+    <div style="margin-top:48px">
+      <ol class="flow">
+        <li><b>Discovery</b><span>An editorial article explains what is genuinely
+          happening in this category, internationally, with sources.</span></li>
+        <li><b>Homeowner education</b><span>Eleven plain questions. &ldquo;I don't
+          know&rdquo; is a first-class answer everywhere it appears, and the
+          connection capacity question never requires anyone to find their
+          MIC.</span></li>
+        <li><b>Preliminary property screening</b><span>Three evidence-controlled
+          states. Nothing is ruled out on tenure, and the closed state needs two
+          positive statements from the homeowner about their own property.</span></li>
+        <li><b>Evidence gaps</b><span>Every unknown is named and returned to the
+          homeowner as something they could go and find out.</span></li>
+        <li><b>Interest capture</b><span>An optional register. Opt-in, separable
+          consent, Eircode routing key only &mdash; never the full code.</span></li>
+        <li><b>Geographic aggregation</b><span>Counts by county and routing key,
+          with any cell below five suppressed.</span></li>
+        <li><b>Provider technical qualification</b><span>Not built, and not
+          buildable, until the requirements below exist.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6 · WHAT THE DATA COULD BECOME -->
+  <section>
+    <div class="rule">
+      <span class="kick">What the data could become</span>
+    </div>
+    <div class="cols is-lead">
+      <div><h2>An aggregate picture of the Irish side, if one ever forms.</h2></div>
+      <div>
+        <p>The register and the aggregate instrument are built and tested. Given a
+          population, they would answer how many properties are registered, how
+          many report fibre to the home, how many have solar or a battery
+          installed, how many report a known connection capacity or three-phase
+          supply, how they cluster by county and routing key, how many are new
+          build against existing stock, and which evidence gaps recur.</p>
+        <p class="figs-note" style="margin-top:22px"><strong>The register is not
+          open and holds no entries.</strong> There is no interest population, no
+          demand figure and no waiting list, and PlotNua will not present one until
+          real entries exist. Any count shown to anyone would be derived from the
+          register against a clearly defined state, or it would not be shown.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · IRELAND -->
+  <section>
+    <div class="rule">
+      <span class="kick">Ireland</span>
+    </div>
+    <div class="cols is-lead">
+      <div><h2>Why Ireland is at least worth a look.</h2></div>
+      <div>
+        <p>Compact, English-speaking, EU, and unusually well connected for its
+          size. At Q2 2026 ComReg reports fibre to the premises available at
+          <strong>87% of Irish premises</strong>, with every county at or above
+          80%, and gigabit broadband at <strong>92%</strong>. There are 1.13
+          million FTTP subscriber lines, 63% of all fixed broadband lines.</p>
+        <p>On the electrical side, ESB Networks offers a standard domestic
+          connection of <strong>12&nbsp;kVA</strong>, with 16&nbsp;kVA,
+          20&nbsp;kVA and 29&nbsp;kVA available, 29&nbsp;kVA being the upper limit
+          of domestic MIC. Smart meters and half-hourly tariffs are in the market,
+          and ESB Networks is developing flexibility services.</p>
+        <p class="figs-note" style="margin-top:22px"><strong>National
+          infrastructure statistics describe a country, not a house.</strong> None
+          of the above says anything about whether any individual Irish property
+          could host anything, and PlotNua does not present it as if it
+          did.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · WHAT WE WOULD NEED FROM SPAN -->
+  <section>
+    <div class="rule is-heavy">
+      <span class="kick is-accent">What we would need</span>
+    </div>
+    <div class="cols is-lead" style="margin-bottom:30px">
+      <div><h2>The criteria that would turn screening into qualification.</h2></div>
+      <div><p>PlotNua's check is preliminary by construction, and it will stay
+        preliminary until there is something to screen against. These are not
+        demands and there is no expectation of an answer today &mdash; they are
+        simply the fields that are currently empty, and the reason the readiness
+        layer stops where it stops.</p></div>
+    </div>
+
+    <div class="kn">
+      <div class="kn-col is-known">
+        <span class="kick is-accent" style="margin:0">Published, and already used</span>
+        <ul>
+          <li>Compute nodes in residential and small-commercial locations</li>
+          <li>SPAN Panel and battery required</li>
+          <li>Liquid-cooled NVIDIA RTX PRO 6000 Blackwell Server Edition GPUs</li>
+          <li>Closed-loop cooling, roughly 60&nbsp;dB target</li>
+          <li>100-home US new-construction proof of concept</li>
+          <li>Broader expansion planned from 2027</li>
+          <li>Not currently available outside the US &middot; no waitlist</li>
+          <li>Host compensation exists; no amount published</li>
+        </ul>
+      </div>
+      <div class="kn-col is-unknown">
+        <span class="kick" style="margin:0;color:var(--oak)">Not published, and needed to qualify a property</span>
+        <ul>
+          <li>Continuous electrical load, in kW</li>
+          <li>Maximum electrical load, in kW</li>
+          <li>230V / 50Hz compatibility</li>
+          <li>Minimum connection capacity, against Ireland's 12&ndash;29&nbsp;kVA domestic range</li>
+          <li>Whether three phase is required</li>
+          <li>Minimum bandwidth, and minimum upload</li>
+          <li>Maximum tolerable latency</li>
+          <li>Physical dimensions and siting clearances</li>
+          <li>European certification and conformity route</li>
+          <li>Deployment model outside new-build communities, if any</li>
+          <li>Any European timetable</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:26px">Give PlotNua the left-hand column in numbers and the
+      right-hand column becomes a filter. Until then, a homeowner being told their
+      property is suitable would be being told something nobody knows.</p>
+  </section>
+
+  <!-- 9 · POSSIBLE ROLE -->
+  <section>
+    <div class="rule">
+      <span class="kick">A possible shape</span>
+    </div>
+    <div class="cols is-lead" style="margin-bottom:30px">
+      <div><h2>A hypothesis, not a proposal.</h2></div>
+      <div><p>If this model ever reaches Ireland, someone will have to do the
+        homeowner side of it. This is one way the pieces could sit. It is not an
+        offer, it describes no arrangement, and nothing has been discussed with
+        anyone.</p></div>
+    </div>
+    <ul class="parts">
+      <li><b>Technology</b><span>Compute hardware and orchestration</span></li>
+      <li><b>Energy</b><span>Generation, storage, installation, finance</span></li>
+      <li class="is-us"><b>PlotNua</b><span>Homeowner discovery, education,
+        interest capture, preliminary screening and property aggregation</span></li>
+      <li><b>Irish homes</b><span>Existing stock and new developments</span></li>
+    </ul>
+  </section>
+
+  <!-- 10 · THE ASK -->
+  <section class="ask">
+    <div class="wrap" style="padding:0">
+      <span class="kick">The ask</span>
+      <h2>Could an Irish homeowner readiness layer be useful to you?</h2>
+      <p>That is the whole question. Not whether SPAN has any Irish plans, and
+        not whether we could work together &mdash; simply whether the homeowner
+        and property side of this, built to the standard above, would be worth
+        anything to XFRA as it develops and future markets are considered.</p>
+      <p>If it would, the right person is probably whoever holds XFRA market
+        development or partnerships. If it would not, that is a genuinely useful
+        answer too, and PlotNua will carry on building the Irish layer either
+        way.</p>
+      <a class="askmail" href="mailto:hello@plotnua.ie?subject=Irish%20homeowner%20readiness%20layer">hello@plotnua.ie</a>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section>
+    <div class="rule">
+      <span class="kick">Where every figure came from</span>
+    </div>
+    <ul class="srcs">
+      <li><strong>PlotNua platform counts</strong> &mdash; read directly from the
+        Atlas base on 24 September 2026 as whole-table aggregates, not samples or
+        estimates. Published Discovery and Property Check counts are countable on
+        plotnua.ie.</li>
+      <li><strong>Irish broadband</strong> &mdash; ComReg, Q2 2026.
+        <strong>Irish domestic connection capacity</strong> &mdash; ESB Networks,
+        2026. Both re-verified against the publishing body on 24 September
+        2026.</li>
+      <li><strong>XFRA and the Sunrun announcement</strong> &mdash; SPAN's own
+        support material and the Sunrun investor release, both read on 24 September 2026. PlotNua
+        keeps an internal register in which each of these facts carries its source
+        URL and the date it was read, and in which everything unpublished stays
+        recorded as unknown rather than inferred.</li>
+    </ul>
+
+    <p class="foot">This page is private and unlisted. It is not indexed, not in
+      the sitemap, not linked from plotnua.ie and not reachable from the public
+      site. PlotNua has no relationship with SPAN, Sunrun or NVIDIA, claims none,
+      and has had no contact with any of them. SPAN, XFRA, Sunrun and NVIDIA are
+      named here descriptively, as the companies whose published work prompted
+      this note. No logo or brand mark of any third party appears on this page.</p>
+  </section>
+
+</main>
+</body>
+</html>
