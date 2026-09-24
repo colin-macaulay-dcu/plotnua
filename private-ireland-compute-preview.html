@@ -13,14 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ============================================================
-     SPX-001 - PRIVATE MARKET-ENTRY PREVIEW
-
-     THE DESIGN LANGUAGE IS PLOTNUA'S OWN, BY VALUE. Tokens, type roles and
-     elevation are lifted from the DISC-026 Discovery and the accepted
-     RCR-002 design pass rather than invented here, so a reader who opens
-     this and then opens plotnua.ie meets one company.
-     ============================================================ */
+  
   :root{
     --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
     --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
@@ -38,7 +31,7 @@
 
   .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
 
-  /* ---- masthead ---- */
+  
   .top{border-bottom:1px solid var(--line-soft);}
   .topin{max-width:1080px;margin:0 auto;padding:20px 28px;display:flex;
     align-items:center;gap:16px;}
@@ -55,7 +48,7 @@
     color:var(--oak);border:1px solid rgba(139,111,78,.4);border-radius:2px;
     padding:6px 12px;white-space:nowrap;}
 
-  /* ---- section rhythm ---- */
+  
   section{padding:clamp(56px,7vw,104px) 0 0;}
   section:last-of-type{padding-bottom:clamp(64px,8vw,120px);}
   .kick{display:block;font-family:'Work Sans',sans-serif;font-size:9.5px;
@@ -79,7 +72,7 @@
   em{font-style:italic;}
   strong{font-weight:500;color:var(--ink);}
 
-  /* ---- the opening ---- */
+  
   .hero{padding-top:clamp(64px,9vw,128px);}
   .hero-sub{font-size:19px;line-height:1.62;color:var(--body);max-width:54ch;
     margin:0 0 30px;}
@@ -88,7 +81,7 @@
     font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--soft);}
 
-  /* ---- the credibility band: counts, never dramatised ---- */
+  
   .figs{list-style:none;display:grid;gap:10px;margin:0;padding:0;}
   @media(min-width:760px){ .figs{grid-template-columns:repeat(2,1fr);} }
   @media(min-width:1000px){ .figs{grid-template-columns:repeat(4,1fr);} }
@@ -104,20 +97,19 @@
     color:var(--accent);}
   .figdef{display:block;margin-top:9px;font-family:'Work Sans',sans-serif;
     font-size:12.5px;line-height:1.6;color:var(--soft);}
-  /* THE SENTENCE THAT STOPS A COUNT BEING READ AS A CUSTOMER BASE. Same
-     weight as the figures, directly under them, never a footnote. */
+  
   .figs-note{margin:26px 0 0;padding:22px 26px;background:var(--stone);
     border:1px solid rgba(31,59,46,.14);border-left:2px solid var(--oak);
     border-radius:2px;font-size:15px;line-height:1.7;color:var(--ink);
     max-width:none;}
 
-  /* ---- two-column editorial ---- */
+  
   .cols{display:grid;gap:34px 56px;align-items:start;}
   @media(min-width:1000px){ .cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr);} }
   .cols.is-lead{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);}
   @media(max-width:999px){ .cols.is-lead{grid-template-columns:1fr;} }
 
-  /* ---- the flow ---- */
+  
   .flow{list-style:none;margin:0;padding:0;counter-reset:f;}
   .flow li{margin:0;padding:20px 0;border-top:1px solid var(--line);
     display:grid;grid-template-columns:34px 1fr;gap:18px;align-items:baseline;}
@@ -129,7 +121,7 @@
     font-size:16.5px;line-height:1.35;color:var(--ink);margin:0 0 5px;}
   .flow span{display:block;font-size:14px;line-height:1.65;color:var(--soft);}
 
-  /* ---- captures of the real product ---- */
+  
   figure{margin:0;}
   .shot{margin:0;border:1px solid var(--line);border-radius:2px;
     overflow:hidden;background:var(--paper);
@@ -145,7 +137,7 @@
     .shots.is-aside{grid-template-columns:1.55fr 1fr;align-items:start;}
   }
 
-  /* ---- known / unknown ---- */
+  
   .kn{display:grid;gap:10px;margin:0;align-items:start;}
   @media(min-width:900px){ .kn{grid-template-columns:1fr 1fr;} }
   .kn-col{padding:26px 28px 28px;border-radius:2px;
@@ -160,7 +152,7 @@
   .kn-col li:first-child{border-top:0;}
   .kn-col.is-unknown li{font-family:'Work Sans',sans-serif;}
 
-  /* ---- the hypothesis ---- */
+  
   .parts{list-style:none;display:grid;gap:10px;margin:0;padding:0;}
   @media(min-width:900px){ .parts{grid-template-columns:repeat(4,1fr);} }
   .parts li{margin:0;padding:22px 22px 24px;background:var(--paper);
@@ -175,7 +167,7 @@
   .parts span{display:block;font-family:'Fraunces',Georgia,serif;
     font-weight:500;font-size:15.5px;line-height:1.4;color:var(--ink);}
 
-  /* ---- the ask ---- */
+  
   .ask{background:var(--stone);margin:clamp(64px,8vw,110px) calc(50% - 50vw) 0;
     padding:clamp(56px,7vw,92px) calc(50vw - 50%);
     border-top:1px solid var(--rule);}
@@ -186,7 +178,7 @@
     border-bottom:1px solid rgba(31,59,46,.34);padding-bottom:3px;}
   .askmail:hover{border-bottom-color:rgba(31,59,46,.8);}
 
-  /* ---- sources ---- */
+  
   .srcs{list-style:none;margin:16px 0 0;padding:0;}
   .srcs li{margin:0;padding:13px 0;border-top:1px solid var(--line-soft);
     font-family:'Work Sans',sans-serif;font-size:13px;line-height:1.65;

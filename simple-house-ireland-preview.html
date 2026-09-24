@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ── PREVIEW SHELL — the page around the demonstration ───────────── */
+
 :root{
   --pn-ground:#F5F2E8; --pn-voice:#24351F; --pn-fact:#16190F; --pn-body:#474B3B;
   --pn-stone:#8B8971; --pn-meta:#9E9C86; --pn-hair:#DBD7C5;
@@ -76,7 +76,6 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 .credit-line{ font-size:var(--pn-w-caption); color:var(--pn-stone);
   border-top:1px solid var(--pn-hair); padding:12px 16px; background:var(--pn-ground); }
 
-/* the live PlotNua surface, hosted inside the frame */
 .pn-stage{ background:var(--paper); color:var(--ink);
   font-family:'Work Sans',system-ui,sans-serif; font-size:15px; line-height:1.6;
   padding:22px 26px 34px; }
@@ -84,8 +83,7 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 .pn-stage-top{ display:flex; justify-content:flex-end; margin-bottom:26px; }
 .pn-stage p{ max-width:none; margin:0; }
 .pn-stage .results-hero-inner{ margin-bottom:0; }
-/* The production field goes full-bleed on a phone; contained inside a framed
-   screenshot. Preview scope only — the production rule is untouched. */
+
 .pn-stage .results-hero-inner.is-fieldonly{ margin-left:0; margin-right:0; border-radius:6px; }
 @media (min-width:720px){
   .pn-stage .results-hero-inner{ align-items:stretch; }
@@ -101,7 +99,6 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 .pn-stage .hero-secondary .hero-secondary-dot{ display:none; }
 .pn-stage .hero-secondary .hero-secondary-link + .hero-secondary-link{ flex-basis:100%; }
 
-/* Imagery state C — a purposeful held space, never an apology. */
 .pn-photo-slot{ flex:1 1 auto; display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px;
   background:
@@ -112,7 +109,6 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
   letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
 .pn-photo-slot span{ font-size:13px; line-height:1.5; color:var(--soft); max-width:30ch; }
 
-/* Verified supplier facts, read as rows rather than one dense run. */
 .pn-facts{ list-style:none; margin:20px 0 0; padding:16px 0 0;
   border-top:1px solid rgba(31,59,46,.10); display:grid; gap:9px; }
 .pn-facts li{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px;
@@ -124,7 +120,6 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
   .pn-facts li{ flex-direction:column; gap:1px; }
 }
 
-/* PRODUCT-LED ONLY — what has not been established, stated plainly. */
 .pn-open{ margin-top:22px; padding:16px 18px; border:1px solid rgba(31,59,46,.14);
   border-radius:4px; background:rgba(139,137,113,.07); }
 .pn-open b{ display:block; font-size:11px; font-weight:600; letter-spacing:.16em;
@@ -146,10 +141,6 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   border-top:1px solid var(--pn-hair); font-size:var(--pn-w-body-sm); color:var(--pn-stone); }
 
-/* ══ BEGIN PLOTNUA UI KIT — GENERATED, DO NOT HAND-EDIT ══════════════
-   Lifted verbatim from your-plot.html by refresh-ui-kit.py. These are the
-   production Results / My Plot rules, not a copy of them. Re-run the script
-   after any change to the real Results surface. */
   :root{
     --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
     --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
@@ -169,7 +160,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     transition:box-shadow .22s ease;
   }
   .my-plot-access:hover .pn-mark-heart{ box-shadow:0 6px 16px rgba(31,59,46,.32), inset 0 0 0 1px rgba(31,59,46,.09); }
-  /* Larger house/heart detail, scoped strictly to the pill instance. */
+  
   .my-plot-access .pn-mark-heart.is-plot-active .pmh-heart-path{ transform:scale(4.1); }
   @media (max-width:560px){
     .my-plot-access .pn-mark-heart{ width:54px; height:54px; margin-right:14px; padding:6px; border-radius:19px; }
@@ -182,16 +173,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     box-shadow:0 14px 36px rgba(31,59,46,.34), 0 3px 10px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.10);
     transition:transform .22s cubic-bezier(.2,.85,.32,1.1), box-shadow .22s ease, background .22s ease;
   }
-  /* RESULTS v4.2 — MY PLOT VISUAL IDENTITY (LOCKED, branding only): the
-     "My Plot (n) →" text is a plain text node directly inside this
-     button (see updateMyPlotAccess() — unchanged), so it inherits these
-     rules directly; the icon beside it is pixel-sized via .pn-mark-heart
-     below and unaffected by them. Pulling the text back a step (15px/600
-     → 13px/500, slightly reduced opacity) shifts relative visual weight
-     toward the new icon medallion, per "the icon block should carry much
-     more visual weight." No markup or interaction touched. */
-  /* Label block — title and saved-count caption, replacing the former single
-     flat text node. */
+
   .my-plot-access-label{ display:flex; flex-direction:column; gap:1px; min-width:0; }
   .my-plot-access-title{
     font-family:'Fraunces',serif; font-weight:500; font-size:19px; line-height:1.15;
@@ -217,12 +199,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     .my-plot-access-title{ font-size:17px; }
     .my-plot-access-chevron{ margin-left:12px; }
   }
-  /* PB-029 TASK 7 — the pill outside My Plot. The solid dark-green slab read as
-     a floating call-to-action sitting on top of the page; on a paper/cream
-     surface with a fine border and a soft shadow it reads as part of the
-     interface. Proportions, mark, markup and click behaviour are untouched —
-     only surface, border, shadow and text colour change. Appended after the
-     PB-021 rules so it resolves last at equal specificity. */
+  
   .my-plot-access{
     background:var(--paper);
     color:var(--ink);
@@ -238,8 +215,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     box-shadow:0 2px 4px rgba(31,59,46,.06), 0 16px 38px rgba(31,59,46,.15);
   }
   .my-plot-access:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  /* The mark keeps its own green identity; on cream it needs a defining edge
-     rather than the ivory tile it wore against the dark pill. */
+  
   .my-plot-access .pn-mark-heart{
     background:var(--brand-green);
     box-shadow:inset 0 0 0 1px rgba(31,59,46,.10);
@@ -258,36 +234,9 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     background:var(--brand-green); color:var(--brand-ivory); border-color:var(--brand-green);
   }
   .match-card-save-primary.is-saved:hover{ background:var(--accent); border-color:var(--accent); }
-  /* Point 6 — "a clearly visible larger terracotta heart": the mark on
-     Results' primary save action is sized up from the 26px used everywhere
-     else the mark appears inline, giving the heart real presence as the
-     card's one interactive focal point.
-     RESULTS v4.1 — MY PLOT VISUALS (LOCKED): "Make the heart clearly
-     visible" + "restore the larger premium feel" — raised again, 34px→
-     42px, to match the button's own larger size above. */
+  
   .match-card-save-primary .pn-mark-heart{ width:42px; height:42px; margin-right:2px; }
-  /* PATCH C — TASK 2: the expand/collapse interaction ("See full
-     reasoning"/"Show less", the shared expand-all-three-together state,
-     and the .match-card-expansion panel it revealed) is removed entirely
-     — .match-card-expand-btn and .match-card-expansion are no longer used
-     anywhere and their rules are deleted with them. Every card now shows
-     its useful decision information directly; see the new
-     .match-card-atlas-summary / .match-card-check-summary rules below
-     (TASK 3) for the condensed "What Atlas knows" / "Still to check"
-     content that replaces the old click-to-reveal panel. */
-  /* PATCH M — TASK 8: bigger, more separated from Save, underlined.
-     PATCH N — TASK 6: still flagged as lacking visual importance, so this
-     goes one step further — a small outlined pill (same shape language as
-     .match-primary-kicker/.match-your-brief-kicker elsewhere on this
-     page) instead of plain underlined text, giving it real button
-     presence without competing with Save (which stays filled/primary —
-     this stays outlined/secondary). Same element, same click handler,
-     same hidden/shown logic — only appearance changed. */
-  /* PATCH O — TASK 8: one step further again — a soft brand-green fill
-     (was plain white) so it reads as "continue your journey" rather than
-     a bare outline utility link, while Save keeps the only fully solid
-     fill on the card, so the two never compete. Same element, same click
-     handler, same hidden/shown logic, same copy — visual weight only. */
+
   .match-card-open-myplot-link{
     display:inline-flex; align-items:center; gap:4px; margin-top:10px;
     background:rgba(79,107,74,.1); border:1.5px solid var(--brand-green); border-radius:20px;
@@ -301,33 +250,15 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     overflow:visible; box-shadow:none;
     margin:0 0 72px; padding-bottom:0; border-bottom:none;
   }
-  /* RESULTS-UX-003 — DEPTH, WITHOUT DECORATION. Four layers, all CSS, no image
-     files, no network, nothing animated:
-       1 a soft off-axis radial highlight — light falling from upper-left;
-       2 a fine paper grain (inline SVG feTurbulence, ~3.5% alpha);
-       3 a tonal deepening at the lower edge, so the field has weight;
-       4 a 1px light edge at the top, the way printed board catches light.
-     If the grain ever reads as noise rather than surface it comes straight
-     back out — it is one line. */
+  
   .results-hero-inner.is-fieldonly{
     position:relative; isolation:isolate;
     border-radius:6px;
-    /* RESULTS-UX-006 — measured 92px top / 69px bottom at 1440. The top was
-       set when the field had to carry an image slot. With type alone it is
-       more air than the composition needs above a 92px headline. Horizontal
-       padding is UNCHANGED, so the right-hand negative space is untouched. */
-    /* UX-008C — with two columns the content block is roughly half its old
-       height, so the field's own padding is trimmed again rather than left
-       sized for a tall single column. */
+
     padding:clamp(40px,3.4vw,54px) clamp(28px,4.4vw,72px) clamp(32px,2.8vw,44px);
     background:
       radial-gradient(120% 90% at 12% 4%, rgba(255,253,246,.92) 0%, rgba(255,253,246,0) 58%),
-      /* RESULTS-UX-005 — the second light. The right 39% of the field carries
-         no ink (measured: widest ink x=551 of 910) and the only light source
-         sat top-left, behind the text, so the empty half was also the darkest
-         half. This lifts it just enough to read as space rather than absence.
-         Deliberately weaker and wider than the primary light, and warm, so it
-         reads as daylight across paper and never as a panel or a shape. */
+      
       radial-gradient(88% 76% at 82% 34%, rgba(255,252,242,.46) 0%, rgba(255,252,242,0) 66%),
       linear-gradient(178deg, rgba(31,59,46,0) 62%, rgba(31,59,46,.055) 100%),
       linear-gradient(160deg, #F1ECDF 0%, #E8E2D1 58%, #E0D9C6 100%);
@@ -348,9 +279,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   .results-hero-name{
     font-family:'Fraunces',serif; font-weight:500;
     font-size:clamp(38px,6.2vw,92px); line-height:1.0; letter-spacing:-0.028em;
-    /* RESULTS-UX-006 — 44 → 32. The SCALE and the 15ch measure are unchanged:
-       three balanced lines at 92px is the defining feature of the hero and
-       nothing here reduces it. Only the gap beneath it moves. */
+    
     color:var(--ink); margin:0 0 32px; max-width:15ch; text-wrap:balance;
   }
   .results-hero-org{ color:var(--soft); margin-bottom:0; font-size:12px;
@@ -363,15 +292,10 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   .results-hero-budget-note{ font-size:13px; color:var(--oak); margin-bottom:14px; }
   .results-hero-editorial{
     font-family:'Fraunces',serif; font-style:italic; font-weight:400; font-size:19px;
-    /* RESULTS-UX-006 — 44 → 32, matching every other between-group interval. */
-    /* RESULTS-UX-006 — 42ch → 46ch as a WRAP GUARD, not a design change.
-       Measured at 91% full with 10% headroom, and the real typeface
-       (Fraunces italic) could not be loaded to verify. One extra line
-       here costs 30px and would push the hero below the fold at
-       1280x800. Still one line today, at either measure. */
+
     line-height:1.6; color:var(--brand-green); margin:32px 0 0; max-width:46ch;
   }
-  .results-hero-body .match-card-actions{ margin-top:32px; }  /* UX-006 — was 34 */
+  .results-hero-body .match-card-actions{ margin-top:32px; }  
   .prop-confirm{
     margin:0 0 44px; padding:0 0 20px;
     background:none; border:none; border-bottom:1px solid rgba(31,59,46,.10);
@@ -379,16 +303,10 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     display:grid; grid-template-columns:auto 1fr auto; align-items:baseline;
     gap:6px 18px;
   }
-  /* RESULTS-UX-004 — inside the hero it is one quiet line under the price,
-     not a strip with a rule. */
-  /* One line under the price: place then link, sharing a baseline. The grid
-     columns the strip used above the hero would strand the link on its own row
-     here. */
+
   .prop-confirm.is-in-hero{
     margin:12px 0 0; padding:0; border:none;
-    /* align-items:center, not baseline: the link is itself a flex box with an
-       arrow, so its inner text baseline sits below the plain text beside it and
-       "Dublin" appeared to be on its own line. */
+    
     display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px;
   }
   .prop-confirm.is-in-hero .prop-confirm-place{
@@ -402,11 +320,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   .prop-confirm.is-in-hero .prop-confirm-link:hover{
     text-decoration-color:var(--accent);
   }
-  /* RESULTS-UX-006 — the base rule sets min-height:44px, which is a TOUCH
-     target and correct on a phone. It is also what made this row 44px tall
-     for a 13px link inside the hero. Reduced only where a fine pointer is
-     present, so every touch device — phone and tablet alike — keeps its full
-     44px target. Nothing is scoped by screen width. */
+  
   @media (pointer:fine){
     .prop-confirm.is-in-hero .prop-confirm-link{ min-height:28px; }
   }
@@ -446,11 +360,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     .results-hero-media{ width:42%; aspect-ratio:4/3; flex:none; }
     .results-hero-body{ width:auto; flex:1 1 0; display:flex; flex-direction:column;
       justify-content:center; padding:0; }
-    /* UX-008C — the 38% that used to be air is now the decision column.
-       LEFT  identity: name, maker, price, location, why it fits
-       RIGHT confidence: verified facts, the evidence control, the actions
-       Ordered by CSS `order`, so the DOM sequence — and therefore the reading
-       order for a screen reader and the tab order — is unchanged. */
+    
     .results-hero-inner.is-fieldonly{ display:block; }
     .results-hero-inner.is-fieldonly .results-hero-body{
       max-width:none;
@@ -459,13 +369,13 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
       column-gap:clamp(40px,5vw,88px);
       align-items:start;
     }
-    /* LEFT */
+    
     .results-hero-inner.is-fieldonly .results-hero-name,
     .results-hero-inner.is-fieldonly .results-hero-org,
     .results-hero-inner.is-fieldonly .results-hero-price-row,
     .results-hero-inner.is-fieldonly .prop-confirm,
     .results-hero-inner.is-fieldonly .results-hero-editorial{ grid-column:1; }
-    /* RIGHT — pulled up to sit level with the product name. */
+    
     .results-hero-inner.is-fieldonly .hero-trust,
     .results-hero-inner.is-fieldonly .match-card-actions,
     .results-hero-inner.is-fieldonly .hero-secondary{ grid-column:2; }
@@ -474,31 +384,26 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     }
     .results-hero-inner.is-fieldonly .match-card-actions{ margin-top:26px; }
     .results-hero-inner.is-fieldonly .hero-secondary{ margin-top:16px; }
-    /* The name no longer needs its own measure cap: the grid column IS the
-       measure, and fitHeroName still holds it to three lines. */
+    
     .results-hero-inner.is-fieldonly .results-hero-name{ max-width:none; }
     .results-hero-inner.is-fieldonly .results-hero-editorial{ max-width:34ch; }
   }
   @media (max-width:719px){
     .results-hero-inner{ margin-bottom:52px; padding-bottom:0; }
-    /* The field runs edge to edge, breaking the page margin. This is the
-       single most effective way to stop a phone reading as an application. */
+    
     .results-hero-inner.is-fieldonly{
       margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw);
       border-radius:0; padding:44px 22px 40px;
     }
-    /* NOT a proportional scale-down: 92px on a 390px screen is three words a
-       line, and several admitted names are very long. */
+    
     .results-hero-name{ font-size:clamp(34px,10.5vw,44px); }
     .results-hero-price{ font-size:28px; }
     .results-hero-editorial{ font-size:17px; }
     .hero-trust{ max-width:none; }
-    /* Full width is the native expectation for a primary action on a phone,
-       and this is the only place it is right. */
+    
     .results-hero-body .match-card-save-primary{ width:100%; justify-content:center; }
     .hero-secondary{ justify-content:center; margin-top:20px; }
-    /* RESULTS-UX-001 — on a phone a 4:3 held space costs ~290px above the fold
-       to carry two lines of text. It shrinks to the height of what it says. */
+    
     .results-hero-media:has(img.pn-image-fallback){ aspect-ratio:auto; }
     .results-hero-media:has(img.pn-image-fallback)::before{ padding:20px 22px; }
   }
@@ -507,41 +412,28 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase;
     color:var(--accent); opacity:.9; margin-bottom:12px;
   }
-  /* Display scale is set above; this line only kept it at 29px. */
-  /* RESULTS-UX-003 — this later rule was still overriding the 12px caption
-     set for it in UX-002. Same cascade collision as the hero container had. */
+
   .results-hero-org{ font-size:12px; color:var(--soft); margin-bottom:0; }
-  /* The rule under the price belonged to the card. With the card gone it was
-     one more horizontal line on a page that had 61 of them. */
+  
   .results-hero-price-row{
     align-items:baseline; gap:16px;
     padding-bottom:0; margin-bottom:0; border-bottom:none;
   }
-  /* Price scale is set above. */
+  
   .results-hero-area{ font-size:15px; color:var(--soft); }
   .results-hero-budget-note{ font-size:13px; line-height:1.5; color:var(--oak); margin:0 0 16px; }
-  /* Editorial sentence scale is set above. */
+  
   .results-hero-body .match-card-actions{ padding-top:0; }
-  /* RESULTS-UX-001 — .match-card-save-primary sets flex:1, which is right in
-     the narrow alternative cards it was written for and wrong here: in a hero
-     column half the page wide it stretched into a full-width banner and became
-     the biggest thing on screen. Sized to its own content, as a button. */
+  
   .results-hero-body .match-card-save-primary{
     flex:0 0 auto; align-self:flex-start;
-    /* RESULTS-UX-006 — 15px → 10px vertical. The button measured 74px in the
-       hero: 15px of padding around a 42px mark. At 10px it is 64px — still far
-       above the 44px minimum target and still the largest control on the
-       cover. Horizontal padding is unchanged.
-       NOTE for anyone editing this later: a UX-006 rule was first written 2,500
-       lines EARLIER at the same specificity and silently lost to this one. If
-       the button's padding needs to change, change it here. */
+    
     padding:10px 30px; border-radius:999px;
   }
   @media (min-width:640px){
     .results-hero-body{ padding:0; }
   }
 
-  /* ---- PRIORITY 3: Save to My Plot — light refinement only ---- */
   .results-hero-body .match-card-save-primary,
   .results-gallery-body .match-card-save-primary{
     letter-spacing:.005em;
@@ -559,36 +451,10 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   }
   .results-hero-body .match-card-open-myplot-link,
   .results-gallery-body .match-card-open-myplot-link{ border-radius:999px; }
-/* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */
+
 </style>
 </head>
 <body>
-<!--
-  ════════════════════════════════════════════════════════════════════
-  PLOTNUA SUPPLIER PREVIEW — VARIANT B · PROVIDER-LED
-  Use when the relationship is with a provider or category, not one product.
-  Read SUPPLIER-PREVIEW-SYSTEM-V1.md before filling this in.
-
-  REPLACE EVERY POPULATED. Delete nothing structural.
-  Every verified value must come from the first-party evidence pack.
-  UNKNOWN STAYS UNKNOWN — move it to the "Still to establish" list.
-
-    Simple House Ireland        official name, exactly as they write it
-    SIP garden houses and modular homes           the category/offering, in their words
-    Helping homeowners discover what their property could do.          the PlotNua hero line (rarely changed)
-    And make better-informed decisions about what comes next.                 one supporting line
-    Imagine a homeowner reaching Simple House Ireland like this.         e.g. "Imagine a homeowner reaching X like this."
-    They’ve already explored the opportunity through PlotNua. Here’s what that could look like.            one line, no apology
-    Project-specific quote       as published, with its own currency
-    based on design, site and specification e.g. "including fitting", "as published, ex VAT"
-    Verified supplier facts      label + value, first-party only
-    A strong match for the modern feel you wanted.      MUST trace to a real PlotNua capability
-    the suitable model, site requirements, final specification and total project cost.      one honest line
-    One of Simple House Ireland’s own completed projects would sit in this panel.      what the held image panel says (state C)
-    WHY                      the commercial difference, in their language
-    Could PlotNua help Simple House Ireland meet homeowners who have already worked out the space they need and the questions they want to ask?  ONE interesting question
-  ════════════════════════════════════════════════════════════════════
--->
 
 <div class="pv-bar"><div class="wrap">
   <strong>Private preview</strong>
