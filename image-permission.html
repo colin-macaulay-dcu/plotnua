@@ -157,6 +157,29 @@ a{color:var(--pn-voice)}
     </div>
   </section>
 
+  <!-- ─────────── STATE D · a problem at OUR end, not the supplier's ───────────
+       WHY THIS STATE EXISTS. Until 26 September 2026 this page showed STATE C
+       for five different outcomes: a genuinely refused token, an Airtable read
+       failure, a missing binding, a rate limit, and a fetch that never
+       completed. Telling a supplier their link is dead when the truth is that
+       our own system is briefly unavailable is simply untrue, and it could cost
+       a real permission that the supplier was willing to give. It also made the
+       first production test impossible to diagnose from the screen.
+       The reference code is a bare boundary name. It carries nothing about the
+       supplier, the token or the record. ─────────────────────────────────── -->
+  <section id="s-wait" hidden>
+    <h1>Something went wrong at our end.</h1>
+    <div class="card">
+      <p class="lead"><strong>Nothing has been recorded, and your link is still
+        valid.</strong> This is a problem on the PlotNua side, not with your
+        link. Please try again in a few minutes.</p>
+      <p class="lead">If it keeps happening, email
+        <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and quote
+        <span id="wait-ref" class="ref">&mdash;</span>. That code tells us
+        which part failed.</p>
+    </div>
+  </section>
+
 </main>
 <script>
 /* PERM-P-1.0. No cookie, no storage, no analytics, no third-party call.
@@ -176,8 +199,14 @@ a{color:var(--pn-voice)}
   var q = new URLSearchParams(location.search);
   var K = q.get('k') || '';
 
+  /* The boundary is named on screen, for us, not explained to the supplier. */
+  function wait(code) {
+    var el = document.getElementById('wait-ref');
+    if (el) el.textContent = 'REF ' + code;
+    show('s-wait');
+  }
   function show(id) {
-    ['s-invite', 's-done', 's-stop'].forEach(function (s) {
+    ['s-invite', 's-done', 's-stop', 's-wait'].forEach(function (s) {
       var el = document.getElementById(s);
       if (el) el.hidden = (s !== id);
     });
@@ -198,8 +227,23 @@ a{color:var(--pn-voice)}
        readable; credentials 'omit' means no cookie is sent or accepted, and
        the Worker correspondingly never allows credentials. */
     method: 'GET', mode: 'cors', credentials: 'omit', cache: 'no-store'
-  }).then(function (r) { return r.json(); }).then(function (d) {
-    if (!d || d.ok !== true) { show('s-stop'); return; }
+  }).then(function (r) {
+    /* KEEP THE STATUS. Throwing it away is what made five different outcomes
+       look identical. 200 is the only status that carries a real answer about
+       this link; everything else is a problem at our end. */
+    return r.json().catch(function () { return null; }).then(function (j) {
+      return { status: r.status, body: j };
+    });
+  }).then(function (res) {
+    var d = res.body;
+    if (res.status === 503) { wait('C-503'); return; }   /* Airtable unreachable */
+    if (res.status === 429) { wait('C-429'); return; }   /* rate limited */
+    if (res.status !== 200 || !d) { wait('C-' + res.status); return; }
+    /* A 200 with dry_run means the Worker has no Airtable binding. The token is
+       fine, but we must not offer a button whose write would go nowhere. */
+    if (d.dry_run) { wait('C-CFG'); return; }
+    /* Only now is a refusal genuinely about this link. */
+    if (d.ok !== true) { show('s-stop'); return; }
 
     if (d.state === 'recorded') {
       setAll('done-name', nameOr(d.supplier_name));
@@ -234,7 +278,12 @@ a{color:var(--pn-voice)}
           dwell_ms: Date.now() - LOADED,
           company_website_confirm: document.getElementById('hp').value
         })
-      }).then(function (r) { return r.json(); }).then(function (res) {
+      }).then(function (r) {
+        return r.json().catch(function () { return null; }).then(function (j) {
+          return { status: r.status, body: j };
+        });
+      }).then(function (out) {
+        var res = out.body;
         if (res && res.ok === true && res.state === 'recorded') {
           setAll('done-name', nm);
           var ref = document.getElementById('done-ref');
@@ -242,13 +291,35 @@ a{color:var(--pn-voice)}
             ref.textContent = 'Recorded. Reference ' + res.confirmation_ref + '.';
           }
           show('s-done');
-        } else {
-          /* Never show a thank-you we cannot back with a record. */
-          show('s-stop');
+          return;
         }
-      }).catch(function () { show('s-stop'); });
+        /* NEVER SHOW A THANK-YOU WE CANNOT BACK WITH A RECORD. That rule is
+           unchanged. What changes is what we say when there is no record: a
+           supplier who has just pressed CONFIRM and had it fail deserves to be
+           told nothing was recorded and that they can try again, not that their
+           link is dead. The button is re-enabled, because the truthful message
+           is useless without the ability to act on it. */
+        if (out.status === 503 || out.status === 429 || out.status !== 200 || !res) {
+          btn.disabled = false;
+          btn.textContent = 'CONFIRM IMAGE PERMISSION';
+          wait(out.status === 503 ? 'P-503'
+             : out.status === 429 ? 'P-429'
+             : 'P-' + out.status);
+          return;
+        }
+        /* A 200 that is not "recorded" is a real refusal about this link. */
+        show('s-stop');
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'CONFIRM IMAGE PERMISSION';
+        wait('P-NET');
+      });
     });
-  }).catch(function () { show('s-stop'); });
+  }).catch(function () {
+    /* The fetch never completed: network, DNS, CORS or CSP. The link is not the
+       problem and must not be blamed. */
+    wait('C-NET');
+  });
 })();
 </script>
 </body>
