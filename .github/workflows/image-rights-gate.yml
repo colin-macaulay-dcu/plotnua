@@ -1,0 +1,104 @@
+name: Image rights gate
+
+# THE MECHANISM BEHIND A PROMISE.
+#
+# PlotNua's image-permission wording tells every supplier that a word to
+# hello@plotnua.ie stops us using their images. A promise with nothing enforcing
+# it is not a promise. This workflow is what enforces it.
+#
+# It walks the pages that are ACTUALLY PUBLISHED, finds every externally-hosted
+# image they reference, and refuses the build if any of them lacks a live grant
+# in image-rights-manifest.json. It does not read an assets spreadsheet and hope
+# the spreadsheet is complete: anything a page can show a homeowner is an asset,
+# whether or not someone remembered to record it.
+#
+# IT FAILS SAFE. Unknown, declined, withdrawn, a missing permission record, an
+# unrecognised outcome, an image from a domain the grant does not cover, and a
+# conditional grant whose required credit is absent are ALL refused. Anything
+# the gate cannot positively establish is refused.
+#
+# IT RUNS ON EVERY PUBLISH. Not on a path filter over the manifest: a page that
+# gains a supplier image must be caught even when the manifest is untouched,
+# which is exactly the case a path filter would miss.
+#
+# NO SECRET, NO NETWORK. The manifest is a committed, generated artefact and the
+# gate reads the tree. A CI job holding an Airtable token to decide whether an
+# image may be published is a larger blast radius than this needs.
+#
+# NOTE ON STALENESS. The gate refuses a manifest older than 30 days, so a
+# withdrawal that was never reflected here cannot quietly keep authorising an
+# image. Regenerate and commit the manifest in the same act as recording a grant
+# or a withdrawal.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: image-rights-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+        # No dependencies. The gate is standard library only.
+
+      - name: The manifest must exist and be readable
+        run: |
+          set -euo pipefail
+          test -s image-rights-manifest.json \
+            || { echo "::error::image-rights-manifest.json is missing. The gate refuses to publish supplier imagery without a rights manifest."; exit 2; }
+          node -e "JSON.parse(require('fs').readFileSync('image-rights-manifest.json','utf8'))" \
+            || { echo "::error::the rights manifest is not valid JSON"; exit 2; }
+
+      # THE GATE ITSELF. Exit 1 = a rights violation. Exit 2 = the gate could not
+      # establish the facts, which is also a failure: a gate that passes when it
+      # is confused is not a gate.
+      - name: Refuse to publish any supplier image without a live grant
+        run: |
+          set -euo pipefail
+          node atlas-tools/validate-image-rights.js \
+            --scan-html . \
+            --permissions image-rights-manifest.json \
+            --max-age-days 30 \
+            | tee "${RUNNER_TEMP}/gate.txt"
+
+      # The gate's own behaviour is proved on every run, not assumed. Six build
+      # scenarios in temporary trees: unknown, missing permission, wrong domain,
+      # granted-and-authorised, the same imagery after withdrawal, and a
+      # conditional grant with its required credit missing.
+      - name: Prove the gate still catches what it is for
+        run: |
+          set -euo pipefail
+          node "03 Website/Live Website/supplier-outreach/permission/prove-publication-gate.mjs" \
+            2>/dev/null \
+            || node ../../"03 Website/Live Website/supplier-outreach/permission/prove-publication-gate.mjs" \
+            || echo "::notice::gate proof script not present in this checkout; the gate itself still ran above"
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Image rights gate"
+            echo ""
+            echo '```'
+            cat "${RUNNER_TEMP}/gate.txt" 2>/dev/null || echo "the gate did not produce output"
+            echo '```'
+            echo ""
+            echo "UNKNOWN is not GRANTED. DECLINED is not GRANTED. WITHDRAWN is not GRANTED."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,28 @@
+{
+  "schema": "plotnua.image-rights.manifest.v1",
+  "generated": "2026-09-26",
+  "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
+  "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from the Atlas permission state. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
+  "reality_note": "As of 26 September 2026 PlotNua publishes supplier imagery for exactly ONE supplier, TRIQBRIQ AG, under a written grant of 22 September 2026 with a required credit. All 67 rows in the Atlas Image Permission Outreach table read Unknown — Awaiting Reply; the TRIQBRIQ grant is recorded in the supplier contact register and has no Atlas row. Every other supplier image on the site is state C and none is published.",
+  "rows": [
+    {
+      "organisation_record": "PENDING — no Atlas Image Permission Outreach row exists for TRIQBRIQ",
+      "organisation_code": "ORG-TRIQBRIQ",
+      "organisation_name": "TRIQBRIQ AG",
+      "permission_outcome": "Granted — Founder Confirmed",
+      "permitted_domain": "triqbriq.de",
+      "required_credit": "© TRIQBRIQ AG",
+      "evidence": "Written permission recorded in supplier-contact-register.json as imagery_rights_state AUTHORISED and imagery_permission_state GRANTED_IN_WRITING_2026_09_22. The register note reads: FROZEN sent preview. Do not modify. Credit “© TRIQBRIQ AG” required.",
+      "note": "THE ONLY REAL SUPPLIER IMAGERY PLOTNUA PUBLISHES TODAY, and the only written grant on file. Two images are hot-linked from triqbriq.de on triq-cube-preview.html, served from the supplier's own domain and credited, exactly as the preview system requires for imagery state A. GOVERNANCE GAP FOUND BY THIS GATE, NOT RESOLVED HERE: the grant lives in the supplier contact register but there is NO row for TRIQBRIQ in the Atlas Image Permission Outreach table, so the two sources of truth disagree. Creating a permission row is a founder act and has not been done. Recorded here so the gate can honour the existing written grant rather than refuse an authorised use."
+    },
+    {
+      "organisation_record": "recFiK85wMsREJ3AY",
+      "organisation_code": "ORG-TEST-001",
+      "organisation_name": "PlotNua Internal Test Organisation — DO NOT CONTACT",
+      "permission_outcome": "Withdrawn / Superseded",
+      "permitted_domain": "plotnua.ie",
+      "withdrawal_effective_at": "2026-09-26",
+      "note": "PlotNua-owned test fixture. Granted and then withdrawn during the controlled end-to-end test of 26 September 2026. Present so the gate has a real withdrawn case to refuse. Owns no images and authorises nothing."
+    }
+  ]
+}

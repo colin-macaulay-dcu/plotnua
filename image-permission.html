@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>Image permission &mdash; PlotNua</title>
+<!--
+  ════════════════════════════════════════════════════════════════════════
+  PLOTNUA IMAGE PERMISSION — CONFIRMATION PAGE.  PERM-P-1.0
+  Built 26 September 2026.
+
+  THIS PAGE CANNOT GRANT PERMISSION BY BEING LOADED.
+    Loading it is a GET. No GET in this system writes anything. The grant is
+    a POST to /v1/permission/confirm that only happens when a person presses
+    the button. Every mail scanner, prefetcher and antivirus crawler that
+    follows the emailed link lands here and changes nothing.
+
+  NO COOKIE. NO LOCALSTORAGE. NO ANALYTICS. NO THIRD-PARTY SCRIPT. NO PIXEL.
+  NO FONT FETCH. Everything is inline and first-party. Nothing about the
+  visitor is measured, stored or sent anywhere.
+
+  The supplier name shown comes from /v1/permission/context, which is the
+  canonical Atlas value. The token payload is never trusted for display.
+  ════════════════════════════════════════════════════════════════════════
+-->
+<style>
+:root{
+  --pn-ground:#F5F2E8; --pn-voice:#24351F; --pn-fact:#16190F; --pn-body:#474B3B;
+  --pn-stone:#8B8971; --pn-hair:#DBD7C5; --pn-paper:#FBFAF5; --pn-on-dark:#F5F2E8;
+  --pn-yes:#2F5D3A; --pn-no:#8A5A4B;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--pn-ground); color:var(--pn-body);
+  font-family:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:620px;margin:0 auto;padding:0 20px}
+header.bar{background:var(--pn-voice);color:var(--pn-on-dark);padding:14px 0}
+header.bar strong{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+main{padding:34px 0 56px}
+h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;
+   font-size:29px;line-height:1.2;color:var(--pn-fact);margin:0 0 6px}
+.org{font-size:15px;color:var(--pn-stone);margin:0 0 24px}
+.card{background:var(--pn-paper);border:1px solid var(--pn-hair);border-radius:6px;
+      padding:22px;margin:0 0 22px}
+.lead{font-size:17px;color:var(--pn-fact);margin:0 0 18px}
+.own{font-size:15px;font-weight:600;color:var(--pn-voice);
+     background:rgba(139,137,113,.10);border-radius:4px;padding:11px 13px;margin:0 0 20px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:560px){.cols{grid-template-columns:1fr;gap:16px}}
+.col h2{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+        margin:0 0 9px}
+.col.yes h2{color:var(--pn-yes)}
+.col.no h2{color:var(--pn-no)}
+ul{list-style:none;margin:0;padding:0}
+li{font-size:14.5px;padding:0 0 7px 17px;position:relative}
+li::before{position:absolute;left:0;top:0;font-weight:600}
+.col.yes li::before{content:"\2713";color:var(--pn-yes)}
+.col.no li::before{content:"\00D7";color:var(--pn-no)}
+.withdraw{font-size:14.5px;margin:20px 0 0;padding-top:16px;border-top:1px solid var(--pn-hair)}
+.authority{font-size:13.5px;color:var(--pn-stone);margin:12px 0 0}
+button.go{display:block;width:100%;background:var(--pn-voice);color:var(--pn-on-dark);
+  border:0;border-radius:5px;padding:17px 20px;font-size:15px;font-weight:600;
+  letter-spacing:.06em;cursor:pointer;font-family:inherit}
+button.go:hover{background:#1b2817}
+button.go[disabled]{opacity:.55;cursor:default}
+.aside{font-size:13.5px;color:var(--pn-stone);margin:18px 0 0}
+a{color:var(--pn-voice)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.ref{font-size:13px;color:var(--pn-stone);margin:18px 0 0}
+[hidden]{display:none !important}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap"><strong>PlotNua</strong></div></header>
+<main class="wrap">
+
+  <!-- ─────────────── STATE A · invitation ─────────────── -->
+  <section id="s-invite" hidden>
+    <h1>Image permission</h1>
+    <p class="org" id="inv-org"></p>
+
+    <div class="card">
+      <p class="lead">You are giving PlotNua permission to use selected images from
+        <b id="inv-domain"></b> when featuring <b class="inv-name"></b> and its
+        products or services on PlotNua.</p>
+
+      <p class="own">You keep ownership of your images. Nothing here transfers it.</p>
+
+      <div class="cols">
+        <div class="col yes">
+          <h2>Yes</h2>
+          <ul>
+            <li>Selected images from your website that you own, or are authorised to license.</li>
+            <li>Used on PlotNua, only when featuring your company, products or services.</li>
+            <li>Credited to you, with a link to your own website.</li>
+          </ul>
+        </div>
+        <div class="col no">
+          <h2>No</h2>
+          <ul>
+            <li>No resale.</li>
+            <li>No sublicensing to anyone else.</li>
+            <li>No advertising that is not about featuring your company.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="withdraw"><b>You can change your mind.</b> Email
+        <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and we will stop using them.</p>
+
+      <p class="authority">By confirming, you are telling us you are authorised to
+        give this permission on behalf of <b class="inv-name"></b>.</p>
+    </div>
+
+    <button class="go" id="go" type="button">CONFIRM IMAGE PERMISSION</button>
+
+    <label class="hp" for="hp">Leave this field empty</label>
+    <input class="hp" id="hp" name="company_website_confirm" type="text"
+           tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <p class="aside">Not the right person to decide this? Forward this page to whoever
+      is, or email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
+  </section>
+
+  <!-- ─────────────── STATE B · recorded ─────────────── -->
+  <section id="s-done" hidden>
+    <h1>Thank you &mdash; permission received.</h1>
+    <div class="card">
+      <p class="lead">PlotNua may use selected images from
+        <b class="done-name"></b>&rsquo;s website when featuring
+        <b class="done-name"></b> and its products or services on PlotNua.</p>
+      <p class="withdraw">You can ask us to stop using them at any time by contacting
+        <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
+    </div>
+    <p class="ref" id="done-ref"></p>
+  </section>
+
+  <!-- ─────────────── STATE C · cannot be used ─────────────── -->
+  <section id="s-stop" hidden>
+    <h1>This link can&rsquo;t be used.</h1>
+    <div class="card">
+      <p class="lead">It may have expired, or it may already have been used.
+        Email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and we&rsquo;ll
+        sort it out.</p>
+    </div>
+  </section>
+
+</main>
+<script>
+/* PERM-P-1.0. No cookie, no storage, no analytics, no third-party call.
+   The ONLY network requests this page makes are to PlotNua's own permission
+   endpoints. */
+(function () {
+  'use strict';
+  var LOADED = Date.now();
+  var API = '/v1/permission';
+  var q = new URLSearchParams(location.search);
+  var K = q.get('k') || '';
+
+  function show(id) {
+    ['s-invite', 's-done', 's-stop'].forEach(function (s) {
+      var el = document.getElementById(s);
+      if (el) el.hidden = (s !== id);
+    });
+  }
+  function setAll(cls, text) {
+    Array.prototype.forEach.call(document.querySelectorAll('.' + cls), function (n) {
+      n.textContent = text;
+    });
+  }
+  /* A supplier name we could not confirm is rendered as a neutral phrase, never
+     as anything taken from the URL. */
+  function nameOr(v) { return (typeof v === 'string' && v.trim()) ? v.trim() : 'your company'; }
+
+  if (!K) { show('s-stop'); return; }
+
+  fetch(API + '/context?k=' + encodeURIComponent(K), {
+    method: 'GET', credentials: 'omit', cache: 'no-store'
+  }).then(function (r) { return r.json(); }).then(function (d) {
+    if (!d || d.ok !== true) { show('s-stop'); return; }
+
+    if (d.state === 'recorded') {
+      setAll('done-name', nameOr(d.supplier_name));
+      var ref = document.getElementById('done-ref');
+      if (d.confirmation_ref) {
+        ref.textContent = 'Recorded. Reference ' + d.confirmation_ref + '.';
+      }
+      show('s-done');
+      return;
+    }
+
+    if (d.state !== 'invite') { show('s-stop'); return; }
+
+    var nm = nameOr(d.supplier_name);
+    setAll('inv-name', nm);
+    document.getElementById('inv-org').textContent = nm;
+    document.getElementById('inv-domain').textContent = d.domain || '';
+    show('s-invite');
+
+    document.getElementById('go').addEventListener('click', function () {
+      var btn = this;
+      btn.disabled = true;
+      btn.textContent = 'RECORDING…';
+      fetch(API + '/confirm', {
+        method: 'POST',
+        credentials: 'omit',
+        cache: 'no-store',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          k: K,
+          dwell_ms: Date.now() - LOADED,
+          company_website_confirm: document.getElementById('hp').value
+        })
+      }).then(function (r) { return r.json(); }).then(function (res) {
+        if (res && res.ok === true && res.state === 'recorded') {
+          setAll('done-name', nm);
+          var ref = document.getElementById('done-ref');
+          if (res.confirmation_ref) {
+            ref.textContent = 'Recorded. Reference ' + res.confirmation_ref + '.';
+          }
+          show('s-done');
+        } else {
+          /* Never show a thank-you we cannot back with a record. */
+          show('s-stop');
+        }
+      }).catch(function () { show('s-stop'); });
+    });
+  }).catch(function () { show('s-stop'); });
+})();
+</script>
+</body>
+</html>
