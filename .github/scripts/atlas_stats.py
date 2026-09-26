@@ -69,6 +69,9 @@ METRICS = {
 
 MAX_DECREASE = 0.20                     # 20%, per founder governance
 
+# Fixtures and other non-genuine records, excluded from every published count.
+from atlas_exclusions import EXCLUDED_RECORD_IDS, drop_excluded  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
 INDEX = ROOT / "index.html"
 STATS = ROOT / "atlas-stats.json"
@@ -133,6 +136,17 @@ def collect(token: str) -> dict:
     counts = {}
     for key, m in METRICS.items():
         records = fetch_all(token, m["table"], m["field"])
+
+        # NON-GENUINE RECORDS ARE REMOVED BEFORE ANYTHING IS COUNTED.
+        # Test fixtures exist in Atlas so that machinery can be exercised
+        # without touching a real supplier. They are not businesses and must
+        # never reach a homeowner-facing figure. Enforced here by record id
+        # rather than by a note asking people to remember.
+        records, dropped = drop_excluded(records)
+        for d in dropped:
+            print(f"  excluded from {m['label']}: {d.get('id')} "
+                  f"— {EXCLUDED_RECORD_IDS.get(d.get('id', ''), '')[:70]}")
+
         total = len(records)
         matched = sum(1 for r in records if cell(r, m["field"]) == m["value"])
         counts[key] = {"count": matched, "tableTotal": total}
