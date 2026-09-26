@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="referrer" content="no-referrer">
+<!-- CONTENT SECURITY POLICY. There was none before; this is a tightening, not a
+     concession to going cross-origin. connect-src names the ONE Worker origin
+     this page may talk to, so even a script-injection defect could not
+     exfiltrate the token to anywhere else. img-src 'none' rules out a tracking
+     pixel by policy as well as by absence; form-action 'none' means nothing on
+     this page can POST a form anywhere. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src https://plotnua-permission.colin-a41.workers.dev; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'">
 <title>Image permission &mdash; PlotNua</title>
 <!--
   ════════════════════════════════════════════════════════════════════════
@@ -154,11 +161,18 @@ a{color:var(--pn-voice)}
 <script>
 /* PERM-P-1.0. No cookie, no storage, no analytics, no third-party call.
    The ONLY network requests this page makes are to PlotNua's own permission
-   endpoints. */
+   Worker, named in full below and in connect-src above.
+
+   WHY AN ABSOLUTE URL RATHER THAN /v1/permission. A Cloudflare Worker Route
+   needs an active Cloudflare zone with proxied DNS, and plotnua.ie is not on
+   Cloudflare. Rather than move a working production domain to suit one
+   endpoint, the page calls the Worker's own hostname. That makes the request
+   cross-site, which the Worker handles explicitly: it accepts this origin and
+   no other, and it returns CORS headers only for this origin. */
 (function () {
   'use strict';
   var LOADED = Date.now();
-  var API = '/v1/permission';
+  var API = 'https://plotnua-permission.colin-a41.workers.dev/v1/permission';
   var q = new URLSearchParams(location.search);
   var K = q.get('k') || '';
 
@@ -180,7 +194,10 @@ a{color:var(--pn-voice)}
   if (!K) { show('s-stop'); return; }
 
   fetch(API + '/context?k=' + encodeURIComponent(K), {
-    method: 'GET', credentials: 'omit', cache: 'no-store'
+    /* mode 'cors' is what the URL would imply anyway, stated so the intent is
+       readable; credentials 'omit' means no cookie is sent or accepted, and
+       the Worker correspondingly never allows credentials. */
+    method: 'GET', mode: 'cors', credentials: 'omit', cache: 'no-store'
   }).then(function (r) { return r.json(); }).then(function (d) {
     if (!d || d.ok !== true) { show('s-stop'); return; }
 
@@ -208,6 +225,7 @@ a{color:var(--pn-voice)}
       btn.textContent = 'RECORDING…';
       fetch(API + '/confirm', {
         method: 'POST',
+        mode: 'cors',
         credentials: 'omit',
         cache: 'no-store',
         headers: { 'content-type': 'application/json' },
