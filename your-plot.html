@@ -8998,6 +8998,11 @@
               professional confirmation.</b> Atlas has worked from your measurements against
               published conditions. Your local authority decides whether a build qualifies, and
               an architect or engineer needs to see the site before anything is committed.</p>
+            <p class="hm-calm"><b>This exempted-development route is time-limited.</b> Under the
+              current regulations it covers work both started and finished by 31 December 2030.
+              That date belongs to this particular route, not to the idea of an additional home
+              — after it, building one would be a question for a planning application rather
+              than an automatic exemption.</p>
           </div>
           <div class="hm-sect hm-sources">
             <h4>Where this comes from</h4>
@@ -34393,9 +34398,9 @@
       /* The measurement evidence ruling's own hold, counted separately from
          the Q1 unresolved-basis hold. Two different evidence gaps must not be
          added together: one is "we do not know what the supplier measured",
-         the other is "we do know, and it is not the measurement the ceiling
-         is expressed in". Diagnostic only; no homeowner copy reads it. */
-      heldStatutoryArea: 0,
+         the other is "we do know, and it is not a measurement of the whole
+         structure". Diagnostic only; no homeowner copy reads it. */
+      heldCeilingBasisInsufficient: 0,
       outsideBand: 0,
       noUsableArea: 0
     };
@@ -34411,8 +34416,8 @@
       else if ((p.qualification && p.qualification.heldReasons || [])
                .indexOf('irish-unconfirmed') >= 0) funnel.irishUnconfirmed++;
       if (reason === 'area-basis-unresolved-at-band-edge') funnel.heldAtBandEdge++;
-      if (reason === 'statutory-area-not-established-at-upper-band-edge')
-        funnel.heldStatutoryArea++;
+      if (reason === 'area-basis-insufficient-for-ceiling-test')
+        funnel.heldCeilingBasisInsufficient++;
       if (reason === 'outside-pathway-band') funnel.outsideBand++;
       if (reason === 'no-usable-area') funnel.noUsableArea++;
       if (c3 === 'CANDIDATE') { funnel.class3aCandidates++; out.push(p); }
@@ -34576,8 +34581,7 @@
       : (lead
       ? 'Sold in Ireland as living accommodation. Its published ' + areaStr
         + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden '
-        + 'could take with room to spare, so no question arises about whether the '
-        + 'finished footprint would exceed the ' + R.MAX + ' m² ceiling.'
+        + 'could take. The finished external area still needs to be confirmed.'
       : 'Sold in Ireland as living accommodation, and its published ' + areaStr
         + ' sits inside the ' + R.MIN + '–' + R.MAX + ' m² range your garden could take.');
 

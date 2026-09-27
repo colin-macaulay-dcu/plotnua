@@ -1376,9 +1376,9 @@
       },
       "class3a": {
         "state": "HELD",
-        "reason": "statutory-area-not-established-at-upper-band-edge",
+        "reason": "area-basis-insufficient-for-ceiling-test",
         "caveats": [
-          "statutory-area-not-established"
+          "area-basis-insufficient-for-ceiling-test"
         ]
       }
     },
@@ -2869,9 +2869,9 @@
       },
       "class3a": {
         "state": "HELD",
-        "reason": "statutory-area-not-established-at-upper-band-edge",
+        "reason": "area-basis-insufficient-for-ceiling-test",
         "caveats": [
-          "statutory-area-not-established"
+          "area-basis-insufficient-for-ceiling-test"
         ]
       }
     }

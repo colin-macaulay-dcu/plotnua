@@ -33,6 +33,17 @@ from atlas_common import cell, txt, classify_irish_availability
 # changed materially, so the identifier changes with it. Membership,
 # habitation admission, Irish availability and evidence sufficiency are all
 # untouched — only the pathway filter moved.
+# ── CLASS 3A IS TIME-LIMITED, AND THAT IS NOT A PRODUCT FACT ────────────────
+# S.I. No. 340 of 2026 inserted Class 3A with effect from 27 JULY 2026. Its
+# condition 1 sets a relevant period ending 31 DECEMBER 2030, and condition 2
+# admits only development COMMENCED AND COMPLETED inside that period.
+#
+# DELIBERATELY NOT ENCODED BELOW. No current date is read anywhere in this
+# module. A product does not stop being an Additional Home, or stop being the
+# right building for someone, because a statutory route closes — and a rule
+# that silently changed its own output as the clock moved would be untestable.
+# The sunset belongs to the ROUTE: it is carried in governance documentation
+# and surfaced to the homeowner in the Property Check, not applied to products.
 RULE_VERSION = "additional-home-qualification-v1.1"
 ADDITIONAL_HOME = "Additional Home"
 
@@ -83,7 +94,15 @@ BAND_EDGE_TOLERANCE_M2 = 2.0
 # so only VERIFIED_EXTERNAL admits at the upper edge. NOMINAL is a published
 # designation rather than a verified measurement, and UNRESOLVED is already
 # held by the Q1 guard below.
-STATUTORY_AREA_BASES = frozenset({"VERIFIED_EXTERNAL"})
+#
+# NAMED FOR WHAT IT IS (27 Sep 2026). This set was called STATUTORY_AREA_BASES
+# and its hold reason "statutory-area-not-established". Those names implied the
+# statute names a measurement basis. IT DOES NOT: S.I. No. 340 of 2026 Class 3A
+# condition 7 says only "the total area of such structures", unqualified. The
+# comment block above always said so; the identifiers contradicted it. Verified
+# external is PLOTNUA'S CONSERVATIVE EVIDENCE PROXY for a question the statute
+# leaves open, and the names now say that. Behaviour is unchanged.
+ACCEPTED_CEILING_AREA_BASES = frozenset({"VERIFIED_EXTERNAL"})
 
 # ── area: a usable number and a verified measurement are different facts ────
 AREA_FEATURES = ("internal floor area", "floor area")
@@ -282,14 +301,14 @@ def class_3a(q):
     # than being relabelled by this one.
     #
     # Asymmetric BY EVIDENCE, not by preference: BAND_MAX only. See the note on
-    # STATUTORY_AREA_BASES. `abs()` is deliberately not used — a product below
+    # ACCEPTED_CEILING_AREA_BASES. `abs()` is deliberately not used — a product below
     # the ceiling by more than the tolerance is not at the edge, and one above
     # the ceiling never reaches here at all.
-    if (BAND_MAX - n) <= BAND_EDGE_TOLERANCE_M2 and basis not in STATUTORY_AREA_BASES:
+    if (BAND_MAX - n) <= BAND_EDGE_TOLERANCE_M2 and basis not in ACCEPTED_CEILING_AREA_BASES:
         # HELD FROM THE PATHWAY ONLY. The product remains an Additional Home,
         # remains CONFIRMED RESIDENTIAL HABITATION, remains ELIGIBLE, and keeps
         # its Irish availability and price evidence untouched.
         return {"state": "HELD",
-                "reason": "statutory-area-not-established-at-upper-band-edge",
-                "caveats": ["statutory-area-not-established"]}
+                "reason": "area-basis-insufficient-for-ceiling-test",
+                "caveats": ["area-basis-insufficient-for-ceiling-test"]}
     return {"state": "CANDIDATE", "reason": None, "caveats": caveats}
