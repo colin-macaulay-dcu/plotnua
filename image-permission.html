@@ -97,6 +97,13 @@ details.scope>summary::after{content:" \25B8";text-decoration:none;
 details.scope[open]>summary::after{transform:rotate(90deg)}
 details.scope .card{margin-top:.9rem}
 details.scope ul{margin:.7rem 0}
+/* FOUND BY THE LIVE VISUAL CHECK, 27 Sep 2026: the old tick rule was
+   .col.yes li::before, and the new markup is ul.yes with no .col, so the
+   permitted-uses list rendered with NO marker while the restrictions kept
+   their cross. A list of things you MAY do, shown blank beside a list of
+   things you may NOT, reads as an oversight at best and as emphasis on the
+   restrictions at worst. */
+details.scope ul.yes li::before{content:"\2713";color:var(--pn-yes)}
 details.scope ul.no li::before{content:"\2715";color:#9ca3af}
 @media (max-width:420px){h1.prop{font-size:1.38rem}}
 </style>
