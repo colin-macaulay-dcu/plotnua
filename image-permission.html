@@ -15,7 +15,7 @@
 <title>Image permission &mdash; PlotNua</title>
 <!--
   ════════════════════════════════════════════════════════════════════════
-  PLOTNUA IMAGE PERMISSION — CONFIRMATION PAGE.  PERM-P-1.0
+  PLOTNUA IMAGE PERMISSION — CONFIRMATION PAGE.  PERM-P-1.1
   Built 26 September 2026.
 
   THIS PAGE CANNOT GRANT PERMISSION BY BEING LOADED.
@@ -80,6 +80,25 @@ a{color:var(--pn-voice)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .ref{font-size:13px;color:var(--pn-stone);margin:18px 0 0}
 [hidden]{display:none !important}
+
+/* ── PERM-P-1.1 · the light screen ─────────────────────────────────────── */
+.pair{margin:0 0 .6rem;font-size:.82rem;letter-spacing:.09em;
+  text-transform:uppercase;color:#6b7280}
+h1.prop{margin:0 0 1.1rem;font-size:1.6rem;line-height:1.3;font-weight:600;
+  max-width:26ch}
+.reassure{margin:0 0 1.9rem;font-size:1rem;line-height:1.65;color:#374151}
+details.scope{margin:1.6rem 0 0;border-top:1px solid #e5e7eb;padding-top:1rem}
+details.scope>summary{cursor:pointer;font-size:.95rem;color:#1f3d2b;
+  text-decoration:underline;text-underline-offset:3px;list-style:none;
+  padding:.3rem 0}
+details.scope>summary::-webkit-details-marker{display:none}
+details.scope>summary::after{content:" \25B8";text-decoration:none;
+  display:inline-block;transition:transform .15s}
+details.scope[open]>summary::after{transform:rotate(90deg)}
+details.scope .card{margin-top:.9rem}
+details.scope ul{margin:.7rem 0}
+details.scope ul.no li::before{content:"\2715";color:#9ca3af}
+@media (max-width:420px){h1.prop{font-size:1.38rem}}
 </style>
 </head>
 <body>
@@ -88,51 +107,57 @@ a{color:var(--pn-voice)}
 
   <!-- ─────────────── STATE A · invitation ─────────────── -->
   <section id="s-invite" hidden>
-    <h1>Image permission</h1>
-    <p class="org" id="inv-org"></p>
+<!-- PERM-P-1.1 — THE LIGHT SCREEN.
+     One proposition, two reassurances, one button, one disclosure. The Yes/No
+     comparison panel that used to sit here has moved inside the disclosure
+     below, word for word. It is not gone and it is not softened: a supplier who
+     wants the full scope gets exactly the scope that was always there, and a
+     supplier who just wants to say yes can. -->
+<p class="pair" id="inv-pair"></p>
 
-    <div class="card">
-      <p class="lead">You are giving PlotNua permission to use selected images from
-        <b id="inv-domain"></b> when featuring <b class="inv-name"></b> and its
-        products or services on PlotNua.</p>
+<h1 class="prop">Use selected <b class="inv-name"></b> images when we feature
+<b class="inv-name"></b>.</h1>
 
-      <p class="own">You keep ownership of your images. Nothing here transfers it.</p>
+<p class="reassure">You keep ownership of your images.<br>
+You can change your mind at any time.</p>
 
-      <div class="cols">
-        <div class="col yes">
-          <h2>Yes</h2>
-          <ul>
-            <li>Selected images from your website that you own, or are authorised to license.</li>
-            <li>Used on PlotNua, only when featuring your company, products or services.</li>
-            <li>Credited to you, with a link to your own website.</li>
-          </ul>
-        </div>
-        <div class="col no">
-          <h2>No</h2>
-          <ul>
-            <li>No resale.</li>
-            <li>No sublicensing to anyone else.</li>
-            <li>No advertising that is not about featuring your company.</li>
-          </ul>
-        </div>
-      </div>
+<button class="go" id="go" type="button">YES &mdash; CONFIRM IMAGE PERMISSION</button>
 
-      <p class="withdraw"><b>You can change your mind.</b> Email
-        <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and we will stop using them.</p>
+<label class="hp" for="hp">Leave this field empty</label>
+<input class="hp" id="hp" name="company_website_confirm" type="text"
+tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <p class="authority">By confirming, you are telling us you are authorised to
-        give this permission on behalf of <b class="inv-name"></b>.</p>
-    </div>
+<details class="scope">
+<summary>What am I agreeing to?</summary>
+<div class="card">
+<p class="lead">You are giving PlotNua permission to use selected images from
+<b id="inv-domain"></b> when featuring <b class="inv-name"></b> and its
+products or services on PlotNua.</p>
 
-    <button class="go" id="go" type="button">CONFIRM IMAGE PERMISSION</button>
+<p class="own">You keep ownership of your images. Nothing here transfers it.</p>
 
-    <label class="hp" for="hp">Leave this field empty</label>
-    <input class="hp" id="hp" name="company_website_confirm" type="text"
-           tabindex="-1" autocomplete="off" aria-hidden="true">
+<ul class="yes">
+<li>Selected images from your website that you own, or are authorised to license.</li>
+<li>Used on PlotNua, only when featuring your company, products or services.</li>
+<li>Credited to you, with a link to your own website.</li>
+</ul>
+<ul class="no">
+<li>No resale.</li>
+<li>No sublicensing to anyone else.</li>
+<li>No advertising that is not about featuring your company.</li>
+</ul>
 
-    <p class="aside">Not the right person to decide this? Forward this page to whoever
-      is, or email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
-  </section>
+<p class="withdraw"><b>You can change your mind.</b> Email
+<a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and we will stop using them.</p>
+
+<p class="authority">By confirming, you are telling us you are authorised to
+give this permission on behalf of <b class="inv-name"></b>.</p>
+</div>
+</details>
+
+<p class="aside">Not the right person to decide this? Forward this page to whoever
+is, or email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
+</section>
 
   <!-- ─────────────── STATE B · recorded ─────────────── -->
   <section id="s-done" hidden>
@@ -182,7 +207,7 @@ a{color:var(--pn-voice)}
 
 </main>
 <script>
-/* PERM-P-1.0. No cookie, no storage, no analytics, no third-party call.
+/* PERM-P-1.1. No cookie, no storage, no analytics, no third-party call.
    The ONLY network requests this page makes are to PlotNua's own permission
    Worker, named in full below and in connect-src above.
 
