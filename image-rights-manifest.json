@@ -30,7 +30,7 @@
     },
     {
       "organisation_record": "recZyvRt8pDg5spUU",
-      "organisation_code": "ORG-000194",
+      "organisation_code": "ORG-000065",
       "organisation_name": "Power Sheds",
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "powersheds.com",
@@ -48,7 +48,7 @@
         "Power Sheds may request removal or change of any image at any time.",
         "PlotNua complies with any such request."
       ],
-      "note": "NOT A ONE-CLICK GRANT, and must never be represented as one. No PERM-W-2.0 wording was shown to Power Sheds and no decision token was ever issued to them; this row belongs to the reply-by-email arm. Scope is exactly as evidenced and no wider: selected imagery from the Power Sheds website, used when featuring Power Sheds on PlotNua, carrying the credit 'Image: Power Sheds'. Exercised on one page only, powersheds-preview.html, which is noindex and unlisted. The gate refuses the image if that credit ever disappears from the page. REMOVAL: delete image_url in supplier-outreach/powersheds/powersheds-manifest.json and rebuild -- the builder renders no image without one -- then regenerate this manifest.",
+      "note": "ORGANISATION ID CORRECTED BEFORE PUSH. This record was first written with ORG-000194, which is Nua Modular (recuvqPv7XW0b0PFJ), not Power Sheds. The Airtable record id recZyvRt8pDg5spUU was always correct and is what the gate keys on, so nothing was ever mis-authorised -- but a publication-rights record carrying another organisation's code is not something to leave standing. Verified against the live Organisations table: recZyvRt8pDg5spUU is Power Sheds, ORG-000065.\n\nNOT A ONE-CLICK GRANT, and must never be represented as one. No PERM-W-2.0 wording was shown to Power Sheds and no decision token was ever issued to them; this row belongs to the reply-by-email arm. Scope is exactly as evidenced and no wider: selected imagery from the Power Sheds website, used when featuring Power Sheds on PlotNua, carrying the credit 'Image: Power Sheds'. Exercised on one page only, powersheds-preview.html, which is noindex and unlisted. The gate refuses the image if that credit ever disappears from the page. REMOVAL: delete image_url in supplier-outreach/powersheds/powersheds-manifest.json and rebuild -- the builder renders no image without one -- then regenerate this manifest.",
       "atlas_permission_record": "reczCyWXPWvoA27GX",
       "atlas_permission_ref": "IPO-POWERSHEDS-0001",
       "permission_date": "2026-09-28"
