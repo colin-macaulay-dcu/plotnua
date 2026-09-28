@@ -58,6 +58,37 @@ const KNOWN_NON_GRANTS = new Set([
 const RIGHTS_OK = new Set(['Supplier Provided', 'Owned', 'Licensed']);
 const PUBLICATION_OK = new Set(['Approved', 'Published']);
 
+/* ------------------------------------------------- SCOPED DELIVERY HOSTS ---
+   A supplier whose site runs on Shopify, Squarespace or Wix serves their OWN
+   photographs from a third-party CDN, so "their website" and "their domain"
+   stop being the same string. A grant may therefore name delivery hosts, but
+   ONLY with a path prefix narrow enough to be that supplier's alone.
+
+   A HOST WITHOUT A PREFIX IS NOT A SCOPE. cdn.shopify.com on its own would
+   authorise every Shopify store on the internet, which is not what any
+   supplier granted, so a malformed entry is DISCARDED rather than honoured —
+   the asset then falls through to the ordinary domain check and is refused.
+   The generator refuses to emit one in the first place; this is the second
+   line, because the gate must not depend on the generator having run. */
+function normaliseDelivery(list) {
+  const out = [];
+  for (const d of Array.isArray(list) ? list : []) {
+    if (!d || typeof d !== 'object') continue;
+    const host = String(d.host || '').trim().toLowerCase().replace(/^www\./, '');
+    const prefix = String(d.path_prefix || '').trim();
+    if (!host || !prefix || prefix === '/' || !prefix.startsWith('/')) continue;
+    out.push({ host, prefix });
+  }
+  return out;
+}
+
+function matchDelivery(delivery, host, pathname) {
+  for (const d of delivery || []) {
+    if (d.host === host && String(pathname || '').startsWith(d.prefix)) return d;
+  }
+  return null;
+}
+
 function fail(code, lines) {
   console.log('\nGATE FAILED');
   lines.forEach(l => console.log('  ' + l));
@@ -96,8 +127,9 @@ function evaluate(assets, permissions) {
     const withdrawn = !!p.withdrawal_effective_at || outcome === 'Withdrawn / Superseded';
     const prev = byOrg.get(org);
     const grant = LIVE_GRANTS.has(outcome) && !withdrawn;
-    if (!prev || prev.grant) byOrg.set(org, { grant: prev ? (prev.grant && grant) : grant, outcome, withdrawn, domain: p.permitted_domain });
-    if (withdrawn) byOrg.set(org, { grant: false, outcome, withdrawn: true, domain: p.permitted_domain });
+    const delivery = normaliseDelivery(p.permitted_delivery_hosts);
+    if (!prev || prev.grant) byOrg.set(org, { grant: prev ? (prev.grant && grant) : grant, outcome, withdrawn, domain: p.permitted_domain, delivery });
+    if (withdrawn) byOrg.set(org, { grant: false, outcome, withdrawn: true, domain: p.permitted_domain, delivery });
   }
 
   const verdicts = [];
@@ -135,14 +167,20 @@ function evaluate(assets, permissions) {
       continue;
     }
     if (perm.domain && a.source_url) {
-      let host = '';
-      try { host = new URL(a.source_url).hostname.replace(/^www\./, ''); } catch (e) { host = ''; }
+      let host = '', pathname = '';
+      try {
+        const u = new URL(a.source_url);
+        host = u.hostname.replace(/^www\./, '');
+        pathname = u.pathname;
+      } catch (e) { host = ''; }
       if (!host) {
         verdicts.push({ id, publishable: false, violation: true,
           why: 'source URL is unreadable, so the asset cannot be tied to the permitted domain' });
         continue;
       }
-      if (host !== perm.domain.replace(/^www\./, '')) {
+      const onOwnDomain = host === perm.domain.replace(/^www\./, '');
+      const scoped = matchDelivery(perm.delivery, host, pathname);
+      if (!onOwnDomain && !scoped) {
         verdicts.push({ id, publishable: false, violation: true,
           why: 'asset comes from ' + host + ' but the grant covers '
              + perm.domain + ' only' });
@@ -256,6 +294,56 @@ function selfTest() {
   console.log('  ' + (w.verdicts[0].publishable ? 'ALLOW' : 'REFUSE') + ' — ' + w.verdicts[0].why);
   if (w.verdicts[0].publishable) { console.log('\nFAIL an unrecognised outcome was treated as a grant'); ok = false; }
 
+  /* SCOPED DELIVERY HOSTS. The rule that let Power Sheds through must not be
+     the rule that lets everyone on the same CDN through with them. */
+  console.log('\nSCOPED-DELIVERY-HOST TEST');
+  const CDN = 'cdn.example-host.com';
+  const ORG_A = 'recSCOPEDSTORE01';
+  const ORG_B = 'recSCOPEDSTORE02';
+  const scopedPerms = [
+    { organisation_record: ORG_A, permission_outcome: 'Granted with Conditions — Founder Confirmed',
+      permitted_domain: 'store-a.ie',
+      permitted_delivery_hosts: [{ host: CDN, path_prefix: '/s/files/1/0001/' }] },
+    { organisation_record: ORG_B, permission_outcome: 'Granted with Conditions — Founder Confirmed',
+      permitted_domain: 'store-b.ie',
+      permitted_delivery_hosts: [{ host: CDN, path_prefix: '/s/files/1/0002/' }] },
+    /* A BARE CDN, WHICH MUST BE DISCARDED rather than honoured. */
+    { organisation_record: 'recBARECDN000001', permission_outcome: 'Granted — Founder Confirmed',
+      permitted_domain: 'store-c.ie',
+      permitted_delivery_hosts: [{ host: CDN }] }
+  ];
+  const scopedRaw = [
+    { asset_name: 'scoped/own-prefix-should-allow.jpg', host: CDN,
+      source_url: 'https://' + CDN + '/s/files/1/0001/a.jpg',
+      rights_status: 'Supplier Provided', publication_status: 'Published' },
+    { asset_name: 'scoped/other-prefix-attributes-to-B.jpg', host: CDN,
+      source_url: 'https://' + CDN + '/s/files/1/0002/b.jpg',
+      rights_status: 'Supplier Provided', publication_status: 'Published' },
+    { asset_name: 'scoped/unclaimed-prefix-should-refuse.jpg', host: CDN,
+      source_url: 'https://' + CDN + '/s/files/1/9999/c.jpg',
+      rights_status: 'Supplier Provided', publication_status: 'Published' },
+    { asset_name: 'scoped/bare-cdn-grant-should-refuse.jpg', host: CDN,
+      source_url: 'https://' + CDN + '/anything/at/all/d.jpg',
+      rights_status: 'Supplier Provided', publication_status: 'Published' }
+  ];
+  const scopedV = evaluate(attribute(scopedRaw, scopedPerms), scopedPerms).verdicts;
+  for (const v of scopedV) {
+    console.log('  ' + (v.publishable ? 'ALLOW ' : 'REFUSE') + ' ' + v.id);
+  }
+  const byName = Object.fromEntries(scopedV.map(v => [v.id, v]));
+  if (!byName['scoped/own-prefix-should-allow.jpg'].publishable) {
+    console.log('\nFAIL a supplier\'s own scoped CDN prefix was not honoured'); ok = false;
+  }
+  if (!byName['scoped/other-prefix-attributes-to-B.jpg'].publishable) {
+    console.log('\nFAIL the second store\'s own prefix was not honoured'); ok = false;
+  }
+  if (byName['scoped/unclaimed-prefix-should-refuse.jpg'].publishable) {
+    console.log('\nFAIL an unclaimed prefix on a shared CDN was allowed'); ok = false;
+  }
+  if (byName['scoped/bare-cdn-grant-should-refuse.jpg'].publishable) {
+    console.log('\nFAIL a delivery host with no path prefix authorised a whole CDN'); ok = false;
+  }
+
   console.log('\n' + '='.repeat(74));
   console.log(ok ? 'SELF-TEST PASS' : 'SELF-TEST FAIL');
   process.exit(ok ? 0 : 1);
@@ -327,14 +415,33 @@ function scanHtml(dir) {
    refused, because rights cannot be established for it. */
 function attribute(assets, permissions) {
   const byDomain = new Map();
+  const scoped = [];                 /* {host, prefix, org} — shared CDNs */
   for (const p of permissions) {
     if (p.permitted_domain) {
       byDomain.set(String(p.permitted_domain).replace(/^www\./, '').toLowerCase(),
                    p.organisation_record);
     }
+    for (const d of normaliseDelivery(p.permitted_delivery_hosts)) {
+      scoped.push({ host: d.host, prefix: d.prefix, org: p.organisation_record });
+    }
   }
   return assets.map(a => {
-    const org = byDomain.get(a.host);
+    let org = byDomain.get(a.host);
+
+    /* A CDN HOST BELONGS TO NOBODY, so it is matched by PATH, not by host.
+       Two suppliers on the same CDN are told apart by their store prefixes.
+       If more than one prefix matches the same URL the attribution is
+       AMBIGUOUS, and an ambiguous asset is left unattributed and therefore
+       refused — guessing which supplier owns an image is exactly the thing
+       this gate exists to stop. */
+    if (!org) {
+      let pathname = '';
+      try { pathname = new URL(a.source_url).pathname; } catch (e) { pathname = ''; }
+      const hits = scoped.filter(s => s.host === a.host && pathname.startsWith(s.prefix));
+      const orgs = new Set(hits.map(h => h.org));
+      if (orgs.size === 1) org = hits[0].org;
+    }
+
     if (!org) return a;                                   /* no org → refused */
     const perm = permissions.find(x => x.organisation_record === org);
     return { ...a, organisation_record: org,

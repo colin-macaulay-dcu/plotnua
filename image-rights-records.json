@@ -1,11 +1,9 @@
 {
-  "schema": "plotnua.image-rights.manifest.v1",
-  "generated": "2026-09-28",
+  "schema": "plotnua.image-rights.records.v1",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
-  "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
-  "reality_note": "PlotNua publishes supplier imagery for 2 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
-  "reconciliation": "Every row carries the Atlas record id it reflects, so a disagreement between this manifest and Atlas is visible rather than silent. Generated from image-rights-records.json; edit that file, never this one.",
-  "rows": [
+  "governance": "THE CANONICAL RIGHTS RECORDS. One record per organisation, each carrying the Atlas Image Permission Outreach id it reflects. This file is the INPUT; image-rights-manifest.json is generated from it by .github/scripts/generate_image_rights_manifest.py and must not be hand-edited. Recording a grant or a withdrawal means editing a record here, regenerating, and committing both in the same act.",
+  "how_to_add_a_supplier": "1. Record the permission in Atlas (Image Permission Outreach) first; that is the source of record. 2. Add a record here carrying its record id and ref. 3. permission_outcome must be one of the gate's live-grant or known-non-grant values, spelled exactly. 4. permitted_domain is the supplier's own site. 5. If their site serves images from a third-party CDN, add permitted_delivery_hosts with the host AND a path prefix narrow enough to be theirs alone -- a host without a prefix is refused. 6. required_credit if the grant is conditional on one. 7. Regenerate. 8. Run the gate.",
+  "records": [
     {
       "organisation_record": "recztK0C8LeTavhVJ",
       "organisation_code": "ORG-000195",
@@ -34,6 +32,7 @@
       "organisation_name": "Power Sheds",
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "powersheds.com",
+      "required_credit": "Image: Power Sheds",
       "permitted_delivery_hosts": [
         {
           "host": "cdn.shopify.com",
@@ -41,7 +40,6 @@
           "why": "Power Sheds' own Shopify store namespace; the store id is part of the prefix, so the scope is their files and nobody else's."
         }
       ],
-      "required_credit": "Image: Power Sheds",
       "evidence": "Granted by Jack Sutcliffe of Power Sheds BY EMAIL, Gmail thread 1a0b5d1a7cf5e664, recorded in Atlas 28 September 2026 as Image Permission Outreach IPO-POWERSHEDS-0001 (reczCyWXPWvoA27GX), Permission Method 'Reply by Email', Permission Outcome 'Granted with Conditions — Founder Confirmed'. The email thread is the evidence.",
       "conditions": [
         "Power Sheds attribution on every image use.",

@@ -66,6 +66,17 @@ jobs:
           node -e "JSON.parse(require('fs').readFileSync('image-rights-manifest.json','utf8'))" \
             || { echo "::error::the rights manifest is not valid JSON"; exit 2; }
 
+      # THE MANIFEST MUST STILL BE THE GENERATOR'S OUTPUT. It is generated from
+      # image-rights-records.json, and a hand-edit there would be invisible
+      # until it mattered. This regenerates in memory and compares: a manifest
+      # that no longer matches its records has been edited by hand, and a
+      # hand-edited rights manifest is exactly what nobody should trust.
+      - name: The manifest must match the canonical rights records
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/generate_image_rights_manifest.py --check \
+            || { echo "::error::image-rights-manifest.json does not match image-rights-records.json. Regenerate it; do not hand-edit the manifest."; exit 2; }
+
       # THE GATE ITSELF. Exit 1 = a rights violation. Exit 2 = the gate could not
       # establish the facts, which is also a failure: a gate that passes when it
       # is confused is not a gate.
@@ -89,6 +100,18 @@ jobs:
             2>/dev/null \
             || node ../../"03 Website/Live Website/supplier-outreach/permission/prove-publication-gate.mjs" \
             || echo "::notice::gate proof script not present in this checkout; the gate itself still ran above"
+
+      # The gate's OWN self-test, including the scoped-delivery-host rule that
+      # lets a supplier's images through a shared CDN on their store prefix and
+      # refuses everyone else's. Cheap, and it proves the rule here rather than
+      # leaving it to be discovered by a supplier it wrongly authorised.
+      - name: The gate's self-test
+        run: node atlas-tools/validate-image-rights.js --self-test
+
+      # And the proof that the Power Sheds grant is what makes that image
+      # publishable: eight ways of invalidating it, each of which must refuse.
+      - name: Prove a live grant is load-bearing, not decorative
+        run: node atlas-tools/prove-powersheds-grant.mjs
 
       - name: Summary
         if: always()
