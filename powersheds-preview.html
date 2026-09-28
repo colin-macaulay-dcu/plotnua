@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<title>PlotNua &mdash; how Power Sheds would look</title>
+<style>
+:root{--ink:#1F3B2E;--paper:#F8F5EC;--cream:#F2EFE6;--soft:#55605A;
+--accent:#4F6B4A;--sage:#8FAF8A;--oak:#8B6F4E;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+font-family:Georgia,'Times New Roman',serif;line-height:1.65;}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 80px;}
+.note{background:var(--cream);border-left:3px solid var(--sage);
+padding:22px 24px;margin:0 0 48px;font-size:.95rem;}
+.note h1{font-size:1.35rem;margin:0 0 12px;line-height:1.3}
+.note p{margin:0 0 10px;color:var(--soft)}
+.note ul{margin:8px 0 0;padding-left:20px;color:var(--soft);font-size:.9rem}
+.note li{margin:4px 0}
+header.top{padding:44px 0 8px}
+.brand{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
+color:var(--accent);font-family:system-ui,sans-serif}
+.kicker{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+color:var(--accent);font-family:system-ui,sans-serif;margin-bottom:10px}
+h2{font-size:1.75rem;line-height:1.22;margin:0 0 16px;font-weight:400}
+h3{font-size:1.12rem;margin:0 0 6px;font-weight:600}
+h4{font-size:.95rem;margin:0 0 6px;font-weight:600}
+section{margin:0 0 54px}
+.ps-lead{color:var(--soft);margin:0 0 22px}
+.ps-route-list{list-style:none;margin:0;padding:0;
+display:grid;gap:14px}
+.ps-route{background:#fff;border:1px solid #E4DFD2;border-radius:6px;padding:18px 20px}
+.ps-route-is{margin:0 0 10px;color:var(--ink)}
+.ps-route-asks{margin:0;font-size:.85rem;color:var(--soft);
+font-family:system-ui,sans-serif}
+.ps-route-asks span{display:block;font-size:.68rem;letter-spacing:.14em;
+text-transform:uppercase;color:var(--oak);margin-bottom:3px}
+.ps-neutral{margin:20px 0 0;color:var(--soft);font-size:.95rem;
+border-top:1px solid #E4DFD2;padding-top:16px}
+.ps-q{border:0;margin:0 0 22px;padding:0}
+.ps-q legend{font-size:1rem;font-weight:600;padding:0 0 10px}
+.ps-opts{display:grid;gap:8px}
+.ps-opt{display:flex;gap:10px;align-items:flex-start;background:#fff;
+border:1px solid #E4DFD2;border-radius:5px;padding:11px 14px;cursor:pointer;
+font-family:system-ui,sans-serif;font-size:.92rem}
+.ps-opt:hover{border-color:var(--sage)}
+.ps-opt input{margin-top:3px;accent-color:var(--accent)}
+.ps-result{margin-top:30px;border-top:2px solid var(--sage);padding-top:26px}
+.ps-answer h3{margin-bottom:8px}
+.ps-ground{background:var(--cream);border-radius:6px;padding:16px 18px;
+margin:20px 0}
+.ps-ground p{margin:0;color:var(--soft);font-size:.93rem}
+.ps-card{background:#fff;border:1px solid #E4DFD2;border-radius:6px;
+overflow:hidden;margin:22px 0}
+.ps-fig{margin:0}
+.ps-fig img{width:100%;height:auto;display:block;background:var(--cream)}
+.ps-attr{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+color:var(--soft);font-family:system-ui,sans-serif;padding:8px 18px 0}
+.ps-card-body{padding:14px 18px 20px}
+.ps-answers{color:var(--soft);font-size:.93rem;margin:0 0 16px}
+.ps-cta{display:inline-block;background:var(--accent);color:#fff;
+text-decoration:none;padding:12px 20px;border-radius:4px;font-weight:600;
+font-family:system-ui,sans-serif;font-size:.92rem}
+.ps-cta:hover{background:var(--ink)}
+.ps-cta-note{font-size:.8rem;color:var(--soft);margin:12px 0 0;
+font-family:system-ui,sans-serif}
+.ps-tocheck{margin:24px 0 0}
+.ps-tocheck ul{margin:8px 0 0;padding-left:20px;color:var(--soft);font-size:.92rem}
+.ps-tocheck li{margin:6px 0}
+.ps-why{margin:24px 0 0;font-size:.9rem;color:var(--soft);
+border-top:1px solid #E4DFD2;padding-top:16px}
+.routes-entry{background:var(--cream);padding:18px 20px;border-radius:6px;
+font-size:.95rem}
+.routes-entry a{color:var(--accent)}
+.foot{margin-top:60px;border-top:1px solid #E4DFD2;padding-top:24px;
+font-size:.85rem;color:var(--soft)}
+@media(max-width:640px){
+ .wrap{padding:0 16px 60px} h2{font-size:1.45rem}
+ .ps-cta{display:block;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand">PlotNua &middot; Private preview</div></header>
+
+<div class="note">
+<h1>How Power Sheds would look on PlotNua</h1>
+<p>Jack &mdash; this is the real page, not a mockup. It sits inside our Garden
+Retreat section, which helps people work out what would suit their garden.
+Nothing is live yet, and this page isn&rsquo;t indexed or linked from the site.</p>
+<ul>
+<li>PlotNua doesn&rsquo;t publish your prices. Sizes and prices stay on
+ie.powersheds.com.</li>
+<li>Every image is clearly credited to Power Sheds. If you&rsquo;d ever like an
+image changed or removed, just let me know and I&rsquo;ll update it.</li>
+<li>Nothing is needed from your side: no feed, no data to keep updated, no
+tagging, no integration and no reporting.</li>
+<li>Links carry a PlotNua tag, so you can see in your own analytics what
+we&rsquo;ve sent you.</li>
+</ul>
+</div>
+
+<section class="ps-routes" id="ps-start-with-one-thing">
+<div class="kicker">Options</div>
+<h2>Ways to make a garden retreat</h2>
+<p class="ps-lead">There are a few ways to make a garden retreat. What suits you depends on how you want to use it, the space you have and your budget.</p>
+<ul class="ps-route-list">
+<li class="ps-route"><h3>A summerhouse</h3><p class="ps-route-is">A small room in the garden you can sit in. It’s the cheapest and simplest of the four.</p><p class="ps-route-asks"><span>What your garden needs</span> A level base. No electrics needed.</p></li>
+<li class="ps-route"><h3>A sauna</h3><p class="ps-route-is">For short sessions, usually fifteen or twenty minutes. Electric heaters need to be wired in. Wood-fired ones need a stove and a flue.</p><p class="ps-route-asks"><span>What your garden needs</span> A level base, plus wiring or a flue.</p></li>
+<li class="ps-route"><h3>A wood-fired hot tub</h3><p class="ps-route-is">An outdoor place to relax. It takes the most setting up of the four.</p><p class="ps-route-asks"><span>What your garden needs</span> A base that takes the weight when full, water, and room for the flue.</p></li>
+<li class="ps-route"><h3>The whole garden</h3><p class="ps-route-is">A room, a sauna, a hot tub and planting, like the photo at the top of this page. Most people build it up over a few years.</p><p class="ps-route-asks"><span>What your garden needs</span> Room for several structures, and a budget to match.</p></li>
+</ul>
+<p class="ps-neutral">We don’t think one of these is better than the others. The questions below only cover the garden room, because that choice mostly comes down to the shape and size of your space.</p>
+</section>
+<section class="ps-check" id="ps-check">
+<div class="kicker">The Check</div>
+<h2>Which garden room would suit your space</h2>
+<p class="ps-lead">Answer three quick questions about your garden.</p>
+<form class="ps-form" id="psForm">
+<fieldset class="ps-q" data-q="position">
+<legend>Where would it go?</legend><div class="ps-opts">
+<label class="ps-opt"><input type="radio" name="position" value="boundary"><span>Against a boundary or fence</span></label>
+<label class="ps-opt"><input type="radio" name="position" value="open"><span>On open ground, with space around it</span></label>
+<label class="ps-opt"><input type="radio" name="position" value="window"><span>Close to the house, or under a window</span></label>
+</div></fieldset>
+<fieldset class="ps-q" data-q="purpose">
+<legend>What would you use it for?</legend><div class="ps-opts">
+<label class="ps-opt"><input type="radio" name="purpose" value="sit"><span>Somewhere to sit</span></label>
+<label class="ps-opt"><input type="radio" name="purpose" value="store"><span>Somewhere to sit, and somewhere to store things</span></label>
+</div></fieldset>
+<fieldset class="ps-q" data-q="ground">
+<legend>What is the ground like there?</legend><div class="ps-opts">
+<label class="ps-opt"><input type="radio" name="ground" value="level"><span>Level and solid</span></label>
+<label class="ps-opt"><input type="radio" name="ground" value="sloped"><span>Sloping, soft or uneven</span></label>
+<label class="ps-opt"><input type="radio" name="ground" value="unsure"><span>Not sure</span></label>
+</div></fieldset>
+</form>
+<div class="ps-result" id="psResult" hidden>
+<div class="ps-answer" id="psAnswer"></div>
+<div class="ps-ground" id="psGround"></div>
+<div class="ps-card" id="psCard"></div>
+<div class="ps-tocheck"><h4>What still needs checking</h4><ul>
+<li>Whether you need planning permission. It depends on where you live and what you’re putting up, so check with your local authority.</li>
+<li>The final size, once you pick doors and windows. You do that on the Power Sheds website.</li>
+<li>How it gets into the garden, if the only way in is through the house.</li>
+</ul></div>
+<p class="ps-why"><strong>Why we’re telling you this.</strong> PlotNua doesn’t sell garden buildings and doesn’t take payment. We help you work out what would suit your garden, then link you to the supplier.</p>
+</div></section>
+<script>(function(){
+var CARDS={"apex-summerhouse": "<figure class=\"ps-fig\"><img src=\"https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_12x6_POWER_APEX_SUMMERHOUSE_SHIPLAP_ADOBE_98_1eb4bcc2-9cc2-47f8-9f06-3561a381ca1e.jpg\" alt=\"A Power Sheds Apex Summerhouse in a garden\" loading=\"lazy\"><figcaption class=\"ps-attr\">Image: Power Sheds</figcaption></figure><div class=\"ps-card-body\"><h3>Apex Summerhouse</h3><p class=\"ps-answers\">More headroom inside. Good where there\u2019s space around it.</p><a class=\"ps-cta\" href=\"https://ie.powersheds.com/products/apex-summerhouse?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=ie-garden-retreat-2026&amp;utm_content=apex-summerhouse\" target=\"_blank\" rel=\"noopener\">See sizes and prices on Power Sheds &rarr;</a><p class=\"ps-cta-note\">Prices and sizes are on the Power Sheds website. PlotNua doesn\u2019t sell this and doesn\u2019t take payment.</p></div>", "pent-summerhouse": "<figure class=\"ps-fig\"><img src=\"https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW010_4.jpg\" alt=\"A Power Sheds Pent Summerhouse in a garden\" loading=\"lazy\"><figcaption class=\"ps-attr\">Image: Power Sheds</figcaption></figure><div class=\"ps-card-body\"><h3>Pent Summerhouse</h3><p class=\"ps-answers\">A single-slope roof. Good against a boundary or under a window.</p><a class=\"ps-cta\" href=\"https://ie.powersheds.com/products/pent-summerhouse?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=ie-garden-retreat-2026&amp;utm_content=pent-summerhouse\" target=\"_blank\" rel=\"noopener\">See sizes and prices on Power Sheds &rarr;</a><p class=\"ps-cta-note\">Prices and sizes are on the Power Sheds website. PlotNua doesn\u2019t sell this and doesn\u2019t take payment.</p></div>", "apex-summerhouse-combi": "<figure class=\"ps-fig\"><img src=\"https://cdn.shopify.com/s/files/1/0601/8967/1489/files/PO2B37_1.jpg\" alt=\"A Power Sheds Apex Summerhouse Combi, a summerhouse with an attached store\" loading=\"lazy\"><figcaption class=\"ps-attr\">Image: Power Sheds</figcaption></figure><div class=\"ps-card-body\"><h3>Apex Summerhouse Combi</h3><p class=\"ps-answers\">A summerhouse with a store attached.</p><a class=\"ps-cta\" href=\"https://ie.powersheds.com/products/apex-summerhouse-combi?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=ie-garden-retreat-2026&amp;utm_content=apex-summerhouse-combi\" target=\"_blank\" rel=\"noopener\">See sizes and prices on Power Sheds &rarr;</a><p class=\"ps-cta-note\">Prices and sizes are on the Power Sheds website. PlotNua doesn\u2019t sell this and doesn\u2019t take payment.</p></div>"};
+var GROUND={"level": ["Your ground sounds fine.", "All of these need a level base. Level, solid ground is what you want."], "sloped": ["Sort the base first.", "Sloping, soft or uneven ground means building a level base before anything is delivered. It costs money and it\u2019s easy to forget when you\u2019re working out the budget."], "unsure": ["Check the ground before you order.", "Every garden building needs a level base. Worth checking before you order."]};
+
+var f=document.getElementById('psForm'),r=document.getElementById('psResult');
+function pick(){
+  var d={};['position','purpose','ground'].forEach(function(n){
+    var e=f.querySelector('input[name="'+n+'"]:checked');d[n]=e?e.value:null;});
+  if(!d.position||!d.purpose||!d.ground){r.hidden=true;return;}
+  /* PURPOSE WINS OVER POSITION. If something must be stored, the combined
+     building is the answer whatever it stands against. */
+  var key = d.purpose==='store' ? 'apex-summerhouse-combi'
+          : (d.position==='boundary'||d.position==='window') ? 'pent-summerhouse'
+          : 'apex-summerhouse';
+  var says = d.purpose==='store'
+      ? 'You want somewhere to sit and somewhere to store things. One building can do both.'
+      : (d.position==='boundary'||d.position==='window')
+        ? 'Against a boundary or under a window, a single-slope roof works better. The tall side sits away from the edge.'
+        : 'With space around it, a ridged roof gives you more headroom inside.';
+  document.getElementById('psAnswer').innerHTML='<h3>What would suit that spot</h3><p>'+says+'</p>';
+  var g=GROUND[d.ground];
+  document.getElementById('psGround').innerHTML='<h4>'+g[0]+'</h4><p>'+g[1]+'</p>';
+  document.getElementById('psCard').innerHTML=CARDS[key];
+  r.hidden=false;
+}
+f.addEventListener('change',pick);
+
+})();</script>
+
+<section>
+<div class="kicker">Irish Routes</div>
+<h2>How you&rsquo;d be described</h2>
+<p class="routes-entry"><strong>Power Sheds</strong> trades in Ireland as Powersheds Ltd. They publish euro prices on <a href="https://ie.powersheds.com/">ie.powersheds.com</a> and deliver free throughout Ireland. Images used with permission.</p>
+</section>
+
+<section>
+<div class="kicker">Next</div>
+<h2>What happens after someone clicks</h2>
+<p class="routes-entry">They land on your product page. Everything after that is
+yours: sizes, options, delivery, payment and support. PlotNua doesn&rsquo;t take
+orders or payment, and doesn&rsquo;t sit between you and the customer.</p>
+</section>
+
+<p class="foot">Private preview for Power Sheds &middot; PlotNua &middot;
+28 September 2026 &middot; not indexed, not linked, not live.<br>
+Any image can be changed or removed &mdash; just email hello@plotnua.ie.</p>
+</div>
+</body>
+</html>
