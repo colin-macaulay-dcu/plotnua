@@ -75,6 +75,26 @@
       "atlas_permission_record": "recAWWIwLpJX8mAiW",
       "atlas_permission_ref": "IPO-032",
       "permission_date": "2026-09-29"
+    },
+    {
+      "organisation_record": "recEitQxMaz9SyDzX",
+      "organisation_code": "ORG-000200",
+      "organisation_name": "Superior Pergola Ireland",
+      "permission_outcome": "Granted — Founder Confirmed",
+      "permitted_domain": "superiorpergola.ie",
+      "required_credit": "Image: Superior Pergola Ireland",
+      "permitted_delivery_hosts": [
+        {
+          "host": "b3819663.assetcdn.net",
+          "path_prefix": "/2.0/3819663/",
+          "why": "Superior Pergola Ireland's own account namespace on assetcdn.net; the account id 3819663 appears in both the host label and the path, so the scope is their files and nobody else's. assetcdn.net as a whole is NOT whitelisted."
+        }
+      ],
+      "evidence": "Granted by Neringa of Superior Pergola Ireland BY EMAIL, 29 September 2026 at 14:59:12 UTC, from admin@superiorpergola.ie, Gmail thread 1a0b5b8814a3baa1, message 1a0edad5eca5a3a6: \"No worries, feel free to use our photos.\" Recorded in Atlas as Image Permission Outreach IPO-SUPERIORPERGOLA-20260929 (recXRyXBNu0UMvSZ6), Permission Method 'Reply by Email', Permission Outcome 'Granted — Founder Confirmed'.",
+      "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nUNCONDITIONAL GRANT, WITH A PLOTNUA UNDERTAKING. The supplier attached no condition. The credit and the link back to superiorpergola.ie are PlotNua's own commitments, made in PlotNua's reply on the same thread, and are honoured regardless. They are recorded as required_credit here so the gate refuses the imagery if the credit ever disappears from the page — PlotNua holding itself to its own word, not a supplier condition being enforced.\n\nDELIVERY HOST. superiorpergola.ie is a WordPress site serving its media through b3819663.assetcdn.net under /2.0/3819663/wp-content/uploads/. The scope above is that host and that prefix only.\n\nExercised on one page, superior-pergola-platform-preview.html, which is noindex and unlisted. Images are referenced from the supplier's own delivery path, unmodified, and are not copied into any PlotNua asset pool. REMOVAL: delete the image entries in supplier_superior_pergola.py and rebuild — the builder renders no image without one — then regenerate this manifest.\n\nNOTHING ELSE IS INFERRED from the photographs: not price, not lead time, not warranty, not installation coverage, not planning status, and not any supplier relationship, exclusivity or endorsement.",
+      "atlas_permission_record": "recXRyXBNu0UMvSZ6",
+      "atlas_permission_ref": "IPO-SUPERIORPERGOLA-20260929",
+      "permission_date": "2026-09-29"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "generated": "2026-09-29",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
   "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
-  "reality_note": "PlotNua publishes supplier imagery for 3 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
+  "reality_note": "PlotNua publishes supplier imagery for 4 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box, Superior Pergola Ireland. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
   "reconciliation": "Every row carries the Atlas record id it reflects, so a disagreement between this manifest and Atlas is visible rather than silent. Generated from image-rights-records.json; edit that file, never this one.",
   "rows": [
     {
@@ -76,6 +76,26 @@
       "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nDOMAIN: weareyardbox.com (the outreach address) redirects to yardbox.co.uk, which is the live site and the permitted domain. Imagery is served from Squarespace's CDN inside Yard Box's own site namespace, scoped above.\n\nTHE DESIGN CREDIT CONDITION IS RECORDED BUT NOT YET APPLIED, on founder instruction of 29 September 2026. Cormac asked that design AND manufacture be credited to Yard Box. INTUMODULAR (ORG-000192) publish \"Designed by INTUMODULAR. Manufactured with YardBox\", and Yard Box's own models page calls Bothán \"our premium 45sqm modular home\". Two suppliers make incompatible authorship statements about the same product on their own sites, so PlotNua preserves the currently evidenced attribution, invents no compromise, and has put the question back to Cormac. NO BOTHÁN IMAGE is used while this is open, although several are authorised and available.\n\nSEPARATELY AND NOT HELD: Cormac's statement that the Bothán 45 sqm figure is the INTERNAL footprint is unambiguous and is applied.",
       "atlas_permission_record": "recAWWIwLpJX8mAiW",
       "atlas_permission_ref": "IPO-032",
+      "permission_date": "2026-09-29"
+    },
+    {
+      "organisation_record": "recEitQxMaz9SyDzX",
+      "organisation_code": "ORG-000200",
+      "organisation_name": "Superior Pergola Ireland",
+      "permission_outcome": "Granted — Founder Confirmed",
+      "permitted_domain": "superiorpergola.ie",
+      "permitted_delivery_hosts": [
+        {
+          "host": "b3819663.assetcdn.net",
+          "path_prefix": "/2.0/3819663/",
+          "why": "Superior Pergola Ireland's own account namespace on assetcdn.net; the account id 3819663 appears in both the host label and the path, so the scope is their files and nobody else's. assetcdn.net as a whole is NOT whitelisted."
+        }
+      ],
+      "required_credit": "Image: Superior Pergola Ireland",
+      "evidence": "Granted by Neringa of Superior Pergola Ireland BY EMAIL, 29 September 2026 at 14:59:12 UTC, from admin@superiorpergola.ie, Gmail thread 1a0b5b8814a3baa1, message 1a0edad5eca5a3a6: \"No worries, feel free to use our photos.\" Recorded in Atlas as Image Permission Outreach IPO-SUPERIORPERGOLA-20260929 (recXRyXBNu0UMvSZ6), Permission Method 'Reply by Email', Permission Outcome 'Granted — Founder Confirmed'.",
+      "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nUNCONDITIONAL GRANT, WITH A PLOTNUA UNDERTAKING. The supplier attached no condition. The credit and the link back to superiorpergola.ie are PlotNua's own commitments, made in PlotNua's reply on the same thread, and are honoured regardless. They are recorded as required_credit here so the gate refuses the imagery if the credit ever disappears from the page — PlotNua holding itself to its own word, not a supplier condition being enforced.\n\nDELIVERY HOST. superiorpergola.ie is a WordPress site serving its media through b3819663.assetcdn.net under /2.0/3819663/wp-content/uploads/. The scope above is that host and that prefix only.\n\nExercised on one page, superior-pergola-platform-preview.html, which is noindex and unlisted. Images are referenced from the supplier's own delivery path, unmodified, and are not copied into any PlotNua asset pool. REMOVAL: delete the image entries in supplier_superior_pergola.py and rebuild — the builder renders no image without one — then regenerate this manifest.\n\nNOTHING ELSE IS INFERRED from the photographs: not price, not lead time, not warranty, not installation coverage, not planning status, and not any supplier relationship, exclusivity or endorsement.",
+      "atlas_permission_record": "recXRyXBNu0UMvSZ6",
+      "atlas_permission_ref": "IPO-SUPERIORPERGOLA-20260929",
       "permission_date": "2026-09-29"
     }
   ]
