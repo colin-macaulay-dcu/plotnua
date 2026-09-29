@@ -60828,7 +60828,16 @@
    "priceEvidenceState": "missing",
    "qualificationCaveats": [
     "No usable price is recorded."
-   ]
+   ],
+   "imagery": {
+    "url": "https://images.squarespace-cdn.com/content/v1/619124cac9d9895faff3d303/dca56524-1fb1-424b-8fac-ac5ad731b557/Yard-Box-Patrick-26+%281%29.JPG",
+    "alt": "The Yard Box Toronto, a garden room installed in a garden",
+    "credit": "Image: Yard Box",
+    "supplier": "Yard Box",
+    "rightsRecord": "IPO-032",
+    "assetRecord": "rec3FDMBST0pgNyyy",
+    "presentationTier": "A"
+   }
   },
   {
    "id": "reckMDqp4tVjAjM7b",
@@ -60950,7 +60959,16 @@
    "priceEvidenceState": "missing",
    "qualificationCaveats": [
     "No usable price is recorded."
-   ]
+   ],
+   "imagery": {
+    "url": "https://images.squarespace-cdn.com/content/v1/619124cac9d9895faff3d303/8d487648-027f-4435-89d9-ae906fe9a790/854A5433+copy-2.jpg",
+    "alt": "The Yard Box Vancouver, a mid-range garden room",
+    "credit": "Image: Yard Box",
+    "supplier": "Yard Box",
+    "rightsRecord": "IPO-032",
+    "assetRecord": "recOwRs3TWWSUyiOr",
+    "presentationTier": "A"
+   }
   },
   {
    "id": "receaph6vCI7xtS5K",
@@ -61072,7 +61090,16 @@
    "priceEvidenceState": "missing",
    "qualificationCaveats": [
     "No usable price is recorded."
-   ]
+   ],
+   "imagery": {
+    "url": "https://images.squarespace-cdn.com/content/v1/619124cac9d9895faff3d303/b8f49726-43f3-4a54-895b-149a5349bc82/whistler+5.PNG",
+    "alt": "The Yard Box Whistler, a compact garden room",
+    "credit": "Image: Yard Box",
+    "supplier": "Yard Box",
+    "rightsRecord": "IPO-032",
+    "assetRecord": "reca1N71LmZi78HvZ",
+    "presentationTier": "A"
+   }
   },
   {
    "id": "recGGCVFmV7lY1zkj",

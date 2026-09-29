@@ -223,6 +223,49 @@ ATLAS_ASSETS = [
         "alt": "A Power Sheds Apex Workshop Log Cabin in a garden",
         "products": ["recwvpChVgFSc2RWQ"],
     },
+
+    # ---- YARD BOX -------------------------------------------------------
+    # Created in Atlas 29 September 2026 to close the gap the previous pass
+    # reported. PRODUCT ASSOCIATION IS DOM CONTAINMENT on yardbox.co.uk/models:
+    # each image sits INSIDE the same card element as its model's heading and
+    # description. That is Yard Box's own association of photograph to model on
+    # their own site -- not PlotNua inferring identity from the fact that an
+    # image happens to be Yard Box's, which the brief explicitly forbids.
+    {
+        "asset": "reca1N71LmZi78HvZ",
+        "organisation": "Yard Box",
+        "url": "https://images.squarespace-cdn.com/content/v1/"
+               "619124cac9d9895faff3d303/b8f49726-43f3-4a54-895b-149a5349bc82/"
+               "whistler+5.PNG",
+        "alt": "The Yard Box Whistler, a compact garden room",
+        # STRONGEST OF THE THREE: card containment AND the filename names the
+        # product. Two independent signals agree.
+        "products": ["receaph6vCI7xtS5K"],
+    },
+    {
+        "asset": "recOwRs3TWWSUyiOr",
+        "organisation": "Yard Box",
+        "url": "https://images.squarespace-cdn.com/content/v1/"
+               "619124cac9d9895faff3d303/8d487648-027f-4435-89d9-ae906fe9a790/"
+               "854A5433+copy-2.jpg",
+        "alt": "The Yard Box Vancouver, a mid-range garden room",
+        # Card containment only; the filename is a camera code. Recorded as the
+        # weaker association in the Atlas note rather than levelled up.
+        "products": ["reckMDqp4tVjAjM7b"],
+    },
+    {
+        "asset": "rec3FDMBST0pgNyyy",
+        "organisation": "Yard Box",
+        "url": "https://images.squarespace-cdn.com/content/v1/"
+               "619124cac9d9895faff3d303/dca56524-1fb1-424b-8fac-ac5ad731b557/"
+               "Yard-Box-Patrick-26+%281%29.JPG",
+        "alt": "The Yard Box Toronto, a garden room installed in a garden",
+        # ACCEPTED WITH A CAVEAT, which the Atlas note carries in full: the same
+        # photograph is also the models page's site-wide hero, so it is the
+        # supplier's chosen representation of The Toronto rather than an
+        # isolated product shot. No stronger candidate exists.
+        "products": ["recLEonLKyhNTUiAt"],
+    },
 ]
 
 
@@ -322,40 +365,65 @@ def prove(doc_before, grants):
           [p.get("productId") for p in doc_before["products"]]
           == [p.get("productId") for p in after_doc["products"]])
 
-    # G5 — UNKNOWN permission never renders imagery.
-    unknown = {k: v for k, v in grants.items() if k != "power sheds"}
-    bp, _ = resolve(copy.deepcopy(doc_before["products"]), unknown)
-    check("G5 no live grant for a supplier yields no imagery",
-          len(bp) == 0, "resolved %d" % len(bp))
+    # PER-SUPPLIER, NOT GLOBAL. The first version of these guards mutated only
+    # Power Sheds and then asserted that NOTHING resolved. That held while one
+    # supplier had imagery; the moment Yard Box was added the guards failed --
+    # correctly, because the assertion was too narrow, not because the data was
+    # wrong. Withdrawing one supplier's grant must remove EXACTLY that
+    # supplier's images and leave every other supplier untouched, which is a
+    # stronger claim than the original and scales to any number of grants.
+    suppliers = sorted({a["organisation"] for a in ATLAS_ASSETS})
+    for sup in suppliers:
+        key = sup.strip().lower()
+        if key not in grants:
+            continue
+        mine = {pid for pid, im in by_product.items() if im["supplier"] == sup}
+        others = {pid for pid in by_product if pid not in mine}
 
-    # G6 — withdrawal removes imagery, leaves the property result untouched.
-    wdoc = copy.deepcopy(after_doc)
-    wb, _ = resolve(wdoc["products"], unknown)
-    apply(wdoc, wb)
-    still = [p for p in wdoc["products"] if p.get("imagery")]
-    check("G6 withdrawal removes every image", len(still) == 0)
-    check("G6 withdrawal leaves the matching surface untouched",
-          match_surface(wdoc) == before)
+        # G5 — no live grant for THIS supplier: none of its images resolve,
+        # and nobody else's disappear.
+        gone = {k: v for k, v in grants.items() if k != key}
+        bp, _ = resolve(copy.deepcopy(doc_before["products"]), gone)
+        check("G5 %s without a live grant resolves no imagery" % sup,
+              not (set(bp) & mine), "%d of its own resolved" % len(set(bp) & mine))
+        check("G5 %s losing its grant disturbs no other supplier" % sup,
+              others <= set(bp), "%d others kept" % len(others & set(bp)))
 
-    # G7 — the gate's scoping rule is authoritative: a bare CDN host refuses.
-    bare = copy.deepcopy(grants)
-    ps = bare.get("power sheds")
-    if ps:
-        ps = copy.deepcopy(ps)
-        ps["permitted_delivery_hosts"] = [{"host": "cdn.shopify.com"}]
-        bare["power sheds"] = ps
-        bp2, _ = resolve(copy.deepcopy(doc_before["products"]), bare)
-        check("G7 a delivery host with no path prefix authorises nothing",
-              len(bp2) == 0, "resolved %d" % len(bp2))
+        # G6 — withdrawal, applied to a universe that already carries imagery.
+        wdoc = copy.deepcopy(after_doc)
+        wb, _ = resolve(wdoc["products"], gone)
+        apply(wdoc, wb)
+        still = {p.get("productId") for p in wdoc["products"] if p.get("imagery")}
+        check("G6 withdrawing %s removes its images" % sup,
+              not (still & mine))
+        check("G6 withdrawing %s leaves the matching surface untouched" % sup,
+              match_surface(wdoc) == before)
 
-        other = copy.deepcopy(grants)
-        ps2 = copy.deepcopy(grants["power sheds"])
-        ps2["permitted_delivery_hosts"] = [
-            {"host": "cdn.shopify.com", "path_prefix": "/s/files/1/9999/9999/"}]
-        other["power sheds"] = ps2
-        bp3, _ = resolve(copy.deepcopy(doc_before["products"]), other)
-        check("G7 a different store's prefix authorises nothing",
-              len(bp3) == 0, "resolved %d" % len(bp3))
+        # G7 — the scoping rule is authoritative, per supplier.
+        grant = grants[key]
+        hosts = grant.get("permitted_delivery_hosts") or []
+        if hosts:
+            bare = copy.deepcopy(grants)
+            b = copy.deepcopy(grant)
+            b["permitted_delivery_hosts"] = [{"host": hosts[0]["host"]}]
+            bare[key] = b
+            bp2, _ = resolve(copy.deepcopy(doc_before["products"]), bare)
+            check("G7 %s: a bare host with no path prefix authorises nothing"
+                  % sup, not (set(bp2) & mine),
+                  "%d resolved" % len(set(bp2) & mine))
+
+            other = copy.deepcopy(grants)
+            o = copy.deepcopy(grant)
+            o["permitted_delivery_hosts"] = [
+                {"host": hosts[0]["host"],
+                 "path_prefix": "/content/v1/0000000000000000/"
+                 if "squarespace" in hosts[0]["host"]
+                 else "/s/files/1/9999/9999/"}]
+            other[key] = o
+            bp3, _ = resolve(copy.deepcopy(doc_before["products"]), other)
+            check("G7 %s: another tenant's prefix authorises nothing" % sup,
+                  not (set(bp3) & mine),
+                  "%d resolved" % len(set(bp3) & mine))
 
     # G-CREDIT — the grant's required credit travels with every image.
     missing = [pid for pid, im in by_product.items() if not im.get("credit")]
