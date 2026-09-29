@@ -8439,23 +8439,18 @@
   #screen-match-results .results-hero-media{
     aspect-ratio:4/3;
   }
-  #screen-match-results .results-hero-media img{
-    /* MEASURED IN A BROWSER, NOT REASONED ABOUT. These supplier files are
-       composites: a CAD elevation above, the photograph below. Biasing the
-       crop above centre -- which is right for a plain photograph, to protect
-       a roofline -- fills this frame with the drawing instead. Bottom-
-       aligning puts the building in the frame. Measured at 1440: the
-       photograph goes from roughly 45% of the hero to roughly 85% of it. */
-    object-position:center bottom;
-  }
+  /* NO CROP BIAS. RVR-3 bottom-aligned the hero crop to drag the photograph
+     up out of a composite source file. RVR-4 replaced those sources with the
+     photograph-only originals, so the compensation is gone rather than left
+     behind: a photograph crops from its own centre. The one remaining
+     composite, The Whistler, splits drawing LEFT / photograph RIGHT, which no
+     vertical bias ever helped -- see its Atlas asset note. */
   @media (min-width:720px){
     #screen-match-results .results-hero-media{ aspect-ratio:4/3; }
   }
   /* The alternative plates keep 4/3 and get the same bias, for the same
      reason: a square source in a 4/3 well crops from somewhere. */
-  #screen-match-results #altResults .results-gallery-media img{
-    object-position:center bottom;
-  }
+
 
   /* ---- ONE GROUP: PRICE AND AVAILABILITY ----------------------------
      They were three separate blocks with three separate margins. Price and
