@@ -14872,7 +14872,7 @@
     // ---- PHASE 1 · the only view declared by any Discovery in Sprint 1 ----
     'best-overall': {
       id: 'best-overall',
-      label: 'Best Overall',
+      label: 'Best match',
       type: 'recommendation',      // the answer itself
       kind: 'primary',
       producesProduct: true,
@@ -14881,7 +14881,14 @@
       requiredFields: [],          // ranks on the score vector, needs no extra field
       predicate: null,             // the whole qualified pool
       compare: compareByScoreVector,
-      unavailableLine: null,       // cannot be unavailable: the pool is never empty here
+      /* Since the Results publication gate, the publishable pool CAN be
+         empty -- if no product has a live image grant, nothing is
+         showable. rankGardenRoomCandidates already returns an empty row
+         set in that case rather than a fabricated one. This line stays
+         null because the empty state is handled upstream, not by this
+         view; the previous comment claiming the pool is never empty was
+         true before the gate and is not true now. */
+      unavailableLine: null,
     },
 
     // ---- PHASE 2 · registered so the gate has real subjects. NOT declared ----

@@ -278,6 +278,46 @@ console.log('-'.repeat(78));
         has('pnGuaranteeAuthorisedImageRow') === 0);
 }
 
+console.log('\nEMPTY PUBLISHABLE POOL — THE SHIPPED PATH, TRACED IN SOURCE');
+console.log('-'.repeat(78));
+{
+  /* Behaviour with an empty pool cannot be driven headlessly: the app runs
+     in <script type="module">, which jsdom does not execute. What CAN be
+     proved without a browser is that every step between an empty pool and
+     the DOM is guarded, so nothing dereferences an absent product. Each
+     assertion below names the shipped line it depends on. */
+  const has = (n) => src.split(n).length - 1;
+  check('primaryEntry is read positionally and may be undefined',
+        has('const primaryEntry = ordered[0];') === 1);
+  check('the alternatives list is guarded on it',
+        has('const rest = primaryEntry ? ordered.slice(1) : [];') === 1);
+  check('the carousel is guarded on it — no [undefined] head',
+        has('const carousel = primaryEntry ? [primaryEntry].concat(carouselTail) : [];') === 1);
+  check('rows are mapped from that carousel, so rows === [] follows',
+        has('const rows = carousel.map(buildRow);') === 1);
+  check('the profile-match renderer returns early with no primary',
+        has("if (!primaryResult) { els.resultsProfileMatch.hidden = true; return; }") === 1);
+  check('it clears the list BEFORE that early return, so no stale card remains',
+        src.indexOf("els.resultsProfileList.innerHTML = '';") <
+        src.indexOf("if (!primaryResult) { els.resultsProfileMatch.hidden = true; return; }"));
+  check('the stale "pool is never empty" claim has been corrected',
+        has('cannot be unavailable: the pool is never empty here') === 0);
+}
+
+console.log('\nTHE LABEL');
+console.log('-'.repeat(78));
+{
+  const has = (n) => src.split(n).length - 1;
+  check("the rendered label reads 'Best match'", has("label: 'Best match',") === 1);
+  check("the old 'Best Overall' label string is gone", has("label: 'Best Overall',") === 0);
+  check('the view id is unchanged — it is a contract, not copy',
+        has("id: 'best-overall',") === 1);
+  check('the two developer warnings quoting the old title survive',
+        has("NOT 'Best Overall'") === 2);
+  check('no explanatory copy was added beside the label',
+        !/label: 'Best match',[\s\S]{0,300}(image|rights|permission)/i.test(src));
+}
+
 console.log('\nTHE FOUNDER JOURNEY — RUN, NOT GUESSED');
 console.log('='.repeat(78));
 {
