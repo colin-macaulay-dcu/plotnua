@@ -94,21 +94,34 @@ const RESOLVE_KEYS = [
   ['planning', 'world'], ['schedule', 'plotnua'],
 ];
 
-/* RECORDED VIOLATIONS — frozen at 3099d8d. Growth or spread fails the gate. */
-const VIOLATIONS = [
-  { id: 'V1', guard: 'J03',
-    what: 'pnOpenQuestions() is a parallel uncertainty model',
-    fingerprint: 'function pnOpenQuestions(product){', count: 1,
-    frozen: { label: 'questions declared', n: 7 } },
-  { id: 'V2', guard: 'J07',
-    what: 'Option Detail holds the supplier handoff',
-    fingerprint: 'pnSupplierHandover(product, nextAction.state);', count: 1 },
-  { id: 'V3', guard: 'J07',
-    what: 'pnNextAction() gates on URL existence, not readiness',
-    fingerprint: 'function pnNextAction(product){', count: 1 },
-  { id: 'V4', guard: 'P01',
-    what: 'an Atlas evidence gap stated as a supplier publication fact',
-    fingerprint: 'has not published a price for this one.', count: 1 },
+/* RECORDED VIOLATIONS — RETIRED BY RP-1 (repair commit).
+
+   All four were genuinely repaired, not re-fingerprinted. What stood here as
+   "this violation must not grow" is now inverted: the guards below assert the
+   REPAIRED state, so the violation cannot come back either. That is the only
+   honest way to retire a ledger entry.
+
+     V1  pnOpenQuestions()            RETIRED -> pnResolvePreview() reads RESOLVE_REGISTRY
+     V2  Option Detail -> supplier    RETIRED -> continuation goes to My Plot
+     V3  pnNextAction() routing       RETIRED -> retained, no caller
+     V4  supplier-publication claim   RETIRED -> wording gone; PB046 stands   */
+const VIOLATIONS = [];
+
+/* POST-REPAIR INVARIANTS. Each fails if its violation returns. */
+const REPAIRED = [
+  { guard: 'J03', label: 'V1 stays retired: no parallel question model',
+    absent: 'function pnOpenQuestions(' },
+  { guard: 'J03', label: 'V1 repair present: pnResolvePreview declared',
+    present: 'function pnResolvePreview(product){', count: 1 },
+  { guard: 'J07', label: 'V2 stays retired: Option Detail does not call the outbound door',
+    absent: 'pnSupplierHandover(product, nextAction.state);' },
+  /* Two occurrences, measured: the section heading and the button label. */
+  { guard: 'J07', label: 'V2 repair present: the continuation opens My Plot',
+    present: 'Continue with this option', count: 2 },
+  { guard: 'J07', label: 'V3 stays retired: Option Detail does not route on pnNextAction',
+    absent: 'const nextAction = pnNextAction(product);' },
+  { guard: 'P01', label: 'V4 repair present: the PlotNua-gap wording',
+    present: 'PlotNua does not hold a confirmed price', count: 1 },
 ];
 
 /* J07 — the single outbound door. */
@@ -214,29 +227,30 @@ function run(src) {
   }
 
   head('J03 · OPTION DETAIL MAY NOT OWN THE RESOLVE MODEL');
-  const oq = lift(src, 'function pnOpenQuestions(product){');
-  if (!oq) {
-    bad('J03', 'pnOpenQuestions() could not be lifted');
+  const prev = lift(src, 'function pnResolvePreview(product){');
+  if (!prev) {
+    bad('J03', 'pnResolvePreview() could not be lifted — the canonical read is gone');
   } else {
-    if (oq.indexOf('RESOLVE_REGISTRY') >= 0) {
-      ok('J03', 'pnOpenQuestions() now reads RESOLVE_REGISTRY — V1 is repaired');
-      note('the ledger entry for V1 should be retired from this file');
+    if (prev.indexOf('RESOLVE_REGISTRY') >= 0) ok('J03', 'the preview reads RESOLVE_REGISTRY');
+    else bad('J03', 'the preview no longer reads RESOLVE_REGISTRY');
+    if (prev.indexOf('resolveCopyFor(entry)') >= 0) ok('J03', 'the preview uses the canonical label resolver');
+    else bad('J03', 'the preview no longer uses resolveCopyFor()');
+    /* A question authored HERE is how a second taxonomy starts. Any long
+       capitalised string literal in this function is one. */
+    const authored = (stripComments(prev).match(/'[A-Z][^']{14,}'/g) || []);
+    if (!authored.length) ok('J03', 'the preview authors no questions of its own');
+    else bad('J03', 'the preview authors its own question text: ' + authored.slice(0, 3).join(', '));
+    if (prev.indexOf('recordResolveAnswer') >= 0 || prev.indexOf('resolvePositions') >= 0) {
+      bad('J03', 'the preview writes Resolve state; it is a read-only preview');
     } else {
-      const n = countOf(oq, "'");
-      const qs = (oq.match(/'[A-Z][^']{8,}'/g) || []).length;
-      const frozen = VIOLATIONS[0].frozen.n;
-      if (qs === frozen) ok('J03', 'V1 frozen: ' + qs + ' hard-coded questions, unchanged');
-      else bad('J03', 'V1 GREW: ' + qs + ' hard-coded questions, frozen at ' + frozen +
-                      ' — the parallel model is spreading');
-      void n;
+      ok('J03', 'the preview owns no answers and writes no state');
     }
   }
   const rival = /function\s+(pn[A-Za-z]*(Questions|Uncertaint|Checklist|Unknowns)[A-Za-z]*)\s*\(/g;
   const rivals = [];
   while ((m = rival.exec(code)) !== null) if (rivals.indexOf(m[1]) < 0) rivals.push(m[1]);
-  const extra = rivals.filter(function (r) { return r !== 'pnOpenQuestions'; });
-  if (!extra.length) ok('J03', 'no second uncertainty model has appeared');
-  else bad('J03', 'a rival uncertainty model appeared: ' + extra.join(', '));
+  if (!rivals.length) ok('J03', 'no rival uncertainty model exists');
+  else bad('J03', 'a rival uncertainty model appeared: ' + rivals.join(', '));
 
   head('J07 · SUPPLIER HANDOFF MAY NOT BE INTRODUCED EARLY');
   const out = countOf(code, OUTBOUND.fingerprint);
@@ -250,11 +264,13 @@ function run(src) {
     bad('J07', 'window.open is not inside pnSupplierHandover() — the single door has moved');
   }
 
+  /* POST-RP-1. The door is DEFINED and has NO CALLER. That is the contract:
+     it belongs at the end of Progress, and Progress is dormant. A reference
+     count above one means some stage started calling it again. */
   const callers = countOf(code, 'pnSupplierHandover(');
-  const expected = 1 /* definition */ + 1 /* the recorded V2 call site */;
-  if (callers === expected) ok('J07', 'pnSupplierHandover has exactly the one recorded call site (V2)');
-  else bad('J07', 'pnSupplierHandover reference count is ' + callers + ', recorded ' + expected +
-                  ' — a new handoff call site was added');
+  if (callers === 1) ok('J07', 'the outbound door is defined and has no caller, as the contract requires');
+  else bad('J07', 'pnSupplierHandover reference count is ' + callers + ', expected 1 (definition only)' +
+                  ' — a stage has started calling the outbound door again');
 
   head('J10 · NO PARALLEL JOURNEY AROUND A CANONICAL STAGE');
   const declared = [];
@@ -289,25 +305,24 @@ function run(src) {
   head('P01 · PRICE SEMANTICS AND CLAIM FIREWALL');
   FORBIDDEN_CLAIMS.forEach(function (claim) {
     const n = countOf(code, claim);
-    const rec = VIOLATIONS.filter(function (v) { return v.fingerprint === claim + ' for this one.'; })[0];
-    const allowed = rec ? rec.count : 0;
+    const allowed = 0;   /* RP-1 retired the last one. None are permitted. */
     if (n === allowed) {
-      if (allowed) ok('P01', 'V4 frozen: "' + claim + '" appears ' + n + ' time, as recorded');
-      else ok('P01', 'absent: "' + claim + '"');
+      ok('P01', 'absent: "' + claim + '"');
     } else {
       bad('P01', '"' + claim + '" appears ' + n + ' times, contract allows ' + allowed);
     }
   });
 
-  head('RECORDED VIOLATION LEDGER (3099d8d)');
-  VIOLATIONS.forEach(function (v) {
-    const n = countOf(src, v.fingerprint);
-    if (n === v.count) {
-      ok(v.guard, v.id + ' unchanged — ' + v.what);
-    } else if (n === 0) {
-      ok(v.guard, v.id + ' NO LONGER PRESENT — repaired. Retire it from the ledger.');
+  head('POST-REPAIR INVARIANTS (RP-1) — the four violations stay retired');
+  REPAIRED.forEach(function (r) {
+    if (r.absent !== undefined) {
+      const n = countOf(code, r.absent);
+      if (n === 0) ok(r.guard, r.label);
+      else bad(r.guard, r.label + ' — RETURNED (' + n + ' occurrence(s))');
     } else {
-      bad(v.guard, v.id + ' SPREAD: fingerprint count ' + n + ', recorded ' + v.count);
+      const n = countOf(code, r.present);
+      if (n === r.count) ok(r.guard, r.label);
+      else bad(r.guard, r.label + ': expected ' + r.count + ', found ' + n);
     }
   });
 
@@ -427,7 +442,13 @@ function selfTest() {
   const cases = [
     ['dormant Resolve deleted',      function (s) { return s.replace('const RESOLVE_REGISTRY = [', 'const RETIRED_REGISTRY = ['); }, 'J09'],
     ['a second outbound door',       function (s) { return s.replace('window.open(', 'window.open(/*x*/); window.open('); }, 'J07'],
-    ['a rival uncertainty model',    function (s) { return s.replace('function pnOpenQuestions(product){', 'function pnProductUncertainties(p){ return []; }\n  function pnOpenQuestions(product){'); }, 'J03'],
+    /* Re-pointed after RP-1: the old anchor was retired, so the mutation had
+       become a no-op and the guard looked broken when it was not. */
+    ['a rival uncertainty model',    function (s) { return s.replace('function pnResolvePreview(product){', 'function pnProductUncertainties(p){ return []; }\n  function pnResolvePreview(product){'); }, 'J03'],
+    ['the preview authors a question',function (s) { return s.replace('    const out = [];\n    if (!product) return out;\n    let registry', "    const out = ['Whether VAT is included on this order'];\n    if (!product) return out;\n    let registry"); }, 'J03'],
+    ['the preview writes Resolve state',function (s) { return s.replace('      out.push({ key: entry.key, label: copy.label,', '      recordResolveAnswer(product.id, entry.key, copy.label);\n      out.push({ key: entry.key, label: copy.label,'); }, 'J03'],
+    ['V1 returns: a second question model',function (s) { return s.replace('function pnResolvePreview(product){', 'function pnOpenQuestions(product){ return []; }\n  function pnResolvePreview(product){'); }, 'J03'],
+    ['Option Detail calls the door again',function (s) { return s.replace('      openMyPlot();', '      pnSupplierHandover(product, nextAction.state);\n      openMyPlot();'); }, 'J07'],
     ['a My Plot seam removed',       function (s) { return s.replace('els.myPlotProgressBtn.addEventListener', 'els.myPlotProgressBtnX.addEventListener'); }, 'J08'],
     ['registry owner drift',         function (s) { return s.replace("key:'planning', consequence:'blocking', owner:'world'", "key:'planning', consequence:'blocking', owner:'plotnua'"); }, 'J04'],
     ['a new supplier claim',         function (s) { return s.replace('const PB046_NO_PRICE', "const X='we will request'; const PB046_NO_PRICE"); }, 'P01'],

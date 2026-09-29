@@ -19785,6 +19785,16 @@
 
      Returns null when Atlas holds no product url — state C — and the caller
      renders no outward button at all rather than a dead one. */
+  /* RP-1 · V3. RETAINED, AND DELIBERATELY UNREFERENCED.
+
+     This decided whether to show an outward supplier route from Option
+     Detail, on the strength of a product URL existing. That is the wrong
+     test at the wrong stage. Per PLOTNUA-JOURNEY-CONTRACT.md, a supplier
+     handoff depends on Resolve state, Progress readiness AND a verified
+     supplier route -- and it belongs after Progress.
+
+     It is not deleted, because the states it distinguishes are sound and
+     Progress will need them. It has no caller. Do not give it one here. */
   function pnNextAction(product){
     if (!product) return null;
     const url = typeof product.productUrl === 'string' ? product.productUrl.trim() : '';
@@ -19801,31 +19811,65 @@
             + 'current, and what delivery to your address would add.',
       };
     }
+    /* RP-1 · V4 REPAIRED. The old note asserted that the supplier had put no
+       price in public -- a claim about the SUPPLIER'S behaviour, inferred
+       from a gap in ATLAS. The exact sentence is not quoted here: a guard
+       forbids that wording anywhere in the file, and a comment naming it
+       would defeat its own guard. The file already draws the distinction
+       properly, in the
+       PB046 block: 'none' -> Price not published, 'ambiguous' -> Price not
+       confirmed, evidenced quote-only -> Priced on enquiry. What is true here
+       is only the first half: PlotNua does not hold a confirmed price. */
     return {
       state: 'B',
       href: url,
       label: 'Check price & availability',
-      note: org + ' has not published a price for this one. The next step is to '
-          + 'ask them what it costs and what would be involved at your property.',
+      note: 'PlotNua does not hold a confirmed price for this one. '
+          + org + ' can tell you what it costs and what would be involved '
+          + 'at your property.',
     };
   }
 
   /* THE OPEN QUESTIONS, READ OFF THE EVIDENCE — never a fixed list.
      A line appears only when Atlas genuinely does not hold the answer. */
-  function pnOpenQuestions(product){
+  /* RP-1 · V1 REPAIRED. RESOLVE_REGISTRY IS THE ONLY UNCERTAINTY MODEL.
+
+     pnOpenQuestions() stood here and declared its own seven questions, none
+     of which existed in the canonical taxonomy and all of which duplicated
+     entries that did. This reads the registry instead:
+
+       - each entry answers for itself, through its own resolve(product);
+       - only 'not-yet' entries survive, because 'now' means Atlas can answer
+         it and an answered thing is not an open question;
+       - the words come from resolveCopyFor(), the same resolver Resolve uses,
+         so the two surfaces cannot drift into different language;
+       - an entry with no canonical copy is SKIPPED, not given wording here.
+         Authoring a sentence in a preview is how a second taxonomy starts.
+
+     This is a READ. It owns no answers and writes no state -- Resolve owns
+     both, and still does, dormant or not.
+
+     The registry is declared later in the file than this function. That is
+     safe because nothing calls this until render time, but a const in its
+     temporal dead zone THROWS on typeof rather than reporting 'undefined',
+     so the read is wrapped rather than guarded. */
+  function pnResolvePreview(product){
     const out = [];
     if (!product) return out;
-    if (pnUsablePrice(product.price) == null) out.push('What it costs today');
-    const vat = (typeof pnVatPosition === 'function') ? pnVatPosition(product) : null;
-    if (!vat || vat.state === 'unknown' || vat.state === 'disputed') out.push('Whether VAT is included');
-    if (product.irishAvailabilityConfirmationState !== 'Yes') {
-      out.push('Whether they deliver to your part of Ireland');
-    }
-    const sig = (product.qualification && product.qualification.evidenceSignals) || {};
-    if (!sig.availabilityRecordCount) out.push('How long it takes to arrive');
-    out.push('What the base needs to be, and who lays it');
-    out.push('Whether they install it or you arrange that');
-    out.push('Whether it needs planning permission at your property');
+    let registry = null;
+    try { registry = RESOLVE_REGISTRY; } catch (e) { return out; }
+    if (!Array.isArray(registry)) return out;
+    registry.forEach(function(entry){
+      if (!entry || typeof entry.resolve !== 'function') return;
+      let r = null;
+      try { r = entry.resolve(product); } catch (e) { return; }
+      if (!r || r.resolvability !== 'not-yet') return;
+      let copy = null;
+      try { copy = resolveCopyFor(entry); } catch (e) { return; }
+      if (!copy || !copy.label) return;
+      out.push({ key: entry.key, label: copy.label,
+                 owner: entry.owner || null, consequence: entry.consequence || null });
+    });
     return out;
   }
 
@@ -27994,7 +28038,7 @@
       pdHost.appendChild(checks);
     }
     checks.innerHTML = '';
-    const openQs = pnOpenQuestions(product);
+    const openQs = pnResolvePreview(product).map(function(r){ return r.label; });
     if (openQs.length) {
       const ch = document.createElement('h3');
       ch.className = 'pd-checks-head';
@@ -28024,48 +28068,47 @@
       nextWrap.className = 'pd-next';
       pdHost.appendChild(nextWrap);
     }
+    /* RP-1 · V2 REPAIRED. THE CONTINUATION GOES BACK INTO PLOTNUA.
+
+       "Take this further" sent the homeowner to the supplier's website from
+       the second stage of a nine-stage journey, skipping the two stages that
+       own the decision work. pnSupplierHandover() is untouched and remains
+       the approved single outbound door -- it simply has no caller until
+       Progress is the one calling it.
+
+       Option Detail is a reading surface. Its continuation is the thing that
+       holds the decision: My Plot. Saving here reuses savedProductIds and
+       recordSaveProvenance() exactly as the Save control above does, so no
+       second record and no duplicate can be created. */
     nextWrap.innerHTML = '';
     const nh = document.createElement('h3');
     nh.className = 'pd-next-head';
-    nh.textContent = 'Take this further';
+    nh.textContent = 'Continue with this option';
     nextWrap.appendChild(nh);
 
-    const nextAction = pnNextAction(product);
-    if (nextAction) {
-      const np = document.createElement('p');
-      np.className = 'pd-next-note';
-      np.textContent = nextAction.note;
-      nextWrap.appendChild(np);
-      /* A REAL LINK, not a button that calls window.open. It carries an href,
-         so it can be opened in a new tab, copied, or read out by a screen
-         reader as the outbound link it is. The click still routes through
-         pnSupplierHandover() so the future tracked redirect has exactly one
-         place to land. */
-      const a = document.createElement('a');
-      a.className = 'pd-next-cta';
-      a.href = nextAction.href;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.textContent = nextAction.label + ' \u2192';
-      a.addEventListener('click', function(e){
-        e.preventDefault();
-        pnSupplierHandover(product, nextAction.state);
-      });
-      nextWrap.appendChild(a);
-      const nf = document.createElement('p');
-      nf.className = 'pd-next-foot';
-      nf.textContent = 'This opens ' + (product.organisation || 'the supplier')
-        + '\u2019s own website. PlotNua does not sell this and takes nothing for the introduction.';
-      nextWrap.appendChild(nf);
-    } else {
-      /* STATE C. Atlas holds no product url, so there is nowhere honest to
-         send anyone. Say that, and offer the thing that does exist. */
-      const np = document.createElement('p');
-      np.className = 'pd-next-note';
-      np.textContent = 'Atlas has not recorded a page for this one yet, so there is nowhere '
-        + 'to send you that we can stand over. What is above is everything it holds.';
-      nextWrap.appendChild(np);
-    }
+    const alreadySaved = savedProductIds.has(product.id);
+    const np = document.createElement('p');
+    np.className = 'pd-next-note';
+    np.textContent = alreadySaved
+      ? 'This one is in My Plot. Open it there to keep working on it.'
+      : 'Keep this one in My Plot, where you can come back to it and put it '
+        + 'beside anything else you are weighing up.';
+    nextWrap.appendChild(np);
+
+    const cont = document.createElement('button');
+    cont.type = 'button';
+    cont.className = 'pd-next-cta';
+    cont.textContent = 'Continue with this option \u2192';
+    cont.addEventListener('click', function(){
+      if (!savedProductIds.has(product.id)) {
+        savedProductIds.add(product.id);
+        recordSaveProvenance(product);
+        try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.saved(); } catch (e) {}
+        updateMyPlotAccess();
+      }
+      openMyPlot();
+    });
+    nextWrap.appendChild(cont);
 
     showScreen(els.productDetailScreen);
   }

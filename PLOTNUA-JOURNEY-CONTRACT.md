@@ -247,35 +247,46 @@ Class C is new, and it is the class that `3099d8d` would have failed.
 
 ---
 
-## 5 · Recorded violations — `3099d8d`
+## 5 · Recorded violations — `3099d8d` — **ALL FOUR RETIRED BY RP-1**
 
-`3099d8d` is **not reverted** by this pass. It is recorded, fingerprinted, and frozen: the guards
-fail if any of these grows, spreads, or is joined by another of its kind.
+| Item | Verdict | Status |
+|---|---|---|
+| Results → Option Detail reachability | KEEP — canonical | live |
+| Governed Option Detail image rendering | KEEP — canonical | live |
+| `pnOpenQuestions()` parallel model | NON-CANONICAL · V1 | **RETIRED** |
+| Option Detail → supplier handoff | NON-CANONICAL · V2 | **RETIRED** |
+| `pnNextAction()` as Option Detail router | NON-CANONICAL · V3 | **RETIRED** |
+| supplier-publication price claim | NON-CANONICAL · V4 | **RETIRED** |
 
-| Item | Verdict |
-|---|---|
-| Results → Option Detail reachability | **KEEP** — canonical |
-| Governed Option Detail image rendering | **KEEP** — canonical |
-| `pnOpenQuestions()` parallel uncertainty model | **NON-CANONICAL · V1** |
-| Option Detail → supplier handoff | **NON-CANONICAL · V2** |
-| `pnSupplierHandover()` single-door function | **REUSABLE · placed too early · V3** |
-| `"[Supplier] has not published a price for this one."` | **NON-CANONICAL · V4** |
+They were repaired, not re-fingerprinted. The guards that recorded them now
+assert the **repaired** state instead, so each violation cannot return either.
 
-**V1 — `pnOpenQuestions()` duplicates `RESOLVE_REGISTRY`.** Verified: it contains zero references
-to `RESOLVE_REGISTRY`. Its six questions map almost one-for-one onto registry entries
-(VAT→`priceIncludes`, base→`ground`, install→`installationCharges`, planning→`planning`,
-delivery→`deliversHere`, cost→`priceIncludes`), but carry no owner, no resolvability, no
-consequence, no state and **no persistence**. Frozen at **7** declared questions (6 render for any one product; the cost question is price-conditional).
+**V1 → `pnResolvePreview()`.** Reads `RESOLVE_REGISTRY`, calls each entry's own
+`resolve(product)`, keeps only `resolvability: 'not-yet'`, and takes its words
+from `resolveCopyFor()` — the resolver Resolve itself uses, so the two surfaces
+cannot drift into different language. It authors no questions, owns no answers
+and writes no state. An entry with no canonical copy is skipped rather than
+given wording locally. Measured: 11 of the 13 entries resolve without a DOM;
+`power` and `water` take their copy from `#readinessList` and are skipped when
+that panel is absent, which is the designed behaviour.
 
-**V2 — Option Detail holds the outward CTA.** `pnSupplierHandover(product, nextAction.state)` is
-called from `openProductDetail`'s "Take this further" section, seven stages early.
+**V2 → "Continue with this option".** Option Detail now continues *into*
+PlotNua. Unsaved: it saves through the existing `savedProductIds` +
+`recordSaveProvenance()` + `updateMyPlotAccess()` path, then `openMyPlot()`.
+Already saved: straight to `openMyPlot()`. One record, no duplicate.
 
-**V3 — `pnNextAction()` gates on URL existence, not readiness.** `resolveReadiness(states)` exists
-and nothing in Option Detail calls it.
+**V3.** `pnNextAction()` is retained and has no caller. Its states are sound and
+Progress will need them; the test it applied — does a product URL exist — was
+the wrong test at the wrong stage.
 
-**V4 — an Atlas gap stated as a supplier fact.** See §7.
+**V4.** The supplier-publication sentence is gone. `pnNextAction()`'s State B
+note now says only what is true: PlotNua does not hold a confirmed price. The
+PB046 vocabulary is untouched and remains canonical.
 
----
+**`pnSupplierHandover()` survives, uncalled.** It is still the only
+`window.open(` in the file, and still the seam for the tracked redirect. Guard
+J07 now asserts a reference count of exactly **one** — the definition — and
+fails if any stage starts calling it again before Progress does.
 
 ## 6 · Market source-of-truth invariant
 
@@ -286,11 +297,24 @@ as though it were the Irish supplier route, when a verified Irish storefront exi
 
 **Recorded risk — Power Sheds.** Atlas holds:
 
-| Product | Price | URL |
+**URLs corrected by RP-1** (29 Sep 2026). All three now point at the Irish
+storefront; the slugs map exactly:
+
+| Product | Price held | URL now |
 |---|---|---|
-| 12x12 Apex Classic Log Cabin | 4864 **GBP** | `powersheds.com/products/apex-classic-log-cabin-44mm` |
-| 14x14 Apex Classic Log Cabin | 5634 **GBP** | `powersheds.com/products/apex-classic-log-cabin-44mm` |
-| 16x12 Apex Log Cabin | 7444 **GBP** | `powersheds.com/products/apex-log-cabin` |
+| 12x12 Apex Classic Log Cabin | 4864 **GBP** | `ie.powersheds.com/products/apex-classic-log-cabin-44mm` |
+| 14x14 Apex Classic Log Cabin | 5634 **GBP** | `ie.powersheds.com/products/apex-classic-log-cabin-44mm` |
+| 16x12 Apex Log Cabin | 7444 **GBP** | `ie.powersheds.com/products/apex-log-cabin` |
+
+**No EUR price was ingested, and the currency mismatch remains open.** Measured
+first-party on 29 Sep 2026: the Irish pages publish *From* €5,399.00 and *From*
+€6,864.00, and resolve to a figure only after Size and Door Position are chosen.
+Atlas holds size-specific records, and a base "from" price is not the price of
+the 14x14. Separately, the 15%-off promotion **had not ended** — the banner
+reads "ENDS THURSDAY 1ST OCTOBER, 11PM" and was live on the day of the check.
+It is code-applied at checkout (CABIN15) rather than struck through the list
+price, so the displayed figure is the list price; but with the size-specific
+figure unobtainable, nothing was taken.
 
 All three are `priceEvidenceState: verified` and all three resolve to next-action **State A**
 ("See price at Power Sheds"). The supplier operates a dedicated Irish storefront at
