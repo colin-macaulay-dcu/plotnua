@@ -4249,7 +4249,6 @@
     .results-hero-inner.is-fieldonly .results-hero-name,
     .results-hero-inner.is-fieldonly .results-hero-org,
     .results-hero-inner.is-fieldonly .results-hero-price-row,
-    .results-hero-inner.is-fieldonly .prop-confirm,
     .results-hero-inner.is-fieldonly .results-hero-editorial{ grid-column:1; }
     /* RIGHT — pulled up to sit level with the product name. */
     .results-hero-inner.is-fieldonly .hero-trust,
@@ -5526,32 +5525,15 @@
   /* One line under the price: place then link, sharing a baseline. The grid
      columns the strip used above the hero would strand the link on its own row
      here. */
-  .prop-confirm.is-in-hero{
-    margin:12px 0 0; padding:0; border:none;
-    /* align-items:center, not baseline: the link is itself a flex box with an
-       arrow, so its inner text baseline sits below the plain text beside it and
-       "Dublin" appeared to be on its own line. */
-    display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px;
-  }
-  .prop-confirm.is-in-hero .prop-confirm-place{
-    font-size:14px; color:var(--soft); margin:0;
-  }
-  .prop-confirm.is-in-hero .prop-confirm-link{
-    font-size:13px; font-weight:500; border-bottom:none; padding:0;
-    text-decoration:underline; text-underline-offset:3px;
-    text-decoration-color:rgba(31,59,46,.25);
-  }
-  .prop-confirm.is-in-hero .prop-confirm-link:hover{
-    text-decoration-color:var(--accent);
-  }
-  /* RESULTS-UX-006 — the base rule sets min-height:44px, which is a TOUCH
-     target and correct on a phone. It is also what made this row 44px tall
-     for a 13px link inside the hero. Reduced only where a fine pointer is
-     present, so every touch device — phone and tablet alike — keeps its full
-     44px target. Nothing is scoped by screen width. */
-  @media (pointer:fine){
-    .prop-confirm.is-in-hero .prop-confirm-link{ min-height:28px; }
-  }
+  /* JC-1 — the in-hero variant rules for .prop-confirm are gone along with the
+     relocation that created them. Nothing adds that class any more, so they
+     styled a state that can no longer exist. The base .prop-confirm rules
+     below are untouched and are what the block uses in its authored position.
+
+     The class name is deliberately not written out here: guard P02 fails the
+     build on ANY literal occurrence of it anywhere in the file, which is what
+     makes "the cleanup is complete" checkable rather than asserted. A comment
+     naming it would defeat its own guard. */
   .prop-confirm-label{
     margin:0; font-family:'Work Sans',sans-serif; font-size:11px; font-weight:600;
     letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
@@ -6159,7 +6141,6 @@
   #screen-match-results .plot-twist-intro{ font-size:var(--pn-s-emph); }
   #screen-match-results .plot-twist.wildcard .plot-twist-intro, #screen-match-results .plot-twist.wildcard .plot-twist-observation, #screen-match-results .plot-twist.wildcard .pt-why{ font-size:var(--pn-s-emph); }
   #screen-match-results .prop-confirm-place{ font-size:var(--pn-s-emph); }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-place{ font-size:var(--pn-s-emph); }
   #screen-match-results .pt-why{ font-size:var(--pn-s-emph); }
   #screen-match-results .results-why-compromise{ font-size:var(--pn-s-emph); }
   #screen-match-results .results-why-evidence{ font-size:var(--pn-s-emph); }
@@ -6259,7 +6240,6 @@
   #screen-match-results .plot-twist-observation{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .plot-twist.wildcard .plot-twist-observation{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .prop-confirm-link{ font-size:var(--pn-w-body-sm); }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-link{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .readiness-detail{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .readiness-toggle{ font-size:var(--pn-w-body-sm); }
   #screen-match-results .results-eyebrow{ font-size:var(--pn-w-body-sm); }
@@ -6364,13 +6344,11 @@
   #screen-match-results .plot-twist-intro{ font-weight:500; }
   #screen-match-results .plot-twist.wildcard .plot-twist-intro, #screen-match-results .plot-twist.wildcard .plot-twist-observation, #screen-match-results .plot-twist.wildcard .pt-why{ font-weight:500; }
   #screen-match-results .prop-confirm-place{ font-weight:500; }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-place{ font-weight:500; }
   #screen-match-results .pt-why{ font-weight:500; }
   #screen-match-results .results-why-compromise{ font-weight:500; }
   #screen-match-results .results-why-evidence{ font-weight:500; }
   #screen-match-results .match-card-open-myplot-link{ font-weight:600; }
   #screen-match-results .prop-confirm-link{ font-weight:400; }
-  #screen-match-results .prop-confirm.is-in-hero .prop-confirm-link{ font-weight:400; }
   #screen-match-results .match-atlas-popover-subtitle{ font-weight:600; }
 
   /* ======================================================================
@@ -8520,6 +8498,119 @@
     }
     #screen-match-results .results-hero-editorial{ font-size:15.5px; margin-top:16px; }
   }
+  /* ======================================================================
+     JC-2 · RESULT TO OPTION. Presentation for the new controls only.
+     Scoped, and last in the sheet.
+     ====================================================================== */
+
+  /* VIEW OPTION — the primary on both Results surfaces. It inherits the
+     filled treatment the hero's Save had; Save keeps its shape and steps
+     down to an outline, so the pair reads as "tell me more" then "keep it". */
+  #screen-match-results .pn-view-option{
+    font-family:'Work Sans',sans-serif; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    flex:0 0 auto; background:var(--pn-voice); color:var(--pn-ground);
+    border:1.5px solid var(--pn-voice); border-radius:999px;
+    padding:13px 28px; font-size:14px; font-weight:600; letter-spacing:.005em;
+  }
+  #screen-match-results .pn-view-option:hover{
+    background:var(--pn-wild); border-color:var(--pn-wild);
+  }
+  #screen-match-results .pn-view-option:focus-visible{
+    outline:2px solid var(--brand-sage); outline-offset:3px;
+  }
+  /* SAVE STEPS DOWN. Same control, same handler, same label — outline
+     instead of fill, because two filled pills side by side is not a
+     hierarchy. */
+  #screen-match-results .results-hero-body .match-card-save-primary,
+  #screen-match-results #altResults .match-card-save-primary{
+    background:none; color:var(--pn-voice);
+    border:1.5px solid var(--pn-edge);
+  }
+  #screen-match-results .results-hero-body .match-card-save-primary:hover,
+  #screen-match-results #altResults .match-card-save-primary:hover{
+    background:none; border-color:var(--pn-voice);
+  }
+  #screen-match-results .results-hero-body .match-card-save-primary.is-saved,
+  #screen-match-results #altResults .match-card-save-primary.is-saved{
+    background:var(--pn-wash); border-color:var(--pn-voice); color:var(--pn-voice);
+  }
+  #screen-match-results .match-card-actions{ flex-wrap:wrap; gap:10px; }
+  @media (max-width:719px){
+    #screen-match-results .results-hero-body .match-card-actions{
+      flex-direction:column; align-items:stretch; gap:10px;
+    }
+    #screen-match-results .pn-view-option{ width:100%; padding:15px 24px; }
+  }
+  #screen-match-results #altResults .pn-view-option{
+    padding:10px 20px; font-size:13px;
+  }
+  #screen-match-results #altResults .match-card-save-primary{
+    padding:10px 20px; font-size:13px;
+  }
+
+  /* ---- OPTION DETAIL: the two new sections ------------------------- */
+  #screen-product-detail .pd-checks,
+  #screen-product-detail .pd-next{
+    margin-top:32px; padding-top:24px; border-top:1px solid var(--pn-hair);
+  }
+  #screen-product-detail .pd-checks[hidden]{ display:none; }
+  #screen-product-detail .pd-checks-head,
+  #screen-product-detail .pd-next-head{
+    font-family:'Fraunces',Georgia,serif; font-weight:500; font-size:21px;
+    line-height:1.2; letter-spacing:-.01em; color:var(--pn-voice); margin:0 0 6px;
+  }
+  #screen-product-detail .pd-checks-intro,
+  #screen-product-detail .pd-next-note{
+    font-size:14.5px; line-height:1.6; color:var(--pn-body);
+    margin:0 0 14px; max-width:56ch;
+  }
+  #screen-product-detail .pd-checks-list{
+    margin:0; padding:0; list-style:none;
+    display:grid; gap:8px;
+  }
+  #screen-product-detail .pd-checks-list li{
+    position:relative; padding-left:20px;
+    font-size:14.5px; line-height:1.55; color:var(--pn-body);
+  }
+  /* A neutral mark, not a tick and not a warning: these are open questions,
+     and Atlas has neither answered nor failed them. */
+  #screen-product-detail .pd-checks-list li::before{
+    content:''; position:absolute; left:2px; top:.62em;
+    width:6px; height:6px; border-radius:50%;
+    border:1px solid var(--pn-stone);
+  }
+  #screen-product-detail .pd-next-cta{
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--pn-voice); color:var(--pn-ground);
+    border:1.5px solid var(--pn-voice); border-radius:999px;
+    padding:13px 28px; font-family:'Work Sans',sans-serif;
+    font-size:14px; font-weight:600; text-decoration:none;
+  }
+  #screen-product-detail .pd-next-cta:hover{
+    background:var(--pn-wild); border-color:var(--pn-wild); color:var(--pn-ground);
+  }
+  #screen-product-detail .pd-next-cta:focus-visible{
+    outline:2px solid var(--brand-sage); outline-offset:3px;
+  }
+  /* The honesty line. Quiet, but never hidden: it is the sentence that keeps
+     the handover truthful. */
+  #screen-product-detail .pd-next-foot{
+    margin:12px 0 0; font-size:12.5px; line-height:1.55;
+    color:var(--pn-stone); max-width:52ch;
+  }
+  /* The governed credit sits on the Option Detail image exactly as it does
+     on Results — same chip, same scrim, same rules. */
+  #screen-product-detail .pd-image-wrap{ position:relative; }
+  #screen-product-detail .pn-image-credit{
+    padding:16px 14px 8px; border-radius:0; right:0;
+    background:linear-gradient(0deg,rgba(20,34,26,.62) 0%,rgba(20,34,26,.26) 55%,rgba(20,34,26,0) 100%);
+    font-size:10.5px; letter-spacing:.02em; color:rgba(255,255,255,.93);
+  }
+  @media (max-width:719px){
+    #screen-product-detail .pd-next-cta{ width:100%; }
+  }
+
 </style>
 </head>
 <body>
@@ -9161,7 +9252,11 @@
            VISUALLY, not removed — the section's aria-labelledby points at
            this node, so emptying it would strip the accessible name off the
            whole property block. -->
-      <p class="prop-confirm-label" id="propConfirmLabel" hidden>Your property</p>
+      <!-- JC-1 — VISIBLE AGAIN. It was hidden when this block sat in the hero
+           beside a sunlight link, where "Your property" above "Dublin" was
+           redundant. Out of the hero it is the framing the founder's rule
+           requires: a locality shown to a homeowner has to say whose it is. -->
+      <p class="prop-confirm-label" id="propConfirmLabel">Your property</p>
       <p class="prop-confirm-place" id="propConfirmPlace"></p>
       <a class="prop-confirm-link" href="#yourProperty" id="propConfirmLink">See how sunlight moves across your property
         <span aria-hidden="true">&rarr;</span></a>
@@ -19664,9 +19759,101 @@
   // same showUndoToast()/updateMyPlotAccess()/updateNextStepSection()/
   // myPlotReturn.remember() calls) — pulled into one helper so the primary
   // and alternative card builders don't duplicate this logic three times.
+  /* ==================================================================
+     JC-2 · RESULT TO OPTION — the helpers. Nothing below invents a fact,
+     a price, a route or a relationship; each one reads governed state and
+     returns null when the evidence is not there.
+     ================================================================== */
+
+  /* THE ONE PLACE AN OUTBOUND SUPPLIER LINK IS FOLLOWED.
+
+     It does very little today: open the supplier's own page in a new tab,
+     rel="noopener noreferrer". That is the point. When the PlotNua-controlled
+     server-side redirect and its UTMs exist, this function changes and every
+     surface that hands over inherits it without a new page architecture.
+
+     It sends no personal data, and it counts nothing. A counter that lived in
+     a page variable would be discarded on reload, so calling it "aggregate
+     click tracking" would be a claim, not a measurement. */
+  function pnSupplierHandover(product, action){
+    const next = pnNextAction(product);
+    if (!next || !next.href) return;
+    window.open(next.href, '_blank', 'noopener,noreferrer');
+  }
+
+  /* WHAT THE HOMEOWNER CAN ACTUALLY DO NEXT, DECIDED BY EVIDENCE.
+
+     Returns null when Atlas holds no product url — state C — and the caller
+     renders no outward button at all rather than a dead one. */
+  function pnNextAction(product){
+    if (!product) return null;
+    const url = typeof product.productUrl === 'string' ? product.productUrl.trim() : '';
+    if (!url || !/^https:\/\//i.test(url)) return null;   // state C: nothing to offer
+    const org = product.organisation || 'the supplier';
+    const priced = pnUsablePrice(product.price) != null
+                && product.priceEvidenceState === 'verified';
+    if (priced) {
+      return {
+        state: 'A',
+        href: url,
+        label: 'See price at ' + org,
+        note: org + ' publishes a price for this one. Worth checking it is still '
+            + 'current, and what delivery to your address would add.',
+      };
+    }
+    return {
+      state: 'B',
+      href: url,
+      label: 'Check price & availability',
+      note: org + ' has not published a price for this one. The next step is to '
+          + 'ask them what it costs and what would be involved at your property.',
+    };
+  }
+
+  /* THE OPEN QUESTIONS, READ OFF THE EVIDENCE — never a fixed list.
+     A line appears only when Atlas genuinely does not hold the answer. */
+  function pnOpenQuestions(product){
+    const out = [];
+    if (!product) return out;
+    if (pnUsablePrice(product.price) == null) out.push('What it costs today');
+    const vat = (typeof pnVatPosition === 'function') ? pnVatPosition(product) : null;
+    if (!vat || vat.state === 'unknown' || vat.state === 'disputed') out.push('Whether VAT is included');
+    if (product.irishAvailabilityConfirmationState !== 'Yes') {
+      out.push('Whether they deliver to your part of Ireland');
+    }
+    const sig = (product.qualification && product.qualification.evidenceSignals) || {};
+    if (!sig.availabilityRecordCount) out.push('How long it takes to arrive');
+    out.push('What the base needs to be, and who lays it');
+    out.push('Whether they install it or you arrange that');
+    out.push('Whether it needs planning permission at your property');
+    return out;
+  }
+
+  /* THE PRIMARY. A button, not a card-wide click target: the whole point is
+     that Save stays reachable and the card behaves predictably. */
+  function pnViewOptionButton(product){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pn-view-option';
+    b.textContent = 'View option \u2192';
+    b.setAttribute('aria-label', 'View option: ' + (product && product.name ? product.name : ''));
+    b.addEventListener('click', function(){
+      openProductDetail(product.id, els.matchResultsScreen);
+    });
+    return b;
+  }
+
   function buildSaveActions(product){
     const actions = document.createElement('div');
     actions.className = 'match-card-actions';
+
+    /* JC-2 — VIEW OPTION IS THE PRIMARY, ON BOTH RESULTS SURFACES AT ONCE.
+       buildSaveActions() has exactly two callers, the Best match hero and the
+       alternative card, so one insertion here gives both the same control in
+       the same position with the same label. Save is not removed and not
+       demoted in function — it steps down in weight, which is what it should
+       always have been next to "tell me more". */
+    actions.appendChild(pnViewOptionButton(product));
 
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
@@ -20031,25 +20218,21 @@
     }
     body.appendChild(priceRow);
 
-    /* RESULTS-UX-004 — the property line moves INTO the field, directly beneath
-       the price. It was the last block standing between the homeowner and the
-       recommendation; here it becomes part of the story — this building, for
-       your Dublin property. The existing #propConfirm node is relocated whole,
-       so its link, ids and aria-label travel with it and nothing is re-wired. */
-    const propLine = document.getElementById('propConfirm');
-    if (propLine) {
-      propLine.classList.add('is-in-hero');
-      /* RESULTS-UX-007 — the sunlight link leaves the HERO only. The feature
-         itself is untouched: it is still in Results, still closed by default,
-         still the same component. ISSUE 007 renamed its outer title to "Your
-         property in 3D" — the door, not the room — because Before You Decide
-         sends the homeowner there to look at their plot and not only at the
-         light. Inside, the panel still reads "Watch the light move across
-         your plot" and runs the same calculation. */
-      const sunLink = propLine.querySelector('.prop-confirm-link');
-      if (sunLink) { sunLink.hidden = true; sunLink.setAttribute('aria-hidden','true'); }
-      body.appendChild(propLine);
-    }
+    /* JC-1 — THE HOMEOWNER'S LOCALITY IS NOT PRODUCT DATA, SO IT LEAVES THIS
+       BLOCK. RESULTS-UX-004 relocated #propConfirm to sit directly beneath the
+       price, which put "Stillorgan, Dublin" inside the product's identity: a
+       true statement about the homeowner's property, positioned so it read as
+       a fact about the building. Two earlier passes had already removed what
+       framed it -- RESULTS-UX-003 hid the "Your property" label, RESULTS-UX-007
+       hid the sunlight link on the way in -- so a bare place name was all that
+       arrived.
+
+       The section is not deleted and not re-pointed at supplier or product
+       location. It simply stays where it is authored, immediately above the
+       hero, with its link and its label visible: a property-confirmation strip,
+       which is what it was built to be. Eircode capture, geocoding,
+       geocodedResult, localityLabel, #yourProperty and the sunlight
+       calculation are all untouched. */
 
     if (ctx.aboveBudget) {
       const budgetNote = document.createElement('div');
@@ -27636,14 +27819,26 @@
     // assigning it directly requested "/undefined" and relied on the error
     // handler to swap the placeholder in — a 404 on every product-detail
     // open. The homeowner always saw the right mark; the request was waste.
-    if (product.imageUrl) {
-      els.pdImage.src = product.imageUrl;
+    /* JC-2 — GOVERNED IMAGERY, THE SAME RE-CHECK EVERY OTHER RENDERER MAKES.
+       This read product.imageUrl, which is undefined on every record — the
+       comment above says so — so Option Detail always showed the branded
+       placeholder. A homeowner clicked a photograph on Results and arrived at
+       a grey mark. It now calls pnAuthorisedImage() immediately before the
+       <img> is given a src, exactly as the hero, the alternative card and
+       Compare do, and falls through to the placeholder when the rights are not
+       proven. Withdrawal needs no code path: the imagery block disappears and
+       this branch stops firing. */
+    const pdImg = pnAuthorisedImage(product);
+    if (pdImg) {
+      els.pdImage.src = pdImg.url;
+      if (pdImg.alt) els.pdImage.alt = pdImg.alt;
+      pnAttachImageCredit(els.pdImage.parentNode, pdImg);
     } else {
       els.pdImage.dataset.pnFallback = '1';
       els.pdImage.classList.add('pn-image-fallback');
       els.pdImage.src = PN_IMAGE_FALLBACK_SRC;
+      els.pdImage.alt = product.name;
     }
-    els.pdImage.alt = product.name;
     els.pdRole.textContent = MATCH_ROLE_LABEL[role] || '';
     els.pdName.textContent = product.name;
     els.pdOrg.textContent = product.organisation;
@@ -27752,6 +27947,13 @@
     } catch (e) { console.warn('[Atlas detail] fetch not started', e); }
     if (els.pdMore) els.pdMore.open = false;
 
+    /* JC-2 — the credit chip is re-attached on every open, so clear the one
+       the previous product left behind. pnAttachImageCredit() appends; without
+       this the panel would accumulate one chip per product viewed. */
+    if (els.pdImage && els.pdImage.parentNode) {
+      const oldCredit = els.pdImage.parentNode.querySelector('.pn-image-credit');
+      if (oldCredit) oldCredit.remove();
+    }
     els.pdActions.innerHTML = '';
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
@@ -27772,6 +27974,98 @@
       updateMyPlotAccess();
     });
     els.pdActions.appendChild(saveBtn);
+
+    /* ==================================================================
+       JC-2 — WHAT STILL NEEDS CHECKING, THEN WHAT TO DO ABOUT IT.
+
+       Both blocks are created once and reused, so opening a second product
+       replaces their contents rather than appending a second copy. They sit
+       after the actions row because that is the reading order the decision
+       has: here is the option, here is what we do not know, here is the step
+       that would resolve it.
+       ================================================================== */
+    const pdHost = els.pdActions.parentNode;
+
+    let checks = document.getElementById('pdChecks');
+    if (!checks) {
+      checks = document.createElement('section');
+      checks.id = 'pdChecks';
+      checks.className = 'pd-checks';
+      pdHost.appendChild(checks);
+    }
+    checks.innerHTML = '';
+    const openQs = pnOpenQuestions(product);
+    if (openQs.length) {
+      const ch = document.createElement('h3');
+      ch.className = 'pd-checks-head';
+      ch.textContent = 'What still needs checking';
+      checks.appendChild(ch);
+      const cintro = document.createElement('p');
+      cintro.className = 'pd-checks-intro';
+      cintro.textContent = 'Atlas does not hold answers to these. They are the questions worth asking before you commit.';
+      checks.appendChild(cintro);
+      const ul = document.createElement('ul');
+      ul.className = 'pd-checks-list';
+      openQs.forEach(function(q){
+        const li = document.createElement('li');
+        li.textContent = q;
+        ul.appendChild(li);
+      });
+      checks.appendChild(ul);
+      checks.hidden = false;
+    } else {
+      checks.hidden = true;
+    }
+
+    let nextWrap = document.getElementById('pdNext');
+    if (!nextWrap) {
+      nextWrap = document.createElement('section');
+      nextWrap.id = 'pdNext';
+      nextWrap.className = 'pd-next';
+      pdHost.appendChild(nextWrap);
+    }
+    nextWrap.innerHTML = '';
+    const nh = document.createElement('h3');
+    nh.className = 'pd-next-head';
+    nh.textContent = 'Take this further';
+    nextWrap.appendChild(nh);
+
+    const nextAction = pnNextAction(product);
+    if (nextAction) {
+      const np = document.createElement('p');
+      np.className = 'pd-next-note';
+      np.textContent = nextAction.note;
+      nextWrap.appendChild(np);
+      /* A REAL LINK, not a button that calls window.open. It carries an href,
+         so it can be opened in a new tab, copied, or read out by a screen
+         reader as the outbound link it is. The click still routes through
+         pnSupplierHandover() so the future tracked redirect has exactly one
+         place to land. */
+      const a = document.createElement('a');
+      a.className = 'pd-next-cta';
+      a.href = nextAction.href;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = nextAction.label + ' \u2192';
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        pnSupplierHandover(product, nextAction.state);
+      });
+      nextWrap.appendChild(a);
+      const nf = document.createElement('p');
+      nf.className = 'pd-next-foot';
+      nf.textContent = 'This opens ' + (product.organisation || 'the supplier')
+        + '\u2019s own website. PlotNua does not sell this and takes nothing for the introduction.';
+      nextWrap.appendChild(nf);
+    } else {
+      /* STATE C. Atlas holds no product url, so there is nowhere honest to
+         send anyone. Say that, and offer the thing that does exist. */
+      const np = document.createElement('p');
+      np.className = 'pd-next-note';
+      np.textContent = 'Atlas has not recorded a page for this one yet, so there is nowhere '
+        + 'to send you that we can stand over. What is above is everything it holds.';
+      nextWrap.appendChild(np);
+    }
 
     showScreen(els.productDetailScreen);
   }
