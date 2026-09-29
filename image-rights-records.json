@@ -50,6 +50,31 @@
       "atlas_permission_record": "reczCyWXPWvoA27GX",
       "atlas_permission_ref": "IPO-POWERSHEDS-0001",
       "permission_date": "2026-09-28"
+    },
+    {
+      "organisation_record": "recyfWvDVODL06P8l",
+      "organisation_code": "ORG-000157",
+      "organisation_name": "Yard Box",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "yardbox.co.uk",
+      "required_credit": "Image: Yard Box",
+      "permitted_delivery_hosts": [
+        {
+          "host": "images.squarespace-cdn.com",
+          "path_prefix": "/content/v1/619124cac9d9895faff3d303/",
+          "why": "Yard Box's own Squarespace site namespace; the identifier is their site id, so the scope is their files and nobody else's."
+        }
+      ],
+      "evidence": "Granted by Cormac Carville of Yard Box BY EMAIL, 29 September 2026, Gmail thread 1a0d05e09446b7fe, message 1a0ed8a508425026: \"Imagery is ok to use.\" Recorded in Atlas as Image Permission Outreach IPO-032 (recAWWIwLpJX8mAiW), Permission Method 'Reply by Email', Permission Outcome 'Granted with Conditions — Founder Confirmed'.",
+      "conditions": [
+        "Credit design and manufacture to Yard Box — HELD, see note.",
+        "Yard Box attribution on every image use.",
+        "Images are referenced from Yard Box's own site, never copied."
+      ],
+      "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nDOMAIN: weareyardbox.com (the outreach address) redirects to yardbox.co.uk, which is the live site and the permitted domain. Imagery is served from Squarespace's CDN inside Yard Box's own site namespace, scoped above.\n\nTHE DESIGN CREDIT CONDITION IS RECORDED BUT NOT YET APPLIED, on founder instruction of 29 September 2026. Cormac asked that design AND manufacture be credited to Yard Box. INTUMODULAR (ORG-000192) publish \"Designed by INTUMODULAR. Manufactured with YardBox\", and Yard Box's own models page calls Bothán \"our premium 45sqm modular home\". Two suppliers make incompatible authorship statements about the same product on their own sites, so PlotNua preserves the currently evidenced attribution, invents no compromise, and has put the question back to Cormac. NO BOTHÁN IMAGE is used while this is open, although several are authorised and available.\n\nSEPARATELY AND NOT HELD: Cormac's statement that the Bothán 45 sqm figure is the INTERNAL footprint is unambiguous and is applied.",
+      "atlas_permission_record": "recAWWIwLpJX8mAiW",
+      "atlas_permission_ref": "IPO-032",
+      "permission_date": "2026-09-29"
     }
   ]
 }

@@ -559,6 +559,42 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   }
   .results-hero-body .match-card-open-myplot-link,
   .results-gallery-body .match-card-open-myplot-link{ border-radius:999px; }
+  .results-gallery-heading{
+    font-family:'Fraunces',serif; font-size:19px; font-weight:500; letter-spacing:0; color:var(--ink);
+    text-transform:none; margin:0 0 18px;
+  }
+  .results-gallery{ display:flex; flex-direction:column; gap:22px; margin-bottom:8px; }
+  .results-gallery-card{
+    display:flex; gap:18px; background:#fff; border:1px solid rgba(31,59,46,.08);
+    border-radius:14px; overflow:hidden; box-shadow:0 1px 2px rgba(31,59,46,.06), 0 8px 20px rgba(31,59,46,.06);
+    transition:box-shadow .22s ease, transform .22s ease, border-color .22s ease;
+  }
+  .results-gallery-card:hover{ box-shadow:0 12px 30px rgba(31,59,46,.14); transform:translateY(-2px); border-color:rgba(79,107,74,.30); }
+  .results-gallery-media{ width:38%; min-width:130px; aspect-ratio:4/3; background:#e8e4d8; flex-shrink:0; }
+  .results-gallery-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .results-gallery-body{ padding:16px 18px 16px 0; display:flex; flex-direction:column; justify-content:center; }
+  /* RESULTS v4.1 — ALSO WORTH EXPLORING (LOCKED): "Leave the layout
+     unchanged. No structural edits. Only improve typography and spacing
+     where obviously needed." Same DOM, same card content, same card/media
+     sizes and gaps as v4.0 — only the three margins below (each was
+     visibly tighter than this file's comparable patterns elsewhere, e.g.
+     the hero card's own label→name→price rhythm) are opened up slightly. */
+  .results-gallery-role{ font-size:11.5px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .results-gallery-name{ font-family:'Fraunces',serif; font-weight:500; font-size:18.5px; color:var(--ink); margin-bottom:6px; }
+  .results-gallery-price-row{ font-size:13.5px; color:var(--soft); margin-bottom:10px; }
+  .results-gallery-explain{ font-size:14px; line-height:1.55; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .results-gallery-heading{ font-size:20px; margin:0 0 16px; }
+  .results-gallery-role{
+    font-size:11px; letter-spacing:.09em; font-weight:600;
+    color:var(--accent); opacity:.9; margin-bottom:8px;
+  }
+  /* PB040 — a card the homeowner did not ask for the price of. */
+  .results-gallery-role.is-outside-band{ color:var(--terracotta); }
+  .results-gallery-name{ font-size:19.5px; line-height:1.22; letter-spacing:-.003em; margin:0 0 4px; }
+  .results-gallery-org{ font-size:13px; color:var(--soft); margin:0 0 6px; }
+  .results-gallery-price-row{ font-size:14px; color:var(--soft); margin-bottom:12px; }
+  .results-gallery-explain{ font-size:14.5px; line-height:1.6; color:var(--ink); opacity:.92; margin:0 0 14px; }
+  .results-gallery-body .match-card-actions{ margin-top:4px; padding-top:0; }
 /* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */
 </style>
 </head>
@@ -741,6 +777,45 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
 <!-- WHY THIS COULD BE USEFUL — what PlotNua adds BEFORE the homeowner
      arrives. Keep three points. Rewrite them in the supplier's own terms
      if the defaults do not fit; do not expand the section. -->
+
+<section>
+  <h2 class="results-gallery-heading">Some of the other buildings Power Sheds make</h2>
+  <div class="results-gallery">
+    <div class="results-gallery-card">
+      <div class="results-gallery-media"><img src="https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_12x6_POWER_APEX_SUMMERHOUSE_SHIPLAP_ADOBE_98_1eb4bcc2-9cc2-47f8-9f06-3561a381ca1e.jpg" alt="A Power Sheds Apex Summerhouse in a garden" loading="lazy" decoding="async"></div>
+      <div class="results-gallery-body">
+        <div class="results-gallery-role">Summerhouse</div>
+        <div class="results-gallery-name">Apex Summerhouse</div>
+        <p class="results-gallery-explain">Full-length glazing, in sizes from 4&nbsp;&times;&nbsp;4 up to 20&nbsp;&times;&nbsp;8 feet.</p>
+      </div>
+    </div>
+    <div class="results-gallery-card">
+      <div class="results-gallery-media"><img src="https://cdn.shopify.com/s/files/1/0601/8967/1489/files/PO2B37_1.jpg" alt="A Power Sheds Apex Summerhouse Combi, a summerhouse with an attached store" loading="lazy" decoding="async"></div>
+      <div class="results-gallery-body">
+        <div class="results-gallery-role">Room and store</div>
+        <div class="results-gallery-name">Apex Summerhouse Combi</div>
+        <p class="results-gallery-explain">A summerhouse with a separate store attached, so the mower does not end up in the room.</p>
+      </div>
+    </div>
+    <div class="results-gallery-card">
+      <div class="results-gallery-media"><img src="https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_12x6_POWER_APEX_POTTING_SHED_SHIPLAP_ADOBE_98.jpg" alt="A Power Sheds Apex Potting Shed in a garden" loading="lazy" decoding="async"></div>
+      <div class="results-gallery-body">
+        <div class="results-gallery-role">Potting shed</div>
+        <div class="results-gallery-name">Apex Potting Shed</div>
+        <p class="results-gallery-explain">Glazed along one side for growing, with a choice of door arrangements.</p>
+      </div>
+    </div>
+    <div class="results-gallery-card">
+      <div class="results-gallery-media"><img src="https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW010_4_629362a9-83f9-48e3-b068-7c123bcc3e39.jpg" alt="A Power Sheds Apex Bike Shed in a garden" loading="lazy" decoding="async"></div>
+      <div class="results-gallery-body">
+        <div class="results-gallery-role">Bike store</div>
+        <div class="results-gallery-name">Apex Bike Shed</div>
+        <p class="results-gallery-explain">Three sizes from 2&nbsp;&times;&nbsp;6 feet, for getting bikes out of the hall.</p>
+      </div>
+    </div>
+  </div>
+  <p class="credit-line">Images: Power Sheds. Served from Power Sheds&rsquo; own site, used with written permission from Jack Sutcliffe, unmodified. If Power Sheds ask for any of them to be changed or removed, we change or remove them.</p>
+</section>
 
 <section>
   <h2>How Power Sheds could fit</h2>

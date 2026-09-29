@@ -40,7 +40,13 @@ BLOCKS = [('root',473,477),('heart',2470,2476),('heartsizes',2522,2533),
           ('hero1',3555,3599),('media',3604,3606),('herobody',3607,3607),
           ('hero2',3621,3636),('hero3',3642,3652),('prop',5503,5560),
           ('secondary',4219,4227),('mq720',4229,4267),('mq719',4268,4290),
-          ('late',5183,5239)]
+          ('late',5183,5239),
+          # THE GALLERY. Production already has a multi-image component --
+          # Scene 5, "Other directions" -- and the kit simply never lifted it,
+          # so a supplier preview could show exactly one photograph. A
+          # supplier who grants imagery can now be shown properly, using the
+          # same rules the homeowner sees on Results. Lifted, not written.
+          ('gallery',5106,5129),('gallery2',5242,5253)]
 C = {n: grab(a, b, n) for n, a, b in BLOCKS}
 
 src = '\n'.join(L)
@@ -70,6 +76,7 @@ UI_KIT = "\n".join([
  C['root'], C['heart'], C['heartsizes'], C['myplot'], C['cardactions'], C['save'],
  C['hero1'], C['media'], C['herobody'], C['hero2'], C['hero3'], C['prop'],
  C['secondary'], C['mq720'], C['mq719'], C['late'],
+ C['gallery'], C['gallery2'],
  "/* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */",
 ])
 
