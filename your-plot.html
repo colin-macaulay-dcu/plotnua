@@ -8226,6 +8226,305 @@
   .mp-jitem{ padding:20px 0 18px; }
   .mp-jtitle{ font-size:17.5px; }
 }
+
+  /* ======================================================================
+     RVR-1 · RESULTS — PREMIUM VISUAL PASS.
+
+     Presentation only. Nothing here reads a product, re-checks a right or
+     decides what may be shown: the publication gate did that upstream and
+     pnAuthorisedImage() did it again inside the renderer, immediately before
+     each <img> was given a src. By the time any rule below applies, the
+     photograph on screen has already been proven publishable twice.
+
+     LAST IN THE SHEET, ON PURPOSE. Every rule is scoped #screen-match-results
+     and therefore beats the bare-class rules it supersedes (lines ~3604 for
+     the hero, ~5111 and ~5304 for the cards) on specificity as well as
+     order -- the discipline the ISSUE 007 FINAL block above records the hard
+     way.
+     ====================================================================== */
+
+  #screen-match-results{
+    /* ONE STEP LIGHTER THAN THE GROUND, not a sixth beige. --pn-surface
+       (#E3DECB) is a filled panel against #F5F2E8; a card should read as
+       paper lifted off the page. Measured 1.06:1 against the ground -- a
+       separation you see as an edge, not as a colour. */
+    --pn-plate:#FAF8F1;
+    --pn-plate-radius:12px;
+    /* Restrained: a long, low, very soft drop. Nothing that reads as a
+       product tile hovering over a catalogue. */
+    --pn-plate-lift:0 1px 2px rgba(36,53,31,.04), 0 16px 38px -20px rgba(36,53,31,.28);
+  }
+
+  /* ---- §2/§3 · THE BEST MATCH HERO -----------------------------------
+     The photograph was 42% of the content width at 4:3 and sat beside a
+     column of air. It becomes 58% at 3:2. A garden building is a horizontal
+     subject: 4:3 was taking the ends off it.
+
+     3:2 not 16:9 -- a 910px panel at 16:9 gives a 297px-tall band that reads
+     as a header image rather than a photograph of a building. */
+  #screen-match-results .results-hero-media{
+    border-radius:var(--pn-plate-radius);
+    box-shadow:var(--pn-plate-lift);
+    background:var(--pn-hair);
+  }
+  @media (min-width:720px){
+    #screen-match-results .results-hero-inner{
+      align-items:center; gap:clamp(32px,3.4vw,48px);
+    }
+    #screen-match-results .results-hero-media{
+      width:58%; min-width:0; max-width:58%; flex:0 0 58%;
+      aspect-ratio:3/2;
+    }
+    #screen-match-results .results-hero-body{
+      flex:1 1 0; min-width:0;
+    }
+  }
+
+  /* THE INFORMATION COLUMN IS NARROWER NOW, SO THE TYPE COMES TO IT.
+     The name was clamp(44px,6.4vw,80px) against a 528px column. In a 338px
+     column 80px is four broken lines, not a headline. It is still the
+     largest thing on the page and still the first word read; it is simply
+     sized to the measure it actually has. */
+  #screen-match-results .results-hero-name{
+    font-size:clamp(30px,3.2vw,44px);
+    line-height:1.04; margin:0 0 18px; max-width:none;
+  }
+  #screen-match-results .results-hero-price{
+    font-size:clamp(24px,2.2vw,30px);
+  }
+  #screen-match-results .results-hero-editorial{
+    font-size:17px; line-height:1.55; margin:24px 0 0; max-width:40ch;
+  }
+  #screen-match-results .results-hero-body .match-card-actions{ margin-top:24px; }
+
+  /* §4 · THE MAKER'S NAME GOES ABOVE THE PRODUCT'S.
+     By `order` on a column flex container, so the DOM sequence -- and with
+     it the screen-reader and tab order -- is untouched. The same technique
+     the hero's own is-fieldonly grid already uses a few hundred lines above. */
+  #screen-match-results .results-hero-body{
+    display:flex; flex-direction:column;
+  }
+  #screen-match-results .results-hero-org{
+    order:-1; margin:0 0 10px; font-size:11px; letter-spacing:.17em;
+    color:var(--pn-stone);
+  }
+
+  /* ---- §13 · THE CREDIT IS PERMANENT, NOT LOUD -----------------------
+     pnAttachImageCredit() is not touched and the chip is not removable. It
+     loses the solid slab and takes a scrim that fades into the photograph,
+     so the supplier is named without a green block being the second thing
+     the eye lands on. Contrast is unchanged: white on a dark scrim. */
+  #screen-match-results .pn-image-credit{
+    padding:16px 14px 8px; border-radius:0;
+    background:linear-gradient(0deg, rgba(20,34,26,.62) 0%, rgba(20,34,26,.26) 55%, rgba(20,34,26,0) 100%);
+    right:0; font-size:10.5px; letter-spacing:.02em;
+    color:rgba(255,255,255,.93);
+  }
+
+  /* ---- §5 · THE ALTERNATIVES — IMAGE-FIRST PLATES --------------------
+     auto-fit against a 300px minimum rather than a guessed viewport width.
+     Inside the 910px panel that resolves to two columns; if the panel ever
+     widens it becomes three on its own. The measure decides, not a number
+     someone typed once. */
+  #screen-match-results #altResults{
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    gap:clamp(20px,2.2vw,28px);
+    align-items:stretch;
+  }
+  #screen-match-results #altResults > *{ height:100%; }
+
+  /* A COLUMN, NOT A LISTING. image-left/text-right is the shape of a
+     directory; a photograph across the top of a plate is the shape of a
+     page in a book about buildings. */
+  #screen-match-results #altResults .results-gallery-card{
+    flex-direction:column; gap:0; overflow:hidden;
+    background:var(--pn-plate);
+    border:1px solid var(--pn-hair);
+    border-radius:var(--pn-plate-radius);
+    box-shadow:none;
+  }
+  #screen-match-results #altResults .results-gallery-card:hover{
+    transform:none;
+    box-shadow:var(--pn-plate-lift);
+    border-color:rgba(36,53,31,.22);
+  }
+  #screen-match-results #altResults .results-gallery-media{
+    width:100%; min-width:0; max-width:none; flex:0 0 auto;
+    align-self:auto; aspect-ratio:4/3;
+    background:var(--pn-hair); border-radius:0;
+  }
+  #screen-match-results #altResults .results-gallery-body{
+    display:flex; flex-direction:column; flex:1 1 auto;
+    justify-content:flex-start;
+    padding:20px 22px 22px;
+  }
+
+  /* §5/§7 · THE ORDER THE BRIEF ASKS FOR: maker, name, price, then the one
+     comparison cue. The cue was sitting ABOVE the product it was comparing,
+     which is why the card opened on a fragment. The strings themselves are
+     the selector's governed output and are not rewritten here. */
+  #screen-match-results #altResults .results-gallery-org{
+    order:1; margin:0 0 6px;
+    font-size:11px; letter-spacing:.17em; text-transform:uppercase;
+    color:var(--pn-stone);
+  }
+  #screen-match-results #altResults .results-gallery-name{
+    order:2; font-size:21px; line-height:1.2; margin:0 0 6px;
+  }
+  #screen-match-results #altResults .results-gallery-price-row{
+    order:3; margin:0 0 14px; font-size:13.5px; color:var(--pn-body);
+  }
+  #screen-match-results #altResults .results-gallery-role{
+    order:4; margin:0 0 6px; font-size:12px; font-weight:600;
+    letter-spacing:.01em; color:var(--pn-stone);
+  }
+  /* The out-of-band warnings keep their weight: they are a caution, not a
+     comparison cue, and the card is the only place they are said. */
+  #screen-match-results #altResults .results-gallery-role.is-outside-band{
+    color:var(--oak);
+  }
+  #screen-match-results #altResults .results-gallery-explain{
+    order:5; margin:0 0 14px; font-size:14px; line-height:1.55;
+    color:var(--pn-body); opacity:1;
+  }
+  /* Whatever the renderer appends last -- the save control -- sits at the
+     foot of the plate and every plate's foot lines up, because the cards
+     stretch to the tallest in the row. */
+  #screen-match-results #altResults .results-gallery-body > :last-child{
+    order:9; margin-top:auto; padding-top:4px;
+  }
+
+  /* ---- §10 · "FOUND SOMETHING YOURSELF?" — QUIETER -------------------
+     Unchanged in function: the same block, the same form, the same handler.
+     It stops wearing the same plate as a recommendation, because it is not
+     one. No fill, a dashed hairline, and its title at metadata scale. */
+  #screen-match-results #altResults .match-bring-your-own{
+    background:none;
+    border:1px dashed var(--pn-hair);
+    box-shadow:none;
+  }
+  #screen-match-results #altResults .match-bring-your-own .match-bring-your-own-title{
+    font-size:16px; color:var(--pn-stone);
+  }
+
+  /* ---- §9 · MOBILE IS A DESIGN, NOT A REMAINDER ----------------------
+     One column, a full-bleed 3:2 photograph on the hero at the width of the
+     text beneath it, and the same plate for the alternatives. Nothing here
+     is a desktop layout squeezed. */
+  @media (max-width:719px){
+    #screen-match-results .results-hero-media{ aspect-ratio:3/2; }
+    #screen-match-results .results-hero-body{ padding:24px 0 0; }
+    #screen-match-results .results-hero-name{ font-size:clamp(30px,8.4vw,40px); }
+  }
+  @media (max-width:560px){
+    #screen-match-results #altResults{ gap:18px; }
+    #screen-match-results #altResults .results-gallery-body{ padding:18px 18px 20px; }
+    #screen-match-results #altResults .results-gallery-name{ font-size:19.5px; }
+    #screen-match-results .pn-image-credit{ font-size:10px; padding:14px 12px 7px; }
+  }
+
+  /* ======================================================================
+     RVR-2 · RESULTS HERO — PREMIUM REFINEMENT.
+
+     Presentation only, after RVR-1 and for the same reason: last in the
+     sheet, every selector scoped, no rights path anywhere near it.
+     ====================================================================== */
+
+  /* ---- THE CROP, CORRECTED AGAINST THE REAL FILES -------------------
+     Measured in a real browser, the six governed photographs run from 1.618
+     down to 0.869 -- one of them is portrait and three are exactly square.
+     RVR-1's 3/2 threw away 30% of Toronto's height and 42% of Vancouver's.
+     4/3 is the honest maximum here. The hero stays dominant because it is
+     58% of the content width, which this does not touch. */
+  #screen-match-results .results-hero-media{
+    aspect-ratio:4/3;
+  }
+  #screen-match-results .results-hero-media img{
+    /* MEASURED IN A BROWSER, NOT REASONED ABOUT. These supplier files are
+       composites: a CAD elevation above, the photograph below. Biasing the
+       crop above centre -- which is right for a plain photograph, to protect
+       a roofline -- fills this frame with the drawing instead. Bottom-
+       aligning puts the building in the frame. Measured at 1440: the
+       photograph goes from roughly 45% of the hero to roughly 85% of it. */
+    object-position:center bottom;
+  }
+  @media (min-width:720px){
+    #screen-match-results .results-hero-media{ aspect-ratio:4/3; }
+  }
+  /* The alternative plates keep 4/3 and get the same bias, for the same
+     reason: a square source in a 4/3 well crops from somewhere. */
+  #screen-match-results #altResults .results-gallery-media img{
+    object-position:center bottom;
+  }
+
+  /* ---- ONE GROUP: PRICE AND AVAILABILITY ----------------------------
+     They were three separate blocks with three separate margins. Price and
+     what the homeowner can do about it belong to each other. */
+  #screen-match-results .results-hero-price-row{ margin:0 0 6px; }
+  #screen-match-results .results-hero-budget-note{
+    margin:0 0 2px; font-size:13px; color:var(--pn-body);
+  }
+  #screen-match-results .results-hero-budget-note + .results-hero-budget-note{
+    margin-top:2px;
+  }
+
+  /* ---- THE JUDGEMENT, NOT A PULL QUOTE ------------------------------
+     Still the serif italic that marks a considered remark on this page, one
+     step down in size and closer to what it is judging. The sentence itself
+     is generated from governed state and is not touched. */
+  #screen-match-results .results-hero-editorial{
+    font-size:16px; line-height:1.5; margin:18px 0 0; max-width:38ch;
+  }
+
+  /* ---- CTA HIERARCHY: ONE FILLED OBJECT, THEN TWO TEXT ACTIONS ------
+     PRIMARY. Save was an outlined pill whose background resolves to the page
+     colour on this screen, so it read as an empty outline beside an equally
+     heavy second pill. It becomes the only filled element in the hero. */
+  #screen-match-results .results-hero-body .match-card-actions{
+    margin-top:20px; padding-top:0; gap:0;
+  }
+  #screen-match-results .results-hero-body .match-card-save-primary{
+    flex:0 0 auto;
+    background:var(--pn-voice); color:var(--pn-ground);
+    border:1.5px solid var(--pn-voice); border-radius:999px;
+    padding:13px 28px; font-size:14px; font-weight:600;
+  }
+  #screen-match-results .results-hero-body .match-card-save-primary:hover{
+    background:var(--pn-wild); border-color:var(--pn-wild); transform:none;
+  }
+  /* SECONDARY. The second pill loses its pill: same button, same handler,
+     same label, the weight of a link. */
+  #screen-match-results .results-hero-body .match-card-open-myplot-link{
+    align-self:flex-start;
+    margin-top:14px; padding:0;
+    background:none; border:0; border-radius:0;
+    border-bottom:1px solid rgba(36,53,31,.30);
+    font-size:13.5px; font-weight:500; color:var(--pn-voice);
+  }
+  #screen-match-results .results-hero-body .match-card-open-myplot-link:hover{
+    background:none; color:var(--pn-voice);
+    border-bottom-color:var(--pn-voice);
+  }
+  /* TERTIARY. Quietest thing in the column, and closer to the two above it
+     than it was -- the whole action area loses roughly 30px of height. */
+  #screen-match-results .hero-secondary{ margin:14px 0 0; }
+  #screen-match-results .hero-secondary-link{
+    font-size:13px; color:var(--pn-stone);
+  }
+
+  /* ---- MOBILE ------------------------------------------------------
+     The one width where an oversized control costs real scrolling. Save
+     stays full-bleed because a thumb needs the target; the two text actions
+     do not become buttons to match it. */
+  @media (max-width:719px){
+    #screen-match-results .results-hero-body .match-card-save-primary{
+      width:100%; padding:15px 24px;
+    }
+    #screen-match-results .results-hero-name{
+      font-size:clamp(30px,7.6vw,38px); margin-bottom:14px;
+    }
+    #screen-match-results .results-hero-editorial{ font-size:15.5px; margin-top:16px; }
+  }
 </style>
 </head>
 <body>
