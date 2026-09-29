@@ -5142,6 +5142,20 @@
      imageUrl: null, so the placeholder is what is actually seen today — it is
      therefore treated below as a designed surface rather than a gap. */
 
+  /* THE SUPPLIER CREDIT, ON THE PHOTOGRAPH IT BELONGS TO. Every current
+     grant makes attribution a condition, so this is a rights surface, not a
+     caption style. Deliberately quiet: a homeowner should read the product,
+     not the paperwork. */
+  .pn-image-credit{
+    position:absolute; left:0; bottom:0; z-index:2;
+    padding:4px 8px; margin:0;
+    font-size:11px; line-height:1.3; letter-spacing:.01em;
+    color:#fff; background:rgba(31,59,46,.62);
+    border-top-right-radius:6px;
+    pointer-events:none;
+  }
+  @media (max-width:560px){ .pn-image-credit{ font-size:10px; padding:3px 6px; } }
+
   /* ---- PRIORITY 1: placeholder as a considered surface, not a blank box ---- */
   img.pn-image-fallback{
     object-fit:contain !important;
@@ -12361,6 +12375,46 @@
     return Number.isFinite(Number(value)) && Number(value) > 0;
   }
 
+  /* ======================================================================
+     GOVERNED IMAGERY AT RENDER TIME
+     ======================================================================
+     The publication gate remains authoritative. This does not replace it and
+     does not soften it -- it re-applies the same rule in the browser, where
+     the gate cannot run, so that a URL which drifted out of scope after
+     publication still cannot be drawn.
+
+     EVERY CONDITION MUST HOLD. Any missing one yields null and the caller
+     falls back to the existing image-free treatment. There is no partial
+     state and no "probably fine". */
+
+  function pnAuthorisedImage(product){
+    const im = product && product.imagery;
+    if (!im) return null;
+    if (!im.url || !im.credit || !im.supplier || !im.rightsRecord) return null;
+    /* THE SCOPE RE-CHECK. permittedPrefix is the supplier's own domain root,
+       or the exact scoped delivery path the grant allows -- written by
+       apply_authorised_imagery.py from the canonical record. A shared CDN
+       HOST is never enough on its own, and that is the failure this
+       prevents: the large delivery platforms suppliers use each serve
+       thousands of unrelated businesses from the same hostname, so only the
+       host AND the account path together identify one supplier's files. */
+    if (!im.permittedPrefix) return null;
+    if (String(im.url).indexOf(im.permittedPrefix) !== 0) return null;
+    if (String(im.url).slice(0, 8) !== 'https://') return null;
+    return im;
+  }
+
+  /* The credit is not decoration. It is a condition of the grant for every
+     supplier PlotNua currently holds rights from, so it is rendered with the
+     photograph or the photograph is not rendered. */
+  function pnAttachImageCredit(mediaEl, im){
+    if (!mediaEl || !im || !im.credit) return;
+    const c = document.createElement('span');
+    c.className = 'pn-image-credit';
+    c.textContent = im.credit;
+    mediaEl.appendChild(c);
+  }
+
   function normalizePoolProduct(raw){
     return {
       // Same field names/conventions as ATLAS_MATCH_PRODUCTS, so every
@@ -12396,9 +12450,20 @@
       insulation: inferInsulated(raw.insulation),
       spaceRole: raw.spaceRole || undefined,
       budgetBand: raw.budgetBand || undefined,
-      imageUrl: raw.imageUrl || undefined,
+      /* THE GOVERNED BLOCK IS CARRIED THROUGH UNCHANGED. It is the
+         source of truth; imageUrl below is a convenience derived
+         from it so existing consumers need no edit. */
+      imagery: raw.imagery || undefined,
+      /* ONLY A GOVERNED IMAGE BECOMES imageUrl. raw.imageUrl is
+         deliberately NOT carried through any more: it arrived with
+         imageRightsStatus 'unconfirmed' and the renderers drew it
+         if present. Nothing shipped only because every artefact
+         happened to hold null -- a fact about the data, not the
+         code. UNKNOWN now cannot render by construction. */
+      imageUrl: (raw.imagery && raw.imagery.url) || undefined,
+      imageCredit: (raw.imagery && raw.imagery.credit) || undefined,
       imageSourceUrl: raw.productUrl || undefined,
-      imageRightsStatus: raw.imageRightsStatus || 'unconfirmed',
+      imageRightsStatus: raw.imagery ? 'authorised' : 'unconfirmed',
       electricalConfirmationState: undefined, // not exported — no reliable Atlas field identified for this yet
       irishAvailabilityConfirmationState: raw.irishAvailability === true ? 'Yes' : (raw.irishAvailability === false ? 'No' : undefined),
       availabilityStatus: raw.availabilityStatus || undefined,
@@ -19520,11 +19585,16 @@
     imgWrap.className = 'results-hero-media';
     const img = document.createElement('img');
     attachImageFallback(img);
-    // RESULTS R2.0 — real Atlas pool products have no approved image yet
-    // (imageUrl is null pending rights confirmation); go straight to the
-    // branded fallback instead of requesting a URL that doesn't exist.
-    if (product.imageUrl) {
-      img.src = product.imageUrl;
+    // GOVERNED IMAGERY. The rights are re-checked HERE, immediately before
+    // the <img> is given a src -- live grant, scoped delivery path, credit
+    // present. Anything unproven falls through to the branded placeholder,
+    // which is a designed surface rather than a gap. Withdrawal therefore
+    // needs no code path: the block disappears and this branch stops firing.
+    const pnImg = pnAuthorisedImage(product);
+    if (pnImg) {
+      img.src = pnImg.url;
+      if (pnImg.alt) img.alt = pnImg.alt;
+      pnAttachImageCredit(imgWrap, pnImg);
     } else {
       img.dataset.pnFallback = '1';
       img.src = PN_IMAGE_FALLBACK_SRC;
@@ -25777,11 +25847,16 @@
     imgWrap.className = 'results-gallery-media';
     const img = document.createElement('img');
     attachImageFallback(img);
-    // RESULTS R2.0 — real Atlas pool products have no approved image yet
-    // (imageUrl is null pending rights confirmation); go straight to the
-    // branded fallback instead of requesting a URL that doesn't exist.
-    if (product.imageUrl) {
-      img.src = product.imageUrl;
+    // GOVERNED IMAGERY. The rights are re-checked HERE, immediately before
+    // the <img> is given a src -- live grant, scoped delivery path, credit
+    // present. Anything unproven falls through to the branded placeholder,
+    // which is a designed surface rather than a gap. Withdrawal therefore
+    // needs no code path: the block disappears and this branch stops firing.
+    const pnImg = pnAuthorisedImage(product);
+    if (pnImg) {
+      img.src = pnImg.url;
+      if (pnImg.alt) img.alt = pnImg.alt;
+      pnAttachImageCredit(imgWrap, pnImg);
     } else {
       img.dataset.pnFallback = '1';
       img.src = PN_IMAGE_FALLBACK_SRC;
@@ -27981,12 +28056,14 @@
 
       const media = document.createElement('div');
       media.className = 'myplot-card-media';
-      if (product.imageUrl) {
+      const pnImg = pnAuthorisedImage(product);
+      if (pnImg) {
         const img = document.createElement('img');
         attachImageFallback(img);
-        img.src = product.imageUrl;
-        img.alt = product.name;
+        img.src = pnImg.url;
+        img.alt = pnImg.alt || product.name;
         media.appendChild(img);
+        pnAttachImageCredit(media, pnImg);
       } else {
         // No approved image yet — a legible branded mark rather than a tiny
         // placeholder icon, so the card still reads as a real product card.

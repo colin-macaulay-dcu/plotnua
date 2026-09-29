@@ -286,6 +286,35 @@ def resolve(products, grants):
             trace.append((a["asset"], org, "REFUSED", why))
             continue
         credit = grant.get("required_credit")
+        # THE PERMITTED SCOPE TRAVELS WITH THE IMAGE.
+        # The runtime cannot execute the node gate, and shipping the whole
+        # rights manifest to every browser would be a second imagery
+        # architecture. So the ONE fact the renderer needs to re-check the
+        # gate's own rule -- the prefix this URL had to sit inside to be
+        # authorised -- is carried on the asset. The renderer asserts the url
+        # still starts with it before drawing anything. A tampered or
+        # hand-edited url therefore fails closed at render time, not just at
+        # publication time.
+        scope = None
+        u = urlparse(a["url"])
+        host = (u.hostname or "").lower()
+        host = host[4:] if host.startswith("www.") else host
+        own = (grant.get("permitted_domain") or "").lower()
+        own = own[4:] if own.startswith("www.") else own
+        if own and (host == own or host.endswith("." + own)):
+            scope = u.scheme + "://" + (u.hostname or "") + "/"
+        else:
+            for d in grant.get("permitted_delivery_hosts") or ():
+                h = (d.get("host") or "").lower()
+                h = h[4:] if h.startswith("www.") else h
+                prefix = d.get("path_prefix") or ""
+                if prefix and host == h and u.path.startswith(prefix):
+                    scope = u.scheme + "://" + (u.hostname or "") + prefix
+                    break
+        if not scope:
+            trace.append((a["asset"], org, "REFUSED",
+                          "could not derive a permitted scope"))
+            continue
         hit = 0
         for pid in a["products"]:
             if pid not in known:
@@ -298,6 +327,14 @@ def resolve(products, grants):
                 "supplier": org,
                 "rightsRecord": grant.get("atlas_permission_ref"),
                 "assetRecord": a["asset"],
+                # Re-checked by the renderer before the image is drawn.
+                "permittedPrefix": scope,
+                # PLOTNUA'S OWN UNDERTAKING, WHERE ONE EXISTS. Carried so a
+                # public surface can honour it without re-reading the record.
+                "linkBack": (grant.get("publication_requirements")
+                             and grant.get("permitted_domain")
+                             and ("https://www." + grant["permitted_domain"] + "/")
+                             or None),
                 # STATE, NOT SCORE. Consumers read this to choose a richer
                 # presentation. Nothing downstream may read it as quality.
                 "presentationTier": "A",
