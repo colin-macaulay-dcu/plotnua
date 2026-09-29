@@ -306,7 +306,19 @@ storefront; the slugs map exactly:
 | 14x14 Apex Classic Log Cabin | 5634 **GBP** | `ie.powersheds.com/products/apex-classic-log-cabin-44mm` |
 | 16x12 Apex Log Cabin | 7444 **GBP** | `ie.powersheds.com/products/apex-log-cabin` |
 
-**No EUR price was ingested, and the currency mismatch remains open.** Measured
+**RP-2 (29 Sep 2026): the sterling figure is no longer shown as the Irish
+price.** `priceEvidence.adjudication` on all three is now `'ambiguous'`, which
+`pnPriceView()` already reads to display **"Price not confirmed"**. That is the
+semantically correct state — PB046 defines 'ambiguous' as *"Atlas holds evidence
+it cannot rank"*, and Atlas holds a GBP figure from the UK storefront against
+EUR *from* prices on the Irish one. `'none'` would have been wrong: it renders
+"Price not published", and Power Sheds plainly does publish prices — the V4
+error in a different costume. `price` and `currency` are preserved for
+provenance. Ranking cannot move: `budgetFit()` already returned 1 ("unknown")
+for any non-EUR price, proven by re-running the real comparator across 5 bands
+x 477 products with 0 differences.
+
+**No EUR price was ingested, and the underlying currency gap remains open.** Measured
 first-party on 29 Sep 2026: the Irish pages publish *From* €5,399.00 and *From*
 €6,864.00, and resolve to a figure only after Size and Door Position are chosen.
 Atlas holds size-specific records, and a base "from" price is not the price of

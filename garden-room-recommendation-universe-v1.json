@@ -86,8 +86,8 @@
     "status": "Verified",
     "includesVat": "Unknown",
     "evidenceScope": null,
-    "adjudication": "adjudicated",
-    "candidateCount": 1
+    "adjudication": "ambiguous",
+    "candidateCount": 2
    },
    "features": {
     "construction": {
@@ -191,8 +191,8 @@
     "status": "Verified",
     "includesVat": "Unknown",
     "evidenceScope": null,
-    "adjudication": "adjudicated",
-    "candidateCount": 1
+    "adjudication": "ambiguous",
+    "candidateCount": 2
    },
    "features": {
     "externalDimensions": {
@@ -296,8 +296,8 @@
     "status": "Verified",
     "includesVat": "Unknown",
     "evidenceScope": null,
-    "adjudication": "adjudicated",
-    "candidateCount": 1
+    "adjudication": "ambiguous",
+    "candidateCount": 2
    },
    "features": {
     "construction": {
