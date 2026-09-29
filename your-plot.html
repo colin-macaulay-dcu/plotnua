@@ -15189,7 +15189,18 @@
        call and is unaffected by it: the scored pool is a separate
        array and the reorder never touches it, which is what keeps
        every view's honesty gate reading true suitability. */
-    pnApplyPresentationPriority(ordered);
+    /* PRESENTATION PRIORITY -- RETIRED FROM RESULTS, ESTABLISHMENT PHASE.
+       It existed to float authorised imagery up a mixed list. The
+       publication gate above means the list is no longer mixed: every
+       candidate carries governed imagery, so there is nothing to float
+       and the function's own guard would return early anyway. Leaving
+       it wired would be a second ordering system that is merely proved
+       idle rather than absent, so the call is retired.
+
+       pnApplyPresentationPriority and pnPresentationTier REMAIN DEFINED
+       and their proof suite still runs. Nothing is deleted; the
+       behaviour is preserved for a later phase in which a mixed pool is
+       intentional. Re-enable by restoring the single call here. */
     const scoredPool = (ordered && ordered.__scored) || [];
     // ordered.__scored is the qualified, ordered pool; ordered[0] is the
     // Best Overall answer. Both are read below without recomputing either.
@@ -15313,6 +15324,37 @@
     return ordered;
   }
 
+  /* ======================================================================
+     RESULTS PUBLICATION GATE -- ESTABLISHMENT PHASE
+     ======================================================================
+     THE SINGLE PLACE that decides whether a product may appear on the
+     homeowner Results page. Factual eligibility is already established by
+     the time this runs; this adds the rights condition and nothing else.
+
+     IT IS DELIBERATELY A DELEGATION. pnAuthorisedImage() is the same
+     re-check the renderer performs immediately before it gives an <img> a
+     src. If Results used a looser test than the renderer, a product could
+     rank, occupy a slot, and then draw a placeholder -- the homeowner would
+     see a recommendation PlotNua could not actually show. One function,
+     one answer, both surfaces.
+
+     WHAT IT REQUIRES (all of them, via pnAuthorisedImage):
+       an imagery block            -- UNKNOWN rights have none, so they fail
+       url, credit, supplier       -- attribution is a condition of every grant
+       rightsRecord                -- the grant it rests on, by reference
+       permittedPrefix             -- the scope the grant actually covers
+       url inside that prefix      -- a drifted or hand-edited url fails
+       https                       -- a downgraded url fails
+
+     WITHDRAWAL IS AUTOMATIC. Re-running the imagery resolver removes the
+     block; the product stops being publishable on the next render. No list
+     to maintain, no exception to remove. */
+
+  function pnResultPublishable(product){
+    if (!product) return false;
+    return !!pnAuthorisedImage(product);
+  }
+
   function rankGardenRoomCandidates(decisionProfile){
     /* MATCH-ELIGIBILITY-001 — the gate sits HERE, before the budget band and
        before any scoring. Everything downstream (bands, diversity, carousel,
@@ -15336,7 +15378,20 @@
        `hardConstraintsFailed` stays, because other constraints may yet use
        it, but budget can no longer fail: there is nothing left for it to fail
        at. */
-    const pool = allCandidates.slice();
+    /* ESTABLISHMENT-PHASE PUBLICATION GATE. Runs HERE -- after factual
+       eligibility, before the budget signal and before any scoring --
+       so everything downstream (tuple, bands, diversity, carousel,
+       views, refinement, Best Overall) operates on a pool PlotNua can
+       actually publish. No later rule can resurrect a frozen product,
+       and no ranking exception is needed to surface an authorised one.
+
+       `allCandidates` is NOT narrowed. It stays the full factually
+       eligible set so the investigation scope can still say honestly
+       how much was examined, and so no other reader of the pool is
+       affected. Only what may be SHOWN is narrowed. */
+    const publishableCandidates = allCandidates.filter(pnResultPublishable);
+    const frozenForImageRights = allCandidates.length - publishableCandidates.length;
+    const pool = publishableCandidates.slice();
 
     // Reported, not enforced: how many candidates are KNOWN to fit the stated
     // band. Nothing reads this to exclude anything.
@@ -15606,6 +15661,13 @@
     // claiming otherwise would be false.
     Object.defineProperty(rows, '__investigation', { enumerable: false, value: {
       universeTotal: allCandidates.length,
+      /* ESTABLISHMENT PHASE. publishableTotal is what Results could
+         actually draw from; frozenForImageRights is how many factually
+         eligible products were withheld ONLY because PlotNua has no
+         governed imagery for them yet. Recorded so no surface has to
+         imply it searched a market it did not show. */
+      publishableTotal: publishableCandidates.length,
+      frozenForImageRights: frozenForImageRights,
       supplierCount: (function(){
         var s = {}; var n = 0;
         allCandidates.forEach(function(p){
