@@ -34,7 +34,8 @@ blocked product contributes nothing, provenance included.
 
 Run:  python3 test_generator_provenance.py
 """
-import json, re, subprocess, sys, tempfile
+import json
+import os, re, subprocess, sys, tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -204,9 +205,31 @@ def snapshot():
 
 
 def run_generator(gen_path, out_dir, snap_path):
+    """Run a generator -- the real one, or a deliberately mutated copy.
+
+    THE MUTATED COPIES LIVE IN A TEMP DIRECTORY. Python seeds sys.path[0] with
+    the directory of the script being run, so a copy outside .github/scripts
+    cannot import the shared helpers the real generator imports:
+
+        ModuleNotFoundError: No module named 'atlas_common'
+
+    Every mutation test therefore exited 1 for a reason that had nothing to do
+    with the mutation, and the E3a guard-capability check reported "the
+    generator still runs 1" while the real cause stayed invisible. Worse, the
+    suite then crashed reading an output file that was never written, so the
+    manual universe refresh stopped before Airtable was ever contacted.
+
+    The fix is environmental, not a change to the generator: prepend HERE to
+    PYTHONPATH so a mutated copy resolves the SAME shared modules as the real
+    generator. atlas_common.py is not copied anywhere and the production
+    generator's imports and sys.path are untouched.
+    """
+    env = dict(os.environ)
+    existing = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = str(HERE) + (os.pathsep + existing if existing else "")
     return subprocess.run(
         [sys.executable, str(gen_path), "--out-dir", str(out_dir), "--snapshot", str(snap_path)],
-        capture_output=True, text=True)
+        capture_output=True, text=True, env=env)
 
 
 def detail_for(out_dir, category):
@@ -386,14 +409,22 @@ with tempfile.TemporaryDirectory() as td:
         out4 = td / "out4"
         out4.mkdir()
         r4 = run_generator(noe, out4, snap)
-        ck("E3a REMOVED: the generator still runs", r4.returncode == 0, r4.returncode)
-        uni4 = json.loads((out4 / "garden-room-recommendation-universe-v1.json").read_text("utf-8"))
-        elig4 = {p["productId"] for p in uni4["products"]}
-        ck("E3a REMOVED: all four adjudicated products become eligible again",
-           all(pid in elig4 for pid in POSITIVE),
-           [p for p in POSITIVE if p not in elig4])
-        ck("E3a REMOVED: eligible count rises by exactly four",
-           len(elig4) == len(elig_ids) + 4, (len(elig_ids), len(elig4)))
+        # A failed mutation run is ONE failure with its reason attached, not a
+        # FileNotFoundError three lines later about a file that was never
+        # written. Read the output only if the generator actually produced it.
+        if r4.returncode != 0:
+            ck("E3a REMOVED: the generator still runs", False,
+               "exit %d\n--- stdout ---\n%s\n--- stderr ---\n%s"
+               % (r4.returncode, r4.stdout[-1200:], r4.stderr[-1200:]))
+        else:
+            ck("E3a REMOVED: the generator still runs", True, 0)
+            uni4 = json.loads((out4 / "garden-room-recommendation-universe-v1.json").read_text("utf-8"))
+            elig4 = {p["productId"] for p in uni4["products"]}
+            ck("E3a REMOVED: all four adjudicated products become eligible again",
+               all(pid in elig4 for pid in POSITIVE),
+               [p for p in POSITIVE if p not in elig4])
+            ck("E3a REMOVED: eligible count rises by exactly four",
+               len(elig4) == len(elig_ids) + 4, (len(elig_ids), len(elig4)))
 
     # ── THE VALIDATOR MUST ACCEPT WHAT THE GENERATOR PRODUCES ─────────────
     # A second E2 defect, found by running this chain: `sources` was written
@@ -434,9 +465,14 @@ with tempfile.TemporaryDirectory() as td:
         out3 = td / "out3"
         out3.mkdir()
         r3 = run_generator(unsafe, out3, snap)
-        ck("E2.2 REINTRODUCED: the generator still runs (it is a data defect)",
-           r3.returncode == 0, r3.returncode)
-        sup3 = detail_for(out3, "suppliers") or {}
+        if r3.returncode != 0:
+            ck("E2.2 REINTRODUCED: the generator still runs (it is a data defect)", False,
+               "exit %d\n--- stdout ---\n%s\n--- stderr ---\n%s"
+               % (r3.returncode, r3.stdout[-1200:], r3.stderr[-1200:]))
+            sup3 = {}
+        else:
+            ck("E2.2 REINTRODUCED: the generator still runs (it is a data defect)", True, 0)
+            sup3 = detail_for(out3, "suppliers") or {}
         ck("E2.2 REINTRODUCED: the phone DOES reach the artefact",
            "+353 1 253 3786" in json.dumps(sup3))
         v3 = subprocess.run(
