@@ -607,12 +607,16 @@
     display:none; align-items:center; gap:8px;
     min-height:44px; padding:11px 17px 11px 14px;
     background:var(--paper); color:var(--soft);
-    border:1px solid rgba(31,59,46,.10); border-radius:24px;
-    box-shadow:0 1px 5px rgba(31,59,46,.07);
+    border:1px solid rgba(31,59,46,.13); border-radius:24px;
+    box-shadow:0 1px 6px rgba(31,59,46,.09);
+    /* G4 - THE DIMMING GOES. Opacity is what reads as DISABLED; colour
+       and weight are what read as SUBORDINATE. So the control sits at
+       full opacity with a soft label and a light border -- quiet, but
+       plainly available. The border and shadow come up a shade from
+       M4's values, nowhere near the old .16 and .13. */
     font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:500;
-    text-decoration:none; cursor:pointer; opacity:.88;
-    transition:opacity .18s ease, border-color .18s ease,
-               box-shadow .18s ease, color .18s ease;
+    text-decoration:none; cursor:pointer;
+    transition:border-color .18s ease, box-shadow .18s ease, color .18s ease;
     -webkit-appearance:none; appearance:none;
   }
   body.pn-results-live .pn-return{ display:inline-flex; }
@@ -628,7 +632,7 @@
      works because the two are siblings in that order. */
   .pn-fallback-note.is-visible ~ .pn-return{ bottom:72px; }
   .pn-return:hover, .pn-return:focus-visible{
-    opacity:1; color:var(--ink);
+    color:var(--ink);
     border-color:rgba(31,59,46,.28); box-shadow:0 3px 12px rgba(31,59,46,.14);
   }
   .pn-return:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
@@ -7798,38 +7802,50 @@
   }
   #screen-resolve .resolve-shell{ width:100%; }
 
-  /* ---- M3 . A CONTENT-SAFE GUTTER FOR THE FIXED MY PLOT PILL -----------
+  /* ---- G1-G3 . THE COLLISION, SOLVED WHERE IT HAPPENS -------------------
 
-     THE GEOMETRY. .my-plot-access-wrap is position:fixed at top 20 / right
-     20 and is the widest fixed element on the page -- medallion, two-line
-     label, chevron, then the info trigger beside it. Measured generously
-     from its own rules it occupies about 300px, so its left edge sits at
-     about (viewport - 320).
+     WHAT THIS REPLACES, AND WHY IT WAS WRONG. M3 reserved 336px / 300px of
+     right padding across the whole screen. Screen padding-right does not
+     simply hold a margin clear: it shrinks the box the centred shell lives
+     in and moves the shell's centre left by half the padding. So 336px
+     pushed the whole composition 168px off-centre and left a dead column.
+     It was decided from an ESTIMATE of the pill's width with no browser to
+     check in, which is the wrong way round.
 
-     The shell is max-width 860 and centred, so its right edge is at
-     (viewport + 860) / 2. Those two meet when the viewport is about
-     2 x (430 + 320) = 1500 wide -- which is to say ON EVERY ORDINARY
-     DESKTOP, not just narrow ones. Below that the pill sits over the
-     right-hand end of the hero copy and, once scrolled, over the answer
-     column of the property rows.
+     THE PILL, MEASURED FROM ITS OWN RULES THIS TIME.
+       .my-plot-access .pn-mark-heart   64px tall
+       .my-plot-access                  padding 10px top and bottom
+       so the pill is                   84px tall
+       .my-plot-access-wrap             top:20px
+       so its bottom edge is at         104px
 
-     THE FIX RESERVES SPACE RATHER THAN MOVING THE PILL. A right gutter on
-     the screen shifts the centred column left by half of it, which keeps
-     the column looking centred within what is left. The pill is untouched,
-     so Results and every other screen that shows it are unaffected.
+     THE COMPOSITION, THE SAME WAY.
+       #screen-resolve                  padding-top 48px at >=900
+       .resolve-shell                   padding-top --pn-space-xl = 48px
+       so content began at              96px
 
-     THE 300px IS AN ESTIMATE FROM CSS, NOT A MEASUREMENT -- there is no
-     browser in this build environment. 336 is deliberately generous so a
-     wider-than-estimated pill still clears, and it is worth one look at
-     1280 and 1440 before this ships.
+     96 against 104. The pill overlapped the top EIGHT PIXELS of the hero
+     image and nothing else -- no text, no control. Eight pixels of
+     photograph, for which the old rule cost the page 336.
 
-     Below 900 the pill has its own smaller rules and the column is already
-     narrow, so the band ends there. */
-  @media (min-width:900px) and (max-width:1559px){
-    #screen-resolve, #screen-progress{ padding-right:336px; }
+     SO THE FIX IS VERTICAL. Sixteen pixels of extra top padding puts the
+     start of the composition at 112px, clearing the pill by 8px, and costs
+     no width at all.
+
+     AND ONE SMALL HORIZONTAL SAFETY MARGIN, below 1280 only, where the
+     column is narrowest and the width arithmetic has least slack: 24px,
+     which moves the centre by twelve. That is a margin for error, not a
+     layout decision.
+
+     WHAT REMAINS, AND WHAT PADDING CANNOT DO. While the page is scrolled,
+     content passes beneath a position:fixed element. That is true here, it
+     is true on Results, and no padding changes it. Hiding or shrinking the
+     pill on scroll would -- and that is a behaviour change, not this. */
+  @media (min-width:900px){
+    #screen-resolve, #screen-progress{ padding-top:64px; }
   }
-  @media (min-width:900px) and (max-width:1100px){
-    #screen-resolve, #screen-progress{ padding-right:300px; }
+  @media (min-width:900px) and (max-width:1279px){
+    #screen-resolve, #screen-progress{ padding-right:24px; }
   }
 
   /* ---- level 1-2 · the situation and the standing ---- */
