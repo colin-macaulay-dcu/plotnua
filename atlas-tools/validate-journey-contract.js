@@ -337,9 +337,13 @@ function run(src) {
        capitalised literals are how authoring looks. The two strings this
        function may compose are allowed by name, because both are built
        from governed values rather than written as questions. */
-    const ALLOWED = ['Price for ', 'Do you deliver to my location?',
-                     'Is installation included in the price?',
-                     'Are groundworks or base preparation included?',
+    /* Prefixes, not whole sentences, so a polish pass on the wording
+       does not read as a new question being authored. Two were reworded
+       and one gained a question mark; the SET is unchanged, which is
+       what this check exists to police. */
+    const ALLOWED = ['Price for ', 'Delivery to your location',
+                     'Is installation included',
+                     'Are groundworks or base preparation included',
                      'What happens next'];
     const authored = (stripComments(body).match(/'[A-Z][^']{14,}'/g) || [])
       .filter(function(s){

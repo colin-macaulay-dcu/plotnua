@@ -8840,9 +8840,19 @@
     font-family:'Work Sans',sans-serif; font-size:15.5px; font-weight:700;
     cursor:pointer;
   }
-  .rsv-close-cta.is-pending{
-    background:rgba(242,239,230,.28); color:rgba(242,239,230,.92);
-    cursor:default;
+  /* H5 - THE PENDING PLATE. Metrically identical to .rsv-close-cta above
+     -- same padding, same radius, same family, same size -- so the live
+     control drops into its place without a pixel moving. It differs only
+     in what it is made of: a hairline on the green ground instead of a
+     sage fill, and no weight in the type, because it is a statement
+     rather than an invitation.
+
+     .is-pending is retired with the disabled button it styled. */
+  .rsv-close-pending{
+    display:inline-block; padding:15px 28px; border-radius:10px;
+    background:none; box-shadow:inset 0 0 0 1px rgba(242,239,230,.30);
+    color:rgba(242,239,230,.88);
+    font-family:'Work Sans',sans-serif; font-size:15.5px; font-weight:500;
   }
   .rsv-close-cta:focus-visible,
   .rsv-close-secondary:focus-visible{
@@ -8867,7 +8877,7 @@
     .rsv-qrow-side{ max-width:100%; justify-content:flex-start; }
     .rsv-qrow-answer{ align-items:flex-start; }
     .rsv-close{ padding:24px 20px; }
-    .rsv-close-cta{ display:block; width:100%; }
+    .rsv-close-cta, .rsv-close-pending{ display:block; width:100%; }
   }
 
   /* ---- V2 · THE CARD GRID ----------------------------------------------
@@ -8988,34 +8998,11 @@
     margin:0; font-size:12.5px; line-height:1.45; color:var(--soft);
   }
 
-  .rsv-forward{ margin-top:26px; padding-top:20px; border-top:1px solid rgba(31,59,46,.14); }
-  .rsv-forward-cta{
-    display:inline-block; padding:13px 22px; border:none; border-radius:8px;
-    background:var(--brand-green); color:#fff; font-size:15px; font-weight:700;
-    cursor:pointer;
-  }
-  /* Q2 - THE PENDING PRIMARY AND THE SECONDARY.
-
-     The pending state is quieter than the live one but still reads as
-     the main control: same size, same shape, less contrast. It must not
-     look like a mistake, and it must not look pressable. The secondary
-     is a text link -- no fill, no border -- so the hierarchy is obvious
-     without a second colour. */
-  .rsv-forward-cta.is-pending{
-    background:rgba(31,59,46,.30); cursor:default;
-  }
-  .rsv-forward-pending{
-    margin:8px 0 0; font-size:12.5px; line-height:1.45; color:var(--soft);
-  }
-  .rsv-forward-secondary{
-    display:inline-block; margin-top:14px; padding:0;
-    border:none; background:none; cursor:pointer;
-    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
-    color:var(--brand-green); text-decoration:underline;
-    text-underline-offset:3px;
-  }
-  .rsv-forward-secondary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .rsv-forward-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  /* H5c - THE .rsv-forward FAMILY IS DELETED. Seven rules with no
+     renderer: the redesign replaced the forward block with .rsv-close-*
+     and these were left behind in the same pass that removed another
+     set of orphaned styles for the same reason. Nothing in the file
+     emits any of these class names. */
 
   /* ---- Z5 · THE FORWARD ROW -------------------------------------------
      One control, below the Atlas assessment, at the point of decision. The
@@ -30940,10 +30927,18 @@
     const ops = pnSupplierLocality(product);
     const delivers = !!(ops && ops.deliveryStatus === 'CONFIRMED'
                      && ops.roiDelivery === 'CONFIRMED' && ops.deliverySourceUrl);
-    if (!delivers) ask('deliversHere', 'Do you deliver to my location?');
+    /* H2 - THE LIST READS AS AN AGENDA, NOT AN INTERROGATION. "Do you
+       deliver to my location?" is the homeowner's voice; every other
+       line is a heading. One register, and it is the register of a
+       prepared enquiry. */
+    if (!delivers) ask('deliversHere', 'Delivery to your location');
 
     if (open('installationCharges') || open('priceIncludes')) {
-      ask('installationCharges', 'Is installation included in the price?');
+      /* THE LABEL, NOT A SECOND COPY OF IT. leadTime and warranty already
+         read their wording from RESOLVE_ATLAS_LABELS; this one carried a
+         duplicate literal, and two copies of a sentence are two chances
+         to reword one of them. */
+      ask('installationCharges', RESOLVE_ATLAS_LABELS.installationCharges);
     }
 
     /* G4 - THE HOMEOWNER'S VIEW OF THEIR GROUND DOES NOT ANSWER THIS.
@@ -30969,7 +30964,7 @@
       ask('warranty', RESOLVE_ATLAS_LABELS.warranty);
     }
     if (open('schedule')) {
-      ask('schedule', 'What happens next — survey, deposit and installation');
+      ask('schedule', 'What happens next — survey, deposit and installation?');
     }
     return out;
   }
@@ -30983,9 +30978,12 @@
     const sec = rsvEl('section', 'rsv-panel rsv-panel-enquiry');
     const head = rsvEl('div', 'rsv-panel-head');
     head.appendChild(rsvEl('h3', 'rsv-panel-title', 'Questions to send with your enquiry'));
+    /* H1 - THE LINE SAYS WHAT THE LIST IS, not what PlotNua will do to
+       the maker. It also stops naming the organisation: the name is
+       already in the hero and in the button below, and a third mention
+       in three lines reads as a mail-merge. */
     head.appendChild(rsvEl('p', 'rsv-panel-lede',
-      'We’ll include these when you contact '
-      + (product.organisation || 'the maker') + '.'));
+      'These are the questions we’ll include with your enquiry.'));
     sec.appendChild(head);
     const ol = rsvEl('ol', 'rsv-qlist');
     qs.forEach(function(q){
@@ -31046,7 +31044,7 @@
     leadTime:            'Lead time',
     warranty:            'Warranty & after-sales support',
     priceIncludes:       'What the price includes',                 /* §6 table 3 */
-    installationCharges: 'Is installation included in the price?',
+    installationCharges: 'Is installation included?',
     afterSales:          'Warranty & after-sales support',
     planning:            'Whether you\u2019d need planning permission', /* §6 table 4 */
   };
@@ -31061,6 +31059,25 @@
     power:    'Power',
     water:    'Water & drainage',
     planning: 'Planning',
+  };
+
+  /* H3 - ONE QUESTION OVERRIDDEN, ON THIS SURFACE ONLY.
+
+     EVID_ASK_SUPPLIER asks "Will your ground take it?" That is a
+     structural question about load, and what the homeowner is actually
+     being asked here is whether the site needs work first -- which is
+     what their three choices answer.
+
+     THE GOVERNED LIST IS NOT EDITED. EVID_ASK_SUPPLIER#ground still
+     reads as it always did, because Results renders the same entry in
+     its ask-the-supplier list and that surface was not reviewed. So
+     the two now differ, deliberately, and it is reported rather than
+     quietly reconciled: if Results should follow, that is a separate
+     decision about a separate surface.
+
+     Anything not named here falls through to the governed label. */
+  const PN_PROPERTY_ASKS = {
+    ground: 'Will the site need preparation?',
   };
   /* W1 - WHAT THE HOMEOWNER IS OFFERED, PER QUESTION.
 
@@ -31744,7 +31761,7 @@
         main.appendChild(rsvEl('span', 'rsv-qrow-label',
           PN_PROPERTY_LABELS[e.key] || (copy && copy.label) || e.key));
         /* The governed question, under the noun. Not authored here. */
-        const q = (copy && copy.label) || '';
+        const q = PN_PROPERTY_ASKS[e.key] || (copy && copy.label) || '';
         if (q && q !== PN_PROPERTY_LABELS[e.key]) {
           main.appendChild(rsvEl('p', 'rsv-qrow-ask', q));
         }
@@ -31805,15 +31822,29 @@
     const rsvGo = rsvEl('section', 'rsv-close');
     let rsvHasAction = false;
 
+    /* =====================================================================
+       H4 - THE PENDING STATE, SAID ON PURPOSE.
+
+       WHAT WENT. A disabled button reading "Enquire about this option"
+       with "We're not able to send this yet." underneath. Two problems.
+       A greyed-out primary is the universal sign of a control that has
+       failed to load or a form that is not valid yet -- so it read as a
+       bug. And the sentence was an apology for PlotNua's position, which
+       is not news the homeowner needs.
+
+       IT IS NOT A BUTTON ANY MORE. A <div> cannot be clicked, cannot be
+       focused, cannot be re-enabled by deleting an attribute in dev
+       tools, and does not look like something that ought to work. It
+       states a fact about the route: it is coming, and it is not here.
+
+       WHEN YARDBOX APPROVES, this whole branch is replaced by the live
+       control and NOTHING AROUND IT MOVES: .rsv-close-pending carries
+       the same padding, radius and type size as .rsv-close-cta, which
+       guard H08 checks by comparing the two rules. The secondary link
+       below is already in its final place. */
     if (!rsvPriced) {
-      const enq = rsvEl('button', 'rsv-close-cta is-pending',
-        'Enquire about this option →');
-      enq.type = 'button';
-      enq.disabled = true;
-      enq.setAttribute('aria-disabled', 'true');
-      rsvGo.appendChild(enq);
-      rsvGo.appendChild(rsvEl('p', 'rsv-close-note',
-        'We’re not able to send this yet.'));
+      rsvGo.appendChild(rsvEl('div', 'rsv-close-pending',
+        'Enquiry through PlotNua — coming shortly'));
       rsvHasAction = true;
     }
 
