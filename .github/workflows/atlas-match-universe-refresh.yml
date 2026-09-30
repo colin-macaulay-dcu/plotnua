@@ -65,7 +65,7 @@ on:
           candidate artefacts, then STOP without touching production.
         type: choice
         required: false
-        default: publish
+        default: verify-only
         options:
           - publish
           - verify-only
