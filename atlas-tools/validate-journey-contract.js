@@ -136,8 +136,14 @@ const REPAIRED = [
      and should survive any future relabelling. */
   { guard: 'J07', label: 'V2 repair present: the Option continuation stays inside PlotNua',
     present: 'openResolveScreen(els.productDetailScreen, product);', count: 1 },
-  { guard: 'J07', label: 'V2 repair present: the Option CTA auto-saves without duplicating',
-    present: 'if (!savedProductIds.has(product.id)) {', count: 1 },
+  /* THE AUTO-SAVE CHECK MOVED OUT OF THIS TABLE — see J07-DUP below.
+     It asserted `if (!savedProductIds.has(product.id)) {` appeared exactly
+     once. That was a fingerprint of ONE call site, not an invariant: the
+     moment a second surface auto-saved before continuing -- which the Results
+     Next steps CTA now legitimately does -- the count broke while the
+     property it stood for held perfectly. Same failure as the wording
+     fingerprints above, third time. The replacement asserts the real rule:
+     NO SAVE ANYWHERE MAY BE UNGUARDED, however many save sites exist. */
   { guard: 'J07', label: 'V3 stays retired: Option Detail does not route on pnNextAction',
     absent: 'const nextAction = pnNextAction(product);' },
   { guard: 'P01', label: 'V4 repair present: the PlotNua-gap wording',
@@ -383,6 +389,37 @@ function run(src) {
       else bad(r.guard, r.label + ': expected ' + r.count + ', found ' + n);
     }
   });
+
+  /* J07-DUP · EVERY SAVE IS DUPLICATE-GUARDED.
+     savedProductIds is a Set keyed on the canonical Atlas product.id, so a
+     repeat press cannot create a second entry regardless. The guard exists so
+     that recordSaveProvenance() and the funnel event fire ONCE per product --
+     an unguarded save would double-count the funnel and rewrite provenance
+     with a later timestamp. This check scales with the architecture: add a
+     tenth surface that auto-saves and it passes, so long as that surface
+     tests before it writes. */
+  (function () {
+    const NEEDLE = 'savedProductIds.add(product.id)';
+    const WINDOW = 600;
+    let from = 0, n = 0, unguarded = 0;
+    for (;;) {
+      const i = code.indexOf(NEEDLE, from);
+      if (i < 0) break;
+      n++;
+      const ctx = code.slice(Math.max(0, i - WINDOW), i);
+      if (ctx.indexOf('savedProductIds.has(product.id)') < 0) unguarded++;
+      from = i + NEEDLE.length;
+    }
+    if (n === 0) {
+      bad('J07', 'no save call sites found at all — the save contract is gone');
+    } else if (unguarded === 0) {
+      ok('J07', 'all ' + n + ' save call sites test savedProductIds.has() first');
+    } else {
+      bad('J07', unguarded + ' of ' + n + ' save call sites write without '
+          + 'testing savedProductIds.has() first — provenance and the funnel '
+          + 'event would fire twice');
+    }
+  })();
 
   head('P1-P8 · PROGRESS EVIDENCE CARRIER (RP-3)');
   /* P1 — supplier operations evidence stays in the dedicated partition. */

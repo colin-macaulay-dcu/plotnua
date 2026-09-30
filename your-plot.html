@@ -8635,6 +8635,61 @@
   }
   .rsv-forward-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 
+  /* ---- Y2 · NEXT STEPS -------------------------------------------------
+     The forward journey, stated once under the hero. Quiet numbers, one
+     filled control, one outlined one. It must read as a path, not a panel. */
+  .rn-next{
+    margin:26px 0 0; padding:20px 0 0;
+    border-top:1px solid rgba(31,59,46,.14);
+  }
+  .rn-next-title{
+    margin:0 0 12px; font-size:12px; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--soft); font-weight:700;
+  }
+  .rn-next-list{
+    margin:0 0 18px; padding:0 0 0 1.35em; list-style:decimal;
+  }
+  .rn-next-list li{
+    margin:0 0 7px; font-size:13.5px; line-height:1.5; color:var(--ink);
+  }
+  .rn-next-list li::marker{ color:var(--soft); font-weight:700; }
+  .rn-next-step{ font-weight:700; }
+  .rn-next-step::after{ content:" \2014 "; font-weight:400; color:var(--soft); }
+  .rn-next-desc{ color:var(--ink); opacity:.82; }
+  .rn-next-cta{
+    display:inline-block; padding:14px 24px; border:none; border-radius:8px;
+    background:var(--brand-green); color:#fff; font-size:15px; font-weight:700;
+    cursor:pointer; font-family:'Work Sans',sans-serif;
+  }
+  .rn-next-cta:hover{ filter:brightness(1.06); }
+  .rn-next-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .rn-next-evidence{
+    display:inline-block; margin-left:12px; padding:13px 20px;
+    border:1px solid var(--pn-hair, rgba(31,59,46,.28)); border-radius:8px;
+    background:none; color:var(--brand-green); font-size:14px; font-weight:600;
+    cursor:pointer; font-family:'Work Sans',sans-serif;
+  }
+  .rn-next-evidence:hover{ border-color:var(--brand-green); background:rgba(31,59,46,.04); }
+  .rn-next-evidence:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .rn-next-evidence[hidden]{ display:none; }
+  @media (max-width:560px){
+    .rn-next-cta, .rn-next-evidence{ display:block; width:100%; margin-left:0; text-align:center; }
+    .rn-next-evidence{ margin-top:10px; }
+  }
+
+  /* ---- Y3 · the evidence disclosure, as an obvious secondary control ---- */
+  .aa-evd-sum.is-button{
+    display:inline-block; padding:12px 18px; margin:4px 0 10px;
+    border:1px solid var(--pn-hair, rgba(31,59,46,.28)); border-radius:8px;
+    background:none; color:var(--brand-green);
+    font-size:14px; font-weight:600; cursor:pointer;
+    list-style:none; text-decoration:none;
+  }
+  .aa-evd-sum.is-button::-webkit-details-marker{ display:none; }
+  .aa-evd-sum.is-button:hover{ border-color:var(--brand-green); background:rgba(31,59,46,.04); }
+  .aa-evd-sum.is-button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  details[open] > .aa-evd-sum.is-button{ background:rgba(31,59,46,.05); }
+
   /* J8 — the review date, subordinate. */
   .aa-mast-meta{ display:block; font-size:11px; color:var(--soft); font-weight:400; }
 
@@ -19994,7 +20049,18 @@
        the same position with the same label. Save is not removed and not
        demoted in function — it steps down in weight, which is what it should
        always have been next to "tell me more". */
-    actions.appendChild(pnViewOptionButton(product));
+    /* Y1 — "View option" RETIRED FROM THE RESULT CARD.
+       The Result screen already shows the option. This control asked the
+       homeowner to go and look at what was in front of them, and it was
+       the only forward-looking thing on the card, so Resolve -- the real
+       next step -- was invisible. The Next steps block below the hero
+       carries the journey now.
+
+       pnViewOptionButton() is RETAINED, defined and uncalled, on the same
+       terms pnSupplierHandover() was between RP-1 and the P0 restore: the
+       control is sound, its placement was not. Option Detail keeps two
+       other routes in -- the My Plot saved item and the found-product
+       flow -- so nothing is stranded. */
 
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
@@ -20441,6 +20507,87 @@
     const { actions, openMyPlotLink } = buildSaveActions(product);
     body.appendChild(actions);
     body.appendChild(openMyPlotLink);
+
+    /* Y2 — NEXT STEPS. The forward journey, made visible.
+
+       This is the HERO only. buildSaveActions() has two callers and the
+       alternative card is the other one; putting this there would repeat
+       the journey once per card, which is the opposite of making it
+       legible. Three lines, one primary, one secondary. */
+    const ns = document.createElement('section');
+    ns.className = 'rn-next';
+    ns.setAttribute('aria-label', 'Next steps');
+    const nsH = document.createElement('h3');
+    nsH.className = 'rn-next-title';
+    nsH.textContent = 'Next steps';
+    ns.appendChild(nsH);
+
+    const nsList = document.createElement('ol');
+    nsList.className = 'rn-next-list';
+    [['Resolve',  'Check the few things that still matter.'],
+     ['Progress', 'See what is confirmed and what is still open.'],
+     ['Supplier', 'Continue when you are ready.']].forEach(function(row){
+      const li = document.createElement('li');
+      const nm = document.createElement('span');
+      nm.className = 'rn-next-step';
+      nm.textContent = row[0];
+      const ds = document.createElement('span');
+      ds.className = 'rn-next-desc';
+      ds.textContent = row[1];
+      li.appendChild(nm); li.appendChild(ds);
+      nsList.appendChild(li);
+    });
+    ns.appendChild(nsList);
+
+    /* THE PRIMARY. Auto-saves behind the same has() test the Save control
+       uses -- savedProductIds is a Set on the canonical Atlas id, so a
+       duplicate is impossible; the guard is there so provenance and the
+       funnel event fire once -- then opens Resolve for THIS product. */
+    const nsGo = document.createElement('button');
+    nsGo.type = 'button';
+    nsGo.className = 'rn-next-cta';
+    nsGo.textContent = 'Check what needs resolving \u2192';
+    nsGo.addEventListener('click', function(){
+      if (!savedProductIds.has(product.id)) {
+        savedProductIds.add(product.id);
+        recordSaveProvenance(product);
+        try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.saved(); } catch (e) {}
+        updateMyPlotAccess();
+      }
+      openResolveScreen(els.matchResultsScreen, product);
+    });
+    ns.appendChild(nsGo);
+
+    /* THE SECONDARY. Evidence, beside the forward step rather than buried
+       in the assessment. It does NOT render a second copy of anything: it
+       opens and focuses the ONE disclosure aaRenderAssessment() built. If
+       that disclosure does not exist -- no evidence for this maker -- the
+       button is not rendered at all, rather than being a control that does
+       nothing. */
+    const nsEv = document.createElement('button');
+    nsEv.type = 'button';
+    nsEv.className = 'rn-next-evidence';
+    nsEv.textContent = 'Check what Atlas knows about '
+      + ((product && product.organisation) || 'the maker') + ' \u2192';
+    nsEv.hidden = true;
+    nsEv.addEventListener('click', function(){
+      const box = document.querySelector('#screen-match-results details.aa-evd');
+      if (!box) return;
+      box.open = true;
+      const sum = box.querySelector('summary');
+      try { box.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+      if (sum) sum.focus({ preventScroll: true });
+    });
+    ns.appendChild(nsEv);
+    /* The assessment paints after this hero, so the button reveals itself
+       once its target exists. One frame, no polling loop. */
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        nsEv.hidden = !document.querySelector('#screen-match-results details.aa-evd');
+      });
+    });
+
+    body.appendChild(ns);
 
     /* One filled control, two quiet ones. Four buttons in a hero is the
        overload the brief warns about; Compare and Ask Atlas are navigation,
@@ -24514,7 +24661,12 @@
       const box = document.createElement('details');
       box.className = 'aa-evd';
       const sum = document.createElement('summary');
-      sum.className = 'aa-evd-sum';
+      /* Y3 — an obvious secondary control, NOT a <button>. <summary> is
+         already focusable and already announces expanded/collapsed; a
+         button would lose that. So the semantics stay and the styling
+         changes: real padding, a border, a hit area, hover and
+         :focus-visible. */
+      sum.className = 'aa-evd-sum is-button';
       /* SIMPLIFY — a verb, so it reads as a control rather than a label. */
       sum.textContent = 'Check what Atlas knows about ' + (org || 'the maker') + ' \u2192';
       box.appendChild(sum);
