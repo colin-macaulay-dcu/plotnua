@@ -498,12 +498,53 @@ function run(src) {
        block that still calls the gate, and both totals stay put. Counting
        shape is not checking provenance. Every painted url must now come from
        a variable this file assigned FROM the gate. */
+    /* THE ONE PAINTER THAT IS TRUSTED BY SHAPE, NOT BY NAME.
+
+       pnPaintGoverned(imgEl, im) paints an image from a governed SET, so its
+       variable never came from `= pnAuthorisedImage(product)` and the rule
+       below would reject it. Widening that rule to accept the name `im` would
+       reopen exactly the hole described above -- a name is not a permission.
+
+       Instead the painter is verified as a SHAPE, here, once: its rights check
+       must be its first statement and it must make exactly one assignment.
+       Nothing else may paint from a set. Its body is then removed from the
+       provenance scan, so every other surface is held to the unchanged rule.
+       This is one more obligation than before, not one fewer. */
+    /* MATCHED BY NAME, NOT BY SIGNATURE. Pinning the argument list made this
+       fail the moment the credit host was added -- a check that breaks when
+       a parameter is added is testing the wrong thing. */
+    const PAINTER = 'function pnPaintGoverned(';
+    if (code.split(PAINTER).length - 1 !== 1) {
+      bad('J11', 'the governed painter is not declared exactly once');
+      return;
+    }
+    const pi = code.indexOf(PAINTER);
+    const pe = code.indexOf('\n  }', pi);
+    const painter = code.slice(pi, pe);
+    /* THE CHECK MUST BE THE FIRST STATEMENT, not merely present somewhere in
+       the body: a check after the assignment protects nothing. */
+    /* From after the opening brace, not after the NAME -- once PAINTER stopped
+       pinning the signature, slicing by its length landed mid-argument-list. */
+    const firstStmt = painter.slice(painter.indexOf('{') + 1).replace(/^\s+/, '');
+    if (firstStmt.indexOf('if (!imgEl || !pnImageRightsOk(im)) return false;') !== 0) {
+      bad('J11', 'the governed painter does not check rights as its first '
+        + 'statement');
+      return;
+    }
+    if ((painter.match(/\.src\s*=/g) || []).length !== 1) {
+      bad('J11', 'the governed painter makes more than one src assignment');
+      return;
+    }
+    /* `code` is a const in this scope, so the scan reads a COPY with the
+       painter's body removed rather than reassigning it. */
+    const scan = code.slice(0, pi) + code.slice(pe);
+
     const gated = new Set();
     let gm; const gre = /(?:const|let|var)\s+(\w+)\s*=\s*pnAuthorisedImage\(product\);/g;
-    while ((gm = gre.exec(code))) gated.add(gm[1]);
+    while ((gm = gre.exec(scan))) gated.add(gm[1]);
     const painted = [];
     let pm; const pre2 = /\.src\s*=\s*(\w+)\.url;/g;
-    while ((pm = pre2.exec(code))) painted.push(pm[1]);
+    while ((pm = pre2.exec(scan))) painted.push(pm[1]);
     const ungated = painted.filter(function (n) { return !gated.has(n); });
     if (ungated.length) {
       bad('J11', 'image src painted from ' + JSON.stringify(ungated)
@@ -512,7 +553,12 @@ function run(src) {
     }
     const A = (code.match(/=\s*pnAuthorisedImage\(product\);/g) || []).length;
     const B = painted.length;
-    const C = (code.match(/pnAttachImageCredit\(/g) || []).length - 1;  /* minus the definition */
+    /* B AND C MUST BE COUNTED OVER THE SAME TEXT. The painter's body is excluded
+       from `scan` because it is verified by shape above -- so its credit call
+       must be excluded from C for the same reason its paint is excluded from B.
+       Counting one over `code` and the other over `scan` compared two different
+       populations and failed on arithmetic rather than on architecture. */
+    const C = (scan.match(/pnAttachImageCredit\(/g) || []).length - 1;  /* minus the definition */
     if (A < 4) {
       bad('J11', 'only ' + A + ' renderer rights re-check(s); the shipped '
         + 'surfaces that paint a governed photograph number at least four');
@@ -819,6 +865,18 @@ function selfTest() {
     ['publication gate unwired',      function (s) { return s.replace('const publishableCandidates = allCandidates.filter(pnResultPublishable);', 'const publishableCandidates = allCandidates.slice();'); }, 'J11'],
     ['enquiry transport un-gated',    function (s) { return s.replace("const ENQUIRY_TEST_MODE = new URLSearchParams(location.search).get('enquiry') === 'test';", 'const ENQUIRY_TEST_MODE = true;'); }, 'J07'],
     ['code claims the Irish route',   function (s) { return s.replace('const PB046_NO_PRICE', "const CLAIM='the Irish supplier route for Power Sheds'; const PB046_NO_PRICE"); }, 'M01'],
+
+    /* THE GOVERNED PAINTER. Its two rules are new, so they need mutations only
+       they catch -- a rule about rights that cannot fail is worth nothing. */
+    ['painter checks rights too late', function (s) { return s.replace(
+      'if (!imgEl || !pnImageRightsOk(im)) return false;\n    imgEl.src = im.url;',
+      'imgEl.src = im.url;\n    if (!imgEl || !pnImageRightsOk(im)) return false;'); }, 'J11'],
+    ['painter paints twice',          function (s) { return s.replace(
+      '    imgEl.src = im.url;\n    if (im.alt)',
+      '    imgEl.src = im.url;\n    imgEl.src = im.url;\n    if (im.alt)'); }, 'J11'],
+    ['a second painter appears',      function (s) { return s.replace(
+      '  function pnPaintGoverned(',
+      '  function pnPaintGoverned(a, b){ a.src = b.url; return true; }\n  function pnPaintGoverned('); }, 'J11'],
   ];
 
   let caught = 0;

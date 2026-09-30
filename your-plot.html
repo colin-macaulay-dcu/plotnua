@@ -8800,6 +8800,33 @@
   .rsv-hero{
     display:flex; gap:40px; align-items:flex-end; margin:0 0 4px;
   }
+  /* THE GOVERNED GALLERY. Deliberately NOT named .results-gallery --
+     that class is the alternative-options carousel and has nothing to do
+     with imagery. This one strip serves both surfaces. */
+  .pn-gal-strip{
+    display:flex; gap:8px; margin:10px 0 0; padding:0;
+    overflow-x:auto; scrollbar-width:thin;
+    -webkit-overflow-scrolling:touch;
+  }
+  .pn-gal-thumb{
+    flex:0 0 auto; width:62px; height:46px; padding:0; border:none;
+    border-radius:7px; overflow:hidden; cursor:pointer; background:none;
+    opacity:.62; transition:opacity .16s ease, box-shadow .16s ease;
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.14);
+  }
+  .pn-gal-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .pn-gal-thumb:hover{ opacity:.88; }
+  .pn-gal-thumb.is-on{
+    opacity:1; box-shadow:inset 0 0 0 2px var(--pn-voice, #1F3B2E);
+  }
+  .pn-gal-thumb:focus-visible{
+    outline:2px solid var(--pn-voice, #1F3B2E); outline-offset:2px;
+  }
+  @media (max-width:640px){
+    .pn-gal-thumb{ width:54px; height:40px; }
+    .pn-gal-strip{ gap:6px; margin-top:8px; }
+  }
+
   .rsv-hero-media{
     flex:0 0 52%; max-width:52%; aspect-ratio:3/2; overflow:hidden;
     border-radius:14px; background:var(--pn-hair); position:relative;
@@ -13440,6 +13467,54 @@
      falls back to the existing image-free treatment. There is no partial
      state and no "probably fine". */
 
+  /* THE RULE FOR ONE IMAGE. Lifted out of pnAuthorisedImage() unchanged
+     so that a SET can be gated image by image rather than as a unit. A
+     set is not a unit of permission: if the fourth photograph's url has
+     drifted outside the prefix its grant allows, that photograph is
+     dropped and the other three still publish. This is the only place
+     the rule exists. */
+  function pnImageRightsOk(im){
+    if (!im) return false;
+    if (!im.url || !im.credit || !im.supplier || !im.rightsRecord) return false;
+    if (!im.permittedPrefix) return false;
+    if (String(im.url).indexOf(im.permittedPrefix) !== 0) return false;
+    if (String(im.url).slice(0, 8) !== 'https://') return false;
+    return true;
+  }
+
+  /* EVERY AUTHORISED IMAGE FOR A PRODUCT, IN ORDER, DEDUPLICATED.
+
+     `imagery` is the primary and always a single block. `imagerySet` is
+     written by apply_authorised_imagery.py ONLY when a product has two
+     or more, so its absence means one image and this returns an array of
+     one -- which is why adding the capability changed nothing.
+
+     A single object is accepted wherever an array is, because an older
+     cached artefact must not be able to blank a product's photograph.
+     The primary is forced to the front: the gallery's first frame and
+     the hero every other surface draws are then the same picture by
+     construction, not by coincidence. */
+  function pnAuthorisedImages(product){
+    const raw = product && (product.imagerySet || product.imagery);
+    if (!raw) return [];
+    const list = Array.isArray(raw) ? raw : [raw];
+    const primary = product.imagery;
+    const out = [];
+    const seen = {};
+    const push = function(im){
+      if (!pnImageRightsOk(im)) return;
+      if (seen[im.url]) return;
+      seen[im.url] = 1;
+      out.push(im);
+    };
+    if (primary && !Array.isArray(primary)) push(primary);
+    for (let i = 0; i < list.length; i++) push(list[i]);
+    return out;
+  }
+
+  /* UNCHANGED FOR EVERY CALLER. Ten surfaces read this. It is now
+     defined as the first member of the authorised set, which for a
+     one-image product is the same object it always returned. */
   function pnAuthorisedImage(product){
     const im = product && product.imagery;
     if (!im) return null;
@@ -13460,6 +13535,91 @@
   /* The credit is not decoration. It is a condition of the grant for every
      supplier PlotNua currently holds rights from, so it is rendered with the
      photograph or the photograph is not rendered. */
+  /* ONE GALLERY. Results and Resolve both call this, so they cannot show
+     different pictures for the same product.
+
+     IT DOES NOTHING FOR A SINGLE IMAGE. Not "renders a gallery of one" --
+     returns false, and the caller's existing single-hero code is what the
+     homeowner sees. That is what keeps the approved composition frozen
+     for all but a handful of products.
+
+     THE CREDIT TRAVELS PER FRAME. Each image carries its own required
+     credit; showing the first image's credit under the fourth would
+     breach the grant while looking perfectly tidy. */
+  /* THE ONLY PLACE A GOVERNED PHOTOGRAPH IS PAINTED FROM A SET.
+
+     The rights check and the assignment are the same three lines, so this
+     function cannot paint an image the gate would refuse -- there is no
+     ordering in which it could. That is why the journey contract can
+     verify it once instead of tracking a variable name through a loop:
+     a name is not a permission, but this shape is. */
+  function pnPaintGoverned(imgEl, im, creditEl){
+    if (!imgEl || !pnImageRightsOk(im)) return false;
+    imgEl.src = im.url;
+    if (im.alt) imgEl.alt = im.alt;
+    /* THE ATTRIBUTION IS PART OF THE PAINT, NOT A SEPARATE COURTESY.
+       A credit attached in one function and a paint performed in another
+       are two things that can drift apart. Here they cannot: this
+       function does the check, the assignment and the credit, or it does
+       none of them.
+
+       creditEl is omitted for a thumbnail. The credit is a requirement on
+       the DISPLAYED photograph, and the strip is a control for choosing
+       which photograph is displayed; the credit sits on the frame the
+       homeowner is looking at and follows it on every swap. */
+    if (creditEl) {
+      const was = creditEl.querySelector('.pn-image-credit');
+      if (was) was.parentNode.removeChild(was);
+      pnAttachImageCredit(creditEl, im);
+    }
+    return true;
+  }
+
+  function pnGovernedGallery(mediaEl, images){
+    if (!mediaEl || !images || images.length < 2) return false;
+    const main = mediaEl.querySelector('img');
+    if (!main) return false;
+
+    const strip = document.createElement('div');
+    strip.className = 'pn-gal-strip';
+    const thumbs = [];
+
+    const show = function(i){
+      const im = images[i];
+      /* The rights re-check now lives INSIDE the painter, where it
+         cannot be separated from the assignment it protects. */
+      if (!pnPaintGoverned(main, im, mediaEl)) return;
+      for (let k = 0; k < thumbs.length; k++) {
+        const on = (k === i);
+        thumbs[k].classList.toggle('is-on', on);
+        thumbs[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+      }
+    };
+
+    for (let i = 0; i < images.length; i++) {
+      const im = images[i];
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pn-gal-thumb';
+      b.setAttribute('aria-label', 'View image ' + (i + 1) + ' of ' + images.length);
+      const t = document.createElement('img');
+      t.alt = '';
+      t.loading = 'lazy';
+      /* A THUMBNAIL IS STILL A PUBLISHED IMAGE. Small is not a reason to
+         skip the gate, so it goes through the same painter. */
+      if (!pnPaintGoverned(t, im)) continue;
+      b.appendChild(t);
+      b.addEventListener('click', function(){ show(i); });
+      strip.appendChild(b);
+      thumbs.push(b);
+    }
+
+    mediaEl.classList.add('has-pn-gallery');
+    if (mediaEl.parentNode) mediaEl.parentNode.insertBefore(strip, mediaEl.nextSibling);
+    show(0);
+    return true;
+  }
+
   function pnAttachImageCredit(mediaEl, im){
     if (!mediaEl || !im || !im.credit) return;
     const c = document.createElement('span');
@@ -20876,6 +21036,15 @@
       img.src = pnImg.url;
       if (pnImg.alt) img.alt = pnImg.alt;
       pnAttachImageCredit(imgWrap, pnImg);
+      /* THE SET, IF THERE IS ONE. Inert at one image, so the approved
+         hero is untouched for every product that has a single
+         photograph -- which today is every product that has any.
+
+         THE RUNNER-UP CARDS DELIBERATELY DO NOT GET THIS. They call the
+         same gate and draw the same primary image, but a thumbnail strip
+         inside a 38%-wide card is a worse card, not a richer one. The
+         rule is by SURFACE, never by supplier. */
+      pnGovernedGallery(imgWrap, pnAuthorisedImages(product));
     } else {
       img.dataset.pnFallback = '1';
       img.src = PN_IMAGE_FALLBACK_SRC;
@@ -31721,6 +31890,11 @@
       media.appendChild(im);
       try { pnAttachImageCredit(media, rsvImg); } catch (e) {}
       rsvHero.appendChild(media);
+      /* THE SAME GALLERY AS RESULTS, FROM THE SAME SET. Resolve is a
+         continuation of the result, so it must not be able to show a
+         different picture. Calling a second implementation here is the
+         one way to get that wrong, so there is only one. */
+      try { pnGovernedGallery(media, pnAuthorisedImages(product)); } catch (e) {}
     }
 
     const rsvCopy = rsvEl('div', 'rsv-hero-copy');

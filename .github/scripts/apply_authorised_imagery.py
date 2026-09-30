@@ -86,7 +86,7 @@ PROVE = "--prove" in sys.argv
 # what the engine thinks of it. The guards assert these are byte-identical
 # before and after. `imagery` is deliberately absent: it is the only key this
 # script is allowed to touch.
-MATCH_KEYS_EXCLUDED = {"imagery"}
+MATCH_KEYS_EXCLUDED = {"imagery", "imagerySet"}
 
 
 # ---------------------------------------------------------------------------
@@ -341,7 +341,15 @@ def resolve(products, grants):
             if pid not in known:
                 continue          # linked in Atlas, not in THIS universe
             hit += 1
-            by_product[pid] = {
+            # ONE PRODUCT, EVERY AUTHORISED IMAGE. This was an
+            # assignment, so the second asset to name a product silently
+            # destroyed the first. It is now an ordered list, and the
+            # same file linked twice is refused HERE rather than
+            # deduplicated in two different renderers later.
+            blocks = by_product.setdefault(pid, [])
+            if any(b["url"] == a["url"] for b in blocks):
+                continue
+            blocks.append({
                 "url": a["url"],
                 "alt": a["alt"],
                 "credit": credit,
@@ -359,7 +367,7 @@ def resolve(products, grants):
                 # STATE, NOT SCORE. Consumers read this to choose a richer
                 # presentation. Nothing downstream may read it as quality.
                 "presentationTier": "A",
-            }
+            })
         trace.append((a["asset"], org, "ALLOWED",
                       "%d product(s) in this universe" % hit))
     return by_product, trace
@@ -369,16 +377,35 @@ def apply(doc, by_product):
     changed = 0
     for p in doc["products"]:
         pid = p.get("productId") or p.get("id")
-        img = by_product.get(pid)
-        if img:
-            if p.get("imagery") != img:
+        ims = by_product.get(pid)
+        if ims:
+            # `imagery` KEEPS ITS EXACT SHAPE -- a single block, the
+            # first authorised image. Every existing consumer reads it
+            # unchanged, so a one-image product is byte-identical.
+            #
+            # `imagerySet` is written ONLY when there are two or more.
+            # Its ABSENCE is what says "one image", which is why adding
+            # this capability changes no product in the universe today.
+            if p.get("imagery") != ims[0]:
                 changed += 1
-            p["imagery"] = img
-        elif "imagery" in p:
-            # WITHDRAWAL PATH. No special case: losing the grant simply means
-            # no resolved imagery, and the key goes.
-            del p["imagery"]
-            changed += 1
+            p["imagery"] = ims[0]
+            if len(ims) > 1:
+                if p.get("imagerySet") != ims:
+                    changed += 1
+                p["imagerySet"] = ims
+            elif "imagerySet" in p:
+                del p["imagerySet"]
+                changed += 1
+        else:
+            # WITHDRAWAL PATH. No special case: losing the grant means no
+            # resolved imagery, and BOTH keys go. A set left behind after
+            # the primary was withdrawn would be unauthorised imagery
+            # still on the page, which is the one outcome that must be
+            # impossible.
+            for k in ("imagery", "imagerySet"):
+                if k in p:
+                    del p[k]
+                    changed += 1
     return changed
 
 
@@ -435,7 +462,8 @@ def prove(doc_before, grants):
         key = sup.strip().lower()
         if key not in grants:
             continue
-        mine = {pid for pid, im in by_product.items() if im["supplier"] == sup}
+        mine = {pid for pid, ims in by_product.items()
+                if any(b["supplier"] == sup for b in ims)}
         others = {pid for pid in by_product if pid not in mine}
 
         # G5 — no live grant for THIS supplier: none of its images resolve,
@@ -484,9 +512,38 @@ def prove(doc_before, grants):
                   "%d resolved" % len(set(bp3) & mine))
 
     # G-CREDIT — the grant's required credit travels with every image.
-    missing = [pid for pid, im in by_product.items() if not im.get("credit")]
+    # EVERY image in the set, not just the first. A gallery whose second
+    # picture has no credit breaches the grant exactly as loudly as one
+    # whose first does.
+    missing = [pid for pid, ims in by_product.items()
+               if any(not b.get("credit") for b in ims)]
     check("every resolved image carries its grant's required credit",
           not missing, "%d without credit" % len(missing))
+
+    # THE SET IS A SET. Every block in it passed the same gate as the
+    # primary, no url appears twice, and the primary is its first member.
+    # Without this, "the gallery" could disagree with "the hero".
+    bad = []
+    for pid, ims in by_product.items():
+        urls = [b["url"] for b in ims]
+        if len(set(urls)) != len(urls):
+            bad.append(pid + " duplicate url")
+        for b in ims:
+            if not b.get("permittedPrefix") or \
+                    not b["url"].startswith(b["permittedPrefix"]):
+                bad.append(pid + " unscoped url")
+            if not b["url"].startswith("https://"):
+                bad.append(pid + " not https")
+    check("every image in a set is scoped, https and unique",
+          not bad, "; ".join(bad[:4]))
+
+    plural = {pid: len(ims) for pid, ims in by_product.items() if len(ims) > 1}
+    check("the primary image is the first member of every set",
+          all(by_product[pid][0]["url"] ==
+              next(p["imagery"]["url"] for p in after_doc["products"]
+                   if (p.get("productId") or p.get("id")) == pid)
+              for pid in by_product),
+          "%d product(s) carry 2+ images" % len(plural))
 
     # PRODUCT-EXACT — no image lands on a product it is not linked to.
     linked = set()
