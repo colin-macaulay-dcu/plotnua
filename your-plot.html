@@ -8552,14 +8552,48 @@
   /* ---- OPTION DETAIL: the two new sections ------------------------- */
   #screen-product-detail .pd-checks,
   /* ---- P0 JOURNEY RESTORE ------------------------------------------- */
-  /* J1 — the saved state, not a second primary. */
+  /* V2 — THE SAVED STATE. A confirmation, not a second primary.
+
+     These sit AFTER the #screen-match-results .match-card-save-primary rules
+     in source order at equal specificity, so they win on the Results screen
+     without !important and without touching the originals.
+
+     THE MARK IS EXPLICITLY BOUNDED HERE. It must never again depend on a rule
+     that a rename can orphan: clamp() gives it a hard ceiling and a hard
+     floor, so the worst case is a mark that is slightly wrong, never one that
+     is unconstrained. 42px is the size the mark was designed at; 28px is the
+     narrow-screen size. */
+  #screen-match-results .match-card-save-state,
   .match-card-save-state{
-    background:none; border:none; padding:2px 0; margin-top:2px;
+    background:none; border:none; box-shadow:none;
+    padding:4px 0; margin-top:4px; flex:0 0 auto; width:auto;
     font-size:12.5px; font-weight:600; color:var(--soft);
-    display:inline-flex; align-items:center; gap:6px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+    transform:none;
   }
-  .match-card-save-state.is-saved{ color:var(--brand-green); }
-  .match-card-save-state:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  #screen-match-results .match-card-save-state:hover,
+  .match-card-save-state:hover{
+    background:none; border-color:transparent; transform:none; color:var(--ink);
+  }
+  #screen-match-results .match-card-save-state.is-saved,
+  .match-card-save-state.is-saved{
+    background:none; color:var(--brand-green); border-color:transparent;
+  }
+  #screen-match-results .match-card-save-state:focus-visible,
+  .match-card-save-state:focus-visible{
+    outline:2px solid var(--accent); outline-offset:3px;
+  }
+  /* THE BOUND. Desktop ceiling 42px, narrow-screen floor 28px. */
+  #screen-match-results .match-card-save-state .pn-mark-heart,
+  .match-card-save-state .pn-mark-heart{
+    width:clamp(28px, 4.2vw, 42px);
+    height:clamp(28px, 4.2vw, 42px);
+    margin-right:0; flex:0 0 auto;
+  }
+  @media (max-width:480px){
+    #screen-match-results .match-card-save-state .pn-mark-heart,
+    .match-card-save-state .pn-mark-heart{ width:28px; height:28px; }
+  }
 
   /* J2 — the journey cue. Quiet by default; the current step is the only
      thing that carries weight. */
@@ -19968,7 +20002,15 @@
        View option is the primary on this card. Save keeps every one of
        its behaviours -- provenance, undo toast, funnel -- and loses only
        its competing weight. */
-    saveBtn.className = 'match-card-save-state';
+    /* V1 — BOTH CLASSES, DELIBERATELY.
+       `match-card-save-primary` is what seventeen existing rules target:
+       the 42px mark, the button chrome, the hero and gallery layouts, the
+       mobile full-width rule, the border and shadow normalisation. The P0
+       rename dropped all of them and the mark rendered unconstrained.
+       Keeping the original class restores every one; the -state class
+       that follows it overrides only weight, colour and mark size, so the
+       control is demoted without being re-styled from scratch. */
+    saveBtn.className = 'match-card-save-primary match-card-save-state';
     const isSavedNow = savedProductIds.has(product.id);
     const syncCardSaveBtn = (saved) => {
       saveBtn.setAttribute('aria-pressed', saved ? 'true' : 'false');
@@ -24253,9 +24295,19 @@
     /* P0 J8 — supplier identity stays primary; the review date becomes
        subordinate metadata in its own element rather than sharing the
        supplier's weight inside one concatenated string. */
+    /* V3 — THE REVIEW DATE LEAVES THE MASTHEAD.
+       A single date beside the supplier name reads as the review date of
+       the whole assessment, which it is not: it is the last review of ONE
+       organisation record. Rather than invent a latest-material-review
+       rule to justify a newer date, the claim is withdrawn from the main
+       homeowner hierarchy.
+
+       PROVENANCE IS NOT LOST. The supplier panel still carries it, as a
+       labelled row that says exactly what it is:
+           rowsSrc.push(['Supplier record', 'Reviewed ' + reviewed, true]);
+       That is the deeper evidence view, which is where a record-level
+       date belongs. */
     mast.appendChild(aaEl('span', 'aa-mast-r', org));
-    if (reviewed) mast.appendChild(aaEl('span', 'aa-mast-meta',
-      'Reviewed ' + reviewed));
     host.appendChild(mast);
 
     /* ---- (2) THE CONCLUSION. The old typographic drama, honest content. --- */
