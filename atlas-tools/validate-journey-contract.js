@@ -115,9 +115,18 @@ const REPAIRED = [
     present: 'function pnResolvePreview(product){', count: 1 },
   { guard: 'J07', label: 'V2 stays retired: Option Detail does not call the outbound door',
     absent: 'pnSupplierHandover(product, nextAction.state);' },
-  /* Two occurrences, measured: the section heading and the button label. */
-  { guard: 'J07', label: 'V2 repair present: the continuation opens My Plot',
-    present: 'Continue with this option', count: 2 },
+  /* P0 JOURNEY RESTORE — BEHAVIOUR, NOT A COPY STRING.
+     This used to fingerprint the literal 'Continue with this option' twice.
+     The P0 repair relabels that CTA by saved state ('Add to My Plot' /
+     'Continue to My Plot'), so the old fingerprint broke while the behaviour
+     it was standing in for was completely intact. A test that fails when the
+     words change but the architecture does not was testing the wrong thing.
+     It now tests what V2 actually repaired: Option Detail's continuation
+     lands in My Plot. */
+  { guard: 'J07', label: 'V2 repair present: the Option continuation opens My Plot',
+    present: "cont.addEventListener('click', function(){", count: 1 },
+  { guard: 'J07', label: 'V2 repair present: both saved-state labels exist',
+    present: "? 'Continue to My Plot \\u2192' : 'Add to My Plot \\u2192'", count: 1 },
   { guard: 'J07', label: 'V3 stays retired: Option Detail does not route on pnNextAction',
     absent: 'const nextAction = pnNextAction(product);' },
   { guard: 'P01', label: 'V4 repair present: the PlotNua-gap wording',
@@ -264,13 +273,51 @@ function run(src) {
     bad('J07', 'window.open is not inside pnSupplierHandover() — the single door has moved');
   }
 
-  /* POST-RP-1. The door is DEFINED and has NO CALLER. That is the contract:
-     it belongs at the end of Progress, and Progress is dormant. A reference
-     count above one means some stage started calling it again. */
-  const callers = countOf(code, 'pnSupplierHandover(');
-  if (callers === 1) ok('J07', 'the outbound door is defined and has no caller, as the contract requires');
-  else bad('J07', 'pnSupplierHandover reference count is ' + callers + ', expected 1 (definition only)' +
-                  ' — a stage has started calling the outbound door again');
+  /* P0 JOURNEY RESTORE — THE CONTRACT MOVED, SO THIS CHECK MOVED WITH IT.
+     Until the P0 repair the door was DEFINED WITH NO CALLER, because Progress
+     was dormant and there was nowhere legitimate to call it from. Progress is
+     now visible by founder authorisation, so the contract is no longer "zero
+     callers" — it is "EXACTLY ONE caller, and it is inside renderProgress".
+     That is a stricter statement, not a looser one: it pins the location as
+     well as the count.
+
+     COMMENTS ARE NOT EXECUTABLE. The old check counted raw occurrences, which
+     included RP-1's own explanatory comment. Counting prose as a call site
+     would have made this unpassable for the right reason, which is the same
+     as unpassable for the wrong one. */
+  const bareCode = code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const callers = countOf(bareCode.replace('function pnSupplierHandover(', ''),
+                          'pnSupplierHandover(');
+  function bodyOf(text, sig){
+    const i = text.indexOf(sig);
+    if (i < 0) return '';
+    let j = text.indexOf('{', i), d = 0;
+    for (let k = j; k < text.length; k++){
+      if (text[k] === '{') d++;
+      else if (text[k] === '}'){ d--; if (!d) return text.slice(i, k + 1); }
+    }
+    return text.slice(i);
+  }
+  const inProgress = bodyOf(bareCode, 'function renderProgress(').indexOf('pnSupplierHandover(') >= 0;
+  if (callers === 1 && inProgress) {
+    ok('J07', 'the outbound door has exactly one caller, and it is inside renderProgress()');
+  } else if (callers !== 1) {
+    bad('J07', 'pnSupplierHandover has ' + callers + ' caller(s) in executable code, expected exactly 1');
+  } else {
+    bad('J07', 'the single pnSupplierHandover caller is NOT inside renderProgress() — a stage ' +
+               'before Progress has opened the outbound door');
+  }
+
+  /* And the prohibition, stated positively: none of the five upstream stages
+     may hold the door. */
+  ['function openProductDetail(', 'function openMyPlot(', 'function renderMyPlotPickTwo(',
+   'function renderResolve(', 'function buildSaveActions('].forEach(function(sig){
+    const b = bodyOf(bareCode, sig);
+    if (b && b.indexOf('pnSupplierHandover(') >= 0) {
+      bad('J07', 'a supplier exit appeared in ' + sig.replace('function ', '').replace('(', '()'));
+    }
+  });
+  ok('J07', 'no supplier exit in Result card, Option Detail, My Plot, Compare or Resolve');
 
   head('J10 · NO PARALLEL JOURNEY AROUND A CANONICAL STAGE');
   const declared = [];
@@ -388,11 +435,45 @@ function run(src) {
     }
   } catch (e) { bad('P6', 'operations evidence unreadable: ' + e.message); }
 
-  /* P8 — Progress stays dormant. */
-  if (countOf(code, 'els.myPlotProgressBtn.hidden = true;') === 1) {
-    ok('P8', 'Progress remains dormant (button force-hidden)');
+  /* P8 — P0 JOURNEY RESTORE. Progress is VISIBLE by founder authorisation.
+     This used to assert dormancy. Dormancy was the right contract while the
+     stage had no evidence and no outbound door; both of those changed, so
+     the invariant changes with them -- and it gets STRICTER, not looser.
+
+     Visible is only safe if it cannot become dishonest. So P8 now asserts
+     three things at once: the stage is reachable at the recorded threshold,
+     the six market resolvers are still hard-open, and the maker lane still
+     requires CONFIRMED evidence with a source. Visibility without those three
+     would be fabricated readiness, which is the thing dormancy was protecting
+     against in the first place. */
+  const progVisible = countOf(code, 'els.myPlotProgressBtn.hidden = total < 1;') === 1
+                   && countOf(code, 'els.myPlotProgressBtn.hidden = true;') === 0;
+  const resolveVisible = countOf(code, 'els.myPlotResolveBtn.hidden = total < 1;') === 1
+                      && countOf(code, 'els.myPlotResolveBtn.hidden = true;') === 0;
+  if (progVisible) ok('P8', 'Progress is reachable from My Plot at the recorded threshold');
+  else bad('P8', 'Progress is not reachable at `total < 1` — the restored entry point moved');
+  if (resolveVisible) ok('P8', 'Resolve is reachable from My Plot at the recorded threshold');
+  else bad('P8', 'Resolve is not reachable at `total < 1` — the restored entry point moved');
+
+  const hardOpen = countOf(code, 'return pnOpenCell({ checked:false });');
+  if (hardOpen === 6) ok('P8', 'the six market-lane questions are still hard-open — nothing fabricated');
+  else bad('P8', 'market-lane hard-open resolvers are ' + hardOpen + ', expected 6 — '
+                 + 'a question has been answered without evidence');
+
+  if (code.indexOf("ops.installationStatus !== 'CONFIRMED'") >= 0
+      && code.indexOf("ops.deliveryStatus !== 'CONFIRMED'") >= 0
+      && code.indexOf("ops.roiDelivery !== 'CONFIRMED'") >= 0) {
+    ok('P8', 'the maker lane still requires CONFIRMED status with a source url');
   } else {
-    bad('P8', 'Progress dormancy changed');
+    bad('P8', 'a maker-lane evidence test was weakened');
+  }
+
+  /* P8 — the headline must not claim readiness it does not have, and must not
+     tell the homeowner the product is broken either. */
+  if (code.indexOf('PlotNua cannot tell you yet what is normal') >= 0) {
+    bad('P8', 'the old broken-sounding Progress headline is still present');
+  } else {
+    ok('P8', 'the Progress headline frames partial progress without claiming readiness');
   }
 
   head('M01 · MARKET SOURCE OF TRUTH');

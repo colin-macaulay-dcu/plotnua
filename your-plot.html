@@ -8551,6 +8551,48 @@
 
   /* ---- OPTION DETAIL: the two new sections ------------------------- */
   #screen-product-detail .pd-checks,
+  /* ---- P0 JOURNEY RESTORE ------------------------------------------- */
+  /* J1 — the saved state, not a second primary. */
+  .match-card-save-state{
+    background:none; border:none; padding:2px 0; margin-top:2px;
+    font-size:12.5px; font-weight:600; color:var(--soft);
+    display:inline-flex; align-items:center; gap:6px; cursor:pointer;
+  }
+  .match-card-save-state.is-saved{ color:var(--brand-green); }
+  .match-card-save-state:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  /* J2 — the journey cue. Quiet by default; the current step is the only
+     thing that carries weight. */
+  #screen-product-detail .pd-journey-cue{
+    list-style:none; display:flex; flex-wrap:wrap; gap:6px;
+    margin:14px 0 0; padding:0; font-size:11.5px; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--soft);
+  }
+  #screen-product-detail .pd-journey-cue li + li::before{
+    content:"\2192"; margin-right:6px; opacity:.5;
+  }
+  #screen-product-detail .pd-journey-cue li.is-here{
+    color:var(--brand-green); font-weight:700;
+  }
+  #screen-product-detail .pd-next-back{
+    display:inline-block; margin-top:10px; background:none; border:none;
+    padding:0; font-size:13px; color:var(--accent); cursor:pointer;
+    text-decoration:underline;
+  }
+
+  /* J8 — the review date, subordinate. */
+  .aa-mast-meta{ display:block; font-size:11px; color:var(--soft); font-weight:400; }
+
+  /* J6 — the supplier door, at the end of Progress and nowhere else. */
+  .prg-supplier{ margin-top:26px; padding-top:20px; border-top:1px solid rgba(31,59,46,.14); }
+  .prg-supplier-note{ font-size:13.5px; color:var(--soft); margin:0 0 12px; }
+  .prg-supplier-cta{
+    display:inline-block; padding:13px 22px; border:none; border-radius:8px;
+    background:var(--brand-green); color:#fff; font-size:15px; font-weight:700;
+    cursor:pointer;
+  }
+  .prg-supplier-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
   #screen-product-detail .pd-next{
     margin-top:32px; padding-top:24px; border-top:1px solid var(--pn-hair);
   }
@@ -19901,7 +19943,11 @@
 
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
-    saveBtn.className = 'match-card-save-primary';
+    /* P0 J1 — THE SAVE CONTROL IS NOT A SECOND PRIMARY.
+       View option is the primary on this card. Save keeps every one of
+       its behaviours -- provenance, undo toast, funnel -- and loses only
+       its competing weight. */
+    saveBtn.className = 'match-card-save-state';
     const isSavedNow = savedProductIds.has(product.id);
     const syncCardSaveBtn = (saved) => {
       saveBtn.setAttribute('aria-pressed', saved ? 'true' : 'false');
@@ -23821,7 +23867,10 @@
       let band = null;
       try { band = appearanceBand(product, pref).band; } catch (e) { band = null; }
       if (band === 2)      look = 'It matches the ' + pref + ' style you chose';
-      else if (band === 1) look = 'Style did not count for or against this one';
+      /* P0 J7 — style is mentioned ONLY when it moved the match. A
+         neutral band is scoring mechanics, not something a homeowner
+         needs, so it now says nothing at all. */
+      else if (band === 1) look = '';
     } else if (pref === 'either') {
       look = 'You did not narrow the style, so it did not separate this one from the others';
     }
@@ -23846,8 +23895,12 @@
                     : 'published price of ';
         if (bare) money = 'its ' + noun + bare + ' sits within your ' + label + ' budget';
       } else if (fit === 1) {
-        money = 'your ' + label + ' budget could not be tested here, because no '
-              + 'comparable price is published \u2014 so it did not rule this one out';
+        /* P0 J7 — homeowner language. Names the maker and the consequence,
+           not the test. */
+        money = 'your budget could not be checked because '
+              + ((product.organisation) || 'this maker')
+              + ' does not publish a comparable price \u2014 so price did not '
+              + 'rule this option out';
       }
     }
 
@@ -24173,8 +24226,12 @@
     /* ---- (1) MASTHEAD. The section's single dateline. -------------------- */
     const mast = aaEl('div', 'aa-mast');
     mast.appendChild(aaEl('span', 'aa-mast-l', 'Atlas assessment'));
-    mast.appendChild(aaEl('span', 'aa-mast-r',
-      org + (reviewed ? ('  ·  Reviewed ' + reviewed) : '')));
+    /* P0 J8 — supplier identity stays primary; the review date becomes
+       subordinate metadata in its own element rather than sharing the
+       supplier's weight inside one concatenated string. */
+    mast.appendChild(aaEl('span', 'aa-mast-r', org));
+    if (reviewed) mast.appendChild(aaEl('span', 'aa-mast-meta',
+      'Reviewed ' + reviewed));
     host.appendChild(mast);
 
     /* ---- (2) THE CONCLUSION. The old typographic drama, honest content. --- */
@@ -28066,7 +28123,13 @@
       nextWrap = document.createElement('section');
       nextWrap.id = 'pdNext';
       nextWrap.className = 'pd-next';
-      pdHost.appendChild(nextWrap);
+      /* P0 J2 — ABOVE THE EVIDENCE, NOT BELOW IT.
+         pdNext used to be appended last, so the only onward step sat
+         underneath the whole evidence stack and read as a dead end.
+         Placing it immediately after the actions row puts the decision
+         where the homeowner is already looking; the evidence still
+         follows, unchanged and in its original order. */
+      pdHost.insertBefore(nextWrap, els.pdActions.nextSibling);
     }
     /* RP-1 · V2 REPAIRED. THE CONTINUATION GOES BACK INTO PLOTNUA.
 
@@ -28083,10 +28146,12 @@
     nextWrap.innerHTML = '';
     const nh = document.createElement('h3');
     nh.className = 'pd-next-head';
-    nh.textContent = 'Continue with this option';
+    nh.textContent = alreadySavedHead
+      ? 'Continue to My Plot' : 'Add this to My Plot';
     nextWrap.appendChild(nh);
 
     const alreadySaved = savedProductIds.has(product.id);
+    const alreadySavedHead = alreadySaved;
     const np = document.createElement('p');
     np.className = 'pd-next-note';
     np.textContent = alreadySaved
@@ -28098,7 +28163,9 @@
     const cont = document.createElement('button');
     cont.type = 'button';
     cont.className = 'pd-next-cta';
-    cont.textContent = 'Continue with this option \u2192';
+    /* P0 J2 — the label names what the tap does, by state. */
+    cont.textContent = alreadySaved
+      ? 'Continue to My Plot \u2192' : 'Add to My Plot \u2192';
     cont.addEventListener('click', function(){
       if (!savedProductIds.has(product.id)) {
         savedProductIds.add(product.id);
@@ -28109,6 +28176,33 @@
       openMyPlot();
     });
     nextWrap.appendChild(cont);
+
+    /* P0 J2 — SECONDARY: back to where they came from. Reuses the panel's
+       one existing back control rather than adding a second navigation
+       architecture. */
+    const backLink = document.createElement('button');
+    backLink.type = 'button';
+    backLink.className = 'pd-next-back';
+    backLink.textContent = 'Back to results';
+    backLink.addEventListener('click', function(){ productDetailReturn.close(); });
+    nextWrap.appendChild(backLink);
+
+    /* P0 J2 — THE JOURNEY CUE. Not decoration: it answers "what happens
+       if I tap this", which is the question the dead-end reading came
+       from. Current stage is marked for assistive technology too. */
+    const cue = document.createElement('ol');
+    cue.className = 'pd-journey-cue';
+    cue.setAttribute('aria-label', 'Where this sits in the journey');
+    ['Result', 'Option', 'My Plot', 'Resolve', 'Progress'].forEach(function(step){
+      const li = document.createElement('li');
+      li.textContent = step;
+      if (step === 'Option') {
+        li.className = 'is-here';
+        li.setAttribute('aria-current', 'step');
+      }
+      cue.appendChild(li);
+    });
+    nextWrap.appendChild(cue);
 
     showScreen(els.productDetailScreen);
   }
@@ -28640,7 +28734,12 @@
        TO RESTORE: put back `els.myPlotResolveBtn.hidden = total < 1;`.
 
        RS-2's threshold, for the record: ONE, not two. */
-    if (els.myPlotResolveBtn) els.myPlotResolveBtn.hidden = true;
+    /* P0 J3 — RESOLVE RESTORED. ISSUE 007 closed this on a design
+       objection, not an evidence one: RESOLVE_REGISTRY, renderResolve()
+       and openResolveScreen() were never touched and still run. This is
+       the exact line ISSUE 007 recorded under TO RESTORE. Threshold is
+       ONE, per RS-2. */
+    if (els.myPlotResolveBtn) els.myPlotResolveBtn.hidden = total < 1;
     /* LAUNCH-INT-002 — PROGRESS IS HIDDEN FOR LAUNCH.
 
        The stage stays built: the screen, the model, the history entry, the
@@ -28654,7 +28753,13 @@
        to be offered.
 
        TO RESTORE: put back `total < 1`. That is the whole of it. */
-    if (els.myPlotProgressBtn) els.myPlotProgressBtn.hidden = true;
+    /* P0 J4 — PROGRESS RESTORED. LAUNCH-INT-002 hid it because the market
+       lane answers nothing. Founder decision: incompleteness is not a
+       reason to hide a stage -- it is a reason to say so plainly, which
+       J5 now does. Not one resolver changed; the counts are still
+       whatever the evidence supports, today 2/8 and 1/8. This is the
+       exact line LAUNCH-INT-002 recorded under TO RESTORE. */
+    if (els.myPlotProgressBtn) els.myPlotProgressBtn.hidden = total < 1;
     els.myPlotCompareHint.hidden = total !== 1;
     // NOTE: `total` deliberately counts SAVED items only. The considered
     // selection is transient and belongs to one comparison; letting it light
@@ -30976,7 +31081,14 @@
     const maker = (product && product.organisation) || 'the maker';
     const m = model.counts.marketAnswered;
     if (m === 0) {
-      return 'PlotNua cannot tell you yet what is normal for a build like this.';
+      /* P0 J5 — PARTIAL PROGRESS, HONESTLY FRAMED.
+         The old sentence described PlotNua's limits and read as a broken
+         product. This describes the homeowner's position: some of it is
+         settled, the rest is not. It claims nothing the counts do not
+         support -- every unanswered row is still rendered unanswered,
+         and the lane-level "Atlas has not been able to establish any of
+         this yet" sentence is untouched. */
+      return 'What we know so far.';
     }
     const w = RESOLVE_COUNT_WORDS[m] || String(m);
     return w + (m === 1 ? ' thing is' : ' things are') + ' known about how this usually goes.';
@@ -31063,6 +31175,38 @@
       + 'PlotNua does not know what usually happens across this market. '
       + 'It cannot see your job, and it is not in touch with anyone about it.'));
     view.appendChild(bound);
+
+    /* P0 J6 — THE SUPPLIER DOOR. THE FIRST AND ONLY CALL SITE.
+
+       pnSupplierHandover() has carried no caller since RP-1 removed the
+       premature one from Option Detail. This is the stage the journey
+       contract names: the homeowner has seen the option, saved it,
+       resolved what is open and seen what is known about how it goes.
+
+       NO SECOND MECHANISM. pnNextAction() decides whether a route exists
+       and pnSupplierHandover() opens it -- both exactly as written. When
+       Atlas holds no governed product url pnNextAction() returns null and
+       NOTHING is rendered, rather than a dead control.
+
+       THE COPY NAMES THIS STEP, NOT THE BUSINESS MODEL. Nothing here
+       says the supplier owns the sale permanently; PlotNua may own more
+       of enquiry, reservation and transaction later without this line
+       becoming false. */
+    const outward = pnNextAction(product);
+    if (outward && outward.href) {
+      const door = prgEl('div', 'prg-supplier');
+      door.appendChild(prgEl('p', 'prg-supplier-note',
+        'The next step happens with '
+        + ((product.organisation) || 'the maker') + '. '
+        + 'PlotNua does not speak to them for you.'));
+      const go = prgEl('button', 'prg-supplier-cta', 'Continue to supplier \u2192');
+      go.type = 'button';
+      go.addEventListener('click', function(){
+        pnSupplierHandover(product, 'progress');
+      });
+      door.appendChild(go);
+      view.appendChild(door);
+    }
 
     return model;
   }

@@ -121,7 +121,11 @@ Rebuilding a dormant stage under a new name is the failure mode this contract ex
   `recordResolveAnswer()`, `recordResolveAcceptance()`, `withdrawResolvePosition()`; persisted
   through the My Plot record.
 - **Allowed next** — MY PLOT · PROGRESS
-- **Status** — **BUILT · WIRED · DORMANT BY FOUNDER DECISION**
+- **Status** — **BUILT · WIRED · VISIBLE** (2026-09-30, P0 JOURNEY RESTORE)
+  - Reverses ISSUE 007. The objection was a design one, not an evidence one:
+    RESOLVE_REGISTRY, renderResolve() and openResolveScreen() were never
+    touched. Entry restored to `els.myPlotResolveBtn.hidden = total < 1;`,
+    the exact line ISSUE 007 recorded under TO RESTORE. Threshold ONE, per RS-2.
 - **Blocker** — ISSUE 007. Founder review rejected the customer-facing Resolve screen for launch.
   Engine, registry, renderer, storage all untouched and still running; only the reveal is withdrawn.
 - **Restore condition** — founder decision. Mechanically:
@@ -159,7 +163,20 @@ Rebuilding a dormant stage under a new name is the failure mode this contract ex
 - **Exit** — back to My Plot; **supplier/provider handoff**.
 - **State owned** — **readiness and progression state.**
 - **Allowed next** — MY PLOT · SUPPLIER / PROVIDER
-- **Status** — **BUILT · WIRED · DORMANT BY EVIDENCE BLOCKER**
+- **Status** — **BUILT · WIRED · VISIBLE, PARTIAL BY EVIDENCE** (2026-09-30, P0 JOURNEY RESTORE)
+  - Reverses LAUNCH-INT-002 by founder authorisation: *incompleteness is not a
+    reason to hide a stage.* Entry restored to
+    `els.myPlotProgressBtn.hidden = total < 1;`.
+  - **Nothing was fabricated to make it presentable.** Both maker resolvers still
+    require CONFIRMED status with a source url; all six market questions remain
+    hard-open. Measured today: Power Sheds **2/8**, Yardbox **1/8**, market lane
+    **0/6** for every product.
+  - The headline now frames partial progress ('What we know so far.') instead of
+    stating PlotNua's limits. The counts still come from progressFor(); only the
+    sentence above them changed.
+  - **Progress is the ONLY stage that may call pnSupplierHandover().** Guard J07
+    asserts exactly one caller AND that it sits inside renderProgress(); the five
+    upstream stages are checked individually for the absence of that door.
 - **Blocker** — LAUNCH-INT-002. Progress cannot answer its own question until Atlas holds process
   evidence. Market lane answered **0/37**. A stage that can only say what it does not know is
   honest but not ready to be offered.
