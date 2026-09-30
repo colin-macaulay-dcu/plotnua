@@ -8714,8 +8714,13 @@
      well keeps the plate vocabulary the Results hero uses -- same radius
      family, same soft lift -- so the two pages read as one journey. */
   .rsv-hero{ display:flex; gap:26px; align-items:center; margin:0 0 6px; }
+  /* X1 - 42% OF THE HEADER, UP FROM 34%.
+     The middle of the 40-45% the brief asks for, chosen so the copy
+     column still holds the product line and the headline on two lines
+     at 1024. The plate vocabulary is unchanged: same radius family,
+     same soft lift, same aspect ratio, same governed image. */
   .rsv-hero-media{
-    flex:0 0 34%; max-width:34%; aspect-ratio:4/3; overflow:hidden;
+    flex:0 0 42%; max-width:42%; aspect-ratio:4/3; overflow:hidden;
     border-radius:12px; background:var(--pn-hair); position:relative;
     box-shadow:
       0 2px 4px rgba(36,53,31,.05),
@@ -8807,7 +8812,43 @@
 
      SCOPED TO #screen-resolve. Progress uses .rsv-working and .rsv-head too
      and keeps its own spacing; only Resolve tightens. */
-  #screen-resolve .rsv-situation{ margin-bottom:0; }
+  /* X5 - READY / HANDOFF.
+
+     Progress reuses Resolve's plate vocabulary rather than inventing a
+     second one: the same hero, the same cream card, the same hairline.
+     What is new is only the two-column list, which is a plainer shape
+     than the card grid because these rows carry no controls.
+
+     W4's #screen-resolve .rsv-situation rule is gone with the element
+     it spaced. */
+  #screen-progress .rsv-head{ padding-bottom:var(--pn-space-md); }
+  #screen-progress .rsv-working{
+    margin-top:var(--pn-space-lg); padding-top:0; border-top:none;
+  }
+  .prg-block{ margin:0 0 var(--pn-space-lg); }
+  .prg-block-title{
+    margin:0 0 10px; font-family:'Work Sans',sans-serif;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    font-weight:600; color:var(--soft);
+  }
+  .prg-rows{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+  .prg-row{
+    margin:0; padding:14px 16px;
+    background:var(--brand-ivory, #F7F3E8);
+    border:1px solid rgba(31,59,46,.10);
+    border-radius:12px;
+    box-shadow:0 1px 2px rgba(36,53,31,.04);
+  }
+  .prg-row-title{
+    display:block; font-family:'Work Sans',sans-serif;
+    font-size:14.5px; font-weight:600; line-height:1.35;
+    color:var(--brand-green);
+  }
+  .prg-row-value{ margin:5px 0 0; font-size:13.5px; line-height:1.45; color:var(--ink); }
+  .prg-row-note{ margin:4px 0 0; font-size:12.5px; line-height:1.45; color:var(--soft); }
+  @media (min-width:760px){
+    .prg-rows{ grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); }
+  }
   #screen-resolve .rsv-head{ padding-bottom:var(--pn-space-md); }
   #screen-resolve .rsv-working{
     margin-top:var(--pn-space-lg); padding-top:0; border-top:none;
@@ -31258,7 +31299,15 @@
     const h = rsvEl('h2', 'rsv-headline', resolveHeadline(model, product));
     h.id = 'rsvHeadline';
     rsvCopy.appendChild(h);
-    rsvCopy.appendChild(rsvEl('p', 'rsv-situation', RESOLVE_SITUATION));
+    /* X2 - THE SUPPORTING PARAGRAPH IS GONE.
+
+       "We already know a lot about this option..." said in two clauses
+       what the headline says in one, and it said it before the reader
+       had seen a single card. The headline is enough.
+
+       RESOLVE_SITUATION is retired rather than left dangling: a string
+       constant with no consumer is a copy change waiting to be made by
+       accident. Guard X05 fails the build if it comes back. */
     rsvHero.appendChild(rsvCopy);
     head.appendChild(rsvHero);
     view.appendChild(head);
@@ -31388,15 +31437,22 @@
     });
     if (working.childNodes.length) view.appendChild(working);
 
-    /* AMENDMENT 2, then AMENDMENT 1. Not a footer: the boundary clause
-       carries the whole completeness claim, so it reads as a closing
-       paragraph rather than as small print. */
-    view.appendChild(resolveBoundaryBlock(model, product));
+    /* X3 - THE FOOTER IS GONE, AND THE TWO FUNCTIONS ARE NOT.
 
-    /* RS-2b — one sentence, once, at the foot, and only if it is true. */
-    const note = resolveStorageNote();
-    if (note) view.appendChild(note);
+       Three paragraphs sat between the last card and Continue: what
+       Atlas looked at, what no list can settle, and where the answers
+       are stored. All three are true. None of them is what a person
+       needs at the moment they are deciding whether to go on, and
+       together they turned the foot of the page into small print with
+       a button after it.
 
+       resolveBoundaryBlock() and resolveStorageNote() are LEFT DEFINED
+       AND UNCALLED, the same way resolveStopBlock() was. The boundary
+       clause is a real claim-completeness device and deleting it would
+       mean reinventing it if it earns a place elsewhere; the storage
+       note is still the only string allowed to promise persistence.
+       Guard X06 fails the build if either is called from Resolve
+       again without this comment being revisited. */
     /* SIMPLIFY — RESOLVE'S FORWARD ACTION.
        Resolve shows what is settled and what is not. Its next step is
        Progress, and until now there was no control that said so, which is
@@ -31536,13 +31592,6 @@
      contract's own worked example, verbatim. The rejected form is on the
      record beside it: "You're probably feeling nervous" — a presumption about
      someone we have never met. */
-  /* T2 — SUPPORTING COPY, not a mood-setter. It says what the stage is
-     for and it says the reassuring half first, because the reassuring
-     half is the true half: most of this option is already known. */
-  const RESOLVE_SITUATION = 'We already know a lot about this option. '
-    + 'These are the few things that could still affect cost, timing or '
-    + 'suitability.';
-
   /* AMENDMENT 1 — the irreducible class. Named once, plainly, and never
      worked on: no prompt, no exercise, no reframing, no encouragement.
      PlotNua does not do psychology, and saying so out loud is more respectful
@@ -31781,14 +31830,19 @@
     const maker = (product && product.organisation) || 'the maker';
     const m = model.counts.marketAnswered;
     if (m === 0) {
-      /* P0 J5 — PARTIAL PROGRESS, HONESTLY FRAMED.
-         The old sentence described PlotNua's limits and read as a broken
-         product. This describes the homeowner's position: some of it is
-         settled, the rest is not. It claims nothing the counts do not
-         support -- every unanswered row is still rendered unanswered,
-         and the lane-level "Atlas has not been able to establish any of
-         this yet" sentence is untouched. */
-      return 'What we know so far.';
+      /* X6 - THE HEADLINE.
+
+         "What we know so far." now names the block directly beneath it,
+         so the page said the same thing twice in two type sizes.
+
+         THE BRIEF OFFERED TWO AND I TOOK THE SECOND. "Ready for the next
+         step." is a verdict, and on a page that may be listing four
+         things still to ask it is a verdict the evidence does not
+         support. "Here's where things stand." is true whether the lists
+         are full or nearly empty, which is what a derived headline has
+         to be. The counted branch below is untouched and still takes
+         over the moment Atlas can answer a market question. */
+      return 'Here’s where things stand.';
     }
     const w = RESOLVE_COUNT_WORDS[m] || String(m);
     return w + (m === 1 ? ' thing is' : ' things are') + ' known about how this usually goes.';
@@ -31818,88 +31872,146 @@
     progressCurrentProduct = product;
     view.innerHTML = '';
 
+    /* =====================================================================
+       X4 - READY / HANDOFF.
+
+       WHAT WAS HERE, AND WHY IT WENT. Two lanes. Lane 1 held two supplier
+       operations facts. Lane 2 held six questions about what usually
+       happens -- how long it takes, what is asked for up front, how long
+       people wait -- and ATLAS HOLDS NO ANSWER TO ANY OF THEM, for any
+       product, today. They were printed as six labelled rows with nothing
+       beside them, under a sentence apologising for the emptiness. A page
+       that lists its own gaps at length is not informative; it is a page
+       about PlotNua.
+
+       PROGRESS_REGISTRY IS UNTOUCHED. The market entries are still
+       declared, still resolved, still counted, and the moment one of them
+       resolves confirmed it appears in WHAT WE KNOW with no code changed.
+       What changed is that an OPEN market question is no longer rendered,
+       because "we could not find this out" is not news to the homeowner.
+
+       TWO LISTS, BOTH EARNED.
+
+         WHAT WE KNOW   every confirmed practical fact this stage can
+                        reach: the supplier operations facts from
+                        PROGRESS_REGISTRY, and everything Resolve settled
+                        -- whether Atlas surfaced it or the homeowner
+                        answered it on the previous screen.
+
+         STILL TO ASK   only questions a supplier can actually answer:
+                        lane-1 facts Atlas could not confirm, and the
+                        Resolve entries whose resolvability is on-request.
+                        Not the ones nobody can answer, and not the ones
+                        the homeowner already settled.
+
+       NEITHER IS RENDERED EMPTY. A heading over nothing is the same defect
+       in a smaller frame. */
     const head = prgEl('div', 'rsv-head');
     head.appendChild(prgEl('p', 'rsv-kicker', 'What happens next'));
-    head.appendChild(prgEl('p', 'rsv-situation', PROGRESS_SITUATION));
-    const h = prgEl('h2', 'rsv-headline', progressHeadline(model, product));
-    h.id = 'prgHeadline';
-    head.appendChild(h);
-    head.appendChild(prgEl('p', 'rsv-product',
+
+    /* THE SAME GOVERNED PICTURE RESOLVE CARRIES, ON THE SAME TERMS.
+       pnAuthorisedImage() is the fail-closed rights gate; nothing is
+       fetched, nothing is inferred, and when it returns null nothing is
+       painted. The credit travels with the picture. */
+    const prgHero = prgEl('div', 'rsv-hero');
+    const prgImg = pnAuthorisedImage(product);
+    if (prgImg) {
+      const prgMedia = prgEl('div', 'rsv-hero-media');
+      const pim = document.createElement('img');
+      pim.src = prgImg.url;
+      pim.alt = prgImg.alt || product.name || '';
+      pim.loading = 'lazy';
+      prgMedia.appendChild(pim);
+      try { pnAttachImageCredit(prgMedia, prgImg); } catch (e) {}
+      prgHero.appendChild(prgMedia);
+    }
+    const prgCopy = prgEl('div', 'rsv-hero-copy');
+    prgCopy.appendChild(prgEl('p', 'rsv-product',
       product.organisation ? (product.name + ', from ' + product.organisation)
                            : (product.name || '')));
+    const h = prgEl('h2', 'rsv-headline', progressHeadline(model, product));
+    h.id = 'prgHeadline';
+    prgCopy.appendChild(h);
+    prgHero.appendChild(prgCopy);
+    head.appendChild(prgHero);
     view.appendChild(head);
 
-    const working = prgEl('section', 'rsv-working');
-    PROGRESS_LANES.forEach(function(lane){
-      const items = model.states.filter(function(e){ return e.lane === lane.key; });
-      if (!items.length) return;
+    /* Resolve's model, read fresh. Progress does not keep its own copy of
+       what the homeowner answered, and it writes nothing back. */
+    const prgResolve = resolveUncertaintiesFor(product, resolvePositionsFor(product.id));
 
-      const sec = prgEl('section', 'rsv-lane');
-      sec.setAttribute('data-lane', lane.key);
-      sec.appendChild(prgEl('h3', 'rsv-lane-title', lane.heading));
+    const prgKnown = [];
+    model.maker.forEach(function(e){
+      if (e.state !== 'answered') return;
+      prgKnown.push({ title: e.label, value: e.cell.display,
+                      note: progressEvidenceLine(e) });
+    });
+    prgResolve.states.forEach(function(e){
+      if (e.state !== 'answered') return;
+      const copy = resolveCopyFor(e);
+      prgKnown.push({ title: (copy && copy.label) || e.key,
+                      value: e.cell && e.cell.display,
+                      note: resolveEvidenceLine(e) });
+    });
 
-      /* The honest sentence, once per lane, where the lane holds nothing.
-         Not per item: repeating it eight times would be noise, and the fact
-         is about the lane rather than about any one question. */
-      const anyAnswered = items.some(function(e){ return e.state === 'answered'; });
-      if (!anyAnswered) {
-        sec.appendChild(prgEl('p', 'rsv-item-detail',
-          'Atlas has not been able to establish any of this yet. '
-          + 'These are the questions it would need to answer.'));
-      }
+    const prgAsk = [];
+    model.maker.forEach(function(e){
+      if (e.state === 'answered') return;
+      prgAsk.push({ title: e.label });
+    });
+    prgResolve.states.forEach(function(e){
+      if (e.state !== 'open' || e.resolvability !== 'on-request') return;
+      const copy = resolveCopyFor(e);
+      prgAsk.push({ title: (copy && copy.label) || e.key });
+    });
 
-      const ul = prgEl('ul', 'rsv-list');
-      items.forEach(function(e){
-        const li = prgEl('li', 'rsv-item');
-        li.setAttribute('data-key', e.key);
-        li.setAttribute('data-state', e.state);
-        li.appendChild(prgEl('span', 'rsv-item-label', e.label));
-        if (e.state === 'answered' && e.cell.display) {
-          li.appendChild(prgEl('span', 'rsv-item-value', e.cell.display));
-          const ev = progressEvidenceLine(e);
-          if (ev) li.appendChild(prgEl('span', 'rsv-item-checked', ev));
-        }
+    function prgBlock(title, rows){
+      if (!rows.length) return null;
+      const sec = prgEl('section', 'prg-block');
+      sec.appendChild(prgEl('h3', 'prg-block-title', title));
+      const ul = prgEl('ul', 'prg-rows');
+      rows.forEach(function(r){
+        const li = prgEl('li', 'prg-row');
+        li.appendChild(prgEl('span', 'prg-row-title', r.title));
+        if (r.value) li.appendChild(prgEl('p', 'prg-row-value', r.value));
+        if (r.note)  li.appendChild(prgEl('p', 'prg-row-note', r.note));
         ul.appendChild(li);
       });
       sec.appendChild(ul);
-      working.appendChild(sec);
-    });
-    view.appendChild(working);
+      return sec;
+    }
 
-    /* The boundary, on the same terms Resolve's carries: what was looked at,
-       and what was not. It is the load-bearing sentence on this page today. */
-    const bound = prgEl('div', 'rsv-boundary');
-    bound.appendChild(prgEl('p', 'rsv-boundary-line',
-      'Everything above comes from what '
-      + ((product.organisation) || 'the maker') + ' publishes about itself. '
-      + 'PlotNua does not know what usually happens across this market. '
-      + 'It cannot see your job, and it is not in touch with anyone about it.'));
-    view.appendChild(bound);
+    const working = prgEl('section', 'rsv-working');
+    const knownBlock = prgBlock('What we know', prgKnown);
+    if (knownBlock) working.appendChild(knownBlock);
+    const askBlock = prgBlock('Still to ask', prgAsk);
+    if (askBlock) working.appendChild(askBlock);
+    if (working.childNodes.length) view.appendChild(working);
 
-    /* P0 J6 — THE SUPPLIER DOOR. THE FIRST AND ONLY CALL SITE.
+    /* THE OUTWARD ROUTE, AND WHAT IT IS NOT.
 
-       pnSupplierHandover() has carried no caller since RP-1 removed the
-       premature one from Option Detail. This is the stage the journey
-       contract names: the homeowner has seen the option, saved it,
-       resolved what is open and seen what is known about how it goes.
+       THIS IS THE FALLBACK, NOT THE ARCHITECTURE. The founder's commercial
+       correction is explicit: for an option priced on enquiry, the intended
+       route is an enquiry made through PlotNua, which then introduces the
+       homeowner to the maker. That route is NOT wired here, because the
+       same instruction says to return the proposed flow before any live
+       supplier contact. ENQUIRY_ENABLED_ORGS stays empty and frozen and the
+       submit path stays gated on ?enquiry=test.
 
-       NO SECOND MECHANISM. pnNextAction() decides whether a route exists
-       and pnSupplierHandover() opens it -- both exactly as written. When
-       Atlas holds no governed product url pnNextAction() returns null and
-       NOTHING is rendered, rather than a dead control.
+       So the only control on this page is the external one that already
+       existed, and its copy no longer implies the maker owns the step
+       permanently. "For now" is doing real work in that sentence.
 
-       THE COPY NAMES THIS STEP, NOT THE BUSINESS MODEL. Nothing here
-       says the supplier owns the sale permanently; PlotNua may own more
-       of enquiry, reservation and transaction later without this line
-       becoming false. */
+       pnNextAction() still decides whether a route exists at all, and
+       pnSupplierHandover() still opens it -- this remains its only caller. */
     const outward = pnNextAction(product);
     if (outward && outward.href) {
       const door = prgEl('div', 'prg-supplier');
       door.appendChild(prgEl('p', 'prg-supplier-note',
-        'The next step happens with '
-        + ((product.organisation) || 'the maker') + '. '
-        + 'PlotNua does not speak to them for you.'));
-      const go = prgEl('button', 'prg-supplier-cta', 'Continue to supplier \u2192');
+        'For now, the next step happens on '
+        + ((product.organisation) || 'the maker') + '’s own site.'));
+      const go = prgEl('button', 'prg-supplier-cta',
+        'Visit ' + ((product.organisation) || 'the maker') + ' →');
       go.type = 'button';
       go.addEventListener('click', function(){
         pnSupplierHandover(product, 'progress');
