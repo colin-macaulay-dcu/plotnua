@@ -8708,44 +8708,75 @@
 
   /* SIMPLIFY — Resolve's forward action, matching Progress's door so the two
      stages read as one sequence rather than two designs. */
-  /* ---- T3/T4/T5 · COMPACT RESOLVE ROWS ---------------------------------
-     Separators, not blocks. A row is one line of type plus one line of
-     support, with its status on the right, and the rows sit against each
-     other so the eye runs down a list instead of stepping over cards. */
-  .rsv-group{ margin:0 0 22px; }
+  /* ---- V1 · THE RESOLVE HEADER -----------------------------------------
+     The picture the homeowner just looked at, beside the name, the maker and
+     the calm line. Two columns on desktop, stacked on a phone. The image
+     well keeps the plate vocabulary the Results hero uses -- same radius
+     family, same soft lift -- so the two pages read as one journey. */
+  .rsv-hero{ display:flex; gap:26px; align-items:center; margin:0 0 6px; }
+  .rsv-hero-media{
+    flex:0 0 34%; max-width:34%; aspect-ratio:4/3; overflow:hidden;
+    border-radius:12px; background:var(--pn-hair); position:relative;
+    box-shadow:
+      0 2px 4px rgba(36,53,31,.05),
+      0 18px 36px -22px rgba(36,53,31,.30),
+      inset 0 0 0 1px rgba(36,53,31,.06);
+  }
+  .rsv-hero-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .rsv-hero-copy{ flex:1 1 0; min-width:0; }
+  @media (max-width:720px){
+    .rsv-hero{ flex-direction:column; align-items:stretch; gap:16px; }
+    .rsv-hero-media{ flex:0 0 auto; max-width:100%; }
+  }
+
+  /* ---- V2 · THE CARD GRID ----------------------------------------------
+     Cream plates on the page's own ground, a hairline rather than a border,
+     and the shadow barely there. Three columns where there is room, two on a
+     tablet, one on a phone. Auto-fit with a minimum keeps that responsive
+     without three separate breakpoints declaring it. */
+  .rsv-group{ margin:0 0 26px; }
   .rsv-group-title{
-    margin:0 0 4px; font-family:'Work Sans',sans-serif;
+    margin:0 0 10px; font-family:'Work Sans',sans-serif;
     font-size:11px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--soft); font-weight:700;
   }
-  .rsv-group .rsv-list{ list-style:none; margin:0; padding:0; }
-  .rsv-row{
-    display:flex; align-items:baseline; gap:18px;
-    padding:11px 0; margin:0;
-    border-bottom:1px solid rgba(31,59,46,.10);
+  .rsv-group .rsv-list{
+    list-style:none; margin:0; padding:0;
+    display:grid; gap:12px;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
   }
-  .rsv-row:last-child{ border-bottom:none; }
-  .rsv-row-main{ flex:1 1 auto; min-width:0; }
-  .rsv-row-title{
-    display:block; font-size:15px; font-weight:600; color:var(--ink);
-    line-height:1.35;
+  .rsv-card{
+    display:flex; flex-direction:column; justify-content:space-between;
+    gap:10px; margin:0; padding:16px 18px;
+    background:var(--brand-ivory, #F7F3E8);
+    border:1px solid rgba(31,59,46,.10);
+    border-radius:12px;
+    box-shadow:0 1px 2px rgba(36,53,31,.04);
   }
-  .rsv-row-value{
-    margin:2px 0 0; font-size:13.5px; line-height:1.45; color:var(--ink);
+  .rsv-card-main{ min-width:0; }
+  .rsv-card-title{
+    display:block; font-family:'Work Sans',sans-serif;
+    font-size:14.5px; font-weight:600; line-height:1.35;
+    color:var(--brand-green);
   }
-  .rsv-row-note{
-    margin:2px 0 0; font-size:13px; line-height:1.45; color:var(--soft);
+  .rsv-card-value{
+    margin:5px 0 0; font-size:13.5px; line-height:1.45; color:var(--ink);
   }
-  .rsv-row-side{
-    flex:0 0 auto; display:flex; flex-direction:column;
-    align-items:flex-end; gap:4px; text-align:right;
+  .rsv-card-note{
+    margin:5px 0 0; font-size:13px; line-height:1.45; color:var(--soft);
   }
-  .rsv-row-status{
-    font-family:'Work Sans',sans-serif; font-size:11.5px; font-weight:700;
-    letter-spacing:.06em; text-transform:uppercase; white-space:nowrap;
-    color:var(--soft);
+  .rsv-card-foot{
+    display:flex; align-items:center; flex-wrap:wrap; gap:10px;
   }
-  .rsv-row-status[data-status="Confirmed"]{ color:var(--brand-green); }
+  .rsv-card-status{
+    display:inline-block; padding:3px 9px; border-radius:999px;
+    font-family:'Work Sans',sans-serif; font-size:10.5px; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; white-space:nowrap;
+    color:var(--soft); background:rgba(31,59,46,.06);
+  }
+  .rsv-card-status[data-status="Confirmed"]{
+    color:var(--brand-green); background:rgba(31,59,46,.10);
+  }
   .rsv-when{ font-size:11.5px; color:var(--soft); white-space:nowrap; }
   .rsv-btn-inline{
     padding:0; border:none; background:none; font-size:12px;
@@ -8753,9 +8784,11 @@
     font-family:'Work Sans',sans-serif;
   }
   .rsv-btn-inline:hover{ color:var(--ink); }
+  @media (max-width:900px){
+    .rsv-group .rsv-list{ grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); }
+  }
   @media (max-width:560px){
-    .rsv-row{ flex-direction:column; align-items:flex-start; gap:6px; }
-    .rsv-row-side{ align-items:flex-start; text-align:left; flex-direction:row; gap:12px; }
+    .rsv-group .rsv-list{ grid-template-columns:1fr; }
   }
 
   .rsv-forward{ margin-top:26px; padding-top:20px; border-top:1px solid rgba(31,59,46,.14); }
@@ -31115,18 +31148,51 @@
     head.appendChild(rsvEl('p', 'rsv-kicker', 'What\u2019s still open'));
     /* RS-4 — AMENDMENT 3. One line about the moment, before any data. A stage
        that opens with a list, however well ordered, opens as an audit. */
-    /* T2 — THE HEADLINE LEADS. Copy that supports a headline has to
-       follow it; before this the support arrived first and the headline
-       read as a second thought. Same two nodes, same classes, same id,
-       in the order a reader needs them. */
-    const h = rsvEl('h2', 'rsv-headline', resolveHeadline(model, product));
-    h.id = 'rsvHeadline';
-    head.appendChild(h);
-    head.appendChild(rsvEl('p', 'rsv-situation', RESOLVE_SITUATION));
+    /* V1 — THE PRODUCT COMES WITH YOU.
+
+       Resolve opened on a headline about an option the page never
+       showed, so the stage read as a form rather than a continuation of
+       the result. The header now carries the same picture, the same
+       name and the same maker the homeowner just looked at.
+
+       THE PICTURE IS THE GOVERNED ONE, AND NOTHING ELSE.
+       pnAuthorisedImage() is the fail-closed rights gate every other
+       surface calls: url, credit, supplier, rightsRecord, a
+       permittedPrefix the url actually starts with, https. Nothing is
+       fetched, nothing is inferred, no second source is consulted.
+
+       WHEN IT RETURNS NULL, NOTHING IS PAINTED. Results falls back to a
+       branded placeholder because a hero with a hole in it is broken.
+       This header is a continuation, not a hero: a missing photograph is
+       better said by silence than by a second placeholder, and the rule
+       stays simple -- unauthorised means unpainted.
+
+       The credit travels with the picture. Reusing the image without
+       reusing pnAttachImageCredit() is the one way to get this wrong. */
+    const rsvHero = rsvEl('div', 'rsv-hero');
+    const rsvImg = pnAuthorisedImage(product);
+    if (rsvImg) {
+      const media = rsvEl('div', 'rsv-hero-media');
+      const im = document.createElement('img');
+      im.src = rsvImg.url;
+      im.alt = rsvImg.alt || product.name || '';
+      im.loading = 'lazy';
+      media.appendChild(im);
+      try { pnAttachImageCredit(media, rsvImg); } catch (e) {}
+      rsvHero.appendChild(media);
+    }
+
+    const rsvCopy = rsvEl('div', 'rsv-hero-copy');
     /* A middot between two names is a data separator. A person says "from". */
-    head.appendChild(rsvEl('p', 'rsv-product',
+    rsvCopy.appendChild(rsvEl('p', 'rsv-product',
       product.organisation ? (product.name + ', from ' + product.organisation)
                            : (product.name || '')));
+    const h = rsvEl('h2', 'rsv-headline', resolveHeadline(model, product));
+    h.id = 'rsvHeadline';
+    rsvCopy.appendChild(h);
+    rsvCopy.appendChild(rsvEl('p', 'rsv-situation', RESOLVE_SITUATION));
+    rsvHero.appendChild(rsvCopy);
+    head.appendChild(rsvHero);
     view.appendChild(head);
 
     /* =====================================================================
@@ -31169,7 +31235,9 @@
       if (e.state === 'accepted') return 'Not waiting for this';
       if (e.resolvability === 'measure')    return 'Needs checking';
       if (e.resolvability === 'on-request') return 'Ask supplier';
-      return 'Not yet confirmed';
+      /* V3 — "Not yet confirmed" -> "Not confirmed". One word shorter,
+         and the badge has to hold it. Nothing about the state changes. */
+      return 'Not confirmed';
     };
 
     /* T4 — ONE SHORT SENTENCE, AND IT IS THE GOVERNED ONE. The first
@@ -31198,27 +31266,29 @@
 
       items.forEach(function(e){
         const copy = resolveCopyFor(e);
-        const li = rsvEl('li', 'rsv-row');
+        /* V2 — THE ROW IS A CARD. Same data, same order, same status
+           rule: only the surface changes. */
+        const li = rsvEl('li', 'rsv-card');
         li.setAttribute('data-key', e.key);
         li.setAttribute('data-state', e.state);
         if (e.answeredBy) li.setAttribute('data-answered-by', e.answeredBy);
 
-        const main = rsvEl('div', 'rsv-row-main');
-        main.appendChild(rsvEl('span', 'rsv-row-title',
+        const main = rsvEl('div', 'rsv-card-main');
+        main.appendChild(rsvEl('span', 'rsv-card-title',
           (copy && copy.label) || e.key));
 
         /* The answer, when there is one. This is the evidence, and it is
            the most useful thing the row can say, so it leads the body. */
         if (e.state === 'answered' && e.cell && e.cell.display) {
-          main.appendChild(rsvEl('p', 'rsv-row-value', e.cell.display));
+          main.appendChild(rsvEl('p', 'rsv-card-value', e.cell.display));
         } else {
           const s = pnResolveSentence(copy);
-          if (s) main.appendChild(rsvEl('p', 'rsv-row-note', s));
+          if (s) main.appendChild(rsvEl('p', 'rsv-card-note', s));
         }
         li.appendChild(main);
 
-        const side = rsvEl('div', 'rsv-row-side');
-        const st = rsvEl('span', 'rsv-row-status', pnResolveStatus(e));
+        const side = rsvEl('div', 'rsv-card-foot');
+        const st = rsvEl('span', 'rsv-card-status', pnResolveStatus(e));
         st.setAttribute('data-status', pnResolveStatus(e));
         side.appendChild(st);
         const actions = resolveActionsFor(e, product.id);

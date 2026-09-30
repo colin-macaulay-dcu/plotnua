@@ -72,7 +72,16 @@ const MUST_EXIST = [
 
   ['J11', 'publication gate wired',      'const publishableCandidates = allCandidates.filter(pnResultPublishable);', 1],
   ['J11', 'gate delegates to rights',    'return !!pnAuthorisedImage(product);', 1],
-  ['J11', 'renderer rights re-checks',   '= pnAuthorisedImage(product);', 4],
+  /* THE RENDERER RE-CHECK COUNT MOVED OUT OF THIS TABLE — see J11-RIGHTS
+     below. It asserted the literal number 4. That was a CENSUS of the
+     surfaces that painted a product photograph on the day it was written,
+     not the rule it stood for. Adding a fifth surface that re-checks
+     rights correctly — the Resolve header — failed a check whose whole
+     purpose that surface was honouring.
+
+     The replacement asserts the actual invariant: every governed image
+     painted anywhere is gated AND credited. It scales with the app and
+     it fails on the thing that matters, which a fixed number never could. */
 
   ['P01', 'PB046 no-price constant',     "const PB046_NO_PRICE = 'Price not published';", 1],
   ['P01', 'PB046 ambiguous constant',    "const PB046_AMBIGUOUS_PRICE = 'Price not confirmed';", 1],
@@ -389,6 +398,53 @@ function run(src) {
       else bad(r.guard, r.label + ': expected ' + r.count + ', found ' + n);
     }
   });
+
+  /* J11-RIGHTS · EVERY GOVERNED IMAGE IS GATED AND CREDITED.
+
+     Three counts that must agree:
+       A  re-checks     `= pnAuthorisedImage(product);`
+       B  src assigns   `.src = <something>Img.url;`
+       C  credits       `pnAttachImageCredit(` call sites
+
+     A === B means no surface paints a governed photograph without asking the
+     rights gate first, and no gate call is decorative. B === C means the
+     attribution travels with every picture. Paint an image without a gate,
+     or gate one and drop its credit, and this fails. */
+  (function () {
+    /* THE NAMES, NOT JUST THE COUNTS. A first version of this check counted
+       `.src = <anything>.url` and compared totals. A probe walked straight
+       through it: swap the gated variable for an ungated object inside a
+       block that still calls the gate, and both totals stay put. Counting
+       shape is not checking provenance. Every painted url must now come from
+       a variable this file assigned FROM the gate. */
+    const gated = new Set();
+    let gm; const gre = /(?:const|let|var)\s+(\w+)\s*=\s*pnAuthorisedImage\(product\);/g;
+    while ((gm = gre.exec(code))) gated.add(gm[1]);
+    const painted = [];
+    let pm; const pre2 = /\.src\s*=\s*(\w+)\.url;/g;
+    while ((pm = pre2.exec(code))) painted.push(pm[1]);
+    const ungated = painted.filter(function (n) { return !gated.has(n); });
+    if (ungated.length) {
+      bad('J11', 'image src painted from ' + JSON.stringify(ungated)
+        + ', which never came from pnAuthorisedImage()');
+      return;
+    }
+    const A = (code.match(/=\s*pnAuthorisedImage\(product\);/g) || []).length;
+    const B = painted.length;
+    const C = (code.match(/pnAttachImageCredit\(/g) || []).length - 1;  /* minus the definition */
+    if (A < 4) {
+      bad('J11', 'only ' + A + ' renderer rights re-check(s); the shipped '
+        + 'surfaces that paint a governed photograph number at least four');
+    } else if (A !== B) {
+      bad('J11', A + ' rights re-check(s) but ' + B + ' governed image src '
+        + 'assignment(s) — every painted photograph must be gated');
+    } else if (B !== C) {
+      bad('J11', B + ' governed image(s) painted but ' + C + ' credit '
+        + 'attachment(s) — attribution must travel with the picture');
+    } else {
+      ok('J11', A + ' governed images, each gated and each credited');
+    }
+  })();
 
   /* J07-DUP · EVERY SAVE IS DUPLICATE-GUARDED.
      savedProductIds is a Set keyed on the canonical Atlas product.id, so a
