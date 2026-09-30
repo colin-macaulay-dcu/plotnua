@@ -177,6 +177,12 @@ const ROUTING_FUNCTIONS = [
      wrote 3099d8d, which is the whole argument for this file existing. */
   'openCompareScreen', 'closeCompareScreen',
   'openEnquiryScreen', 'closeEnquiryScreen',
+  /* Declared with the final Resolve simplification. It routes nothing:
+     it derives the enquiry question list from the model Resolve already
+     built. It is on this list because J10's pattern is deliberately
+     exhaustive over pn[A-Z]* -- being here means it was looked at, not
+     that it was excused. J03 above holds it to being a reader. */
+  'pnEnquiryQuestions',
 ];
 
 /* P01 — claim shapes that turn an evidence gap into a fact about a supplier. */
@@ -286,11 +292,67 @@ function run(src) {
       ok('J03', 'the preview owns no answers and writes no state');
     }
   }
+  /* ONE READER IS EXEMPT BY NAME, AND THEN TESTED.
+
+     pnEnquiryQuestions() matches the rival pattern because it really is
+     a pn*Questions* function. What makes it legitimate is that it READS
+     the canonical model instead of building a second one -- and a
+     whitelist entry that only asserted that would be a waiver. So the
+     exemption is followed immediately by the three checks that make the
+     claim true. Every other pn*Questions* function still fails, and this
+     one fails as well the moment it stops being a reader. */
+  /* Brace-matched, because a reader's body is what the three checks
+     below read. J07 has its own local bodyOf(); this one is declared
+     here rather than hoisted, so J07's stays exactly as it was. */
+  function j03Body(text, sig){
+    const i = text.indexOf(sig);
+    if (i < 0) return '';
+    let d = 0;
+    for (let k = text.indexOf('{', i); k < text.length; k++){
+      if (text[k] === '{') d++;
+      else if (text[k] === '}'){ d--; if (!d) return text.slice(i, k + 1); }
+    }
+    return '';
+  }
+  const READERS = ['pnEnquiryQuestions'];
   const rival = /function\s+(pn[A-Za-z]*(Questions|Uncertaint|Checklist|Unknowns)[A-Za-z]*)\s*\(/g;
   const rivals = [];
-  while ((m = rival.exec(code)) !== null) if (rivals.indexOf(m[1]) < 0) rivals.push(m[1]);
+  while ((m = rival.exec(code)) !== null) {
+    if (READERS.indexOf(m[1]) >= 0) continue;
+    if (rivals.indexOf(m[1]) < 0) rivals.push(m[1]);
+  }
   if (!rivals.length) ok('J03', 'no rival uncertainty model exists');
   else bad('J03', 'a rival uncertainty model appeared: ' + rivals.join(', '));
+
+  READERS.forEach(function(name){
+    const body = j03Body(code, 'function ' + name + '(');
+    if (!body) { bad('J03', name + ' is exempted but does not exist'); return; }
+    if (body.indexOf('resolveUncertaintiesFor(') >= 0
+        || body.indexOf('model.states') >= 0) {
+      ok('J03', name + ' reads the canonical model rather than building one');
+    } else {
+      bad('J03', name + ' no longer reads the canonical uncertainty model');
+    }
+    /* A question authored HERE is how a second taxonomy starts. Long
+       capitalised literals are how authoring looks. The two strings this
+       function may compose are allowed by name, because both are built
+       from governed values rather than written as questions. */
+    const ALLOWED = ['Price for ', 'Do you deliver to my location?',
+                     'Is installation included in the price?',
+                     'Are groundworks or base preparation included?',
+                     'What happens next'];
+    const authored = (stripComments(body).match(/'[A-Z][^']{14,}'/g) || [])
+      .filter(function(s){
+        return !ALLOWED.some(function(a){ return s.indexOf(a) >= 0; });
+      });
+    if (!authored.length) ok('J03', name + ' authors no question outside its declared set');
+    else bad('J03', name + ' authors new question text: ' + authored.slice(0, 3).join(', '));
+    if (body.indexOf('recordResolveAnswer') >= 0 || body.indexOf('resolvePositions.set') >= 0) {
+      bad('J03', name + ' writes Resolve state; it is a read-only reader');
+    } else {
+      ok('J03', name + ' writes no state');
+    }
+  });
 
   head('J07 · SUPPLIER HANDOFF MAY NOT BE INTRODUCED EARLY');
   const out = countOf(code, OUTBOUND.fingerprint);

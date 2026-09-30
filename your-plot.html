@@ -8734,6 +8734,142 @@
     .rsv-hero-media{ flex:0 0 auto; max-width:100%; }
   }
 
+  /* ---- F7 . RESOLVE, REDESIGNED ----------------------------------------
+
+     WHAT THIS REPLACES. A responsive grid of cream cards, each with a
+     border, a shadow, a title, a sentence and a status badge. Five of them
+     read as a dashboard, and the unfilled right-hand half of each one read
+     as a form.
+
+     WHAT IT IS NOW. Two tonal panels and a closing section. Hierarchy comes
+     from type scale, spacing rhythm and ground tone rather than from
+     containers: there is one rule between rows and none around them. The
+     hero image is the largest element on the page, which is the point -- the
+     homeowner is deciding about a building.
+
+     THE PANELS ARE TONAL, NOT BORDERED. Warm ivory for the homeowner's own
+     questions; a sage wash for the enquiry, so the two roles are legible
+     before a word is read. One hairline, no shadow, generous inset.
+     ------------------------------------------------------------------- */
+  #screen-resolve .rsv-body{ display:block; }
+  .rsv-panel{
+    margin:0 0 var(--pn-space-lg); padding:26px 28px 22px;
+    border-radius:16px;
+    background:var(--brand-ivory, #F2EFE6);
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.07);
+  }
+  .rsv-panel-head{ margin:0 0 18px; }
+  .rsv-panel-title{
+    margin:0; font-family:'Fraunces',Georgia,serif;
+    font-size:21px; font-weight:600; line-height:1.2;
+    letter-spacing:-.01em; color:var(--brand-green, #1F3B2E);
+  }
+  .rsv-panel-lede{
+    margin:6px 0 0; font-family:'Work Sans',sans-serif;
+    font-size:13.5px; line-height:1.5; color:var(--soft);
+  }
+
+  /* ---- the property rows --------------------------------------------- */
+  .rsv-qrows{ list-style:none; margin:0; padding:0; }
+  .rsv-qrow{
+    display:flex; gap:20px; align-items:baseline;
+    padding:16px 0; margin:0;
+    border-top:1px solid rgba(31,59,46,.10);
+  }
+  .rsv-qrow:first-child{ border-top:none; padding-top:2px; }
+  .rsv-qrow-main{ flex:1 1 auto; min-width:0; }
+  .rsv-qrow-label{
+    display:block; font-family:'Work Sans',sans-serif;
+    font-size:15px; font-weight:600; line-height:1.3;
+    color:var(--brand-green, #1F3B2E);
+  }
+  .rsv-qrow-ask{
+    margin:3px 0 0; font-size:13px; line-height:1.45; color:var(--soft);
+  }
+  .rsv-qrow-side{
+    flex:0 0 auto; display:flex; flex-wrap:wrap; gap:8px;
+    align-items:center; justify-content:flex-end; max-width:56%;
+  }
+  /* G2 - the answer, with a quiet label above it. The label is small,
+     spaced and sage; the answer keeps the weight. Right-aligned on
+     desktop with the rest of the side column, left on a phone where
+     the column becomes a block. */
+  .rsv-qrow-answer{ display:flex; flex-direction:column; align-items:flex-end; }
+  .rsv-qrow-mine{
+    font-family:'Work Sans',sans-serif; font-size:10px; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase;
+    color:var(--brand-sage, #8FAF8A); margin-bottom:2px;
+  }
+  .rsv-qrow-said{
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    color:var(--brand-green, #1F3B2E);
+  }
+
+  /* ---- the enquiry panel --------------------------------------------- */
+  .rsv-panel-enquiry{
+    background:rgba(143,175,138,.16);
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.09);
+  }
+  .rsv-qlist{
+    list-style:none; margin:0; padding:0; counter-reset:pnq;
+  }
+  .rsv-qitem{
+    counter-increment:pnq; position:relative;
+    margin:0; padding:11px 0 11px 34px;
+    border-top:1px solid rgba(31,59,46,.10);
+    font-family:'Work Sans',sans-serif; font-size:14.5px; line-height:1.45;
+    color:var(--brand-green, #1F3B2E);
+  }
+  .rsv-qitem:first-child{ border-top:none; }
+  .rsv-qitem::before{
+    content:counter(pnq); position:absolute; left:0; top:11px;
+    width:22px; text-align:center;
+    font-size:11.5px; font-weight:700; line-height:1.7;
+    color:var(--brand-sage, #8FAF8A);
+  }
+
+  /* ---- the closing action -------------------------------------------- */
+  .rsv-close{
+    margin:calc(var(--pn-space-lg) + 4px) 0 0; padding:28px;
+    border-radius:16px; text-align:center;
+    background:var(--brand-green, #1F3B2E);
+  }
+  .rsv-close-cta{
+    display:inline-block; padding:15px 28px; border:none; border-radius:10px;
+    background:var(--brand-sage, #8FAF8A); color:var(--brand-green, #1F3B2E);
+    font-family:'Work Sans',sans-serif; font-size:15.5px; font-weight:700;
+    cursor:pointer;
+  }
+  .rsv-close-cta.is-pending{
+    background:rgba(242,239,230,.28); color:rgba(242,239,230,.92);
+    cursor:default;
+  }
+  .rsv-close-cta:focus-visible,
+  .rsv-close-secondary:focus-visible{
+    outline:2px solid var(--brand-sage, #8FAF8A); outline-offset:3px;
+  }
+  .rsv-close-note{
+    margin:10px 0 0; font-family:'Work Sans',sans-serif;
+    font-size:12.5px; line-height:1.5; color:rgba(242,239,230,.70);
+  }
+  .rsv-close-secondary{
+    display:inline-block; margin-top:16px; padding:0;
+    border:none; background:none; cursor:pointer;
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    color:rgba(242,239,230,.88); text-decoration:underline;
+    text-underline-offset:3px;
+  }
+
+  /* ---- the phone ----------------------------------------------------- */
+  @media (max-width:640px){
+    .rsv-panel{ padding:22px 20px 18px; border-radius:14px; }
+    .rsv-qrow{ flex-direction:column; align-items:stretch; gap:10px; }
+    .rsv-qrow-side{ max-width:100%; justify-content:flex-start; }
+    .rsv-qrow-answer{ align-items:flex-start; }
+    .rsv-close{ padding:24px 20px; }
+    .rsv-close-cta{ display:block; width:100%; }
+  }
+
   /* ---- V2 · THE CARD GRID ----------------------------------------------
      Cream plates on the page's own ground, a hairline rather than a border,
      and the shadow barely there. Three columns where there is room, two on a
@@ -8825,30 +8961,10 @@
   #screen-progress .rsv-working{
     margin-top:var(--pn-space-lg); padding-top:0; border-top:none;
   }
-  .prg-block{ margin:0 0 var(--pn-space-lg); }
-  .prg-block-title{
-    margin:0 0 10px; font-family:'Work Sans',sans-serif;
-    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    font-weight:600; color:var(--soft);
-  }
-  .prg-rows{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
-  .prg-row{
-    margin:0; padding:14px 16px;
-    background:var(--brand-ivory, #F7F3E8);
-    border:1px solid rgba(31,59,46,.10);
-    border-radius:12px;
-    box-shadow:0 1px 2px rgba(36,53,31,.04);
-  }
-  .prg-row-title{
-    display:block; font-family:'Work Sans',sans-serif;
-    font-size:14.5px; font-weight:600; line-height:1.35;
-    color:var(--brand-green);
-  }
-  .prg-row-value{ margin:5px 0 0; font-size:13.5px; line-height:1.45; color:var(--ink); }
-  .prg-row-note{ margin:4px 0 0; font-size:12.5px; line-height:1.45; color:var(--soft); }
-  @media (min-width:760px){
-    .prg-rows{ grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); }
-  }
+  /* F7d - THE SUMMARY'S STYLES WENT WITH THE SUMMARY.
+     .prg-block, .prg-rows and the three .prg-row-* rules styled a
+     section that no longer exists. Dead CSS is not harmless: the next
+     author reads it as a component that is still in service. */
   #screen-resolve .rsv-head{ padding-bottom:var(--pn-space-md); }
   #screen-resolve .rsv-working{
     margin-top:var(--pn-space-lg); padding-top:0; border-top:none;
@@ -30318,8 +30434,18 @@
        pnConfirmedCell like every other fact, so a blank answer cannot reach
        'confirmed' any more than a sourceless Atlas value can.
        ===================================================================== */
+    /* F2 - THE SAME PREDICATE THE SCREEN USES.
+
+       Was `resolvability === 'measure'`, which silently discarded a
+       recorded planning answer because the screen and the model
+       disagreed about who may answer. pnHomeownerCanAnswer() is now the
+       only place that question is decided, and resolveActionsFor()
+       reads the identical call. H1 still holds: the source is the
+       literal 'homeowner' and it goes through pnConfirmedCell, so a
+       blank answer still cannot reach 'confirmed'. */
     if (!acceptance && position && typeof position.answer === 'string'
-        && position.answer.trim() && resolvability === 'measure') {
+        && position.answer.trim()
+        && pnHomeownerCanAnswer({ key: entry.key, resolvability: resolvability })) {
       const own = pnConfirmedCell(position.answer.trim(), position.answer.trim(),
                                   'homeowner', position.answeredAt || null, null);
       if (own.state === 'confirmed') { cell = own; answeredBy = 'homeowner'; }
@@ -30773,76 +30899,106 @@
      ========================================================================= */
 
   /* =======================================================================
-     Z1 - THE READY SUMMARY, DEFINED ONCE.
+     F5 - THE ENQUIRY QUESTIONS, DERIVED.
 
-     Resolve now carries this at its foot and Progress still renders it for
-     anyone who opens Progress from My Plot. TWO COPIES WOULD DRIFT, and the
-     drift would be silent: one surface would start claiming a fact the other
-     had stopped claiming. So there is one function, and both call it.
+     WHAT WENT. "What we know" listed access, ground, power, water and the
+     installation model back to the homeowner immediately after they had
+     answered or seen them, one screen-height below. Repetition dressed as a
+     summary. It is deleted, not hidden.
 
-     WHAT WE KNOW is every confirmed practical fact these two models can
-     reach -- the supplier operations facts PROGRESS_REGISTRY resolves, plus
-     everything Resolve settled, whether Atlas surfaced it or the homeowner
-     answered it. STILL TO ASK is only what a supplier can actually answer:
-     lane-1 facts Atlas could not confirm, and the Resolve entries whose
-     resolvability is on-request. Not the ones nobody can answer, and not the
-     ones the homeowner has already settled.
+     WHAT REPLACED IT. The same model, read for a different purpose: not
+     "what is unresolved" but "what is worth asking". Those are different
+     lists. An unresolved item nobody can answer is not a question; an item
+     the homeowner has already settled is not one either.
 
-     NOTHING IS AUTHORED HERE. Every title comes from a registry label or
-     resolveCopyFor(); every value comes from a cell the model produced. */
-  function pnReadySummary(product){
-    const prog = progressFor(product);
-    const rsv  = resolveUncertaintiesFor(product, resolvePositionsFor(product.id));
-    const known = [];
-    const ask   = [];
+     EVERY QUESTION NAMES ITS SOURCE. `from` is the registry key, the
+     supplier-operations key or 'price' -- and guard F08 fails the build if a
+     question is ever pushed without one. Nothing here invents a question,
+     and nothing here answers one.
 
-    prog.maker.forEach(function(e){
-      if (e.state === 'answered') {
-        /* Q4 - NO SOURCE LINE HERE. "From the maker's own site, checked
-           7 September 2026." under a one-line fact is provenance shown
-           at the same weight as the fact, and it doubled the height of
-           every confirmed row. The evidence layer on Results still
-           carries it in full; this summary is the short version by
-           design. progressEvidenceLine() and resolveEvidenceLine() are
-           both retained -- the sources are not deleted, only the
-           repetition of them here. */
-        known.push({ title: e.label, value: e.cell.display });
-      } else {
-        ask.push({ title: e.label });
-      }
-    });
-    rsv.states.forEach(function(e){
-      const copy = resolveCopyFor(e);
-      const title = (copy && copy.label) || e.key;
-      if (e.state === 'answered') {
-        known.push({ title: title, value: e.cell && e.cell.display });
-      } else if (e.state === 'open' && e.resolvability === 'on-request') {
-        ask.push({ title: title });
-      }
-    });
-    return { known: known, ask: ask };
+     THE GROUNDWORKS QUESTION IS DERIVED FROM THE HOMEOWNER'S OWN ANSWER.
+     If they said the ground is fine as it is, asking the supplier about base
+     preparation is noise. If they said it may need work, or they are not
+     sure, it is the most expensive unknown on the page. */
+  function pnEnquiryQuestions(product, model){
+    const out = [];
+    const byKey = {};
+    model.states.forEach(function(e){ byKey[e.key] = e; });
+    /* `schedule` is resolvability 'by-action', which the model removes from
+       Resolve's scope entirely -- so it lives in model.excluded, and this is
+       the only surface left that can carry it. */
+    (model.excluded || []).forEach(function(e){ byKey[e.key] = e; });
+    const open = function(k){ return byKey[k] && byKey[k].state === 'open'; };
+    const ask = function(from, text){ out.push({ from: from, text: text }); };
+
+    const priced = pnUsablePrice(product.price) != null
+                && product.priceEvidenceState === 'verified';
+    if (!priced) ask('price', 'Price for ' + (product.name || 'this option'));
+
+    /* The same CONFIRMED test PROGRESS_REGISTRY's deliversHere entry makes.
+       Anything short of confirmed delivery to this market is a real question. */
+    const ops = pnSupplierLocality(product);
+    const delivers = !!(ops && ops.deliveryStatus === 'CONFIRMED'
+                     && ops.roiDelivery === 'CONFIRMED' && ops.deliverySourceUrl);
+    if (!delivers) ask('deliversHere', 'Do you deliver to my location?');
+
+    if (open('installationCharges') || open('priceIncludes')) {
+      ask('installationCharges', 'Is installation included in the price?');
+    }
+
+    /* G4 - THE HOMEOWNER'S VIEW OF THEIR GROUND DOES NOT ANSWER THIS.
+
+       This question used to disappear when they chose "Fine as it is".
+       That was wrong, and wrong in the direction that costs money.
+       Whether the ground looks fine to the person standing on it does
+       not establish what base the supplier requires, whether
+       preparation is included in the price, or whether groundworks turn
+       out to be needed anyway. Three different facts, none of them
+       theirs to give.
+
+       So it depends on SUPPLIER evidence and nothing else, on the same
+       terms as the question above it: while Atlas cannot say what
+       installation includes, this is worth asking. Guard G07 fails the
+       build if this function reads a homeowner answer again. */
+    if (open('installationCharges') || open('priceIncludes')) {
+      ask('ground', 'Are groundworks or base preparation included?');
+    }
+
+    if (open('leadTime')) ask('leadTime', RESOLVE_ATLAS_LABELS.leadTime);
+    if (open('warranty') || open('afterSales')) {
+      ask('warranty', RESOLVE_ATLAS_LABELS.warranty);
+    }
+    if (open('schedule')) {
+      ask('schedule', 'What happens next — survey, deposit and installation');
+    }
+    return out;
   }
 
-  /* A HEADING OVER NOTHING IS THE DEFECT THIS PASS EXISTS TO REMOVE, in a
-     smaller frame. An empty list returns null and the caller appends
-     nothing. */
-  function pnReadyBlock(title, rows){
-    if (!rows || !rows.length) return null;
-    const sec = rsvEl('section', 'prg-block');
-    sec.appendChild(rsvEl('h3', 'prg-block-title', title));
-    const ul = rsvEl('ul', 'prg-rows');
-    rows.forEach(function(r){
-      const li = rsvEl('li', 'prg-row');
-      li.appendChild(rsvEl('span', 'prg-row-title', r.title));
-      if (r.value) li.appendChild(rsvEl('p', 'prg-row-value', r.value));
-      if (r.note)  li.appendChild(rsvEl('p', 'prg-row-note', r.note));
-      ul.appendChild(li);
+  /* One panel, numbered, with one line of explanation. NOT a list of
+     failures: there is no status, no badge and no "not confirmed" anywhere
+     in it, because a question is not a deficiency. */
+  function pnEnquiryPanel(product, model){
+    const qs = pnEnquiryQuestions(product, model);
+    if (!qs.length) return null;
+    const sec = rsvEl('section', 'rsv-panel rsv-panel-enquiry');
+    const head = rsvEl('div', 'rsv-panel-head');
+    head.appendChild(rsvEl('h3', 'rsv-panel-title', 'Questions to send with your enquiry'));
+    head.appendChild(rsvEl('p', 'rsv-panel-lede',
+      'We’ll include these when you contact '
+      + (product.organisation || 'the maker') + '.'));
+    sec.appendChild(head);
+    const ol = rsvEl('ol', 'rsv-qlist');
+    qs.forEach(function(q){
+      const li = rsvEl('li', 'rsv-qitem', q.text);
+      li.setAttribute('data-from', q.from);
+      ol.appendChild(li);
     });
-    sec.appendChild(ul);
+    sec.appendChild(ol);
     return sec;
   }
 
   function rsvEl(tag, cls, text){
+
     const e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text != null) e.textContent = text;
@@ -30873,17 +31029,39 @@
      have to translate, and two others read as headings rather than speech.
      The governance's own example — "Who you'd be buying from" — is used
      verbatim, contraction and all. */
+  /* F6 - THE LANGUAGE OF AN ENQUIRY, NOT OF AN AUDIT.
+
+     RESOLVE-UX-001 replaced trade words with spoken ones, and it was
+     right about the surface it was written for: a list of things the
+     homeowner was being asked to worry about. These same labels now
+     appear as QUESTIONS PLOTNUA WILL SEND, and in that role "How long
+     you'd be waiting" is a worry where "Lead time" is a question. A
+     supplier reading the enquiry needs the second.
+
+     After-sales is folded into warranty: they are one question to a
+     supplier, and asking them separately invites two partial answers. */
   const RESOLVE_ATLAS_LABELS = {
     contractingEntity:   'Who you\u2019d be buying from',            /* §6 table 1 */
     origin:              'Where it\u2019s made',                     /* §6 table 1 */
-    leadTime:            'How long you\u2019d be waiting',           /* was "Lead time" */
-    warranty:            'What\u2019s covered if it goes wrong',     /* was "Warranty" */
+    leadTime:            'Lead time',
+    warranty:            'Warranty & after-sales support',
     priceIncludes:       'What the price includes',                 /* §6 table 3 */
-    installationCharges: 'What it costs to put in',                 /* was "What installation costs" */
-    afterSales:          'Who looks after it afterwards',           /* was "After-sales in writing" */
+    installationCharges: 'Is installation included in the price?',
+    afterSales:          'Warranty & after-sales support',
     planning:            'Whether you\u2019d need planning permission', /* §6 table 4 */
   };
 
+
+  /* The five rows of YOUR PROPERTY, named as a person names them. The
+     governed question stays on the row as its sentence -- this is the
+     noun above it, not a replacement for it. */
+  const PN_PROPERTY_LABELS = {
+    access:   'Access',
+    ground:   'Ground',
+    power:    'Power',
+    water:    'Water & drainage',
+    planning: 'Planning',
+  };
   /* W1 - WHAT THE HOMEOWNER IS OFFERED, PER QUESTION.
 
      Copy, not logic. The routing that decides WHICH cards get choices reads
@@ -30907,6 +31085,41 @@
   };
   /* Any other question the model says the homeowner can settle. */
   const PN_RESOLVE_CHOICES_DEFAULT = ['Yes', 'No / not sure', 'I’ll check later'];
+
+  /* =======================================================================
+     F1 - THE HOMEOWNER LANE. ONE PREDICATE, READ IN BOTH PLACES.
+
+     THE BUG THIS REPLACES. resolveEntryState() accepted a homeowner answer
+     only when resolvability === 'measure'. resolveActionsFor() offered pills
+     for any key in PN_RESOLVE_CHOICES. planning is 'never', so it got pills
+     the model would then throw away: the click wrote, the render ran, and
+     the card did not move. Two rules about the same question with no source
+     of truth between them.
+
+     WHY planning BELONGS HERE. H3's reasoning was sound and still is: a
+     homeowner writing down what they THINK installation costs would be
+     recording a guess as a fact. Planning is not that. It is a question
+     about their own property and their own intentions, the three answers are
+     hedged on their face ("I think it's exempt"), and the answer is stored
+     with source 'homeowner' so it can never be mistaken for Atlas's reading
+     of the exemption. leadTime, installationCharges and the rest stay out,
+     for exactly the reason H3 gave.
+
+     THE REGISTRY IS UNTOUCHED. planning is still declared 'never' -- which
+     is true of the WORLD's ability to settle it in advance, and is what the
+     consequence ordering reads. This list is about who may ANSWER on this
+     screen, which is a presentation question, so it lives in presentation.
+
+     GUARD F05 FAILS THE BUILD if the set of keys offered choices is not
+     exactly the set the model accepts. That is what makes this class of bug
+     impossible rather than merely fixed. */
+  const PN_HOMEOWNER_KEYS = ['planning'];
+
+  function pnHomeownerCanAnswer(entry){
+    if (!entry) return false;
+    if (entry.resolvability === 'measure') return true;
+    return PN_HOMEOWNER_KEYS.indexOf(entry.key) !== -1;
+  }
 
   /* Said once, on every card only the supplier can answer. */
   const PN_RESOLVE_SUPPLIER_LINE =
@@ -31431,98 +31644,134 @@
        second printing was the same item twice. resolveStopBlock() is
        retained, defined and uncalled.
        ===================================================================== */
+    /* =====================================================================
+       F4 - ONE GROUP, FIVE ROWS.
+
+       WHAT STOPPED RENDERING, AND WHY.
+
+         Who you'd be buying from   the homeowner has just chosen a maker by
+                                    name; telling them who they would be
+                                    buying from is telling them what they
+                                    already did.
+         Where it's made            true, and not load-bearing at the point
+                                    of making an enquiry.
+         What the price includes    these are questions for the supplier, and
+         Installation cost          they now appear as questions, in the
+         After-sales                enquiry panel, where they are useful
+                                    instead of merely unresolved.
+
+       ALL OF THEM STILL RESOLVE. RESOLVE_REGISTRY is byte-identical, every
+       entry is still evaluated, and the supplier-owned ones now feed
+       pnEnquiryQuestions(). Nothing was removed from the model to tidy the
+       screen.
+
+       PLANNING JOINS YOUR PROPERTY. It always belonged there -- it is a
+       question about this garden -- and F1/F2 make its answers stick. */
     const PN_RESOLVE_GROUPS = [
       { title: 'Your property',
-        keys: ['access', 'ground', 'power', 'water'] },
-      { title: 'Supplier details',
-        keys: ['priceIncludes', 'installationCharges', 'afterSales'] },
-      { title: 'Still to confirm',
-        keys: ['planning', 'contractingEntity', 'leadTime', 'warranty',
-               'origin', 'schedule'] },
+        keys: ['access', 'ground', 'power', 'water', 'planning'] },
     ];
 
-    /* T4 — ONE RULE FOR EVERY STATUS. Read from state and resolvability,
-       which the model already decided; nothing is judged here, and no
-       owner, consequence class or resolvability token reaches the page. */
-    /* W3 - FOUR STATES, NONE OF THEM INTERNAL.
+    /* =====================================================================
+       G1 - pnResolveStatus() IS DELETED, AND THE CLAIM WITH IT.
 
-       "Not waiting for this" described a state in the model. So did
-       "Deferred" and "Owner unresolved" before it. A homeowner reading
-       a card wants to know whether it is done, whether it is theirs to
-       do, whether the supplier has to answer, or whether nobody can yet.
+       THE RULE WAS WRONG ABOUT PLANNING. It returned 'Confirmed' for any
+       answered entry except the not-yet option. "I think it's exempt" is
+       a homeowner's VIEW of their own planning position. It does not
+       confirm it, nobody has established it, and a badge reading
+       Confirmed over it would be PlotNua asserting something no evidence
+       supports -- the CP-1 fault class in one word.
 
-       AN HONEST "NOT SURE" IS NOT SETTLED. The third choice is recorded
-       like any other, so the model holds what the homeowner said; the
-       status reads it back and keeps the card open. Compared against the
-       key's own last option rather than pattern-matched on prose, so the
-       words can change without the rule quietly stopping working. */
-    const pnResolveStatus = function(e){
-      const set = PN_RESOLVE_CHOICES[e.key] || PN_RESOLVE_CHOICES_DEFAULT;
-      const notYet = set[set.length - 1];
-      if (e.state === 'answered'){
-        const said = e.cell && e.cell.display;
-        if (e.answeredBy === 'homeowner' && said === notYet) return 'Needs checking';
-        return 'Confirmed';
-      }
-      /* A legacy accepted position is shown as what it is for the
-         homeowner now -- still open -- rather than as the state name. */
-      if (e.state === 'accepted') return 'Needs checking';
-      if (e.resolvability === 'on-request') return 'Needs supplier confirmation';
-      if (e.resolvability === 'measure' || PN_RESOLVE_CHOICES[e.key]) return 'Needs checking';
-      return 'Not yet confirmed';
-    };
+       IT ALSO HAD NO CALLER. The redesign stopped rendering a status on
+       the property rows, so this rule was already dead. That is not a
+       reason to leave it: a dead rule holding a wrong claim is the
+       RESOLVE_SITUATION trap exactly -- still findable, still greppable,
+       and one day wired back up by someone who never read why it went.
 
-    /* T4 — ONE SHORT SENTENCE, AND IT IS THE GOVERNED ONE. The first
-       sentence of the detail copy Resolve already holds. Never authored
-       here, never summarised: if the governed copy has no sentence short
-       enough to stand alone, the row carries no sentence at all. */
-    const pnResolveSentence = function(copy){
-      const d = (copy && copy.detail) ? String(copy.detail).trim() : '';
-      if (!d) return '';
-      const m = d.match(/^[^.!?]{10,150}[.!?]/);
-      return m ? m[0].trim() : '';
-    };
+       NOTHING IS LOST THAT WAS TRUE. The four states it emitted were
+       useful when every question sat on its own plate with a badge. On a
+       row inside a panel, an unanswered question is self-evidently
+       unanswered: it is showing you three choices. What an ANSWERED row
+       needs is not a verdict but attribution, which G2 gives it. */
 
     const byKey = {};
     model.states.forEach(function(e){ byKey[e.key] = e; });
 
-    const working = rsvEl('section', 'rsv-working');
+    /* =====================================================================
+       F7 - ONE PANEL, NOT FIVE CARDS.
+
+       WHAT WAS WRONG WITH THE CARDS. Every question sat in its own beige
+       plate with its own border, its own shadow and its own status badge.
+       Five of those in a grid is a dashboard: the eye counts containers
+       instead of reading questions, and the empty right-hand half of each
+       plate made the page feel like a form that had not been filled in.
+
+       WHAT REPLACED IT. One tonal panel with hairline dividers. The label is
+       the noun, the governed question sits under it at small size, and the
+       choices sit on the right on desktop and below on a phone. No border
+       per row, no badge on an unanswered row -- a row with choices in it is
+       self-evidently unanswered, and saying so as well is the badge habit.
+
+       THE STATUS SURVIVES WHERE IT CARRIES INFORMATION: once answered, the
+       row shows what the homeowner said and a quiet way to change it. */
+    const working = rsvEl('div', 'rsv-body');
     PN_RESOLVE_GROUPS.forEach(function(group){
       const items = group.keys.map(function(k){ return byKey[k]; })
                               .filter(function(e){ return !!e; });
       if (!items.length) return;
 
-      const sec = rsvEl('section', 'rsv-group');
-      sec.appendChild(rsvEl('h3', 'rsv-group-title', group.title));
-      const ul = rsvEl('ul', 'rsv-list');
+      const sec = rsvEl('section', 'rsv-panel rsv-panel-property');
+      const head = rsvEl('div', 'rsv-panel-head');
+      head.appendChild(rsvEl('h3', 'rsv-panel-title', group.title));
+      /* G3 - "Only you can answer these" is not true of planning, which
+         a planner or an architect can answer properly, and it is only
+         loosely true of ground. What IS true is that these are things
+         the homeowner can tell us, and that none is required. */
+      head.appendChild(rsvEl('p', 'rsv-panel-lede',
+        'A few things you can tell us about your property. '
+        + 'None of these is required.'));
+      sec.appendChild(head);
 
+      const ul = rsvEl('ul', 'rsv-qrows');
       items.forEach(function(e){
         const copy = resolveCopyFor(e);
-        /* V2 — THE ROW IS A CARD. Same data, same order, same status
-           rule: only the surface changes. */
-        const li = rsvEl('li', 'rsv-card');
+        const li = rsvEl('li', 'rsv-qrow');
         li.setAttribute('data-key', e.key);
         li.setAttribute('data-state', e.state);
         if (e.answeredBy) li.setAttribute('data-answered-by', e.answeredBy);
 
-        const main = rsvEl('div', 'rsv-card-main');
-        main.appendChild(rsvEl('span', 'rsv-card-title',
-          (copy && copy.label) || e.key));
-
-        /* The answer, when there is one. This is the evidence, and it is
-           the most useful thing the row can say, so it leads the body. */
-        if (e.state === 'answered' && e.cell && e.cell.display) {
-          main.appendChild(rsvEl('p', 'rsv-card-value', e.cell.display));
-        } else {
-          const s = pnResolveSentence(copy);
-          if (s) main.appendChild(rsvEl('p', 'rsv-card-note', s));
+        const main = rsvEl('div', 'rsv-qrow-main');
+        main.appendChild(rsvEl('span', 'rsv-qrow-label',
+          PN_PROPERTY_LABELS[e.key] || (copy && copy.label) || e.key));
+        /* The governed question, under the noun. Not authored here. */
+        const q = (copy && copy.label) || '';
+        if (q && q !== PN_PROPERTY_LABELS[e.key]) {
+          main.appendChild(rsvEl('p', 'rsv-qrow-ask', q));
         }
         li.appendChild(main);
 
-        const side = rsvEl('div', 'rsv-card-foot');
-        const st = rsvEl('span', 'rsv-card-status', pnResolveStatus(e));
-        st.setAttribute('data-status', pnResolveStatus(e));
-        side.appendChild(st);
+        const side = rsvEl('div', 'rsv-qrow-side');
+        /* G2 - ATTRIBUTION, NOT A VERDICT.
+
+           "Your answer" is true of every homeowner answer and claims
+           nothing about any of them. It reads as a label on what they
+           said rather than a judgement of it, which is the whole
+           difference between this and the word it replaces.
+
+           An Atlas-answered entry would show no such label -- but none
+           can reach these five rows, because pnHomeownerCanAnswer()
+           gates the group and the model only accepts 'homeowner' on
+           that lane. The condition still reads answeredBy rather than
+           assuming, because an assumption is how that stops being
+           true. */
+        if (e.state === 'answered' && e.cell && e.cell.display) {
+          const saidWrap = rsvEl('div', 'rsv-qrow-answer');
+          if (e.answeredBy === 'homeowner') {
+            saidWrap.appendChild(rsvEl('span', 'rsv-qrow-mine', 'Your answer'));
+          }
+          saidWrap.appendChild(rsvEl('span', 'rsv-qrow-said', e.cell.display));
+          side.appendChild(saidWrap);
+        }
         const actions = resolveActionsFor(e, product.id);
         if (actions) side.appendChild(actions);
         li.appendChild(side);
@@ -31532,113 +31781,46 @@
       sec.appendChild(ul);
       working.appendChild(sec);
     });
+
+    /* The enquiry panel, from the shared deriver. */
+    const enqPanel = pnEnquiryPanel(product, model);
+    if (enqPanel) working.appendChild(enqPanel);
+
     if (working.childNodes.length) view.appendChild(working);
-
-    /* X3 - THE FOOTER IS GONE, AND THE TWO FUNCTIONS ARE NOT.
-
-       Three paragraphs sat between the last card and Continue: what
-       Atlas looked at, what no list can settle, and where the answers
-       are stored. All three are true. None of them is what a person
-       needs at the moment they are deciding whether to go on, and
-       together they turned the foot of the page into small print with
-       a button after it.
-
-       resolveBoundaryBlock() and resolveStorageNote() are LEFT DEFINED
-       AND UNCALLED, the same way resolveStopBlock() was. The boundary
-       clause is a real claim-completeness device and deleting it would
-       mean reinventing it if it earns a place elsewhere; the storage
-       note is still the only string allowed to promise persistence.
-       Guard X06 fails the build if either is called from Resolve
-       again without this comment being revisited. */
     /* =====================================================================
-       Z2 - THE FOOT OF RESOLVE IS THE END OF THE VISIBLE JOURNEY.
+       F7b - THE CLOSING ACTION.
 
-       PROGRESS WAS TOO THIN TO BE A STAGE. Measured across the whole
-       universe it rendered 3,816 rows of which 1,431 were labels with
-       nothing after them, and after the last pass it was two short lists and
-       a button. A separate screen for that asks the homeowner to travel for
-       no new information. Its useful content is these two lists, and they
-       belong where the questions were asked.
+       A button after a list is a form submit. This is a closing section: its
+       own tonal ground, the primary sitting on it at full weight, the
+       supplier link beneath as a text link. It should read as the end of the
+       journey rather than the bottom of the page.
 
-       CONTINUE NO LONGER OPENS PROGRESS. Progress is still built, still
-       reachable from My Plot, and PROGRESS_REGISTRY still feeds the summary
-       above -- it is an evidence structure now rather than a stop on the
-       journey. */
-    const rsvReady = pnReadySummary(product);
-    const rsvSum = rsvEl('section', 'rsv-ready');
-    const rsvKnown = pnReadyBlock('What we know', rsvReady.known);
-    if (rsvKnown) rsvSum.appendChild(rsvKnown);
-    const rsvAsk = pnReadyBlock('Still to ask', rsvReady.ask);
-    if (rsvAsk) rsvSum.appendChild(rsvAsk);
-    if (rsvSum.childNodes.length) view.appendChild(rsvSum);
-
-    /* THE FORWARD CONTROL, AND WHAT IT IS NOT YET.
-
-       THE INTENDED PRIMARY IS AN ENQUIRY THROUGH PLOTNUA. For an option
-       priced on enquiry the homeowner cannot buy directly, so the route that
-       serves them -- and the route that keeps the relationship -- is
-       "Enquire about this option", with PlotNua making the introduction.
-
-       IT IS NOT WIRED HERE. The instruction is explicit that live enquiry
-       waits for supplier approval, so ENQUIRY_ENABLED_ORGS stays empty and
-       frozen and nothing on this page routes to the enquiry screen. Guard
-       Z10 fails the build if that changes.
-
-       UNTIL THEN, THE SUPPLIER'S OWN SITE, PLAINLY LABELLED. No sentence
-       above it: "For now, the next step happens on their own site" was
-       explaining the architecture to the homeowner, which is not their
-       problem. When pnNextAction() finds no governed route, NOTHING is
-       rendered rather than a dead control. */
-    /* =====================================================================
-       Q1 - THE FORWARD BLOCK. WHO THE HOMEOWNER GOES ON WITH.
-
-       THE COMMERCIAL ARCHITECTURE IS RESULT -> RESOLVE -> ENQUIRE THROUGH
-       PLOTNUA, not RESULT -> RESOLVE -> LEAVE PLOTNUA. For an option with no
-       usable published price the homeowner cannot buy anything by visiting
-       the maker's site; they have to ask. That ask is the moment the
-       relationship is either kept or given away, so the control that offers
-       it is the primary one.
-
-       WHICH OPTIONS. The same price test pnNextAction() already makes: a
-       usable price AND verified price evidence. Anything short of that is
-       quote-only or unpriced -- Yardbox The Toronto is the worked example,
-       because Atlas holds no Pricing record for Yardbox at all -- and the
-       enquiry leads. Where a price IS published and verified, seeing it is
-       genuinely the useful next step and the supplier link stays primary.
-
-       IT CANNOT SEND, AND IT DOES NOT PRETEND TO. The control is disabled,
-       carries aria-disabled, AND HAS NO CLICK HANDLER AT ALL -- there is
-       nothing for a hand-edited DOM to fire. Beneath it, one line says so in
-       the homeowner's terms. That line claims nothing about any supplier's
-       intentions, because PlotNua has no agreement to describe yet.
-
-       THE SUPPLIER'S SITE STAYS, AS A SECONDARY. A quiet text link, not a
-       filled button. pnNextAction() still decides whether it exists at all
-       and pnSupplierHandover() still opens it, so this remains the single
-       outbound door. */
+       THE ENQUIRY STILL CANNOT SEND. Disabled, aria-disabled, and NO CLICK
+       HANDLER -- nothing for a hand-edited DOM to fire. Guard F10 fails the
+       build if that changes. */
     const rsvOut = pnNextAction(product);
     const rsvPriced = pnUsablePrice(product.price) != null
                    && product.priceEvidenceState === 'verified';
 
-    const rsvGo = rsvEl('div', 'rsv-forward');
+    const rsvGo = rsvEl('section', 'rsv-close');
     let rsvHasAction = false;
 
     if (!rsvPriced) {
-      const enq = rsvEl('button', 'rsv-forward-cta is-pending',
-        'Enquire about this option \u2192');
+      const enq = rsvEl('button', 'rsv-close-cta is-pending',
+        'Enquire about this option →');
       enq.type = 'button';
       enq.disabled = true;
       enq.setAttribute('aria-disabled', 'true');
       rsvGo.appendChild(enq);
-      rsvGo.appendChild(rsvEl('p', 'rsv-forward-pending',
-        'We\u2019re not able to send this yet.'));
+      rsvGo.appendChild(rsvEl('p', 'rsv-close-note',
+        'We’re not able to send this yet.'));
       rsvHasAction = true;
     }
 
     if (rsvOut && rsvOut.href) {
       const visit = rsvEl('button',
-        rsvPriced ? 'rsv-forward-cta' : 'rsv-forward-secondary',
-        'Visit ' + (product.organisation || 'the maker') + ' \u2192');
+        rsvPriced ? 'rsv-close-cta' : 'rsv-close-secondary',
+        'Visit ' + (product.organisation || 'the maker') + ' →');
       visit.type = 'button';
       visit.addEventListener('click', function(){
         pnSupplierHandover(product, 'resolve');
@@ -31722,9 +31904,13 @@
     /* A question the homeowner can settle from their own property. The
        options are question-specific where that helps and generic where it
        does not; both shapes write the same way. */
-    const opts = PN_RESOLVE_CHOICES[entry.key]
-              || (entry.resolvability === 'measure' ? PN_RESOLVE_CHOICES_DEFAULT : null);
-    if (!opts) return null;   /* nobody can answer it here; the status says so */
+    /* F3 - ASK THE MODEL, NOT THE COPY TABLE.
+
+       The old line read the choice table FIRST, so a key with wording
+       got pills whether or not the model would keep the answer. Now the
+       predicate decides and the table only supplies the words. */
+    if (!pnHomeownerCanAnswer(entry)) return null;
+    const opts = PN_RESOLVE_CHOICES[entry.key] || PN_RESOLVE_CHOICES_DEFAULT;
 
     const row = rsvEl('div', 'rsv-choices');
     row.setAttribute('role', 'group');
@@ -32098,15 +32284,18 @@
     head.appendChild(h);
     view.appendChild(head);
 
-    /* Z4 - THE SAME SUMMARY RESOLVE SHOWS, FROM THE SAME FUNCTION.
-       Progress composed these lists itself and Resolve now shows them
-       too, so one of the two copies had to go. This one did. */
-    const prgReady = pnReadySummary(product);
-    const working = prgEl('section', 'rsv-working');
-    const knownBlock = pnReadyBlock('What we know', prgReady.known);
-    if (knownBlock) working.appendChild(knownBlock);
-    const askBlock = pnReadyBlock('Still to ask', prgReady.ask);
-    if (askBlock) working.appendChild(askBlock);
+    /* F8 - THE SAME ENQUIRY PANEL RESOLVE SHOWS.
+
+       Progress is not a homeowner-visible screen any more, but it is
+       still built and still reachable from the instrumentation handle,
+       so it must not render a summary whose builder has been deleted.
+       It shows the one panel that still exists, from the same
+       function -- which is also what keeps the two from drifting if
+       Progress is ever brought back. */
+    const working = prgEl('div', 'rsv-body');
+    const prgEnq = pnEnquiryPanel(product, resolveUncertaintiesFor(
+      product, resolvePositionsFor(product.id)));
+    if (prgEnq) working.appendChild(prgEnq);
     if (working.childNodes.length) view.appendChild(working);
 
     /* Z5 - THE DOOR MOVED TO RESOLVE, WITH THE END OF THE JOURNEY.
