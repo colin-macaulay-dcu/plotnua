@@ -992,6 +992,22 @@ def main():
             # whose tie-break was row order. adjudicate_price() decides on
             # governed evidence or declines.
             adj_state, pick, adj_candidates = adjudicate_price(price_rows)
+            # R1 — THE QUOTE-ONLY STATE REACHES THE PAGE.
+            #
+            # usable_price() has always separated "the supplier prices this
+            # by quotation" from "Atlas holds no price", and the runtime has
+            # always been able to render it: pnPriceView() tests
+            # priceEvidence.quoteOnly before it tests for a missing number.
+            # The two were never connected. Measured across the shipped
+            # artefacts, 0 of 477 products carried the key, so every
+            # quote-only supplier was published as "Price not published" --
+            # which says the maker has not published a price, when the maker
+            # has published HOW it prices.
+            #
+            # Computed from the same rows and the same helper. No new
+            # inference, no new field in Atlas, no supplier named.
+            _px_state, _px_rec = usable_price(price_rows)
+            _quote_only = (_px_state == "quote-only")
             # An AMBIGUOUS product still HAS evidence -- two records Atlas
             # cannot choose between -- and none of it is discarded. The record
             # fields stay null because no single record won; the count and the
@@ -1003,6 +1019,10 @@ def main():
                     "priceType": None, "status": None, "includesVat": None,
                     "evidenceScope": None,
                     "adjudication": "ambiguous",
+                    # Ambiguity outranks quote-only: two disagreeing numeric
+                    # records is a different problem from "priced on enquiry",
+                    # and the runtime tests ambiguity first for the same reason.
+                    "quoteOnly": False,
                     "candidateCount": len(adj_candidates),
                 }
             else:
@@ -1015,6 +1035,7 @@ def main():
                     "includesVat": cell(pick, "Price Includes VAT"),
                     "evidenceScope": cell(pick, "Evidence Scope"),
                     "adjudication": adj_state,
+                    "quoteOnly": _quote_only,
                     "candidateCount": len(adj_candidates) or (1 if pick else 0),
                 }
             # ---- ISSUE 005 PIECE D2 — THE PIPE STOPS LEAKING ---------------

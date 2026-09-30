@@ -24219,17 +24219,20 @@
                     : kind === 'range'     ? 'published price range of '
                     : 'published price of ';
         if (bare) money = 'its ' + noun + bare + ' sits within your ' + label + ' budget';
-      } else if (fit === 1) {
-        /* P0 J7 — homeowner language. Names the maker and the consequence,
-           not the test. */
-        /* SIMPLIFY — the gap is ATLAS'S, and the sentence says so. The
-           previous wording made it the maker's failure to publish; Atlas
-           not yet holding a comparable record is the honest subject. */
-        money = 'your budget could not be compared because Atlas does not yet '
-              + 'have a comparable published price for this '
-              + ((product.organisation) || 'maker') + ' model. '
-              + 'Price therefore did not rule it out';
       }
+      /* R2 — THE UNCOMPARABLE-BUDGET CLAUSE IS DELETED, NOT REWORDED.
+
+         It said, in homeowner words, that the matcher had failed to
+         exclude this option. "Price therefore did not rule it out" is a
+         statement about the ranking, and a homeowner reading it learns
+         nothing they can act on -- the price row directly above already
+         tells them what Atlas holds, in the canonical vocabulary.
+
+         NOTHING REPLACES IT, AND THAT IS THE POINT. When this was the
+         only clause, `why` is now empty and the `if (why.length)` guard
+         below drops the whole "Why you are seeing this" section. The
+         section omits itself when it has nothing to say, which is what
+         the brief asks for, and it does so without a second rule. */
     }
 
     if (look && money) return [look + ', and ' + money + '.'];
@@ -24372,6 +24375,125 @@
      supplier record states it, including the absences, and the paragraph is
      attributed to the supplier record so it can never be read as a promise
      about this particular building. */
+  /* ===== SHARED RESULTS EVIDENCE RULES ===================================
+
+     Default presentation behaviour for EVERY product that reaches Results.
+     Nothing below keys on a supplier, an organisation or a product id, and
+     the build fails if one is ever introduced here.
+
+     Three tables and three rules:
+       PN_PLAIN_ENGLISH     taxonomy -> homeowner English          (§3)
+       PN_INTERNAL_TOKENS   the fail-closed list                   (§3)
+       PN_HOMEOWNER_ORDER   what a homeowner asks, in order        (§2)
+       pnPlainEnglish()     translate, or withhold                 (§3)
+       pnEvidenceCore()     the comparable core of a value         (§4)
+       pnEvidenceRows()     translate -> dedupe -> order           (§2,§4) */
+
+  /* §3 — TRANSLATION, LONGEST PATTERN FIRST.
+
+     Each entry is a normalisation phrase Atlas uses internally and the
+     sentence a homeowner would actually say. These are TAXONOMY phrases:
+     they describe how Atlas classifies coverage, not who the supplier is.
+     A supplier name must never appear here -- guard S05 enforces it. */
+  const PN_PLAIN_ENGLISH = [
+    /* The compound form first, so the parts below cannot half-translate it. */
+    [/all[- ]island;\s*northern ireland base serving both jurisdictions/i,
+     'Based in Northern Ireland and serves customers across Ireland'],
+    [/all[- ]island;\s*(?:republic of ireland|irish) base serving both jurisdictions/i,
+     'Based in the Republic of Ireland and serves customers across Ireland'],
+    [/serving both jurisdictions/i, 'serving customers across Ireland'],
+    [/\ball[- ]island\b/i, 'across Ireland and Northern Ireland'],
+    [/\borganisation[- ]wide\b/i, 'across everything this maker sells'],
+    [/\bproduct[- ]specific\b/i, 'for this model'],
+    [/\bevidence tier\b/i, ''],
+    [/\bstated[, ]+not certified\b/i, 'stated by the supplier, not yet verified'],
+    [/\bnot certified\b/i, 'not yet verified'],
+    [/\bsupplier[- ]installs\b/i, 'the supplier installs it'],
+    [/\bunknown\b/i, 'Not confirmed'],
+  ];
+
+  /* §3 — FAIL CLOSED. If any of these survives translation the row is
+     WITHHELD rather than printed. A row Atlas cannot say in plain English is
+     a row the homeowner does not need, and printing raw taxonomy to avoid an
+     empty slot is the failure this rule exists to prevent. */
+  const PN_INTERNAL_TOKENS = /(all[- ]island|jurisdictions?\b|organisation[- ]wide|evidence tier|tier [A-D]\b|_[A-Z]|[A-Z]{4,}_)/;
+
+  /* §2 — HOMEOWNER ORDER. The questions in the order they are asked.
+     Labels with no field feeding them yet are listed deliberately: when Atlas
+     starts carrying lead time or warranty, those rows sort into position with
+     no further edit. Unranked labels keep source order, after the ranked. */
+  const PN_HOMEOWNER_ORDER = [
+    'Price', 'Pricing basis', 'Lead time', 'Installation time',
+    'Who installs it', 'Installation area', 'Delivery coverage',
+    'Delivery charge', 'What is included', 'What is excluded', 'Warranty',
+    'Irish presence', 'Manufacturing', 'Still to confirm',
+  ];
+
+  const PN_EVIDENCE_INLINE_MAX = 6;   /* §6 — the disclosure threshold. */
+
+  /* §3 — translate, or return '' to withhold. */
+  function pnPlainEnglish(v){
+    let s = String(v == null ? '' : v).trim();
+    if (!s) return '';
+    for (let i = 0; i < PN_PLAIN_ENGLISH.length; i++){
+      s = s.replace(PN_PLAIN_ENGLISH[i][0], PN_PLAIN_ENGLISH[i][1]);
+    }
+    /* Tidy what translation can leave behind: doubled separators, a stranded
+       leading connector, doubled spaces. Presentation only. */
+    s = s.replace(/\s*;\s*$/, '').replace(/\s{2,}/g, ' ')
+         .replace(/^[;,\s\u2014-]+/, '').trim();
+    if (!s) return '';
+    if (PN_INTERNAL_TOKENS.test(s)) return '';
+    return s;
+  }
+
+  /* §4 — the comparable core. Qualifier tails restate the head as provenance
+     ("— per the supplier's own statement", ", per supplier statement"), so
+     two fields carrying the same coverage claim differ only by their tail.
+     Stripping it is what makes the duplicate visible. */
+  function pnEvidenceCore(v){
+    let s = String(v == null ? '' : v).toLowerCase();
+    s = s.replace(/\s*[\u2014-]\s*(per|supplier|the supplier)[^]*$/, '');
+    s = s.replace(/,\s*(per|as per|according to)\b[^]*$/, '');
+    s = s.replace(/[.,;:]+$/, '');
+    s = s.replace(/[^a-z0-9 ]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+    return s;
+  }
+
+  /* §2 §4 — translate, drop duplicates, then order. One pass, no supplier
+     knowledge, and every step reversible. */
+  function pnEvidenceRows(pairs){
+    const kept = [];
+    for (let i = 0; i < pairs.length; i++){
+      const lab = pairs[i][0];
+      const val = pnPlainEnglish(pairs[i][1]);
+      if (!val) continue;                       /* §3 withheld, or empty */
+      const core = pnEvidenceCore(val);
+      if (!core) continue;
+      let dup = false;
+      for (let j = 0; j < kept.length; j++){
+        const k = kept[j].core;
+        /* Equal, or strictly less specific than something already shown. */
+        if (k === core || k.indexOf(core) >= 0) { dup = true; break; }
+        /* Strictly MORE specific than something already shown: replace it,
+           so the fuller sentence is the one the homeowner reads. */
+        if (core.indexOf(k) >= 0) { kept[j] = { lab: lab, val: val, core: core }; dup = true; break; }
+      }
+      if (!dup) kept.push({ lab: lab, val: val, core: core });
+    }
+    const rank = function(l){
+      const i = PN_HOMEOWNER_ORDER.indexOf(l);
+      return i < 0 ? PN_HOMEOWNER_ORDER.length : i;
+    };
+    /* Stable: equal ranks keep the order the schema gave them. */
+    return kept.map(function(r, i){ return { r: r, i: i }; })
+               .sort(function(a, b){
+                 const d = rank(a.r.lab) - rank(b.r.lab);
+                 return d !== 0 ? d : a.i - b.i;
+               })
+               .map(function(x){ return x.r.lab + ': ' + x.r.val; });
+  }
+
   function pnAssessContext(product){
     /* STAGE 4.3 — the same governed values, presented concisely. Every rule
        here was measured across the 487 first, and every one is reversible
@@ -24419,9 +24541,13 @@
           }
         }
       }
-      out.push((LABEL[spec.label] || spec.label) + ': ' + v);
+      /* R3/R4/R5 — the row is COLLECTED here and presented by the shared
+         rules below. It is no longer formatted at the point of reading,
+         because translation, de-duplication and ordering are decisions
+         about the whole set, not about one field. */
+      out.push([(LABEL[spec.label] || spec.label), v]);
     }
-    return out;
+    return pnEvidenceRows(out);
   }
 
   /* WHAT ATLAS IS STILL CHECKING. Six governed caveat strings, each rewritten
@@ -24772,7 +24898,19 @@
       const k = String(c.className || '');
       if (k === 'aa-mkr' || k === 'aa-ev-foot' || k === 'aa-notes') evd.push(c);
     }
-    if (evd.length) {
+    /* R6 — INLINE BY DEFAULT. THE DISCLOSURE IS EARNED, NOT AUTOMATIC.
+
+       Counted from the DATA that produced the evidence, not from the
+       painted DOM: the maker band's rows plus the source rows. Both are
+       already in scope here and both are the arrays the renderer used,
+       so the count cannot drift from what is on the page.
+
+       At or below the threshold there is no <details> at all -- the
+       evidence stays where it was built and the homeowner reads it
+       without pressing anything. Above it, the disclosure returns.
+       One constant, the same arithmetic for every product. */
+    const pnSubstantive = (ctx ? ctx.length : 0) + (rowsSrc ? rowsSrc.length : 0);
+    if (evd.length && pnSubstantive > PN_EVIDENCE_INLINE_MAX) {
       const box = document.createElement('details');
       box.className = 'aa-evd';
       const sum = document.createElement('summary');
@@ -24783,7 +24921,9 @@
          :focus-visible. */
       sum.className = 'aa-evd-sum is-button';
       /* SIMPLIFY — a verb, so it reads as a control rather than a label. */
-      sum.textContent = 'Check what Atlas knows about ' + (org || 'the maker') + ' \u2192';
+      /* R7 — the important facts are on the page now, so the control
+         offers MORE rather than implying the page withholds. */
+      sum.textContent = 'Find out more about ' + (org || 'the maker') + ' \u2192';
       box.appendChild(sum);
       host.insertBefore(box, evd[0]);
       for (let i = 0; i < evd.length; i++) box.appendChild(evd[i]);
