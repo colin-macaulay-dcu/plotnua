@@ -158,6 +158,40 @@ jobs:
             exit 1
           fi
 
+      # IMG-REFRESH — GOVERNED AUTHORISED IMAGERY, REAPPLIED BEFORE VALIDATION.
+      #
+      # The generator does not emit `imagery` and never has: the imagery layer
+      # is this separate, idempotent post-pass over the artefact. Until now it
+      # was only ever run by hand, so a CI refresh produced a universe with
+      # zero authorised products and the publish step copied it over a
+      # production file that had six. That collapses the Results publication
+      # gate to nothing.
+      #
+      # It runs HERE -- after the generator, before every validator -- so the
+      # thing that is validated and the thing that is published are the same
+      # file, imagery included.
+      #
+      # --require-min 6 is a FLOOR. It is the number of Garden Room products
+      # the canonical rights system currently authorises. More is fine and
+      # passes. Fewer fails the job loudly, because a withdrawal is a decision
+      # someone makes deliberately and then lowers this number, not something
+      # an unattended refresh absorbs in silence.
+      - name: Reapply governed authorised imagery to the candidate
+        run: |
+          set -euo pipefail
+          python .github/scripts/apply_authorised_imagery.py \
+            --universe "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" \
+            --require-min 6
+
+      - name: Verify the imagery pass wrote nothing into the repository
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::The imagery pass modified the working tree. It must only write to the candidate."
+            git status --porcelain
+            exit 1
+          fi
+
       # THE GATE. Exits non-zero on any structural or truthfulness failure, and
       # decides changed/unchanged. Nothing downstream runs if this fails.
       - name: Validate the candidate against production

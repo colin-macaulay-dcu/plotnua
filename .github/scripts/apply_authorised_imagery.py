@@ -56,6 +56,27 @@ HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 
 UNIVERSE = REPO / "garden-room-recommendation-universe-v1.json"
+
+# IMG-REFRESH — the artefact this run acts on.
+#
+# Default: the committed universe, exactly as every hand-run invocation has
+# always used. `--universe PATH` points it at a generated candidate instead,
+# so the Atlas refresh workflow can reapply imagery to the candidate BEFORE it
+# is validated, rather than publishing a universe with no imagery at all.
+#
+# This changes WHICH FILE is read and written. It does not change the rule:
+# grants still come from the canonical manifest, assets still come from
+# ATLAS_ASSETS, and an unproven image still yields nothing.
+if "--universe" in sys.argv:
+    UNIVERSE = pathlib.Path(sys.argv[sys.argv.index("--universe") + 1]).resolve()
+
+# A FLOOR, NOT AN EQUALITY. Rights growing is fine and must not fail a run.
+# Rights shrinking is a deliberate act that should lower this number by hand,
+# so a silent collapse -- the defect this whole pass exists to close -- cannot
+# reach validation, let alone publication.
+REQUIRE_MIN = 0
+if "--require-min" in sys.argv:
+    REQUIRE_MIN = int(sys.argv[sys.argv.index("--require-min") + 1])
 MANIFEST = REPO / "image-rights-manifest.json"
 
 CHECK = "--check" in sys.argv
@@ -512,6 +533,17 @@ def main():
         print("\n--check: nothing written (%d would change)" % changed)
         return 0
 
+    # IMG-REFRESH — THE FLOOR. Checked BEFORE the write, so a collapsed
+    # imagery layer never reaches a file, let alone a validator.
+    if len(by_product) < REQUIRE_MIN:
+        print("\nABORT: %d product(s) carry authorised imagery; at least %d "
+              "were required. Nothing was written.\n"
+              "       A grant has been withdrawn, or the asset/product links "
+              "have moved.\n       Both are decisions a person makes and then "
+              "lowers the floor for — not\n       something an unattended "
+              "refresh may absorb quietly."
+              % (len(by_product), REQUIRE_MIN))
+        return 1
     UNIVERSE.write_text(
         json.dumps(doc, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print("\nwrote " + UNIVERSE.name + "  (%d product(s) changed)" % changed)
