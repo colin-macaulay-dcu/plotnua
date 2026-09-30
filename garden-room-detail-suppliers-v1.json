@@ -617,13 +617,21 @@
       "name": "Power Sheds",
       "locality": {
         "contractingEntity": "Powersheds Limited, UK company number 11790351",
-        "installationModel": "Not published",
-        "irishPresence": "None located",
-        "deliveryCoverage": "UK; no Ireland-specific delivery terms located",
+        "installationModel": "Not provided by the supplier. Self-assembly is the default; the supplier publishes a third-party installer directory and a separate base-installation directory for Ireland",
+        "deliveryCoverage": "UK, and FREE DELIVERY THROUGHOUT IRELAND stated first-party on ie.powersheds.com product pages; dispatch stated as 10\u201312 weeks; HIAB craned delivery; delivery date arranged after the order is placed",
         "manufacturingLocation": "Not published separately from the Bradford site",
         "jurisdiction": "England (United Kingdom)",
-        "evidenceTier": "B",
-        "evidenceScope": "Organisation-Wide"
+        "evidenceTier": "A for the Irish-market facts (first-party product and contact pages, read 2026-09-29); B for the UK corporate facts",
+        "evidenceScope": "Organisation-Wide",
+        "installationType": "SUPPLY_ONLY",
+        "installationStatus": "CONFIRMED",
+        "installationSourceUrl": "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm",
+        "installationCheckedAt": "2026-09-29",
+        "roiDelivery": "CONFIRMED",
+        "roiInstallCoverage": "UNKNOWN",
+        "deliveryStatus": "CONFIRMED",
+        "deliverySourceUrl": "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm",
+        "deliveryCheckedAt": "2026-09-29"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
