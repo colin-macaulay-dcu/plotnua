@@ -4265,30 +4265,25 @@
     .results-hero-inner.is-fieldonly .results-hero-editorial{ max-width:34ch; }
   }
 
-  /* ===== H5 · THE RESULT IMAGE BECOMES THE DOMINANT ELEMENT ==========
+  /* ===== K1 · H5 IS WITHDRAWN. IT NEVER APPLIED. ====================
 
-     Measured against the Results measure, 910px (.match-results-panel
-     max-width, unchanged by this pass):
+     H5 set `.results-hero-media{ width:51% }` and
+     `.results-hero-inner:not(.is-fieldonly){ gap:40px }` at class
+     specificity. This screen already carried, at id specificity:
 
-       BEFORE   media 42%  ->  382.2 x 286.7   gap 56   text 471.8
-       AFTER    media 51%  ->  464.1 x 348.1   gap 40   text 405.9
+       #screen-match-results .results-hero-media{ width:58%; ... }
+       #screen-match-results .results-hero-inner{ gap:clamp(...); }
 
-     Width and height +21.4%, area +47.3%.
+     The id wins at every width, so neither declaration was ever used and
+     the geometry H5's comment claims was never on screen. The live width
+     has been 58% throughout.
 
-     WHY 1024 AND NOT 720. The row layout starts at 720px, but there the
-     container is roughly 672px and 51% would leave the text column near
-     289px -- narrower than the 40ch editorial measure, which is the
-     'cramped' the brief rules out. Tablet keeps the 42/56 proportions it
-     already has; the enlargement begins where the measure is full.
+     The rules are removed rather than left as decoration: a declaration
+     that cannot win is worse than no declaration, because the next reader
+     has to discover for themselves that it does nothing. The real change
+     is made at the id scope, further down, where this screen is governed.
 
-     ASPECT RATIO AND CROP ARE UNTOUCHED. 4/3 and object-fit:cover are not
-     restated here, so the image is framed exactly as it was, larger. */
-  @media (min-width:1024px){
-    .results-hero-media{ width:51%; }
-    /* is-fieldonly is display:block and has no media child; excluded so
-       the rule cannot be read as applying to a case it does not. */
-    .results-hero-inner:not(.is-fieldonly){ gap:40px; }
-  }
+     Nothing replaces them here. */
   @media (max-width:719px){
     .results-hero-inner{ margin-bottom:52px; padding-bottom:0; }
     /* The field runs edge to edge, breaking the page margin. This is the
@@ -8269,9 +8264,39 @@
 
      3:2 not 16:9 -- a 910px panel at 16:9 gives a 297px-tall band that reads
      as a header image rather than a photograph of a building. */
+  /* K2 · THE PLATE, WITH REAL DEPTH.
+
+     WRITTEN HERE, AND NOT ON THE TOKEN. --pn-plate-lift and
+     --pn-plate-radius each have a second consumer (the alternative
+     plates); this brief is the hero, so the hero overrides and the
+     token keeps its meaning for everything else.
+
+     THE SHADOW. Three drop layers, one ink, every one with negative
+     spread so no edge is ever hard:
+
+       before   0 1px 2px      rgba(36,53,31,.04)
+                0 16px 38px -20px rgba(36,53,31,.28)
+
+       after    0 2px 4px      rgba(36,53,31,.05)     contact
+                0 14px 28px -14px rgba(36,53,31,.18)  mid
+                0 40px 80px -30px rgba(36,53,31,.34)  ambient
+
+     Broader and deeper, still low-opacity. The ink is the file's
+     green-black, not black, so the edge stays soft; every layer is a
+     drop shadow, so there is no glow.
+
+     THE MICRO-LIFT is the last entry: a 1px inset hairline at 6% ink,
+     on the container. Not an invention -- .results-gallery-media already
+     draws `inset 0 0 0 1px rgba(31,59,46,.06)`. It defines the plate's
+     edge against the ivory without a coloured border, a gradient over
+     the photograph, glass, or motion. */
   #screen-match-results .results-hero-media{
-    border-radius:var(--pn-plate-radius);
-    box-shadow:var(--pn-plate-lift);
+    border-radius:14px;
+    box-shadow:
+      0 2px 4px rgba(36,53,31,.05),
+      0 14px 28px -14px rgba(36,53,31,.18),
+      0 40px 80px -30px rgba(36,53,31,.34),
+      inset 0 0 0 1px rgba(36,53,31,.06);
     background:var(--pn-hair);
   }
   @media (min-width:720px){
@@ -8454,6 +8479,34 @@
      vertical bias ever helped -- see its Atlas asset note. */
   @media (min-width:720px){
     #screen-match-results .results-hero-media{ aspect-ratio:4/3; }
+  }
+  /* K2b · SIZE, ON LARGE DESKTOP ONLY.
+
+     At the 910px measure every pixel the image gains comes out of the
+     gap or the text column. The gap yields 22px; the rest comes from the
+     text:
+
+       before   58%  ->  527.8 x 395.9   gap 48   text 334.2
+       after    64%  ->  582.4 x 436.8   gap 26   text 301.6
+
+       image +10.3%   area +21.7%   text -9.8%
+
+     THE BOTTOM OF THE RANGE, DELIBERATELY. 15% would need 607px and
+     leave the text at 277px, under the 40ch editorial measure -- the
+     'excessive' squeeze the brief rules out. The way to have both is to
+     let this row break the 910px measure, which changes where the hero
+     sits relative to the assessment beneath it. That is a composition
+     decision, so it is reported, not taken.
+
+     1280, NOT 1024: the container is 910 at both, but at 1024 the gap
+     clamp yields only 34.8px, so the same width would squeeze harder.
+     Below 1280 the hero is exactly as it was. Aspect ratio and crop are
+     not restated, so the framing is unchanged. */
+  @media (min-width:1280px){
+    #screen-match-results .results-hero-media{
+      width:64%; max-width:64%; flex:0 0 64%;
+    }
+    #screen-match-results .results-hero-inner{ gap:26px; }
   }
   /* The alternative plates keep 4/3 and get the same bias, for the same
      reason: a square source in a 4/3 well crops from somewhere. */
