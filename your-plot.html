@@ -8713,287 +8713,300 @@
      the calm line. Two columns on desktop, stacked on a phone. The image
      well keeps the plate vocabulary the Results hero uses -- same radius
      family, same soft lift -- so the two pages read as one journey. */
-  .rsv-hero{ display:flex; gap:26px; align-items:center; margin:0 0 6px; }
-  /* X1 - 42% OF THE HEADER, UP FROM 34%.
-     The middle of the 40-45% the brief asks for, chosen so the copy
-     column still holds the product line and the headline on two lines
-     at 1024. The plate vocabulary is unchanged: same radius family,
-     same soft lift, same aspect ratio, same governed image. */
+  /* ---- C2 . THE HERO, COMPOSED RATHER THAN COLUMNED ---------------------
+
+     WHAT WAS WRONG. Two blocks of similar width, vertically centred on each
+     other, with an eyebrow above the text. Centring two things of nearly
+     equal size is the one arrangement that reads as a form: nothing leads.
+
+     WHAT CHANGED, AND ONLY THIS.
+       · 42% -> 52%. The photograph is now decisively the larger element.
+       · align-items:flex-end. The copy sits on the image's baseline instead
+         of floating in the middle of it, which is what gives the pair a
+         direction to read in.
+       · 3/2 instead of 4/3. A wider plate reads as architectural rather
+         than as a thumbnail, and it lets the copy column breathe at the
+         same overall height.
+       · gap 26 -> 40, and padding-bottom on the copy so the name and the
+         headline are not crowded against the picture's edge.
+
+     NO DECORATION WAS ADDED. Same governed image, same rights gate, same
+     radius family, same soft lift. */
+  .rsv-hero{
+    display:flex; gap:40px; align-items:flex-end; margin:0 0 4px;
+  }
   .rsv-hero-media{
-    flex:0 0 42%; max-width:42%; aspect-ratio:4/3; overflow:hidden;
-    border-radius:12px; background:var(--pn-hair); position:relative;
+    flex:0 0 52%; max-width:52%; aspect-ratio:3/2; overflow:hidden;
+    border-radius:14px; background:var(--pn-hair); position:relative;
     box-shadow:
       0 2px 4px rgba(36,53,31,.05),
-      0 18px 36px -22px rgba(36,53,31,.30),
+      0 22px 44px -26px rgba(36,53,31,.32),
       inset 0 0 0 1px rgba(36,53,31,.06);
   }
   .rsv-hero-media img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .rsv-hero-copy{ flex:1 1 0; min-width:0; }
-  @media (max-width:720px){
-    .rsv-hero{ flex-direction:column; align-items:stretch; gap:16px; }
-    .rsv-hero-media{ flex:0 0 auto; max-width:100%; }
+  .rsv-hero-copy{ flex:1 1 0; min-width:0; padding-bottom:6px; }
+
+  /* The product line is the quiet one and the headline carries the weight.
+     Hierarchy by size and colour, not by a third element between them. */
+  #screen-resolve .rsv-hero-copy .rsv-product{
+    margin:0 0 10px; font-family:'Work Sans',sans-serif;
+    font-size:12.5px; font-weight:600; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--soft);
+  }
+  #screen-resolve .rsv-hero-copy .rsv-headline{
+    margin:0; font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(28px, 3.4vw, 40px); font-weight:600;
+    line-height:1.12; letter-spacing:-.02em; max-width:22ch;
+    color:var(--brand-green, #1F3B2E);
   }
 
-  /* ---- F7 . RESOLVE, REDESIGNED ----------------------------------------
+  @media (max-width:860px){
+    .rsv-hero{ gap:28px; }
+    .rsv-hero-media{ flex:0 0 46%; max-width:46%; }
+  }
+  @media (max-width:720px){
+    .rsv-hero{ flex-direction:column; align-items:stretch; gap:18px; }
+    .rsv-hero-media{ flex:0 0 auto; max-width:100%; aspect-ratio:4/3; }
+    .rsv-hero-copy{ padding-bottom:0; }
+  }
 
-     WHAT THIS REPLACES. A responsive grid of cream cards, each with a
-     border, a shadow, a title, a sentence and a status badge. Five of them
-     read as a dashboard, and the unfilled right-hand half of each one read
-     as a form.
+  /* ---- C3-C7 . RESOLVE, COMPOSED ---------------------------------------
 
-     WHAT IT IS NOW. Two tonal panels and a closing section. Hierarchy comes
-     from type scale, spacing rhythm and ground tone rather than from
-     containers: there is one rule between rows and none around them. The
-     hero image is the largest element on the page, which is the point -- the
-     homeowner is deciding about a building.
+     THE PREVIOUS PASS REPLACED CARDS WITH PANELS, WHICH WAS RIGHT AND NOT
+     FAR ENOUGH. Two filled, ringed, rounded containers stacked on the page
+     are still two boxes; the eye reads the boxes before the content. This
+     pass takes the container away from the section that does not need one
+     and gives the one that does a reason to be there.
 
-     THE PANELS ARE TONAL, NOT BORDERED. Warm ivory for the homeowner's own
-     questions; a sage wash for the enquiry, so the two roles are legible
-     before a word is read. One hairline, no shadow, generous inset.
+       YOUR PROPERTY   no fill, no ring. A rule under the heading and fine
+                       rules between rows. It reads as a section of a page.
+       THE ENQUIRY     the only tinted panel left, so it is unmistakably
+                       the thing PlotNua has prepared. Softer wash, no
+                       ring, Fraunces numerals, more air per line.
+       THE CLOSE       a strip, not a banner: one row, half the height.
+
+     HIERARCHY IS TYPE AND SPACE. Fraunces at three sizes (hero headline,
+     panel titles, enquiry numerals), Work Sans everywhere else, and one
+     uppercase micro-label. No badges, no chrome.
      ------------------------------------------------------------------- */
   #screen-resolve .rsv-body{ display:block; }
-  .rsv-panel{
-    margin:0 0 var(--pn-space-lg); padding:26px 28px 22px;
-    border-radius:16px;
-    background:var(--brand-ivory, #F2EFE6);
-    box-shadow:inset 0 0 0 1px rgba(31,59,46,.07);
-  }
-  .rsv-panel-head{ margin:0 0 18px; }
+
+  /* C7 - THE RHYTHM. Measured against the old values: hero->section was
+     --pn-space-lg (32) plus the panel's own 26 of padding = 58; it is now
+     36 with no padding above the heading. Section->section was 32 plus 26;
+     it is now 40, which is MORE air between two unlike things and less
+     inside each. Dead space removed, real space kept. */
+  .rsv-panel{ margin:0 0 40px; padding:0; border-radius:0; background:none;
+              box-shadow:none; }
+  .rsv-panel-head{ margin:0 0 4px; }
   .rsv-panel-title{
     margin:0; font-family:'Fraunces',Georgia,serif;
-    font-size:21px; font-weight:600; line-height:1.2;
-    letter-spacing:-.01em; color:var(--brand-green, #1F3B2E);
+    font-size:23px; font-weight:600; line-height:1.15;
+    letter-spacing:-.015em; color:var(--brand-green, #1F3B2E);
   }
   .rsv-panel-lede{
-    margin:6px 0 0; font-family:'Work Sans',sans-serif;
-    font-size:13.5px; line-height:1.5; color:var(--soft);
+    margin:7px 0 0; font-family:'Work Sans',sans-serif;
+    font-size:13.5px; line-height:1.55; color:var(--soft); max-width:46ch;
   }
 
-  /* ---- the property rows --------------------------------------------- */
+  /* ---- C3 . the property section -------------------------------------- */
+  .rsv-panel-property{ margin-top:36px; }
+  .rsv-panel-property .rsv-panel-head{
+    padding-bottom:14px; border-bottom:1px solid rgba(31,59,46,.16);
+  }
   .rsv-qrows{ list-style:none; margin:0; padding:0; }
   .rsv-qrow{
-    display:flex; gap:20px; align-items:baseline;
-    padding:16px 0; margin:0;
-    border-top:1px solid rgba(31,59,46,.10);
+    display:flex; gap:28px; align-items:center;
+    padding:15px 2px; margin:0;
+    border-top:1px solid rgba(31,59,46,.09);
   }
-  .rsv-qrow:first-child{ border-top:none; padding-top:2px; }
+  .rsv-qrow:first-child{ border-top:none; }
   .rsv-qrow-main{ flex:1 1 auto; min-width:0; }
   .rsv-qrow-label{
     display:block; font-family:'Work Sans',sans-serif;
-    font-size:15px; font-weight:600; line-height:1.3;
-    color:var(--brand-green, #1F3B2E);
+    font-size:15.5px; font-weight:600; line-height:1.25;
+    letter-spacing:-.005em; color:var(--brand-green, #1F3B2E);
   }
   .rsv-qrow-ask{
-    margin:3px 0 0; font-size:13px; line-height:1.45; color:var(--soft);
+    margin:2px 0 0; font-family:'Work Sans',sans-serif;
+    font-size:12.5px; line-height:1.45; color:var(--soft);
   }
   .rsv-qrow-side{
-    flex:0 0 auto; display:flex; flex-wrap:wrap; gap:8px;
-    align-items:center; justify-content:flex-end; max-width:56%;
-  }
-  /* G2 - the answer, with a quiet label above it. The label is small,
-     spaced and sage; the answer keeps the weight. Right-aligned on
-     desktop with the rest of the side column, left on a phone where
-     the column becomes a block. */
-  .rsv-qrow-answer{ display:flex; flex-direction:column; align-items:flex-end; }
-  .rsv-qrow-mine{
-    font-family:'Work Sans',sans-serif; font-size:10px; font-weight:600;
-    letter-spacing:.12em; text-transform:uppercase;
-    color:var(--brand-sage, #8FAF8A); margin-bottom:2px;
-  }
-  .rsv-qrow-said{
-    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
-    color:var(--brand-green, #1F3B2E);
+    flex:0 0 auto; display:flex; flex-wrap:wrap; gap:12px;
+    align-items:center; justify-content:flex-end; max-width:58%;
   }
 
-  /* ---- the enquiry panel --------------------------------------------- */
+  /* The answer, once given: the micro-label above it, right-aligned with
+     the control it replaces so the row does not shift. */
+  .rsv-qrow-answer{ display:flex; flex-direction:column; align-items:flex-end; }
+  .rsv-qrow-mine{
+    font-family:'Work Sans',sans-serif; font-size:9.5px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase;
+    color:var(--brand-sage, #8FAF8A); margin-bottom:3px;
+  }
+  .rsv-qrow-said{
+    font-family:'Work Sans',sans-serif; font-size:14px; font-weight:600;
+    line-height:1.2; color:var(--brand-green, #1F3B2E);
+  }
+
+  /* ---- C5 . the enquiry panel ----------------------------------------- */
   .rsv-panel-enquiry{
-    background:rgba(143,175,138,.16);
-    box-shadow:inset 0 0 0 1px rgba(31,59,46,.09);
+    margin-bottom:0; padding:30px 32px 26px; border-radius:18px;
+    background:rgba(143,175,138,.11);
+    box-shadow:none;
   }
-  .rsv-qlist{
-    list-style:none; margin:0; padding:0; counter-reset:pnq;
+  .rsv-panel-enquiry .rsv-panel-head{
+    margin-bottom:14px; padding-bottom:0; border-bottom:none;
   }
+  .rsv-panel-enquiry .rsv-panel-title{ font-size:24px; }
+  .rsv-panel-enquiry .rsv-panel-lede{ color:rgba(31,59,46,.62); }
+  .rsv-qlist{ list-style:none; margin:0; padding:0; counter-reset:pnq; }
   .rsv-qitem{
     counter-increment:pnq; position:relative;
-    margin:0; padding:11px 0 11px 34px;
-    border-top:1px solid rgba(31,59,46,.10);
-    font-family:'Work Sans',sans-serif; font-size:14.5px; line-height:1.45;
+    margin:0; padding:13px 0 13px 40px;
+    border-top:1px solid rgba(31,59,46,.07);
+    font-family:'Work Sans',sans-serif; font-size:15px; line-height:1.5;
     color:var(--brand-green, #1F3B2E);
   }
   .rsv-qitem:first-child{ border-top:none; }
+  /* Fraunces numerals, sage, optically aligned with the first line of the
+     text rather than boxed in a circle. A numeral is enough. */
   .rsv-qitem::before{
-    content:counter(pnq); position:absolute; left:0; top:11px;
-    width:22px; text-align:center;
-    font-size:11.5px; font-weight:700; line-height:1.7;
-    color:var(--brand-sage, #8FAF8A);
+    content:counter(pnq); position:absolute; left:0; top:12px;
+    width:26px; text-align:left;
+    font-family:'Fraunces',Georgia,serif; font-size:15px; font-weight:600;
+    line-height:1.5; color:rgba(143,175,138,.95);
   }
 
-  /* ---- the closing action -------------------------------------------- */
+  /* ---- C6 . the closing strip ----------------------------------------- */
   .rsv-close{
-    margin:calc(var(--pn-space-lg) + 4px) 0 0; padding:28px;
-    border-radius:16px; text-align:center;
+    margin:40px 0 0; padding:18px 24px; border-radius:14px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px; flex-wrap:wrap; text-align:left;
     background:var(--brand-green, #1F3B2E);
   }
   .rsv-close-cta{
-    display:inline-block; padding:15px 28px; border:none; border-radius:10px;
+    display:inline-block; padding:13px 24px; border:none; border-radius:10px;
     background:var(--brand-sage, #8FAF8A); color:var(--brand-green, #1F3B2E);
-    font-family:'Work Sans',sans-serif; font-size:15.5px; font-weight:700;
+    font-family:'Work Sans',sans-serif; font-size:15px; font-weight:700;
     cursor:pointer;
   }
-  /* H5 - THE PENDING PLATE. Metrically identical to .rsv-close-cta above
-     -- same padding, same radius, same family, same size -- so the live
-     control drops into its place without a pixel moving. It differs only
-     in what it is made of: a hairline on the green ground instead of a
-     sage fill, and no weight in the type, because it is a statement
-     rather than an invitation.
-
-     .is-pending is retired with the disabled button it styled. */
+  /* THE PENDING PLATE. Metrically identical to .rsv-close-cta above -- same
+     padding, same radius, same family, same size -- so the live control
+     drops into its place without a pixel moving. It differs only in what it
+     is made of: a hairline on the green ground instead of a sage fill, and
+     no weight in the type, because it is a statement rather than an
+     invitation. */
   .rsv-close-pending{
-    display:inline-block; padding:15px 28px; border-radius:10px;
-    background:none; box-shadow:inset 0 0 0 1px rgba(242,239,230,.30);
-    color:rgba(242,239,230,.88);
-    font-family:'Work Sans',sans-serif; font-size:15.5px; font-weight:500;
+    display:inline-block; padding:13px 24px; border-radius:10px;
+    background:none; box-shadow:inset 0 0 0 1px rgba(242,239,230,.26);
+    color:rgba(242,239,230,.90);
+    font-family:'Work Sans',sans-serif; font-size:15px; font-weight:500;
   }
   .rsv-close-cta:focus-visible,
   .rsv-close-secondary:focus-visible{
     outline:2px solid var(--brand-sage, #8FAF8A); outline-offset:3px;
   }
-  .rsv-close-note{
-    margin:10px 0 0; font-family:'Work Sans',sans-serif;
-    font-size:12.5px; line-height:1.5; color:rgba(242,239,230,.70);
-  }
   .rsv-close-secondary{
-    display:inline-block; margin-top:16px; padding:0;
+    display:inline-block; margin:0; padding:0;
     border:none; background:none; cursor:pointer;
     font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
-    color:rgba(242,239,230,.88); text-decoration:underline;
-    text-underline-offset:3px;
+    color:rgba(242,239,230,.80); text-decoration:underline;
+    text-underline-offset:4px;
   }
+  .rsv-close-secondary:hover{ color:rgba(242,239,230,1); }
 
   /* ---- the phone ----------------------------------------------------- */
   @media (max-width:640px){
-    .rsv-panel{ padding:22px 20px 18px; border-radius:14px; }
-    .rsv-qrow{ flex-direction:column; align-items:stretch; gap:10px; }
+    .rsv-panel{ margin-bottom:32px; }
+    .rsv-panel-property{ margin-top:28px; }
+    .rsv-panel-enquiry{ padding:24px 20px 20px; border-radius:16px; }
+    .rsv-panel-title{ font-size:21px; }
+    .rsv-panel-enquiry .rsv-panel-title{ font-size:21px; }
+    .rsv-qrow{ flex-direction:column; align-items:stretch; gap:12px; }
     .rsv-qrow-side{ max-width:100%; justify-content:flex-start; }
     .rsv-qrow-answer{ align-items:flex-start; }
-    .rsv-close{ padding:24px 20px; }
-    .rsv-close-cta, .rsv-close-pending{ display:block; width:100%; }
+    .rsv-close{
+      margin-top:32px; padding:18px 20px;
+      flex-direction:column; align-items:stretch; gap:14px;
+    }
+    .rsv-close-cta, .rsv-close-pending{
+      display:block; width:100%; text-align:center;
+    }
+    .rsv-close-secondary{ text-align:center; }
   }
 
-  /* ---- V2 · THE CARD GRID ----------------------------------------------
-     Cream plates on the page's own ground, a hairline rather than a border,
-     and the shadow barely there. Three columns where there is room, two on a
-     tablet, one on a phone. Auto-fit with a minimum keeps that responsive
-     without three separate breakpoints declaring it. */
-  .rsv-group{ margin:0 0 26px; }
-  .rsv-group-title{
-    margin:0 0 10px; font-family:'Work Sans',sans-serif;
-    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--soft); font-weight:700;
-  }
-  .rsv-group .rsv-list{
-    list-style:none; margin:0; padding:0;
-    display:grid; gap:12px;
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-  }
-  .rsv-card{
-    display:flex; flex-direction:column; justify-content:space-between;
-    gap:10px; margin:0; padding:16px 18px;
-    background:var(--brand-ivory, #F7F3E8);
-    border:1px solid rgba(31,59,46,.10);
-    border-radius:12px;
-    box-shadow:0 1px 2px rgba(36,53,31,.04);
-  }
-  .rsv-card-main{ min-width:0; }
-  .rsv-card-title{
-    display:block; font-family:'Work Sans',sans-serif;
-    font-size:14.5px; font-weight:600; line-height:1.35;
-    color:var(--brand-green);
-  }
-  .rsv-card-value{
-    margin:5px 0 0; font-size:13.5px; line-height:1.45; color:var(--ink);
-  }
-  .rsv-card-note{
-    margin:5px 0 0; font-size:13px; line-height:1.45; color:var(--soft);
-  }
-  .rsv-card-foot{
-    display:flex; align-items:center; flex-wrap:wrap; gap:10px;
-  }
-  .rsv-card-status{
-    display:inline-block; padding:3px 9px; border-radius:999px;
-    font-family:'Work Sans',sans-serif; font-size:10.5px; font-weight:700;
-    letter-spacing:.08em; text-transform:uppercase; white-space:nowrap;
-    color:var(--soft); background:rgba(31,59,46,.06);
-  }
-  .rsv-card-status[data-status="Confirmed"]{
-    color:var(--brand-green); background:rgba(31,59,46,.10);
-  }
-  .rsv-when{ font-size:11.5px; color:var(--soft); white-space:nowrap; }
+  /* ---- C8 . WHAT THIS REPLACEMENT ALSO DELETES --------------------------
+
+     The retired card grid lived inside this same block: .rsv-group,
+     .rsv-group-title, .rsv-list, the seven .rsv-card* rules, .rsv-card-status
+     and its data-status variant, .rsv-when, and the two breakpoints that
+     reshaped the grid. Twelve rules whose renderer was replaced two passes
+     ago, when YOUR PROPERTY stopped being a grid of plates. .rsv-close-note
+     goes with them -- dead since the pending state stopped needing a caption.
+
+     .rsv-btn-inline is KEPT, below, because the Change control still uses it.
+     The two .rsv-working rules are NOT: both screens render .rsv-body now.
+
+     Checked, not assumed: guard C03 proves none of the deleted class names is
+     emitted anywhere in the input, and C09 re-checks against the output. */
   .rsv-btn-inline{
     padding:0; border:none; background:none; font-size:12px;
     color:var(--soft); text-decoration:underline; cursor:pointer;
     font-family:'Work Sans',sans-serif;
   }
   .rsv-btn-inline:hover{ color:var(--ink); }
-  @media (max-width:900px){
-    .rsv-group .rsv-list{ grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); }
-  }
-  @media (max-width:560px){
-    .rsv-group .rsv-list{ grid-template-columns:1fr; }
-  }
 
-  /* ---- W4 . THE HERO SITS ON THE CARDS ---------------------------------
-
-     MEASURED BEFORE CHANGING. Four spacers stacked between the header and the
-     first group, every one of them winning on the Resolve screen:
-
-       .rsv-situation  margin-bottom  --pn-space-xl
-       .rsv-head       padding-bottom  calc(--pn-space-xl * 1.75)
-       .rsv-working    margin-top      calc(--pn-space-xl * 1.5)
-       .rsv-working    padding-top     --pn-space-lg   + a 2px rule
-
-     About 4.25 x --pn-space-xl plus a large, and a heavy line across the page
-     saying the two halves were separate things. They are not: the cards are
-     what the header is introducing.
-
-     SCOPED TO #screen-resolve. Progress uses .rsv-working and .rsv-head too
-     and keeps its own spacing; only Resolve tightens. */
-  /* X5 - READY / HANDOFF.
-
-     Progress reuses Resolve's plate vocabulary rather than inventing a
-     second one: the same hero, the same cream card, the same hairline.
-     What is new is only the two-column list, which is a plainer shape
-     than the card grid because these rows carry no controls.
-
-     W4's #screen-resolve .rsv-situation rule is gone with the element
-     it spaced. */
-  #screen-progress .rsv-head{ padding-bottom:var(--pn-space-md); }
-  #screen-progress .rsv-working{
-    margin-top:var(--pn-space-lg); padding-top:0; border-top:none;
-  }
-  /* F7d - THE SUMMARY'S STYLES WENT WITH THE SUMMARY.
-     .prg-block, .prg-rows and the three .prg-row-* rules styled a
-     section that no longer exists. Dead CSS is not harmless: the next
-     author reads it as a component that is still in service. */
   #screen-resolve .rsv-head{ padding-bottom:var(--pn-space-md); }
-  #screen-resolve .rsv-working{
-    margin-top:var(--pn-space-lg); padding-top:0; border-top:none;
+  #screen-progress .rsv-head{ padding-bottom:var(--pn-space-md); }
+
+  /* ---- C4 . THE SEGMENTED CONTROL ---------------------------------------
+
+     WHAT WAS WRONG. Three white pills, each with its own border and its own
+     radius, floating with a 6px gap. Three outlines for one question, and
+     the border contrast was doing all the work of saying "these are
+     controls" -- which is what makes a page look like a form.
+
+     WHAT IT IS NOW. ONE control with one outline. The options share it,
+     divided by hairlines, at a single height. Border contrast drops to a
+     tenth-opacity ring; the selectable-ness is carried by the shared frame
+     and the hover fill instead.
+
+     THERE IS NO PERSISTENT SELECTED SEGMENT, and that is honest rather than
+     an omission: the moment an option is chosen the model answers the
+     question, the row re-renders, and the control is replaced by the answer
+     with YOUR ANSWER above it. So the states are unselected, hover, focus
+     and pressed -- and "answered" is a different row, not a filled segment.
+     Making the control persist with one segment lit would be an interaction
+     change, not a composition one, and this pass is composition.
+     ------------------------------------------------------------------- */
+  .rsv-choices{
+    display:inline-flex; flex-wrap:wrap; gap:0;
+    border-radius:10px; overflow:hidden;
+    box-shadow:inset 0 0 0 1px rgba(31,59,46,.13);
+    background:rgba(255,255,255,.42);
+  }
+  .rsv-choice{
+    appearance:none; cursor:pointer; margin:0;
+    padding:9px 15px; border:none; border-radius:0;
+    background:none; box-shadow:inset 1px 0 0 rgba(31,59,46,.10);
+    font-family:'Work Sans',sans-serif; font-size:13px; font-weight:600;
+    line-height:1.2; letter-spacing:-.002em;
+    color:var(--brand-green); white-space:nowrap;
+    transition:background .12s ease, color .12s ease;
+  }
+  .rsv-choice:first-child{ box-shadow:none; }
+  .rsv-choice:hover{ background:rgba(143,175,138,.22); }
+  .rsv-choice:active{ background:rgba(143,175,138,.34); }
+  .rsv-choice:focus-visible{
+    outline:2px solid var(--brand-sage, #8FAF8A); outline-offset:-2px;
+  }
+  @media (max-width:640px){
+    .rsv-choices{ display:flex; width:100%; }
+    .rsv-choice{ flex:1 1 0; text-align:center; padding:10px 8px;
+                 white-space:normal; }
   }
 
-  /* ---- W2 . THE CHOICES ------------------------------------------------
-     Pills, not a form. They wrap, they are small, and none of them is
-     required. */
-  .rsv-choices{ display:flex; flex-wrap:wrap; gap:6px; }
-  .rsv-choice{
-    appearance:none; cursor:pointer;
-    padding:6px 12px; border-radius:999px;
-    border:1px solid rgba(31,59,46,.22);
-    background:rgba(255,255,255,.65);
-    font-family:'Work Sans',sans-serif; font-size:12.5px; font-weight:600;
-    color:var(--brand-green); line-height:1.2;
-  }
-  .rsv-choice:hover{ border-color:var(--brand-green); background:#fff; }
-  .rsv-choice:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   .rsv-carry{
     margin:0; font-size:12.5px; line-height:1.45; color:var(--soft);
   }
@@ -31581,7 +31594,10 @@
     /* GOVERNANCE 3 — "Resolve" is the name WE gave this stage. A homeowner
        has to translate it. The page now says what it is about, in the same
        words as the control that opened it, so the door and the room agree. */
-    head.appendChild(rsvEl('p', 'rsv-kicker', 'What\u2019s still open'));
+    /* C1 - NO KICKER. "What's still open" was a label on a page that
+       already shows what is open, above a photograph that says what the
+       page is about better than any eyebrow could. The hero now opens
+       with the picture and the name. Nothing replaces it. */
     /* RS-4 — AMENDMENT 3. One line about the moment, before any data. A stage
        that opens with a list, however well ordered, opens as an audit. */
     /* V1 — THE PRODUCT COMES WITH YOU.
