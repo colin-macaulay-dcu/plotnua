@@ -4264,6 +4264,31 @@
     .results-hero-inner.is-fieldonly .results-hero-name{ max-width:none; }
     .results-hero-inner.is-fieldonly .results-hero-editorial{ max-width:34ch; }
   }
+
+  /* ===== H5 · THE RESULT IMAGE BECOMES THE DOMINANT ELEMENT ==========
+
+     Measured against the Results measure, 910px (.match-results-panel
+     max-width, unchanged by this pass):
+
+       BEFORE   media 42%  ->  382.2 x 286.7   gap 56   text 471.8
+       AFTER    media 51%  ->  464.1 x 348.1   gap 40   text 405.9
+
+     Width and height +21.4%, area +47.3%.
+
+     WHY 1024 AND NOT 720. The row layout starts at 720px, but there the
+     container is roughly 672px and 51% would leave the text column near
+     289px -- narrower than the 40ch editorial measure, which is the
+     'cramped' the brief rules out. Tablet keeps the 42/56 proportions it
+     already has; the enlargement begins where the measure is full.
+
+     ASPECT RATIO AND CROP ARE UNTOUCHED. 4/3 and object-fit:cover are not
+     restated here, so the image is framed exactly as it was, larger. */
+  @media (min-width:1024px){
+    .results-hero-media{ width:51%; }
+    /* is-fieldonly is display:block and has no media child; excluded so
+       the rule cannot be read as applying to a case it does not. */
+    .results-hero-inner:not(.is-fieldonly){ gap:40px; }
+  }
   @media (max-width:719px){
     .results-hero-inner{ margin-bottom:52px; padding-bottom:0; }
     /* The field runs edge to edge, breaking the page margin. This is the
@@ -5517,7 +5542,11 @@
     margin:0 0 44px; padding:0 0 20px;
     background:none; border:none; border-bottom:1px solid rgba(31,59,46,.10);
     border-radius:0;
-    display:grid; grid-template-columns:auto 1fr auto; align-items:baseline;
+    /* H2 — THREE COLUMNS BECOME TWO. The third was the sunlight link's
+       alone. An `auto` column with no content is zero-wide but still
+       earns its 18px column gap, so leaving the template as it was would
+       leave trailing space with nothing in it. */
+    display:grid; grid-template-columns:auto 1fr; align-items:baseline;
     gap:6px 18px;
   }
   /* RESULTS-UX-004 — inside the hero it is one quiet line under the price,
@@ -9429,8 +9458,14 @@
            requires: a locality shown to a homeowner has to say whose it is. -->
       <p class="prop-confirm-label" id="propConfirmLabel">Your property</p>
       <p class="prop-confirm-place" id="propConfirmPlace"></p>
-      <a class="prop-confirm-link" href="#yourProperty" id="propConfirmLink">See how sunlight moves across your property
-        <span aria-hidden="true">&rarr;</span></a>
+      <!-- H1 — THE SUNLIGHT CAPTION IS REMOVED, AND NOT REPLACED.
+           It sat above the result, competing with it, and pointed at an
+           optional panel that is still reachable by its own summary.
+           Nothing takes its place: the brief is explicit that the top of
+           this screen is the product.
+
+           The els entry and the click handler that opened #yourProperty
+           go with it (H3, H4). #yourProperty itself is untouched. -->
     </section>
 
 
@@ -10688,7 +10723,6 @@
     statusText: document.getElementById('statusText'),
     localityLabel: document.getElementById('localityLabel'),
     propConfirmPlace: document.getElementById('propConfirmPlace'),
-    propConfirmLink: document.getElementById('propConfirmLink'),
     entryForm: document.getElementById('entryForm'),
     findBtn: document.getElementById('findPlotBtn'),
     continueBtn: document.getElementById('continueBtn'),
@@ -31724,19 +31758,11 @@
   }
   // RESULTS V2 SPRINT 3 — brief refinement.
   if (els.briefRerun) els.briefRerun.addEventListener('click', () => { briefRerun(); });
-  /* RESULTS-002 — "See how sunlight moves across your property" now OPENS the
-     section it points at. The href already scrolled there, but the panel is
-     collapsed by default (correctly — it is optional), so a homeowner who
-     followed the link arrived at a closed summary and had to press it again.
-     A link that names what it will show should show it.
-     Normal browsing is unaffected: nothing else opens it. */
-  {
-    const pcLink = document.getElementById('propConfirmLink');
-    if (pcLink) pcLink.addEventListener('click', function(){
-      const d = document.getElementById('yourProperty');
-      if (d) d.open = true;
-    });
-  }
+  /* H4 — RESULTS-002 is retired with the link it served. It existed to
+     open #yourProperty when the sunlight caption was followed. With no
+     caption there is no follow, and the block would be a handler bound to
+     an id that is never in the document. #yourProperty keeps its own
+     summary and opens exactly as every other disclosure here does. */
   {
     const rcEnd = document.getElementById('refinedEnd');
     if (rcEnd) rcEnd.addEventListener('click', endRefinedComparison);
