@@ -8791,6 +8791,46 @@
     .rsv-group .rsv-list{ grid-template-columns:1fr; }
   }
 
+  /* ---- W4 . THE HERO SITS ON THE CARDS ---------------------------------
+
+     MEASURED BEFORE CHANGING. Four spacers stacked between the header and the
+     first group, every one of them winning on the Resolve screen:
+
+       .rsv-situation  margin-bottom  --pn-space-xl
+       .rsv-head       padding-bottom  calc(--pn-space-xl * 1.75)
+       .rsv-working    margin-top      calc(--pn-space-xl * 1.5)
+       .rsv-working    padding-top     --pn-space-lg   + a 2px rule
+
+     About 4.25 x --pn-space-xl plus a large, and a heavy line across the page
+     saying the two halves were separate things. They are not: the cards are
+     what the header is introducing.
+
+     SCOPED TO #screen-resolve. Progress uses .rsv-working and .rsv-head too
+     and keeps its own spacing; only Resolve tightens. */
+  #screen-resolve .rsv-situation{ margin-bottom:0; }
+  #screen-resolve .rsv-head{ padding-bottom:var(--pn-space-md); }
+  #screen-resolve .rsv-working{
+    margin-top:var(--pn-space-lg); padding-top:0; border-top:none;
+  }
+
+  /* ---- W2 . THE CHOICES ------------------------------------------------
+     Pills, not a form. They wrap, they are small, and none of them is
+     required. */
+  .rsv-choices{ display:flex; flex-wrap:wrap; gap:6px; }
+  .rsv-choice{
+    appearance:none; cursor:pointer;
+    padding:6px 12px; border-radius:999px;
+    border:1px solid rgba(31,59,46,.22);
+    background:rgba(255,255,255,.65);
+    font-family:'Work Sans',sans-serif; font-size:12.5px; font-weight:600;
+    color:var(--brand-green); line-height:1.2;
+  }
+  .rsv-choice:hover{ border-color:var(--brand-green); background:#fff; }
+  .rsv-choice:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .rsv-carry{
+    margin:0; font-size:12.5px; line-height:1.45; color:var(--soft);
+  }
+
   .rsv-forward{ margin-top:26px; padding-top:20px; border-top:1px solid rgba(31,59,46,.14); }
   .rsv-forward-cta{
     display:inline-block; padding:13px 22px; border:none; border-radius:8px;
@@ -30706,6 +30746,34 @@
     planning:            'Whether you\u2019d need planning permission', /* §6 table 4 */
   };
 
+  /* W1 - WHAT THE HOMEOWNER IS OFFERED, PER QUESTION.
+
+     Copy, not logic. The routing that decides WHICH cards get choices reads
+     resolvability from the model; this table only supplies the words, and it
+     is question-specific where a generic yes/no would be vaguer than the
+     question deserves. Every key here must exist in RESOLVE_REGISTRY -- guard
+     W05 fails the build otherwise, so this cannot drift into inventing a
+     field.
+
+     THE THIRD OPTION IS ALWAYS A WAY OF SAYING "NOT YET". It is recorded like
+     any other answer, because what the homeowner told us is worth keeping
+     even when it is uncertainty, and pnResolveStatus() reads it back and
+     leaves the card open. */
+  const PN_RESOLVE_CHOICES = {
+    access:   ['Yes', 'No / not sure', 'I’ll check later'],
+    ground:   ['Fine as it is', 'May need work', 'I’m not sure yet'],
+    power:    ['Connection available', 'No obvious connection', 'I’m not sure yet'],
+    water:    ['Available', 'Not needed', 'I’m not sure yet'],
+    planning: ['I think it’s exempt', 'I think permission is needed',
+               'I’m not sure yet'],
+  };
+  /* Any other question the model says the homeowner can settle. */
+  const PN_RESOLVE_CHOICES_DEFAULT = ['Yes', 'No / not sure', 'I’ll check later'];
+
+  /* Said once, on every card only the supplier can answer. */
+  const PN_RESOLVE_SUPPLIER_LINE =
+    'We’ll carry this forward to the supplier step.';
+
   /* Compare's list stops at Five, because Compare has five rows. */
   const RESOLVE_COUNT_WORDS = ['Nothing', 'One', 'Two', 'Three', 'Four', 'Five',
                                'Six', 'Seven', 'Eight', 'Nine', 'Ten',
@@ -31230,14 +31298,32 @@
     /* T4 — ONE RULE FOR EVERY STATUS. Read from state and resolvability,
        which the model already decided; nothing is judged here, and no
        owner, consequence class or resolvability token reaches the page. */
+    /* W3 - FOUR STATES, NONE OF THEM INTERNAL.
+
+       "Not waiting for this" described a state in the model. So did
+       "Deferred" and "Owner unresolved" before it. A homeowner reading
+       a card wants to know whether it is done, whether it is theirs to
+       do, whether the supplier has to answer, or whether nobody can yet.
+
+       AN HONEST "NOT SURE" IS NOT SETTLED. The third choice is recorded
+       like any other, so the model holds what the homeowner said; the
+       status reads it back and keeps the card open. Compared against the
+       key's own last option rather than pattern-matched on prose, so the
+       words can change without the rule quietly stopping working. */
     const pnResolveStatus = function(e){
-      if (e.state === 'answered') return 'Confirmed';
-      if (e.state === 'accepted') return 'Not waiting for this';
-      if (e.resolvability === 'measure')    return 'Needs checking';
-      if (e.resolvability === 'on-request') return 'Ask supplier';
-      /* V3 — "Not yet confirmed" -> "Not confirmed". One word shorter,
-         and the badge has to hold it. Nothing about the state changes. */
-      return 'Not confirmed';
+      const set = PN_RESOLVE_CHOICES[e.key] || PN_RESOLVE_CHOICES_DEFAULT;
+      const notYet = set[set.length - 1];
+      if (e.state === 'answered'){
+        const said = e.cell && e.cell.display;
+        if (e.answeredBy === 'homeowner' && said === notYet) return 'Needs checking';
+        return 'Confirmed';
+      }
+      /* A legacy accepted position is shown as what it is for the
+         homeowner now -- still open -- rather than as the state name. */
+      if (e.state === 'accepted') return 'Needs checking';
+      if (e.resolvability === 'on-request') return 'Needs supplier confirmation';
+      if (e.resolvability === 'measure' || PN_RESOLVE_CHOICES[e.key]) return 'Needs checking';
+      return 'Not yet confirmed';
     };
 
     /* T4 — ONE SHORT SENTENCE, AND IT IS THE GOVERNED ONE. The first
@@ -31353,44 +31439,37 @@
      this state was never customer language; EMOTIONAL-CONTRACT §5 governs what
      the reader sees. "Withdraw" is §4's own word and is unchanged.
      ========================================================================= */
+  /* W2 — THE ACTION LAYER, REWRITTEN FOR CLARITY.
+
+     WHAT WENT, AND WHY. The old layer offered a free-text box labelled "Add
+     what you found", a control reading "I'll go ahead without this", and,
+     once used, a line saying "You decided not to wait for this" beside
+     "Actually, I'd rather wait". Every one of those describes PlotNua's
+     internal states -- answered, accepted, withdrawn -- rather than telling
+     the homeowner what to do. A person looking at their side passage does
+     not want a text field; they want to say yes or no.
+
+     WHAT REPLACED IT. Three plain choices per question, as pills. They write
+     through recordResolveAnswer(), which is the SAME function the text box
+     called, so the state model, the ownership contract and everything
+     Progress reads are untouched. No new registry field, no new state.
+
+     WHO GETS CHOICES. Questions the homeowner can answer from their own
+     property. Questions only the supplier can answer get no input at all --
+     a fake one would be worse than none -- just the line saying it travels
+     to the supplier step. Everything else says it is not yet confirmed and
+     stops there.
+
+     NOTHING IS REQUIRED. Every card can be left alone, and the third choice
+     is always a way of saying "not yet" that keeps the card open. */
   function resolveActionsFor(entry, productId){
     if (entry.state === 'answered' && entry.answeredBy === 'atlas') return null;
 
     const wrap = rsvEl('div', 'rsv-actions');
 
-    if (entry.state === 'accepted') {
-      /* RS-4 — AMENDMENT 4, verbatim, from EMOTIONAL-CONTRACT §5's table.
-         Active, and literally what happened. Not a chip, not a tag, not a
-         state name. The date follows the same evidence discipline every other
-         fact on the page carries. */
-      /* T5 — THE POSITION IS A STATUS NOW, NOT AN ANNOUNCEMENT.
-
-         The sentence and its date were repeated under every deferred row,
-         at paragraph weight, beside a full-width button. The row's status
-         already says "Not waiting for this", so the sentence restated it
-         once per row.
-
-         NOTHING IS LOST. The date survives as the row's quiet timestamp,
-         and the withdraw route is the same call on the same control. §4
-         property 5 still holds: only the homeowner may withdraw. */
-      if (entry.acceptance && entry.acceptance.acceptedAt) {
-        wrap.appendChild(rsvEl('span', 'rsv-when',
-          compareLongDate(String(entry.acceptance.acceptedAt).slice(0, 10))));
-      }
-      const undo = rsvEl('button', 'rsv-btn rsv-btn-quiet rsv-btn-inline', 'Wait for it after all');
-      undo.type = 'button';
-      undo.addEventListener('click', function(){
-        withdrawResolvePosition(productId, entry.key);
-        renderResolve(buildResolveFromId(productId));
-      });
-      wrap.appendChild(undo);
-      return wrap;
-    }
-
+    /* The homeowner has answered. Their own words, and a quiet way back. */
     if (entry.state === 'answered' && entry.answeredBy === 'homeowner') {
-      const line = rsvEl('p', 'rsv-position', 'You told us: ' + entry.cell.display);
-      wrap.appendChild(line);
-      const undo = rsvEl('button', 'rsv-btn rsv-btn-quiet', 'Change this');
+      const undo = rsvEl('button', 'rsv-btn-inline', 'Change');
       undo.type = 'button';
       undo.addEventListener('click', function(){
         withdrawResolvePosition(productId, entry.key);
@@ -31400,52 +31479,36 @@
       return wrap;
     }
 
-    /* Open. The homeowner may answer only what they own. */
-    if (entry.resolvability === 'measure') {
-      /* RESOLVE-UX-001 — a question floating inside a box is survey
-         software. The field now carries a quiet visible label and starts
-         empty, which is what a considered form looks like. The label is also
-         the accessible name, so there is one string rather than two that can
-         drift apart. */
-      const row = rsvEl('div', 'rsv-answer-row');
-      const field = rsvEl('div', 'rsv-field');
-      const lab = rsvEl('label', 'rsv-field-label', 'What you found');
-      const inputId = 'rsvAnswer-' + entry.key;
-      lab.setAttribute('for', inputId);
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.id = inputId;
-      input.className = 'rsv-input';
-      field.appendChild(lab);
-      field.appendChild(input);
-      /* GOVERNANCE 4 names the old label among the phrases not to use.
-         "Add what you found" is the governance's own example. */
-      const save = rsvEl('button', 'rsv-btn', 'Add what you found');
-      save.type = 'button';
-      save.addEventListener('click', function(){
-        if (!input.value.trim()) return;
-        recordResolveAnswer(productId, entry.key, input.value);
-        renderResolve(buildResolveFromId(productId));
-      });
-      row.appendChild(field);
-      row.appendChild(save);
-      wrap.appendChild(row);
+    /* Only the supplier can answer this. No input, and no pretending. */
+    if (entry.resolvability === 'on-request') {
+      wrap.appendChild(rsvEl('p', 'rsv-carry', PN_RESOLVE_SUPPLIER_LINE));
+      return wrap;
     }
 
-    /* RS-4 — AMENDMENT 4. RS-2b shipped the architecture's own internal
-       phrase for this state, taken from BEHAVIOURAL-MODEL §8 — which is the
-       architecture describing itself, not customer language. EMOTIONAL-CONTRACT §5 rules that ACCEPTED is never
-       shown as "Accepted", and §4 gives the reason: it "sounds like a verdict
-       issued to them", it is passive, and it carries resignation. The
-       homeowner is not resigning; they are deciding not to wait, which is an
-       act of strength. The control now says what they are doing. */
-    const accept = rsvEl('button', 'rsv-btn rsv-btn-quiet', 'I\u2019ll go ahead without this');
-    accept.type = 'button';
-    accept.addEventListener('click', function(){
-      recordResolveAcceptance(productId, entry.key, null);
-      renderResolve(buildResolveFromId(productId));
+    /* A question the homeowner can settle from their own property. The
+       options are question-specific where that helps and generic where it
+       does not; both shapes write the same way. */
+    const opts = PN_RESOLVE_CHOICES[entry.key]
+              || (entry.resolvability === 'measure' ? PN_RESOLVE_CHOICES_DEFAULT : null);
+    if (!opts) return null;   /* nobody can answer it here; the status says so */
+
+    const row = rsvEl('div', 'rsv-choices');
+    row.setAttribute('role', 'group');
+    opts.forEach(function(label){
+      const b = rsvEl('button', 'rsv-choice', label);
+      b.type = 'button';
+      b.addEventListener('click', function(){
+        /* Every choice is recorded, including "not sure yet": what the
+           homeowner told us is worth keeping even when it is uncertainty.
+           pnResolveStatus() reads the text back and leaves the card open
+           when the answer was the not-yet one, so an honest "I don't know"
+           never reads as settled. */
+        recordResolveAnswer(productId, entry.key, label);
+        renderResolve(buildResolveFromId(productId));
+      });
+      row.appendChild(b);
     });
-    wrap.appendChild(accept);
+    wrap.appendChild(row);
     return wrap;
   }
 
