@@ -3,7 +3,7 @@
   "version": "1.0.0-scale",
   "note": "GENERATOR INPUT, NEVER PUBLISHED. Typed Supplier Operations Evidence keyed by canonical Airtable organisation id. Every CONFIRMED value names the page whose visible content supports the claim and the date it was read. STATED_NOT_CERTIFIED means Atlas prose asserts something no read page supported. UNKNOWN asserts nothing. Organisations absent from this file were not read and carry no typed evidence — which is a finding, not a negative. Nothing here is read by marketEligibility(), getEligibleAtlasPool(), qualification, ranking or recommendation selection.",
   "checkedAt": "2026-09-07",
-  "organisationsRead": 61,
+  "organisationsRead": 62,
   "organisations": {
     "recw124UIanKV5Ath": {
       "name": "Shomera",
@@ -222,10 +222,10 @@
     "reczne3oE3EHQyp7L": {
       "name": "Granny Flats Dublin",
       "installationType": "UNKNOWN",
-      "installationStatus": "STATED_NOT_CERTIFIED",
+      "installationStatus": "UNKNOWN",
       "roiDelivery": "UNKNOWN",
       "roiInstallCoverage": "UNKNOWN",
-      "deliveryStatus": "STATED_NOT_CERTIFIED"
+      "deliveryStatus": "UNKNOWN"
     },
     "rec7dG4sHJtzstIHo": {
       "name": "Berko Pod Systems Ltd",
@@ -485,7 +485,7 @@
       "installationCheckedAt": "2026-09-07",
       "roiDelivery": "UNKNOWN",
       "roiInstallCoverage": "UNKNOWN",
-      "deliveryStatus": "STATED_NOT_CERTIFIED"
+      "deliveryStatus": "UNKNOWN"
     },
     "rec7wp2vzUC3dxcYr": {
       "name": "Iglucraft",
@@ -548,6 +548,18 @@
       "roiDelivery": "UNKNOWN",
       "roiInstallCoverage": "UNKNOWN",
       "deliveryStatus": "UNKNOWN"
+    },
+    "recZyvRt8pDg5spUU": {
+      "name": "Power Sheds",
+      "installationType": "SUPPLY_ONLY",
+      "installationStatus": "CONFIRMED",
+      "installationSourceUrl": "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm",
+      "installationCheckedAt": "2026-09-29",
+      "roiDelivery": "CONFIRMED",
+      "roiInstallCoverage": "UNKNOWN",
+      "deliveryStatus": "CONFIRMED",
+      "deliverySourceUrl": "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm",
+      "deliveryCheckedAt": "2026-09-29"
     }
   }
 }

@@ -18,6 +18,20 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 CHECKED = "2026-09-07"
 
+# RP-3 — PER-ORGANISATION READ DATE.
+# CHECKED above is the date of the 61-organisation sweep. An organisation read
+# on a different day must carry THAT day: the contract is "the date it was
+# read", and re-dating a later read to 2026-09-07 would be a false claim about
+# when the page was seen. Absent from this map means the sweep date applies.
+CHECKED_BY_ORG = {
+    "recZyvRt8pDg5spUU": "2026-09-29",   # Power Sheds, ie.powersheds.com
+}
+
+
+def checked_for(oid):
+    return CHECKED_BY_ORG.get(oid, CHECKED)
+
+
 # ---- CONFIRMED, adjudicated from the quoted page content ------------------
 INSTALL = {
     # org id: (installationType, page URL)
@@ -42,6 +56,13 @@ INSTALL = {
     "recmBdXALBPGk5wSI": ("SUPPLIER_INSTALLS", "https://nookprefab.com/"),
     "rec8j9KTIVfQAVMzg": ("SUPPLIER_INSTALLS", "https://www.oecogardenrooms.co.uk/"),
     "recEMNNtEYy59gmbt": ("SUPPLIER_INSTALLS", "https://koto.co.uk/"),
+    # ---- RP-3, certified 2026-09-29 from the Irish storefront.
+    # SUPPLY_ONLY: the page states self-assembly as the route ("DIY or don't"),
+    # includes instructions and fixings, and points at a THIRD-PARTY installer
+    # directory rather than offering installation. A supplier that refers you
+    # elsewhere is not a supplier that installs.
+    "recZyvRt8pDg5spUU": ("SUPPLY_ONLY",
+                          "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm"),
 }
 # org id: (roiDelivery, roiInstallCoverage, page URL)
 DELIVERY = {
@@ -54,6 +75,13 @@ DELIVERY = {
     "recExaEx7i1hqG6CD": ("CONFIRMED", "UNKNOWN",
                           "https://mcdgardensheds.ie/delivery-cancellations-returns/"),
     "recefOJGKHPwabRhV": ("UNKNOWN",   "NATIONWIDE", "https://www.loghouse.ie/"),
+    # ---- RP-3, certified 2026-09-29. The Irish storefront states "Free
+    # delivery throughout Ireland" in its own banner and "FREE Delivery" on the
+    # product page. roiInstallCoverage stays UNKNOWN and is NOT set to
+    # NATIONWIDE: they do not install at all, so install coverage is not a
+    # thing they have. UNKNOWN asserts nothing, which is the truthful state.
+    "recZyvRt8pDg5spUU": ("CONFIRMED", "UNKNOWN",
+                          "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm"),
 }
 
 # Organisations whose first-party pages were actually read in this pass.
@@ -80,21 +108,45 @@ READ = [
     "rec7wp2vzUC3dxcYr", "recmBdXALBPGk5wSI", "rec8j9KTIVfQAVMzg",
     "recEMNNtEYy59gmbt", "recgsaDsSVCCad0q4", "rechsPFUooApigybT",
     "reczQn59haPghHYmT",
+    # ---- RP-3
+    "recZyvRt8pDg5spUU",
 ]
 
 # Prose that asserts nothing. Anything else counts as an Atlas claim.
 NO_CLAIM = re.compile(r"^\s*(none|not stated|no |unknown|not published)", re.I)
 
 part = json.loads((ROOT / "garden-room-detail-suppliers-v1.json").read_text())["products"]
+# Names only, for organisations that have left the partition. Not evidence:
+# purely so a human reading this file can still tell who a record is.
+try:
+    PRIOR_NAMES = {k: v.get("name", "") for k, v in json.loads(
+        (HERE / "supplier-operations-evidence-v1.json").read_text()
+    ).get("organisations", {}).items()}
+except FileNotFoundError:
+    PRIOR_NAMES = {}
 out = {}
+# RP-3 — AN ORGANISATION MAY HAVE LEFT THE PARTITION.
+# Three of the 61 READ organisations are no longer in the published supplier
+# partition, so this script crashed on HEAD and the committed evidence file
+# could not be regenerated from the committed data. Absence is handled, not
+# crashed on:
+#   * a HAND-ADJUDICATED value (INSTALL / DELIVERY) does not depend on
+#     partition prose at all, so it is emitted regardless. Certification
+#     survives; it was a human act and is not the partition's to revoke.
+#   * the DERIVED branch needs prose to read. With no record there is no
+#     prose, so it derives UNKNOWN, which asserts nothing. That is strictly
+#     weaker than STATED_NOT_CERTIFIED, and correct: that flag means "Atlas
+#     prose asserts something no page supported", and the prose is gone.
+absent = [oid for oid in READ if oid not in part]
 for oid in READ:
-    loc = part[oid]["locality"]
-    rec = {"name": part[oid]["name"]}
+    loc = (part.get(oid) or {}).get("locality", {})
+    rec = {"name": (part.get(oid) or {}).get("name")
+                   or (INSTALL.get(oid) and "") or PRIOR_NAMES.get(oid, "")}
 
     t, url = INSTALL.get(oid, (None, None))
     if t:
         rec.update(installationType=t, installationStatus="CONFIRMED",
-                   installationSourceUrl=url, installationCheckedAt=CHECKED)
+                   installationSourceUrl=url, installationCheckedAt=checked_for(oid))
     else:
         prose = loc.get("installationModel", "")
         rec.update(installationType="UNKNOWN",
@@ -106,7 +158,7 @@ for oid in READ:
         roi, cov, durl = d
         rec.update(roiDelivery=roi, roiInstallCoverage=cov,
                    deliveryStatus="CONFIRMED",
-                   deliverySourceUrl=durl, deliveryCheckedAt=CHECKED)
+                   deliverySourceUrl=durl, deliveryCheckedAt=checked_for(oid))
     else:
         prose = loc.get("deliveryCoverage", "")
         rec.update(roiDelivery="UNKNOWN", roiInstallCoverage="UNKNOWN",
@@ -132,3 +184,8 @@ doc = {
 (HERE / "supplier-operations-evidence-v1.json").write_text(
     json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 print("wrote", len(out), "organisations")
+if absent:
+    print("  NOT IN THE SUPPLIER PARTITION (derived status falls back to UNKNOWN;")
+    print("  hand-adjudicated CONFIRMED values are still emitted):")
+    for _o in absent:
+        print("   ", _o, PRIOR_NAMES.get(_o, ""))

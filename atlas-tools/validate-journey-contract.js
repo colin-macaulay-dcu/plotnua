@@ -326,6 +326,75 @@ function run(src) {
     }
   });
 
+  head('P1-P8 · PROGRESS EVIDENCE CARRIER (RP-3)');
+  /* P1 — supplier operations evidence stays in the dedicated partition. */
+  if (!fs.existsSync(path.join(REPO, 'garden-room-detail-suppliers-v1.json'))) {
+    bad('P1', 'the supplier detail partition is missing');
+  } else {
+    ok('P1', 'the supplier partition exists and is the carrier');
+  }
+  /* P5 — no `.irish` structure added to the core universe to serve Progress. */
+  try {
+    const uni = JSON.parse(fs.readFileSync(
+      path.join(REPO, 'garden-room-recommendation-universe-v1.json'), 'utf8'));
+    if (uni.suppliers) bad('P5', 'the CORE universe now carries a `suppliers` object — this can move Match eligibility');
+    else ok('P5', 'the core universe carries no `suppliers` object');
+  } catch (e) { bad('P5', 'core universe unreadable: ' + e.message); }
+
+  /* P2 — Progress joins by canonical organisation id, not display name. */
+  const lane1 = code.indexOf("key:'whoDoesTheWork'");
+  const lane1end = code.indexOf("lane:'market'", lane1);
+  const lane1src = lane1 >= 0 ? code.slice(lane1, lane1end) : '';
+  if (lane1src.indexOf('pnSupplierLocality(') >= 0) ok('P2', 'lane 1 joins through pnSupplierLocality (canonical id)');
+  else bad('P2', 'lane 1 no longer joins through the canonical-id accessor');
+  if (lane1src.indexOf('compareSupplierIrish') >= 0 || lane1src.indexOf('resolveSupplierRecord') >= 0) {
+    bad('P2', 'lane 1 still reads the core-universe supplier record');
+  } else {
+    ok('P2', 'lane 1 no longer reads the core universe');
+  }
+
+  /* P3 — a missing partition fails soft to UNKNOWN, never false. */
+  if ((lane1src.match(/pnOpenCell\(\{ checked: !!ops \}\)/g) || []).length === 2) {
+    ok('P3', 'both lane-1 entries fail soft to an open cell');
+  } else {
+    bad('P3', 'a lane-1 entry does not fail soft to an open cell');
+  }
+
+  /* P4 — the carrier cannot reach Match. */
+  if (code.indexOf('function marketEligibility(product){') >= 0
+      && lane1src.indexOf('marketEligibility') < 0) {
+    ok('P4', 'lane 1 does not touch marketEligibility');
+  } else {
+    bad('P4', 'lane 1 reaches into Match eligibility');
+  }
+
+  /* P6/P7 — certified evidence for both pilot suppliers survives in the input. */
+  try {
+    const opsDoc = JSON.parse(fs.readFileSync(
+      path.join(REPO, '.github/scripts/supplier-operations-evidence-v1.json'), 'utf8'));
+    const orgs = opsDoc.organisations || {};
+    const ps = orgs['recZyvRt8pDg5spUU'], yb = orgs['recyfWvDVODL06P8l'];
+    if (ps && ps.installationStatus === 'CONFIRMED' && ps.deliveryStatus === 'CONFIRMED'
+        && ps.installationCheckedAt === '2026-09-29') {
+      ok('P6', 'Power Sheds certified operations evidence present and dated to its own read');
+    } else {
+      bad('P6', 'Power Sheds certified operations evidence is missing or mis-dated');
+    }
+    if (yb && yb.installationStatus === 'CONFIRMED'
+        && yb.installationSourceUrl === 'https://www.yardbox.co.uk/') {
+      ok('P7', 'Yardbox certified evidence unchanged');
+    } else {
+      bad('P7', 'Yardbox certified evidence changed or was lost');
+    }
+  } catch (e) { bad('P6', 'operations evidence unreadable: ' + e.message); }
+
+  /* P8 — Progress stays dormant. */
+  if (countOf(code, 'els.myPlotProgressBtn.hidden = true;') === 1) {
+    ok('P8', 'Progress remains dormant (button force-hidden)');
+  } else {
+    bad('P8', 'Progress dormancy changed');
+  }
+
   head('M01 · MARKET SOURCE OF TRUTH');
   let uni = null;
   try { uni = JSON.parse(fs.readFileSync(UNIVERSE, 'utf8')); } catch (e) { /* optional */ }

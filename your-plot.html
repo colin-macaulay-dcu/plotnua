@@ -29267,6 +29267,16 @@
     return product ? compareSupplierIrish(product.organisation) : null;
   }
 
+  /* RP-3 — the closed installation vocabulary, said to a homeowner. The ONLY
+     thing this repair adds: pnSupplierOrgId() and pnSupplierLocality() already
+     existed and already join by canonical organisation record id. Rendering
+     only; an unrecognised token falls through to itself rather than being
+     guessed at. */
+  const PN_INSTALL_SAYS = {
+    SUPPLIER_INSTALLS: 'The supplier installs it',
+    SUPPLY_ONLY: 'Supplied only — installation is yours to arrange',
+  };
+
   /* =========================================================================
      ACCEPTANCE.
 
@@ -30868,23 +30878,34 @@
        same justification origin was kept on: on Compare it SEPARATES TWO
        PRODUCTS; here it describes what will happen in this garden and who
        will be standing in it. Comparison versus process. */
+    /* RP-3 — both lane-1 entries now read the CERTIFIED operations keys from
+       the supplier partition, joined by canonical organisation id. Only a
+       CONFIRMED status with a source url answers; STATED_NOT_CERTIFIED and
+       UNKNOWN both stay open, because "Atlas prose said so" is not evidence
+       and "nobody looked" is not a negative. */
     { key:'whoDoesTheWork', lane:'maker',
       label:'Who does the work',
       resolve:function(p){
-        const irish = resolveSupplierRecord(p);
-        if (!irish || !irish.installationModel) return pnOpenCell({ checked: !!irish });
-        return pnConfirmedCell(irish.installationModel, irish.installationModel,
-                               irish.sourceUrl, irish.checkedAt, null);
+        const ops = pnSupplierLocality(p);
+        if (!ops || ops.installationStatus !== 'CONFIRMED'
+            || !ops.installationType || !ops.installationSourceUrl) {
+          return pnOpenCell({ checked: !!ops });
+        }
+        return pnConfirmedCell(ops.installationType,
+                               PN_INSTALL_SAYS[ops.installationType] || ops.installationType,
+                               ops.installationSourceUrl, ops.installationCheckedAt, null);
       } },
 
     { key:'deliversHere', lane:'maker',
       label:'Whether they deliver where you are',
       resolve:function(p){
-        const irish = resolveSupplierRecord(p);
-        if (!irish || irish.deliveryConfirmed !== true) return pnOpenCell({ checked: !!irish });
-        return pnConfirmedCell(irish.statedScope || true,
-                               irish.statedScope || 'Stated',
-                               irish.sourceUrl, irish.checkedAt, null);
+        const ops = pnSupplierLocality(p);
+        if (!ops || ops.deliveryStatus !== 'CONFIRMED'
+            || ops.roiDelivery !== 'CONFIRMED' || !ops.deliverySourceUrl) {
+          return pnOpenCell({ checked: !!ops });
+        }
+        return pnConfirmedCell(true, 'Delivers to ' + PLOTNUA_ACTIVE_MARKET,
+                               ops.deliverySourceUrl, ops.deliveryCheckedAt, null);
       } },
 
     /* ---- LANE 2. The questions a homeowner actually asks once they are
@@ -31048,6 +31069,15 @@
 
   function openProgressScreen(returnScreen, product){
     if (!els.progressScreen || !product) return false;
+    /* RP-3 — warm the supplier partition, then re-render. The first render is
+       synchronous and may show lane 1 as open; when the (already memoised)
+       partition resolves, the same renderer runs again with the evidence in
+       hand. Never rejects, so a missing partition simply leaves lane 1 open. */
+    pnDetailPartitionReady('suppliers').then(function(){
+      if (els.progressScreen && !els.progressScreen.classList.contains('is-hidden')) {
+        renderProgress(product);
+      }
+    });
     if (!renderProgress(product)) return false;
     progressReturn.remember(returnScreen || currentScreenEl || els.myPlotScreen);
     showScreen(els.progressScreen);
