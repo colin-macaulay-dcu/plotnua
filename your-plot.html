@@ -8580,6 +8580,27 @@
     text-decoration:underline;
   }
 
+  /* SIMPLIFY — Option: the save status steps back so the one forward
+     action can be the only thing that looks like one. */
+  #screen-product-detail .pd-actions{ margin-top:12px; }
+  #screen-product-detail .match-card-save-btn{
+    font-size:12.5px; color:var(--soft); font-weight:600; padding:2px 0;
+  }
+  #screen-product-detail .match-card-save-btn .pn-mark-heart{
+    width:18px; height:18px;
+  }
+  #screen-product-detail .pd-next-plot{ margin-left:18px; }
+
+  /* SIMPLIFY — Resolve's forward action, matching Progress's door so the two
+     stages read as one sequence rather than two designs. */
+  .rsv-forward{ margin-top:26px; padding-top:20px; border-top:1px solid rgba(31,59,46,.14); }
+  .rsv-forward-cta{
+    display:inline-block; padding:13px 22px; border:none; border-radius:8px;
+    background:var(--brand-green); color:#fff; font-size:15px; font-weight:700;
+    cursor:pointer;
+  }
+  .rsv-forward-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
   /* J8 — the review date, subordinate. */
   .aa-mast-meta{ display:block; font-size:11px; color:var(--soft); font-weight:400; }
 
@@ -23897,10 +23918,13 @@
       } else if (fit === 1) {
         /* P0 J7 — homeowner language. Names the maker and the consequence,
            not the test. */
-        money = 'your budget could not be checked because '
-              + ((product.organisation) || 'this maker')
-              + ' does not publish a comparable price \u2014 so price did not '
-              + 'rule this option out';
+        /* SIMPLIFY — the gap is ATLAS'S, and the sentence says so. The
+           previous wording made it the maker's failure to publish; Atlas
+           not yet holding a comparable record is the honest subject. */
+        money = 'your budget could not be compared because Atlas does not yet '
+              + 'have a comparable published price for this '
+              + ((product.organisation) || 'maker') + ' model. '
+              + 'Price therefore did not rule it out';
       }
     }
 
@@ -24439,7 +24463,8 @@
       box.className = 'aa-evd';
       const sum = document.createElement('summary');
       sum.className = 'aa-evd-sum';
-      sum.textContent = 'What Atlas knows about ' + (org || 'the maker') + ' \u2192';
+      /* SIMPLIFY — a verb, so it reads as a control rather than a label. */
+      sum.textContent = 'Check what Atlas knows about ' + (org || 'the maker') + ' \u2192';
       box.appendChild(sum);
       host.insertBefore(box, evd[0]);
       for (let i = 0; i < evd.length; i++) box.appendChild(evd[i]);
@@ -28062,7 +28087,11 @@
     const syncSaveBtn = () => {
       const isSavedNow = savedProductIds.has(product.id);
       saveBtn.setAttribute('aria-pressed', isSavedNow ? 'true' : 'false');
-      saveBtn.innerHTML = plotIcon(isSavedNow) + (isSavedNow ? ' Saved ✓' : ' Save to My Plot');
+      /* SIMPLIFY — a STATUS, not a second call to action. The control stays
+         interactive so a homeowner can still unsave; it simply stops
+         competing with the one forward action above it. */
+      saveBtn.innerHTML = plotIcon(isSavedNow)
+        + (isSavedNow ? ' \u2713 Saved to My Plot' : ' Save to My Plot');
       saveBtn.classList.toggle('is-saved', isSavedNow);
     };
     syncSaveBtn();
@@ -28146,34 +28175,41 @@
     nextWrap.innerHTML = '';
     const nh = document.createElement('h3');
     nh.className = 'pd-next-head';
-    nh.textContent = alreadySavedHead
-      ? 'Continue to My Plot' : 'Add this to My Plot';
+    nh.textContent = 'What still needs resolving';
     nextWrap.appendChild(nh);
 
     const alreadySaved = savedProductIds.has(product.id);
     const alreadySavedHead = alreadySaved;
     const np = document.createElement('p');
     np.className = 'pd-next-note';
-    np.textContent = alreadySaved
-      ? 'This one is in My Plot. Open it there to keep working on it.'
-      : 'Keep this one in My Plot, where you can come back to it and put it '
-        + 'beside anything else you are weighing up.';
+    np.textContent = 'We will keep this in My Plot so you can come back to '
+      + 'it, then show you what is settled and what still needs checking.';
     nextWrap.appendChild(np);
 
     const cont = document.createElement('button');
     cont.type = 'button';
     cont.className = 'pd-next-cta';
-    /* P0 J2 — the label names what the tap does, by state. */
-    cont.textContent = alreadySaved
-      ? 'Continue to My Plot \u2192' : 'Add to My Plot \u2192';
+    /* SIMPLIFY — ONE FORWARD ACTION, AND IT IS NOT A DETOUR.
+       The label used to name the filing cabinet. It now names the
+       question the homeowner actually has. Saving still happens; it
+       just stops being the thing they are asked to care about. */
+    cont.textContent = 'Check what needs resolving \u2192';
     cont.addEventListener('click', function(){
+      /* AUTO-SAVE, GUARDED AGAINST DUPLICATES BY THE SAME has() TEST THE
+         SAVE CONTROL USES. savedProductIds is a Set keyed on the canonical
+         Atlas product id, so a second press cannot create a second entry
+         even if this guard were removed -- the guard is here so that
+         provenance and the funnel event are recorded once, not twice. */
       if (!savedProductIds.has(product.id)) {
         savedProductIds.add(product.id);
         recordSaveProvenance(product);
         try { if (window.PlotNuaGardenRoomFunnel) window.PlotNuaGardenRoomFunnel.saved(); } catch (e) {}
         updateMyPlotAccess();
       }
-      openMyPlot();
+      /* STRAIGHT TO RESOLVE. My Plot is no longer on the path; it is a
+         place to come back to. Returning from Resolve lands on Option,
+         which is where the homeowner actually was. */
+      openResolveScreen(els.productDetailScreen, product);
     });
     nextWrap.appendChild(cont);
 
@@ -28186,6 +28222,18 @@
     backLink.textContent = 'Back to results';
     backLink.addEventListener('click', function(){ productDetailReturn.close(); });
     nextWrap.appendChild(backLink);
+
+    /* SIMPLIFY — the workspace, still one tap away, deliberately quiet.
+       It is no longer the forward action, so it no longer looks like one. */
+    const plotLink = document.createElement('button');
+    plotLink.type = 'button';
+    plotLink.className = 'pd-next-back pd-next-plot';
+    plotLink.textContent = 'Open My Plot \u2192';
+    plotLink.addEventListener('click', function(){
+      myPlotReturn.remember(els.productDetailScreen);
+      openMyPlot();
+    });
+    nextWrap.appendChild(plotLink);
 
     /* P0 J2 — THE JOURNEY CUE. Not decoration: it answers "what happens
        if I tap this", which is the question the dead-end reading came
@@ -30700,6 +30748,24 @@
     /* RS-2b — one sentence, once, at the foot, and only if it is true. */
     const note = resolveStorageNote();
     if (note) view.appendChild(note);
+
+    /* SIMPLIFY — RESOLVE'S FORWARD ACTION.
+       Resolve shows what is settled and what is not. Its next step is
+       Progress, and until now there was no control that said so, which is
+       why the stage read as a cul-de-sac. openProgressScreen() is called,
+       not reimplemented, and it returns to Resolve. Nothing here answers,
+       accepts or defers anything on the homeowner's behalf. */
+    const rsvGo = document.createElement('div');
+    rsvGo.className = 'rsv-forward';
+    const rsvBtn = document.createElement('button');
+    rsvBtn.type = 'button';
+    rsvBtn.className = 'rsv-forward-cta';
+    rsvBtn.textContent = 'Continue \u2192';
+    rsvBtn.addEventListener('click', function(){
+      openProgressScreen(els.resolveScreen, product);
+    });
+    rsvGo.appendChild(rsvBtn);
+    view.appendChild(rsvGo);
 
     return model;
   }

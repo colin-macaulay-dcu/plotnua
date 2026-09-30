@@ -123,10 +123,21 @@ const REPAIRED = [
      words change but the architecture does not was testing the wrong thing.
      It now tests what V2 actually repaired: Option Detail's continuation
      lands in My Plot. */
-  { guard: 'J07', label: 'V2 repair present: the Option continuation opens My Plot',
-    present: "cont.addEventListener('click', function(){", count: 1 },
-  { guard: 'J07', label: 'V2 repair present: both saved-state labels exist',
-    present: "? 'Continue to My Plot \\u2192' : 'Add to My Plot \\u2192'", count: 1 },
+  /* SIMPLIFY — THE INVARIANT, NOT THE WORDING.
+     V2's repair was never "the CTA says X" or even "it goes to My Plot". It
+     was: OPTION DETAIL'S CONTINUATION STAYS INSIDE PLOTNUA instead of leaving
+     for the supplier. My Plot was simply where it went first. The journey has
+     since been simplified so it goes straight to Resolve, and My Plot became
+     an optional workspace -- so the check now asserts the thing that must
+     never change: Option continues into a PlotNua decision stage.
+
+     I have now rewritten this check twice for wording changes. That is the
+     tell that fingerprinting copy was the wrong test; this one is behavioural
+     and should survive any future relabelling. */
+  { guard: 'J07', label: 'V2 repair present: the Option continuation stays inside PlotNua',
+    present: 'openResolveScreen(els.productDetailScreen, product);', count: 1 },
+  { guard: 'J07', label: 'V2 repair present: the Option CTA auto-saves without duplicating',
+    present: 'if (!savedProductIds.has(product.id)) {', count: 1 },
   { guard: 'J07', label: 'V3 stays retired: Option Detail does not route on pnNextAction',
     absent: 'const nextAction = pnNextAction(product);' },
   { guard: 'P01', label: 'V4 repair present: the PlotNua-gap wording',
