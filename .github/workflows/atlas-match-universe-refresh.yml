@@ -57,6 +57,18 @@ on:
   #    # two jobs off the same Airtable rate-limit window.
   #    - cron: '15 6 * * *'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: >-
+          publish = generate, validate and publish if genuinely different
+          (today's behaviour). verify-only = generate, validate and upload the
+          candidate artefacts, then STOP without touching production.
+        type: choice
+        required: false
+        default: publish
+        options:
+          - publish
+          - verify-only
 
 # Least privilege. The job pushes one file; it needs nothing else.
 permissions:
@@ -191,6 +203,7 @@ jobs:
       # 'generated' moves every run and is excluded from that test on both.
       - name: Publish the candidates, only if they are genuinely different
         if: >-
+          inputs.mode != 'verify-only' &&
           steps.validate.outputs.valid == 'true' &&
           steps.validate_detail.outputs.detail_valid == 'true' &&
           steps.validate_parts.outputs.parts_valid == 'true' &&
@@ -286,6 +299,9 @@ jobs:
             ${{ steps.outdir.outputs.path }}/garden-room-detail-evidence-v1.json
             ${{ steps.outdir.outputs.path }}/validation-summary.txt
             ${{ steps.outdir.outputs.path }}/detail-validation-summary.txt
+            ${{ steps.outdir.outputs.path }}/garden-room-detail-index-v1.json
+            ${{ steps.outdir.outputs.path }}/garden-room-detail-suppliers-v1.json
+            ${{ steps.outdir.outputs.path }}/partition-validation-summary.txt
           if-no-files-found: warn
           retention-days: 7
 
