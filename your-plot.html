@@ -8635,60 +8635,79 @@
   }
   .rsv-forward-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 
-  /* ---- Y2 · NEXT STEPS -------------------------------------------------
-     The forward journey, stated once under the hero. Quiet numbers, one
-     filled control, one outlined one. It must read as a path, not a panel. */
+  /* ---- Z5 · THE FORWARD ROW -------------------------------------------
+     One control, below the Atlas assessment, at the point of decision. The
+     numbered Resolve/Progress/Supplier list it replaces is gone: see Z2. */
+  .rn-forward{ margin:0; }
   .rn-next{
-    margin:26px 0 0; padding:20px 0 0;
-    border-top:1px solid rgba(31,59,46,.14);
+    margin:var(--pn-space-lg, 28px) 0 var(--pn-space-xl, 40px);
+    padding:22px 0 0; border-top:1px solid rgba(31,59,46,.14);
   }
-  .rn-next-title{
-    margin:0 0 12px; font-size:12px; letter-spacing:.09em;
-    text-transform:uppercase; color:var(--soft); font-weight:700;
-  }
-  .rn-next-list{
-    margin:0 0 18px; padding:0 0 0 1.35em; list-style:decimal;
-  }
-  .rn-next-list li{
-    margin:0 0 7px; font-size:13.5px; line-height:1.5; color:var(--ink);
-  }
-  .rn-next-list li::marker{ color:var(--soft); font-weight:700; }
-  .rn-next-step{ font-weight:700; }
-  .rn-next-step::after{ content:" \2014 "; font-weight:400; color:var(--soft); }
-  .rn-next-desc{ color:var(--ink); opacity:.82; }
   .rn-next-cta{
-    display:inline-block; padding:14px 24px; border:none; border-radius:8px;
-    background:var(--brand-green); color:#fff; font-size:15px; font-weight:700;
+    display:inline-block; padding:16px 30px; border:none; border-radius:8px;
+    background:var(--brand-green); color:#fff; font-size:16px; font-weight:700;
     cursor:pointer; font-family:'Work Sans',sans-serif;
   }
   .rn-next-cta:hover{ filter:brightness(1.06); }
   .rn-next-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .rn-next-evidence{
-    display:inline-block; margin-left:12px; padding:13px 20px;
-    border:1px solid var(--pn-hair, rgba(31,59,46,.28)); border-radius:8px;
-    background:none; color:var(--brand-green); font-size:14px; font-weight:600;
-    cursor:pointer; font-family:'Work Sans',sans-serif;
-  }
-  .rn-next-evidence:hover{ border-color:var(--brand-green); background:rgba(31,59,46,.04); }
-  .rn-next-evidence:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .rn-next-evidence[hidden]{ display:none; }
   @media (max-width:560px){
-    .rn-next-cta, .rn-next-evidence{ display:block; width:100%; margin-left:0; text-align:center; }
-    .rn-next-evidence{ margin-top:10px; }
+    .rn-next-cta{ display:block; width:100%; text-align:center; }
   }
 
-  /* ---- Y3 · the evidence disclosure, as an obvious secondary control ---- */
+  /* ---- Z6 · THE EVIDENCE DISCLOSURE, AS AN OBVIOUS SECONDARY CONTROL ----
+
+     THE SPECIFICITY DEFECT, AND WHY THESE SELECTORS LOOK HEAVY.
+
+     The previous pass wrote these rules as `.aa-evd-sum.is-button`, which is
+     specificity 0-2-0. The Results screen already carried
+
+         #screen-match-results .aa-evd > summary { ... }
+
+     at 1-1-2. The id wins every declaration they share, so on the ONE screen
+     this control appears the new styling did nothing at all and the founder
+     saw the original 11.5px uppercase label. The rules below carry the same
+     id scope so they are compared on source order, where they win by sitting
+     later. !important would also have worked and would have hidden the
+     reason from whoever reads this next.
+
+     It stays a <summary> inside <details>: already focusable, already
+     announcing expanded/collapsed. A <button> would lose both. */
+  #screen-match-results .aa-evd > summary.aa-evd-sum.is-button,
   .aa-evd-sum.is-button{
-    display:inline-block; padding:12px 18px; margin:4px 0 10px;
-    border:1px solid var(--pn-hair, rgba(31,59,46,.28)); border-radius:8px;
-    background:none; color:var(--brand-green);
-    font-size:14px; font-weight:600; cursor:pointer;
-    list-style:none; text-decoration:none;
+    display:inline-block; padding:14px 22px; margin:6px 0 4px;
+    /* LITERAL FIRST, TOKEN SECOND. The shorthand carries a resolvable
+       colour so the border exists even where custom properties are not
+       resolved -- and so it can be MEASURED rather than asserted; the
+       following line re-applies the token for theming. The width is a whole
+       2px: 1.5px is a fractional device pixel that some engines round to 1
+       and some to 2, which is not a decision worth leaving to chance on the
+       one control this pass exists to make obvious. */
+    border:2px solid #1F3B2E; border-color:var(--brand-green);
+    border-radius:8px;
+    background:rgba(31,59,46,.045); color:var(--brand-green);
+    font-family:'Work Sans',sans-serif;
+    font-size:14.5px; font-weight:700;
+    letter-spacing:0; text-transform:none;
+    cursor:pointer; list-style:none; text-decoration:none;
   }
+  #screen-match-results .aa-evd > summary.aa-evd-sum.is-button::-webkit-details-marker,
   .aa-evd-sum.is-button::-webkit-details-marker{ display:none; }
-  .aa-evd-sum.is-button:hover{ border-color:var(--brand-green); background:rgba(31,59,46,.04); }
-  .aa-evd-sum.is-button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  details[open] > .aa-evd-sum.is-button{ background:rgba(31,59,46,.05); }
+  #screen-match-results .aa-evd > summary.aa-evd-sum.is-button:hover,
+  .aa-evd-sum.is-button:hover{
+    background:var(--brand-green); color:#fff; border-color:var(--brand-green);
+  }
+  #screen-match-results .aa-evd > summary.aa-evd-sum.is-button:focus-visible,
+  .aa-evd-sum.is-button:focus-visible{
+    outline:3px solid var(--accent); outline-offset:3px;
+  }
+  #screen-match-results .aa-evd[open] > summary.aa-evd-sum.is-button,
+  details[open] > .aa-evd-sum.is-button{
+    background:var(--brand-green); color:#fff; margin-bottom:var(--pn-space-md, 16px);
+  }
+  @media (max-width:560px){
+    #screen-match-results .aa-evd > summary.aa-evd-sum.is-button,
+    .aa-evd-sum.is-button{ display:block; text-align:center; }
+  }
 
   /* J8 — the review date, subordinate. */
   .aa-mast-meta{ display:block; font-size:11px; color:var(--soft); font-weight:400; }
@@ -9596,6 +9615,16 @@
           <ul class="hm-ev" id="hmrLeadOpen"></ul>
         </details>
       </div>
+
+    <!-- Z1 — THE FORWARD SLOT. The one place on Results that carries the
+         step forward, positioned after the Atlas assessment and before
+         Ask Atlas, so the homeowner reads the result, then the evidence
+         control that closes it, then the decision.
+
+         It is empty in source and filled per render, so it cannot carry a
+         stale product. It is NOT hidden by default: the forward journey
+         must not be strandable by a section that failed to paint. -->
+    <div class="rn-forward" id="resultForward"></div>
 
     <section class="ask chapter" id="askAtlas" hidden aria-labelledby="askTitle">
       <!-- RESULTS-UX-005 — the approved wording. "Ask Atlas" had been said
@@ -20514,30 +20543,20 @@
        alternative card is the other one; putting this there would repeat
        the journey once per card, which is the opposite of making it
        legible. Three lines, one primary, one secondary. */
+    /* Z2 — THE NUMBERED SEQUENCE IS GONE.
+
+       'Resolve / Progress / Supplier' named PlotNua's own screens. It
+       asked the homeowner to learn an internal vocabulary before they had
+       finished reading the result, and it sat ABOVE the assessment, so the
+       thing the page exists to say was pushed below a table of contents
+       for the thing the page exists to say.
+
+       THE JOURNEY ITSELF IS UNCHANGED. Result -> Resolve -> Progress ->
+       Supplier still runs exactly as before; it is simply no longer
+       announced in advance. One control, at the point of decision. */
     const ns = document.createElement('section');
     ns.className = 'rn-next';
-    ns.setAttribute('aria-label', 'Next steps');
-    const nsH = document.createElement('h3');
-    nsH.className = 'rn-next-title';
-    nsH.textContent = 'Next steps';
-    ns.appendChild(nsH);
-
-    const nsList = document.createElement('ol');
-    nsList.className = 'rn-next-list';
-    [['Resolve',  'Check the few things that still matter.'],
-     ['Progress', 'See what is confirmed and what is still open.'],
-     ['Supplier', 'Continue when you are ready.']].forEach(function(row){
-      const li = document.createElement('li');
-      const nm = document.createElement('span');
-      nm.className = 'rn-next-step';
-      nm.textContent = row[0];
-      const ds = document.createElement('span');
-      ds.className = 'rn-next-desc';
-      ds.textContent = row[1];
-      li.appendChild(nm); li.appendChild(ds);
-      nsList.appendChild(li);
-    });
-    ns.appendChild(nsList);
+    ns.setAttribute('aria-label', 'Continue');
 
     /* THE PRIMARY. Auto-saves behind the same has() test the Save control
        uses -- savedProductIds is a Set on the canonical Atlas id, so a
@@ -20546,7 +20565,8 @@
     const nsGo = document.createElement('button');
     nsGo.type = 'button';
     nsGo.className = 'rn-next-cta';
-    nsGo.textContent = 'Check what needs resolving \u2192';
+    /* Z3 — the label names the decision, not the mechanism. */
+    nsGo.textContent = 'Continue with this option \u2192';
     nsGo.addEventListener('click', function(){
       if (!savedProductIds.has(product.id)) {
         savedProductIds.add(product.id);
@@ -20558,36 +20578,44 @@
     });
     ns.appendChild(nsGo);
 
-    /* THE SECONDARY. Evidence, beside the forward step rather than buried
-       in the assessment. It does NOT render a second copy of anything: it
-       opens and focuses the ONE disclosure aaRenderAssessment() built. If
-       that disclosure does not exist -- no evidence for this maker -- the
-       button is not rendered at all, rather than being a control that does
-       nothing. */
-    const nsEv = document.createElement('button');
-    nsEv.type = 'button';
-    nsEv.className = 'rn-next-evidence';
-    nsEv.textContent = 'Check what Atlas knows about '
-      + ((product && product.organisation) || 'the maker') + ' \u2192';
-    nsEv.hidden = true;
-    nsEv.addEventListener('click', function(){
-      const box = document.querySelector('#screen-match-results details.aa-evd');
-      if (!box) return;
-      box.open = true;
-      const sum = box.querySelector('summary');
-      try { box.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
-      if (sum) sum.focus({ preventScroll: true });
-    });
-    ns.appendChild(nsEv);
-    /* The assessment paints after this hero, so the button reveals itself
-       once its target exists. One frame, no polling loop. */
+    /* Z4 — THE REMOTE EVIDENCE BUTTON IS DELETED, NOT MOVED.
+
+       It existed because the CTA was in the hero, hundreds of pixels above
+       the evidence it referred to, so it opened that disclosure by proxy.
+       The CTA now sits directly beneath the assessment, which means the
+       real disclosure is already the last thing before it. Keeping the
+       proxy would put two controls with identical wording on one screen,
+       one of which only scrolls to the other.
+
+       The evidence action the founder asked to make obvious is the
+       disclosure itself, restyled in Z6. Nothing is lost: it is the SAME
+       control, in the place it belongs, and it still does not render at
+       all when the maker has no evidence to show. */
+
+    /* Z5 — WHERE THE CTA GOES.
+
+       Not the hero. The brief is explicit that the top of the page stays
+       the product -- image, name, price state, the short Atlas reason and
+       the saved status -- with no process content in it.
+
+       FAIL-OPEN PLACEMENT. #resultForward sits inside #aboutSupplier,
+       which starts hidden and is unhidden when the assessment renders. If
+       the assessment does not render, the slot would go with it and the
+       forward journey would be unreachable from Results. So the placement
+       is re-checked after paint and the row is moved to the panel if its
+       host is hidden. Two frames, matching the convention already used on
+       this screen -- no polling loop. */
+    const fwdHost = document.getElementById('resultForward');
+    if (fwdHost) { fwdHost.innerHTML = ''; fwdHost.appendChild(ns); }
+    else { body.appendChild(ns); }
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        nsEv.hidden = !document.querySelector('#screen-match-results details.aa-evd');
+        const sup = document.getElementById('aboutSupplier');
+        const panel = document.getElementById('matchResultsPanel');
+        if (sup && sup.hidden && panel && panel.contains(ns) === false) return;
+        if (sup && sup.hidden && panel) panel.appendChild(ns);
       });
     });
-
-    body.appendChild(ns);
 
     /* One filled control, two quiet ones. Four buttons in a hero is the
        overload the brief warns about; Compare and Ask Atlas are navigation,
