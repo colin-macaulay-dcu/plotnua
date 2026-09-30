@@ -7841,7 +7841,6 @@
   #screen-resolve .rsv-working .rsv-consequence{
     font-size:var(--pn-w-meta); font-weight:500; color:var(--pn-meta);
   }
-  #screen-resolve .rsv-item[data-shown-above]{ opacity:.72; }
 
   /* ---- the class-1 answer, given the room it earns ---- */
   #screen-resolve .rsv-entity{ display:block; }
@@ -8709,6 +8708,56 @@
 
   /* SIMPLIFY — Resolve's forward action, matching Progress's door so the two
      stages read as one sequence rather than two designs. */
+  /* ---- T3/T4/T5 · COMPACT RESOLVE ROWS ---------------------------------
+     Separators, not blocks. A row is one line of type plus one line of
+     support, with its status on the right, and the rows sit against each
+     other so the eye runs down a list instead of stepping over cards. */
+  .rsv-group{ margin:0 0 22px; }
+  .rsv-group-title{
+    margin:0 0 4px; font-family:'Work Sans',sans-serif;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--soft); font-weight:700;
+  }
+  .rsv-group .rsv-list{ list-style:none; margin:0; padding:0; }
+  .rsv-row{
+    display:flex; align-items:baseline; gap:18px;
+    padding:11px 0; margin:0;
+    border-bottom:1px solid rgba(31,59,46,.10);
+  }
+  .rsv-row:last-child{ border-bottom:none; }
+  .rsv-row-main{ flex:1 1 auto; min-width:0; }
+  .rsv-row-title{
+    display:block; font-size:15px; font-weight:600; color:var(--ink);
+    line-height:1.35;
+  }
+  .rsv-row-value{
+    margin:2px 0 0; font-size:13.5px; line-height:1.45; color:var(--ink);
+  }
+  .rsv-row-note{
+    margin:2px 0 0; font-size:13px; line-height:1.45; color:var(--soft);
+  }
+  .rsv-row-side{
+    flex:0 0 auto; display:flex; flex-direction:column;
+    align-items:flex-end; gap:4px; text-align:right;
+  }
+  .rsv-row-status{
+    font-family:'Work Sans',sans-serif; font-size:11.5px; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; white-space:nowrap;
+    color:var(--soft);
+  }
+  .rsv-row-status[data-status="Confirmed"]{ color:var(--brand-green); }
+  .rsv-when{ font-size:11.5px; color:var(--soft); white-space:nowrap; }
+  .rsv-btn-inline{
+    padding:0; border:none; background:none; font-size:12px;
+    color:var(--soft); text-decoration:underline; cursor:pointer;
+    font-family:'Work Sans',sans-serif;
+  }
+  .rsv-btn-inline:hover{ color:var(--ink); }
+  @media (max-width:560px){
+    .rsv-row{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .rsv-row-side{ align-items:flex-start; text-align:left; flex-direction:row; gap:12px; }
+  }
+
   .rsv-forward{ margin-top:26px; padding-top:20px; border-top:1px solid rgba(31,59,46,.14); }
   .rsv-forward-cta{
     display:inline-block; padding:13px 22px; border:none; border-radius:8px;
@@ -30689,25 +30738,18 @@
        stops at Five because Compare has five rows; Resolve carries twelve, so
        it has its own list rather than borrowing one that does not reach.
        Nothing derived changes — only how the number is spelt. */
-    const bothWords = !!RESOLVE_COUNT_WORDS[stop] && !!RESOLVE_COUNT_WORDS[rest];
-    const w = function(n){
-      return bothWords ? (RESOLVE_COUNT_WORDS[n] || String(n)) : String(n);
-    };
+    /* T1 — ONE CALM LINE, WHATEVER THE COUNTS.
 
-    /* Read aloud, all four ways. "what you'd pay" is how a person says it;
-       "what you pay" is how a form says it. */
-    if (stop === 0 && rest === 0) {
-      return 'There is nothing left that Atlas can put a question to on the ' + name + '.';
-    }
-    if (stop === 0) {
-      return 'Nothing here would stop the job. ' + w(rest)
-        + (rest === 1 ? ' thing changes' : ' things change') + ' what you\u2019d pay.';
-    }
-    const first = w(stop)
-      + (stop === 1 ? ' thing could stop this going ahead.' : ' things could stop this going ahead.');
-    if (rest === 0) return first;
-    return first + ' ' + w(rest)
-      + (rest === 1 ? ' more changes' : ' more change') + ' what you\u2019d pay.';
+       The four branches above built a verdict out of arithmetic: how
+       many things could stop the job, how many change what you would
+       pay. Every one of them was true, and together they opened the
+       stage as a warning.
+
+       THE COUNTS STILL DO THEIR REAL WORK. They order the rows, they
+       decide what each row says and they drive the statuses. They no
+       longer also write the headline, because a headline is a posture
+       and this one's posture was wrong. */
+    return 'A few things to check before you continue.';
   }
 
   let resolveCurrentProduct = null;
@@ -31073,10 +31115,14 @@
     head.appendChild(rsvEl('p', 'rsv-kicker', 'What\u2019s still open'));
     /* RS-4 — AMENDMENT 3. One line about the moment, before any data. A stage
        that opens with a list, however well ordered, opens as an audit. */
-    head.appendChild(rsvEl('p', 'rsv-situation', RESOLVE_SITUATION));
+    /* T2 — THE HEADLINE LEADS. Copy that supports a headline has to
+       follow it; before this the support arrived first and the headline
+       read as a second thought. Same two nodes, same classes, same id,
+       in the order a reader needs them. */
     const h = rsvEl('h2', 'rsv-headline', resolveHeadline(model, product));
     h.id = 'rsvHeadline';
     head.appendChild(h);
+    head.appendChild(rsvEl('p', 'rsv-situation', RESOLVE_SITUATION));
     /* A middot between two names is a data separator. A person says "from". */
     head.appendChild(rsvEl('p', 'rsv-product',
       product.organisation ? (product.name + ', from ' + product.organisation)
@@ -31084,114 +31130,101 @@
     view.appendChild(head);
 
     /* =====================================================================
-       RS-4 — WHAT COULD STOP THIS.
+       T3 · THREE GROUPS, COMPACT ROWS.
 
-       Consequence orders ATTENTION; the four §5 lanes still order THE
-       WORKING. Both frozen rules survive because the page has two tiers
-       rather than one list.
+       GROUPED BY REGISTRY KEY. The four lanes grouped by who can settle
+       an item, which is an ownership idea, and ownership vocabulary is
+       exactly what this stage is not supposed to make the homeowner
+       learn. These groups are the three things a person is actually
+       looking at.
 
-       These items carry their controls HERE and appear below as record only.
+       EVERY REGISTRY KEY IS PLACED. All thirteen, including `schedule`,
+       which the brief's groups do not name -- a live registry row
+       dropped because a brief did not list it would take a real
+       uncertainty off the page silently. Guard T05 fails the build if
+       any registry key is unplaced, so this cannot drift when the
+       registry grows.
+
+       T6 · THE STANDING IS RETIRED. It printed every blocking item here
+       and again inside the list below, flagged data-shown-above. The
+       compact row now carries the status AND the action together, so the
+       second printing was the same item twice. resolveStopBlock() is
+       retained, defined and uncalled.
        ===================================================================== */
-    const stopping = model.needsPosition.filter(function(e){
-      return e.consequence === 'blocking';
-    });
-    const shownAbove = {};
-    if (stopping.length) {
-      const sec = rsvEl('section', 'rsv-stopping');
-      stopping.forEach(function(e){
-        shownAbove[e.key] = true;
-        sec.appendChild(resolveStopBlock(e, product.id));
-      });
-      view.appendChild(sec);
-    }
+    const PN_RESOLVE_GROUPS = [
+      { title: 'Your property',
+        keys: ['access', 'ground', 'power', 'water'] },
+      { title: 'Supplier details',
+        keys: ['priceIncludes', 'installationCharges', 'afterSales'] },
+      { title: 'Still to confirm',
+        keys: ['planning', 'contractingEntity', 'leadTime', 'warranty',
+               'origin', 'schedule'] },
+    ];
 
-    /* The lanes. Each is a filter on the model's resolvability — the view
-       classifies nothing. An empty lane is omitted rather than rendered with
-       a reassuring nothing in it. */
+    /* T4 — ONE RULE FOR EVERY STATUS. Read from state and resolvability,
+       which the model already decided; nothing is judged here, and no
+       owner, consequence class or resolvability token reaches the page. */
+    const pnResolveStatus = function(e){
+      if (e.state === 'answered') return 'Confirmed';
+      if (e.state === 'accepted') return 'Not waiting for this';
+      if (e.resolvability === 'measure')    return 'Needs checking';
+      if (e.resolvability === 'on-request') return 'Ask supplier';
+      return 'Not yet confirmed';
+    };
+
+    /* T4 — ONE SHORT SENTENCE, AND IT IS THE GOVERNED ONE. The first
+       sentence of the detail copy Resolve already holds. Never authored
+       here, never summarised: if the governed copy has no sentence short
+       enough to stand alone, the row carries no sentence at all. */
+    const pnResolveSentence = function(copy){
+      const d = (copy && copy.detail) ? String(copy.detail).trim() : '';
+      if (!d) return '';
+      const m = d.match(/^[^.!?]{10,150}[.!?]/);
+      return m ? m[0].trim() : '';
+    };
+
+    const byKey = {};
+    model.states.forEach(function(e){ byKey[e.key] = e; });
+
     const working = rsvEl('section', 'rsv-working');
-    RESOLVE_LANES.forEach(function(lane){
-      /* RS-2b — filtered on RESOLVABILITY, not on state. RS-2 filtered
-         model.open, which was correct only while nothing could ever leave the
-         open state: as soon as a homeowner answered something, the item left
-         model.open and appeared in NO LANE AT ALL, taking their answer off the
-         screen with it.
-
-         A lane is defined by who can settle it, not by whether it is settled.
-         Keeping settled items in place is also what §11 asks for — "the most
-         valuable section is the record of what you decided to accept, and
-         why". */
-      const inScope = model.states.filter(function(e){
-        return e.resolvability !== 'by-action';
-      });
-      let items;
-      if (lane.key === 'now') {
-        items = model.surfaced;
-      } else if (lane.key === 'unanswerable') {
-        items = inScope.filter(function(e){
-          return e.resolvability === 'not-yet' || e.resolvability === 'never';
-        });
-      } else {
-        items = inScope.filter(function(e){ return e.resolvability === lane.key; });
-      }
+    PN_RESOLVE_GROUPS.forEach(function(group){
+      const items = group.keys.map(function(k){ return byKey[k]; })
+                              .filter(function(e){ return !!e; });
       if (!items.length) return;
 
-      const sec = rsvEl('section', 'rsv-lane');
-      sec.setAttribute('data-lane', lane.key);
-      sec.appendChild(rsvEl('h3', 'rsv-lane-title', lane.heading));
-
+      const sec = rsvEl('section', 'rsv-group');
+      sec.appendChild(rsvEl('h3', 'rsv-group-title', group.title));
       const ul = rsvEl('ul', 'rsv-list');
+
       items.forEach(function(e){
         const copy = resolveCopyFor(e);
-        const li = rsvEl('li', 'rsv-item');
+        const li = rsvEl('li', 'rsv-row');
         li.setAttribute('data-key', e.key);
         li.setAttribute('data-state', e.state);
-        li.setAttribute('data-consequence', e.consequence);
-        if (shownAbove[e.key]) li.setAttribute('data-shown-above', 'true');
+        if (e.answeredBy) li.setAttribute('data-answered-by', e.answeredBy);
 
-        /* RS-3 §12.4 — the class-1 answer gets the editorial treatment and
-           returns early; everything else takes the standard row. */
-        if (e.key === 'contractingEntity' && e.state === 'answered') {
-          li.appendChild(resolveEntityBlock(e, (copy && copy.label) || e.key));
-          ul.appendChild(li);
-          return;
-        }
-
-        li.appendChild(rsvEl('span', 'rsv-item-label',
+        const main = rsvEl('div', 'rsv-row-main');
+        main.appendChild(rsvEl('span', 'rsv-row-title',
           (copy && copy.label) || e.key));
 
-        /* Consequence, in the contract's own sentence, and silence where
-           there is none. */
-        const cq = resolveConsequenceLine(e.consequence);
-        if (cq && e.state === 'open') li.appendChild(rsvEl('p', 'rsv-consequence', cq));
-
-        /* An ANSWERED item shows what Atlas holds, with its source and date —
-           the same evidence discipline every other surface follows. An open
-           one shows nothing where the answer would be, because there is
-           nothing there. */
+        /* The answer, when there is one. This is the evidence, and it is
+           the most useful thing the row can say, so it leads the body. */
         if (e.state === 'answered' && e.cell && e.cell.display) {
-          li.appendChild(rsvEl('span', 'rsv-item-value', e.cell.display));
-          const ev = resolveEvidenceLine(e);
-          if (ev) li.appendChild(rsvEl('span', 'rsv-item-checked', ev));
+          main.appendChild(rsvEl('p', 'rsv-row-value', e.cell.display));
+        } else {
+          const s = pnResolveSentence(copy);
+          if (s) main.appendChild(rsvEl('p', 'rsv-row-note', s));
         }
-        if (copy && copy.detail) {
-          li.appendChild(rsvEl('p', 'rsv-item-detail', copy.detail));
-        }
-        /* A checked-and-not-established note is the one thing an open cell
-           has to say, and it is Atlas's own words, never a paraphrase. */
-        if (e.state === 'open' && e.cell && e.cell.note) {
-          li.appendChild(rsvEl('p', 'rsv-item-note', e.cell.note));
-        }
-        /* RS-2b — who answered it, on the entry itself, so a homeowner's own
-           measurement can never be read as an Atlas citation. */
-        if (e.answeredBy) li.setAttribute('data-answered-by', e.answeredBy);
-        /* ACT ABOVE, RECORD BELOW. A blocking item carries its controls in
-           The Standing; here it is record only, so one question never has two
-           identical inputs. Every other item is presented once, here, with
-           its way to act. */
-        if (!shownAbove[e.key]) {
-          const actions = resolveActionsFor(e, product.id);
-          if (actions) li.appendChild(actions);
-        }
+        li.appendChild(main);
+
+        const side = rsvEl('div', 'rsv-row-side');
+        const st = rsvEl('span', 'rsv-row-status', pnResolveStatus(e));
+        st.setAttribute('data-status', pnResolveStatus(e));
+        side.appendChild(st);
+        const actions = resolveActionsFor(e, product.id);
+        if (actions) side.appendChild(actions);
+        li.appendChild(side);
+
         ul.appendChild(li);
       });
       sec.appendChild(ul);
@@ -31260,17 +31293,21 @@
          Active, and literally what happened. Not a chip, not a tag, not a
          state name. The date follows the same evidence discipline every other
          fact on the page carries. */
-      const line = rsvEl('p', 'rsv-position',
-        'You decided not to wait for this'
-        + (entry.acceptance && entry.acceptance.acceptedAt
-            ? ' \u2014 ' + compareLongDate(String(entry.acceptance.acceptedAt).slice(0, 10)) : '')
-        + '.');
-      wrap.appendChild(line);
-      /* §4 property 5 — only the homeowner may withdraw. "Withdraw" is a
-         solicitor's word doing two different jobs; changing your mind about
-         waiting and correcting what you found are not the same act, so they
-         no longer say the same thing. */
-      const undo = rsvEl('button', 'rsv-btn rsv-btn-quiet', 'Actually, I\u2019d rather wait');
+      /* T5 — THE POSITION IS A STATUS NOW, NOT AN ANNOUNCEMENT.
+
+         The sentence and its date were repeated under every deferred row,
+         at paragraph weight, beside a full-width button. The row's status
+         already says "Not waiting for this", so the sentence restated it
+         once per row.
+
+         NOTHING IS LOST. The date survives as the row's quiet timestamp,
+         and the withdraw route is the same call on the same control. §4
+         property 5 still holds: only the homeowner may withdraw. */
+      if (entry.acceptance && entry.acceptance.acceptedAt) {
+        wrap.appendChild(rsvEl('span', 'rsv-when',
+          compareLongDate(String(entry.acceptance.acceptedAt).slice(0, 10))));
+      }
+      const undo = rsvEl('button', 'rsv-btn rsv-btn-quiet rsv-btn-inline', 'Wait for it after all');
       undo.type = 'button';
       undo.addEventListener('click', function(){
         withdrawResolvePosition(productId, entry.key);
@@ -31366,7 +31403,12 @@
      contract's own worked example, verbatim. The rejected form is on the
      record beside it: "You're probably feeling nervous" — a presumption about
      someone we have never met. */
-  const RESOLVE_SITUATION = 'This is the point where most people stop and think.';
+  /* T2 — SUPPORTING COPY, not a mood-setter. It says what the stage is
+     for and it says the reassuring half first, because the reassuring
+     half is the true half: most of this option is already known. */
+  const RESOLVE_SITUATION = 'We already know a lot about this option. '
+    + 'These are the few things that could still affect cost, timing or '
+    + 'suitability.';
 
   /* AMENDMENT 1 — the irreducible class. Named once, plainly, and never
      worked on: no prompt, no exercise, no reframing, no encouragement.
