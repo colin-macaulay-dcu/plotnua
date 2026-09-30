@@ -1,16 +1,28 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-30T09:24:04Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "typicalHomeowner"
   ],
-  "productCount": 420,
+  "productCount": 431,
   "recordCounts": {
-    "typicalHomeowner": 420
+    "typicalHomeowner": 431
   },
   "products": {
+    "recpZW4echDhHtEVv": {
+      "typicalHomeowner": {
+        "text": "A HOUSEHOLD BUILDING A WELLNESS CORNER IN THE GARDEN. Often the same buyer who is also looking at a cold plunge or hot tub, and who thinks of the sauna as equipment rather than as a building. They are choosing on heat, timber and appearance, and they will be guided by the supplier's own material because Atlas holds nothing technical for this model. THE ADVICE THAT MATTERS MOST TO THEM is structural rather than thermal: because the sauna counts toward the same 30 m2 allowance as any other garden building, they should decide now whether a garden office or studio might follow, and reserve the allowance accordingly. NOT FOR: anyone whose primary need is a work or study room.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recEZ678YSRDJ16Ox": {
+      "typicalHomeowner": {
+        "text": "A WELLNESS BUYER, NOT A WORKSPACE BUYER. Someone adding a sauna to a garden as a lifestyle purchase \u2014 often alongside a hot tub or plunge tub \u2014 who is choosing on heat performance, timber quality and appearance rather than on square metres per euro. They are typically not comparing this against a garden office at all, and they should not be shown one as an equivalent. THE THING THEY MOST NEED TO KNOW is the thing they are least likely to ask: the footprint counts against the same 30 m2 back-garden allowance as any other building, so a sauna now may cost them a garden room later. NOT FOR: anyone needing a work, study or habitable room \u2014 this is a single-function wellness building.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "recD12mXzhW3zEo1K": {
       "typicalHomeowner": {
         "text": "CANNOT BE CHARACTERISED FROM HELD EVIDENCE, and inventing a profile from a company name would be exactly the kind of guess this layer exists to prevent. THE ONE THING THAT CAN BE SAID ABOUT THE BUYER: anyone pursuing this record will be starting the specification conversation from scratch rather than choosing from a documented range, so it suits a homeowner who is happy to ring a supplier, ask direct questions and work from a written quotation \u2014 and who is not trying to compare three products side by side on a spreadsheet, because this one cannot join that comparison yet.",
@@ -191,6 +203,18 @@
         "evidenceScope": "Product-Specific"
       }
     },
+    "recxVSbrKDFIVNTAV": {
+      "typicalHomeowner": {
+        "text": "A homeowner for whom finish quality and brand tier matter more than cost per square metre, budgeting roughly EUR 63k-73k once VAT, base and connections are added. Comfortable paying a premium for the top specification, but should still ask precisely what that premium buys.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recqsw7UCWcnwUwas": {
+      "typicalHomeowner": {
+        "text": "An Irish homeowner creating independent accommodation for an adult child or ageing parent, with good site access and roughly EUR 85k-95k available once VAT, base, craneage and connections are counted. Wants the building to arrive finished and habitable rather than to run a construction project, and is prepared to handle planning and a services connection.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "rec0lmoob3jo4FfNg": {
       "typicalHomeowner": {
         "text": "An Irish homeowner around EUR 19k-24k all-in who has already decided on Concept Modular and is choosing between its two office tiers. Values a delivered, factory-finished, maintenance-free steel building and a warranty that outlasts any mortgage.",
@@ -248,6 +272,12 @@
     "recT2DoASzrfwSgDm": {
       "typicalHomeowner": {
         "text": "A homeowner with an awkward garden corner to use, wanting a plain square room of about 12 m2, comfortable arranging base and assembly, using the building seasonally, and budgeting around EUR 6,240 for the delivered kit before groundworks.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recWYh1cQPtKDBsvL": {
+      "typicalHomeowner": {
+        "text": "SOMEONE ADDING A WELLNESS FEATURE RATHER THAN SOLVING A SPACE PROBLEM. They already have the house they need; this is a discretionary purchase for recovery, relaxation or cold-water bathing, and they are buying from an Irish showroom where they can see the build. THEY ARE ALSO, OFTEN, THE SAME HOUSEHOLD THAT WILL WANT A GARDEN OFFICE LATER \u2014 which is why the allowance arithmetic matters to them more than the sauna's own modest size suggests. NOT FOR: anyone whose garden allowance is already committed, or who assumes small structures do not count.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1097,6 +1127,12 @@
         "evidenceScope": "Product-Specific"
       }
     },
+    "recW6DjtfmrlAHyfQ": {
+      "typicalHomeowner": {
+        "text": "A HOUSEHOLD THAT WANTS SOMEWHERE TO SIT OUT IN APRIL AND OCTOBER. The veranda is the reason they are looking at this model rather than a plain room \u2014 shelter without being indoors, which is the whole appeal of a summer house in an Irish garden. THEY ARE BUYING FOR LEISURE, and are the buyer least likely to have thought about the allowance at all. NOT FOR: year-round working use, where nothing thermal is published; nor for guest sleeping, which is a different consent route; nor for a garden already close to 30 m2.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "recrFFekZa6jNZsKe": {
       "typicalHomeowner": {
         "text": "A homeowner with a medium garden and few existing outbuildings, who will use the covered porch as much as the room, comfortable arranging base and assembly, using the building seasonally, and budgeting around EUR 7,750 for the delivered kit before groundworks.",
@@ -1106,6 +1142,18 @@
     "recJrM9Ubx8WyWXCS": {
       "typicalHomeowner": {
         "text": "A homeowner with a clear garden and no existing outbuildings, wanting the largest room available without planning permission, comfortable arranging base and assembly for a heavier 70 mm kit, and budgeting around EUR 14,810 for the delivered kit before groundworks.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recCLPeIXS09tSjIo": {
+      "typicalHomeowner": {
+        "text": "A homeowner with a shallow garden or a boundary run of about 6 m, wanting a small room with a roofed outdoor area attached, comfortable arranging base and assembly, and budgeting around EUR 5,600 for the delivered kit before groundworks.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recQAh2Q9scUud7pC": {
+      "typicalHomeowner": {
+        "text": "A homeowner with a shallow garden or a boundary run of about 6 m, wanting a small room with sheltered seating attached for seasonal use, comfortable arranging base and assembly, and budgeting around EUR 6,200 for the delivered kit before groundworks.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2255,6 +2303,12 @@
         "evidenceScope": "Product-Specific"
       }
     },
+    "recgOQWcwBubjOLWh": {
+      "typicalHomeowner": {
+        "text": "A homeowner with a small or already-occupied garden, wanting the largest enclosed room available from a compact footprint, comfortable arranging base and assembly, using the building seasonally, and budgeting around EUR 7,500 for the delivered kit before groundworks.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "rec74jHDrOU6IOM32": {
       "typicalHomeowner": {
         "text": "A homeowner with a long boundary run of nearly 9 m, prepared to seek planning permission, wanting to consolidate room, storage and outdoor decking into one structure rather than three, and budgeting around EUR 14,300 for the delivered kit before groundworks.",
@@ -2348,6 +2402,18 @@
     "recFQ6LsmRjnd581W": {
       "typicalHomeowner": {
         "text": "A practical homeowner around the GBP 14k mark who wants real space rather than a premium badge, and who is genuinely willing to get out with timber treatment once a year. Suits a home office, hobby room or garden lounge. A poor fit for anyone who wants to install it and never think about it again \u2014 the guarantee depends on the upkeep.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recsgRXeV6TNzxCYa": {
+      "typicalHomeowner": {
+        "text": "A HOUSEHOLD MAKING WELLNESS THE POINT OF THE GARDEN. They want the full sequence \u2014 heat, then water \u2014 and they would rather buy it once than assemble it piece by piece over three summers. They have space and budget, and they are likely to be building this instead of, not alongside, a garden office. THAT TRADE IS THE HONEST FRAMING: a combined unit is likely to consume a substantial share of the 30 m2 allowance, so a future workspace may need permission. NOT FOR: a garden already carrying a shed or garage near the limit.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recgmL8p4EKPREiWf": {
+      "typicalHomeowner": {
+        "text": "A COMMITTED SAUNA USER WITH A SPECIFIC SPOT IN MIND. They know how many people they want to seat and they have a length of garden \u2014 along a fence, beside a patio \u2014 that suits a barrel form. Because the product is made to order they are in a specification conversation rather than a purchase, and they should arrive at it already knowing how much of their 30 m2 allowance is unspent. NOT FOR: a buyer who wants a fixed price and a catalogue size, or anyone needing enclosed workspace rather than heat.",
         "evidenceScope": "Product-Specific"
       }
     },

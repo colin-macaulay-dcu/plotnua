@@ -1,16 +1,28 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-30T09:24:04Z",
+  "generated": "2026-09-22T21:40:32Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "bestFor"
   ],
-  "productCount": 420,
+  "productCount": 431,
   "recordCounts": {
-    "bestFor": 420
+    "bestFor": 431
   },
   "products": {
+    "recpZW4echDhHtEVv": {
+      "bestFor": {
+        "text": "THE SAME WELLNESS BUYER AS THE QUU, AND ATLAS CANNOT SEPARATE THE TWO MODELS. Neither the Aurea nor the Quu publishes an internal floor area, an external footprint, a height, a heater specification, a warranty or a price, so nothing in the record tells a homeowner which is larger, hotter, better built or dearer. CATALOGUE LIMITATION recorded once for this supplier: with two identically documented models, no evidence-based distinction can be drawn between them, and none has been invented. WHAT CAN BE SAID applies to both: a purpose-built outdoor sauna cabin, held under Garden Rooms only because Atlas has no correct category, whose footprint nonetheless counts toward the 30 m2 combined back-garden allowance. HOMEOWNER IMPLICATION: the choice between Aurea and Quu has to be made from the supplier's own material, not from this catalogue \u2014 ask what differs, in writing.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recEZ678YSRDJ16Ox": {
+      "bestFor": {
+        "text": "A HOME SAUNA BUYER \u2014 AND THAT IS A DIFFERENT PURCHASE FROM A GARDEN ROOM. Auroom supplies wellness and sauna cabins, and the certified AM-001 layer records a standing category flag: these products sit under Garden Rooms in Atlas only because no correct Product Category exists, and they should not be compared like-for-like against work-use garden rooms. THE USEFUL FRAMING is therefore not 'is this a good office' but 'is this a good sauna, and what does putting one in the garden cost you'. WHAT IS NOT HELD: no internal floor area, no footprint, no height, no insulation value, no warranty and no price. HOMEOWNER IMPLICATION: if you want a sauna, judge it as one \u2014 heater type, bench layout, timber, ventilation \u2014 and then ask for the external footprint, because it counts against the same planning allowance as a garden office would.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "recD12mXzhW3zEo1K": {
       "bestFor": {
         "text": "CANNOT BE DETERMINED \u2014 THE RECORD IDENTIFIES A PRODUCT TYPE, NOT A PRODUCT. 'Ballyfree Garden Sheds \u2014 Garden Room' carries no model name, no size, no specification and no price in Atlas, and the certified AM-001 and AM-006 layers both record that no floor area, dimensions or height are published, with nothing estimated. A record at this level of generality cannot be matched to a homeowner's requirement, because there is no requirement it can be tested against. HOMEOWNER IMPLICATION: this is a supplier-level entry rather than a buyable product. If Ballyfree is on your list, contact them for their actual model range and sizes, then compare those against the specified products in this catalogue \u2014 do not treat this single record as representing what the company can build.",
@@ -191,6 +203,18 @@
         "evidenceScope": "Product-Specific"
       }
     },
+    "recxVSbrKDFIVNTAV": {
+      "bestFor": {
+        "text": "The most expensive product per square metre in the Concept Modular range at roughly EUR 2,234/m\u00b2. On the evidence Atlas holds today, it is only the right choice for a homeowner who has confirmed exactly what the Signature specification adds and decided it is worth the premium.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recqsw7UCWcnwUwas": {
+      "bestFor": {
+        "text": "Self-contained garden accommodation, delivered factory-finished with a designer kitchen and bathroom already fitted. At 36.2m\u00b2 with plumbed water and a 50-year structural warranty, this is the Concept Modular product that genuinely functions as an annexe rather than a room.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "rec0lmoob3jo4FfNg": {
       "bestFor": {
         "text": "A homeowner who wants Concept Modular's steel-framed build and 50-year structural warranty in the uprated Signature specification, and is willing to pay about EUR 2,000 over the Standard Office to get it.",
@@ -248,6 +272,12 @@
     "recT2DoASzrfwSgDm": {
       "bestFor": {
         "text": "Best for a garden corner where a square 359 x 359 cm plan uses the angle efficiently. The 12 m2 enclosed room suits a study, hobby room or seating room, with almost no ground given over to outdoor structure.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recWYh1cQPtKDBsvL": {
+      "bestFor": {
+        "text": "A GARDEN SAUNA \u2014 AND A REMINDER THAT A SAUNA IS STILL A BACK-GARDEN STRUCTURE. The certified record makes the point homeowners most often miss: its footprint counts toward the combined 30 m2 allowance exactly as a garden office would; it is not garden furniture for planning purposes. IT IS UNLIKELY ON ITS OWN TO THREATEN THE LIMIT, but it will reduce what remains for a future garden room \u2014 which is precisely the sequence in which people run out of allowance without realising. 'M' DENOTES A SIZE BAND, NOT A MEASUREMENT, and has not been read as one; no footprint or height is published. HOMEOWNER IMPLICATION: add it to your running total before you plan anything else.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1097,6 +1127,12 @@
         "evidenceScope": "Product-Specific"
       }
     },
+    "recW6DjtfmrlAHyfQ": {
+      "bestFor": {
+        "text": "A SUMMER HOUSE WITH COVERED OUTDOOR SPACE \u2014 AND THE VERANDA IS THE PLANNING QUESTION, NOT AN ACCESSORY. The certified layers record that a veranda MAY OR MAY NOT COUNT toward the assessed area depending on whether it is roofed and enclosed, and that this has not been determined for the range's veranda models. A ROOFED VERANDA WOULD BE ADDED TO THE ENCLOSED FOOTPRINT for the 30 m2 combined test. No audited area is held for either element. HOMEOWNER IMPLICATION: ask specifically whether the veranda is inside the quoted footprint \u2014 the certified layers note it can decide the exemption.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "recrFFekZa6jNZsKe": {
       "bestFor": {
         "text": "Best for a household wanting a 15 m2 room with a genuinely usable covered porch of about 8.9 m2 \u2014 large enough for outdoor seating rather than just shelter at the door. Suited to a medium garden with few other structures.",
@@ -1106,6 +1142,18 @@
     "recJrM9Ubx8WyWXCS": {
       "bestFor": {
         "text": "Best for a buyer who wants the largest room the exemption will accommodate without planning permission, in the supplier's thickest wall specification, on a clear garden with no other outbuildings.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recCLPeIXS09tSjIo": {
+      "bestFor": {
+        "text": "Best for a shallow garden or boundary strip under 3 m deep where a small room with a roofed canopy is wanted rather than an open veranda, at the lower price of the two Nora D outdoor variants.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recQAh2Q9scUud7pC": {
+      "bestFor": {
+        "text": "Best for a shallow garden or boundary strip under 3 m deep, where a small room with an attached veranda is wanted and the 578 cm length can run along a fence. Suited to seasonal seating with a lockable room behind.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2255,6 +2303,12 @@
         "evidenceScope": "Product-Specific"
       }
     },
+    "recgOQWcwBubjOLWh": {
+      "bestFor": {
+        "text": "Best for a buyer wanting maximum enclosed room from a small footprint, on a site where other structures already use part of the statutory allowance. The near-square 318 x 418 cm plan suits a garden corner or the end of a modest plot.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
     "rec74jHDrOU6IOM32": {
       "bestFor": {
         "text": "Best for a long narrow garden with a run of nearly 9 m available, where a 22 m2 room, storage and open decking are all wanted in one line along a boundary, and where the owner is prepared to address planning.",
@@ -2348,6 +2402,18 @@
     "recFQ6LsmRjnd581W": {
       "bestFor": {
         "text": "Homeowners who want the largest insulated room they can get for the money and are willing to accept a timber building that needs annual maintenance to keep its guarantee alive. The best floor-area-per-pound in this review set.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recsgRXeV6TNzxCYa": {
+      "bestFor": {
+        "text": "A COMPLETE WELLNESS SETUP IN ONE UNIT \u2014 THE ONLY COMBINED SAUNA-AND-TUB PRODUCT IN THIS CATALOGUE. For a household that wants both heat and water, buying them as one build avoids two separate installations, two bases and two sets of services. THE PLANNING CONSEQUENCE IS THE COROLLARY: the certified AM-006 layer records that the whole unit occupies one continuous footprint, and because the sauna element is an enclosed structure the buyer must count the OVERALL external footprint toward the 30 m2 allowance \u2014 not the sauna cabin alone. HOMEOWNER IMPLICATION: the most capable wellness record here, and the most demanding on garden allowance.",
+        "evidenceScope": "Product-Specific"
+      }
+    },
+    "recgmL8p4EKPREiWf": {
+      "bestFor": {
+        "text": "A SAUNA SIZED TO THE GARDEN RATHER THAN TO A CATALOGUE. The certified AM-001 layer records this as a CUSTOM-configured barrel sauna: length, and therefore floor area, are specified per order. UNLIKE THE TUBS IN THIS RANGE IT IS AN ENCLOSED STRUCTURE, so its footprint counts toward the 30 m2 combined back-garden allowance in full \u2014 which makes the made-to-order length an advantage, because the building can be specified to whatever allowance remains. HOMEOWNER IMPLICATION: decide the length by subtracting your existing garden structures from 30 m2, not by choosing the biggest bench layout you like.",
         "evidenceScope": "Product-Specific"
       }
     },
