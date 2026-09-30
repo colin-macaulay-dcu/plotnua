@@ -67,7 +67,12 @@ const MUST_EXIST = [
   ['J08', 'My Plot single-select seam',  'function renderMyPlotPickOne(', 1],
   ['J08', 'compareShortlist()',          'function compareShortlist(){', 1],
   ['J08', 'Resolve entry listener',      'els.myPlotResolveBtn.addEventListener', 1],
-  ['J08', 'Progress entry listener',     'els.myPlotProgressBtn.addEventListener', 1],
+  /* PROGRESS LEFT THE VISIBLE JOURNEY, SO THIS CHECK TURNED ROUND.
+     It used to require the My Plot listener. It now requires that no
+     such listener exists: a homeowner-visible route to Progress is the
+     violation, not the contract. Same subject, opposite sign -- the
+     check was not dropped. */
+  ['J08', 'No Progress entry listener',  'els.myPlotProgressBtn.addEventListener', 0],
   ['J08', 'Compare entry listener',      'els.myPlotCompareBtn.addEventListener', 1],
 
   ['J11', 'publication gate wired',      'const publishableCandidates = allCandidates.filter(pnResultPublishable);', 1],
@@ -324,26 +329,36 @@ function run(src) {
     }
     return text.slice(i);
   }
-  const inProgress = bodyOf(bareCode, 'function renderProgress(').indexOf('pnSupplierHandover(') >= 0;
-  if (callers === 1 && inProgress) {
-    ok('J07', 'the outbound door has exactly one caller, and it is inside renderProgress()');
+  /* THE STAGE MOVED, SO THE PIN MOVED WITH IT.
+
+     Progress has been removed from the visible journey by founder
+     authorisation: its content now sits at the foot of Resolve, and
+     Resolve is the last screen the homeowner is sent to. The rule was
+     never "the door lives in Progress" -- it is "exactly one door, at
+     the last visible stage, and never before it". So the pin is now
+     renderResolve(), and Resolve has come off the prohibition list
+     below for the same reason. The count is unchanged at one, and every
+     stage before the last is still forbidden to hold it. */
+  const inResolve = bodyOf(bareCode, 'function renderResolve(').indexOf('pnSupplierHandover(') >= 0;
+  if (callers === 1 && inResolve) {
+    ok('J07', 'the outbound door has exactly one caller, and it is inside renderResolve()');
   } else if (callers !== 1) {
     bad('J07', 'pnSupplierHandover has ' + callers + ' caller(s) in executable code, expected exactly 1');
   } else {
-    bad('J07', 'the single pnSupplierHandover caller is NOT inside renderProgress() — a stage ' +
-               'before Progress has opened the outbound door');
+    bad('J07', 'the single pnSupplierHandover caller is NOT inside renderResolve() — a stage ' +
+               'before the last visible one has opened the outbound door');
   }
 
   /* And the prohibition, stated positively: none of the five upstream stages
      may hold the door. */
   ['function openProductDetail(', 'function openMyPlot(', 'function renderMyPlotPickTwo(',
-   'function renderResolve(', 'function buildSaveActions('].forEach(function(sig){
+   'function buildSaveActions('].forEach(function(sig){
     const b = bodyOf(bareCode, sig);
     if (b && b.indexOf('pnSupplierHandover(') >= 0) {
       bad('J07', 'a supplier exit appeared in ' + sig.replace('function ', '').replace('(', '()'));
     }
   });
-  ok('J07', 'no supplier exit in Result card, Option Detail, My Plot, Compare or Resolve');
+  ok('J07', 'no supplier exit in Result card, Option Detail, My Plot or Compare');
 
   head('J10 · NO PARALLEL JOURNEY AROUND A CANONICAL STAGE');
   const declared = [];
@@ -550,12 +565,22 @@ function run(src) {
      requires CONFIRMED evidence with a source. Visibility without those three
      would be fabricated readiness, which is the thing dormancy was protecting
      against in the first place. */
-  const progVisible = countOf(code, 'els.myPlotProgressBtn.hidden = total < 1;') === 1
-                   && countOf(code, 'els.myPlotProgressBtn.hidden = true;') === 0;
+  /* R1 — PROGRESS IS NO LONGER HOMEOWNER-VISIBLE, SO THIS TURNED ROUND.
+
+     P8 has been rewritten twice now, and both times for the same
+     reason: the invariant follows the journey. It asserted dormancy,
+     then visibility, and now absence. What has never changed is the
+     thing it exists to protect — that this stage cannot claim
+     readiness it does not have. The three assertions carrying that
+     claim are below and are untouched.
+
+     Progress survives as an evidence structure. What must not survive
+     is a control that opens it. */
+  const progVisible = countOf(code, 'myPlotProgressBtn') === 0;
   const resolveVisible = countOf(code, 'els.myPlotResolveBtn.hidden = total < 1;') === 1
                       && countOf(code, 'els.myPlotResolveBtn.hidden = true;') === 0;
-  if (progVisible) ok('P8', 'Progress is reachable from My Plot at the recorded threshold');
-  else bad('P8', 'Progress is not reachable at `total < 1` — the restored entry point moved');
+  if (progVisible) ok('P8', 'no homeowner-visible control opens Progress');
+  else bad('P8', 'a homeowner-visible route to Progress exists — it left the journey');
   if (resolveVisible) ok('P8', 'Resolve is reachable from My Plot at the recorded threshold');
   else bad('P8', 'Resolve is not reachable at `total < 1` — the restored entry point moved');
 
@@ -654,11 +679,17 @@ function goldenJourneys(src) {
     else bad('GJ' + fx.id, 'Results -> Option Detail path is broken');
 
     /* Stage 3: the continuation seam back into the canonical journey. */
+    /* R2 — THE SEAM IS RESOLVE'S ALONE NOW.
+       My Plot's continuation back into the canonical journey used to
+       have two doors. Progress is not a stage any more, so requiring
+       its door would require the journey to contain something it does
+       not. Resolve's door is still required, and renderMyPlotPickOne()
+       still has to exist — it is what makes that door work. */
     const seam = countOf(src, 'function renderMyPlotPickOne(') === 1 &&
                  countOf(src, 'els.myPlotResolveBtn.addEventListener') === 1 &&
-                 countOf(src, 'els.myPlotProgressBtn.addEventListener') === 1;
-    if (seam) ok('GJ' + fx.id, 'My Plot -> Resolve/Progress seams exist (dormant, wired)');
-    else bad('GJ' + fx.id, 'a dormant continuation seam has been removed');
+                 countOf(src, 'els.myPlotProgressBtn.addEventListener') === 0;
+    if (seam) ok('GJ' + fx.id, 'My Plot -> Resolve is wired, and nothing opens Progress');
+    else bad('GJ' + fx.id, 'the My Plot continuation seam is wrong');
 
     /* THE ASSERTION THAT MATTERS.
        Unresolved decision work exists for this product, so the supplier
@@ -703,7 +734,11 @@ function selfTest() {
     ['the preview writes Resolve state',function (s) { return s.replace('      out.push({ key: entry.key, label: copy.label,', '      recordResolveAnswer(product.id, entry.key, copy.label);\n      out.push({ key: entry.key, label: copy.label,'); }, 'J03'],
     ['V1 returns: a second question model',function (s) { return s.replace('function pnResolvePreview(product){', 'function pnOpenQuestions(product){ return []; }\n  function pnResolvePreview(product){'); }, 'J03'],
     ['Option Detail calls the door again',function (s) { return s.replace('      openMyPlot();', '      pnSupplierHandover(product, nextAction.state);\n      openMyPlot();'); }, 'J07'],
-    ['a My Plot seam removed',       function (s) { return s.replace('els.myPlotProgressBtn.addEventListener', 'els.myPlotProgressBtnX.addEventListener'); }, 'J08'],
+    /* RE-POINTED WITH THE CHECK. The old mutation removed a listener
+       that no longer exists, so it had become a no-op -- a mutation
+       that changes nothing proves nothing. This one ADDS the route
+       back, which is what J08 now forbids. */
+    ['a My Plot route to Progress returns', function (s) { return s.replace("  if (els.myPlotResolveBtn) {", "  els.myPlotProgressBtn.addEventListener('click', function(){});\n  if (els.myPlotResolveBtn) {"); }, 'J08'],
     ['registry owner drift',         function (s) { return s.replace("key:'planning', consequence:'blocking', owner:'world'", "key:'planning', consequence:'blocking', owner:'plotnua'"); }, 'J04'],
     ['a new supplier claim',         function (s) { return s.replace('const PB046_NO_PRICE', "const X='we will request'; const PB046_NO_PRICE"); }, 'P01'],
     ['Option Detail gated on rights',function (s) { return s.replace('function openProductDetail(productId, returnScreen){', 'function openProductDetail(productId, returnScreen){\n    if (!pnAuthorisedImage(product)) return false;'); }, 'J12'],

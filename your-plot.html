@@ -8878,6 +8878,27 @@
     background:var(--brand-green); color:#fff; font-size:15px; font-weight:700;
     cursor:pointer;
   }
+  /* Q2 - THE PENDING PRIMARY AND THE SECONDARY.
+
+     The pending state is quieter than the live one but still reads as
+     the main control: same size, same shape, less contrast. It must not
+     look like a mistake, and it must not look pressable. The secondary
+     is a text link -- no fill, no border -- so the hierarchy is obvious
+     without a second colour. */
+  .rsv-forward-cta.is-pending{
+    background:rgba(31,59,46,.30); cursor:default;
+  }
+  .rsv-forward-pending{
+    margin:8px 0 0; font-size:12.5px; line-height:1.45; color:var(--soft);
+  }
+  .rsv-forward-secondary{
+    display:inline-block; margin-top:14px; padding:0;
+    border:none; background:none; cursor:pointer;
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
+    color:var(--brand-green); text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .rsv-forward-secondary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
   .rsv-forward-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 
   /* ---- Z5 · THE FORWARD ROW -------------------------------------------
@@ -10657,10 +10678,18 @@
            Unlike Compare's control the threshold is ONE, not two — Resolve is
            singular by §9, and Compare needs a pair. -->
       <button type="button" class="btn-primary small myplot-compare-btn" id="myPlotResolveBtn" hidden>What’s still open →</button>
-      <!-- PROG-001 — entry to Progress. Same threshold as Resolve's: one
-           saved product. Progress is per-purchase, and My Plot is where the
-           purchases are. -->
-      <button type="button" class="btn-primary small myplot-compare-btn" id="myPlotProgressBtn" hidden>What happens next →</button>
+      <!-- Q3 — THE ENTRY TO PROGRESS IS REMOVED.
+
+           Progress is no longer a homeowner-facing screen at all: its
+           content sits at the foot of Resolve and its registry survives
+           as an evidence structure. A control that opens a screen the
+           journey no longer contains is a second journey, which is the
+           thing J10 exists to prevent.
+
+           #myPlotProgressView is left in place: renderMyPlotPickOne()
+           still takes a view element, and removing one of its hosts
+           while the function is shared would be a change to Resolve's
+           selection step dressed as a deletion here. -->
       <!-- SPRINT 1.5 — the homeowner's own reset. Two-step, because clearing
            a considered shortlist by mis-tapping would be worse than the extra
            tap. Shown only when there is something to clear. -->
@@ -11165,7 +11194,6 @@
     enqSentBackBtn: document.getElementById('enqSentBackBtn'),
     enqSentBody: document.getElementById('enqSentBody'),
     progressView: document.getElementById('progressView'),
-    myPlotProgressBtn: document.getElementById('myPlotProgressBtn'),
     myPlotProgressView: document.getElementById('myPlotProgressView'),
     compareView: document.getElementById('compareView'),
     productDetailScreen: document.getElementById('screen-product-detail'),
@@ -29429,7 +29457,6 @@
        J5 now does. Not one resolver changed; the counts are still
        whatever the evidence supports, today 2/8 and 1/8. This is the
        exact line LAUNCH-INT-002 recorded under TO RESTORE. */
-    if (els.myPlotProgressBtn) els.myPlotProgressBtn.hidden = total < 1;
     els.myPlotCompareHint.hidden = total !== 1;
     // NOTE: `total` deliberately counts SAVED items only. The considered
     // selection is transient and belongs to one comparison; letting it light
@@ -30745,6 +30772,76 @@
      §13 PHASE 3 — THE VISUAL CONCEPT — HAS NOT HAPPENED. This is structure.
      ========================================================================= */
 
+  /* =======================================================================
+     Z1 - THE READY SUMMARY, DEFINED ONCE.
+
+     Resolve now carries this at its foot and Progress still renders it for
+     anyone who opens Progress from My Plot. TWO COPIES WOULD DRIFT, and the
+     drift would be silent: one surface would start claiming a fact the other
+     had stopped claiming. So there is one function, and both call it.
+
+     WHAT WE KNOW is every confirmed practical fact these two models can
+     reach -- the supplier operations facts PROGRESS_REGISTRY resolves, plus
+     everything Resolve settled, whether Atlas surfaced it or the homeowner
+     answered it. STILL TO ASK is only what a supplier can actually answer:
+     lane-1 facts Atlas could not confirm, and the Resolve entries whose
+     resolvability is on-request. Not the ones nobody can answer, and not the
+     ones the homeowner has already settled.
+
+     NOTHING IS AUTHORED HERE. Every title comes from a registry label or
+     resolveCopyFor(); every value comes from a cell the model produced. */
+  function pnReadySummary(product){
+    const prog = progressFor(product);
+    const rsv  = resolveUncertaintiesFor(product, resolvePositionsFor(product.id));
+    const known = [];
+    const ask   = [];
+
+    prog.maker.forEach(function(e){
+      if (e.state === 'answered') {
+        /* Q4 - NO SOURCE LINE HERE. "From the maker's own site, checked
+           7 September 2026." under a one-line fact is provenance shown
+           at the same weight as the fact, and it doubled the height of
+           every confirmed row. The evidence layer on Results still
+           carries it in full; this summary is the short version by
+           design. progressEvidenceLine() and resolveEvidenceLine() are
+           both retained -- the sources are not deleted, only the
+           repetition of them here. */
+        known.push({ title: e.label, value: e.cell.display });
+      } else {
+        ask.push({ title: e.label });
+      }
+    });
+    rsv.states.forEach(function(e){
+      const copy = resolveCopyFor(e);
+      const title = (copy && copy.label) || e.key;
+      if (e.state === 'answered') {
+        known.push({ title: title, value: e.cell && e.cell.display });
+      } else if (e.state === 'open' && e.resolvability === 'on-request') {
+        ask.push({ title: title });
+      }
+    });
+    return { known: known, ask: ask };
+  }
+
+  /* A HEADING OVER NOTHING IS THE DEFECT THIS PASS EXISTS TO REMOVE, in a
+     smaller frame. An empty list returns null and the caller appends
+     nothing. */
+  function pnReadyBlock(title, rows){
+    if (!rows || !rows.length) return null;
+    const sec = rsvEl('section', 'prg-block');
+    sec.appendChild(rsvEl('h3', 'prg-block-title', title));
+    const ul = rsvEl('ul', 'prg-rows');
+    rows.forEach(function(r){
+      const li = rsvEl('li', 'prg-row');
+      li.appendChild(rsvEl('span', 'prg-row-title', r.title));
+      if (r.value) li.appendChild(rsvEl('p', 'prg-row-value', r.value));
+      if (r.note)  li.appendChild(rsvEl('p', 'prg-row-note', r.note));
+      ul.appendChild(li);
+    });
+    sec.appendChild(ul);
+    return sec;
+  }
+
   function rsvEl(tag, cls, text){
     const e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -31453,23 +31550,104 @@
        note is still the only string allowed to promise persistence.
        Guard X06 fails the build if either is called from Resolve
        again without this comment being revisited. */
-    /* SIMPLIFY — RESOLVE'S FORWARD ACTION.
-       Resolve shows what is settled and what is not. Its next step is
-       Progress, and until now there was no control that said so, which is
-       why the stage read as a cul-de-sac. openProgressScreen() is called,
-       not reimplemented, and it returns to Resolve. Nothing here answers,
-       accepts or defers anything on the homeowner's behalf. */
-    const rsvGo = document.createElement('div');
-    rsvGo.className = 'rsv-forward';
-    const rsvBtn = document.createElement('button');
-    rsvBtn.type = 'button';
-    rsvBtn.className = 'rsv-forward-cta';
-    rsvBtn.textContent = 'Continue \u2192';
-    rsvBtn.addEventListener('click', function(){
-      openProgressScreen(els.resolveScreen, product);
-    });
-    rsvGo.appendChild(rsvBtn);
-    view.appendChild(rsvGo);
+    /* =====================================================================
+       Z2 - THE FOOT OF RESOLVE IS THE END OF THE VISIBLE JOURNEY.
+
+       PROGRESS WAS TOO THIN TO BE A STAGE. Measured across the whole
+       universe it rendered 3,816 rows of which 1,431 were labels with
+       nothing after them, and after the last pass it was two short lists and
+       a button. A separate screen for that asks the homeowner to travel for
+       no new information. Its useful content is these two lists, and they
+       belong where the questions were asked.
+
+       CONTINUE NO LONGER OPENS PROGRESS. Progress is still built, still
+       reachable from My Plot, and PROGRESS_REGISTRY still feeds the summary
+       above -- it is an evidence structure now rather than a stop on the
+       journey. */
+    const rsvReady = pnReadySummary(product);
+    const rsvSum = rsvEl('section', 'rsv-ready');
+    const rsvKnown = pnReadyBlock('What we know', rsvReady.known);
+    if (rsvKnown) rsvSum.appendChild(rsvKnown);
+    const rsvAsk = pnReadyBlock('Still to ask', rsvReady.ask);
+    if (rsvAsk) rsvSum.appendChild(rsvAsk);
+    if (rsvSum.childNodes.length) view.appendChild(rsvSum);
+
+    /* THE FORWARD CONTROL, AND WHAT IT IS NOT YET.
+
+       THE INTENDED PRIMARY IS AN ENQUIRY THROUGH PLOTNUA. For an option
+       priced on enquiry the homeowner cannot buy directly, so the route that
+       serves them -- and the route that keeps the relationship -- is
+       "Enquire about this option", with PlotNua making the introduction.
+
+       IT IS NOT WIRED HERE. The instruction is explicit that live enquiry
+       waits for supplier approval, so ENQUIRY_ENABLED_ORGS stays empty and
+       frozen and nothing on this page routes to the enquiry screen. Guard
+       Z10 fails the build if that changes.
+
+       UNTIL THEN, THE SUPPLIER'S OWN SITE, PLAINLY LABELLED. No sentence
+       above it: "For now, the next step happens on their own site" was
+       explaining the architecture to the homeowner, which is not their
+       problem. When pnNextAction() finds no governed route, NOTHING is
+       rendered rather than a dead control. */
+    /* =====================================================================
+       Q1 - THE FORWARD BLOCK. WHO THE HOMEOWNER GOES ON WITH.
+
+       THE COMMERCIAL ARCHITECTURE IS RESULT -> RESOLVE -> ENQUIRE THROUGH
+       PLOTNUA, not RESULT -> RESOLVE -> LEAVE PLOTNUA. For an option with no
+       usable published price the homeowner cannot buy anything by visiting
+       the maker's site; they have to ask. That ask is the moment the
+       relationship is either kept or given away, so the control that offers
+       it is the primary one.
+
+       WHICH OPTIONS. The same price test pnNextAction() already makes: a
+       usable price AND verified price evidence. Anything short of that is
+       quote-only or unpriced -- Yardbox The Toronto is the worked example,
+       because Atlas holds no Pricing record for Yardbox at all -- and the
+       enquiry leads. Where a price IS published and verified, seeing it is
+       genuinely the useful next step and the supplier link stays primary.
+
+       IT CANNOT SEND, AND IT DOES NOT PRETEND TO. The control is disabled,
+       carries aria-disabled, AND HAS NO CLICK HANDLER AT ALL -- there is
+       nothing for a hand-edited DOM to fire. Beneath it, one line says so in
+       the homeowner's terms. That line claims nothing about any supplier's
+       intentions, because PlotNua has no agreement to describe yet.
+
+       THE SUPPLIER'S SITE STAYS, AS A SECONDARY. A quiet text link, not a
+       filled button. pnNextAction() still decides whether it exists at all
+       and pnSupplierHandover() still opens it, so this remains the single
+       outbound door. */
+    const rsvOut = pnNextAction(product);
+    const rsvPriced = pnUsablePrice(product.price) != null
+                   && product.priceEvidenceState === 'verified';
+
+    const rsvGo = rsvEl('div', 'rsv-forward');
+    let rsvHasAction = false;
+
+    if (!rsvPriced) {
+      const enq = rsvEl('button', 'rsv-forward-cta is-pending',
+        'Enquire about this option \u2192');
+      enq.type = 'button';
+      enq.disabled = true;
+      enq.setAttribute('aria-disabled', 'true');
+      rsvGo.appendChild(enq);
+      rsvGo.appendChild(rsvEl('p', 'rsv-forward-pending',
+        'We\u2019re not able to send this yet.'));
+      rsvHasAction = true;
+    }
+
+    if (rsvOut && rsvOut.href) {
+      const visit = rsvEl('button',
+        rsvPriced ? 'rsv-forward-cta' : 'rsv-forward-secondary',
+        'Visit ' + (product.organisation || 'the maker') + ' \u2192');
+      visit.type = 'button';
+      visit.addEventListener('click', function(){
+        pnSupplierHandover(product, 'resolve');
+      });
+      rsvGo.appendChild(visit);
+      rsvHasAction = true;
+    }
+
+    if (rsvHasAction) view.appendChild(rsvGo);
 
     return model;
   }
@@ -31822,31 +32000,18 @@
     };
   }
 
-  /* THE FINDING, DERIVED, NEVER AUTHORED — the same rule Compare and Resolve
-     hold. Today it states the honest position: PlotNua cannot yet say what is
-     normal. When Atlas holds a baseline the sentence changes because the
-     counts change, not because anyone rewrites it. */
-  function progressHeadline(model, product){
-    const maker = (product && product.organisation) || 'the maker';
-    const m = model.counts.marketAnswered;
-    if (m === 0) {
-      /* X6 - THE HEADLINE.
+  /* Z3b - progressHeadline() IS DELETED, WITH THE HEADLINE IT PRODUCED.
 
-         "What we know so far." now names the block directly beneath it,
-         so the page said the same thing twice in two type sizes.
+     Nothing called it once Progress lost its headline. A dead function
+     holding a live homeowner sentence is the trap RESOLVE_SITUATION set
+     last pass: the string stays findable and greppable, and one day
+     someone wires it back up without reading why it went.
 
-         THE BRIEF OFFERED TWO AND I TOOK THE SECOND. "Ready for the next
-         step." is a verdict, and on a page that may be listing four
-         things still to ask it is a verdict the evidence does not
-         support. "Here's where things stand." is true whether the lists
-         are full or nearly empty, which is what a derived headline has
-         to be. The counted branch below is untouched and still takes
-         over the moment Atlas can answer a market question. */
-      return 'Here’s where things stand.';
-    }
-    const w = RESOLVE_COUNT_WORDS[m] || String(m);
-    return w + (m === 1 ? ' thing is' : ' things are') + ' known about how this usually goes.';
-  }
+     THE DERIVED-COUNT IDEA IS NOT LOST. progressFor() still computes
+     counts.marketAnswered, so a future surface that wants to say how
+     much is known about how this usually goes has the number waiting
+     for it. What it will not inherit is a sentence written for a page
+     that no longer exists. */
 
   function progressEvidenceLine(entry){
     const c = entry.cell || {};
@@ -31909,116 +32074,49 @@
     const head = prgEl('div', 'rsv-head');
     head.appendChild(prgEl('p', 'rsv-kicker', 'What happens next'));
 
-    /* THE SAME GOVERNED PICTURE RESOLVE CARRIES, ON THE SAME TERMS.
-       pnAuthorisedImage() is the fail-closed rights gate; nothing is
-       fetched, nothing is inferred, and when it returns null nothing is
-       painted. The credit travels with the picture. */
-    const prgHero = prgEl('div', 'rsv-hero');
-    const prgImg = pnAuthorisedImage(product);
-    if (prgImg) {
-      const prgMedia = prgEl('div', 'rsv-hero-media');
-      const pim = document.createElement('img');
-      pim.src = prgImg.url;
-      pim.alt = prgImg.alt || product.name || '';
-      pim.loading = 'lazy';
-      prgMedia.appendChild(pim);
-      try { pnAttachImageCredit(prgMedia, prgImg); } catch (e) {}
-      prgHero.appendChild(prgMedia);
-    }
-    const prgCopy = prgEl('div', 'rsv-hero-copy');
-    prgCopy.appendChild(prgEl('p', 'rsv-product',
+    /* Z3c - AND THE PICTURE GOES WITH THE HERO.
+
+       Resolve carries the governed image now, at the head of the stage
+       the homeowner is actually sent to. Repeating it on a screen they
+       reach only from My Plot is decoration, and every repaint of a
+       rights-gated photograph is another place the gate has to be got
+       right. One painting site is safer than two. */
+    /* Z3 - NO HERO, NO HEADLINE SENTENCE.
+
+       Progress is no longer a stage the homeowner is sent to, so it no
+       longer opens like one. The picture and the derived sentence were
+       both introducing a page; what is left is a title and the lists.
+
+       THE h2 STAYS, because #screen-progress carries
+       aria-labelledby="prgHeadline" and a dangling reference is a real
+       accessibility defect, not a tidy-up. It now says which option is
+       on screen, which is what a screen-reader user needs from it. */
+    const h = prgEl('h2', 'rsv-headline',
       product.organisation ? (product.name + ', from ' + product.organisation)
-                           : (product.name || '')));
-    const h = prgEl('h2', 'rsv-headline', progressHeadline(model, product));
+                           : (product.name || ''));
     h.id = 'prgHeadline';
-    prgCopy.appendChild(h);
-    prgHero.appendChild(prgCopy);
-    head.appendChild(prgHero);
+    head.appendChild(h);
     view.appendChild(head);
 
-    /* Resolve's model, read fresh. Progress does not keep its own copy of
-       what the homeowner answered, and it writes nothing back. */
-    const prgResolve = resolveUncertaintiesFor(product, resolvePositionsFor(product.id));
-
-    const prgKnown = [];
-    model.maker.forEach(function(e){
-      if (e.state !== 'answered') return;
-      prgKnown.push({ title: e.label, value: e.cell.display,
-                      note: progressEvidenceLine(e) });
-    });
-    prgResolve.states.forEach(function(e){
-      if (e.state !== 'answered') return;
-      const copy = resolveCopyFor(e);
-      prgKnown.push({ title: (copy && copy.label) || e.key,
-                      value: e.cell && e.cell.display,
-                      note: resolveEvidenceLine(e) });
-    });
-
-    const prgAsk = [];
-    model.maker.forEach(function(e){
-      if (e.state === 'answered') return;
-      prgAsk.push({ title: e.label });
-    });
-    prgResolve.states.forEach(function(e){
-      if (e.state !== 'open' || e.resolvability !== 'on-request') return;
-      const copy = resolveCopyFor(e);
-      prgAsk.push({ title: (copy && copy.label) || e.key });
-    });
-
-    function prgBlock(title, rows){
-      if (!rows.length) return null;
-      const sec = prgEl('section', 'prg-block');
-      sec.appendChild(prgEl('h3', 'prg-block-title', title));
-      const ul = prgEl('ul', 'prg-rows');
-      rows.forEach(function(r){
-        const li = prgEl('li', 'prg-row');
-        li.appendChild(prgEl('span', 'prg-row-title', r.title));
-        if (r.value) li.appendChild(prgEl('p', 'prg-row-value', r.value));
-        if (r.note)  li.appendChild(prgEl('p', 'prg-row-note', r.note));
-        ul.appendChild(li);
-      });
-      sec.appendChild(ul);
-      return sec;
-    }
-
+    /* Z4 - THE SAME SUMMARY RESOLVE SHOWS, FROM THE SAME FUNCTION.
+       Progress composed these lists itself and Resolve now shows them
+       too, so one of the two copies had to go. This one did. */
+    const prgReady = pnReadySummary(product);
     const working = prgEl('section', 'rsv-working');
-    const knownBlock = prgBlock('What we know', prgKnown);
+    const knownBlock = pnReadyBlock('What we know', prgReady.known);
     if (knownBlock) working.appendChild(knownBlock);
-    const askBlock = prgBlock('Still to ask', prgAsk);
+    const askBlock = pnReadyBlock('Still to ask', prgReady.ask);
     if (askBlock) working.appendChild(askBlock);
     if (working.childNodes.length) view.appendChild(working);
 
-    /* THE OUTWARD ROUTE, AND WHAT IT IS NOT.
+    /* Z5 - THE DOOR MOVED TO RESOLVE, WITH THE END OF THE JOURNEY.
 
-       THIS IS THE FALLBACK, NOT THE ARCHITECTURE. The founder's commercial
-       correction is explicit: for an option priced on enquiry, the intended
-       route is an enquiry made through PlotNua, which then introduces the
-       homeowner to the maker. That route is NOT wired here, because the
-       same instruction says to return the proposed flow before any live
-       supplier contact. ENQUIRY_ENABLED_ORGS stays empty and frozen and the
-       submit path stays gated on ?enquiry=test.
-
-       So the only control on this page is the external one that already
-       existed, and its copy no longer implies the maker owns the step
-       permanently. "For now" is doing real work in that sentence.
-
-       pnNextAction() still decides whether a route exists at all, and
-       pnSupplierHandover() still opens it -- this remains its only caller. */
-    const outward = pnNextAction(product);
-    if (outward && outward.href) {
-      const door = prgEl('div', 'prg-supplier');
-      door.appendChild(prgEl('p', 'prg-supplier-note',
-        'For now, the next step happens on '
-        + ((product.organisation) || 'the maker') + '’s own site.'));
-      const go = prgEl('button', 'prg-supplier-cta',
-        'Visit ' + ((product.organisation) || 'the maker') + ' →');
-      go.type = 'button';
-      go.addEventListener('click', function(){
-        pnSupplierHandover(product, 'progress');
-      });
-      door.appendChild(go);
-      view.appendChild(door);
-    }
+       The journey contract's rule is not "the door lives in Progress";
+       it is "exactly one door, at the LAST visible stage, never before
+       it". Resolve is that stage now, so the door went with it and the
+       contract was updated to say so rather than left to fail. Progress
+       keeps no second exit -- two doors is the defect the rule exists
+       to prevent. */
 
     return model;
   }
@@ -32533,12 +32631,16 @@
   els.myPlotCompareBtn.addEventListener('click', () => renderMyPlotPickTwo());
   // RS-2 — entry to Resolve. One saved product opens directly; several open
   // the selection step. Both routes live in renderMyPlotPickOne().
-  if (els.myPlotProgressBtn) {
-    els.myPlotProgressBtn.addEventListener('click', () => renderMyPlotPickOne(
-      els.myPlotProgressView, 'Which one?',
-      'Pick the one you are furthest along with.',
-      openProgressScreen));
-  }
+  /* Q3 - THE LAST HOMEOWNER-VISIBLE ROUTE TO PROGRESS IS GONE.
+
+     openProgressScreen() and renderProgress() are RETAINED and are now
+     reachable only from window.__pnProgressScreen, the CP-2
+     instrumentation handle. That is a developer surface, not a
+     navigation one: nothing in the interface calls it.
+
+     The journey contract was updated in the same commit. J08 used to
+     REQUIRE this listener; it now requires its ABSENCE, which is the
+     same check pointed the other way rather than a check removed. */
   if (els.myPlotResolveBtn) {
     els.myPlotResolveBtn.addEventListener('click', () => renderMyPlotPickOne(
       els.myPlotResolveView, 'Which one?',
