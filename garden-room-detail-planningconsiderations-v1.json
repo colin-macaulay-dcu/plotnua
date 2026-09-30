@@ -1,28 +1,16 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-22T21:40:32Z",
+  "generated": "2026-09-30T09:24:04Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "planningConsiderations"
   ],
-  "productCount": 431,
+  "productCount": 420,
   "recordCounts": {
-    "planningConsiderations": 431
+    "planningConsiderations": 420
   },
   "products": {
-    "recpZW4echDhHtEVv": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. Auroom publishes no internal floor area and no footprint for the Aurea; the certified AM-001 Measurement Basis record confirms nothing has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. As a garden structure a sauna cabin counts toward that combined allowance in full. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: obtain the external footprint and overall height in writing before ordering, and count the sauna toward your 30 m2 total. CATEGORY ISSUE recorded once: both are wellness and sauna cabins held under Garden Rooms because Atlas has no correct Product Category, and they should not be compared like-for-like against work-use garden rooms; recorded, not corrected, architecture frozen. THE PLANNING POINT WORTH CARRYING FORWARD FROM THIS SUPPLIER AND THE OTHER WELLNESS RANGES IN THIS LAYER: sauna cabins, hot-tub enclosures and similar wellness buildings are treated by buyers as equipment and by the Regulations as structures. Their footprints count toward the same 30 m2 as a garden office, and because none of these suppliers publishes a footprint, a homeowner cannot even total their own garden without asking. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recEZ678YSRDJ16Ox": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. Auroom publishes no internal floor area and no footprint for the Quu; the certified AM-001 Measurement Basis record confirms nothing has been estimated and no wall thickness subtracted. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2) therefore cannot be tested. THE POINT THE CERTIFIED RECORD MAKES AND WHICH BUYERS ROUTINELY MISS: an outdoor sauna cabin IS a garden structure for Class 3 purposes and counts toward the combined 30 m2 alongside any shed, garage or garden room already on the plot \u2014 so its area matters even though the building is small. A sauna bought as a wellness purchase rather than a building purchase is exactly the kind of structure that quietly consumes the allowance a homeowner was saving for a garden office. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. CATEGORY ISSUE: Auroom supplies wellness and sauna cabins held under Garden Rooms because Atlas has no correct Product Category; they should not be compared like-for-like against work-use garden rooms. Recorded, not corrected. HOMEOWNER IMPLICATION: obtain the external footprint and overall height in writing, and add the sauna to your running total of back-garden structures before planning anything else.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recD12mXzhW3zEo1K": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. Ballyfree Garden Sheds publishes no floor area, no dimensions and no derivable footprint for this record; the certified AM-001 Measurement Basis record confirms nothing has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2) therefore cannot be tested. The record name identifies a product type rather than a model, so there is no size-bearing designation to work from either. Conditions applying regardless of area: sited behind the front wall of the house; at least 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; use incidental to the enjoyment of the house; NO HUMAN HABITATION. SUPPLIER OMISSION: neither a footprint nor a height is published, so neither statutory test can be run. HOMEOWNER IMPLICATION: obtain the external footprint in metres, the measurement basis and the roof height and covering from Ballyfree in writing before ordering, then add the footprint to every other structure already in the back garden and check the combined total against 30 m2. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
@@ -203,18 +191,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recxVSbrKDFIVNTAV": {
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 25 m2 against a 30 m2 allowance, leaving 5 m2. Sat exactly on the old 25 m2 threshold until 27 July 2026. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. Homeowner implication: a small existing shed consumes the remaining margin; keep the use non-residential.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recqsw7UCWcnwUwas": {
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT \u2014 36 m2 against a 30 m2 back-garden allowance. Planning permission is required under Class 3 even after the 27 July 2026 increase. HOWEVER this product falls squarely inside the size band of the NEW CLASS 3A DETACHED AUXILIARY DWELLING exemption created by the same 2026 Regulations: a detached habitable dwelling of BETWEEN 32 m2 AND 45 m2 to the rear of the principal house, linked to its services, exempt subject to notifying the planning authority AT LEAST 14 DAYS before development, time-bound and expiring 31 DECEMBER 2030. Building and Fire Regulations for habitable dwellings continue to apply. Whether this specific product meets those standards has NOT been determined. Homeowner implication: not exempt as a garden office, but potentially exempt as an auxiliary dwelling \u2014 a materially different and more demanding route that must be confirmed with the supplier and the local authority. The range splits four ways: FOUR sit inside the allowance on floor area (Cabin 17m2, Cabin 19m2 Studio, Cabin 25m2, Signature Cabin 25m2), ONE is inside only because of the 27 July 2026 increase (Cabin 26m2 Studio), ONE is over the limit (this Signature Cabin 36m2), and TWO could not be tested because they publish no figure at all (Standard Office, Signature Office). Nothing estimated. THE SUPPLIER-LEVEL FINDING, carried from the certified AM-001 layer: six of the eight carry a bare square-metre figure in the product name with NO STATED BASIS \u2014 internal, external or nominal is never specified, and no dimensions are published anywhere against which the figure could be checked. FOUR OF THE EIGHT SIT WITHIN 6 m2 OF THE 30 m2 ALLOWANCE, which is where an unstated basis stops being a technicality: at 25 m2 and 26 m2 the difference between an internal figure and an external footprint can decide the planning route. DUPLICATE-FIGURE NOTE, recorded once and not corrected: Atlas holds both a Cabin 25m2 and a Signature Cabin 25m2 at the same stated area; they are separate records and no figure has been carried between them. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: one written line from Concept Modular confirming whether its square metres are internal or external would settle the position on half the range. Recorded at the AM-006 Layer Completion Audit Repair.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rec0lmoob3jo4FfNg": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The 30 m2 back-garden allowance applies (raised from 25 m2 on 27 July 2026), with conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, no human habitation. Atlas holds no verified floor area for this product and none has been estimated. Homeowner implication: ask the supplier for the external footprint in m2 and test it against 30 m2 combined with any existing shed.",
@@ -272,12 +248,6 @@
     "recT2DoASzrfwSgDm": {
       "planningConsiderations": {
         "text": "COMFORTABLY WITHIN EXEMPTION \u2014 43% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 12.89 m2, leaving 17.11 m2 for other sheds, stores and structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: leaves substantial headroom within the allowance. Roof height is not published and must be confirmed.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recWYh1cQPtKDBsvL": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area, dimensions or derivable footprint are published for the Cube Sauna M; the certified AM-001 Measurement Basis record confirms nothing has been estimated and records that the 'M' denotes a SIZE BAND, not a measurement, and has not been read as one. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) therefore cannot be tested. THE POINT HOMEOWNERS MISS ABOUT SAUNAS: a garden sauna is still a back-garden structure and its footprint counts toward the combined 30 m2 allowance exactly as a garden office would. It is not a piece of garden furniture for planning purposes. It is also unlikely on its own to threaten the limit, but it will reduce what remains for a future garden room \u2014 which is precisely the sequence in which people run out of allowance without realising. CATEGORY ISSUE carried from the certified record: this is a SAUNA held in Atlas under Garden Rooms because no correct Product Category exists; recorded, not corrected, architecture frozen \u2014 the same issue already logged against TimberIN hot tubs and Auroom wellness cabins. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: ask for the external footprint and height, and add the sauna to your running total of back-garden structures before you plan anything else.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1127,12 +1097,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recW6DjtfmrlAHyfQ": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, no human habitation. No audited area held in Atlas. A VERANDA MAY OR MAY NOT COUNT toward floor area depending on whether it is roofed and enclosed. Homeowner implication: ask whether the veranda is inside the quoted footprint \u2014 it can decide the exemption.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
     "recrFFekZa6jNZsKe": {
       "planningConsiderations": {
         "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 80% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 23.88 m2, leaving 6.12 m2 for other structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: viable only where existing garden structures total under 6.12 m2. Whether the covered porch counts toward the exempted area should be confirmed locally. Roof height is not published.",
@@ -1142,18 +1106,6 @@
     "recJrM9Ubx8WyWXCS": {
       "planningConsiderations": {
         "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 93% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 27.78 m2, leaving 2.22 m2 for every other shed, store or structure on the site. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: this is one of the largest structures in the range that still fits the exemption, but only on a garden with essentially no other outbuildings. Roof height is not published.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCLPeIXS09tSjIo": {
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 60% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 17.88 m2, leaving 12.12 m2 for other structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: a canopy is roofed structure and counts toward the allowance in full, so the whole 17.88 m2 must be assumed to count. Roof height is not published.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recQAh2Q9scUud7pC": {
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 57% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 17.22 m2, leaving 12.78 m2 for other structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: comfortable headroom within the allowance. The planning position here rests on the external dimensions, which the supplier publishes consistently for this product, so the room-area discrepancy noted elsewhere does not affect this determination. Roof height is not published.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2306,12 +2258,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recgOQWcwBubjOLWh": {
-      "planningConsiderations": {
-        "text": "COMFORTABLY WITHIN EXEMPTION \u2014 44% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 13.29 m2, leaving 16.71 m2 for other sheds, stores and structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: leaves substantial headroom for an existing shed or future structure. Roof height is not published and must be confirmed.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rec74jHDrOU6IOM32": {
       "planningConsiderations": {
         "text": "EXCEEDS THE EXEMPTION ON FOOTPRINT. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 34.70 m2 \u2014 116% of the allowance \u2014 before any existing shed or store is counted. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: on published dimensions this product cannot be erected under the exemption. Part of the residual is an integrated shed, which is roofed structure and counts in full; only the open terrace portion is potentially arguable, and the supplier does not publish the split. Roof height is not published.",
@@ -2405,18 +2351,6 @@
     "recFQ6LsmRjnd581W": {
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA. Supplier designation, preserved exactly: 5 m \u00d7 3 m, giving 15.00 m2 nominal plan area against the 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) \u2014 half of it. 15.00 m2 also sat inside the previous 25 m2 limit, so the position is unchanged by the 2026 increase, and about 15 m2 remains for other structures. The certified AM-001 Measurement Basis record notes the supplier does not state whether the designation is internal or external and that nothing has been estimated; at 15.00 m2 the margin is wide enough that the unresolved basis does not change the conclusion. PREMIUM INSULATED BUILD CAVEAT: the thicker wall build-up means the usable floor sits below the nominal label by an unpublished amount, so do not compare this figure directly against an uninsulated cabin of the same label. Conditions applying in addition to area: behind the front wall of the house; at least 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: inside the area limit. Confirm the roof height and covering with Waltons before ordering, and add every existing shed, garage or garden structure to the same 30 m2 total.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recsgRXeV6TNzxCYa": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. This is a combined sauna-and-hot-tub unit; the certified AM-001 Measurement Basis record confirms no footprint or internal area is held and that nothing has been estimated or apportioned between the two elements. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. THE COMBINED FOOTPRINT IS WHAT COUNTS: the sauna element is an enclosed structure and the whole unit occupies one continuous footprint in the garden, so the buyer must obtain the overall external footprint from TimberIN \u2014 not the sauna cabin alone \u2014 and count all of it toward the 30 m2. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: ask for the overall external footprint of the complete unit and its maximum height above finished ground level, in writing, before ordering. TWO of the four are VESSELS rather than structures \u2014 the Nordic Rojal wood-fired hot tub and the Nordic Ice cold plunge tub \u2014 and the floor-area test does not properly apply to them at all; their planning relevance depends on whether they are decked, housed or roofed on site. The other TWO are enclosed structures to which the area test does apply \u2014 the Nordic Pod Custom barrel sauna, which is made to order so has no fixed area even in principle, and this Hobbiton combo, for which no footprint is published. VOCABULARY LIMITATION recorded once: the approved classification set assumes an enclosed structure assessed on floor area and cannot express 'the area test does not apply to this product type'; the closest approved value is retained throughout and the distinction is explained in each value. CATEGORY ISSUE recorded once: all four are wellness equipment held under Garden Rooms because Atlas has no correct Product Category, and they should be excluded from garden-room recommendations; recorded, not corrected, architecture frozen. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recgmL8p4EKPREiWf": {
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. This is a CUSTOM-configured barrel sauna: the certified AM-001 Measurement Basis record records that length, and therefore floor area, are specified per order, so no single area exists to test and none has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2) cannot be tested against a product with no fixed size. UNLIKE THE TUBS IN THIS RANGE, THIS ONE IS AN ENCLOSED STRUCTURE AND THE AREA TEST DOES APPLY: a sauna cabin is a back-garden structure and its footprint counts toward the combined 30 m2 exactly as a garden office would, so the buyer must obtain the AS-ORDERED footprint from TimberIN before assuming exemption. A barrel form also complicates the height question, because the curved roof reaches its maximum at the centre line \u2014 ask for the overall height at the highest point above finished ground level, against the 3 m limit for a non-tiled roof. Other conditions: behind the front wall of the house; 25 m2 of private open space retained; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: because the product is made to order, the planning answer is set by YOUR order, not by the catalogue. Get the as-ordered external footprint and maximum height in writing before committing, and add the footprint to every other structure in the garden.",
         "evidenceScope": "Product-Specific"
       }
     },

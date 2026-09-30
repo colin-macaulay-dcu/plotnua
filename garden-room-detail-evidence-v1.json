@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-dryrun",
-  "generated": "2026-09-22T21:40:32Z",
+  "generated": "2026-09-30T09:24:04Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "alternatives",
@@ -12,69 +12,17 @@
     "typicalHomeowner",
     "sources"
   ],
-  "productCount": 456,
+  "productCount": 445,
   "recordCounts": {
-    "alternatives": 431,
-    "bestFor": 431,
-    "considerations": 431,
-    "planningConsiderations": 431,
-    "strengths": 431,
-    "typicalHomeowner": 431,
-    "sources": 352
+    "alternatives": 420,
+    "bestFor": 420,
+    "considerations": 420,
+    "planningConsiderations": 420,
+    "strengths": 420,
+    "typicalHomeowner": 420,
+    "sources": 341
   },
   "products": {
-    "recpZW4echDhHtEVv": {
-      "considerations": {
-        "text": "THE PLANNING CONSEQUENCE IS THE SAME AS FOR ANY GARDEN BUILDING AND IS EASILY OVERLOOKED: the footprint of a sauna cabin counts toward the 30 m2 combined back-garden allowance in full, so it reduces what remains for a future office, shed or studio. Neither the footprint nor the height is published, so neither statutory test could be run in the certified AM-006 layer. SECOND, THE TWO-MODEL PROBLEM: Aurea and Quu carry identical evidence positions, so a homeowner cannot rank them, and any comparison presented between them would be empty. Recorded once as a catalogue limitation; not corrected, architecture frozen. THIRD, PRACTICAL SAUNA-SPECIFIC POINTS THAT ATLAS CANNOT ANSWER: electrical supply for the heater, ventilation, and the base \u2014 all matter more for a sauna than for a dry office and none is held. HOMEOWNER IMPLICATION: treat the electrical and base requirements as part of the price, and get the footprint in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "THE SAME WELLNESS BUYER AS THE QUU, AND ATLAS CANNOT SEPARATE THE TWO MODELS. Neither the Aurea nor the Quu publishes an internal floor area, an external footprint, a height, a heater specification, a warranty or a price, so nothing in the record tells a homeowner which is larger, hotter, better built or dearer. CATALOGUE LIMITATION recorded once for this supplier: with two identically documented models, no evidence-based distinction can be drawn between them, and none has been invented. WHAT CAN BE SAID applies to both: a purpose-built outdoor sauna cabin, held under Garden Rooms only because Atlas has no correct category, whose footprint nonetheless counts toward the 30 m2 combined back-garden allowance. HOMEOWNER IMPLICATION: the choice between Aurea and Quu has to be made from the supplier's own material, not from this catalogue \u2014 ask what differs, in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. Auroom publishes no internal floor area and no footprint for the Aurea; the certified AM-001 Measurement Basis record confirms nothing has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. As a garden structure a sauna cabin counts toward that combined allowance in full. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: obtain the external footprint and overall height in writing before ordering, and count the sauna toward your 30 m2 total. CATEGORY ISSUE recorded once: both are wellness and sauna cabins held under Garden Rooms because Atlas has no correct Product Category, and they should not be compared like-for-like against work-use garden rooms; recorded, not corrected, architecture frozen. THE PLANNING POINT WORTH CARRYING FORWARD FROM THIS SUPPLIER AND THE OTHER WELLNESS RANGES IN THIS LAYER: sauna cabins, hot-tub enclosures and similar wellness buildings are treated by buyers as equipment and by the Regulations as structures. Their footprints count toward the same 30 m2 as a garden office, and because none of these suppliers publishes a footprint, a homeowner cannot even total their own garden without asking. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD BUILDING A WELLNESS CORNER IN THE GARDEN. Often the same buyer who is also looking at a cold plunge or hot tub, and who thinks of the sauna as equipment rather than as a building. They are choosing on heat, timber and appearance, and they will be guided by the supplier's own material because Atlas holds nothing technical for this model. THE ADVICE THAT MATTERS MOST TO THEM is structural rather than thermal: because the sauna counts toward the same 30 m2 allowance as any other garden building, they should decide now whether a garden office or studio might follow, and reserve the allowance accordingly. NOT FOR: anyone whose primary need is a work or study room.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "PURPOSE-BUILT FOR SAUNA USE, AS WITH THE REST OF THE RANGE \u2014 a cabin designed around heat, steam and ventilation rather than a general garden building adapted to it. That specialism is the one established advantage. NOTHING FURTHER IS ESTABLISHED, AND THAT INCLUDES ANY ADVANTAGE OVER THE QUU: no floor area, footprint, height, wall build-up, heater specification, warranty term, installation scope or price is held for the Aurea, and no distinction between the two Auroom models has been drawn from the model names or from brand positioning. WHAT HAS DELIBERATELY NOT BEEN DONE: with two undifferentiated records, it would be easy to present one as the premium option. Nothing supports that. HOMEOWNER IMPLICATION: ask Auroom directly what separates the Aurea from the Quu \u2014 size, heater, timber, glazing and price \u2014 because Atlas records no difference at all.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE WELLNESS COHORT IN THIS CATALOGUE IS SMALL AND UNIFORMLY UNDOCUMENTED ON SIZE. TimberIN offers four products \u2014 a wood-fired hot tub, a cold plunge tub, a made-to-order barrel sauna and a sauna-and-hot-tub combo \u2014 of which only the enclosed ones are structures for planning purposes. MyCabin.ie's Cube Sauna M is the Irish-supplier alternative. None publishes a footprint. THE MORE USEFUL COMPARISON MAY BE OUTSIDE THE CATEGORY: if the sauna is intended to share a garden with a future office, look at what the office will need \u2014 Adman's nine named Multiroom sizes from 9.60 m2 upward, or Yardbox's published footprints \u2014 and reserve the allowance now. HOMEOWNER IMPLICATION: plan the whole garden, not the next purchase. Neither the Quu nor the Aurea publishes an area, footprint, height, specification, warranty or price, and Atlas records no distinguishing evidence between the two models \u2014 recorded once as a catalogue limitation. CATEGORY ISSUE carried forward once: both are wellness and sauna cabins held under Garden Rooms because no correct Product Category exists, and they should not be compared like-for-like against work-use garden rooms. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recEZ678YSRDJ16Ox": {
-      "alternatives": {
-        "text": "WITHIN THE WELLNESS GROUP IN THIS CATALOGUE, the comparisons are TimberIN's Nordic Pod Custom barrel sauna \u2014 made to order, so the size is set by the commission \u2014 and its Nordic Hobbiton sauna-and-hot-tub combo, where the whole unit occupies one continuous footprint. MyCabin.ie's Cube Sauna M is the Irish-supplier option, though the 'M' is a size band rather than a measurement. All of them share the same gap: none publishes a footprint, so none can be tested against the allowance. IF THE REAL REQUIREMENT IS A WARM YEAR-ROUND ROOM RATHER THAN A SAUNA, the certified thermal work points elsewhere entirely \u2014 SIPS-House publishes 124 mm SIPS walls and a 0.031 W/mK core, and Sanctum and Yardbox publish usable internal area separately from footprint. HOMEOWNER IMPLICATION: decide first whether you are buying heat or space; they are different products.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A HOME SAUNA BUYER \u2014 AND THAT IS A DIFFERENT PURCHASE FROM A GARDEN ROOM. Auroom supplies wellness and sauna cabins, and the certified AM-001 layer records a standing category flag: these products sit under Garden Rooms in Atlas only because no correct Product Category exists, and they should not be compared like-for-like against work-use garden rooms. THE USEFUL FRAMING is therefore not 'is this a good office' but 'is this a good sauna, and what does putting one in the garden cost you'. WHAT IS NOT HELD: no internal floor area, no footprint, no height, no insulation value, no warranty and no price. HOMEOWNER IMPLICATION: if you want a sauna, judge it as one \u2014 heater type, bench layout, timber, ventilation \u2014 and then ask for the external footprint, because it counts against the same planning allowance as a garden office would.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. Auroom publishes no internal floor area and no footprint for the Quu; the certified AM-001 Measurement Basis record confirms nothing has been estimated and no wall thickness subtracted. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2) therefore cannot be tested. THE POINT THE CERTIFIED RECORD MAKES AND WHICH BUYERS ROUTINELY MISS: an outdoor sauna cabin IS a garden structure for Class 3 purposes and counts toward the combined 30 m2 alongside any shed, garage or garden room already on the plot \u2014 so its area matters even though the building is small. A sauna bought as a wellness purchase rather than a building purchase is exactly the kind of structure that quietly consumes the allowance a homeowner was saving for a garden office. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. CATEGORY ISSUE: Auroom supplies wellness and sauna cabins held under Garden Rooms because Atlas has no correct Product Category; they should not be compared like-for-like against work-use garden rooms. Recorded, not corrected. HOMEOWNER IMPLICATION: obtain the external footprint and overall height in writing, and add the sauna to your running total of back-garden structures before planning anything else.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "THE PRODUCT IS PURPOSE-BUILT FOR ITS FUNCTION, AND THAT IS WORTH SAYING PLAINLY. A dedicated outdoor sauna cabin is engineered around heat, steam and ventilation \u2014 timber selection, sealing and bench geometry all follow from that \u2014 in a way that a general-purpose garden room converted to sauna use is not. For a buyer whose requirement is a sauna, a specialist product is the right starting point. NOTHING ELSE IS ESTABLISHED IN ATLAS: no internal floor area, no external footprint, no height, no wall build-up, no heater specification, no warranty term, no installation scope and no price is held for the Quu, and nothing has been inferred from the wellness category or the brand. HOMEOWNER IMPLICATION: the specialism is real; every number is still to be asked for.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "THE POINT BUYERS ROUTINELY MISS: AN OUTDOOR SAUNA IS A GARDEN STRUCTURE FOR PLANNING PURPOSES. The certified AM-006 layer records that a sauna cabin counts toward the 30 m2 combined back-garden allowance alongside any shed, garage or garden room already on the plot \u2014 so its area matters even though the building is small. A sauna bought as a wellness purchase rather than a building purchase is exactly the kind of structure that quietly consumes the allowance a homeowner was saving for an office. SECOND, NEITHER STATUTORY TEST CAN BE RUN: no footprint and no height are published, so the 30 m2 allowance and the 3 m / 4 m height limits are both untestable. THIRD, THE CATEGORY PLACEMENT: held under Garden Rooms because Atlas has no correct category; recorded, not corrected, architecture frozen. FOURTH, no price, warranty or installation scope is held. HOMEOWNER IMPLICATION: add the sauna to your running total of garden structures before planning anything else.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A WELLNESS BUYER, NOT A WORKSPACE BUYER. Someone adding a sauna to a garden as a lifestyle purchase \u2014 often alongside a hot tub or plunge tub \u2014 who is choosing on heat performance, timber quality and appearance rather than on square metres per euro. They are typically not comparing this against a garden office at all, and they should not be shown one as an equivalent. THE THING THEY MOST NEED TO KNOW is the thing they are least likely to ask: the footprint counts against the same 30 m2 back-garden allowance as any other building, so a sauna now may cost them a garden room later. NOT FOR: anyone needing a work, study or habitable room \u2014 this is a single-function wellness building.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recD12mXzhW3zEo1K": {
       "bestFor": {
         "text": "CANNOT BE DETERMINED \u2014 THE RECORD IDENTIFIES A PRODUCT TYPE, NOT A PRODUCT. 'Ballyfree Garden Sheds \u2014 Garden Room' carries no model name, no size, no specification and no price in Atlas, and the certified AM-001 and AM-006 layers both record that no floor area, dimensions or height are published, with nothing estimated. A record at this level of generality cannot be matched to a homeowner's requirement, because there is no requirement it can be tested against. HOMEOWNER IMPLICATION: this is a supplier-level entry rather than a buyable product. If Ballyfree is on your list, contact them for their actual model range and sizes, then compare those against the specified products in this catalogue \u2014 do not treat this single record as representing what the company can build.",
@@ -927,58 +875,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recxVSbrKDFIVNTAV": {
-      "alternatives": {
-        "text": "Concept Modular Cabin 26m\u00b2 Studio \u2014 EUR 38,500 for a slightly larger room, EUR 16,450 less, same warranty and same construction system. Compare these two directly before anything else. Concept Modular Signature Cabin 36m\u00b2 \u2014 EUR 67,950 for 36.2m\u00b2 with kitchen and bathroom, better value per m\u00b2 than this model. Luxury Garden Studios Signature 98 \u2014 GBP 142,000 turnkey if the requirement is genuinely a dwelling rather than a studio.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner for whom finish quality and brand tier matter more than cost per square metre, budgeting roughly EUR 63k-73k once VAT, base and connections are added. Comfortable paying a premium for the top specification, but should still ask precisely what that premium buys.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "The most expensive product per square metre in the Concept Modular range at roughly EUR 2,234/m\u00b2. On the evidence Atlas holds today, it is only the right choice for a homeowner who has confirmed exactly what the Signature specification adds and decided it is worth the premium.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "50-year structural warranty, the longest in Atlas. 100mm galvanised box steel frame with 100mm insulated floor, walls and roof; aluminium plate cladding, aluminium Low-E tempered double glazing and SPC flooring standard. Wired with smart-ready fittings. Top of the Concept Modular cabin specification at this size, delivered factory-finished with no site build to manage.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "At EUR 54,950 for 24.6m\u00b2 this is EUR 16,450 more than the 26m\u00b2 Studio, which is slightly LARGER \u2014 roughly EUR 2,234 per m\u00b2 against EUR 1,481. Atlas holds no evidence describing what the Signature specification adds, so that premium is currently unjustified from the record. Get the specification difference in writing before committing. Price excludes VAT and is Starting From; mains connection excluded; base, installation, craneage and haulage likely separate.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 25 m2 against a 30 m2 allowance, leaving 5 m2. Sat exactly on the old 25 m2 threshold until 27 July 2026. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. Homeowner implication: a small existing shed consumes the remaining margin; keep the use non-residential.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recqsw7UCWcnwUwas": {
-      "alternatives": {
-        "text": "SIPS Garden Room MINT \u2014 41.2m\u00b2 one-bedroom kit from EUR 21,490 ex VAT: more floor area for a fraction of the price, but as a shell with no kitchen, bathroom, services or assembly included. 1 Bed Granny Flat 33m\u00b2 (Granny Flats Dublin) \u2014 the closest Irish turnkey annexe comparison. Luxury Garden Studios Signature 98 \u2014 GBP 142,000 for 98m\u00b2 and four bedrooms if the accommodation brief is much larger than one person.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Self-contained garden accommodation, delivered factory-finished with a designer kitchen and bathroom already fitted. At 36.2m\u00b2 with plumbed water and a 50-year structural warranty, this is the Concept Modular product that genuinely functions as an annexe rather than a room.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "36.2m\u00b2 delivered with a designer kitchen and bathroom fitted and a water heater as standard \u2014 genuinely habitable on arrival rather than a shell. 50-year structural warranty, the longest in Atlas. 100mm galvanised box steel frame with 100mm insulation throughout; aluminium plate cladding, aluminium Low-E tempered double glazing, SPC flooring. 3m external height with a terrace. Roughly EUR 1,877 per m\u00b2 \u2014 better value than the Signature Cabin 25m\u00b2 despite far higher specification.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "An Irish homeowner creating independent accommodation for an adult child or ageing parent, with good site access and roughly EUR 85k-95k available once VAT, base, craneage and connections are counted. Wants the building to arrive finished and habitable rather than to run a construction project, and is prepared to handle planning and a services connection.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "Described as turnkey, but concrete base, installation labour, craneage and haulage are costed separately from the EUR 67,950 \u2014 typically EUR 3,000-5,000 plus VAT \u2014 and mains electrical connection is excluded and must be arranged with a certified electrician. The price also excludes VAT. A plumbed water supply is required. At 36.2m\u00b2 with kitchen and bathroom this is habitable accommodation, so assume full planning permission rather than exempted development. Craneage implies site access for a lorry and crane \u2014 check that early.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "EXCEEDS THE EXEMPTION LIMIT \u2014 36 m2 against a 30 m2 back-garden allowance. Planning permission is required under Class 3 even after the 27 July 2026 increase. HOWEVER this product falls squarely inside the size band of the NEW CLASS 3A DETACHED AUXILIARY DWELLING exemption created by the same 2026 Regulations: a detached habitable dwelling of BETWEEN 32 m2 AND 45 m2 to the rear of the principal house, linked to its services, exempt subject to notifying the planning authority AT LEAST 14 DAYS before development, time-bound and expiring 31 DECEMBER 2030. Building and Fire Regulations for habitable dwellings continue to apply. Whether this specific product meets those standards has NOT been determined. Homeowner implication: not exempt as a garden office, but potentially exempt as an auxiliary dwelling \u2014 a materially different and more demanding route that must be confirmed with the supplier and the local authority. The range splits four ways: FOUR sit inside the allowance on floor area (Cabin 17m2, Cabin 19m2 Studio, Cabin 25m2, Signature Cabin 25m2), ONE is inside only because of the 27 July 2026 increase (Cabin 26m2 Studio), ONE is over the limit (this Signature Cabin 36m2), and TWO could not be tested because they publish no figure at all (Standard Office, Signature Office). Nothing estimated. THE SUPPLIER-LEVEL FINDING, carried from the certified AM-001 layer: six of the eight carry a bare square-metre figure in the product name with NO STATED BASIS \u2014 internal, external or nominal is never specified, and no dimensions are published anywhere against which the figure could be checked. FOUR OF THE EIGHT SIT WITHIN 6 m2 OF THE 30 m2 ALLOWANCE, which is where an unstated basis stops being a technicality: at 25 m2 and 26 m2 the difference between an internal figure and an external footprint can decide the planning route. DUPLICATE-FIGURE NOTE, recorded once and not corrected: Atlas holds both a Cabin 25m2 and a Signature Cabin 25m2 at the same stated area; they are separate records and no figure has been carried between them. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: one written line from Concept Modular confirming whether its square metres are internal or external would settle the position on half the range. Recorded at the AM-006 Layer Completion Audit Repair.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rec0lmoob3jo4FfNg": {
       "planningConsiderations": {
         "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The 30 m2 back-garden allowance applies (raised from 25 m2 on 27 July 2026), with conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, no human habitation. Atlas holds no verified floor area for this product and none has been estimated. Homeowner implication: ask the supplier for the external footprint in m2 and test it against 30 m2 combined with any existing shed.",
@@ -1268,32 +1164,6 @@
       },
       "strengths": {
         "text": "Published strengths, stated without comparison: a room-to-footprint ratio of 1.07; a square plan intended for corner siting; a 12.89 m2 footprint using only 43% of the statutory allowance; a 44 mm log wall; and the lowest published price of the two catalogue rows on this specification at EUR 6,240, delivery included.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recWYh1cQPtKDBsvL": {
-      "bestFor": {
-        "text": "A GARDEN SAUNA \u2014 AND A REMINDER THAT A SAUNA IS STILL A BACK-GARDEN STRUCTURE. The certified record makes the point homeowners most often miss: its footprint counts toward the combined 30 m2 allowance exactly as a garden office would; it is not garden furniture for planning purposes. IT IS UNLIKELY ON ITS OWN TO THREATEN THE LIMIT, but it will reduce what remains for a future garden room \u2014 which is precisely the sequence in which people run out of allowance without realising. 'M' DENOTES A SIZE BAND, NOT A MEASUREMENT, and has not been read as one; no footprint or height is published. HOMEOWNER IMPLICATION: add it to your running total before you plan anything else.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE CATALOGUE'S OTHER WELLNESS RECORDS ARE AUROOM WELLNESS, IGLUCRAFT AND TIMBERIN, and none of them publishes a footprint or height either \u2014 so no documented garden sauna exists here, which is the honest position. TIMBERIN'S NORDIC ICE COLD PLUNGE TUB is the one wellness product in the catalogue that is a vessel rather than an enclosed structure, and therefore the one least likely to consume the allowance. WITHIN MYCABIN, this is the only wellness product; the Laois at 9.00 m2 is the smallest of its buildings. HOMEOWNER IMPLICATION: across every sauna supplier here, the footprint is the figure to demand in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. No floor area, dimensions or derivable footprint are published for the Cube Sauna M; the certified AM-001 Measurement Basis record confirms nothing has been estimated and records that the 'M' denotes a SIZE BAND, not a measurement, and has not been read as one. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) therefore cannot be tested. THE POINT HOMEOWNERS MISS ABOUT SAUNAS: a garden sauna is still a back-garden structure and its footprint counts toward the combined 30 m2 allowance exactly as a garden office would. It is not a piece of garden furniture for planning purposes. It is also unlikely on its own to threaten the limit, but it will reduce what remains for a future garden room \u2014 which is precisely the sequence in which people run out of allowance without realising. CATEGORY ISSUE carried from the certified record: this is a SAUNA held in Atlas under Garden Rooms because no correct Product Category exists; recorded, not corrected, architecture frozen \u2014 the same issue already logged against TimberIN hot tubs and Auroom wellness cabins. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: ask for the external footprint and height, and add the sauna to your running total of back-garden structures before you plan anything else.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "SOMEONE ADDING A WELLNESS FEATURE RATHER THAN SOLVING A SPACE PROBLEM. They already have the house they need; this is a discretionary purchase for recovery, relaxation or cold-water bathing, and they are buying from an Irish showroom where they can see the build. THEY ARE ALSO, OFTEN, THE SAME HOUSEHOLD THAT WILL WANT A GARDEN OFFICE LATER \u2014 which is why the allowance arithmetic matters to them more than the sauna's own modest size suggests. NOT FOR: anyone whose garden allowance is already committed, or who assumes small structures do not count.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "THE ALLOWANCE IS CONSUMED IN SEQUENCE, AND A SAUNA IS USUALLY THE FIRST BITE. Because the 30 m2 is COMBINED across every back-garden structure, installing a sauna today reduces what is available for a garden office in two years' time \u2014 and the household that adds buildings one at a time is the one most likely to breach the limit without ever making a conscious decision to. NO FOOTPRINT OR HEIGHT IS PUBLISHED, so its contribution to the total cannot be calculated from Atlas evidence. THIRD, the certified layers record the category placement issue once, alongside the same issue on TimberIN hot tubs and Auroom wellness cabins; recorded, not corrected. HOMEOWNER IMPLICATION: get the external footprint and height, and keep a running total of every structure in the garden.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "IT IS A SMALL, SINGLE-PURPOSE BUILDING FROM A SUPPLIER WITH IRISH SHOWROOMS \u2014 the combination that makes a wellness purchase practical rather than speculative, since a sauna is a product people want to sit inside before buying. BEING SMALL IS ITSELF AN ADVANTAGE HERE: it is the least likely product in the range to create a planning problem, and it leaves most of the allowance intact for a future garden room. NOT ESTABLISHED: no footprint, dimensions, height, heater specification, timber specification, warranty or price is published, and the size band conveys no figure \u2014 so nothing about its capacity or performance has been recorded.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -4368,10 +4238,6 @@
       }
     },
     "recMa9xyEmfP70YFw": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-evelin-plus-insulated-34-cladding-6x3m-20x10-18m-2.html",
-        "evidenceScope": null
-      },
       "strengths": {
         "text": "THE INSULATED DESIGNATION IS THE SUPPLIER'S OWN AND IT MEANS SOMETHING SPECIFIC AT PINECA: 'At pineca.ie, insulation is not an afterthought' \u2014 it is integrated into the wall, roof and floor construction from the outset and the materials are included in the kit price rather than sold as an optional extra. THAT IS A GENUINELY DIFFERENT PROPOSITION from the log suppliers whose insulation is a separate purchase. PINECA IS ALSO THE ONLY SUPPLIER IN THIS ATLAS THAT PUBLISHES U-VALUES anywhere in its range. NOT ESTABLISHED: no size, no area, no height, no Product URL, no identification of which of the four insulated specifications applies \u2014 and therefore no advantage claimed over any other Pineca insulated model.",
         "evidenceScope": "Product-Specific"
@@ -4668,10 +4534,6 @@
       }
     },
     "recaj7Ngc6yeMuLg8": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-layla-insulated-34-cladding-6x3-m-20x10-15-m2-3.html",
-        "evidenceScope": null
-      },
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 all three published sizes sit inside the 30 m2 combined back-garden allowance, raised from 25 m2 on 27 July 2026: 4x3 m (12 m2 external, 10 m2 published internal), 5x3 m (15 external, 13 internal) and 6x3 m (18 external, 15 internal). Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. THIS IS A RANGE-LEVEL ATLAS RECORD covering three variants, and the classification holds for every one of them because the largest external envelope is 18 m2. MEASUREMENT FINDING from the certified AM-001 layer, useful here: on the insulated LAYLA the published area is consistently 2 to 3 m2 BELOW the external dimensions, which establishes it as the internal floor \u2014 the opposite convention to Pineca's Garden Studio MAJA. Planning assesses the external figure, which is what has been used. VOCABULARY LIMITATION, restated once: one classification covers three published sizes; the variant detail is carried inside the value. HOMEOWNER IMPLICATION: whichever size you choose, at least 12 m2 of the allowance remains.",
         "evidenceScope": "Product-Specific"
@@ -4848,10 +4710,6 @@
       }
     },
     "recdsv9K7rmPYi8UU": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-maja-34-mm-7-5x4-m-25x13-30-m2.html",
-        "evidenceScope": null
-      },
       "considerations": {
         "text": "ZERO HEADROOM IS NOT A MARGIN. At exactly 30.00 m2 external the building consumes the entire combined allowance, so a bin store, a greenhouse or a bike shed already standing puts the plot over the limit. SECOND, NO INSULATION DESIGNATION IS HELD, and Pineca publishes both uninsulated and insulated builds under the same model names \u2014 an unqualified record could be either, and AT THIS SUPPLIER THE CHOICE CANNOT BE REVERSED because insulation is integrated into the wall construction and cannot be retrofitted. THIRD, PINECA'S PUBLISHED AREA HAS NO CONSISTENT BASIS ACROSS THE RANGE: external here, internal on the LAYLA models, self-contradictory on the 34 mm OAK. FOURTH, Pineca lists this as a Garden STUDIO while Atlas holds it as a Garden Room. HOMEOWNER IMPLICATION: audit the garden, then name the insulation class.",
         "evidenceScope": "Product-Specific"
@@ -5028,10 +4886,6 @@
       }
     },
     "reczxS9ObYqm25Ylb": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-oak-34-mm-6x3-m-20x10-16-m2.html",
-        "evidenceScope": null
-      },
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 18.00 m2 external (6 x 3 m) against the 30 m2 combined back-garden allowance, raised from 25 m2 on 27 July 2026. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. SUPPLIER DATA CONFLICT, recorded not resolved: Pineca publishes this model as '18 m2' in the product title while the product's own URL slug reads '16 m2'. Two different areas for the same product in the same link. Both are recorded exactly as published; neither has been chosen, corrected or averaged. The arithmetic resolves neither \u2014 6 x 3 m is 18.00 m2 externally and 17.39 m2 internally on the published 34 mm wall, so 18 matches the envelope and 16 matches nothing. THE CONFLICT DOES NOT CHANGE THE EXEMPTION AT THIS SIZE: both figures sit inside the allowance. On a larger model the same defect could decide it. SPECIFICATION: 34 mm walls are a summerhouse-grade profile, not a year-round insulated build. HOMEOWNER IMPLICATION: exempt on area either way, but ask Pineca which figure is right before comparing this against anything else.",
         "evidenceScope": "Product-Specific"
@@ -5645,36 +5499,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recW6DjtfmrlAHyfQ": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-eva-e-g0147/",
-        "evidenceScope": null
-      },
-      "considerations": {
-        "text": "A VERANDA CAN ADD SEVERAL SQUARE METRES THAT NOBODY THINKS OF AS BUILDING. If it is roofed, it counts toward the combined 30 m2 alongside the enclosed room \u2014 and a homeowner given a room-only figure will understate their position, which is exactly the error the certified layers flag on this range. SECOND, NO AREA IS HELD FOR EITHER ELEMENT and nothing has been estimated. THIRD, no height is published. FOURTH, a summer house used for overnight guests would fall outside the exemption on use regardless of size. HOMEOWNER IMPLICATION: ask for ONE TOTAL ROOFED FIGURE covering room and veranda together.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE GARDEN ROOM NORA E AND GARDEN ROOM JACOB E, BOTH WITH VERANDAS, ARE THE PARALLEL RECORDS, none distinguishable on published evidence. ALL ABOUT OUTDOORS' LENA IS THE COMPARISON WORTH MAKING: the certified layers state plainly there that a roofed patio counts toward the assessed area alongside the enclosed room \u2014 the same question, already settled. IF THE ALLOWANCE IS TIGHT, an UNROOFED deck beside a plain room achieves much of the same use without counting. HOMEOWNER IMPLICATION: roofed or unroofed is the decision with planning consequences.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD THAT WANTS SOMEWHERE TO SIT OUT IN APRIL AND OCTOBER. The veranda is the reason they are looking at this model rather than a plain room \u2014 shelter without being indoors, which is the whole appeal of a summer house in an Irish garden. THEY ARE BUYING FOR LEISURE, and are the buyer least likely to have thought about the allowance at all. NOT FOR: year-round working use, where nothing thermal is published; nor for guest sleeping, which is a different consent route; nor for a garden already close to 30 m2.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "A SUMMER HOUSE WITH COVERED OUTDOOR SPACE \u2014 AND THE VERANDA IS THE PLANNING QUESTION, NOT AN ACCESSORY. The certified layers record that a veranda MAY OR MAY NOT COUNT toward the assessed area depending on whether it is roofed and enclosed, and that this has not been determined for the range's veranda models. A ROOFED VERANDA WOULD BE ADDED TO THE ENCLOSED FOOTPRINT for the 30 m2 combined test. No audited area is held for either element. HOMEOWNER IMPLICATION: ask specifically whether the veranda is inside the quoted footprint \u2014 the certified layers note it can decide the exemption.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, no human habitation. No audited area held in Atlas. A VERANDA MAY OR MAY NOT COUNT toward floor area depending on whether it is roofed and enclosed. Homeowner implication: ask whether the veranda is inside the quoted footprint \u2014 it can decide the exemption.",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "strengths": {
-        "text": "A VERANDA IS DISPROPORTIONATELY USEFUL IN AN IRISH GARDEN, where the limit on outdoor living is rain rather than temperature: covered space beside the house doubles the days the building gets used, at a fraction of the cost of more enclosed floor. HANSA24 OFFERS THREE VERANDA MODELS \u2014 Eva E, Nora E and Jacob E \u2014 so the feature is a standing part of the range rather than a one-off. NOT ESTABLISHED: no audited area for the room or the veranda, no dimensions, height, specification, warranty or price is held in Atlas.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recrFFekZa6jNZsKe": {
       "sources": {
         "text": "https://summerhouse24.ie/garden-summer-house-with-porch-franz-g0098/",
@@ -5732,66 +5556,6 @@
       },
       "strengths": {
         "text": "Published strengths, stated without comparison: 22 m2 of enclosed room within a 27.78 m2 footprint that still fits the statutory allowance; a 70 mm log wall, the thickest specification the supplier publishes; a room-to-footprint ratio of 1.26; and euro pricing at EUR 14,810 with delivery included from an Irish trading entity.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCLPeIXS09tSjIo": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-canopy-nora-d-g0152/",
-        "evidenceScope": null
-      },
-      "considerations": {
-        "text": "Considerations from published evidence: the supplier publishes 8.5 m2 here and 9 m2 for Lucas D with Canopy on the identical 600 x 298 cm footprint and identical 44 mm wall, a contradiction it does not explain; only 48% of the ground covered is enclosed room; the canopy is roofed structure and counts toward the statutory allowance in full; the canopy dimensions are not separately published; and no insulation specification, warranty duration or installation service is published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "The direct comparison is Lucas D with Canopy, published on the identical 600 x 298 cm footprint and 44 mm wall at EUR 5,770 \u2014 EUR 170 more, with a published room area 0.5 m2 larger. The veranda version of this model publishes 8.5 m2 on 578 x 298 cm for EUR 6,200. EVIDENCE NEUTRALITY: the supplier publishes no specification difference between the two canopy models other than the contradicted room area, so no published evidence establishes either as the better build.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 60% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 17.88 m2, leaving 12.12 m2 for other structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: a canopy is roofed structure and counts toward the allowance in full, so the whole 17.88 m2 must be assumed to count. Roof height is not published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a shallow garden or boundary strip under 3 m deep where a small room with a roofed canopy is wanted rather than an open veranda, at the lower price of the two Nora D outdoor variants.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Published strengths, stated without comparison: approximately 9.4 m2 of roofed canopy alongside an 8.5 m2 room; a shallow 298 cm depth suited to a narrow boundary; a 44 mm log wall; and, at EUR 5,600, EUR 600 below the veranda version on a slightly larger overall envelope.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with a shallow garden or a boundary run of about 6 m, wanting a small room with a roofed outdoor area attached, comfortable arranging base and assembly, and budgeting around EUR 5,600 for the delivered kit before groundworks.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recQAh2Q9scUud7pC": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-nora-d-g0153/",
-        "evidenceScope": null
-      },
-      "alternatives": {
-        "text": "The direct comparison is Lucas D with Veranda, published on the identical 578 x 298 cm footprint and 44 mm wall at EUR 6,380 \u2014 EUR 180 more, with a published room area 0.5 m2 larger. The canopy version of this model publishes 8.5 m2 on 600 x 298 cm for EUR 5,600. EVIDENCE NEUTRALITY: the supplier publishes no specification difference between the two veranda models other than the contradicted room area, so no published evidence establishes either as the better build.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "Considerations from published evidence: the supplier publishes 8.5 m2 here and 9 m2 for Lucas D with Veranda on the identical 578 x 298 cm footprint and identical 44 mm wall, a contradiction it does not explain; only 49% of the ground covered is enclosed room; the veranda dimensions are not separately published; no insulation specification is published; and no warranty duration or installation service is published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Published strengths, stated without comparison: approximately 8.7 m2 of covered veranda alongside an 8.5 m2 room; a shallow 298 cm depth suited to a narrow boundary; a 17.22 m2 footprint leaving 12.78 m2 of the statutory allowance free; a 44 mm log wall; and euro pricing at EUR 6,200 with delivery included.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "WITHIN EXEMPTION ON FOOTPRINT \u2014 57% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 17.22 m2, leaving 12.78 m2 for other structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: comfortable headroom within the allowance. The planning position here rests on the external dimensions, which the supplier publishes consistently for this product, so the room-area discrepancy noted elsewhere does not affect this determination. Roof height is not published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a shallow garden or boundary strip under 3 m deep, where a small room with an attached veranda is wanted and the 578 cm length can run along a fence. Suited to seasonal seating with a lockable room behind.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with a shallow garden or a boundary run of about 6 m, wanting a small room with sheltered seating attached for seasonal use, comfortable arranging base and assembly, and budgeting around EUR 6,200 for the delivered kit before groundworks.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -6416,10 +6180,6 @@
       }
     },
     "rectNeIDvu63i8kmi": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-offices/insulated/",
-        "evidenceScope": null
-      },
       "planningConsiderations": {
         "text": "WITHIN EXEMPTED DEVELOPMENT ON FLOOR AREA \u2014 15.00 m2 nominal plan area against the 30 m2 combined back-garden allowance, raised from 25 m2 on 27 July 2026. Conditions: behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. MEASUREMENT CAVEAT from the certified AM-001 layer: 15.00 m2 is the nominal 5 x 3 m plan area; no internal figure is published for this model and none has been derived. Pineca's insulated LAYLA at the same 5 x 3 m external size publishes 13 m2, so this insulated office will also deliver materially less than 15 m2 usable \u2014 that comparator has NOT been transferred. HOMEOWNER IMPLICATION: exactly half the allowance, leaving 15 m2 for anything else on the plot.",
         "evidenceScope": "Product-Specific"
@@ -8355,10 +8115,6 @@
       }
     },
     "recP9G0xFJ6R0ic4W": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-offices/traditional/",
-        "evidenceScope": null
-      },
       "considerations": {
         "text": "THERE IS NO UPGRADE PATH, AND THAT IS THE DECISIVE POINT AT THIS SUPPLIER. Pineca states it plainly: 'Standard garden rooms are not designed for post-assembly structural insulation upgrades, as the insulation is integrated into the wall construction... the cost of retrofitting insulation after assembly is much higher and the result less satisfactory.' UNLIKE HANSA24, GARDENHOUSE24 AND LUGARDE, where a summer shell can be insulated later at a price, THE INSULATED OAK IS A DIFFERENT PRODUCT BOUGHT AT ORDER \u2014 not an upgrade to this one. SECOND, THREE SEPARATE OAK 6 \u00d7 3 m RECORDS EXIST in Atlas with different wall build-ups and different usable floors; they must not be treated as interchangeable. THIRD, no internal floor figure. HOMEOWNER IMPLICATION: a buyer comparing the two OAK records is comparing a summer room against a winter one.",
         "evidenceScope": "Product-Specific"
@@ -8385,10 +8141,6 @@
       }
     },
     "recDGpbgqL1YuAaou": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-offices/insulated/",
-        "evidenceScope": null
-      },
       "considerations": {
         "text": "'INSULATED' NAMES A CLASS, NOT A SPECIFICATION, AND THE FOUR PINECA CLASSES DIFFER SUBSTANTIALLY. This record does not say whether it is 34 mm + Cladding, Twin Skin, SIPS or High-Quality \u2014 and the supplier itself describes SIPS as delivering 'the highest thermal performance in our range' against the entry option. SECOND, ATLAS HOLDS THREE SEPARATE OAK 6 \u00d7 3 m RECORDS \u2014 this insulated one, a 44 mm version, and a 34 mm version whose published area is self-contradictory. All three share the same envelope but have different usable floors, and they MUST NOT be treated as interchangeable. THIRD, the insulated build-up reduces usable floor below the 18.00 m2 nominal and no internal figure is published for this variant. HOMEOWNER IMPLICATION: name the insulation class and get the internal floor, in writing.",
         "evidenceScope": "Product-Specific"
@@ -11320,36 +11072,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recgOQWcwBubjOLWh": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-porch-eva-e-g0146/",
-        "evidenceScope": null
-      },
-      "considerations": {
-        "text": "Considerations from published evidence: the porch named in the title is not reflected in the published external dimensions, which leave only 1.29 m2 beyond the room area; at EUR 7,500 this is priced above four other catalogue rows offering the same 12 m2 room on a similar footprint; no insulation specification is published; no warranty duration is published; and no installation service is published.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "Published strengths, stated without comparison: a room-to-footprint ratio of 1.11, among the more efficient in the enumerated catalogue; a 13.29 m2 footprint using only 44% of the statutory allowance; a 44 mm log wall; and euro pricing at EUR 7,500 with delivery included from an Irish trading entity.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A homeowner with a small or already-occupied garden, wanting the largest enclosed room available from a compact footprint, comfortable arranging base and assembly, using the building seasonally, and budgeting around EUR 7,500 for the delivered kit before groundworks.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "Buyers wanting the same 12 m2 room for less should compare the 298 x 418 cm cluster, where four rows are published at EUR 5,950 to EUR 6,980. Buyers wanting a genuine covered outdoor area should compare Eva D with Terrace at 698 x 298 cm. EVIDENCE NEUTRALITY: the published data does not establish any of these as the better build; only size, price and named outdoor elements differ.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "COMFORTABLY WITHIN EXEMPTION \u2014 44% OF THE COMBINED ALLOWANCE. Under S.I. 338 of 2026 (in force 27 July 2026) the back-garden exemption is 30 m2 COMBINED across all garden structures. This structure's published external footprint is 13.29 m2, leaving 16.71 m2 for other sheds, stores and structures. Height limits are 3 m to a flat or non-tiled roof and 4 m to a tiled or slated pitched roof; it must sit behind the front wall of the house, 25 m2 of private open space must remain, and use must be incidental with NO HUMAN HABITATION. HOMEOWNER IMPLICATION: leaves substantial headroom for an existing shed or future structure. Roof height is not published and must be confirmed.",
-        "evidenceScope": "Product-Specific"
-      },
-      "bestFor": {
-        "text": "Best for a buyer wanting maximum enclosed room from a small footprint, on a site where other structures already use part of the statutory allowance. The near-square 318 x 418 cm plan suits a garden corner or the end of a modest plot.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rec74jHDrOU6IOM32": {
       "sources": {
         "text": "https://summerhouse24.ie/summer-house-with-shed-terrace-heinz-g0102/",
@@ -11803,58 +11525,6 @@
       },
       "strengths": {
         "text": "15m2 internal for GBP 14,398.99 including VAT \u2014 the strongest floor area per pound of the eight Garden Rooms reviewed in this session. Insulated to a stated premium specification: 100mm double-skinned EcoQuilt walls and roof over an AirTec insulated floor. Front veranda included within the 5.23m x 3.96m external footprint. VAT position stated clearly on the published price.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recsgRXeV6TNzxCYa": {
-      "strengths": {
-        "text": "IT DOES IN ONE BUILD WHAT THE REST OF THIS SUPPLIER'S RANGE DOES IN TWO. Sauna and hot tub in a single unit means one delivery, one base, one set of connections and one visual object in the garden rather than a scattered wellness corner \u2014 a genuine practical and aesthetic advantage. IT IS ALSO THE ONLY SUCH COMBINATION IN THE ATLAS CATALOGUE. NOT ESTABLISHED: no overall footprint, no split between sauna and tub, no height, no heater or timber specification, no warranty and no price is held, and nothing has been apportioned between the two elements.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "THE ALTERNATIVE TO A COMBINED UNIT IS SIMPLY BUYING THE TWO ELEMENTS SEPARATELY: this supplier's Nordic Pod Custom sauna, sized to order, plus the Nordic Ice plunge tub or the Nordic Rojal hot tub \u2014 which has the planning advantage that a free-standing vessel need not count toward the allowance while a combined structure does. Auroom's Quu and Aurea and MyCabin.ie's Cube Sauna M are the other sauna cabins in the catalogue. HOMEOWNER IMPLICATION: splitting the functions can cost less allowance than combining them. All four are wellness equipment held under Garden Rooms because Atlas has no correct Product Category, and the range divides on a distinction that matters more than any specification: TWO ARE VESSELS \u2014 the Nordic Rojal hot tub and the Nordic Ice plunge tub \u2014 to which the floor-area test does not properly apply and whose planning relevance depends on whether they are decked or housed; TWO ARE ENCLOSED STRUCTURES \u2014 the Nordic Pod Custom barrel sauna, made to order with no fixed area, and this Hobbiton combo \u2014 whose footprints count toward the 30 m2 allowance in full. Not one publishes a footprint, height, warranty or price. Evidence neutrality preserved; nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "bestFor": {
-        "text": "A COMPLETE WELLNESS SETUP IN ONE UNIT \u2014 THE ONLY COMBINED SAUNA-AND-TUB PRODUCT IN THIS CATALOGUE. For a household that wants both heat and water, buying them as one build avoids two separate installations, two bases and two sets of services. THE PLANNING CONSEQUENCE IS THE COROLLARY: the certified AM-006 layer records that the whole unit occupies one continuous footprint, and because the sauna element is an enclosed structure the buyer must count the OVERALL external footprint toward the 30 m2 allowance \u2014 not the sauna cabin alone. HOMEOWNER IMPLICATION: the most capable wellness record here, and the most demanding on garden allowance.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. This is a combined sauna-and-hot-tub unit; the certified AM-001 Measurement Basis record confirms no footprint or internal area is held and that nothing has been estimated or apportioned between the two elements. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026) cannot be tested. THE COMBINED FOOTPRINT IS WHAT COUNTS: the sauna element is an enclosed structure and the whole unit occupies one continuous footprint in the garden, so the buyer must obtain the overall external footprint from TimberIN \u2014 not the sauna cabin alone \u2014 and count all of it toward the 30 m2. Conditions applying regardless of area: behind the front wall of the house; 25 m2 of private open space retained; 3 m maximum height for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: ask for the overall external footprint of the complete unit and its maximum height above finished ground level, in writing, before ordering. TWO of the four are VESSELS rather than structures \u2014 the Nordic Rojal wood-fired hot tub and the Nordic Ice cold plunge tub \u2014 and the floor-area test does not properly apply to them at all; their planning relevance depends on whether they are decked, housed or roofed on site. The other TWO are enclosed structures to which the area test does apply \u2014 the Nordic Pod Custom barrel sauna, which is made to order so has no fixed area even in principle, and this Hobbiton combo, for which no footprint is published. VOCABULARY LIMITATION recorded once: the approved classification set assumes an enclosed structure assessed on floor area and cannot express 'the area test does not apply to this product type'; the closest approved value is retained throughout and the distinction is explained in each value. CATEGORY ISSUE recorded once: all four are wellness equipment held under Garden Rooms because Atlas has no correct Product Category, and they should be excluded from garden-room recommendations; recorded, not corrected, architecture frozen. PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE).",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "considerations": {
-        "text": "THE COMBINED FOOTPRINT IS THE FIGURE THAT MATTERS AND IT IS NOT PUBLISHED. A buyer who thinks of the tub as equipment and only counts the sauna will understate what the 30 m2 allowance measures, because the unit occupies one continuous footprint. The certified AM-006 layer makes that explicit and records that the test could not be run. SECOND, NO HEIGHT IS PUBLISHED, so the 3 m limit for a non-tiled roof cannot be checked. THIRD, SERVICES ARE HEAVIER THAN FOR EITHER ELEMENT ALONE \u2014 electrical supply, water fill and drainage \u2014 and none is specified. FOURTH, no warranty or price. HOMEOWNER IMPLICATION: ask for the overall external footprint of the complete unit and its maximum height, in writing.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD MAKING WELLNESS THE POINT OF THE GARDEN. They want the full sequence \u2014 heat, then water \u2014 and they would rather buy it once than assemble it piece by piece over three summers. They have space and budget, and they are likely to be building this instead of, not alongside, a garden office. THAT TRADE IS THE HONEST FRAMING: a combined unit is likely to consume a substantial share of the 30 m2 allowance, so a future workspace may need permission. NOT FOR: a garden already carrying a shed or garage near the limit.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recgmL8p4EKPREiWf": {
-      "bestFor": {
-        "text": "A SAUNA SIZED TO THE GARDEN RATHER THAN TO A CATALOGUE. The certified AM-001 layer records this as a CUSTOM-configured barrel sauna: length, and therefore floor area, are specified per order. UNLIKE THE TUBS IN THIS RANGE IT IS AN ENCLOSED STRUCTURE, so its footprint counts toward the 30 m2 combined back-garden allowance in full \u2014 which makes the made-to-order length an advantage, because the building can be specified to whatever allowance remains. HOMEOWNER IMPLICATION: decide the length by subtracting your existing garden structures from 30 m2, not by choosing the biggest bench layout you like.",
-        "evidenceScope": "Product-Specific"
-      },
-      "planningConsiderations": {
-        "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. This is a CUSTOM-configured barrel sauna: the certified AM-001 Measurement Basis record records that length, and therefore floor area, are specified per order, so no single area exists to test and none has been estimated. The 30 m2 combined back-garden allowance (S.I. 338 of 2026, in force 27 July 2026, raised from 25 m2) cannot be tested against a product with no fixed size. UNLIKE THE TUBS IN THIS RANGE, THIS ONE IS AN ENCLOSED STRUCTURE AND THE AREA TEST DOES APPLY: a sauna cabin is a back-garden structure and its footprint counts toward the combined 30 m2 exactly as a garden office would, so the buyer must obtain the AS-ORDERED footprint from TimberIN before assuming exemption. A barrel form also complicates the height question, because the curved roof reaches its maximum at the centre line \u2014 ask for the overall height at the highest point above finished ground level, against the 3 m limit for a non-tiled roof. Other conditions: behind the front wall of the house; 25 m2 of private open space retained; incidental use; NO HUMAN HABITATION. HOMEOWNER IMPLICATION: because the product is made to order, the planning answer is set by YOUR order, not by the catalogue. Get the as-ordered external footprint and maximum height in writing before committing, and add the footprint to every other structure in the garden.",
-        "evidenceScope": "Product-Specific"
-      },
-      "typicalHomeowner": {
-        "text": "A COMMITTED SAUNA USER WITH A SPECIFIC SPOT IN MIND. They know how many people they want to seat and they have a length of garden \u2014 along a fence, beside a patio \u2014 that suits a barrel form. Because the product is made to order they are in a specification conversation rather than a purchase, and they should arrive at it already knowing how much of their 30 m2 allowance is unspent. NOT FOR: a buyer who wants a fixed price and a catalogue size, or anyone needing enclosed workspace rather than heat.",
-        "evidenceScope": "Product-Specific"
-      },
-      "alternatives": {
-        "text": "AUROOM'S QUU AND AUREA are the direct sauna-cabin comparisons, though neither publishes a footprint either, so the same question arises. MYCABIN.IE'S CUBE SAUNA M is the Irish-supplier option, with an 'M' size band rather than a measurement. WITHIN THIS SUPPLIER, the Nordic Hobbiton combines a sauna and a hot tub in one continuous footprint \u2014 more capability, more allowance consumed. IF THE ALLOWANCE IS TIGHT, the Nordic Ice plunge tub delivers part of the wellness routine without counting as a structure at all. HOMEOWNER IMPLICATION: among saunas, the made-to-order length is this record's real differentiator.",
-        "evidenceScope": "Product-Specific"
-      },
-      "strengths": {
-        "text": "CONFIGURABILITY IS THE ESTABLISHED STRENGTH: length is chosen per order, so bench capacity and footprint can be matched to both the household and the remaining planning allowance. That is a rarer combination than it sounds \u2014 most saunas in this catalogue publish neither a size nor a way to change it. A BARREL FORM ALSO SHEDS WATER WELL and heats efficiently for its volume. NOT ESTABLISHED: no as-ordered dimensions, no height, no timber or heater specification, no warranty and no price is held in Atlas.",
-        "evidenceScope": "Product-Specific"
-      },
-      "considerations": {
-        "text": "NO FIXED SIZE MEANS NO ADVANCE TEST. The certified AM-006 layer records that the 30 m2 allowance cannot be tested against a product with no fixed area, and that the buyer must obtain the AS-ORDERED footprint before assuming exemption. SECOND, THE BARREL FORM COMPLICATES HEIGHT: a curved roof reaches its maximum at the centre line, and because it is not tiled or slated the tighter 3 m limit applies \u2014 ask for the height at the highest point above finished ground level. THIRD, a sauna needs an electrical supply and a level base, neither specified in Atlas. FOURTH, no warranty or price. HOMEOWNER IMPLICATION: agree footprint and maximum height in writing before the order is placed.",
         "evidenceScope": "Product-Specific"
       }
     },
