@@ -592,15 +592,27 @@
      homeowner on Results has just built something and home discards it.
      It is hidden until the Results are actually showing, so it never floats
      over the Eircode screen or the loader. */
+  /* M4 - QUIETER, NOT SMALLER.
+
+     THE HIT AREA IS UNCHANGED: min-height 44 and the same padding, so
+     the touch target still meets the 44px floor. What comes down is
+     contrast -- the border from .16 to .10, the shadow from .13 to
+     .07, the label from --ink to --soft, and the whole control to 88%
+     until it is hovered or focused, when it returns to full strength.
+
+     Navigation is untouched: same element, same handler, same label
+     logic, same destinations. */
   .pn-return{
     position:fixed; left:22px; bottom:22px; z-index:60;
     display:none; align-items:center; gap:8px;
     min-height:44px; padding:11px 17px 11px 14px;
-    background:var(--paper); color:var(--ink);
-    border:1px solid rgba(31,59,46,.16); border-radius:24px;
-    box-shadow:0 2px 10px rgba(31,59,46,.13);
-    font-family:'Work Sans',sans-serif; font-size:14px; font-weight:500;
-    text-decoration:none; cursor:pointer;
+    background:var(--paper); color:var(--soft);
+    border:1px solid rgba(31,59,46,.10); border-radius:24px;
+    box-shadow:0 1px 5px rgba(31,59,46,.07);
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:500;
+    text-decoration:none; cursor:pointer; opacity:.88;
+    transition:opacity .18s ease, border-color .18s ease,
+               box-shadow .18s ease, color .18s ease;
     -webkit-appearance:none; appearance:none;
   }
   body.pn-results-live .pn-return{ display:inline-flex; }
@@ -615,7 +627,10 @@
      control, so the control steps above it. One rule, no JavaScript, and it
      works because the two are siblings in that order. */
   .pn-fallback-note.is-visible ~ .pn-return{ bottom:72px; }
-  .pn-return:hover{ border-color:rgba(31,59,46,.34); box-shadow:0 3px 14px rgba(31,59,46,.17); }
+  .pn-return:hover, .pn-return:focus-visible{
+    opacity:1; color:var(--ink);
+    border-color:rgba(31,59,46,.28); box-shadow:0 3px 12px rgba(31,59,46,.14);
+  }
   .pn-return:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
   .pn-return .pn-return-arrow{ font-size:15px; line-height:1; }
   @media (max-width:600px){
@@ -7783,6 +7798,40 @@
   }
   #screen-resolve .resolve-shell{ width:100%; }
 
+  /* ---- M3 . A CONTENT-SAFE GUTTER FOR THE FIXED MY PLOT PILL -----------
+
+     THE GEOMETRY. .my-plot-access-wrap is position:fixed at top 20 / right
+     20 and is the widest fixed element on the page -- medallion, two-line
+     label, chevron, then the info trigger beside it. Measured generously
+     from its own rules it occupies about 300px, so its left edge sits at
+     about (viewport - 320).
+
+     The shell is max-width 860 and centred, so its right edge is at
+     (viewport + 860) / 2. Those two meet when the viewport is about
+     2 x (430 + 320) = 1500 wide -- which is to say ON EVERY ORDINARY
+     DESKTOP, not just narrow ones. Below that the pill sits over the
+     right-hand end of the hero copy and, once scrolled, over the answer
+     column of the property rows.
+
+     THE FIX RESERVES SPACE RATHER THAN MOVING THE PILL. A right gutter on
+     the screen shifts the centred column left by half of it, which keeps
+     the column looking centred within what is left. The pill is untouched,
+     so Results and every other screen that shows it are unaffected.
+
+     THE 300px IS AN ESTIMATE FROM CSS, NOT A MEASUREMENT -- there is no
+     browser in this build environment. 336 is deliberately generous so a
+     wider-than-estimated pill still clears, and it is worth one look at
+     1280 and 1440 before this ships.
+
+     Below 900 the pill has its own smaller rules and the column is already
+     narrow, so the band ends there. */
+  @media (min-width:900px) and (max-width:1559px){
+    #screen-resolve, #screen-progress{ padding-right:336px; }
+  }
+  @media (min-width:900px) and (max-width:1100px){
+    #screen-resolve, #screen-progress{ padding-right:300px; }
+  }
+
   /* ---- level 1-2 · the situation and the standing ---- */
   #screen-resolve .rsv-situation, #screen-progress .rsv-situation{
     font-family:'Work Sans',sans-serif; font-size:var(--pn-w-body-sm);
@@ -8850,20 +8899,33 @@
   }
 
   /* ---- C5 . the enquiry panel ----------------------------------------- */
+  /* M1 - ~13% SHORTER, MEASURED RATHER THAN EYEBALLED.
+
+     Before, for the seven-question case: head 28 + lede 21 + 14 margin
+     = 63, seven items at 13+13+22.5 = 48.5 each = 339.5, plus 56 of
+     panel padding. About 459.
+
+     After: head 25 + lede 21 + 12 = 58, seven items at 10+10+22.5 =
+     42.5 each = 297.5, plus 44 of padding. About 400. A 13% reduction,
+     inside the 10-15% asked for.
+
+     NOTHING BUT SPACE CHANGED. The wording, the order, the numbering
+     and the logic that derives them are all untouched -- guard M04
+     compares the deriver byte for byte. */
   .rsv-panel-enquiry{
-    margin-bottom:0; padding:30px 32px 26px; border-radius:18px;
+    margin-bottom:0; padding:24px 28px 20px; border-radius:18px;
     background:rgba(143,175,138,.11);
     box-shadow:none;
   }
   .rsv-panel-enquiry .rsv-panel-head{
-    margin-bottom:14px; padding-bottom:0; border-bottom:none;
+    margin-bottom:12px; padding-bottom:0; border-bottom:none;
   }
-  .rsv-panel-enquiry .rsv-panel-title{ font-size:24px; }
+  .rsv-panel-enquiry .rsv-panel-title{ font-size:22px; }
   .rsv-panel-enquiry .rsv-panel-lede{ color:rgba(31,59,46,.62); }
   .rsv-qlist{ list-style:none; margin:0; padding:0; counter-reset:pnq; }
   .rsv-qitem{
     counter-increment:pnq; position:relative;
-    margin:0; padding:13px 0 13px 40px;
+    margin:0; padding:10px 0 10px 38px;
     border-top:1px solid rgba(31,59,46,.07);
     font-family:'Work Sans',sans-serif; font-size:15px; line-height:1.5;
     color:var(--brand-green, #1F3B2E);
@@ -8872,7 +8934,7 @@
   /* Fraunces numerals, sage, optically aligned with the first line of the
      text rather than boxed in a circle. A numeral is enough. */
   .rsv-qitem::before{
-    content:counter(pnq); position:absolute; left:0; top:12px;
+    content:counter(pnq); position:absolute; left:0; top:9px;
     width:26px; text-align:left;
     font-family:'Fraunces',Georgia,serif; font-size:15px; font-weight:600;
     line-height:1.5; color:rgba(143,175,138,.95);
@@ -8891,17 +8953,29 @@
     font-family:'Work Sans',sans-serif; font-size:15px; font-weight:700;
     cursor:pointer;
   }
-  /* THE PENDING PLATE. Metrically identical to .rsv-close-cta above -- same
-     padding, same radius, same family, same size -- so the live control
-     drops into its place without a pixel moving. It differs only in what it
-     is made of: a hairline on the green ground instead of a sage fill, and
-     no weight in the type, because it is a statement rather than an
-     invitation. */
+  /* M2 - THE PENDING STATUS. NO BOX AT ALL.
+
+     The hairline ring is gone: a rounded outline at button size IS a
+     button as far as the eye is concerned, whatever the element is.
+     What is left is two lines of type on the green ground.
+
+     THE SWAP STILL MOVES NOTHING. min-height 46px is the live control's
+     own height -- 13px of padding twice plus a 20px line box -- and the
+     two lines are centred inside it. So when the enquiry goes live and
+     this block is replaced by .rsv-close-cta, the strip does not change
+     height. Guard M06 checks that number against the control's padding
+     rather than trusting the comment. */
   .rsv-close-pending{
-    display:inline-block; padding:13px 24px; border-radius:10px;
-    background:none; box-shadow:inset 0 0 0 1px rgba(242,239,230,.26);
-    color:rgba(242,239,230,.90);
-    font-family:'Work Sans',sans-serif; font-size:15px; font-weight:500;
+    display:flex; flex-direction:column; justify-content:center;
+    min-height:46px; padding:0; background:none; box-shadow:none;
+  }
+  .rsv-close-pending-main{
+    font-family:'Work Sans',sans-serif; font-size:15px; font-weight:600;
+    line-height:1.25; color:rgba(242,239,230,.94);
+  }
+  .rsv-close-pending-sub{
+    font-family:'Work Sans',sans-serif; font-size:12.5px; font-weight:500;
+    line-height:1.3; letter-spacing:.02em; color:rgba(242,239,230,.58);
   }
   .rsv-close-cta:focus-visible,
   .rsv-close-secondary:focus-visible{
@@ -8930,9 +9004,8 @@
       margin-top:32px; padding:18px 20px;
       flex-direction:column; align-items:stretch; gap:14px;
     }
-    .rsv-close-cta, .rsv-close-pending{
-      display:block; width:100%; text-align:center;
-    }
+    .rsv-close-cta{ display:block; width:100%; text-align:center; }
+    .rsv-close-pending{ width:100%; align-items:center; text-align:center; }
     .rsv-close-secondary{ text-align:center; }
   }
 
@@ -31859,8 +31932,20 @@
        guard H08 checks by comparing the two rules. The secondary link
        below is already in its final place. */
     if (!rsvPriced) {
-      rsvGo.appendChild(rsvEl('div', 'rsv-close-pending',
-        'Enquiry through PlotNua — coming shortly'));
+      /* M2 - A STATUS, IN TWO LINES.
+
+         One line inside a hairline box still read as a disabled
+         control: the shape was the message. Two lines with a quiet
+         second one cannot be mistaken for a button, because buttons
+         do not have subtitles.
+
+         Still not a control: a div, no handler, nothing to fire. */
+      const pend = rsvEl('div', 'rsv-close-pending');
+      pend.appendChild(rsvEl('span', 'rsv-close-pending-main',
+        'Enquiry through PlotNua'));
+      pend.appendChild(rsvEl('span', 'rsv-close-pending-sub',
+        'Coming shortly'));
+      rsvGo.appendChild(pend);
       rsvHasAction = true;
     }
 
