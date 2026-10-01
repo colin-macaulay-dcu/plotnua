@@ -8400,7 +8400,12 @@
   #screen-match-results .results-hero-body{
     display:flex; flex-direction:column;
   }
-  #screen-match-results .results-hero-org{
+  /* §4's order:-1 lifted the maker above the name inside the old
+     single-column body. Both are in the identity band now, in DOM order, so
+     the reordering has nothing to reorder. The rule is kept for any surface
+     that still renders the maker inside .results-hero-body and is scoped to
+     that case, rather than deleted and silently changing it. */
+  #screen-match-results .results-hero-body > .results-hero-org{
     order:-1; margin:0 0 10px; font-size:11px; letter-spacing:.17em;
     color:var(--pn-stone);
   }
@@ -8593,6 +8598,150 @@
      is generated from governed state and is not touched. */
   #screen-match-results .results-hero-editorial{
     font-size:16px; line-height:1.5; margin:18px 0 0; max-width:38ch;
+  }
+
+  /* ======================================================================
+     RESULTS-IDENTITY-001 · IDENTITY FIRST, THEN IMAGE + DECISION.
+
+     Last in the sheet and every selector scoped to #screen-match-results or
+     to :has(.rh-split), for one reason: the ~100 shipped supplier previews
+     carry the OLD hero markup, and every generic .results-hero-* rule above
+     is left exactly as it was so they keep laying out as they do today. A
+     page without an identity band never matches anything below.
+
+     THE GEOMETRY IS RE-POINTED, NOT RE-CHOSEN. 58% at >=720, 64% at >=1280,
+     4:3 at every width -- the same numbers, moved from .results-hero-inner
+     (which is now a column) onto .rh-split (which is now the row).
+     ====================================================================== */
+
+  /* The inner stops being the flex row the moment there is a band to stack
+     above the split. */
+  .results-hero-inner:has(.rh-identity){
+    display:block;
+  }
+
+  /* ---- THE BAND --------------------------------------------------------- */
+  #screen-match-results .rh-identity{
+    margin:0 0 clamp(22px,2.2vw,32px);
+  }
+  #screen-match-results .rh-identity .results-hero-name{
+    font-size:clamp(34px,5.2vw,68px);
+    line-height:1.02; letter-spacing:-.015em;
+    margin:0 0 12px; max-width:22ch;
+  }
+  /* ONE LINE, ALWAYS THE SAME SHAPE. The band must not move when the price
+     state changes from "€41,500" to "Price on enquiry", so the meta row has
+     a fixed type size and a fixed baseline rather than sizing to content. */
+  #screen-match-results .rh-identity-meta{
+    display:flex; flex-wrap:wrap; align-items:baseline;
+    gap:0 10px; min-height:26px;
+  }
+  #screen-match-results .rh-identity-meta .results-hero-org{
+    order:0; margin:0;
+    font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--pn-stone);
+  }
+  #screen-match-results .rh-identity-sep{
+    color:var(--pn-stone); opacity:.55; font-size:13px;
+  }
+  #screen-match-results .rh-identity-meta .results-hero-price{
+    font-size:clamp(19px,1.5vw,22px); line-height:1.2;
+  }
+
+  /* ---- THE SPLIT -------------------------------------------------------- */
+  #screen-match-results .rh-split{
+    display:flex; flex-direction:column; gap:0;
+  }
+  #screen-match-results .rh-split .pn-media-col{
+    display:flex; flex-direction:column; gap:10px; min-width:0;
+  }
+  #screen-match-results .rh-split .results-hero-media{
+    width:100%; max-width:none; flex:0 0 auto; aspect-ratio:4/3;
+  }
+  #screen-match-results .rh-split .results-hero-body{
+    padding:26px 0 0; min-width:0;
+  }
+
+  @media (min-width:720px){
+    #screen-match-results .rh-split{
+      flex-direction:row; align-items:flex-start;
+      gap:clamp(32px,3.4vw,48px);
+    }
+    /* 58%, unchanged -- on the media COLUMN, which is what the photograph and
+       its thumbnail strip now share. */
+    #screen-match-results .rh-split .pn-media-col{
+      width:58%; min-width:0; max-width:58%; flex:0 0 58%;
+    }
+    #screen-match-results .rh-split .results-hero-body{
+      flex:1 1 0; min-width:0; padding:0;
+    }
+  }
+  @media (min-width:1280px){
+    /* 64% and the 26px gap, unchanged -- see K2b above for the measurement
+       that chose them. */
+    #screen-match-results .rh-split .pn-media-col{
+      width:64%; max-width:64%; flex:0 0 64%;
+    }
+    #screen-match-results .rh-split{ gap:26px; }
+  }
+
+  /* ---- THE THUMBNAIL STRIP, WHICH NOW ACTUALLY EXISTS ------------------- */
+  #screen-match-results .rh-split .pn-gal-strip{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  #screen-match-results .rh-split .pn-gal-thumb{
+    width:72px; aspect-ratio:4/3; padding:0; border:0; cursor:pointer;
+    border-radius:3px; overflow:hidden; background:var(--pn-hair);
+    box-shadow:inset 0 0 0 1px rgba(36,53,31,.10);
+    opacity:.62; transition:opacity .18s ease, box-shadow .18s ease;
+  }
+  #screen-match-results .rh-split .pn-gal-thumb img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  #screen-match-results .rh-split .pn-gal-thumb:hover{ opacity:.85; }
+  #screen-match-results .rh-split .pn-gal-thumb.is-on{
+    opacity:1; box-shadow:inset 0 0 0 2px var(--accent);
+  }
+  #screen-match-results .rh-split .pn-gal-thumb:focus-visible{
+    outline:2px solid var(--accent); outline-offset:2px;
+  }
+
+  /* ---- THE FIELD-ONLY STATE, REDESIGNED FOR THE SAME STRUCTURE ----------
+     No photograph means no media column was ever appended, so .rh-split holds
+     the decision column alone. It collapses to a block rather than running as
+     a one-child flex row with a 58% rule looking for a sibling, and the
+     decision column keeps the UX-008C two-column grid it already had. The
+     name and the maker are no longer in that grid -- they are in the band
+     above it -- so their grid-column rules simply match nothing here; the
+     spec row keeps column 1, which is where it belongs. */
+  #screen-match-results .results-hero-inner.is-fieldonly .rh-split{
+    display:block;
+  }
+  @media (min-width:720px){
+    #screen-match-results .results-hero-inner.is-fieldonly .rh-identity{
+      margin-bottom:clamp(18px,1.8vw,26px);
+    }
+    #screen-match-results .results-hero-inner.is-fieldonly .results-hero-body{
+      padding:0;
+    }
+    /* The trust block no longer needs pulling up level with the name: the
+       name is above the grid now, so row 1 starts with the spec row. */
+    #screen-match-results .results-hero-inner.is-fieldonly .hero-trust{
+      grid-row:auto; margin:0;
+    }
+  }
+
+  /* ---- MOBILE: identity, hero, gallery, decision ------------------------
+     The order is already the DOM order, so this sets no `order` anywhere. It
+     only brings the name down to a phone measure and removes the desktop
+     width rules, which the flex-direction:column default above already does. */
+  @media (max-width:719px){
+    #screen-match-results .rh-identity .results-hero-name{
+      font-size:clamp(30px,8.4vw,40px); max-width:none;
+    }
+    #screen-match-results .rh-split .pn-media-col{
+      width:100%; max-width:none;
+    }
   }
 
   /* ---- CTA HIERARCHY: ONE FILLED OBJECT, THEN TWO TEXT ACTIONS ------
@@ -21233,56 +21382,45 @@
      Reads the RENDERED line count rather than the character count: names with
      one very long word ("Contemporary", "(Residential)") behave nothing like
      names of the same length made of short words. */
-  function fitHeroName(el){
-    if (!el || !el.textContent) return;
-    /* RESULTS-UX-006 — clear any size this function wrote earlier before
-       measuring, so it reads the CSS clamp and not its own previous answer.
-       Without this the function is not idempotent and a resize would compound
-       the reduction. */
-    el.style.fontSize = '';
-    let base;
-    try { base = parseFloat(getComputedStyle(el).fontSize); } catch (e) { return; }
-    if (!base || !isFinite(base)) return;
-    const lineCount = function(px){
-      el.style.fontSize = px + 'px';
-      const h = el.getBoundingClientRect().height;
-      return h > 0 ? Math.round(h / px) : 1;   /* line-height is 1.0 */
-    };
-    /* Off-screen or display:none — every measurement is 0 and stepping down
-       would be meaningless. Leave the CSS size alone. */
-    if (lineCount(base) < 1 || el.getBoundingClientRect().height === 0) {
-      el.style.fontSize = ''; return;
-    }
-    if (lineCount(base) <= 3) { el.style.fontSize = ''; return; }
-    const FLOOR = 52;
-    let px = base;
-    while (px > FLOOR) {
-      px = Math.max(FLOOR, Math.round(px * 0.9));
-      if (lineCount(px) <= 3) return;
-    }
-    /* Floor reached and still over three lines — keep the floor rather than
-       shrink further. A hero slightly below the fold is a better outcome than
-       a headline too small to be one. */
-  }
+  /* fitHeroName() IS RETIRED -- RESULTS-IDENTITY-001.
 
-  /* RESULTS-UX-006 — the hero is built once and is not re-rendered on resize,
-     so a size written at one viewport would persist at every other. Wired once
-     here; the element is looked up at fire time because the hero node itself is
-     replaced on each render. Debounced, because fitHeroName reads layout. */
-  (function wireHeroNameRefit(){
-    var t = null;
-    window.addEventListener('resize', function(){
-      if (t) clearTimeout(t);
-      t = setTimeout(function(){
-        var el = document.querySelector('.results-hero-name');
-        if (el) fitHeroName(el);
-      }, 150);
-    });
-  })();
+     It existed to hold the product name to three lines in the 334px decision
+     column, shrinking from the computed size down to a FLOOR of 52px. The
+     name on Results is clamp(30px,3.2vw,44px), so the entry condition
+     `base > FLOOR` was 44 > 52: false at every viewport. The shrink loop
+     could never execute. Measured against the shipped function in a real
+     browser before removal:
+
+         baseFontSize 30px (narrow) / 44px (max)
+         "base > FLOOR ? (shrink loop can run)": false
+
+     The name now has the full content measure in .rh-identity, so there is
+     nothing to correct and nothing to re-tune. The resize wiring that called
+     it goes with it. */
+
+  /* RESULTS-UX-006's resize listener is gone with fitHeroName(). It existed
+     only to re-run a size calculation that never changed anything, and a
+     resize listener that does no work is still a resize listener. The name is
+     sized by clamp() now, which needs no JavaScript at any viewport. */
 
   function buildResultsHero({ role, product, ctx }){
     const wrap = document.createElement('div');
     wrap.className = 'results-hero-inner';
+
+    /* RESULTS-IDENTITY-001 -- THE PRODUCT IS NAMED ACROSS THE TOP.
+       Three containers, built here so the gallery has somewhere real to be
+       inserted before it is ever asked to insert anything:
+         .rh-identity   the name, then "Supplier . price"
+         .rh-split      the image column and the decision column
+         .pn-media-col  the photograph and its thumbnail strip, together
+       The DOM sequence is identity -> media -> decision, which is also the
+       reading order and the tab order. Nothing is reordered by CSS. */
+    const identity = document.createElement('div');
+    identity.className = 'rh-identity';
+    const split = document.createElement('div');
+    split.className = 'rh-split';
+    const mediaCol = document.createElement('div');
+    mediaCol.className = 'pn-media-col';
 
     const imgWrap = document.createElement('div');
     imgWrap.className = 'results-hero-media';
@@ -21306,7 +21444,11 @@
          same gate and draw the same primary image, but a thumbnail strip
          inside a 38%-wide card is a worse card, not a richer one. The
          rule is by SURFACE, never by supplier. */
-      pnGovernedGallery(imgWrap, pnAuthorisedImages(product));
+      /* THE GALLERY IS NOT WIRED HERE. It used to be, and it never ran:
+         pnGovernedGallery() needs the <img> inside mediaEl and mediaEl inside
+         a parent, and at this line imgWrap has neither. Wired below, once
+         both are true. The rights check above is unchanged and still happens
+         before any src is assigned. */
     } else {
       img.dataset.pnFallback = '1';
       img.src = PN_IMAGE_FALLBACK_SRC;
@@ -21322,7 +21464,14 @@
        still built, so restoring the panel is one class away, and a real
        imageUrl renders it exactly as before. */
     if (product.imageUrl) {
-      wrap.appendChild(imgWrap);
+      mediaCol.appendChild(imgWrap);
+      split.appendChild(mediaCol);
+      /* NOW the gallery can be built: imgWrap holds the <img> and sits inside
+         .pn-media-col, so pnGovernedGallery() finds `main` and has a parent
+         to insert the strip into -- next to the photograph, not next to the
+         decision column. Still gated on pnImg, so an unauthorised product
+         gets the placeholder and no strip, exactly as before. */
+      if (pnImg) pnGovernedGallery(imgWrap, pnAuthorisedImages(product));
     } else {
       wrap.classList.add('is-fieldonly');
     }
@@ -21352,23 +21501,39 @@
     const name = document.createElement('h2');
     name.className = 'results-hero-name';
     name.textContent = product.name;
-    body.appendChild(name);
-    /* RESULTS-UX-008B — NOT fitted here. `name` is inside a detached tree at
-       this point (buildResultsHero returns the wrap; the caller attaches it),
-       so it has no layout and fitHeroName's zero-height guard returns
-       immediately. Fitted at the call site, after attachment. */
+    identity.appendChild(name);
+    /* NOT FITTED, AND NOT FITTABLE. RESULTS-UX-008B fitted the name at the
+       call site to hold it to three lines. fitHeroName() is retired in this
+       pass because it was already dead: it shrank only when
+       base > FLOOR (52px), and the name on Results is clamp(30px,3.2vw,44px).
+       44 > 52 is false at every viewport, so the loop never ran. The band
+       gives the name the full content measure, which is the real remedy. */
 
-    const org = document.createElement('div');
+    /* THE BAND CARRIES THE SUPPLIER AND THE PRICE, AND NOTHING ELSE.
+       Everything that EXPLAINS the price -- the basis note, the above-budget
+       caveat, the Irish-availability note -- is part of the decision, not
+       part of the identity, so it stays in the decision column below. */
+    const identityMeta = document.createElement('div');
+    identityMeta.className = 'rh-identity-meta';
+    const org = document.createElement('span');
     org.className = 'results-hero-org';
     org.textContent = product.organisation;
-    body.appendChild(org);
-
-    const priceRow = document.createElement('div');
-    priceRow.className = 'results-hero-price-row';
+    identityMeta.appendChild(org);
+    const sep = document.createElement('span');
+    sep.className = 'rh-identity-sep';
+    sep.setAttribute('aria-hidden', 'true');
+    sep.textContent = '\u00b7';
+    identityMeta.appendChild(sep);
     const price = document.createElement('span');
     price.className = 'results-hero-price';
     price.textContent = pnPriceDisplay(product); // BATCH 2 PIECE 1: was pb046Price(), euro-only and exact-only
-    priceRow.appendChild(price);
+    identityMeta.appendChild(price);
+    identity.appendChild(identityMeta);
+
+    /* THE FLOOR AREA IS A SPECIFICATION, NOT AN IDENTITY, so it opens the
+       decision column instead of riding along in the band. */
+    const priceRow = document.createElement('div');
+    priceRow.className = 'results-hero-price-row';
     // PB-019 — AREA VALIDITY GUARD: the area span is created and appended only
     // when the area is valid, so an unverified area leaves the price standing
     // alone rather than rendering a placeholder beside it.
@@ -21377,8 +21542,10 @@
       area.className = 'results-hero-area';
       area.textContent = product.floorAreaM2 + 'm²';
       priceRow.appendChild(area);
+      /* PB-019 continued -- the row is appended only when it has something in
+         it. It previously went in empty whenever the area was unverified. */
+      body.appendChild(priceRow);
     }
-    body.appendChild(priceRow);
 
     /* JC-1 — THE HOMEOWNER'S LOCALITY IS NOT PRODUCT DATA, SO IT LEAVES THIS
        BLOCK. RESULTS-UX-004 relocated #propConfirm to sit directly beneath the
@@ -21570,7 +21737,12 @@
     });
     body.appendChild(secondary);
 
-    wrap.appendChild(body);
+    /* ASSEMBLY. identity, then the split. In the field-only state no media
+       column was appended, so .rh-split holds the decision column alone and
+       the CSS collapses it rather than leaving an empty grid track. */
+    split.appendChild(body);
+    wrap.appendChild(identity);
+    wrap.appendChild(split);
     return wrap;
   }
 
@@ -28829,10 +29001,6 @@
     if (primaryResult) {
       // SCENE 1
       els.matchPrimary.appendChild(buildResultsHero(primaryResult));
-      /* RESULTS-UX-008B — fitted HERE, where the node finally has layout.
-         This is the line that makes the UX-006 three-line ceiling real. */
-      const heroName = els.matchPrimary.querySelector('.results-hero-name');
-      if (heroName) fitHeroName(heroName);
 
       // SCENE 2 — RESULTS R1.1 — CHANGE 2: buildResultsWhyStartHere()
       // replaces buildResultsNarrative() in the render path (the latter is
