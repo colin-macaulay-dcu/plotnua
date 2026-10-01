@@ -55,7 +55,24 @@ PERMISSION_DATE = "30 September 2026"
 # ── IMAGERY ────────────────────────────────────────────────────────────────
 # Each entry: {"url": <a real hutsmith.co.uk URL>, "alt": <plain description>}
 # Only hutsmith.co.uk / its own CDN. Unmodified. Credit stays on the page.
-HUTSMITH_IMAGES = []
+HUTSMITH_IMAGES = [
+    {"url": "https://images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/"
+            "8d8ab49b-c296-45cf-96d9-67d1989f4e22/SDOR-+DMR+-+Aldbury+-+6A.jpg?format=1500w",
+     "alt": "A Hutsmith cabin in black timber, in a garden"},
+    {"url": "https://images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/"
+            "b24eee9f-8fd7-4b4d-8d90-70443115dae9/Hutsmith+Harbourne45176aa.JPG?format=1500w",
+     "alt": "The plywood-lined interior of a Hutsmith cabin used as a home office"},
+]
+
+# Hutsmith's own Squarespace content store. 6952720a1e68c05bac7f54fe is the
+# site id of hutsmith.com, so this path is as first-party as hutsmith.com
+# itself -- exactly how yardbox-preview.html carries Yard Box's images from
+# their own Squarespace store.
+HUTSMITH_IMAGE_ROOTS = (
+    "images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/",
+    "hutsmith.com/",
+    "hutsmith.co.uk/",
+)
 
 # ── THE COPY ───────────────────────────────────────────────────────────────
 # Voice: short, ordinary, confident. Never sound written. No "imagine", no
@@ -78,12 +95,16 @@ FILL = {
 
     "PHOTO_SLOT_LINE": "",   # set below, by imagery state
 
-    "OFFER_NAME": "Modular cabins",
+    "OFFER_NAME": "Bespoke cabins",
 
-    # QUOTE-ONLY. Hutsmith publishes no cabin price, so none is invented.
-    "VERIFIED_PRICE": "Price on enquiry",
-    "VERIFIED_PRICE_BASIS": "Hutsmith publishes no cabin price. The route is "
-                            "&ldquo;Configure my cabin&rdquo; and a site survey.",
+    # Hutsmith publishes a real price against every completed project on
+    # hutsmith.com/portfolio, so the band is theirs, not an estimate. It is
+    # named as sterling and as completed-project prices, not a price list and
+    # not an Irish quotation.
+    "VERIFIED_PRICE": "&pound;33,500 &ndash; &pound;162,000",
+    "VERIFIED_PRICE_BASIS": "the range Hutsmith publishes against their own "
+                            "completed projects. Sterling, not converted, and "
+                            "not an Irish quotation.",
 
     # PERSONALISATION GUARDRAIL §6. Locality comes from the Eircode lookup,
     # the look from the journey's own appearance question. Nothing here
@@ -91,16 +112,21 @@ FILL = {
     "HOMEOWNER_LOCALITY": "Co. Meath",
     "PERSONALISATION": "In keeping with the natural-timber look they preferred.",
 
-    "VERIFIED_FACT_1_LABEL": "Cladding",
-    "VERIFIED_FACT_1_VALUE": "External larch, grown in the highlands of Scotland",
-    "VERIFIED_FACT_2_LABEL": "Built",
-    "VERIFIED_FACT_2_VALUE": "In the Hutsmith workshop, then assembled on site",
-    "VERIFIED_FACT_3": "Double glazed windows, multipoint locking, airflow breathable membrane",
-    "VERIFIED_FACT_4": "Full internal high grade ply, with bespoke ply shelving",
-    "VERIFIED_FACT_5": "Standard electric pack &mdash; three double sockets, USB charger, LED lighting",
+    # All five from hutsmith.com, read 1 October 2026. Note what this
+    # corrects: Hutsmith is the design studio, and the cabins are built by a
+    # named licensed construction partner. Saying "built in the Hutsmith
+    # workshop" full stop, as the older hutsmith.co.uk pages imply, would
+    # misdescribe their own business to them.
+    "VERIFIED_FACT_1_LABEL": "What Hutsmith do",
+    "VERIFIED_FACT_1_VALUE": "Architectural design, from first ideas to technical drawings",
+    "VERIFIED_FACT_2_LABEL": "Who builds it",
+    "VERIFIED_FACT_2_VALUE": "Your Space Cabins, their licensed construction partner",
+    "VERIFIED_FACT_3": "Built in the workshop and dropped on site; modular wall sections where access is tight",
+    "VERIFIED_FACT_4": "Two to four weeks on site, depending on scale and complexity",
+    "VERIFIED_FACT_5": "&pound;90 site survey, refundable on sale, and &pound;295 for design development",
 
-    "THINGS_TO_CHECK": "ground works, access for delivery, and what a survey "
-                       "costs outside the UK.",
+    "THINGS_TO_CHECK": "ground works, access for the drop, and what the survey "
+                       "and the build partner look like outside the UK.",
 
     # WHY THIS IS USEFUL TO HUTSMITH. Commercial, and no claim that lead
     # quality or conversion has been proven.
@@ -131,14 +157,19 @@ FILL = {
 # Only genuinely unestablished items belong here.
 STILL_TO_CONFIRM = [
     "Delivery cost to Ireland",
-    "Site survey arrangements for Ireland",
+    "Site survey arrangements for Ireland, and whether the &pound;90 fee still applies",
     "Base and ground preparation requirements",
-    "Whether installation is included or arranged separately",
+    "Whether Your Space Cabins build in Ireland, or whether a local partner would",
     "Typical lead time for an Irish order",
 ]
 
 FORBIDDEN = [
-    "partner", "partnership", "preferred supplier", "approved supplier",
+    # NOTE: bare "partner" is NOT here. Hutsmith's own cabins are built by
+    # "Your Space Cabins, their licensed construction partner" -- that is
+    # Hutsmith's fact about their own business, and refusing it would force
+    # the page to misdescribe them. What must never appear is PlotNua being
+    # cast as a partner, which G10b checks positionally instead.
+    "preferred supplier", "approved supplier",
     "recommended supplier", "trusted supplier", "endorse", "endorsement",
     "exclusive", "exclusivity", "commission", "agent", "reseller", "dealer",
     "listing fee", "sole channel", "only through",
@@ -338,9 +369,9 @@ def main():
                   "in image-rights-records.json. Nothing written.")
             return 1
         for i in HUTSMITH_IMAGES:
-            if "hutsmith.co.uk" not in i["url"]:
-                print("REFUSED. Image URL is not on Hutsmith's own domain: %s"
-                      % i["url"])
+            if not any(r in i["url"] for r in HUTSMITH_IMAGE_ROOTS):
+                print("REFUSED. Image URL is not on a Hutsmith first-party "
+                      "path: %s" % i["url"])
                 return 1
         if "credit-line" not in src:
             print("REFUSED. Imagery is published with no credit line.")
@@ -352,6 +383,17 @@ def main():
     if hits:
         print("REFUSED. The output carries forbidden claim wording: %s" % hits)
         return 1
+
+    # G10b · PlotNua must never be cast as a partner. Checked by proximity
+    # rather than by the bare word, so Hutsmith's own construction partner
+    # survives and "PlotNua has partnered with Hutsmith" does not.
+    text = re.sub(r"<[^>]+>", " ", src).lower()
+    for m in re.finditer(r"partner", text):
+        window = text[max(0, m.start() - 90):m.start() + 90]
+        if "plotnua" in window:
+            print("REFUSED. PlotNua is cast as a partner: ...%s..."
+                  % window.strip()[:120])
+            return 1
 
     # G11 · No other supplier's content.
     others = ["koto", "haku", "triq", "power sheds", "powersheds", "yard box",

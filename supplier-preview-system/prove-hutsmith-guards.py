@@ -121,10 +121,17 @@ results.append(run(lambda m: setattr(
 results.append(run(lambda m: m.FILL.pop("CLOSING_SUPPORT"),
                    "G8 · a token is left unreplaced"))
 
-# G9a — imagery set with no live rights record
-results.append(run(lambda m: setattr(m, "HUTSMITH_IMAGES",
-    [{"url": "https://hutsmith.co.uk/a.jpg", "alt": "x"}]),
-    "G9 · imagery published with no live rights record"))
+# G9a — imagery set with no live rights record. Hutsmith now HAS a record, so
+# the proof has to take it away: records without Hutsmith, images still set.
+def g9a(m):
+    m.HUTSMITH_IMAGES = [{"url": "https://hutsmith.co.uk/a.jpg", "alt": "x"}]
+    tmp = pathlib.Path("/tmp/proofNoRec"); tmp.mkdir(exist_ok=True)
+    rec = json.loads((m.SITE / "image-rights-records.json").read_text())
+    rec["records"] = [r for r in rec["records"]
+                      if r.get("organisation_name") != "Hutsmith"]
+    (tmp / "image-rights-records.json").write_text(json.dumps(rec))
+    m.SITE = tmp; m.OUT = tmp / "x.html"
+results.append(run(g9a, "G9 · imagery published with no live rights record"))
 
 # G9b — imagery on a domain that is not Hutsmith's
 def g9b(m):
@@ -163,10 +170,14 @@ results.append(run(lambda m: m.FILL.__setitem__(
     "G11 · another supplier's content is present"))
 
 # G12a — the page still asks for photography already granted
-results.append(run(lambda m: temp_template(
-    m, lambda s: s.replace("<b>Your project photography here</b>",
-                           "<b>Your project photos here</b>"),
-    ".proof-slot-heading-moved.html"),
+# The slot heading is only corrected in the HELD state, so the images must be
+# cleared for this mutation to exercise that path at all.
+def g12a(m):
+    m.HUTSMITH_IMAGES = []
+    temp_template(m, lambda s: s.replace("<b>Your project photography here</b>",
+                                         "<b>Your project photos here</b>"),
+                  ".proof-slot-heading-moved.html")
+results.append(run(g12a,
     "G12a · photo-slot heading reworded, so it cannot be corrected"))
 
 # G12 — the privacy meta is dropped
