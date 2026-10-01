@@ -64,11 +64,12 @@ FILL = {
     "SUPPLIER_NAME": SUPPLIER,
     "SUPPLIER_SHORT": SUPPLIER,
 
-    # OPENING. Supplier-first and commercial. The PlotNua manifesto lines are
-    # gone: Dudley sees what is being offered to Hutsmith, not our mission.
-    "PROPOSITION": "Hutsmith in front of Irish homeowners.",
-    "LEDE": "This is how Hutsmith could appear to an Irish homeowner who has "
-            "already narrowed down what would work for their property.",
+    # NO OPENING HERO AT ALL. The brand wordmark, the headline and the
+    # supporting line are removed outright, not reworded -- a replacement
+    # slogan was explicitly ruled out. After the private-preview bar the page
+    # goes straight to the demonstration, so the first substantive thing
+    # Dudley sees is the Hutsmith result itself. {{PROPOSITION}} and {{LEDE}}
+    # therefore no longer exist and are absent from this fill set.
 
     # Concrete, not speculative. No "imagine".
     "DEMO_HEADING": "How an Irish homeowner would reach Hutsmith",
@@ -155,6 +156,30 @@ REQUIRED = [
     "What we still need to confirm",
 ]
 
+# Slogans and marketing statements that must never stand in for the removed
+# hero. A replacement headline was explicitly ruled out.
+BANNED_SLOGANS = [
+    "in front of irish homeowners",
+    "see what", "unlock", "discover what your", "helping homeowners discover",
+    "the irish market awaits", "your route to ireland",
+]
+
+
+def low_so_far(s):
+    """Lowercased visible text of the region ABOVE the demonstration only.
+
+    That is the only place a replacement hero could sit, and scoping it there
+    matters: the approved why-point legitimately reads "put Hutsmith in front
+    of Irish homeowners", and the frozen journey band legitimately reads "See
+    what a property like theirs could do". Checking the whole body would
+    refuse both.
+    """
+    start = s.find('<div class="pv-bar"')
+    end = s.find('class="pn-stage"')      # everything before the result card
+    if start < 0 or end < 0:
+        return ""
+    return re.sub(r"<[^>]+>", " ", s[start:end]).lower()
+
 
 def imagery_block():
     """The hero media inner HTML, decided solely by HUTSMITH_IMAGES."""
@@ -180,6 +205,21 @@ def main():
               "expected; the strip anchor has moved. Not guessing.")
         return 1
     src = src.replace(block.group(0), "\n")
+
+    # G1b · Remove the introductory hero entirely: the PlotNua wordmark, the
+    # headline and the supporting line. Not reworded -- removed. The page then
+    # opens on the demonstration.
+    hero = re.search(r"\n<div class=\"wrap\">\n  <header class=\"hero\">.*?"
+                     r"\n  </header>\n</div>\n", src, re.S)
+    if not hero:
+        print("REFUSED. The introductory hero block was not found where "
+              "expected. Not guessing.")
+        return 1
+    if "{{PROPOSITION}}" not in hero.group(0) or "{{LEDE}}" not in hero.group(0):
+        print("REFUSED. The matched hero block is not the one carrying the "
+              "headline tokens. Not guessing.")
+        return 1
+    src = src.replace(hero.group(0), "\n")
 
     # G2 · Move the frozen journey band BELOW the demonstration, so Hutsmith
     # is the first thing on the page rather than a band of PlotNua process.
@@ -327,6 +367,28 @@ def main():
     if "Your project photography here" in src:
         print("REFUSED. The page still asks Hutsmith for photography they "
               "have already granted.")
+        return 1
+
+    # G12b · The introductory hero must be gone, and nothing may have taken
+    # its place. The first substantive element after the preview bar has to be
+    # the demonstration heading.
+    if '<header class="hero">' in src or 'class="brand"' in src:
+        print("REFUSED. The introductory hero is still present.")
+        return 1
+    if src.count("<h1") or src.count("<h1>"):
+        print("REFUSED. An <h1> is present, so a replacement headline was "
+              "introduced where the hero used to be.")
+        return 1
+    slog = [s for s in BANNED_SLOGANS if s in low_so_far(src)]
+    if slog:
+        print("REFUSED. A marketing slogan replaced the removed hero: %s" % slog)
+        return 1
+    bar = src.find('class="pv-bar"')
+    demo = src.find("How an Irish homeowner would reach Hutsmith")
+    stage = src.find('class="pn-stage"')
+    if not (bar < demo < stage):
+        print("REFUSED. The page no longer runs preview bar -> demonstration "
+              "heading -> result.")
         return 1
 
     # G12 · Required strings.
