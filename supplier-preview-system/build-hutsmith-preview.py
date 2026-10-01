@@ -58,17 +58,19 @@ PERMISSION_DATE = "30 September 2026"
 # Both from one project -- Creative Studio, published at £72,500 on
 # hutsmith.com/portfolio/new-portfolio-item -- so the card shows a single
 # coherent building rather than two unrelated ones.
+# The hero is the EXTERIOR, so the first thing Dudley sees is a whole
+# Hutsmith building rather than a detail of one. Uncropped, full frame, the
+# building complete in its garden. The interior follows as the second image.
 HUTSMITH_IMAGES = [
+    {"url": "https://images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/"
+            "dfffd6f6-6a9c-4f02-a111-7c6c03684233/IMG_2871.jpg?format=1500w",
+     "alt": "The Creative Studio by Hutsmith: a dark-timber cabin with a "
+            "pitched roof and a rooflight, lit from within, in a garden"},
     {"url": "https://images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/"
             "bb0891f1-5475-4fd3-bfbf-7524a51ae37f/"
             "79c5a028-956d-416e-8db7-ba419bddcdd7.JPG?format=1500w",
-     "alt": "The Creative Studio by Hutsmith: a timber-lined room with a "
-            "pitched roof, skylights and full-height glazing onto a garden"},
-    {"url": "https://images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/"
-            "40b25e71-fa3d-4e61-a100-14d47c2dd427/"
-            "11dd326c-7e48-4fbe-a08c-f129af444968.JPG?format=1500w",
-     "alt": "Inside the Creative Studio by Hutsmith: a mezzanine reached by a "
-            "ladder, with a kitchenette below"},
+     "alt": "Inside the Creative Studio by Hutsmith: a timber-lined room with "
+            "a pitched roof, skylights and full-height glazing onto the garden"},
 ]
 
 # Hutsmith's own Squarespace content store. 6952720a1e68c05bac7f54fe is the
@@ -97,8 +99,9 @@ FILL = {
 
     # Concrete, not speculative. No "imagine".
     "DEMO_HEADING": "How an Irish homeowner would reach Hutsmith",
-    "DEMO_LEDE": "This is the PlotNua interface a homeowner would see. The "
-                 "Hutsmith details come from your own published pages.",
+    "DEMO_LEDE": "This is how Hutsmith would appear to an Irish homeowner "
+                 "using PlotNua. The information shown is based on "
+                 "Hutsmith&rsquo;s published material.",
 
     "PHOTO_SLOT_LINE": "",   # set below, by imagery state
 
@@ -109,9 +112,8 @@ FILL = {
     # named as sterling and as completed-project prices, not a price list and
     # not an Irish quotation.
     "VERIFIED_PRICE": "&pound;33,500 &ndash; &pound;162,000",
-    "VERIFIED_PRICE_BASIS": "the range Hutsmith publishes against their own "
-                            "completed projects. Sterling, not converted, and "
-                            "not an Irish quotation.",
+    "VERIFIED_PRICE_BASIS": "Published Hutsmith project prices. Sterling, not "
+                            "converted, and not an Irish quotation.",
 
     # PERSONALISATION GUARDRAIL §6. Locality comes from the Eircode lookup,
     # the look from the journey's own appearance question. Nothing here
