@@ -211,9 +211,17 @@ ok = run(state_a, "state A builds with images + a live record", expect="BUILT")
 if ok:
     s = (pathlib.Path("/tmp/proofA2/hutsmith-preview.html")
          .read_text(encoding="utf-8"))
+    import re as _re
+    heromedia = _re.search(r'<div class="results-hero-media[^"]*">.*?</div>',
+                           s, _re.S)
     checks = [
-        ("two first-party <img> in the hero",
-         s.count('<img src="https://hutsmith.co.uk') == 2),
+        # PREVIEW-PARITY-001 — the hero carries ONE image, as production does.
+        # The old assertion here expected two, which was the defect.
+        ("exactly one <img> in the hero media",
+         bool(heromedia) and heromedia.group(0).count("<img") == 1),
+        ("the second image is a gallery thumb, not a second hero",
+         s.count('class="pn-gal-thumb') == 2),
+        ("gallery strip present", 'class="pn-gal-strip"' in s),
         ("credit line present", "credit-line" in s),
         ("held slot div removed", '<div class="pn-photo-slot">' not in s),
         ("no longer asks for photography",

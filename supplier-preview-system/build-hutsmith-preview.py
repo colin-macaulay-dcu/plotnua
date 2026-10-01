@@ -236,10 +236,29 @@ def imagery_block():
         return None, ("Hutsmith photography, authorised %s. Your own cabin "
                       "images go here, credited to Hutsmith and served from "
                       "your site." % PERMISSION_DATE)
-    imgs = "\n".join(
-        '          <img src="%s" alt="%s" loading="lazy">' % (i["url"], i["alt"])
-        for i in HUTSMITH_IMAGES)
-    return imgs, None
+    # ONE HERO, THEN THE GALLERY -- production's architecture, not two
+    # equal pictures in the media box. your-plot.html draws a single
+    # pnAuthorisedImage() into .results-hero-media and then hands the rest
+    # to pnGovernedGallery(), which inserts a .pn-gal-strip of .pn-gal-thumb
+    # buttons as the media's next sibling. Emitting two <img> into the hero
+    # was mine, and it is not what a homeowner sees.
+    hero, rest = HUTSMITH_IMAGES[0], HUTSMITH_IMAGES[1:]
+    out = ['          <div class="pn-media-col">',
+           '          <div class="results-hero-media has-pn-gallery">',
+           '            <img src="%s" alt="%s" loading="lazy">' % (hero["url"], hero["alt"]),
+           '            <span class="pn-image-credit">© Hutsmith</span>',
+           '          </div>']
+    if rest:
+        out.append('          <div class="pn-gal-strip">')
+        # The hero is the first thumb and starts selected, exactly as
+        # pnGovernedGallery's show(0) leaves it.
+        for n, i in enumerate([hero] + rest):
+            out.append('            <button type="button" class="pn-gal-thumb%s">'
+                       '<img src="%s" alt=""></button>'
+                       % (" is-on" if n == 0 else "", i["url"]))
+        out.append('          </div>')
+    out.append('          </div>')
+    return "\n".join(out), None
 
 
 def main():
@@ -301,10 +320,14 @@ def main():
             return 1
         src = src.replace(ask, "<b>Hutsmith photography</b>")
     else:
-        slot = re.search(r'          <div class="pn-photo-slot">.*?</div>\n',
-                         src, re.S)
+        # The whole media wrapper is replaced, not the slot inside it:
+        # state A emits its own .results-hero-media plus the gallery strip
+        # beside it, which is production's shape.
+        slot = re.search(r'        <div class="results-hero-media">\n'
+                         r'          <div class="pn-photo-slot">.*?</div>\n'
+                         r'        </div>\n', src, re.S)
         if not slot:
-            print("REFUSED. The held photo slot was not found, so state A "
+            print("REFUSED. The held media wrapper was not found, so state A "
                   "cannot replace it. Nothing written.")
             return 1
         src = src.replace(slot.group(0), imgs + "\n")
