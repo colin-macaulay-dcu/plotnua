@@ -161,6 +161,151 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 /* the governed gallery strip — L8806. Production inserts it as the next
    sibling of the media, inside the hero row, so the preview does the same
    and the media column carries both. */
+
+/* ======================================================================
+     PREVIEW-IDENTITY-001 · IDENTITY FIRST (lifted from production), THEN IMAGE + DECISION.
+
+     Last in the sheet and every selector scoped to .pn-stage or
+     to :has(.rh-split), for one reason: the ~100 shipped supplier previews
+     carry the OLD hero markup, and every generic .results-hero-* rule above
+     is left exactly as it was so they keep laying out as they do today. A
+     page without an identity band never matches anything below.
+
+     THE GEOMETRY IS RE-POINTED, NOT RE-CHOSEN. 58% at >=720, 64% at >=1280,
+     4:3 at every width -- the same numbers, moved from .results-hero-inner
+     (which is now a column) onto .rh-split (which is now the row).
+     ====================================================================== */
+
+  /* The inner stops being the flex row the moment there is a band to stack
+     above the split. */
+  .pn-stage .results-hero-inner:has(.rh-identity){
+    display:block;
+  }
+
+  /* ---- THE BAND --------------------------------------------------------- */
+  .pn-stage .rh-identity{
+    margin:0 0 clamp(22px,2.2vw,32px);
+  }
+  .pn-stage .rh-identity .results-hero-name{
+    font-size:clamp(34px,5.2vw,68px);
+    line-height:1.02; letter-spacing:-.015em;
+    margin:0 0 12px; max-width:22ch;
+  }
+  /* ONE LINE, ALWAYS THE SAME SHAPE. The band must not move when the price
+     state changes from "€41,500" to "Price on enquiry", so the meta row has
+     a fixed type size and a fixed baseline rather than sizing to content. */
+  .pn-stage .rh-identity-meta{
+    display:flex; flex-wrap:wrap; align-items:baseline;
+    gap:0 10px; min-height:26px;
+  }
+  .pn-stage .rh-identity-meta .results-hero-org{
+    order:0; margin:0;
+    font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--pn-stone);
+  }
+  .pn-stage .rh-identity-sep{
+    color:var(--pn-stone); opacity:.55; font-size:13px;
+  }
+  .pn-stage .rh-identity-meta .results-hero-price{
+    font-size:clamp(19px,1.5vw,22px); line-height:1.2;
+  }
+
+  /* ---- THE SPLIT -------------------------------------------------------- */
+  .pn-stage .rh-split{
+    display:flex; flex-direction:column; gap:0;
+  }
+  .pn-stage .rh-split .pn-media-col{
+    display:flex; flex-direction:column; gap:10px; min-width:0;
+  }
+  .pn-stage .rh-split .results-hero-media{
+    width:100%; max-width:none; flex:0 0 auto; aspect-ratio:4/3;
+  }
+  .pn-stage .rh-split .results-hero-body{
+    padding:26px 0 0; min-width:0;
+  }
+
+  @media (min-width:720px){
+    .pn-stage .rh-split{
+      flex-direction:row; align-items:flex-start;
+      gap:clamp(32px,3.4vw,48px);
+    }
+    /* 58%, unchanged -- on the media COLUMN, which is what the photograph and
+       its thumbnail strip now share. */
+    .pn-stage .rh-split .pn-media-col{
+      width:58%; min-width:0; max-width:58%; flex:0 0 58%;
+    }
+    .pn-stage .rh-split .results-hero-body{
+      flex:1 1 0; min-width:0; padding:0;
+    }
+  }
+  @media (min-width:1280px){
+    /* 64% and the 26px gap, unchanged -- see K2b above for the measurement
+       that chose them. */
+    .pn-stage .rh-split .pn-media-col{
+      width:64%; max-width:64%; flex:0 0 64%;
+    }
+    .pn-stage .rh-split{ gap:26px; }
+  }
+
+  /* ---- THE THUMBNAIL STRIP, WHICH NOW ACTUALLY EXISTS ------------------- */
+  .pn-stage .rh-split .pn-gal-strip{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .pn-stage .rh-split .pn-gal-thumb{
+    width:72px; aspect-ratio:4/3; padding:0; border:0; cursor:pointer;
+    border-radius:3px; overflow:hidden; background:var(--pn-hair);
+    box-shadow:inset 0 0 0 1px rgba(36,53,31,.10);
+    opacity:.62; transition:opacity .18s ease, box-shadow .18s ease;
+  }
+  .pn-stage .rh-split .pn-gal-thumb img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .pn-stage .rh-split .pn-gal-thumb:hover{ opacity:.85; }
+  .pn-stage .rh-split .pn-gal-thumb.is-on{
+    opacity:1; box-shadow:inset 0 0 0 2px var(--accent);
+  }
+  .pn-stage .rh-split .pn-gal-thumb:focus-visible{
+    outline:2px solid var(--accent); outline-offset:2px;
+  }
+
+  /* ---- THE FIELD-ONLY STATE, REDESIGNED FOR THE SAME STRUCTURE ----------
+     No photograph means no media column was ever appended, so .rh-split holds
+     the decision column alone. It collapses to a block rather than running as
+     a one-child flex row with a 58% rule looking for a sibling, and the
+     decision column keeps the UX-008C two-column grid it already had. The
+     name and the maker are no longer in that grid -- they are in the band
+     above it -- so their grid-column rules simply match nothing here; the
+     spec row keeps column 1, which is where it belongs. */
+  .pn-stage .results-hero-inner.is-fieldonly .rh-split{
+    display:block;
+  }
+  @media (min-width:720px){
+    .pn-stage .results-hero-inner.is-fieldonly .rh-identity{
+      margin-bottom:clamp(18px,1.8vw,26px);
+    }
+    .pn-stage .results-hero-inner.is-fieldonly .results-hero-body{
+      padding:0;
+    }
+    /* The trust block no longer needs pulling up level with the name: the
+       name is above the grid now, so row 1 starts with the spec row. */
+    .pn-stage .results-hero-inner.is-fieldonly .hero-trust{
+      grid-row:auto; margin:0;
+    }
+  }
+
+  /* ---- MOBILE: identity, hero, gallery, decision ------------------------
+     The order is already the DOM order, so this sets no `order` anywhere. It
+     only brings the name down to a phone measure and removes the desktop
+     width rules, which the flex-direction:column default above already does. */
+  @media (max-width:719px){
+    .pn-stage .rh-identity .results-hero-name{
+      font-size:clamp(30px,8.4vw,40px); max-width:none;
+    }
+    .pn-stage .rh-split .pn-media-col{
+      width:100%; max-width:none;
+    }
+  }
+
 .pn-stage .pn-media-col{ display:flex; flex-direction:column; min-width:0; }
 @media (min-width:720px){
   .pn-stage .pn-media-col{ width:58%; max-width:58%; flex:0 0 58%; }
@@ -781,21 +926,36 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
       </div>
 
       <div class="results-hero-inner">
+        <!-- PREVIEW-IDENTITY-001 — THE PRODUCT IS NAMED ACROSS THE
+             TOP, as it is on production Results. The band carries the
+             name and "Supplier · price" and nothing else; the price
+             BASIS and every other explanation belong to the decision,
+             so they stay in the column below. -->
+        <div class="rh-identity">
+          <h2 class="results-hero-name">{{OFFER_NAME}}</h2>
+          <div class="rh-identity-meta">
+            <span class="results-hero-org">{{SUPPLIER_NAME}}</span>
+            <span class="rh-identity-sep" aria-hidden="true">·</span>
+            <span class="results-hero-price">{{VERIFIED_PRICE}}</span>
+          </div>
+        </div>
+        <div class="rh-split">
         <!-- IMAGERY STATE C — NOT YET AUTHORISED. A purposeful held space
              that shows the supplier where their photography would sit. Never
              substitute their pictures because the page is private. -->
+        <div class="pn-media-col">
         <div class="results-hero-media">
           <div class="pn-photo-slot">
             <b>Your project photography here</b>
             <span>{{PHOTO_SLOT_LINE}}</span>
           </div>
         </div>
+        </div>
         <div class="results-hero-body">
-          <h2 class="results-hero-name">{{OFFER_NAME}}</h2>
-          <div class="results-hero-org">{{SUPPLIER_NAME}}</div>
-
+          <!-- The name, the supplier and the price are in the band above.
+               What stays here is the price BASIS, which explains the figure
+               rather than stating it, and therefore belongs to the decision. -->
           <div class="results-hero-price-row">
-            <span class="results-hero-price">{{VERIFIED_PRICE}}</span>
             <span class="results-hero-area">{{VERIFIED_PRICE_BASIS}}</span>
           </div>
 
@@ -830,6 +990,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
             <a class="hero-secondary-link" href="#">Explore with {{SUPPLIER_SHORT}} &rarr;</a>
           </div>
         </div>
+        </div>
       </div>
     </div>
   </div>
@@ -862,5 +1023,53 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
 </footer>
 
 </div>
+
+<!-- PREVIEW-IDENTITY-001 — THE GALLERY ACTUALLY WORKS NOW.
+     Both templates previously carried no script at all, so the thumbnail
+     strip was decorative: clicking it did nothing. This is the whole
+     behaviour, in one place, for every preview built from these templates.
+
+     It is deliberately NOT a copy of pnGovernedGallery(). On Results that
+     function re-checks the rights gate before every paint, because Results
+     paints from live Atlas data. A preview is a STATIC artefact whose
+     images already passed the gate at build time -- the builder refuses to
+     emit an unauthorised image at all -- so there is nothing left to
+     re-check at click time and pretending otherwise would be theatre. What
+     must still hold is that the credit never parts company with the
+     picture, so the credit is swapped in the same statement as the src. -->
+<script>
+(function(){
+  var strip = document.querySelector('.pn-gal-strip');
+  if (!strip) return;
+  var media  = document.querySelector('.results-hero-media');
+  var main   = media && media.querySelector('img');
+  var credit = media && media.querySelector('.pn-image-credit');
+  if (!main) return;
+  var thumbs = strip.querySelectorAll('.pn-gal-thumb');
+
+  function show(btn, i){
+    var full = btn.getAttribute('data-full');
+    if (!full) return;                       /* nothing to show, do nothing */
+    main.src = full;
+    main.alt = btn.getAttribute('data-alt') || '';
+    /* THE CREDIT TRAVELS WITH THE PICTURE. Same statement, no gap. */
+    if (credit) credit.textContent = btn.getAttribute('data-credit') || '';
+    for (var k = 0; k < thumbs.length; k++){
+      var on = (k === i);
+      thumbs[k].classList.toggle('is-on', on);
+      thumbs[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+
+  for (var i = 0; i < thumbs.length; i++){
+    (function(btn, idx){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();                  /* never reload the page */
+        show(btn, idx);
+      });
+    })(thumbs[i], i);
+  }
+})();
+</script>
 </body>
 </html>

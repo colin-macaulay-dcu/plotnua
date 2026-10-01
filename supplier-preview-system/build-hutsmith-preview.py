@@ -243,21 +243,33 @@ def imagery_block():
     # buttons as the media's next sibling. Emitting two <img> into the hero
     # was mine, and it is not what a homeowner sees.
     hero, rest = HUTSMITH_IMAGES[0], HUTSMITH_IMAGES[1:]
-    out = ['          <div class="pn-media-col">',
-           '          <div class="results-hero-media has-pn-gallery">',
-           '            <img src="%s" alt="%s" loading="lazy">' % (hero["url"], hero["alt"]),
-           '            <span class="pn-image-credit">© Hutsmith</span>',
-           '          </div>']
+    # PREVIEW-IDENTITY-001 — NO .pn-media-col HERE ANY MORE. The refreshed
+    # template now wraps the media in .pn-media-col itself, because that is
+    # what production's .rh-split expects. Emitting a second one nested it
+    # inside the first, so the wrapper is the template's job and the
+    # photograph plus its strip are this builder's.
+    out = ['        <div class="results-hero-media has-pn-gallery">',
+           '          <img src="%s" alt="%s" loading="lazy">' % (hero["url"], hero["alt"]),
+           '          <span class="pn-image-credit">© Hutsmith</span>',
+           '        </div>']
     if rest:
-        out.append('          <div class="pn-gal-strip">')
+        out.append('        <div class="pn-gal-strip">')
+        # THE THUMBS CARRY THE PICTURE THEY SWAP IN. The template's handler
+        # reads data-full / data-alt / data-credit, so each button carries
+        # everything needed to replace the hero -- including the credit,
+        # which must never lag a frame behind the photograph it credits.
         # The hero is the first thumb and starts selected, exactly as
-        # pnGovernedGallery's show(0) leaves it.
+        # pnGovernedGallery's show(0) leaves it on Results.
         for n, i in enumerate([hero] + rest):
-            out.append('            <button type="button" class="pn-gal-thumb%s">'
+            out.append('          <button type="button" class="pn-gal-thumb%s" '
+                       'aria-pressed="%s" aria-label="View image %d of %d" '
+                       'data-full="%s" data-alt="%s" data-credit="© Hutsmith">'
                        '<img src="%s" alt=""></button>'
-                       % (" is-on" if n == 0 else "", i["url"]))
-        out.append('          </div>')
-    out.append('          </div>')
+                       % (" is-on" if n == 0 else "",
+                          "true" if n == 0 else "false",
+                          n + 1, len([hero] + rest),
+                          i["url"], i["alt"].replace('"', "&quot;"), i["url"]))
+        out.append('        </div>')
     return "\n".join(out), None
 
 
