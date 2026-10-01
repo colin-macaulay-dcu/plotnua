@@ -117,13 +117,20 @@
       "organisation_code": "ORG-000174",
       "organisation_name": "Hutsmith",
       "permission_outcome": "Granted — Founder Confirmed",
-      "permitted_domain": "images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/",
+      "permitted_domain": "hutsmith.com",
       "required_credit": "© Hutsmith",
-      "evidence": "Dudley Radford to PlotNua by email, 30 September 2026, granting use of Hutsmith website imagery. Identity confirmed first-party on hutsmith.com/about-1, read 1 October 2026: \"Hi, I am Dudley Radford.\" The permitted domain is Hutsmith's own Squarespace content store; 6952720a1e68c05bac7f54fe is the site id of hutsmith.com, so that path is as first-party as the site itself.",
-      "note": "Two images are published, both from one project -- Creative Studio, published at £72,500 on hutsmith.com/portfolio/new-portfolio-item -- read off that live page and each opened and confirmed to render on 1 October 2026:\n  IMG_2871.jpg                               1206x1956  HERO, exterior: the whole cabin in its garden, dark timber, pitched roof with a rooflight, lit from within\n  79c5a028-956d-416e-8db7-ba419bddcdd7.JPG   1500x2000  interior: pitched roof, skylights, glazing to the garden\nBoth are served unmodified and uncropped from Hutsmith's own store, never rehosted. Publication-logo and AI-generated assets on the same site are deliberately excluded, as is the portrait of Dudley.\n\nATLAS ROW NOT YET CREATED, DELIBERATELY. Every other record here cites the Gmail thread id, the message id and the supplier's verbatim wording. For Hutsmith only the founder's account of Dudley Radford's email of 30 September 2026 is held, so no Image Permission Outreach row was written: inventing that provenance in the source of record would be worse than the gap. Colin creates the row from the real email, sets atlas_permission_record and atlas_permission_ref, then regenerates the manifest. Until then the manifest generator aborts on this record by design and the publish gate refuses the two Hutsmith images, which is the correct behaviour, not a defect.",
-      "atlas_permission_record": "",
-      "atlas_permission_ref": "PENDING-FOUNDER",
-      "permission_date": "2026-09-30"
+      "evidence": "Dudley Radford to PlotNua, Gmail thread 1a0d27372227dae9, message 1a0f7adce2edeebc, 2026-10-01 13:35:49 UTC, replying \"sounds good\" to the request in message 1a0f75edde00136d which asked to feature Hutsmith and use selected website images and stated that a simple yes was sufficient. Identity confirmed first-party on hutsmith.com/about-1, read 1 October 2026: \"Hi, I am Dudley Radford.\"",
+      "note": "Two images are published, both from one project -- Creative Studio, published at £72,500 on hutsmith.com/portfolio/new-portfolio-item -- read off that live page and each opened and confirmed to render on 1 October 2026:\n  IMG_2871.jpg                               1206x1956  HERO, exterior: the whole cabin in its garden, dark timber, pitched roof with a rooflight, lit from within\n  79c5a028-956d-416e-8db7-ba419bddcdd7.JPG   1500x2000  interior: pitched roof, skylights, glazing to the garden\nBoth are served unmodified and uncropped from Hutsmith's own store, never rehosted. Publication-logo and AI-generated assets on the same site are deliberately excluded, as is the portrait of Dudley.\n\nATLAS ROW NOW EXISTS: recT7pcIdeMuERdjI / IPO-HUTSMITH-20261001, in Image Permission Outreach, carrying the Gmail thread 1a0d27372227dae9, the request message 1a0f75edde00136d, the grant message 1a0f7adce2edeebc of 2026-10-01 13:35:49 UTC, both wordings verbatim, and the conditions. Dudley's commission sentence is recorded there as OUTSIDE image-rights scope and appears on no published surface.",
+      "atlas_permission_record": "recT7pcIdeMuERdjI",
+      "atlas_permission_ref": "IPO-HUTSMITH-20261001",
+      "permission_date": "2026-10-01",
+      "permitted_delivery_hosts": [
+        {
+          "host": "images.squarespace-cdn.com",
+          "path_prefix": "/content/v1/6952720a1e68c05bac7f54fe/",
+          "why": "Hutsmith's own Squarespace site namespace; the identifier is their site id, so the scope is their files and nobody else's."
+        }
+      ]
     }
   ]
 }

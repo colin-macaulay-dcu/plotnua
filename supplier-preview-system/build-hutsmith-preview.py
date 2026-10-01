@@ -50,7 +50,7 @@ OUT = SITE / "hutsmith-preview.html"
 
 SUPPLIER = "Hutsmith"
 EVIDENCE_DATE = "1 October 2026"
-PERMISSION_DATE = "30 September 2026"
+PERMISSION_DATE = "1 October 2026"
 
 # ── IMAGERY ────────────────────────────────────────────────────────────────
 # Each entry: {"url": <a real hutsmith.co.uk URL>, "alt": <plain description>}
@@ -313,10 +313,20 @@ def main():
         # G4's "token must be present" check refuses a correct state-A build.
         FILL.pop("PHOTO_SLOT_LINE", None)
         # The state-A credit line, as yardbox-preview.html carries it.
-        credit = ('          <p class="credit-line">Images: Hutsmith, used with '
-                  'written permission from Dudley Radford, %s, unmodified, and '
-                  'served from Hutsmith&rsquo;s own site. If Hutsmith ask for any '
-                  'of them to be changed or removed, we change or remove them.</p>\n'
+        # The credit carries BOTH halves of what was actually promised to
+        # Dudley: clear credit, and a link back to his website. "© Hutsmith"
+        # is the machine-checkable token the rights gate looks for, so if it
+        # is ever dropped the gate refuses the images rather than publishing
+        # them uncredited.
+        # NOTE: a literal © character, not &copy;. The rights gate scans the
+        # raw HTML for the exact credit token, so the entity form would leave
+        # the page looking credited to a reader while the gate -- correctly --
+        # saw no credit at all.
+        credit = ('          <p class="credit-line">© Hutsmith. Images used '
+                  'with written permission from Dudley Radford, %s, unmodified '
+                  'and served from <a href="https://www.hutsmith.com/" '
+                  'rel="noopener">hutsmith.com</a>. If Hutsmith ask for any of '
+                  'them to be changed or removed, we change or remove them.</p>\n'
                   % PERMISSION_DATE)
         foot = "<footer>\n"
         if src.count(foot) != 1:
