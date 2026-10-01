@@ -2,38 +2,40 @@
 # -*- coding: utf-8 -*-
 """BOUNDED BUILDER — THE HUTSMITH PRIVATE SUPPLIER PREVIEW.
 
-Variant B, provider-led, straight from template-provider-led.html. No bespoke
-layout, no new design language, no hand-editing of the emitted HTML: change the
-copy here and re-run.
+TEMPLATE: supplier-preview-system/template-provider-led.html
+VARIANT:  B, provider-led
+No bespoke layout, no new design language, no hand-editing of the emitted
+HTML. Change the copy here and re-run.
 
 WHY PROVIDER-LED. Hutsmith's own route is "Configure my cabin" plus a site
 survey, and they publish no cabin price. That is a provider relationship, not
-one priced product carrying the conversation, so SUPPLIER-PREVIEW-SYSTEM-V1 §1
-puts it in variant B.
+one priced product carrying the conversation, which is what SUPPLIER-PREVIEW-
+SYSTEM-V1 §1 puts in variant B.
 
-EVERY FACT BELOW CAME OFF A HUTSMITH PAGE READ FOR THIS BUILD, 1 October 2026:
+FIRST-PARTY EVIDENCE, read 1 October 2026:
     https://hutsmith.co.uk/          home
     https://hutsmith.co.uk/about     about
     https://hutsmith.co.uk/design    details / specification
     https://hutsmith.co.uk/saunas    saunas, with published prices
 
-WHAT IS DELIBERATELY ABSENT, AND WHY. /cabins and /frequent-questions could not
-be read for this build -- they return no body text to the fetch available here,
-and the browser could not reach the domain at all. So the cabin type names,
-their dimensions, the lead time, and the delivery charges are NOT on this page.
-Search engines will happily summarise those pages, and §2 is explicit that
-third-party relays are not evidence. A gap stays a gap; on a provider-led
-preview it is simply absent.
+── IMAGERY ────────────────────────────────────────────────────────────────
+Dudley Radford has GRANTED permission. The state is therefore decided by one
+list, HUTSMITH_IMAGES, and nothing else:
 
-IMAGERY IS AUTHORISED BUT NOT YET PLACED. Dudley Radford granted it by email.
-The held panel is therefore worded as an invitation with the permission already
-given -- not as "not yet authorised", which would be untrue. No Hutsmith image
-is referenced, because the image URLs could not be read first-party for this
-build, and inventing an image URL would be worse than an empty panel.
+    empty  -> the certified held slot, worded as authorised-and-awaiting.
+              NOT "not yet authorised", which would now be untrue.
+    filled -> certified state A: first-party <img> in .results-hero-media
+              exactly as yardbox-preview.html does it, plus the credit line,
+              and G9 then REQUIRES a live Hutsmith rights record.
 
-NOT PUBLISHED, AND THE COMMISSION STAYS OFF THE PAGE. Dudley raised commission.
-Nothing is agreed, so the page says nothing about it, and nothing on it casts
-PlotNua as an agent, reseller, dealer, partner or exclusive channel.
+It is empty today because no Hutsmith image URL could be read first-party.
+/cabins and /frequent-questions return no body text to the fetch available
+here; the in-app browser is refused by the host; the Chrome extension is not
+connected; the WordPress REST route and both sitemap conventions return
+nothing. Four independent routes, all closed. Inventing an image URL, or
+lifting one from a search summary, would be a fabricated first-party fact,
+so the slot stays honest until a real URL is in hand. Add the URLs to
+HUTSMITH_IMAGES, add the rights record, re-run: no other edit is needed.
 
 Run: python3 build-hutsmith-preview.py
 """
@@ -47,40 +49,43 @@ TEMPLATE = HERE / "template-provider-led.html"
 OUT = SITE / "hutsmith-preview.html"
 
 SUPPLIER = "Hutsmith"
+EVIDENCE_DATE = "1 October 2026"
+PERMISSION_DATE = "30 September 2026"
 
-# ── THE COPY ────────────────────────────────────────────────────────────────
-# Voice test, §7: would Colin say this to Dudley, in person?
+# ── IMAGERY ────────────────────────────────────────────────────────────────
+# Each entry: {"url": <a real hutsmith.co.uk URL>, "alt": <plain description>}
+# Only hutsmith.co.uk / its own CDN. Unmodified. Credit stays on the page.
+HUTSMITH_IMAGES = []
+
+# ── THE COPY ───────────────────────────────────────────────────────────────
+# Voice: short, ordinary, confident. Never sound written. No "imagine", no
+# poetic phrasing, no mirrored constructions, no abstract strategy language.
 FILL = {
     "SUPPLIER_NAME": SUPPLIER,
     "SUPPLIER_SHORT": SUPPLIER,
 
-    # The PlotNua hero lines. §12 calls these rarely changed; they are the
-    # same two lines every preview has carried.
-    "PROPOSITION": "Helping homeowners discover what their property could do.",
-    "LEDE": "And make better-informed decisions about what comes next.",
+    # OPENING. Supplier-first and commercial. The PlotNua manifesto lines are
+    # gone: Dudley sees what is being offered to Hutsmith, not our mission.
+    "PROPOSITION": "Hutsmith in front of Irish homeowners.",
+    "LEDE": "This is how Hutsmith could appear to an Irish homeowner who has "
+            "already narrowed down what would work for their property.",
 
-    "DEMO_HEADING": "Imagine an Irish homeowner reaching Hutsmith like this.",
-    "DEMO_LEDE": "The screen below is the real PlotNua interface. "
-                 "Everything it says about Hutsmith came off your own site.",
+    # Concrete, not speculative. No "imagine".
+    "DEMO_HEADING": "How an Irish homeowner would reach Hutsmith",
+    "DEMO_LEDE": "This is the PlotNua interface a homeowner would see. The "
+                 "Hutsmith details come from your own published pages.",
 
-    # IMAGERY STATE: authorised by Dudley, not yet placed. Worded accordingly.
-    "PHOTO_SLOT_LINE": "You&rsquo;ve said yes to us using your website imagery, "
-                       "so one of your own cabin photographs would sit here, "
-                       "credited to Hutsmith and linked back to you.",
+    "PHOTO_SLOT_LINE": "",   # set below, by imagery state
 
     "OFFER_NAME": "Modular cabins",
 
-    # QUOTE-ONLY. Hutsmith publishes no cabin price, so none is invented. The
-    # sauna prices they DO publish are named as sterling and ex VAT, and
-    # explicitly not restated as an Irish delivered price (§8).
+    # QUOTE-ONLY. Hutsmith publishes no cabin price, so none is invented.
     "VERIFIED_PRICE": "Price on enquiry",
-    "VERIFIED_PRICE_BASIS": "Hutsmith publishes no cabin price &mdash; the route is "
-                            "&ldquo;Configure my cabin&rdquo; and a site survey. The "
-                            "published sauna sizes run &pound;24,000 to &pound;30,000 + VAT, "
-                            "sterling, not converted, and not an Irish quotation.",
+    "VERIFIED_PRICE_BASIS": "Hutsmith publishes no cabin price. The route is "
+                            "&ldquo;Configure my cabin&rdquo; and a site survey.",
 
-    # PERSONALISATION GUARDRAIL §6. Locality comes from the Eircode lookup and
-    # the appearance preference from the journey's own question. Nothing here
+    # PERSONALISATION GUARDRAIL §6. Locality comes from the Eircode lookup,
+    # the look from the journey's own appearance question. Nothing here
     # touches aspect, orientation or surface, which PlotNua does not capture.
     "HOMEOWNER_LOCALITY": "Co. Meath",
     "PERSONALISATION": "In keeping with the natural-timber look they preferred.",
@@ -93,60 +98,80 @@ FILL = {
     "VERIFIED_FACT_4": "Full internal high grade ply, with bespoke ply shelving",
     "VERIFIED_FACT_5": "Standard electric pack &mdash; three double sockets, USB charger, LED lighting",
 
-    "THINGS_TO_CHECK": "what the ground needs, how a module reaches the garden, "
-                       "and what a survey and delivery look like outside the UK.",
+    "THINGS_TO_CHECK": "ground works, access for delivery, and what a survey "
+                       "costs outside the UK.",
 
-    "WHY_1_LABEL": "More context",
-    "WHY_1_TEXT": "By the time someone reaches Hutsmith they have already worked "
-                  "through what their property can take and what they want from it.",
+    # WHY THIS IS USEFUL TO HUTSMITH. Commercial, and no claim that lead
+    # quality or conversion has been proven.
+    "WHY_1_LABEL": "Better informed enquiries",
+    "WHY_1_TEXT": "Homeowners have already worked through what could suit their "
+                  "property before they reach Hutsmith.",
     "WHY_2_LABEL": "Clearer intent",
-    "WHY_2_TEXT": "They arrive with a size, a look and a budget band in mind, so the "
-                  "first conversation starts further along than a cold enquiry does.",
-    "WHY_3_LABEL": "A better starting point",
-    "WHY_3_TEXT": "Irish homeowners comparing timber cabins have no easy way to see a "
-                  "maker like you next to the local options. PlotNua gives them one.",
+    "WHY_2_TEXT": "They arrive with a better idea of the size, use and type of "
+                  "building they are considering.",
+    "WHY_3_LABEL": "A route into the Irish market",
+    "WHY_3_TEXT": "PlotNua can put Hutsmith in front of Irish homeowners who may "
+                  "not otherwise find a UK supplier while comparing local options.",
 
-    "CLOSING_PROPOSITION": "Before anything else, one practical question: what would a "
-                           "Hutsmith cabin actually need to land in an Irish garden "
-                           "&mdash; the survey, the delivery, the base &mdash; and is that "
-                           "work you&rsquo;d want?",
-    "CLOSING_SUPPORT": "Your survey fee is published for the UK and your delivery "
-                       "charges are measured from the workshop, so Ireland changes "
-                       "something in both. Working out what, before a homeowner asks, "
-                       "seems the useful next step.",
+    # CLOSING. Practical, not literary. Note the deliberate wording: "before
+    # any homeowner enquiry reaches you" rather than "before we send genuine
+    # enquiries your way", because the second promises enquiries that are not
+    # flowing yet and §8 forbids presenting the enquiry route as operational.
+    "CLOSING_PROPOSITION": "You&rsquo;ve confirmed that Hutsmith can supply "
+                           "Ireland. Before any homeowner enquiry reaches you, "
+                           "we want the practical details right for an Irish "
+                           "customer.",
+    "CLOSING_SUPPORT": "If you can confirm those points, PlotNua can present "
+                       "Hutsmith more accurately to Irish homeowners.",
 
-    "DATE": "1 October 2026",
+    "DATE": EVIDENCE_DATE,
 }
 
-# Phrases that must never reach a supplier-facing page (§8, plus the founder's
-# explicit commercial boundary for this build). Checked against the OUTPUT, so
-# a careless edit to FILL cannot slip one through.
+# Only genuinely unestablished items belong here.
+STILL_TO_CONFIRM = [
+    "Delivery cost to Ireland",
+    "Site survey arrangements for Ireland",
+    "Base and ground preparation requirements",
+    "Whether installation is included or arranged separately",
+    "Typical lead time for an Irish order",
+]
+
 FORBIDDEN = [
     "partner", "partnership", "preferred supplier", "approved supplier",
     "recommended supplier", "trusted supplier", "endorse", "endorsement",
     "exclusive", "exclusivity", "commission", "agent", "reseller", "dealer",
     "listing fee", "sole channel", "only through",
-    # Ireland facts nobody has evidenced.
     "irish showroom", "irish office", "irish installer", "irish projects",
-    # The planning claim Hutsmith makes for UK flat roofs must not cross over.
     "no planning permission", "planning permission is not",
+    # Banned from the corrected copy by name.
+    "imagine",
 ]
 
-# Things that MUST be present, because their absence is the failure mode.
 REQUIRED = [
     'content="noindex, nofollow, noarchive, nosnippet, noimageindex"',
     "Private preview",
     "Prepared for Hutsmith",
     "Republic of Ireland",
+    "What we still need to confirm",
 ]
+
+
+def imagery_block():
+    """The hero media inner HTML, decided solely by HUTSMITH_IMAGES."""
+    if not HUTSMITH_IMAGES:
+        return None, ("Hutsmith photography, authorised %s. Your own cabin "
+                      "images go here, credited to Hutsmith and served from "
+                      "your site." % PERMISSION_DATE)
+    imgs = "\n".join(
+        '          <img src="%s" alt="%s" loading="lazy">' % (i["url"], i["alt"])
+        for i in HUTSMITH_IMAGES)
+    return imgs, None
 
 
 def main():
     src = TEMPLATE.read_text(encoding="utf-8")
 
-    # G1 · Strip the template's own filling instructions. They carry {{TOKEN}}
-    # and {{VERIFIED_FACT_N}} as examples, and every shipped preview drops this
-    # block, so a surviving comment means the strip anchor moved.
+    # G1 · Strip the template's filling instructions (they carry {{TOKEN}}).
     block = re.search(
         r"\n<!--\s*[═=]{10,}.*?PROVIDER-LED.*?[═=]{10,}\s*-->\n",
         src, re.S)
@@ -156,7 +181,61 @@ def main():
         return 1
     src = src.replace(block.group(0), "\n")
 
-    # G2 · Fill. Every key must actually appear, or the token was renamed.
+    # G2 · Move the frozen journey band BELOW the demonstration, so Hutsmith
+    # is the first thing on the page rather than a band of PlotNua process.
+    # The band's own markup is carried across untouched -- relocated, not
+    # rewritten -- and G7 proves that byte-for-byte.
+    jm = re.search(r"\n<!-- FROZEN.*?\n<div class=\"journey\">.*?\n</div>\n",
+                   src, re.S)
+    if not jm:
+        print("REFUSED. The frozen journey band was not found. Not guessing.")
+        return 1
+    journey = jm.group(0)
+    src = src.replace(journey, "\n")
+    why_anchor = "<!-- WHY THIS COULD BE USEFUL"
+    if src.count(why_anchor) != 1:
+        print("REFUSED. The 'why' section anchor is not unique. Nothing written.")
+        return 1
+    src = src.replace(why_anchor, journey.strip("\n") + "\n\n" + why_anchor)
+
+    # G3 · Imagery. One list decides the state.
+    imgs, held_line = imagery_block()
+    if imgs is None:
+        FILL["PHOTO_SLOT_LINE"] = held_line
+        # The template's bold line asks the supplier for photography. Dudley
+        # has already given it, so that wording is now wrong. It is not a
+        # token, so it is replaced here by exact string.
+        ask = "<b>Your project photography here</b>"
+        if src.count(ask) != 1:
+            print("REFUSED. The photo-slot heading was not found exactly once. "
+                  "Nothing written.")
+            return 1
+        src = src.replace(ask, "<b>Hutsmith photography</b>")
+    else:
+        slot = re.search(r'          <div class="pn-photo-slot">.*?</div>\n',
+                         src, re.S)
+        if not slot:
+            print("REFUSED. The held photo slot was not found, so state A "
+                  "cannot replace it. Nothing written.")
+            return 1
+        src = src.replace(slot.group(0), imgs + "\n")
+        # The slot carrying {{PHOTO_SLOT_LINE}} has just been removed, so the
+        # token no longer exists and must not be in the fill set -- otherwise
+        # G4's "token must be present" check refuses a correct state-A build.
+        FILL.pop("PHOTO_SLOT_LINE", None)
+        # The state-A credit line, as yardbox-preview.html carries it.
+        credit = ('          <p class="credit-line">Images: Hutsmith, used with '
+                  'written permission from Dudley Radford, %s, unmodified, and '
+                  'served from Hutsmith&rsquo;s own site. If Hutsmith ask for any '
+                  'of them to be changed or removed, we change or remove them.</p>\n'
+                  % PERMISSION_DATE)
+        foot = "<footer>\n"
+        if src.count(foot) != 1:
+            print("REFUSED. The footer anchor is not unique. Nothing written.")
+            return 1
+        src = src.replace(foot, credit + foot)
+
+    # G4 · Fill every token.
     for key, value in FILL.items():
         needle = "{{%s}}" % key
         if needle not in src:
@@ -164,58 +243,106 @@ def main():
             return 1
         src = src.replace(needle, value)
 
-    # G3 · Record the one thing Hutsmith told us that their website does not
-    # say: that they can serve the Republic of Ireland. It goes in the facts
-    # list, attributed to the supplier, not asserted as a website fact.
-    anchor = ("          <ul class=\"pn-facts\">\n")
+    # G5 · Ireland availability, attributed to Hutsmith and dated.
+    anchor = "          <ul class=\"pn-facts\">\n"
     if src.count(anchor) != 1:
         print("REFUSED. The facts list anchor is not unique. Nothing written.")
         return 1
     src = src.replace(anchor, anchor +
                       "            <li><b>Republic of Ireland &mdash; confirmed "
-                      "available by Hutsmith, 1 October 2026</b></li>\n")
+                      "available by Hutsmith, %s</b></li>\n" % EVIDENCE_DATE)
 
-    # G4 · No token may survive.
+    # G6 · The closing section: practical, with the open items as a list.
+    old_h2 = "<h2>What we&rsquo;d like to explore</h2>"
+    if src.count(old_h2) != 1:
+        print("REFUSED. The closing heading was not found exactly once. "
+              "Nothing written.")
+        return 1
+    src = src.replace(old_h2, "<h2>What we still need to confirm</h2>")
+    items = "\n".join("      <li><b>%s</b></li>" % i for i in STILL_TO_CONFIRM)
+    close_anchor = '<p class="close-statement">%s</p>' % FILL["CLOSING_PROPOSITION"]
+    if src.count(close_anchor) != 1:
+        print("REFUSED. The closing statement anchor is not unique. "
+              "Nothing written.")
+        return 1
+    src = src.replace(close_anchor, close_anchor +
+                      '\n    <ul class="pn-facts">\n' + items + "\n    </ul>")
+
+    # G7 · The frozen journey band must have survived the move byte-for-byte.
+    if journey.strip("\n") not in src:
+        print("REFUSED. The frozen journey band was altered by the move, not "
+              "just relocated. Nothing written.")
+        return 1
+    # ...and must now sit after the demonstration.
+    if src.index('class="journey"') < src.index('class="pn-stage"'):
+        print("REFUSED. The journey band is still above the demonstration.")
+        return 1
+
+    # G8 · No token may survive.
     left = re.findall(r"\{\{[A-Z0-9_]+\}\}", src)
     if left:
         print("REFUSED. Unreplaced tokens survive: %s" % sorted(set(left)))
         return 1
 
-    # G5 · No forbidden claim.
+    # G9 · If imagery is published, a live rights record must back it, and
+    # every URL must be Hutsmith's own domain.
+    if HUTSMITH_IMAGES:
+        import json
+        rec = SITE / "image-rights-records.json"
+        data = json.loads(rec.read_text(encoding="utf-8"))
+        live = [r for r in data["records"]
+                if r.get("organisation_name") == SUPPLIER
+                and not r.get("withdrawal_effective_at")]
+        if not live:
+            print("REFUSED. Imagery is set but no live Hutsmith record exists "
+                  "in image-rights-records.json. Nothing written.")
+            return 1
+        for i in HUTSMITH_IMAGES:
+            if "hutsmith.co.uk" not in i["url"]:
+                print("REFUSED. Image URL is not on Hutsmith's own domain: %s"
+                      % i["url"])
+                return 1
+        if "credit-line" not in src:
+            print("REFUSED. Imagery is published with no credit line.")
+            return 1
+
+    # G10 · No forbidden claim.
     low = src.lower()
     hits = [p for p in FORBIDDEN if p in low]
     if hits:
         print("REFUSED. The output carries forbidden claim wording: %s" % hits)
         return 1
 
-    # G6 · No other supplier's content. The template is shared, so a stray
-    # name from a previous build is a real failure mode.
+    # G11 · No other supplier's content.
     others = ["koto", "haku", "triq", "power sheds", "powersheds", "yard box",
               "yardbox", "capsule castle", "honka", "superior pergola",
-              "iglucraft", "shomera"]
+              "iglucraft", "shomera", "luka", "intumodular"]
     stray = [o for o in others if o in low]
     if stray:
         print("REFUSED. Another supplier's content is present: %s" % stray)
         return 1
 
-    # G7 · No external image anywhere. Imagery is authorised but unplaced, and
-    # an image slipping in without a rights-manifest grant would fail the gate.
-    ext = re.findall(r'<img[^>]+src="(?!data:)[^"]*"', src)
-    if ext:
-        print("REFUSED. The page references an image: %s" % ext[:3])
+    # G12a · The "asking for photography" wording must never survive, in any
+    # state, now that permission is granted.
+    if "Your project photography here" in src:
+        print("REFUSED. The page still asks Hutsmith for photography they "
+              "have already granted.")
         return 1
 
-    # G8 · Required strings.
+    # G12 · Required strings.
     for need in REQUIRED:
         if need not in src:
             print("REFUSED. A required string is missing: %r" % need)
             return 1
 
     OUT.write_text(src, encoding="utf-8")
+    state = "A (authorised, %d image(s))" % len(HUTSMITH_IMAGES) \
+        if HUTSMITH_IMAGES else "held slot (authorised, no URL obtainable yet)"
     print("BUILT  %s" % OUT.name)
+    print("  template            template-provider-led.html, variant B")
     print("  %d bytes, %d lines" % (len(src.encode()), src.count("\n") + 1))
-    print("  tokens replaced     %d" % len(FILL))
-    print("  external images     0  (imagery authorised, not yet placed)")
+    print("  imagery state       %s" % state)
+    print("  journey band        moved below the demonstration, byte-identical")
     print("  forbidden claims    0  (%d patterns checked)" % len(FORBIDDEN))
     return 0
 
