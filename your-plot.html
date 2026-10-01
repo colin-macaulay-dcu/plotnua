@@ -8827,6 +8827,33 @@
     .pn-gal-strip{ gap:6px; margin-top:8px; }
   }
 
+  /* THE CANDIDATE LIST. Shown only when Atlas genuinely holds more than
+     one match, so it is a rare surface and stays quiet. */
+  .byo-choices{
+    display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 0;
+  }
+  .byo-choice{
+    display:flex; flex-direction:column; align-items:flex-start; gap:1px;
+    padding:9px 14px; border-radius:12px; cursor:pointer; text-align:left;
+    background:var(--pn-ivory, #F2EFE6);
+    border:1px solid rgba(31,59,46,.16);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .byo-choice:hover{
+    border-color:rgba(31,59,46,.34);
+    box-shadow:0 2px 10px rgba(31,59,46,.10);
+  }
+  .byo-choice:focus-visible{
+    outline:2px solid var(--pn-voice, #1F3B2E); outline-offset:2px;
+  }
+  .byo-choice-name{ font-size:14px; color:var(--ink, #1F3B2E); }
+  .byo-choice-org{ font-size:12px; color:var(--soft, #6B7A6B); opacity:.85; }
+  .byo-notice.is-found{ color:var(--pn-voice, #1F3B2E); font-weight:500; }
+  .byo-notice.is-asking{ color:var(--ink, #1F3B2E); }
+  @media (max-width:640px){
+    .byo-choice{ width:100%; }
+  }
+
   .rsv-hero-media{
     flex:0 0 52%; max-width:52%; aspect-ratio:3/2; overflow:hidden;
     border-radius:14px; background:var(--pn-hair); position:relative;
@@ -10368,12 +10395,18 @@
            fired. It is a sibling of the form, not a child, so it survives
            form.reset(). -->
       <p class="byo-notice" id="myPlotByoNotice" role="status" aria-live="polite" hidden></p>
+      <!-- A QUESTION NEEDS SOMEWHERE TO PUT THE ANSWERS. When Atlas holds
+           several products that match, the homeowner picks one here rather
+           than the page picking for them. Empty and hidden until there is
+           genuinely something to choose between. -->
+      <div class="byo-choices" id="myPlotByoChoices" hidden></div>
       <!-- PB038 CORRECTION 2 — the one place an intake rejection is spoken.
            Polite live region, empty until there is something to say, so a
            screen reader is not told about a validation rule that has not
            fired. It is a sibling of the form, not a child, so it survives
            form.reset(). -->
       <p class="byo-notice" id="resultsByoNotice" role="status" aria-live="polite" hidden></p>
+      <div class="byo-choices" id="resultsByoChoices" hidden></div>
     </div>
 
 
@@ -11333,6 +11366,8 @@
     matchNextStepEmpty: document.getElementById('matchNextStepEmpty'),
     matchNextStepOpenMyPlot: document.getElementById('matchNextStepOpenMyPlot'),
     resultsAddYourOwnForm: document.getElementById('resultsAddYourOwnForm'),
+    myPlotByoChoices: document.getElementById('myPlotByoChoices'),
+    resultsByoChoices: document.getElementById('resultsByoChoices'),
     resultsAddOwnUrl: document.getElementById('resultsAddOwnUrl'),
     resultsByoNotice: document.getElementById('resultsByoNotice'),
     resultsByoTitle: document.getElementById('resultsByoTitle'),
@@ -14954,6 +14989,233 @@
       organisation: record.organisation || '',
       id: record.id || null,
     };
+  }
+
+  /* =====================================================================
+     MANUAL ADD — CANONICAL RESOLUTION.
+
+     A homeowner may have found a product by themselves. Whether PlotNua
+     currently RECOMMENDS it and whether Atlas KNOWS it are two different
+     questions, and conflating them is what made a real Atlas product read as
+     "no verified record". Identity is resolved against the canonical
+     catalogue first; recommendation eligibility is never consulted here.
+
+     No parallel product database is created. The two sources below are the
+     two exports the page already loads.
+     ===================================================================== */
+
+  /* GENERIC INDEX-PAGE WORDS. A path ending in one of these names a place to
+     browse products, not a product. The list is deliberately generic: no
+     supplier appears in it, and none ever should. */
+  const PN_COLLECTION_SLUGS = Object.freeze([
+    'models', 'model', 'products', 'product', 'shop', 'store', 'collection',
+    'collections', 'range', 'ranges', 'our-range', 'our-models', 'our-products',
+    'garden-rooms', 'garden-room', 'gardenrooms', 'cabins', 'cabin', 'buildings',
+    'gallery', 'catalogue', 'catalog', 'browse', 'designs', 'design', 'all',
+    'homes', 'studios', 'offices', 'sheds', 'rooms', 'index', 'home'
+  ]);
+
+  /* Returns the generic slug a URL ends on, 'root' for a bare domain, or null
+     when the path looks like it names one specific thing. */
+  function pnCollectionSlug(u){
+    if (!u) return null;
+    const segs = String(u.pathname || '').split('/').filter(Boolean);
+    if (!segs.length) return 'root';
+    const last = segs[segs.length - 1]
+      .replace(/\.(html?|php|aspx?)$/i, '').toLowerCase();
+    return PN_COLLECTION_SLUGS.indexOf(last) !== -1 ? last : null;
+  }
+
+  function pnHostOf(value){
+    try {
+      const u = (value && value.hostname) ? value : new URL(String(value));
+      return String(u.hostname || '').replace(/^www\./i, '').toLowerCase();
+    } catch (e) { return ''; }
+  }
+
+  /* THE CANONICAL CATALOGUE FIRST, THEN THE RECOMMENDATION UNIVERSE.
+
+     Identity does not depend on whether a product is currently recommendable,
+     so the catalogue export leads. A record present in both keeps its
+     catalogue identity and still picks up its universe facts through
+     enrichAtlasMatch(), which looks the product up by id. */
+  function pnCanonicalRecords(){
+    const out = [];
+    const seen = Object.create(null);
+    const push = function(r, source){
+      if (!r) return;
+      const id = r.id || r.productId;
+      if (!id || seen[id]) return;
+      seen[id] = 1;
+      out.push({
+        id: id,
+        name: r.name || '',
+        organisation: r.organisation || '',
+        url: r.url || r.productUrl || '',
+        source: source,
+        record: r
+      });
+    };
+    const pool = (typeof atlasRecognitionPool !== 'undefined' && atlasRecognitionPool)
+      ? atlasRecognitionPool : [];
+    pool.forEach(function(r){ push(r, 'catalogue'); });
+    byoUniverseRecords().forEach(function(r){ push(r, 'universe'); });
+    return out;
+  }
+
+  function pnUniqueRows(rows){
+    const seen = Object.create(null); const out = [];
+    rows.forEach(function(r){ if (r && !seen[r.id]) { seen[r.id] = 1; out.push(r); } });
+    return out;
+  }
+
+  /* The supplier a set of candidates agrees on, or '' when they do not. Used
+     so a collection page can be named ("We found <supplier>") only when the
+     evidence actually supports naming one. */
+  function pnAgreedSupplier(rows){
+    const names = {};
+    rows.forEach(function(r){ if (r.organisation) names[r.organisation] = 1; });
+    const keys = Object.keys(names);
+    return keys.length === 1 ? keys[0] : '';
+  }
+
+  /* A product name with its own supplier prefix removed, so "Yardbox Bothán"
+     from the supplier "Yardbox" can also be matched as "Bothán". The record's
+     stored name is never altered -- this is a comparison key only. */
+  function pnNameWithoutOrg(rn, ro){
+    if (!rn || !ro) return rn || '';
+    if (rn.indexOf(ro + ' ') === 0) return rn.slice(ro.length + 1);
+    if (rn.length > ro.length && rn.slice(-(ro.length + 1)) === (' ' + ro)) {
+      return rn.slice(0, rn.length - ro.length - 1);
+    }
+    return rn;
+  }
+
+  /* Whole-word containment. "bothan" is inside "yardbox bothan"; it is not
+     inside "bothanical". Substring matching on names is how a resolver
+     returns the wrong product, so the boundaries are explicit. */
+  function pnContainsWholeName(haystack, needle){
+    if (!haystack || !needle) return false;
+    return (' ' + haystack + ' ').indexOf(' ' + needle + ' ') !== -1;
+  }
+
+  /* THE ONE RESOLVER. Returns a decision and never a side effect.
+
+     outcome:
+       'product'   resolved to exactly one canonical Atlas product
+       'choose'    several real candidates -- ask, never guess
+       'need-name' a page we recognise that does not name a product
+       'unknown'   a genuine external product Atlas does not hold
+       'invalid'   not a product identity at all                           */
+  function pnResolveManualAdd(raw){
+    const text = String(raw == null ? '' : raw).trim();
+    if (!text) return { outcome: 'invalid', reason: 'empty' };
+    if (!/[a-z0-9]/i.test(text)) return { outcome: 'invalid', reason: 'no-identifier' };
+
+    const rows = pnCanonicalRecords();
+    const nName = normalizeAtlasName(text);
+    const u = byoParseProductUrl(text);
+
+    /* ---- A · exact canonical product URL --------------------------------
+       A URL SHARED BY SEVERAL PRODUCTS IS A COLLECTION PAGE. That is
+       evidence, not a guess, and it is the case the old code threw away as
+       "ambiguous" on its way to inventing a product from the slug. */
+    if (u) {
+      const nUrl = normalizeAtlasUrl(u.href);
+      const hits = pnUniqueRows(rows.filter(function(r){
+        return r.url && normalizeAtlasUrl(r.url) === nUrl;
+      }));
+      if (hits.length === 1) {
+        return { outcome: 'product', step: 'A', match: hits[0], url: u.href };
+      }
+      if (hits.length > 1) {
+        return { outcome: 'choose', step: 'A', url: u.href,
+                 reason: 'collection-url',
+                 supplier: pnAgreedSupplier(hits), candidates: hits };
+      }
+    }
+
+    if (nName) {
+      /* ---- B · exact supplier + product name ---------------------------- */
+      const exact = pnUniqueRows(rows.filter(function(r){
+        return normalizeAtlasName(r.name) === nName;
+      }));
+      if (exact.length === 1) return { outcome: 'product', step: 'B', match: exact[0] };
+      if (exact.length > 1) {
+        const withOrg = pnUniqueRows(exact.filter(function(r){
+          const ro = normalizeAtlasName(r.organisation);
+          return ro && nName.indexOf(ro) !== -1;
+        }));
+        if (withOrg.length === 1) return { outcome: 'product', step: 'B', match: withOrg[0] };
+      }
+
+      /* ---- C · normalised supplier + name, in either order --------------
+         This is how a homeowner retypes what a card showed them. */
+      const combined = pnUniqueRows(rows.filter(function(r){
+        const rn = normalizeAtlasName(r.name);
+        const ro = normalizeAtlasName(r.organisation);
+        if (!rn || !ro) return false;
+        const bare = pnNameWithoutOrg(rn, ro);
+        return nName === (ro + ' ' + bare) || nName === (bare + ' ' + ro);
+      }));
+      if (combined.length === 1) return { outcome: 'product', step: 'C', match: combined[0] };
+      if (combined.length > 1) {
+        return { outcome: 'choose', step: 'C', reason: 'ambiguous-name',
+                 typed: text, supplier: pnAgreedSupplier(combined), candidates: combined };
+      }
+
+      /* ---- D · a unique product name on its own -------------------------
+         Whole-word, both directions, and ANY ambiguity becomes a question
+         rather than a pick. Four Atlas products contain the word "Bothán";
+         choosing one of them silently would be worse than asking. */
+      const named = pnUniqueRows(rows.filter(function(r){
+        const rn = normalizeAtlasName(r.name);
+        const ro = normalizeAtlasName(r.organisation);
+        if (!rn) return false;
+        if (pnNameWithoutOrg(rn, ro) === nName) return true;
+        return pnContainsWholeName(rn, nName);
+      }));
+      if (named.length === 1) return { outcome: 'product', step: 'D', match: named[0] };
+      if (named.length > 1) {
+        return { outcome: 'choose', step: 'D', reason: 'ambiguous-name',
+                 typed: text, supplier: pnAgreedSupplier(named), candidates: named };
+      }
+    }
+
+    /* ---- E · a supplier page we recognise, naming no product ------------- */
+    if (u) {
+      const host = pnHostOf(u);
+      const sameHost = pnUniqueRows(rows.filter(function(r){
+        return r.url && pnHostOf(r.url) === host;
+      }));
+      const slug = pnCollectionSlug(u);
+      if (sameHost.length) {
+        const supplier = pnAgreedSupplier(sameHost);
+        if (slug || sameHost.length > 1) {
+          return { outcome: 'choose', step: 'E', url: u.href,
+                   reason: 'collection-url', supplier: supplier, candidates: sameHost };
+        }
+      }
+      /* ---- F · genuinely unknown ---------------------------------------
+         A GENERIC SLUG NEVER BECOMES A PRODUCT NAME. If the path says
+         "models" or "collections" we have a page and no product, so we ask
+         for the model rather than inventing one. */
+      if (slug) {
+        return { outcome: 'need-name', step: 'F', url: u.href, host: host };
+      }
+      const id = byoIdentityFromUrl(u);
+      return { outcome: 'unknown', step: 'F', url: u.href, host: host,
+               name: id.name, supplier: id.supplier };
+    }
+
+    /* ---- F · typed text that is not a URL and matched nothing ----------- */
+    if (byoLooksLikeProse(text)) return { outcome: 'invalid', reason: 'reads-as-prose' };
+    const pair = byoSplitPair(text);
+    if (pair) {
+      return { outcome: 'unknown', step: 'F', url: '',
+               name: pair.name, supplier: pair.supplier };
+    }
+    return { outcome: 'invalid', reason: 'no-product-identity' };
   }
 
   function classifyExternalProductInput(raw){
@@ -30959,8 +31221,8 @@
 
   function atlasUnrecognisedSupportingLine(){
     return atlasRecognitionLoadFailed
-      ? 'PlotNua could identify this product, but Atlas has not verified its details.'
-      : 'PlotNua could identify this product, but Atlas has no verified record of it yet.';
+      ? 'We couldn\u2019t reach Atlas just now, so we haven\u2019t been able to check this one.'
+      : 'Atlas doesn\u2019t know this product yet, so there\u2019s less we can tell you about it.';
   }
 
   /* ITEM 11 — the host is now an argument. Every line below this point is
@@ -31014,7 +31276,7 @@
                    name: item.name || 'Added product',
                    why: atlasRecognitionLoadFailed
                      ? 'PlotNua could not complete the Atlas lookup for this product, so there is nothing to compare on yet.'
-                     : 'Atlas has no verified record of this product yet, so there is nothing to compare on.' });
+                     : 'Atlas doesn\u2019t know this product yet, so there is nothing to compare on.' });
       }
     });
     return out;
@@ -34857,8 +35119,23 @@
   // analyse the URL itself. Waits for atlasRecognitionReady first (usually
   // already resolved) so a slow network doesn't cause a false "not
   // recognised" result on a genuinely known product.
-  async function submitAddYourOwnItem({ url, name, supplier, tier, recognisedId }){
+  async function submitAddYourOwnItem({ url, name, supplier, tier, recognisedId, atlasRecord }){
     await atlasRecognitionReady;
+    /* A RECORD THE RESOLVER ALREADY FOUND IS NOT LOOKED UP AGAIN. Asking
+       a second mechanism to re-find a product the first one identified is
+       how two answers appear for one question. The older lookups below
+       stay for every path that does not supply a record. */
+    if (atlasRecord) {
+      const direct = enrichAtlasMatch(atlasRecord);
+      addedItems.push({ url, name, supplier, tier, atlasMatch: direct });
+      myPlotQueueWrite();
+      renderAddedItems();
+      renderResultsFoundCards();
+      updateMyPlotAccess();
+      updateCompareVisibility();
+      updateNextStepSection();
+      return direct;
+    }
     // PB043A — the recognition-pool lookup is kept exactly as designed and is
     // still tried first. What is added is the fallback to the Recommendation
     // Universe, so a product PlotNua is currently displaying resolves even
@@ -34884,8 +35161,15 @@
   // PB038 CORRECTION 2 — one helper, both forms. Showing and clearing the
   // notice is a state transition, so it lives in one place rather than being
   // written twice and drifting apart the way the two card renderers did.
-  function setByoNotice(el, message){
+  /* THE SAME ELEMENT SAYS ALL OF IT. A rejection, a question and a
+     confirmation are the same transition -- the form responding to what
+     the person just did -- so they share one element and one function.
+     `tone` only changes how it looks; the words carry the meaning. */
+  function setByoNotice(el, message, tone){
     if (!el) return;
+    el.classList.remove('is-found', 'is-asking');
+    if (tone === 'found') el.classList.add('is-found');
+    if (tone === 'asking') el.classList.add('is-asking');
     if (message) { el.textContent = message; el.hidden = false; }
     else { el.textContent = ''; el.hidden = true; }
   }
@@ -34916,43 +35200,153 @@
   wireByoNoticeClearing(els.addOwnUrl, els.myPlotByoNotice);
   wireByoNoticeClearing(els.resultsAddOwnUrl, els.resultsByoNotice);
 
-  els.addYourOwnForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const raw = els.addOwnUrl.value.trim();
-    // PB038 CORRECTION 2 — the gate. Nothing below this line runs unless a
-    // real product identity was found. No card, no My Plot entry, no Atlas
-    // warning, no invented title, no comparison — the person simply stays
-    // in the intake state with one instruction and their text still in the
-    // field to edit.
-    const parsed = classifyExternalProductInput(raw);
-    if (!parsed.valid) {
-      setByoNotice(els.myPlotByoNotice, BYO_INVALID_MESSAGE);
-      els.addOwnUrl.focus();
+
+  /* =====================================================================
+     ONE MANUAL-ADD HANDLER, BOTH FORMS.
+
+     The two submit handlers below used to hold a copy each of this logic.
+     The source said so itself. Two copies of a rule drift, and this pass
+     changes the rule, so there is now one.
+     ===================================================================== */
+
+  /* The product name as a person would say it. Atlas stores "Yardbox Bothán"
+     because the catalogue needs the supplier in the key; a sentence that
+     already says "by Yardbox" does not need it twice. */
+  function pnSpokenProductName(match){
+    const n = String(match && match.name || '');
+    const o = String(match && match.organisation || '');
+    if (o && n.toLowerCase().indexOf(o.toLowerCase() + ' ') === 0) {
+      return n.slice(o.length + 1);
+    }
+    return n;
+  }
+
+  /* WHAT WE SAY WHEN ATLAS DOES NOT KNOW THE PRODUCT. Said once, here, so the
+     two forms cannot say it differently. It states what happened and what the
+     homeowner can still do -- never what PlotNua's internals are called. */
+  const PN_UNKNOWN_MESSAGE =
+    'We found the page, but Atlas doesn’t know this product yet. '
+    + 'You can still keep it in My Plot — we’ll just have less to tell '
+    + 'you about it.';
+
+  function pnAskWhichMessage(res){
+    if (res.reason === 'collection-url') {
+      return res.supplier
+        ? 'We found ' + res.supplier + '. Which model did you mean?'
+        : 'That page lists several products. Which one did you mean?';
+    }
+    const typed = res.typed ? '“' + res.typed + '”' : 'that';
+    return 'More than one product matches ' + typed + '. Which did you mean?';
+  }
+
+  function pnClearChoices(el){
+    if (!el) return;
+    el.textContent = '';
+    el.hidden = true;
+  }
+
+  /* THE CANDIDATES, AS BUTTONS. Real buttons, so they are reachable by
+     keyboard and announced as actions rather than decoration. Each one names
+     its supplier, because two products with the same name from two makers is
+     exactly the case that produced the question. */
+  function pnRenderChoices(ctx, res){
+    const el = ctx.choicesEl;
+    if (!el) return;
+    pnClearChoices(el);
+    if (!res || !res.candidates || !res.candidates.length) return;
+    res.candidates.forEach(function(c){
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'byo-choice';
+      const nameEl = document.createElement('span');
+      nameEl.className = 'byo-choice-name';
+      nameEl.textContent = pnSpokenProductName(c) || c.name;
+      b.appendChild(nameEl);
+      if (c.organisation) {
+        const orgEl = document.createElement('span');
+        orgEl.className = 'byo-choice-org';
+        orgEl.textContent = c.organisation;
+        b.appendChild(orgEl);
+      }
+      b.addEventListener('click', function(){
+        pnClearChoices(el);
+        pnCommitManualAdd(ctx, { outcome: 'product', step: res.step, match: c,
+                                 url: c.url || res.url || '' });
+      });
+      el.appendChild(b);
+    });
+    el.hidden = false;
+  }
+
+  /* THE ONE PLACE AN ITEM ENTERS MY PLOT. A resolved Atlas product carries its
+     canonical record; anything else is an external product and is labelled as
+     one. There is no third state and no invented middle ground. */
+  async function pnCommitManualAdd(ctx, res){
+    const btn = ctx.submitBtn;
+    if (btn) { btn.disabled = true; btn.textContent = 'Checking…'; }
+    if (res.outcome === 'product') {
+      await submitAddYourOwnItem({
+        url: res.match.url || res.url || '',
+        name: res.match.name,
+        supplier: res.match.organisation,
+        tier: 'canonical-' + (res.step || '?'),
+        atlasRecord: res.match.record
+      });
+      const spoken = pnSpokenProductName(res.match);
+      setByoNotice(ctx.noticeEl,
+        'Found it — ' + spoken
+        + (res.match.organisation ? ' by ' + res.match.organisation : '')
+        + '. Added to My Plot.', 'found');
+    } else {
+      await submitAddYourOwnItem({
+        url: res.url || '',
+        name: res.name || '',
+        supplier: res.supplier || '',
+        tier: 'external'
+      });
+      setByoNotice(ctx.noticeEl, PN_UNKNOWN_MESSAGE);
+    }
+    if (ctx.input) ctx.input.value = '';
+    if (btn) { btn.disabled = false; btn.textContent = 'Check with Atlas →'; }
+  }
+
+  async function pnHandleManualAdd(ctx){
+    const raw = ctx.input ? ctx.input.value.trim() : '';
+    pnClearChoices(ctx.choicesEl);
+    const res = pnResolveManualAdd(raw);
+
+    if (res.outcome === 'invalid') {
+      setByoNotice(ctx.noticeEl, BYO_INVALID_MESSAGE);
+      if (ctx.input) ctx.input.focus();
       return;
     }
-    setByoNotice(els.myPlotByoNotice, '');
-    const url = parsed.url;
-    // PB-028 TASK 2 — one field, so the single value is offered to Atlas as
-    // both identifiers and the existing tier hierarchy decides which it is.
-    // lookupAtlasRecognition() itself is unchanged: normalizeAtlasUrl() yields
-    // nothing usable for a typed name, normalizeAtlasName() yields nothing that
-    // resolves for a pasted URL, and every tier still requires exactly one
-    // unambiguous record. Verified over all 516 Atlas records: 516/516 resolve
-    // from a name, 70/70 of the URL-resolvable ones still resolve from a URL,
-    // zero wrong products, and no adversarial input resolves at all.
-    // PB-028 TASK 2's "offer the one value to Atlas as both identifiers" is
-    // retained — lookupAtlasRecognition() is not modified — but the value
-    // offered is now the CLASSIFIED name, not the raw field contents.
-    const name = parsed.name;
-    const submitBtn = els.addYourOwnForm.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Checking…';
-    await submitAddYourOwnItem({ url, name, supplier: parsed.supplier, tier: parsed.tier, recognisedId: parsed.recognisedId });
-    els.addOwnUrl.value = '';
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Check with Atlas \u2192';
-    // PB-029 TASK 4 — the form stays visible: it is the section's only action,
-    // so there is nothing to collapse back into.
+    /* A QUESTION IS NOT A FAILURE. Nothing is added, the typed text stays put,
+       and the candidates appear underneath to be chosen from. */
+    if (res.outcome === 'choose') {
+      setByoNotice(ctx.noticeEl, pnAskWhichMessage(res), 'asking');
+      pnRenderChoices(ctx, res);
+      return;
+    }
+    /* A PAGE WE RECOGNISE THAT NAMES NO PRODUCT. We do not turn its address
+       bar into a product name. We ask. */
+    if (res.outcome === 'need-name') {
+      setByoNotice(ctx.noticeEl,
+        'That page lists more than one product. Add the model name and we’ll '
+        + 'look it up.', 'asking');
+      if (ctx.input) ctx.input.focus();
+      return;
+    }
+    await pnCommitManualAdd(ctx, res);
+  }
+
+  els.addYourOwnForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    await pnHandleManualAdd({
+      input: els.addOwnUrl,
+      noticeEl: els.myPlotByoNotice,
+      choicesEl: els.myPlotByoChoices,
+      submitBtn: els.addYourOwnForm.querySelector('button[type="submit"]')
+    });
   });
 
   // SPRINT 2 — TASK 8: Results' own inline Compare My Find form. Same
@@ -34963,33 +35357,15 @@
   if (els.resultsAddYourOwnForm) {
     els.resultsAddYourOwnForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const raw = els.resultsAddOwnUrl.value.trim();
-      // PB038 CORRECTION 2 — the same gate as My Plot's form, calling the
-      // same classifier. Two entry points, one rule.
-      const parsed = classifyExternalProductInput(raw);
-      if (!parsed.valid) {
-        setByoNotice(els.resultsByoNotice, BYO_INVALID_MESSAGE);
-        els.resultsAddOwnUrl.focus();
-        return;
-      }
-      setByoNotice(els.resultsByoNotice, '');
-      const url = parsed.url;
-      // PB-030 TASK 2 — one field, so the single value is offered to Atlas as
-      // both identifiers and the existing tier hierarchy decides which it is.
-      // Identical to the approved PB-029 My Plot behaviour;
-      // lookupAtlasRecognition() itself is not modified.
-      const name = parsed.name;
-      const submitBtn = els.resultsAddYourOwnForm.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Checking…';
-      await submitAddYourOwnItem({ url, name, supplier: parsed.supplier, tier: parsed.tier, recognisedId: parsed.recognisedId });
-      els.resultsAddOwnUrl.value = '';
-      // PB-030 TASK 3 — the form stays open so another option can be entered.
-      submitBtn.disabled = false;
-      // PATCH C — TASK 5: label matches the new button copy.
-      submitBtn.textContent = 'Check with Atlas →';
+      await pnHandleManualAdd({
+        input: els.resultsAddOwnUrl,
+        noticeEl: els.resultsByoNotice,
+        choicesEl: els.resultsByoChoices,
+        submitBtn: els.resultsAddYourOwnForm.querySelector('button[type="submit"]')
+      });
     });
   }
+
 
   // SPRINT 2 — TASK 8: renders addedItems as full-parity cards directly on
   // Results, alongside the 3 Atlas matches, so Compare My Find never has to

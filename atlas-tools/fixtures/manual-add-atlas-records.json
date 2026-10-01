@@ -1,0 +1,19 @@
+{
+  "_provenance": {
+    "read": "live Atlas, Products tblMiUcO4OT9ia2aE, via the Airtable MCP connector, GET only",
+    "date": "2026-10-01",
+    "why": "atlas-recognition-pool.json is a 27 August export of 516 records and holds none of these. Until generate_recognition_pool.py is run with a token, these verbatim records are how the resolver's behaviour on them is proved.",
+    "scope": "every Yardbox product, plus every product whose name contains Bothan, which is what makes that name ambiguous",
+    "fields": "copied verbatim from the Atlas response; no value is derived, inferred or tidied"
+  },
+  "records": [
+    {"id":"recFek9ErsnKt6uKN","name":"Yardbox Aspect Modular Homes","organisation":"Yardbox","url":"https://www.yardbox.co.uk/aspect","status":null,"verification":null},
+    {"id":"recLEonLKyhNTUiAt","name":"Yardbox The Toronto","organisation":"Yardbox","url":"https://www.yardbox.co.uk/models","status":"Researching","verification":null},
+    {"id":"recPermX1OwzI2o1Y","name":"Yardbox Bothán","organisation":"Yardbox","url":"https://www.yardbox.co.uk/bothan","status":null,"verification":null},
+    {"id":"receaph6vCI7xtS5K","name":"Yardbox The Whistler","organisation":"Yardbox","url":"https://www.yardbox.co.uk/models","status":"Researching","verification":null},
+    {"id":"reckMDqp4tVjAjM7b","name":"Yardbox The Vancouver","organisation":"Yardbox","url":"https://www.yardbox.co.uk/models","status":"Researching","verification":null},
+    {"id":"recE9uczupH0dHo9v","name":"INTUMODULAR BOTHÁN 45 Modular Dwelling","organisation":"INTUMODULAR","url":"https://www.intumodular.co.uk/the-bothan","status":"Done","verification":null},
+    {"id":"rectJkwbceI7ZYlUu","name":"INTUMODULAR BOTHÁN 65 Modular Home","organisation":"INTUMODULAR","url":"https://www.intumodular.co.uk/the-bothan","status":"Done","verification":null},
+    {"id":"recdA5bFhvvcgAtgO","name":"INTUMODULAR BOTHÁN 80 Modular Home","organisation":"INTUMODULAR","url":"https://www.intumodular.co.uk/the-bothan","status":"Done","verification":null}
+  ]
+}
