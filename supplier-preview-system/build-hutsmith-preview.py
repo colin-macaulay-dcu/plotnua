@@ -55,13 +55,20 @@ PERMISSION_DATE = "30 September 2026"
 # ── IMAGERY ────────────────────────────────────────────────────────────────
 # Each entry: {"url": <a real hutsmith.co.uk URL>, "alt": <plain description>}
 # Only hutsmith.co.uk / its own CDN. Unmodified. Credit stays on the page.
+# Both from one project -- Creative Studio, published at £72,500 on
+# hutsmith.com/portfolio/new-portfolio-item -- so the card shows a single
+# coherent building rather than two unrelated ones.
 HUTSMITH_IMAGES = [
     {"url": "https://images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/"
-            "8d8ab49b-c296-45cf-96d9-67d1989f4e22/SDOR-+DMR+-+Aldbury+-+6A.jpg?format=1500w",
-     "alt": "A Hutsmith cabin in black timber, in a garden"},
+            "bb0891f1-5475-4fd3-bfbf-7524a51ae37f/"
+            "79c5a028-956d-416e-8db7-ba419bddcdd7.JPG?format=1500w",
+     "alt": "The Creative Studio by Hutsmith: a timber-lined room with a "
+            "pitched roof, skylights and full-height glazing onto a garden"},
     {"url": "https://images.squarespace-cdn.com/content/v1/6952720a1e68c05bac7f54fe/"
-            "b24eee9f-8fd7-4b4d-8d90-70443115dae9/Hutsmith+Harbourne45176aa.JPG?format=1500w",
-     "alt": "The plywood-lined interior of a Hutsmith cabin used as a home office"},
+            "40b25e71-fa3d-4e61-a100-14d47c2dd427/"
+            "11dd326c-7e48-4fbe-a08c-f129af444968.JPG?format=1500w",
+     "alt": "Inside the Creative Studio by Hutsmith: a mezzanine reached by a "
+            "ladder, with a kitchenette below"},
 ]
 
 # Hutsmith's own Squarespace content store. 6952720a1e68c05bac7f54fe is the
@@ -144,23 +151,32 @@ FILL = {
     # any homeowner enquiry reaches you" rather than "before we send genuine
     # enquiries your way", because the second promises enquiries that are not
     # flowing yet and §8 forbids presenting the enquiry route as operational.
+    # A plain supplier information request. No rhetorical framing, no
+    # "before an enquiry reaches you", nothing to decode.
     "CLOSING_PROPOSITION": "You&rsquo;ve confirmed that Hutsmith can supply "
-                           "Ireland. Before any homeowner enquiry reaches you, "
-                           "we want the practical details right for an Irish "
-                           "customer.",
-    "CLOSING_SUPPORT": "If you can confirm those points, PlotNua can present "
-                       "Hutsmith more accurately to Irish homeowners.",
+                           "customers in Ireland. To make sure we present "
+                           "Hutsmith accurately to Irish homeowners, could you "
+                           "confirm the following?",
+    "CLOSING_SUPPORT": "Once we have those details, we can present Hutsmith "
+                       "more accurately to Irish homeowners.",
 
     "DATE": EVIDENCE_DATE,
 }
 
 # Only genuinely unestablished items belong here.
+# Real questions, asked plainly. Each one is a genuine evidence gap: none of
+# the five is answered anywhere on hutsmith.com. Where a published UK figure
+# exists it is quoted back in the question rather than assumed to carry over,
+# which is the point of asking.
 STILL_TO_CONFIRM = [
-    "Delivery cost to Ireland",
-    "Site survey arrangements for Ireland, and whether the &pound;90 fee still applies",
-    "Base and ground preparation requirements",
-    "Whether Your Space Cabins build in Ireland, or whether a local partner would",
-    "Typical lead time for an Irish order",
+    "1. What would delivery typically cost to the Republic of Ireland?",
+    "2. Do you offer site surveys in Ireland, and if so, does the published "
+    "&pound;90 survey fee still apply?",
+    "3. What base or ground preparation does the customer need to have in "
+    "place before installation?",
+    "4. Does Your Space Cabins carry out the build in Ireland, or would "
+    "installation be handled by a local partner?",
+    "5. What would be a typical lead time for an Irish order?",
 ]
 
 FORBIDDEN = [
