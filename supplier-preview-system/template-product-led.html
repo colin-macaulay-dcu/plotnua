@@ -88,8 +88,16 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
    screenshot. Preview scope only — the production rule is untouched. */
 .pn-stage .results-hero-inner.is-fieldonly{ margin-left:0; margin-right:0; border-radius:6px; }
 @media (min-width:720px){
-  .pn-stage .results-hero-inner{ align-items:stretch; }
-  .pn-stage .results-hero-media{ aspect-ratio:auto; min-height:320px; }
+  /* PREVIEW-GEOMETRY-001 — scoped to the held slot only. Identical fix to
+     template-provider-led.html, and identical reason: unscoped,
+     `aspect-ratio:auto` plus `align-items:stretch` let the media panel grow
+     to the height of the decision column, so a 42%-wide box rendered 581x943
+     (ratio 0.62, portrait) while production Results renders the same markup
+     at 581x436 (ratio 1.33) with aspect-ratio:4/3 and align-items:center.
+     The held slot is type and does still need to stretch, with a floor. */
+  .pn-stage .results-hero-inner:has(.pn-photo-slot){ align-items:stretch; }
+  .pn-stage .results-hero-media:has(.pn-photo-slot){
+    aspect-ratio:auto; min-height:320px; }
   .pn-stage .results-hero-inner.is-fieldonly .match-card-open-myplot-link{
     grid-column:2; justify-self:start; }
 }

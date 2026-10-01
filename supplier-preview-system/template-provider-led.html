@@ -88,8 +88,26 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
    screenshot. Preview scope only — the production rule is untouched. */
 .pn-stage .results-hero-inner.is-fieldonly{ margin-left:0; margin-right:0; border-radius:6px; }
 @media (min-width:720px){
-  .pn-stage .results-hero-inner{ align-items:stretch; }
-  .pn-stage .results-hero-media{ aspect-ratio:auto; min-height:320px; }
+  /* PREVIEW-GEOMETRY-001 — THESE TWO RULES ARE SCOPED TO THE HELD SLOT ONLY.
+
+     They used to apply to every .pn-stage hero, and that made the preview lie
+     about production. `aspect-ratio:auto` plus `align-items:stretch` lets the
+     media panel grow to the HEIGHT OF THE DECISION COLUMN, so six fact rows
+     turned a 42%-wide box into 581x943 — ratio 0.62, portrait — while real
+     Results renders the same markup at 581x436, ratio 1.33, because
+     production keeps aspect-ratio:4/3 and align-items:center.
+
+     The held slot is type, not a photograph: it carries two lines of copy and
+     genuinely does need to grow with the column, with a floor, or it reads
+     cramped. So the stretch is kept for THAT case and nothing else. With a
+     real image neither selector matches, production's own rules apply, and
+     the preview shows the homeowner geometry exactly.
+
+     :has() is already a dependency of this stylesheet — see the
+     .results-hero-media:has(img.pn-image-fallback) rule further down. */
+  .pn-stage .results-hero-inner:has(.pn-photo-slot){ align-items:stretch; }
+  .pn-stage .results-hero-media:has(.pn-photo-slot){
+    aspect-ratio:auto; min-height:320px; }
   .pn-stage .results-hero-inner.is-fieldonly .match-card-open-myplot-link{
     grid-column:2; justify-self:start; }
 }
