@@ -1,9 +1,9 @@
 {
   "schema": "plotnua.image-rights.manifest.v1",
-  "generated": "2026-10-01",
+  "generated": "2026-10-02",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
   "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
-  "reality_note": "PlotNua publishes supplier imagery for 5 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box, Superior Pergola Ireland, Hutsmith. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
+  "reality_note": "PlotNua publishes supplier imagery for 8 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
   "reconciliation": "Every row carries the Atlas record id it reflects, so a disagreement between this manifest and Atlas is visible rather than silent. Generated from image-rights-records.json; edit that file, never this one.",
   "rows": [
     {
@@ -133,6 +133,75 @@
       "atlas_permission_record": "recT7pcIdeMuERdjI",
       "atlas_permission_ref": "IPO-HUTSMITH-20261001",
       "permission_date": "2026-10-01"
+    },
+    {
+      "organisation_record": "recUrpkOqKbynjQP0",
+      "organisation_code": "ORG-000012",
+      "organisation_name": "Garden Room Ireland",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "gardenroomireland.ie",
+      "permitted_delivery_hosts": [
+        {
+          "host": "static.wixstatic.com",
+          "path_prefix": "/media/fef4b6_",
+          "why": "Garden Room Ireland's own Wix media account prefix. static.wixstatic.com is shared by every Wix site, so the account prefix — not the host — is the scope. Verified across all nine of their first-party gallery pages during the 2 October 2026 crawl."
+        },
+        {
+          "host": "static.wixstatic.com",
+          "path_prefix": "/media/083d1a_",
+          "why": "Garden Room Ireland's second Wix media account prefix, carrying part of the Grey Windows gallery and three home-page exteriors. Same reasoning: the prefix is theirs alone."
+        }
+      ],
+      "required_credit": "© Garden Room Ireland",
+      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-049 (recQV5mDeIFBj9CZM) against Organisations ORG-000012 (recUrpkOqKbynjQP0), supplier YES 2 October 2026, Gmail thread 1a0fb8c10027247e.",
+      "conditions": [
+        "Credit '© Garden Room Ireland' on every image use.",
+        "Garden Room Ireland may request change or removal of any image at any time, and PlotNua complies.",
+        "No resale, no sublicensing, no unrelated advertising use.",
+        "Garden Room Ireland retains ownership of the imagery."
+      ],
+      "note": "SCOPE IS THE TWO WIX ACCOUNT PREFIXES AND NOTHING WIDER. static.wixstatic.com is a shared CDN; a bare host entry would have authorised every Wix site on the internet, which is not what was granted. Three further prefixes appear on Garden Room Ireland's own pages and are deliberately excluded: 11062b_ (Wix stock/demo imagery), 8bb438_ and 4d0b36_ (third-party accounts). The gate matches by pathname prefix, so those three are refused by construction.\n\n90 assets governed in Atlas on 2 October 2026 after individual visual inspection of 97 candidates across nine first-party pages (Grey Windows, Verandas, Green Walls, Grey Walls, Black Pillars, Grey Pillars, Light Oak, Interiors, home page). Seven candidates were excluded and are not covered here: two dominated by an identifiable individual, one carrying prominent third-party film posters, two whose provenance could not be established as first-party, one named as a screen capture, one generic architectural-drawing stock image. Three of the 90 are classified Floor Plan rather than Product Image.",
+      "atlas_permission_record": "recQV5mDeIFBj9CZM",
+      "atlas_permission_ref": "IPO-049",
+      "permission_date": "2026-10-02"
+    },
+    {
+      "organisation_record": "recyCu5OjHlUObM8f",
+      "organisation_code": "ORG-000148",
+      "organisation_name": "Elm Landscaping",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "elmlandscaping.ie",
+      "required_credit": "© Elm Landscaping",
+      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-046 (reccLICqUV2mAGicg) against Organisations ORG-000148 (recyCu5OjHlUObM8f), supplier YES 2 October 2026, Gmail thread 1a0d05e8fd940e75.",
+      "conditions": [
+        "Credit '© Elm Landscaping' on every image use.",
+        "Elm Landscaping may request change or removal of any image at any time, and PlotNua complies.",
+        "No resale, no sublicensing, no unrelated advertising use.",
+        "Elm Landscaping retains ownership of the imagery."
+      ],
+      "note": "NO DELIVERY HOST IS DECLARED, because none is needed: Elm serve their imagery from their own WordPress installation at elmlandscaping.ie/wp-content/uploads/, so the first-party domain already is the scope.\n\nTHE INSTAGRAM EMBED IS OUT OF SCOPE AND STAYS OUT. elmlandscaping.ie/gallery/ renders an Instagram feed rather than hosted images; permission reaches supplier-owned imagery on the authorised website and is not broadened to a third-party domain merely because images are embedded there. No instagram host appears in this record and the builder that wrote it refuses one.\n\n53 assets governed in Atlas on 2 October 2026 after individual visual inspection of 67 candidates across thirteen first-party pages. Fourteen candidates were excluded and are not covered here: two showing identifiable children, one an identifiable pair of staff, two branded-fleet shots, one a third-party 'Millboard Approved Installer' badge, three whose provenance reads as licensed stock, five duplicates of accepted frames. Finished-garden outcomes are typed Product Image; works-in-progress and tree-surgery service photography is typed Other, so the two are never confused downstream.",
+      "atlas_permission_record": "reccLICqUV2mAGicg",
+      "atlas_permission_ref": "IPO-046",
+      "permission_date": "2026-10-02"
+    },
+    {
+      "organisation_record": "recOLYgRSUdzU8zwI",
+      "organisation_name": "Don Modular Homes",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "donmodularhomes.ie",
+      "required_credit": "© Don Modular Homes",
+      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20) against Organisations recOLYgRSUdzU8zwI, supplier YES 2 October 2026, Gmail thread 1a0fbe3f8fdf7329.",
+      "conditions": [
+        "Credit '© Don Modular Homes' on every image use.",
+        "Don Modular Homes may request change or removal of any image at any time, and PlotNua complies.",
+        "No resale, no sublicensing, no unrelated advertising use.",
+        "Don Modular Homes retains ownership of the imagery.",
+        "EVERY governed Don image is a computer-generated architectural visualisation, not a photograph of a completed build, and must never be presented as one."
+      ],
+      "note": "ALL 25 GOVERNED DON IMAGES ARE CGI VISUALISATIONS. This is not a caveat added for safety; it is what the images are. Every exterior and every interior on donmodularhomes.ie is an architectural render. The distinction is carried in the governed Atlas asset records themselves rather than in a new schema field: each asset's alt text begins 'Visualisation:' and each asset's Notes carries the sentence 'computer-generated visualisation published by the supplier, not a photograph of a completed build'. The render path reads alt text from the governed record, so the distinction survives to the page without any frontend change. Nothing in the publication path rewrites or discards it, and nothing may be added that implies these are photographs of completed installations.\n\nNo delivery host is declared: Don serve their own images from donmodularhomes.ie/images/, so the first-party domain is the scope.\n\n25 assets governed in Atlas on 2 October 2026 — the complete unique set across the whole site, after collapsing responsive variants (-828, -1080) and .jpg/.webp pairs, and probing for further files that do not exist. No candidate was excluded. One record additionally notes that the supplier's own alt text for interior-9 describes a bathroom while the image shows a bed alcove and kitchen; PlotNua's alt text follows what was actually seen.\n\nNO PRODUCT RECORDS WERE CREATED. Don sell one configurable steel-frame design priced per square metre; the 1/2/3/4-bed pages are size variants of the same building, not distinct models. Imagery is governed at organisation level accordingly.",
+      "atlas_permission_record": "recAFBJW5nwWv0Z20",
+      "atlas_permission_ref": "C2-FIRST-DON-MODULAR-20261002",
+      "permission_date": "2026-10-02"
     }
   ]
 }
