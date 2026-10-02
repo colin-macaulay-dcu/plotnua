@@ -107,35 +107,44 @@ def die(msg):
 # and saunas are different homeowner outcomes reached from different starting
 # points, and collapsing them into one "range" would be the single easiest
 # way to misrepresent this supplier. It is deliberately shorter than the
-# garden-room demonstration: the point is to show the cross-category reach,
-# not to run the whole result twice.
+# demonstration above: the point is to show the cross-category reach, not to
+# run the whole result twice.
+#
+# WELLNESS LEADS, GARDEN ROOM FOLLOWS. Founder-reframed 2026-10-02. Bruno
+# replied to the HOME WELLNESS outreach -- outdoor saunas, garden retreat --
+# so the sauna is the result he is shown first and the garden room is the
+# extra reach he did not ask about. The earlier build had these the other way
+# round, which answered a question he had not asked.
 #
 # Markup reuses the template's existing classes only -- <section>, h2, and
 # ul.pn-facts -- so it inherits the page's type, spacing and responsive
 # behaviour and introduces no new CSS.
-SECOND_POSSIBILITY = """<!-- THE SECOND POSSIBILITY — a different homeowner outcome from the same
-     supplier. Keep it shorter than the demonstration above, and keep the
-     two categories separate. Every figure is first-party. -->
+SECOND_POSSIBILITY = """<!-- THE SECOND POSSIBILITY — the cross-category reach, after the wellness
+     result the supplier was actually contacted about. Keep it shorter than
+     the demonstration above, and keep the two categories separate. Every
+     figure is first-party. -->
 <section>
-  <h2>A different homeowner, a different outcome</h2>
-  <p>Not every homeowner who finds you is looking for a room to work in.
-     Someone who comes into PlotNua through home wellness is after a garden
-     retreat, and that is a separate journey with its own questions &mdash;
-     where it sits, how it is heated, who it is for. Cosy Cabins can answer
-     that one too.</p>
+  <h2>Another homeowner, another possibility</h2>
+  <p>PlotNua reached you through saunas, but the same company would also be
+     found by someone who never looks for wellness at all. A homeowner who
+     wants somewhere to work, or a studio at the end of the garden, arrives
+     through a different journey with different questions &mdash; and Cosy
+     Cabins has a real garden room range to answer it with. That is reach
+     most suppliers we look at do not have.</p>
   <ul class="pn-facts">
-    <li><b>Example</b><span>Sauna 2m, from &euro;4,800 inc. VAT</span></li>
-    <li><b>Size</b><span>2m total length, 1.7m sauna length, 2.10m diameter</span></li>
-    <li><b>Published for</b><span>a group of 2&ndash;4 people</span></li>
-    <li><b>Included in that figure</b>Assembly by your team, electric Harvia
-        9kW stove, sauna stones, black alder benches, tempered glass door and
-        bitumen shingle roof</li>
-    <li><b>Range</b><span>six sizes, &euro;4,800 to &euro;8,800 inc. VAT</span></li>
+    <li><b>Example</b><span>Athlone Garden Room 4.5m &times; 2.5m, from &euro;10,940 inc. VAT</span></li>
+    <li><b>Structure</b><span>45mm solid timber walls, 19mm tongue-and-groove floor and roof boards, Scandinavian spruce</span></li>
+    <li><b>Windows and doors</b><span>double-glazed tilt-and-turn with toughened safety glass</span></li>
+    <li><b>Priced separately</b><span>construction by your team +&euro;1,900, timber frame on block foundation +&euro;1,580, 100mm roof insulation +&euro;670, 100mm wall insulation with shiplap +&euro;2,460, gutters +&euro;300, laminate floor +&euro;960, panel heater +&euro;400</span></li>
+    <li><b>Range</b><span>six garden room sizes, 4m &times; 3m up to 6m &times; 4m</span></li>
   </ul>
-  <p class="results-hero-editorial">Worth noticing: assembly is inside the
-     published sauna figure, whereas on the garden rooms it is a separate
-     &euro;1,900 option. A homeowner comparing the two would want to know
-     that, so PlotNua would say it rather than leave them to find out.</p>
+  <p class="results-hero-editorial">Two things we would want you to confirm
+     before this goes in front of homeowners. Your garden room page lists
+     roof and wall insulation as priced options while the page description
+     calls the building insulated; and the same page is labelled
+     &ldquo;Fully Built By Our Team&rdquo; while construction is also a
+     &euro;1,900 extra. We have not picked a side between them &mdash; we
+     would rather ask you.</p>
 </section>
 """
 
@@ -170,36 +179,39 @@ FILL = {
                        "us otherwise. This is where they would sit, credited "
                        "to Cosy Cabins and linked back to cosycabins.ie.",
 
-    "OFFER_NAME": "Athlone Garden Room 4.5m &times; 2.5m",
-    "VERIFIED_PRICE": "from &euro;10,940",
-    "VERIFIED_PRICE_BASIS": "as published by Cosy Cabins, inc. VAT. A "
-                            "&ldquo;from&rdquo; figure for the smallest of "
-                            "seven sizes of the same model.",
+    # THE WELLNESS RESULT LEADS. Bruno answered the home-wellness outreach,
+    # so the framed example is the sauna. The garden room moved to the
+    # second-possibility section below.
+    "OFFER_NAME": "Sauna 2m",
+    "VERIFIED_PRICE": "from &euro;4,800",
+    "VERIFIED_PRICE_BASIS": "as published by Cosy Cabins, inc. VAT, with "
+                            "assembly by your own team inside that figure. A "
+                            "&ldquo;from&rdquo; price for the smallest of six "
+                            "sizes.",
 
-    "VERIFIED_FACT_1_LABEL": "External size",
-    "VERIFIED_FACT_1_VALUE": "4.5m &times; 2.5m",
-    "VERIFIED_FACT_2_LABEL": "Heights",
-    "VERIFIED_FACT_2_VALUE": "2.65m ridge, 2.16m wall",
-    "VERIFIED_FACT_3": "45mm solid timber walls, 19mm tongue-and-groove floor "
-                       "and roof boards, Scandinavian spruce",
-    "VERIFIED_FACT_4": "Double-glazed tilt-and-turn windows and doors with "
-                       "toughened safety glass, handles, locks and keys",
-    "VERIFIED_FACT_5": "Published in six further sizes, 4m &times; 3m up to "
-                       "6m &times; 4m",
+    "VERIFIED_FACT_1_LABEL": "Size",
+    "VERIFIED_FACT_1_VALUE": "2m total length, 1.7m sauna length, "
+                             "2.10m diameter",
+    "VERIFIED_FACT_2_LABEL": "Published for",
+    "VERIFIED_FACT_2_VALUE": "a group of 2&ndash;4 people",
+    "VERIFIED_FACT_3": "Electric Harvia 9kW stove with 20&ndash;30kg of sauna "
+                       "stones",
+    "VERIFIED_FACT_4": "Black alder benches, brown tempered glass door and a "
+                       "bitumen shingle roof",
+    "VERIFIED_FACT_5": "Assembly by Cosy Cabins is included in the published "
+                       "figure",
 
-    # ONE HONEST LINE, and the most useful sentence on the page. The headline
-    # figure is the building. Naming what sits outside it is the difference
-    # between a listing and a decision.
-    "THINGS_TO_CHECK": "the published figure is the building itself. Cosy "
-                       "Cabins list construction by their own team "
-                       "(+&euro;1,900), a timber frame on block foundation "
-                       "(+&euro;1,580), 100mm roof insulation (+&euro;670), "
-                       "100mm wall insulation with shiplap cladding "
-                       "(+&euro;2,460), gutters (+&euro;300), laminate floor "
-                       "(+&euro;960) and an electric panel heater "
-                       "(+&euro;400) as separately priced options. Delivery "
+    # ONE HONEST LINE, and the most useful sentence on the page. What sits
+    # outside the headline figure is the difference between a listing and a
+    # decision.
+    "THINGS_TO_CHECK": "assembly is inside this figure, which is not true of "
+                       "every garden building. What sits outside it: delivery "
                        "is free within 50km of Cavan Town and &euro;1.50 per "
-                       "km beyond it.",
+                       "km beyond, and a solid-fuel stove (+&euro;600), half "
+                       "or full panoramic glass (+&euro;600 or +&euro;900) "
+                       "and a trailer (+&euro;3,000) are priced separately. "
+                       "The range runs to six sizes, &euro;4,800 to "
+                       "&euro;8,800 inc. VAT.",
 
     # PERSONALISATION GUARDRAIL §6 — LOCALITY ONLY. The journey asks for an
     # Eircode and simplifyLocalityDisplay() reduces it to exactly this. It
@@ -223,11 +235,12 @@ FILL = {
                   "what they still need to check. The product facts shown "
                   "here are drawn from your published information.",
     "WHY_3_LABEL": "MORE THAN ONE WAY IN",
-    "WHY_3_TEXT": "Cosy Cabins can appear in the garden-room journey, the "
-                  "studio journey and the home-wellness journey. Most "
-                  "suppliers we look at only fit one, so you would be "
+    "WHY_3_TEXT": "We came to you about home wellness, but Cosy Cabins can "
+                  "appear in the garden-room and studio journeys as well. "
+                  "Most suppliers we look at only fit one, so you would be "
                   "reachable by people arriving from three different "
-                  "starting points.",
+                  "starting points rather than the one we contacted you "
+                  "about.",
 
     "CLOSING_PROPOSITION": "Does this represent Cosy Cabins accurately for an "
                            "Irish homeowner?",

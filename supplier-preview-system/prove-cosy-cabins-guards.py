@@ -106,7 +106,7 @@ r(run("G3b . the closing heading anchor no longer matches the template",
 
 # ---- G4 . tokens ----------------------------------------------------------
 r(run("G4 . a token is dropped from the fill set",
-      [('"OFFER_NAME": "Athlone Garden Room 4.5m &times; 2.5m",', "")]))
+      [('"OFFER_NAME": "Sauna 2m",', "")]))
 
 # ---- G5 . privacy ---------------------------------------------------------
 r(run("G5 . the noimageindex robots directive is dropped",
@@ -130,17 +130,17 @@ r(run("G7 . the frozen journey band is edited in transit, not relocated",
 # Two separate breaks, because the two claims fail for different reasons:
 # insulation is contradicted by the supplier's own itemised spec, and
 # nationwide coverage is contradicted by their published delivery terms.
-r(run("G8 . the page calls the garden room fully insulated",
-      [('"VERIFIED_FACT_3": "45mm solid timber walls',
-        '"VERIFIED_FACT_3": "Fully insulated. 45mm solid timber walls')]))
+r(run("G8 . the page calls the framed example fully insulated",
+      [('"VERIFIED_FACT_3": "Electric Harvia 9kW stove',
+        '"VERIFIED_FACT_3": "Fully insulated. Electric Harvia 9kW stove')]))
 
 r(run("G8 . the page claims nationwide installation",
       [('"WHY_3_LABEL": "MORE THAN ONE WAY IN",',
         '"WHY_3_LABEL": "NATIONWIDE REACH",')]))
 
 r(run("G8 . the page borrows the supplier's year-round-use marketing line",
-      [('"VERIFIED_FACT_5": "Published in six further sizes',
-        '"VERIFIED_FACT_5": "Designed for year-round use. Six further sizes')]))
+      [('"VERIFIED_FACT_5": "Assembly by Cosy Cabins is included',
+        '"VERIFIED_FACT_5": "Designed for year-round use. Assembly included')]))
 
 # ---- G9 . no imagery on the artefact, not merely absent from the list -----
 # Aimed past G0: the list stays empty, so only the output check can catch an
