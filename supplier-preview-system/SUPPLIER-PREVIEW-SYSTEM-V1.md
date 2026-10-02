@@ -208,13 +208,59 @@ SUPPLIER IDENTIFIED
 → POPULATE THE TEMPLATE
 → ACCURACY GUARDS (§6, §8)
 → DESKTOP / TABLET / MOBILE RENDER
-→ FOUNDER REVIEW
 → PRIVATE DEPLOY (push main; Pages serves it)
 → VERIFY THE LIVE URL, not the local file
+→ RETURN THE URL TO THE FOUNDER
+→ ####  STOP  ####
+→ FOUNDER SAYS SEND
 → SEND
 → FREEZE the sent commit SHA
 → WAIT FOR THE SUPPLIER RESPONSE
 ```
+
+### 10.1 · THE SEND GATE — FOUNDER REVIEW BEFORE SUPPLIER DELIVERY
+
+**Founder-set governance rule, 2 October 2026. This is the default for every
+supplier-facing preview and there is no category it does not cover.**
+
+Building, proving and deploying a preview does not authorise sending it. The
+sequence stops after the URL is handed over, and it stays stopped until the
+founder says so.
+
+**TECHNICAL PASS IS NOT APPROVAL TO SEND.** Every guard green, containment
+CONTAINED, the rights gate passing and the responsive QA clean together mean
+one thing only: the page is fit to be *reviewed*. They say nothing about
+whether it should reach the supplier, and they never have. Reading a clean
+proof run as a green light to email is the specific mistake this rule exists
+to stop.
+
+It applies whether the supplier:
+
+- replied **PREVIEW**, asking to see the page first; **or**
+- already said **YES**, and the preview is going as a courtesy or review page.
+
+The second case is the one most likely to be rationalised away. A grant to use
+imagery is not a grant to be emailed an unreviewed page.
+
+**Sending requires an explicit founder instruction** — "SEND", "GO SEND",
+"LIVE — SEND", "APPROVED — SEND", or anything plainly equivalent. Nothing
+weaker counts: not "looks good", not silence, not a previous send on a
+different supplier, not the founder having asked for the preview in the first
+place. If the instruction is ambiguous, ask; the cost of asking is a sentence
+and the cost of guessing is a supplier relationship.
+
+**For PREVIEW-request suppliers specifically**, the state that must survive
+until the supplier replies:
+
+- Permission Outcome stays **Unknown — Awaiting Reply**;
+- no imagery, unless permission is granted separately and in writing;
+- publication stays blocked;
+- the founder sees the preview before the supplier does.
+
+Enforced in code by `atlas-tools/prove-preview-only-containment.mjs` over
+`atlas-tools/preview-only-suppliers.json`. The send gate itself is a human
+gate: no script can tell an approved send from an unapproved one, which is
+exactly why it is written down here.
 
 Copy the chosen template to the repository root as
 `<supplier>-preview.html`, fill it, and commit by explicit path. Never
@@ -230,6 +276,10 @@ supplier's response creates a genuine reason to.
 ---
 
 ## 11 · STOP CONDITIONS
+
+**ALWAYS stop before sending.** §10.1 is not a conditional stop condition; it
+is the default end of every preview build. The list below is what stops a
+build *earlier* than that.
 
 Stop and ask the founder if:
 
