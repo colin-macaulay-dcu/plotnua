@@ -222,6 +222,31 @@
       "atlas_permission_record": "rec6JPwNYPIj7EIfZ",
       "atlas_permission_ref": "C2-GRANT-BIOBUILDS-20261002",
       "permission_date": "2026-10-02"
+    },
+    {
+      "organisation_record": "reclPfKiOQHdGJNGK",
+      "organisation_name": "Tanktribe",
+      "permission_outcome": "Granted — Founder Confirmed",
+      "permitted_domain": "tanktribe.ie",
+      "permitted_delivery_hosts": [
+        {
+          "host": "images.squarespace-cdn.com",
+          "path_prefix": "/content/v1/67ac8d737a7c665f57f5babe/",
+          "why": "Tanktribe's own Squarespace site namespace; the site id scopes the shared Squarespace CDN to Tanktribe's files rather than authorising other Squarespace customers."
+        }
+      ],
+      "required_credit": "© Tanktribe",
+      "evidence": "Derek O'Rourke / Tanktribe replied “YES” on 2 October 2026 in Gmail thread 1a0fd832b4b384f2, message 1a0fd9de5ac55e40, to PlotNua's request for permission to feature Tanktribe and use selected imagery from its website, clearly credit Tanktribe and link back to tanktribe.ie. Recorded in Atlas Image Permission Outreach WELLNESS-FIRST-TANKTRIBE-20261002 (recHf6UOaAVMmmoGA) as Granted — Founder Confirmed.",
+      "conditions": [
+        "Credit '© Tanktribe' on every image use.",
+        "Link back to https://www.tanktribe.ie/ wherever Tanktribe imagery appears.",
+        "Use only selected first-party Tanktribe imagery from the authorised website/CDN namespace.",
+        "Exclude images whose provenance or medium is unclear; AI-labelled images are not admitted as photographs."
+      ],
+      "note": "Six selected image assets were governed in Atlas on 2 October 2026: three CORE cold-plunge photographs (IMG_8495.jpg, IMG_8455.jpg, DSC_2111.jpg) and three WILD TUB photographs (IMG_2580 3.JPG, IMG_2518.JPG, IMG_2531.JPG). Images on the WILD TUB page whose filenames begin 'ChatGPT Image ...' were deliberately excluded rather than treated as photographs. Product evidence was reconciled for CORE, FLOW, ACTIVE and WILD TUB; FLOW and ACTIVE remain range-level where the individual product URL was unavailable during review. This grant does not authorise third-party commercial chiller imagery merely because Tanktribe mentions a commercial partner.",
+      "atlas_permission_record": "recHf6UOaAVMmmoGA",
+      "atlas_permission_ref": "WELLNESS-FIRST-TANKTRIBE-20261002",
+      "permission_date": "2026-10-02"
     }
   ]
 }
