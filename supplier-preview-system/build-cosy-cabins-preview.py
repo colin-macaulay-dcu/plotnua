@@ -122,7 +122,7 @@ SECOND_POSSIBILITY = """<!-- THE SECOND POSSIBILITY — a different homeowner ou
      Someone who comes into PlotNua through home wellness is after a garden
      retreat, and that is a separate journey with its own questions &mdash;
      where it sits, how it is heated, who it is for. Cosy Cabins can answer
-     that one too, which is unusual.</p>
+     that one too.</p>
   <ul class="pn-facts">
     <li><b>Example</b><span>Sauna 2m, from &euro;4,800 inc. VAT</span></li>
     <li><b>Size</b><span>2m total length, 1.7m sauna length, 2.10m diameter</span></li>
@@ -220,8 +220,8 @@ FILL = {
     "WHY_2_LABEL": "YOUR FACTS, IN CONTEXT",
     "WHY_2_TEXT": "Your published sizes and prices sit inside the homeowner&rsquo;s "
                   "own decision rather than in a directory entry, next to "
-                  "what they still need to check. Nothing here is written by "
-                  "us about your products.",
+                  "what they still need to check. The product facts shown "
+                  "here are drawn from your published information.",
     "WHY_3_LABEL": "MORE THAN ONE WAY IN",
     "WHY_3_TEXT": "Cosy Cabins can appear in the garden-room journey, the "
                   "studio journey and the home-wellness journey. Most "
