@@ -122,29 +122,43 @@ def die(msg):
 SECOND_POSSIBILITY = """<!-- THE SECOND POSSIBILITY — the cross-category reach, after the wellness
      result the supplier was actually contacted about. Keep it shorter than
      the demonstration above, and keep the two categories separate. Every
-     figure is first-party. -->
+     figure is first-party.
+
+     SUPPLIER-FACING LANGUAGE, founder-set 2026-10-02. Plain paragraphs, not
+     a label/value fact list: the earlier version invented labels such as
+     "Structure" and "Priced separately" that the supplier never used. The
+     two open points are asked as QUESTIONS, in the words a person would
+     use, with no internal governance vocabulary.
+
+     Markup is <section>, h2, h3, p, b, br and .pn-open — all already in the
+     template's stylesheet, so this introduces no new CSS. .pn-open is the
+     template's own open-questions component, which renders each item with a
+     dash and is exactly what these two are. -->
 <section>
-  <h2>Another homeowner, another possibility</h2>
-  <p>PlotNua reached you through saunas, but the same company would also be
-     found by someone who never looks for wellness at all. A homeowner who
-     wants somewhere to work, or a studio at the end of the garden, arrives
-     through a different journey with different questions &mdash; and Cosy
-     Cabins has a real garden room range to answer it with. That is reach
-     most suppliers we look at do not have.</p>
-  <ul class="pn-facts">
-    <li><b>Example</b><span>Athlone Garden Room 4.5m &times; 2.5m, from &euro;10,940 inc. VAT</span></li>
-    <li><b>Structure</b><span>45mm solid timber walls, 19mm tongue-and-groove floor and roof boards, Scandinavian spruce</span></li>
-    <li><b>Windows and doors</b><span>double-glazed tilt-and-turn with toughened safety glass</span></li>
-    <li><b>Priced separately</b><span>construction by your team +&euro;1,900, timber frame on block foundation +&euro;1,580, 100mm roof insulation +&euro;670, 100mm wall insulation with shiplap +&euro;2,460, gutters +&euro;300, laminate floor +&euro;960, panel heater +&euro;400</span></li>
-    <li><b>Range</b><span>six garden room sizes, 4m &times; 3m up to 6m &times; 4m</span></li>
-  </ul>
-  <p class="results-hero-editorial">Two things we would want you to confirm
-     before this goes in front of homeowners. Your garden room page lists
-     roof and wall insulation as priced options while the page description
-     calls the building insulated; and the same page is labelled
-     &ldquo;Fully Built By Our Team&rdquo; while construction is also a
-     &euro;1,900 extra. We have not picked a side between them &mdash; we
-     would rather ask you.</p>
+  <h2>Another way Cosy Cabins could appear</h2>
+  <p>PlotNua first reached you through your sauna range, but Cosy Cabins
+     could also appear in a separate garden-room journey.</p>
+  <p>A homeowner looking for a home office, studio or extra space in the
+     garden may arrive through a completely different route, and your
+     garden-room range gives us another relevant way to introduce Cosy
+     Cabins.</p>
+  <p><b>Athlone Garden Room 4.5m &times; 2.5m</b><br>From &euro;10,940 inc. VAT</p>
+  <p>45mm solid timber walls, 19mm tongue-and-groove floor and roof boards,
+     Scandinavian spruce, and double-glazed tilt-and-turn windows and
+     doors.</p>
+  <p>Construction by your team is listed separately at &euro;1,900, along
+     with a number of other options and upgrades.</p>
+  <h3>A couple of things we would like to confirm</h3>
+  <p>Before anything goes in front of homeowners, could you clarify:</p>
+  <div class="pn-open">
+    <ul>
+      <li>Is roof and wall insulation included as standard, or is it an
+          optional upgrade?</li>
+      <li>The page says &ldquo;Fully Built By Our Team&rdquo;, while
+          construction is also listed as a &euro;1,900 extra. How should we
+          describe that accurately?</li>
+    </ul>
+  </div>
 </section>
 """
 

@@ -146,9 +146,9 @@ r(run("G8 . the page borrows the supplier's year-round-use marketing line",
 # Aimed past G0: the list stays empty, so only the output check can catch an
 # image that arrives through the markup.
 r(run("G9 . an external image arrives through the markup, not the image list",
-      [('  <ul class="pn-facts">\n    <li><b>Example</b>',
-        '  <img src="https://static.wixstatic.com/media/9ba815_x.jpg" alt="">\n'
-        '  <ul class="pn-facts">\n    <li><b>Example</b>')]))
+      [('  <h2>Another way Cosy Cabins could appear</h2>',
+        '  <h2>Another way Cosy Cabins could appear</h2>\n'
+        '  <img src="https://static.wixstatic.com/media/9ba815_x.jpg" alt="">')]))
 
 # ALL THREE links are stripped, with the %s arity preserved. Removing only
 # one proves nothing: the check needs a single href to be satisfied, and a
