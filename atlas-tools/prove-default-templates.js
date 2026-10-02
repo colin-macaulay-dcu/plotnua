@@ -298,11 +298,34 @@ check('the gallery attaches no credit of its own', !/pnAttachImageCredit\(/.test
 =========================================================================== */
 head('F · THE GALLERY STRIP IS RESPONSIVE AND KEYBOARD-REACHABLE');
 
-/* TWO DECLARATIONS, NOT ONE: the base rule and the phone breakpoint's override.
-   My first version asserted one and so failed on the responsive rule it asks
-   for two checks below. */
-check('the strip is styled in exactly two places (base + phone breakpoint)',
-      (code.match(/\.pn-gal-strip\{/g) || []).length === 2);
+/* RE-ANCHORED FOR RESULTS-IDENTITY-001.
+
+   This assertion used to read "styled in exactly two places" and counted the
+   declarations. The count was only ever a proxy for the thing worth proving,
+   and RESULTS-IDENTITY-001 broke the proxy without breaking the invariant: the
+   authorised layout moved the strip inside .rh-split and legitimately added a
+   third, Results-scoped declaration. A guard that fails because the
+   implementation it guards was correctly changed is telling you about itself,
+   not about the code, and the right answer is to test the invariant rather
+   than loosen the number.
+
+   THE INVARIANT: the strip is styled in exactly the three AUTHORISED places,
+   each appearing once, and nowhere else. Naming them means a fourth stray
+   declaration is still caught, which is what the old count was for. */
+const STRIP_RULES = [
+  ['the Results-scoped rule inside .rh-split',
+   /#screen-match-results \.rh-split \.pn-gal-strip\{/g],
+  ['the shared base rule',
+   /\n  \.pn-gal-strip\{/g],
+  ['the phone breakpoint override',
+   /@media \(max-width:640px\)\{[\s\S]{0,400}?\.pn-gal-strip\{/g]
+];
+STRIP_RULES.forEach(([what, re]) => {
+  check('the strip is styled once in ' + what,
+        (code.match(re) || []).length === 1);
+});
+check('the strip is styled in exactly those three places and nowhere else',
+      (code.match(/\.pn-gal-strip\{/g) || []).length === 3);
 check('the strip scrolls rather than wrapping out of its container',
       /\.pn-gal-strip\{[^}]*overflow-x:auto/.test(code));
 check('a phone breakpoint resizes the thumbnails',
