@@ -62,14 +62,22 @@ PERMITTED_PREFIX = ("https://images.squarespace-cdn.com/content/v1/"
 TANKTRIBE_IMAGES = [
     {"url": PERMITTED_PREFIX + "b9e11038-bd53-49c8-984b-65ed12892e43/"
             "IMG_2580%2B3.JPG",
-     "alt": "Tanktribe WILD TUB in a garden, a round galvanised tub set up "
-            "for wood-fired heating"},
+     # ALT TEXT IS THE ATLAS DESCRIPTION, VERBATIM. Corrected 2 Oct 2026
+     # after the three WILD TUB assets were opened and looked at. The
+     # originals were written from the product page and the filename, not
+     # from the images, and all three implied a view of the tub that none
+     # of them contains. Alt text asserted without looking is the same
+     # failure class as any other unverified claim.
+     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "
+            "burning on gravel"},
     {"url": PERMITTED_PREFIX + "33335f39-c5fe-48af-9c3a-f6f6cc4e8c8e/"
             "IMG_2518.JPG",
-     "alt": "A Tanktribe WILD TUB outdoor setup seen from the side"},
+     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "
+            "burning on a paving slab"},
     {"url": PERMITTED_PREFIX + "ab9c9630-7b25-441f-9559-b711ff7f6d5b/"
             "IMG_2531.JPG",
-     "alt": "Tanktribe WILD TUB with its wood-fired heating arrangement"},
+     "alt": "Close view from beside the Tanktribe WILD TUB showing the "
+            "water surface, timber ledge, tub rim and garden background"},
     {"url": PERMITTED_PREFIX + "2d930a20-ec94-4b5f-8af4-159501335d62/"
             "IMG_8495.jpg",
      "alt": "Tanktribe CORE galvanised steel cold plunge standing outdoors"},
