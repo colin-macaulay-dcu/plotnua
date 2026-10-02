@@ -21,6 +21,9 @@ Run: python3 .github/scripts/prove-img6-guards.py
 
 import contextlib
 import hashlib
+import json
+import subprocess
+import tempfile
 import io
 import pathlib
 import sys
@@ -32,10 +35,45 @@ RECORDS = HERE.parent.parent / "image-rights-records.json"
 before = hashlib.sha256(RECORDS.read_bytes()).hexdigest()
 _n = [0]
 
+# ── THE PROOF RUNS AGAINST A PRISTINE FIXTURE, NOT THE LIVE FILE ──────────
+#
+# WHY THIS HAD TO CHANGE. This builder is a ONE-SHOT APPEND, and it has now
+# run: the three records it adds are committed (380bb7b), and a fourth
+# supplier has been recorded since (BIOBUILDS, b238c33). So against the live
+# file the builder correctly refuses on R00 idempotence and R01's prior-count
+# anchor -- which meant the proof's final "the unmutated builder must still
+# BUILD" case failed, and every sabotage was being caught by R00 before it
+# could reach its target. A proof in that state is not proving anything.
+#
+# The fix is to give the builder the file it was written against -- the
+# revision immediately before IMG-6 -- rather than to loosen the guards or
+# delete the clean-run case. The fixture is read from git, so it cannot
+# drift, and the live records file is never opened for writing by this proof
+# at all. The hash printed at the end still covers the live file, so the
+# fixture cannot quietly become the thing being protected.
+PRE_IMG6_REV = "fd47cf5"
+_fixture_dir = pathlib.Path(tempfile.mkdtemp(prefix="img6-fixture-"))
+FIXTURE = _fixture_dir / "image-rights-records.json"
+FIXTURE.write_bytes(subprocess.run(
+    ["git", "-C", str(HERE.parent.parent), "show",
+     PRE_IMG6_REV + ":image-rights-records.json"],
+    check=True, capture_output=True).stdout)
+
+_n_fixture = json.loads(FIXTURE.read_text(encoding="utf-8"))["records"]
+if len(_n_fixture) != 6:
+    raise AssertionError(
+        "the pre-IMG-6 fixture holds %d records, not the 6 this builder was "
+        "anchored against. Re-establish PRE_IMG6_REV before trusting this "
+        "proof." % len(_n_fixture))
+
+# Applied to EVERY run, before any sabotage: the builder reads the fixture.
+REDIRECT = ('RECORDS = REPO / "image-rights-records.json"',
+            'RECORDS = __import__("pathlib").Path(%r)' % str(FIXTURE))
+
 
 def run(label, subs=(), expect="REFUSED"):
     code = BUILDER.read_text(encoding="utf-8")
-    for old, new in subs:
+    for old, new in (REDIRECT,) + tuple(subs):
         if old not in code:
             raise AssertionError("builder anchor absent: %r" % old[:70])
         code = code.replace(old, new, 1)
