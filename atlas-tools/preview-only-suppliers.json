@@ -1,0 +1,49 @@
+{
+  "schema": "plotnua.preview-only-suppliers.v1",
+  "what_this_is": "The register of suppliers who asked to SEE a private preview and have granted PlotNua nothing. One row per supplier, read by atlas-tools/prove-preview-only-containment.mjs. Adding a supplier here is what puts their preview under containment; it is not a permission of any kind.",
+  "why_a_register_rather_than_a_script_each": "The first two of these -- Cosy Cabins and Irish Sauna Company -- were about to get a second near-identical proof file. Three would have guaranteed that a fix applied to one was forgotten in the others. The checks live in one place and this file is the only thing that changes per supplier.",
+  "the_rule_these_rows_enforce": "UNKNOWN is not GRANTED. A supplier in this register has replied PREVIEW, not YES. Their preview page may carry their published FACTS, with attribution and a link back, and NONE of their imagery. The moment a grant exists, the supplier moves out of this register and into image-rights-records.json -- never both.",
+  "suppliers": [
+    {
+      "name": "Cosy Cabins",
+      "legal_name": "Cosy Cabins Limited",
+      "page": "cosy-cabins-preview.html",
+      "site_host": "cosycabins.ie",
+      "credit": "© Cosy Cabins Limited",
+      "image_hosts": [
+        { "host": "static.wixstatic.com", "path_prefix": "/media/9ba815_",
+          "why": "their own Wix media account prefix; the host is shared with other Wix sites, so the prefix is what identifies them" }
+      ],
+      "forbidden_claims": [
+        "fully insulated", "insulated garden room", "u-value",
+        "planning exempt", "no planning permission",
+        "lead time", "warranty", "nationwide", "across ireland"
+      ],
+      "evidence": "Bruno replied \"PREVIEW please — I'd like to see how Cosy Cabins would appear on PlotNua before anything is published\" on 2 October 2026, Gmail thread 1a0fd84efd61b0fa, when the outreach offered both YES and PREVIEW.",
+      "atlas_permission_ref": "WELLNESS-FIRST-COSY-CABINS-20261002"
+    },
+    {
+      "name": "Irish Sauna Company",
+      "legal_name": "Irish Sauna Company",
+      "page": "irish-sauna-company-preview.html",
+      "site_host": "irishsaunacompany.com",
+      "credit": "© Irish Sauna Company",
+      "image_hosts": [
+        { "host": "irishsaunacompany.com", "path_prefix": "/cdn/shop/",
+          "why": "their Shopify CDN path on their own domain" }
+      ],
+      "forbidden_claims": [
+        "irish built", "irish-built", "built in galway", "manufactured in galway",
+        "we manufacture", "handcrafted in", "irish made", "irish-made",
+        "installation included", "we install", "installed by irish sauna",
+        "delivery included", "shipping included", "free delivery",
+        "planning exempt", "no planning permission",
+        "lead time of", "weeks from confirmed order",
+        "warranty", "guaranteed for"
+      ],
+      "forbidden_claims_note": "INSULATION IS DELIBERATELY NOT ON THIS LIST, unlike Cosy Cabins. Irish Sauna Company's garden saunas publish insulated construction three times on the product page and in the specification table, so it is an evidenced fact here and may be stated. The origin claims are the dangerous ones instead: the garden range is manufactured by Harvia and supplied in Ireland by Irish Sauna Company, while the company's own Galway manufacturing is of commercial mobile saunas and accommodation pods. Calling a garden sauna Irish-built would be false.",
+      "evidence": "Brona replied \"I'd be happy to take a look at the private preview first, particularly to see how our products, specifications and pricing would be presented\" on 2 October 2026, Gmail message 1a0fdc60270190fd, when the outreach offered both YES and PREVIEW.",
+      "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002"
+    }
+  ]
+}

@@ -125,6 +125,17 @@ jobs:
           node atlas-tools/prove-biobuilds-containment.mjs
           node atlas-tools/prove-biobuilds-containment-capability.mjs
 
+      # PREVIEW-ONLY SUPPLIERS. These ones granted NOTHING -- they replied
+      # asking to SEE the preview when the outreach offered both YES and
+      # PREVIEW. There is no manifest row to scope because there is no grant,
+      # so what has to be proved is ABSENCE: their published facts on the page,
+      # none of their imagery anywhere, and nothing in the public journey.
+      # One proof over a register, so adding a supplier cannot forget a check.
+      - name: Preview-only suppliers must stay contained
+        run: |
+          set -euo pipefail
+          node atlas-tools/prove-preview-only-containment.mjs
+
       - name: Summary
         if: always()
         run: |
