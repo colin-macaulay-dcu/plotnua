@@ -3,7 +3,7 @@
   "generated": "2026-10-02",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
   "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
-  "reality_note": "PlotNua publishes supplier imagery for 10 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes, BIOBUILDS, Tanktribe. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
+  "reality_note": "PlotNua publishes supplier imagery for 11 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes, BIOBUILDS, Tanktribe, OGNYX. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
   "reconciliation": "Every row carries the Atlas record id it reflects, so a disagreement between this manifest and Atlas is visible rather than silent. Generated from image-rights-records.json; edit that file, never this one.",
   "rows": [
     {
@@ -248,6 +248,26 @@
       "note": "Six selected image assets were governed in Atlas on 2 October 2026: three CORE cold-plunge photographs (IMG_8495.jpg, IMG_8455.jpg, DSC_2111.jpg) and three WILD TUB photographs (IMG_2580 3.JPG, IMG_2518.JPG, IMG_2531.JPG). Images on the WILD TUB page whose filenames begin 'ChatGPT Image ...' were deliberately excluded rather than treated as photographs. Product evidence was reconciled for CORE, FLOW, ACTIVE and WILD TUB; FLOW and ACTIVE remain range-level where the individual product URL was unavailable during review. This grant does not authorise third-party commercial chiller imagery merely because Tanktribe mentions a commercial partner.",
       "atlas_permission_record": "recHf6UOaAVMmmoGA",
       "atlas_permission_ref": "WELLNESS-FIRST-TANKTRIBE-20261002",
+      "permission_date": "2026-10-02"
+    },
+    {
+      "organisation_record": "recGxi1agXCBR1FLt",
+      "organisation_name": "OGNYX",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "ognyx.com",
+      "required_credit": "© OGNYX",
+      "evidence": "Fabian of OGNYX replied on 2 October 2026 to the Home Wellness outreach, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: “Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua. Please feel free to prepare the preview, including any example imagery, product presentation and links you propose to use.” Recorded in Atlas as Image Permission Outreach WELLNESS-FIRST-OGNYX-20261002 (recIjRDMQ55nk6cOn) against Organisations recGxi1agXCBR1FLt, contact info@ognyx.com. THE OUTCOME IN ATLAS REMAINS “Unknown — Awaiting Reply”: he asked to see the preview, he did not say yes to publication.",
+      "conditions": [
+        "PREVIEW ONLY. This permission covers ognyx-preview.html and nothing else. OGNYX imagery must not appear on any other page, in the public Results journey, or in any runtime Atlas payload, until OGNYX approve publication in writing.",
+        "Credit '© OGNYX' wherever the imagery appears.",
+        "Link back to https://www.ognyx.com/ wherever the imagery appears.",
+        "Images are used unmodified and served from OGNYX's own domain. Nothing is downloaded, re-hosted, cropped or altered.",
+        "OGNYX may request change or removal of any image at any time, and PlotNua complies.",
+        "No resale, no sublicensing, no unrelated advertising use. OGNYX retain ownership of the imagery."
+      ],
+      "note": "SCOPE: ognyx.com only. OGNYX serve their product images from their own domain, so there is no shared CDN to scope by prefix and no delivery host is declared.\n\nTHIS ROW EXISTS TO LET THE PRIVATE PREVIEW PASS THE GATE, AND FOR NOTHING ELSE. The gate scopes a grant by host and has no notion of a page, so on its own this row would authorise OGNYX imagery anywhere in the tree. atlas-tools/prove-preview-only-containment.mjs is what keeps it to ognyx-preview.html, and that proof runs in CI beside the gate on every publish. If the preview is ever deleted, this record should go with it.\n\nFOUR ASSETS, all read first-party from ognyx.com on 2 October 2026 and all visually inspected before use: two photographs of the Stainless Steel Cold Plunge Tub for One, one visualisation of the 1.6m Outdoor Sauna, and one visualisation of the Round Hot Tub with integrated wood-fired stove. The two visualisations are labelled as visualisations on the page, because showing a render as a photograph would misrepresent what a homeowner would receive.",
+      "atlas_permission_record": "recIjRDMQ55nk6cOn",
+      "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002",
       "permission_date": "2026-10-02"
     }
   ]

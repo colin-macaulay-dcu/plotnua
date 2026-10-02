@@ -2,10 +2,13 @@
   "schema": "plotnua.preview-only-suppliers.v1",
   "what_this_is": "The register of suppliers who asked to SEE a private preview and have granted PlotNua nothing. One row per supplier, read by atlas-tools/prove-preview-only-containment.mjs. Adding a supplier here is what puts their preview under containment; it is not a permission of any kind.",
   "why_a_register_rather_than_a_script_each": "The first two of these -- Cosy Cabins and Irish Sauna Company -- were about to get a second near-identical proof file. Three would have guaranteed that a fix applied to one was forgotten in the others. The checks live in one place and this file is the only thing that changes per supplier.",
-  "the_rule_these_rows_enforce": "UNKNOWN is not GRANTED. A supplier in this register has replied PREVIEW, not YES. Their preview page may carry their published FACTS, with attribution and a link back, and NONE of their imagery. The moment a grant exists, the supplier moves out of this register and into image-rights-records.json -- never both.",
+  "the_rule_these_rows_enforce": "UNKNOWN is not GRANTED. A supplier in this register has replied PREVIEW, not YES. Their preview page carries their published FACTS, with attribution and a link back. Whether it may also carry their IMAGERY is decided by imagery_mode, and by nothing else.",
+  "imagery_mode": "Required on every row, and an unrecognised value is an ERROR rather than a pass. 'none' is the default case: the supplier granted nothing at all, so none of their imagery may appear on ANY page, including their own preview. 'preview-only' is the narrower case where the supplier invited imagery for the preview in writing while withholding publication: their imagery may appear on their own preview page and NOWHERE else, a preview-scoped row must exist in image-rights-records.json carrying that invitation, and that row's conditions must name the page. The two modes are checked by different code paths on purpose -- a 'none' supplier must never pass through the 'preview-only' branch because somebody edited one character.",
+  "the_grant_boundary": "A supplier with a full publication grant does not belong in this register at all; they live only in image-rights-records.json. A 'preview-only' supplier appears in BOTH, and that is the one case where both is correct: the rights row is what lets the gate pass the preview, and this register is what stops the row reaching anything else.",
   "suppliers": [
     {
       "name": "Cosy Cabins",
+      "imagery_mode": "none",
       "legal_name": "Cosy Cabins Limited",
       "page": "cosy-cabins-preview.html",
       "site_host": "cosycabins.ie",
@@ -24,6 +27,7 @@
     },
     {
       "name": "Irish Sauna Company",
+      "imagery_mode": "none",
       "legal_name": "Irish Sauna Company",
       "page": "irish-sauna-company-preview.html",
       "site_host": "irishsaunacompany.com",
@@ -44,6 +48,32 @@
       "forbidden_claims_note": "INSULATION IS DELIBERATELY NOT ON THIS LIST, unlike Cosy Cabins. Irish Sauna Company's garden saunas publish insulated construction three times on the product page and in the specification table, so it is an evidenced fact here and may be stated. The origin claims are the dangerous ones instead: the garden range is manufactured by Harvia and supplied in Ireland by Irish Sauna Company, while the company's own Galway manufacturing is of commercial mobile saunas and accommodation pods. Calling a garden sauna Irish-built would be false.",
       "evidence": "Brona replied \"I'd be happy to take a look at the private preview first, particularly to see how our products, specifications and pricing would be presented\" on 2 October 2026, Gmail message 1a0fdc60270190fd, when the outreach offered both YES and PREVIEW.",
       "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002"
+    },
+    {
+      "name": "OGNYX",
+      "legal_name": "OGNYX LIMITED",
+      "imagery_mode": "preview-only",
+      "page": "ognyx-preview.html",
+      "site_host": "ognyx.com",
+      "credit": "\u00a9 OGNYX",
+      "image_hosts": [
+        { "host": "ognyx.com", "path_prefix": "/cdn/shop/",
+          "why": "their Shopify file path on their own domain; no third-party CDN is involved, so the scope is the domain itself" }
+      ],
+      "imagery_evidence": "Fabian of OGNYX wrote, on 2 October 2026, Gmail message 1a0fe3d7b43366cf: \"Please feel free to prepare the preview, including any example imagery, product presentation and links you propose to use.\" That is written permission for THIS PAGE. It is not publication permission, and the sentence before it asks to see the preview before proceeding.",
+      "rights_record_must_be_preview_scoped": true,
+      "forbidden_claims": [
+        "health benefit", "therapeutic", "improves recovery",
+        "inc. vat", "including vat", "vat included",
+        "free delivery", "delivery included", "delivery is free",
+        "installation included", "we install", "fully installed",
+        "warranty included", "guaranteed",
+        "in stock", "next day", "lead time of",
+        "planning exempt", "no planning permission"
+      ],
+      "forbidden_claims_note": "OGNYX's own product copy calls cold immersion a health benefit and the tub therapeutically versatile. PlotNua does not repeat a health claim to a homeowner whoever first wrote it, so those stay on this list even though the supplier does make them. The money, delivery, installation and lead-time bans exist for the opposite reason: the OGNYX shipping policy and terms of 2 September 2026 make each of them CONDITIONAL -- free standard delivery applies to eligible saunas where the product page says so, VAT is confirmed at checkout, installation needs a separate quotation, and production time varies by configuration. Stating any of them flatly would turn a condition into a promise.",
+      "evidence": "Fabian replied on 2 October 2026, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: \"Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua.\" Atlas Permission Outcome remains \"Unknown \u2014 Awaiting Reply\".",
+      "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002"
     }
   ]
 }

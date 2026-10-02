@@ -136,6 +136,14 @@ jobs:
           set -euo pipefail
           node atlas-tools/prove-preview-only-containment.mjs
 
+      # AND THAT PROOF'S OWN CAPABILITY. It gained a second imagery mode for
+      # OGNYX, who invited imagery for their preview while withholding
+      # publication, and new containment code that has never been seen to
+      # refuse is a comment. Seven sabotages, each restored in a finally
+      # block, with every touched file hashed before and after.
+      - name: The containment proof must still catch what it is for
+        run: python3 atlas-tools/prove-preview-only-capability.py
+
       - name: Summary
         if: always()
         run: |

@@ -247,6 +247,27 @@
       "atlas_permission_record": "recHf6UOaAVMmmoGA",
       "atlas_permission_ref": "WELLNESS-FIRST-TANKTRIBE-20261002",
       "permission_date": "2026-10-02"
+    },
+    {
+      "organisation_record": "recGxi1agXCBR1FLt",
+      "organisation_name": "OGNYX",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "ognyx.com",
+      "required_credit": "© OGNYX",
+      "evidence": "Fabian of OGNYX replied on 2 October 2026 to the Home Wellness outreach, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: “Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua. Please feel free to prepare the preview, including any example imagery, product presentation and links you propose to use.” Recorded in Atlas as Image Permission Outreach WELLNESS-FIRST-OGNYX-20261002 (recIjRDMQ55nk6cOn) against Organisations recGxi1agXCBR1FLt, contact info@ognyx.com. THE OUTCOME IN ATLAS REMAINS “Unknown — Awaiting Reply”: he asked to see the preview, he did not say yes to publication.",
+      "conditions": [
+        "PREVIEW ONLY. This permission covers ognyx-preview.html and nothing else. OGNYX imagery must not appear on any other page, in the public Results journey, or in any runtime Atlas payload, until OGNYX approve publication in writing.",
+        "Credit '© OGNYX' wherever the imagery appears.",
+        "Link back to https://www.ognyx.com/ wherever the imagery appears.",
+        "Images are used unmodified and served from OGNYX's own domain. Nothing is downloaded, re-hosted, cropped or altered.",
+        "OGNYX may request change or removal of any image at any time, and PlotNua complies.",
+        "No resale, no sublicensing, no unrelated advertising use. OGNYX retain ownership of the imagery."
+      ],
+      "note": "SCOPE: ognyx.com only. OGNYX serve their product images from their own domain, so there is no shared CDN to scope by prefix and no delivery host is declared.\n\nTHIS ROW EXISTS TO LET THE PRIVATE PREVIEW PASS THE GATE, AND FOR NOTHING ELSE. The gate scopes a grant by host and has no notion of a page, so on its own this row would authorise OGNYX imagery anywhere in the tree. atlas-tools/prove-preview-only-containment.mjs is what keeps it to ognyx-preview.html, and that proof runs in CI beside the gate on every publish. If the preview is ever deleted, this record should go with it.\n\nFOUR ASSETS, all read first-party from ognyx.com on 2 October 2026 and all visually inspected before use: two photographs of the Stainless Steel Cold Plunge Tub for One, one visualisation of the 1.6m Outdoor Sauna, and one visualisation of the Round Hot Tub with integrated wood-fired stove. The two visualisations are labelled as visualisations on the page, because showing a render as a photograph would misrepresent what a homeowner would receive.",
+      "atlas_permission_record": "recIjRDMQ55nk6cOn",
+      "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002",
+      "permission_date": "2026-10-02",
+      "permitted_delivery_hosts": []
     }
   ]
 }
