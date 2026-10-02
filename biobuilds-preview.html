@@ -88,13 +88,259 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
    screenshot. Preview scope only — the production rule is untouched. */
 .pn-stage .results-hero-inner.is-fieldonly{ margin-left:0; margin-right:0; border-radius:6px; }
 @media (min-width:720px){
-  .pn-stage .results-hero-inner{ align-items:stretch; }
-  .pn-stage .results-hero-media{ aspect-ratio:auto; min-height:320px; }
+  /* PREVIEW-GEOMETRY-001 — THESE TWO RULES ARE SCOPED TO THE HELD SLOT ONLY.
+
+     They used to apply to every .pn-stage hero, and that made the preview lie
+     about production. `aspect-ratio:auto` plus `align-items:stretch` lets the
+     media panel grow to the HEIGHT OF THE DECISION COLUMN, so six fact rows
+     turned a 42%-wide box into 581x943 — ratio 0.62, portrait — while real
+     Results renders the same markup at 581x436, ratio 1.33, because
+     production keeps aspect-ratio:4/3 and align-items:center.
+
+     The held slot is type, not a photograph: it carries two lines of copy and
+     genuinely does need to grow with the column, with a floor, or it reads
+     cramped. So the stretch is kept for THAT case and nothing else. With a
+     real image neither selector matches, production's own rules apply, and
+     the preview shows the homeowner geometry exactly.
+
+     :has() is already a dependency of this stylesheet — see the
+     .results-hero-media:has(img.pn-image-fallback) rule further down. */
+  .pn-stage .results-hero-inner:has(.pn-photo-slot){ align-items:stretch; }
+  .pn-stage .results-hero-media:has(.pn-photo-slot){
+    aspect-ratio:auto; min-height:320px; }
   .pn-stage .results-hero-inner.is-fieldonly .match-card-open-myplot-link{
     grid-column:2; justify-self:start; }
 }
 .pn-stage .results-hero-media{ display:flex; }
 .pn-stage .results-hero-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* ── PREVIEW-PARITY-001 ─────────────────────────────────────────────────
+   PORTED VERBATIM FROM PRODUCTION RESULTS, re-scoped .pn-stage.
+   Source: your-plot.html, #screen-match-results. This kit had drifted to
+   the old 42% class rule and carried none of the id-scoped geometry, so
+   the preview was showing suppliers a weaker hero than homeowners get.
+   Nothing here is invented and nothing is a preview-only idea: every
+   declaration is production's, at production's values.
+
+   NOT PORTED, DELIBERATELY: the 3/2 at L8370 and L8511. A later unscoped
+   rule (L8535) sets 4/3 and wins at every width, so 4/3 is what production
+   actually renders. RVR-1 tried 3/2 and reverted it after measuring the
+   governed pool -- 1.618 down to 0.869 -- because it cropped 30% off one
+   product and 42% off another. Porting 3/2 would reintroduce a decision
+   that was already made and withdrawn on evidence. */
+
+/* the plate — your-plot.html L8357 */
+.pn-stage .results-hero-media{
+  border-radius:14px;
+  box-shadow:
+    0 2px 4px rgba(36,53,31,.05),
+    0 14px 28px -14px rgba(36,53,31,.18),
+    0 40px 80px -30px rgba(36,53,31,.34),
+    inset 0 0 0 1px rgba(36,53,31,.06);
+  background:var(--pn-hair, #E6E0D2);
+}
+/* 4:3, at every width — L8535 / L8545 */
+.pn-stage .results-hero-media{ aspect-ratio:4/3; }
+/* desktop geometry — L8366-8378 */
+@media (min-width:720px){
+  .pn-stage .results-hero-inner{ align-items:center; gap:clamp(32px,3.4vw,48px); }
+  .pn-stage .results-hero-media{
+    width:58%; min-width:0; max-width:58%; flex:0 0 58%; aspect-ratio:4/3; }
+  .pn-stage .results-hero-body{ flex:1 1 0; min-width:0; }
+}
+/* large desktop — L8568 */
+@media (min-width:1280px){
+  .pn-stage .results-hero-media{ width:64%; max-width:64%; flex:0 0 64%; }
+  .pn-stage .results-hero-inner{ gap:26px; }
+}
+/* mobile name scaling — L8511 */
+@media (max-width:719px){
+  .pn-stage .results-hero-body{ padding:24px 0 0; }
+  .pn-stage .results-hero-name{ font-size:clamp(30px,8.4vw,40px); }
+}
+/* the governed gallery strip — L8806. Production inserts it as the next
+   sibling of the media, inside the hero row, so the preview does the same
+   and the media column carries both. */
+
+/* ======================================================================
+     PREVIEW-IDENTITY-001 · IDENTITY FIRST (lifted from production), THEN IMAGE + DECISION.
+
+     Last in the sheet and every selector scoped to .pn-stage or
+     to :has(.rh-split), for one reason: the ~100 shipped supplier previews
+     carry the OLD hero markup, and every generic .results-hero-* rule above
+     is left exactly as it was so they keep laying out as they do today. A
+     page without an identity band never matches anything below.
+
+     THE GEOMETRY IS RE-POINTED, NOT RE-CHOSEN. 58% at >=720, 64% at >=1280,
+     4:3 at every width -- the same numbers, moved from .results-hero-inner
+     (which is now a column) onto .rh-split (which is now the row).
+     ====================================================================== */
+
+  /* The inner stops being the flex row the moment there is a band to stack
+     above the split. */
+  .pn-stage .results-hero-inner:has(.rh-identity){
+    display:block;
+  }
+
+  /* ---- THE BAND --------------------------------------------------------- */
+  .pn-stage .rh-identity{
+    margin:0 0 clamp(22px,2.2vw,32px);
+  }
+  .pn-stage .rh-identity .results-hero-name{
+    font-size:clamp(34px,5.2vw,68px);
+    line-height:1.02; letter-spacing:-.015em;
+    margin:0 0 12px; max-width:22ch;
+  }
+  /* ONE LINE, ALWAYS THE SAME SHAPE. The band must not move when the price
+     state changes from "€41,500" to "Price on enquiry", so the meta row has
+     a fixed type size and a fixed baseline rather than sizing to content. */
+  .pn-stage .rh-identity-meta{
+    display:flex; flex-wrap:wrap; align-items:baseline;
+    gap:0 10px; min-height:26px;
+  }
+  .pn-stage .rh-identity-meta .results-hero-org{
+    order:0; margin:0;
+    font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--pn-stone);
+  }
+  .pn-stage .rh-identity-sep{
+    color:var(--pn-stone); opacity:.55; font-size:13px;
+  }
+  .pn-stage .rh-identity-meta .results-hero-price{
+    font-size:clamp(19px,1.5vw,22px); line-height:1.2;
+  }
+
+  /* ---- THE SPLIT -------------------------------------------------------- */
+  .pn-stage .rh-split{
+    display:flex; flex-direction:column; gap:0;
+  }
+  .pn-stage .rh-split .pn-media-col{
+    display:flex; flex-direction:column; gap:10px; min-width:0;
+  }
+  .pn-stage .rh-split .results-hero-media{
+    width:100%; max-width:none; flex:0 0 auto; aspect-ratio:4/3;
+  }
+  .pn-stage .rh-split .results-hero-body{
+    padding:26px 0 0; min-width:0;
+  }
+
+  @media (min-width:720px){
+    .pn-stage .rh-split{
+      flex-direction:row; align-items:flex-start;
+      gap:clamp(32px,3.4vw,48px);
+    }
+    /* 58%, unchanged -- on the media COLUMN, which is what the photograph and
+       its thumbnail strip now share. */
+    .pn-stage .rh-split .pn-media-col{
+      width:58%; min-width:0; max-width:58%; flex:0 0 58%;
+    }
+    .pn-stage .rh-split .results-hero-body{
+      flex:1 1 0; min-width:0; padding:0;
+    }
+  }
+  @media (min-width:1280px){
+    /* 64% and the 26px gap, unchanged -- see K2b above for the measurement
+       that chose them. */
+    .pn-stage .rh-split .pn-media-col{
+      width:64%; max-width:64%; flex:0 0 64%;
+    }
+    .pn-stage .rh-split{ gap:26px; }
+  }
+
+  /* ---- THE THUMBNAIL STRIP, WHICH NOW ACTUALLY EXISTS ------------------- */
+  .pn-stage .rh-split .pn-gal-strip{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .pn-stage .rh-split .pn-gal-thumb{
+    width:72px; aspect-ratio:4/3; padding:0; border:0; cursor:pointer;
+    border-radius:3px; overflow:hidden; background:var(--pn-hair);
+    box-shadow:inset 0 0 0 1px rgba(36,53,31,.10);
+    opacity:.62; transition:opacity .18s ease, box-shadow .18s ease;
+  }
+  .pn-stage .rh-split .pn-gal-thumb img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .pn-stage .rh-split .pn-gal-thumb:hover{ opacity:.85; }
+  .pn-stage .rh-split .pn-gal-thumb.is-on{
+    opacity:1; box-shadow:inset 0 0 0 2px var(--accent);
+  }
+  .pn-stage .rh-split .pn-gal-thumb:focus-visible{
+    outline:2px solid var(--accent); outline-offset:2px;
+  }
+
+  /* ---- THE FIELD-ONLY STATE, REDESIGNED FOR THE SAME STRUCTURE ----------
+     No photograph means no media column was ever appended, so .rh-split holds
+     the decision column alone. It collapses to a block rather than running as
+     a one-child flex row with a 58% rule looking for a sibling, and the
+     decision column keeps the UX-008C two-column grid it already had. The
+     name and the maker are no longer in that grid -- they are in the band
+     above it -- so their grid-column rules simply match nothing here; the
+     spec row keeps column 1, which is where it belongs. */
+  .pn-stage .results-hero-inner.is-fieldonly .rh-split{
+    display:block;
+  }
+  @media (min-width:720px){
+    .pn-stage .results-hero-inner.is-fieldonly .rh-identity{
+      margin-bottom:clamp(18px,1.8vw,26px);
+    }
+    .pn-stage .results-hero-inner.is-fieldonly .results-hero-body{
+      padding:0;
+    }
+    /* The trust block no longer needs pulling up level with the name: the
+       name is above the grid now, so row 1 starts with the spec row. */
+    .pn-stage .results-hero-inner.is-fieldonly .hero-trust{
+      grid-row:auto; margin:0;
+    }
+  }
+
+  /* ---- MOBILE: identity, hero, gallery, decision ------------------------
+     The order is already the DOM order, so this sets no `order` anywhere. It
+     only brings the name down to a phone measure and removes the desktop
+     width rules, which the flex-direction:column default above already does. */
+  @media (max-width:719px){
+    .pn-stage .rh-identity .results-hero-name{
+      font-size:clamp(30px,8.4vw,40px); max-width:none;
+    }
+    .pn-stage .rh-split .pn-media-col{
+      width:100%; max-width:none;
+    }
+  }
+
+.pn-stage .pn-media-col{ display:flex; flex-direction:column; min-width:0; }
+@media (min-width:720px){
+  .pn-stage .pn-media-col{ width:58%; max-width:58%; flex:0 0 58%; }
+  .pn-stage .pn-media-col .results-hero-media{ width:100%; max-width:none; flex:none; }
+}
+@media (min-width:1280px){
+  .pn-stage .pn-media-col{ width:64%; max-width:64%; flex:0 0 64%; }
+}
+.pn-stage .pn-gal-strip{
+  display:flex; gap:8px; margin:10px 0 0; padding:0; overflow-x:auto;
+  scrollbar-width:thin; -webkit-overflow-scrolling:touch; }
+.pn-stage .pn-gal-thumb{
+  flex:0 0 auto; width:62px; height:46px; padding:0; border:none;
+  border-radius:7px; overflow:hidden; cursor:pointer; background:none;
+  opacity:.62; transition:opacity .16s ease, box-shadow .16s ease;
+  box-shadow:inset 0 0 0 1px rgba(31,59,46,.06); }
+.pn-stage .pn-gal-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.pn-stage .pn-gal-thumb:hover{ opacity:.88; }
+.pn-stage .pn-gal-thumb.is-on{
+  opacity:1; box-shadow:inset 0 0 0 2px var(--pn-voice, #1F3B2E); }
+@media (max-width:560px){
+  .pn-stage .pn-gal-thumb{ width:54px; height:40px; }
+  .pn-stage .pn-gal-strip{ gap:6px; margin-top:8px; }
+}
+/* the image credit, as Results draws it — L8413 */
+.pn-stage .pn-image-credit{
+  position:absolute; left:0; right:0; bottom:0; z-index:2;
+  padding:16px 14px 8px; margin:0; border-radius:0;
+  background:linear-gradient(0deg, rgba(20,34,26,.62) 0%,
+    rgba(20,34,26,.26) 55%, rgba(20,34,26,0) 100%);
+  font-size:10.5px; line-height:1.3; letter-spacing:.02em;
+  color:rgba(255,255,255,.93); pointer-events:none; }
+@media (max-width:560px){
+  .pn-stage .pn-image-credit{ font-size:10px; padding:14px 12px 7px; }
+}
 .pn-stage .results-hero-budget-note{ margin-top:14px; }
 .pn-stage .match-card-open-myplot-link{ align-self:flex-start; }
 .pn-stage .hero-secondary{ flex-wrap:wrap; }
@@ -559,23 +805,159 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   }
   .results-hero-body .match-card-open-myplot-link,
   .results-gallery-body .match-card-open-myplot-link{ border-radius:999px; }
+  .results-gallery-heading{
+    font-family:'Fraunces',serif; font-size:19px; font-weight:500; letter-spacing:0; color:var(--ink);
+    text-transform:none; margin:0 0 18px;
+  }
+  .results-gallery{ display:flex; flex-direction:column; gap:22px; margin-bottom:8px; }
+  .results-gallery-card{
+    display:flex; gap:18px; background:#fff; border:1px solid rgba(31,59,46,.08);
+    border-radius:14px; overflow:hidden; box-shadow:0 1px 2px rgba(31,59,46,.06), 0 8px 20px rgba(31,59,46,.06);
+    transition:box-shadow .22s ease, transform .22s ease, border-color .22s ease;
+  }
+  .results-gallery-card:hover{ box-shadow:0 12px 30px rgba(31,59,46,.14); transform:translateY(-2px); border-color:rgba(79,107,74,.30); }
+  .results-gallery-media{ width:38%; min-width:130px; aspect-ratio:4/3; background:#e8e4d8; flex-shrink:0; }
+  .results-gallery-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .results-gallery-body{ padding:16px 18px 16px 0; display:flex; flex-direction:column; justify-content:center; }
+  /* RESULTS v4.1 — ALSO WORTH EXPLORING (LOCKED): "Leave the layout
+     unchanged. No structural edits. Only improve typography and spacing
+     where obviously needed." Same DOM, same card content, same card/media
+     sizes and gaps as v4.0 — only the three margins below (each was
+     visibly tighter than this file's comparable patterns elsewhere, e.g.
+     the hero card's own label→name→price rhythm) are opened up slightly. */
+  .results-gallery-role{ font-size:11.5px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .results-gallery-name{ font-family:'Fraunces',serif; font-weight:500; font-size:18.5px; color:var(--ink); margin-bottom:6px; }
+  .results-gallery-price-row{ font-size:13.5px; color:var(--soft); margin-bottom:10px; }
+  .results-gallery-explain{ font-size:14px; line-height:1.55; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .results-gallery-heading{ font-size:20px; margin:0 0 16px; }
+  .results-gallery-role{
+    font-size:11px; letter-spacing:.09em; font-weight:600;
+    color:var(--accent); opacity:.9; margin-bottom:8px;
+  }
+  /* PB040 — a card the homeowner did not ask for the price of. */
+  .results-gallery-role.is-outside-band{ color:var(--terracotta); }
+  .results-gallery-name{ font-size:19.5px; line-height:1.22; letter-spacing:-.003em; margin:0 0 4px; }
+  .results-gallery-org{ font-size:13px; color:var(--soft); margin:0 0 6px; }
+  .results-gallery-price-row{ font-size:14px; color:var(--soft); margin-bottom:12px; }
+  .results-gallery-explain{ font-size:14.5px; line-height:1.6; color:var(--ink); opacity:.92; margin:0 0 14px; }
+  .results-gallery-body .match-card-actions{ margin-top:4px; padding-top:0; }
 /* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */
 </style>
 </head>
 <body>
+
 <div class="pv-bar"><div class="wrap">
   <strong>Private preview</strong>
   <span>Prepared for BIOBUILDS</span>
 </div></div>
 
-<div class="wrap">
-  <header class="hero">
-    <div class="brand">PlotNua</div>
-    <h1>Helping homeowners discover what their property could do.</h1>
-    <p class="lede">And make better-informed decisions about what comes next.</p>
-  </header>
-</div>
 
+
+<div class="wrap">
+
+<!-- ═══ THE DEMONSTRATION — MANDATORY ══════════════════════════════
+     Never ship a supplier preview that is mainly explanatory prose.
+     Everything inside .pn-stage is genuine production PlotNua markup
+     and CSS. Do not invent a mock interface. ═══════════════════════ -->
+<section>
+  <div class="demo-intro">
+    <h2 style="margin:0">How an Irish homeowner would reach BIOBUILDS</h2>
+    <span class="illus-tag">Illustrative preview</span>
+  </div>
+  <p style="margin-bottom:var(--pn-lg)">This is a shortened example of the Results experience &mdash; a homeowner would see additional property-specific checks, comparison information and supporting detail as they continue through PlotNua.</p>
+
+  <div class="screen">
+    <div class="screen-chrome">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="screen-url">plotnua.ie/your-plot</span>
+    </div>
+
+    <div class="pn-stage">
+      <div class="pn-stage-top">
+        <button type="button" class="my-plot-access"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipPill"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipPill)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span><span class="my-plot-access-label"><span class="my-plot-access-title">My Plot</span><span class="my-plot-access-count">1 option saved</span></span><span class="my-plot-access-chevron" aria-hidden="true">&rarr;</span></button>
+      </div>
+
+      <div class="results-hero-inner">
+        <!-- PREVIEW-IDENTITY-001 — THE PRODUCT IS NAMED ACROSS THE
+             TOP, as it is on production Results. The band carries the
+             name and "Supplier · price" and nothing else; the price
+             BASIS and every other explanation belong to the decision,
+             so they stay in the column below. -->
+        <div class="rh-identity">
+          <h2 class="results-hero-name">Wanderlust 48</h2>
+          <div class="rh-identity-meta">
+            <span class="results-hero-org">BIOBUILDS</span>
+            <span class="rh-identity-sep" aria-hidden="true">·</span>
+            <span class="results-hero-price">from &euro;112,700</span>
+          </div>
+        </div>
+        <div class="rh-split">
+        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A purposeful held space
+             that shows the supplier where their photography would sit. Never
+             substitute their pictures because the page is private. -->
+        <div class="pn-media-col">
+        <div class="results-hero-media has-pn-gallery">
+          <img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg" alt="Wanderlust 48 by BIOBUILDS: a dark timber-clad single-storey home on a deck at dusk, with outdoor seating" loading="lazy">
+          <span class="pn-image-credit">© BIOBUILDS</span>
+        </div>
+        <div class="pn-gal-strip">
+          <button type="button" class="pn-gal-thumb is-on" aria-pressed="true" aria-label="View image 1 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg" data-alt="Wanderlust 48 by BIOBUILDS: a dark timber-clad single-storey home on a deck at dusk, with outdoor seating" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 2 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg" data-alt="Inside Wanderlust 48: kitchen and dining area with a slatted timber ceiling and glazing onto open fields" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 3 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg" data-alt="Wanderlust 48 bedroom with full-height glazing onto the landscape and a slatted timber ceiling" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 4 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg" data-alt="Serenity 95 by BIOBUILDS: a dark-clad home with a timber deck and outdoor seating on a lawn" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 5 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg" data-alt="Inside Serenity 95: a living room with sofa and armchairs and sliding glazing onto a meadow" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 6 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg" data-alt="Serenity 95 bathroom with marble-effect walls, a walk-in shower and an oval backlit mirror" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 7 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wall-section-3.0.26fqr4wmqyq13.jpg" data-alt="Cutaway of the BIOBUILDS timber wall build-up, showing the insulation, board layers and membrane" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wall-section-3.0.26fqr4wmqyq13.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 8 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg" data-alt="A wrapped BIOBUILDS module suspended from crane slings during installation" data-credit="© BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg" alt=""></button>
+        </div>
+        </div>
+        <div class="results-hero-body">
+          <!-- The name, the supplier and the price are in the band above.
+               What stays here is the price BASIS, which explains the figure
+               rather than stating it, and therefore belongs to the decision. -->
+          <div class="results-hero-price-row">
+            <span class="results-hero-area">as published by BIOBUILDS. Foundation and installation are quoted separately.</span>
+          </div>
+
+          <!-- PERSONALISATION GUARDRAIL. Anything shown here must trace to a
+               real PlotNua capability. PlotNua does NOT capture or infer
+               garden aspect, orientation or surface, so lines such as
+               "south-facing patio" are forbidden however well they read. -->
+          <section class="prop-confirm is-in-hero" aria-label="Your property">
+            <p class="prop-confirm-place">Your property &middot; Co. Galway</p>
+          </section>
+
+          <p class="results-hero-editorial">Shown for a homeowner in Co. Galway, from the location they gave us.</p>
+
+          <ul class="pn-facts">
+            <li><b>Floor area</b><span>48 m&sup2;</span></li>
+            <li><b>Bedrooms</b><span>1&ndash;2</span></li>
+            <li><b>Priced at &euro;2,400 per m&sup2;, fully fitted</b></li>
+            <li><b>Kitchen, bathroom, air conditioning and underfloor heating included</b></li>
+            <li><b>Delivery to the Republic of Ireland confirmed by BIOBUILDS</b></li>
+          </ul>
+
+          <div class="results-hero-budget-note">Things to check: foundation and installation are quoted separately, so the published figure is the home itself.</div>
+
+          <div class="match-card-actions">
+            <button type="button" class="match-card-save-primary is-saved" aria-pressed="true"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipSave"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipSave)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span> Saved to My Plot &#10003;</button>
+          </div>
+          <button type="button" class="match-card-open-myplot-link">Open My Plot &rarr;</button>
+
+          <div class="hero-secondary">
+            <a class="hero-secondary-link" href="#">Ask PlotNua</a>
+            <span class="hero-secondary-dot">&middot;</span>
+            <a class="hero-secondary-link" href="#">Explore with BIOBUILDS &rarr;</a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FROZEN — the real PlotNua homeowner journey. Change only if the
+     platform architecture itself changes. -->
 <div class="journey">
   <div class="wrap">
     <div class="eyebrow">How a homeowner moves through it</div>
@@ -590,86 +972,81 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   </div>
 </div>
 
-<div class="wrap">
-
-<section>
-  <div class="demo-intro">
-    <h2 style="margin:0">Imagine a homeowner reaching BIOBUILDS like this.</h2>
-    <span class="illus-tag">Illustrative preview</span>
-  </div>
-  <p style="margin-bottom:var(--pn-lg)">They&rsquo;ve already explored the opportunity through PlotNua. Here&rsquo;s what that could look like.</p>
-
-  <div class="screen">
-    <div class="screen-chrome">
-      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-      <span class="screen-url">plotnua.ie/your-plot</span>
-    </div>
-
-    <div class="pn-stage">
-      <div class="pn-stage-top">
-        <button type="button" class="my-plot-access"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipPill"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipPill)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span><span class="my-plot-access-label"><span class="my-plot-access-title">My Plot</span><span class="my-plot-access-count">1 option saved</span></span><span class="my-plot-access-chevron" aria-hidden="true">&rarr;</span></button>
-      </div>
-
-      <div class="results-hero-inner">
-        <div class="results-hero-media">
-          <div class="pn-photo-slot">
-            <b>Your project photography here</b>
-            <span>One of BIOBUILDS&rsquo;s own completed projects would sit in this panel.</span>
-          </div>
-        </div>
-        <div class="results-hero-body">
-          <h2 class="results-hero-name">Garden rooms and garden buildings</h2>
-          <div class="results-hero-org">BIOBUILDS</div>
-
-          <section class="prop-confirm is-in-hero" aria-label="Your property">
-            <p class="prop-confirm-place">Your property &middot; Dublin 6</p>
-          </section>
-
-          <p class="results-hero-editorial">A strong match for the modern feel you wanted.</p>
-
-          <ul class="pn-facts">
-            <li><b>Based</b><span>Maramures, Romania</span></li>
-            <li><b>Delivers across Europe; the online configurator lists Ireland as a selectable destination</b></li>
-            <li><b>Publishes delivery to Ireland</b></li>
-          </ul>
-
-          <div class="results-hero-budget-note">Things to check: what suits this particular garden, and what the finished build would come to.</div>
-
-          <div class="match-card-actions">
-            <button type="button" class="match-card-save-primary is-saved" aria-pressed="true"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipSave"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipSave)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span> Saved to My Plot &#10003;</button>
-          </div>
-          <button type="button" class="match-card-open-myplot-link">Open My Plot &rarr;</button>
-
-          <div class="hero-secondary">
-            <a class="hero-secondary-link" href="#">Ask PlotNua</a>
-            <span class="hero-secondary-dot">&middot;</span>
-            <a class="hero-secondary-link" href="#">Explore with BIOBUILDS &rarr;</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- WHY THIS COULD BE USEFUL — what PlotNua adds BEFORE the homeowner
+     arrives. Keep three points. Rewrite them in the supplier's own terms
+     if the defaults do not fit; do not expand the section. -->
 <section>
   <h2>Why this could be useful</h2>
   <div class="why">
-    <div class="why-c"><b>More context</b><span>They&rsquo;ve already explored what could work for their property.</span></div>
-    <div class="why-c"><b>Clearer intent</b><span>They&rsquo;ve thought about what they want from the space and compared the options.</span></div>
-    <div class="why-c"><b>A better starting point</b><span>BIOBUILDS starts the conversation with someone who already has context.</span></div>
+    <div class="why-c"><b>MORE CONTEXT</b><span>By the time someone reaches you they have already worked out roughly what they want, what size, and what they can spend. You are not starting from nothing.</span></div>
+    <div class="why-c"><b>CLEARER INTENT</b><span>A modular home is a long decision. People arrive at it slowly. We would rather send you three people who have thought about it than thirty who have not.</span></div>
+    <div class="why-c"><b>A BETTER STARTING POINT</b><span>Your published sizes and prices are already in front of them &mdash; Wanderlust 48 at &euro;112,700, Serenity 95 at &euro;208,500 &mdash; so the first conversation can be about their site rather than your catalogue.</span></div>
   </div>
 </section>
 
+<!-- THE ENDING — ONE commercially interesting proposition or question.
+     Do not summarise the page again. Do not define PlotNua as ending at
+     referral, and do not claim any connection, attribution or commercial
+     mechanism is operational. -->
 <section>
-  <h2>What we&rsquo;d like to explore</h2>
-  <p class="close-statement">Could PlotNua help turn an initial idea — “I’d like to do something with my garden” — into a much more useful conversation with BIOBUILDS?</p>
-  <p>By the time a homeowner reaches you, they could already have explored what might work for their property, considered what matters to them and compared the options.</p>
+  <h2>Before anything goes live</h2>
+  <p class="close-statement">Does this represent BIOBUILDS accurately for an Irish homeowner?</p>
+  <p>If anything on this page is wrong, out of date or missing, let us know and we&rsquo;ll correct it before publication.</p>
 </section>
 
+          <p class="credit-line">© BIOBUILDS. Images used with permission given 2 October 2026, unmodified and served from <a href="https://www.biobuilds.com/" rel="noopener">biobuilds.com</a>. If BIOBUILDS ask for any of them to be changed or removed, we change or remove them.</p>
 <footer>
-  <p>Private preview prepared for BIOBUILDS &middot; 23 September 2026</p>
+  <p>Private preview prepared for BIOBUILDS &middot; 2 October 2026</p>
 </footer>
 
 </div>
+
+<!-- PREVIEW-IDENTITY-001 — THE GALLERY ACTUALLY WORKS NOW.
+     Both templates previously carried no script at all, so the thumbnail
+     strip was decorative: clicking it did nothing. This is the whole
+     behaviour, in one place, for every preview built from these templates.
+
+     It is deliberately NOT a copy of pnGovernedGallery(). On Results that
+     function re-checks the rights gate before every paint, because Results
+     paints from live Atlas data. A preview is a STATIC artefact whose
+     images already passed the gate at build time -- the builder refuses to
+     emit an unauthorised image at all -- so there is nothing left to
+     re-check at click time and pretending otherwise would be theatre. What
+     must still hold is that the credit never parts company with the
+     picture, so the credit is swapped in the same statement as the src. -->
+<script>
+(function(){
+  var strip = document.querySelector('.pn-gal-strip');
+  if (!strip) return;
+  var media  = document.querySelector('.results-hero-media');
+  var main   = media && media.querySelector('img');
+  var credit = media && media.querySelector('.pn-image-credit');
+  if (!main) return;
+  var thumbs = strip.querySelectorAll('.pn-gal-thumb');
+
+  function show(btn, i){
+    var full = btn.getAttribute('data-full');
+    if (!full) return;                       /* nothing to show, do nothing */
+    main.src = full;
+    main.alt = btn.getAttribute('data-alt') || '';
+    /* THE CREDIT TRAVELS WITH THE PICTURE. Same statement, no gap. */
+    if (credit) credit.textContent = btn.getAttribute('data-credit') || '';
+    for (var k = 0; k < thumbs.length; k++){
+      var on = (k === i);
+      thumbs[k].classList.toggle('is-on', on);
+      thumbs[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+
+  for (var i = 0; i < thumbs.length; i++){
+    (function(btn, idx){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();                  /* never reload the page */
+        show(btn, idx);
+      });
+    })(thumbs[i], i);
+  }
+})();
+</script>
 </body>
 </html>

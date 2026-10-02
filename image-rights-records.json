@@ -200,6 +200,28 @@
       "atlas_permission_record": "recAFBJW5nwWv0Z20",
       "atlas_permission_ref": "C2-FIRST-DON-MODULAR-20261002",
       "permission_date": "2026-10-02"
+    },
+    {
+      "organisation_record": "recjNpnrIr2KT5BWh",
+      "organisation_code": "ORG-000153",
+      "organisation_name": "BIOBUILDS",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "biobuilds.com",
+      "required_credit": "© BIOBUILDS",
+      "evidence": "Mateus, BIOBUILDS, to PlotNua from marketing@biobuilds.com, Gmail thread 1a0d05d7cd1d4aea, message 1a0fc4a334452803, 2026-10-02 11:05:03 UTC: \"Yes. We are happy for PlotNua to feature BioBuilds and use selected images from our website, with credit and a link back to us. We supply the Republic of Ireland. Please send us the listing before it goes live, so we can check it.\" Recorded in Atlas as Image Permission Outreach C2-GRANT-BIOBUILDS-20261002 (rec6JPwNYPIj7EIfZ) against Organisations ORG-000153 (recjNpnrIr2KT5BWh), outcome 'Granted with Conditions — Founder Confirmed'.",
+      "conditions": [
+        "Credit '© BIOBUILDS' on every image use.",
+        "Link back to https://www.biobuilds.com/ wherever the imagery appears.",
+        "PRE-LIVE REVIEW: BIOBUILDS asked for the listing before it goes live. This grant therefore covers the private, noindexed review preview ONLY. Public publication waits for BIOBUILDS to come back.",
+        "BIOBUILDS may request change or removal of any image at any time, and PlotNua complies.",
+        "No resale, no sublicensing, no unrelated advertising use.",
+        "BIOBUILDS retains ownership of the imagery.",
+        "THE MEDIUM OF THE MODEL IMAGERY IS NOT ESTABLISHED. BIOBUILDS has not said whether the model images on their site are photographs of completed homes or architectural visualisations, and the question has been put to them. Until they answer, no PlotNua surface may describe them as either."
+      ],
+      "note": "SCOPE IS THE PRIVATE REVIEW PREVIEW, NOT PUBLICATION. Exercised on one page only, biobuilds-preview.html, which carries 'noindex, nofollow, noarchive, nosnippet, noimageindex', appears in no sitemap, and is reachable only by the URL BIOBUILDS were already sent on 23 September, 24 September and 2 October 2026. atlas-tools/prove-biobuilds-containment.mjs enforces exactly that and fails CI if a biobuilds.com image appears anywhere else or if that page loses a robots directive.\n\nALL 34 GOVERNED BIOBUILDS ASSETS REMAIN 'Reference Only — Not Published' IN ATLAS, verified 2 October 2026. Results publishability is decided by the runtime product payload's image block, which is written only for Approved assets, so BIOBUILDS cannot reach the Results pool while that is true. This manifest row does not and cannot change it.\n\nEight of the 34 are exercised on the preview: Wanderlust 48 (wanderlust-catalog, int-catalog, bedroom), Serenity 95 (serenity-catalog, int-catalog, bathroom), Construction (wall-section-3.0) and Process (prefab-48-crane-lift). All are served unmodified from BIOBUILDS' own origin and never rehosted. Sanctuary 142, Bloom 190 and Nest 24 are governed in Atlas but no product records exist for them and none were created to support the preview.\n\nWHEN BIOBUILDS REPLIES: if they approve, publication is a separate decision that needs the Atlas assets promoted to Approved and the containment guard revisited. If they decline or go quiet, this row is the thing to withdraw -- add withdrawal_effective_at and regenerate, and the gate will refuse the imagery on the next build.",
+      "atlas_permission_record": "rec6JPwNYPIj7EIfZ",
+      "atlas_permission_ref": "C2-GRANT-BIOBUILDS-20261002",
+      "permission_date": "2026-10-02"
     }
   ]
 }

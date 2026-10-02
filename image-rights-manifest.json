@@ -3,7 +3,7 @@
   "generated": "2026-10-02",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
   "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
-  "reality_note": "PlotNua publishes supplier imagery for 8 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
+  "reality_note": "PlotNua publishes supplier imagery for 9 supplier(s) under a live grant: TRIQBRIQ AG, Power Sheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes, BIOBUILDS. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
   "reconciliation": "Every row carries the Atlas record id it reflects, so a disagreement between this manifest and Atlas is visible rather than silent. Generated from image-rights-records.json; edit that file, never this one.",
   "rows": [
     {
@@ -201,6 +201,28 @@
       "note": "ALL 25 GOVERNED DON IMAGES ARE CGI VISUALISATIONS. This is not a caveat added for safety; it is what the images are. Every exterior and every interior on donmodularhomes.ie is an architectural render. The distinction is carried in the governed Atlas asset records themselves rather than in a new schema field: each asset's alt text begins 'Visualisation:' and each asset's Notes carries the sentence 'computer-generated visualisation published by the supplier, not a photograph of a completed build'. The render path reads alt text from the governed record, so the distinction survives to the page without any frontend change. Nothing in the publication path rewrites or discards it, and nothing may be added that implies these are photographs of completed installations.\n\nNo delivery host is declared: Don serve their own images from donmodularhomes.ie/images/, so the first-party domain is the scope.\n\n25 assets governed in Atlas on 2 October 2026 — the complete unique set across the whole site, after collapsing responsive variants (-828, -1080) and .jpg/.webp pairs, and probing for further files that do not exist. No candidate was excluded. One record additionally notes that the supplier's own alt text for interior-9 describes a bathroom while the image shows a bed alcove and kitchen; PlotNua's alt text follows what was actually seen.\n\nNO PRODUCT RECORDS WERE CREATED. Don sell one configurable steel-frame design priced per square metre; the 1/2/3/4-bed pages are size variants of the same building, not distinct models. Imagery is governed at organisation level accordingly.",
       "atlas_permission_record": "recAFBJW5nwWv0Z20",
       "atlas_permission_ref": "C2-FIRST-DON-MODULAR-20261002",
+      "permission_date": "2026-10-02"
+    },
+    {
+      "organisation_record": "recjNpnrIr2KT5BWh",
+      "organisation_code": "ORG-000153",
+      "organisation_name": "BIOBUILDS",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "biobuilds.com",
+      "required_credit": "© BIOBUILDS",
+      "evidence": "Mateus, BIOBUILDS, to PlotNua from marketing@biobuilds.com, Gmail thread 1a0d05d7cd1d4aea, message 1a0fc4a334452803, 2026-10-02 11:05:03 UTC: \"Yes. We are happy for PlotNua to feature BioBuilds and use selected images from our website, with credit and a link back to us. We supply the Republic of Ireland. Please send us the listing before it goes live, so we can check it.\" Recorded in Atlas as Image Permission Outreach C2-GRANT-BIOBUILDS-20261002 (rec6JPwNYPIj7EIfZ) against Organisations ORG-000153 (recjNpnrIr2KT5BWh), outcome 'Granted with Conditions — Founder Confirmed'.",
+      "conditions": [
+        "Credit '© BIOBUILDS' on every image use.",
+        "Link back to https://www.biobuilds.com/ wherever the imagery appears.",
+        "PRE-LIVE REVIEW: BIOBUILDS asked for the listing before it goes live. This grant therefore covers the private, noindexed review preview ONLY. Public publication waits for BIOBUILDS to come back.",
+        "BIOBUILDS may request change or removal of any image at any time, and PlotNua complies.",
+        "No resale, no sublicensing, no unrelated advertising use.",
+        "BIOBUILDS retains ownership of the imagery.",
+        "THE MEDIUM OF THE MODEL IMAGERY IS NOT ESTABLISHED. BIOBUILDS has not said whether the model images on their site are photographs of completed homes or architectural visualisations, and the question has been put to them. Until they answer, no PlotNua surface may describe them as either."
+      ],
+      "note": "SCOPE IS THE PRIVATE REVIEW PREVIEW, NOT PUBLICATION. Exercised on one page only, biobuilds-preview.html, which carries 'noindex, nofollow, noarchive, nosnippet, noimageindex', appears in no sitemap, and is reachable only by the URL BIOBUILDS were already sent on 23 September, 24 September and 2 October 2026. atlas-tools/prove-biobuilds-containment.mjs enforces exactly that and fails CI if a biobuilds.com image appears anywhere else or if that page loses a robots directive.\n\nALL 34 GOVERNED BIOBUILDS ASSETS REMAIN 'Reference Only — Not Published' IN ATLAS, verified 2 October 2026. Results publishability is decided by the runtime product payload's image block, which is written only for Approved assets, so BIOBUILDS cannot reach the Results pool while that is true. This manifest row does not and cannot change it.\n\nEight of the 34 are exercised on the preview: Wanderlust 48 (wanderlust-catalog, int-catalog, bedroom), Serenity 95 (serenity-catalog, int-catalog, bathroom), Construction (wall-section-3.0) and Process (prefab-48-crane-lift). All are served unmodified from BIOBUILDS' own origin and never rehosted. Sanctuary 142, Bloom 190 and Nest 24 are governed in Atlas but no product records exist for them and none were created to support the preview.\n\nWHEN BIOBUILDS REPLIES: if they approve, publication is a separate decision that needs the Atlas assets promoted to Approved and the containment guard revisited. If they decline or go quiet, this row is the thing to withdraw -- add withdrawal_effective_at and regenerate, and the gate will refuse the imagery on the next build.",
+      "atlas_permission_record": "rec6JPwNYPIj7EIfZ",
+      "atlas_permission_ref": "C2-GRANT-BIOBUILDS-20261002",
       "permission_date": "2026-10-02"
     }
   ]

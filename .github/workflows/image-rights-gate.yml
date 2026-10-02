@@ -113,6 +113,18 @@ jobs:
       - name: Prove a live grant is load-bearing, not decorative
         run: node atlas-tools/prove-powersheds-grant.mjs
 
+      # BIOBUILDS CONTAINMENT. The manifest scopes a grant by host and prefix
+      # and has no notion of a page, so the biobuilds.com row would otherwise
+      # pass their imagery on ANY page. BIOBUILDS asked to see the listing
+      # before it goes live, so the grant covers the private noindexed preview
+      # and nothing else. This is what keeps the row narrower than the gate
+      # would enforce, and its own capability proof runs beside it.
+      - name: The BIOBUILDS grant must stay inside the private review preview
+        run: |
+          set -euo pipefail
+          node atlas-tools/prove-biobuilds-containment.mjs
+          node atlas-tools/prove-biobuilds-containment-capability.mjs
+
       - name: Summary
         if: always()
         run: |
