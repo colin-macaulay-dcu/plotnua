@@ -60,24 +60,22 @@ PERMITTED_PREFIX = ("https://images.squarespace-cdn.com/content/v1/"
 # photograph. WILD TUB leads because it is the primary example; CORE follows
 # as the cold-plunge example. Alt text describes what is visible.
 TANKTRIBE_IMAGES = [
-    {"url": PERMITTED_PREFIX + "b9e11038-bd53-49c8-984b-65ed12892e43/"
-            "IMG_2580%2B3.JPG",
-     # ALT TEXT IS THE ATLAS DESCRIPTION, VERBATIM. Corrected 2 Oct 2026
-     # after the three WILD TUB assets were opened and looked at. The
-     # originals were written from the product page and the filename, not
-     # from the images, and all three implied a view of the tub that none
-     # of them contains. Alt text asserted without looking is the same
-     # failure class as any other unverified claim.
-     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "
-            "burning on gravel"},
-    {"url": PERMITTED_PREFIX + "33335f39-c5fe-48af-9c3a-f6f6cc4e8c8e/"
-            "IMG_2518.JPG",
-     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "
-            "burning on a paving slab"},
-    {"url": PERMITTED_PREFIX + "ab9c9630-7b25-441f-9559-b711ff7f6d5b/"
-            "IMG_2531.JPG",
-     "alt": "Close view from beside the Tanktribe WILD TUB showing the "
-            "water surface, timber ledge, tub rim and garden background"},
+    # FOUNDER-SET ORDER, 2 Oct 2026, CORE-FIRST. The hero image is the
+    # PRODUCT CARD's image, not a page banner: it sits inside the same
+    # <section> as the product name and price. So the framed product and the
+    # first image have to be the same thing, or the page shows a €510 cold
+    # plunge under a €1,485 WILD TUB heading. That binding is why the hero
+    # could not simply be swapped while WILD TUB stayed framed.
+    #
+    # IMG_8495 leads because it is the only governed asset that is a single
+    # tub, unmistakably a cold plunge, with no competing wordmark and no
+    # identifiable face. The two coil shots stay at 5 and 6 so the WILD TUB
+    # wood-fired function remains visually evidenced.
+    #
+    # ALT TEXT IS THE ATLAS DESCRIPTION, VERBATIM, for all six. All six were
+    # corrected on 2 Oct 2026 after each image was opened and looked at; the
+    # originals were written from the product pages and the filenames and
+    # every one of them was wrong or materially incomplete.
     {"url": PERMITTED_PREFIX + "2d930a20-ec94-4b5f-8af4-159501335d62/"
             "IMG_8495.jpg",
      "alt": "Overhead view of a Tanktribe CORE galvanised stock tank on a "
@@ -93,6 +91,18 @@ TANKTRIBE_IMAGES = [
      "alt": "Four galvanised stock tanks lined up on grass beside water, "
             "each with a person sitting in iced water, with TANKKD "
             "branding on two of the tanks"},
+    {"url": PERMITTED_PREFIX + "ab9c9630-7b25-441f-9559-b711ff7f6d5b/"
+            "IMG_2531.JPG",
+     "alt": "Close view from beside the Tanktribe WILD TUB showing the "
+            "water surface, timber ledge, tub rim and garden background"},
+    {"url": PERMITTED_PREFIX + "b9e11038-bd53-49c8-984b-65ed12892e43/"
+            "IMG_2580%2B3.JPG",
+     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "
+            "burning on gravel"},
+    {"url": PERMITTED_PREFIX + "33335f39-c5fe-48af-9c3a-f6f6cc4e8c8e/"
+            "IMG_2518.JPG",
+     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "
+            "burning on a paving slab"},
 ]
 
 # Tokens that would mean an AI-generated asset had reached the list.
@@ -123,6 +133,55 @@ def die(msg):
 
 # ── THE OPEN QUESTIONS ─────────────────────────────────────────────────────
 # Plain questions, at the bottom, in the words a person would use.
+# ── THE SECOND POSSIBILITY ─────────────────────────────────────────────────
+# WILD TUB, moved here on 2 Oct 2026 when CORE became the framed product. It
+# is a DISTINCT SECTION, not a second product in the same hero: the hero card
+# carries one name, one price and one image, and they must agree.
+#
+# The wood-fired function stays visually evidenced -- IMG_2531 and IMG_2580+3
+# are the coil images and they are 4th and 5th in the gallery above, which the
+# paragraph points at. Markup is <section>, h2, p, b, br -- all template
+# classes, no new CSS.
+# IMG_2580+3, the wood-fired heating coil. Indexed out of the governed
+# list rather than written out again, so it cannot drift from Atlas, and
+# asserted by filename so a reorder cannot silently change which image
+# illustrates the wood-fired claim.
+WILD_TUB_COIL = TANKTRIBE_IMAGES[4]
+if "IMG_2580" not in WILD_TUB_COIL["url"]:
+    die("the WILD TUB section's supporting image is no longer the heating-coil "
+        "photograph (%s). The section claims the picture shows the coil." % WILD_TUB_COIL["url"])
+
+SECOND_POSSIBILITY = """<!-- THE SECOND POSSIBILITY — the wood-fired tub, after the cold plunge a
+     homeowner would meet first. Shorter than the demonstration above. Every
+     figure is first-party. -->
+<section>
+  <h2>Another way Tanktribe could appear</h2>
+  <p>A homeowner who wants heat as well as cold reaches a different product,
+     and the WILD TUB is the clearest answer in your range for somebody who
+     has not decided whether they want hot, cold or both.</p>
+  <p><b>Tanktribe WILD TUB</b><br>From &euro;1,485</p>
+  <p>A wood-fired hot tub when the heating coil is lit, and a cold plunge when
+     it is not. No electricity is needed for the heating, and one tub covers
+     both halves of a hot-and-cold routine rather than needing two.</p>
+  <!-- INLINE STYLES, DELIBERATELY. .results-hero-media and .pn-image-credit
+       are both scoped '.pn-stage .…' in the kit, and this section sits OUTSIDE
+       the stage, so borrowing those class names would have produced an
+       unstyled full-natural-width image -- fine at 1440 and overflowing at
+       390. The geometry is copied from the stage rules (4/3, 14px radius,
+       cover) so the two images read as the same component. -->
+  <div style="position:relative; max-width:460px; aspect-ratio:4/3;
+              border-radius:14px; overflow:hidden; margin:18px 0 0;
+              box-shadow:0 14px 28px -14px rgba(36,53,31,.18);">
+    <img src="%s" alt="%s" loading="lazy"
+         style="width:100%%; height:100%%; object-fit:cover; display:block;">
+    <span style="position:absolute; left:0; right:0; bottom:0; padding:16px 14px 8px;
+                 font-size:10.5px; letter-spacing:.02em; color:#fff;
+                 background:linear-gradient(0deg, rgba(20,34,26,.62) 0%%,
+                   rgba(20,34,26,0) 100%%);">%s</span>
+  </div>
+</section>
+""" % (WILD_TUB_COIL["url"], WILD_TUB_COIL["alt"], CREDIT)
+
 OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the points the supplier's own site leaves open,
      asked and not resolved. Each names what the site does say first. -->
 <section>
@@ -143,10 +202,10 @@ OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the points the supplier's own si
       <li><b>Delivery and setup.</b> Is delivery quoted separately, and do you
           position the tub and get it running, or is that the
           homeowner&rsquo;s own job once it arrives?</li>
-      <li><b>What the WILD TUB needs on site.</b> A wood-fired tub implies a
-          level base, water access and sensible clearance around the flue. Is
-          there a standard list you would want a homeowner to have thought
-          about before they call?</li>
+      <li><b>What each one needs on site.</b> CORE implies a level base and
+          water access; the WILD TUB additionally implies sensible clearance
+          around the flue. Is there a standard list you would want a homeowner
+          to have thought about before they call?</li>
       <li><b>FLOW and ACTIVE.</b> We have shown CORE as the simple
           cold-plunge option and mentioned FLOW and ACTIVE as the filtration
           and temperature-controlled steps up. Is that the right way round to
@@ -170,8 +229,13 @@ FILL = {
 
     "PHOTO_SLOT_LINE": "",   # set by imagery state
 
-    "OFFER_NAME": "WILD TUB",
-    "VERIFIED_PRICE": "from &euro;1,485",
+    # CORE IS THE FRAMED PRODUCT, founder-set 2 Oct 2026 (option 1). The
+    # hero image is the product CARD's image -- same <section> as the name
+    # and the price -- so the framed product and the first image have to be
+    # the same thing, or the page shows a 510 euro cold plunge under a
+    # 1,485 euro WILD TUB heading. WILD TUB moves to its own section below.
+    "OFFER_NAME": "CORE",
+    "VERIFIED_PRICE": "from &euro;510",
     # "VAT treatment" collided with G8's ban on "treatment" -- a medical
     # word on a cold-water product. The guard is right to be blunt there, so
     # the copy moved rather than the ban.
@@ -180,22 +244,25 @@ FILL = {
                             "we.",
 
     "VERIFIED_FACT_1_LABEL": "What it is",
-    "VERIFIED_FACT_1_VALUE": "a wood-fired hot tub when the heating coil is "
-                             "lit, and a cold plunge when it is not",
-    "VERIFIED_FACT_2_LABEL": "Power",
-    "VERIFIED_FACT_2_VALUE": "no electricity required for heating",
-    "VERIFIED_FACT_3": "Built around a galvanised steel tank, for outdoor use",
-    "VERIFIED_FACT_4": "One tub covers both halves of a hot-and-cold routine, "
-                       "rather than needing two",
-    "VERIFIED_FACT_5": "Tanktribe also publish three cold-plunge "
-                       "configurations: CORE from &euro;510, FLOW from "
-                       "&euro;850 and ACTIVE from &euro;1,939",
+    "VERIFIED_FACT_1_VALUE": "a natural cold plunge built around a galvanised "
+                             "steel stock tank, for outdoor use",
+    "VERIFIED_FACT_2_LABEL": "How it runs",
+    "VERIFIED_FACT_2_VALUE": "no pump and no chiller &mdash; fresh water, and "
+                             "ice if a homeowner wants it colder",
+    "VERIFIED_FACT_3": "The simplest configuration in the range, and the one "
+                       "that needs least done to the garden",
+    "VERIFIED_FACT_4": "FLOW adds filtration from &euro;850 and ACTIVE adds "
+                       "temperature control from &euro;1,939, so there is "
+                       "somewhere to go afterwards",
+    "VERIFIED_FACT_5": "The WILD TUB, from &euro;1,485, is the wood-fired "
+                       "option: a hot tub with the coil lit and a cold plunge "
+                       "without it",
 
     "THINGS_TO_CHECK": "the published figure is a &ldquo;from&rdquo; price, and "
                        "the page does not say whether VAT is included, so a "
                        "homeowner should confirm both. Delivery, siting and "
-                       "what the tub needs where it stands are the other "
-                       "three things worth asking about before ordering.",
+                       "how the water is kept fresh without filtration are "
+                       "the other things worth asking about before ordering.",
 
     # PERSONALISATION GUARDRAIL §6 — LOCALITY ONLY.
     "HOMEOWNER_LOCALITY": "Co. Wicklow",
@@ -205,11 +272,11 @@ FILL = {
                        "safely go, so we would not pretend to know &mdash; "
                        "those stay as things to raise with you.",
 
-    "WHY_1_LABEL": "ONE TUB, TWO USES",
-    "WHY_1_TEXT": "The WILD TUB is the clearest thing in your range for a "
-                  "homeowner who has been reading about cold water and is not "
-                  "sure whether they want hot, cold or both. It answers the "
-                  "question instead of making them choose first.",
+    "WHY_1_LABEL": "A FIRST STEP SOMEBODY WILL ACTUALLY TAKE",
+    "WHY_1_TEXT": "CORE is the least committing thing in your range for a "
+                  "homeowner who has been reading about cold water and has not "
+                  "decided how far in they want to go. At &euro;510, with no "
+                  "pump and no chiller, it is a decision they can make.",
     "WHY_2_LABEL": "A LADDER, NOT A LIST",
     "WHY_2_TEXT": "CORE, FLOW and ACTIVE read as a progression &mdash; fill "
                   "it yourself, then filtration, then temperature control. "
@@ -315,7 +382,7 @@ def main():
     if src.count(why_anchor) != 1:
         die("the 'why' section anchor is not unique. Nothing written.")
     src = src.replace(why_anchor,
-                      OPEN_QUESTIONS + "\n" + journey.strip("\n")
+                      SECOND_POSSIBILITY + "\n" + OPEN_QUESTIONS + "\n" + journey.strip("\n")
                       + "\n\n" + why_anchor)
 
     # G3 · IMAGERY STATE A.
@@ -421,11 +488,15 @@ def main():
         die("the page does not LINK back to %s, which is half of what "
             "Tanktribe asked for. A mention in prose is not a link."
             % SUPPLIER_SITE)
+    # Six in the strip, the hero repeated as its own first thumbnail, and one
+    # coil image in the WILD TUB section below: 6 + 1 + 1.
+    EXPECTED_IMGS = len(TANKTRIBE_IMAGES) + 2
     if len(re.findall(r'<img[^>]+src="' + re.escape(PERMITTED_PREFIX), src)) \
-            != len(TANKTRIBE_IMAGES) + 1:
-        die("the rendered image count does not match the governed list plus "
-            "its hero repeat in the thumbnail strip. Something was dropped or "
-            "duplicated.")
+            != EXPECTED_IMGS:
+        die("the rendered image count is not the governed list plus the hero "
+            "repeat in the thumbnail strip plus the WILD TUB coil image "
+            "(expected %d). Something was dropped or duplicated."
+            % EXPECTED_IMGS)
     stray = [u for u in re.findall(r'<img[^>]+src="(https?://[^"]+)"', src)
              if not u.startswith(PERMITTED_PREFIX)]
     if stray:

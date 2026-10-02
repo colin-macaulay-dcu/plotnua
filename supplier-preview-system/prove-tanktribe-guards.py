@@ -75,12 +75,19 @@ r(run("G0 . an image from a neighbouring Squarespace namespace is added",
         '0000000000000000000000/x/IMG_2580.JPG"')]))
 
 r(run("G0 . the governed six becomes five",
-      [('    {"url": PERMITTED_PREFIX + "bc66569f-f2d9-431e-bf62-7f0bb6e1a3b9/"\n'
-        '            "DSC_2111.jpg",\n'
-        '     "alt": "Four galvanised stock tanks lined up on grass beside water, "\n'
-        '            "each with a person sitting in iced water, with TANKKD "\n'
-        '            "branding on two of the tanks"},\n',
+      [('    {"url": PERMITTED_PREFIX + "33335f39-c5fe-48af-9c3a-f6f6cc4e8c8e/"\n'
+        '            "IMG_2518.JPG",\n'
+        '     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "\n'
+        '            "burning on a paving slab"},\n',
         '')]))
+
+# ---- the WILD TUB section's supporting image must BE the coil -------------
+# The secondary section states in words that the photograph shows the
+# wood-fired coil. A reorder that leaves a cold-plunge tank at index 4 would
+# make the page say one thing and show another.
+r(run("the WILD TUB section's supporting image is no longer the coil",
+      [("WILD_TUB_COIL = TANKTRIBE_IMAGES[4]",
+        "WILD_TUB_COIL = TANKTRIBE_IMAGES[0]")]))
 
 # ---- G0b . the AI-asset exclusion ----------------------------------------
 # The condition that constrains PlotNua rather than the supplier, and so the
@@ -107,7 +114,7 @@ r(run("G3b . the closing heading anchor no longer matches",
       [('old_head = "<h2>What we&rsquo;d like to explore</h2>"',
         'old_head = "<h2>What we would like to explore</h2>"')]))
 r(run("G4 . a token is dropped from the fill set",
-      [('"OFFER_NAME": "WILD TUB",', "")]))
+      [('"OFFER_NAME": "CORE",', "")]))
 r(run("G5 . the noimageindex robots directive is dropped",
       [('for directive in ("noindex", "nofollow", "noarchive", "nosnippet",\n'
         '                      "noimageindex"):',
@@ -123,11 +130,11 @@ r(run("G7 . the frozen journey band is edited in transit",
 
 # ---- G8 . the claims a cold-water product attracts ------------------------
 r(run("G8 . the page makes a health claim",
-      [('"VERIFIED_FACT_3": "Built around a galvanised steel tank, for outdoor use"',
-        '"VERIFIED_FACT_3": "Improves recovery after training"')]))
+      [('"VERIFIED_FACT_3": "The simplest configuration in the range, and the one "',
+        '"VERIFIED_FACT_3": "Improves recovery after training, and the one "')]))
 r(run("G8 . the page states a VAT basis nobody published",
-      [('"VERIFIED_FACT_4": "One tub covers both halves of a hot-and-cold routine, "',
-        '"VERIFIED_FACT_4": "Price is inc. VAT. One tub covers both halves, "')]))
+      [('"VERIFIED_FACT_4": "FLOW adds filtration from &euro;850 and ACTIVE adds "',
+        '"VERIFIED_FACT_4": "Price is inc. VAT. FLOW adds filtration, and ACTIVE adds "')]))
 
 # ---- G9 . the credit and the link back -----------------------------------
 # THE VACUOUS-GUARD CASE. src.count("") returns the page length, so a
