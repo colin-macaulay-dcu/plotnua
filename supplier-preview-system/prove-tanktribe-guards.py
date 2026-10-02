@@ -77,15 +77,17 @@ r(run("G0 . an image from a neighbouring Squarespace namespace is added",
 r(run("G0 . the governed six becomes five",
       [('    {"url": PERMITTED_PREFIX + "bc66569f-f2d9-431e-bf62-7f0bb6e1a3b9/"\n'
         '            "DSC_2111.jpg",\n'
-        '     "alt": "A galvanised stock tank in use as a Tanktribe cold plunge"},\n',
+        '     "alt": "Four galvanised stock tanks lined up on grass beside water, "\n'
+        '            "each with a person sitting in iced water, with TANKKD "\n'
+        '            "branding on two of the tanks"},\n',
         '')]))
 
 # ---- G0b . the AI-asset exclusion ----------------------------------------
 # The condition that constrains PlotNua rather than the supplier, and so the
 # one most likely to be quietly dropped.
 r(run("G0b . a ChatGPT-named asset reaches the image list",
-      [('"alt": "A galvanised stock tank in use as a Tanktribe cold plunge"',
-        '"alt": "ChatGPT Image of a Tanktribe cold plunge"')]))
+      [('"alt": "Four galvanised stock tanks lined up on grass beside water, "',
+        '"alt": "ChatGPT Image of four stock tanks beside water, "')]))
 
 # ---- template anchors ----------------------------------------------------
 r(run("G1 . the instruction-comment anchor no longer matches",

@@ -80,13 +80,19 @@ TANKTRIBE_IMAGES = [
             "water surface, timber ledge, tub rim and garden background"},
     {"url": PERMITTED_PREFIX + "2d930a20-ec94-4b5f-8af4-159501335d62/"
             "IMG_8495.jpg",
-     "alt": "Tanktribe CORE galvanised steel cold plunge standing outdoors"},
+     "alt": "Overhead view of a Tanktribe CORE galvanised stock tank on a "
+            "timber deck, filled with iced water, with a person lying "
+            "submerged in it"},
     {"url": PERMITTED_PREFIX + "1760048787936-G7C8NEDHMKBFMZPTGO00/"
             "IMG_8455.jpg",
-     "alt": "Tanktribe CORE stock-tank cold plunge, product photograph"},
+     "alt": "A man sitting in a Tanktribe CORE galvanised stock tank "
+            "filled with iced water on a timber deck, with TANKKD "
+            "branding on the side of the tank"},
     {"url": PERMITTED_PREFIX + "bc66569f-f2d9-431e-bf62-7f0bb6e1a3b9/"
             "DSC_2111.jpg",
-     "alt": "A galvanised stock tank in use as a Tanktribe cold plunge"},
+     "alt": "Four galvanised stock tanks lined up on grass beside water, "
+            "each with a person sitting in iced water, with TANKKD "
+            "branding on two of the tanks"},
 ]
 
 # Tokens that would mean an AI-generated asset had reached the list.
@@ -371,6 +377,10 @@ def main():
     low = re.sub(r"\s+", " ", visible).lower()
 
     # G6 · NO OTHER SUPPLIER'S CONTENT.
+    # TANKKD is deliberately NOT in this list: it is the stock-tank
+    # manufacturer whose wordmark is visible on two governed CORE
+    # photographs, and naming it in alt text is accurate rather than a leak
+    # — the same call made for Harvia on the Irish Sauna Company preview.
     for other in ("Cosy Cabins", "Irish Sauna Company", "Hutsmith",
                   "Yard Box", "Power Sheds", "TRIQ", "BIOBUILDS",
                   "Superior Pergola", "Honka", "MyCabin", "Harvia"):
