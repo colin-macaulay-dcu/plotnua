@@ -136,6 +136,19 @@ jobs:
           set -euo pipefail
           node atlas-tools/prove-preview-only-containment.mjs
 
+      # DISCOVERY LIBRARY IMAGES. Founder rule of 3 October 2026: each card
+      # shows the discovery REALISED, chosen editorially and recorded in
+      # atlas-tools/discovery-library-images.json. The guard's main job is to
+      # refuse a potential-asset plate -- the empty wall, the bare lawn, the
+      # before state -- which is what two earlier selector-based rules kept
+      # selecting. Its capability proof drives that case with the real
+      # before-plates from the real pages.
+      - name: Discovery Library cards must show the realised image
+        run: |
+          set -euo pipefail
+          node atlas-tools/prove-discovery-library-images.mjs
+          python3 atlas-tools/prove-discovery-library-capability.py
+
       # AND THAT PROOF'S OWN CAPABILITY. It gained a second imagery mode for
       # OGNYX, who invited imagery for their preview while withholding
       # publication, and new containment code that has never been seen to

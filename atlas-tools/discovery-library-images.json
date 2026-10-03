@@ -1,0 +1,121 @@
+{
+  "schema": "plotnua.discovery-library-images.v1",
+  "what_this_is": "The explicit, governed mapping from each Discovery to the image its Library card shows on discoveries.html, with the standalone alt text written for that card. One row per card. Read by atlas-tools/build-discovery-library-images.py, which writes the page, and by atlas-tools/prove-discovery-library-images.mjs, which guards it.",
+
+  "the_founder_rule": "FOUNDER DECISION, 3 October 2026. The Library card shows the image that best communicates THE DISCOVERY REALISED -- the payoff, the possibility made real. It is an EDITORIAL selection, recorded here, and it is deliberately NOT derived from any rule over the page's markup.",
+
+  "why_not_a_selector": "Two attempts to infer this failed in ways worth recording, because the next person will be tempted the same way. The first followed the personalised Results engine, which was the wrong layer entirely -- Property Check journeys carry no result imagery at all and the garden room result differs per homeowner. The second followed '.d-hero', then 'the first .imagine-photo that is not a cmp frame'. That one looked principled and systematically selected the POTENTIAL ASSET plate: the empty wall, the bare lawn, the frontage before the bins are gone. Measured on 3 October 2026, four of the images it chose carry 'potential asset' or 'annotated by PlotNua' in their own page-side alt text. Discovery pages have different image rhythms and no selector encodes editorial judgement. So the judgement is written down instead.",
+
+  "what_is_not_a_library_image": "Potential Asset annotations, empty wall / empty lawn / empty roof, 'before' states, diagnostic or context plates, and planning or measurement diagrams. The Library is where the revelation goes.",
+
+  "the_guard": "prove-discovery-library-images.mjs refuses any row whose image carries a potential-asset marker in its page-side alt text -- 'potential asset', 'annotated by PlotNua', 'before anything is planted', 'standing completely empty'. The bare word 'empty' is deliberately NOT a marker: Driveway Income's realised image describes two cars parked in spaces 'that stood empty', and a guard that cannot tell a realised image from a description of what it replaced would be worse than none.",
+
+  "alt_text_policy": "Each card carries standalone alt text written for the Library, not inherited from the page. Page-side descriptions open with phrases like 'The same living room after...' which read correctly in sequence on the Discovery page and read as a non-sequitur on a card seen alone. Every card's alt text is nonetheless held to what its image actually shows, derived from the page's own description of that image.",
+
+  "cards": [
+    {
+      "title": "What Could You Build in Your Garden?",
+      "card": "discovery-living-in-the-garden.html",
+      "image": "assets/img/3cac96685bcd03a5.jpg",
+      "alt": "A woman with a mug in her kitchen doorway, looking down the garden to a lit timber garden room where three teenagers are playing pool.",
+      "why": "The garden room in use after dark, seen from the house: the possibility realised and occupied, not an empty building.",
+      "previous": "assets/img/8c60a8f27eb9c697.jpg"
+    },
+    {
+      "title": "Garden Retreat",
+      "card": "discovery-garden-retreat.html",
+      "image": "assets/img/7d5f5718cf9cd3da.jpg",
+      "alt": "An Irish back garden at dusk with a lit timber garden room, a steaming barrel sauna, a hot tub in use and a plunge pool set among decking and planting.",
+      "why": "Founder choice of 3 October 2026, from three realised candidates. The fullest realised retreat on the page, and the only one that reads as a retreat rather than as a single object at thumbnail size. The alternatives offered were the wood-fired hot tub (83da38d51a03414d) and the cold-plunge tub (5d6a5fd0aab3d9ce); neither is a before-state, both are simply quieter.",
+      "previous": "assets/img/5d6a5fd0aab3d9ce.jpg"
+    },
+    {
+      "title": "Above and Beyond",
+      "card": "discovery-above-and-beyond.html",
+      "image": "assets/img/55f2bd4248ec234f.jpg",
+      "alt": "A sculptural timber pod raised clear of the lawn on splayed legs in an Irish back garden, with a timber stair and deck leading up to it.",
+      "why": "The elevated pod built and standing in the garden. The page's other candidate, b53d75f9dff4af2e, is the annotated plate showing the empty air above the lawn -- a potential asset, which is exactly what the Library must not show.",
+      "previous": "assets/img/55f2bd4248ec234f.jpg"
+    },
+    {
+      "title": "The Borrowed Garden",
+      "card": "discovery-the-borrowed-garden.html",
+      "image": "assets/img/75f721f0513e4f37.jpg",
+      "alt": "A grower crouching beside raised vegetable beds picking tomatoes into a basket, with the homeowner reading on the patio behind.",
+      "why": "The arrangement actually working: someone growing, the homeowner still enjoying their own garden. The previous card showed beds alone; the selector rule would have chosen 59d566ff7c3a50e8, the open lawn 'before anything is planted'.",
+      "previous": "assets/img/e5ecf61c22bb13db.jpg"
+    },
+    {
+      "title": "Buy Original Irish Art",
+      "card": "discovery-a-home-for-art.html",
+      "image": "assets/img/c1d46445b6a79373.jpg",
+      "alt": "An Irish living room with a large original landscape painting hung above the fireplace and flowers on the table.",
+      "why": "The artwork bought and hung. The selector rule chose 5dc201bef1868b84 -- the same room with the wall above the fireplace empty, annotated as a potential asset.",
+      "previous": "assets/img/c0f5bfcde033dea3.jpg"
+    },
+    {
+      "title": "Open Your Home to Art",
+      "card": "discovery-open-your-home-to-art.html",
+      "image": "assets/img/dfb125ba9dd7cd87.jpg",
+      "alt": "A living room with exposed timber beams, hung with large contemporary canvases, with half a dozen visitors talking and looking at the work.",
+      "why": "The home open and the art being seen by people. The selector rule chose 046ec577a454599b, the same room with its large wall empty and annotated as a potential asset.",
+      "previous": "assets/img/dfb125ba9dd7cd87.jpg"
+    },
+    {
+      "title": "The House as a Power Station",
+      "card": "discovery-house-as-power-station.html",
+      "image": "assets/img/ce9da2e51c945693.jpg",
+      "alt": "An Irish family outside their home at dusk, with solar panels across the roof, a battery unit in the open garage and an electric car charging in the driveway.",
+      "why": "Panels, battery and charger all installed and working. The page's d-hero, fec77c3f0bae107a, is the potential-asset plate annotating the bare roof.",
+      "previous": "assets/img/ce9da2e51c945693.jpg"
+    },
+    {
+      "title": "The Hidden Bins",
+      "card": "discovery-hidden-bins.html",
+      "image": "assets/img/3bbcedb3f00a3852.jpg",
+      "alt": "A compact underground chamber open in the frontage of an Irish home, with three ordinary wheelie bins standing below ground level.",
+      "why": "The system installed and open, which is the revelation the Discovery is named for. The selector rule chose 31b49fb60732073b, the frontage with the bins simply gone -- the after-effect, not the mechanism.",
+      "previous": "assets/img/3bbcedb3f00a3852.jpg"
+    },
+    {
+      "title": "The Neighbourhood Parcel House",
+      "card": "discovery-neighbourhood-parcel-house.html",
+      "image": "assets/img/e0d578046cd29bda.jpg",
+      "alt": "An open front door with a shelved unit of parcels inside the porch and a neighbour calling to collect one.",
+      "why": "The porch in service with a neighbour actually collecting. The page's d-hero, b52ce590d9e0e41a, is the potential-asset plate of the porch itself.",
+      "previous": "assets/img/8b20a0968b1fc5a1.jpg"
+    },
+    {
+      "title": "Hidden Cars",
+      "card": "discovery-hidden-cars.html",
+      "image": "assets/img/9aa6c362d5486001.jpg",
+      "alt": "A car raised on a platform lift above an open chamber in the driveway of an Irish period house, with a second car parked in the lit space below.",
+      "why": "The lift in action with both cars placed, which is the whole idea in one frame. The page's d-hero, 458728c46951cf14, is the potential-asset plate.",
+      "previous": "assets/img/9aa6c362d5486001.jpg"
+    },
+    {
+      "title": "Your Home On Screen",
+      "card": "discovery-your-home-on-screen.html",
+      "image": "assets/img/7f49094747879fe4.jpg",
+      "alt": "An ordinary Irish sitting room during filming, with a camera on a tripod, a boom microphone overhead and two crew at the monitor.",
+      "why": "The production actually happening in an ordinary room. The previous card image, ea3f24eedab76294, is the annotated street view of the house -- context, not result.",
+      "previous": "assets/img/ea3f24eedab76294.jpg"
+    },
+    {
+      "title": "Driveway Income",
+      "card": "discovery-driveway-income.html",
+      "image": "assets/img/4a4a1e4b08edaada.jpg",
+      "alt": "An Irish semi-detached house with two cars parked in its two driveway spaces.",
+      "why": "The driveway earning, with both spaces taken. The previous card image, b5cbac3fff9072d4, is the same driveway standing completely empty.",
+      "previous": "assets/img/b5cbac3fff9072d4.jpg"
+    },
+    {
+      "title": "Home Exchange",
+      "card": "discovery-home-exchange.html",
+      "image": "assets/img/1ce6a296e2cd1b22.jpg",
+      "alt": "A terrace outside a Mediterranean house with wooden shutters and bougainvillea, a table and chairs looking out over a bay towards a coastal village.",
+      "why": "The exchange home being enjoyed, which is what a homeowner is actually after. Kept as it was.",
+      "previous": "assets/img/1ce6a296e2cd1b22.jpg"
+    }
+  ]
+}
