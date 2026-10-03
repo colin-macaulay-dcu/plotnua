@@ -1,42 +1,92 @@
-ATLAS MARK — PRODUCTION ASSET PACK
+ATLAS A — FINAL PRODUCTION ASSET PACK
+======================================
 
-Approved direction: Atlas Frame 01
-Role: secondary PlotNua system mark for evidence / knowledge / verification.
-The PlotNua P remains the primary site and Property Journey mark.
+STATUS
+------
+Founder-approved visual direction: C · Atlas A
+Canonical visual authority: atlas-mark-master-reference.png
+
+MEANING
+-------
+PlotNua P = master PlotNua / Property Journey identity
+Atlas A = evidence / knowledge / property-intelligence system
+Property Brain = reasoning / interpretation
+
+Atlas concept:
+A calm property anchor inside a living field of information, evidence,
+context and intelligence. The surrounding field forms a subtle A-like
+silhouette without becoming a literal typographic A.
 
 FILES
 -----
 atlas-mark.svg
-  Full-colour mark for light / ivory / white surfaces.
-  Outer frame: #1F3B2E
-  Inner form:  #8FAF8A
-  Transparent background.
+  Primary full-colour Atlas A for white / warm-ivory / light surfaces.
 
 atlas-mark-reversed.svg
-  Full-colour mark for dark green surfaces.
-  Outer frame: #F2EFE6
-  Inner form:  #8FAF8A
-  Transparent background.
+  Warm-ivory + sage version for PlotNua dark-green surfaces.
 
 atlas-mark-mono.svg
-  Single-colour dark green version for light backgrounds.
-  #1F3B2E
+  Single-colour dark-green version.
 
 atlas-mark-mono-reversed.svg
-  Single-colour warm ivory version for dark backgrounds.
-  #F2EFE6
+  Single-colour warm-ivory version.
 
-TECHNICAL
+atlas-mark-micro.svg
+  Simplified static 16px derivative. Use only where the full mark would be
+  too dense. Static only.
+
+atlas-mark-motion-ready.svg
+  Same approved full-colour artwork with stable SVG group IDs:
+    #atlas-house
+    #atlas-dark-field
+    #atlas-sage-field
+  The geometry must not be redrawn during implementation.
+
+atlas-mark-master-reference.png
+  Founder-approved high-resolution raster master. This is the visual
+  authority for any future QA of the SVG.
+
+BRAND COLOURS
+-------------
+Dark green  #1F3B2E
+Sage        #8FAF8A
+Warm ivory  #F2EFE6
+
+IMPLEMENTATION RULES
+--------------------
+- Do not redraw or reinterpret the SVG.
+- Do not "improve" the A silhouette.
+- Do not change the house.
+- Do not alter the ribbon arrangement.
+- Do not substitute a house/icon-library glyph.
+- Do not add shields, ticks, AI sparkles, brains, targets or map pins.
+- Atlas remains secondary to the PlotNua P.
+
+PRIMARY USE
+-----------
+24px — "What is Atlas?" heading
+20px — "What Atlas Knows" heading
+
+MICRO USE
 ---------
-- SVG only; no raster content.
-- No text baked into the mark.
-- 64×64 canonical viewBox.
-- Simple fill-only geometry for clear rendering at 16–24px.
-- Transparent background.
-- Keep aspect ratio 1:1.
-- Recommended minimum display size: 16px.
+16px — exact-item established evidence rows only.
+Static only.
 
-USAGE
------
-Use Atlas only for evidence / verification / source / confidence contexts.
-Do not replace the PlotNua P with Atlas.
+Evidence gating must remain:
+  row.state === 'established' && !row.scope && !row.conflict
+
+MOTION CONTRACT
+---------------
+Use atlas-mark-motion-ready.svg / equivalent inline groups.
+- #atlas-house stays stable.
+- The intelligence field may gather / settle around the house.
+- No spinning, orbiting, loading-dot motion, bouncing or endless obvious pulse.
+- prefers-reduced-motion: show settled state immediately.
+- 16px micro is always static.
+
+SOURCE GEOMETRY
+---------------
+The SVG paths were traced from the approved high-resolution master, preserving
+its visible geometry rather than redesigning it.
+ViewBox: 0 0 1157 1038
+Transparent background.

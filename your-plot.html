@@ -1684,6 +1684,58 @@
      file's other headings — .results-headline/.results-centrepiece-title
      — rather than the previous small bold sans label), then calmer,
      more generously spaced body copy below it. */
+  /* ATLAS A — secondary system mark for evidence surfaces only.
+     The artwork is the supplied production pack, used as provided.
+     Nothing here redraws, re-scales or recolours it: the page sets a
+     box and the artwork fills it. The PlotNua P stays primary. */
+  .pn-atlas-mark{ flex:0 0 auto; display:inline-block; vertical-align:middle; }
+  .pn-atlas-mark--24{ width:24px; height:24px; }
+  .pn-atlas-mark--20{ width:20px; height:20px; }
+  .pn-atlas-mark--16{ width:16px; height:16px; }
+  /* The heading becomes a row so the mark sits BESIDE the words,
+     never replacing them. */
+  .match-atlas-popover-title.has-atlas-mark,
+  .am-panel-title.has-atlas-mark{ display:flex; align-items:center; gap:10px; }
+  /* On an evidence row the mark is a quiet trailing signature. */
+  .am-ev-atlas{ margin-left:6px; position:relative; top:2px; opacity:.9; }
+
+  /* ATLAS A MOTION — the 24px and 20px headings only.
+
+     The supplied motion contract, implemented literally:
+       #atlas-house stays stable          -- it carries NO animation
+                                             rule at all, so it cannot
+                                             move by accident.
+       the field gathers and settles      -- the two field groups fade
+                                             and scale in, once.
+       no spin, orbit, loading-dot,       -- only opacity and a scale
+       bounce or endless pulse               that ends at 1. Nothing
+                                             turns, travels or repeats;
+                                             the builder refuses any
+                                             looping keyword in here.
+       reduced motion                     -- animation removed entirely,
+                                             which lands on the artwork's
+                                             own authored state.
+       16px micro                         -- an <img>, never in here.
+
+     transform-box:fill-box makes transform-origin resolve against each
+     group rather than the SVG user space. Where it is unsupported the
+     scale grows from the viewBox origin, which is wrong but not broken:
+     fill-mode both still lands on the settled artwork. */
+  .pn-atlas-a{ overflow:visible; }
+  .pn-atlas-a .pn-am-field{
+    animation-duration:620ms; animation-delay:var(--pn-am-d,0ms);
+    animation-timing-function:cubic-bezier(.2,.75,.25,1);
+    animation-iteration-count:1; animation-fill-mode:both;
+    transform-box:fill-box; transform-origin:center;
+  }
+  .pn-atlas-a.pn-am-play .pn-am-field{ animation-name:pn-atlas-a-settle; }
+  @keyframes pn-atlas-a-settle{
+    from{ opacity:0; transform:scale(.90) }
+    to{ opacity:1; transform:scale(1) }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .pn-atlas-a .pn-am-field{ animation:none !important; }
+  }
   .match-atlas-popover-title{
     font-family:'Fraunces',serif; font-weight:500; font-size:22px; line-height:1.25;
     color:var(--ink); margin:0 0 14px;
@@ -10032,7 +10084,7 @@
          unreferenced, per this file's leave-defined-but-unused convention,
          so restoring a trust surface later is a one-line change. -->
     <div class="match-atlas-popover" id="resultsAtlasPopoverTop">
-      <p class="match-atlas-popover-title">What is Atlas?</p>
+      <p class="match-atlas-popover-title has-atlas-mark"><span class="pn-atlas-slot" data-atlas-size="24"></span>What is Atlas?</p>
       <p class="match-atlas-popover-intro">Atlas is PlotNua's research layer — it checks real, published specifications for every product before anything is matched to your project.</p>
       <p class="match-atlas-popover-subtitle">What it verified</p>
       <ul class="match-atlas-popover-list">
@@ -11019,7 +11071,7 @@
     <!-- PB041 PART 12 — the closing trust strip is removed for the same
          reason as the one at the top of Results. Removed, not replaced. -->
     <div class="match-atlas-popover" id="matchAtlasPopover">
-      <p class="match-atlas-popover-title">What is Atlas?</p>
+      <p class="match-atlas-popover-title has-atlas-mark"><span class="pn-atlas-slot" data-atlas-size="24"></span>What is Atlas?</p>
       <p class="match-atlas-popover-intro">Atlas is PlotNua's research layer — it checks real, published specifications for every product before anything is matched to your project.</p>
       <p class="match-atlas-popover-subtitle">What it verified</p>
       <ul class="match-atlas-popover-list">
@@ -20364,7 +20416,7 @@
       if (flat && state === 'negative'){
         knows.push({ label: row.label, statement: null, conflict: {
           a: flat, b: read.finding }, scope: pnScopeNote(read),
-          meaning: read.meaning || null });
+          meaning: read.meaning || null, state: state });
         if (read.limitation) checks.push({ label: row.label, text: read.limitation });
         return;
       }
@@ -20381,6 +20433,7 @@
              other category's path can change. Null everywhere else. */
           knows.push({ label: row.label, statement: stmt, conflict: null,
             scope: pnScopeNote(read), meaning: read.meaning || null,
+            state: state,
             duration: row.label === 'Warranty'
               ? pnWarrantyDuration(((product.features || {}).warranty || {}).text)
               : null });
@@ -20392,7 +20445,8 @@
       /* The record defers or is absent. The flat field answers if it can. */
       if (flat){
         knows.push({ label: row.label, statement: flat, conflict: null,
-          scope: null, meaning: (read && read.meaning) || null });
+          scope: null, meaning: (read && read.meaning) || null,
+          state: 'flat' });
         if (read && read.limitation) checks.push({ label: row.label, text: read.limitation });
         return;
       }
@@ -20529,8 +20583,23 @@
     const atlasKnows = document.createElement('div');
     atlasKnows.className = 'am-panel';
     const akTitle = document.createElement('div');
-    akTitle.className = 'am-panel-title';
-    akTitle.textContent = 'What Atlas Knows';
+    akTitle.className = 'am-panel-title has-atlas-mark';
+    /* ATLAS MARK, 20px. The heading already says "Atlas", so the
+       mark is decorative here and carries alt="" rather than
+       repeating the word to a screen reader. textContent is
+       replaced by an explicit text node so the heading is still
+       built without innerHTML. */
+    /* ATLAS A, 20px. A hydration slot rather than markup: the artwork
+       lives once in #pn-atlas-a-template and is cloned into every
+       slot, so there is a single copy of the supplied geometry in the
+       page. aria-hidden because the heading beside it already says
+       "Atlas". */
+    const akMark = document.createElement('span');
+    akMark.className = 'pn-atlas-slot';
+    akMark.setAttribute('data-atlas-size', '20');
+    akTitle.appendChild(akMark);
+    if (window.pnAtlasHydrate) window.pnAtlasHydrate(akTitle);
+    akTitle.appendChild(document.createTextNode('What Atlas Knows'));
     atlasKnows.appendChild(akTitle);
     // LAUNCH v1.6 — PRIORITY 3/4: a short narrative line restoring the
     // Atlas story before the fact list — "we selected this because Atlas
@@ -20603,6 +20672,30 @@
           q.textContent = mapped.note;
           li.appendChild(q);
         }
+      }
+
+      /* ATLAS MARK, 16px mono — THE NARROWEST GATE ON THE PAGE.
+
+         Three conditions, all required:
+           state === 'established'  Atlas determined something.
+           no scope note            it determined it for THIS model,
+                                    not for the range or the supplier.
+                                    Measured: 1,231 of 1,783
+                                    established reads are scope-
+                                    limited, so this is the condition
+                                    that does the work.
+           no conflict              a contradiction is not a finding.
+
+         It stands alone with no visible word, so it carries its own
+         accessible name. A bare icon that means something and says
+         nothing is the failure this avoids. */
+      if (row.state === 'established' && !row.scope && !row.conflict){
+        const am = document.createElement('img');
+        am.className = 'pn-atlas-mark pn-atlas-mark--16 am-ev-atlas';
+        am.src = 'assets/brand/atlas-mark-micro.svg';
+        am.width = 16; am.height = 16;
+        am.alt = 'Atlas established evidence';
+        li.appendChild(am);
       }
 
       const shortScope = pnScopeShort(row.scope);
@@ -37783,5 +37876,56 @@
 })();
 </script>
 
+<!-- ATLAS A — the supplied production artwork, inlined once and
+     hydrated into the two animated heading placements by cloneNode.
+     This markup is lifted verbatim from
+     assets/brand/atlas-mark-motion-ready.svg and is proved
+     byte-identical to it by atlas-tools/prove-atlas-a.mjs. It is not
+     redrawn, re-scaled or recoloured here. -->
+<script>
+/* ATLAS A HYDRATION. Fills every .pn-atlas-slot from the single
+   inlined copy of the supplied artwork, sizes it, tags the two field
+   groups so CSS can settle them, and plays once.
+
+   #atlas-house is deliberately NOT tagged. It carries no animation
+   class and no animation rule, so the property anchor cannot move --
+   that is the supplied motion contract, enforced by omission rather
+   than by a rule that could be edited away. */
+(function(){
+  var tpl = document.getElementById("pn-atlas-a-template");
+  if (!tpl) return;
+  var DELAYS = { "atlas-dark-field": 90, "atlas-sage-field": 240 };
+  function fill(slot){
+    if (!slot || slot.getAttribute("data-atlas-done")) return;
+    var px = parseInt(slot.getAttribute("data-atlas-size"), 10) || 24;
+    var svg = tpl.content.firstElementChild.cloneNode(true);
+    svg.classList.add("pn-atlas-mark--" + px);
+    svg.setAttribute("width", px);
+    svg.setAttribute("height", px);
+    Object.keys(DELAYS).forEach(function(id){
+      var g = svg.querySelector("#" + id);
+      if (!g) return;
+      g.removeAttribute("id");   /* ids must stay unique in the page */
+      g.classList.add("pn-am-field");
+      g.style.setProperty("--pn-am-d", DELAYS[id] + "ms");
+    });
+    var h = svg.querySelector("#atlas-house");
+    if (h) h.removeAttribute("id");
+    slot.appendChild(svg);
+    slot.setAttribute("data-atlas-done", "1");
+    requestAnimationFrame(function(){ svg.classList.add("pn-am-play"); });
+  }
+  window.pnAtlasHydrate = function(root){
+    (root || document).querySelectorAll(".pn-atlas-slot")
+      .forEach(fill);
+  };
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", function(){ window.pnAtlasHydrate(); });
+  } else { window.pnAtlasHydrate(); }
+})();
+</script>
+<template id="pn-atlas-a-template"><svg class="pn-atlas-mark pn-atlas-a" viewBox="0 0 1157 1038" aria-hidden="true" focusable="false"><g id="atlas-dark-field" fill="#1F3B2E" fill-rule="evenodd"><path d="M 670 924 L 657 917 L 655 915 L 656 914 L 654 915 L 637 906 L 635 904 L 612 892 L 613 891 L 611 892 L 598 885 L 595 885 L 593 887 L 582 892 L 572 899 L 562 904 L 557 908 L 549 912 L 529 925 L 524 927 L 509 937 L 475 955 L 473 955 L 468 958 L 441 968 L 434 969 L 430 971 L 421 972 L 420 973 L 414 973 L 413 974 L 386 974 L 385 973 L 380 973 L 379 972 L 371 971 L 357 966 L 340 957 L 328 949 L 313 937 L 303 927 L 305 931 L 306 936 L 308 939 L 312 951 L 316 957 L 316 959 L 318 961 L 321 968 L 336 989 L 352 1005 L 364 1013 L 381 1021 L 384 1021 L 393 1024 L 397 1024 L 398 1025 L 420 1026 L 421 1025 L 431 1025 L 437 1023 L 447 1022 L 484 1010 L 489 1007 L 498 1004 L 529 988 L 538 982 L 545 979 L 550 975 L 569 965 L 576 960 L 611 942 L 613 942 L 618 939 L 640 931 L 643 931 L 650 928 L 670 925 Z"/><path d="M 285 727 L 283 742 L 282 743 L 282 748 L 281 749 L 280 764 L 279 765 L 279 775 L 278 776 L 278 790 L 280 791 L 285 791 L 295 794 L 300 794 L 301 795 L 311 796 L 317 798 L 322 798 L 328 800 L 339 801 L 340 802 L 344 802 L 350 804 L 355 804 L 356 805 L 366 806 L 367 807 L 371 807 L 372 808 L 376 808 L 382 810 L 387 810 L 393 812 L 408 814 L 413 816 L 423 817 L 433 820 L 438 820 L 439 821 L 447 822 L 448 823 L 451 823 L 452 824 L 455 824 L 456 825 L 467 827 L 471 829 L 474 829 L 475 830 L 486 832 L 490 834 L 508 838 L 508 837 L 489 825 L 477 814 L 473 812 L 461 801 L 462 800 L 460 798 L 458 799 L 455 796 L 456 795 L 426 766 L 425 767 L 423 765 L 424 763 L 425 764 L 415 754 L 414 755 L 409 749 L 410 748 L 409 747 L 408 748 L 404 743 L 405 742 L 404 741 L 403 742 L 400 738 L 397 736 L 342 733 L 341 732 L 315 730 L 314 729 L 307 729 L 306 728 L 292 727 L 291 726 L 286 726 Z"/><path d="M 347 570 L 332 599 L 332 603 L 340 629 L 342 632 L 341 635 L 342 634 L 343 635 L 342 637 L 343 636 L 344 637 L 346 643 L 363 676 L 385 709 L 418 750 L 449 782 L 480 808 L 504 826 L 511 830 L 513 832 L 512 833 L 514 832 L 519 836 L 539 848 L 538 849 L 540 848 L 546 852 L 548 851 L 551 846 L 562 834 L 572 826 L 584 819 L 586 819 L 591 816 L 600 813 L 608 812 L 609 811 L 614 811 L 615 810 L 639 810 L 640 811 L 642 810 L 640 810 L 623 800 L 582 779 L 573 773 L 535 753 L 530 749 L 525 747 L 489 724 L 486 723 L 483 720 L 471 713 L 467 709 L 463 707 L 442 691 L 420 672 L 413 665 L 414 664 L 411 661 L 410 662 L 396 648 L 381 630 L 361 600 L 350 577 L 348 570 Z"/><path d="M 848 539 L 846 540 L 847 542 L 847 631 L 846 632 L 846 642 L 845 643 L 845 652 L 844 653 L 842 669 L 833 699 L 830 704 L 827 713 L 825 715 L 819 727 L 804 747 L 786 765 L 775 774 L 756 787 L 739 796 L 740 797 L 742 796 L 757 796 L 758 795 L 790 794 L 791 793 L 801 793 L 802 792 L 826 790 L 827 789 L 843 787 L 864 781 L 881 773 L 895 763 L 908 748 L 920 726 L 927 703 L 927 698 L 929 691 L 929 681 L 925 677 L 904 648 L 887 621 L 865 579 L 866 577 L 865 578 L 864 577 L 864 575 L 861 570 L 862 569 L 860 568 L 857 562 L 857 560 L 851 549 L 852 546 L 851 547 L 850 546 Z"/><path d="M 351 233 L 314 251 L 312 253 L 279 269 L 277 271 L 255 282 L 253 282 L 211 303 L 200 307 L 156 329 L 124 348 L 105 361 L 73 387 L 48 413 L 36 429 L 25 447 L 16 465 L 15 470 L 11 478 L 11 481 L 6 496 L 4 512 L 3 513 L 3 521 L 2 522 L 2 548 L 3 549 L 3 559 L 4 560 L 4 566 L 5 567 L 7 582 L 14 606 L 16 609 L 17 614 L 22 624 L 22 626 L 35 651 L 51 675 L 61 686 L 65 692 L 89 716 L 102 727 L 133 748 L 168 766 L 170 766 L 178 770 L 180 770 L 180 760 L 181 759 L 182 742 L 183 741 L 183 736 L 184 735 L 184 731 L 185 730 L 189 707 L 186 707 L 183 705 L 168 700 L 161 696 L 159 696 L 139 686 L 122 675 L 107 663 L 86 642 L 83 637 L 79 633 L 69 618 L 61 602 L 62 599 L 61 600 L 58 595 L 51 570 L 50 555 L 49 554 L 49 537 L 50 536 L 51 523 L 52 522 L 52 518 L 55 510 L 55 507 L 57 504 L 57 502 L 58 501 L 59 502 L 58 499 L 65 484 L 73 471 L 75 469 L 76 470 L 75 469 L 83 458 L 99 441 L 113 429 L 132 415 L 162 397 L 276 342 L 278 340 L 293 333 L 295 331 L 304 327 L 306 325 L 328 313 L 330 311 L 332 297 L 333 296 L 339 269 L 343 260 L 343 257 Z"/><path d="M 498 184 L 483 189 L 480 191 L 451 200 L 448 202 L 445 202 L 430 208 L 420 210 L 417 214 L 412 228 L 408 235 L 408 237 L 404 244 L 404 246 L 399 255 L 399 257 L 394 266 L 392 272 L 413 261 L 415 259 L 428 253 L 439 246 L 448 242 L 456 232 L 463 225 L 464 226 L 463 224 L 475 211 L 476 212 L 475 210 Z"/><path d="M 713 166 L 703 148 L 685 157 L 656 178 L 657 179 L 677 172 L 685 171 L 690 169 L 702 168 L 703 167 L 712 167 Z"/><path d="M 831 121 L 833 127 L 835 129 L 857 172 L 860 172 L 869 175 L 894 186 L 920 204 L 938 221 L 951 237 L 963 255 L 976 282 L 987 319 L 987 323 L 989 329 L 989 335 L 990 336 L 990 345 L 995 357 L 995 360 L 993 363 L 995 360 L 996 363 L 994 366 L 996 363 L 997 364 L 995 370 L 997 366 L 998 367 L 997 371 L 998 369 L 1003 387 L 1003 392 L 1005 399 L 1005 407 L 1006 408 L 1006 436 L 1007 437 L 1008 430 L 1011 423 L 1011 420 L 1014 411 L 1017 389 L 1018 388 L 1019 369 L 1020 368 L 1020 333 L 1019 332 L 1019 324 L 1018 323 L 1016 302 L 1015 301 L 1015 297 L 1013 292 L 1011 280 L 1002 253 L 991 230 L 983 217 L 966 195 L 946 175 L 928 161 L 922 158 L 916 153 L 885 137 L 854 126 Z"/><path d="M 541 21 L 520 32 L 500 45 L 496 49 L 486 55 L 461 76 L 442 95 L 420 121 L 407 140 L 406 143 L 394 161 L 392 166 L 388 171 L 365 221 L 357 246 L 354 252 L 354 255 L 346 279 L 346 282 L 343 291 L 343 295 L 341 300 L 339 314 L 338 315 L 338 320 L 337 321 L 335 345 L 334 346 L 334 355 L 333 356 L 332 387 L 347 351 L 347 349 L 360 321 L 363 312 L 367 305 L 367 303 L 371 296 L 371 294 L 375 287 L 375 285 L 381 274 L 381 272 L 407 219 L 409 217 L 427 182 L 449 147 L 468 121 L 480 107 L 503 84 L 522 69 L 525 68 L 533 62 L 549 54 L 564 49 L 572 48 L 573 47 L 580 47 L 581 46 L 603 47 L 626 54 L 638 60 L 655 72 L 679 97 L 697 123 L 718 162 L 718 164 L 730 188 L 729 191 L 730 190 L 737 204 L 738 209 L 751 239 L 759 264 L 764 275 L 771 298 L 773 301 L 787 343 L 787 346 L 799 380 L 799 383 L 804 396 L 804 399 L 806 402 L 808 411 L 812 423 L 814 426 L 817 435 L 817 438 L 821 450 L 823 453 L 831 479 L 836 490 L 838 498 L 852 531 L 855 541 L 859 548 L 859 550 L 863 557 L 863 559 L 867 566 L 871 577 L 873 579 L 873 581 L 888 609 L 887 611 L 888 610 L 893 618 L 892 619 L 893 618 L 901 630 L 904 635 L 903 637 L 906 638 L 910 645 L 933 676 L 952 698 L 953 700 L 952 701 L 953 700 L 961 708 L 965 714 L 984 735 L 1005 761 L 1021 783 L 1031 799 L 1044 824 L 1053 849 L 1053 853 L 1054 854 L 1055 862 L 1056 863 L 1056 868 L 1057 869 L 1057 883 L 1058 884 L 1057 910 L 1056 911 L 1056 916 L 1055 917 L 1055 921 L 1051 933 L 1051 936 L 1043 953 L 1043 955 L 1034 970 L 1024 983 L 1011 996 L 990 1011 L 988 1010 L 989 1011 L 987 1013 L 979 1017 L 977 1016 L 978 1017 L 961 1025 L 949 1029 L 946 1029 L 937 1032 L 925 1033 L 921 1035 L 931 1035 L 932 1036 L 971 1036 L 972 1035 L 979 1035 L 980 1034 L 990 1033 L 991 1032 L 995 1032 L 996 1031 L 1007 1029 L 1019 1025 L 1022 1023 L 1027 1022 L 1048 1012 L 1050 1010 L 1059 1006 L 1084 988 L 1109 964 L 1124 945 L 1139 919 L 1149 891 L 1150 883 L 1151 882 L 1151 877 L 1152 876 L 1152 870 L 1153 869 L 1153 861 L 1154 860 L 1154 834 L 1153 833 L 1153 825 L 1152 824 L 1152 817 L 1151 816 L 1149 801 L 1139 768 L 1122 733 L 1092 689 L 1047 633 L 1043 626 L 1035 617 L 1027 604 L 1019 594 L 1008 577 L 1009 575 L 1008 576 L 1006 574 L 998 561 L 982 531 L 982 529 L 976 517 L 977 515 L 976 516 L 975 515 L 976 512 L 975 514 L 971 507 L 971 505 L 963 488 L 959 475 L 956 470 L 949 448 L 947 445 L 947 442 L 943 433 L 933 403 L 930 390 L 927 384 L 927 381 L 907 321 L 907 318 L 904 312 L 902 303 L 898 294 L 896 285 L 892 277 L 890 268 L 887 263 L 883 249 L 878 239 L 877 234 L 875 231 L 867 209 L 864 204 L 864 202 L 855 184 L 851 173 L 841 155 L 842 153 L 841 154 L 839 151 L 840 149 L 839 150 L 838 149 L 839 147 L 838 148 L 837 147 L 838 145 L 837 146 L 836 145 L 837 143 L 836 144 L 835 143 L 836 141 L 835 142 L 834 141 L 835 139 L 834 140 L 833 139 L 834 137 L 833 138 L 832 137 L 833 135 L 832 136 L 831 135 L 832 133 L 830 129 L 827 128 L 826 122 L 825 123 L 823 121 L 804 90 L 791 73 L 777 57 L 761 42 L 739 26 L 718 15 L 711 13 L 706 10 L 685 4 L 681 4 L 675 2 L 669 2 L 668 1 L 660 1 L 659 0 L 621 0 L 620 1 L 611 1 L 610 2 L 598 3 L 597 4 L 593 4 L 588 6 L 584 6 L 583 7 L 572 9 L 550 17 L 543 21 Z"/></g>
+  <g id="atlas-sage-field" fill="#8FAF8A" fill-rule="evenodd"><path d="M 1046 934 L 1046 931 L 1039 939 L 1034 942 L 1030 946 L 1015 955 L 1004 960 L 984 966 L 972 967 L 971 968 L 947 968 L 946 967 L 938 967 L 937 966 L 931 966 L 930 965 L 917 963 L 889 954 L 852 937 L 804 908 L 791 899 L 792 898 L 791 899 L 728 858 L 708 847 L 703 843 L 696 840 L 689 835 L 695 833 L 696 834 L 695 835 L 696 834 L 698 835 L 697 836 L 699 835 L 703 838 L 702 839 L 703 838 L 706 839 L 708 841 L 707 842 L 709 841 L 718 846 L 720 848 L 719 849 L 720 848 L 722 849 L 721 850 L 723 849 L 724 850 L 723 853 L 724 852 L 727 854 L 726 853 L 728 852 L 738 859 L 753 856 L 784 846 L 797 840 L 800 841 L 799 840 L 830 824 L 855 806 L 872 789 L 876 783 L 854 791 L 837 794 L 836 795 L 825 796 L 824 797 L 795 799 L 794 800 L 781 800 L 780 801 L 765 801 L 764 802 L 750 802 L 749 803 L 730 804 L 729 805 L 723 805 L 722 806 L 717 806 L 716 807 L 711 807 L 710 808 L 696 810 L 688 813 L 671 817 L 670 819 L 674 821 L 676 823 L 675 824 L 677 823 L 678 824 L 677 825 L 679 824 L 680 825 L 679 826 L 681 825 L 683 827 L 681 828 L 685 831 L 684 832 L 680 831 L 678 829 L 663 822 L 656 817 L 643 811 L 641 812 L 639 811 L 615 811 L 614 812 L 604 813 L 584 820 L 572 827 L 557 840 L 548 852 L 548 853 L 564 861 L 566 863 L 603 881 L 605 883 L 628 894 L 630 896 L 632 896 L 634 898 L 645 903 L 647 905 L 654 908 L 656 910 L 663 913 L 665 915 L 691 929 L 696 933 L 714 943 L 716 945 L 715 946 L 716 945 L 719 946 L 737 958 L 740 959 L 742 961 L 741 962 L 743 961 L 744 962 L 743 963 L 744 962 L 783 987 L 800 996 L 807 1001 L 835 1015 L 840 1016 L 848 1020 L 860 1024 L 863 1024 L 876 1028 L 880 1028 L 881 1029 L 887 1029 L 888 1030 L 921 1030 L 922 1029 L 928 1029 L 929 1028 L 943 1026 L 950 1023 L 953 1023 L 962 1020 L 985 1009 L 1005 995 L 1021 979 L 1034 961 L 1041 948 L 1043 940 Z"/><path d="M 288 481 L 275 488 L 258 500 L 229 527 L 208 553 L 196 571 L 186 591 L 180 608 L 178 620 L 177 621 L 176 635 L 175 636 L 175 650 L 176 651 L 176 660 L 177 661 L 177 667 L 178 668 L 179 675 L 183 687 L 190 701 L 192 700 L 200 672 L 201 671 L 202 673 L 204 671 L 204 670 L 203 670 L 202 672 L 201 669 L 206 654 L 209 649 L 212 638 L 218 626 L 219 629 L 220 629 L 218 626 L 218 624 L 220 621 L 221 623 L 222 623 L 221 622 L 222 621 L 221 622 L 220 620 L 224 612 L 226 605 L 228 603 L 230 596 L 242 573 L 242 571 L 244 569 L 244 567 L 249 558 L 250 559 L 249 557 L 266 523 L 268 521 L 274 508 L 276 506 L 279 498 L 283 492 L 284 493 L 283 491 Z"/><path d="M 989 357 L 990 361 L 989 362 L 987 382 L 986 383 L 982 402 L 969 437 L 959 455 L 959 459 L 961 462 L 965 475 L 974 495 L 974 497 L 977 502 L 978 507 L 982 514 L 984 508 L 989 499 L 996 480 L 996 477 L 1000 464 L 1000 459 L 1001 458 L 1001 451 L 1002 450 L 1002 431 L 1003 430 L 1002 428 L 1003 427 L 1002 408 L 1001 407 L 1001 399 L 1000 398 L 999 386 L 991 358 Z"/><path d="M 658 83 L 654 83 L 653 84 L 638 87 L 627 92 L 625 92 L 618 96 L 616 96 L 614 98 L 603 103 L 585 115 L 582 116 L 571 125 L 567 127 L 561 133 L 553 138 L 522 167 L 505 185 L 504 184 L 505 185 L 503 187 L 502 186 L 503 187 L 492 199 L 456 241 L 440 262 L 435 267 L 429 276 L 424 281 L 372 352 L 369 358 L 366 361 L 344 395 L 343 394 L 344 395 L 342 398 L 341 397 L 342 399 L 338 404 L 336 409 L 332 414 L 313 448 L 311 450 L 309 455 L 307 457 L 302 468 L 300 470 L 283 503 L 281 505 L 279 511 L 272 522 L 268 530 L 268 532 L 264 538 L 264 540 L 252 562 L 252 564 L 243 581 L 243 583 L 240 587 L 237 596 L 223 625 L 222 630 L 210 658 L 204 676 L 204 679 L 200 689 L 200 692 L 197 699 L 195 712 L 192 721 L 189 743 L 188 744 L 188 750 L 187 751 L 186 770 L 185 771 L 185 806 L 186 807 L 186 818 L 187 819 L 187 827 L 188 828 L 189 841 L 190 842 L 191 851 L 192 852 L 196 871 L 209 906 L 219 926 L 232 947 L 249 968 L 267 985 L 280 995 L 297 1006 L 327 1020 L 336 1023 L 343 1024 L 347 1026 L 357 1027 L 358 1028 L 365 1028 L 366 1029 L 388 1029 L 389 1030 L 392 1030 L 390 1028 L 386 1028 L 383 1026 L 375 1024 L 370 1021 L 366 1020 L 364 1018 L 365 1017 L 364 1018 L 362 1017 L 363 1016 L 361 1017 L 359 1015 L 360 1014 L 359 1013 L 360 1014 L 359 1015 L 356 1014 L 348 1008 L 342 1002 L 343 1001 L 342 1002 L 325 984 L 310 960 L 304 947 L 304 945 L 299 936 L 283 888 L 283 885 L 280 876 L 280 872 L 279 871 L 279 867 L 278 866 L 278 862 L 277 861 L 277 857 L 276 856 L 276 850 L 275 849 L 275 843 L 274 842 L 274 834 L 273 833 L 273 819 L 272 818 L 272 782 L 273 781 L 273 766 L 274 765 L 274 757 L 275 756 L 277 736 L 278 735 L 278 731 L 280 726 L 281 717 L 282 716 L 286 697 L 289 690 L 289 687 L 292 680 L 294 671 L 296 668 L 298 660 L 302 652 L 307 637 L 314 623 L 314 621 L 343 563 L 345 561 L 356 540 L 369 520 L 374 510 L 381 501 L 385 493 L 390 487 L 391 484 L 409 457 L 433 424 L 439 414 L 446 406 L 459 388 L 460 389 L 459 388 L 466 378 L 471 373 L 505 329 L 512 322 L 514 318 L 528 303 L 531 298 L 586 237 L 630 193 L 652 174 L 681 153 L 701 143 L 694 130 L 679 107 L 668 93 Z"/></g>
+  <g id="atlas-house" fill="#1F3B2E" fill-rule="evenodd"><path d="M 610 429 L 609 429 L 608 431 L 607 431 L 602 436 L 601 436 L 588 448 L 587 448 L 582 453 L 581 453 L 575 459 L 574 459 L 569 464 L 568 464 L 561 471 L 560 471 L 550 480 L 549 480 L 543 486 L 542 486 L 537 491 L 536 491 L 531 496 L 530 496 L 522 504 L 521 504 L 518 507 L 517 507 L 506 517 L 506 521 L 505 522 L 505 541 L 506 542 L 505 544 L 505 670 L 622 670 L 623 671 L 625 671 L 626 670 L 713 670 L 713 665 L 714 664 L 714 523 L 713 522 L 713 517 L 707 511 L 706 511 L 696 502 L 695 502 L 687 494 L 686 494 L 681 489 L 680 489 L 666 476 L 665 476 L 661 472 L 660 472 L 653 465 L 652 465 L 647 460 L 646 460 L 639 453 L 638 453 L 634 449 L 633 449 L 626 442 L 625 442 L 621 438 L 620 438 Z"/></g></svg></template>
 </body>
 </html>

@@ -149,6 +149,23 @@ jobs:
           node atlas-tools/prove-discovery-library-images.mjs
           python3 atlas-tools/prove-discovery-library-capability.py
 
+      # ATLAS A, PHASE 1. The mark is a claim — "Atlas established this" — so
+      # the guard is not that the icon renders but that it never renders over
+      # something Atlas did not establish for the exact model on screen.
+      # pnEvidenceState() === 'established' is NOT sufficient: 1,231 of 1,783
+      # established reads are supplier- or range-level. The proof lifts the
+      # shipped functions and drives them over the real universe.
+      #
+      # It also holds the SUPPLIED ARTWORK to account. The founder-supplied
+      # pack is used as provided, so the proof asserts that the copy inlined
+      # into your-plot.html is byte-identical to
+      # assets/brand/atlas-mark-motion-ready.svg, that there is exactly one
+      # copy of it in the page, and that #atlas-house carries no animation
+      # rule. The mark cannot be quietly redrawn or set moving without this
+      # step failing.
+      - name: The Atlas A mark must never claim unestablished verification
+        run: node atlas-tools/prove-atlas-a.mjs
+
       # AND THAT PROOF'S OWN CAPABILITY. It gained a second imagery mode for
       # OGNYX, who invited imagery for their preview while withholding
       # publication, and new containment code that has never been seen to
