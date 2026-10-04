@@ -1699,6 +1699,28 @@
   /* On an evidence row the mark is a quiet trailing signature. */
   .am-ev-atlas{ margin-left:6px; position:relative; top:2px; opacity:.9; }
 
+  /* ATLAS A ON THE VISIBLE SURFACES.
+
+     Phase 1 put the mark only where Atlas EXPLAINS itself -- a popover and a
+     collapsed panel. These three are where the page NAMES Atlas on first
+     render, so they are where the mark has to be.
+
+     .aa-mast is justify-content:space-between and must stay two-ended, so the
+     mark and the label share one inline-flex wrapper rather than becoming a
+     third flex item.
+
+     The maker label is a <p> with an appended footnote superscript, so its
+     mark stays inline-block: making that label a flex row would pull the
+     superscript out of the text baseline. */
+  .aa-mast-lead{ display:inline-flex; align-items:center; gap:8px; }
+  .results-gallery-heading.has-atlas-mark{
+    display:flex; align-items:center; gap:10px;
+  }
+  .aa-find-lab-mark{
+    display:inline-block; vertical-align:middle;
+    margin-right:7px; position:relative; top:-1px;
+  }
+
   /* ATLAS A MOTION — the 24px and 20px headings only.
 
      The supplied motion contract, implemented literally:
@@ -10480,7 +10502,12 @@
          been hidden since UX-008; no element was added for it. -->
     <!-- ISSUE 007 — the count is gone. "Four" was hard-coded and became untrue
          the moment a lens was suppressed; this stays true whatever renders. -->
-    <div class="results-gallery-heading" id="matchAlternativesHeading" hidden>Atlas looked at this in other ways.</div>
+    <!-- ATLAS A, 20px, STATIC. The sentence names Atlas as the author of
+         the alternatives, so the mark belongs to it. Static: this is a
+         heading the homeowner scrolls to, not an arrival. The slot
+         hydrates with the rest of the static markup; the heading being
+         `hidden` until the rail populates does not affect that. -->
+    <div class="results-gallery-heading has-atlas-mark" id="matchAlternativesHeading" hidden><span class="pn-atlas-slot" data-atlas-size="20" data-atlas-motion="static"></span><span>Atlas looked at this in other ways.</span></div>
     <!-- RESULTS-UX-008 — the single useful fact from the retired search-funnel
          section, said where the four results actually are. Figures come from
          the matching logic, never typed. -->
@@ -25771,7 +25798,24 @@
 
     /* ---- (1) MASTHEAD. The section's single dateline. -------------------- */
     const mast = aaEl('div', 'aa-mast');
-    mast.appendChild(aaEl('span', 'aa-mast-l', 'Atlas assessment'));
+    /* ATLAS A, 20px, VISIBLE ON FIRST RENDER OF THE ASSESSMENT.
+
+       This masthead is the single place Atlas explains itself on Results, and
+       it is on screen without a click, which is what the Phase 1 placements
+       were not. The mark settles once by the existing contract; the house does
+       not move, because it carries no animation rule at all.
+
+       The wrapper keeps .aa-mast two-ended: the lead group sits left, the
+       organisation stays right. Hydrated here rather than at DOMContentLoaded
+       because this host is emptied and repainted when the lazy detail
+       partitions land. */
+    const mastLead = aaEl('span', 'aa-mast-lead');
+    const mastMark = aaEl('span', 'pn-atlas-slot');
+    mastMark.setAttribute('data-atlas-size', '20');
+    mastLead.appendChild(mastMark);
+    mastLead.appendChild(aaEl('span', 'aa-mast-l', 'Atlas assessment'));
+    mast.appendChild(mastLead);
+    if (window.pnAtlasHydrate) window.pnAtlasHydrate(mastLead);
     /* P0 J8 — supplier identity stays primary; the review date becomes
        subordinate metadata in its own element rather than sharing the
        supplier's weight inside one concatenated string. */
@@ -25888,6 +25932,29 @@
       const band = aaEl('div', 'aa-mkr');
       const blab = aaEl('p', 'aa-find-lab',
         'What Atlas holds on ' + (org || 'the maker'));
+      /* ATLAS A, 16px, STATIC, THE SUPPLIED MICRO DERIVATIVE. This label
+         names Atlas as the HOLDER of specific maker evidence, which is the
+         closest thing on the visible page to what the mark is for.
+
+         THE MICRO FILE, NOT THE FULL MARK SCALED DOWN. The supplied pack
+         draws a separate derivative for this size and the two are not the
+         same picture, so at 16px the micro asset is the correct one -- the
+         same file and the same plain-<img> mechanism the evidence rows use.
+         An <img> is never hydrated and so can never animate.
+
+         16px, not 18px: the label is 10px uppercase and a larger mark would
+         outweigh the words it introduces. Inserted before the text and left
+         inline so the footnote superscript appended below keeps its baseline.
+
+         Decorative: alt is empty because the label beside it says "What Atlas
+         holds on ..." in words. The evidence-row micro mark keeps an
+         accessible name for the opposite reason -- it stands alone. */
+      const blabMark = document.createElement('img');
+      blabMark.className = 'pn-atlas-mark pn-atlas-mark--16 aa-find-lab-mark';
+      blabMark.src = 'assets/brand/atlas-mark-micro.svg';
+      blabMark.width = 16; blabMark.height = 16;
+      blabMark.alt = '';
+      blab.insertBefore(blabMark, blab.firstChild);
       const mS = NOTE_SUPPLIER();
       if (mS) blab.appendChild(aaEl('span', 'aa-sup', String(mS)));
       band.appendChild(blab);
@@ -37913,6 +37980,13 @@
     if (h) h.removeAttribute("id");
     slot.appendChild(svg);
     slot.setAttribute("data-atlas-done", "1");
+    /* A STATIC PLACEMENT NEVER RECEIVES THE PLAY CLASS. Without the class
+       there is no animation-name, so the fields simply render in their
+       authored state. The marks beside the alternatives heading and the maker
+       label are quiet signatures on surfaces the homeowner is reading, not
+       arrivals, and one settle per heading is enough movement on a page that
+       already carries one. */
+    if (slot.getAttribute("data-atlas-motion") === "static") return;
     requestAnimationFrame(function(){ svg.classList.add("pn-am-play"); });
   }
   window.pnAtlasHydrate = function(root){

@@ -251,6 +251,182 @@ else {
     : bad('the hydrator may tag the house as animated');
 }
 
+/* ---- A8 . REACHABILITY -- the check whose absence let the mark ship unseen.
+
+   Phase 1 passed every other check in this file and the founder still could not
+   find the mark anywhere. All three placements were wired, sized and gated
+   correctly, and all three sat behind an interaction: a popover at
+   visibility:hidden, and a closed <details> on a secondary screen. This file
+   verified that each placement EXISTED. It never verified that any of them
+   could be SEEN.
+
+   So: at least one placement must be on a surface that renders without a
+   click, and specifically the "Atlas assessment" masthead must be one of them.
+   A placement is unreachable if it is inside the popover, inside the
+   collapsed intelligence panel, or carries its own hidden / display:none /
+   visibility:hidden. ------------------------------------------------------- */
+console.log('');
+console.log('  REACHABILITY WITHOUT INTERACTION');
+console.log('  ' + '-'.repeat(72));
+{
+  /* (1) The masthead placement exists and is built where the masthead is. */
+  const mastBlock = /const mast = aaEl\('div', 'aa-mast'\);[\s\S]{0,4000}?mast\.appendChild\(aaEl\('span', 'aa-mast-r', org\)\);/.exec(src);
+  if (!mastBlock) cannot('could not isolate the Atlas assessment masthead block');
+  else {
+    /pn-atlas-slot/.test(mastBlock[0]) && /data-atlas-size', '20'/.test(mastBlock[0])
+      ? ok('the "Atlas assessment" masthead carries a 20px Atlas slot')
+      : bad('the "Atlas assessment" masthead carries no Atlas slot',
+            'this is the placement the founder must be able to see on Results');
+    /pnAtlasHydrate/.test(mastBlock[0])
+      ? ok('the masthead slot hydrates its own subtree — it survives the repaint')
+      : bad('the masthead slot is not hydrated locally',
+            'aaRenderAssessment() empties and repaints its host, so a slot that '
+            + 'waits for DOMContentLoaded renders empty after the repaint');
+    /* The masthead mark must not be made conditional: no branch may stand
+       between the masthead being created and the mark being appended to it.
+       (The pnAtlasHydrate call that follows is itself guarded, which is a
+       feature-detect, not a condition on the mark existing.) */
+    const upToMark = mastBlock[0].split('const mastMark')[0] || '';
+    /\bif\s*\(|\?\s*[^:]*:/.test(upToMark.replace(/\/\*[\s\S]*?\*\//g, ''))
+      ? bad('the masthead mark is built conditionally',
+            'every assessment must carry it, not some of them')
+      : ok('the masthead mark is unconditional — every assessment carries it');
+  }
+
+  /* (2) The masthead itself must not be hidden, display:none or inside a
+         <details>. aa-mast is appended straight to the assessment host. */
+  /mast\.appendChild|host\.appendChild\(mast\)/.test(src)
+    ? ok('the masthead is appended directly to the visible assessment host')
+    : bad('could not confirm the masthead reaches the assessment host');
+  const mastCss = /\.aa-mast\{[^}]*\}/.exec(src);
+  if (!mastCss) cannot('could not read the .aa-mast CSS');
+  else if (/display:\s*none|visibility:\s*hidden|opacity:\s*0\b/.test(mastCss[0]))
+    bad('.aa-mast is hidden by its own CSS', mastCss[0]);
+  else ok('.aa-mast carries no hiding rule — it renders on sight');
+
+  /* (3) The two static placements must exist and must NOT animate. */
+  const altHeading = /<div class="results-gallery-heading has-atlas-mark"[^>]*>[\s\S]{0,320}?<\/div>/.exec(src);
+  if (!altHeading) bad('"Atlas looked at this in other ways." carries no Atlas mark');
+  else if (!/data-atlas-motion="static"/.test(altHeading[0]))
+    bad('the alternatives heading mark is not marked static');
+  else ok('"Atlas looked at this in other ways." carries a static 20px mark');
+
+  /* THE MAKER BAND USES THE SUPPLIED MICRO DERIVATIVE, NOT THE FULL MARK.
+
+     The pack draws a separate file for 16px and the two are not the same
+     picture, so scaling the full geometry down would ship artwork the founder
+     did not approve for that size. This placement must therefore be the micro
+     file, delivered the way the evidence rows deliver it: a plain <img>, which
+     is also what makes it unanimatable -- an <img> is never hydrated, so it
+     can never pick up a motion class. */
+  const mkrBlock = /const blab = aaEl\('p', 'aa-find-lab',[\s\S]{0,2200}?band\.appendChild\(blab\);/.exec(src);
+  if (!mkrBlock) cannot('could not isolate the maker band label block');
+  else {
+    const b = mkrBlock[0];
+    if (/pn-atlas-slot|data-atlas-size|pnAtlasHydrate/.test(b))
+      bad('the maker band mark is still a hydrated slot of the FULL mark',
+          'at 16px it must be assets/brand/atlas-mark-micro.svg');
+    else if (!/blabMark\.src = 'assets\/brand\/atlas-mark-micro\.svg'/.test(b))
+      bad('the maker band mark does not point at the supplied micro file');
+    else if (!/blabMark = document\.createElement\('img'\)/.test(b))
+      bad('the maker band micro mark is not a plain <img>');
+    else if (!/pn-atlas-mark--16/.test(b))
+      bad('the maker band mark is not in the 16px box');
+    else if (!/aa-find-lab-mark/.test(b))
+      bad('the maker band mark lost its approved spacing class');
+    else if (/pn-am-field|pn-am-play|animation/.test(b))
+      bad('the maker band micro mark carries an animation hook',
+          'the supplied contract says micro is static only');
+    else ok('"What Atlas holds on <org>" uses the supplied micro file, '
+            + 'static, 16px, spacing intact');
+  }
+
+  /* AND THE MICRO FILE IS NOW USED BY TWO PLACEMENTS, BOTH AS <img>. If a
+     third mechanism ever reaches it, this count moves and says so. */
+  {
+    const uses = (src.match(/assets\/brand\/atlas-mark-micro\.svg/g) || []).length;
+    uses === 2
+      ? ok('the micro file has exactly 2 consumers — evidence row and maker band')
+      : bad('the micro file has ' + uses + ' consumer(s), expected 2');
+  }
+
+  /* (4) The hydrator must HONOUR static, or "static" is a label with no
+         mechanism behind it. */
+  /data-atlas-motion"\) === "static"\)\s*return/.test(src)
+    ? ok('the hydrator refuses to play a slot marked static')
+    : bad('nothing in the hydrator honours data-atlas-motion="static"',
+          'the static placements would animate anyway');
+
+  /* (5) AND THE NEGATIVE. None of the three new placements may sit inside the
+         popover that hid Phase 1. The popover body runs from its title to its
+         confidence paragraph, which is its documented last element, so that
+         span is the region to search. */
+  {
+    /* Anchored on the real ELEMENTS, not the CSS selectors of the same name:
+       a selector-anchored search spans everything between the stylesheet and
+       the markup, which is most of the file. */
+    const re = /<p class="match-atlas-popover-title[\s\S]{0,8000}?match-atlas-popover-confidence"[^<]*<\/p>/g;
+    let m, regions = 0, leaked = [];
+    while ((m = re.exec(src)) !== null) {
+      regions++;
+      for (const marker of ['aa-mast-lead', 'aa-find-lab-mark',
+                            'results-gallery-heading has-atlas-mark']) {
+        if (m[0].includes(marker)) leaked.push(marker);
+      }
+    }
+    if (!regions) cannot('could not isolate any popover body to search');
+    else if (leaked.length)
+      bad('a visible placement sits inside the hidden popover',
+          'found: ' + [...new Set(leaked)].join(', '));
+    else ok('none of the 3 new placements sits inside the popover ('
+            + regions + ' popover bodies searched)');
+  }
+
+  /* (6) NOR INSIDE A CLOSED DISCLOSURE. The <details> wrapper is the other
+         thing that hid Phase 1. Each new marker must appear outside every
+         <details> block in the page. */
+  {
+    const details = src.match(/<details[\s\S]*?<\/details>/g) || [];
+    const inside = [];
+    for (const d of details) {
+      for (const marker of ['aa-mast-lead', 'aa-find-lab-mark',
+                            'results-gallery-heading has-atlas-mark']) {
+        if (d.includes(marker)) inside.push(marker);
+      }
+    }
+    inside.length
+      ? bad('a visible placement sits inside a <details> disclosure',
+            'found: ' + [...new Set(inside)].join(', '))
+      : ok('no new placement sits inside a <details> (' + details.length
+           + ' disclosures searched)');
+  }
+
+  /* (7) Phase 1 is intact. A visibility fix that moved an existing placement
+         would be a worse outcome than the defect. */
+  const kept = [
+    [2, (src.match(/<span class="pn-atlas-slot" data-atlas-size="24"><\/span>/g) || []).length,
+     'the 2 popover 24px slots'],
+    [1, (src.match(/akMark\.setAttribute\('data-atlas-size', '20'\)/g) || []).length,
+     'the "What Atlas Knows" 20px slot'],
+    [1, (src.match(/am\.src = 'assets\/brand\/atlas-mark-micro\.svg'/g) || []).length,
+     'the 16px evidence-row micro mark'],
+  ];
+  let keptOk = true;
+  for (const [want, got, what] of kept) {
+    if (want !== got) { bad('Phase 1 changed: ' + what + ' (expected ' + want + ', found ' + got + ')'); keptOk = false; }
+  }
+  if (keptOk) ok('all four Phase 1 placements survive unchanged');
+
+  /* (8) STILL ONE COPY OF THE SUPPLIED GEOMETRY. Three new placements must be
+         three more clones, not three more copies of the artwork. */
+  const tplCount = (src.match(/id="pn-atlas-a-template"/g) || []).length;
+  const vbCount = (src.match(/viewBox="0 0 1157 1038"/g) || []).length;
+  (tplCount === 1 && vbCount === 1)
+    ? ok('still exactly one copy of the supplied geometry in the page')
+    : bad('the supplied geometry is duplicated',
+          tplCount + ' template(s), ' + vbCount + ' viewBox occurrence(s)');
+}
+
 /* ---- A7 . containment ---------------------------------------------------- */
 const stray = fs.readdirSync(ROOT).filter(f => f.endsWith('.html') && f !== 'your-plot.html')
   .filter(f => fs.readFileSync(path.join(ROOT, f), 'utf8').includes('assets/brand/atlas-mark'));
