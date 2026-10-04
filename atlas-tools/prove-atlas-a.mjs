@@ -281,9 +281,22 @@ else {
   /* THE TINY BOUNDS. Parsed from the keyframes and checked numerically, so a
      later edit cannot widen the drift into a slide. */
   {
+    /* THE AMPLITUDE IS A DELIBERATE, MEASURED VALUE, NOT A FEELING.
+
+       transform-box is fill-box, so a percentage resolves against each GROUP's
+       own box, not the 60px viewport. The first amplitude (+-0.7% / +-0.4%) was
+       therefore sub-pixel on screen -- 0.42px for dark, 0.32px for sage -- and
+       read as completely static. These numbers travel:
+
+           dark  59.74 x 53.73 px box  ->  -1.49 px X, +0.81 px Y, +0.54 px/edge
+           sage  45.17 x 49.11 px box  ->  +1.13 px X, -0.74 px Y, -0.34 px/edge
+           relative separation at the extremes: 3.04 px diagonal
+
+       The ceiling below is the restraint: wide enough to see over 9 and 11
+       seconds, far too narrow to read as a slide or a loading indicator. */
     const want = {
-      'pn-atlas-a-drift-dark': { x: -0.7, y:  0.4, s: 1.006 },
-      'pn-atlas-a-drift-sage': { x:  0.7, y: -0.4, s: 0.996 },
+      'pn-atlas-a-drift-dark': { x: -2.5, y:  1.5, s: 1.018 },
+      'pn-atlas-a-drift-sage': { x:  2.5, y: -1.5, s: 0.985 },
     };
     let allOk = true;
     for (const [name, w] of Object.entries(want)) {
@@ -298,7 +311,7 @@ else {
       const m = /translate\((-?[\d.]+)%,\s*(-?[\d.]+)%\)\s*scale\(([\d.]+)\)/.exec(kf[1].split('to{')[1] || '');
       if (!m) { bad('could not parse the end state of ' + name); allOk = false; continue; }
       const x = +m[1], y = +m[2], sc = +m[3];
-      if (Math.abs(x) > 0.75 || Math.abs(y) > 0.45 || Math.abs(sc - 1) > 0.008) {
+      if (Math.abs(x) > 2.6 || Math.abs(y) > 1.6 || Math.abs(sc - 1) > 0.020) {
         bad(name + ' drifts outside the approved bounds',
             'translate ' + x + '%, ' + y + '% scale ' + sc); allOk = false; continue;
       }
@@ -306,7 +319,7 @@ else {
         bad(name + ' is not the approved value', 'got ' + x + ',' + y + ',' + sc); allOk = false;
       }
     }
-    if (allOk) ok('both drifts stay within ±0.7% translate and ±0.6% scale, in opposition');
+    if (allOk) ok('both drifts stay within ±2.5% / ±1.5% translate and ±2% scale, in opposition');
   }
   /* No travel in the SETTLE, which still must not move. */
   /@keyframes pn-atlas-a-settle\{[^}]*translate\(/.test(rules)

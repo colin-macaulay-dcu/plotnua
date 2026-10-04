@@ -96,7 +96,14 @@ function makeDom() {
   const house = el('g', { id: 'atlas-house' });
   const dark = el('g', { id: 'atlas-dark-field' });
   const sage = el('g', { id: 'atlas-sage-field' });
-  const svg = el('svg', { viewBox: '0 0 1157 1038' });
+  /* THE TEMPLATE'S OWN CLASSES, LIFTED FROM THE PAGE. The first version of this
+     harness built a bare <svg>, so .pn-atlas-a was missing and the
+     reduced-motion selector appeared not to match -- a gap in the harness, not
+     in the page. The shim now seeds its class list from the real template, so
+     selector tests are evaluated against the classes the browser would see. */
+  const tplClass = (/<template id="pn-atlas-a-template"><svg class="([^"]*)"/.exec(src) || [, ''])[1];
+  const svg = el('svg', { viewBox: '0 0 1157 1038', class: tplClass });
+  tplClass.split(/\s+/).filter(Boolean).forEach(c => svg.classes.add(c));
   svg.appendChild(dark); svg.appendChild(sage); svg.appendChild(house);
   const tplEl = el('template', { id: 'pn-atlas-a-template' });
   tplEl.content = { firstElementChild: svg };
@@ -210,6 +217,92 @@ console.log('  ' + '-'.repeat(72));
       dom.slot.getAttribute('data-atlas-done') === '1'
         ? ok('the slot is marked done, so it is not filled twice')
         : bad('the slot was not marked done');
+    }
+  }
+}
+
+/* ---- 2b . THE AMBIENT ANIMATION IS ACTUALLY ATTACHED --------------------
+
+   DIAGNOSTIC, not a style check. prove-atlas-a.mjs confirms the ambient rules
+   EXIST in the stylesheet and are correctly scoped. That is not the same claim
+   as "the hydrated mark matches them" -- and the whole hydration bug was the
+   gap between a correct stylesheet and an element that never appeared. So this
+   takes the REAL selectors out of the page and evaluates them against the REAL
+   hydrated DOM built above: ancestor classes, descendant classes, the lot. If
+   the hydrator ever stops adding a class the ambient rules depend on, this
+   fails even though the CSS is untouched. ---------------------------------- */
+console.log('');
+console.log('  THE AMBIENT MOTION IS ATTACHED TO THE HYDRATED MARK');
+console.log('  ' + '-'.repeat(72));
+{
+  const dom = makeDom();
+  let win;
+  try { win = run(boot, dom); } catch (e) { cannot('bootstrap threw: ' + e.message); }
+  if (win) {
+    dom.parseTemplate();
+    dom.fireReady();
+    const svg = dom.slot.children[0];
+    if (!svg) { bad('no hydrated mark to test the selectors against'); }
+    else {
+      /* Lift the ambient selectors from the shipped stylesheet. */
+      const styles = (src.match(/<style[^>]*>[\s\S]*?<\/style>/g) || []).join('\n')
+        .replace(/\/\*[\s\S]*?\*\//g, '');
+      const sels = [...styles.matchAll(/(\.pn-atlas-mark--60[^{,]*?\.pn-am-(?:dark|sage))\s*\{([^}]*)\}/g)];
+      sels.length === 2
+        ? ok('found both ambient rules in the shipped stylesheet')
+        : bad('expected 2 ambient rules, found ' + sels.length);
+
+      /* Evaluate "A.B C" descendant selectors against the hydrated tree. */
+      const matches = sel => {
+        const parts = sel.trim().split(/\s+/);
+        if (parts.length !== 2) return false;
+        const anc = parts[0].split('.').filter(Boolean);
+        const des = parts[1].split('.').filter(Boolean);
+        if (!anc.every(c => svg.classes.has(c))) return false;
+        return svg.children.some(g => des.every(c => g.classes.has(c)));
+      };
+
+      for (const [, sel, body] of sels) {
+        const field = sel.includes('pn-am-dark') ? 'dark' : 'sage';
+        if (!matches(sel)) {
+          bad('the ' + field + ' ambient rule does NOT match the hydrated mark', sel.trim());
+          continue;
+        }
+        const name = (/animation-name:([^;]+);/.exec(body) || [, ''])[1];
+        const dur = (/animation-duration:([^;]+);/.exec(body) || [, ''])[1];
+        const iter = (/animation-iteration-count:([^;]+);/.exec(body) || [, ''])[1];
+        const dir = (/animation-direction:([^;]+);/.exec(body) || [, ''])[1];
+        const okName = name.includes('pn-atlas-a-drift-' + field);
+        const okLoop = iter.includes('infinite') && dir.includes('alternate');
+        (okName && okLoop)
+          ? ok('the ' + field + ' field IS animated by ' + ('pn-atlas-a-drift-' + field)
+               + ' (' + dur.trim() + ', ' + iter.trim() + ', ' + dir.trim() + ')')
+          : bad('the ' + field + ' rule matches but does not drive its drift',
+                'name=' + name.trim() + ' iter=' + iter.trim() + ' dir=' + dir.trim());
+      }
+
+      /* AND THE HOUSE MUST MATCH NOTHING. */
+      const house = svg.children.find(g => g.classes.size === 0);
+      if (!house) bad('could not find an unclassed group — the house may have been tagged');
+      else {
+        const reachable = sels.some(([, sel]) => {
+          const des = sel.trim().split(/\s+/)[1].split('.').filter(Boolean);
+          return des.every(c => house.classes.has(c));
+        });
+        reachable ? bad('an ambient selector reaches the house')
+                  : ok('no ambient selector can reach the house — it is fixed by omission');
+      }
+
+      /* AND THE REDUCED-MOTION OVERRIDE MUST REACH THE HYDRATED MARK. */
+      const rm = /@media \(prefers-reduced-motion: reduce\)\{\s*(\.pn-atlas-a \.pn-am-field)\{ animation:none !important; \}/.exec(styles);
+      if (!rm) bad('could not find the reduced-motion rule');
+      else {
+        const [anc, des] = rm[1].trim().split(/\s+/).map(x => x.split('.').filter(Boolean));
+        const hits = anc.every(c => svg.classes.has(c))
+          && svg.children.some(g => des.every(c => g.classes.has(c)));
+        hits ? ok('the reduced-motion override reaches the hydrated fields (kills entrance AND ambient)')
+             : bad('the reduced-motion override does NOT reach the hydrated fields');
+      }
     }
   }
 }
