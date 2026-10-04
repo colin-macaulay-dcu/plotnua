@@ -37,6 +37,16 @@ with a path prefix narrow enough to be that supplier's alone. A bare CDN host
 is refused: cdn.shopify.com without a prefix would authorise every Shopify
 store on the internet, which is not what any supplier granted.
 
+THE DATE STAMP IS NOT DRIFT. The manifest carries a 'generated' date, and a
+regeneration stamps today. --check therefore compares the committed manifest
+against a fresh one re-serialised with the COMMITTED stamp, so a manifest whose
+rights are correct does not fail for being a day old. Everything else is still
+compared byte for byte -- key order, indentation, every row and field. The
+stamp must still be real: a missing, malformed or future-dated stamp is
+refused, because freshness is enforced from that date by
+atlas-tools/validate-image-rights.js (--max-age-days 30), and a manifest that
+lied about its own age would defeat it.
+
 Run:  python3 .github/scripts/generate_image_rights_manifest.py
       python3 .github/scripts/generate_image_rights_manifest.py --check
 """
@@ -142,6 +152,35 @@ def check_record(i, r):
                    "has nothing to enforce. If attribution is a condition, name it.")
 
 
+def stamp_of(current):
+    """The committed manifest's own 'generated' date, or (None, reason).
+
+    The date is exempt from the drift comparison, so it has to be checked on
+    its own terms instead. A stamp that is missing, malformed, or dated in the
+    future would defeat the staleness rule in validate-image-rights.js, which
+    computes the manifest's age FROM THIS FIELD -- a manifest stamped next year
+    would read as perpetually fresh. Each of those is refused here, where the
+    message can say what to do, rather than in CI.
+    """
+    if not current.strip():
+        return None, "no committed manifest to compare against"
+    try:
+        stamp = json.loads(current).get("generated")
+    except ValueError:
+        return None, "the committed manifest is not readable JSON"
+    if not isinstance(stamp, str) or not stamp:
+        return None, "the committed manifest has no generated date"
+    try:
+        when = datetime.date.fromisoformat(stamp)
+    except ValueError:
+        return None, "the generated date is not a plain ISO date: " + stamp
+    if when > datetime.date.today():
+        return None, ("the generated date is in the future: " + stamp
+                      + ". A manifest cannot be stamped ahead of itself; that "
+                      + "would read as perpetually fresh.")
+    return stamp, None
+
+
 def main():
     if not RECORDS.exists():
         die("image-rights-records.json not found; it is the input")
@@ -205,8 +244,23 @@ def main():
     text = json.dumps(out, indent=2, ensure_ascii=False) + "\n"
     if CHECK_ONLY:
         current = MANIFEST.read_text(encoding="utf-8") if MANIFEST.exists() else ""
-        same = current == text
         print("VALIDATED %d record(s), %d live grant(s)" % (len(records), len(live)))
+
+        # Compare against the committed manifest re-stamped with ITS OWN date,
+        # so a correct manifest does not fail merely for being a day old. The
+        # stamp is the ONLY exemption, and it must be a real past date: see
+        # stamp_of() for why.
+        stamp, why = stamp_of(current)
+        if stamp is None:
+            print("manifest is up to date: NO — regenerate (" + why + ")")
+            return 1
+        out["generated"] = stamp
+        expected = json.dumps(out, indent=2, ensure_ascii=False) + "\n"
+
+        same = current == expected
+        print("manifest generated " + stamp
+              + "; freshness is enforced by validate-image-rights.js"
+              + " --max-age-days")
         print("manifest is up to date: " + ("YES" if same else "NO — regenerate"))
         return 0 if same else 1
 

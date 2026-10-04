@@ -71,11 +71,33 @@ jobs:
       # until it mattered. This regenerates in memory and compares: a manifest
       # that no longer matches its records has been edited by hand, and a
       # hand-edited rights manifest is exactly what nobody should trust.
+      #
+      # The comparison exempts ONE field: the manifest's own generated date.
+      # It used to include it, which meant the check compared against today's
+      # date and could only pass on the day the manifest was last committed --
+      # so it failed every later publish with "regenerate" while the rights
+      # were correct. A gate that cries wolf daily teaches the team to
+      # regenerate reflexively to clear a red tick, which is the one habit that
+      # would wave a real rights change through. Freshness was never enforced
+      # here anyway: it is the --max-age-days rule below, which reads that same
+      # date. The step after this one proves the exemption is narrow.
       - name: The manifest must match the canonical rights records
         run: |
           set -euo pipefail
           python3 .github/scripts/generate_image_rights_manifest.py --check \
             || { echo "::error::image-rights-manifest.json does not match image-rights-records.json. Regenerate it; do not hand-edit the manifest."; exit 2; }
+
+      # AND THE EXEMPTION MUST STAY NARROW. A check that ignores a field is one
+      # edit away from ignoring everything, and a relaxed check that has never
+      # been seen to refuse is a comment. Eleven sabotages in temporary trees:
+      # a downgraded grant, a widened domain, a hand-edited row, a softened
+      # reality note, a reformatted file, a missing / malformed / FUTURE-dated
+      # stamp, unreadable JSON and no manifest at all must each refuse -- and a
+      # difference of date alone must pass. The real records, manifest and
+      # generator are hashed before and after: a proof that edits what it
+      # proves has proved nothing.
+      - name: Prove the manifest date-stamp exemption is narrow
+        run: python3 .github/scripts/prove-manifest-check-capability.py
 
       # THE GATE ITSELF. Exit 1 = a rights violation. Exit 2 = the gate could not
       # establish the facts, which is also a failure: a gate that passes when it
