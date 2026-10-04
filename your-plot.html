@@ -38011,11 +38011,31 @@
    that is the supplied motion contract, enforced by omission rather
    than by a rule that could be edited away. */
 (function(){
-  var tpl = document.getElementById("pn-atlas-a-template");
-  if (!tpl) return;
+  /* THE TEMPLATE IS RESOLVED AT HYDRATION TIME, NEVER AT INSTALL TIME.
+
+     This function used to begin by capturing the template and returning if it
+     was absent. Because the pn-atlas-a-template element sits AFTER this
+     script in the document, it was always absent at execution time: the IIFE
+     returned on its second line, window.pnAtlasHydrate was never assigned, the
+     DOMContentLoaded listener was never registered, and every
+     `if (window.pnAtlasHydrate)` call elsewhere silently did nothing. No
+     hydrated Atlas mark rendered at all.
+
+     So nothing here may depend on parse order. pnAtlasHydrate is installed
+     unconditionally; fill() looks the template up when it needs it; and if the
+     template is not parsed yet, fill() returns WITHOUT marking the slot done,
+     so the next pass retries it. This script could sit before the template,
+     after it, or in the head, and hydration still happens. */
   var DELAYS = { "atlas-dark-field": 90, "atlas-sage-field": 240 };
+  function template(){
+    var t = document.getElementById("pn-atlas-a-template");
+    return (t && t.content && t.content.firstElementChild) ? t : null;
+  }
   function fill(slot){
     if (!slot || slot.getAttribute("data-atlas-done")) return;
+    var tpl = template();
+    /* Not parsed yet. Leave the slot UNMARKED so a later pass fills it. */
+    if (!tpl) return;
     var px = parseInt(slot.getAttribute("data-atlas-size"), 10) || 24;
     /* ASPECT-CORRECT HEIGHT WHERE ONE IS DECLARED. The viewBox is 1157x1038,
        so a square box letterboxes the artwork and loses 10.3% of its height.

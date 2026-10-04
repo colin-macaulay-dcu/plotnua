@@ -188,6 +188,18 @@ jobs:
       - name: The Atlas A mark must never claim unestablished verification
         run: node atlas-tools/prove-atlas-a.mjs
 
+      # AND IT MUST ACTUALLY RENDER. The step above reads the page as TEXT, and
+      # it passed on four commits while not one hydrated Atlas mark appeared in
+      # a browser: the bootstrap resolved its template before the parser had
+      # reached it, returned on its second line, and never installed
+      # pnAtlasHydrate at all. Every source-level assertion was true and the
+      # feature was dead. So this step EXECUTES the shipped bootstrap against a
+      # minimal DOM in real source order, and reconstructs the OLD bootstrap as
+      # a control that must fail the same harness -- a harness that cannot
+      # reproduce the bug would prove nothing about the fix.
+      - name: Prove Atlas hydration survives template parse order
+        run: node atlas-tools/prove-atlas-hydration-order.mjs
+
       # AND THAT PROOF'S OWN CAPABILITY. It gained a second imagery mode for
       # OGNYX, who invited imagery for their preview while withholding
       # publication, and new containment code that has never been seen to
