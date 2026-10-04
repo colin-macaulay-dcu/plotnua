@@ -108,9 +108,19 @@ function makeDom() {
   const tplEl = el('template', { id: 'pn-atlas-a-template' });
   tplEl.content = { firstElementChild: svg };
 
-  /* the masthead slot, present from the start (it is built by JS above the
-     bootstrap in the real page, and by hand here) */
-  const slot = el('span', { 'data-atlas-size': '60', 'data-atlas-height': '54' });
+  /* THE SLOT IS LIFTED FROM THE PAGE, NOT INVENTED.
+     This used to hard-code data-atlas-size=60 / data-atlas-height=54. When the
+     founder retired the 60px masthead lockup for a supplied static raster, that
+     invented slot kept passing -- the harness was proving the hydrator against
+     a slot the page no longer contains. So the attributes now come out of the
+     first real .pn-atlas-slot in the shipped markup, and SLOT_PX below is what
+     the assertions compare against. If the page's slots change size, this
+     harness follows them instead of silently testing a ghost. */
+  const slotTag = (/<span class="pn-atlas-slot"[^>]*><\/span>/.exec(src) || [])[0];
+  if (!slotTag) { console.log('    CANNOT  no .pn-atlas-slot in the shipped markup'); process.exit(2); }
+  const slotAttrs = {};
+  for (const [, k, v] of slotTag.matchAll(/(data-atlas-[a-z]+)="([^"]*)"/g)) slotAttrs[k] = v;
+  const slot = el('span', slotAttrs);
   slot.classes.add('pn-atlas-slot');
   const slots = [slot];
 
@@ -120,8 +130,12 @@ function makeDom() {
     querySelectorAll: () => slots,
     addEventListener: (ev, fn) => { if (ev === 'DOMContentLoaded') listeners.push(fn); },
   };
+  /* What the hydrator will compute from those attributes: size, and height
+     only where one is declared (ph defaults to px). */
+  const px = parseInt(slotAttrs['data-atlas-size'], 10) || 24;
+  const ph = parseInt(slotAttrs['data-atlas-height'], 10) || px;
   return {
-    document: document_, slot, tplEl, house,
+    document: document_, slot, tplEl, house, px, ph,
     /* the parser reaches the template */
     parseTemplate() { ids['pn-atlas-a-template'] = tplEl; },
     fireReady() { document_.readyState = 'interactive'; listeners.forEach(f => f()); },
@@ -157,7 +171,7 @@ console.log('  ' + '-'.repeat(72));
       : bad('the control did not reproduce the bug', 'this harness cannot be trusted');
     dom.parseTemplate(); dom.fireReady();
     dom.slot.children.length === 0
-      ? ok('the OLD bootstrap leaves the 60x54 slot EMPTY even after DOMContentLoaded')
+      ? ok('the OLD bootstrap leaves the slot EMPTY even after DOMContentLoaded')
       : bad('the control filled the slot', 'the harness is not modelling the failure');
   }
 }
@@ -193,13 +207,14 @@ console.log('  ' + '-'.repeat(72));
       ? ok('(3) DOMContentLoaded hydration resolves the template and fills the slot')
       : bad('(3) the slot is still empty after DOMContentLoaded');
     if (kid) {
-      kid.tagName === 'svg' ? ok('the 60x54 masthead slot received an <svg>')
+      kid.tagName === 'svg' ? ok('the ' + dom.px + 'x' + dom.ph + ' slot received an <svg>')
                             : bad('the slot received a ' + kid.tagName + ', not an svg');
-      (kid.getAttribute('width') === '60' && kid.getAttribute('height') === '54')
-        ? ok('the SVG is sized 60 x 54 — aspect-correct, from data-atlas-height')
+      (kid.getAttribute('width') === String(dom.px) && kid.getAttribute('height') === String(dom.ph))
+        ? ok('the SVG is sized ' + dom.px + ' x ' + dom.ph + ' — exactly what the slot declares')
         : bad('the SVG is ' + kid.getAttribute('width') + ' x ' + kid.getAttribute('height'));
-      kid.classes.has('pn-atlas-mark--60')
-        ? ok('the SVG carries .pn-atlas-mark--60') : bad('the SVG has no --60 class');
+      kid.classes.has('pn-atlas-mark--' + dom.px)
+        ? ok('the SVG carries .pn-atlas-mark--' + dom.px)
+        : bad('the SVG has no --' + dom.px + ' class');
       kid.classes.has('pn-am-play')
         ? ok('the entrance settle is armed (.pn-am-play)') : bad('.pn-am-play was never added');
       const groups = kid.children;
@@ -221,18 +236,19 @@ console.log('  ' + '-'.repeat(72));
   }
 }
 
-/* ---- 2b . THE AMBIENT ANIMATION IS ACTUALLY ATTACHED --------------------
+/* ---- 2b . THE RETIRED AMBIENT DRIFT LEFT NOTHING ATTACHED ---------------
 
-   DIAGNOSTIC, not a style check. prove-atlas-a.mjs confirms the ambient rules
-   EXIST in the stylesheet and are correctly scoped. That is not the same claim
-   as "the hydrated mark matches them" -- and the whole hydration bug was the
-   gap between a correct stylesheet and an element that never appeared. So this
-   takes the REAL selectors out of the page and evaluates them against the REAL
-   hydrated DOM built above: ancestor classes, descendant classes, the lot. If
-   the hydrator ever stops adding a class the ambient rules depend on, this
-   fails even though the CSS is untouched. ---------------------------------- */
+   This section used to prove the opposite: that two ambient-drift rules in the
+   shipped stylesheet really did reach the hydrated 60px mark. The founder has
+   since retired that mark and that motion -- the masthead now carries a
+   supplied STATIC raster -- so the claim inverts. What must be proved now is
+   that the drift is gone from the stylesheet AND that nothing it used to touch
+   is left half-wired: the field classes the hydrator still writes must match no
+   animation rule, the house must still be unclassed, and the reduced-motion
+   override must still reach the fields it does govern (the entrance), because
+   that override is shared with the placements that remain SVG. ------------- */
 console.log('');
-console.log('  THE AMBIENT MOTION IS ATTACHED TO THE HYDRATED MARK');
+console.log('  THE RETIRED AMBIENT DRIFT LEFT NOTHING ATTACHED');
 console.log('  ' + '-'.repeat(72));
 {
   const dom = makeDom();
@@ -244,63 +260,38 @@ console.log('  ' + '-'.repeat(72));
     const svg = dom.slot.children[0];
     if (!svg) { bad('no hydrated mark to test the selectors against'); }
     else {
-      /* Lift the ambient selectors from the shipped stylesheet. */
       const styles = (src.match(/<style[^>]*>[\s\S]*?<\/style>/g) || []).join('\n')
         .replace(/\/\*[\s\S]*?\*\//g, '');
-      const sels = [...styles.matchAll(/(\.pn-atlas-mark--60[^{,]*?\.pn-am-(?:dark|sage))\s*\{([^}]*)\}/g)];
-      sels.length === 2
-        ? ok('found both ambient rules in the shipped stylesheet')
-        : bad('expected 2 ambient rules, found ' + sels.length);
 
-      /* Evaluate "A.B C" descendant selectors against the hydrated tree. */
-      const matches = sel => {
-        const parts = sel.trim().split(/\s+/);
-        if (parts.length !== 2) return false;
-        const anc = parts[0].split('.').filter(Boolean);
-        const des = parts[1].split('.').filter(Boolean);
-        if (!anc.every(c => svg.classes.has(c))) return false;
-        return svg.children.some(g => des.every(c => g.classes.has(c)));
-      };
+      /* (a) THE DRIFT IS GONE — keyframes, rules and the 60px box alike. */
+      const ghosts = ['pn-atlas-a-drift', 'pn-atlas-mark--60'].filter(k => styles.includes(k));
+      ghosts.length === 0
+        ? ok('no ambient-drift keyframes or rules survive in the shipped stylesheet')
+        : bad('a retired drift artefact survives', ghosts.join(', '));
 
-      for (const [, sel, body] of sels) {
-        const field = sel.includes('pn-am-dark') ? 'dark' : 'sage';
-        if (!matches(sel)) {
-          bad('the ' + field + ' ambient rule does NOT match the hydrated mark', sel.trim());
-          continue;
-        }
-        const name = (/animation-name:([^;]+);/.exec(body) || [, ''])[1];
-        const dur = (/animation-duration:([^;]+);/.exec(body) || [, ''])[1];
-        const iter = (/animation-iteration-count:([^;]+);/.exec(body) || [, ''])[1];
-        const dir = (/animation-direction:([^;]+);/.exec(body) || [, ''])[1];
-        const okName = name.includes('pn-atlas-a-drift-' + field);
-        const okLoop = iter.includes('infinite') && dir.includes('alternate');
-        (okName && okLoop)
-          ? ok('the ' + field + ' field IS animated by ' + ('pn-atlas-a-drift-' + field)
-               + ' (' + dur.trim() + ', ' + iter.trim() + ', ' + dir.trim() + ')')
-          : bad('the ' + field + ' rule matches but does not drive its drift',
-                'name=' + name.trim() + ' iter=' + iter.trim() + ' dir=' + dir.trim());
-      }
+      /* (b) AND NOTHING ELSE PICKED THE FIELDS UP. The hydrator still tags the
+         two ribbon groups; no animation rule anywhere may reach them now. */
+      const fieldRules = [...styles.matchAll(/([^{}]*\.pn-am-(?:dark|sage)[^{,]*)\{([^}]*)\}/g)]
+        .filter(([, , body]) => /animation(-name)?\s*:/.test(body) && !/animation:\s*none/.test(body));
+      fieldRules.length === 0
+        ? ok('the dark and sage field classes are animated by nothing')
+        : bad('a rule still animates a ribbon field', fieldRules.map(r => r[1].trim()).join(' | '));
 
-      /* AND THE HOUSE MUST MATCH NOTHING. */
+      /* (c) THE HOUSE IS STILL FIXED BY OMISSION — it carries no class at all,
+         so no selector of any kind can reach it. */
       const house = svg.children.find(g => g.classes.size === 0);
-      if (!house) bad('could not find an unclassed group — the house may have been tagged');
-      else {
-        const reachable = sels.some(([, sel]) => {
-          const des = sel.trim().split(/\s+/)[1].split('.').filter(Boolean);
-          return des.every(c => house.classes.has(c));
-        });
-        reachable ? bad('an ambient selector reaches the house')
-                  : ok('no ambient selector can reach the house — it is fixed by omission');
-      }
+      house
+        ? ok('the house is still unclassed — fixed by omission, not by rule')
+        : bad('could not find an unclassed group — the house may have been tagged');
 
-      /* AND THE REDUCED-MOTION OVERRIDE MUST REACH THE HYDRATED MARK. */
+      /* (d) AND THE SHARED REDUCED-MOTION OVERRIDE STILL REACHES THE FIELDS. */
       const rm = /@media \(prefers-reduced-motion: reduce\)\{\s*(\.pn-atlas-a \.pn-am-field)\{ animation:none !important; \}/.exec(styles);
       if (!rm) bad('could not find the reduced-motion rule');
       else {
         const [anc, des] = rm[1].trim().split(/\s+/).map(x => x.split('.').filter(Boolean));
         const hits = anc.every(c => svg.classes.has(c))
           && svg.children.some(g => des.every(c => g.classes.has(c)));
-        hits ? ok('the reduced-motion override reaches the hydrated fields (kills entrance AND ambient)')
+        hits ? ok('the reduced-motion override still reaches the hydrated fields')
              : bad('the reduced-motion override does NOT reach the hydrated fields');
       }
     }
@@ -320,7 +311,7 @@ console.log('  ' + '-'.repeat(72));
     dom.document.readyState = 'complete';
     /* aaRenderAssessment() empties its host and rebuilds, then calls
        pnAtlasHydrate(subtree). Model a FRESH slot, as a repaint produces. */
-    const fresh = { ...dom.slot, children: [], attrs: { 'data-atlas-size': '60', 'data-atlas-height': '54' } };
+    const fresh = { ...dom.slot, children: [], attrs: { ...dom.slot.attrs } };
     fresh.classes = new Set(['pn-atlas-slot']);
     fresh.classList = { add: c => fresh.classes.add(c), remove: c => fresh.classes.delete(c), contains: c => fresh.classes.has(c) };
     fresh.getAttribute = k => (k in fresh.attrs ? fresh.attrs[k] : null);
@@ -364,6 +355,6 @@ console.log('='.repeat(76));
 if (confused) { console.log('NOT ESTABLISHED — ' + confused + ' check(s) could not run.'); process.exit(2); }
 if (failed) { console.log('FAILED — ' + failed + ' check(s).'); process.exit(1); }
 console.log('HYDRATION ORDER VERIFIED — the bootstrap installs unconditionally, resolves the '
-  + 'template when it hydrates, and fills the 60x54 masthead slot in the real source order. '
+  + 'template when it hydrates, and fills a real shipped slot at the size that slot declares, in the real source order. '
   + 'The old bootstrap fails this same harness.');
 process.exit(0);

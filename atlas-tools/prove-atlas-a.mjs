@@ -224,6 +224,10 @@ if (headPage) {
    explains the house is never targeted. */
 const css = (/\/\* ATLAS A MOTION[\s\S]*?prefers-reduced-motion[\s\S]*?\n  \}\n/.exec(src) || [''])[0];
 const rules = css.replace(/\/\*[\s\S]*?\*\//g, '');
+/* The static-mark rules live outside the old ATLAS A MOTION block, so that
+   section reads the whole stylesheet rather than the scoped extract. */
+const rulesAll = (src.match(/<style[^>]*>[\s\S]*?<\/style>/g) || []).join('\n')
+                   .replace(/\/\*[\s\S]*?\*\//g, '');
 if (!css) cannot('could not find the Atlas A motion CSS');
 else {
   /* ------------------------------------------------------------------------
@@ -253,91 +257,77 @@ else {
       ? bad('looping motion escapes the 60px lockup', 'reachable via: ' + leaks.join(' | '))
       : ok('looping is reachable ONLY through .pn-atlas-mark--60 — no other mark inherits it');
   }
-  /* And only the two FIELDS may carry it. */
+  /* ===== THE APPROVED STATIC ATLAS MARK ==========================
+     Founder decision: the primary Atlas placement is a supplied STATIC raster.
+     The SVG-motion contract this section used to assert is retired along with
+     the animation it described. What is asserted now is that the supplied
+     asset is used as supplied and that nothing anywhere makes it move. */
   {
-    const sels = (rules.match(/\.pn-atlas-mark--60[^{]*\{/g) || [])
-      .map(x => x.replace('{', '').trim());
-    const bad_sel = sels.filter(x => !/\.pn-am-dark$|\.pn-am-sage$/.test(x));
-    bad_sel.length
-      ? bad('an ambient rule targets something other than the two fields', bad_sel.join(' | '))
-      : ok('ambient motion targets only .pn-am-dark and .pn-am-sage (' + sels.length + ' rules)');
+    const IMG = 'assets/brand/atlas-final-static-approved-transparent.png';
+    (src.split(IMG).length - 1) === 1
+      ? ok('the approved static mark is referenced exactly once')
+      : bad('the approved static mark reference count is wrong');
+    fs.existsSync(path.join(ROOT, IMG))
+      ? ok('the supplied asset is present on disk')
+      : bad('the supplied asset is missing from the repo');
+
+    /* THE ANIMATION IS GONE FROM THIS PRESENTATION POINT. */
+    const retired = [
+      ['<video', 'a video tag'],
+      /* A tag search alone misses the JS route, which is how the retired
+         implementation actually built its player. */
+      ["createElement('video')", 'a video element built in JS'],
+      ['video/webm', 'a webm source type'],
+      ['video/mp4', 'an mp4 source type'],
+      ['atlas-final-living-loop-transparent.webm', 'the transparent webm'],
+      ['atlas-final-living-loop.mp4', 'the mp4'],
+      ['atlas-final-static-fallback-transparent.png', 'the animation fallback'],
+      ['pn-atlas-loop', 'the video wrapper'],
+      ['pn-atlas-mark--60', 'the retired 60px SVG box'],
+      ['pn-atlas-a-drift', 'the retired SVG ambient drift'],
+    ].filter(([s]) => src.includes(s));
+    retired.length === 0
+      ? ok('no video, no webm/mp4, no retired SVG motion survives at the masthead')
+      : bad('a retired implementation survives', retired.map(r => r[1]).join(', '));
+
+    /* AND NOTHING MAKES THE STATIC MARK MOVE. */
+    const still = rulesAll.split('}').filter(b2 => b2.includes('pn-atlas-still')).join('}');
+    const moves = ['@keyframes', 'animation', 'transition', 'transform',
+                   'mix-blend-mode', 'filter:', 'rotate', 'scale(']
+      .filter(k => still.includes(k));
+    moves.length === 0
+      ? ok('the static mark carries no animation, transition, transform, blend or filter')
+      : bad('the static mark is not inert', moves.join(', '));
+
+    /* SIZING, POSITION AND RESPONSIVE BEHAVIOUR CARRIED OVER. */
+    /\.pn-atlas-still\{[^}]*width:60px; height:60px;/.test(rulesAll)
+      ? ok('60px box preserved')
+      : bad('the 60px box was not preserved');
+    /@media \(max-width:360px\)\{\s*\.pn-atlas-still\{ width:48px; height:48px; \}/.test(rulesAll)
+      ? ok('48px at <=360 preserved')
+      : bad('the narrow-width box was not preserved');
+    /aspect-ratio:1 \/ 1/.test(rulesAll)
+      ? ok('1:1 intrinsic ratio declared — no layout shift before load')
+      : bad('the 1:1 ratio is not declared');
+    /const mastImg = document\.createElement\('img'\);/.test(src)
+      ? ok('the mark is an <img> — a plain image, not a player')
+      : bad('the masthead mark is not built as an <img>');
+    (/mastImg\.width = 60; mastImg\.height = 60;/.test(src)
+     && /mastImg\.setAttribute\('aria-hidden', 'true'\)/.test(src)
+     && /mastImg\.alt = '';/.test(src))
+      ? ok('decorative: empty alt, aria-hidden, explicit 60x60 box')
+      : bad('the image is not correctly declared decorative');
+    /mastLead\.appendChild\(aaEl\('span', 'aa-mast-l', 'Atlas assessment'\)\)/.test(src)
+      ? ok('still sits in the masthead lead beside the Atlas assessment heading')
+      : bad('the masthead placement changed');
+
+    /* THE SMALL PLACEMENTS KEEP THE INLINED SVG — unchanged by this decision. */
+    (/viewBox="0 0 1157 1038"/.test(src) && /\.pn-atlas-mark--24\{/.test(src)
+     && /\.pn-atlas-mark--20\{/.test(src) && /\.pn-atlas-mark--16\{/.test(src))
+      ? ok('the 24px, 20px and 16px SVG placements are untouched')
+      : bad('a small SVG placement changed');
   }
-  /* THE APPROVED DURATIONS, exactly. 9s and 11s are co-prime so the two
-     cycles re-align only every 99s — that is what removes the visible reset,
-     so the numbers are part of the contract, not a detail. */
-  /animation-duration:620ms, 9s;/.test(rules)
-    ? ok('the dark field drifts over 9s')
-    : bad('the dark field ambient duration is not 9s');
-  /animation-duration:620ms, 11s;/.test(rules)
-    ? ok('the sage field drifts over 11s')
-    : bad('the sage field ambient duration is not 11s');
-  /animation-timing-function:cubic-bezier\(\.2,\.75,\.25,1\), ease-in-out;/.test(rules)
-    ? ok('the ambient drift eases in and out')
-    : bad('the ambient drift is not ease-in-out');
-  /animation-direction:normal, alternate;/.test(rules)
-    ? ok('the drift alternates — it eases back rather than resetting')
-    : bad('the drift does not alternate, so it would snap back');
 
-  /* THE TINY BOUNDS. Parsed from the keyframes and checked numerically, so a
-     later edit cannot widen the drift into a slide. */
-  {
-    /* THE AMPLITUDE IS A DELIBERATE, MEASURED VALUE, NOT A FEELING.
-
-       transform-box is fill-box, so a percentage resolves against each GROUP's
-       own box, not the 60px viewport. The first amplitude (+-0.7% / +-0.4%) was
-       therefore sub-pixel on screen -- 0.42px for dark, 0.32px for sage -- and
-       read as completely static. These numbers travel:
-
-           dark  59.74 x 53.73 px box  ->  -1.49 px X, +0.81 px Y, +0.54 px/edge
-           sage  45.17 x 49.11 px box  ->  +1.13 px X, -0.74 px Y, -0.34 px/edge
-           relative separation at the extremes: 3.04 px diagonal
-
-       The ceiling below is the restraint: wide enough to see over 9 and 11
-       seconds, far too narrow to read as a slide or a loading indicator. */
-    const want = {
-      'pn-atlas-a-drift-dark': { x: -2.5, y:  1.5, s: 1.018 },
-      'pn-atlas-a-drift-sage': { x:  2.5, y: -1.5, s: 0.985 },
-    };
-    let allOk = true;
-    for (const [name, w] of Object.entries(want)) {
-      /* Match to the block's OWN closing brace, not the first inner one: a
-         keyframes block contains `from{...}` and `to{...}`, so a lazy match to
-         the first '}' stops inside `from` and never sees the end state. */
-      const kf = new RegExp('@keyframes ' + name + '\\{([\\s\\S]*?)\\n  \\}').exec(rules);
-      if (!kf) { bad('missing keyframes ' + name); allOk = false; continue; }
-      if (/opacity|rotate|filter|box-shadow|skew|perspective/.test(kf[1])) {
-        bad(name + ' animates something other than translate and scale'); allOk = false; continue;
-      }
-      const m = /translate\((-?[\d.]+)%,\s*(-?[\d.]+)%\)\s*scale\(([\d.]+)\)/.exec(kf[1].split('to{')[1] || '');
-      if (!m) { bad('could not parse the end state of ' + name); allOk = false; continue; }
-      const x = +m[1], y = +m[2], sc = +m[3];
-      if (Math.abs(x) > 2.6 || Math.abs(y) > 1.6 || Math.abs(sc - 1) > 0.020) {
-        bad(name + ' drifts outside the approved bounds',
-            'translate ' + x + '%, ' + y + '% scale ' + sc); allOk = false; continue;
-      }
-      if (x !== w.x || y !== w.y || sc !== w.s) {
-        bad(name + ' is not the approved value', 'got ' + x + ',' + y + ',' + sc); allOk = false;
-      }
-    }
-    if (allOk) ok('both drifts stay within ±2.5% / ±1.5% translate and ±2% scale, in opposition');
-  }
-  /* No travel in the SETTLE, which still must not move. */
-  /@keyframes pn-atlas-a-settle\{[^}]*translate\(/.test(rules)
-    ? bad('the entrance settle now travels')
-    : ok('the entrance settle still scales and fades only');
-  const spin = ['rotate(', 'box-shadow', 'drop-shadow', 'filter:', 'skew('].filter(k => rules.includes(k));
-  spin.length ? bad('the motion spins or glows: ' + spin.join(', '))
-              : ok('no rotation, shadow, filter or skew anywhere in the motion');
-  /to\{ opacity:1; transform:scale\(1\) \}/.test(rules)
-    ? ok('the entrance keyframe ends settled at opacity 1, scale 1')
-    : bad('the entrance keyframe does not end at the settled state');
-
-  /* REDUCED MOTION must kill BOTH. One !important rule on
-     .pn-atlas-a .pn-am-field reaches the lockup too, because the lockup
-     carries .pn-atlas-a and its fields carry .pn-am-field. */
-  /@media \(prefers-reduced-motion: reduce\)\{\s*\.pn-atlas-a \.pn-am-field\{ animation:none !important; \}/.test(rules)
-    ? ok('prefers-reduced-motion removes entrance AND ambient motion (one !important rule reaches both)')
-    : bad('reduced motion does not disable the Atlas animation');
   /\.pn-atlas-mark--60[^{]*\{[^}]*animation[^}]*!important/.test(rules)
     ? bad('an ambient rule uses !important', 'it would survive the reduced-motion override')
     : ok('no ambient rule uses !important — reduced motion always wins');
@@ -373,44 +363,53 @@ else {
    18.1% of the mark's width -- 3.6 x 4.2px at 20px nominal. The finest sage
    ribbon does not clear the 2px floor until about 53px.
 
-   So the assertions are: ONE visible mark, in the masthead, at an
-   aspect-correct 60 x 54, reachable without interaction; no mark on the two
-   retired labels; the gated micro signature untouched; one source copy of the
-   geometry. ------------------------------------------------------------- */
+   THIRD, AND CURRENT: the masthead placement is no longer the SVG at all.
+   The founder approved a supplied STATIC raster for it, so the reachability
+   and aspect requirements above are now carried by the static asset section
+   near the top of this file, and this section asserts that the retired 60x54
+   SVG lockup left nothing behind. The 24/20/16px placements are still the SVG
+   and the house assertions above still govern them.
+
+   So the assertions are: ONE visible mark, in the masthead, supplied as a
+   static raster and inert, reachable without interaction; no leftovers from
+   the retired SVG lockup; no mark on the two retired labels; the gated micro
+   signature untouched; one source copy of the geometry. ---------------- */
 console.log('');
 console.log('  THE ATLAS IDENTITY LOCKUP');
 console.log('  ' + '-'.repeat(72));
 {
-  /* (1) THE MASTHEAD CARRIES THE FULL MARK AT 60 x 54. */
+  /* (1) THE MASTHEAD'S SVG LOCKUP IS RETIRED.
+     The founder approved a supplied STATIC raster for this one placement, so
+     the masthead no longer clones the SVG template at 60x54. The positive
+     assertions for what IS there now live in THE APPROVED STATIC ATLAS MARK
+     section above; what this block asserts is that the retired lockup left
+     nothing behind -- no 60px class, no size attributes, no orphan slot. */
   const mastBlock = /const mast = aaEl\('div', 'aa-mast'\);[\s\S]{0,4000}?mast\.appendChild\(aaEl\('span', 'aa-mast-r', org\)\);/.exec(src);
   if (!mastBlock) cannot('could not isolate the Atlas assessment masthead block');
   else {
     const b = mastBlock[0];
-    /data-atlas-size', '60'/.test(b)
-      ? ok('the masthead lockup is 60px wide')
-      : bad('the masthead lockup is not 60px', 'below ~53px the ribbons fall under the 2px floor');
-    /data-atlas-height', '54'/.test(b)
-      ? ok('the masthead lockup declares an aspect-correct height of 54px')
-      : bad('the masthead lockup has no aspect-correct height',
-            'a square box letterboxes the 1157x1038 artwork and loses 10.3% of it');
-    /pn-atlas-slot/.test(b)
-      ? ok('the masthead uses the full mark, cloned from the one template')
-      : bad('the masthead carries no Atlas slot');
-    /pnAtlasHydrate/.test(b)
-      ? ok('the masthead hydrates its own subtree — it survives the repaint')
-      : bad('the masthead slot is not hydrated locally');
+    const left = [
+      ["data-atlas-size', '60'", 'the 60px size attribute'],
+      ["data-atlas-height', '54'", 'the 54px height attribute'],
+      ['pn-atlas-slot', 'an SVG slot'],
+      ['pn-atlas-mark--60', 'the 60px mark class'],
+    ].filter(([s]) => b.includes(s));
+    left.length === 0
+      ? ok('the retired SVG lockup left nothing behind in the masthead')
+      : bad('the retired SVG lockup partly survives', left.map(r => r[1]).join(', '));
+    /pn-atlas-still/.test(b)
+      ? ok('the masthead carries the approved static mark')
+      : bad('the masthead carries no static mark');
     const upToMark = b.split('const mastMark')[0] || '';
     /\bif\s*\(/.test(upToMark.replace(/\/\*[\s\S]*?\*\//g, ''))
       ? bad('the masthead mark is built conditionally')
       : ok('the masthead mark is unconditional — every assessment carries it');
   }
-  /* The CSS must agree, and must NOT be a square. */
-  const c60 = /\.pn-atlas-mark--60\{ width:60px; height:54px; \}/.test(src);
-  c60 ? ok('CSS .pn-atlas-mark--60 is an aspect-correct 60x54 box')
-      : bad('CSS .pn-atlas-mark--60 is missing or not 60x54');
-  /\.pn-atlas-mark--60\{ width:60px; height:60px; \}/.test(src)
-    ? bad('the 60px class is a SQUARE box', 'it would letterbox the artwork')
-    : ok('the 60px class is not square');
+  /* And the retired class is gone from the stylesheet too, so no rule is left
+     styling a box nothing requests any more. */
+  !/\.pn-atlas-mark--60\b/.test(src)
+    ? ok('the retired .pn-atlas-mark--60 rule is gone from the stylesheet')
+    : bad('.pn-atlas-mark--60 is still declared', 'nothing requests it any more');
   /* The hydrator must honour the declared height, or the attribute geometry
      and the stylesheet disagree. */
   /data-atlas-height"\), 10\) \|\| px/.test(src)
@@ -544,6 +543,7 @@ console.log('='.repeat(76));
 if (confused) { console.log('NOT ESTABLISHED — ' + confused + ' check(s) could not run.'); process.exit(2); }
 if (failed) { console.log('FAILED — ' + failed + ' check(s).'); process.exit(1); }
 console.log('ATLAS A PHASE 1 VERIFIED — the supplied artwork is used as supplied, '
-  + 'the house never moves, and the mark never claims model-level verification '
+  + 'the masthead mark is inert, the house never moves in the SVG placements, '
+  + 'and the mark never claims model-level verification '
   + 'Atlas did not establish.');
 process.exit(0);

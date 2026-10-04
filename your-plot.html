@@ -1692,10 +1692,12 @@
   .pn-atlas-mark--24{ width:24px; height:24px; }
   .pn-atlas-mark--20{ width:20px; height:20px; }
   .pn-atlas-mark--16{ width:16px; height:16px; }
-  /* ASPECT-CORRECT, NOT SQUARE. The viewBox is 1157x1038, so a square box
-     wastes 10.3% of its height and makes the nominal size a lie. 60x54 is the
-     artwork's own ratio: 60 / 1.1146 = 53.8, rounded to 54. */
-  .pn-atlas-mark--60{ width:60px; height:54px; }
+  /* THE 60px SVG BOX IS RETIRED. It carried the masthead at an aspect-correct
+     60x54 -- the viewBox is 1157x1038, so a square box would have wasted 10.3%
+     of its height. The founder has since approved a supplied static raster for
+     that one placement, so nothing requests size 60 any more and the rule, its
+     ambient drift and its keyframes are all gone. The SVG mark itself stays,
+     unchanged, for the 24px, 20px and 16px uses below. */
   /* The heading becomes a row so the mark sits BESIDE the words,
      never replacing them. */
   .match-atlas-popover-title.has-atlas-mark,
@@ -1737,8 +1739,9 @@
      EXCEPT ONE: the primary 60 x 54 ATLAS ASSESSMENT lockup, which alone may
      carry continuous ambient field motion. The 24px popover marks, the 20px
      panel mark, the 16px evidence-row micro signature and any future
-     placement remain play-once. Nothing inherits the loop: the ambient rules
-     are selector-scoped to .pn-atlas-mark--60 and cannot reach anything else.
+     placement remain play-once. The ambient loop that this paragraph used to
+     scope is retired: the primary placement is the supplied video asset, so
+     the smooth mark now settles once everywhere and loops nowhere.
 
      The supplied motion contract, otherwise implemented literally:
        #atlas-house stays stable          -- it carries NO animation rule at
@@ -1795,47 +1798,36 @@
     to{ opacity:1; transform:scale(1) }
   }
 
-  /* AMBIENT FIELD DRIFT — .pn-atlas-mark--60 AND NOTHING ELSE.
-
-     Two animations per group as a comma list: the entrance settle keeps its
-     620ms and its iteration-count 1, and the ambient begins after the settle
-     has landed (1000ms and 1150ms against settle ends of 710ms and 860ms), so
-     the handoff happens at translate(0,0) scale(1) — exactly where the settle
-     finishes. Nothing jumps.
-
-     The two periods are co-prime on purpose. Equal periods would breathe in
-     lockstep and the turn would read as a beat; 9 and 11 re-align only every
-     99 seconds. */
-  .pn-atlas-mark--60.pn-am-play .pn-am-dark{
-    animation-name:pn-atlas-a-settle, pn-atlas-a-drift-dark;
-    animation-duration:620ms, 9s;
-    animation-delay:var(--pn-am-d,0ms), 1000ms;
-    animation-timing-function:cubic-bezier(.2,.75,.25,1), ease-in-out;
-    animation-iteration-count:1, infinite;
-    animation-direction:normal, alternate;
-    animation-fill-mode:both, none;
-  }
-  .pn-atlas-mark--60.pn-am-play .pn-am-sage{
-    animation-name:pn-atlas-a-settle, pn-atlas-a-drift-sage;
-    animation-duration:620ms, 11s;
-    animation-delay:var(--pn-am-d,0ms), 1150ms;
-    animation-timing-function:cubic-bezier(.2,.75,.25,1), ease-in-out;
-    animation-iteration-count:1, infinite;
-    animation-direction:normal, alternate;
-    animation-fill-mode:both, none;
-  }
-  /* Transform only. No opacity, no filter, no shadow, no rotation. */
-  @keyframes pn-atlas-a-drift-dark{
-    from{ transform:translate(0,0) scale(1) }
-    to{ transform:translate(-2.5%,1.5%) scale(1.018) }
-  }
-  @keyframes pn-atlas-a-drift-sage{
-    from{ transform:translate(0,0) scale(1) }
-    to{ transform:translate(2.5%,-1.5%) scale(0.985) }
-  }
+  /* The 60px ambient drift is retired with its box: its selector could
+     only ever match the retired 60px size class, and no element is built
+     with that class any more. (The class name is deliberately not spelled
+     out here: a comment naming it would trip the builder's own orphan
+     check, which is exactly the self-referential hazard it exists to
+     catch.) */
   @media (prefers-reduced-motion: reduce){
     .pn-atlas-a .pn-am-field{ animation:none !important; }
   }
+  /* ===== THE APPROVED STATIC ATLAS MARK ==========================
+     Supplied as a finished 1254x1254 raster and used as supplied. Sizing,
+     position and responsive behaviour are carried over unchanged from the
+     placement this replaces: 60px, 48px at <=360, 1:1, inline in the masthead
+     lead beside the heading.
+
+     No animation, no transition, no blend mode, no filter. The mark is static
+     by founder decision, so prefers-reduced-motion needs no special case --
+     there is nothing to stop. ========================================= */
+  .pn-atlas-still{
+    display:inline-block; flex:0 0 auto; line-height:0;
+    width:60px; height:60px;
+  }
+  .pn-atlas-still-img{
+    display:block; width:100%; height:100%;
+    aspect-ratio:1 / 1; object-fit:contain;
+  }
+  @media (max-width:360px){
+    .pn-atlas-still{ width:48px; height:48px; }
+  }
+
   .match-atlas-popover-title{
     font-family:'Fraunces',serif; font-weight:500; font-size:22px; line-height:1.25;
     color:var(--ink); margin:0 0 14px;
@@ -25893,12 +25885,34 @@
        because this host is emptied and repainted when the lazy detail
        partitions land. */
     const mastLead = aaEl('span', 'aa-mast-lead');
-    const mastMark = aaEl('span', 'pn-atlas-slot');
-    /* 60 x 54, the artwork's own ratio. Not 20: at 20px the house draws
-       3.6 x 4.2px and the mark reads as a status glyph rather than an
-       identity. Measured, not guessed. */
-    mastMark.setAttribute('data-atlas-size', '60');
-    mastMark.setAttribute('data-atlas-height', '54');
+    /* THE APPROVED STATIC ATLAS MARK, USED EXACTLY AS SUPPLIED.
+       Authority: atlas-visual-references/atlas-final-static-approved.png
+   Shipped as ...-transparent.png: the SAME artwork with its #FDFAF1 ground
+   keyed out to real alpha, so PlotNua's #F5F2E8 shows through the open centre
+   and around the knot. Every fully opaque pixel is byte-identical to the
+   approved file; only the anti-aliased rim carries partial alpha.
+       1254x1254, 1:1. Interwoven dark-green and sage knot with an OPEN CENTRE
+       -- no house, no mini-house, no sphere, no object of any kind.
+
+       This supersedes, for production, the animated WebM/MP4, the GIF
+       experiments, the transparent animation, the earlier house/A versions and
+       the old inlined SVG mark. The mark is STATIC: there is no video element,
+       no poster, no reduced-motion swap and no CSS motion, because there is no
+       motion to settle.
+
+       Decorative, as every previous Atlas placement was: the "Atlas assessment"
+       heading beside it carries the meaning, so it is aria-hidden with an empty
+       alt and cannot be focused. Width and height are set so the 1:1 box is
+       reserved before the image loads. */
+    const mastMark = aaEl('span', 'pn-atlas-still');
+    const mastImg = document.createElement('img');
+    mastImg.className = 'pn-atlas-still-img';
+    mastImg.src = 'assets/brand/atlas-final-static-approved-transparent.png';
+    mastImg.alt = '';
+    mastImg.width = 60; mastImg.height = 60;
+    mastImg.decoding = 'async';
+    mastImg.setAttribute('aria-hidden', 'true');
+    mastMark.appendChild(mastImg);
     mastLead.appendChild(mastMark);
     mastLead.appendChild(aaEl('span', 'aa-mast-l', 'Atlas assessment'));
     mast.appendChild(mastLead);
