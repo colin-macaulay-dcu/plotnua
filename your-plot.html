@@ -1692,6 +1692,10 @@
   .pn-atlas-mark--24{ width:24px; height:24px; }
   .pn-atlas-mark--20{ width:20px; height:20px; }
   .pn-atlas-mark--16{ width:16px; height:16px; }
+  /* ASPECT-CORRECT, NOT SQUARE. The viewBox is 1157x1038, so a square box
+     wastes 10.3% of its height and makes the nominal size a lie. 60x54 is the
+     artwork's own ratio: 60 / 1.1146 = 53.8, rounded to 54. */
+  .pn-atlas-mark--60{ width:60px; height:54px; }
   /* The heading becomes a row so the mark sits BESIDE the words,
      never replacing them. */
   .match-atlas-popover-title.has-atlas-mark,
@@ -1699,44 +1703,67 @@
   /* On an evidence row the mark is a quiet trailing signature. */
   .am-ev-atlas{ margin-left:6px; position:relative; top:2px; opacity:.9; }
 
-  /* ATLAS A ON THE VISIBLE SURFACES.
+  /* THE ATLAS IDENTITY LOCKUP — the one visible mark on this page.
 
-     Phase 1 put the mark only where Atlas EXPLAINS itself -- a popover and a
-     collapsed panel. These three are where the page NAMES Atlas on first
-     render, so they are where the mark has to be.
+     Phase 1 put the mark only where Atlas EXPLAINS itself: a popover and a
+     collapsed panel, neither of which a homeowner reaches without a click. The
+     first correction added three visible marks at 16-20px, which failed on
+     sight for a reason the geometry predicts -- at 20px the house renders
+     3.6 x 4.2px and the finest ribbon 0.76px, so the identity dissolves into a
+     status glyph. The 2px floor is not cleared until about 53px.
 
-     .aa-mast is justify-content:space-between and must stay two-ended, so the
-     mark and the label share one inline-flex wrapper rather than becoming a
-     third flex item.
-
-     The maker label is a <p> with an appended footnote superscript, so its
-     mark stays inline-block: making that label a flex row would pull the
-     superscript out of the text baseline. */
-  .aa-mast-lead{ display:inline-flex; align-items:center; gap:8px; }
-  .results-gallery-heading.has-atlas-mark{
-    display:flex; align-items:center; gap:10px;
+     So there is now ONE visible mark, at a size the artwork survives, in the
+     one place that is the page's Atlas moment. .aa-mast stays two-ended, so
+     the mark and its label share this lead group rather than becoming a third
+     flex item; the group is what makes them one lockup rather than an icon
+     placed near some words. No container: no fill, border, radius or shadow. */
+  .aa-mast-lead{ display:flex; align-items:center; gap:16px; }
+  /* UNDER 360px THE MASTHEAD STACKS ON PURPOSE. .aa-mast is flex-wrap:wrap, so
+     a long organisation name already dropped to a second line -- but left
+     wherever justify-content:space-between happened to put it. Blocking the
+     masthead puts the organisation on its own line, aligned to the masthead's
+     own left edge, with modest space above. The lockup is untouched: still
+     60 x 54, still beside its label. No other assessment rule changes. */
+  @media (max-width:360px){
+    .aa-mast{ display:block; }
+    .aa-mast-r{ display:block; margin-top:10px; }
   }
-  .aa-find-lab-mark{
-    display:inline-block; vertical-align:middle;
-    margin-right:7px; position:relative; top:-1px;
-  }
 
-  /* ATLAS A MOTION — the 24px and 20px headings only.
+  /* ATLAS A MOTION — the hydrated placements, with ONE amendment.
 
-     The supplied motion contract, implemented literally:
-       #atlas-house stays stable          -- it carries NO animation
-                                             rule at all, so it cannot
-                                             move by accident.
-       the field gathers and settles      -- the two field groups fade
-                                             and scale in, once.
-       no spin, orbit, loading-dot,       -- only opacity and a scale
-       bounce or endless pulse               that ends at 1. Nothing
-                                             turns, travels or repeats;
-                                             the builder refuses any
-                                             looping keyword in here.
-       reduced motion                     -- animation removed entirely,
-                                             which lands on the artwork's
-                                             own authored state.
+     THE AMENDMENT, stated before the rules it changes. The supplied contract
+     said no endless pulse, and this block enforced it by banning the looping
+     keywords outright. That ban is now ABSOLUTE FOR EVERY ATLAS PLACEMENT
+     EXCEPT ONE: the primary 60 x 54 ATLAS ASSESSMENT lockup, which alone may
+     carry continuous ambient field motion. The 24px popover marks, the 20px
+     panel mark, the 16px evidence-row micro signature and any future
+     placement remain play-once. Nothing inherits the loop: the ambient rules
+     are selector-scoped to .pn-atlas-mark--60 and cannot reach anything else.
+
+     The supplied motion contract, otherwise implemented literally:
+       #atlas-house stays stable          -- it carries NO animation rule at
+                                             all AND the hydrator gives it no
+                                             class, so no selector can reach
+                                             it. Fixed by omission, twice.
+       the field gathers and settles      -- the two field groups fade and
+                                             scale in, once, everywhere.
+       ambient drift, LOCKUP ONLY         -- the two fields then breathe in
+                                             opposition, 9s and 11s, ease-in-
+                                             out, alternate. Co-prime periods,
+                                             so they re-align only every 99s
+                                             and there is no beat or reset.
+                                             Transform only: <=0.7% translate
+                                             and <=0.6% scale. No opacity, so
+                                             nothing pulses in brightness.
+       no spin, orbit, loading-dot        -- still none, anywhere. The drift
+       or bounce                             travels under one percent and
+                                             eases both ways; it is not a
+                                             loading indicator.
+       reduced motion                     -- one !important rule removes BOTH
+                                             the entrance and the ambient
+                                             animation, landing on the
+                                             artwork's authored static state
+                                             immediately.
        16px micro                         -- an <img>, never in here.
 
      transform-box:fill-box makes transform-origin resolve against each
@@ -1754,6 +1781,45 @@
   @keyframes pn-atlas-a-settle{
     from{ opacity:0; transform:scale(.90) }
     to{ opacity:1; transform:scale(1) }
+  }
+
+  /* AMBIENT FIELD DRIFT — .pn-atlas-mark--60 AND NOTHING ELSE.
+
+     Two animations per group as a comma list: the entrance settle keeps its
+     620ms and its iteration-count 1, and the ambient begins after the settle
+     has landed (1000ms and 1150ms against settle ends of 710ms and 860ms), so
+     the handoff happens at translate(0,0) scale(1) — exactly where the settle
+     finishes. Nothing jumps.
+
+     The two periods are co-prime on purpose. Equal periods would breathe in
+     lockstep and the turn would read as a beat; 9 and 11 re-align only every
+     99 seconds. */
+  .pn-atlas-mark--60.pn-am-play .pn-am-dark{
+    animation-name:pn-atlas-a-settle, pn-atlas-a-drift-dark;
+    animation-duration:620ms, 9s;
+    animation-delay:var(--pn-am-d,0ms), 1000ms;
+    animation-timing-function:cubic-bezier(.2,.75,.25,1), ease-in-out;
+    animation-iteration-count:1, infinite;
+    animation-direction:normal, alternate;
+    animation-fill-mode:both, none;
+  }
+  .pn-atlas-mark--60.pn-am-play .pn-am-sage{
+    animation-name:pn-atlas-a-settle, pn-atlas-a-drift-sage;
+    animation-duration:620ms, 11s;
+    animation-delay:var(--pn-am-d,0ms), 1150ms;
+    animation-timing-function:cubic-bezier(.2,.75,.25,1), ease-in-out;
+    animation-iteration-count:1, infinite;
+    animation-direction:normal, alternate;
+    animation-fill-mode:both, none;
+  }
+  /* Transform only. No opacity, no filter, no shadow, no rotation. */
+  @keyframes pn-atlas-a-drift-dark{
+    from{ transform:translate(0,0) scale(1) }
+    to{ transform:translate(-0.7%,0.4%) scale(1.006) }
+  }
+  @keyframes pn-atlas-a-drift-sage{
+    from{ transform:translate(0,0) scale(1) }
+    to{ transform:translate(0.7%,-0.4%) scale(0.996) }
   }
   @media (prefers-reduced-motion: reduce){
     .pn-atlas-a .pn-am-field{ animation:none !important; }
@@ -3886,7 +3952,17 @@
 
   /* ======================================================================
      AA-001 · THE ATLAS ASSESSMENT — frozen editorial spread.
-     Typographic only: no fills, no boxes, no shadows, no pills, no icons.
+     Typographic, with ONE named exception: no fills, no boxes, no shadows,
+     no pills and no icons — except the Atlas identity lockup in the masthead,
+     which is the single brand exception and is not an icon in the sense this
+     rule forbids. It carries no container of its own: no fill, no border, no
+     radius, no shadow, no pill. It is the approved Atlas A artwork set beside
+     the "Atlas assessment" label as one unit, at an aspect-correct 60 x 54px,
+     because the measured geometry does not survive below roughly 53px: the
+     house is 18.1% of the mark's width, and the finest ribbon falls under the
+     2px floor. Nothing else in this spread may add a mark, and no second
+     visible Atlas mark may be introduced on this page without that
+     measurement being redone.
      Six tones, each with exactly one job:
        ground   inherited from the page
        voice    #24351F  serif statements and structural rules
@@ -3909,8 +3985,8 @@
     font-family:'Work Sans',sans-serif;
   }
   .aa-mast{
-    border-top:1px solid var(--aa-voice); padding-top:9px;
-    display:flex; justify-content:space-between; align-items:baseline;
+    border-top:1px solid var(--aa-voice); padding-top:14px;
+    display:flex; justify-content:space-between; align-items:center;
     gap:20px; flex-wrap:wrap;
   }
   .aa-mast-l{ font-size:10px; letter-spacing:.30em; color:var(--aa-label); text-transform:uppercase; }
@@ -10502,12 +10578,7 @@
          been hidden since UX-008; no element was added for it. -->
     <!-- ISSUE 007 — the count is gone. "Four" was hard-coded and became untrue
          the moment a lens was suppressed; this stays true whatever renders. -->
-    <!-- ATLAS A, 20px, STATIC. The sentence names Atlas as the author of
-         the alternatives, so the mark belongs to it. Static: this is a
-         heading the homeowner scrolls to, not an arrival. The slot
-         hydrates with the rest of the static markup; the heading being
-         `hidden` until the rail populates does not affect that. -->
-    <div class="results-gallery-heading has-atlas-mark" id="matchAlternativesHeading" hidden><span class="pn-atlas-slot" data-atlas-size="20" data-atlas-motion="static"></span><span>Atlas looked at this in other ways.</span></div>
+    <div class="results-gallery-heading" id="matchAlternativesHeading" hidden>Atlas looked at this in other ways.</div>
     <!-- RESULTS-UX-008 — the single useful fact from the retired search-funnel
          section, said where the four results actually are. Figures come from
          the matching logic, never typed. -->
@@ -25811,7 +25882,11 @@
        partitions land. */
     const mastLead = aaEl('span', 'aa-mast-lead');
     const mastMark = aaEl('span', 'pn-atlas-slot');
-    mastMark.setAttribute('data-atlas-size', '20');
+    /* 60 x 54, the artwork's own ratio. Not 20: at 20px the house draws
+       3.6 x 4.2px and the mark reads as a status glyph rather than an
+       identity. Measured, not guessed. */
+    mastMark.setAttribute('data-atlas-size', '60');
+    mastMark.setAttribute('data-atlas-height', '54');
     mastLead.appendChild(mastMark);
     mastLead.appendChild(aaEl('span', 'aa-mast-l', 'Atlas assessment'));
     mast.appendChild(mastLead);
@@ -25932,29 +26007,6 @@
       const band = aaEl('div', 'aa-mkr');
       const blab = aaEl('p', 'aa-find-lab',
         'What Atlas holds on ' + (org || 'the maker'));
-      /* ATLAS A, 16px, STATIC, THE SUPPLIED MICRO DERIVATIVE. This label
-         names Atlas as the HOLDER of specific maker evidence, which is the
-         closest thing on the visible page to what the mark is for.
-
-         THE MICRO FILE, NOT THE FULL MARK SCALED DOWN. The supplied pack
-         draws a separate derivative for this size and the two are not the
-         same picture, so at 16px the micro asset is the correct one -- the
-         same file and the same plain-<img> mechanism the evidence rows use.
-         An <img> is never hydrated and so can never animate.
-
-         16px, not 18px: the label is 10px uppercase and a larger mark would
-         outweigh the words it introduces. Inserted before the text and left
-         inline so the footnote superscript appended below keeps its baseline.
-
-         Decorative: alt is empty because the label beside it says "What Atlas
-         holds on ..." in words. The evidence-row micro mark keeps an
-         accessible name for the opposite reason -- it stands alone. */
-      const blabMark = document.createElement('img');
-      blabMark.className = 'pn-atlas-mark pn-atlas-mark--16 aa-find-lab-mark';
-      blabMark.src = 'assets/brand/atlas-mark-micro.svg';
-      blabMark.width = 16; blabMark.height = 16;
-      blabMark.alt = '';
-      blab.insertBefore(blabMark, blab.firstChild);
       const mS = NOTE_SUPPLIER();
       if (mS) blab.appendChild(aaEl('span', 'aa-sup', String(mS)));
       band.appendChild(blab);
@@ -37965,28 +38017,33 @@
   function fill(slot){
     if (!slot || slot.getAttribute("data-atlas-done")) return;
     var px = parseInt(slot.getAttribute("data-atlas-size"), 10) || 24;
+    /* ASPECT-CORRECT HEIGHT WHERE ONE IS DECLARED. The viewBox is 1157x1038,
+       so a square box letterboxes the artwork and loses 10.3% of its height.
+       CSS already sizes the box; setting the attributes to agree keeps the
+       intrinsic ratio right before the stylesheet applies, and keeps the two
+       from contradicting each other. */
+    var ph = parseInt(slot.getAttribute("data-atlas-height"), 10) || px;
     var svg = tpl.content.firstElementChild.cloneNode(true);
     svg.classList.add("pn-atlas-mark--" + px);
     svg.setAttribute("width", px);
-    svg.setAttribute("height", px);
+    svg.setAttribute("height", ph);
     Object.keys(DELAYS).forEach(function(id){
       var g = svg.querySelector("#" + id);
       if (!g) return;
       g.removeAttribute("id");   /* ids must stay unique in the page */
       g.classList.add("pn-am-field");
+      /* AND WHICH FIELD IT IS. Both groups used to get only .pn-am-field, so
+         after hydration CSS could not tell them apart and the opposing ambient
+         drift was not expressible. Derived from the id immediately before it
+         is stripped. #atlas-house is not in DELAYS, so it gets neither class
+         and no selector can reach it. */
+      g.classList.add(id === "atlas-dark-field" ? "pn-am-dark" : "pn-am-sage");
       g.style.setProperty("--pn-am-d", DELAYS[id] + "ms");
     });
     var h = svg.querySelector("#atlas-house");
     if (h) h.removeAttribute("id");
     slot.appendChild(svg);
     slot.setAttribute("data-atlas-done", "1");
-    /* A STATIC PLACEMENT NEVER RECEIVES THE PLAY CLASS. Without the class
-       there is no animation-name, so the fields simply render in their
-       authored state. The marks beside the alternatives heading and the maker
-       label are quiet signatures on surfaces the homeowner is reading, not
-       arrivals, and one settle per heading is enough movement on a page that
-       already carries one. */
-    if (slot.getAttribute("data-atlas-motion") === "static") return;
     requestAnimationFrame(function(){ svg.classList.add("pn-am-play"); });
   }
   window.pnAtlasHydrate = function(root){

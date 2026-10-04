@@ -226,205 +226,298 @@ const css = (/\/\* ATLAS A MOTION[\s\S]*?prefers-reduced-motion[\s\S]*?\n  \}\n/
 const rules = css.replace(/\/\*[\s\S]*?\*\//g, '');
 if (!css) cannot('could not find the Atlas A motion CSS');
 else {
-  /animation-iteration-count:1/.test(rules) ? ok('motion plays once (iteration-count 1)')
-                                            : bad('the motion does not pin iteration-count to 1');
-  const loops = ['infinite', 'alternate', 'animation-direction'].filter(k => rules.includes(k));
-  loops.length ? bad('the motion can loop or reverse: ' + loops.join(', '))
-               : ok('nothing loops, alternates or reverses');
-  const spin = ['rotate(', 'translate(', 'box-shadow', 'drop-shadow', 'filter:']
-    .filter(k => rules.includes(k));
-  spin.length ? bad('the motion spins, travels or glows: ' + spin.join(', '))
-              : ok('no rotation, travel, shadow or filter — only opacity and scale');
+  /* ------------------------------------------------------------------------
+     THE MOTION CONTRACT, AS AMENDED. The entrance settle plays once
+     EVERYWHERE. Continuous ambient drift is permitted on the primary 60x54
+     lockup and on NOTHING ELSE. These checks encode the exception as an
+     exception: the loop must be reachable only through .pn-atlas-mark--60.
+     --------------------------------------------------------------------- */
+  /animation-iteration-count:1;/.test(rules)
+    ? ok('the entrance settle still plays once (iteration-count 1)')
+    : bad('the entrance settle no longer pins iteration-count to 1');
+
+  /* LOOPING IS SCOPED, NOT PERMITTED. Every declaration carrying a looping
+     keyword must belong to a selector naming the 60px lockup. This is the
+     check that stops the exception widening: a loop added to
+     `.pn-atlas-a .pn-am-field` would reach the popover and panel marks, and
+     it fails here. */
+  {
+    const blocks = rules.split('}');
+    const leaks = [];
+    for (const b of blocks) {
+      if (!/infinite|alternate/.test(b)) continue;
+      const sel = (b.split('{')[0] || '').trim().split('\n').pop().trim();
+      if (!sel.includes('pn-atlas-mark--60')) leaks.push(sel || '(unknown selector)');
+    }
+    leaks.length
+      ? bad('looping motion escapes the 60px lockup', 'reachable via: ' + leaks.join(' | '))
+      : ok('looping is reachable ONLY through .pn-atlas-mark--60 — no other mark inherits it');
+  }
+  /* And only the two FIELDS may carry it. */
+  {
+    const sels = (rules.match(/\.pn-atlas-mark--60[^{]*\{/g) || [])
+      .map(x => x.replace('{', '').trim());
+    const bad_sel = sels.filter(x => !/\.pn-am-dark$|\.pn-am-sage$/.test(x));
+    bad_sel.length
+      ? bad('an ambient rule targets something other than the two fields', bad_sel.join(' | '))
+      : ok('ambient motion targets only .pn-am-dark and .pn-am-sage (' + sels.length + ' rules)');
+  }
+  /* THE APPROVED DURATIONS, exactly. 9s and 11s are co-prime so the two
+     cycles re-align only every 99s — that is what removes the visible reset,
+     so the numbers are part of the contract, not a detail. */
+  /animation-duration:620ms, 9s;/.test(rules)
+    ? ok('the dark field drifts over 9s')
+    : bad('the dark field ambient duration is not 9s');
+  /animation-duration:620ms, 11s;/.test(rules)
+    ? ok('the sage field drifts over 11s')
+    : bad('the sage field ambient duration is not 11s');
+  /animation-timing-function:cubic-bezier\(\.2,\.75,\.25,1\), ease-in-out;/.test(rules)
+    ? ok('the ambient drift eases in and out')
+    : bad('the ambient drift is not ease-in-out');
+  /animation-direction:normal, alternate;/.test(rules)
+    ? ok('the drift alternates — it eases back rather than resetting')
+    : bad('the drift does not alternate, so it would snap back');
+
+  /* THE TINY BOUNDS. Parsed from the keyframes and checked numerically, so a
+     later edit cannot widen the drift into a slide. */
+  {
+    const want = {
+      'pn-atlas-a-drift-dark': { x: -0.7, y:  0.4, s: 1.006 },
+      'pn-atlas-a-drift-sage': { x:  0.7, y: -0.4, s: 0.996 },
+    };
+    let allOk = true;
+    for (const [name, w] of Object.entries(want)) {
+      /* Match to the block's OWN closing brace, not the first inner one: a
+         keyframes block contains `from{...}` and `to{...}`, so a lazy match to
+         the first '}' stops inside `from` and never sees the end state. */
+      const kf = new RegExp('@keyframes ' + name + '\\{([\\s\\S]*?)\\n  \\}').exec(rules);
+      if (!kf) { bad('missing keyframes ' + name); allOk = false; continue; }
+      if (/opacity|rotate|filter|box-shadow|skew|perspective/.test(kf[1])) {
+        bad(name + ' animates something other than translate and scale'); allOk = false; continue;
+      }
+      const m = /translate\((-?[\d.]+)%,\s*(-?[\d.]+)%\)\s*scale\(([\d.]+)\)/.exec(kf[1].split('to{')[1] || '');
+      if (!m) { bad('could not parse the end state of ' + name); allOk = false; continue; }
+      const x = +m[1], y = +m[2], sc = +m[3];
+      if (Math.abs(x) > 0.75 || Math.abs(y) > 0.45 || Math.abs(sc - 1) > 0.008) {
+        bad(name + ' drifts outside the approved bounds',
+            'translate ' + x + '%, ' + y + '% scale ' + sc); allOk = false; continue;
+      }
+      if (x !== w.x || y !== w.y || sc !== w.s) {
+        bad(name + ' is not the approved value', 'got ' + x + ',' + y + ',' + sc); allOk = false;
+      }
+    }
+    if (allOk) ok('both drifts stay within ±0.7% translate and ±0.6% scale, in opposition');
+  }
+  /* No travel in the SETTLE, which still must not move. */
+  /@keyframes pn-atlas-a-settle\{[^}]*translate\(/.test(rules)
+    ? bad('the entrance settle now travels')
+    : ok('the entrance settle still scales and fades only');
+  const spin = ['rotate(', 'box-shadow', 'drop-shadow', 'filter:', 'skew('].filter(k => rules.includes(k));
+  spin.length ? bad('the motion spins or glows: ' + spin.join(', '))
+              : ok('no rotation, shadow, filter or skew anywhere in the motion');
   /to\{ opacity:1; transform:scale\(1\) \}/.test(rules)
-    ? ok('the keyframe ends settled at opacity 1, scale 1 — nothing pulses after')
-    : bad('the motion keyframe does not end at the settled state');
+    ? ok('the entrance keyframe ends settled at opacity 1, scale 1')
+    : bad('the entrance keyframe does not end at the settled state');
+
+  /* REDUCED MOTION must kill BOTH. One !important rule on
+     .pn-atlas-a .pn-am-field reaches the lockup too, because the lockup
+     carries .pn-atlas-a and its fields carry .pn-am-field. */
   /@media \(prefers-reduced-motion: reduce\)\{\s*\.pn-atlas-a \.pn-am-field\{ animation:none !important; \}/.test(rules)
-    ? ok('prefers-reduced-motion removes the animation entirely')
+    ? ok('prefers-reduced-motion removes entrance AND ambient motion (one !important rule reaches both)')
     : bad('reduced motion does not disable the Atlas animation');
-  /* THE HOUSE. The contract says it stays stable, and it is kept stable by
-     carrying no rule at all rather than by a rule that could be edited away. */
+  /\.pn-atlas-mark--60[^{]*\{[^}]*animation[^}]*!important/.test(rules)
+    ? bad('an ambient rule uses !important', 'it would survive the reduced-motion override')
+    : ok('no ambient rule uses !important — reduced motion always wins');
+
+  /* THE HOUSE. Kept fixed by omission, now twice over: no stylesheet rule
+     names it, and the hydrator gives it no class for a selector to find. */
   (rules.includes('#atlas-house') || rules.includes('pn-am-house'))
     ? bad('the house is targeted by a motion rule')
     : ok('the house carries no motion rule — it cannot move');
+  /g\.classList\.add\(id === "atlas-dark-field" \? "pn-am-dark" : "pn-am-sage"\)/.test(src)
+    ? ok('the hydrator distinguishes the two fields after stripping their ids')
+    : bad('the hydrator does not distinguish dark from sage', 'opposing drift would be inexpressible');
+  /DELAYS = \{ "atlas-dark-field"[^}]*"atlas-sage-field"[^}]*\}/.test(src)
+    && !/DELAYS[^;]*atlas-house/.test(src)
+    ? ok('the house is not in DELAYS, so it never receives a field class')
+    : bad('the house may receive a field class');
   /h\.removeAttribute\("id"\)/.test(src) && !/atlas-house[^\n]*pn-am-field/.test(src)
     ? ok('the hydrator never tags the house as an animated field')
     : bad('the hydrator may tag the house as animated');
 }
 
-/* ---- A8 . REACHABILITY -- the check whose absence let the mark ship unseen.
+/* ---- A8 . THE ATLAS IDENTITY LOCKUP, AND ITS SIZE.
 
-   Phase 1 passed every other check in this file and the founder still could not
-   find the mark anywhere. All three placements were wired, sized and gated
-   correctly, and all three sat behind an interaction: a popover at
-   visibility:hidden, and a closed <details> on a secondary screen. This file
-   verified that each placement EXISTED. It never verified that any of them
-   could be SEEN.
+   Two failures are encoded here, so neither can recur silently.
 
-   So: at least one placement must be on a surface that renders without a
-   click, and specifically the "Atlas assessment" masthead must be one of them.
-   A placement is unreachable if it is inside the popover, inside the
-   collapsed intelligence panel, or carries its own hidden / display:none /
-   visibility:hidden. ------------------------------------------------------- */
+   FIRST, REACHABILITY. Phase 1 passed every other check in this file and the
+   founder could not find the mark: all three placements sat behind an
+   interaction. Existing is not the same as visible.
+
+   SECOND, SIZE. The correction then put marks at 16-20px, which failed on
+   sight. The geometry says why: the viewBox is 1157x1038, so a SQUARE box
+   letterboxes the art and loses 10.3% of its height, and the house is only
+   18.1% of the mark's width -- 3.6 x 4.2px at 20px nominal. The finest sage
+   ribbon does not clear the 2px floor until about 53px.
+
+   So the assertions are: ONE visible mark, in the masthead, at an
+   aspect-correct 60 x 54, reachable without interaction; no mark on the two
+   retired labels; the gated micro signature untouched; one source copy of the
+   geometry. ------------------------------------------------------------- */
 console.log('');
-console.log('  REACHABILITY WITHOUT INTERACTION');
+console.log('  THE ATLAS IDENTITY LOCKUP');
 console.log('  ' + '-'.repeat(72));
 {
-  /* (1) The masthead placement exists and is built where the masthead is. */
+  /* (1) THE MASTHEAD CARRIES THE FULL MARK AT 60 x 54. */
   const mastBlock = /const mast = aaEl\('div', 'aa-mast'\);[\s\S]{0,4000}?mast\.appendChild\(aaEl\('span', 'aa-mast-r', org\)\);/.exec(src);
   if (!mastBlock) cannot('could not isolate the Atlas assessment masthead block');
   else {
-    /pn-atlas-slot/.test(mastBlock[0]) && /data-atlas-size', '20'/.test(mastBlock[0])
-      ? ok('the "Atlas assessment" masthead carries a 20px Atlas slot')
-      : bad('the "Atlas assessment" masthead carries no Atlas slot',
-            'this is the placement the founder must be able to see on Results');
-    /pnAtlasHydrate/.test(mastBlock[0])
-      ? ok('the masthead slot hydrates its own subtree — it survives the repaint')
-      : bad('the masthead slot is not hydrated locally',
-            'aaRenderAssessment() empties and repaints its host, so a slot that '
-            + 'waits for DOMContentLoaded renders empty after the repaint');
-    /* The masthead mark must not be made conditional: no branch may stand
-       between the masthead being created and the mark being appended to it.
-       (The pnAtlasHydrate call that follows is itself guarded, which is a
-       feature-detect, not a condition on the mark existing.) */
-    const upToMark = mastBlock[0].split('const mastMark')[0] || '';
-    /\bif\s*\(|\?\s*[^:]*:/.test(upToMark.replace(/\/\*[\s\S]*?\*\//g, ''))
-      ? bad('the masthead mark is built conditionally',
-            'every assessment must carry it, not some of them')
+    const b = mastBlock[0];
+    /data-atlas-size', '60'/.test(b)
+      ? ok('the masthead lockup is 60px wide')
+      : bad('the masthead lockup is not 60px', 'below ~53px the ribbons fall under the 2px floor');
+    /data-atlas-height', '54'/.test(b)
+      ? ok('the masthead lockup declares an aspect-correct height of 54px')
+      : bad('the masthead lockup has no aspect-correct height',
+            'a square box letterboxes the 1157x1038 artwork and loses 10.3% of it');
+    /pn-atlas-slot/.test(b)
+      ? ok('the masthead uses the full mark, cloned from the one template')
+      : bad('the masthead carries no Atlas slot');
+    /pnAtlasHydrate/.test(b)
+      ? ok('the masthead hydrates its own subtree — it survives the repaint')
+      : bad('the masthead slot is not hydrated locally');
+    const upToMark = b.split('const mastMark')[0] || '';
+    /\bif\s*\(/.test(upToMark.replace(/\/\*[\s\S]*?\*\//g, ''))
+      ? bad('the masthead mark is built conditionally')
       : ok('the masthead mark is unconditional — every assessment carries it');
   }
+  /* The CSS must agree, and must NOT be a square. */
+  const c60 = /\.pn-atlas-mark--60\{ width:60px; height:54px; \}/.test(src);
+  c60 ? ok('CSS .pn-atlas-mark--60 is an aspect-correct 60x54 box')
+      : bad('CSS .pn-atlas-mark--60 is missing or not 60x54');
+  /\.pn-atlas-mark--60\{ width:60px; height:60px; \}/.test(src)
+    ? bad('the 60px class is a SQUARE box', 'it would letterbox the artwork')
+    : ok('the 60px class is not square');
+  /* The hydrator must honour the declared height, or the attribute geometry
+     and the stylesheet disagree. */
+  /data-atlas-height"\), 10\) \|\| px/.test(src)
+    ? ok('the hydrator reads the declared aspect-correct height')
+    : bad('the hydrator ignores data-atlas-height');
 
-  /* (2) The masthead itself must not be hidden, display:none or inside a
-         <details>. aa-mast is appended straight to the assessment host. */
+  /* (2) THE ALTERNATIVES HEADING CARRIES NO MARK. */
+  const altH = /<div class="results-gallery-heading"[^>]*id="matchAlternativesHeading"[^>]*>[\s\S]{0,200}?<\/div>/.exec(src);
+  if (!altH) cannot('could not isolate the alternatives heading');
+  else if (/pn-atlas-slot|atlas-mark|has-atlas-mark/.test(altH[0]))
+    bad('"Atlas looked at this in other ways." still carries a mark',
+        'the full mark is illegible at heading scale; it was removed deliberately');
+  else ok('"Atlas looked at this in other ways." carries no Atlas mark');
+  /results-gallery-heading\.has-atlas-mark/.test(src)
+    ? bad('the retired alternatives-heading CSS survives')
+    : ok('the retired alternatives-heading CSS is gone');
+
+  /* (3) THE MAKER-BAND LABEL CARRIES NO MARK. */
+  const mkr = /const blab = aaEl\('p', 'aa-find-lab',[\s\S]{0,900}?band\.appendChild\(blab\);/.exec(src);
+  if (!mkr) cannot('could not isolate the maker band label block');
+  else if (/pn-atlas-slot|atlas-mark-micro|aa-find-lab-mark/.test(mkr[0]))
+    bad('"What Atlas holds on <org>" still carries a mark');
+  else ok('"What Atlas holds on <org>" carries no Atlas mark');
+  /aa-find-lab-mark/.test(src)
+    ? bad('the retired maker-band CSS survives')
+    : ok('the retired maker-band CSS is gone');
+
+  /* (4) THE GATED EVIDENCE-ROW MICRO MARK IS EXACTLY AS BEFORE. */
+  {
+    const p3 = /if \(row\.state === 'established' && !row\.scope && !row\.conflict\)\{[\s\S]{0,520}?\n      \}/.exec(src);
+    if (!p3) cannot('could not isolate the gated evidence-row block');
+    else if (!/am\.src = 'assets\/brand\/atlas-mark-micro\.svg'/.test(p3[0]))
+      bad('the evidence row no longer uses the supplied micro file');
+    else if (!/am\.className = 'pn-atlas-mark pn-atlas-mark--16 am-ev-atlas'/.test(p3[0]))
+      bad('the evidence-row micro mark changed class');
+    else if (/pn-atlas-slot|pn-am-field|pn-am-play/.test(p3[0]))
+      bad('the evidence-row micro mark gained an animation hook');
+    else ok('the gated evidence-row micro signature is unchanged, still three-condition gated');
+    const uses = (src.match(/assets\/brand\/atlas-mark-micro\.svg/g) || []).length;
+    uses === 1 ? ok('the micro file has exactly 1 consumer — the gated evidence row')
+               : bad('the micro file has ' + uses + ' consumer(s), expected 1');
+  }
+
+  /* (5) ONE SOURCE COPY OF THE SUPPLIED FULL GEOMETRY. */
+  {
+    const t = (src.match(/id="pn-atlas-a-template"/g) || []).length;
+    const v = (src.match(/viewBox="0 0 1157 1038"/g) || []).length;
+    (t === 1 && v === 1)
+      ? ok('exactly one source copy of the supplied full geometry')
+      : bad('the supplied geometry is duplicated', t + ' template(s), ' + v + ' viewBox(es)');
+  }
+
+  /* (6) THE VISIBLE MARK IS REACHABLE WITHOUT INTERACTION. */
   /mast\.appendChild|host\.appendChild\(mast\)/.test(src)
     ? ok('the masthead is appended directly to the visible assessment host')
     : bad('could not confirm the masthead reaches the assessment host');
-  const mastCss = /\.aa-mast\{[^}]*\}/.exec(src);
+  /* The MAIN masthead rule, identified by its hairline — not the
+     <=360px override, which sits earlier in the sheet and also starts
+     `.aa-mast{`. */
+  const mastCss = /\.aa-mast\{[^}]*border-top[^}]*\}/.exec(src);
   if (!mastCss) cannot('could not read the .aa-mast CSS');
   else if (/display:\s*none|visibility:\s*hidden|opacity:\s*0\b/.test(mastCss[0]))
     bad('.aa-mast is hidden by its own CSS', mastCss[0]);
-  else ok('.aa-mast carries no hiding rule — it renders on sight');
-
-  /* (3) The two static placements must exist and must NOT animate. */
-  const altHeading = /<div class="results-gallery-heading has-atlas-mark"[^>]*>[\s\S]{0,320}?<\/div>/.exec(src);
-  if (!altHeading) bad('"Atlas looked at this in other ways." carries no Atlas mark');
-  else if (!/data-atlas-motion="static"/.test(altHeading[0]))
-    bad('the alternatives heading mark is not marked static');
-  else ok('"Atlas looked at this in other ways." carries a static 20px mark');
-
-  /* THE MAKER BAND USES THE SUPPLIED MICRO DERIVATIVE, NOT THE FULL MARK.
-
-     The pack draws a separate file for 16px and the two are not the same
-     picture, so scaling the full geometry down would ship artwork the founder
-     did not approve for that size. This placement must therefore be the micro
-     file, delivered the way the evidence rows deliver it: a plain <img>, which
-     is also what makes it unanimatable -- an <img> is never hydrated, so it
-     can never pick up a motion class. */
-  const mkrBlock = /const blab = aaEl\('p', 'aa-find-lab',[\s\S]{0,2200}?band\.appendChild\(blab\);/.exec(src);
-  if (!mkrBlock) cannot('could not isolate the maker band label block');
-  else {
-    const b = mkrBlock[0];
-    if (/pn-atlas-slot|data-atlas-size|pnAtlasHydrate/.test(b))
-      bad('the maker band mark is still a hydrated slot of the FULL mark',
-          'at 16px it must be assets/brand/atlas-mark-micro.svg');
-    else if (!/blabMark\.src = 'assets\/brand\/atlas-mark-micro\.svg'/.test(b))
-      bad('the maker band mark does not point at the supplied micro file');
-    else if (!/blabMark = document\.createElement\('img'\)/.test(b))
-      bad('the maker band micro mark is not a plain <img>');
-    else if (!/pn-atlas-mark--16/.test(b))
-      bad('the maker band mark is not in the 16px box');
-    else if (!/aa-find-lab-mark/.test(b))
-      bad('the maker band mark lost its approved spacing class');
-    else if (/pn-am-field|pn-am-play|animation/.test(b))
-      bad('the maker band micro mark carries an animation hook',
-          'the supplied contract says micro is static only');
-    else ok('"What Atlas holds on <org>" uses the supplied micro file, '
-            + 'static, 16px, spacing intact');
-  }
-
-  /* AND THE MICRO FILE IS NOW USED BY TWO PLACEMENTS, BOTH AS <img>. If a
-     third mechanism ever reaches it, this count moves and says so. */
+  else if (!/align-items:center/.test(mastCss[0]))
+    bad('.aa-mast is not centre-aligned', 'a 54px mark cannot share a baseline with a 10px label');
+  else ok('.aa-mast renders on sight, centre-aligned for the lockup');
   {
-    const uses = (src.match(/assets\/brand\/atlas-mark-micro\.svg/g) || []).length;
-    uses === 2
-      ? ok('the micro file has exactly 2 consumers — evidence row and maker band')
-      : bad('the micro file has ' + uses + ' consumer(s), expected 2');
-  }
-
-  /* (4) The hydrator must HONOUR static, or "static" is a label with no
-         mechanism behind it. */
-  /data-atlas-motion"\) === "static"\)\s*return/.test(src)
-    ? ok('the hydrator refuses to play a slot marked static')
-    : bad('nothing in the hydrator honours data-atlas-motion="static"',
-          'the static placements would animate anyway');
-
-  /* (5) AND THE NEGATIVE. None of the three new placements may sit inside the
-         popover that hid Phase 1. The popover body runs from its title to its
-         confidence paragraph, which is its documented last element, so that
-         span is the region to search. */
-  {
-    /* Anchored on the real ELEMENTS, not the CSS selectors of the same name:
-       a selector-anchored search spans everything between the stylesheet and
-       the markup, which is most of the file. */
     const re = /<p class="match-atlas-popover-title[\s\S]{0,8000}?match-atlas-popover-confidence"[^<]*<\/p>/g;
-    let m, regions = 0, leaked = [];
-    while ((m = re.exec(src)) !== null) {
-      regions++;
-      for (const marker of ['aa-mast-lead', 'aa-find-lab-mark',
-                            'results-gallery-heading has-atlas-mark']) {
-        if (m[0].includes(marker)) leaked.push(marker);
-      }
-    }
+    let m, regions = 0, leaked = false;
+    while ((m = re.exec(src)) !== null) { regions++; if (m[0].includes('aa-mast-lead')) leaked = true; }
     if (!regions) cannot('could not isolate any popover body to search');
-    else if (leaked.length)
-      bad('a visible placement sits inside the hidden popover',
-          'found: ' + [...new Set(leaked)].join(', '));
-    else ok('none of the 3 new placements sits inside the popover ('
-            + regions + ' popover bodies searched)');
+    else if (leaked) bad('the lockup sits inside the hidden popover');
+    else ok('the lockup is not inside the popover (' + regions + ' bodies searched)');
   }
-
-  /* (6) NOR INSIDE A CLOSED DISCLOSURE. The <details> wrapper is the other
-         thing that hid Phase 1. Each new marker must appear outside every
-         <details> block in the page. */
   {
-    const details = src.match(/<details[\s\S]*?<\/details>/g) || [];
-    const inside = [];
-    for (const d of details) {
-      for (const marker of ['aa-mast-lead', 'aa-find-lab-mark',
-                            'results-gallery-heading has-atlas-mark']) {
-        if (d.includes(marker)) inside.push(marker);
-      }
-    }
-    inside.length
-      ? bad('a visible placement sits inside a <details> disclosure',
-            'found: ' + [...new Set(inside)].join(', '))
-      : ok('no new placement sits inside a <details> (' + details.length
-           + ' disclosures searched)');
+    const d = src.match(/<details[\s\S]*?<\/details>/g) || [];
+    d.some(x => x.includes('aa-mast-lead'))
+      ? bad('the lockup sits inside a <details> disclosure')
+      : ok('the lockup is not inside a <details> (' + d.length + ' searched)');
   }
 
-  /* (7) Phase 1 is intact. A visibility fix that moved an existing placement
-         would be a worse outcome than the defect. */
+  /* (6b) THE MASTHEAD STACKS ON PURPOSE UNDER 360px. Incidental flex wrapping
+         left the organisation wherever space-between happened to put it; under
+         360px the masthead blocks so the organisation takes its own line,
+         aligned to the masthead's left edge. The lockup must not shrink. */
+  {
+    const mq = /@media \(max-width:360px\)\{([\s\S]*?)\n  \}/.exec(src);
+    if (!mq) bad('there is no <=360px masthead rule', 'long organisation names would wrap by accident');
+    else {
+      const b = mq[1];
+      /\.aa-mast\{ display:block; \}/.test(b)
+        ? ok('under 360px .aa-mast stacks deliberately (display:block)')
+        : bad('the <=360px rule does not block the masthead');
+      /\.aa-mast-r\{ display:block; margin-top:10px; \}/.test(b)
+        ? ok('under 360px the organisation takes its own line with 10px above')
+        : bad('the organisation line is not deliberately placed under 360px');
+      /pn-atlas-mark--60|width:|height:/.test(b.replace(/margin-top:10px;/, ''))
+        ? bad('the <=360px rule resizes something', b.trim())
+        : ok('the <=360px rule resizes nothing — the lockup stays 60x54');
+    }
+  }
+
+  /* (7) PHASE 1 AND THE GOVERNANCE NOTE. */
   const kept = [
-    [2, (src.match(/<span class="pn-atlas-slot" data-atlas-size="24"><\/span>/g) || []).length,
-     'the 2 popover 24px slots'],
-    [1, (src.match(/akMark\.setAttribute\('data-atlas-size', '20'\)/g) || []).length,
-     'the "What Atlas Knows" 20px slot'],
-    [1, (src.match(/am\.src = 'assets\/brand\/atlas-mark-micro\.svg'/g) || []).length,
-     'the 16px evidence-row micro mark'],
+    [2, (src.match(/<span class="pn-atlas-slot" data-atlas-size="24"><\/span>/g) || []).length, 'the 2 popover 24px slots'],
+    [1, (src.match(/akMark\.setAttribute\('data-atlas-size', '20'\)/g) || []).length, 'the "What Atlas Knows" 20px slot'],
   ];
   let keptOk = true;
-  for (const [want, got, what] of kept) {
-    if (want !== got) { bad('Phase 1 changed: ' + what + ' (expected ' + want + ', found ' + got + ')'); keptOk = false; }
-  }
-  if (keptOk) ok('all four Phase 1 placements survive unchanged');
-
-  /* (8) STILL ONE COPY OF THE SUPPLIED GEOMETRY. Three new placements must be
-         three more clones, not three more copies of the artwork. */
-  const tplCount = (src.match(/id="pn-atlas-a-template"/g) || []).length;
-  const vbCount = (src.match(/viewBox="0 0 1157 1038"/g) || []).length;
-  (tplCount === 1 && vbCount === 1)
-    ? ok('still exactly one copy of the supplied geometry in the page')
-    : bad('the supplied geometry is duplicated',
-          tplCount + ' template(s), ' + vbCount + ' viewBox occurrence(s)');
+  for (const [w, g, what] of kept) if (w !== g) { bad('Phase 1 changed: ' + what); keptOk = false; }
+  if (keptOk) ok('the explanatory Phase 1 placements survive unchanged');
+  /no pills and no icons — except the Atlas identity lockup in the masthead/.test(src)
+    ? ok('the AA-001 note names the lockup as the single brand exception')
+    : bad('the AA-001 note still forbids what the masthead now does',
+          'code and the rule it states about itself must agree');
+  /* No container. The lockup must stay typographic. */
+  const leadCss = /\.aa-mast-lead\{[^}]*\}/.exec(src);
+  if (!leadCss) cannot('could not read the .aa-mast-lead CSS');
+  else if (/background|border|box-shadow|border-radius/.test(leadCss[0]))
+    bad('the lockup gained a container', leadCss[0]);
+  else ok('the lockup carries no fill, border, radius or shadow');
 }
 
 /* ---- A7 . containment ---------------------------------------------------- */
