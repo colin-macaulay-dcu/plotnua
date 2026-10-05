@@ -920,6 +920,33 @@
 </style>
 
 <style>
+  /* ---- the transition into Related Discoveries ------------------------
+     Measured before changing anything: the gap was already 194px at 1440 and
+     131px at 390, so this is not a shortage of whitespace. What was missing
+     was any sign that the Discovery had ended. A little more air, and the air
+     itself carries a paper-to-cream settle so the eye is told, below the level
+     it notices, that something new begins.
+
+     --rel-air is the top padding AND the gradient's end stop, so the colour
+     finishes exactly where the heading starts: the tint lies entirely in empty
+     space and no text, card or photograph ever sits on a gradient.
+
+     Six values per channel, over a hundred-odd pixels. No rule, no band, no
+     card, no divider. The deepened ivory runs to the foot of the section,
+     where the footer's own gradient takes over, so nothing is boxed in.
+
+     section.related, not .related: the shared donor stylesheet sets .related
+     padding twice and must not be edited. Element+class wins on specificity
+     rather than on where this block happens to be injected. ---- */
+  section.related{
+    --rel-air:12vh;
+    background:linear-gradient(180deg,
+      var(--paper) 0, var(--cream) var(--rel-air), var(--cream) 100%);
+    padding:var(--rel-air) 7vw 10vh;
+  }
+  @media(max-width:1024px){ section.related{ --rel-air:10vh; } }
+  @media(max-width:720px){ section.related{ --rel-air:9vh; } }
+
   /* --- evidence formatting: tables, bullets, subheads ---------------- */
   .concept-cap{ font-size:13px; line-height:1.6; color:var(--pn-muted);
     margin:10px 0 0; }
