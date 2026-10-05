@@ -348,7 +348,11 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 .pn-stage .hero-secondary .hero-secondary-link + .hero-secondary-link{ flex-basis:100%; }
 
 /* Imagery state C — a purposeful held space, never an apology. */
-.pn-photo-slot{ flex:1 1 auto; display:flex; flex-direction:column;
+/* The panel is empty by certified rule, so it needs its own height: with no
+   children left there is nothing to hold it open. 4/3 keeps the hero's two
+   columns balanced at every width without pretending to be a photograph. */
+.pn-photo-slot{ flex:1 1 auto; min-height:240px; aspect-ratio:4/3;
+  display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px;
   background:
     radial-gradient(120% 90% at 18% 8%, rgba(255,253,246,.85) 0%, rgba(255,253,246,0) 60%),
@@ -866,7 +870,6 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
     {{VERIFIED_FACT_N}}      label + value, first-party only
     {{PERSONALISATION}}      MUST trace to a real PlotNua capability
     {{THINGS_TO_CHECK}}      one honest line
-    {{PHOTO_SLOT_LINE}}      what the held image panel says (state C)
     {{WHY_*}}                the commercial difference, in their language
     {{CLOSING_PROPOSITION}}  ONE interesting question
   ════════════════════════════════════════════════════════════════════
@@ -940,15 +943,13 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
           </div>
         </div>
         <div class="rh-split">
-        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A purposeful held space
-             that shows the supplier where their photography would sit. Never
-             substitute their pictures because the page is private. -->
+        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A restrained, empty panel.
+             THIS SLOT CARRIES NO COPY: certified rule, 5 Oct 2026, written
+             out in full in SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2. The rights
+             gate is unchanged and still fails closed. -->
         <div class="pn-media-col">
         <div class="results-hero-media">
-          <div class="pn-photo-slot">
-            <b>Your project photography here</b>
-            <span>{{PHOTO_SLOT_LINE}}</span>
-          </div>
+          <div class="pn-photo-slot" aria-hidden="true"></div>
         </div>
         </div>
         <div class="results-hero-body">

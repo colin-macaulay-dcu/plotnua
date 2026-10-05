@@ -103,7 +103,6 @@ FILL = {
                  "using PlotNua. The information shown is based on "
                  "Hutsmith&rsquo;s published material.",
 
-    "PHOTO_SLOT_LINE": "",   # set below, by imagery state
 
     "OFFER_NAME": "Bespoke cabins",
 
@@ -321,22 +320,18 @@ def main():
     # G3 · Imagery. One list decides the state.
     imgs, held_line = imagery_block()
     if imgs is None:
-        FILL["PHOTO_SLOT_LINE"] = held_line
-        # The template's bold line asks the supplier for photography. Dudley
-        # has already given it, so that wording is now wrong. It is not a
-        # token, so it is replaced here by exact string.
-        ask = "<b>Your project photography here</b>"
-        if src.count(ask) != 1:
-            print("REFUSED. The photo-slot heading was not found exactly once. "
-                  "Nothing written.")
-            return 1
-        src = src.replace(ask, "<b>Hutsmith photography</b>")
+        # G3 · THE IMAGE POSITION CARRIES NO COPY (certified,
+        # 5 Oct 2026). Nothing to do here any more: the template now
+        # ships the correct restrained empty panel, so the right
+        # action in the no-imagery case is none at all. THIS BRANCH
+        # IS THE FAIL-CLOSED PATH and it stays fail-closed.
+        pass
     else:
         # The whole media wrapper is replaced, not the slot inside it:
         # state A emits its own .results-hero-media plus the gallery strip
         # beside it, which is production's shape.
         slot = re.search(r'        <div class="results-hero-media">\n'
-                         r'          <div class="pn-photo-slot">.*?</div>\n'
+                         r'          <div class="pn-photo-slot"[^>]*>.*?</div>\n'
                          r'        </div>\n', src, re.S)
         if not slot:
             print("REFUSED. The held media wrapper was not found, so state A "

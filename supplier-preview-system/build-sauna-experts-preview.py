@@ -133,9 +133,8 @@ OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the three things the supplier's 
      asks rather than guesses. -->
 <section>
   <h2>Three things we would ask before publishing</h2>
-  <p>Everything above comes from your own product page, so where it stops we
-     stop too. These are the three points a homeowner would ask us about, and
-     we&rsquo;d rather have your answer than our best guess.</p>
+  <p>These are the three things we&rsquo;d like to check with you before the
+     page goes live.</p>
   <div class="pn-open">
     <ul>
       <li><b>What the &euro;25,000 covers on site.</b> The listing says
@@ -153,12 +152,6 @@ OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the three things the supplier's 
           start from one of these, or from a blank sheet?</li>
     </ul>
   </div>
-  <h3>Where your imagery would go</h3>
-  <p>The space beside the specification is where your photography of the
-     finished units would sit, credited to Sauna Experts and linked back to
-     your site. We haven&rsquo;t used any of it. You asked to see the approach
-     first, so the imagery waits until you&rsquo;ve told us you&rsquo;re happy
-     with it.</p>
 </section>
 """
 
@@ -177,11 +170,13 @@ FILL = {
                  "check, and only then reach suppliers. By the time this "
                  "screen appears the thinking has already happened.",
 
-    "PHOTO_SLOT_LINE": "No Sauna Experts photography is used on this page. "
-                       "You asked to see the approach before anything is "
-                       "published, so your images stay yours until you tell "
-                       "us otherwise. This is where they would sit, credited "
-                       "to Sauna Experts and linked back to saunaexperts.ie.",
+    # PHOTO_SLOT_LINE WAS REMOVED, 5 Oct 2026, with the token it filled.
+    # It carried a paragraph explaining that no Sauna Experts photography was
+    # used, that their images stayed theirs, and where the pictures would
+    # eventually sit. Under the certified rule the image position carries no
+    # copy at all: a preview is the experience the supplier is invited into,
+    # not a document explaining how it was built. The rights gate is
+    # unchanged and still fails closed.
 
     "OFFER_NAME": "Outdoor Sauna Chill &mdash; Woodburner",
     "VERIFIED_PRICE": "&euro;25,000",
@@ -330,12 +325,19 @@ def main():
                       OPEN_QUESTIONS + "\n" + journey.strip("\n")
                       + "\n\n" + why_anchor)
 
-    # G3 · IMAGERY STATE C.
-    ask = "<b>Your project photography here</b>"
-    if src.count(ask) != 1:
-        die("the photo-slot heading was not found exactly once. Nothing "
-            "written.")
-    src = src.replace(ask, "<b>Your imagery is not used on this page</b>")
+    # G3 · THE IMAGE POSITION CARRIES NO COPY. Certified rule, 5 Oct 2026.
+    # This replaces the old relabel step, which wrote a governance paragraph
+    # into the hero. The guard now runs the other way: it refuses if the
+    # image position has acquired any copy at all, and refuses if the
+    # rights-process vocabulary has leaked anywhere into the visible page.
+    slot = re.search(r'<div class="pn-photo-slot"[^>]*>(.*?)</div>',
+                     src, flags=re.S)
+    if not slot:
+        die("the photo slot was not found. The template has moved.")
+    if slot.group(1).strip():
+        die("the image position carries copy: %r. Under the certified rule "
+            "it stays empty, and the rights process is not narrated to the "
+            "supplier." % slot.group(1).strip()[:90])
 
     # G3c · ATTRIBUTION.
     attribution = (
@@ -372,22 +374,13 @@ def main():
     if leftover:
         die("unfilled tokens remain: " + ", ".join(leftover))
 
-    # PREVIEW-POLISH-001 · h3 HAS NO SIZE RULE IN THE TEMPLATE.
-    # h1 and h2 are both given an explicit size; h3 inherits only the serif
-    # family and weight 400, so it falls back to the browser default and
-    # "Where your imagery would go" read as body copy beside the section h2.
-    # One restrained rule, built from the type token that already exists
-    # (--pn-s-quote, 19px) rather than a new size, and NO box, rule, border
-    # or colour change. INJECTED PER PAGE ON PURPOSE: the shared certified
-    # template is used by ~105 built previews and is not touched here.
-    if src.count("</style>") != 1:
-        die("expected exactly one </style> to anchor the h3 rule, found %d. "
-            "The template's shape has changed and this edit will not guess."
-            % src.count("</style>"))
-    src = src.replace(
-        "</style>",
-        "h3{ font-size:var(--pn-s-quote); line-height:1.25;\n"
-        "  margin:var(--pn-md) 0 6px; max-width:34ch; }\n</style>", 1)
+    # PREVIEW-POLISH-001 WAS REMOVED WITH THE SECTION IT STYLED.
+    # It injected an h3 size rule because "Where your imagery would go" read
+    # as body copy. That subsection is gone under the certified rule, the
+    # page now has no h3 at all, and a CSS rule with nothing to style is
+    # dead weight in a file a supplier can View Source on. A guard below
+    # asserts the element really is absent, so this is a removal with a
+    # proof rather than an assumption.
 
     # G5 · PRIVACY.
     for directive in ("noindex", "nofollow", "noarchive", "nosnippet",
@@ -399,6 +392,29 @@ def main():
     visible = re.sub(r"<style\b.*?</style>", " ", visible, flags=re.S | re.I)
     visible = re.sub(r"<script\b.*?</script>", " ", visible, flags=re.S | re.I)
     low = re.sub(r"\s+", " ", visible).lower()
+
+    # G3d · THE RIGHTS PROCESS IS NOT NARRATED TO THE SUPPLIER.
+    # Certified rule, 5 Oct 2026. The gate stays fail-closed in code; what it
+    # must not do is appear in the copy. These phrases are the ones the old
+    # photo-slot paragraph and the "Where your imagery would go" subsection
+    # used, so the guard is pointed at the exact failure that happened rather
+    # than at a vague idea of process language. The factual line in the
+    # credit footer that no photography is used is deliberately NOT caught:
+    # it is a one-clause statement of fact in the attribution, not a passage
+    # explaining the permission workflow.
+    for phrase in ("where they would sit", "where your imagery would go",
+                   "where your photography would", "stay yours until",
+                   "images stay yours", "imagery waits until",
+                   "until you tell us otherwise",
+                   "before anything is published, so your"):
+        if phrase in low:
+            die("the page narrates the image-rights process to the supplier: "
+                "%r. The gate stays fail-closed in code; it does not get "
+                "explained in the copy." % phrase)
+    if "<h3" in src:
+        die("an h3 appeared. The imagery subsection was removed under the "
+            "certified rule and its CSS rule was removed with it, so a new "
+            "h3 would render unstyled.")
 
     # G6 · NO OTHER SUPPLIER'S CONTENT. Harvia is deliberately absent from this
     # list: the Chill is built around a Harvia stove, shield, base and chimney

@@ -187,11 +187,6 @@ FILL = {
                  "happened.",
 
     # IMAGERY STATE C. This line is the honest version of an empty panel.
-    "PHOTO_SLOT_LINE": "We have not used any Cosy Cabins photography on this "
-                       "page. You asked to see the preview before anything is "
-                       "published, so your images stay yours until you tell "
-                       "us otherwise. This is where they would sit, credited "
-                       "to Cosy Cabins and linked back to cosycabins.ie.",
 
     # THE WELLNESS RESULT LEADS. Bruno answered the home-wellness outreach,
     # so the framed example is the sauna. The garden room moved to the
@@ -316,11 +311,10 @@ def main():
 
     # G3 · IMAGERY STATE C. The held panel is relabelled so it reads as a
     # deliberate position rather than a missing asset.
-    ask = "<b>Your project photography here</b>"
-    if src.count(ask) != 1:
-        die("the photo-slot heading was not found exactly once. Nothing "
-            "written.")
-    src = src.replace(ask, "<b>Your imagery is not used on this page</b>")
+    # G3 · THE IMAGE POSITION CARRIES NO COPY (certified, 5 Oct
+    # 2026). The relabel that stood here rewrote the slot heading into a
+    # sentence about photography. There is no heading and no sentence
+    # now; the rights gate is unchanged and still fails closed.
 
     # G3c · ATTRIBUTION. Every figure on this page is Cosy Cabins' own
     # published information, so the page says where it came from and links

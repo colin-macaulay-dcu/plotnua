@@ -186,8 +186,8 @@ OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the points the supplier's own si
      asked and not resolved. Each names what the site does say first. -->
 <section>
   <h2>A few things we would ask before publishing</h2>
-  <p>Everything above comes from your own pages, so where they stop we stop
-     too. These are the points a homeowner would ask us about.</p>
+  <p>These are the three things we&rsquo;d like to check with you before the
+     page goes live.</p>
   <div class="pn-open">
     <ul>
       <li><b>VAT.</b> Your prices are published as &ldquo;from&rdquo;
@@ -227,7 +227,6 @@ FILL = {
                  "suppliers &mdash; so by the time this screen appears the "
                  "thinking has already happened.",
 
-    "PHOTO_SLOT_LINE": "",   # set by imagery state
 
     # CORE IS THE FRAMED PRODUCT, founder-set 2 Oct 2026 (option 1). The
     # hero image is the product CARD's image -- same <section> as the name
@@ -391,7 +390,7 @@ def main():
         die("the image list is empty, but Tanktribe granted imagery. A held "
             "slot here would understate what they agreed to.")
     slot = re.search(r'        <div class="results-hero-media">\n'
-                     r'          <div class="pn-photo-slot">.*?</div>\n'
+                     r'          <div class="pn-photo-slot"[^>]*>.*?</div>\n'
                      r'        </div>\n', src, re.S)
     if not slot:
         die("the held media wrapper was not found, so state A cannot replace "

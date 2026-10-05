@@ -129,9 +129,8 @@ OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the three things the supplier's 
      asks rather than guesses. -->
 <section>
   <h2>Three things we would ask before publishing</h2>
-  <p>Everything above comes from your own product page, so where the page
-     stops we stop too. These are the three points a homeowner would ask us
-     about, and we would rather have your answer than our best guess.</p>
+  <p>These are the three things we&rsquo;d like to check with you before the
+     page goes live.</p>
   <div class="pn-open">
     <ul>
       <li><b>Installation.</b> The Legend page says the final electrical
@@ -152,12 +151,6 @@ OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the three things the supplier's 
           story by accident?</li>
     </ul>
   </div>
-  <h3>Where your imagery would go</h3>
-  <p>The space beside the specification is where your product photography
-     would sit, credited to Irish Sauna Company and linked back to your site.
-     We have not used any of it on this page. You asked to see the approach
-     first, so the imagery waits until you have told us you are happy with
-     it.</p>
 </section>
 """
 
@@ -176,12 +169,6 @@ FILL = {
                  "reach suppliers &mdash; so by the time this screen appears "
                  "the thinking has already happened.",
 
-    "PHOTO_SLOT_LINE": "No Irish Sauna Company photography is used on this "
-                       "page. You asked to see the approach before anything "
-                       "is published, so your images stay yours until you "
-                       "tell us otherwise. This is where they would sit, "
-                       "credited to Irish Sauna Company and linked back to "
-                       "irishsaunacompany.com.",
 
     "OFFER_NAME": "Harvia Legend Electric Outdoor Sauna",
     "VERIFIED_PRICE": "&euro;17,880",
@@ -301,11 +288,10 @@ def main():
 
     # G3 · IMAGERY STATE C. The held panel is relabelled so it reads as a
     # deliberate position rather than a missing asset.
-    ask = "<b>Your project photography here</b>"
-    if src.count(ask) != 1:
-        die("the photo-slot heading was not found exactly once. Nothing "
-            "written.")
-    src = src.replace(ask, "<b>Your imagery is not used on this page</b>")
+    # G3 · THE IMAGE POSITION CARRIES NO COPY (certified, 5 Oct
+    # 2026). The relabel that stood here rewrote the slot heading into a
+    # sentence about photography. There is no heading and no sentence
+    # now; the rights gate is unchanged and still fails closed.
 
     # G3c · ATTRIBUTION. Every figure is their published information, so the
     # page says where it came from and links back. The same line carries the

@@ -348,7 +348,11 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 .pn-stage .hero-secondary .hero-secondary-link + .hero-secondary-link{ flex-basis:100%; }
 
 /* Imagery state C — a purposeful held space, never an apology. */
-.pn-photo-slot{ flex:1 1 auto; display:flex; flex-direction:column;
+/* The panel is empty by certified rule, so it needs its own height: with no
+   children left there is nothing to hold it open. 4/3 keeps the hero's two
+   columns balanced at every width without pretending to be a photograph. */
+.pn-photo-slot{ flex:1 1 auto; min-height:240px; aspect-ratio:4/3;
+  display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px;
   background:
     radial-gradient(120% 90% at 18% 8%, rgba(255,253,246,.85) 0%, rgba(255,253,246,0) 60%),
@@ -842,8 +846,6 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   .results-gallery-explain{ font-size:14.5px; line-height:1.6; color:var(--ink); opacity:.92; margin:0 0 14px; }
   .results-gallery-body .match-card-actions{ margin-top:4px; padding-top:0; }
 /* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */
-h3{ font-size:var(--pn-s-quote); line-height:1.25;
-  margin:var(--pn-md) 0 6px; max-width:34ch; }
 </style>
 </head>
 <body>
@@ -894,15 +896,13 @@ h3{ font-size:var(--pn-s-quote); line-height:1.25;
           </div>
         </div>
         <div class="rh-split">
-        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A purposeful held space
-             that shows the supplier where their photography would sit. Never
-             substitute their pictures because the page is private. -->
+        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A restrained, empty panel.
+             THIS SLOT CARRIES NO COPY: certified rule, 5 Oct 2026, written
+             out in full in SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2. The rights
+             gate is unchanged and still fails closed. -->
         <div class="pn-media-col">
         <div class="results-hero-media">
-          <div class="pn-photo-slot">
-            <b>Your imagery is not used on this page</b>
-            <span>No Sauna Experts photography is used on this page. You asked to see the approach before anything is published, so your images stay yours until you tell us otherwise. This is where they would sit, credited to Sauna Experts and linked back to saunaexperts.ie.</span>
-          </div>
+          <div class="pn-photo-slot" aria-hidden="true"></div>
         </div>
         </div>
         <div class="results-hero-body">
@@ -956,9 +956,8 @@ h3{ font-size:var(--pn-s-quote); line-height:1.25;
      asks rather than guesses. -->
 <section>
   <h2>Three things we would ask before publishing</h2>
-  <p>Everything above comes from your own product page, so where it stops we
-     stop too. These are the three points a homeowner would ask us about, and
-     we&rsquo;d rather have your answer than our best guess.</p>
+  <p>These are the three things we&rsquo;d like to check with you before the
+     page goes live.</p>
   <div class="pn-open">
     <ul>
       <li><b>What the &euro;25,000 covers on site.</b> The listing says
@@ -976,12 +975,6 @@ h3{ font-size:var(--pn-s-quote); line-height:1.25;
           start from one of these, or from a blank sheet?</li>
     </ul>
   </div>
-  <h3>Where your imagery would go</h3>
-  <p>The space beside the specification is where your photography of the
-     finished units would sit, credited to Sauna Experts and linked back to
-     your site. We haven&rsquo;t used any of it. You asked to see the approach
-     first, so the imagery waits until you&rsquo;ve told us you&rsquo;re happy
-     with it.</p>
 </section>
 
 <!-- FROZEN — the real PlotNua homeowner journey. Change only if the

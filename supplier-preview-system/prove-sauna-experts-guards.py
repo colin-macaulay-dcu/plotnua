@@ -88,10 +88,24 @@ r(run("G2 . the frozen journey band anchor no longer matches",
       [('r"\\n<!-- FROZEN.*?\\n<div class=\\"journey\\">.*?\\n</div>\\n"',
         'r"\\n<!-- THAWED.*?\\n<div class=\\"journey\\">.*?\\n</div>\\n"')]))
 
-# ---- G3 . the held imagery panel ------------------------------------------
-r(run("G3 . the held photo-slot heading cannot be found",
-      [('ask = "<b>Your project photography here</b>"',
-        'ask = "<b>Your project photographs here</b>"')]))
+# ---- G3 / G3d . the image position and the rights-process copy ------------
+# BOTH SABOTAGES RE-POINTED, 5 Oct 2026. The old G3 renamed a heading the
+# builder then rewrote; under the certified rule the slot carries no copy at
+# all, so the guard runs the other way and the sabotage has to PUT copy in
+# rather than rename it. G3d is new and gets its own break, because a rule
+# with no failing test is a comment.
+r(run("G3 . copy is written into the empty image position",
+      [('    # G3 \u00b7 THE IMAGE POSITION CARRIES NO COPY.',
+        '    src = src.replace(\'<div class="pn-photo-slot" aria-hidden="true">'
+        '</div>\', \'<div class="pn-photo-slot" aria-hidden="true"><span>'
+        'No photography is used on this page.</span></div>\')\n'
+        '    # G3 \u00b7 THE IMAGE POSITION CARRIES NO COPY.')]))
+
+r(run("G3d . the page explains the image-rights process to the supplier",
+      [('  <p>These are the three things we&rsquo;d like to check with you '
+        'before the\n     page goes live.</p>',
+        '  <p>Where your imagery would go: the space beside the result is '
+        'where your\n     photography would sit.</p>')]))
 
 # ---- G3c . attribution ----------------------------------------------------
 r(run("G3c . the footer anchor for the attribution line cannot be found",

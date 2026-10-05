@@ -143,7 +143,6 @@ FILL = {
                  "property-specific checks, comparison information and "
                  "supporting detail as they continue through PlotNua.",
 
-    "PHOTO_SLOT_LINE": "",   # set by imagery state
 
     "OFFER_NAME": "Wanderlust 48",
     "VERIFIED_PRICE": "from &euro;112,700",
@@ -286,14 +285,15 @@ def main():
     # G3 · Imagery.
     imgs, held_line = imagery_block()
     if imgs is None:
-        FILL["PHOTO_SLOT_LINE"] = held_line
-        ask = "<b>Your project photography here</b>"
-        if src.count(ask) != 1:
-            die("the photo-slot heading was not found exactly once.")
-        src = src.replace(ask, "<b>BIOBUILDS imagery</b>")
+        # G3 · THE IMAGE POSITION CARRIES NO COPY (certified,
+        # 5 Oct 2026). Nothing to do here any more: the template now
+        # ships the correct restrained empty panel, so the right
+        # action in the no-imagery case is none at all. THIS BRANCH
+        # IS THE FAIL-CLOSED PATH and it stays fail-closed.
+        pass
     else:
         slot = re.search(r'        <div class="results-hero-media">\n'
-                         r'          <div class="pn-photo-slot">.*?</div>\n'
+                         r'          <div class="pn-photo-slot"[^>]*>.*?</div>\n'
                          r'        </div>\n', src, re.S)
         if not slot:
             die("the held media wrapper was not found, so state A cannot "

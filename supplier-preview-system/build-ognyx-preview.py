@@ -252,7 +252,6 @@ FILL = {
                  "PlotNua. It uses your published products, prices and "
                  "specifications, and nothing else.",
 
-    "PHOTO_SLOT_LINE": "",   # set by imagery state
 
     "OFFER_NAME": "Stainless Steel Cold Plunge Tub for One",
     "VERIFIED_PRICE": "&euro;2,310",
@@ -419,7 +418,7 @@ def main():
         die("the image list is empty, but Fabian asked to see the imagery we "
             "propose. A held slot here would not answer what he asked.")
     slot = re.search(r'        <div class="results-hero-media">\n'
-                     r'          <div class="pn-photo-slot">.*?</div>\n'
+                     r'          <div class="pn-photo-slot"[^>]*>.*?</div>\n'
                      r'        </div>\n', src, re.S)
     if not slot:
         die("the held media wrapper was not found, so the imagery cannot "

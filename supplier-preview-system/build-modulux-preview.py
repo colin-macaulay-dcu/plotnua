@@ -192,9 +192,8 @@ LADDER = """<!-- THE LADDER — why this supplier is unusual to PlotNua. Four pu
     </ul>
   </div>
   <h2>Three things we would ask before publishing</h2>
-  <p>Everything above comes from your own pages, so where they stop we stop
-     too. These are the three points a homeowner would ask us about, and
-     we&rsquo;d rather have your answer than our best guess.</p>
+  <p>These are the three things we&rsquo;d like to check with you before the
+     page goes live.</p>
   <div class="pn-open">
     <ul>
       <li><b>Where the line falls.</b> Your site says a garden room is often
@@ -214,11 +213,6 @@ LADDER = """<!-- THE LADDER — why this supplier is unusual to PlotNua. Four pu
           PlotNua, but tell us if that&rsquo;s the wrong call.</li>
     </ul>
   </div>
-  <h3>Where your imagery would go</h3>
-  <p>The space beside the detail is where your project photography would sit,
-     credited to Modulux and linked back to your site. We haven&rsquo;t used
-     any of it here. Your photographs are yours, and they stay that way until
-     you tell us you&rsquo;re happy with the approach.</p>
 </section>
 """
 
@@ -236,11 +230,6 @@ FILL = {
                  "suppliers &mdash; so by the time this screen appears the "
                  "thinking has already happened.",
 
-    "PHOTO_SLOT_LINE": "No Modulux photography is used on this page. "
-                       "We&rsquo;d need your permission first, and we "
-                       "haven&rsquo;t asked for it yet. This is where your "
-                       "project photography would sit, credited to Modulux "
-                       "and linked back to modulux.ie.",
 
     "OFFER_NAME": "Garden apartment &mdash; one or two bedrooms",
     "VERIFIED_PRICE": "Quoted per project",
@@ -377,11 +366,10 @@ def main():
 
     # G3 · IMAGERY STATE C. The held panel is relabelled so it reads as a
     # deliberate position rather than a missing asset.
-    ask = "<b>Your project photography here</b>"
-    if src.count(ask) != 1:
-        die("the photo-slot heading was not found exactly once. Nothing "
-            "written.")
-    src = src.replace(ask, "<b>Your imagery is not used on this page</b>")
+    # G3 · THE IMAGE POSITION CARRIES NO COPY (certified, 5 Oct
+    # 2026). The relabel that stood here rewrote the slot heading into a
+    # sentence about photography. There is no heading and no sentence
+    # now; the rights gate is unchanged and still fails closed.
 
     # G3c · ATTRIBUTION. Every statement is their published information, so
     # the page says where it came from and links back.
