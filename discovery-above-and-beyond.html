@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Above and Beyond | PlotNua Discoveries</title>
-<meta name="description" content="The space above your garden is doing nothing, and a structure can bring its own support, so you do not need a tree to use it. What Irish builders actually build, and what the Irish rules actually say.">
+<meta name="description" content="You do not need a tree to build above your garden, and Ireland already sells it from a few hundred euro. What decides the result is a number almost nobody mentions.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-above-and-beyond.html">
 
@@ -920,7 +920,132 @@
 </style>
 
 <style>
-  /* ============================================================
+  /* --- evidence formatting: tables, bullets, subheads ---------------- */
+  .sp-figs{ margin:30px 0 26px; }
+  .sp-lede{ font-family:'Work Sans',system-ui,sans-serif; font-size:12px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--pn-muted);
+    margin:0 0 12px; }
+  .sp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px;
+    align-items:start; }
+  .sp-grid img{ width:100%; height:auto; display:block; border-radius:3px; }
+  .sp-credit{ font-size:13px; line-height:1.6; color:var(--pn-muted);
+    margin:12px 0 0; }
+  .sp-credit a{ color:inherit; }
+  @media (max-width:640px){ .sp-grid{ grid-template-columns:1fr; } }
+  .ev-sub{ font-family:'Work Sans',system-ui,sans-serif; font-size:12px;
+    letter-spacing:.09em; text-transform:uppercase; font-weight:600;
+    color:var(--ink); margin:22px 0 8px; }
+  .ev-bul{ margin:0 0 14px; padding-left:20px; }
+  .ev-bul li{ font-size:14px; line-height:1.65; margin:0 0 7px; }
+  .ev-tw{ overflow-x:auto; margin:0 0 18px; }
+  .ev-tbl{ width:100%; border-collapse:collapse; font-size:13px; }
+  .ev-tbl th{ text-align:left; font-family:'Work Sans',system-ui,sans-serif;
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    font-weight:600; color:var(--accent); padding:0 14px 8px 0;
+    border-bottom:1px solid rgba(31,59,46,.26); vertical-align:bottom; }
+  .ev-tbl td{ padding:10px 14px 10px 0; line-height:1.55;
+    border-bottom:1px solid rgba(31,59,46,.1); vertical-align:top; }
+  .ev-tbl tr td:first-child{ font-weight:600; white-space:normal;
+    min-width:13ch; }
+  @media (max-width:600px){
+    .ev-tbl{ font-size:12.5px; }
+    .ev-tbl th, .ev-tbl td{ padding-right:10px; }
+  }
+  /* --- the price visual: three comparable states --------------------- */
+  .pr-table{ display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+    margin:0 0 26px; border-top:2px solid var(--ink); }
+  .pr-state{ padding:22px 22px 24px;
+    border-right:1px solid rgba(31,59,46,.14); }
+  .pr-state:last-child{ border-right:none; }
+  .pr-k{ font-family:'Work Sans',system-ui,sans-serif; font-size:12px;
+    letter-spacing:.1em; text-transform:uppercase; font-weight:600;
+    color:var(--accent); margin:0 0 12px; }
+  .pr-v{ font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(23px,2.7vw,32px); line-height:1.05; color:var(--ink);
+    margin:0 0 10px; }
+  .pr-s{ font-size:13px; line-height:1.6; color:var(--soft);
+    margin:0 0 18px; }
+  .pr-cta{ margin:0; }
+  .pr-cta a{ font-family:'Work Sans',system-ui,sans-serif; font-size:12px;
+    letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    color:var(--accent); text-decoration:none;
+    border-bottom:1px solid currentColor; padding-bottom:2px; }
+  @media (max-width:899px){
+    .pr-table{ grid-template-columns:1fr; }
+    .pr-state{ border-right:none;
+      border-bottom:1px solid rgba(31,59,46,.14); }
+    .pr-state:last-child{ border-bottom:none; }
+  }
+  /* --- the height hierarchy ------------------------------------------ */
+  .pn-hero-fig .pn-fig{ border-top:3px solid var(--accent);
+    padding-top:20px; }
+  .pn-hero-fig .pn-fig-n{ font-size:clamp(54px,9vw,104px);
+    line-height:.92; }
+  .pn-hero-fig .pn-fig-l{ font-family:'Work Sans',system-ui,sans-serif;
+    font-size:12px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--accent); font-weight:600; max-width:34ch; }
+  .pn-stack{ display:grid; gap:2px; margin:30px 0 0; padding-left:18px;
+    border-left:2px solid rgba(31,59,46,.16); }
+  .pn-stack .pn-fig-n{ font-size:clamp(22px,2.6vw,30px); }
+  .pn-op{ font-family:'Fraunces',Georgia,serif; font-size:22px;
+    color:var(--accent); margin:8px 0 0; }
+  .pn-op-l{ font-size:14px; line-height:1.6; color:var(--ink);
+    margin:0 0 4px; }
+  .pn-exception{ margin:30px 0 0; }
+  .pn-exception .pn-fig{ border-top:1px dashed rgba(31,59,46,.34);
+    padding-top:16px; }
+  .pn-exception .pn-fig-n{ font-size:clamp(22px,2.6vw,30px);
+    color:var(--soft); }
+  .pn-aop{ font-family:'Fraunces',Georgia,serif; font-size:24px;
+    color:var(--accent); margin:0; }
+  /* --- final hierarchy pass ------------------------------------------ */
+  .pn-afig{ padding:18px 0 0; border-top:2px solid var(--accent); }
+  .pn-afig-n{ font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(26px,3.4vw,38px); line-height:1; color:var(--ink);
+    margin:0 0 8px; }
+  .pn-afig-l{ font-size:13px; line-height:1.6; color:var(--soft);
+    margin:0; }
+  .pn-conclusion{ font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(20px,2.4vw,25px); line-height:1.35; color:var(--ink);
+    margin:0 0 22px; max-width:34ch; }
+  .pn-attrib{ font-size:13px; line-height:1.7; color:var(--soft);
+    margin:14px 0 0; }
+  .pn-capability{ font-size:15px; line-height:1.75; color:var(--ink);
+    margin:14px 0 22px; padding-left:14px;
+    border-left:2px solid var(--accent); max-width:62ch; }
+  .ev-rows{ display:grid; gap:0; margin:0 0 16px; }
+  .ev-row{ display:grid; grid-template-columns:minmax(10ch,22ch) 1fr;
+    gap:16px; padding:9px 0; border-top:1px solid rgba(31,59,46,.12); }
+  .ev-row:first-child{ border-top:none; }
+  .ev-who{ font-family:'Work Sans',system-ui,sans-serif; font-size:13px;
+    font-weight:600; color:var(--accent); }
+  .ev-what{ font-size:14px; line-height:1.6; }
+  .ev-note{ font-size:13px; line-height:1.7; color:var(--soft); }
+  .ev-limits{ margin:0; padding-left:20px; }
+  .ev-limits li{ font-size:14px; line-height:1.65; margin:0 0 9px; }
+  .fork-cta{ margin:22px 0 0; }
+  .gb-cta{ display:inline-block;
+    font-family:'Work Sans',system-ui,sans-serif; font-size:13px;
+    letter-spacing:.09em; text-transform:uppercase; font-weight:600;
+    background:var(--accent); color:#fff; border:none; cursor:pointer;
+    padding:15px 26px; border-radius:2px; text-decoration:none; }
+  .gb-cta:hover{ opacity:.9; }
+  .gb-open{ margin:0; }
+  .jr-back{ margin:20px 0 0; }
+  /* The gate rule is retired: there is nothing left to collapse. */
+  .pb-preview.is-quiet-end{ padding:48px 0 0; background:none;
+    border-top:1px solid rgba(31,59,46,.14); text-align:left; }
+  .pb-quiet-h{ font-family:'Work Sans',system-ui,sans-serif; font-size:13px;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--accent);
+    margin:0 0 8px; font-weight:600; }
+  .pb-quiet-sub{ font-size:15px; line-height:1.7; color:var(--soft);
+    margin:0 0 20px; }
+  /* --- consolidated evidence groups ---------------------------------- */
+  .ev-lede{ font-style:italic; color:var(--soft); }
+  .ev-h{ font-family:'Work Sans',system-ui,sans-serif; font-size:13px;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--accent);
+    margin:26px 0 8px; font-weight:600; }
+  .faq-a .ev-h:first-of-type{ margin-top:18px; }  /* ============================================================
      DISC-016 - THE ANNOTATED PLATE IS IMAGE 01, IN THE BODY.
 
      Same architecture as DISC-021. On DISC-029 the annotated plate is the
@@ -1027,6 +1152,325 @@
     font-size:13px; line-height:1.7; color:var(--soft); max-width:56ch; }
 
   /* ============================================================
+     DISC-016 - THE NINE DIAGRAMS.
+
+     GEOMETRY IN SVG, TYPOGRAPHY IN HTML. Where a diagram's argument is
+     comparative magnitude, the bar width is a percentage computed in the
+     builder from the published figure, so the proportion is real and the
+     label is ordinary reflowing HTML that honours the reader's font size.
+     Where the argument is physical scale, the drawing is SVG at a stated
+     unit-per-metre and carries only short numeric labels.
+
+     No new colour. Every rule below resolves to --ink, --soft, --accent,
+     --paper, --cream or --oak.
+     ============================================================ */
+  .pn-dia{ margin:34px 0 10px; padding:26px 26px 22px;
+    background:var(--paper); border:1px solid rgba(31,59,46,.10);
+    border-radius:3px; }
+  .pn-dia-t{ font-family:'Work Sans',system-ui,sans-serif; font-size:12px;
+    font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 20px; }
+  .pn-dia-c{ margin:20px 0 0; font-size:14px; line-height:1.75;
+    color:var(--soft); max-width:62ch;
+    padding-left:16px; border-left:2px solid rgba(79,107,74,.26); }
+  .pn-dia h4{ font-family:'Work Sans',system-ui,sans-serif; font-size:15px;
+    font-weight:600; color:var(--ink); margin:0 0 6px; line-height:1.4; }
+  .pn-dia p{ font-size:14px; line-height:1.7; color:var(--soft); margin:0; }
+  .pn-dia ul, .pn-dia ol{ list-style:none; margin:0; padding:0; }
+
+  /* --- shared SVG ink ---------------------------------------------------- */
+  .pn-dia svg{ display:block; width:100%; height:auto; overflow:visible; }
+  .pn-g-ground, .pn-h-ground{ stroke:rgba(31,59,46,.34); stroke-width:1.4;
+    fill:none; }
+  .pn-g-tree{ stroke:var(--oak); stroke-width:2.6; fill:none;
+    stroke-linecap:round; }
+  .pn-g-deck{ fill:var(--accent); }
+  .pn-g-post{ stroke:var(--ink); stroke-width:2.6; fill:none; }
+  .pn-g-brace{ stroke:rgba(31,59,46,.42); stroke-width:1.4; fill:none; }
+
+  /* --- D1 three ways to stand -------------------------------------------- */
+  .pn-stands{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .pn-stand-svg{ margin-bottom:12px; }
+
+  /* --- D4 the height stack ----------------------------------------------- */
+  .pn-h-svg{ max-width:560px; margin:0 auto; }
+  .pn-h-rule{ stroke:var(--ink); stroke-width:1.6; fill:none; }
+  .pn-h-rule.is-cond{ stroke:var(--oak); stroke-width:1.6;
+    stroke-dasharray:7 5; }
+  .pn-h-n{ font-family:'Work Sans',system-ui,sans-serif; font-size:15px;
+    font-weight:600; fill:var(--ink); }
+  .pn-h-n.n-cond{ fill:var(--oak); }
+  .pn-h-n.n-pub{ fill:var(--accent); font-size:14px; }
+  .pn-h-body{ fill:rgba(79,107,74,.16); stroke:var(--accent);
+    stroke-width:1.6; }
+  .pn-h-post{ stroke:var(--accent); stroke-width:2.4; fill:none; }
+  .pn-h-deck{ stroke:var(--accent); stroke-width:3.4; fill:none; }
+  .pn-h-key, .pn-p-key{ display:grid; gap:10px; margin-top:20px; }
+  .pn-h-key li, .pn-p-key li{ display:grid; grid-template-columns:auto 1fr;
+    gap:11px; align-items:start; font-size:14px; line-height:1.7;
+    color:var(--soft); }
+  .pn-sw{ width:16px; height:3px; margin-top:9px; border-radius:3px;
+    background:var(--ink); }
+  .pn-sw.sw-cond{ background:var(--oak); }
+  .pn-sw.sw-pub, .pn-sw.sw-deck{ background:var(--accent); }
+  .pn-sw.sw-zone{ background:rgba(79,107,74,.26); }
+
+  /* --- D6 the ground it takes ------------------------------------------- */
+  .pn-p-svg{ max-width:380px; margin:0 auto; }
+  .pn-p-zone{ fill:rgba(79,107,74,.10); stroke:rgba(79,107,74,.40);
+    stroke-width:1.3; stroke-dasharray:6 4; }
+  .pn-p-deck{ fill:rgba(79,107,74,.30); stroke:var(--accent);
+    stroke-width:1.8; }
+  .pn-p-dim{ stroke:rgba(31,59,46,.30); stroke-width:1; fill:none; }
+
+  /* --- D7 the area arithmetic ------------------------------------------- */
+  .pn-area{ display:grid; gap:18px; }
+  .pn-area-row{ display:grid;
+    grid-template-columns:1fr; gap:7px; }
+  .pn-area-l{ font-size:13.5px; line-height:1.6; color:var(--soft); }
+  .pn-area-row.is-cap .pn-area-l, .pn-area-row.is-split .pn-area-l{
+    font-family:'Work Sans',system-ui,sans-serif; font-weight:600;
+    color:var(--ink); }
+  .pn-area-track{ display:flex; height:22px; background:rgba(31,59,46,.06);
+    border-radius:2px; overflow:hidden; }
+  .pn-area-bar{ display:block; height:22px; background:rgba(79,107,74,.26); }
+  .pn-area-row.is-cap .pn-area-bar{ background:var(--ink); }
+  .pn-area-bar.is-house{ background:var(--oak); }
+  .pn-area-bar.is-left{ background:repeating-linear-gradient(135deg,
+    rgba(79,107,74,.22),rgba(79,107,74,.22) 5px,
+    rgba(79,107,74,.07) 5px,rgba(79,107,74,.07) 10px); }
+  .pn-area-bar.is-struct{ background:var(--accent); }
+  .pn-area-bar.is-open{ background:rgba(31,59,46,.22); }
+  .pn-area-n{ font-family:'Work Sans',system-ui,sans-serif; font-size:13px;
+    font-weight:600; color:var(--ink); letter-spacing:.04em; }
+  .pn-area-n2{ color:var(--accent); }
+  .pn-area-n2::before{ content:" + "; color:var(--soft); font-weight:400; }
+  .pn-area-axis{ font-size:12px !important; color:var(--soft) !important;
+    font-family:'Work Sans',system-ui,sans-serif !important; margin-top:2px; }
+
+  /* --- RESPONSIVE. The three-and-two-column diagram grids collapse, and the
+         padding tightens, at the donor's own 767 breakpoint. Nothing else
+         changes, because the typography is HTML and already reflows. ------ */
+  @media (max-width:767px){
+    .pn-dia{ padding:20px 18px 18px; margin:26px 0 8px; }
+    .pn-stands{ grid-template-columns:1fr; gap:18px; }
+    .pn-stand-svg{ max-width:180px; }
+    .pn-roofs{ grid-template-columns:1fr; gap:22px; }
+    .pn-fork-arms{ grid-template-columns:1fr; gap:16px; }
+    .pn-fork-arms::before{ display:none; }
+    .pn-fork-stem{ display:none; }
+    .pn-order li{ grid-template-columns:1fr; gap:6px; }
+    .pn-dia-c{ font-size:13.5px; }
+  }
+
+  /* ============================================================
+     DISC-016 - THE FOUR-QUESTION JOURNEY, and the option cards.
+
+     Replaces the nine-field interaction's layout. Same tokens, same type
+     scale, no new colour. The questions are native fieldsets with large hit
+     areas; the option cards are ordinary article elements that exist in the
+     document whether or not the script runs.
+     ============================================================ */
+  .jq-set{ display:grid; gap:30px; }
+  .jq{ border:none; margin:0; padding:0; }
+  .jq legend{ font-family:'Fraunces',Georgia,serif; font-size:clamp(19px,2.2vw,23px);
+    line-height:1.3; color:var(--ink); padding:0 0 10px; }
+  .jq-hint{ font-size:14px; line-height:1.75; color:var(--soft);
+    margin:0 0 14px; max-width:60ch; }
+  .jq-opts{ display:grid; gap:9px; }
+  .jq-opt{ display:flex; align-items:flex-start; gap:12px; cursor:pointer;
+    padding:13px 16px; background:#fff; border:1px solid rgba(31,59,46,.18);
+    border-radius:2px; }
+  .jq-opt:hover{ border-color:var(--accent); }
+  .jq-opt input{ margin:2px 0 0; width:18px; height:18px; flex:none;
+    accent-color:var(--accent); }
+  .jq-opt span{ font-size:15px; line-height:1.5; color:var(--ink); }
+  .jq-opt:has(input:checked){ border-color:var(--accent);
+    background:var(--cream); }
+  .jq-opt:focus-within{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* --- the result ------------------------------------------------------- */
+  .jres h3{ font-size:clamp(20px,2.4vw,25px); margin:0 0 22px; }
+  .jres h3:focus{ outline:2px solid var(--accent); outline-offset:4px; }
+  .jr{ padding:24px 26px; background:var(--cream);
+    border-left:3px solid var(--accent); margin:0 0 26px; }
+  .jr.is-check{ border-left-color:var(--oak); }
+  .jr-label{ font-family:'Work Sans',system-ui,sans-serif;
+    font-size:clamp(14px,1.8vw,18px); font-weight:600; letter-spacing:.07em;
+    color:var(--ink); margin:0 0 11px; line-height:1.35; }
+  .jr p{ font-size:14.5px; line-height:1.75; color:var(--soft); margin:0; }
+  .jr-why{ margin-top:16px; }
+  .jr-why ul{ list-style:none; margin:0; padding:0; display:grid; gap:11px; }
+  .jr-why li{ font-size:14px; line-height:1.75; color:var(--soft);
+    padding-left:15px; border-left:2px solid rgba(79,107,74,.3); }
+  .jr-visit{ margin-top:18px !important; font-style:italic; }
+  .jr-asks, .jr-check{ margin-top:22px; padding-top:20px;
+    border-top:1px solid rgba(31,59,46,.1); }
+  .jr-asks h4, .jr-check h4{ font-family:'Work Sans',system-ui,sans-serif;
+    font-size:14px; font-weight:600; color:var(--ink); margin:0 0 9px; }
+  .jr-asks-note{ font-style:italic; margin-bottom:12px !important; }
+  .jr-asks ul{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+  .jr-asks li{ font-size:14px; line-height:1.7; color:var(--soft);
+    padding-left:15px; position:relative; }
+  .jr-asks li::before{ content:""; position:absolute; left:0; top:9px;
+    width:5px; height:5px; border-radius:5px; background:var(--accent); }
+  .jr-check p{ margin-bottom:12px !important; }
+  .jr-check-after{ font-weight:600; color:var(--ink) !important; }
+
+  /* --- the option cards ------------------------------------------------- */
+  .jo-set{ display:grid; gap:18px; margin:4px 0 26px; }
+  .jo-lede, .jo-none{ font-size:13.5px; line-height:1.75; color:var(--soft);
+    margin:0; max-width:62ch; padding-left:16px;
+    border-left:2px solid rgba(79,107,74,.26); }
+  .jo{ padding:22px 24px; background:#fff;
+    border:1px solid rgba(31,59,46,.16); border-radius:2px; }
+  .jo h4{ margin:0 0 12px; display:grid; gap:3px; }
+  .jo-sup{ font-family:'Work Sans',system-ui,sans-serif; font-size:12px;
+    font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); }
+  .jo-prod{ font-family:'Fraunces',Georgia,serif; font-size:19px;
+    line-height:1.3; color:var(--ink); }
+  .jo-price{ font-size:15px; line-height:1.7; color:var(--ink);
+    margin:0 0 14px; }
+  .jo-why, .jo-next{ font-size:13.5px; line-height:1.75; color:var(--soft);
+    margin:0 0 10px; }
+  .jo-next{ margin-bottom:0; }
+  .jo-k{ display:block; font-family:'Work Sans',system-ui,sans-serif;
+    font-size:11px; font-weight:600; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:3px; }
+
+  @media (max-width:767px){
+    .jq-set{ gap:24px; }
+    .jq-opt{ padding:12px 14px; }
+    .jr{ padding:18px 18px; }
+    .jo{ padding:18px; }
+  }
+
+  /* ============================================================
+     FAIL VISIBLE — added 5 October 2026.
+
+     The donor starts every .reveal element at opacity 0 and relies on script to
+     restore it. Measured with scripting disabled, #the-one-number had computed
+     opacity 0 and the whole article was blank: the failure mode of a decoration
+     had become the loss of the content.
+
+     So the starting state is now conditional on scripting being present. The
+     inline mark below is set by the page's own script; when it is absent, these
+     rules restore full opacity. With scripting on, nothing about the animation
+     changes.
+
+     This is deliberately NOT done with a <noscript> block: scripting can be
+     enabled and the script still fail to run (a parse error, a blocked file, a
+     CSP rejection), and <noscript> does not fire in that case. A class the
+     script itself must set covers both.
+     ============================================================ */
+  html:not(.pn-js) .reveal{ opacity:1 !important; transform:none !important; }
+  html:not(.pn-js) .gb-step[hidden]{ display:block !important; }
+  html:not(.pn-js) .gb-nav, html:not(.pn-js) .gb-state{ display:none !important; }
+
+  /* ============================================================
+     DISC-016 - YOUR GARDEN BRIEF, the S10 interaction.
+
+     Native controls, donor tokens, no new colour. The four screens are
+     sibling <section>s toggled by the hidden attribute, so a browser with
+     no JavaScript shows step 1 and the reader loses an interaction rather
+     than losing the content around it.
+     ============================================================ */
+  .gb{ margin:32px 0 6px; padding:30px; background:var(--paper);
+    border:1px solid rgba(31,59,46,.12); border-radius:3px; }
+  .gb-prog{ font-family:'Work Sans',system-ui,sans-serif; font-size:11px;
+    font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 10px; }
+  .gb h3{ font-size:clamp(20px,2.4vw,25px); line-height:1.3; margin:0 0 26px;
+    color:var(--ink); }
+  .gb h3:focus{ outline:2px solid var(--accent); outline-offset:4px; }
+  .gb h4{ font-family:'Work Sans',system-ui,sans-serif; font-size:14px;
+    font-weight:600; letter-spacing:.02em; color:var(--ink); margin:0 0 10px; }
+
+  .gb-field{ padding:20px 0; border-top:1px solid rgba(31,59,46,.09); }
+  .gb-field:first-of-type{ border-top:none; padding-top:0; }
+  .gb-q{ font-family:'Work Sans',system-ui,sans-serif; font-size:15px;
+    font-weight:600; color:var(--ink); line-height:1.5; margin:0 0 6px; }
+  .gb-qn{ display:inline-block; min-width:30px; font-size:12px;
+    font-weight:600; letter-spacing:.1em; color:var(--accent); }
+  .gb-hint{ font-size:13.5px; line-height:1.7; color:var(--soft);
+    margin:0 0 14px; max-width:58ch; }
+
+  .gb-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin:0 0 10px; }
+  .gb-row label{ font-size:13.5px; color:var(--soft); min-width:16ch; }
+  .gb-n, .gb-t{ font-family:'Work Sans',system-ui,sans-serif; font-size:15px;
+    color:var(--ink); background:#fff; border:1px solid rgba(31,59,46,.26);
+    border-radius:2px; padding:9px 11px; }
+  .gb-n{ width:7.5em; }
+  .gb-t{ width:16em; max-width:100%; }
+  .gb-n:focus, .gb-t:focus{ outline:2px solid var(--accent);
+    outline-offset:1px; border-color:var(--accent); }
+  .gb-u{ font-size:13px; color:var(--soft); }
+
+  .gb-fs{ border:none; margin:0 0 6px; padding:0; }
+  .gb-fs legend{ font-size:13.5px; color:var(--soft); padding:0 0 9px; }
+  .gb-opt{ display:flex; align-items:flex-start; gap:10px; margin:0 0 9px; }
+  .gb-opt input{ margin:3px 0 0; width:17px; height:17px;
+    accent-color:var(--accent); flex:none; }
+  .gb-opt label{ font-size:14.5px; line-height:1.55; color:var(--ink); }
+
+  .gb-nav{ display:flex; gap:12px; flex-wrap:wrap; margin:26px 0 0; }
+  .gb-btn{ font-family:'Work Sans',system-ui,sans-serif; font-size:13px;
+    font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+    padding:13px 22px; border-radius:2px; cursor:pointer;
+    border:1px solid var(--accent); background:var(--accent); color:var(--cream); }
+  .gb-btn.is-back, .gb-btn.is-plain{ background:transparent; color:var(--accent); }
+  .gb-btn:hover{ filter:brightness(1.08); }
+  .gb-btn:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+
+  .gb-err, .gb-copied{ margin:14px 0 0; font-size:13.5px; line-height:1.7;
+    color:var(--oak); }
+  .gb-err:empty, .gb-copied:empty{ margin:0; }
+
+  .gb-states-lede{ font-size:14px; color:var(--soft); margin:0 0 18px; }
+  .gb-state{ padding:22px 24px; background:var(--cream);
+    border-left:3px solid var(--accent); margin:0 0 24px; }
+  .gb-state-label{ font-family:'Work Sans',system-ui,sans-serif;
+    font-size:clamp(14px,1.7vw,17px); font-weight:600; letter-spacing:.08em;
+    color:var(--ink); margin:0 0 10px; line-height:1.4; }
+  .gb-state p:last-child{ font-size:14.5px; line-height:1.75;
+    color:var(--soft); margin:0; }
+
+  .gb-why{ padding:20px 0 0; border-top:1px solid rgba(31,59,46,.09); }
+  .gb-why ul{ list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .gb-why li{ font-size:14px; line-height:1.75; color:var(--soft);
+    padding-left:16px; border-left:2px solid rgba(79,107,74,.26); }
+  .gb-why-note{ margin:16px 0 0; font-size:13px; font-style:italic;
+    color:var(--soft); }
+
+  .gb-next{ margin:26px 0 0; padding:20px 22px; background:var(--cream); }
+  .gb-next p{ font-size:14px; line-height:1.75; color:var(--soft); margin:0; }
+  .gb-next a{ color:var(--accent); }
+
+  .gb-brief{ margin:28px 0 0; padding:24px 0 0;
+    border-top:1px solid rgba(31,59,46,.09); }
+  .gb-brief-note{ font-size:13.5px; line-height:1.7; color:var(--soft);
+    margin:0 0 16px; max-width:60ch; }
+  .gb-out{ margin:0; padding:20px; background:#fff;
+    border:1px solid rgba(31,59,46,.16); border-radius:2px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.5px; line-height:1.65; color:var(--ink);
+    white-space:pre-wrap; overflow-wrap:break-word; max-height:430px;
+    overflow:auto; }
+  .gb-out:focus{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  @media (max-width:767px){
+    .gb{ padding:22px 18px; }
+    .gb-row label{ min-width:0; width:100%; }
+    .gb-n, .gb-t{ width:100%; }
+    .gb-nav{ flex-direction:column; }
+    .gb-btn{ width:100%; }
+    .gb-state{ padding:18px; }
+    .gb-out{ font-size:11.5px; padding:14px; }
+  }
+
+  /* ============================================================
      SECTION 6 - HOW IT WORKS. Three quiet steps, stacked like paragraphs
      rather than boxed into cards. Ported VERBATIM from the existing
      about.html .steps pattern - not a new component. No cards, no boxes,
@@ -1101,6 +1545,7 @@
 </style>
 </head>
 <body>
+<script>document.documentElement.className += ' pn-js';</script>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
      Goes to the Discovery Library, NOT to the homepage: the brand mark above
@@ -1120,7 +1565,7 @@
        Discovery the annotated plate is the SAME photograph, further down,
        and showing the same garden twice - once as it is, once with what is
        above it marked - IS the argument of the page. -->
-  <img id="dHeroImg" class="on" src="assets/img/b53d75f9dff4af2e.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="An ordinary Irish back garden seen from the house: a mown striped lawn with a football on it, a paved patio outside sliding doors, a child&rsquo;s scooter, potted plants, a silver birch and a mature oak, with clipped hedges and neighbouring rooftops beyond.">
+  <img id="dHeroImg" class="on" src="assets/img/b53d75f9dff4af2e.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="An ordinary Irish back garden seen from the house: a mown striped lawn with a football on it, a paved patio outside sliding doors, a child&#8217;s scooter, potted plants, a silver birch and a mature oak, with clipped hedges and neighbouring rooftops beyond.">
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">PlotNua Discovery</div>
@@ -1135,10 +1580,10 @@
     <div class="kicker">The Revelation</div>
     <h2>Look up</h2>
     <p>Stand at the back door and look at your garden. You are almost certainly measuring the ground.</p>
-    <p>That is how everyone thinks about garden space &mdash; as a footprint. So much lawn, so much patio. Any new room has to come out of it, so building something means the garden gets smaller. Most people accept that trade without ever questioning it.</p>
+    <p>Everyone thinks about garden space as a footprint &mdash; so much lawn, so much patio. A new room has to come out of it, so building something means the garden gets smaller.</p>
     <p>Now look up.</p>
-    <p>Above the lawn is space that is already yours but rarely gets counted. When you think about what your garden could do, you probably think about the ground. <strong>But what if the extra space was above it?</strong></p>
-    <p>That is not a thought experiment. People build up there, in Ireland, in ordinary gardens &mdash; including small ones.</p>
+    <p>The space above the lawn is already yours, and it rarely gets counted. <strong>What if the extra space was above it?</strong></p>
+    <p>People build up there, in Ireland, in ordinary gardens, including small ones. You can buy one this week. And the thing that decides what you end up with is not the thing you would expect.</p>
   </section>
 
 </main>
@@ -1204,19 +1649,43 @@
 
 <main class="article">
 
-  <section class="article-section reveal" id="the-same-garden">
-    <div class="kicker">The Same Garden</div>
-    <h2>What&rsquo;s above your garden</h2>
-    <p>The same garden. The only thing that has changed is where you are looking.</p>
-  </section>
-
   <section class="article-section reveal" id="you-dont-need-a-tree">
     <div class="kicker">The Surprise</div>
-    <h2>You don&rsquo;t need a tree</h2>
-    <p>Here is the part that surprises people.</p>
-    <p>A treehouse without a tree sounds like a contradiction, and it isn&rsquo;t. A structure can bring its own support &mdash; posts, stilts, columns or an engineered frame &mdash; and stand up entirely on its own.</p>
-    <p>That matters more than it sounds. The moment a suitable tree stops being a requirement, the idea opens up to gardens where a traditional treehouse would not work.</p>
-    <p>There are three ways one of these can stand up.</p>
+    <h2>You don&#8217;t need a tree</h2>
+    <p>A treehouse without a tree sounds like a contradiction, and it isn&#8217;t. A structure can bring its own support &mdash; posts, stilts, columns or an engineered frame &mdash; and stand up entirely on its own.</p>
+    <p>Irish and British builders describe the category that way themselves, and Irish suppliers sell it by name &mdash; a playhouse <em>on stilts, with a ladder, a swing, and decking under</em>. The decking under is the part worth noticing.</p>
+    <p>The moment a suitable tree stops being a requirement, the idea opens up to gardens where a traditional treehouse would not work.</p>
+    <p class="steps-after">There are three ways one of these can stand up.</p>
+    <figure class="pn-dia" id="dia-three-ways">
+      <figcaption class="pn-dia-t">Three ways the same deck can stand</figcaption>
+      <ul class="pn-stands">
+        <li class="pn-stand">
+          <svg class="pn-stand-svg" viewBox="0 0 120 126" role="img" aria-label="Tree-supported elevation">
+            <path class="pn-g-ground" d="M6 118 L114 118"/>
+            <path class="pn-g-tree" d="M60 118 L60 36 M60 70 L40 48 M60 78 L82 54"/><rect class="pn-g-deck" x="22" y="60" width="76" height="7"/>
+          </svg>
+          <h4>Tree-supported</h4>
+          <p>The tree carries the load.</p>
+        </li>
+        <li class="pn-stand">
+          <svg class="pn-stand-svg" viewBox="0 0 120 126" role="img" aria-label="Part-supported elevation">
+            <path class="pn-g-ground" d="M6 118 L114 118"/>
+            <path class="pn-g-tree" d="M44 118 L44 36 M44 66 L28 48"/><rect class="pn-g-deck" x="22" y="60" width="76" height="7"/><path class="pn-g-post" d="M90 67 L90 118"/>
+          </svg>
+          <h4>Part-supported</h4>
+          <p>The tree and posts share it.</p>
+        </li>
+        <li class="pn-stand">
+          <svg class="pn-stand-svg" viewBox="0 0 120 126" role="img" aria-label="Freestanding elevation">
+            <path class="pn-g-ground" d="M6 118 L114 118"/>
+            <rect class="pn-g-deck" x="22" y="60" width="76" height="7"/><path class="pn-g-post" d="M30 67 L30 118 M90 67 L90 118"/><path class="pn-g-brace" d="M30 100 L90 86"/>
+          </svg>
+          <h4>Freestanding</h4>
+          <p>Posts carry it. No tree at all.</p>
+        </li>
+      </ul>
+      <p class="pn-dia-c">The deck is drawn at the same height in all three. Only the support changes, which is the whole point: the thing that matters to the regulations is how high it is, not what is holding it up.</p>
+    </figure>
     <div class="steps">
       <div class="step">
         <div class="step-head"><span class="step-num">01</span><h3>Freestanding</h3></div>
@@ -1246,11 +1715,91 @@
 
 <main class="article">
 
-  <section class="article-section reveal" id="what-it-can-be">
-    <div class="kicker">The Use</div>
-    <h2>What it can be</h2>
+  <section class="article-section reveal" id="what-it-can-become">
+    <div class="kicker">The Range</div>
+    <h2>What it can become</h2>
     <p>This is where people underestimate it. The picture in most heads is a small timber box for small children, outgrown in about three summers.</p>
-    <p>It does not have to be that.</p>
+    <p>It does not have to be that. Laid end to end, the published work runs from a den a metre off the lawn to something an architect signs.</p>
+    <div class="practical-group">
+      <div class="practical-item">
+        <h3>A raised den</h3>
+        <p>A platform, a ladder or steps, a small enclosed space and a veranda. This is the volume product, and it is where most Irish gardens start.</p>
+      </div>
+      <div class="practical-item">
+        <h3>A play and adventure structure</h3>
+        <p>Towers, slides, monkey bars, climbing walls, nets, crow&#8217;s nests. Irish makers publish bridges between towers, drop bridges and in-ground trampolines at this level, not only at the ambitious end.</p>
+      </div>
+      <div class="practical-item">
+        <h3>A substantial elevated room</h3>
+        <p>Enclosed, boarded, glazed. One Irish maker&#8217;s published Dublin project is a games room treehouse, elevated and built around a mature birch to give a sense of being in the canopy while avoiding overlook of neighbouring gardens.</p>
+      </div>
+      <div class="practical-item">
+        <h3>An adult retreat</h3>
+        <p>The same maker publishes a County Louth retreat in a mature oak with a wrap-around deck that lets you follow the sun, and says that depending on the comfort level required these can be fully insulated and heated for year-round use.</p>
+      </div>
+      <div class="practical-item">
+        <h3>A games room, studio or workspace</h3>
+        <p>At the frontier these are published as standing product lines &mdash; studios, home offices, garden rooms in the air. In Ireland the games room is the evidenced example.</p>
+      </div>
+      <div class="practical-item">
+        <h3>An architectural treehouse</h3>
+        <p>The most ambitious published example built in Ireland is on the Atlantic coast: a look-out deck, a rope bridge, a reading nook, cedar cladding and a glass window in the floor, designed for a windy, exposed site. It was built by a British practice, and whether that practice currently takes on private commissions here is something PlotNua has not established.</p>
+      </div>
+    </div>
+    <figure class="sp-figs">
+      <p class="sp-lede">Two of those projects, photographed by the designer.</p>
+      <div class="sp-grid">
+        <img src="assets/img/de115143d8931901.jpg" width="960" height="1280" loading="lazy" decoding="async" alt="A large timber room raised on its own posts in a garden, with a wide deck and wire balustrade, a timber stair up to it and a slide back down, and open ground underneath.">
+        <img src="assets/img/3884a467015a395a.jpg" width="1280" height="1175" loading="lazy" decoding="async" alt="A timber retreat raised on posts among mature trees, with a wraparound deck and a balustrade made from branches.">
+      </div>
+      <figcaption class="sp-credit">Photographs by the designer at <a href="https://www.forestwildtreehouses.ie/" target="_blank" rel="noopener">Forest Wild Treehouses / Plan Eden</a>, used with permission. He designed and built these. PlotNua has no commercial arrangement with him.</figcaption>
+    </figure>
+    <figure class="ed-photo">
+      <img src="assets/img/aecece07994fe0db.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="The same garden with two timber pods instead of one, joined in the air by a rope bridge. A climbing net rises to one of them, a curved slide runs down from the other to the lawn, and a child is climbing the net.">
+    </figure>
+    <p class="rel-note"><strong>One important distinction.</strong> This is not something anyone sells off a shelf. It is not a standard Irish product, it would not suit every garden, and nothing about a structure this size should be assumed to be exempted development.</p>
+    <p class="steps-after">Not every structure suits every use, and the use changes what has to be built. Insulation, power, glazing, how you get up there and how often you go &mdash; somewhere to read on a June evening and somewhere to work in February are different briefs.</p>
+  </section>
+
+  <section class="article-section reveal" id="the-market-stops">
+    <div class="kicker">What It Costs</div>
+    <h2>Where you can see a price &mdash; and where you need to ask</h2>
+    <div class="pr-table">
+        <div class="pr-state">
+          <p class="pr-k">READY-MADE</p>
+          <p class="pr-v">&euro;700&ndash;&euro;4,100</p>
+          <p class="pr-s">Published Irish products, Garden Sheds Dublin to Geppetto Land</p>
+          <p class="pr-cta"><a href="#garden-brief">See ready-made options <span aria-hidden="true">&rarr;</span></a></p>
+        </div>
+        <div class="pr-state">
+          <p class="pr-k">MADE TO QUOTE</p>
+          <p class="pr-v">Price on request</p>
+          <p class="pr-s">A maker prices your idea</p>
+          <p class="pr-cta"><a href="#garden-brief">Find a maker <span aria-hidden="true">&rarr;</span></a></p>
+        </div>
+        <div class="pr-state">
+          <p class="pr-k">DESIGNED FOR YOU</p>
+          <p class="pr-v">From &euro;30,000</p>
+          <p class="pr-s">Supplier-confirmed starting budget, Forest Wild design</p>
+          <p class="pr-cta"><a href="#garden-brief">See the design route <span aria-hidden="true">&rarr;</span></a></p>
+        </div>
+    </div>
+    <details class="pn-disc">
+      <summary>How we got these figures</summary>
+      <div class="pn-disc-b">
+        <div class="ev-rows">
+        <div class="ev-row"><span class="ev-who">Garden Sheds Dublin</span><span class="ev-what">from &euro;700 flat packed and collected; standard range from &euro;1,400</span></div>
+        <div class="ev-row"><span class="ev-who">Abwood</span><span class="ev-what">from &euro;740</span></div>
+        <div class="ev-row"><span class="ev-who">Green Tree Play</span><span class="ev-what">&euro;840 to &euro;3,470</span></div>
+        <div class="ev-row"><span class="ev-who">East Coast Timber Engineering</span><span class="ev-what">&euro;1,000 to &euro;1,750</span></div>
+        <div class="ev-row"><span class="ev-who">Geppetto Land</span><span class="ev-what">&euro;1,350 to &euro;4,100</span></div>
+        <div class="ev-row"><span class="ev-who">Bennett Wood</span><span class="ev-what">&euro;1,650 to &euro;3,000</span></div>
+        <div class="ev-row"><span class="ev-who">Timbertrove</span><span class="ev-what">&euro;1,489, &euro;2,339 and &euro;3,189</span></div>
+        <div class="ev-row"><span class="ev-who">Forest Wild Treehouses</span><span class="ev-what">from &euro;30,000 for a basic structure and from &euro;60,000 for a more elaborate project &mdash; starting-budget guidance confirmed directly by the designer, 5 October 2026. Design and consultancy, not construction</span></div>
+        </div>
+        <p class="ev-note">Between &euro;4,100 and &euro;30,000 no Irish supplier we found publishes a price. Quote-only makers may well work in that band &mdash; at least one Irish maker offers a free approximate estimate online, and another will quote remotely for smaller structures if you are very specific. What we can say is narrower and more useful: no published Irish price establishes that band. PlotNua does not fill it with a guess, and we will not borrow one from another market to make the picture look complete. All figures read first-party on the supplier&#8217;s own website on 5 October 2026.</p>
+      </div>
+    </details>
   </section>
 
 </main>
@@ -1264,83 +1813,88 @@
 
 <main class="article">
 
-  <section class="article-section reveal" id="what-it-can-be-cont">
-    <p>Irish builders publish elevated structures used as dens, play spaces, reading places, games rooms and hangout spaces, creative and art spaces, music spaces, quiet retreats, and occasional workspaces. One Irish maker&rsquo;s published projects include a games room in a Dublin garden and an adult retreat in County Louth with a wrap-around deck.</p>
-    <p>Not every structure suits every use, and the use changes what has to be built. Insulation, power, glazing, how you get up there and how often you go &mdash; somewhere to read on a June evening and somewhere to work in February are different briefs.</p>
-    <p>It is up in the air, it is yours, and going up there feels different from walking across the lawn.</p>
+  <section class="article-section reveal" id="the-one-number">
+    <div class="kicker">Why Height Matters</div>
+    <h2>Why most ready-made options stay under 3 metres</h2>
+    <p class="pn-conclusion">Planning rules are a big reason.</p>
+    <div class="pn-hero-fig">
+        <div class="pn-fig">
+          <p class="pn-fig-n">3 m</p>
+          <p class="pn-fig-l">Usual overall exempt-development limit considered here</p>
+        </div>
+    </div>
+    <div class="pn-stack">
+        <div class="pn-fig">
+          <p class="pn-fig-n">1.2 m</p>
+          <p class="pn-fig-l">deck height published by Timbertrove</p>
+        </div>
+        <p class="pn-op">+</p>
+        <p class="pn-op-l">room to stand up in above it</p>
+        <p class="pn-op">=</p>
+        <p class="pn-op-l">why many ready-made designs stay relatively low overall</p>
+    </div>
+    <div class="pn-exception">
+        <div class="pn-fig">
+          <p class="pn-fig-n">4 m</p>
+          <p class="pn-fig-l">Only with a tiled or slated pitched roof</p>
+        </div>
+    </div>
+    <p class="pn-insight">This helps explain the proportions of many ready-made Irish designs.</p>
+    <p class="pn-thesis">The tree is optional. The height isn&#8217;t.</p>
+    <details class="pn-disc">
+      <summary>See the planning detail</summary>
+      <div class="pn-disc-b">
+        <h4 class="ev-h">The exemption limit</h4>
+        <p>The exemption for a structure of this kind sets a limit of 3 metres, measured overall from ground level to the highest point, and allows 4 metres only where the roof is a tiled or slated pitched roof. The two conditions hold together: a felted or shingled roof at any pitch is on the 3 metre line, which is why quoting the higher figure on its own would be the most misleading thing this page could do.</p>
+        <h4 class="ev-h">What Irish suppliers actually publish</h4>
+        <p>Timbertrove publish the only complete measured elevation we found in Ireland &mdash; a deck at 1.2 metres, 2.7 metres overall, felted roof &mdash; for the Hide Out Treehouse at &euro;2,339. Geppetto Land and Garden Sheds Dublin each publish deck heights of about 4 feet for products in their ranges. No Irish catalogue product we found is published with a tiled or slated pitched roof, so in practice the ready-made market is working to the 3 metre figure.</p>
+        <h4 class="ev-h">Where Class 3 stops</h4>
+        <p>Class 3 of the exempted-development regulations does not name treehouses, and this page does not assert that any particular structure is within it.</p>
+        <h4 class="ev-h">How to get an answer that binds</h4>
+        <p>Under section 5 of the Planning and Development Act 2000 any person can ask their planning authority for a declaration on whether something is development and whether it is exempted development. That is the only binding answer available.</p>
+        <h4 class="ev-h">Sources and dates</h4>
+        <p>Statutory text read on the Irish Statute Book and supplier figures read first-party, both on 5 October 2026.</p>
+      </div>
+    </details>
   </section>
 
-  <section class="article-section reveal" id="take-it-further">
-    <div class="kicker">The Ambitious End</div>
-    <h2>Take it further</h2>
-    <p>The freestanding pod is only one version of the idea. At the ambitious end, an elevated space can become a much bigger piece of the garden.</p>
-    <figure class="ed-photo">
-      <img src="assets/img/aecece07994fe0db.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="The same garden with two timber pods instead of one, joined in the air by a rope bridge. A climbing net rises to one of them, a curved slide runs down from the other to the lawn, and a child is climbing the net.">
-    </figure>
-    <p>Two structures instead of one, joined by a bridge. A climbing net on one side and a slide off the other. A route through the garden that happens in the air rather than on the ground.</p>
-    <p>This is the ambitious end, not the starting point. It is shown here because the idea scales &mdash; and because, once the tree is optional, the design is no longer dictated by what your garden happened to grow.</p>
-    <p class="rel-note"><strong>One important distinction.</strong> This is not something anyone sells off a shelf. It is not a standard Irish product, it would not suit every garden, and nothing about a structure this size should be assumed to be exempted development.</p>
-  </section>
-
-  <section class="article-section reveal" id="what-ireland-already-has">
-    <div class="kicker">Irish Supply</div>
-    <h2>What Ireland already has</h2>
-    <p>You do not have to import this idea.</p>
-    <p><strong><a href="https://treehouses.ie/" target="_blank" rel="noopener">Treehouses.ie</a></strong>, based in Clare, designs and builds treehouses, cabins, decks and other garden structures throughout Ireland, in timber and steel. They say it plainly: a structure can be supported by one or more trees <strong>or freestanding</strong>. They will build anything from a bare shell to a fully insulated and fitted interior.</p>
-    <p><strong><a href="https://www.forestwildtreehouses.ie/" target="_blank" rel="noopener">Forest Wild Treehouses</a></strong> designs and builds across Ireland for adults and children, and publishes projects in ordinary gardens &mdash; several of them small Dublin ones. Their work includes a games room, play towers and an adult retreat.</p>
-    <p>Both work bespoke, to the garden. Neither publishes a standard price.</p>
-    <p class="rel-note"><strong>PlotNua has no arrangement with either of them.</strong> They are named because their own published work is the evidence that this is built in Ireland.</p>
-  </section>
-
-  <section class="article-section reveal" id="now-the-practical-part">
-    <div class="kicker">The Practical Part</div>
-    <h2>Now the practical part</h2>
-    <p>Here is what decides whether this is a nice idea or something you can do.</p>
-    <h3>Planning</h3>
-    <div class="rule-group">
-      <h3>What the rule says</h3>
-      <p>Garden structures come under <strong><a href="https://www.irishstatutebook.ie/eli/2026/si/338/made/en/print" target="_blank" rel="noopener">Class 3</a></strong> of the exempted-development regulations, as substituted in July 2026. It covers <em>&ldquo;the construction, erection or placing within the curtilage of a house of any tent, awning, shade or other object, greenhouse, garage, store, shed or other similar structure&rdquo;</em>, subject to six conditions. The ones that matter here:</p>
-      <ul class="planning-conditions">
-        <li>nothing <strong>forward of the front wall</strong> of the house</li>
-        <li>everything of this kind on the property, added together, <strong>no more than 30&nbsp;m&sup2;</strong></li>
-        <li>it must not leave you with <strong>less than 25&nbsp;m&sup2;</strong> of private open space to the rear or side</li>
-        <li><strong>the height must not exceed 4 metres for a tiled or slated pitched roof, or 3 metres in any other case</strong></li>
-        <li><strong>no human habitation</strong>, and no use except one incidental to enjoying the house</li>
-      </ul>
+  <section class="article-section reveal" id="close-off">
+    <div class="kicker">Before You Order</div>
+    <h2>Thinking about a garden house later? Read this first.</h2>
+    <p>A separate 2026 exemption can allow a small detached house in a back garden. But it shares an overall area limit with other garden structures.</p>
+    <p>Build too much garden structure now and you may reduce &mdash; or lose &mdash; that option later.</p>
+    <div class="pn-figs">
+        <div class="pn-afig">
+          <p class="pn-afig-n">45 m&sup2;</p>
+          <p class="pn-afig-l">Combined maximum, both classes together</p>
+        </div>
+        <p class="pn-aop">&minus;</p>
+        <div class="pn-afig">
+          <p class="pn-afig-n">32 m&sup2;</p>
+          <p class="pn-afig-l">Minimum size for the detached garden house</p>
+        </div>
+        <p class="pn-aop">=</p>
+        <div class="pn-afig">
+          <p class="pn-afig-n">&asymp; 13 m&sup2;</p>
+          <p class="pn-afig-l">Potentially available for relevant existing garden structures</p>
+        </div>
     </div>
-    <div class="rule-group">
-      <h3>What that can mean in practice</h3>
-      <p class="illus-note">The following is a <strong>PlotNua illustration</strong> using <strong>assumed dimensions</strong>. It is not a rule, and <strong>your own figures will differ</strong>.</p>
-      <p>The height limit is measured to the top of the whole structure, from the ground. An elevated space has to fit its elevation, its headroom and its roof inside that one number. Assume roughly 2.1&nbsp;m of internal headroom and a modest pitched roof, and an illustration like that leaves somewhere around a metre of elevation inside a 4&nbsp;m limit. Lift the floor higher and the total climbs quickly.</p>
-      <p><strong>The overall height limit can significantly constrain how high an enclosed elevated structure can sit while staying within Class 3. A proposal outside those limits needs a site-specific planning check.</strong> The formal route to an answer for a specific proposal is a <strong>Section 5 Declaration</strong> from your local authority.</p>
-    </div>
-    <div class="practical-group">
-      <div class="practical-item">
-        <h3>Building Regulations</h3>
-        <p>A separate regime with its own exemption. <a href="https://www.irishstatutebook.ie/eli/1997/si/497/made/en/print" target="_blank" rel="noopener">The Building Regulations</a> exempt a <strong>single storey building ancillary to a dwelling</strong>, detached, <strong>not more than 25&nbsp;m&sup2;</strong>, within the same 3&nbsp;m / 4&nbsp;m heights, and <strong>used exclusively for recreational or storage purposes</strong> &mdash; expressly <strong>not for any trade or business, and not for human habitation</strong>.</p>
-        <p>Two things worth knowing. The area figures <strong>are not the same</strong>: planning now allows 30&nbsp;m&sup2;, the Building Regulations exemption is 25&nbsp;m&sup2;. And the exemption is written for a <em>single storey building</em> &mdash; <strong>whether a raised structure is read that way is not something PlotNua could establish</strong>, so it is a question for your builder and your local Building Control Authority.</p>
+    <p class="pn-attrib"><strong>That 13 m&sup2; reading is PlotNua&#8217;s own, from two sets of regulations, and not guidance from any authority.</strong></p>
+    <p class="pn-insight">If a future garden house matters to you, check this before ordering.</p>
+    <details class="pn-disc">
+      <summary>See how the 13 m&sup2; figure is calculated</summary>
+      <div class="pn-disc-b">
+        <h4 class="ev-h">The two classes</h4>
+        <p>Class 3 covers garden structures of this kind and counts every one in the curtilage together. Since July 2026 a separate class has allowed a small detached house in a back garden without planning permission, for a limited period, where it is occupied along with the main house. They are different exemptions, and they share an overall area ceiling.</p>
+        <h4 class="ev-h">The arithmetic, and whose it is</h4>
+        <p>The combined ceiling across both classes is 45 square metres. A detached garden house has a floor it cannot go below of 32 square metres. Taken together that leaves about 13 square metres &mdash; roughly a three-by-four-metre building plus a modest deck &mdash; for garden structures of this kind before the garden house route closes. <strong>That reading is PlotNua&#8217;s own, drawn from two sets of regulations, and it is not guidance from any authority.</strong> We set it out so you can check it rather than take it.</p>
+        <h4 class="ev-h">What to do about it</h4>
+        <p>If a garden house is anywhere in your thinking, put the question to your local authority before you order a treehouse rather than after. A section 5 declaration is the way to get an answer that binds.</p>
+        <h4 class="ev-h">Sources and dates</h4>
+        <p>Both sets of regulations read on the Irish Statute Book on 5 October 2026.</p>
       </div>
-      <div class="practical-item">
-        <h3>Getting up there</h3>
-        <p>Access is a design problem, not an afterthought. Depending on the structure, getting up there might involve steps, a ladder, a bridge or a combination of them.</p>
-        <p>Stairs, ladders and landings take up ground too. <strong>Nobody should tell you an elevated structure costs you no garden at all.</strong> Supports, access, foundations and the space kept clear around it all take some. The more accurate claim is that <strong>much of the garden underneath and around it can stay useful.</strong></p>
-      </div>
-      <div class="practical-item">
-        <h3>Safety</h3>
-        <p>Being above the ground changes the conversation. Worth asking your builder about: the structure and its supports, safe access, guarding and fall protection, who will actually use it, and what inspection and maintenance it needs. Where a living tree is carrying load, add an arborist&rsquo;s assessment to that list.</p>
-        <p>The European playground-equipment standard, <strong>EN&nbsp;1176</strong>, is written for <strong>permanently installed equipment in public or shared settings</strong> &mdash; parks, schools, housing estates. <strong>Equipment for private family use at a single home is outside its scope.</strong> So if a builder tells you a structure meets it, that is a commitment they have chosen to make, not a mandatory domestic requirement. A good question to ask, and a good answer to get.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Cost</h3>
-        <p><strong>Quote required.</strong> None of the verified Irish builders publishes a standard price. They build bespoke, to a particular garden, and at least one says a site visit is essential before design begins. A structure that carries people at height gets designed for the ground it stands on.</p>
-        <p>PlotNua does not publish a figure for this and will not borrow one from another market.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Insurance</h3>
-        <p>Outbuildings such as a garden shed are usually within buildings cover. <a href="https://www.ccpc.ie/manage-your-money/day-to-day-finances/insurance/home-insurance" target="_blank" rel="noopener">The CCPC</a> advises that if you extend or improve your home you may need to increase that cover, and to review it after building work. It also says plainly that <strong>specific exclusions vary between policies and should always be checked.</strong></p>
-        <p><strong>PlotNua could not establish any general Irish position on elevated garden structures specifically.</strong> Tell your insurer what you are planning <strong>before</strong> you build, and ask about the structure, its contents, and liability if someone is hurt.</p>
-      </div>
-    </div>
+    </details>
+    <p class="rel-note">Nobody selling you a garden structure is going to do that sum for you, because it is not their sum to do.</p>
   </section>
 
   <section class="article-section reveal" id="practical-questions">
@@ -1348,104 +1902,556 @@
     <h2>The practical questions</h2>
     <details class="faq-item is-inline">
       <summary><h3>Do I really not need a tree?</h3><span class="icon"></span></summary>
-      <div class="faq-a">Correct. An Irish builder states it directly: a structure can be supported by one or more trees, or freestanding. Where there is no suitable tree, the structure brings its own support.</div>
+      <div class="faq-a">Correct, and builders in three countries say so in their own words. Irish makers describe the category as a raised playhouse and offer freestanding as well as tree-supported routes; Irish suppliers sell playhouses on stilts by name. Where there is no suitable tree, the structure brings its own support.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What does it actually cost?</h3><span class="icon"></span></summary>
+      <div class="faq-a">Seven Irish suppliers publish prices, from &euro;700 for a small flat-packed tree house from Garden Sheds Dublin up to &euro;4,100 for the dearest activity centre from Geppetto Land. For a one-off designed for your garden, the designer at Forest Wild gives starting-budget guidance of &euro;30,000 and up for a basic structure, and &euro;60,000 and up for something more elaborate. That is his figure for the project, and he designs rather than builds. Between those two points nothing is published, and PlotNua will not borrow a price from another market to fill the space.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>How high can I actually go?</h3><span class="icon"></span></summary>
+      <div class="faq-a">Three metres overall, in most real cases. The regulations allow 4 metres only where the pitched roof is tiled or slated; everything else is capped at 3 metres. Since Irish makers typically finish these roofs in felt, shingles or steel, three is usually the number that applies. One Irish product publishes its full height at 2.7 metres, which is how we know the market builds to it.</div>
     </details>
 
     <details class="faq-item is-inline">
       <summary><h3>Is it just for kids?</h3><span class="icon"></span></summary>
-      <div class="faq-a">No. Irish builders publish elevated structures designed for adults and for children &mdash; a games room in a Dublin garden, an adult retreat in County Louth with a wrap-around deck, play towers described as being for all ages.</div>
+      <div class="faq-a">No. Irish makers publish a games room in a Dublin garden and an adult retreat in a County Louth oak with a wrap-around deck, and say these can be insulated and heated for year-round use. At the frontier, studios and home offices are standing product lines.</div>
     </details>
 
     <details class="faq-item is-inline">
       <summary><h3>Can I sleep in it, or let someone live in it?</h3><span class="icon"></span></summary>
-      <div class="faq-a">No. Both the planning exemption and the Building Regulations exemption exclude human habitation. This is a space to use, not a place to live.</div>
+      <div class="faq-a">No. The garden-structure exemption excludes use for human habitation, and so does the Building Regulations exemption for a single storey building ancillary to a dwelling. This is a space to use, not a place to live.</div>
     </details>
 
     <details class="faq-item is-inline">
       <summary><h3>Could I work in it?</h3><span class="icon"></span></summary>
-      <div class="faq-a">Carefully. The Building Regulations exemption covers use that is exclusively recreational or for storage, and expressly excludes use for a trade or business. <strong>Whether working from home for an employer falls inside that is not something PlotNua could establish.</strong> Ask before you build if that is the plan.</div>
+      <div class="faq-a">Carefully. The Building Regulations exemption covers use that is exclusively recreational or for storage and expressly excludes use for a trade or business. Whether working from home for an employer falls inside that is not something PlotNua could establish. Ask before you build if that is the plan.</div>
     </details>
 
     <details class="faq-item is-inline">
       <summary><h3>Will I lose garden space?</h3><span class="icon"></span></summary>
-      <div class="faq-a">Some. Supports, access, foundations and the clear space around the structure all take ground. What you keep is much of the space underneath and around it &mdash; the part that would otherwise have gone entirely.</div>
+      <div class="faq-a">Some. Supports, access, foundations and the clear space around the structure all take ground. What you keep is much of the space underneath and around it &mdash; and at least one Irish supplier sells a model with usable decking under the platform.</div>
     </details>
 
     <details class="faq-item is-inline">
-      <summary><h3>Will the neighbours see in &mdash; or will I see into their garden?</h3><span class="icon"></span></summary>
-      <div class="faq-a">It is a real consideration, and Irish builders design around it: one published Dublin project is described as elevated specifically to give a sense of being in the canopy <em>while avoiding overlook of neighbouring gardens</em>. <strong>Class 3 itself contains no window-to-boundary condition</strong>, so this is a design conversation and, for anything ambitious, a planning one.</div>
+      <summary><h3>Will the neighbours see in?</h3><span class="icon"></span></summary>
+      <div class="faq-a">It is a real consideration and Irish makers design around it: one published Dublin project is elevated specifically to sit in the canopy while avoiding overlook of neighbouring gardens. Class 3 itself contains no window-to-boundary condition, so this is a design conversation rather than a rule, and for anything ambitious a planning one.</div>
     </details>
 
     <details class="faq-item is-inline">
       <summary><h3>What if I do want to use a tree?</h3><span class="icon"></span></summary>
-      <div class="faq-a">Have it looked at by an arborist before anything is designed. Separately, a planning authority can make a <strong><a href="https://www.irishstatutebook.ie/eli/2000/act/30/section/205/enacted/en/html" target="_blank" rel="noopener">Tree Preservation Order</a></strong> under section 205 of the Planning and Development Act 2000, which can prohibit cutting down, topping, lopping or wilful destruction of the trees it names &mdash; and contravening one is an offence. <strong>Whether a TPO also restricts attaching a structure to a tree is not something PlotNua could establish.</strong> If your tree might be protected, ask your local authority.</div>
+      <div class="faq-a">Have it looked at by an arborist before anything is designed. Separately, a planning authority can make a Tree Preservation Order under <a href="https://www.irishstatutebook.ie/eli/2000/act/30/section/205/enacted/en/html" target="_blank" rel="noopener">section 205 of the Planning and Development Act 2000</a>, which can prohibit cutting down, topping, lopping or wilful destruction of the trees it names. Whether a TPO also restricts attaching a structure to a tree is not something PlotNua could establish.</div>
     </details>
 
     <details class="faq-item is-inline">
-      <summary><h3>How much does it cost?</h3><span class="icon"></span></summary>
-      <div class="faq-a">Nobody publishes a price. Every verified Irish route is a quotation after a site visit. PlotNua will not invent a figure or borrow one from another country.</div>
+      <summary><h3>Does a treehouse need planning permission?</h3><span class="icon"></span></summary>
+      <div class="faq-a">That question has no general answer, and anyone who gives you one is guessing. The regulations do not mention treehouses at all, so whether a particular structure is exempt depends on its height, its area, where it sits, what else is in the garden and the site itself. The only binding answer is a Section 5 Declaration from your local authority.</div>
     </details>
   </section>
 
-  <section class="article-section reveal" id="looking-ahead">
-    <div class="kicker">Looking Ahead</div>
-    <h2>Looking ahead</h2>
-    <p class="quarantine-lede">Everything future-facing on this page is in this section and nowhere else.</p>
-    <p>What makes this hard to judge from a photograph is that the answer depends on things only your own garden knows: how much clear space there is, what is already built, how close the boundaries are, how high you would want to go, and whether there is a tree worth using.</p>
-    <p>Those are answerable questions. A future version of PlotNua could ask a small number of them and tell you honestly whether an elevated structure looks straightforward where you are, where it starts to need a planning conversation, and where it plainly does not work.</p>
-    <p>That does not exist yet. Nothing on this page assesses your property.</p>
+  <section class="article-section reveal" id="your-garden-brief">
+    <div class="kicker">The PlotNua Journey</div>
+    <h2>Find what could work for you</h2>
+    <p class="jq-lede">Answer four quick questions.</p>
+    <div class="gb" id="garden-brief" data-gb>
+      <div class="jq-set" data-questions>
+      <fieldset class="jq" data-q="purpose">
+        <legend>What would you like it for?</legend>
+        <div class="jq-opts">
+          <label class="jq-opt" for="jq-purpose-play"><input type="radio" name="jq-purpose" id="jq-purpose-play" value="play"><span>Somewhere for children to play</span></label>
+          <label class="jq-opt" for="jq-purpose-retreat"><input type="radio" name="jq-purpose" id="jq-purpose-retreat" value="retreat"><span>A retreat or a hideaway</span></label>
+          <label class="jq-opt" for="jq-purpose-workspace"><input type="radio" name="jq-purpose" id="jq-purpose-workspace" value="workspace"><span>A workspace or a studio</span></label>
+          <label class="jq-opt" for="jq-purpose-ambitious"><input type="radio" name="jq-purpose" id="jq-purpose-ambitious" value="ambitious"><span>Something more ambitious than that</span></label>
+          <label class="jq-opt" for="jq-purpose-exploring"><input type="radio" name="jq-purpose" id="jq-purpose-exploring" value="exploring"><span>I&#8217;m just exploring</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="jq" data-q="tree">
+        <legend>Do you have a tree where you are thinking of putting it?</legend>
+        <p class="jq-hint"><strong>No tree is fine</strong> &mdash; many options are freestanding.</p>
+        <div class="jq-opts">
+          <label class="jq-opt" for="jq-tree-yes"><input type="radio" name="jq-tree" id="jq-tree-yes" value="yes"><span>Yes, there is a tree there</span></label>
+          <label class="jq-opt" for="jq-tree-no"><input type="radio" name="jq-tree" id="jq-tree-no" value="no"><span>No tree there</span></label>
+          <label class="jq-opt" for="jq-tree-unsure"><input type="radio" name="jq-tree" id="jq-tree-unsure" value="unsure"><span>Not sure yet</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="jq" data-q="space">
+        <legend>How much space do you have?</legend>
+        <p class="jq-hint">Roughly is fine.</p>
+        <div class="jq-opts">
+          <label class="jq-opt" for="jq-space-corner"><input type="radio" name="jq-space" id="jq-space-corner" value="corner"><span>A small corner</span></label>
+          <label class="jq-opt" for="jq-space-part"><input type="radio" name="jq-space" id="jq-space-part" value="part"><span>A reasonable part of the garden</span></label>
+          <label class="jq-opt" for="jq-space-plenty"><input type="radio" name="jq-space" id="jq-space-plenty" value="plenty"><span>Plenty of room</span></label>
+          <label class="jq-opt" for="jq-space-unsure"><input type="radio" name="jq-space" id="jq-space-unsure" value="unsure"><span>Not sure</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="jq" data-q="route">
+        <legend>Which of these feels closer?</legend>
+        <div class="jq-opts">
+          <label class="jq-opt" for="jq-route-ready"><input type="radio" name="jq-route" id="jq-route-ready" value="ready"><span>I&#8217;d like to see things I could actually order</span></label>
+          <label class="jq-opt" for="jq-route-designed"><input type="radio" name="jq-route" id="jq-route-designed" value="designed"><span>I&#8217;d like something designed for my garden</span></label>
+          <label class="jq-opt" for="jq-route-unsure"><input type="radio" name="jq-route" id="jq-route-unsure" value="unsure"><span>I&#8217;m not sure yet</span></label>
+        </div>
+      </fieldset>
+        <p class="gb-nav"><button type="button" class="gb-btn is-go" data-show>Show me what fits</button> <button type="button" class="gb-btn is-plain" data-reset>Start again</button></p>
+      </div>
+      <div class="jq-tail">
+        <p class="gb-err" data-err role="status" aria-live="polite"></p>
+      </div>
+      <div class="jres" data-result hidden>
+        <h3 id="jres-h" tabindex="-1">These are your closest matches</h3>
+      <div class="jr" data-route-block="0" hidden>
+        <p class="jr-label">YOU COULD START WITH A READY-MADE OPTION</p>
+        <p>What you have described is sold in Ireland now, at a published price, by people who deliver and in most cases fit it.</p>
+        <div class="jr-why" data-why-ready></div>
+      </div>
+      <div class="jr" data-route-block="1" hidden>
+        <p class="jr-label">THIS LOOKS MORE LIKE A DESIGNED-TO-ORDER PROJECT</p>
+        <p>What you have described is not something anyone sells off a shelf, so the next step is a maker rather than a basket.</p>
+        <div class="jr-why" data-why-design></div>
+        <p class="jr-visit">Before any of that, a site visit is essential for bespoke work, and it happens before design begins rather than after. It is worth asking whether it carries a fee, because some makers charge for it and some do not, and nobody publishes which.</p>
+    <details class="pn-disc is-tight">
+      <summary>What a maker will ask you for, when you get there</summary>
+      <div class="pn-disc-b"><p>The overall height you have in mind, ground to the highest point. Roughly how much ground you can give it, and what is already built in the garden. How materials would reach the spot &mdash; width, gates, steps, or through the house. How much the ground falls across the site. Whether a tree is involved, and if so what kind. Whether it needs to be usable in winter, which is the question that changes the price most.</p></div>
+    </details>
+      </div>
+      <div class="jr is-check" data-route-block="2" hidden>
+        <p class="jr-label">ONE THING TO CHECK BEFORE YOU GO FURTHER</p>
+        <p>One of your answers raises something worth settling first. It is not a problem, and it is not about your property &mdash; it is about what you have told us.</p>
+        <div class="jr-check">
+          <h4>A workspace or something more ambitious needs more room than a small corner</h4>
+          <p>That is not a planning point and it is not about your garden &mdash; it is about the two answers sitting next to each other. An insulated room you can work in has a footprint, and it needs space around it to get up into and to build in the first place.</p>
+          <p>Two ways forward, both cheap: decide whether there is a bigger spot than the corner you were thinking of, or decide that a smaller structure would do what you want. Either answer makes the next conversation a short one.</p>
+          <p class="jr-check-after">Change either answer above and you will get a route.</p>
+        </div>
+        <p class="jr-back"><button type="button" class="gb-btn is-plain" data-check-options>Show me the ready-made options anyway <span aria-hidden="true">&rarr;</span></button></p>
+      </div>
+        <div class="jo-set" data-options>
+        <article class="jo" id="opt-tt-hideout" data-purpose="retreat play exploring" data-route="ready">
+          <h4><span class="jo-sup">Timbertrove</span><span class="jo-prod">Hide Out Treehouse</span></h4>
+          <p class="jo-price">&euro;2,339, published on Timbertrove&#8217;s own shop and in stock when we read it on 5 October 2026.</p>
+          <p class="jo-why">A raised hideaway that stands on its own legs, made in the Dublin Mountains. Timbertrove publish the full measured elevation &mdash; a deck at 1.2 metres, 2.7 metres overall, felted roof &mdash; so this is the one ready-made treehouse in Ireland you can check against the height rule before you buy.</p>
+          <p class="jo-fact">Free delivery and installation in the Greater Dublin area, lead time about two to three weeks.</p>
+          <p class="jo-cta"><a href="https://timbertrove.com/collections/playhouses-treehouses/products/hide-out-treehouse" target="_blank" rel="noopener">View product <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-tt-log" data-purpose="retreat play" data-route="ready">
+          <h4><span class="jo-sup">Timbertrove</span><span class="jo-prod">Log Treehouse</span></h4>
+          <p class="jo-price">&euro;3,189, published on Timbertrove&#8217;s own shop and in stock when we read it on 5 October 2026.</p>
+          <p class="jo-why">The larger of their two treehouses, in log construction. Same Dublin Mountains workshop, same nationwide delivery.</p>
+          <p class="jo-fact">Orderable online, with delivery to your door.</p>
+          <p class="jo-cta"><a href="https://timbertrove.com/collections/playhouses-treehouses/products/log-treehouse" target="_blank" rel="noopener">View product <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-tt-den" data-purpose="play exploring" data-route="ready">
+          <h4><span class="jo-sup">Timbertrove</span><span class="jo-prod">The Den Playhouse</span></h4>
+          <p class="jo-price">From &euro;1,489, published on Timbertrove&#8217;s own shop and in stock when we read it on 5 October 2026.</p>
+          <p class="jo-why">A playhouse rather than a full treehouse, which is the right answer if what you actually want is somewhere for children and not a raised room.</p>
+          <p class="jo-fact">Orderable online.</p>
+          <p class="jo-cta"><a href="https://timbertrove.com/collections/playhouses-treehouses/products/the-den-playhouse" target="_blank" rel="noopener">View product <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-fw" data-purpose="workspace ambitious retreat play" data-route="designed">
+          <h4><span class="jo-sup">Forest Wild Treehouses</span><span class="jo-prod">Treehouse and garden design, and consultancy</span></h4>
+          <p class="jo-price">The designer gives starting-budget guidance of &euro;30,000 and up for a basic structure, and &euro;60,000 and up for a more elaborate project.</p>
+          <p class="jo-why">He designed and built elevated structures in Irish gardens for years, and told us on 5 October 2026 that he has retired from the building side and now takes design and consultancy work only. So this route gives you the design and the thinking behind it; the building itself would go to a builder afterwards.</p>
+          <p class="jo-fact">A site visit comes before design. Bring what you know about the space.</p>
+          <p class="jo-cta"><a href="https://www.forestwildtreehouses.ie/" target="_blank" rel="noopener">Enquire about design <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-gsd" data-purpose="play exploring" data-route="ready">
+          <h4><span class="jo-sup">Garden Sheds Dublin</span><span class="jo-prod">Small tree house, flat packed</span></h4>
+          <p class="jo-price">&euro;700 for a flat pack collected from their yard in rustic timber, or &euro;850 in the light deluxe. Fitting in the Leinster area is &euro;100 more, and their standard range, with the posts dug in and concreted, starts at &euro;1,400.</p>
+          <p class="jo-why">The least expensive published route into a raised structure in Ireland, which makes it the realistic starting point for a small corner and a modest budget.</p>
+          <p class="jo-cta"><a href="https://www.gardensheds-dublin.com/play-houses-and-tree-houses/" target="_blank" rel="noopener">View range <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-gtp" data-purpose="play exploring" data-route="ready">
+          <h4><span class="jo-sup">Green Tree Play</span><span class="jo-prod">Playhouse on stilts, with ladder and swing</span></h4>
+          <p class="jo-price">Green Tree Play, in Galway, publish this at &euro;1,450, and run from &euro;840 up to &euro;3,470 across the first page of their range.</p>
+          <p class="jo-why">A raised deck with a ladder, a swing and usable space underneath, which is the shape most families actually want. Five-year structural warranty, one year on hardware.</p>
+          <p class="jo-cta"><a href="https://www.greentreeplay.ie/product-page/owl-3-279" target="_blank" rel="noopener">View product <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-ecte" data-purpose="play retreat exploring" data-route="ready">
+          <h4><span class="jo-sup">East Coast Timber Engineering</span><span class="jo-prod">Eleven treehouses in native Irish timber</span></h4>
+          <p class="jo-price">East Coast Timber Engineering, in Wicklow, publish eleven treehouses from &euro;1,000 to &euro;1,750, and say every price includes free nationwide delivery and assembly.</p>
+          <p class="jo-why">The widest published choice at one price level, and the only one we found where delivery and assembly are in the price everywhere in the country.</p>
+          <p class="jo-cta"><a href="https://ecte.ie/treehouse" target="_blank" rel="noopener">View range <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-abw" data-purpose="play exploring" data-route="ready">
+          <h4><span class="jo-sup">Abwood</span><span class="jo-prod">Wendy house, kids timber tower, wooden tree houses</span></h4>
+          <p class="jo-price">Abwood, in Wicklow, publish a wendy house from &euro;740, a kids timber tower at &euro;950 and wooden tree houses from &euro;1,520.</p>
+          <p class="jo-why">Supplied and fitted by their own team, so there is nothing to build yourself. The tower sits between a playhouse and a treehouse.</p>
+          <p class="jo-cta"><a href="https://shop.abwood.ie/products/kids-outdoor-playhouse" target="_blank" rel="noopener">View product <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-ben" data-purpose="retreat play" data-route="ready">
+          <h4><span class="jo-sup">Bennett Wood</span><span class="jo-prod">Playhouse on stilts</span></h4>
+          <p class="jo-price">Bennett Wood, in Limerick, publish this at &euro;2,600, and run from &euro;1,650 to &euro;3,000.</p>
+          <p class="jo-why">A larger raised structure from a Munster maker, which matters if delivery distance is part of your thinking.</p>
+          <p class="jo-cta"><a href="https://www.gardenplayhouses.ie/product/serena-playhouse-on-stilts/" target="_blank" rel="noopener">View product <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+        <article class="jo" id="opt-gep" data-purpose="play ambitious exploring" data-route="ready">
+          <h4><span class="jo-sup">Geppetto Land</span><span class="jo-prod">Bella house, and the activity centres</span></h4>
+          <p class="jo-price">Geppetto Land publish the Bella house at &euro;1,350 and their dearest activity centre at &euro;4,100, which is the highest published Irish figure we found.</p>
+          <p class="jo-why">The largest published catalogue, and the top of the ready-made market. If you want more structure than this, published prices stop.</p>
+          <p class="jo-cta"><a href="https://geppettoland.ie/product/bella-house-rustic-type/" target="_blank" rel="noopener">View product <span aria-hidden="true">&rarr;</span></a></p>
+        </article>
+          <p class="jo-none" data-opt-none hidden>Nothing in the published Irish catalogue matches that, which is the finding rather than a gap in this page. The design route above is the honest answer.</p>
+        </div>
+        <p class="jo-escape" data-escape hidden>Not what you had in mind? <button type="button" class="gb-link" data-see-bespoke>See bespoke options &rarr;</button></p>
+        <p class="gb-nav"><button type="button" class="gb-btn is-back" data-change>Change an answer</button> <button type="button" class="gb-btn is-plain" data-reset>Start again</button></p>
+      </div>
+    </div>
+    <details class="pn-disc">
+      <summary>About this check</summary>
+      <div class="pn-disc-b"><p>Nothing on this page assesses your property. PlotNua has not visited, measured or surveyed anything, and the result is a reading of the four answers you give, not a view about your garden or its planning status. It does not send anything to anyone, it does not contact any supplier on your behalf, and it does not keep anything after you close the tab &mdash; there is no account, no storage and no record. Where a supplier button appears, it goes to that supplier&#8217;s own website; PlotNua does not take orders, does not pass your details to anyone, has not been paid by any supplier named here and has no arrangement with any of them.</p></div>
+    </details>
   </section>
 
   <section class="article-section reveal" id="the-evidence">
     <div class="kicker">Evidence</div>
     <h2>The evidence behind this</h2>
-    <p>Where this page states something, it is because a named source states it. Where no source could be found, the page says so rather than filling the gap.</p>
+    <p>Where this page states something, it is because a named source states it. Where we could not establish something, the page says so rather than filling the gap.</p>
 
+    <h3>The evidence, in full</h3>
+    <p>Every condition, figure, source and limit behind this page,
+       grouped by subject. Open one only if it bears on your
+       garden &mdash; nothing you need in order to act is in here.</p>
     <details class="faq-item is-inline">
-      <summary><h3>What the planning rules actually say &mdash; read directly</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>Class 3, as substituted by S.I. No. 338 of 2026</strong>, in force 27 July 2026. It permits <em>&ldquo;the construction, erection or placing within the curtilage of a house of any tent, awning, shade or other object, greenhouse, garage, store, shed or other similar structure&rdquo;</em>, subject to six conditions: nothing forward of the front wall of the house; a combined floor area for all such structures of no more than 30 square metres; no reduction of private open space to the rear or side below 25 square metres; a height limit of 4 metres for a structure with a tiled or slated pitched roof and 3 metres in any other case; no use for human habitation; and no use other than a purpose incidental to the enjoyment of the house.<br><br><strong>The area figure changed.</strong> The previous limit was 25 square metres. The 2026 substitution raised it to 30. Both figures are stated here because a homeowner reading older guidance will meet the old one.<br><br><strong>Class 3A</strong> carries the <strong>same 3-metre and 4-metre height limits</strong>. <strong>Article 9(1)</strong> sets out the general restrictions that can remove exempted-development status from any class. Read first-party on the Irish Statute Book, 25 September 2026.</div>
+      <summary><h3>Prices, and who publishes them</h3><span class="icon"></span></summary>
+      <div class="faq-a">
+        <p class="ev-lede">Every Irish supplier we found, what each one publishes, and what we could not establish.</p>
+        <h4 class="ev-h">Who builds and sells these &mdash; read, not endorsed</h4>
+        <p><strong>Published Irish prices, read first-party on 5 October 2026.</strong></p>
+        <div class="ev-tw"><table class="ev-tbl">
+          <thead><tr><th>Supplier</th><th>Published price or range</th><th>Useful detail</th></tr></thead>
+          <tbody>
+            <tr><td>Garden Sheds Dublin</td><td>&euro;700 rustic, &euro;850 light deluxe; standard range from &euro;1,400</td><td>Small tree house, flat packed. Leinster fitting &euro;100 more.</td></tr>
+            <tr><td>Abwood, Wicklow</td><td>Wendy house from &euro;740; timber tower &euro;950; tree houses from &euro;1,520</td><td>Supplied and fitted. Lead time stated as about six to eight weeks.</td></tr>
+            <tr><td>Green Tree Play, Galway</td><td>&euro;840 to &euro;3,470 on the first page of the range; playhouse on stilts with decking under from &euro;1,450</td><td>Five-year structural and one-year hardware warranty.</td></tr>
+            <tr><td>East Coast Timber Engineering, Wicklow</td><td>Eleven treehouses, &euro;1,000 to &euro;1,750</td><td>All prices stated to include free nationwide delivery and assembly.</td></tr>
+            <tr><td>Geppetto Land</td><td>Bella house &euro;1,350, rising to &euro;4,100 for the dearest activity centre</td><td>The largest published Irish catalogue we found.</td></tr>
+            <tr><td>Bennett Wood, Limerick</td><td>&euro;1,650 to &euro;3,000</td><td>Includes a playhouse on stilts at &euro;2,600.</td></tr>
+            <tr><td>Timbertrove, Dublin Mountains</td><td>Treehouse &euro;2,339</td><td>House 1.5 by 1.5 metres, deck 2.7 by 1.5 metres, deck height 1.2 metres, overall height 2.7 metres, felted roof with steel or shingle upgrades. Free delivery and installation in the Greater Dublin area, lead time about two to three weeks.</td></tr>
+            <tr><td>Forest Wild Treehouses &mdash; design and consultancy, Ireland</td><td>From &euro;30,000 for a basic structure; from &euro;60,000 for a more elaborate project</td><td>Design for adults and children. Starting-budget guidance given to PlotNua directly by the designer, 5 October 2026, who also told us he has retired from the construction side and now offers design and consultancy only. Historical built work, his own design and build: a Dublin games room treehouse elevated around a mature birch while avoiding overlook, a County Louth adult retreat in a mature oak with a wrap-around deck, and a Wicklow play tower.</td></tr>
+          </tbody>
+        </table></div>
+        <h5 class="ev-sub">Forest Wild and Plan Eden &mdash; direct from the designer</h5>
+        <p>This one is not read off a website. The designer replied to PlotNua directly on 5 October 2026, and where his reply and his websites disagree, the reply is what this page follows.</p>
+        <ul class="ev-bul">
+          <li>He has recently retired from the construction side of the business.</li>
+          <li>He now provides design and consultancy services only, for treehouses and gardens.</li>
+          <li>The Forest Wild and Plan Eden websites have not yet been updated to say so, which is why they still read as a build service.</li>
+          <li>All the work shown on those sites is his own design and build work.</li>
+          <li>Starting-budget guidance: &euro;30,000 and up for a basic structure, &euro;60,000 and up for a more elaborate project.</li>
+          <li>He says safety and longevity were central to the structures he designed and built.</li>
+          <li>He has given PlotNua permission to use his photographs, with accreditation and a link back to his site. There is no commercial arrangement of any kind between PlotNua and him.</li>
+        </ul>
+        <h5 class="ev-sub">Quote-only Irish makers</h5>
+        <ul class="ev-bul">
+          <li>A Longford maker publishes a free online approximate quote and describes the category as a raised playhouse, often called a tree house. They have not been contacted, and nothing here presents them as currently taking work.</li>
+          <li>A Clare maker states that a structure may be supported by one or more trees or freestanding amongst the branches.</li>
+        </ul>
+        <h5 class="ev-sub">European and UK context, only</h5>
+        <ul class="ev-bul">
+          <li>A British practice&#8217;s published Wild Atlantic Treehouse was completed in Ireland, with a look-out deck, rope bridge, reading nook, cedar cladding and a glass window in the floor, on a windy exposed coastal site. That the project was built here is established. Whether that practice currently accepts private residential commissions in Ireland is not.</li>
+          <li>Two further British builders and a German architecture practice are cited for the no-tree position, for published build times of four to twelve weeks after design, for payment structured in three stages, for a three-year workmanship guarantee and for published insurance limits. None of their prices are used anywhere on this page.</li>
+        </ul>
+        <h5 class="ev-sub">Supplier independence</h5>
+        <ul class="ev-bul">
+          <li>PlotNua has no arrangement with any supplier named here.</li>
+          <li>None has paid for inclusion, and none has been offered it.</li>
+          <li>No supplier&#8217;s photography appears on this page.</li>
+        </ul>
+      </div>
     </details>
-
     <details class="faq-item is-inline">
-      <summary><h3>What the Building Regulations say &mdash; a separate regime</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>Building Regulations 1997, S.I. No. 497 of 1997</strong>, Article 8 and the Third Schedule, read first-party 25 September 2026.<br><br><strong>Article 8</strong> exempts from the Regulations <em>&ldquo;works in connection with a building referred to in the Third Schedule &hellip; or a building referred to in the Third Schedule&rdquo;</em>.<br><br><strong>Third Schedule, Class 2</strong> covers <em>&ldquo;a single storey building (not being a building described in Class 1) ancillary to a dwelling (such as a summer house, poultry-house, aviary, conservatory, coal shed, garden tool shed or bicycle shed)&rdquo;</em> on four conditions: detached from any other building; a floor area <em>&ldquo;not exceeding 25 square metres&rdquo;</em>; a height <em>&ldquo;not exceeding 3 metres, or in the case of a building with a pitched roof, not exceeding 4 metres&rdquo;</em>; and <em>&ldquo;used exclusively for recreational or storage purposes&rdquo;</em> or the keeping of plants, birds or animals for domestic purposes, and <em>&ldquo;shall not be used for the purposes of any trade or business or for human habitation&rdquo;</em>.<br><br><strong>The two regimes do not use the same area figure.</strong> Planning allows 30 square metres. The Building Regulations exemption is 25. A structure between the two can be exempted development for planning and still fall inside the Building Regulations.</div>
+      <summary><h3>Height, and where the three metre figure comes from</h3><span class="icon"></span></summary>
+      <div class="faq-a">
+        <p class="ev-lede">The limit, the condition attached to it, and the regulation in its own words.</p>
+        <h4 class="ev-h">The height limit, and why it is usually three metres</h4>
+        <h5 class="ev-sub">The planning rule</h5>
+        <ul class="ev-bul">
+          <li>The 4-metre allowance in Class 3 is conditional on a tiled or slated pitched roof.</li>
+          <li>Any other covering falls under <em>any other case</em> and the limit is 3 metres.</li>
+        </ul>
+        <h5 class="ev-sub">What Irish suppliers publish</h5>
+        <ul class="ev-bul">
+          <li>The coverings Irish makers publish are mineral felt, shingles and steel sheeting, including a slate-effect steel.</li>
+          <li>A slate-effect finish is not slate.</li>
+        </ul>
+        <h5 class="ev-sub">Building Regulations are a separate regime</h5>
+        <p><strong>A separate regime, worded differently.</strong> The Building Regulations are a separate regime from planning, administered by your local Building Control Authority rather than the planning section, and the two area figures <strong>are not the same</strong>.</p>
+        <ul class="ev-bul">
+          <li>Building Regulations 1997, S.I. No. 497 of 1997, Article 8 and the Third Schedule exempt a single storey building ancillary to a dwelling: detached, not more than 25 square metres, used exclusively for recreational or storage purposes and not for any trade or business, and no human habitation.</li>
+          <li>Height limit 3 metres, or &mdash; for a building with a pitched roof, and unlike the planning condition, with no requirement that it be tiled or slated &mdash; 4 metres.</li>
+          <li>The two regimes also use different area figures: planning now allows 30 square metres, the Building Regulations exemption is 25 square metres.</li>
+        </ul>
+        <h5 class="ev-sub">What this means</h5>
+        <p>So the binding constraint on height is planning, not building control.</p>
+        <h4 class="ev-h">What the planning rules actually say &mdash; read directly</h4>
+        <p><strong>Class 3, as substituted by S.I. No. 338 of 2026</strong>, in force 27 July 2026. It permits the construction, erection or placing within the curtilage of a house of any tent, awning, shade or other object, greenhouse, garage, store, shed or other similar structure, subject to six conditions:</p>
+        <ul class="ev-bul">
+          <li>nothing forward of the front wall of the house;</li>
+          <li>a combined floor area for all such structures of no more than 30 square metres;</li>
+          <li>no reduction of private open space to the rear or side below 25 square metres;</li>
+          <li>external finishes, and the roof covering where the roof is tiled or slated, to conform with those of the house for anything placed to the side;</li>
+          <li>a height limit of 4 metres for a structure with a tiled or slated pitched roof and 3 metres in any other case;</li>
+          <li>and no human habitation, and no use for any purpose other than one incidental to the enjoyment of the house.</li>
+        </ul>
+        <h5 class="ev-sub">The area figure changed</h5>
+        <p>The previous limit was 25 square metres; the 2026 substitution raised it to 30. Both are stated here because older guidance carries the old one.</p>
+        <h5 class="ev-sub">What Class 3 does not say</h5>
+        <p><strong>Class 3 does not name treehouses, playhouses, play towers or elevated structures.</strong> Whether a raised structure is read that way is not something PlotNua could establish.</p>
+        <h5 class="ev-sub">Source and date</h5>
+        <p>Read first-party on the Irish Statute Book, 5 October 2026.</p>
+      </div>
     </details>
-
     <details class="faq-item is-inline">
-      <summary><h3>Trees, standards and insurance</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>Section 205, Planning and Development Act 2000.</strong> A planning authority may make a <strong>Tree Preservation Order</strong> in the interests of amenity or the environment; it is a reserved function of the elected members. An order may prohibit <em>&ldquo;the cutting down, topping, lopping or wilful destruction&rdquo;</em> of the trees it names, and contravening one is an offence. Whether a tree is subject to one is a matter for the planning authority in whose area it stands.<br><br><strong>EN&nbsp;1176</strong> is the European standard for playground equipment. Its scope is permanently installed equipment in public or shared settings. <strong>Equipment intended for private family use at a single home falls outside it.</strong> It is not a mandatory domestic requirement and nothing on this page presents any structure as certified to it.<br><br><strong>Competition and Consumer Protection Commission</strong>, the statutory Irish consumer body, on home insurance. Buildings cover <em>&ldquo;usually includes &hellip; garages or outbuildings such as a garden shed&rdquo;</em>. <em>&ldquo;If you extend or improve your home, you may need to increase your buildings cover.&rdquo;</em> Review your cover if <em>&ldquo;you extended or renovated your home&rdquo;</em>. And: <em>&ldquo;Standard exclusions are in every policy but specific exclusions vary. Always check before you sign up.&rdquo;</em> Liability cover typically responds where <em>&ldquo;a visitor &hellip; is injured, becomes ill or dies in your home and you&rsquo;re at fault&rdquo;</em>.</div>
+      <summary><h3>Space: what counts, and what has to be left</h3><span class="icon"></span></summary>
+      <div class="faq-a">
+        <p class="ev-lede">Why the limit is about the whole garden rather than one structure, and where the two classes meet.</p>
+        <h4 class="ev-h">It all adds up, across the whole garden</h4>
+        <p>Class 3 counts every structure of this kind in the curtilage together, not one at a time. The combined total must not exceed 30 square metres. The previous limit was 25 square metres and a lot of guidance still says so, which is worth knowing if you are reading something older.</p>
+        <h4 class="ev-h">You have to leave open space behind</h4>
+        <p>The same class says the structure must not reduce the private open space to the rear or side of the house below 25 square metres. On a small plot this bites before the area limit does.</p>
+        <h4 class="ev-h">Where it sits changes the specification</h4>
+        <p>Nothing of this kind may go forward of the front wall of the house. And anything placed to the side of the house must have external finishes &mdash; and, where it has a tiled or slated roof, a roof covering &mdash; that conform with those of the house. A side-garden structure is not simply a rear-garden one moved over.</p>
+        <h4 class="ev-h">The detached garden house, and how it interacts</h4>
+        <h5 class="ev-sub">What the class permits</h5>
+        <p>A separate class inserted in July 2026.</p>
+        <ul class="ev-bul">
+          <li>It permits a detached house in the rear garden of a principal house, for a period ending 31 December 2030, occupied only in conjunction with the main dwelling and not sold or subdivided separately.</li>
+          <li>Building control legislation including fire safety applies.</li>
+          <li>A notification must reach the planning authority not less than fourteen days before works commence.</li>
+          <li>It requires a floor area of not less than 32 square metres.</li>
+          <li>It caps that area, taken together with any structures previously placed under Class 3 in the same curtilage, at 45 square metres.</li>
+        </ul>
+        <p><strong>The consequence set out in this page is PlotNua&#8217;s reading of those two provisions together, not guidance from any authority.</strong> Build more than about thirteen square metres of garden structures and what remains of the 45 falls below the 32-square-metre floor.</p>
+        <h4 class="ev-h">The Class 3A arithmetic in full, and whose reading it is</h4>
+        <h5 class="ev-sub">What the separate route allows</h5>
+        <p>Since July 2026 there is a separate route, a different class from the one that covers garden structures, and it comes with its own conditions.</p>
+        <ul class="ev-bul">
+          <li>It lets you put a whole small detached house in your back garden without planning permission, for a limited period, if it is occupied in conjunction with the main house.</li>
+          <li>Building regulations including fire safety apply.</li>
+          <li>You have to notify the council fourteen days before you start.</li>
+        </ul>
+        <h5 class="ev-sub">The catch: two numbers that interact</h5>
+        <ul class="ev-bul">
+          <li>That route requires the house to be at least 32 square metres.</li>
+          <li>And it caps the house, taken together with the garden structures already built under the garden-structure class, at 45 square metres combined.</li>
+        </ul>
+        <p>So the two interact. The more garden structure you build now, the less garden house is available later. Past roughly thirteen square metres of structures, what remains falls below the 32-square-metre floor and that route closes. <strong>This is PlotNua&#8217;s reading of two sets of regulations, not guidance from any authority. The arithmetic is ours.</strong></p>
+        <h5 class="ev-sub">For scale</h5>
+        <ul class="ev-bul">
+          <li>A small treehouse deck is around four square metres.</li>
+          <li>A three-by-four-metre structure is twelve.</li>
+        </ul>
+        <p>So you can usually have both &mdash; but only if somebody counts, and nobody is going to count for you at the point of sale. If a garden house is anywhere in your thinking, it is worth putting to your local authority before you order a treehouse, not after.</p>
+      </div>
     </details>
-
     <details class="faq-item is-inline">
-      <summary><h3>Who builds these in Ireland &mdash; first-party, read not contacted</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>Treehouses.ie</strong>, County Clare. From their own site: <em>&ldquo;We design &amp; build treehouses, playhouses, cabins, sheds, pergolas, decks, gates, &amp; more throughout Ireland&rdquo;</em>, in wood and steel, <em>&ldquo;custom, one off builds&rdquo;</em>. The decisive sentence for this Discovery: <em>&ldquo;Supported by one or more trees or freestanding amongst the branches, different solutions will suit different gardens.&rdquo;</em> Also: <em>&ldquo;A site visit is essential &hellip; before we begin the design&rdquo;</em>, and finish levels <em>&ldquo;from the basic structure or shell only, to including insulation, interior fixing and fittings&rdquo;</em>.<br><br><strong>Forest Wild Treehouses</strong>, Ireland. Bespoke treehouses for adults and children, and play towers described as for all ages. Published Irish projects include a Dublin games room treehouse <em>&ldquo;elevated and built around a mature birch &hellip; while avoiding overlook of neighbouring gardens&rdquo;</em>; a County Louth adult retreat in a mature oak with a wrap-around deck; a Wicklow play tower; and two small urban Dublin gardens. Silver-gilt and Best in Small Garden Category at Bloom 2018.<br><br><strong>No price, from anyone.</strong> No Irish provider publishes a price, a range or a rate. Verified across all three routes below. Treehouses.ie will quote remotely for smaller structures only, and only on a very specific enquiry; everything else follows a site visit.<br><br><strong>Read, not contacted.</strong> Everything above is from these companies&rsquo; own published pages. No builder, local authority, insurer or homeowner was contacted, and no permission was requested.</div>
+      <summary><h3>Trees, safety and insurance</h3><span class="icon"></span></summary>
+      <div class="faq-a">
+        <p class="ev-lede">The three questions that are somebody else&#8217;s expertise, and what to ask them.</p>
+        <h4 class="ev-h">What to get from whoever builds it</h4>
+        <p>Six things worth getting before you pay anybody. Public liability and professional indemnity certificates. The written structural warranty, and what it excludes. Who owns the design you paid for &mdash; at least one builder keeps it. Who services it, how often, and at what rate. The payment schedule. And whether a Section 5 Declaration is being sought, and by whom.</p>
+        <h4 class="ev-h">What the builders themselves say about trees</h4>
+        <p>The builders say it more plainly than we could.</p>
+        <ul class="ev-bul">
+          <li>A Longford maker describes the category as <em>a raised playhouse, often called a tree house &mdash; on a raised platform, with a porch, climbing ropes, a ladder, steps and slides</em>. No tree in the description at all.</li>
+          <li>A Clare maker puts it as supported by one or more trees <em>or freestanding amongst the branches</em>.</li>
+          <li>In the United Kingdom, one builder answers the question with a flat <em>no you don&#8217;t</em> and says it has already built many without trees.</li>
+          <li>Another UK builder heads a whole page <em>you don&#8217;t need a tree to have a treehouse</em>.</li>
+          <li>In Germany, an architecture practice has kept stilt houses as a standing category for twenty years.</li>
+          <li>The Irish market sells the thing by name: one supplier lists a playhouse <em>on stilts</em>, another one <em>on stilts with a ladder, a swing, and decking under</em>.</li>
+        </ul>
+        <p>All read first-party.</p>
+        <h4 class="ev-h">The tree is a specialist question, and not the one you expect</h4>
+        <h5 class="ev-sub">How builders attach to a tree &mdash; two published methods</h5>
+        <ul class="ev-bul">
+          <li>One builder guarantees never to damage the tree, because the structure is not attached to it at all.</li>
+          <li>The standard alternative uses an engineered bolt that lets the tree keep moving and growing.</li>
+          <li>Either way, branch removal goes to a professional tree surgeon.</li>
+          <li>One frontier builder 3D-scans the tree so the design is drawn to its actual geometry.</li>
+        </ul>
+        <h5 class="ev-sub">The counter-intuitive part: the risk is in the ground</h5>
+        <p>For a freestanding structure near a tree, the arboricultural risk sits mostly in the footings, the excavation and where the materials get stacked, because all of that happens inside the root protection area. Your instinct will be to worry about bolts. The standard worries about the ground. <strong>That is PlotNua&#8217;s reading of the professional guidance, which is a British Standard rather than an Irish legal requirement.</strong></p>
+        <h5 class="ev-sub">Tree Preservation Orders</h5>
+        <p>A planning authority can make a Tree Preservation Order under section 205 of the Planning and Development Act 2000, which can prohibit the cutting down, topping, lopping or wilful destruction of the trees it names. Contravening one, or even a proposed one, is an offence.</p>
+        <p>Attaching something is not in that list, but an individual order can carry its own conditions, so the order has to be read. Whether a TPO also restricts attaching a structure to a tree is not something PlotNua could establish.</p>
+        <h4 class="ev-h">Getting up there takes ground, and so does the space around it</h4>
+        <p>Access is a design problem, not an afterthought. Steps, a ladder, a bridge or some combination, and all of them take up ground.</p>
+        <h5 class="ev-sub">The only published figures for clear space</h5>
+        <ul class="ev-bul">
+          <li>A cushioned surface extending at least 6 feet past the equipment.</li>
+          <li>Loose fill 12 inches deep for equipment up to 8 feet high.</li>
+        </ul>
+        <p>That is one Irish supplier&#8217;s own practice, published as fall-zone guidance for its own range, expressed in feet and inches and evidently drawn from public-playground guidance. It is not an Irish requirement and nothing here presents it as one. It is still the most concrete answer anyone publishes to how much room you actually need around the thing.</p>
+        <h5 class="ev-sub">What nobody should tell you</h5>
+        <p><strong>Nobody should tell you an elevated structure costs you no garden at all.</strong> Supports, access, foundations and the clear space around it all take some. The more accurate claim is that much of the garden underneath and around it can stay useful &mdash; and one Irish supplier sells exactly that, a playhouse on stilts with decking underneath.</p>
+        <h4 class="ev-h">Safety standards are a commitment, not a requirement</h4>
+        <p>EN 1176, the European playground equipment standard, covers permanently installed equipment in public and shared settings &mdash; parks, schools, housing estates. Equipment intended for private family use at a single home falls outside its scope, so it is not a mandatory domestic requirement, and nothing here is presented as certified to it. If a builder tells you a structure meets a European safety standard, that is a commitment they have chosen to make. It is a good question to ask and a good answer to get.</p>
+        <h4 class="ev-h">Ask about the builder&#8217;s insurance, not just your own</h4>
+        <h5 class="ev-sub">Your own policy</h5>
+        <ul class="ev-bul">
+          <li>The CCPC notes that buildings cover usually includes outbuildings such as a garden shed.</li>
+          <li>You may need to increase your cover if you extend or improve your home.</li>
+          <li>The CCPC says specific exclusions vary between policies and should always be checked.</li>
+          <li>The usual advice is to tell your insurer before you build, and that still holds.</li>
+        </ul>
+        <h5 class="ev-sub">The sharper question: the person building it</h5>
+        <ul class="ev-bul">
+          <li>The CCPC says damage caused by someone working in your home is not usually covered by your own buildings policy.</li>
+          <li>You can only claim if the person who caused it has their own public liability insurance.</li>
+          <li>The CCPC says, twice, to check that anyone working on your home has it. So ask for the certificates and keep them.</li>
+        </ul>
+        <p>For scale, one frontier builder publishes employers&#8217; liability, public and products liability and professional indemnity cover, and offers copies on request.</p>
+        <p>PlotNua could not establish any general Irish position on elevated garden structures specifically, so treat all of this as the question to ask rather than the answer.</p>
+        <h4 class="ev-h">Trees, standards and insurance</h4>
+        <h5 class="ev-sub">Tree Preservation Orders</h5>
+        <ul class="ev-bul">
+          <li>Section 205, Planning and Development Act 2000. A planning authority may make a Tree Preservation Order in the interests of amenity or the environment; it is a reserved function of the elected members.</li>
+          <li>An order may prohibit the cutting down, topping, lopping or wilful destruction of the trees it names, and contravening an order, or a proposed order pending decision, is an offence.</li>
+          <li>Attachment is not among the prohibitions the Act names, but an order may carry its own conditions.</li>
+          <li>Whether a TPO also restricts attaching a structure to a tree is not something PlotNua could establish.</li>
+        </ul>
+        <h5 class="ev-sub">Root protection</h5>
+        <p>The professional framework for trees near construction is a British Standard rather than an Irish legal requirement. It calculates a root protection area at design stage, within which ground disturbance, excavation, trenching, utility installation and material storage should not occur. PlotNua&#8217;s inference that footings matter more than fixings for a freestanding structure follows from that, and is labelled as inference.</p>
+        <h5 class="ev-sub">EN 1176</h5>
+        <ul class="ev-bul">
+          <li><strong>EN 1176</strong> is the European standard for playground equipment.</li>
+          <li>Published scope descriptions state that it covers permanently installed public playground equipment and excludes items defined as toys in EN 71.</li>
+          <li>Equipment intended for private family use at a single home falls outside it.</li>
+          <li>The standard text itself sits behind a paywall and was not read; this is a catalogue scope statement, not a reading of the standard.</li>
+          <li>It is not a mandatory domestic requirement and nothing on this page is presented as certified to it.</li>
+        </ul>
+        <h5 class="ev-sub">Insurance</h5>
+        <p>The Competition and Consumer Protection Commission, the statutory Irish consumer body, states:</p>
+        <ul class="ev-bul">
+          <li>that buildings cover usually includes garages or outbuildings such as a garden shed;</li>
+          <li>that if you extend or improve your home you may need to increase your buildings cover;</li>
+          <li>that standard exclusions are in every policy but specific exclusions vary and should always be checked;</li>
+          <li>that damage caused by someone working in your home is not usually covered and can only be claimed where that person has their own public liability insurance;</li>
+          <li>and, as a tip, to always check that anyone working on your home has it.</li>
+        </ul>
+        <p>PlotNua could not establish any general Irish position on elevated garden structures specifically.</p>
+      </div>
     </details>
-
     <details class="faq-item is-inline">
-      <summary><h3>Context only &mdash; not presented as Irish supply</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>Berko Pod Systems &mdash; The Treehouse.</strong> Held in PlotNua Atlas with a verification status of Verified, and recorded in a <em>Treehouses</em> category outside the Garden Room certification boundary. It is a manufactured product rather than a bespoke elevated build, and it is included here only to mark that distinction.<br><br><strong>Cheeky Monkey Treehouses Ltd</strong> (England &amp; Wales, company 06596279) publishes a free-standing-on-stilts service. <strong>Non-Irish. Context only</strong>, and no price of theirs is used anywhere on this page.</div>
+      <summary><h3>Getting a certain answer, and the one Irish case</h3><span class="icon"></span></summary>
+      <div class="faq-a">
+        <p class="ev-lede">How to turn an interpretation into a decision, and the single Irish precedent we found.</p>
+        <h4 class="ev-h">Exemption can disappear for reasons that have nothing to do with size</h4>
+        <p>Article 9 of the same regulations removes exempted-development status in a list of circumstances: contravening a condition of an existing permission, interfering with a view or prospect of special amenity value protected by the development plan, obstructing a public right of way, works in an architectural conservation area that would materially affect its character, or extending an unauthorised structure. Class 3 is also named specifically: in an area covered by a special amenity area order it is not exempted development at all. If the house is a protected structure, or in a conservation area, the route is a Section 57 Declaration rather than a Section 5.</p>
+        <h4 class="ev-h">The way to get an actual answer</h4>
+        <p>Under section 5 of the Planning and Development Act 2000 any person can ask their planning authority for a declaration on whether something is development, and whether it is exempted development.</p>
+        <ul class="ev-bul">
+          <li>The authority must issue the declaration and the main reasons for it within four weeks, or within three weeks of receiving any further information it asks for.</li>
+          <li>The fee in the county whose register we read is &euro;80, payable to the planning authority.</li>
+          <li>The application needs the relevant site maps.</li>
+        </ul>
+        <h5 class="ev-sub">Two things worth knowing before you apply</h5>
+        <ul class="ev-bul">
+          <li>A Section 5 considers only whether something is development and whether it is exempt &mdash; no planning policy, no design view.</li>
+          <li>The question has to be posed clearly or the application comes back invalid, which is the most common way people lose a month.</li>
+        </ul>
+        <h4 class="ev-h">Getting a binding answer, and one real case</h4>
+        <h5 class="ev-sub">The statutory route</h5>
+        <p>Under section 5 of the Planning and Development Act 2000 any person may, on payment of the prescribed fee, request a declaration from the planning authority on whether something is or is not development, and is or is not exempted development.</p>
+        <ul class="ev-bul">
+          <li>The authority must issue the declaration and the main reasons and considerations within four weeks, or within three weeks of receiving requested further information.</li>
+          <li>A declaration may be referred for review within four weeks of issue.</li>
+          <li>Details of every declaration are entered in a public register, which is why the case below is readable.</li>
+          <li>The fee in the register we read is &euro;80, set by that planning authority, and the application requires the relevant site maps.</li>
+          <li>A Section 5 considers only development and exemption; no planning policy is considered.</li>
+          <li>An unclear question is returned invalid.</li>
+        </ul>
+        <h5 class="ev-sub">The case</h5>
+        <p>Louth County Council&#8217;s 2025 register records a request asking whether a recently erected playroom structure in the rear of a property was development and was exempted development. The decision was a refusal. The register gives no reasons, no dimensions, and does not say whether the structure was elevated. It is one declaration by one authority and it is not a rule that binds others. Read first-party, 5 October 2026.</p>
+        <h4 class="ev-h">One real Irish case, and what it does not tell you</h4>
+        <p>In 2025 a homeowner in County Louth asked the council whether a recently erected playroom structure in the rear of a property was development, and whether it was exempted development. The council refused the declaration. Read that carefully, because it is thinner than it looks. The public register records the question and the decision but not the reasons, and it says nothing about the structure&#8217;s dimensions or whether it was elevated at all. It is one case, decided by one authority, and it is not a rule that binds anybody else. What it does show is that this question reaches councils, and that already having built the thing does not settle it.</p>
+      </div>
     </details>
+    <details class="faq-item is-inline">
+      <summary><h3>Slope, access, light and overlooking</h3><span class="icon"></span></summary>
+      <div class="faq-a">
+        <p class="ev-lede">The site conditions that decide more than the regulations do.</p>
+        <h4 class="ev-h">Slope and access decide more than they should</h4>
+        <p>One supplier&#8217;s floor height varies with the slope of the garden. Another supplies levelling blocks on the condition that the site is clear and level. A third publishes a site and access requirements page, because getting the materials down the side of a house is the classic lost day. Re-levelling is itself a planning question. In one published Louth case a proposal to raise and lower rear-garden ground levels by no more than a metre was refused exempted-development status.</p>
+        <h4 class="ev-h">Light and overlooking are design questions, not rules</h4>
+        <p>Class 3 itself contains no window-to-boundary condition, so this is not something the regulations decide for you. It is still real. One Irish maker&#8217;s published Dublin project was deliberately elevated to sit in the canopy while avoiding overlook of neighbouring gardens. Another tells customers plainly that the bigger tree houses would not suit a smaller garden because they may block views and a lot of sunlight. That is a supplier talking someone out of the larger model, which is worth more than a brochure.</p>
+      </div>
+    </details>
+    <figure class="pn-dia" id="dia-clear-zone">
+      <figcaption class="pn-dia-t">The ground a deck takes, and the ground around it</figcaption>
+      <svg class="pn-p-svg" viewBox="0 0 368.2 368.2" role="img" aria-label="A plan drawn to scale: a two metre square deck with a clear zone of 1.83 metres on every side, giving an overall square of 5.66 metres.">
+        <rect class="pn-p-zone" x="20.0" y="20.0" width="328.2" height="328.2"/>
+        <rect class="pn-p-deck" x="126.1" y="126.1" width="116.0" height="116.0"/>
+        <path class="pn-p-dim" d="M20.0 73.0 L348.2 73.0"/>
+      </svg>
+      <ul class="pn-p-key">
+        <li><span class="pn-sw sw-deck"></span>A two metre square deck: four square metres of structure.</li>
+        <li><span class="pn-sw sw-zone"></span>The clear zone around it, at the depth one supplier publishes for its own range.</li>
+      </ul>
+      <p class="pn-dia-c">Drawn to scale at 1 metre to 58 units.</p><p>Green Tree Play publish, for their own range, a clear zone of 6 feet on every side, a surfacing depth of 12 inches, and a fall height threshold of 8 feet high. Those are one supplier&#8217;s published figures for their own products, evidently drawn from public-playground guidance, and they are not an Irish requirement.</p><p>The reason to draw them anyway is that the clear zone, not the deck, is what decides whether the garden still works.</p>
+    </figure>
+    <figure class="pn-dia" id="dia-area-counter">
+      <figcaption class="pn-dia-t">The arithmetic nobody does at the point of sale</figcaption>
+      <div class="pn-area">
+        <div class="pn-area-row is-cap">
+          <span class="pn-area-l">Combined cap, both classes together</span>
+          <span class="pn-area-track"><span class="pn-area-bar" style="width:100%"></span></span>
+          <span class="pn-area-n">45</span>
+        </div>
+        <div class="pn-area-row is-split">
+          <span class="pn-area-l">A detached garden house has a floor it cannot go below</span>
+          <span class="pn-area-track"><span class="pn-area-bar is-house" style="width:71.1%"></span><span class="pn-area-bar is-left" style="width:28.9%"></span></span>
+          <span class="pn-area-n">32<span class="pn-area-n2">13</span></span>
+        </div>
+        <div class="pn-area-row">
+          <span class="pn-area-l">Garden structures of this kind, all of them added together</span>
+          <span class="pn-area-track"><span class="pn-area-bar is-struct" style="width:66.7%"></span></span>
+          <span class="pn-area-n">30</span>
+        </div>
+        <div class="pn-area-row">
+          <span class="pn-area-l">Private open space that has to be left behind</span>
+          <span class="pn-area-track"><span class="pn-area-bar is-open" style="width:55.6%"></span></span>
+          <span class="pn-area-n">25</span>
+        </div>
+        <p class="pn-area-axis">Every bar is drawn to the same scale. Figures are in square metres.</p>
+      </div>
+      <p class="pn-dia-c">Read the second row. The combined cap and the minimum house size together leave about thirteen square metres for garden structures before the garden house route closes. That reading of the two sets of regulations is PlotNua&#8217;s own arithmetic, not guidance from any authority. It is here because the two classes interact and nothing at the point of sale will tell you so.</p>
+    </figure>
 
-    <h3>What this evidence does not establish</h3>
-    <p>Cost &mdash; no Irish figure of any kind. How many Irish makers exist. <strong>Whether a raised structure is a &ldquo;single storey building&rdquo; for the Building Regulations.</strong> <strong>Whether working from home for an employer is a &ldquo;trade or business&rdquo;.</strong> <strong>Whether a Tree Preservation Order restricts attaching a structure to a protected tree.</strong> <strong>Any general Irish insurance position on elevated garden structures.</strong> <strong>Whether overlooking bites on a Class 3 structure</strong>, which contains no window-to-boundary condition. That any particular garden can take one. That the structure shown in the last photograph is available off the shelf, or would be exempted development. And that PlotNua has assessed anything.</p>
+    <h3>A few things depend on your own property</h3>
+    <p class="pn-insight">Planning, trees and site conditions can change the answer from one garden to another.</p>
+    <details class="pn-disc">
+      <summary>See the important limits</summary>
+      <div class="pn-disc-b">
+        <ul class="ev-limits">
+          <li>Whether a raised structure is a single storey building for the Building Regulations: whether a raised structure is read that way is not something PlotNua could establish.</li>
+          <li>Whether working from home for an employer falls inside that is not something PlotNua could establish.</li>
+          <li>Whether a TPO also restricts attaching a structure to a tree is not something PlotNua could establish.</li>
+          <li>PlotNua could not establish any general Irish position on elevated garden structures.</li>
+          <li>Whether overlooking bites on a Class 3 structure &mdash; Class 3 itself contains no window-to-boundary condition.</li>
+          <li>How many Irish makers exist.</li>
+          <li>Whether any published Irish price exists between the product-led ceiling and the bespoke floor.</li>
+          <li>The reasons for the one Louth refusal.</li>
+          <li>Whether the British practice that built on the Irish coast currently takes Irish commissions.</li>
+          <li>Whether any particular garden can take one of these.</li>
+          <li>And that PlotNua has assessed anything.</li>
+        </ul>
+      </div>
+    </details>
   </section>
 
 </main>
 
-<!-- PROPERTY BRAIN, PATTERN C. No form, no Eircode input, no button, no
-     route to your-plot.html. A control a homeowner cannot use is worse
-     than no control at all.
-     PROVENANCE: recovered verbatim from 365d08c:discovery-hidden-bins.html,
-     the DISC-029 launch state, rather than reconstructed from a report. -->
-<section class="pb-preview reveal" id="discover-your-property">
-  <div class="pn-wordmark">PlotNua</div>
-  <h2 class="pb-headline">This property check is being prepared</h2>
-  <p class="pb-subhead">The questions that would decide this are practical ones &mdash; how much clear space you have, what is already built in the garden, how close the boundaries are, how high you would want to go, and whether there is a tree worth using. PlotNua is working on a check that asks them honestly. It is not ready, and nothing on this page assesses your property.</p>
+<section class="pb-preview is-quiet-end reveal" id="where-next">
+  <h3 class="pb-quiet-h">More from PlotNua</h3>
+  <p class="pb-quiet-sub">The nearest things PlotNua has looked at.</p>
   <div class="cs-exits">
     <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore What Could You Build in Your Garden? &rarr;</a>
     <a class="cs-exit" href="discovery-the-borrowed-garden.html">Explore The Borrowed Garden &rarr;</a>
     <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
-    <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
+    <a class="cs-exit is-quiet" href="index.html">Back to the homepage</a>
   </div>
   <p class="pb-independence"><strong>Recommendations cannot be bought, and payment never determines who appears or ranks more highly.</strong></p>
 </section>
@@ -1454,13 +2460,13 @@
   <h2>Related Discoveries</h2>
   <div class="related-grid">
     <a class="related-card" href="discovery-living-in-the-garden.html">
-      <div class="thumb"><img src="assets/img/8c60a8f27eb9c697.jpg" loading="lazy" decoding="async" alt="An Irish back garden behind a suburban house, with a small single-storey home at the end of it."></div>
+      <div class="thumb"><img src="assets/img/3cac96685bcd03a5.jpg" loading="lazy" decoding="async" alt="A woman with a mug in her kitchen doorway, looking down the garden to a lit timber garden room where three teenagers are playing pool."></div>
       <span class="related-kicker">Space</span>
       <span class="related-title">What Could You Build in Your Garden?</span>
       <span class="related-line">The same garden at ground level, and what the 2026 rules allow.</span>
     </a>
     <a class="related-card" href="discovery-the-borrowed-garden.html">
-      <div class="thumb"><img src="assets/img/e5ecf61c22bb13db.jpg" loading="lazy" decoding="async" alt="An Irish back garden with raised vegetable beds along one side and a grower tending them."></div>
+      <div class="thumb"><img src="assets/img/75f721f0513e4f37.jpg" loading="lazy" decoding="async" alt="A grower crouching beside raised vegetable beds picking tomatoes into a basket, with the homeowner reading on the patio behind."></div>
       <span class="related-kicker">Garden</span>
       <span class="related-title">The Borrowed Garden</span>
       <span class="related-line">Ground you are not using, and someone nearby who would.</span>
@@ -1473,6 +2479,228 @@
     </a>
   </div>
 </section>
+
+<script>
+/* ===========================================================================
+   DISC-016 · FOUR QUESTIONS, ONE ROUTE
+   ---------------------------------------------------------------------------
+   Reads four answers, shows one of three route blocks, says why in the
+   homeowner's own terms, and filters the option cards already in the page.
+
+   WHAT IT DOES NOT DO, and G-NO-SEND proves it rather than trusting it:
+     no fetch, no XMLHttpRequest, no beacon, no form, nothing submitted;
+     no localStorage, sessionStorage, IndexedDB or cookie;
+     no My Plot write, no supplier contact, no enquiry queue;
+     no planning claim, no score, no rating, no suitability, no eligibility;
+     nothing inferred about a particular tree, foundation or load.
+
+   THE ROUTE RULE, so it can be read rather than trusted:
+     C  purpose is workspace or ambitious AND space is a small corner.
+     B  otherwise, purpose is workspace or ambitious, or route is designed.
+     A  otherwise.
+
+   WHY IT FILTERS RATHER THAN RENDERS. The cards are in the document, inside the
+   same cost firewall as every other figure on the page, and visible to a reader
+   with no JavaScript. This script hides the ones that do not fit. It never
+   writes a price.
+   =========================================================================== */
+(function () {
+  "use strict";
+  var root = document.querySelector("[data-gb]");
+  if (!root) { return; }
+
+  var qSet = root.querySelector("[data-questions]");
+  var res = root.querySelector("[data-result]");
+  var errEl = root.querySelector("[data-err]");
+  var blocks = root.querySelectorAll("[data-route-block]");
+  var cards = root.querySelectorAll(".jo");
+  var noneEl = root.querySelector("[data-opt-none]");
+  var ledeEl = root.querySelector("[data-opt-lede]");
+
+  var LABEL = {
+    play: "somewhere for children to play",
+    retreat: "a retreat or a hideaway",
+    workspace: "a workspace or a studio",
+    ambitious: "something more ambitious",
+    exploring: "a look at what is possible",
+    corner: "a small corner",
+    part: "a reasonable part of the garden",
+    plenty: "plenty of room",
+    yes: "a tree where it would go",
+    no: "no tree there"
+  };
+
+  function pick(n) {
+    var el = root.querySelector('input[name="jq-' + n + '"]:checked');
+    return el ? el.value : "";
+  }
+
+  function read() {
+    return { purpose: pick("purpose"), tree: pick("tree"),
+             space: pick("space"), route: pick("route") };
+  }
+
+  function routeOf(a) {
+    var big = (a.purpose === "workspace" || a.purpose === "ambitious");
+    if (big && a.space === "corner") { return 2; }
+    if (big || a.route === "designed") { return 1; }
+    return 0;
+  }
+
+  /* ---- why, in the homeowner's own words ------------------------------- */
+  function why(a, r) {
+    var L = [];
+    if (r === 0) {
+      L.push("You said " + (LABEL[a.purpose] || "you are exploring")
+        + (a.space && LABEL[a.space] ? ", with " + LABEL[a.space] : "")
+        + ". That is squarely what the Irish market publishes, so there are "
+        + "named products at named prices below.");
+      if (a.route === "ready") {
+        L.push("You also said you would rather see things you could actually "
+          + "order, which is what this route is.");
+      }
+      if (a.tree === "no" || a.tree === "unsure") {
+        L.push("No tree is needed for any of them. Everything below stands on "
+          + "its own legs.");
+      } else if (a.tree === "yes") {
+        L.push("There is a tree where it would go. None of the options below "
+          + "needs to touch it, but if you want it built around the tree, that "
+          + "is a conversation with an arborist first.");
+      }
+    } else if (r === 1) {
+      L.push("You said " + (LABEL[a.purpose] || "you want something designed")
+        + ". No Irish supplier we found publishes a catalogue product for that, "
+        + "so the next step is a maker rather than a basket.");
+      if (a.purpose === "workspace") {
+        L.push("A room you can work in through an Irish winter needs insulation "
+          + "and glazing, and that is the part nobody publishes a price for.");
+      }
+      if (a.purpose === "ambitious") {
+        L.push("At that scale the height question starts to bite: three metres "
+          + "overall is the figure for a structure of this kind, so a maker "
+          + "will design to it rather than around it.");
+      }
+      if (a.route === "designed") {
+        L.push("You also said you would rather have something designed for your "
+          + "garden, which is the same route.");
+      }
+      if (a.tree === "yes") {
+        L.push("With a tree on the site, bring an arborist into the "
+          + "conversation early. It changes the method, not the possibility.");
+      }
+    } else {
+      L.push("You said " + (LABEL[a.purpose] || "something substantial")
+        + ", and a small corner. Those two do not sit together yet.");
+    }
+    return L;
+  }
+
+  /* ---- show ------------------------------------------------------------ */
+  function show() {
+    var a = read();
+    var missing = [];
+    if (!a.purpose) { missing.push("what you would like it for"); }
+    if (!a.tree) { missing.push("whether there is a tree there"); }
+    if (!a.space) { missing.push("how much space you have"); }
+    if (!a.route) { missing.push("which route feels closer"); }
+    if (missing.length) {
+      errEl.textContent = "Still to answer: " + missing.join("; ") + ".";
+      return;
+    }
+    errEl.textContent = "";
+
+    var r = routeOf(a);
+    for (var i = 0; i < blocks.length; i++) {
+      blocks[i].hidden = (blocks[i].getAttribute("data-route-block")
+        !== String(r));
+    }
+    var tgt = root.querySelector('[data-route-block="' + r + '"]');
+    var box = tgt.querySelector(".jr-why");
+    if (box) {
+      box.innerHTML = "";
+      var ul = document.createElement("ul");
+      why(a, r).forEach(function (t) {
+        var li = document.createElement("li");
+        li.textContent = t;
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+    }
+
+    // Filter the cards that are already here. Route C shows none, because the
+    // honest answer there is to settle the question first.
+    var wantRoute = (r === 0) ? "ready" : (r === 1 ? "designed" : null);
+    var shown = 0;
+    for (var j = 0; j < cards.length; j++) {
+      var c = cards[j];
+      var ok = false;
+      if (wantRoute && c.getAttribute("data-route") === wantRoute) {
+        var ps = (c.getAttribute("data-purpose") || "").split(/\s+/);
+        ok = (a.purpose === "exploring") || ps.indexOf(a.purpose) > -1;
+        // A ready-made card still fits someone who has not decided the route.
+        if (!ok && a.route === "unsure" && ps.indexOf(a.purpose) > -1) {
+          ok = true;
+        }
+      }
+      c.hidden = !ok;
+      if (ok) { shown++; }
+    }
+    if (noneEl) { noneEl.hidden = (shown > 0 || r === 2); }
+    if (ledeEl) { ledeEl.hidden = (shown === 0); }
+
+    qSet.hidden = true;
+    res.hidden = false;
+    var h = res.querySelector("h3");
+    if (h && h.focus) { h.focus(); }
+  }
+
+  function change() {
+    res.hidden = true;
+    qSet.hidden = false;
+    var f = qSet.querySelector("legend");
+    if (f && f.scrollIntoView) { f.scrollIntoView({ block: "center" }); }
+  }
+
+  function reset() {
+    var ins = root.querySelectorAll('input[type="radio"]');
+    for (var i = 0; i < ins.length; i++) { ins[i].checked = false; }
+    for (var j = 0; j < blocks.length; j++) { blocks[j].hidden = true; }
+    for (var k = 0; k < cards.length; k++) { cards[k].hidden = false; }
+    if (noneEl) { noneEl.hidden = true; }
+    if (ledeEl) { ledeEl.hidden = false; }
+    errEl.textContent = "";
+    change();
+  }
+
+  /* Route C must not be a dead end: reveal the ready-made cards with an
+     honest framing, without claiming the thing to check is now settled. */
+  function checkOptions() {
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].hidden = (cards[i].getAttribute("data-route") !== "ready");
+    }
+    if (noneEl) { noneEl.hidden = true; }
+    if (ledeEl) { ledeEl.hidden = false; }
+  }
+
+  root.addEventListener("click", function (ev) {
+    var t = ev.target;
+    if (!t || t.nodeName !== "BUTTON") { return; }
+    if (t.hasAttribute("data-check-options")) { checkOptions(); return; }
+    if (t.hasAttribute("data-show")) { show(); return; }
+    if (t.hasAttribute("data-change")) { change(); return; }
+    if (t.hasAttribute("data-reset")) { reset(); return; }
+  });
+
+  /* Enter anywhere in the question set shows the result. There is no form and
+     nothing to submit, so Enter cannot post. */
+  root.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Enter") { return; }
+    if (!qSet || qSet.hidden) { return; }
+    ev.preventDefault();
+    show();
+  });
+})();
+</script>
 
 <footer>
   <div class="footer-inner">
@@ -1535,7 +2763,7 @@
     document.querySelectorAll('.reveal').forEach(el=>{
       const io = new IntersectionObserver(es=>{
         es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, {threshold:.12});
+      }, {threshold:0, rootMargin:'0px 0px -12% 0px'});
       io.observe(el);
     });
   })();
