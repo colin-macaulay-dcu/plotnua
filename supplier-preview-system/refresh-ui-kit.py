@@ -255,7 +255,8 @@ CONFIG_B = CONFIG_A.replace('VARIANT A · PRODUCT-LED',
   '    {{OFFER_NAME}}           the category/offering, in their words').replace(
   '''    {{STILL_TO_ESTABLISH_N}} what PlotNua has NOT established
     {{IMAGE_*}}              imagery state A only — see the block below''',
-  '''    {{PHOTO_SLOT_LINE}}      what the held image panel says (state C)''')
+  '''    (no imagery token: the image position carries no copy — see
+    SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2)''')
 
 HEAD = '''<!DOCTYPE html>
 <html lang="en">
@@ -339,14 +340,10 @@ MEDIA_A = '''        <!-- IMAGERY STATE A — AUTHORISED. Credit is mandatory an
         </div>
 '''
 
-MEDIA_B = '''        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A purposeful held space
-             that shows the supplier where their photography would sit. Never
-             substitute their pictures because the page is private. -->
+MEDIA_B = '''        <div class="pn-media-col">
         <div class="results-hero-media">
-          <div class="pn-photo-slot">
-            <b>Your project photography here</b>
-            <span>{{PHOTO_SLOT_LINE}}</span>
-          </div>
+          <div class="pn-photo-slot" aria-hidden="true"></div>
+        </div>
         </div>
 '''
 
@@ -494,6 +491,36 @@ if '<img' in files['template-provider-led.html'].split('</style>',1)[1]:
     die('provider-led template must carry no <img>')
 if '<img' not in files['template-product-led.html']:
     die('product-led template lost its authorised-imagery slot')
+
+# ── CERTIFIED RULE, 5 Oct 2026 — SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2 ──────
+# This kit regenerates the templates from live production code, so without
+# these assertions a future refresh could quietly reinstate the obsolete
+# image-position architecture and every preview built afterwards would
+# inherit it. The tool now REFUSES rather than writing a non-conforming
+# provider template. Nothing here can touch an already-built supplier page:
+# the only files this script writes are the two templates in OUT.
+_p = files['template-provider-led.html']
+if 'PHOTO_SLOT_LINE' in _p:
+    die('provider-led template reinstated the PHOTO_SLOT_LINE token; the '
+        'image position carries no copy (§10.2)')
+if 'Your project photography here' in _p:
+    die('provider-led template reinstated the photo-slot heading (§10.2)')
+if 'Where your imagery would go' in _p:
+    die('provider-led template reinstated the imagery subsection (§10.2)')
+if _p.count('<div class="pn-photo-slot" aria-hidden="true"></div>') != 1:
+    die('provider-led template must carry exactly one empty image position')
+for _phrase in ('where they would sit', 'stay yours until',
+                'imagery waits until', 'until you tell us otherwise'):
+    if _phrase in _p.lower():
+        die('provider-led template narrates the image-rights process: '
+            '"' + _phrase + '" (§10.2)')
+
+# KNOWN DRIFT, RECORDED NOT FIXED: this kit has not been updated for the
+# PREVIEW-IDENTITY-001 band (.rh-split / .rh-identity), which was applied to
+# the templates by a separate one-shot migration. A refresh would therefore
+# still lose that band. That helper is superseded legacy and is scheduled for
+# retirement rather than blind editing, so DO NOT run this kit expecting a
+# drop-in replacement until the identity band is folded in here.
 
 os.makedirs(OUT, exist_ok=True)
 for fn, h in files.items():
