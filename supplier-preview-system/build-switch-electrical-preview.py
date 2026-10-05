@@ -182,12 +182,23 @@ FILL = {
 
     "OFFER_NAME": "Solar PV, battery storage and EV charging",
     "VERIFIED_PRICE": "Quoted after a free survey",
+    # THE DETAIL RELOCATED OUT OF FACTS 4 AND 5 LANDS HERE, not because it
+    # was surplus but because the three bold slots are proof points and this
+    # is the prose that explains how the engagement actually runs. Nothing
+    # was dropped: the single-day install, the BER on completion, the phone
+    # monitoring and the single-app point are all still on the page, in the
+    # place where a reader slows down rather than scans.
     "VERIFIED_PRICE_BASIS": "Switch Electrical publish no price list. The "
                             "survey and the quote are free, and the system is "
                             "sized to the roof and to how the household "
                             "actually uses electricity. The SEAI Solar "
                             "Electricity Grant is separate money and is paid "
-                            "by SEAI to the homeowner, not to the installer.",
+                            "by SEAI to the homeowner, not to the installer. "
+                            "Installation is usually a single day on site, "
+                            "followed by switch-on, a BER on completion and "
+                            "monitoring set up on the homeowner&rsquo;s "
+                            "phone; generation, storage and car charging are "
+                            "then watched and managed in one Sigenergy app.",
 
     "VERIFIED_FACT_1_LABEL": "What they fit",
     "VERIFIED_FACT_1_VALUE": "Solar PV, battery storage and home EV chargers, "
@@ -198,16 +209,20 @@ FILL = {
     "VERIFIED_FACT_2_VALUE": "Based in Dublin. Dublin, Louth, Meath, Kildare "
                              "and Wicklow are named, and the site adds "
                              "&ldquo;and across Leinster&rdquo;",
-    "VERIFIED_FACT_3": "SEAI-registered installer No. 50744 and Safe Electric "
-                       "registered No. A6580 &mdash; an SEAI-registered "
-                       "installer is what the grant itself requires",
-    "VERIFIED_FACT_4": "Free survey and quote, the SEAI grant paperwork "
-                       "handled, installation usually in a single day on "
-                       "site, then switch-on with a BER on completion and "
-                       "monitoring set up on the homeowner&rsquo;s phone",
+    # FACTS 3-5 ARE SHORT BOLD PROOF POINTS, not sentences. The template
+    # gives these three slots a <b> and no value span, so anything long
+    # renders as a wall of bold body text and buries the label/value pair
+    # above it -- worst at 390px, where .pn-facts li stacks. They are now
+    # scannable at a glance and the explanation lives in the prose.
+    # NOTHING VERIFIED WAS LOST. The grant's own requirement for an
+    # SEAI-registered installer is already stated verbatim in
+    # THINGS_TO_CHECK below, so dropping it from fact 3 removes a
+    # duplication rather than a fact.
+    "VERIFIED_FACT_3": "SEAI-registered installer No. 50744 &middot; Safe "
+                       "Electric No. A6580",
+    "VERIFIED_FACT_4": "Free survey, free quote, SEAI grant paperwork handled",
     "VERIFIED_FACT_5": "Battery, inverter and EV charging on one Sigenergy "
-                       "platform, so generation, storage and car charging are "
-                       "watched and managed in a single app",
+                       "platform",
 
     # THE ONE HONEST LINE. It carries the grant's real structure and all three
     # published eligibility conditions, because a figure without them is the
@@ -356,6 +371,23 @@ def main():
     leftover = sorted(set(re.findall(r"\{\{[A-Z_0-9]+\}\}", src)))
     if leftover:
         die("unfilled tokens remain: " + ", ".join(leftover))
+
+    # PREVIEW-POLISH-001 · h3 HAS NO SIZE RULE IN THE TEMPLATE.
+    # h1 and h2 are both given an explicit size; h3 inherits only the serif
+    # family and weight 400, so it falls back to the browser default and
+    # "Where your imagery would go" read as body copy beside the section h2.
+    # One restrained rule, built from the type token that already exists
+    # (--pn-s-quote, 19px) rather than a new size, and NO box, rule, border
+    # or colour change. INJECTED PER PAGE ON PURPOSE: the shared certified
+    # template is used by ~105 built previews and is not touched here.
+    if src.count("</style>") != 1:
+        die("expected exactly one </style> to anchor the h3 rule, found %d. "
+            "The template's shape has changed and this edit will not guess."
+            % src.count("</style>"))
+    src = src.replace(
+        "</style>",
+        "h3{ font-size:var(--pn-s-quote); line-height:1.25;\n"
+        "  margin:var(--pn-md) 0 6px; max-width:34ch; }\n</style>", 1)
 
     # G5 · PRIVACY. Non-negotiable, and doubly so here: nothing was granted.
     for directive in ("noindex", "nofollow", "noarchive", "nosnippet",

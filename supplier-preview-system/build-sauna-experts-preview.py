@@ -185,10 +185,26 @@ FILL = {
 
     "OFFER_NAME": "Outdoor Sauna Chill &mdash; Woodburner",
     "VERIFIED_PRICE": "&euro;25,000",
-    "VERIFIED_PRICE_BASIS": "exactly as published on the product page, which "
+    # PREVIEW-IDENTITY-001 ORPHANED THIS LINE, and the page showed it.
+    # The template's own note calls this slot a fragment -- "including
+    # fitting", "as published, ex VAT" -- because it used to sit directly
+    # after the price. The identity band moved the price up to the top, so
+    # the fragment was left starting a paragraph on its own, lowercase and
+    # with no subject: "exactly as published on the product page...". It
+    # now carries its own subject and reads as a sentence. Switch
+    # Electrical's basis was already written as a full sentence, which is
+    # why only this page showed the fault.
+    "VERIFIED_PRICE_BASIS": "The &euro;25,000 is exactly as published on the "
+                            "product page, which "
                             "also lists the unit as in stock. Sauna Experts "
                             "say their saunas are designed and manufactured "
-                            "in Ireland.",
+                            "in Ireland. The published specification also "
+                            "lists two-level Black Alder benches, a "
+                            "bronze-tinted glass door and integrated LED "
+                            "lighting inside; a charred Nordic Spruce "
+                            "exterior, steel-clad roof, double glazing, a lit "
+                            "porch and Thermo Spruce decking outside; and "
+                            "Siberian Larch cladding to the plunge area.",
 
     "VERIFIED_FACT_1_LABEL": "Capacity",
     "VERIFIED_FACT_1_VALUE": "2&ndash;4 people in the sauna room",
@@ -196,16 +212,21 @@ FILL = {
     "VERIFIED_FACT_2_VALUE": "4m &times; 2.4m overall, with a sauna room of "
                              "1.8m &times; 1.85m and a cold plunge area of "
                              "1.9m &times; 2.1m",
+    # FACTS 3-5 ARE SHORT BOLD PROOF POINTS, not sentences. The template
+    # gives these three slots a <b> and no value span, so anything long
+    # renders as a wall of bold body text and buries the Capacity and
+    # Footprint pair above it -- worst at 390px, where .pn-facts li stacks.
+    # The timber, bench, door, lighting, roof, glazing, porch, decking and
+    # plunge-cladding detail is NOT lost: it moves verbatim into the price
+    # basis prose, which is where what-the-figure-covers belongs.
+    # The opening string fragment of each is left untouched on purpose --
+    # the guard-capability proof anchors its sabotages to them.
     "VERIFIED_FACT_3": "Harvia woodburning stove with sauna stones, "
-                       "protective shield, protective base and chimney kit",
+                       "shield, base and chimney kit",
     "VERIFIED_FACT_4": "Fully insulated with a vapour barrier; Thermo Aspen "
-                       "lining, two-level Black Alder benches, bronze-tinted "
-                       "glass door and integrated LED lighting",
-    "VERIFIED_FACT_5": "Charred Nordic Spruce exterior, steel-clad roof, "
-                       "double glazing, a lit porch and Thermo Spruce "
-                       "decking; the plunge area is clad in Siberian Larch "
-                       "and the Chill Tub holds 400 litres and adjusts down "
-                       "to 3&deg;C",
+                       "lining",
+    "VERIFIED_FACT_5": "Chill Tub holds 400 litres, adjustable down to "
+                       "3&deg;C",
 
     # THE ONE HONEST LINE. It carries what the figure does and does not settle,
     # and PlotNua's own planning position -- which this supplier's site does
@@ -350,6 +371,23 @@ def main():
     leftover = sorted(set(re.findall(r"\{\{[A-Z_0-9]+\}\}", src)))
     if leftover:
         die("unfilled tokens remain: " + ", ".join(leftover))
+
+    # PREVIEW-POLISH-001 · h3 HAS NO SIZE RULE IN THE TEMPLATE.
+    # h1 and h2 are both given an explicit size; h3 inherits only the serif
+    # family and weight 400, so it falls back to the browser default and
+    # "Where your imagery would go" read as body copy beside the section h2.
+    # One restrained rule, built from the type token that already exists
+    # (--pn-s-quote, 19px) rather than a new size, and NO box, rule, border
+    # or colour change. INJECTED PER PAGE ON PURPOSE: the shared certified
+    # template is used by ~105 built previews and is not touched here.
+    if src.count("</style>") != 1:
+        die("expected exactly one </style> to anchor the h3 rule, found %d. "
+            "The template's shape has changed and this edit will not guess."
+            % src.count("</style>"))
+    src = src.replace(
+        "</style>",
+        "h3{ font-size:var(--pn-s-quote); line-height:1.25;\n"
+        "  margin:var(--pn-md) 0 6px; max-width:34ch; }\n</style>", 1)
 
     # G5 · PRIVACY.
     for directive in ("noindex", "nofollow", "noarchive", "nosnippet",

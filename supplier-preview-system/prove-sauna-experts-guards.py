@@ -134,10 +134,14 @@ r(run("G8 . the supplier's ranking claim is repeated as PlotNua's",
         '"WHY_1_LABEL": "IRELAND\'S NUMBER ONE SAUNA SHOP",')]))
 
 r(run("G8 . the contradictory experience figure is used anyway",
-      [('"VERIFIED_PRICE_BASIS": "exactly as published on the product page, '
-        'which "',
+      # ANCHOR RE-POINTED after the price-basis line was given its own
+      # subject. The sabotage is unchanged in kind -- it injects the banned
+      # "20 years of experience" figure into the same field -- only the
+      # string it attaches to moved.
+      [('"VERIFIED_PRICE_BASIS": "The &euro;25,000 is exactly as published '
+        'on the "',
         '"VERIFIED_PRICE_BASIS": "Built by a team with over 20 years of '
-        'experience. Exactly as published on the product page, which "')]))
+        'experience. The &euro;25,000 is exactly as published on the "')]))
 
 r(run("G8 . the page asserts a warranty nobody published",
       [('"VERIFIED_FACT_3": "Harvia woodburning stove with sauna stones, "',
@@ -154,9 +158,16 @@ r(run("G8 . the page decides the planning question the supplier never raised",
 # The attribution occurs exactly once, so this sabotage is real rather than a
 # needle mutation: the claim survives in the copy, the attribution does not.
 r(run("G8b . Irish manufacture is stated without saying whose claim it is",
+      # ANCHOR RE-POINTED. The relocated specification detail now follows
+      # the attribution in the same string, so the anchor had to grow to
+      # match. The sabotage is unchanged in kind: it still strips "Sauna
+      # Experts say" and asserts Irish manufacture as PlotNua's own finding,
+      # which is the single thing G8b exists to catch.
       [('"say their saunas are designed and manufactured "\n'
-        '                            "in Ireland.",',
-        '"design and manufacture in Ireland.",')]))
+        '                            "in Ireland. The published specification '
+        'also "',
+        '"design and manufacture in Ireland. The published specification '
+        'also "')]))
 
 # ---- G8c . the planning firewall must be present --------------------------
 r(run("G8c . the planning firewall is dropped from the honest line",
