@@ -94,12 +94,18 @@ r(run("G2 . the frozen journey band anchor no longer matches",
 # all, so the guard runs the other way and the sabotage has to PUT copy in
 # rather than rename it. G3d is new and gets its own break, because a rule
 # with no failing test is a comment.
-r(run("G3 . copy is written into the empty image position",
-      [('    # G3 \u00b7 THE IMAGE POSITION CARRIES NO COPY.',
-        '    src = src.replace(\'<div class="pn-photo-slot" aria-hidden="true">'
-        '</div>\', \'<div class="pn-photo-slot" aria-hidden="true"><span>'
-        'No photography is used on this page.</span></div>\')\n'
-        '    # G3 \u00b7 THE IMAGE POSITION CARRIES NO COPY.')]))
+r(run("G3 . rights copy is added beside the placeholder label",
+      [('    PLACEHOLDER = "<b>Your image here</b>"',
+        '    src = src.replace(\'<div class="pn-photo-slot"><b>Your image '
+        'here</b></div>\', \'<div class="pn-photo-slot"><b>Your image here'
+        '</b><span>No photography is used on this page.</span></div>\')\n'
+        '    PLACEHOLDER = "<b>Your image here</b>"')]))
+
+r(run("G3 . the placeholder label is stripped out entirely",
+      [('    PLACEHOLDER = "<b>Your image here</b>"',
+        '    src = src.replace(\'<div class="pn-photo-slot"><b>Your image '
+        'here</b></div>\', \'<div class="pn-photo-slot"></div>\')\n'
+        '    PLACEHOLDER = "<b>Your image here</b>"')]))
 
 r(run("G3d . the page explains the image-rights process to the supplier",
       [('  <p>These are the three things we&rsquo;d like to check with you '

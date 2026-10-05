@@ -342,7 +342,7 @@ MEDIA_A = '''        <!-- IMAGERY STATE A — AUTHORISED. Credit is mandatory an
 
 MEDIA_B = '''        <div class="pn-media-col">
         <div class="results-hero-media">
-          <div class="pn-photo-slot" aria-hidden="true"></div>
+          <div class="pn-photo-slot"><b>Your image here</b></div>
         </div>
         </div>
 '''
@@ -507,8 +507,9 @@ if 'Your project photography here' in _p:
     die('provider-led template reinstated the photo-slot heading (§10.2)')
 if 'Where your imagery would go' in _p:
     die('provider-led template reinstated the imagery subsection (§10.2)')
-if _p.count('<div class="pn-photo-slot" aria-hidden="true"></div>') != 1:
-    die('provider-led template must carry exactly one empty image position')
+if _p.count('<div class="pn-photo-slot"><b>Your image here</b></div>') != 1:
+    die('provider-led template must carry exactly one image position holding '
+        'the neutral placeholder label and nothing else (§10.2)')
 for _phrase in ('where they would sit', 'stay yours until',
                 'imagery waits until', 'until you tell us otherwise'):
     if _phrase in _p.lower():

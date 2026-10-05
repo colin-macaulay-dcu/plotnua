@@ -330,14 +330,21 @@ def main():
     # into the hero. The guard now runs the other way: it refuses if the
     # image position has acquired any copy at all, and refuses if the
     # rights-process vocabulary has leaked anywhere into the visible page.
+    # The image position carries EXACTLY ONE neutral label and nothing else.
+    # This guard is deliberately an equality check, not an emptiness check:
+    # it refuses if the label is removed AND if anything is added beside it.
+    # An earlier version required the slot to be wholly empty, which stripped
+    # the label the design wants; the rule was never "no label", it was "no
+    # rights-process copy".
+    PLACEHOLDER = "<b>Your image here</b>"
     slot = re.search(r'<div class="pn-photo-slot"[^>]*>(.*?)</div>',
                      src, flags=re.S)
     if not slot:
         die("the photo slot was not found. The template has moved.")
-    if slot.group(1).strip():
-        die("the image position carries copy: %r. Under the certified rule "
-            "it stays empty, and the rights process is not narrated to the "
-            "supplier." % slot.group(1).strip()[:90])
+    inner = slot.group(1).strip()
+    if inner != PLACEHOLDER:
+        die("the image position must carry exactly %r and nothing else. "
+            "Found: %r" % (PLACEHOLDER, inner[:110]))
 
     # G3c · ATTRIBUTION.
     attribution = (

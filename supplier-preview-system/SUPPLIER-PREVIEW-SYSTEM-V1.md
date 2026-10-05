@@ -283,14 +283,28 @@ A private supplier preview is **the actual PlotNua experience the supplier is
 being invited into**. It is not a document explaining how PlotNua constructed
 the preview. Governance stays rigorous and stays behind the scenes.
 
-**1 · The image position carries no copy.** Never fill an unused image
-position with explanatory text about image permission, photography not being
-used, images remaining the supplier's, where imagery would eventually appear,
-credits, backlinks, or waiting for supplier approval. If imagery is not
-authorised, the slot is simply the restrained empty panel. The rights gate is
-unchanged and still fails closed — the builder refuses to emit an
-unauthorised image at all — but the supplier is not walked through the
-workflow. **UNKNOWN is still not GRANTED; it is just not narrated.**
+**1 · The image position carries ONE neutral label and nothing else.** When
+supplier imagery is not authorised, the slot shows exactly:
+
+> YOUR IMAGE HERE
+
+and nothing more. It must never carry explanatory text about image
+permission, "your images stay yours" language, publication-process
+explanations, credit or backlink explanations, "where your imagery would go"
+copy, or any other rights-process language. The rights gate is unchanged and
+still fails closed — the builder refuses to emit an unauthorised image at all
+— but the supplier is not walked through the workflow. **UNKNOWN is still not
+GRANTED; it is just not narrated.**
+
+Treatment: centred on both axes, existing PlotNua typography (the established
+`.pn-photo-slot b` rule — 11px Work Sans, 600, `.2em` tracking, uppercase,
+accent colour), **no icon, no second line, no additional sentence.**
+
+*Corrected 5 Oct 2026: an earlier pass of this rule removed the label along
+with the copy and left the panel wholly blank. That was one element too many.
+The rule was never "no label" — it was "no rights-process copy". The guards
+are now an EQUALITY check, so they refuse both the label going missing and
+anything being added beside it.*
 
 `{{PHOTO_SLOT_LINE}}` and the "Your project photography here" heading were
 removed from `template-provider-led.html`. Any builder still supplying that
@@ -326,7 +340,8 @@ explaining the permission workflow.
 regenerates both templates from live production code, so it was the one route
 by which a future refresh could quietly bring the obsolete image position
 back. Its state-C block now emits the empty panel, and it carries assertions
-that REFUSE to write a provider template containing the token, the old
+that REFUSE to write a provider template unless the image position holds
+exactly the neutral placeholder label, and that refuse the token, the old
 heading, the imagery subsection, or any rights-process phrasing. All four
 refusals are exercised by a capability proof. The kit writes only the two
 templates and can never touch a built supplier page.
