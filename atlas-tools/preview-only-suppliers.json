@@ -74,6 +74,59 @@
       "forbidden_claims_note": "OGNYX's own product copy calls cold immersion a health benefit and the tub therapeutically versatile. PlotNua does not repeat a health claim to a homeowner whoever first wrote it, so those stay on this list even though the supplier does make them. The money, delivery, installation and lead-time bans exist for the opposite reason: the OGNYX shipping policy and terms of 2 September 2026 make each of them CONDITIONAL -- free standard delivery applies to eligible saunas where the product page says so, VAT is confirmed at checkout, installation needs a separate quotation, and production time varies by configuration. Stating any of them flatly would turn a condition into a promise.",
       "evidence": "Fabian replied on 2 October 2026, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: \"Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua.\" Atlas Permission Outcome remains \"Unknown \u2014 Awaiting Reply\".",
       "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002"
+    },
+    {
+      "name": "Switch Electrical",
+      "imagery_mode": "none",
+      "legal_name": "Switch Electrical Limited",
+      "page": "switch-electrical-preview.html",
+      "site_host": "switchelectrical.ie",
+      "credit": "\u00a9 Switch Electrical Ltd",
+      "image_hosts": [
+        { "host": "switchelectrical.ie", "path_prefix": "/gallery/",
+          "why": "their completed-installation gallery, served from their own domain" },
+        { "host": "switchelectrical.ie", "path_prefix": "/_astro/",
+          "why": "the build-time image directory their site serves the hero and page imagery from" }
+      ],
+      "forbidden_claims": [
+        "save you", "savings of", "guaranteed saving", "will save",
+        "pay for itself", "pays for itself", "payback", "return on investment",
+        "free electricity", "cut your bills", "lower your bills",
+        "reduce your bills",
+        "nationwide", "across ireland", "all of ireland", "anywhere in ireland",
+        "suitable for your home", "suits your roof", "any roof", "every home",
+        "cheapest", "best price", "number one",
+        "planning exempt", "no planning permission",
+        "warranty", "guaranteed for", "lead time of"
+      ],
+      "forbidden_claims_note": "MONEY AND SERVICE AREA, not product facts. Switch Electrical's own homepage says \"cut your electricity bills\" and carries three customer reviews mentioning bill reductions; that is their copy about their customers and would be an unevidenced claim about a stranger's house in PlotNua's voice. The service-area bans exist because the site names five counties and adds \"across Leinster\" -- a page that rounded that up to nationwide would send them enquiries they cannot serve. NOTE WHAT IS NOT BANNED: the words \"free\" and \"guarantee\". The free survey, the free quote and the free BER are all published, and the Clean Export Guarantee is the name of a real scheme.",
+      "evidence": "Switch Electrical replied \"Preview pls\" on 5 October 2026 to outreach sent to sales@switchelectrical.ie, when the outreach offered both YES and PREVIEW. A request to see the page is not a grant.",
+      "atlas_permission_ref": "NOT IN ATLAS — Switch Electrical Limited has no organisation record, no product record and no permission record. A full-tree search on 5 October 2026 returned nothing. There is no relationship to reflect and none is implied."
+    },
+    {
+      "name": "Sauna Experts",
+      "imagery_mode": "none",
+      "legal_name": "Sauna Experts Limited",
+      "page": "sauna-experts-preview.html",
+      "site_host": "saunaexperts.ie",
+      "credit": "\u00a9 Sauna Experts",
+      "image_hosts": [
+        { "host": "saunaexperts.ie", "path_prefix": "/wp-content/uploads/",
+          "why": "their WordPress media library on their own domain, which is where every product and gallery image is served from" }
+      ],
+      "forbidden_claims": [
+        "number one", "highest rated", "best sauna", "ireland's top",
+        "ireland's best", "most professional", "the leading", "top rated",
+        "market leader", "cheapest", "best price",
+        "20 years of experience", "16 years of experience",
+        "warranty", "guaranteed for", "we guarantee",
+        "lead time of", "free delivery", "delivery included",
+        "planning exempt", "no planning permission",
+        "cures", "treats", "proven to reduce"
+      ],
+      "forbidden_claims_note": "BORROWED SUPERLATIVES FIRST. Their own site calls them \"Ireland's Number One Sauna Shop\", \"the highest rated sauna supplier in Ireland\", \"Ireland's Top Sauna Manufacturer\" and \"the most professional\". Those are their marketing and nobody's verified fact; PlotNua repeating one would convert an unchecked claim into an apparent ranking on a page whose whole purpose is to show editorial independence. THE EXPERIENCE FIGURES ARE BANNED BECAUSE THEY CONTRADICT EACH OTHER: the homepage says \"over 20 years of experience\" of the custom saunas and, four paragraphs later, \"over 16 years\" of the founders. Both are first-party and they disagree, so neither is used. NOTE WHAT IS NOT BANNED: installation and nationwide delivery. Unlike the Irish Sauna Company case, this supplier publishes both on the product page itself -- \"nationwide delivery, sauna installation, and comprehensive support with building advisory\" -- so they are evidenced and may be reported, with the open question of what sits inside the price left open rather than answered.",
+      "evidence": "Sauna Experts replied \"PREVIEW\" on 5 October 2026 to outreach sent to saunaexpertsltd@gmail.com, when the outreach offered both YES and PREVIEW. A request to see the page is not a grant.",
+      "atlas_permission_ref": "NOT IN ATLAS — Sauna Experts Limited has no organisation record, no product record and no permission record. A full-tree search on 5 October 2026 returned nothing. There is no relationship to reflect and none is implied."
     }
   ]
 }
