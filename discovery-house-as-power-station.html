@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The House as a Power Station | PlotNua Discoveries</title>
-<meta name="description" content="Most houses only use electricity. A growing number of Irish homes now make some of their own, and are paid for what they do not use. What an Irish home can do today, and what is still years away.">
+<meta name="description" content="Computing cannot stop making heat, and a house cannot stop needing it. What is already happening elsewhere, what is already happening in Tallaght, and what an Irish property can actually do today.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-house-as-power-station.html">
 
@@ -32,7 +32,7 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
 <meta property="og:title" content="The House as a Power Station | PlotNua Discoveries">
-<meta property="og:description" content="What if your home could help power the future?">
+<meta property="og:description" content="What if your house could one day do some of the work of a data centre &mdash; and use the heat it creates?">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -42,7 +42,7 @@
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The House as a Power Station | PlotNua Discoveries">
-<meta name="twitter:description" content="What if your home could help power the future?">
+<meta name="twitter:description" content="What if your house could one day do some of the work of a data centre &mdash; and use the heat it creates?">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -896,6 +896,196 @@
   @media (max-width:640px){
     .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
   }
+
+  /* ==================================================================
+     DISC-026 REBUILD, 4 October 2026. Five components, built on the
+     tokens this page already defines. No new colour, no new font, no
+     third-party asset.
+
+     .ev      evidence state. THREE values and deliberately no fourth:
+              TODAY / EMERGING / FUTURE. Weight falls as certainty
+              falls -- solid, dashed, dotted -- so the boundary is
+              legible before the words are read.
+     .seam    S6, the honesty break. The one dark full-bleed band on
+              the page. Everything above it is somewhere else or
+              someone else's; everything below it is available here.
+     .anat    S7, the energy anatomy of the property.
+     .chain   S9, generation through to the flagship.
+     .rights  a reserved photograph position, stated honestly. UNKNOWN
+              fails closed, so the position says so rather than being
+              filled with a render.
+     ================================================================== */
+
+  .ev{ display:inline-block; font-family:'Work Sans',sans-serif;
+    font-size:9px; font-weight:500; letter-spacing:.2em;
+    text-transform:uppercase; padding:4px 10px 3px; border-radius:2px;
+    margin:0 0 14px; border:1px solid rgba(31,59,46,.42);
+    color:var(--ink); background:rgba(31,59,46,.07); }
+  .ev-emerging{ background:none; border-style:dashed;
+    border-color:rgba(31,59,46,.34); color:var(--soft); }
+  .ev-future{ background:none; border-style:dotted;
+    border-color:rgba(31,59,46,.26); color:var(--soft); }
+
+  /* the band. Full-bleed, so it is set outside .article. */
+  .seam{ margin:0; padding:clamp(66px,9vw,118px) 24px;
+    background:var(--ink); color:var(--cream); }
+  .seam-inner{ max-width:740px; margin:0 auto; }
+  .seam .kicker{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--brand-sage); margin:0 0 20px; }
+  .seam h2{ font-family:'Fraunces',Georgia,serif; font-weight:400;
+    font-size:clamp(26px,3.6vw,42px); line-height:1.16;
+    letter-spacing:-.018em; color:var(--brand-ivory); margin:0 0 26px; }
+  .seam p{ font-family:'Work Sans',sans-serif; font-size:16px;
+    line-height:1.8; margin:0 0 18px; color:rgba(242,239,230,.82);
+    max-width:60ch; }
+  .seam blockquote{ margin:30px 0 0; padding:22px 26px;
+    border-left:2px solid var(--brand-sage);
+    background:rgba(255,255,255,.05);
+    font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:17px;
+    line-height:1.56; color:var(--brand-ivory); }
+  .seam blockquote + blockquote{ margin-top:14px; }
+
+  /* the anatomy: one figure, then one block per position. */
+  .anat{ margin:38px 0 0; }
+  .anat-fig{ background:var(--cream); border:1px solid rgba(31,59,46,.13);
+    border-top:2px solid rgba(31,59,46,.42); border-radius:2px;
+    padding:28px 26px 20px; }
+  .anat-fig svg{ display:block; width:100%; height:auto; }
+  .anat-cap{ font-family:'Work Sans',sans-serif; font-size:12px;
+    line-height:1.68; color:var(--soft); margin:18px 0 0; max-width:66ch; }
+  .pos{ margin:40px 0 0; padding:28px 0 0;
+    border-top:1px solid rgba(31,59,46,.20); }
+  .pos-where{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:9.5px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  .pos h3{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:clamp(19px,2.1vw,24px); line-height:1.26; margin:0 0 14px; }
+  .pos p{ font-family:'Work Sans',sans-serif; font-size:15px;
+    line-height:1.78; margin:0 0 14px; max-width:62ch; color:var(--ink); }
+  .pos-facts{ list-style:none; margin:18px 0 0; padding:0; display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(208px,1fr)); gap:1px;
+    background:rgba(31,59,46,.13); border:1px solid rgba(31,59,46,.13);
+    border-radius:2px; }
+  .pos-facts > li{ margin:0; background:var(--paper);
+    padding:17px 19px 19px; }
+  /* the open question, where there is one. Quieter than a fact and
+     visibly not one -- it is what PlotNua has NOT established. */
+  .pos-open{ margin:18px 0 0; padding:17px 19px;
+    background:rgba(31,59,46,.045);
+    border-left:2px solid rgba(31,59,46,.30);
+    font-family:'Work Sans',sans-serif; font-size:13.5px; line-height:1.72;
+    color:var(--soft); max-width:66ch; }
+  .pos-open strong{ color:var(--ink); font-weight:500; }
+
+  .chain{ list-style:none; margin:34px 0 0; padding:0; }
+  .chain > li{ margin:0; padding:18px 0; display:grid;
+    grid-template-columns:30px 1fr; gap:16px; align-items:baseline;
+    border-top:1px solid rgba(31,59,46,.12); }
+  .chain > li:first-child{ border-top:2px solid rgba(31,59,46,.42); }
+  .chain-n{ font-family:'Work Sans',sans-serif; font-size:10px;
+    font-weight:500; letter-spacing:.12em; color:var(--accent); }
+  .chain-t{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:16px; line-height:1.4; color:var(--ink); }
+  .chain-t span{ display:block; font-family:'Work Sans',sans-serif;
+    font-size:12.5px; line-height:1.7; color:var(--soft); margin-top:6px; }
+
+  .rights{ margin:26px 0 0; padding:15px 17px;
+    border:1px dashed rgba(31,59,46,.30); border-radius:2px;
+    font-family:'Work Sans',sans-serif; font-size:12px; line-height:1.72;
+    color:var(--soft); max-width:70ch; }
+  .rights b{ font-weight:500; color:var(--ink); }
+
+  @media (max-width:760px){
+    .seam{ padding:56px 20px; }
+    .anat-fig{ padding:20px 16px 14px; }
+    .pos-facts{ grid-template-columns:1fr; }
+    .chain > li{ grid-template-columns:24px 1fr; gap:12px; }
+  }
+
+
+  /* ==================================================================
+     FOUNDER REVIEW CORRECTIONS, 4 October 2026.
+
+     .pos-eq   the seven positions ARE the revelation, so each one now
+               leads with its idea in the largest type on the page --
+               larger than the section heading. Light weight, because at
+               this size weight would shout where scale is enough.
+     .imgnote  one quiet line where a real photograph will go. The
+               permission workflow is ours, not the reader's.
+     ================================================================== */
+
+  .pos-eq{ display:block; font-family:'Fraunces',Georgia,serif;
+    font-weight:300; font-size:clamp(27px,4.4vw,48px); line-height:1.08;
+    letter-spacing:-.022em; color:var(--ink); margin:0 0 18px; }
+  .pos-eq i{ font-style:normal; color:var(--accent); padding:0 .14em;
+    font-weight:300; }
+  /* the one-idea sentence steps down hard, so the idea above it leads */
+  .pos h3{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:clamp(17px,1.7vw,19px); line-height:1.38; margin:0 0 12px;
+    color:var(--ink); max-width:46ch; }
+  .pos .faq-item.is-inline{ margin-top:20px; }
+  .pos .faq-item.is-inline summary h3{ font-size:14.5px; max-width:none; }
+
+  .imgnote{ display:block; margin:22px 0 0; font-family:'Work Sans',sans-serif;
+    font-size:11.5px; line-height:1.7; letter-spacing:.01em;
+    color:var(--soft); }
+
+  @media (max-width:760px){
+    .pos-eq{ font-size:clamp(24px,7.4vw,30px); }
+  }
+
+
+  /* ==================================================================
+     FOUNDER VISUAL REVIEW, CORRECTION 01 . THE TYPE SCALE, DECLARED.
+
+     The review finding was that too many sentences carried near-hero
+     authority. Five levels now, and nothing is allowed to sit between
+     them:
+
+       A  FLAGSHIP HERO        h1            32 -> 58px
+       B  REVELATION / PROOF   h2.is-proof   26 -> 40px
+          and the seam         .seam h2      26 -> 42px
+          and the anatomy      .pos-eq       27 -> 48px
+       C  SECTION HEADLINE     h2            23 -> 31px
+       D  CATEGORY KICKER      .kicker       12px uppercase
+       E  TRANSITION / SPARK   .spark p      18 -> 25px, compact
+
+     WHAT CHANGED AND WHY. Every section h2 was set at 40px, which made
+     the mechanism, the proof and the watching brief equally loud; B now
+     belongs to the Tallaght proof alone, and C is a step below it. The
+     spark was 40px italic inside 12vh of padding, so one sentence held
+     most of a viewport; the closing line held nearly two-fifths of one
+     in padding alone. Both are compressed without being weakened --
+     they are still the quietest and most deliberate type on the page.
+
+     The anatomy leading ideas are deliberately NOT reduced: the founder
+     is reviewing them at this size.
+     ================================================================== */
+
+  /* C . the default section headline steps down from proof scale. */
+  .article-section h2{ font-size:clamp(23px,2.6vw,31px); line-height:1.26;
+    max-width:24ch; margin-bottom:22px; }
+  /* B . and the proof keeps the authority it has earned. */
+  .article-section h2.is-proof{ font-size:clamp(26px,3.4vw,40px);
+    line-height:1.3; max-width:19ch; margin-bottom:26px; }
+
+  /* E . the transition is compact. One sentence should not hold a screen. */
+  .spark{ padding:7vh 7vw; }
+  .spark p{ font-size:clamp(18px,1.9vw,25px); line-height:1.5; }
+  .closing-line{ padding:11vh 7vw 10vh; }
+
+  /* A compact figure, for a diagram that is a caption rather than a plate. */
+  .fig-strip{ background:none; border:none; border-top:1px solid rgba(31,59,46,.22);
+    border-radius:0; padding:22px 0 0; margin-top:30px; }
+  .fig-strip svg{ display:block; width:100%; height:auto; }
+  .fig-strip .anat-cap{ margin-top:14px; }
+
+  @media (max-width:760px){
+    .spark{ padding:6vh 20px; }
+    .closing-line{ padding:9vh 20px 8vh; }
+  }
+
 </style>
 </head>
 <body>
@@ -948,343 +1138,1131 @@
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
     <h1>The House as a Power Station</h1>
-    <p class="subtitle">What if your home could help power the future?</p>
-    <p class="intro">Your home already uses energy. In the future, it could do something much more unexpected with it.</p>
+    <p class="subtitle">What if your house could one day do some of the work of a
+      data centre &mdash; and use the heat it creates?</p>
+    <p class="intro">A house is somewhere electricity arrives. Computing is starting to
+      move the other way &mdash; and computing cannot stop making heat.</p>
   </div>
 </header>
 
 <main class="article">
 
-  <!-- ============================================================
-       THE DISCOVERY. Solar is no longer the subject of this page; it is the
-       evidence that the infrastructure is arriving. The boundary -- none of
-       this is available in Ireland -- is stated once, plainly, at the top,
-       so the rest can be told confidently instead of hedged sentence by
-       sentence.
-       ============================================================ -->
+  <!-- ====================================================================
+       S2 . WHY A HOUSE AT ALL. One mechanism, before any company is named.
+       The physics needs no citation. The SCALE claim does, and it is Irish
+       and first-party: CRU, 12 December 2025.
+       ==================================================================== -->
   <section class="article-section reveal">
-    <div class="kicker">The Discovery</div>
-    <h2>Could a house help power AI?</h2>
-    <p>A house has always been somewhere electricity arrives. Computing is beginning to move the other way.</p>
-    <p>Emerging models are beginning to spread computing across many smaller sites &mdash; and some of those sites are ordinary homes. A property could contribute electricity, battery capacity, connectivity, secure space, or even make use of the heat that computing produces.</p>
-    <p>None of this is available to an Irish homeowner today. What follows is what is being built elsewhere.</p>
+    <div class="kicker">Computing and heat</div>
+    <h2>Computers produce heat. Homes need heat.<br>What if one could help supply
+      the other?</h2>
+    <span class="ev">Today &mdash; the physics</span>
+    <p>Almost all the electricity a computer draws leaves it as heat. A data centre
+      spends more money getting rid of that heat. Your house spends money making it.
+      Those are the same thing, pointing in opposite directions.</p>
+    <p>In Ireland this stopped being a curiosity some time ago. Data centres took
+      <strong>5% of the country&rsquo;s electricity in 2015</strong>. By
+      <strong>2024 it was 22%</strong>, and the Commission for Regulation of
+      Utilities projects <strong>31% by 2034</strong>.</p>
+    <p>Put the computer where the heat is wanted, and the waste stops being waste.
+      That is the whole idea. Everything below is about how close it actually is.</p>
 
-    <!-- INTERNATIONAL EVIDENCE. Four tiles, 2x2. Each one is a real,
-         named, dated programme; each carries what the household actually
-         receives, because "paid" is wrong for two of the four. -->
-    <div class="dq-adv">
-      <span class="dq-cat dq-adv-cat">Already being built</span>
-      <ul class="dq-adv-cols is-five">
-        <li>
-          <span class="dq-adv-label">Britain</span>
-          <span class="dq-fact">A boiler-sized unit holds 450&ndash;500 compute modules, and the heat they produce warms the household&rsquo;s water.</span>
-          <span class="dq-note">Thermify&rsquo;s HeatHub. The company pays for the electricity and sells the computing. Deployed through the SHIELD trial with UK Power Networks.</span>
-        </li>
-        <li>
-          <span class="dq-adv-label">United States</span>
-          <span class="dq-fact">Sixteen NVIDIA GPUs installed at a home beside a smart panel and battery, using power the house is not consuming.</span>
-          <span class="dq-note">SPAN&rsquo;s XFRA, backed by NVIDIA and the homebuilder PulteGroup, rolling out from Q3 2026. Households are not paid cash: they receive the equipment, the installation, and discounted electricity and internet.</span>
-        </li>
-        <li>
-          <span class="dq-adv-label">United States</span>
-          <span class="dq-fact">Home solar and batteries supplying capacity into the programmes that serve AI data centres.</span>
-          <span class="dq-note">Sunrun with Voltus, announced August 2026, in the PJM and MISO grid regions. Participating households are compensated.</span>
-        </li>
-        <li>
-          <span class="dq-adv-label">Europe</span>
-          <span class="dq-fact">One European platform describes household nodes as a layer of its network: homes with rooftop solar and batteries becoming compute sites.</span>
-          <span class="dq-note">CYANIS AI, Hamburg. Its specified household unit is 500W and desktop-sized, behind the meter. The architecture is published; the household layer is not an open programme.</span>
-        </li>
-        <li>
-          <span class="dq-adv-label">Australia</span>
-          <span class="dq-fact">Computing installed in the home, the household paid for the power and space it uses, and the heat it produces put back into the house.</span>
-          <span class="dq-note">Zai Node. The company installs, owns and maintains the equipment; the household provides the space, the electricity and the connection. Recovered heat is used for hot water, heating or a pool. An Australian proposition, open to Australian homeowners &mdash; not an Irish programme.</span>
-        </li>
-      </ul>
+    <!-- THE HEAT PATH. A diagram, not a photograph: it describes a mechanism
+         and makes no claim that any particular installation exists. Drawn by
+         PlotNua, so it carries no rights question. -->
+    <div class="fig-strip">
+      <svg viewBox="0 0 900 132" role="img"
+           aria-label="Electricity enters a computer, the computer does its work, and almost all of that electricity leaves again as heat. A data centre pays once for the electricity and again to throw the heat away.">
+        <!-- one baseline, three stages, no boxes. Hairline rule, small glyphs,
+             labels on the rule. A caption with pictures rather than a plate. -->
+        <g fill="none" stroke="#1F3B2E">
+          <path d="M28 72 H872" stroke-width="1" opacity=".30"/>
+          <!-- stage ticks -->
+          <path d="M28 66 V78 M300 66 V78 M572 66 V78 M872 66 V78"
+                stroke-width="1" opacity=".30"/>
+          <!-- chevrons along the rule -->
+          <path d="M156 66 L166 72 L156 78" stroke-width="1.1" opacity=".5"/>
+          <path d="M428 66 L438 72 L428 78" stroke-width="1.1" opacity=".5"/>
+          <path d="M716 66 L726 72 L716 78" stroke-width="1.1" opacity=".5"/>
+        </g>
+        <!-- glyph 1 . electricity -->
+        <g transform="translate(40,20)" fill="none" stroke="#1F3B2E" stroke-width="1.4">
+          <path d="M14 0 L2 22 H11 L7 40 L21 16 H12 Z" stroke-linejoin="round"/>
+        </g>
+        <!-- glyph 2 . the processor -->
+        <g transform="translate(306,20)" fill="none" stroke="#1F3B2E" stroke-width="1.4">
+          <rect x="6" y="6" width="30" height="30" rx="1.5" fill="#8FAF8A" fill-opacity=".20"/>
+          <rect x="15" y="15" width="12" height="12" rx="1"/>
+          <path d="M6 14 H0 M6 21 H0 M6 28 H0 M36 14 H42 M36 21 H42 M36 28 H42
+                   M14 6 V0 M21 6 V0 M28 6 V0 M14 36 V42 M21 36 V42 M28 36 V42"
+                stroke-width="1"/>
+        </g>
+        <!-- glyph 3 . the cylinder, which is where the heat can go -->
+        <g transform="translate(578,14)" fill="none" stroke="#1F3B2E" stroke-width="1.4">
+          <path d="M4 12 C4 4 26 4 26 12 V46 C26 52 4 52 4 46 Z"
+                fill="#8FAF8A" fill-opacity=".20"/>
+          <path d="M4 12 C4 19 26 19 26 12" stroke-width="1" opacity=".6"/>
+          <path d="M15 4 V0" stroke-width="1"/>
+          <!-- rising heat -->
+          <path d="M38 40 C44 34 38 30 44 24 M50 44 C56 38 50 34 56 28"
+                stroke-width="1" opacity=".45"/>
+        </g>
+        <g font-family="Work Sans, sans-serif" fill="#1F3B2E" letter-spacing="1.6">
+          <text x="28" y="100" font-size="8.5" fill="#4F6B4A">IN</text>
+          <text x="28" y="116" font-size="10.5">ELECTRICITY</text>
+          <text x="300" y="100" font-size="8.5" fill="#4F6B4A">WORK</text>
+          <text x="300" y="116" font-size="10.5">COMPUTING</text>
+          <text x="572" y="100" font-size="8.5" fill="#4F6B4A">OUT</text>
+          <text x="572" y="116" font-size="10.5">HEAT, AND SOMEWHERE FOR IT TO GO</text>
+        </g>
+      </svg>
+      <p class="anat-cap">A data centre pays twice: once for the electricity, and
+        again to throw the heat away. Drawn by PlotNua &mdash; an illustration of the
+        mechanism, not of an installation.</p>
     </div>
-
-    <!-- WHAT MIGHT MATTER. The page's single unbroken surface and its
-         highest elevation, because this is the Discovery. It is a LENS, not
-         a test: there is no Irish programme to qualify for, nothing is
-         scored, and the copy says so inside the feature itself. -->
-    <div class="dq-opp">
-      <div class="dq-earn">
-        <span class="dq-cat">What might matter</span>
-        <p class="dq-earn-lead">If a home were ever part of a network like this, these are the pieces the emerging models keep naming.</p>
-        <p class="dq-earn-caveat">What would matter will depend on the technology and the provider. For now, these are simply the features appearing again and again in the models being developed.</p>
-        <ul class="dq-figs">
-          <li><span class="dq-fig">500W</span><span class="dq-src">The household unit CYANIS specifies: desktop form factor, silent, behind the meter.</span></li>
-          <li><span class="dq-fig">450&ndash;500</span><span class="dq-src">Compute modules inside a single Thermify HeatHub, heating a household&rsquo;s water.</span></li>
-        </ul>
-      </div>
-      <div class="dq-use">
-        <span class="dq-cat">The pieces</span>
-        <ul class="dq-rows">
-          <li><span class="dq-fact"><strong>Energy.</strong> The ability to generate or provide electricity.</span></li>
-          <li><span class="dq-fact"><strong>Storage.</strong> Battery capacity that can shift when electricity is used.</span></li>
-          <li><span class="dq-fact"><strong>Connectivity.</strong> A reliable high-speed connection for computing equipment.</span></li>
-          <li><span class="dq-fact"><strong>Space.</strong> A secure physical place to put it.</span></li>
-          <li><span class="dq-fact"><strong>Heat.</strong> Some models make use of the heat computing produces. At least one now does both at once: paying the household for the resources the computing uses, and returning its heat as hot water or heating.</span></li>
-        </ul>
-      </div>
-    </div>
-
   </section>
 </main>
 
 <section class="spark reveal">
-  <!-- THE TRANSITION. The page's one dramatic beat, on the existing .spark
-       component -- the largest, quietest type in the system. It earns the
-       drama from the sequence of evidence above it, not from punctuation. -->
-  <p>Not here yet. But some of the pieces already are.</p>
-</section>
-
-<section class="imagine-photo reveal">
-  <!-- IMAGE 03 (was IMAGE 01) - the former hero, moved here by the founder's
-       image-rhythm correction. It shows the same house as the hero with panels,
-       storage and charging in place, so it now reads as the outcome of the
-       decision section above rather than as a near-repeat of the opening.
-       Asset unchanged and unedited. -->
-  <img src="assets/img/ce9da2e51c945693.jpg" width="1408" height="768" loading="lazy" decoding="async"
-       alt="An Irish family outside their home at dusk: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.">
-
+  <p>Not here yet. But not hypothetical either.</p>
 </section>
 
 <main class="article">
 
-  <!-- ============================================================
-       TODAY IN IRELAND. Everything that used to be the Discovery, now
-       serving it. Deliberately built from the QUIET tile (elevation 20)
-       rather than a second opportunity surface, so nothing here competes
-       with "What might matter" above.
-       ============================================================ -->
+  <!-- ====================================================================
+       S3 . IT IS ALREADY HAPPENING SOMEWHERE. The section that makes the
+       Discovery credible, so it is specific, named and dated.
+
+       NON-NEGOTIABLE, per the storyboard: every figure here is UK or German,
+       under those countries' prices and programmes, and what the household
+       receives in every operating case is HEAT. No "earn". No "could be paid".
+       ==================================================================== -->
+  <section class="article-section reveal">
+    <div class="kicker">Home compute &middot; useful heat</div>
+    <h2>There are houses today with a computer bolted to the hot water cylinder.</h2>
+    <span class="ev ev-emerging">Emerging &mdash; outside Ireland</span>
+    <p>Not a prototype in a lab. Occupied homes, with a submeter on the wall and a
+      box on the cylinder. The household gets the hot water.</p>
+
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">Operating now, outside Ireland</span>
+      <ul class="dq-adv-cols is-four">
+        <li>
+          <span class="dq-adv-label">Britain &middot; in homes</span>
+          <span class="dq-fact">A compute unit clamped to a domestic hot water
+            cylinder through a patented thermal bridge. A billing-accredited
+            submeter is fitted, and the household is credited for the electricity
+            the unit uses.</span>
+          <span class="dq-note">heata (Bit Warmer Ltd). The company&rsquo;s own
+            modelling is 4.25&nbsp;kWh of hot water a day, up to
+            &pound;340 a year. It needs a cylinder of roughly
+            425&ndash;450&nbsp;mm diameter with clearance around it. British Gas
+            ran a trial in employees&rsquo; homes.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Britain &middot; in homes</span>
+          <span class="dq-fact">A household unit where the company pays for the
+            electricity and sells the computing, and the heat stays in the
+            house.</span>
+          <span class="dq-note">Thermify HeatHub, deployed through the SHIELD
+            trial with UK Power Networks. A second, independent household-scale
+            precedent &mdash; which matters more than either one alone.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Britain &middot; building scale</span>
+          <span class="dq-fact">An immersion-cooled &ldquo;digital boiler&rdquo;
+            installed at a building with constant heat demand, displacing the gas
+            that used to make that heat.</span>
+          <span class="dq-note">Deep Green. At Exmouth Leisure Centre the reported
+            result was 62% less gas for the pool and over &pound;20,000 a year
+            saved. Blocks of flats are named as a target building type.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Germany &middot; specified</span>
+          <span class="dq-fact">A household unit specified at 500&nbsp;W, desktop
+            sized, silent, sitting behind the meter.</span>
+          <span class="dq-note">CYANIS AI, Hamburg. The architecture is published;
+            the household layer is not an open programme. It is here for one
+            reason &mdash; it sets the physical scale of the idea.</span>
+        </li>
+      </ul>
+    </div>
+
+    <p style="margin-top:38px">Every one of those figures is British or German,
+      under those countries&rsquo; electricity prices and programmes. None of it is open to an Irish homeowner. And in every
+      case that is actually operating, what the household receives is
+      <strong>heat</strong> &mdash; not income.</p>
+
+    <span class="imgnote">Real installation photography will be added when publication rights are confirmed.</span>
+  </section>
+
+  <!-- ====================================================================
+       S4 . AND IT IS ALREADY HAPPENING IN IRELAND. The strongest Irish
+       evidence on the page, and the most easily over-read -- so the
+       limitation is in the same surface, not in a footnote.
+
+       The 133 apartments are in the scheme's own FORWARD terms. Codema has
+       not confirmed the connection is complete, so the present tense is not
+       available to us. The founder's rule: if unconfirmed, forward terms.
+       ==================================================================== -->
+  <section class="article-section reveal">
+    <div class="kicker">Data centres &middot; useful heat</div>
+    <h2 class="is-proof">Waste heat from a data centre already heats buildings in
+      Tallaght.</h2>
+    <span class="ev">Today &mdash; operating since 2023</span>
+    <p>This is the part most people in Ireland have not heard. It is not a trial, it
+      is not a pilot, and it has been running for three years.</p>
+
+    <div class="dq-opp">
+      <div class="dq-earn">
+        <span class="dq-cat">The Tallaght District Heating Scheme</span>
+        <p class="dq-earn-lead">Ireland&rsquo;s first large-scale district heating
+          network of its kind. During normal operation, its heat demand is
+          <strong>100% covered by waste heat from the neighbouring Amazon data
+          centre</strong>.</p>
+        <p class="dq-earn-caveat">Phase 1 has been operational since 2023, supplying
+          South Dublin County Council&rsquo;s County Hall and library complex and
+          buildings on the TU Dublin Tallaght campus. Operated by Heat Works,
+          Ireland&rsquo;s first not-for-profit energy utility, wholly owned by South
+          Dublin County Council.</p>
+        <ul class="dq-figs">
+          <li>
+            <span class="dq-fig">1,400+</span>
+            <span class="dq-src">Tonnes of CO&#8322; saved in 2025, on the
+              scheme&rsquo;s own figures.</span>
+          </li>
+          <li>
+            <span class="dq-fig">133</span>
+            <span class="dq-src">Affordable apartments were set to connect as the
+              scheme expanded in 2025. Whether that connection is complete is
+              something PlotNua has asked Codema and has not yet been told.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="dq-use">
+        <span class="dq-cat">What it proves, and what it doesn&rsquo;t</span>
+        <ul class="dq-rows">
+          <li><span class="dq-fact"><strong>It proves the heat is real.</strong>
+            Compute heat already reaches Irish buildings, including
+            homes.</span></li>
+          <li><span class="dq-fact"><strong>It arrives through a pipe.</strong> A
+            heat network, built by a council-owned utility, fed by one
+            utility-scale data centre.</span>
+            <span class="dq-note">Nothing in it belongs to a household. There is no
+              equipment on anybody&rsquo;s property.</span></li>
+          <li><span class="dq-fact"><strong>It is not proof that a house can host
+            computing.</strong> It is the opposite end of the same idea &mdash;
+            district scale, delivered to buildings, not generated at
+            them.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <span class="imgnote">Real installation photography will be added when publication rights are confirmed.</span>
+  </section>
+
+  <!-- ====================================================================
+       S5 . WHERE IT PLAUSIBLY ARRIVES FIRST. Direct operator evidence,
+       3 October 2026, one email exchange.
+
+       HARD CONSTRAINTS. Tandem is NOT a PlotNua partner. Both preconditions
+       travel with their claims -- "suitable existing gas infrastructure" for
+       CHP, "with centralised heating" for the development model -- because
+       Stage 1 showed both being dropped between the conversation and the
+       note, and both materially narrow the claim.
+       ==================================================================== -->
+  <section class="article-section reveal">
+    <div class="kicker">Distributed compute &middot; Ireland</div>
+    <h2>This is already being built in Ireland.</h2>
+    <span class="ev ev-emerging">Emerging &mdash; commercial and community sites</span>
+    <p>Tandem Compute is developing distributed AI infrastructure at larger
+      commercial and community sites &mdash; places with a constant appetite for heat
+      and the energy infrastructure already in the ground. We asked them about
+      houses, and the answer was more useful than a brochure would have been.</p>
+
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">What the operator told us, October 2026</span>
+      <ul class="dq-adv-cols is-four">
+        <li>
+          <span class="dq-adv-label">What they build</span>
+          <span class="dq-fact">Distributed AI compute infrastructure at locations
+            where the energy it produces can be put to productive use.</span>
+          <span class="dq-note">Tandem Compute. A host site is judged on heat
+            demand, existing energy infrastructure, power, fibre and physical
+            space.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Where, today</span>
+          <span class="dq-fact">Larger commercial and community sites &mdash; pools,
+            leisure facilities, hotels, food production, industrial users.</span>
+          <span class="dq-note">Places with a constant, year-round appetite for heat
+            and the infrastructure already in the ground.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Increasingly examining</span>
+          <span class="dq-fact">Compute combined with CHP &mdash;
+            <em>where a site has suitable existing gas infrastructure</em>. The CHP
+            makes electricity for the compute and useful heat, and the
+            compute&rsquo;s own heat is recovered too.</span>
+          <span class="dq-note">That condition is theirs, and it is load-bearing.
+            Without the gas infrastructure, this route does not apply.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">The nearer-term housing route</span>
+          <span class="dq-fact">A housing or mixed-use development
+            <em>with centralised heating</em>, hosting compute and CHP centrally and
+            distributing the heat across the development.</span>
+          <span class="dq-note">A development, not a house. The centralised-heating
+            condition is theirs too.</span>
+        </li>
+      </ul>
+    </div>
+
+    <p style="margin-top:38px"><strong>Individual homes are not part of
+      Tandem&rsquo;s current pipeline.</strong> In the same breath they said they do
+      think that is coming, pointing to very small distributed compute installations
+      emerging in the United States.</p>
+    <p>Tandem is not a PlotNua partner. This is one email exchange and a conversation
+      being arranged, recorded here because what an operator says about its own
+      limits is worth more than what anybody says about its promise.</p>
+
+    <!-- A MODEL, labelled as one. No Irish development may be depicted as
+         existing, because none does. -->
+    <div class="anat-fig" style="margin-top:36px">
+      <svg viewBox="0 0 900 420" role="img"
+           aria-label="A section through a development-scale model: an energy centre housing compute and combined heat and power, a heat main running under the street, and four homes in a development taking heat from it.">
+        <!-- GROUND. A single line with a shallow hatch band under it, so the
+             buried main reads as buried rather than floating. -->
+        <defs>
+          <pattern id="d26soil" width="9" height="9" patternUnits="userSpaceOnUse"
+                   patternTransform="rotate(38)">
+            <path d="M0 0 V9" stroke="#1F3B2E" stroke-width=".6" opacity=".22"/>
+          </pattern>
+        </defs>
+        <rect x="40" y="258" width="820" height="104" fill="url(#d26soil)"/>
+        <path d="M40 258 H860" stroke="#1F3B2E" stroke-width="1.6" opacity=".7" fill="none"/>
+
+        <!-- THE ENERGY CENTRE. A plain industrial volume: parapet, louvre
+             band, flue. No glow, no server imagery. -->
+        <g fill="none" stroke="#1F3B2E">
+          <rect x="68" y="150" width="176" height="108" stroke-width="1.5"
+                fill="#8FAF8A" fill-opacity=".13"/>
+          <path d="M62 150 H250" stroke-width="2"/>
+          <path d="M86 176 H150 M86 186 H150 M86 196 H150" stroke-width="1" opacity=".5"/>
+          <rect x="176" y="172" width="50" height="62" stroke-width="1" opacity=".55"/>
+          <path d="M188 184 H214 M188 196 H214 M188 208 H214" stroke-width="1" opacity=".4"/>
+          <path d="M214 150 V124 H226 V150" stroke-width="1.3"/>
+          <!-- the two services leaving the building -->
+          <path d="M156 258 V300" stroke-width="1.2" opacity=".65"/>
+          <path d="M170 258 V312" stroke-width="1.2" opacity=".45"/>
+        </g>
+
+        <!-- THE HEAT MAIN. Flow and return, as a pair, running under the
+             street and rising into each home. -->
+        <g fill="none" stroke="#1F3B2E">
+          <path d="M156 300 H790" stroke-width="1.6" opacity=".75"/>
+          <path d="M170 312 H776" stroke-width="1.2" opacity=".45"/>
+          <!-- direction, stated once -->
+          <path d="M470 294 L482 300 L470 306" stroke-width="1.1" opacity=".6"/>
+        </g>
+
+        <!-- FOUR HOMES, in elevation, with varied ridge heights so the row
+             reads as houses rather than as repeated icons. Each takes a
+             riser off the main. -->
+        <g fill="none" stroke="#1F3B2E">
+          <!-- house 1 -->
+          <path d="M448 258 V202 L492 170 L536 202 V258" stroke-width="1.5"
+                fill="#8FAF8A" fill-opacity=".10"/>
+          <path d="M442 204 L492 168 L542 204" stroke-width="1.8"/>
+          <rect x="466" y="222" width="20" height="36" stroke-width="1" opacity=".55"/>
+          <path d="M492 300 V258" stroke-width="1.1" opacity=".6"/>
+          <circle cx="492" cy="258" r="3" stroke-width="1" opacity=".7"/>
+          <!-- house 2 -->
+          <path d="M552 258 V212 L592 182 L632 212 V258" stroke-width="1.5"
+                fill="#8FAF8A" fill-opacity=".10"/>
+          <path d="M546 214 L592 180 L638 214" stroke-width="1.8"/>
+          <rect x="570" y="228" width="18" height="30" stroke-width="1" opacity=".55"/>
+          <path d="M592 300 V258" stroke-width="1.1" opacity=".6"/>
+          <circle cx="592" cy="258" r="3" stroke-width="1" opacity=".7"/>
+          <!-- house 3 -->
+          <path d="M650 258 V198 L694 166 L738 198 V258" stroke-width="1.5"
+                fill="#8FAF8A" fill-opacity=".10"/>
+          <path d="M644 200 L694 164 L744 200" stroke-width="1.8"/>
+          <rect x="668" y="218" width="20" height="40" stroke-width="1" opacity=".55"/>
+          <path d="M694 300 V258" stroke-width="1.1" opacity=".6"/>
+          <circle cx="694" cy="258" r="3" stroke-width="1" opacity=".7"/>
+          <!-- house 4 -->
+          <path d="M754 258 V208 L792 180 L830 208 V258" stroke-width="1.5"
+                fill="#8FAF8A" fill-opacity=".10"/>
+          <path d="M748 210 L792 178 L836 210" stroke-width="1.8"/>
+          <rect x="770" y="226" width="18" height="32" stroke-width="1" opacity=".55"/>
+          <path d="M792 300 V258" stroke-width="1.1" opacity=".6"/>
+          <circle cx="792" cy="258" r="3" stroke-width="1" opacity=".7"/>
+        </g>
+
+        <!-- recovered heat, shown as three short rises off the plant, not as
+             an arrow between two boxes -->
+        <g fill="none" stroke="#4F6B4A" stroke-width="1.1" opacity=".55">
+          <path d="M268 140 C276 130 268 124 276 114"/>
+          <path d="M286 148 C294 138 286 132 294 122"/>
+          <path d="M304 140 C312 130 304 124 312 114"/>
+        </g>
+
+        <g font-family="Work Sans, sans-serif" fill="#1F3B2E" letter-spacing="1.6">
+          <text x="68" y="112" font-size="8.5" fill="#4F6B4A">ENERGY CENTRE</text>
+          <text x="68" y="392" font-size="10.5">COMPUTE, WITH CHP WHERE THE</text>
+          <text x="68" y="408" font-size="10.5">GAS INFRASTRUCTURE EXISTS</text>
+          <text x="330" y="112" font-size="8.5" fill="#4F6B4A">RECOVERED HEAT</text>
+          <text x="330" y="340" font-size="8.5" fill="#4F6B4A">HEAT MAIN, IN THE GROUND</text>
+          <text x="448" y="140" font-size="8.5" fill="#4F6B4A">THE DEVELOPMENT</text>
+          <text x="448" y="392" font-size="10.5">HOMES TAKING HEAT FROM</text>
+          <text x="448" y="408" font-size="10.5">A SHARED NETWORK</text>
+        </g>
+      </svg>
+      <p class="anat-cap">How a development-scale model could work. Illustration based
+        on the model described by Tandem Compute. Centralised heating is a
+        precondition of that model, not a detail.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ======================================================================
+     S6 . THE HONESTY BREAK. The structural hinge of the whole Discovery.
+
+     Everything above this band is somewhere else or someone else's.
+     Everything below it is available in Ireland now. Without the break in
+     this position, a reader arriving at the solar grant would reasonably
+     assume the compute part is purchasable too.
+
+     The two findings are carried VERBATIM from the Residential Compute
+     Readiness work, where they are emitted unconditionally on every run.
+     No image. An image here would soften a section whose entire value is
+     that it is blunt.
+     ====================================================================== -->
+<section class="seam reveal">
+  <div class="seam-inner">
+    <span class="kicker">The honest part</span>
+    <h2>Nobody yet knows what a &ldquo;compute-ready&rdquo; home looks like.</h2>
+    <p>There is no agreed standard for this yet. So today, nobody can reliably tell
+      you whether an individual home would qualify.</p>
+    <blockquote>Distributed residential computing is not currently commercially
+      available through PlotNua in Ireland. PlotNua is investigating what would be
+      required if this model enters the Irish market.</blockquote>
+    <blockquote>Nobody has published the technical requirements a property would have
+      to meet. Until they do, no one can tell you whether a property is technically
+      compatible, and PlotNua will not pretend otherwise.</blockquote>
+    <p style="margin-top:30px">Everything from here down is different. It is
+      available in Ireland today, it is supported, and it is worth doing entirely on
+      its own terms &mdash; whatever happens to the idea above.</p>
+  </div>
+</section>
+
+<main class="article">
+
+  <!-- ====================================================================
+       S7 . THE ENERGY ANATOMY OF THE PROPERTY. Founder correction 1.
+
+       Seven positions on an ordinary property: roof, utility or wall space,
+       air, ground, garden, driveway, grid connection. Each one is a place,
+       not a product -- the correction's whole point was that S7 must not
+       become seven mini product guides.
+
+       EVERY FIGURE HERE IS FIRST-PARTY. Per the governance rule of
+       4 October 2026 (PLATFORM-EVIDENCE-GOVERNANCE.md 5a), no Irish grant
+       or financial-support amount enters PlotNua from a secondary source.
+       ==================================================================== -->
   <section class="article-section reveal">
     <div class="kicker">Today in Ireland</div>
-    <h2>The first pieces are already here.</h2>
-    <p>More than 140,000 customers with smart meters are already receiving payments for the electricity they send back. This is not a trial.</p>
+    <h2>The energy anatomy of your property</h2>
+    <span class="ev">Today &mdash; available in Ireland now</span>
+    <p>Everything a house would have to be before it could ever do any of the above
+      is already available here. Not as a package and not as a product &mdash; as
+      seven separate places on an ordinary property, each of which can do something
+      with energy rather than only consume it.</p>
+    <p><strong>Doing all seven would not make your property compute-ready.</strong>
+      Nothing can, because nobody has defined compute-ready. Each of these is worth
+      doing for its own reasons, and that is the only promise on this page.</p>
 
-    <ul class="dq-qual is-four">
-      <li>
-        <span class="dq-cat">Make</span>
-        <span class="dq-fact">The roof turns daylight into electricity the house uses straight away.</span>
-      </li>
-      <li>
-        <span class="dq-cat">Time</span>
-        <span class="dq-fact">A smart meter lets some hours of the day cost far less than others.</span>
-      </li>
-      <li>
-        <span class="dq-cat">Store</span>
-        <span class="dq-fact">A battery holds the afternoon&rsquo;s electricity until the evening.</span>
-      </li>
-      <li>
-        <span class="dq-cat">Sell</span>
-        <span class="dq-fact">What the house does not use goes back out, and you are paid for it.</span>
-      </li>
-    </ul>
+    <div class="anat">
+      <div class="anat-fig">
+        <svg viewBox="0 0 900 470" role="img"
+             aria-label="A cross-section of an ordinary house and its site with seven numbered positions: one, solar panels on the roof; two, a battery on the utility wall inside; three, an air-source unit beside the house; four, a ground loop beneath the garden; five, a small turbine in the open garden; six, a charger on the driveway; seven, the grid connection at the boundary.">
+          <defs>
+            <pattern id="d26ground" width="9" height="9" patternUnits="userSpaceOnUse"
+                     patternTransform="rotate(38)">
+              <path d="M0 0 V9" stroke="#1F3B2E" stroke-width=".6" opacity=".20"/>
+            </pattern>
+          </defs>
 
-    <ul class="dq-qual is-quiet">
-      <li>
-        <span class="dq-cat">Grant</span>
-        <span class="dq-fact">Up to &euro;1,800 towards panels, and no VAT on them.</span>
-        <span class="dq-note">The house must have been built and lived in before 2021, and it can be claimed once at any address. It shrinks each year and finishes in 2029.</span>
-      </li>
-      <li>
-        <span class="dq-cat">Export</span>
-        <span class="dq-fact">The first &euro;400 a year is free of income tax, to the end of 2028.</span>
-        <span class="dq-note">Every supplier must pay you for what you send back, though how much is up to them. With a smart meter you are paid on the meter reading; if your home is not yet eligible for one, a calculated amount can apply instead.</span>
-      </li>
-      <li>
-        <span class="dq-cat">Permission</span>
-        <span class="dq-fact">No planning permission for panels on a house, and no limit on the area.</span>
-        <span class="dq-note">Restrictions can still apply to protected structures and homes in an Architectural Conservation Area. There is no grant for a home battery.</span>
-      </li>
-    </ul>
+          <!-- GROUND -->
+          <rect x="20" y="322" width="860" height="86" fill="url(#d26ground)"/>
+          <path d="M20 322 H880" stroke="#1F3B2E" stroke-width="1.6" opacity=".7" fill="none"/>
 
-    <details class="faq-item is-inline">
+          <!-- THE HOUSE. Pitched roof with eaves, a chimney, openings. -->
+          <g fill="none" stroke="#1F3B2E">
+            <path d="M296 322 V200 L408 124 L520 200 V322 Z" stroke-width="1.5"
+                  fill="#8FAF8A" fill-opacity=".10"/>
+            <path d="M286 203 L408 120 L530 203" stroke-width="2"/>
+            <path d="M462 168 V132 H478 V180" stroke-width="1.3"/>
+            <rect x="322" y="236" width="30" height="34" stroke-width="1" opacity=".5"/>
+            <rect x="462" y="236" width="30" height="34" stroke-width="1" opacity=".5"/>
+            <rect x="392" y="266" width="32" height="56" stroke-width="1" opacity=".5"/>
+            <!-- 1 . PANEL ARRAY on the right roof plane, as a parallelogram
+                 with module divisions, sitting proud of the tiles -->
+            <path d="M420 146 L512 208 L500 216 L408 154 Z" stroke-width="1.4"
+                  fill="#8FAF8A" fill-opacity=".30"/>
+            <path d="M443 162 L431 170 M466 177 L454 185 M489 192 L477 200"
+                  stroke-width=".9" opacity=".6"/>
+            <!-- 2 . BATTERY, wall-mounted inside, with its bracket -->
+            <path d="M318 196 V322" stroke-width="1" opacity=".35"/>
+            <rect x="326" y="212" width="46" height="66" stroke-width="1.4"
+                  fill="#8FAF8A" fill-opacity=".22"/>
+            <path d="M334 222 H364 M334 232 H364" stroke-width=".9" opacity=".5"/>
+            <circle cx="349" cy="258" r="6" stroke-width="1" opacity=".55"/>
+            <!-- 3 . AIR-SOURCE UNIT beside the house, louvres and fan -->
+            <rect x="540" y="268" width="58" height="54" stroke-width="1.4"
+                  fill="#8FAF8A" fill-opacity=".18"/>
+            <circle cx="569" cy="295" r="16" stroke-width="1" opacity=".55"/>
+            <path d="M569 295 L569 281 M569 295 L581 302 M569 295 L557 302"
+                  stroke-width="1" opacity=".55"/>
+            <path d="M546 276 H592 M546 316 H592" stroke-width=".9" opacity=".4"/>
+            <!-- 4 . GROUND LOOP, a serpentine in a shallow trench -->
+            <path d="M120 356 H250 Q262 356 262 368 Q262 380 250 380 H120
+                     Q108 380 108 392 Q108 404 120 404 H250"
+                  stroke-width="1.4" opacity=".75"/>
+            <path d="M104 344 H266" stroke-width=".9" opacity=".35" stroke-dasharray="4 4"/>
+            <!-- 5 . SMALL TURBINE in the open garden, three blades -->
+            <path d="M96 322 V214" stroke-width="1.5"/>
+            <circle cx="96" cy="208" r="5" stroke-width="1.4"
+                    fill="#8FAF8A" fill-opacity=".35"/>
+            <path d="M96 203 V168 M100 211 L131 228 M92 211 L61 228" stroke-width="1.4"/>
+            <!-- 6 . DRIVEWAY and charger -->
+            <path d="M636 322 H842" stroke-width="2.2" opacity=".28"/>
+            <path d="M652 334 H826" stroke-width=".9" opacity=".3" stroke-dasharray="7 7"/>
+            <rect x="648" y="276" width="24" height="46" stroke-width="1.4"
+                  fill="#8FAF8A" fill-opacity=".20"/>
+            <circle cx="660" cy="290" r="5" stroke-width="1" opacity=".55"/>
+            <path d="M672 300 C690 300 694 310 706 310" stroke-width="1" opacity=".5"/>
+            <!-- 7 . GRID CONNECTION at the boundary -->
+            <path d="M858 322 V196" stroke-width="1.5"/>
+            <path d="M836 200 H880 M842 212 H874" stroke-width="1.2"/>
+            <path d="M858 226 C800 226 760 232 700 232" stroke-width="1" opacity=".45"/>
+            <path d="M700 232 C640 232 560 212 530 206" stroke-width="1" opacity=".45"
+                  stroke-dasharray="5 5"/>
+          </g>
+
+          <!-- NUMBERED MARKERS. A circle reads as a key; a bare numeral reads
+               as a leftover. -->
+          <g font-family="Work Sans, sans-serif" font-size="9.5" font-weight="500"
+             text-anchor="middle">
+            <g fill="#8FAF8A" fill-opacity=".30" stroke="#1F3B2E" stroke-width="1">
+              <circle cx="470" cy="150" r="10"/>
+              <circle cx="300" cy="186" r="10"/>
+              <circle cx="612" cy="258" r="10"/>
+              <circle cx="90"  cy="418" r="10"/>
+              <circle cx="40"  cy="208" r="10"/>
+              <circle cx="640" cy="258" r="10" opacity="0"/>
+              <circle cx="700" cy="268" r="10"/>
+              <circle cx="858" cy="170" r="10"/>
+            </g>
+            <g fill="#1F3B2E">
+              <text x="470" y="154">1</text>
+              <text x="300" y="190">2</text>
+              <text x="612" y="262">3</text>
+              <text x="90"  y="422">4</text>
+              <text x="40"  y="212">5</text>
+              <text x="700" y="272">6</text>
+              <text x="858" y="174">7</text>
+            </g>
+          </g>
+
+          <g font-family="Work Sans, sans-serif" fill="#1F3B2E" letter-spacing="1.5"
+             font-size="10">
+            <text x="486" y="154">ROOF</text>
+            <text x="190" y="190" text-anchor="end">UTILITY WALL</text>
+            <text x="628" y="262">AIR</text>
+            <text x="106" y="422">GROUND</text>
+            <text x="56"  y="212">GARDEN</text>
+            <text x="716" y="272">DRIVEWAY</text>
+            <text x="842" y="174" text-anchor="end">GRID</text>
+          </g>
+          <g font-family="Work Sans, sans-serif" font-size="10" fill="#55605A">
+            <text x="20" y="456">An ordinary house, in section. Not your house, and not a design for one.</text>
+          </g>
+        </svg>
+        <p class="anat-cap">Seven positions, drawn by PlotNua. Which of them apply
+          depends entirely on the property &mdash; its age, its boundaries, its
+          orientation, whether it has off-street parking, whether it is a protected
+          structure.</p>
+      </div>
+
+      <!-- ====================================================================
+           THE SEVEN POSITIONS. Founder review correction 2: the positions are
+           the revelation, so each one leads with its idea in the largest type
+           on the page -- larger than the section heading above it.
+
+           THE DETAIL IS DEMOTED, NOT DELETED. Grants, MPRN, NC6, planning,
+           noise and tax now sit in a per-position drawer on the page's own
+           .faq-item.is-inline component. The build asserts that every one of
+           those facts is still present afterwards: a homeowner who wants the
+           detail is one click away, and nothing was quietly dropped in the
+           name of simplicity.
+           ==================================================================== -->
+
+      <!-- 1 . ROOF -->
+      <div class="pos">
+        <span class="pos-where">1 &middot; Roof &middot; Solar energy</span>
+        <span class="pos-eq">Sun <i>&rarr;</i> electricity</span>
+        <span class="ev">Today</span>
+        <h3>The one position almost every house already has.</h3>
+        <p>Panels turn daylight into electricity the house uses as it is made. No
+          moving parts, no planning permission on a house, and the State pays part
+          of the cost.</p>
+        <details class="faq-item is-inline">
+          <summary><h3>Grant, VAT and permission</h3><span class="icon"></span></summary>
+          <div class="faq-a"><strong>The grant.</strong> &euro;700 per kWp for the
+            first 2&nbsp;kWp, then &euro;200 for each additional kWp up to
+            4&nbsp;kWp, paid pro rata &mdash; a maximum of &euro;1,800 in 2026.
+            SEAI.<br><br>
+            <strong>VAT.</strong> 0% on the supply and installation of panels on a
+            private dwelling.<br><br>
+            <strong>Who qualifies.</strong> The home must have been built and
+            occupied before 2021. The grant is not open where solar PV funding has
+            already been claimed at that MPRN &mdash; whoever claimed it. Your
+            installer applies to ESB Networks before anything goes on the roof, and
+            that usually takes at least four weeks; afterwards the house needs a new
+            BER assessment before the grant is paid.<br><br>
+            <strong>Permission.</strong> No planning permission for rooftop panels on
+            a house, and no limit on the roof area used. Restrictions still apply to
+            protected structures and homes in an Architectural Conservation Area, and
+            the exemption carries conditions such as a minimum distance from the roof
+            edge.<br><br>
+            <strong>Who stands behind the work.</strong> SEAI&rsquo;s own words: it
+            &ldquo;does not approve, guarantee, or warranty a company or their
+            works.&rdquo; The State pays part of the cost. Choosing the installer is
+            still entirely yours.</div>
+        </details>
+      </div>
+
+      <!-- 2 . UTILITY / WALL -->
+      <div class="pos">
+        <span class="pos-where">2 &middot; Utility room, garage or wall space &middot; Battery storage</span>
+        <span class="pos-eq">Battery <i>&rarr;</i> stored electricity</span>
+        <span class="ev">Today</span>
+        <h3>A battery doesn&rsquo;t make electricity. It moves it through time.</h3>
+        <p>It holds the afternoon until the evening. This is the piece that turns a
+          house from something that reacts to the grid into something that can
+          choose.</p>
+        <details class="faq-item is-inline">
+          <summary><h3>Grant, eligibility and the grid side</h3><span class="icon"></span></summary>
+          <div class="faq-a">
+            <!-- PN-DISC026-BATTERY-BOUNDARY-BEGIN
+                 THE GOVERNED DATE BOUNDARY, carried into the drawer unchanged.
+                 Stated in ANNOUNCED form with the date on its face, so the
+                 sentence is true before 6 October 2026 and true after it.
+                 Converting it to the present tense on or after that date is a
+                 single anchored edit INSIDE these markers and is deliberately
+                 not part of this build. Do not remove the markers; they are
+                 what makes that edit bounded. -->
+            <strong>The grant.</strong> From 6 October 2026 SEAI is to pay a flat
+            &euro;600 towards a home battery of 5&nbsp;kWh or larger. Batteries under
+            5&nbsp;kWh are not eligible, and the amount is flat rather than scaled to
+            size.
+            <!-- PN-DISC026-BATTERY-BOUNDARY-END --><br><br>
+            <strong>Who qualifies.</strong> The home needs an MPRN and must have been
+            built and occupied <em>before 2025</em> &mdash; a different year from the
+            solar grant, which is why a house finished in 2022 can be outside one and
+            inside the other. One per MPRN, installed by an SEAI registered Solar PV
+            contractor, with the ESB Networks application made before installation.
+            Solar and battery can go in a single application.<br><br>
+            <strong>The grid side.</strong> ESB Networks treats an AC-connected
+            battery as a microgenerator, listed on the NC6 application with its rated
+            output, within the microgeneration thresholds and assessed on inverter
+            capacity. The notification happens before installation, not after, and
+            the work is certified by a Safe Electric registered electrician.<br><br>
+            <strong>Two things we have not established.</strong> Whether a battery
+            installed before that date can be claimed retrospectively, and how the
+            &euro;600 interacts with the solar grant ceiling. We will not guess at
+            either.</div>
+        </details>
+      </div>
+
+      <!-- 3 . AIR -->
+      <div class="pos">
+        <span class="pos-where">3 &middot; The air beside the house &middot; Air-source heat</span>
+        <span class="pos-eq">Heat pump <i>&rarr;</i> heat from outside</span>
+        <span class="ev">Today</span>
+        <h3>There is usable heat in Irish air, even in February.</h3>
+        <p>A unit about the size of a small chest freezer takes it out of the air and
+          moves it inside. It is the largest single change most Irish houses can make
+          to how they use energy &mdash; and the one that most changes what the roof
+          and the battery are for.</p>
+        <div class="pos-open">One condition decides it: <strong>the house has to be
+          able to hold the heat first.</strong> A heat pump in a house that leaks heat
+          is an expensive way to be cold, which is exactly why the test below
+          exists.</div>
+        <details class="faq-item is-inline">
+          <summary><h3>Grant and the heat loss test</h3><span class="icon"></span></summary>
+          <div class="faq-a"><strong>The grant.</strong> Up to &euro;14,500 as a
+            bundle for a detached, semi-detached or mid-terrace house. The ceiling is
+            lower for an apartment, and lower again for air-to-air. SEAI.<br><br>
+            <strong>The test.</strong> SEAI uses a Heat Loss Indicator of 2.3 or
+            below. If your house is above it, or nobody knows, a technical assessment
+            establishes the position. The home must have been built and occupied
+            before 2021.</div>
+        </details>
+      </div>
+
+      <!-- 4 . GROUND . Founder review correction 3: the revelation is restored.
+           The CONCEPT of cooling returns, conditioned on system, ground and
+           design. It is NOT claimed that an Irish domestic installation will
+           deliver it; the precise evidence limitation is in the drawer. -->
+      <div class="pos">
+        <span class="pos-where">4 &middot; The ground beneath the garden &middot; Ground-source energy</span>
+        <span class="pos-eq">Ground <i>&rarr;</i> heat from below</span>
+        <span class="ev">Today</span>
+        <h3>The ground can do more than heat a house.</h3>
+        <p>A few metres down, the ground sits at roughly the same temperature all
+          year. A ground-source system draws that relatively stable heat from beneath
+          the property &mdash; through pipework laid in shallow trenches across the
+          garden, or down a borehole where there is no room to dig.</p>
+        <p>Some systems can also use that same ground connection for cooling. Whether
+          that works for a particular Irish home depends on the system, the ground
+          conditions and the design.</p>
+        <details class="faq-item is-inline">
+          <summary><h3>Grant, what decides it, and what we have not established</h3><span class="icon"></span></summary>
+          <div class="faq-a"><strong>The grant.</strong> The same &euro;14,500
+            ceiling as an air-to-water system, and water-to-water likewise.
+            Ground-source is not a separate scheme and is not funded differently
+            &mdash; it sits inside the same heat pump grant. SEAI.<br><br>
+            <strong>What decides it.</strong> Garden area for trenches, or access for
+            a drilling rig. This is the one position where the shape of the site,
+            rather than the house, is the constraint.<br><br>
+            <strong>On cooling.</strong> PlotNua has not established, from a
+            first-party Irish source, whether or on what terms a domestic ground loop
+            in Ireland can be used for cooling. The capability is real in the
+            technology; the Irish domestic position is not something we can stand over
+            yet, and we will say so plainly when we can.</div>
+        </details>
+      </div>
+
+      <!-- 5 . GARDEN . Administrative possibility and site suitability stay
+           visibly separated. Founder correction 2 of the previous review
+           withdrew a sentence characterising the air at the exempt rotor
+           height; the evidence does not establish it to the required standard,
+           so it is not in this page and not quoted in this comment either. -->
+      <div class="pos">
+        <span class="pos-where">5 &middot; The open garden &middot; Small wind</span>
+        <span class="pos-eq">Wind <i>&rarr;</i> another possible source</span>
+        <span class="ev">Today &mdash; legally and administratively</span>
+        <h3>You can put up a wind turbine in Ireland without planning permission.</h3>
+        <p>Inside tight limits, connected under the same rules as solar, and paid
+          for what it exports. That is genuinely true &mdash; and it is only half the
+          question.</p>
+        <div class="pos-open"><strong>What is settled is what you may build and
+          connect. What is not settled is whether it would be worth building at your
+          property.</strong> PlotNua has not established realistic output, turbulence
+          from surrounding buildings and trees, installation and maintenance costs, or
+          credible Irish suppliers &mdash; and we will not estimate any of them from
+          vendor material.<br><br>
+          The one number most likely to decide it for you is the boundary rule. The
+          mast has to stand back from the nearest party boundary by the full height of
+          the assembly plus a metre &mdash; a 14&nbsp;m clear radius at the maximum
+          exempt size, which rules out a great many suburban gardens before wind is
+          discussed at all.</div>
+        <details class="faq-item is-inline">
+          <summary><h3>The planning limits, at a glance</h3><span class="icon"></span></summary>
+          <div class="faq-a"><strong>Size.</strong> 13&nbsp;m total height.
+            6&nbsp;m rotor. 3&nbsp;m clearance between the ground and the lowest
+            point of the blades. One per house, not attached to the building, not
+            sited in front of it. Matt finish, no advertising, no interference with
+            telecoms signals. SEAI, summarising S.I.&nbsp;83 of 2007 and
+            S.I.&nbsp;235 of 2008.<br><br>
+            <strong>Setback.</strong> The mast must stand back from the nearest party
+            boundary by the total height of the assembly plus one metre.<br><br>
+            <strong>Noise.</strong> 43&nbsp;dB(A) or less, or no more than
+            5&nbsp;dB(A) above background, at the nearest inhabited neighbouring
+            dwelling.<br><br>
+            <strong>Where the exemption disappears.</strong> It does not apply at all
+            where the work would affect a protected landscape or view, protected
+            archaeological, geological, historical, scientific or ecological features,
+            or an area under a special amenity area order. Designations change under a
+            house. SEAI advises a Section 5 Declaration from the local authority,
+            about &euro;80, and warns: &ldquo;There have been instances of people
+            assuming they were exempt which have ended with the local authority
+            requesting that installations be removed.&rdquo;<br><br>
+            <strong>Connecting it.</strong> ESB Networks&rsquo; micro-generation
+            definition &ldquo;makes no explicit reference to any specific form of
+            generating technology&rdquo;, so a domestic turbine goes through the same
+            NC6 route as solar. Micro-generation is 25&nbsp;A or less on a single
+            phase, about 6&nbsp;kVA. Where generation is not inverter-connected
+            &mdash; which small wind can be &mdash; capacity is assessed on the
+            generator&rsquo;s own continuous rating.<br><br>
+            <strong>Being paid for it.</strong> The regulator&rsquo;s definition of
+            microgeneration names small wind turbines explicitly, so export is paid on
+            the same terms as solar. CRU. There is <strong>no SEAI grant</strong> for
+            a domestic wind turbine.<br><br>
+            <strong>Two cautions.</strong> The SEAI Wind Atlas is the obvious place to
+            look and <strong>it cannot answer this question</strong>: its lowest
+            height is 50&nbsp;m, and the tallest exempt domestic turbine is
+            13&nbsp;m. And the SEAI document that sets out these exemptions is
+            demonstrably out of date on solar, so the wind rule should be confirmed
+            against current legislation before anyone relies on it.</div>
+        </details>
+        <div class="anat-fig" style="margin-top:26px">
+          <svg viewBox="0 0 900 470" role="img"
+               aria-label="The planning limits for a domestic wind turbine, drawn to scale at one metre to twenty-four pixels: thirteen metres total height, a six metre rotor, a three metre minimum clearance between the ground and the lowest blade, and a setback from the party boundary of the total height plus one metre, which is fourteen metres at the maximum size.">
+            <defs>
+              <pattern id="d26nogo" width="7" height="7" patternUnits="userSpaceOnUse"
+                       patternTransform="rotate(45)">
+                <path d="M0 0 V7" stroke="#1F3B2E" stroke-width=".7" opacity=".22"/>
+              </pattern>
+              <pattern id="d26turf" width="9" height="9" patternUnits="userSpaceOnUse"
+                       patternTransform="rotate(38)">
+                <path d="M0 0 V9" stroke="#1F3B2E" stroke-width=".6" opacity=".18"/>
+              </pattern>
+            </defs>
+
+            <rect x="30" y="400" width="840" height="34" fill="url(#d26turf)"/>
+            <path d="M30 400 H870" stroke="#1F3B2E" stroke-width="1.6" opacity=".7" fill="none"/>
+
+            <!-- THE MAXIMUM ENVELOPE: 13 m, dashed. -->
+            <rect x="196" y="88" width="208" height="312" fill="none"
+                  stroke="#4F6B4A" stroke-width="1" stroke-dasharray="6 5" opacity=".65"/>
+
+            <!-- THE 3 m FLOOR the blades may not enter. -->
+            <rect x="196" y="328" width="208" height="72" fill="url(#d26nogo)"/>
+            <path d="M196 328 H404" stroke="#1F3B2E" stroke-width="1"
+                  stroke-dasharray="4 4" opacity=".5" fill="none"/>
+
+            <!-- THE HOUSE, for scale: 7 m to the ridge. The turbine may not be
+                 sited in front of the building, so it stands behind it. -->
+            <g fill="none" stroke="#1F3B2E">
+              <path d="M44 400 V286 L104 244 L164 286 V400 Z" stroke-width="1.4"
+                    fill="#8FAF8A" fill-opacity=".10"/>
+              <path d="M36 289 L104 241 L172 289" stroke-width="1.8"/>
+              <rect x="92" y="330" width="26" height="70" stroke-width="1" opacity=".5"/>
+            </g>
+
+            <!-- THE TURBINE, at a compliant configuration: hub at 10 m, a 6 m
+                 rotor, so the tip reaches exactly 13 m and the lowest blade
+                 sits at 7 m, well clear of the 3 m floor. -->
+            <g fill="none" stroke="#1F3B2E">
+              <path d="M300 400 V160" stroke-width="1.8"/>
+              <circle cx="300" cy="160" r="6" stroke-width="1.6"
+                      fill="#8FAF8A" fill-opacity=".35"/>
+              <path d="M300 154 V88 M305 164 L362 196 M295 164 L238 196" stroke-width="1.6"/>
+              <circle cx="300" cy="160" r="72" stroke="#4F6B4A" stroke-width=".9"
+                      stroke-dasharray="3 5" opacity=".5"/>
+            </g>
+
+            <!-- DIMENSIONS -->
+            <g fill="none" stroke="#1F3B2E" stroke-width="1" opacity=".75">
+              <!-- 13 m total height -->
+              <path d="M176 88 V400 M170 88 H182 M170 400 H182"/>
+              <!-- 6 m rotor -->
+              <path d="M424 88 V232 M418 88 H430 M418 232 H430"/>
+              <!-- 3 m clearance -->
+              <path d="M424 328 V400 M418 328 H430 M418 400 H430"/>
+              <!-- setback: 14 m, mast to boundary -->
+              <path d="M300 432 H636 M300 426 V438 M636 426 V438"/>
+            </g>
+
+            <!-- THE PARTY BOUNDARY -->
+            <g fill="none" stroke="#1F3B2E">
+              <path d="M636 400 V336" stroke-width="1.4"/>
+              <path d="M636 348 H700 M636 364 H700 M636 380 H700"
+                    stroke-width="1" opacity=".45"/>
+            </g>
+
+            <g font-family="Work Sans, sans-serif" fill="#1F3B2E" letter-spacing="1.4"
+               font-size="10">
+              <text x="166" y="240" text-anchor="end">13 m TOTAL HEIGHT</text>
+              <text x="440" y="164">6 m ROTOR</text>
+              <text x="440" y="370">3 m MINIMUM CLEARANCE</text>
+              <text x="440" y="386" font-size="8.5" fill="#55605A">BLADES MAY NOT ENTER THIS BAND</text>
+              <text x="468" y="426" text-anchor="middle">14 m SETBACK</text>
+              <text x="712" y="368">PARTY BOUNDARY</text>
+            </g>
+            <g font-family="Work Sans, sans-serif" font-size="10" fill="#55605A">
+              <text x="30" y="462">Drawn to scale. At the maximum exempt size, the turbine can be up to 13 m high and must be at least 14 m from the party boundary.</text>
+            </g>
+          </svg>
+          <p class="anat-cap">The planning limits, drawn to scale.</p>
+        </div>
+        <span class="imgnote">Real installation photography will be added when publication rights are confirmed.</span>
+      </div>
+
+      <!-- 6 . DRIVEWAY -->
+      <div class="pos">
+        <span class="pos-where">6 &middot; The driveway &middot; EV energy</span>
+        <span class="pos-eq">EV <i>&rarr;</i> transport today, maybe storage next</span>
+        <span class="ev">Today &mdash; charging</span>
+        <h3>A car is a battery that happens to have wheels.</h3>
+        <p>Charging at home needs somewhere off-street to put it, and that is the
+          whole of the test. Moving the charging to whichever hours your supplier
+          prices lowest costs nothing and changes the bill.</p>
+        <div class="pos-open">The interesting direction is the other one: the car
+          powering the house, or the grid. <strong>PlotNua has not established when, or
+          whether, a homeowner can actually buy that in Ireland.</strong> You will find
+          confident dates for it online. We could not stand over any of them, so we are
+          not repeating them.</div>
+        <details class="faq-item is-inline">
+          <summary><h3>What ESB Networks has published about two-way charging</h3><span class="icon"></span></summary>
+          <div class="faq-a">ESB Networks treats a car exporting to the grid as a
+            generator, under the same micro-generation and mini-generation rules as
+            solar, a battery or a turbine. It has published the architecture and
+            standards it expects, including EN&nbsp;50549 with Irish protection
+            settings, I.S.&nbsp;10101, EN&nbsp;ISO&nbsp;15118 for the vehicle
+            interface and Safe Electric certification &mdash; and says to apply for
+            the generator connection <em>before</em> choosing the car and charger
+            combination.<br><br>
+            What that document does not establish is availability. It is the
+            architecture, not a date.</div>
+        </details>
+      </div>
+
+      <!-- 7 . GRID -->
+      <div class="pos">
+        <span class="pos-where">7 &middot; The grid connection &middot; Export and flexibility</span>
+        <span class="pos-eq">Export <i>&rarr;</i> the house becomes a participant</span>
+        <span class="ev">Today</span>
+        <h3>The position nobody thinks of as part of the house.</h3>
+        <p>It is the piece that turns the other six from a private arrangement into
+          something the system can see, use and pay for. Over two million smart meters
+          are installed in Ireland, and more than four out of five households have
+          one.</p>
+        <details class="faq-item is-inline">
+          <summary><h3>Meter, export, tax &mdash; and one trap</h3><span class="icon"></span></summary>
+          <div class="faq-a"><strong>The meter.</strong> Over two million smart meters
+            are installed and more than four out of five households have one. ESB,
+            September 2025. Having one does not put you on a time-of-use tariff
+            &mdash; that is a separate choice with your supplier.<br><br>
+            <strong>Export.</strong> Every electricity supplier must pay for eligible
+            electricity you export &mdash; but not until the NC6 or NC7 has been
+            processed by ESB Networks. Without that, the supplier will not pay. Rates
+            are not regulated; each supplier sets its own.<br><br>
+            <strong>Tax.</strong> The first &euro;400 a year of microgeneration income
+            is exempt from income tax.<br><br>
+            <strong>The trap.</strong> If a smart meter has been offered and refused,
+            the home is not eligible for export payment at all. Worth checking if
+            anybody in the house ever said no at the door.</div>
+        </details>
+      </div>
+    </div>
+
+    <details class="faq-item is-inline" style="margin-top:44px">
       <summary><h3>Grant, tax and permission in detail</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>The grant.</strong> Up to &euro;1,800 towards panels, and no VAT to pay on them. The house has to have been built and lived in before 2021, and the grant can only be claimed once at any address &mdash; if a previous owner claimed it, it has already been used. It gets smaller each year and finishes in 2029, so waiting costs you some of it. Your installer applies to ESB Networks before anything goes on the roof, and that takes a few weeks; afterwards the house needs a new BER assessment before the grant is paid.<br><br><strong>Tax.</strong> The first &euro;400 a year you earn from exporting is free of income tax, up to the end of 2028. Above that it is taxed like any other income. You do not need to declare the exempt amount at all.<br><br><strong>Permission.</strong> Panels on the roof of a house are exempt, with no limit on area. Restrictions can still apply if your home is a protected structure or sits in an Architectural Conservation Area, and the exemption carries conditions such as a minimum distance from the edge of the roof. If either applies to your home, ask your local authority.<br><br><strong>Who stands behind the work.</strong> SEAI&rsquo;s own words: it &ldquo;does not approve, guarantee, or warranty a company or their works.&rdquo; The State pays part of the cost. It does not stand behind whoever does the job. Choosing the installer is still entirely yours.</div>
+      <div class="faq-a"><strong>Solar.</strong> &euro;700 per kWp for the first
+        2&nbsp;kWp and &euro;200 for each additional kWp to 4&nbsp;kWp, to a maximum
+        of &euro;1,800 in 2026, paid pro rata, with 0% VAT on supply and
+        installation. The house must have been built and occupied before 2021. The
+        grant can be claimed once at an MPRN, so if a previous owner claimed it, it
+        is gone. Your installer applies to ESB Networks before anything goes on the
+        roof and that usually takes at least four weeks; afterwards the house needs a
+        new BER assessment before the grant is paid.<br><br>
+        <strong>Battery.</strong> A flat &euro;600 for a system of 5&nbsp;kWh or
+        larger, announced by SEAI to start on 6 October 2026. The home needs an MPRN
+        and must have been built and occupied <em>before 2025</em> &mdash; a
+        different year from the solar grant, and the reason a 2022 house can be
+        outside one and inside the other. One per MPRN, installed by an SEAI
+        registered Solar PV contractor, with the ESB Networks application made before
+        installation. Solar and battery can go in a single application. Whether a
+        battery installed before that date can be claimed retrospectively, and how
+        the &euro;600 interacts with the solar ceiling, are two things PlotNua has
+        <em>not</em> established and will not guess at.<br><br>
+        <strong>Heat pump.</strong> Up to &euro;14,500 as a bundle for a detached,
+        semi-detached or mid-terrace house, lower for an apartment and lower again
+        for air-to-air. Ground-source and water-to-water sit inside the same ceiling.
+        A Heat Loss Indicator of 2.3 or below, or a technical assessment to establish
+        the position. Built and occupied before 2021.<br><br>
+        <strong>Tax.</strong> The first &euro;400 a year from exporting is exempt from
+        income tax. Above that it is taxed like other income.<br><br>
+        <strong>Permission.</strong> Rooftop panels on a house are exempt with no area
+        limit. A domestic wind turbine is exempt only inside the limits set out
+        above. Both exemptions fall away for protected structures, Architectural
+        Conservation Areas and the landscape, amenity and heritage designations in
+        your local development plan. If any of that might apply to your home, ask your
+        local authority &mdash; and for a turbine, ask for a Section 5
+        Declaration.<br><br>
+        <strong>Who stands behind the work.</strong> SEAI &ldquo;does not approve,
+        guarantee, or warranty a company or their works.&rdquo; The State pays part of
+        the cost. It does not stand behind whoever does the job.</div>
     </details>
 
-    <details class="faq-item is-inline">
-      <summary><h3>What it changes day to day</h3><span class="icon"></span></summary>
-      <div class="faq-a">Less than people expect, and that is the point. The kettle still boils. The heating works the way it always did. Nothing in the house has to be used differently.<br><br>What changes is quieter. The immersion comes on at three in the morning instead of six in the evening. The car charges while everybody sleeps. On a bright Saturday the house runs itself for a few hours and the meter turns the other way.<br><br>If you have an immersion, a dishwasher or a car in the driveway, moving them to the cheap hours costs nothing and changes the bill. Which hours are cheap, and how cheap, depends on your supplier. Once it is set up, there is very little to think about.</div>
-    </details>
-
-    <details class="faq-item is-inline">
-      <summary><h3>What is not possible in Ireland yet</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>Hosting computing.</strong> There is no Irish residential compute programme. None of the British, American or European models above is open to an Irish homeowner, and none of them transfers automatically: each depends on a provider, a grid arrangement and a market that would have to exist here first.<br><br><strong>Using the car as a battery.</strong> An electric car holds far more electricity than a home battery, but powering your house from your car is not approved for Irish homes, and export from a car is not expected here for a few years.<br><br><strong>Homes working together.</strong> Streets of houses with panels and batteries can be coordinated to behave like one small power station. It has been tested in Ireland. It is not yet something a homeowner can join.<br><br><strong>Plug-in solar.</strong> Small plug-in units are established in Germany and are being worked on here. There is no established Irish pathway for them yet.<br><br>PlotNua is watching all of it. We will say so plainly if and when any of it becomes something an Irish homeowner can actually do.</div>
-    </details>
-
+    <span class="imgnote">Real installation photography will be added when publication rights are confirmed.</span>
   </section>
 </main>
 
 <section class="imagine-photo reveal">
-  <!-- IMAGE 04 - moved into Looking Ahead. Its wall display shows grid support and a
-       homeowner reward: not available in Ireland, so it sits after the reader has been
-       told so and immediately before "Beginning elsewhere". Originally: IMAGE 04 · Everyday Benefit. Final asset in place. Original brief: an ordinary Irish kitchen in the evening, the family at the table,
-       nothing about the room signalling that the house generates its own electricity. -->
-  <img src="assets/img/bae47ddb8d4598ec.jpg" width="1376" height="768" loading="lazy" decoding="async" alt="A family kitchen in the morning with the doors open to the garden, and a small wall display showing the home&rsquo;s energy status.">
+  <!-- CONCEPT IMAGERY, position 1 of 2. The storyboard confines the five
+       AI-generated DISC-026 images to the hero and to S8, and forbids them
+       anywhere a claim of existence is being made. This is S8's opening and
+       the frame is explicitly illustrative in the caption below.
+
+       ASSET UNCHANGED. ce9da2e51c945693.jpg is also the governed Library card
+       image for this Discovery; prove-discovery-library-images.mjs requires it
+       to appear on this page with no potential-asset marker in its alt text. -->
+  <img src="assets/img/ce9da2e51c945693.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="An Irish family outside their home at dusk: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.">
+  <div class="caption">
+    <p>An illustration of the seven positions arriving on one property, not a
+      photograph of a house that exists. Generated imagery, used here because the
+      frame is explicitly about what a property could become.</p>
+  </div>
 </section>
 
-<!-- ════════════════════════════════════════════════════════════════════
-     WHAT WE'RE WATCHING — added 26 September 2026, founder-approved.
-
-     PLACEMENT is the argument: what your house can do now (TODAY IN IRELAND)
-     -> what it may be able to do next (here) -> the check that helps you
-     decide (Property Brain). It sits after Today in Ireland and before the
-     Property Brain for that reason.
-
-     COMPONENTS ARE THE PAGE'S OWN. .dq-adv / .dq-adv-cols / .dq-adv-label /
-     .dq-fact / .dq-note are the same tiles THE DISCOVERY uses for the
-     international compute programmes. No CSS is added.
-
-     COMPUTE AND SOLAR STAY SEPARATE. Residential compute is not mentioned in
-     this section and this section is not mentioned in the compute branch.
-
-     THE IRISH STATUS IS EMERGING / REGULATORY WATCH. As at 26 September 2026
-     no Irish rule, recommendation, decision or consultation outcome on
-     plug-in solar had been published by the Department, the CRU or ESB
-     Networks. The ESB Networks micro-generation requirement is restated in
-     full at the end of the section so the reader is never left to infer it.
-     ════════════════════════════════════════════════════════════════════ -->
 <main class="article">
+
+  <!-- ====================================================================
+       S8 . WHAT COMES NEXT. Emerging and future, without overclaiming any
+       of it. The plug-in solar material is founder-approved from
+       26 September 2026 and is carried forward, compressed, because the
+       evidence behind it is first-party and still stands.
+       ==================================================================== -->
   <section class="article-section reveal" id="what-were-watching">
-    <div class="kicker">What We&rsquo;re Watching</div>
-    <h2>What if solar didn&rsquo;t have to start on your roof?</h2>
-
-    <p>Everything above is about the roof. It is the obvious place, and for
-      most houses it is the right one. But it is not the only place a panel can
-      go, and in some countries it stopped being the starting point a while
-      ago.</p>
-
-    <p>In Germany you can buy a small solar unit in a supermarket, hang it on a
-      balcony railing and plug it in. More than a million households have
-      registered one. It is not a rooftop system in miniature &mdash; it is a
-      different idea about where generation begins.</p>
-
-    <p><strong>Ireland is working on whether the same thing can be done safely
-      here. It is not settled, and nothing below is available yet.</strong></p>
+    <div class="kicker">What we&rsquo;re watching</div>
+    <h2>The house is becoming a participant rather than a consumer.</h2>
+    <span class="ev ev-emerging">Emerging and future</span>
+    <p>Four things are moving at once. None of them is something you can act on this
+      week, and all four change what the seven positions above are for.</p>
 
     <div class="dq-adv">
-      <span class="dq-cat dq-adv-cat">Where this stands</span>
-      <ul class="dq-adv-cols is-five">
+      <span class="dq-cat dq-adv-cat">Where each one actually stands</span>
+      <ul class="dq-adv-cols is-four">
         <li>
-          <span class="dq-adv-label">Germany</span>
-          <span class="dq-fact">A small plug-in unit, up to 2,000&nbsp;W of
-            panels and an inverter of up to 800&nbsp;VA, registered once and
-            used mainly by the household itself.</span>
-          <span class="dq-note">The Bundesnetzagentur&rsquo;s published limits.
-            Since May 2024 the separate notification to the grid operator no
-            longer applies within those limits &mdash; but registration in the
-            national register still does, within a month of switching it
-            on.</span>
+          <span class="dq-adv-label">The hot water cylinder</span>
+          <span class="dq-fact">Of everything in the house, the cylinder is the piece
+            that connects the two halves of this page. It is the heat sink every
+            household-scale compute model above depends on.</span>
+          <span class="dq-note">Which is a strange thing to discover about the least
+            interesting object in your utility room.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">Solar that does not start on the roof</span>
+          <span class="dq-fact">In Germany you can buy a small plug-in solar unit,
+            hang it on a balcony railing and plug it in. More than a million
+            households have registered one.</span>
+          <span class="dq-note">Up to 2,000&nbsp;W of panels and an inverter of up to
+            800&nbsp;VA, under the Bundesnetzagentur&rsquo;s published limits, with
+            registration in the national register still required.</span>
         </li>
         <li>
           <span class="dq-adv-label">Ireland &mdash; being worked on</span>
-          <span class="dq-fact">ESB Networks has convened a cross-industry
-            group with the CRU and the NSAI to find a shared pathway, and has
-            identified changes to its own standards and procedures.</span>
-          <span class="dq-note">The group first met on 9 June 2026. ESB
-            Networks estimated those changes would take up to twelve months to
-            implement, and a report to the Minister was expected in September
-            2026. Nothing has been published.</span>
+          <span class="dq-fact">ESB Networks has convened a cross-industry group with
+            the CRU and the NSAI to find a shared pathway, and has identified changes
+            to its own standards and procedures.</span>
+          <span class="dq-note">The group first met on 9 June 2026. ESB Networks
+            estimated those changes would take up to twelve months, and a report to
+            the Minister was expected in September 2026. Nothing has been published.
+            <strong>Ireland does not yet have an established plug-in pathway for
+            these smaller grid-connected systems.</strong></span>
         </li>
         <li>
-          <span class="dq-adv-label">What Ireland would need</span>
-          <span class="dq-fact">Public safety assured, network integrity
-            protected, devices meeting a standard, and the network operator
-            able to see who has one connected.</span>
-          <span class="dq-note">ESB Networks&rsquo; own four conditions. It also
-            says device safety standards and the wiring framework are not its
-            remit &mdash; that sits with the NSAI and others.</span>
-        </li>
-        <li>
-          <span class="dq-adv-label">The wiring question</span>
-          <span class="dq-fact">Germany banned one older type of trip switch in
-            the 1980s. Ireland and Britain did not, and that type can be
-            blinded by electricity flowing the wrong way.</span>
-          <span class="dq-note">The Institution of Engineering and
-            Technology&rsquo;s technical regulations lead, on why Britain is
-            being careful: an AC-type RCD can fail to trip when direct current
-            flows into the circuit. The British position is to have the
-            installation checked first, and to allow only one plug-in unit per
-            home.</span>
+          <span class="dq-adv-label">Houses working together</span>
+          <span class="dq-fact">Sustainable Energy Communities exist in Ireland, and
+            development-scale heat networks are already real &mdash; Tallaght is
+            one.</span>
+          <span class="dq-note">What is immature here is the framework that would let
+            ordinary neighbouring houses share what they generate. That is the bridge
+            between the energy half of this page and the compute half.</span>
         </li>
       </ul>
-      <p class="dq-note"><strong>Today, a grid-connected micro-generator in
-        Ireland still goes through ESB Networks.</strong> The inverter has to
-        meet IS&nbsp;EN&nbsp;50549-1 with Irish settings, a type-test
-        certificate goes with the form, and the notification is made for you by
-        your registered installer. Until an Irish plug-in route is actually
-        published, that is the rule &mdash; whatever is on sale
-        elsewhere.</p>
+      <p class="dq-note" style="margin-top:18px"><strong>Today, a grid-connected
+        micro-generator in Ireland still goes through ESB Networks.</strong> The
+        inverter has to meet IS&nbsp;EN&nbsp;50549-1 with Irish settings, a type-test
+        certificate goes with the form, and the notification is made for you by your
+        registered installer. Until an Irish plug-in route is published, that is the
+        rule &mdash; whatever is on sale elsewhere.</p>
     </div>
 
-    <p style="margin-top:40px">There is a second thing worth watching. In
-      Europe these small systems are starting to arrive with a battery and a
-      bit of software attached &mdash; not a house-sized installation, just a
-      panel, somewhere to put what it makes, and something deciding when to use
-      it.</p>
-
-    <p>Set that beside the rest of this page and a shape appears. A portable
-      panel that charges a phone. A plug-in unit on a balcony. The same unit
-      with a small battery behind it. A full roof and a house battery.
-      <strong>They are not four different products so much as four sizes of the
-      same idea: a part of your property doing something with energy rather
-      than only consuming it.</strong></p>
-
-    <!-- FOUNDER CORRECTION 3, 26 September 2026, verbatim. The rejected
-         sentence was "None of the smaller sizes is available in Ireland yet",
-         which overstates the evidence: whether a product can be bought or
-         imported is a different question from whether Ireland has an
-         established compliant grid-connection pathway. Only the second is
-         what the evidence speaks to. -->
-    <p>Ireland does not yet have an established plug-in pathway for these
-      smaller grid-connected systems. Where that line falls is what is being
-      worked out now.</p>
+    <p style="margin-top:40px">Set the four of them beside the rest of this page and
+      a shape appears. A plug-in panel on a balcony. The same panel with a small
+      battery behind it. A full roof and a house battery. A development with its own
+      heat network. <strong>They are not different products so much as different
+      sizes of the same idea: a part of a property doing something with energy
+      rather than only consuming it.</strong></p>
   </section>
 </main>
 
-<section class="pb-preview reveal" id="discover-your-property">
-    <!-- PROPERTY BRAIN LAUNCH INTEGRITY — HISTORY, AND ITS RESOLUTION.
-
-         The Eircode form that once stood here submitted to your-plot.html,
-         whose journey is hard-coded to discoveryContext='artist-studio', so
-         whatever this page said the homeowner arrived in the Garden Room
-         journey. The interaction was removed rather than disabled: a control
-         a homeowner cannot use is worse than no control at all.
-
-         GATE 7A. That reason is now spent. disc026-power-station.html exists,
-         is frozen, and is this Discovery's own journey — it asks for the
-         Eircode itself, on its own screen, and keeps it in memory only. So the
-         control returns as ONE link, in the component's own .btn-primary
-         style, and the two sentences that said the check did not exist are
-         corrected. No Eircode field is restored here: the journey collects it,
-         and a build gate forbids that page from reading a query string, so an
-         Eircode captured on this page could not be handed over. The four exit
-         links below are untouched. -->
-    <div class="pn-wordmark">PlotNua</div>
-    <h2 class="pb-headline">Check this against your own home</h2>
-    <p class="pb-subhead">A few short questions about this home, and we&rsquo;ll set out which of the four could apply here &mdash; and what&rsquo;s worth checking next.</p>
-    <a class="btn-primary" href="disc026-power-station.html">See what your home could do</a>
-    <div class="cs-exits">
-      <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
-      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore What Could You Build in Your Garden? &rarr;</a>
-      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>
-      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>
-    </div>
-  </section>
-
 <section class="imagine-photo reveal">
-  <!-- IMAGE 05 · The Future. Final asset in place. Original brief: an ordinary Irish housing estate from above at dusk, panels on
-       many of the roofs, the street lit and unremarkable. -->
-  <img src="assets/img/f0e99db16cefc470.jpg" width="1376" height="768" loading="lazy" decoding="async" alt="An Irish housing estate seen from above at dusk, with solar panels on several of the roofs.">
+  <!-- CONCEPT IMAGERY, position 2 of 2. Asset unchanged and unedited. The
+       caption carries the illustrative frame, as the rule requires. -->
+  <img src="assets/img/f0e99db16cefc470.jpg" width="1376" height="768" loading="lazy" decoding="async"
+       alt="An Irish housing estate seen from above at dusk, with solar panels on several of the roofs.">
+  <div class="caption">
+    <p>An illustration, not a survey. The street where the development-scale version
+      of this would make sense is an ordinary one &mdash; which is the point, and
+      also the part nobody has built yet.</p>
+  </div>
 </section>
 
+<main class="article">
+
+  <!-- ====================================================================
+       S9 . WHAT PLOTNUA IS DOING ABOUT IT, then back to the flagship.
+       Founder correction 3: the ending returns to the revelation.
+
+       ABSOLUTE PROHIBITIONS AT THIS POINT. No suitability verdict. No score.
+       No income implication. No register sign-up presented as a waiting list
+       for a product. No "your house becomes a data centre".
+       ==================================================================== -->
+  <section class="article-section reveal">
+    <div class="kicker">What PlotNua is doing about it</div>
+    <h2>We can&rsquo;t assess your house for this. We can tell you what would be
+      asked.</h2>
+    <span class="ev">Today &mdash; the check exists</span>
+    <p>There is a separate check that walks through your property and tells you
+      what is already there, what is missing, and what nobody can answer yet.</p>
+    <p><strong>It will not give you a score.</strong> We can&rsquo;t give a property
+      a meaningful percentage yet, because nobody has established what a fully
+      &ldquo;compute-ready&rdquo; home would actually require. And
+      <em>&ldquo;I don&rsquo;t know&rdquo;</em> is a real answer to every question in
+      it &mdash; it costs you nothing to say so.</p>
+
+    <!-- THE CHAIN. The founder's sequence, with the status boundary visible
+         inside it rather than asserted around it. -->
+    <ol class="chain">
+      <li><span class="chain-n">01</span><span class="chain-t">Generation
+        <span>The roof. Available today, grant-supported, worth doing alone.</span></span></li>
+      <li><span class="chain-n">02</span><span class="chain-t">Storage
+        <span>The utility wall. Available today. The grant arrives 6 October 2026.</span></span></li>
+      <li><span class="chain-n">03</span><span class="chain-t">Management
+        <span>The meter and the tariff. Available today, and the cheapest step of all.</span></span></li>
+      <li><span class="chain-n">04</span><span class="chain-t">An active energy property
+        <span>Generating, storing, timing and exporting. Thousands of Irish homes are already here.</span></span></li>
+      <li><span class="chain-n">05</span><span class="chain-t">Distributed compute
+        <span>Operating in homes abroad. PlotNua has not found an equivalent Irish residential offering, and Tandem has confirmed that individual homes are not part of its current pipeline.</span></span></li>
+      <li><span class="chain-n">06</span><span class="chain-t">Useful compute heat
+        <span>Real at district scale in Tallaght since 2023. Real at household scale abroad. PlotNua has found no Irish house connected to it.</span></span></li>
+      <li><span class="chain-n">07</span><span class="chain-t">A house doing some of the work of a data centre
+        <span>A possibility, not a product. Nobody has published what a property would have to be, which is why this page ends with a question instead of an offer.</span></span></li>
+    </ol>
+
+    <div class="handoff-pair" style="margin-top:44px">
+      <div class="handoff">
+        <h3>What your home could do today</h3>
+        <p>A few short questions about this property, and we&rsquo;ll set out which
+          of the four energy moves could apply here &mdash; and what&rsquo;s worth
+          checking next. No quote at the end.</p>
+        <a href="disc026-power-station.html">See what your home could do &rarr;</a>
+      </div>
+      <div class="handoff">
+        <h3>The separate question</h3>
+        <p>Could a house like this ever host computing? Nobody can answer that yet.
+          This check tells you what would be asked, and what PlotNua has not
+          established.</p>
+        <a href="disc026-compute-readiness-check.html">Residential Compute Readiness &rarr;</a>
+      </div>
+    </div>
+  </section>
+</main>
+
 <section class="closing-line reveal">
-  <!-- FINAL ANTICIPATION. Not a promise and not a prediction: the three
-       things the house can already do, and the one question left open. -->
-  <p>What PlotNua is watching for is the model that connects those pieces to computing.</p>
+  <!-- FOUNDER CORRECTION 3. The ending returns to the flagship revelation,
+       as a question, in the same words it was asked in. -->
+  <p>So it stays a question, and it is still the right one. Could your house one day
+    do some of the work of a data centre &mdash; and use the heat it creates?</p>
 </section>
 
 <section class="related reveal">
