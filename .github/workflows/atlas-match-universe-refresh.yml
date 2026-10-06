@@ -147,6 +147,7 @@ jobs:
         run: |
           set -euo pipefail
           python .github/scripts/generate_garden_room_universe.py \
+            --production-candidate \
             --out-dir "${{ steps.outdir.outputs.path }}"
 
       - name: Verify the generator wrote nothing into the repository

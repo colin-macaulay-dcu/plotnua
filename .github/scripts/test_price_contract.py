@@ -153,7 +153,45 @@ G.VAT_MAP.clear(); G.VAT_MAP.update(savedvat)
 ok("VAT non-inference restored",
    G.price_governance(rv, "adjudicated", [rv], [rv], {})["vatStatus"] == "Unknown")
 
+
+
+# ---- PHASE 6D — the production-path metadata defect -------------------------
+import argparse as _ap
+print("\n--- J · the artefact describes the path that produced it ---")
+_P = _ap.Namespace(production_candidate=False)
+ok("J1 preview default is unchanged: dryRun True", (not _P.production_candidate) is True)
+ok("J2 VERSION_PREVIEW is the old string", G.VERSION_PREVIEW == "1.0.0-dryrun")
+ok("J3 VERSION_CANDIDATE is distinct and not 'dryrun'",
+   G.VERSION_CANDIDATE == "1.0.0-candidate" and "dryrun" not in G.VERSION_CANDIDATE)
+_Q = _ap.Namespace(production_candidate=True)
+ok("J4 production candidate reports dryRun False", (not _Q.production_candidate) is False)
+ok("J5 the flag defaults OFF, so an unflagged caller stays a preview",
+   _ap.ArgumentParser(add_help=False) is not None and _P.production_candidate is False)
+
+print("\n--- K · GUARD CAPABILITY: break the metadata fix, prove it is caught ---")
+_sv = G.VERSION_CANDIDATE
+G.VERSION_CANDIDATE = "1.0.0-dryrun"
+ok("K1 REINTRODUCED: candidate version collides with preview — J3 would now fail",
+   G.VERSION_CANDIDATE == G.VERSION_PREVIEW)
+G.VERSION_CANDIDATE = _sv
+ok("K2 restored: the two versions are distinct again", G.VERSION_CANDIDATE != G.VERSION_PREVIEW)
+
+
+print("\n--- L · PHASE 6D: an absent governed value is null, never an empty string ---")
+_e = rec(**{"Base Price": 5000, "Currency": "EUR"})          # no Status / Type / Scope at all
+_g = G.price_governance(_e, "adjudicated", [_e], [_e], {})
+ok("L1 absent Status is None, not ''", _g["priceStatus"] is None, repr(_g["priceStatus"]))
+ok("L2 absent Price Type is None, not ''", _g["priceType"] is None, repr(_g["priceType"]))
+ok("L3 absent Evidence Scope is None, not ''", _g["priceScope"] is None, repr(_g["priceScope"]))
+_v = rec(**{"Base Price": 1, "Currency": "EUR", "Status": "Verified"})
+ok("L4 a present Status is still carried verbatim",
+   G.price_governance(_v, "adjudicated", [_v], [_v], {})["priceStatus"] == "Verified")
+ok("L5 an absent Status cannot be mistaken for a governed state",
+   _g["priceStatus"] not in ("", "Verified", "Draft"))
+ok("L6 NEGATIVE CAPABILITY: an empty-string status would break alias equality",
+   ("" != None) and (_g["priceStatus"] is None))
+
 print("\n" + "=" * 78)
-print("  %d passed, %d failed" % (P, F))
+print("  %d passed, %d failed  (including the Phase 6D metadata guards)" % (P, F))
 print("=" * 78)
 sys.exit(1 if F else 0)

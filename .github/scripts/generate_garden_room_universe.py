@@ -94,7 +94,14 @@ GARDEN_ROOMS = "Garden Rooms"
 RULE_VERSION = "garden-room-qualification-v1"
 GOVERNED_CONTRACT_VERSION = "garden-room-price-contract-v1"
 SCHEMA       = "plotnua.garden-room-recommendation-universe"
-VERSION      = "1.0.0-dryrun"
+# PHASE 6D — the artefact must describe the path that produced it. The
+# refresh workflow IS the production candidate path, but every artefact it
+# produced said version "1.0.0-dryrun" / dryRun true, because both were
+# hardcoded. The flag below is explicit and defaults to the safe value, so
+# the preview path is unchanged and only a caller that says so is production.
+VERSION_PREVIEW    = "1.0.0-dryrun"
+VERSION_CANDIDATE  = "1.0.0-candidate"
+VERSION      = VERSION_PREVIEW
 
 # API — moved to atlas_common.py (Gate S1 extraction).
 # PAGE_SIZE — moved to atlas_common.py (Gate S1 extraction).
@@ -550,11 +557,21 @@ SAFE_STATUSES = {"Verified", "Partially Verified"}
 
 def price_governance(pick, adj_state, candidates, price_rows, carried):
     """The governed price contract. Structured evidence only -- no prose."""
+    # PHASE 6D FIX. txt() returns "" for an absent cell, but match_price() --
+    # which feeds the deprecated `priceBasis` alias -- returns the raw cell, so
+    # an absent Status became None there and "" here. Measured: 14 of 573 rows
+    # diverged, and the guard that the alias must equal the canonical field
+    # caught it. An absent governed value is UNKNOWN, which is null, never an
+    # empty string, so the two now agree exactly and nothing reads "" as a state.
+    def _g(field):
+        if not pick or adj_state == "ambiguous":
+            return None
+        v = txt(cell(pick, field))
+        return v if v else None
+
     num = price_record_number(pick) if adj_state != "ambiguous" else None
-    cur = txt(cell(pick, "Currency")) if (pick and adj_state != "ambiguous") else None
-    status = txt(cell(pick, "Status")) if (pick and adj_state != "ambiguous") else None
-    ptype = txt(cell(pick, "Price Type")) if (pick and adj_state != "ambiguous") else None
-    scope = txt(cell(pick, "Evidence Scope")) if (pick and adj_state != "ambiguous") else None
+    cur, status, ptype, scope = (_g("Currency"), _g("Status"),
+                                 _g("Price Type"), _g("Evidence Scope"))
     to = cell(pick, "Price To") if (pick and adj_state != "ambiguous") else None
     vat_raw = txt(cell(pick, "Price Includes VAT")) if (pick and adj_state != "ambiguous") else None
 
@@ -1044,6 +1061,11 @@ def main():
                     help="Read a local JSON snapshot instead of Airtable (offline testing only).")
     ap.add_argument("--write-snapshot", default=None,
                     help="Save the raw Airtable read to this path for reproducibility.")
+    ap.add_argument("--production-candidate", action="store_true",
+                    help="This run is the production CANDIDATE path (the refresh "
+                         "workflow), not the preview dry run. Changes the artefact's "
+                         "self-description only. It still writes nothing to production "
+                         "and still never writes to Airtable.")
     ap.add_argument("--allow-production-write", action="store_true",
                     help="Refused. Present so that its absence is explicit, not implied.")
     args = ap.parse_args()
@@ -1058,6 +1080,9 @@ def main():
             fail(f"Refusing to write into a directory holding {forbidden}.")
     out.mkdir(parents=True, exist_ok=True)
 
+    global VERSION
+    if args.production_candidate:
+        VERSION = VERSION_CANDIDATE
     if args.snapshot:
         raw = json.loads(Path(args.snapshot).read_text(encoding="utf-8"))
         print(f"Offline snapshot: {args.snapshot}")
@@ -1394,7 +1419,9 @@ def main():
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "sourceBase": BASE_ID,
         "qualificationRuleVersion": RULE_VERSION,
-        "dryRun": True,
+        # Truthful: False only when the caller declares the production
+        # candidate path. Preview runs are unchanged.
+        "dryRun": not args.production_candidate,
         "sourceGardenRoomCount": source_count,
         "eligibleCount": len(emitted),
         "highConfidenceCount": tiers["HIGH_CONFIDENCE"],

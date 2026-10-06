@@ -1,0 +1,318 @@
+{
+ "$comment": "PROJECTION OVERLAY v2 - Phase 6A. Every value here was READ BACK FROM LIVE ATLAS on 2026-10-06 AFTER the authorised writes were applied and verified. This is a PROJECTION for measurement only; it does NOT satisfy Phase 6A section 6, which requires regeneration from the live Atlas source through the production generator.",
+ "generatedBy": "PlotNua Phase 6A",
+ "corrections": [
+  {
+   "id": "PS-01",
+   "class": "ALREADY_CORRECT_IN_ATLAS",
+   "productId": "recLcmGihJ0mrfdwV",
+   "productCode": "PROD-000383",
+   "name": "12x12 Apex Classic Log Cabin",
+   "priceRecordIds": [
+    "recfb1UXi3nW7ekH4"
+   ],
+   "atlasBasePrice": 6129,
+   "atlasPriceTo": 6219,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Unknown",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Atlas Product Pricing recfb1UXi3nW7ekH4, read 2026-10-06. Record note: CORRECTED 2026-09-28, euro list price read first-party on ie.powersheds.com.",
+   "atlasWriteRequired": false
+  },
+  {
+   "id": "PS-02",
+   "class": "ALREADY_CORRECT_IN_ATLAS",
+   "productId": "recYM6hUVXceIrmmv",
+   "productCode": "PROD-000384",
+   "name": "14x14 Apex Classic Log Cabin",
+   "priceRecordIds": [
+    "recyHNAgh4s50Ol1S"
+   ],
+   "atlasBasePrice": 6959,
+   "atlasPriceTo": 7044,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Unknown",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Atlas Product Pricing recyHNAgh4s50Ol1S, read 2026-10-06. Record note: CORRECTED 2026-09-28.",
+   "atlasWriteRequired": false
+  },
+  {
+   "id": "PS-03",
+   "class": "ALREADY_CORRECT_IN_ATLAS",
+   "productId": "recrmlUXvX9TbgTj7",
+   "productCode": "PROD-000382",
+   "name": "16x12 Apex Log Cabin",
+   "priceRecordIds": [
+    "reckjDb8tqpNh29c9"
+   ],
+   "atlasBasePrice": 9199,
+   "atlasPriceTo": null,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Unknown",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Atlas Product Pricing reckjDb8tqpNh29c9, read 2026-10-06. Record note: CORRECTED 2026-09-28; all three door positions list at the same figure.",
+   "atlasWriteRequired": false
+  },
+  {
+   "id": "P6A-A1",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recfFcnNP9ZV4BcVW",
+   "name": "CUBE Garden Room Range",
+   "priceRecordIds": [
+    "recmhqpPfdjlXEia2"
+   ],
+   "atlasBasePrice": 36500,
+   "atlasPriceTo": 47850,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Starting From",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Created 2026-10-06. gardenrooms.ie/designs/cube-range/ VAT-inclusive totals 36,500-47,850; VAT 13.5% published.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-A2",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recnBe46LKTCzLJ3P",
+   "name": "Ultimate Garden Room Range",
+   "priceRecordIds": [
+    "recPZnwHVecuaGX88"
+   ],
+   "atlasBasePrice": 43650,
+   "atlasPriceTo": 53650,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Starting From",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Created 2026-10-06. ULTIMATE 20/23/25 inclusive totals. ULTIMATE 27 (EUR51,000 ex-VAT) deliberately excluded, not grossed up.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-B1",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recompzydsCVirAt1",
+   "name": "Shomera Contemporary Range",
+   "priceRecordIds": [
+    "recoP4v6gYk8wQ9uS"
+   ],
+   "atlasBasePrice": 36450,
+   "atlasPriceTo": 46950,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Starting From",
+   "atlasIncludesVat": "Unknown",
+   "atlasEvidenceScope": null,
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Revised 2026-10-06, 35,950->36,450. Contemporary = Shomera 14/18/23, ceiling 46,950. VAT Unknown, not inferred.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-B2",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recS4ar9jaIFmsb8A",
+   "name": "Shomera Classic Range",
+   "priceRecordIds": [
+    "recDiJX5C1S3DbbUo"
+   ],
+   "atlasBasePrice": 28450,
+   "atlasPriceTo": 44950,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Starting From",
+   "atlasIncludesVat": "Unknown",
+   "atlasEvidenceScope": null,
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To added 2026-10-06. Base unchanged at 28,450 (still correct). Classic = Shomera 12/21/25, ceiling 44,950.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-E1",
+   "class": "PHASE_6A_WITHDRAWN_IN_ATLAS",
+   "productId": "rech2D1aCz41kZtc5",
+   "name": "Big Man Tiny Homes - Deluxe Home Office / Treatment Room",
+   "priceRecordIds": [
+    "recVzYsqCkxq61nmE"
+   ],
+   "atlasBasePrice": null,
+   "atlasPriceTo": null,
+   "atlasCurrency": null,
+   "atlasPriceStatus": "Archived",
+   "atlasPriceType": "Custom Quote",
+   "atlasIncludesVat": "Unknown",
+   "atlasEvidenceScope": "Range-Level",
+   "adjudication": "missing",
+   "candidateCount": 1,
+   "evidence": "Withdrawn 2026-10-06. Price From 60,000 and Price To 70,000 cleared; Status -> Archived. Record and provenance retained. Never a provider-published price.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-F1",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recDHVxszqcxMTrXs",
+   "name": "Loghouse ECO 6.0x4.0",
+   "priceRecordIds": [
+    "recRrxTAURDOmxjW6"
+   ],
+   "atlasBasePrice": 27090,
+   "atlasPriceTo": 36420,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To populated 2026-10-06 from loghouse.ie published range inc. VAT. Floor verified unchanged before the write.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-F2",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "rech7TfmJLA8n4Jj9",
+   "name": "Loghouse ECO 4.0x3.0",
+   "priceRecordIds": [
+    "recThHwTwhFjnqgCw"
+   ],
+   "atlasBasePrice": 16380,
+   "atlasPriceTo": 22920,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To populated 2026-10-06 from loghouse.ie published range inc. VAT. Floor verified unchanged before the write.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-F3",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recTpjQUJ7rIgemhk",
+   "name": "Loghouse ECO 4.0x4.0",
+   "priceRecordIds": [
+    "recUhaluaReaTxSLQ"
+   ],
+   "atlasBasePrice": 19630,
+   "atlasPriceTo": 27090,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To populated 2026-10-06 from loghouse.ie published range inc. VAT. Floor verified unchanged before the write.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-F4",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recr7HRb2CIqnyoAa",
+   "name": "Loghouse ECO 5.0x3.0",
+   "priceRecordIds": [
+    "recebyySwa1aZB6Qz"
+   ],
+   "atlasBasePrice": 19630,
+   "atlasPriceTo": 27090,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To populated 2026-10-06 from loghouse.ie published range inc. VAT. Floor verified unchanged before the write.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-F5",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "rec66xKgPx0ipzfOQ",
+   "name": "Loghouse ECO 5.0x4.0",
+   "priceRecordIds": [
+    "rechsZvDCyrdLDrNU"
+   ],
+   "atlasBasePrice": 23190,
+   "atlasPriceTo": 31590,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To populated 2026-10-06 from loghouse.ie published range inc. VAT. Floor verified unchanged before the write.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-F6",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "rec6pnA2GkdMzlmPf",
+   "name": "Loghouse ECO 6.0x3.0",
+   "priceRecordIds": [
+    "recwAWG6vylMAuHsD"
+   ],
+   "atlasBasePrice": 22840,
+   "atlasPriceTo": 31240,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To populated 2026-10-06 from loghouse.ie published range inc. VAT. Floor verified unchanged before the write.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  },
+  {
+   "id": "P6A-F7",
+   "class": "PHASE_6A_APPLIED_TO_ATLAS",
+   "productId": "recJ3HPVMPrYzaXvH",
+   "name": "Loghouse Studio ECO 5.2x4.7",
+   "priceRecordIds": [
+    "recp2utO11YWRg1qe"
+   ],
+   "atlasBasePrice": 30610,
+   "atlasPriceTo": 40775,
+   "atlasCurrency": "EUR",
+   "atlasPriceStatus": "Verified",
+   "atlasPriceType": "Standard Price",
+   "atlasIncludesVat": "Yes",
+   "atlasEvidenceScope": "Product-Specific",
+   "adjudication": "adjudicated",
+   "candidateCount": 1,
+   "evidence": "Price To populated 2026-10-06 from loghouse.ie published range inc. VAT. Floor verified unchanged before the write.",
+   "atlasWriteRequired": false,
+   "atlasWriteApplied": "2026-10-06"
+  }
+ ]
+}

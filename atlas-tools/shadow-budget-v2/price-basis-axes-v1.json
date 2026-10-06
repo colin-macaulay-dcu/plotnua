@@ -1,0 +1,49 @@
+{
+  "schema": "plotnua.garden-room.price-basis-axes",
+  "version": "1.0.0-shadow",
+  "recorded": "2026-10-06",
+  "rulebook": "PHASE 2 / PHASE 4. Each entry records what the GOVERNED Airtable price-basis prose actually states, on three independent axes. Nothing is inferred from supplier type, price level, catalogue depth, or the absence of an exclusion. The analytical class is DERIVED from the axes, never typed by hand. A supplier marketing word (turnkey, premium, luxury, all-in) is never evidence.",
+  "axisVocabulary": {
+    "erection": ["INCLUDED", "EXCLUDED", "UNKNOWN"],
+    "siteWorks": ["INCLUDED", "EXCLUDED", "UNKNOWN"],
+    "delivery": ["INCLUDED", "EXCLUDED", "CONDITIONAL", "UNKNOWN"]
+  },
+  "byOrganisation": {
+    "Gardenhouse24 Ireland": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"CONDITIONAL","confidence":"EXPLICIT","quote":"Insulation, installation and electrics NOT included as standard; Installation Service a separate priced line"},
+    "Irish Log Cabins": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"UNKNOWN","confidence":"EXPLICIT","quote":"Self Build, paid Assembly and Fully Built options are distinct; assembly, foundation and insulation separately priced"},
+    "SIPS-House": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"UNKNOWN","confidence":"EXPLICIT","quote":"Excludes VAT and assembly/installation; foundation/base, water supply/sewerage, electrical installation and HVAC explicitly excluded"},
+    "All In One Cabins": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"INCLUDED","confidence":"EXPLICIT","quote":"Shell price only; electrics/plumbing chargeable add-ons. Free Home Delivery included."},
+    "Concept Modular": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"EXCLUDED","confidence":"EXPLICIT","quote":"concrete base pads, installation, craneage and haulage EXCLUDED; indicative additional works EUR3,000-5,000 + VAT; mains connection not included"},
+    "Loghouse": {"erection":"INCLUDED","siteWorks":"EXCLUDED","delivery":"INCLUDED","confidence":"EXPLICIT","quote":"Delivery and assembly/fitting included. Electrics, plumbing and internal/external painting excluded but can be arranged."},
+    "Adman Steel Sheds": {"erection":"INCLUDED","siteWorks":"UNKNOWN","delivery":"INCLUDED","confidence":"EXPLICIT","quote":"Price includes delivery and professional assembly"},
+    "Garden Office Solutions": {"erection":"INCLUDED","siteWorks":"INCLUDED","delivery":"INCLUDED","confidence":"CONFLICTED","quote":"Fully turnkey price incl. delivery, installation, electrics - BUT a second Pricing record per product gives a lower figure on a different basis"},
+    "Modular House": {"erection":"INCLUDED","siteWorks":"INCLUDED","delivery":"UNKNOWN","confidence":"PARTIAL","quote":"inclusions list foundation works and a consumer-unit-ready electric package; SCOPE NOT FULLY ESTABLISHED: delivery, groundworks beyond foundations, kitchen, bathroom and service connections are not itemised"},
+    "Iglucraft": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"EXCLUDED","confidence":"EXPLICIT","quote":"Explicitly excludes VAT and excludes transportation. Bespoke/configurable, quote-required for final price."},
+    "Sommarnojen": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"EXCLUDED","confidence":"EXPLICIT","quote":"Excludes trailer transport, crane lift, groundworks"},
+    "Outdoor Living (ModPod)": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"UNKNOWN","confidence":"EXPLICIT","quote":"Price is for structure only. Assembly available on request for an additional EUR2,000 / EUR1,750"},
+    "Hansa24 Group": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"NO_BASIS_STATED","quote":"notes record SKU, size and sale status only"},
+    "Sprout Pod": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"NO_BASIS_STATED","quote":"notes address only the width-tier grid; no installation, delivery or services statement anywhere"},
+    "OOD House": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"NOT_CONFIRMED","quote":"Delivery/shipping, foundation/groundworks, utility connection and permits are NOT confirmed as included - the site's own FAQ raises this question without a visible published answer"},
+    "Premium Log House": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"NO_BASIS_STATED","quote":"Category listing price only; installation, base/foundation and delivery terms not itemised on this page"},
+    "MyCabin.ie": {"erection":"UNKNOWN","siteWorks":"EXCLUDED","delivery":"CONDITIONAL","confidence":"PARTIAL","quote":"foundation an optional extra or client-supplied; electrics excluded on Longford; free delivery Leinster only; assembly not stated"},
+    "Quick-Garden": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"INCLUDED","confidence":"PARTIAL","quote":"free delivery to all 32 counties; nothing on assembly or services; record carries no Status at all"},
+    "Lugarde": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"NO_BASIS_STATED","quote":"Starting price for base spec; configurator will change the final price"},
+    "Home Modular": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"NO_BASIS_STATED","quote":"Status Researching given sitewide data-quality concerns"},
+    "Shomera": {"erection":"INCLUDED","siteWorks":"INCLUDED","delivery":"UNKNOWN","confidence":"EXPLICIT","quote":"site survey, design, planning, build and installation all handled; electrical fittings as standard, plumbing optional"},
+    "Live in Garden Pods": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"PARTIAL","quote":"Foundation/groundworks, site access requirements and delivery basis not separately itemised in published pricing - Unknown"},
+    "Big Man Tiny Homes": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"UNSAFE","quote":"Indicative only - third-party press figure. Not a confirmed provider-published price for this specific design."},
+    "NOOK Prefab (espacio NOOK)": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"UNSAFE","quote":"sitewide starting-from figure; this attribution is NOT explicitly confirmed on any page reviewed"},
+    "Rayco Modular Homes": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"UNSAFE","quote":"site-wide headline starting price covering modular homes, garden rooms AND extensions collectively; Scope = Organisation-Wide"},
+    "Bertilo": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"UNKNOWN","confidence":"UNSAFE","quote":"Third-party German retail price (OBI), flat-pack panel-kit only; Bertilo sells direct only within Estonia"},
+    "Elevate Modular": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"UNSAFE","quote":"GBP10,000 / EUR11,750 on listing page vs EUR11,765 on detail page - unresolved conflict; Status Researching"}
+  },
+  "byProduct": {
+    "Garden Room Barbados Plus with Storage": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"EXCLUDED","confidence":"EXPLICIT","quote":"Base unit price; delivery, foundation, insulation and installation are separate cost lines per the site's own extras pricing"},
+    "Garden Snooker Room Hansa B": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"UNKNOWN","confidence":"EXPLICIT","quote":"Excludes assembly/insulation/foundation/guttering options (all itemised as optional extras)"},
+    "Cube Sauna M": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"CONDITIONAL","confidence":"EXPLICIT","quote":"the artefact-era EUR7,110 was the flatpack self-assembly price; assembly service was a separate EUR240"},
+    "OOD Mobile House": {"erection":"UNKNOWN","siteWorks":"EXCLUDED","delivery":"UNKNOWN","confidence":"EXPLICIT","quote":"Explicitly excludes foundation preparation, site levelling and utility connections - arranged through your local contractors"},
+    "The Nova 21.5m Pavillion Sun Room": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"UNSAFE","quote":"a Special Price against a higher Regular Price, entered as Standard Price per Atlas convention; page out of stock; WebSearch-sourced, not rendered"},
+    "The Nova 17.8m Pavillion Sun Room": {"erection":"UNKNOWN","siteWorks":"UNKNOWN","delivery":"UNKNOWN","confidence":"UNSAFE","quote":"a Special Price against a higher Regular Price, entered as Standard Price; out of stock; WebSearch-sourced, not rendered"},
+    "ModPod Nova": {"erection":"EXCLUDED","siteWorks":"EXCLUDED","delivery":"UNKNOWN","confidence":"CONFLICTED","quote":"structure only, assembly EUR2,000 extra; a superseded EUR19,999 Estimated record also exists for this product"}
+  }
+}
