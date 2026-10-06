@@ -1588,6 +1588,14 @@ def main():
             _gverified = txt(cell(_r, "Google Identity Verified On"))
             if _gverified:
                 _gi["verifiedOn"] = _gverified
+            # TR-4 — REVALIDATION TARGET. A Place ID is storable indefinitely
+            # under Google's published guidance, but a business can move, merge
+            # or close, so the record carries the date by which the identity is
+            # to be re-proved rather than pretending the ID is eternally true.
+            # Same guarded shape: absent field yields "" and nothing is emitted.
+            _grevalidate = txt(cell(_r, "Google Identity Revalidate By"))
+            if _grevalidate:
+                _gi["revalidateBy"] = _grevalidate
             _gbasis = txt(cell(_r, "Google Identity Basis"))
             if _gbasis:
                 _gi["basis"] = _gbasis

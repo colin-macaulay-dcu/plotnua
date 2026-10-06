@@ -19778,6 +19778,17 @@
     const sum = document.createElement('summary');
     sum.textContent = 'See Google\u2019s reviews \u2192';
     more.appendChild(sum);
+    /* TR-4 \u2014 THE TWO NOTICES GOOGLE REQUIRES WHERE REVIEWS RENDER, AND WHICH
+       THE UI KIT DOES NOT SUPPLY. Google supplies attribution, the author, the
+       profile link, the date and the reporting control inside its own
+       component; it does not state how the set was ordered, nor that it is
+       unverified. Both are PlotNua's to say, and they belong beside the
+       reviews rather than beside the rating, so they appear on open. Reuses
+       .pn-gx-note: presentation only, no new rule, no new behaviour. */
+    const rnote = document.createElement('p'); rnote.className = 'pn-gx-note';
+    rnote.textContent = 'Google decides which reviews appear here and in what '
+      + 'order. Google does not verify reviews.';
+    more.appendChild(rnote);
     const rhost = document.createElement('div'); rhost.className = 'pn-gx-reviews';
     more.appendChild(rhost);
     more.addEventListener('toggle', function(){
