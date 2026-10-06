@@ -1,0 +1,119 @@
+# PlotNua — ATLAS FRESHNESS DIAGNOSTIC. READ-ONLY. TEMPORARY.
+#
+# Runs atlas-tools/shadow-budget-v2/phase7-freshness/freshness-diagnostic.py
+# against live Atlas, using the existing AIRTABLE_TOKEN repository secret, and
+# uploads its two output files as an Actions artefact.
+#
+# WHY THIS EXISTS.
+#   Concept Modular's published range changed within eight days of a "Verified"
+#   price check, which raised the question of whether governed price evidence
+#   is stale more widely. That question has to be measured before anything is
+#   corrected, regenerated or promoted. This workflow measures it. It decides
+#   nothing: no freshness threshold is applied, and nothing is marked unsafe.
+#
+# WHAT IT CANNOT DO, STRUCTURALLY RATHER THAN BY CARE.
+#   permissions: contents: read. The GITHUB_TOKEN handed to this job has no
+#   write scope at all, so a commit or a push is not blocked by a condition
+#   that could later be mis-edited -- it is absent as a capability.
+#
+#   There is no generator step, no validator step, no publish step and no
+#   deploy step. The job runs one Python file. That file's only Atlas call is
+#   atlas_common.fetch_all(), which issues GET requests, and its own path guard
+#   refuses to write anywhere except its own directory. The verification step
+#   below then proves, independently, that no tracked file changed at all.
+#
+# THE TOKEN.
+#   ${{ secrets.AIRTABLE_TOKEN }} — the same repository secret the refresh
+#   workflow and atlas-stats.yml use. Handed to one step as an environment
+#   variable, never written to a file or an argument, and never reaches the
+#   artefact.
+#
+# THIS IS TEMPORARY. Delete this file once the freshness question is settled:
+#   git rm .github/workflows/atlas-freshness-diagnostic.yml
+name: Atlas freshness diagnostic (read-only)
+
+# A button. No schedule, no push trigger — this cannot start itself.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-freshness-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Record the tracked-file state before the diagnostic runs
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD
+          git diff --exit-code
+          echo "Clean checkout confirmed: no tracked file differs from HEAD."
+
+      # The only step that sees the token. The script READS Atlas (GET only)
+      # and READS first-party supplier URLs. It writes two files, both inside
+      # phase7-freshness/, both untracked.
+      - name: Run the freshness diagnostic
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        working-directory: atlas-tools/shadow-budget-v2/phase7-freshness
+        run: python3 freshness-diagnostic.py
+
+      # STRENGTHENED PROOF. No directory is excluded. `git diff --exit-code`
+      # must succeed outright: the two diagnostic outputs are untracked runtime
+      # files, so a tracked-file diff is the correct and total test. The
+      # porcelain check then proves no tracked file was added, modified,
+      # deleted or renamed, and that the ONLY untracked additions are the two
+      # permitted output files.
+      - name: Prove the diagnostic mutated no tracked file
+        run: |
+          set -euo pipefail
+
+          echo "--- tracked-file diff (must be empty) ---"
+          git diff --exit-code
+
+          echo "--- tracked-file status (must be empty) ---"
+          TRACKED=$(git status --porcelain --untracked-files=no)
+          if [ -n "$TRACKED" ]; then
+            echo "FAIL: a tracked file changed during the diagnostic."
+            echo "$TRACKED"
+            exit 1
+          fi
+
+          echo "--- untracked additions (only the two outputs are permitted) ---"
+          UNEXPECTED=$(git status --porcelain --untracked-files=all \
+            | awk '$1=="??"{print $2}' \
+            | grep -v '^atlas-tools/shadow-budget-v2/phase7-freshness/freshness-summary\.txt$' \
+            | grep -v '^atlas-tools/shadow-budget-v2/phase7-freshness/freshness-results\.json$' \
+            | grep -v '^atlas-tools/shadow-budget-v2/phase7-freshness/__pycache__/' || true)
+          if [ -n "$UNEXPECTED" ]; then
+            echo "FAIL: the diagnostic produced unexpected files."
+            echo "$UNEXPECTED"
+            exit 1
+          fi
+
+          echo "PASS: no tracked file changed; only the two permitted outputs were written."
+
+      - name: Upload the diagnostic artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase7-freshness-diagnostic
+          path: |
+            atlas-tools/shadow-budget-v2/phase7-freshness/freshness-summary.txt
+            atlas-tools/shadow-budget-v2/phase7-freshness/freshness-results.json
+          if-no-files-found: error
+          retention-days: 7
