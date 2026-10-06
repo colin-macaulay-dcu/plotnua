@@ -16542,7 +16542,39 @@
        No band (the homeowner said "not sure") returns 1 above, before this
        test, so currency cannot affect the no-band case. */
     if (!pnPriceComparableToBudget(product)) return 1;
-    return (price >= band.lo && price <= band.hi) ? 2 : 0;
+    /* PHASE 7B-i — GOVERNED SAFETY GATES THE STRONG MATCH.
+
+       Until now any euro figure inside the band scored 2, "proven fit",
+       whatever the governed evidence said about it. Measured against the
+       573-product governed candidate that let 7 unsafe or conflicted prices
+       claim a budget match, 2 of them inside 30k-plus: a Researching figure
+       of EUR 45,000 told a homeowner it fits the budget they named on the
+       strength of a number nobody has verified.
+
+       priceSafeForMatching is the governed answer to exactly that question.
+       An unsafe price is not a weaker fit -- it is not a fit at all, because
+       we do not know the price. It becomes 1, the same UNKNOWN that an
+       absent price and a sterling price already score. It is never 0 either:
+       0 means "proven outside", and nothing is proven about it.
+
+       Absent field fails CLOSED, to 1. A universe carrying no governed price
+       contract makes budget neutral for everyone rather than silently
+       reverting to the unverified-number rule this replaces. That couples
+       this page to the governed universe deliberately and visibly. */
+    if (product.priceSafeForMatching !== true) return 1;
+    /* PHASE 7B-i.2 — HALF-OPEN BANDS, SO EACH PRICE HAS EXACTLY ONE BAND.
+
+       The upper bound used to be inclusive as well as the lower one, so a
+       price of exactly 10000 was a proven fit in BOTH under-10k and 10k-20k,
+       and the same at 20000 and 30000. Nothing in the governed universe sits
+       on a boundary today, so nothing was visibly wrong -- but double
+       membership is not a thing the homeowner labels can mean, and a single
+       round published price would have surfaced it.
+
+       The band table is untouched. The top band's upper bound is already
+       infinite, and every finite price is below infinity, so the open-ended
+       30k-plus band keeps behaving exactly as before. */
+    return (price >= band.lo && price < band.hi) ? 2 : 0;
   }
 
   /* =====================================================================

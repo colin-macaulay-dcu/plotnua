@@ -1,11 +1,11 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
-  "version": "1.0.0-dryrun",
-  "generated": "2026-09-22T21:40:32Z",
+  "version": "1.0.0-candidate",
+  "generated": "2026-10-06T19:11:14Z",
   "categories": [
     "suppliers"
   ],
-  "productCount": 63,
+  "productCount": 61,
   "products": {
     "rec0E8ongSL0hZnZR": {
       "name": "Lasita Maja",
@@ -69,6 +69,20 @@
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
+    },
+    "rec1cpArsWf7WzOzp": {
+      "name": "Zomes",
+      "locality": {
+        "installationModel": "Buyer-assembled or install crew; coverage area not published",
+        "irishPresence": "NONE published",
+        "deliveryCoverage": "NOT ESTABLISHED \u2014 the only international statement located is the slogan \"Designed in California. Enjoyed Worldwide.\" No shipping terms, destinations, costs or Irish route published",
+        "manufacturingLocation": "Not published; supplier states \"Designed in California\"",
+        "jurisdiction": "United States",
+        "evidenceTier": "Tier A \u2014 first-party homepage fetched and read 2026-09-27",
+        "evidenceScope": "Organisation-Wide"
+      },
+      "organisationType": "Manufacturer",
+      "lastReviewed": "2026-09-27"
     },
     "rec2URqKyVwlhHSBw": {
       "name": "\u00d6\u00d6D House",
@@ -221,7 +235,7 @@
         "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-30"
+      "lastReviewed": "2026-09-24"
     },
     "rec8j9KTIVfQAVMzg": {
       "name": "Oeco Garden Rooms",
@@ -301,7 +315,7 @@
         "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-28"
+      "lastReviewed": "2026-09-24"
     },
     "recExaEx7i1hqG6CD": {
       "name": "MCD Garden Sheds",
@@ -429,21 +443,6 @@
       "organisationType": "Supplier",
       "lastReviewed": "2026-08-30"
     },
-    "recLVafp5Tqo5LLt0": {
-      "name": "Sommarn\u00f6jen",
-      "locality": {
-        "contractingEntity": "Sommarn\u00f6jen Scandinavia AB, Swedish organisation number 556966-3072, seated in Stockholm",
-        "installationModel": "Not published for Ireland",
-        "irishPresence": "None located",
-        "deliveryCoverage": "The supplier maintains a dedicated INTERNATIONAL WEBSITE at en.sommarnojen.se, indicating export intent; no Ireland-specific delivery terms located",
-        "manufacturingLocation": "Not published as a distinct plant address \u2014 the company DEVELOPS, PRODUCES AND SELLS prefabricated houses",
-        "jurisdiction": "Sweden (European Union)",
-        "evidenceTier": "B",
-        "evidenceScope": "Organisation-Wide"
-      },
-      "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-28"
-    },
     "recOjnbeotdf0jnqH": {
       "name": "Adman Steel Sheds",
       "locality": {
@@ -459,27 +458,6 @@
         "roiDelivery": "UNKNOWN",
         "roiInstallCoverage": "UNKNOWN",
         "deliveryStatus": "UNKNOWN"
-      },
-      "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-28"
-    },
-    "recP4lqMNuNceOyNh": {
-      "name": "TimberIN",
-      "locality": {
-        "installationModel": "None \u2014 the supplier provides no installation; unloading and placement are the customer's responsibility per the certified Installation layer",
-        "irishPresence": "Yes, delivery only \u2014 the supplier's own copy states 'Projects in Ireland' and maintains an Ireland delivery page; no Irish premises or dealer published",
-        "deliveryCoverage": "EU-wide delivery and logistics service published, including a DEDICATED IRELAND DELIVERY PAGE for wood-fired hot tubs",
-        "manufacturingLocation": "Europe-wide production indicated by an FR/DE/NL/DK/IT/SE/NO/PL storefront network; no specific production site published",
-        "jurisdiction": "European Union \u2014 country of registration not established",
-        "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide",
-        "installationType": "UNKNOWN",
-        "installationStatus": "UNKNOWN",
-        "roiDelivery": "CONFIRMED",
-        "roiInstallCoverage": "UNKNOWN",
-        "deliveryStatus": "CONFIRMED",
-        "deliverySourceUrl": "https://www.woodenhottubsale.co.uk/",
-        "deliveryCheckedAt": "2026-09-07"
       },
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
@@ -554,25 +532,6 @@
       "organisationType": "Manufacturer",
       "lastReviewed": "2026-08-28"
     },
-    "recZVKy9FPReF7I9H": {
-      "name": "Auroom Wellness",
-      "locality": {
-        "installationModel": "Not stated",
-        "irishPresence": "Yes, sales route only \u2014 Ireland is a selectable destination on the supplier's own enquiry form; no Irish premises or dealer published. US retailers sell the range but their terms and locations are their own and are NOT transferred",
-        "deliveryCoverage": "Supplies 30+ countries; the supplier's own inquiry form carries an EXPLICIT IRELAND / UK OPTION",
-        "manufacturingLocation": "Estonia \u2014 specific site not published",
-        "jurisdiction": "European Union (Estonia)",
-        "evidenceTier": "Tier B",
-        "evidenceScope": "Organisation-Wide",
-        "installationType": "UNKNOWN",
-        "installationStatus": "UNKNOWN",
-        "roiDelivery": "UNKNOWN",
-        "roiInstallCoverage": "UNKNOWN",
-        "deliveryStatus": "STATED_NOT_CERTIFIED"
-      },
-      "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-28"
-    },
     "recZcfloN72CBES6I": {
       "name": "Modern Garden Rooms",
       "locality": {
@@ -634,7 +593,7 @@
         "deliveryCheckedAt": "2026-09-29"
       },
       "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-28"
+      "lastReviewed": "2026-09-29"
     },
     "recaVJQjZD9UV8JSs": {
       "name": "The Pod Factory",
@@ -1167,11 +1126,10 @@
       "name": "Yardbox",
       "locality": {
         "installationModel": "Ireland and Northern Ireland \u2014 supplier's published model covers design, manufacture and installation",
-        "irishPresence": "Yes \u2014 all-island; Northern Ireland base serving both jurisdictions",
         "deliveryCoverage": "Ireland and Northern Ireland, per supplier statement",
         "manufacturingLocation": "Not stated",
         "jurisdiction": "NORTHERN IRELAND",
-        "evidenceTier": "Tier B",
+        "evidenceTier": "A for the address and contact facts (first-party contact page, read 2026-09-29); B for the rest",
         "evidenceScope": "Organisation-Wide",
         "installationType": "SUPPLIER_INSTALLS",
         "installationStatus": "CONFIRMED",
@@ -1182,7 +1140,7 @@
         "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-28"
+      "lastReviewed": "2026-09-29"
     },
     "reczIVnJujZd8a2CK": {
       "name": "Modular Outlook Ireland",
