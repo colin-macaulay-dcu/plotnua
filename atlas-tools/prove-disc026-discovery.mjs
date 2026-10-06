@@ -17,10 +17,22 @@
      G3   THE GOVERNED LIBRARY IMAGE is present, exactly once, with no
           potential-asset marker in its page-side alt text. That is
           prove-discovery-library-images.mjs P4 and P3 seen from this side.
-     G4   THE BATTERY DATE BOUNDARY. The SEAI battery grant is stated in
-          ANNOUNCED form with 6 October 2026 on its face, inside the
-          PN-DISC026-BATTERY-BOUNDARY markers. A present-tense assertion that
-          the scheme is open must not appear while the boundary still stands.
+     G4   THE BATTERY DATE BOUNDARY — ACTIVATED 6 October 2026.
+
+          RE-POINTED, NOT WEAKENED. Until the scheme opened this guard held
+          the pre-activation state: the sentence had to be in ANNOUNCED form
+          and no present-tense assertion was allowed. That was correct then
+          and it is wrong now — on 6 October 2026 SEAI opened the scheme, the
+          page was re-read first-party, and the single anchored edit the
+          markers exist to carry was made. A guard that still demanded
+          "is to pay" would now be guarding a false statement.
+
+          So the SAME markers now hold the OPPOSITE invariant, and a stricter
+          one: the markers survive, the grant is stated as current, and NO
+          future-tense or not-yet-open phrasing about it may remain anywhere
+          on the page — including the detailed grants section OUTSIDE the
+          markers, which carried its own "announced ... to start" sentence.
+          The figures stay on the face of the sentence either way.
      G5   NO REMOTE IMAGERY. Five image permissions are outstanding and all
           five are UNKNOWN. UNKNOWN fails closed, so not one externally hosted
           photograph may appear -- caught here one step before the rights gate.
@@ -152,19 +164,40 @@ if (begin !== 1 || end !== 1) {
 } else {
   ok('the boundary markers are present exactly once each');
 }
-if (/From 6 October 2026 SEAI is to pay a flat/.test(html)) {
-  ok('the grant is stated in announced form, with its date on its face');
+if (/SEAI pays a flat\s+&euro;600 towards a home battery of 5&nbsp;kWh or larger/.test(html)) {
+  ok('the grant is stated as CURRENT inside the markers, figures on its face');
 } else {
-  bad('the grant is stated in announced form',
-      'The announced sentence is gone. Either the boundary was converted '
-      + 'without authorisation, or the figure is now unsourced.');
+  bad('the grant is stated as current inside the markers',
+      'The activated sentence is missing. Either the activation was reverted, '
+      + 'or the figure is now unsourced.');
 }
-if (/there&rsquo;s an SEAI grant of|there's an SEAI grant of/i.test(html)) {
-  bad('no present-tense assertion that the scheme is open',
-      'The boundary still stands. A present-tense claim here publishes a '
-      + 'scheme as open before it has been confirmed live.');
+/* The stale phrasings this activation existed to remove. Each is checked
+   across the WHOLE page, not just the marker region, because the detailed
+   grants section carried its own future-tense sentence outside them. */
+const STALE = [
+  [/From 6 October 2026 SEAI is to pay/i,  '"From 6 October 2026 SEAI is to pay"'],
+  [/is to pay a flat/i,                     '"is to pay a flat"'],
+  [/announced by SEAI to start/i,           '"announced by SEAI to start"'],
+  [/announced to start/i,                   '"announced to start"'],
+  [/grant[^.]{0,60}will (?:start|open|begin)/i, 'a "will start/open/begin" grant phrasing'],
+  [/from 6 October 2026[^.]{0,40}(?:SEAI|grant)[^.]{0,40}(?:is to|will)/i,
+                                            'a future-dated grant assertion'],
+];
+const stale = STALE.filter(([re]) => re.test(html));
+if (stale.length) {
+  bad('no future-tense or not-yet-open grant language remains',
+      stale.map(s => s[1]).join('; ') + ' still appears. The scheme opened at '
+      + '5pm on 6 October 2026; telling a homeowner it has not started yet '
+      + 'costs them the application.');
 } else {
-  ok('no present-tense assertion that the scheme is already open');
+  ok('no future-tense or not-yet-open grant language remains anywhere on the page');
+}
+/* The figures must survive the tense change untouched, on BOTH surfaces. */
+if (/&euro;600/.test(html) && /5&nbsp;kWh or larger/.test(html)) {
+  ok('EUR 600 and the 5 kWh minimum both survive the activation');
+} else {
+  bad('EUR 600 and the 5 kWh minimum survive the activation',
+      'A figure was lost while converting the tense.');
 }
 
 /* ---- G5 ----------------------------------------------------------------- */

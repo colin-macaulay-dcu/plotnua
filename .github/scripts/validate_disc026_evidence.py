@@ -70,7 +70,9 @@ SPEC_REQUIRED_CLAIM_KEYS = {
     # TIME
     "meter_enables_time_of_use", "meter_is_not_tariff",
     # STORE
-    "battery_grant_exists", "ac_battery_treated_as_microgeneration",
+    "battery_grant_exists", "battery_grant_exists_historical",
+    "battery_grant_eligibility", "battery_grant_process",
+    "ac_battery_treated_as_microgeneration",
     "battery_requires_esbn_notification", "battery_requires_safe_electric_rec",
     "battery_route_by_capacity",
     # SELL

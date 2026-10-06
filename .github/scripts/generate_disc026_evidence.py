@@ -56,6 +56,8 @@ DEFAULT_REVIEW = {
 
 SEAI_SOLAR = "https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant"
 SEAI_HOME = "https://www.seai.ie/grants/home-energy-grants"
+SEAI_BATTERY = ("https://www.seai.ie/grants/home-energy-grants/"
+                "individual-grants/battery")
 CI_SOLAR = "https://www.citizensinformation.ie/en/housing/housing-grants-and-schemes/grants-for-home-renovations-and-improvements/grants-for-solar-panels/"
 CI_MICRO = "https://www.citizensinformation.ie/en/environment/environmental-grants-and-schemes-for-your-home/micro-generation/"
 GOV_SOLAR = "https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/solar-planning-exemptions/"
@@ -314,15 +316,93 @@ RECORDS = [
     # =======================================================================
     # STORE
     # =======================================================================
-    r(evidence_id="store-no-seai-grant", opportunity="STORE",
+    # THE BATTERY GRANT. Until 5 October 2026 there was no SEAI home battery
+    # grant and this file said so, on a 6-month recheck cycle chosen precisely
+    # because a stale negative costs a homeowner money. The recheck found one.
+    # SEAI opened a grant on 6 October 2026, so the negative is SUPERSEDED
+    # rather than deleted: what PlotNua told homeowners is part of the record.
+    r(evidence_id="store-battery-grant-600", opportunity="STORE",
       claim_key="battery_grant_exists",
+      claim="The SEAI Battery Energy Storage System grant is a flat EUR 600 "
+            "for a home battery of 5kWh or larger.",
+      value={"grant_exists": True, "amount_eur": 600,
+             "min_capacity_kwh": 5, "flat_rate": True},
+      authority="SEAI",
+      source_title="Battery Energy Storage System Grant",
+      source_url=SEAI_BATTERY, source_type="SCHEME_PAGE",
+      valid_from="2026-10-06", last_verified="2026-10-06",
+      review_interval_months=6,
+      maturity="CURRENT_SCHEME", homeowner_safe=True, logic_safe=True,
+      supersedes="store-no-seai-grant",
+      notes="REPLACES the negative claim that no battery grant exists. "
+            "ACTIVATED. Encoded 4 October 2026 and deliberately held out of "
+            "the live page until the scheme opened; re-read against the SEAI "
+            "scheme page on 6 October 2026, which states the grant is open "
+            "for applications from 5pm on Tuesday 6 October 2026 and confirms "
+            "EUR 600 flat for 5kWh or larger, unchanged. Batteries under 5kWh "
+            "are not eligible. The hold was manual because resolve() honours "
+            "valid_from only for ANNOUNCED_FUTURE_CHANGE, and using that "
+            "maturity here would have withheld the whole STORE finding."),
+
+    r(evidence_id="store-battery-grant-eligibility", opportunity="STORE",
+      claim_key="battery_grant_eligibility",
+      claim="The home needs an MPRN and must have been built and occupied "
+            "before 2025. The grant is not open to a home that has already "
+            "had battery grant funding at that MPRN.",
+      value={"mprn_required": True, "built_occupied_before": 2025,
+             "one_per_mprn": True},
+      authority="SEAI",
+      source_title="Battery Energy Storage System Grant",
+      source_url=SEAI_BATTERY, source_type="SCHEME_PAGE",
+      valid_from="2026-10-06", last_verified="2026-10-06",
+      review_interval_months=6,
+      maturity="CURRENT_SCHEME", homeowner_safe=True, logic_safe=True,
+      notes="THE YEAR IS 2025, NOT 2021. Solar PV and the heat pump grant "
+            "both use 'before 2021'. Carrying that threshold across would "
+            "wrongly exclude every home built between 2021 and 2024."),
+
+    r(evidence_id="store-battery-grant-process", opportunity="STORE",
+      claim_key="battery_grant_process",
+      claim="The battery must be installed by an SEAI registered Solar PV "
+            "contractor, the homeowner must receive SEAI's Grant Offer "
+            "before installation begins, the installer applies to ESB "
+            "Networks before the battery is installed, and a post-works BER "
+            "is required where the home has solar PV. Solar PV and a battery "
+            "can be applied for in a single application.",
+      value={"registered_contractor_required": True,
+             "grant_offer_before_install": True,
+             "esbn_application_before_install": True,
+             "post_works_ber_if_pv": True,
+             "single_application_with_pv": True},
+      authority="SEAI",
+      source_title="Battery Energy Storage System Grant",
+      source_url=SEAI_BATTERY, source_type="SCHEME_PAGE",
+      valid_from="2026-10-06", last_verified="2026-10-06",
+      review_interval_months=6,
+      maturity="CURRENT_SCHEME", homeowner_safe=True, logic_safe=True,
+      notes="TWO DISTINCT ROLES, NOT ONE. The SEAI registered Solar PV "
+            "contractor is a grant-scheme registration; the Safe Electric "
+            "registered electrician is the electrical certification. The "
+            "journey must not imply that satisfying the second satisfies "
+            "the first. grant_offer_before_install is from SEAI's Criteria: "
+            "'You must wait to receive a Grant Offer from SEAI before "
+            "installing the battery.' Read 6 October 2026. It is in this "
+            "record and not a new one because it is the same scheme page, "
+            "the same verification, and the same question a homeowner is "
+            "asking: what do I have to do to actually get the EUR 600."),
+
+    r(evidence_id="store-no-seai-grant", opportunity="STORE",
+      claim_key="battery_grant_exists_historical",
       claim="There is no SEAI grant for home battery storage.",
       value={"grant_exists": False}, authority="SEAI",
       source_title="Home energy grants — published measures", source_url=SEAI_HOME,
       source_type="SCHEME_PAGE", review_interval_months=6,
+      valid_until="2026-10-05",
+      superseded_by="store-battery-grant-600",
       maturity="CURRENT_SCHEME", homeowner_safe=True, logic_safe=True,
-      notes="A NEGATIVE claim. Re-checked on a 6-month cycle because a stale "
-            "negative costs a homeowner money as surely as a stale positive."),
+      notes="RETIRED 6 October 2026, superseded by store-battery-grant-600. "
+            "Kept because the 6-month recheck cycle on this negative is what "
+            "caught the change, and that is worth being able to show."),
 
     r(evidence_id="store-battery-recognised", opportunity="STORE",
       claim_key="battery_recognised_renewable",

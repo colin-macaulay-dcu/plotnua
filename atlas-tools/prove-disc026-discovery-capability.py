@@ -111,11 +111,31 @@ case("G3b the governed Library image is removed from the page",
      lambda t: t.replace("assets/img/ce9da2e51c945693.jpg",
                          "assets/img/f0e99db16cefc470.jpg", 1))
 
-# ---- G4 . the battery boundary is converted without authorisation ---------
-case("G4  the battery grant is converted to the present tense",
+# ---- G4 . the battery boundary reverts to the pre-activation tense --------
+# RE-POINTED on 6 October 2026, the day the scheme opened. This case used to
+# break the guard by converting the announced sentence to the present tense.
+# That conversion is now the AUTHORISED state, so the sabotage is its mirror:
+# putting the page back into future tense, which after 5pm on 6 October tells
+# a homeowner the grant has not started when it has.
+case("G4  the battery grant reverts to future tense inside the markers",
      lambda t: t.replace(
-         "From 6 October 2026 SEAI is to pay a flat\n            &euro;600",
-         "There&rsquo;s an SEAI grant of\n            &euro;600", 1))
+         "SEAI pays a flat\n            &euro;600",
+         "From 6 October 2026 SEAI is to pay a flat\n            &euro;600", 1))
+
+# ---- G4c . stale future tense survives OUTSIDE the markers ----------------
+# The detailed grants section carried its own "announced ... to start"
+# sentence, outside the marker region, which the first version of G4 never
+# looked at. A guard that only watches the markers would pass a page that
+# still tells the homeowner the scheme has not opened.
+case("G4c stale future tense survives outside the marker region",
+     lambda t: t.replace(
+         "larger, open for applications from 6 October 2026.",
+         "larger, announced by SEAI to start on 6 October 2026.", 1))
+
+# ---- G4d . a figure is lost while converting the tense --------------------
+case("G4d the EUR 600 figure is lost in the conversion",
+     lambda t: t.replace("SEAI pays a flat\n            &euro;600",
+                         "SEAI pays a flat grant", 1))
 
 # ---- G4b . the boundary markers are stripped ------------------------------
 case("G4b the battery boundary markers are stripped",

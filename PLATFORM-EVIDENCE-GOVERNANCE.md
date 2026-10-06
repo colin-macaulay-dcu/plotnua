@@ -103,6 +103,45 @@ attention. Deliberately not redesigned in this task.
 *(Internal field identifiers are omitted here by the public disclosure
 firewall in §4a. They are held in the internal Atlas schema record.)*
 
+## 5a · FIRST-PARTY RULE FOR GRANTS AND FINANCIAL-SUPPORT AMOUNTS — ACTIVE
+
+Recorded 2026-10-04. **Platform-wide. Not DISC-026-specific.**
+
+> **NO IRISH GRANT OR FINANCIAL-SUPPORT AMOUNT ENTERS PLOTNUA FROM A SECONDARY
+> SOURCE.**
+
+Secondary sources — installer sites, comparison sites, trade press, aggregators —
+**may be used for discovery**: to learn that a scheme exists, that it changed, or
+that it is worth checking. They may not be the source of a published figure.
+
+Before any of the following reaches a homeowner-facing surface or a governed
+evidence record, it must be verified against the **current responsible
+authority's own first-party source**, with that source's URL and the read date
+recorded:
+
+- a grant or financial-support **amount**;
+- an **eligibility threshold**;
+- an **application or scheme date** (opening, closing, deadline);
+- a **property-age condition**;
+- a **technology requirement**.
+
+**Why this is a rule and not a preference.** In a single week of DISC-026
+research, secondary Irish sources were wrong three times on figures that would
+have been published:
+
+| Secondary source said | The authority's own page says |
+|---|---|
+| Heat pump grant maximum **€12,500** | **€14,500** bundle ceiling (SEAI) |
+| Heat Loss Indicator threshold **2.0** | **2.3 W/(K.m²)** (SEAI) |
+| Ground-source grant **"up to €6,500"** | €6,500 is the **replacement** heat-pump cap; the bundle ceiling is **€14,500** (SEAI) |
+
+Each error favoured a plausible-sounding, wrong number. A homeowner acting on any
+of them would have mis-planned their money.
+
+**Retrospective application is NOT authorised by this rule.** Existing evidence
+records are not to be altered merely to apply it. The rule governs what enters
+from now, and applies on the normal recheck cycle.
+
 ## 6 · Scale gate — ACTIVE
 
 | | State |

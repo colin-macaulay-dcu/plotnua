@@ -1135,6 +1135,7 @@ details.ps-drawer[open] summary::after{content:"–"}
     'planning_exempt_houses','planning_no_area_limit_houses',
     'planning_protected_structure_aca','seai_does_not_warranty_contractor',
     'meter_enables_time_of_use','meter_is_not_tariff','battery_grant_exists',
+    'battery_grant_process',
     'ac_battery_treated_as_microgeneration','battery_requires_esbn_notification',
     'battery_requires_safe_electric_rec','battery_route_by_capacity',
     'supplier_must_pay_for_export','export_state_metered','export_state_waiting',
@@ -1253,14 +1254,19 @@ details.ps-drawer[open] summary::after{content:"–"}
   }
 
   function storeResult(){
-    if (!current('battery_grant_exists'))
+    /* BOTH keys, not one. The finding below names the EUR 600 and then names
+       what a homeowner has to do to actually receive it. If the process
+       evidence stops being CURRENT we must stop saying both, not keep the
+       money and drop the conditions — that is the version that costs someone
+       a grant. */
+    if (!current('battery_grant_exists') || !current('battery_grant_process'))
       return {key:'STORE', band:NOINFO, note:'WITHHELD', state:'WITHHELD',
         text:'We can’t stand over this right now — our source needs rechecking.'};
     if (notOwner())
       return {key:'STORE', band:CHANGE, note:'TENANT_OR_NOT_OWNER', state:'OK',
         text:'A battery is the owner’s decision. It does not depend on there being solar here — a battery can charge from the grid on its own.'};
-    return {key:'STORE', band:READY, note:'NO_GRANT_SELF_FUNDED', state:'OK',
-      text:'A battery does not need solar. It can charge from the grid and run the house later, and it can hold what a roof generates if there is one. There’s no SEAI grant for a home battery, so this one is self-funded. ESB Networks is told before it goes in, and the work is done and certified by a Safe Electric registered electrician.'};
+    return {key:'STORE', band:READY, note:'BATTERY_GRANT_600', state:'OK',
+      text:'A battery does not need solar. It can charge from the grid and run the house later, and it can hold what a roof generates if there is one. There’s an SEAI grant of €600 towards a home battery of 5kWh or larger — for that, the battery has to be fitted by an SEAI registered solar PV contractor, and SEAI’s grant offer has to come through before the work starts. Either way, ESB Networks is told before it goes in, and the electrical work is certified by a Safe Electric registered electrician.'};
   }
 
   function sellResult(){
@@ -1387,7 +1393,7 @@ details.ps-drawer[open] summary::after{content:"–"}
     }
     if (r.key==='STORE'){
       if (r.note==='TENANT_OR_NOT_OWNER')       return 'Needs the owner\u2019s decision';
-      if (r.note==='NO_GRANT_SELF_FUNDED')      return 'Available to this home';
+      if (r.note==='BATTERY_GRANT_600')      return 'Available to this home';
     }
     if (r.key==='SELL'){
       if (r.note==='TENANT_OR_NOT_OWNER')       return 'Follows the owner\u2019s decision';
@@ -1457,7 +1463,8 @@ details.ps-drawer[open] summary::after{content:"–"}
           'planning_exempt_houses','planning_no_area_limit_houses','planning_protected_structure_aca',
           'seai_does_not_warranty_contractor'],
     TIME:['meter_enables_time_of_use','meter_is_not_tariff'],
-    STORE:['battery_grant_exists','ac_battery_treated_as_microgeneration',
+    STORE:['battery_grant_exists','battery_grant_process',
+           'ac_battery_treated_as_microgeneration',
            'battery_requires_esbn_notification','battery_requires_safe_electric_rec','battery_route_by_capacity'],
     SELL:['supplier_must_pay_for_export','export_requires_registration','export_rates_unregulated',
           'export_state_calculated','microgen_income_tax_exemption']
