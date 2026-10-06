@@ -59,6 +59,7 @@ Standard library only, matching .github/scripts/atlas_stats.py.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -91,6 +92,7 @@ from atlas_common import (  # noqa: F401  — extracted verbatim, see atlas_comm
 
 GARDEN_ROOMS = "Garden Rooms"
 RULE_VERSION = "garden-room-qualification-v1"
+GOVERNED_CONTRACT_VERSION = "garden-room-price-contract-v1"
 SCHEMA       = "plotnua.garden-room-recommendation-universe"
 VERSION      = "1.0.0-dryrun"
 
@@ -307,6 +309,12 @@ FEATURES_WANTED = {
     # carries both, both stating 10 years structural and 20 on the roof. The
     # brief forbids exposing both, so only the current one is carried.
     "electrical included":     "electricalIncluded",
+    # PHASE 6C — the two remaining commercial-basis axes. Carried as EVIDENCE
+    # only. Their value vocabularies have NOT been measured, so nothing
+    # classifies them yet and both axes stay UNKNOWN. Measuring them from real
+    # generated output is the next phase's work, not a guess made here.
+    "delivery basis":          "deliveryBasis",
+    "foundation / base requirement": "foundationBaseRequirement",
     "warranty":                "warranty",
     "external dimensions":     "externalDimensions",
 }
@@ -478,6 +486,158 @@ def match_price(price_rec):
         if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0:
             return v, cell(price_rec, "Currency"), cell(price_rec, "Status")
     return None, cell(price_rec, "Currency"), cell(price_rec, "Status")
+
+
+# ── PHASE 6C — THE GOVERNED PRICE CONTRACT ──────────────────────────────────
+#
+# WHY priceStatus EXISTS. match_price() returns cell(rec, "Status") as its
+# third value, and the emit block has always assigned that to `priceBasis`.
+# So `priceBasis` has never carried a commercial basis of supply: it carries
+# the Airtable price record's VERIFICATION STATUS (Verified, Partially
+# Verified, Draft, Researching, Active, Archived). your-plot.html reads it 19
+# times and already treats it correctly as a status -- comparePriceEvidenceState()
+# maps it to the three-state "Transparent Pricing" surface. The defect is the
+# NAME, not the runtime behaviour. `priceStatus` is the truthful name; the old
+# key is retained, unchanged, as a deprecated alias so no live reader breaks.
+# A commercial basis claim must never be generated from it.
+#
+# THE ERECTION AXIS IS DERIVED FROM A CLOSED, MEASURED VOCABULARY. Atlas holds
+# no erection/siteWorks/delivery fields. It does hold "Installation Model",
+# whose values open with a governed lead phrase -- the same convention
+# classify_irish_availability() already classifies on. Measured over the 573
+# eligible products in run 37460970253: 428 carry the feature and the lead
+# phrases form a CLOSED set of exactly 8. Anything outside it is UNKNOWN.
+INSTALL_LEAD_ERECTION = {
+    "TURNKEY INSTALLATION INCLUDED":        "INCLUDED",   # 144
+    "INSTALLED / ASSEMBLED INCLUDED":       "INCLUDED",   #   8
+    "SUPPLY AND FIT":                       "INCLUDED",   #   4
+    "DIY KIT ONLY":                         "EXCLUDED",   #  67
+    "INSTALLATION AVAILABLE (OPTIONAL)":    "EXCLUDED",   #  22  optional => not in the standard price
+    "DIY OR INSTALLED":                     "UNKNOWN",    # 155  both offered; which the price covers is not stated
+    "INSTALLATION UNKNOWN":                 "UNKNOWN",    #  26
+    "MANUFACTURER-SUPPORTED ASSEMBLY, WINDOWS AND WIRING": "UNKNOWN",  # 2  support is not erection
+}
+
+
+def install_lead_phrase(text):
+    """The governed lead token, or None. Never a substring search over prose:
+    only the span before the first terminator is considered."""
+    if not text:
+        return None
+    import re as _re
+    head = _re.split(r"[.\u2014\u2013:;]", str(text))[0]
+    head = " ".join(head.strip().upper().split())
+    return head or None
+
+
+def derive_basis_class(ax):
+    """Phase 4 taxonomy. A pure function of the three axes, order significant."""
+    e, d, s = ax.get("erection"), ax.get("delivery"), ax.get("siteWorks")
+    if e == "EXCLUDED" and d == "EXCLUDED":   return "EX_WORKS"
+    if e == "INCLUDED" and s == "INCLUDED":   return "ERECTED_WITH_SERVICES"
+    if e == "INCLUDED" and s == "EXCLUDED":   return "ERECTED_SERVICES_EXCLUDED"
+    if e == "INCLUDED":                       return "ERECTED_SERVICES_UNKNOWN"
+    if e == "EXCLUDED" and d == "INCLUDED":   return "DELIVERED_SHELL"
+    if e == "EXCLUDED":                       return "KIT_SELF_ASSEMBLY"
+    return "UNKNOWN"
+
+
+# Only these three are a governed VAT position. Everything else is Unknown;
+# nothing is parsed out of Notes and no rate is ever manufactured.
+VAT_MAP = {"yes": "Yes", "no": "No", "excluding vat": "No"}
+SAFE_STATUSES = {"Verified", "Partially Verified"}
+
+
+def price_governance(pick, adj_state, candidates, price_rows, carried):
+    """The governed price contract. Structured evidence only -- no prose."""
+    num = price_record_number(pick) if adj_state != "ambiguous" else None
+    cur = txt(cell(pick, "Currency")) if (pick and adj_state != "ambiguous") else None
+    status = txt(cell(pick, "Status")) if (pick and adj_state != "ambiguous") else None
+    ptype = txt(cell(pick, "Price Type")) if (pick and adj_state != "ambiguous") else None
+    scope = txt(cell(pick, "Evidence Scope")) if (pick and adj_state != "ambiguous") else None
+    to = cell(pick, "Price To") if (pick and adj_state != "ambiguous") else None
+    vat_raw = txt(cell(pick, "Price Includes VAT")) if (pick and adj_state != "ambiguous") else None
+
+    # erection, from the closed lead-phrase vocabulary
+    im = (carried or {}).get("installationModel") or {}
+    lead = install_lead_phrase(im.get("text"))
+    if lead is None:
+        erection, basis_conf = "UNKNOWN", "NO_BASIS_STATED"
+    elif lead in INSTALL_LEAD_ERECTION:
+        erection = INSTALL_LEAD_ERECTION[lead]
+        basis_conf = "EXPLICIT" if erection != "UNKNOWN" else "NOT_CONFIRMED"
+    else:
+        erection, basis_conf = "UNKNOWN", "NOT_CONFIRMED"   # outside the closed set
+
+    # delivery and siteWorks: evidence carried, vocabulary not yet measured.
+    axes = {"erection": erection, "siteWorks": "UNKNOWN", "delivery": "UNKNOWN"}
+
+    # ORDER MATTERS. An ambiguous product HAS price evidence -- two governed
+    # records Atlas cannot choose between -- so it must never be reported as
+    # NO_PRICE. Testing num first did exactly that and was caught by the
+    # contract guard before this ever reached CI.
+    if adj_state == "ambiguous":
+        basis_conf = "CONFLICTED"
+    elif num is None:
+        basis_conf = "NO_PRICE"
+
+    safe = bool(num is not None and cur and adj_state == "adjudicated"
+                and status in SAFE_STATUSES)
+    if num is not None and not safe and adj_state != "ambiguous":
+        basis_conf = "UNSAFE" if basis_conf in ("EXPLICIT", "NO_BASIS_STATED",
+                                                "NOT_CONFIRMED") else basis_conf
+
+    is_floor = bool(num is not None and isinstance(to, (int, float))
+                    and not isinstance(to, bool) and to > num) or \
+               bool(num is not None and ptype and ptype.strip().lower() == "starting from")
+
+    ids = [r.get("id") for r in (candidates or []) if r.get("id")]
+    return {
+        "priceRecordIds": ids,
+        "priceRecordIdsAvailable": len(price_rows or []),
+        "priceStatus": status,
+        "priceType": ptype,
+        "priceScope": scope,
+        "vatStatus": VAT_MAP.get((vat_raw or "").strip().lower(), "Unknown"),
+        "vatRate": None,          # no structured governed rate exists in Atlas
+        "priceBasisAxes": axes,
+        "priceBasisClass": derive_basis_class(axes),
+        "priceBasisConfidence": basis_conf,
+        "priceIsRangeFloor": is_floor,
+        "priceSafeForMatching": safe,
+        # Provenance WITHOUT prose: ids, governed states and the check date only.
+        # Known Exclusions and Notes are deliberately excluded.
+        "priceEvidenceRef": {
+            "recordIds": ids,
+            "adjudication": adj_state,
+            "candidateCount": len(candidates or []),
+            "status": status,
+            "priceType": ptype,
+            "evidenceScope": scope,
+            "lastPriceCheck": txt(cell(pick, "Last Price Check")) if pick else None,
+            "basisSource": "installationModel.leadPhrase" if lead else None,
+            "basisLeadPhrase": lead if lead in INSTALL_LEAD_ERECTION else None,
+        },
+    }
+
+
+GOVERNED_DIGEST_FIELDS = (
+    "productId", "price", "currency", "priceStatus", "priceType", "priceScope",
+    "vatStatus", "vatRate", "priceBasisClass", "priceBasisConfidence",
+    "priceIsRangeFloor", "priceSafeForMatching", "priceRecordIds",
+)
+
+
+def governed_digest(products) -> str:
+    """A stable fingerprint of the GOVERNED price contract only. Any
+    post-generation mutation of a governed field changes it; reformatting,
+    key order and non-governed fields do not."""
+    rows = []
+    for e in sorted(products, key=lambda r: r.get("productId") or ""):
+        rows.append([("%s=%s" % (f, json.dumps(e.get(f), sort_keys=True)))
+                     for f in GOVERNED_DIGEST_FIELDS])
+    blob = json.dumps(rows, separators=(",", ":"), sort_keys=False)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
 def match_irish_state(ie_state: str):
@@ -1160,6 +1320,10 @@ def main():
             rec.update({
                 "price": num,                       # numeric or null, never 0-for-unknown
                 "currency": cur or ("EUR" if num is not None else None),
+                # DEPRECATED. Carries the price record's verification STATUS,
+                # never a commercial basis. 19 live readers in your-plot.html
+                # depend on it, so it is retained unchanged and is NOT the
+                # source of any basis language. Read priceStatus instead.
                 "priceBasis": basis,
                 "floorAreaM2": feature_m2(carried, "floorArea"),
                 "glazing": feature_text(carried, "glazing"),
@@ -1188,6 +1352,9 @@ def main():
                 "priceEvidenceState": q["priceEvidence"],
                 "qualificationCaveats": q["caveats"],
             })
+            # PHASE 6C — the governed price contract, additive.
+            rec.update(price_governance(pick, adj_state, adj_candidates,
+                                        price_rows, carried))
             emitted.append(rec)
 
     gates(garden, emitted, excluded, source_count)
@@ -1246,6 +1413,14 @@ def main():
         # as such; it is no longer folded into "missing".
         "priceEvidenceSummary": price_axis,
         "quoteOnlyPriceCount": price_axis["quote-only"],
+        # ---- PHASE 6C — PRODUCTION-CANDIDATE METADATA -----------------------
+        # organisationCount is the DISTINCT organisations actually represented
+        # among the emitted products, not the size of the Organisations table.
+        "organisationCount": len({e.get("organisation") for e in emitted
+                                  if e.get("organisation")}),
+        "governedPriceContractVersion": GOVERNED_CONTRACT_VERSION,
+        "governedDigest": governed_digest(emitted),
+        "sourceKind": ("airtable-live" if not args.snapshot else "offline-snapshot"),
         "missingProductUrlCount": sum(1 for e in emitted + excluded
                                       if not e.get("productUrl")),
         "products": emitted,
