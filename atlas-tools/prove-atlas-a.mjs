@@ -9,8 +9,8 @@
    enough. pnScopeNote() is computed separately and attached to the SAME row, so
    a read can be established AND scope-limited -- Atlas verified the supplier's
    range, not this model. Measured over the real universe by lifting the shipped
-   functions verbatim: 1,783 established · 552 model-level · 1,231 scope-limited.
-   A gate on state alone would make 1,231 false model-level claims.
+   functions verbatim: 1,898 established · 548 model-level · 1,350 scope-limited.
+   A gate on state alone would make 1,350 false model-level claims.
 
    A1  The three placements exist, at 24 / 20 / 16px, wired the approved way.
    A2  THE ARTWORK IS THE SUPPLIED ARTWORK. The inlined template is byte-
@@ -174,10 +174,29 @@ else {
     fs.unlinkSync(lifted);
     leak ? bad(leak + ' row(s) would be marked that must not be')
          : ok('0 rows marked that must not be, across ' + prods.length + ' products');
-    refused === 1231 ? ok('1,231 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,231 scope-limited refusals, measured ' + refused);
-    allowed === 552 ? ok('552 model-level established reads allowed')
-                    : bad('expected 552 model-level marks, measured ' + allowed);
+    /* RE-CENSUSED for the governed 573-product universe, 6 October 2026. The
+       figures were calibrated against the 477-product universe and the Phase 7
+       promotion to 573 moved them: scope-limited 1231 -> 1350, model-level
+       552 -> 548. The DECISION LOGIC above is untouched and its safety
+       assertion still passes -- leak is 0 across all 573 products.
+
+       The movement was decomposed before these numbers were changed. 13
+       re-categorised products left, taking 19 model-level and 27 scope-limited
+       reads with them; 109 additions brought none; and 119 of the 464 products
+       present in both universes gained reads from the Atlas re-read. Every one
+       of the 15 new model-level marks is a feature that did not exist in the
+       477 universe at all -- deliveryBasis, foundationBaseRequirement -- each
+       carrying scope "Product-Specific". ZERO scope notes were lost, which is
+       the only movement that would have meant the mark had started claiming
+       something Atlas had not established for the model on screen.
+
+       STRICT EQUALITY IS DELIBERATE. A tolerance here would let exactly that
+       loss drift through unnoticed, so this stays an exact census that must be
+       re-measured, and its movement explained, on every authorised promotion. */
+    refused === 1350 ? ok('1,350 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,350 scope-limited refusals, measured ' + refused);
+    allowed === 548 ? ok('548 model-level established reads allowed')
+                    : bad('expected 548 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']
       .filter(s => marked({ state: s, scope: null, conflict: null }));
     none.length ? bad('states that must never be marked are: ' + none.join(', '))

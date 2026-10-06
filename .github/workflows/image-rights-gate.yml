@@ -174,7 +174,7 @@ jobs:
       # ATLAS A, PHASE 1. The mark is a claim — "Atlas established this" — so
       # the guard is not that the icon renders but that it never renders over
       # something Atlas did not establish for the exact model on screen.
-      # pnEvidenceState() === 'established' is NOT sufficient: 1,231 of 1,783
+      # pnEvidenceState() === 'established' is NOT sufficient: 1,350 of 1,898
       # established reads are supplier- or range-level. The proof lifts the
       # shipped functions and drives them over the real universe.
       #
