@@ -1,1 +1,22 @@
 __pycache__/
+
+# ---- local / generated, never committed ---------------------------------
+# Added 7 October 2026 as the precondition for bringing the garden-register
+# Worker under version control (G3 closure, founder decision D-E).
+#
+# SCOPE NOTE: these three rules exclude dependency trees, local CLI state and
+# macOS noise ONLY. They are deliberately narrow. No rule here hides unrelated
+# PlotNua work in progress — the shadow-budget-v2 candidate universes, the
+# phase6d/phase7 directories and tr4-inspect-candidate.py all remain visible
+# in `git status` exactly as before.
+
+# npm dependency trees. Regenerable from package-lock.json; 1,846 files / 25 MB
+# in worker/garden-register alone.
+node_modules/
+
+# Wrangler's local CLI cache, including the account identifier it writes after
+# a login. Never inspected, never committed.
+.wrangler/
+
+# macOS Finder metadata.
+.DS_Store
