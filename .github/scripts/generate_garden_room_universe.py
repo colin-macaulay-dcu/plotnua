@@ -1103,8 +1103,19 @@ def main():
                 # SPACE in Airtable. That is the field's real name, not a typo;
                 # requesting "Last Reviewed" returns nothing. "Organisation
                 # Type" was already being fetched and simply never exported.
+                # TR-4 — THE GOOGLE IDENTITY FIELDS MUST BE REQUESTED HERE.
+                # fetch_all sends an explicit fields[] allowlist, so a field
+                # absent from this list is absent from the record, cell()
+                # returns None, txt() returns "" and the googleIdentity block
+                # below silently emits nothing. The block was correct; it was
+                # never given the data. Identity and governance metadata only:
+                # no rating, review count, review text or reviewer field is
+                # requested here or anywhere else.
                 "organisations": fetch_all(token, T_ORGS, ["Organisation Name", "Organisation Type", "Website",
-                                                       "Headquarters", "Sources", "Last Reviewed "]),
+                                                       "Headquarters", "Sources", "Last Reviewed ",
+                                                       "Google Place ID", "Google Identity State",
+                                                       "Google Identity Verified On",
+                                                       "Google Identity Revalidate By"]),
             }
         except Exception as e:
             fail(f"Atlas read failed: {e}")
