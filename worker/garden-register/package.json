@@ -1,0 +1,12 @@
+{
+  "name": "plotnua-garden-register",
+  "private": true,
+  "type": "module",
+  "description": "DISC-025 Borrowed Garden register Worker. G1B contract. Both switches ship off.",
+  "scripts": {
+    "prove": "node test/prove-guards.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.2"
+  }
+}

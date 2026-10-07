@@ -1,0 +1,30 @@
+name = "plotnua-garden-register"
+main = "src/index.js"
+compatibility_date = "2026-10-07"
+
+workers_dev = true      # the endpoint the page calls. plotnua.ie is NOT on
+                        # Cloudflare, so there is no zone route and no
+                        # plotnua.ie/v1/... path. The page calls this origin
+                        # directly and the Worker handles cross-origin properly.
+preview_urls = false    # each preview URL would be another live hostname able
+                        # to reach the same register. One endpoint, not a family.
+
+[vars]
+# ---------------------------------------------------------------------------
+# G1B CONTRACT · BOTH SWITCHES SHIP OFF.
+# A register holding real people's details is one switch away from live, so
+# there are two, and neither is flipped by deploying.
+# ---------------------------------------------------------------------------
+WRITES_ENABLED  = "false"
+EMAIL_ENABLED   = "false"   # there is NO mail adapter in this Worker. This var
+                            # exists so the refusal is explicit rather than
+                            # implied by absence, and so a future adapter
+                            # cannot be switched on by accident.
+ORIGIN          = "https://plotnua.ie"
+PRIVACY_VERSION = "2026-10-PHASE2-V1"
+PILOT_DISTRICTS = "raheny,killester,donnycarney,artane"
+
+# AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here.
+#   AIRTABLE_BASE  -> set as a var at deploy:   appUie3wPmPITfMW7
+#   AIRTABLE_TOKEN -> set as a SECRET only:     wrangler secret put AIRTABLE_TOKEN
+# writesEnabled() requires all three, so a missing token is a third hard stop.
