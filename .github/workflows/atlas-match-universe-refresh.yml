@@ -230,12 +230,16 @@ jobs:
             --index "${{ steps.outdir.outputs.path }}/$DETAIL_INDEX" \
             --summary-out "${{ steps.outdir.outputs.path }}/partition-validation-summary.txt" \
             --output-prefix parts_ \
+            --partitions-production-dir . \
             --github-output
 
       # ATOMIC. Both artefacts are validated above; this publishes BOTH or
       # NEITHER, so production can never hold a fresh core beside a stale or
-      # rejected detail file. It runs only when EITHER has genuinely changed —
-      # 'generated' moves every run and is excluded from that test on both.
+      # rejected detail file. It runs when the core universe, the main detail
+      # artefact OR any governed partition has genuinely changed — TR-4 added
+      # the third, because a change confined to the supplier partition used to
+      # validate cleanly and then never publish. 'generated' moves every run
+      # and is excluded from the test on all three.
       - name: Publish the candidates, only if they are genuinely different
         if: >-
           inputs.mode != 'verify-only' &&
@@ -243,7 +247,8 @@ jobs:
           steps.validate_detail.outputs.detail_valid == 'true' &&
           steps.validate_parts.outputs.parts_valid == 'true' &&
           (steps.validate.outputs.changed == 'true' ||
-           steps.validate_detail.outputs.detail_changed == 'true')
+           steps.validate_detail.outputs.detail_changed == 'true' ||
+           steps.validate_parts.outputs.parts_changed == 'true')
         run: |
           set -euo pipefail
           cp "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" "$PRODUCTION_FILE"
@@ -298,7 +303,8 @@ jobs:
       - name: Confirm both artefacts were left untouched when nothing changed
         if: >-
           steps.validate.outputs.changed != 'true' &&
-          steps.validate_detail.outputs.detail_changed != 'true'
+          steps.validate_detail.outputs.detail_changed != 'true' &&
+          steps.validate_parts.outputs.parts_changed != 'true'
         run: |
           set -euo pipefail
           NOW="$(sha256sum "$PRODUCTION_FILE" | cut -d' ' -f1)"

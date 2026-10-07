@@ -389,6 +389,17 @@ def main():
                     help="Validate a partition index and every partition it names.")
     ap.add_argument("--candidate", required=True)
     ap.add_argument("--production", default=None)
+    # TR-4 — PARTITION CHANGE DETECTION. The publish gate used to ask only
+    # whether the core universe or the main detail artefact had changed, so a
+    # genuine change confined to a governed PARTITION (the supplier artefact,
+    # for instance) could validate cleanly and then never publish. Pointing
+    # this at the directory holding the production partitions makes that
+    # change detectable, compared on content with the same governed rule the
+    # other detectors use: `generated` moves every run and is not a change.
+    ap.add_argument("--partitions-production-dir", default=None,
+                    help="Directory of the PRODUCTION partition files and index. "
+                         "When given, 'changed' reports whether any validated "
+                         "partition or the index materially differs.")
     ap.add_argument("--summary-out", default=None)
     ap.add_argument("--github-output", action="store_true")
     ap.add_argument("--output-prefix", default="detail_",
@@ -444,8 +455,51 @@ def main():
     for w in warnings:
         lines.append(f"  WARNING  {w}")
 
+    # TR-4 — when a production partition directory is supplied, `changed` is
+    # decided by the partitions and the index, not by the absent --production
+    # comparison. Without this the parts validator reported changed=true on
+    # every run (nothing to compare against), which would have turned every
+    # run into a publish.
+    parts_change = None
+    if args.partitions_production_dir and args.index and not errors:
+        pdir = Path(args.partitions_production_dir)
+        idx2, _ = load(args.index, "index", [])
+        moved = []
+        if idx2 is not None:
+            prod_idx_path = pdir / Path(args.index).name
+            if not prod_idx_path.exists():
+                moved.append(Path(args.index).name + " (new)")
+            else:
+                pidx, _ = load(str(prod_idx_path), "production index", [])
+                if pidx is None or not materially_same(idx2, pidx):
+                    moved.append(Path(args.index).name)
+            for p_ in (idx2.get("partitions") or []):
+                if not isinstance(p_, dict) or not isinstance(p_.get("file"), str):
+                    continue
+                cf = Path(args.index).parent / p_["file"]
+                pf = pdir / p_["file"]
+                if not cf.exists():
+                    continue
+                if not pf.exists():
+                    moved.append(p_["file"] + " (new)"); continue
+                csub, _ = load(str(cf), "candidate " + p_["file"], [])
+                psub, _ = load(str(pf), "production " + p_["file"], [])
+                if csub is None or psub is None or not materially_same(csub, psub):
+                    moved.append(p_["file"])
+        parts_change = moved
+
     changed = True
-    if not errors and prod is not None:
+    if parts_change is not None:
+        changed = len(parts_change) > 0
+        lines.append("")
+        if changed:
+            lines.append("  CHANGED — governed partitions differ from production:")
+            for m in parts_change[:25]:
+                lines.append(f"    - {m}")
+        else:
+            lines.append("  NO CHANGE — every governed partition and the index already current")
+            lines.append("  (compared on content; 'generated' is excluded because it moves every run)")
+    elif not errors and prod is not None:
         same = materially_same(cand, prod)
         changed = not same
         lines.append("")
