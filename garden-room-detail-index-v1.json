@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail.index",
   "version": "1.0.0-candidate",
-  "generated": "2026-10-06T19:11:14Z",
+  "generated": "2026-10-07T11:26:27Z",
   "partitions": [
     {
       "category": "alternatives",
@@ -57,7 +57,7 @@
       "file": "garden-room-detail-suppliers-v1.json",
       "productCount": 61,
       "recordCount": 767,
-      "rawBytes": 60152
+      "rawBytes": 60526
     }
   ]
 }

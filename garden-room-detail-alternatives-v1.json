@@ -1,28 +1,16 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
-  "version": "1.0.0-dryrun",
-  "generated": "2026-09-22T21:40:32Z",
+  "version": "1.0.0-candidate",
+  "generated": "2026-10-07T11:26:27Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "alternatives"
   ],
-  "productCount": 431,
+  "productCount": 419,
   "recordCounts": {
-    "alternatives": 431
+    "alternatives": 419
   },
   "products": {
-    "recpZW4echDhHtEVv": {
-      "alternatives": {
-        "text": "THE WELLNESS COHORT IN THIS CATALOGUE IS SMALL AND UNIFORMLY UNDOCUMENTED ON SIZE. TimberIN offers four products \u2014 a wood-fired hot tub, a cold plunge tub, a made-to-order barrel sauna and a sauna-and-hot-tub combo \u2014 of which only the enclosed ones are structures for planning purposes. MyCabin.ie's Cube Sauna M is the Irish-supplier alternative. None publishes a footprint. THE MORE USEFUL COMPARISON MAY BE OUTSIDE THE CATEGORY: if the sauna is intended to share a garden with a future office, look at what the office will need \u2014 Adman's nine named Multiroom sizes from 9.60 m2 upward, or Yardbox's published footprints \u2014 and reserve the allowance now. HOMEOWNER IMPLICATION: plan the whole garden, not the next purchase. Neither the Quu nor the Aurea publishes an area, footprint, height, specification, warranty or price, and Atlas records no distinguishing evidence between the two models \u2014 recorded once as a catalogue limitation. CATEGORY ISSUE carried forward once: both are wellness and sauna cabins held under Garden Rooms because no correct Product Category exists, and they should not be compared like-for-like against work-use garden rooms. Nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recEZ678YSRDJ16Ox": {
-      "alternatives": {
-        "text": "WITHIN THE WELLNESS GROUP IN THIS CATALOGUE, the comparisons are TimberIN's Nordic Pod Custom barrel sauna \u2014 made to order, so the size is set by the commission \u2014 and its Nordic Hobbiton sauna-and-hot-tub combo, where the whole unit occupies one continuous footprint. MyCabin.ie's Cube Sauna M is the Irish-supplier option, though the 'M' is a size band rather than a measurement. All of them share the same gap: none publishes a footprint, so none can be tested against the allowance. IF THE REAL REQUIREMENT IS A WARM YEAR-ROUND ROOM RATHER THAN A SAUNA, the certified thermal work points elsewhere entirely \u2014 SIPS-House publishes 124 mm SIPS walls and a 0.031 W/mK core, and Sanctum and Yardbox publish usable internal area separately from footprint. HOMEOWNER IMPLICATION: decide first whether you are buying heat or space; they are different products.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recD12mXzhW3zEo1K": {
       "alternatives": {
         "text": "IF THE APPEAL IS AN IRISH SHED-AND-GARDEN-BUILDING MAKER, Atlas holds several with real published figures. MCD Garden Sheds offers four models by roof type and configuration \u2014 though it too publishes no dimensions. Adman Steel Sheds is the better documented comparison: nine Multiroom sizes from 9.60 m2 to 36.80 m2, every one named by an explicit two-dimension designation, so the planning test can actually be run before you order. Shanette Sheds publishes two Gold Range sizes, one inside the allowance at 24.80 m2 and one over it at 31.20 m2. MyCabin.ie is Irish with three showrooms and publishes dimensions for every model. HOMEOWNER IMPLICATION: prefer a supplier whose sizes you can check on a page rather than one you must telephone to discover. The single Atlas record names a product type rather than a model and carries no area, dimension, height, specification or price, so all five Decision Intelligence values record an evidenced absence. Nothing inferred.",
@@ -203,18 +191,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recxVSbrKDFIVNTAV": {
-      "alternatives": {
-        "text": "Concept Modular Cabin 26m\u00b2 Studio \u2014 EUR 38,500 for a slightly larger room, EUR 16,450 less, same warranty and same construction system. Compare these two directly before anything else. Concept Modular Signature Cabin 36m\u00b2 \u2014 EUR 67,950 for 36.2m\u00b2 with kitchen and bathroom, better value per m\u00b2 than this model. Luxury Garden Studios Signature 98 \u2014 GBP 142,000 turnkey if the requirement is genuinely a dwelling rather than a studio.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recqsw7UCWcnwUwas": {
-      "alternatives": {
-        "text": "SIPS Garden Room MINT \u2014 41.2m\u00b2 one-bedroom kit from EUR 21,490 ex VAT: more floor area for a fraction of the price, but as a shell with no kitchen, bathroom, services or assembly included. 1 Bed Granny Flat 33m\u00b2 (Granny Flats Dublin) \u2014 the closest Irish turnkey annexe comparison. Luxury Garden Studios Signature 98 \u2014 GBP 142,000 for 98m\u00b2 and four bedrooms if the accommodation brief is much larger than one person.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rec0lmoob3jo4FfNg": {
       "alternatives": {
         "text": "Concept Modular Standard Office \u2014 EUR 16,950 ex VAT and the same 50-year warranty; take this unless the supplier can evidence what Signature adds. Urban Cubed Composite Garden Studio (Sanctum) \u2014 GBP 19,195 inc VAT with published U-values and itemised electrics, stronger on verifiable thermal performance. Duraboard Garden Room Mid Size 4.5m x 3m (My Garden Room) \u2014 EUR 19,600 estimated full turnkey including base, electrics and finishes, the closer comparison on total delivered cost. All 8 carry the full five-Feature AM-007 set. THE SUPPLIER-LEVEL SYNTHESIS: galvanised steel frames with an aluminium shell and advanced insulation, factory-finished, on a published 50-YEAR STRUCTURAL-ONLY warranty \u2014 the scope qualifier is the most important part of the figure, and fifty years on the structure alone is a narrower promise over a longer horizon, not a better one across the board. AVAILABLE IN REPUBLIC OF IRELAND, established on Irish contact details only. THREE LIMITATIONS, restated once: conceptmodular.ie/garden-rooms is on the Atlas permanently-unreadable list, so no coverage page could be read; published prices EXCLUDE base pads, installation, craneage and haulage, stated by the supplier at EUR 3,000 to 4,000 plus VAT; and no floor area is held for the Signature Office, so the EUR 2,000 premium over the Standard Office cannot be justified from evidence Atlas holds. No new outstanding integrity issues.",
@@ -272,12 +248,6 @@
     "recT2DoASzrfwSgDm": {
       "alternatives": {
         "text": "Atlas records this product as the representative of a two-row cluster sharing 12 m2, 44 mm and 359 x 359 cm: this model at EUR 6,240 and Corner Garden House Fargo B at EUR 6,580. For a larger corner building the supplier publishes Corner Garden House with Porch Hansa A at 739 x 548 cm. EVIDENCE NEUTRALITY: within the cluster the supplier publishes no specification difference, so no published evidence distinguishes the two on build.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recWYh1cQPtKDBsvL": {
-      "alternatives": {
-        "text": "THE CATALOGUE'S OTHER WELLNESS RECORDS ARE AUROOM WELLNESS, IGLUCRAFT AND TIMBERIN, and none of them publishes a footprint or height either \u2014 so no documented garden sauna exists here, which is the honest position. TIMBERIN'S NORDIC ICE COLD PLUNGE TUB is the one wellness product in the catalogue that is a vessel rather than an enclosed structure, and therefore the one least likely to consume the allowance. WITHIN MYCABIN, this is the only wellness product; the Laois at 9.00 m2 is the smallest of its buildings. HOMEOWNER IMPLICATION: across every sauna supplier here, the footprint is the figure to demand in writing.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -1127,12 +1097,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recW6DjtfmrlAHyfQ": {
-      "alternatives": {
-        "text": "THE GARDEN ROOM NORA E AND GARDEN ROOM JACOB E, BOTH WITH VERANDAS, ARE THE PARALLEL RECORDS, none distinguishable on published evidence. ALL ABOUT OUTDOORS' LENA IS THE COMPARISON WORTH MAKING: the certified layers state plainly there that a roofed patio counts toward the assessed area alongside the enclosed room \u2014 the same question, already settled. IF THE ALLOWANCE IS TIGHT, an UNROOFED deck beside a plain room achieves much of the same use without counting. HOMEOWNER IMPLICATION: roofed or unroofed is the decision with planning consequences.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "recrFFekZa6jNZsKe": {
       "alternatives": {
         "text": "Atlas records this product as the representative of a two-row cluster sharing 15 m2, 44 mm and 428 x 558 cm: this model at EUR 7,750 and Garden House Henry with Veranda Attached at EUR 7,930. Buyers wanting the same 15 m2 room with no porch should compare Aruba at EUR 6,290 on a 15.44 m2 footprint. EVIDENCE NEUTRALITY: within the cluster the supplier publishes no specification difference, so no published evidence distinguishes the two on build.",
@@ -1142,18 +1106,6 @@
     "recJrM9Ubx8WyWXCS": {
       "alternatives": {
         "text": "Atlas records this product as the representative of a two-row cluster sharing 22 m2, 70 mm and 698 x 398 cm: this model at EUR 14,810 and Malaga 2 at EUR 14,560. Buyers wanting 22 m2 on less ground should compare Liam Plus (23.25 m2 footprint, 44 mm, EUR 10,420); those wanting integrated storage and accepting planning should compare Heinz or Robin. EVIDENCE NEUTRALITY: within the cluster the supplier publishes no specification difference, so no published evidence distinguishes the two on build.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recCLPeIXS09tSjIo": {
-      "alternatives": {
-        "text": "The direct comparison is Lucas D with Canopy, published on the identical 600 x 298 cm footprint and 44 mm wall at EUR 5,770 \u2014 EUR 170 more, with a published room area 0.5 m2 larger. The veranda version of this model publishes 8.5 m2 on 578 x 298 cm for EUR 6,200. EVIDENCE NEUTRALITY: the supplier publishes no specification difference between the two canopy models other than the contradicted room area, so no published evidence establishes either as the better build.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recQAh2Q9scUud7pC": {
-      "alternatives": {
-        "text": "The direct comparison is Lucas D with Veranda, published on the identical 578 x 298 cm footprint and 44 mm wall at EUR 6,380 \u2014 EUR 180 more, with a published room area 0.5 m2 larger. The canopy version of this model publishes 8.5 m2 on 600 x 298 cm for EUR 5,600. EVIDENCE NEUTRALITY: the supplier publishes no specification difference between the two veranda models other than the contradicted room area, so no published evidence establishes either as the better build.",
         "evidenceScope": "Product-Specific"
       }
     },
@@ -2303,12 +2255,6 @@
         "evidenceScope": "Product-Specific"
       }
     },
-    "recgOQWcwBubjOLWh": {
-      "alternatives": {
-        "text": "Buyers wanting the same 12 m2 room for less should compare the 298 x 418 cm cluster, where four rows are published at EUR 5,950 to EUR 6,980. Buyers wanting a genuine covered outdoor area should compare Eva D with Terrace at 698 x 298 cm. EVIDENCE NEUTRALITY: the published data does not establish any of these as the better build; only size, price and named outdoor elements differ.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
     "rec74jHDrOU6IOM32": {
       "alternatives": {
         "text": "Atlas records this product as the representative of a two-row cluster sharing 22 m2, 70 mm and the 393 x 883 cm envelope: this model at EUR 14,300 and Garden House Rio with Side Shed and Veranda at EUR 15,760. Buyers wanting the same 22 m2 with storage inside the statutory allowance should compare Liam Plus (23.25 m2 footprint, 44 mm, EUR 10,420); for a comparable large 70 mm structure the supplier publishes Robin (22 m2, side shed and porch, 885 x 395 cm, EUR 16,020). EVIDENCE NEUTRALITY: within the cluster the supplier publishes no specification difference beyond the named outdoor element, so no published evidence distinguishes the two on build.",
@@ -2402,24 +2348,6 @@
     "recFQ6LsmRjnd581W": {
       "alternatives": {
         "text": "SIPS Garden Office DAISY \u2014 16.9m\u00b2 from EUR 9,390 ex VAT with a SIPS envelope and no annual timber treatment to keep a warranty alive, if you will manage the build. Multiroom Garden Room 4m x 4.2m (Adman Steel Sheds) \u2014 EUR 13,150 for a maintenance-free PVC-coated Irish unit at similar money. Green Retreats G2 4.3m x 4.2m \u2014 GBP 31,420 inc VAT for 16m\u00b2 if you want an established manufacturer's installed service and will pay roughly double for it.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recsgRXeV6TNzxCYa": {
-      "alternatives": {
-        "text": "THE ALTERNATIVE TO A COMBINED UNIT IS SIMPLY BUYING THE TWO ELEMENTS SEPARATELY: this supplier's Nordic Pod Custom sauna, sized to order, plus the Nordic Ice plunge tub or the Nordic Rojal hot tub \u2014 which has the planning advantage that a free-standing vessel need not count toward the allowance while a combined structure does. Auroom's Quu and Aurea and MyCabin.ie's Cube Sauna M are the other sauna cabins in the catalogue. HOMEOWNER IMPLICATION: splitting the functions can cost less allowance than combining them. All four are wellness equipment held under Garden Rooms because Atlas has no correct Product Category, and the range divides on a distinction that matters more than any specification: TWO ARE VESSELS \u2014 the Nordic Rojal hot tub and the Nordic Ice plunge tub \u2014 to which the floor-area test does not properly apply and whose planning relevance depends on whether they are decked or housed; TWO ARE ENCLOSED STRUCTURES \u2014 the Nordic Pod Custom barrel sauna, made to order with no fixed area, and this Hobbiton combo \u2014 whose footprints count toward the 30 m2 allowance in full. Not one publishes a footprint, height, warranty or price. Evidence neutrality preserved; nothing inferred.",
-        "evidenceScope": "Organisation-Wide"
-      }
-    },
-    "recgmL8p4EKPREiWf": {
-      "alternatives": {
-        "text": "AUROOM'S QUU AND AUREA are the direct sauna-cabin comparisons, though neither publishes a footprint either, so the same question arises. MYCABIN.IE'S CUBE SAUNA M is the Irish-supplier option, with an 'M' size band rather than a measurement. WITHIN THIS SUPPLIER, the Nordic Hobbiton combines a sauna and a hot tub in one continuous footprint \u2014 more capability, more allowance consumed. IF THE ALLOWANCE IS TIGHT, the Nordic Ice plunge tub delivers part of the wellness routine without counting as a structure at all. HOMEOWNER IMPLICATION: among saunas, the made-to-order length is this record's real differentiator.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "rec9EpRGhwrOZo686": {
-      "alternatives": {
-        "text": "WITHIN THE SAME SUPPLIER, the Nordic Ice cold plunge tub is the complementary vessel and the Nordic Hobbiton pairs a sauna with a tub in one unit \u2014 the only combined option in this catalogue. FOR A SAUNA INSTEAD OF A TUB, Auroom's Quu and Aurea and TimberIN's own Nordic Pod Custom are the enclosed alternatives, and all count toward the 30 m2 allowance as structures. HOMEOWNER IMPLICATION: decide first whether you want a vessel or a building \u2014 they carry entirely different planning consequences.",
         "evidenceScope": "Product-Specific"
       }
     },

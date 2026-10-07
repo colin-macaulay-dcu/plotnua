@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
-  "version": "1.0.0-dryrun",
-  "generated": "2026-09-22T21:40:32Z",
+  "version": "1.0.0-candidate",
+  "generated": "2026-10-07T11:26:27Z",
   "sourceBase": "appoLZFWesvoPhZGR",
   "categories": [
     "sources"
   ],
-  "productCount": 352,
+  "productCount": 341,
   "recordCounts": {
-    "sources": 352
+    "sources": 341
   },
   "products": {
     "recMYX68xsyrwVoR1": {
@@ -785,12 +785,6 @@
         "evidenceScope": null
       }
     },
-    "recMa9xyEmfP70YFw": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-evelin-plus-insulated-34-cladding-6x3m-20x10-18m-2.html",
-        "evidenceScope": null
-      }
-    },
     "recFyJvpQrlawL682": {
       "sources": {
         "text": "https://lugarde.com/en/product-range/garden-rooms",
@@ -845,12 +839,6 @@
         "evidenceScope": null
       }
     },
-    "recaj7Ngc6yeMuLg8": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-layla-insulated-34-cladding-6x3-m-20x10-15-m2-3.html",
-        "evidenceScope": null
-      }
-    },
     "receZKzDGBygAPUmx": {
       "sources": {
         "text": "https://summerhouse24.ie/garden-room-liam-g0058/",
@@ -881,12 +869,6 @@
         "evidenceScope": null
       }
     },
-    "recdsv9K7rmPYi8UU": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-maja-34-mm-7-5x4-m-25x13-30-m2.html",
-        "evidenceScope": null
-      }
-    },
     "recrcB8pgFufpvizK": {
       "sources": {
         "text": "https://lugarde.com/en/product-range/garden-rooms",
@@ -914,12 +896,6 @@
     "recWSp6lPbZejPLyy": {
       "sources": {
         "text": "https://lugarde.com/en/product-range/garden-rooms",
-        "evidenceScope": null
-      }
-    },
-    "reczxS9ObYqm25Ylb": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-room-oak-34-mm-6x3-m-20x10-16-m2.html",
         "evidenceScope": null
       }
     },
@@ -1121,12 +1097,6 @@
         "evidenceScope": null
       }
     },
-    "recW6DjtfmrlAHyfQ": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-eva-e-g0147/",
-        "evidenceScope": null
-      }
-    },
     "recrFFekZa6jNZsKe": {
       "sources": {
         "text": "https://summerhouse24.ie/garden-summer-house-with-porch-franz-g0098/",
@@ -1136,18 +1106,6 @@
     "recJrM9Ubx8WyWXCS": {
       "sources": {
         "text": "https://summerhouse24.ie/garden-summer-house-malaga-1-g0240/",
-        "evidenceScope": null
-      }
-    },
-    "recCLPeIXS09tSjIo": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-canopy-nora-d-g0152/",
-        "evidenceScope": null
-      }
-    },
-    "recQAh2Q9scUud7pC": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-veranda-nora-d-g0153/",
         "evidenceScope": null
       }
     },
@@ -1220,12 +1178,6 @@
     "rec3GvJzP3GvAZYPk": {
       "sources": {
         "text": "https://timberliving.ie/product/havana-garden-office-cabin/",
-        "evidenceScope": null
-      }
-    },
-    "rectNeIDvu63i8kmi": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-offices/insulated/",
         "evidenceScope": null
       }
     },
@@ -1472,18 +1424,6 @@
     "recL4sDGEMK33JGw7": {
       "sources": {
         "text": "https://timberliving.ie/product/nila-garden-cabin/",
-        "evidenceScope": null
-      }
-    },
-    "recP9G0xFJ6R0ic4W": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-offices/traditional/",
-        "evidenceScope": null
-      }
-    },
-    "recDGpbgqL1YuAaou": {
-      "sources": {
-        "text": "https://www.pineca.ie/garden-offices/insulated/",
         "evidenceScope": null
       }
     },
@@ -1976,12 +1916,6 @@
     "recCYOPggfliZAvQW": {
       "sources": {
         "text": "https://summerhouse24.ie/summer-house-premium-folding-doors-david-2-g0313/",
-        "evidenceScope": null
-      }
-    },
-    "recgOQWcwBubjOLWh": {
-      "sources": {
-        "text": "https://summerhouse24.ie/garden-summer-house-with-porch-eva-e-g0146/",
         "evidenceScope": null
       }
     },

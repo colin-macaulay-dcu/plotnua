@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.garden-room-recommendation-universe.detail",
   "version": "1.0.0-candidate",
-  "generated": "2026-10-06T19:11:14Z",
+  "generated": "2026-10-07T11:26:27Z",
   "categories": [
     "suppliers"
   ],
@@ -549,7 +549,13 @@
         "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Bespoke Builder",
-      "lastReviewed": "2026-08-28"
+      "lastReviewed": "2026-08-28",
+      "googleIdentity": {
+        "state": "verified",
+        "placeId": "ChIJh_woWH1LZ0gRFhvXEPyKrts",
+        "verifiedOn": "2026-10-06",
+        "revalidateBy": "2027-10-06"
+      }
     },
     "recZsdhQM53LBVyyg": {
       "name": "Total Garden Rooms",
@@ -808,7 +814,13 @@
         "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Bespoke Builder",
-      "lastReviewed": "2026-08-28"
+      "lastReviewed": "2026-08-28",
+      "googleIdentity": {
+        "state": "verified",
+        "placeId": "ChIJi8YJW2wSZ0gRVWL3QKDZZuc",
+        "verifiedOn": "2026-10-06",
+        "revalidateBy": "2027-10-06"
+      }
     },
     "rechsPFUooApigybT": {
       "name": "Essex Garden Studios",
