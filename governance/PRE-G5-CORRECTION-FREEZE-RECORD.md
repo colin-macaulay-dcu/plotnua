@@ -1,6 +1,6 @@
 # PRE-G5 CORRECTION · FREEZE RECORD
 
-**Status:** COMMITTED LOCALLY, NOT YET PUSHED · 8 October 2026
+**Status:** **FULLY CLOSED — PUSHED, DEPLOYED AND VERIFIED IN PRODUCTION** · 8 October 2026
 **Authority:** founder decisions D-G5-1 = **option 1 (FROZEN G1B §5 is
 authoritative)**, D-G5-2 = option i, D-G5-3 = YES.
 **Founder visual review of the buying state:** **PASS at 390px and 1440px.**
@@ -9,8 +9,11 @@ authoritative)**, D-G5-2 = option i, D-G5-3 = YES.
 |---|---|
 | PRE-G5 CONTRACT ALIGNMENT | **CLOSED** |
 | PRE-G5 TEST-HARNESS CORRECTION | **CLOSED** |
-| push to `origin/main` | **OPEN** — cannot be performed from this environment (§6) |
-| production page verification | **OPEN** — follows the push (§7) |
+| PRE-G5 PRODUCTION VERIFICATION | **PASS** |
+| **PRE-G5 CORRECTION** | **FULLY CLOSED** |
+
+Pushed as a normal fast-forward, `057bb81..0969ece main -> main`. Release HEAD
+and `origin/main` both `0969ece`, confirmed by `git ls-remote`.
 
 ---
 
@@ -195,29 +198,47 @@ integrating.
 
 ---
 
-## 7 · PRODUCTION VERIFICATION — OPEN, FOLLOWS THE PUSH
+## 7 · PRODUCTION VERIFICATION — PASS
 
-Required state after the GitHub Pages deployment:
+Verified against the **live site**, not localhost and not the repository copy,
+in a real browser at origin `https://plotnua.ie`. The Worker probes were run
+**from that origin**, which is what its exact-Origin CORS check requires.
+
+| # | check | evidence |
+|---|---|---|
+| 1 | live file sha256 | **`370bb493b742222206bc1f5a599796f4a6d34c17f8991793a694f49438da8195`**, 141,272 bytes, HTTP 200, cache-busted — exact match |
+| 2 | public switch | `var INTEREST_PUBLIC = false;` present; no `= true` anywhere. Both superseded conditions absent (0 occurrences); the three corrected ones present (1 + 2) |
+| 3 | ordinary journey, no query string | result reached ("A corner of your garden looks workable"); **`#bgInterest` absent from the DOM, count 0**; not one of `bgIntOpen/bgIntForm/bgIntEmail/bgIntPerm/bgIntCond/bgIntNote` exists; Save to My Plot operational (`bgSave`, `bgSaveLink`, `PlotNuaJourneySave` live) |
+| 4 | preview · **own** | permission block hidden (`offsetParent === null`), note hint `"Optional."`, no "somebody else has to agree" hint, `Private preview · not public` marker shown |
+| 5 | preview · **rent** | permission block **shown**; label "I have asked your landlord or the owner…"; no tick → blocked, 0 requests, *"We still need the owner's permission."*; tick + 13-char note → blocked, 0 requests, *"We still need what you told us about the owner knowing."* |
+| 6 | preview · **buying** | permission block hidden, note `"Optional."`, no hint, no label. **Real submission to the live Worker: HTTP 503 `{"ok":false,"state":"not_open"}`.** Payload carried `inherited_tenure: "buying"` with **`permission_confirmed` absent and `garden_note` absent**. Homeowner sees the approved closed state: *"The register isn't open yet"*, *"details haven't been saved"*, *"Property Check is unchanged"* |
+| 7 | absent-tenure control | direct POST with `inherited_tenure` omitted → **`400 {"ok":false,"state":"refused","field":"inherited_tenure"}"`** — the preserved divergence holds in production |
+| 8 | switches | page `INTEREST_PUBLIC=false`; Worker `WRITES_ENABLED="false"`, `EMAIL_ENABLED="false"`; version `352cc86d-3e37-4e25-bf26-bb512bf9e10c`. `--expect-open` was **not** run |
+| 9 | Airtable, direct read | Gardens **0** · Growers **0** · Status log **0** · Consent proofs **0** · Incidents **0**. Five separate reads with real field lists, after the live submission |
+| 10 | no unrelated change | the deployed diff touches 18 paths, of which **exactly one is site-visible**: `disc025-borrowed-garden-check.html`, +12/-4. Everything else is `atlas-tools/`, `governance/` or `worker/` — not published by Pages. `index.html`, `about.html`, `your-plot.html`, `sitemap.xml`, `robots.txt`, `_redirects`, `404.html`: **0 changed**. `wrangler.toml`: 0 |
+
+**Positive controls alongside, from the live origin** — proving the `503` is the
+write switch and not a validator that has stopped working:
 
 ```
-INTEREST_PUBLIC = false
-WRITES_ENABLED  = "false"
-EMAIL_ENABLED   = "false"
+own                        -> 503 {"ok":false,"state":"not_open"}
+buying + bad district      -> 400 {"ok":false,"state":"refused","field":"district"}
+rent, no tick              -> 400 {"ok":false,"state":"refused","field":"permission_confirmed"}
+rent, tick + short note    -> 400 {"ok":false,"state":"refused","field":"garden_note"}
+buying, no tick, no note   -> 503 {"ok":false,"state":"not_open"}
+inherited_tenure omitted   -> 400 {"ok":false,"state":"refused","field":"inherited_tenure"}
 ```
 
-| # | check |
-|---|---|
-| 1 | live page sha256 = `370bb493b742222206bc1f5a599796f4a6d34c17f8991793a694f49438da8195` |
-| 2 | `var INTEREST_PUBLIC = false;` present in the live source |
-| 3 | ordinary visit (no query string): `#bgInterest` **absent from the DOM** — G3 still closed, no register exposed |
-| 4 | `?interest=preview`, `own`: unchanged — permission block hidden, note Optional |
-| 5 | `?interest=preview`, `rent`: permission controls **still exposed and required** |
-| 6 | `?interest=preview`, `buying`: permission controls **absent**; submits through validation and reaches `503 not_open` |
-| 7 | absent-tenure Worker refusal still `400 refused · inherited_tenure` |
-| 8 | Airtable five tables × **0**, by direct read |
-| 9 | no unrelated production change |
+Only four reply shapes exist: `{ok,state}` and `{ok,state,field}`. No reply
+mentions a mail or token capability.
 
----
+**One correction to my own instrument, recorded:** a first pass asserted that
+no reply mentions `/mail|token|confirm|verify/` and reported a failure. The
+regex was too broad — it matched the governed **field name**
+`permission_confirmed`. Re-tested properly: the state replies mention no mail
+or token capability, the refusal reply mentions none either, and
+`permission_confirmed` is a contract vocabulary value, not a capability. My
+assertion was wrong, not the product.
 
 ## 8 · G7 PREREQUISITE — GOVERNANCE, NOT CODE
 
@@ -271,10 +292,11 @@ disk they would have been one-shot scripts.
   `?interest=preview`, which G5's plan already establishes needs no flip.
 - **`EMAIL_ENABLED` stays `"false"`.** There is no mail adapter; flipping it
   would not enable email.
-- **No Airtable record was created at any point.** That is why the rollback in
-  the correction plan is complete: `wrangler rollback` to
-  `ed9d2dc6-69a0-4c88-91f3-9418a0954bc7`, or a revert commit on the page. No
-  data exists to undo.
+- **No Airtable record was created at any point**, including by the live
+  buying submission made during production verification: five tables read
+  directly afterwards, all 0. That is why rollback stays complete —
+  `wrangler rollback` to `ed9d2dc6-69a0-4c88-91f3-9418a0954bc7`, or a revert
+  commit on the page. No data exists to undo.
 - **No G4. No G7. No outreach. No acquisition traffic.**
 - **PS-1 CLOSED · PS-2 CLOSED · PS-3 OPEN**, scoped to G7 only.
 - The G5 execution plan's case A4 is revised by this correction: `buying`
