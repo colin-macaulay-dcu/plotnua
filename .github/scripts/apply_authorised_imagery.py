@@ -209,39 +209,39 @@ def permitted(grant, url):
 ATLAS_ASSETS = [
     {
         "asset": "rec4Kr7TpqB6j15J1",
-        "organisation": "Power Sheds",
+        "organisation": "Powersheds",
         "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/"
                "1610PALCTIMWDDW_d5c78ede-b4ff-441b-926e-8198c72f4ce4.png",
-        "alt": "A Power Sheds Apex Classic Log Cabin in a garden",
+        "alt": "A Powersheds Apex Classic Log Cabin in a garden",
         "products": ["recLcmGihJ0mrfdwV", "recYM6hUVXceIrmmv"],
     },
     {
         "asset": "recp5bQqCAp5GszpJ",
-        "organisation": "Power Sheds",
+        "organisation": "Powersheds",
         "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/"
                "POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_"
                "ADOBE_98.jpg",
-        "alt": "A Power Sheds Apex Log Cabin in a garden",
+        "alt": "A Powersheds Apex Log Cabin in a garden",
         "products": ["recrmlUXvX9TbgTj7"],
     },
     {
         "asset": "recO0UwmtZcKhGJrP",
-        "organisation": "Power Sheds",
+        "organisation": "Powersheds",
         "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/"
                "POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_"
                "12x6_POWER_APEX_SUMMERHOUSE_SHIPLAP_ADOBE_98_"
                "1eb4bcc2-9cc2-47f8-9f06-3561a381ca1e.jpg",
-        "alt": "A Power Sheds Apex Summerhouse in a garden",
+        "alt": "A Powersheds Apex Summerhouse in a garden",
         "products": ["recR4W832LLj1TU3D", "rec6ZL9spIzGuTUwN",
                      "recCTdPJOw6vBuS0C", "rect9SsPZ8vKIHHMz",
                      "reckm6GuLVBIXoLTZ"],
     },
     {
         "asset": "recp011XSIIwlMfCY",
-        "organisation": "Power Sheds",
+        "organisation": "Powersheds",
         "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/"
                "1412PAWSLCDD28.jpg",
-        "alt": "A Power Sheds Apex Workshop Log Cabin in a garden",
+        "alt": "A Powersheds Apex Workshop Log Cabin in a garden",
         "products": ["recwvpChVgFSc2RWQ"],
     },
 
@@ -451,7 +451,7 @@ def prove(doc_before, grants):
           == [p.get("productId") for p in after_doc["products"]])
 
     # PER-SUPPLIER, NOT GLOBAL. The first version of these guards mutated only
-    # Power Sheds and then asserted that NOTHING resolved. That held while one
+    # Powersheds and then asserted that NOTHING resolved. That held while one
     # supplier had imagery; the moment Yard Box was added the guards failed --
     # correctly, because the assertion was too narrow, not because the data was
     # wrong. Withdrawing one supplier's grant must remove EXACTLY that

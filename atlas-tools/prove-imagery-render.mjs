@@ -4,7 +4,7 @@
  * Drives the REAL pnAuthorisedImage() lifted from your-plot.html against the
  * REAL universe artefact, and simulates normalizePoolProduct's contract.
  *
- * A  Power Sheds  : eligible -> imagery resolved -> renders
+ * A  Powersheds   : eligible -> imagery resolved -> renders
  * B  Yard Box     : eligible -> imagery resolved -> renders
  * C  no permission: eligible -> image-free treatment
  * D  withdrawal   : same match, photograph gone, no scoring corruption
@@ -51,7 +51,11 @@ console.log('END-TO-END PROOF — governed imagery reaches the render');
 console.log('='.repeat(78));
 
 const raws = uni.products;
-const ps = raws.filter(p => p.organisation === 'Power Sheds' && p.imagery);
+/* Organisation renamed 2026-10-08 on the supplier's own correction
+   (Jack Sutcliffe, Powersheds). This is an ASSERTION on the live
+   organisation value, so it had to move with the data — it failed on the
+   first guard run after the rename, which is the guard working. */
+const ps = raws.filter(p => p.organisation === 'Powersheds' && p.imagery);
 const yb = raws.filter(p => p.organisation === 'Yardbox' && p.imagery);
 const none = raws.filter(p => !p.imagery);
 
@@ -59,7 +63,7 @@ console.log('\nCOVERAGE');
 console.log('-'.repeat(78));
 console.log('    universe products          : ' + raws.length);
 console.log('    carrying governed imagery  : ' + raws.filter(p => p.imagery).length);
-check('Power Sheds products with imagery = 3', ps.length === 3);
+check('Powersheds products with imagery = 3', ps.length === 3);
 check('Yard Box products with imagery = 3', yb.length === 3);
 
 console.log('\nA — POWER SHEDS RENDERS');

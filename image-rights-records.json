@@ -29,24 +29,24 @@
     {
       "organisation_record": "recZyvRt8pDg5spUU",
       "organisation_code": "ORG-000065",
-      "organisation_name": "Power Sheds",
+      "organisation_name": "Powersheds",
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "powersheds.com",
-      "required_credit": "Image: Power Sheds",
+      "required_credit": "Image: Powersheds",
       "permitted_delivery_hosts": [
         {
           "host": "cdn.shopify.com",
           "path_prefix": "/s/files/1/0601/8967/1489/",
-          "why": "Power Sheds' own Shopify store namespace; the store id is part of the prefix, so the scope is their files and nobody else's."
+          "why": "Powersheds' own Shopify store namespace; the store id is part of the prefix, so the scope is their files and nobody else's."
         }
       ],
       "evidence": "Granted by Jack Sutcliffe of Power Sheds BY EMAIL, Gmail thread 1a0b5d1a7cf5e664, recorded in Atlas 28 September 2026 as Image Permission Outreach IPO-POWERSHEDS-0001 (reczCyWXPWvoA27GX), Permission Method 'Reply by Email', Permission Outcome 'Granted with Conditions — Founder Confirmed'. The email thread is the evidence.",
       "conditions": [
-        "Power Sheds attribution on every image use.",
-        "Power Sheds may request removal or change of any image at any time.",
+        "Powersheds attribution on every image use.",
+        "Powersheds may request removal or change of any image at any time.",
         "PlotNua complies with any such request."
       ],
-      "note": "ORGANISATION ID CORRECTED BEFORE PUSH. This record was first written with ORG-000194, which is Nua Modular (recuvqPv7XW0b0PFJ), not Power Sheds. The Airtable record id recZyvRt8pDg5spUU was always correct and is what the gate keys on, so nothing was ever mis-authorised -- but a publication-rights record carrying another organisation's code is not something to leave standing. Verified against the live Organisations table: recZyvRt8pDg5spUU is Power Sheds, ORG-000065.\n\nNOT A ONE-CLICK GRANT, and must never be represented as one. No PERM-W-2.0 wording was shown to Power Sheds and no decision token was ever issued to them; this row belongs to the reply-by-email arm. Scope is exactly as evidenced and no wider: selected imagery from the Power Sheds website, used when featuring Power Sheds on PlotNua, carrying the credit 'Image: Power Sheds'. Exercised on one page only, powersheds-preview.html, which is noindex and unlisted. The gate refuses the image if that credit ever disappears from the page. REMOVAL: delete image_url in supplier-outreach/powersheds/powersheds-manifest.json and rebuild -- the builder renders no image without one -- then regenerate this manifest.",
+      "note": "ORGANISATION ID CORRECTED BEFORE PUSH. This record was first written with ORG-000194, which is Nua Modular (recuvqPv7XW0b0PFJ), not Power Sheds. The Airtable record id recZyvRt8pDg5spUU was always correct and is what the gate keys on, so nothing was ever mis-authorised -- but a publication-rights record carrying another organisation's code is not something to leave standing. Verified against the live Organisations table: recZyvRt8pDg5spUU is Powersheds, ORG-000065.\n\nNOT A ONE-CLICK GRANT, and must never be represented as one. No PERM-W-2.0 wording was shown to Powersheds and no decision token was ever issued to them; this row belongs to the reply-by-email arm. Scope is exactly as evidenced and no wider: selected imagery from the Powersheds website, used when featuring Powersheds on PlotNua, carrying the credit 'Image: Powersheds'. Exercised on one page only, powersheds-preview.html, which is noindex and unlisted. The gate refuses the image if that credit ever disappears from the page. REMOVAL: delete image_url in supplier-outreach/powersheds/powersheds-manifest.json and rebuild -- the builder renders no image without one -- then regenerate this manifest.\n\nSUPPLIER NAME CORRECTED 2026-10-08. Jack Sutcliffe of Powersheds wrote: \"Seems ok to me - can you just change Power Sheds to Powersheds?\". That email is two things: his approval of the feature as shown to him, and an explicit correction of his own company name. It is NOT a new or wider grant — the grant is still exactly IPO-POWERSHEDS-0001 of 28 September 2026 and its scope is unchanged. Under founder decision of 2026-10-08 the required credit moved from 'Image: Power Sheds' to 'Image: Powersheds', and the credit, this record, the generated manifest, powersheds-preview.html and the recommendation universe were changed in ONE atomic pass, because the gate refuses any image whose required credit is absent from the page and they cannot be allowed to drift apart. The evidence sentence above and the ORGANISATION ID note below are preserved verbatim: they record the state and the wording in force at the time, and are not rewritten. Corroboration already held: the registered entity is 'Powersheds Limited, UK company number 11790351'.",
       "atlas_permission_record": "reczCyWXPWvoA27GX",
       "atlas_permission_ref": "IPO-POWERSHEDS-0001",
       "permission_date": "2026-09-28"

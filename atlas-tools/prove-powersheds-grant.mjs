@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-/* PROOF: THE POWER SHEDS GRANT IS WHAT MAKES THE IMAGE PUBLISHABLE
+/* PROOF: THE POWERSHEDS GRANT IS WHAT MAKES THE IMAGE PUBLISHABLE
  * ===========================================================================
- * The gate now ALLOWs the Power Sheds photograph. That is only worth anything
+ * The gate now ALLOWs the Powersheds photograph. That is only worth anything
  * if the grant is what is doing the work. So each way the grant could stop
  * being live is applied to a COPY of the real manifest, and the real page is
  * re-scanned. If the image still passes, the grant was decorative.
@@ -60,11 +60,11 @@ const cases = [
   ['the outcome falls back to UNKNOWN',
    m => { row(m, PS).permission_outcome = 'Unknown — Awaiting Reply'; return m; }],
 
-  ['the whole Power Sheds record is REMOVED',
+  ['the whole Powersheds record is REMOVED',
    m => { m.rows = m.rows.filter(r => r.organisation_record !== PS); return m; }],
 
   ['the required credit is changed, so the page no longer carries it',
-   m => { row(m, PS).required_credit = 'Photo courtesy of Power Sheds'; return m; }],
+   m => { row(m, PS).required_credit = 'Photo courtesy of Powersheds'; return m; }],
 
   ['the scoped delivery host is DROPPED, leaving only powersheds.com',
    m => { delete row(m, PS).permitted_delivery_hosts; return m; }],
@@ -76,7 +76,7 @@ const cases = [
    m => { row(m, PS).permitted_delivery_hosts[0].path_prefix = '/s/files/1/9999/9999/'; return m; }]
 ];
 
-console.log('PROOF — the Power Sheds grant is load-bearing');
+console.log('PROOF — the Powersheds grant is load-bearing');
 console.log('='.repeat(74));
 let ok = true;
 let first = true;
