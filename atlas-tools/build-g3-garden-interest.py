@@ -168,45 +168,39 @@ HTML = r"""      </div>
          constant, so no HTML entity can drift the string that gets hashed. -->
     <section class="bg-int" id="bgInterest" hidden aria-labelledby="bgIntH">
       <p class="bg-int-prev" id="bgIntPrev" hidden>Private preview &middot; not public</p>
-      <span class="bg-int-lab">If you would consider it</span>
-      <h2 class="bg-int-h" id="bgIntH">Tell PlotNua you would think about sharing a corner</h2>
+      <h2 class="bg-int-h" id="bgIntH">If somebody nearby needed a corner, would you
+        want to know?</h2>
 
       <div id="bgIntOffer">
-        <p class="bg-int-p">PlotNua is building a register of Dublin gardens whose
-          owners would consider letting somebody grow food in a part of them. It is
-          a list, not a service, and it is private.</p>
-        <ul class="bg-int-facts">
-          <li>There is no public listing, no map, no profile page and no directory.
-            Your record is private to PlotNua.</li>
-          <li>Nothing is shared with anybody until you say yes to one specific
-            introduction. If you do not reply, nothing happens.</li>
-          <li><strong>Joining the register is not a match and does not guarantee
-            one.</strong> We may never find anybody near you.</li>
-        </ul>
+        <p class="bg-int-p">Tell us about the part you have in mind. If somebody
+          nearby is looking for growing space, we&rsquo;ll email you and ask first.</p>
+        <p class="bg-int-p">Nobody else sees your details. There is no public listing,
+          no map and no profile page. Nothing is shared with anybody until you say yes
+          to one specific introduction.</p>
         <p class="bg-int-cta">
-          <button class="pc-cta" type="button" id="bgIntOpen">Tell PlotNua I would consider it</button>
+          <button class="pc-cta" type="button" id="bgIntOpen">Yes &mdash; let me know</button>
         </p>
+        <p class="bg-int-caveat">This is a register, not a match.
+          We may never find anybody near you.</p>
       </div>
 
       <form class="bg-int-form" id="bgIntForm" hidden novalidate>
+        <p class="bg-int-privline">A first name, an email address and a district.
+          No surname, no address, no Eircode, no phone number.</p>
         <div class="bg-int-grid">
           <div class="bg-int-f">
             <label for="bgIntName">First name</label>
             <input type="text" id="bgIntName" name="first_name" autocomplete="given-name"
                    maxlength="60" required>
-            <span class="bg-int-hint">First name only. We never ask for your surname.</span>
           </div>
           <div class="bg-int-f">
             <label for="bgIntEmail">Email address</label>
             <input type="email" id="bgIntEmail" name="email" autocomplete="email"
                    maxlength="120" required>
-            <span class="bg-int-hint">How we would reach you. Nothing else.</span>
           </div>
           <div class="bg-int-f">
             <label for="bgIntDistrict">Which district</label>
             <select id="bgIntDistrict" name="district" required></select>
-            <span class="bg-int-hint">District only. We never ask for your address or
-              your Eircode.</span>
           </div>
           <div class="bg-int-f">
             <label for="bgIntWater">Water out there</label>
@@ -221,7 +215,7 @@ HTML = r"""      </div>
             <select id="bgIntTiming" name="timing" required></select>
           </div>
           <div class="bg-int-f is-wide">
-            <label for="bgIntNote">Anything you want to tell us</label>
+            <label for="bgIntNote">Anything else we should know?</label>
             <textarea id="bgIntNote" name="garden_note" maxlength="600"></textarea>
             <span class="bg-int-hint" id="bgIntNoteHint">Optional.</span>
           </div>
@@ -513,10 +507,10 @@ JS = r"""  /* PLOTNUA-G3-INTEREST-BEGIN
 
   function intReceived(district) {
     var out = [
-      'We have your first name, your email address and what you told us about ' +
-      'the garden. Nobody else can see it.',
-      'This is a register, not a match. We may never find anybody near you, ' +
-      'and if we do we will email you and ask before anything is shared.'
+      'We have your first name, your email and what you told us about the ' +
+      'corner. Nobody else can see it.',
+      'This is a register, not a match. If somebody nearby is looking, we ' +
+      'will email you and ask first. We may never find anybody near you.'
     ];
     if (PILOT_DISTRICTS.indexOf(district) === -1) {
       out.push('We are starting in a small part of Dublin 5, so it may be a ' +

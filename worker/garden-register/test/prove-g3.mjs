@@ -801,8 +801,15 @@ await scope(async () => {
 await scope(async () => {
   const { w, $ } = boot({ search: '?interest=preview', answers: OWN_WORKABLE });
   const offer = $('bgInterest').textContent.replace(/\s+/g, ' ');
+  /* G23 · V2, 8 October 2026. The founder approved replacing the old phrasing
+     with 'This is a register, not a match. We may never find anybody near
+     you.' This guard protects the PROPOSITION, not the former wording: the
+     offer must still say it is not a match AND that nobody may be found.
+     Both clauses are asserted, so weakening either one fails. */
   check('G23 the offer states that joining is not a match',
-    /not a match and does not guarantee one/.test(offer), offer.slice(0, 200));
+    /register, not a match/.test(offer), offer.slice(0, 200));
+  check('G23a the offer states we may never find anybody',
+    /may never find anybody/.test(offer), offer.slice(0, 200));
   check('G23b the offer states there is no public listing',
     /no public listing/.test(offer));
   check('G23c the offer states nothing is shared until a yes',
@@ -950,6 +957,132 @@ await scope(async () => {
   const { w, sent } = boot({ search: '?interest=preview', answers: OWN_WORKABLE });
   check('G28c an open page still makes no request until the form is sent',
     sent.length === 0);
+  w.close();
+});
+
+
+/* ================================================== 10 · G29 ============= *
+ * PRESENTATION-DERIVATION GUARD.  Founder-approved 8 October 2026.
+ *
+ * The V2 result shows a tick list instead of the engine's raw reason bullets.
+ * Two of those ticks have NO reason key behind them: the engine only emits a
+ * reason when a dimension is a PROBLEM, so "a way in that is not the house"
+ * and "you keep using the garden" are derived from the frozen answers. That
+ * derivation is the risk this guard exists to close.
+ *
+ * THE RULE IS RESTATED INDEPENDENTLY BELOW, on purpose. If the page ever
+ * invents a rule of its own, the two disagree and G29c fails. A guard that
+ * imported the page's own table could not detect that.
+ *
+ * Enumeration is CANONICAL: ENG.combinations() is the engine's own helper.
+ * 240 combinations, 48 of them early exits, 192 assessments. An earlier spec
+ * said "108"; that figure was a guess and is wrong - the measured count is
+ * reported by G29pre so the number can never be asserted from memory again.
+ * ======================================================================== */
+
+await scope(async () => {
+  const { w, $ } = boot({ search: '?interest=preview' });
+  const ENG = w.PlotNuaDisc025Check;
+
+  /* The approved rule, restated here and nowhere else in this file. */
+  /* POLISH 1: tenure no longer qualifies for a tick. The invariant is
+     STRICTER - the dimension is absent from QUALIFY, so G29c now fails if a
+     tenure tick appears at all, where before it only failed if the wrong
+     tenure ticked. FLAG.tenure is retained below so G29b still proves a
+     flagged owner-permission case cannot tick. */
+  const QUALIFY = {
+    spare_corner: ['yes_a_clear_corner', 'maybe_part_of_the_lawn'],
+    way_in:       ['side_or_rear_access', 'its_own_gate'],
+    your_own_use: ['yes_regularly', 'now_and_then']
+  };
+  const COPY = {
+    yes_a_clear_corner:     'You already have a corner in mind.',
+    maybe_part_of_the_lawn: 'Part of the lawn could work.',
+    side_or_rear_access:    'Somebody could reach it without coming through your home.',
+    its_own_gate:           'That part has its own gate.',
+    yes_regularly:          'You can keep using the rest of the garden.',
+    now_and_then:           'You can keep using the rest of the garden.'
+  };
+  const ORDER = ['spare_corner', 'way_in', 'your_own_use'];
+  /* Engine reasons that FLAG a dimension. A flagged dimension must never tick. */
+  const FLAG = {
+    tenure:       'authority_permission_from_the_owner',
+    spare_corner: 'scope_no_part_identified_yet',
+    way_in:       'check_a_way_in_that_is_not_the_home',
+    your_own_use: 'check_agree_how_the_space_is_used'
+  };
+
+  const expected = (a, posture) => {
+    if (posture === 'PENDING') return [];
+    return ORDER.filter((q) => QUALIFY[q].indexOf(a[q]) !== -1).map((q) => COPY[a[q]]);
+  };
+  const rendered = () => Array.from(
+    w.document.querySelectorAll('#bgFinding .bg-res-ticks li')
+  ).map((li) => li.textContent.replace(/^✓/, '').replace(/\s+/g, ' ').trim());
+
+  const all = ENG.combinations();
+  let assessments = 0, exits = 0;
+  let badCopy = 0, badPending = 0, badFlagged = 0, badExact = 0, badExit = 0;
+  const firstBad = [];
+
+  for (const a of all) {
+    const dec = ENG.decide(a);
+    w.__disc025.answer(a);
+    const ticks = rendered();
+
+    if (dec.kind === 'early_exit') {
+      exits++;
+      if (ticks.length !== 0) { badExit++; if (firstBad.length < 3) firstBad.push('exit ticked: ' + JSON.stringify(a)); }
+      continue;
+    }
+    assessments++;
+    const r = dec.results[0];
+
+    /* a · every tick is one of the approved sentences */
+    const allowed = Object.keys(COPY).map((k) => COPY[k]);
+    if (!ticks.every((t) => allowed.indexOf(t) !== -1)) {
+      badCopy++; if (firstBad.length < 3) firstBad.push('unapproved tick: ' + JSON.stringify(ticks));
+    }
+    /* b · PENDING never ticks */
+    if (r.posture === 'PENDING' && ticks.length !== 0) {
+      badPending++; if (firstBad.length < 3) firstBad.push('PENDING ticked: ' + JSON.stringify(a));
+    }
+    /* c · a dimension the engine flagged never ticks */
+    for (const q of ['spare_corner', 'way_in', 'your_own_use', 'tenure']) {
+      if (r.reasons.indexOf(FLAG[q]) !== -1) {
+        const dimCopy = (QUALIFY[q] || []).map((v) => COPY[v]);
+        if (ticks.some((t) => dimCopy.indexOf(t) !== -1)) {
+          badFlagged++; if (firstBad.length < 3) firstBad.push('flagged ' + q + ' ticked: ' + JSON.stringify(a));
+        }
+      }
+    }
+    /* d · the tick set is EXACTLY what the restated rule predicts, in order.
+           This is the assertion that proves presentation introduces no
+           independent decision rule. */
+    const exp = expected(a, r.posture);
+    if (ticks.length !== exp.length || ticks.some((t, i) => t !== exp[i])) {
+      badExact++;
+      if (firstBad.length < 3) {
+        firstBad.push('derivation mismatch ' + JSON.stringify(a) +
+                      ' got ' + JSON.stringify(ticks) + ' want ' + JSON.stringify(exp));
+      }
+    }
+  }
+
+  check('G29pre canonical enumeration: 240 combinations from the engine',
+    all.length === 240, String(all.length));
+  check('G29pre2 48 early exits and 192 assessments, measured not assumed',
+    exits === 48 && assessments === 192, exits + ' exits / ' + assessments + ' assessments');
+  check('G29 every rendered tick is an approved sentence',
+    badCopy === 0, badCopy + ' offenders; ' + firstBad.join(' | '));
+  check('G29a PENDING never renders a positive tick',
+    badPending === 0, badPending + ' offenders; ' + firstBad.join(' | '));
+  check('G29b a dimension flagged by the engine never renders a tick',
+    badFlagged === 0, badFlagged + ' offenders; ' + firstBad.join(' | '));
+  check('G29c the tick set is exactly the frozen-input derivation, all 192',
+    badExact === 0, badExact + ' offenders; ' + firstBad.join(' | '));
+  check('G29d an early exit renders no ticks at all',
+    badExit === 0, badExit + ' offenders');
   w.close();
 });
 

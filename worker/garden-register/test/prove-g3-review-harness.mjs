@@ -96,7 +96,7 @@ for (const [file, marker] of EXPECT) {
   check('state 1 shows the preview ribbon (the page’s own rule, flag not flipped)',
     inv.$('bgIntPrev') && inv.$('bgIntPrev').hidden === false);
   check('state 1 invitation carries the no-guarantee sentence',
-    /not a match and does not guarantee one/
+    /register, not a match/
       .test(inv.$('bgIntOffer').textContent.replace(/\s+/g, ' ')));
 }
 

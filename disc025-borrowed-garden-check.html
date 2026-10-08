@@ -150,6 +150,26 @@ window.PlotNuaFunnel = (function () {
     font-size:clamp(26px,3.2vw,38px);line-height:1.18;margin:0 0 14px;
     max-width:22ch;}
   .bg-qnote{font-size:15px;color:var(--soft);margin:0 0 30px;max-width:46ch;}
+  /* ---- V2 presentation. Bounded: new rules only, nothing restructured. --- */
+  .bg-res-item.is-plain{border:0;background:none;padding:0;}
+  .bg-res-ticks{list-style:none;margin:10px 0 26px;padding:0;}
+  .bg-res-ticks li{display:flex;gap:12px;align-items:flex-start;
+    padding:9px 0;font-size:clamp(16px,1.8vw,18px);line-height:1.5;}
+  .bg-tick{flex:0 0 auto;font-weight:600;color:var(--accent);line-height:1.5;}
+  .bg-think{margin:4px 0 30px;}
+  .bg-think>summary{cursor:pointer;font-size:15px;color:var(--soft);
+    padding:10px 0;list-style:none;}
+  .bg-think>summary::-webkit-details-marker{display:none;}
+  .bg-think>summary::after{content:' \2192';}
+  .bg-next>.bg-next-sum{cursor:pointer;font-size:15px;color:var(--soft);
+    padding:12px 0;list-style:none;}
+  .bg-next>.bg-next-sum::-webkit-details-marker{display:none;}
+  .bg-next>.bg-next-sum::after{content:' \2192';}
+  details.bg-next{border:0;background:none;padding:0;margin:4px 0 28px;}
+  .bg-int-caveat{margin:14px 0 0;font-size:14.5px;line-height:1.55;
+    color:var(--soft);}
+  .bg-int-privline{margin:0 0 22px;font-size:15px;line-height:1.6;
+    color:var(--soft);}
   .bg-opts{display:flex;flex-direction:column;gap:12px;max-width:560px;
     margin:0 0 36px;}
   .bg-opt{display:block;width:100%;text-align:left;cursor:pointer;
@@ -960,12 +980,9 @@ window.PlotNuaFunnel = (function () {
         <span>Property Check</span>
       </span>
     </div>
-    <h1 class="pc-introh">Which part of your garden could work, how would somebody
-      reach it, and what do you keep?</h1>
-    <p class="pc-introsub">Four short questions about the part of your garden you
-      could share, how somebody would reach it, and how you would use it yourself.
-      We&rsquo;ll tell you what looks workable, what needs sorting, and what we
-      cannot yet stand over.</p>
+    <h1 class="pc-introh">Could a corner of your garden work for somebody else?</h1>
+    <p class="pc-introsub">Four quick questions about the space you have, how
+      somebody could reach it, and how you use it now.</p>
     <button class="pc-cta" id="bgStart">Start the check
       <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
   </section>
@@ -989,42 +1006,6 @@ window.PlotNuaFunnel = (function () {
 
     <div class="bg-res" id="bgFinding"></div>
 
-    <!-- WHAT COULD HAPPEN NEXT. Populated only where the certified reason
-         payload already identifies a shareable part. Empty and hidden on the
-         early exit and wherever no part exists. It is NOT a second property
-         result: no posture, no finding, and nothing asserted about this
-         garden. -->
-    <div id="bgNext" hidden></div>
-
-    <hr class="bg-sep" id="bgSep">
-    <div id="bgContext"></div>
-
-    <!-- The evidence that is not an action. Progressively disclosed, never
-         removed: every governed key still renders, one click away. -->
-    <details class="bg-more" id="bgMore" hidden>
-      <summary>Planning, money, and why we think this could matter</summary>
-      <div id="bgMoreBody"></div>
-    </details>
-
-    <div class="bg-save pc-saveband">
-      <div class="bg-saveinner pc-saveinner">
-        <p class="pc-savelab">My Plot</p>
-        <div class="bg-savebody">
-          <div class="pc-savehead" id="bgSaveCrest">
-            <span class="pc-mark" id="bgSaveMark" aria-hidden="true">
-              <img src="assets/brand/plotnua-mark-master.svg" alt="" width="64" height="64">
-              <img class="pc-mark-on" src="assets/brand/plotnua-mark-myplot-saved.svg" alt="" width="64" height="64">
-            </span>
-            <p class="pc-saveh" id="bgSaveHead">Somewhere to come back to</p>
-          </div>
-          <p class="pc-savemeta" id="bgSaveMeta" hidden></p>
-          <button class="pc-cta" type="button" id="bgSave" hidden>Save to My Plot</button>
-          <p class="pc-savenote" id="bgSaveNote"></p>
-          <a class="pc-savelink" id="bgSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
-        </div>
-      </div>
-    </div>
-
     <!-- PLOTNUA-G3-HTML-BEGIN
          G3 · HOMEOWNER EXPRESSION OF INTEREST.
          SHIPPED CLOSED: hidden here, and REMOVED FROM THE DOM on load unless
@@ -1034,45 +1015,39 @@ window.PlotNuaFunnel = (function () {
          constant, so no HTML entity can drift the string that gets hashed. -->
     <section class="bg-int" id="bgInterest" hidden aria-labelledby="bgIntH">
       <p class="bg-int-prev" id="bgIntPrev" hidden>Private preview &middot; not public</p>
-      <span class="bg-int-lab">If you would consider it</span>
-      <h2 class="bg-int-h" id="bgIntH">Tell PlotNua you would think about sharing a corner</h2>
+      <h2 class="bg-int-h" id="bgIntH">If somebody nearby needed a corner, would you
+        want to know?</h2>
 
       <div id="bgIntOffer">
-        <p class="bg-int-p">PlotNua is building a register of Dublin gardens whose
-          owners would consider letting somebody grow food in a part of them. It is
-          a list, not a service, and it is private.</p>
-        <ul class="bg-int-facts">
-          <li>There is no public listing, no map, no profile page and no directory.
-            Your record is private to PlotNua.</li>
-          <li>Nothing is shared with anybody until you say yes to one specific
-            introduction. If you do not reply, nothing happens.</li>
-          <li><strong>Joining the register is not a match and does not guarantee
-            one.</strong> We may never find anybody near you.</li>
-        </ul>
+        <p class="bg-int-p">Tell us about the part you have in mind. If somebody
+          nearby is looking for growing space, we&rsquo;ll email you and ask first.</p>
+        <p class="bg-int-p">Nobody else sees your details. There is no public listing,
+          no map and no profile page. Nothing is shared with anybody until you say yes
+          to one specific introduction.</p>
         <p class="bg-int-cta">
-          <button class="pc-cta" type="button" id="bgIntOpen">Tell PlotNua I would consider it</button>
+          <button class="pc-cta" type="button" id="bgIntOpen">Yes &mdash; let me know</button>
         </p>
+        <p class="bg-int-caveat">This is a register, not a match.
+          We may never find anybody near you.</p>
       </div>
 
       <form class="bg-int-form" id="bgIntForm" hidden novalidate>
+        <p class="bg-int-privline">A first name, an email address and a district.
+          No surname, no address, no Eircode, no phone number.</p>
         <div class="bg-int-grid">
           <div class="bg-int-f">
             <label for="bgIntName">First name</label>
             <input type="text" id="bgIntName" name="first_name" autocomplete="given-name"
                    maxlength="60" required>
-            <span class="bg-int-hint">First name only. We never ask for your surname.</span>
           </div>
           <div class="bg-int-f">
             <label for="bgIntEmail">Email address</label>
             <input type="email" id="bgIntEmail" name="email" autocomplete="email"
                    maxlength="120" required>
-            <span class="bg-int-hint">How we would reach you. Nothing else.</span>
           </div>
           <div class="bg-int-f">
             <label for="bgIntDistrict">Which district</label>
             <select id="bgIntDistrict" name="district" required></select>
-            <span class="bg-int-hint">District only. We never ask for your address or
-              your Eircode.</span>
           </div>
           <div class="bg-int-f">
             <label for="bgIntWater">Water out there</label>
@@ -1087,7 +1062,7 @@ window.PlotNuaFunnel = (function () {
             <select id="bgIntTiming" name="timing" required></select>
           </div>
           <div class="bg-int-f is-wide">
-            <label for="bgIntNote">Anything you want to tell us</label>
+            <label for="bgIntNote">Anything else we should know?</label>
             <textarea id="bgIntNote" name="garden_note" maxlength="600"></textarea>
             <span class="bg-int-hint" id="bgIntNoteHint">Optional.</span>
           </div>
@@ -1175,6 +1150,43 @@ window.PlotNuaFunnel = (function () {
         not met anyone on this register. Nothing is arranged through this page.</p>
     </section>
     <!-- PLOTNUA-G3-HTML-END -->
+
+    <!-- WHAT COULD HAPPEN NEXT. Populated only where the certified reason
+         payload already identifies a shareable part. Empty and hidden on the
+         early exit and wherever no part exists. It is NOT a second property
+         result: no posture, no finding, and nothing asserted about this
+         garden. -->
+    <div id="bgNext" hidden></div>
+
+    <hr class="bg-sep" id="bgSep">
+    <div id="bgContext"></div>
+
+    <!-- The evidence that is not an action. Progressively disclosed, never
+         removed: every governed key still renders, one click away. -->
+    <details class="bg-more" id="bgMore" hidden>
+      <summary>Worth knowing &mdash; see what we checked</summary>
+      <div id="bgMoreBody"></div>
+    </details>
+
+    <div class="bg-save pc-saveband">
+      <div class="bg-saveinner pc-saveinner">
+        <p class="pc-savelab">My Plot</p>
+        <div class="bg-savebody">
+          <div class="pc-savehead" id="bgSaveCrest">
+            <span class="pc-mark" id="bgSaveMark" aria-hidden="true">
+              <img src="assets/brand/plotnua-mark-master.svg" alt="" width="64" height="64">
+              <img class="pc-mark-on" src="assets/brand/plotnua-mark-myplot-saved.svg" alt="" width="64" height="64">
+            </span>
+            <p class="pc-saveh" id="bgSaveHead">Somewhere to come back to</p>
+          </div>
+          <p class="pc-savemeta" id="bgSaveMeta" hidden></p>
+          <button class="pc-cta" type="button" id="bgSave" hidden>Save to My Plot</button>
+          <p class="pc-savenote" id="bgSaveNote"></p>
+          <a class="pc-savelink" id="bgSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+
 
     <details class="bg-drawer">
       <summary>Why PlotNua is saying this</summary>
@@ -2012,7 +2024,7 @@ window.PlotNuaDisc025Check = module.exports;
   /* --- copy tables — every emitted key has homeowner-facing copy ----------- */
 
   var HEADLINE = {
-    arrangement_looks_workable:             'A corner of your garden looks workable',
+    arrangement_looks_workable:             'A corner of your garden could work',
     arrangement_access_is_the_question:     'The way in is the question here',
     arrangement_separation_is_the_question: 'The part to share is the question here',
     arrangement_not_established:            'A couple of things still to tell us',
@@ -2079,13 +2091,13 @@ window.PlotNuaDisc025Check = module.exports;
   };
 
   var NEXT = {
-    lab: 'What could happen next',
+    lab: 'What we are building',
     h: 'Could somebody nearby be looking for exactly this?',
-    lede2: 'Somewhere nearby, somebody may be looking for somewhere to grow.',
-    lede3: 'PlotNua wants to bring those two things together.',
-    status: 'Local Garden Matching &middot; not yet live',
-    intro: 'When this opens, you&rsquo;ll be able to ask PlotNua to look for ' +
-           'prospective gardeners near you.',
+    lede2: 'Finding each other is the hard part, and PlotNua cannot do it yet.',
+    lede3: 'When it can, you will be asked first &mdash; and asked again before ' +
+           'anything is shared.',
+    status: '',
+    intro: '',
     steps: [
       { n: '1', t: 'You choose to look',
         p: 'Nothing happens unless you ask.' },
@@ -2155,8 +2167,10 @@ window.PlotNuaDisc025Check = module.exports;
      explanatory; the market evidence is the long scarcity case. All four are
      progressively disclosed — still on the page, still complete, no longer
      louder than the finding. Nothing is deleted. */
-  var CONTEXT_VISIBLE = ['insurance'];
-  var CONTEXT_DISCLOSED = ['planning', 'legal', 'tax', 'market'];
+  /* V2: every category is disclosed, including insurance. Nothing is
+     deleted - all five still render, behind one calm summary. */
+  var CONTEXT_VISIBLE = [];
+  var CONTEXT_DISCLOSED = ['insurance', 'planning', 'legal', 'tax', 'market'];
 
   var CONTEXT_COPY = {
     planning_growing_is_not_development:
@@ -2261,21 +2275,97 @@ window.PlotNuaDisc025Check = module.exports;
 
   /* --- rendering ----------------------------------------------------------- */
 
+  /* V2 · WHY IT COULD WORK.
+     The three observations explain the headline, so no intermediate
+     explanatory sentence is rendered. CARD_LABEL and POSTURE_LABEL are no
+     longer read: the bordered report card and the exposed system posture are
+     gone from the homeowner's view.
+
+     APPROVED G29 RULE, and it is the whole safety of this surface:
+       a tick appears ONLY where the frozen answer supports it AND the engine
+       has not flagged that dimension;
+       a flagged dimension renders the ENGINE'S OWN REASON, never a tick;
+       PENDING renders NO TICKS AT ALL, because an unread dimension must not
+       be presented as an established one.
+     The ticks are therefore derived from frozen inputs, never invented. */
+
+/* FOUNDER POLISH 1, 8 October 2026. The tenure dimension no longer ticks at
+     all. 'The decision about the garden is yours' is reassurance, not evidence
+     for why the arrangement could work, so the clean case shows three reasons
+     rather than four. The engine reason is demoted, not deleted - see
+     DEMOTED_REASONS below. This is STRICTER than before, not weaker: a
+     dimension that cannot appear in TICK_OK can never produce a tick. */
+  var TICK_OK = {
+    spare_corner: ['yes_a_clear_corner', 'maybe_part_of_the_lawn'],
+    way_in:       ['side_or_rear_access', 'its_own_gate'],
+    your_own_use: ['yes_regularly', 'now_and_then']
+  };
+
+  var TICK_COPY = {
+    yes_a_clear_corner:      'You already have a corner in mind.',
+    maybe_part_of_the_lawn:  'Part of the lawn could work.',
+    side_or_rear_access:     'Somebody could reach it without coming through your home.',
+    its_own_gate:            'That part has its own gate.',
+    yes_regularly:           'You can keep using the rest of the garden.',
+    now_and_then:            'You can keep using the rest of the garden.'
+  };
+
+  /* The engine's reasons that are things to settle rather than things
+     established. Rendered as the quiet list, in the engine's own words. */
+  /* Reasons that are true and governed but are not evidence for the finding.
+     They render inside the disclosure so nothing is deleted. */
+  var DEMOTED_REASONS = ['authority_the_decision_is_yours'];
+
+  var TO_SORT = ['authority_permission_from_the_owner', 'scope_no_part_identified_yet',
+                 'check_a_way_in_that_is_not_the_home', 'check_agree_how_the_space_is_used',
+                 'check_what_we_still_need'];
+
+  function ticksFor(a, posture) {
+    if (posture === 'PENDING') return [];
+    var out = [];
+    ['spare_corner', 'way_in', 'your_own_use'].forEach(function (q) {
+      var v = a[q];
+      if (TICK_OK[q].indexOf(v) !== -1 && TICK_COPY[v]) out.push(TICK_COPY[v]);
+    });
+    return out;
+  }
+
   function findingNode(r) {
     var el = document.createElement('div');
-    el.className = 'bg-res-item';
-    var h = '<span class="bg-res-lab">' + (CARD_LABEL[r.posture] || 'The arrangement') + '</span>';
-    if (PHYSICAL[r.physical_finding]) {
-      h += '<p class="bg-res-phys">' + PHYSICAL[r.physical_finding] + '</p>';
-    }
-    h += '<span class="bg-res-posture">' + (POSTURE_LABEL[r.posture] || '') + '</span>';
-    if (r.posture === 'OPEN') {
-      h += '<p class="bg-res-bound">' + OPEN_BOUND + '</p>';
-    }
-    if (r.reasons.length) {
-      h += '<ul class="bg-res-why">';
-      r.reasons.forEach(function (k) { if (REASON[k]) h += '<li>' + REASON[k] + '</li>'; });
+    el.className = 'bg-res-item is-plain';
+    var h = '';
+    var ticks = ticksFor(answers, r.posture);
+    if (ticks.length) {
+      h += '<span class="bg-res-lab">Why it could work</span>';
+      h += '<ul class="bg-res-ticks">';
+      ticks.forEach(function (t) {
+        h += '<li><span class="bg-tick" aria-hidden="true">\u2713</span>' + t + '</li>';
+      });
       h += '</ul>';
+    }
+    var sort = r.reasons.filter(function (k) {
+      return TO_SORT.indexOf(k) !== -1 && REASON[k];
+    });
+    if (sort.length) {
+      h += '<span class="bg-res-lab">Worth sorting first</span>';
+      h += '<ul class="bg-res-why">';
+      sort.forEach(function (k) { h += '<li>' + REASON[k] + '</li>'; });
+      h += '</ul>';
+    }
+    /* The standing reasons are not a finding about this garden. They go into
+       the disclosure, so the result stays readable in seconds. Nothing is
+       deleted: every governed key still renders, one click away. */
+    var standing = r.reasons.filter(function (k) {
+      return (ENG.STANDING_REASONS.indexOf(k) !== -1 ||
+              DEMOTED_REASONS.indexOf(k) !== -1) && REASON[k];
+    });
+    if (standing.length) {
+      h += '<details class="bg-think"><summary>A few things worth thinking about</summary>' +
+           '<ul class="bg-res-why">';
+      standing.forEach(function (k) { h += '<li>' + REASON[k] + '</li>'; });
+      h += '</ul>';
+      if (r.posture === 'OPEN') { h += '<p class="bg-res-bound">' + OPEN_BOUND + '</p>'; }
+      h += '</details>';
     }
     el.innerHTML = h;
     return el;
@@ -2289,16 +2379,17 @@ window.PlotNuaDisc025Check = module.exports;
   }
 
   function nextNode(r) {
-    var el = document.createElement('section');
+    /* FOUNDER POLISH 2. Collapsed by default, so it is never expanded beneath
+       the invitation, the completed form or the success state. Every governed
+       sentence still renders, one click away. */
+    var el = document.createElement('details');
     el.className = 'bg-next';
-    var h = '<span class="bg-next-lab">' + NEXT.lab + '</span>' +
+    var h = '<summary class="bg-next-sum">How would this work?</summary>' +
             '<h3 class="bg-next-h">' + NEXT.h + '</h3>' +
             '<p class="bg-next-lede">' +
               (NEXT_OPENER[r.posture] || NEXT_OPENER.CONDITIONAL) + ' ' +
               NEXT.lede2 + '</p>' +
             '<p class="bg-next-lede">' + NEXT.lede3 + '</p>' +
-            '<p class="bg-next-status">' + NEXT.status + '</p>' +
-            '<p class="bg-next-intro">' + NEXT.intro + '</p>' +
             '<ol class="bg-next-steps">';
     NEXT.steps.forEach(function (s) {
       h += '<li class="bg-next-step"><span class="bg-next-n">' + s.n + '</span>' +
@@ -2364,7 +2455,12 @@ window.PlotNuaDisc025Check = module.exports;
     } else {
       var r = lastEval.results[0];
       $('bgRevealH').textContent = HEADLINE[r.headline] || '';
-      $('bgRevealSub').textContent = SUB[r.posture] || SUB.CONDITIONAL;
+      /* FOUNDER CORRECTION 5. The three observations below explain the
+         headline, so the intermediate explanatory sentence is removed rather
+         than reworded. SUB is left declared and unused on this branch; the
+         early exit still needs its own sentence. */
+      $('bgRevealSub').textContent = '';
+      $('bgRevealSub').hidden = true;
       sep.hidden = false;
       grid.appendChild(findingNode(r));
 
@@ -2643,10 +2739,10 @@ window.PlotNuaDisc025Check = module.exports;
 
   function intReceived(district) {
     var out = [
-      'We have your first name, your email address and what you told us about ' +
-      'the garden. Nobody else can see it.',
-      'This is a register, not a match. We may never find anybody near you, ' +
-      'and if we do we will email you and ask before anything is shared.'
+      'We have your first name, your email and what you told us about the ' +
+      'corner. Nobody else can see it.',
+      'This is a register, not a match. If somebody nearby is looking, we ' +
+      'will email you and ask first. We may never find anybody near you.'
     ];
     if (PILOT_DISTRICTS.indexOf(district) === -1) {
       out.push('We are starting in a small part of Dublin 5, so it may be a ' +

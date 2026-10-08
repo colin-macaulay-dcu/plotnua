@@ -206,8 +206,12 @@ const CASES = [
    ['G23f', 'G23g']],
 
   ['M21 the not-a-match line removed from the confirmation',
-   (h) => sub(h, "      'This is a register, not a match. We may never find anybody near you, ' +",
-                 "      'We are on it. ' +"),
+   /* V2, 8 Oct 2026: re-pointed after the success copy was reflowed. The old
+      target stopped matching and this mutation went VACUOUS - the suite caught
+      it, which is the only reason it is live again. It now removes the
+      not-a-match clause from the new wording, so G15 must still fire. */
+   (h) => sub(h, "      'This is a register, not a match. If somebody nearby is looking, we ' +",
+                 "      'If somebody nearby is looking, we ' +"),
    ['G15']],
 
   ['M22 the preview gate loosened to any ?interest value',
