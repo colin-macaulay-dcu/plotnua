@@ -563,6 +563,47 @@
   }
   .screen.is-hidden{ opacity:0; visibility:hidden; pointer-events:none; }
 
+  /* ========================================================================
+     SEARCH DEEP-LINK BOOT STATE
+     ========================================================================
+     FOUNDER REAL-BROWSER REVIEW, RELEASE BLOCKER 1. A product deep link
+     painted the Eircode/landing journey for a moment and only then opened
+     Product Detail. The automated suite missed it because it proved the
+     eventual destination and never the visible transition.
+
+     THE CAUSE WAS BOOT ORDER, not the product data. #screen-entry ships
+     WITHOUT .is-hidden, so it is visible in the very first paint — before any
+     script runs at all, let alone the deferred module that resolves the
+     governed pool. No amount of asynchronous care could have prevented it.
+
+     So the suppression is in CSS, switched by a class that a tiny classic
+     script sets at the top of <body>. No property state is fabricated, no
+     Atlas reasoning is shown, and the hold is deliberately instant rather
+     than animated: this is the ABSENCE of a screen, not a screen of its own.
+     The class comes off the moment the product resolves, or when the bounded
+     window closes, after which the page behaves exactly as it always has. */
+  html.pn-deeplink #screen-entry{
+    opacity:0 !important; visibility:hidden !important; pointer-events:none !important;
+    transition:none !important;
+  }
+  /* An extremely quiet hold: paper, and one small pulse. No copy, because
+     there is no new journey here to narrate. */
+  html.pn-deeplink #pnDeepLinkHold{
+    position:fixed; inset:0; z-index:120;
+    background:var(--paper,#fdfcf9);
+    display:flex; align-items:center; justify-content:center;
+  }
+  html:not(.pn-deeplink) #pnDeepLinkHold{ display:none; }
+  #pnDeepLinkHold .pn-dl-dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--brand-sage,#7d9b7f);
+    animation:pnDlPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pnDlPulse{ 0%,100%{opacity:.25;transform:scale(.9)} 50%{opacity:.7;transform:scale(1.1)} }
+  @media(prefers-reduced-motion:reduce){
+    #pnDeepLinkHold .pn-dl-dot{ animation:none; opacity:.5; }
+  }
+
   /* RESULTS-003 PART E — THE HAND-OFF STOPS DOUBLE-EXPOSING.
      Both screens ran the same 600ms opacity ramp at once, so every
      transition cross-faded one screen THROUGH another. Measured on
@@ -9613,6 +9654,30 @@
 </style>
 </head>
 <body>
+
+<!-- SEARCH DEEP-LINK BOOT GATE. A CLASSIC script, deliberately: the main
+     PlotNua script is a module and modules are DEFERRED, so by the time it
+     runs the landing screen has already painted. This runs synchronously
+     before the entry section is laid out, which is the only place the flash
+     can be prevented.
+
+     It does ONE thing: shape-checks ?product= and sets a class. It reads no
+     pool, resolves no product, writes no state, and makes no decision about
+     what is publishable — every one of those stays with the governed module
+     below. If the parameter is absent or malformed the class is never set and
+     the page boots exactly as it always has. -->
+<script>
+  (function () {
+    try {
+      var id = new URLSearchParams(location.search).get('product');
+      if (id && /^rec[A-Za-z0-9]{14,17}$/.test(id)
+            && !new URLSearchParams(location.search).has('review')) {
+        document.documentElement.classList.add('pn-deeplink');
+      }
+    } catch (e) { /* no parameter, no class, ordinary boot */ }
+  }());
+</script>
+<div id="pnDeepLinkHold" aria-hidden="true"><span class="pn-dl-dot"></span></div>
 
 <a href="index.html" class="brand-mark in" aria-label="PlotNua — home">
   <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
@@ -29636,6 +29701,14 @@
   // from Results/My Plot cards, both of which already pass their own
   // returnScreen explicitly via remember(), so this generic fallback is
   // rarely used in practice; it just needs to be a real screen.
+  /* SEARCH ORIGIN. Set only by the ?from=search deep link. It carries no
+     search text and nothing about the homeowner — only which surface they came
+     from, because "Back to Results" is a FALSE label for someone who has never
+     been to Results. Default null, so every existing route (Results cards, My
+     Plot cards) behaves exactly as before. Cleared on close, so a later
+     Atlas-origin open cannot inherit it. */
+  let pnProductOrigin = null;
+
   const productDetailReturn = createReturnableOverlay({
     fallback: els.matchResultsScreen,
     onReturnTo(target){
@@ -29659,7 +29732,13 @@
     if (els.productDetailCloseBtn) {
       const target = productDetailReturn.returnTarget();
       els.productDetailCloseBtn.textContent =
-        (target === els.myPlotScreen) ? '\u2190 Back to My Plot' : '\u2190 Back to Results';
+        /* THREE ORIGINS, THREE TRUTHFUL LABELS. Results and My Plot are
+           unchanged; only the Search case is new, and it exists because the
+           founder's real-browser test found "Back to Results" being shown to a
+           homeowner who had arrived from Search. */
+        (pnProductOrigin === 'search') ? '\u2190 Back to Search'
+          : (target === els.myPlotScreen) ? '\u2190 Back to My Plot'
+          : '\u2190 Back to Results';
     }
 
     const cached = productDetailContext.get(productId);
@@ -30002,6 +30081,25 @@
   // above, at productDetailReturn's declaration) rather than duplicated
   // here — same behaviour, one implementation.
   els.productDetailCloseBtn.addEventListener('click', () => {
+    /* SEARCH ORIGIN GOES BACK TO SEARCH, not into the property/Results
+       area. The founder's real-browser test landed on "Found something
+       yourself?" / "Check with Atlas" / "Your property in 3D" — a surface
+       the homeowner had never visited.
+
+       Ordinary browser history is used where it exists, so the STILL-LIVE
+       Search document is restored with its results intact. Nothing is
+       persisted to achieve that: the term was never stored and is not
+       stored now. history.length > 1 is the test for "there is somewhere
+       to go back to"; a fresh tab opened straight on the deep link has no
+       Search behind it and falls back to search.html with an empty field,
+       which is the accepted V1 behaviour and far preferable to keeping the
+       query. */
+    if (pnProductOrigin === 'search') {
+      pnProductOrigin = null;
+      if (history.length > 1) { history.back(); }
+      else { location.href = 'search.html'; }
+      return;
+    }
     productDetailReturn.close();
   });
 
@@ -37132,6 +37230,85 @@
   if (reviewModeParam === 'results') {
     enterResultsReviewMode();
   }
+
+  /* ==========================================================================
+     SEARCH DEEP LINK — ?product=<governed record id>
+     ==========================================================================
+     FOUNDER REVIEW, RELEASE BLOCKER. Search found a specific product and then
+     threw the find away: every product result linked to this page with no
+     parameter, so the page booted to showScreen(els.entry) and the homeowner
+     landed on "Let's start with your plot" and an Eircode field. Search had
+     the answer and handed back the front door.
+
+     WHAT THIS IS NOT. It is NOT ?review=results. That fixture fabricates a
+     property — a fixed Dublin address and three invented answers — which is
+     exactly what the founder forbade. Nothing here writes matchState, builds a
+     decisionProfile, invents an Eircode, a county or an address, marks a
+     Property Check complete, or touches Atlas recommendation state.
+
+     VIEWING IS NOT SAVING. No localStorage write, no My Plot entry, no
+     property state. If the homeowner later chooses "Save to My Plot", the
+     existing governed save does it, unchanged.
+
+     IT FAILS CLOSED FOR FREE. openProductDetail() already begins:
+         const product = getActiveAtlasPool().find(p => p.id === productId);
+         if (!product) return;
+     so an unknown, unpublished or hand-typed id renders nothing and the
+     homeowner simply sees the normal entry screen. Publication eligibility,
+     evidence, price and supplier gates are all inherited from the pool —
+     this adds no new authority, it only addresses what the pool already
+     publishes. Search generates links only for ids in the governed index.
+
+     BACK returns to Search by ordinary browser history. The search term is
+     NOT persisted anywhere to achieve that; a reload losing the query is the
+     accepted V1 behaviour, because weakening the privacy contract is not.
+     ====================================================================== */
+  (function pnSearchProductDeepLink(){
+    var wanted = null;
+    try { wanted = new URLSearchParams(location.search).get('product'); }
+    catch (e) { return; }
+    if (!wanted) { return; }
+    /* Shape-check before touching anything: a governed Airtable record id and
+       nothing else. A malformed value is discarded without a lookup. */
+    if (!/^rec[A-Za-z0-9]{14,17}$/.test(wanted)) { return; }
+    if (reviewModeParam !== null) { return; }   /* never combine with a fixture */
+
+    /* FROM=SEARCH. The only thing that travels is the fact that Search was the
+       origin — no search text, nothing about the homeowner. It exists because
+       "Back to Results" is a FALSE label when Product Detail was entered from
+       Search, which the founder's real-browser test caught. */
+    var fromSearch = false;
+    try { fromSearch = new URLSearchParams(location.search).get('from') === 'search'; }
+    catch (e) { fromSearch = false; }
+    if (fromSearch) { pnProductOrigin = 'search'; }
+
+    /* Releases the pre-paint hold set by the classic script at the top of
+       <body>. Called on success AND on failure, so the page can never be left
+       holding: if resolution fails the homeowner sees the ordinary entry
+       screen, which is the honest fail-closed state. */
+    function releaseHold(){
+      document.documentElement.classList.remove('pn-deeplink');
+    }
+
+    /* The universe loads asynchronously, so the pool may be empty for a moment.
+       This waits, bounded, and then gives up silently — it never retries
+       forever and never synthesises a product. */
+    var tries = 0;
+    (function attempt(){
+      var pool = [];
+      try { pool = getActiveAtlasPool() || []; } catch (e) { pool = []; }
+      if (pool.length) {
+        /* THE ONE CALL. Product Detail is opened first and the hold released
+           after, so Product Detail is the first meaningful screen the
+           homeowner sees — not the entry screen, and not a gap. */
+        openProductDetail(wanted, els.matchResultsScreen);
+        releaseHold();
+        return;
+      }
+      if (++tries > 60) { releaseHold(); return; }   /* ~6s, then fail closed */
+      setTimeout(attempt, 100);
+    }());
+  }());
 
   /* THE TEST ROUTE — ?enquiry=test must OPEN the screen, not merely make it
      openable. The first implementation defined

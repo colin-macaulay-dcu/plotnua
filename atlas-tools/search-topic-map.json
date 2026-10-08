@@ -1,0 +1,53 @@
+{
+  "schema": "plotnua.search.topicmap",
+  "version": "1",
+  "governance": "Founder is the approval authority for homeowner-facing synonym/topic entries. V1 ships ONLY the four mappings below, each audited against the public corpus before approval on 2026-10-08. No speculative additions during implementation. No AI or API query expansion. No fuzzy matching. Future additions or changes require founder approval.",
+  "notIncluded": [
+    {
+      "phrase": "garden office",
+      "reason": "DELIBERATELY NOT A SYNONYM. The corpus already says it natively in productType: 28 'Contemporary garden office', 12 'UK insulated garden office configuration', 9 'Compact garden office pod', 6 'Garden office', 5 'Prefabricated garden office', and more. A synonym would double-count a term that already matches directly."
+    }
+  ],
+  "entries": [
+    {
+      "phrase": "spare garden",
+      "concept": "borrowed-garden",
+      "scope": "possibility",
+      "targets": ["discovery-the-borrowed-garden.html"],
+      "evidence": "Audited 2026-10-08 against the 19-page public corpus: naive token-AND matching returns discovery-open-your-home-to-art.html and about.html on incidental word co-occurrence, and MISSES The Borrowed Garden entirely. The map exists to correct a measured wrong answer, not to add reach.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "solar",
+      "concept": "house-as-power-station",
+      "scope": "possibility",
+      "targets": ["discovery-house-as-power-station.html"],
+      "evidence": "Audited 2026-10-08: zero products in the publishable universe relate to solar. The Discovery is the only truthful answer. Must not imply Atlas covers solar products.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "solar battery",
+      "concept": "house-as-power-station",
+      "scope": "possibility",
+      "targets": ["discovery-house-as-power-station.html"],
+      "evidence": "Audited 2026-10-08: zero products, one public page. Same basis as 'solar'.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "sauna",
+      "concept": "garden-retreat",
+      "scope": "possibility-only",
+      "targets": ["discovery-garden-retreat.html"],
+      "evidence": "Audited 2026-10-08. POSSIBILITY ONLY, by founder decision. Four products mention sauna/wellness and every mention is incidental or negative: MyCabin explicitly EXCLUDES the Cube Sauna from that range; Iglucraft Igluoffice 1 is a warranty exclusion for a sauna heater; Igluoffice 2 is an office variant by a maker of saunas; Koto Niwa is 'suited to a sauna or small garden studio'. All four sit in features prose, which is never indexed. Private previews that do hold sauna suppliers (Auroom Wellness and others) are NEVER searchable and must not fill this gap.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "parking",
+      "concept": "parking-and-driveway",
+      "scope": "possibility",
+      "targets": ["discovery-hidden-cars.html", "discovery-driveway-income.html"],
+      "evidence": "Audited 2026-10-08: this is a NARROWING map, not an expanding one. Naive matching returns 7 public pages, including discovery-hidden-bins.html and discovery-your-home-on-screen.html, which match only on incidental body prose. The map restricts the answer to the two Discoveries actually about parking.",
+      "status": "APPROVED"
+    }
+  ]
+}

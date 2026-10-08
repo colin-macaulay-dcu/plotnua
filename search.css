@@ -1,0 +1,239 @@
+/* ==========================================================================
+   PLOTNUA SEARCH · V1 STYLES
+   ==========================================================================
+   PlotNua's first shared local stylesheet. Founder decision B-2, SPECIFIC TO
+   SEARCH: nothing here restyles an existing component, and no existing inline
+   CSS was extracted.
+
+   THE LEFT-HAND CONTROLS ARE NOT TOUCHED.
+   The earlier design put Search into the left rail as MARK -> SEARCH -> INFO,
+   which required moving the information control and re-anchoring its popover.
+   Founder review rejected that layout, so it is reverted in full: every public
+   page is byte-identical to what shipped, and THIS FILE DECLARES NO RULE for
+   .brand-mark, .brand-info or .brand-info-pop. Their original relationship and
+   geometry stand, including the 12px clearance the shipped stylesheet already
+   measured. Search moved out of their way instead of making them move.
+
+   SEARCH IS A TOP-RIGHT PILL:   [icon] Search PlotNua
+
+   The label is kept at every width, 390px included. The founder asked for a
+   proper labelled control, not an unexplained magnifying glass, and the
+   measurement supports it: at 390px the pill is about 150px against 358px of
+   usable width.
+
+   Namespacing: every selector is .pns-*. There is exactly one exception,
+   html.pns-open, which locks scroll behind the overlay.
+   ========================================================================== */
+
+/* ------------------------------------------------- the top-right search pill */
+/* FOUNDER REVIEW: the location is approved, the treatment was "too generic".
+   Polished against PlotNua's existing vocabulary, taking cues from the My Plot
+   capsule WITHOUT copying its scale — the brief was a smaller sibling, not a
+   rival. Concretely: the ivory capsule, the ink-green type, the same 1px hairline
+   plus soft double shadow the brand mark already uses, Fraunces for the label so
+   it reads as PlotNua rather than as browser furniture, a sage-ringed icon disc
+   at the left, and a quiet chevron at the right for action. Deliberately smaller
+   and lighter than My Plot, and never heavier than the hero. */
+.pns-pill{
+  position:fixed; top:22px; right:22px; z-index:50;
+  display:inline-flex; align-items:center; gap:9px;
+  height:40px; padding:0 14px 0 6px;
+  border-radius:20px;
+  border:1px solid rgba(31,59,46,.13);
+  background:var(--brand-ivory,#fbf9f4);
+  color:var(--ink,#1f3b2e);
+  text-decoration:none; white-space:nowrap;
+  box-shadow:0 1px 3px rgba(31,59,46,.13), 0 0 0 1px rgba(31,59,46,.05);
+  opacity:0;
+  transition:opacity 1.6s ease, border-color .2s ease, box-shadow .2s ease,
+             transform .2s ease;
+}
+.brand-mark.in ~ .pns-pill{ opacity:1; }
+.pns-pill[data-pns-nofade]{ opacity:1; }
+.pns-static .pns-pill{ opacity:1; }
+
+/* The icon sits on its own small sage-tinted disc, which is what stops the
+   control reading as a utility button. */
+.pns-pill-ico-wrap{
+  flex:0 0 auto; width:28px; height:28px; border-radius:50%;
+  background:rgba(125,155,127,.16);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s ease;
+}
+.pns-pill-ico{ display:block; width:13px; height:13px; color:var(--ink,#1f3b2e); opacity:.9; }
+.pns-pill-label{
+  display:inline-block;
+  font-family:'Fraunces',Georgia,serif; font-weight:600;
+  font-size:14.5px; line-height:1; letter-spacing:-.005em;
+}
+.pns-pill-cue{
+  flex:0 0 auto; width:5px; height:5px; margin-left:1px;
+  border-right:1.5px solid currentColor; border-top:1.5px solid currentColor;
+  transform:rotate(45deg); opacity:.4;
+  transition:opacity .2s ease, transform .2s ease;
+}
+.pns-pill:hover{
+  border-color:rgba(31,59,46,.26);
+  box-shadow:0 2px 6px rgba(31,59,46,.15), 0 0 0 1px rgba(31,59,46,.07);
+}
+.pns-pill:hover .pns-pill-ico-wrap{ background:rgba(125,155,127,.26); }
+.pns-pill:hover .pns-pill-cue{ opacity:.7; transform:rotate(45deg) translateX(1px); }
+.pns-pill:focus-visible{ outline:2px solid var(--brand-sage,#7d9b7f); outline-offset:3px; }
+.pns-pill[data-pns-current="true"]{
+  border-color:rgba(31,59,46,.3);
+  box-shadow:0 0 0 3px rgba(125,155,127,.24);
+  cursor:default;
+}
+.pns-pill[data-pns-current="true"] .pns-pill-cue{ opacity:0; }
+
+@media(max-width:720px){
+  /* The LABEL IS KEPT. Measured: the pill is about 150px at this size against
+     390 - 16 - 56 = 318px of free width beside the brand mark. */
+  .pns-pill{ top:16px; right:16px; height:36px; padding:0 12px 0 5px; gap:7px; }
+  .pns-pill-ico-wrap{ width:26px; height:26px; }
+  .pns-pill-label{ font-size:13.5px; }
+}
+
+/* ------------------------------------------------------------- the overlay */
+html.pns-open{ overflow:hidden; }
+
+.pns-panel{
+  position:fixed; inset:0; z-index:200;
+  background:var(--paper,#fdfcf9);
+  overflow:auto; -webkit-overflow-scrolling:touch;
+}
+.pns-panel[hidden]{ display:none; }
+.pns-shell{
+  box-sizing:border-box;
+  max-width:860px; margin:0 auto; padding:84px 20px 72px;
+}
+.pns-close{
+  -webkit-appearance:none; appearance:none; cursor:pointer;
+  position:fixed; top:22px; right:22px; z-index:210;
+  width:40px; height:40px; border-radius:50%;
+  border:1px solid rgba(31,59,46,.22);
+  background:var(--brand-ivory,#fbf9f4); color:var(--ink,#1f3b2e);
+  font-size:19px; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+}
+.pns-close:focus-visible{ outline:2px solid var(--brand-sage,#7d9b7f); outline-offset:3px; }
+
+.pns-ask{
+  margin:0 0 4px;
+  font-family:'Fraunces',Georgia,serif; font-weight:600;
+  font-size:clamp(23px,4.6vw,31px); line-height:1.2; letter-spacing:-.01em;
+  color:var(--ink,#1f3b2e);
+}
+.pns-field{ position:relative; margin:16px 0 10px; }
+.pns-input{
+  box-sizing:border-box; width:100%; min-width:0;
+  padding:14px 16px; border-radius:3px;
+  border:1px solid rgba(31,59,46,.26);
+  background:#fff; color:var(--ink,#1f3b2e);
+  font-family:inherit; font-size:16px; line-height:1.4;
+}
+.pns-input::placeholder{ color:var(--soft,#5d6b60); opacity:.72; }
+.pns-input:focus{ outline:2px solid var(--brand-sage,#7d9b7f); outline-offset:1px; }
+
+/* -------------------------------------------------------------- results */
+.pns-sec{
+  margin:30px 0 8px; padding-bottom:7px;
+  border-bottom:1px solid rgba(31,59,46,.12);
+  font-family:'Fraunces',Georgia,serif; font-weight:600;
+  font-size:14px; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ink,#1f3b2e);
+}
+.pns-count{
+  display:inline-block; margin-left:6px; padding:1px 7px;
+  border-radius:9px; background:rgba(31,59,46,.07);
+  font-family:inherit; font-size:12px; letter-spacing:.02em;
+  text-transform:none; color:var(--soft,#5d6b60);
+}
+.pns-list{ list-style:none; margin:0; padding:0; }
+.pns-item{ padding:11px 0; border-bottom:1px solid rgba(31,59,46,.07); min-width:0; }
+.pns-title{
+  font-family:'Fraunces',Georgia,serif; font-size:17px; line-height:1.32;
+  color:var(--ink,#1f3b2e); text-decoration:none; overflow-wrap:anywhere;
+}
+a.pns-title:hover{ text-decoration:underline; }
+.pns-sub{ margin:3px 0 0; font-size:13.5px; line-height:1.5; color:var(--soft,#5d6b60); overflow-wrap:anywhere; }
+.pns-caveat{
+  margin:5px 0 0; padding:5px 9px; border-radius:2px;
+  background:rgba(176,138,74,.09);
+  font-size:12.5px; line-height:1.45; color:#7a5c25;
+}
+.pns-note{ margin:8px 0 0; font-size:13px; line-height:1.55; color:var(--soft,#5d6b60); }
+.pns-group{ margin:14px 0 0; }
+.pns-group-h{
+  margin:0 0 2px; font-family:'Fraunces',Georgia,serif;
+  font-weight:600; font-size:14.5px; color:var(--ink,#1f3b2e);
+}
+.pns-more{ padding:9px 0; font-size:13px; color:var(--soft,#5d6b60); }
+
+/* ----------------------------------------------- supplier disclosure (D-7) */
+/* The supplier NAME is deliberately not a link and does not look like one: a
+   supplier expands inside Search and has no route to navigate to. The expand
+   control is explicit and labelled with its count. */
+.pns-sup-name{
+  margin:0; font-family:'Fraunces',Georgia,serif;
+  font-size:17px; line-height:1.32; color:var(--ink,#1f3b2e);
+}
+.pns-expand{
+  -webkit-appearance:none; appearance:none; cursor:pointer;
+  display:inline-flex; align-items:center; gap:7px;
+  margin:9px 0 0; padding:7px 13px;
+  border-radius:16px; border:1px solid rgba(31,59,46,.22);
+  background:#fff; color:var(--ink,#1f3b2e);
+  font-family:inherit; font-size:13px; line-height:1;
+}
+.pns-expand:hover{ border-color:rgba(31,59,46,.4); }
+.pns-expand:focus-visible{ outline:2px solid var(--brand-sage,#7d9b7f); outline-offset:2px; }
+.pns-chev{
+  width:7px; height:7px; border-right:1.5px solid currentColor;
+  border-bottom:1.5px solid currentColor; transform:rotate(45deg) translateY(-1px);
+  transition:transform .16s ease;
+}
+.pns-expand[aria-expanded="true"] .pns-chev{ transform:rotate(-135deg) translateY(-2px); }
+.pns-sup-products{ margin:8px 0 2px; padding-left:14px; border-left:2px solid rgba(31,59,46,.1); }
+.pns-sup-products[hidden]{ display:none; }
+.pns-sup-products .pns-item:last-child{ border-bottom:0; }
+
+/* --------------------------------------------------------------- zero state */
+.pns-zero{ margin:22px 0 0; }
+.pns-zero-lead{
+  margin:0 0 10px; font-family:'Fraunces',Georgia,serif;
+  font-size:19px; line-height:1.35; color:var(--ink,#1f3b2e);
+}
+.pns-zero p{ margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--soft,#5d6b60); }
+
+/* ------------------------------------------------- search.html static page */
+.pns-static-main{ box-sizing:border-box; max-width:720px; margin:0 auto; padding:118px 20px 80px; }
+.pns-static-main h1{
+  margin:0 0 8px; font-family:'Fraunces',Georgia,serif; font-weight:600;
+  font-size:clamp(28px,5.4vw,42px); line-height:1.12; letter-spacing:-.015em;
+  color:var(--ink,#1f3b2e);
+}
+.pns-lede{ margin:0 0 30px; font-size:17px; line-height:1.6; color:var(--soft,#5d6b60); }
+.pns-start{ margin:34px 0 0; }
+.pns-start-h{
+  margin:0 0 10px; font-family:'Fraunces',Georgia,serif; font-weight:600;
+  font-size:15px; color:var(--ink,#1f3b2e);
+}
+.pns-chips{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.pns-chip{
+  display:inline-block; padding:7px 14px; border-radius:16px;
+  border:1px solid rgba(31,59,46,.17); background:var(--brand-ivory,#fbf9f4);
+  color:var(--ink,#1f3b2e); text-decoration:none; font-size:13.5px; line-height:1.2;
+}
+.pns-chip:hover{ border-color:rgba(31,59,46,.36); }
+.pns-chip:focus-visible{ outline:2px solid var(--brand-sage,#7d9b7f); outline-offset:2px; }
+
+@media(max-width:620px){
+  .pns-shell{ padding:76px 16px 64px; }
+  .pns-static-main{ padding:104px 16px 72px; }
+  .pns-close{ top:16px; right:16px; }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .pns-pill, .pns-chev{ transition:none; }
+}

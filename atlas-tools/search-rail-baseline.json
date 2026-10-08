@@ -1,0 +1,130 @@
+{
+  "pages": {
+    "about.html": {
+      "after": "3fe3db76164691c6667761a1d1778fd2fc30d723fea45be09b8567f01dbc89e0",
+      "before": "582192a087569dcfd62eb7449054fa7272f494ec71d5ac26488471fdf1e90ec3",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "contact.html": {
+      "after": "7f73354635c30863636c897095fb5f5f9410f451229df7a2472d76db5391ec94",
+      "before": "6fce2601b08e36c381f72cbeb47ebc1c0e871c017a3ac1053aa524564353a60a",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "cookie-policy.html": {
+      "after": "7b093655b05c538968922751bdbaa15b5f0406715dffb7c15d14c5f50a3e5d7a",
+      "before": "00469c8f024f2737118bbe5764c776f2e966ba22d48b66ab6448879d5b837c24",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discoveries.html": {
+      "after": "d88f623647f4ddb24012b84311647d63770eaff809bcf3c8263e981030728c45",
+      "before": "46dc63d0eb5b6c81bf047b4f0ef69ed0b346df6019a3350f7e27f18428e47e4d",
+      "nofade": true,
+      "region": "eda060fe0836edf6383e543862cbf3e0bab4968bccc007c95506fa51b3060f4c"
+    },
+    "discovery-a-home-for-art.html": {
+      "after": "b74ef2741f15ee6f009b60b0d5ffe74bb7032e34f9008403a51f7ed9a57dba02",
+      "before": "1f3ef648b1b9b5710acf47d9921586e8f54313550faa8e7dd77cbef619d090fa",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-above-and-beyond.html": {
+      "after": "d049315906699822cc54b3572af7a6541499dbac2d18cb2228adba755e773e08",
+      "before": "5c83be5aa82eb13513b79a7e772473b50ce52b529c5d5f3a04aa14fc27b41fcb",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-driveway-income.html": {
+      "after": "b190e8b25cb6ad1aa07ea07ec226aaef52352a7740ebfaa3556b042e89dcd74f",
+      "before": "5e1396f7c0edd4a8c201077d127f524e1b24ff643a2480fb681417d60194edec",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-garden-retreat.html": {
+      "after": "84944409bf2ad137a64a81872daab4c81bf337c5de8b1735effd45fbaa34a23e",
+      "before": "c626687d1b4b2c2a1822430e471ccde3cbd49b187f25fc63b2a16dcc74367b70",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-hidden-bins.html": {
+      "after": "8474799e121422c5a44ae471dad01be3d86ae1f0d8ccc33c0920885eca7c2744",
+      "before": "1232c2737ceddf45b8a14c6157f1da5683779b09df45d5b553128e544706b6fc",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-hidden-cars.html": {
+      "after": "c7b2fc3b0c3a8ce18325085f81914d38f9ff61e8bcc3eb07ec72d521a8baeb9b",
+      "before": "3dc80a25fed0f94bc0b685977c839c28ebe8efc7ae288892170069c5d6234d41",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-home-exchange.html": {
+      "after": "dccad75b2812b198f3fa5ee8908408493bc8acab8053daf297f783435e949cfa",
+      "before": "0c593a220a03a6bd1b622902b897977b570f55b5a1214759a079fd9b32ba80b1",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-house-as-power-station.html": {
+      "after": "fccd7bdb90e836997ae93e40166529c6803d9850e37094dbd4065ec7e9380605",
+      "before": "bfb807b617751b51d387c5e91583642fb928134792a261e788e6947b5dbbb1dd",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-living-in-the-garden.html": {
+      "after": "6ef89a22f758aa94dd92a42ea0f5e83a5a5003cf6b0ec41db36f95c90fad13c3",
+      "before": "26354fd458c8b2ec3a908c62e90851d474bb9f860180421e0dadcd143dd90d0c",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-neighbourhood-parcel-house.html": {
+      "after": "cf3397dfecfc26f8f636773f4d6c645216995a09fecc47896dec860b17a11758",
+      "before": "2371c8f7da112eef8d0db5180dea9bf424f00e8bb4aec0584180260b26a0d01f",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-open-your-home-to-art.html": {
+      "after": "c3a96e4b3151e7b6985cd20b01e9546bd74fa7451c051c704bb5c5921b7cf349",
+      "before": "848208bbc57e51592181067938f7c7fc3587c9c5fed2f9328179fcf1e9402f33",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-the-borrowed-garden.html": {
+      "after": "727823fda1a52372a8c325a860e7cdcff05e772c89975197726865efa06a1eef",
+      "before": "aeafad9cf4241478d498af93162859dfe011720e3333902ff10a779364f70669",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "discovery-your-home-on-screen.html": {
+      "after": "3dfd7059876bdfbe5141a72609cc7c2eacfb7f6f158d054edcdbc20db7a47bcd",
+      "before": "318b04a0b0720dd1aedf3ca343566d69354ef54c02865118aadaa7a97a718bec",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "index.html": {
+      "after": "72b5cbb522305ed6855ccf4d74d24d89f20b97074fb971438fc13e8f75cd60df",
+      "before": "723754780c2f6538199342e3bbdae138c9e0a0b199f3d9a01aa7091ee0ab6051",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "privacy.html": {
+      "after": "014900db129cc3370fe584ab89211fc73a2d3d6dbe07b8442d7b08d9b4fad685",
+      "before": "10ba9f01a1510f1bf068724113e9fb197638acc9dac87d97c69f58a1b463d52f",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    },
+    "search.html": {
+      "after": "a8dd597348413835075b47553e3db5bb311ecaa6284b256ec68361b03bc7fe9c",
+      "before": "c3e7dc013603a2435499a9d165c3309e936dad19c61cae973b4be656d4ee89b5",
+      "nofade": true,
+      "region": "eda060fe0836edf6383e543862cbf3e0bab4968bccc007c95506fa51b3060f4c"
+    },
+    "terms.html": {
+      "after": "165f8a685deb1a87af15dced4dde838a81b3972a9fdb4e35a71feb14b51443ab",
+      "before": "bd3faa3e5950f29227925e5a13e9e464df622dd1a63b8d6b3920625100873701",
+      "nofade": false,
+      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+    }
+  }
+}
