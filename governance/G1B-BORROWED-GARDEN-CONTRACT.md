@@ -274,3 +274,14 @@ compares against its own canonical constant for `2026-10-PHASE2-V1`. A mismatch
 is a rejected submission, not a silent write. A page that drifts from the
 approved wording therefore stops working rather than recording a consent to
 text nobody approved.
+
+---
+
+## POST-FREEZE AMENDMENTS
+
+Everything above is the record as frozen on 7 October 2026 and is not altered by
+anything below.
+
+| Date | Amendment | Record |
+|---|---|---|
+| 8 October 2026 | `privacy_version` advances `2026-10-PHASE2-V1` → `2026-10-PHASE2-V2`. The homeowner privacy notice now discloses that PlotNua stores the result the Property Check produced, as well as the answers supplied. `inherited_result_key` KEPT. Consent sentences and both SHA-256 values unchanged. No stored field, retention rule, matching rule or introduction rule changed. G7 remains BLOCKED. | [`G1B-V2-AMENDMENT-2026-10-08.md`](G1B-V2-AMENDMENT-2026-10-08.md) |

@@ -22,7 +22,7 @@ const BASE_ENV = {
   ORIGIN,
   WRITES_ENABLED: 'false',
   EMAIL_ENABLED: 'false',
-  PRIVACY_VERSION: '2026-10-PHASE2-V1',
+  PRIVACY_VERSION: '2026-10-PHASE2-V2',
   PILOT_DISTRICTS: 'raheny,killester,donnycarney,artane'
 };
 /* A deliberately fake token. If any test reaches Airtable with this, the test

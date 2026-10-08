@@ -827,9 +827,20 @@ await scope(async () => {
   check('G23f2 the notice lists what PlotNua never asks for',
     /Your address, your Eircode, your phone number, your surname, your age/
       .test(notice));
-  check('G23g the notice names the 2026-10-PHASE2-V1 retention rule verbatim',
+  check('G23g the notice names the 2026-10-PHASE2-V2 retention rule verbatim',
     /We keep your record for a maximum of 24 months\. You can ask us to delete it at any time, and we may delete it sooner if it is no longer needed\./
       .test($('bgIntNotice').textContent.replace(/\s+/g, ' ')));
+  /* G23f3 · THE DERIVED RESULT IS DISCLOSED.
+     The register stores `inherited_result_key` — the result the Property Check
+     produced — alongside the answers the homeowner supplied. Under V1 the
+     notice described only the answers, so a stored field had no homeowner-
+     facing disclosure. Founder decision of 8 October 2026 KEPT the field and
+     amended the notice; 2026-10-PHASE2-V2 is that amendment.
+     This guard exists because the "What we keep" sentence was previously
+     unasserted, which is exactly how the omission survived a freeze. */
+  check('G23f3 the notice discloses the stored Property Check result',
+    /and whether you own the property . and the result the Property Check produced from those answers\./
+      .test(notice), notice.slice(0, 120));
   w.close();
 });
 

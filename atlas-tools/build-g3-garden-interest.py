@@ -255,7 +255,8 @@ HTML = r"""      </div>
             <p><strong>What we keep about you and your garden.</strong> Your first
               name, your email address, the district you chose, and what you told the
               Property Check about your garden &mdash; its size band, water, how
-              someone would get in, and whether you own the property. We also keep
+              someone would get in, and whether you own the property &mdash; and the
+              result the Property Check produced from those answers. We also keep
               the administrative records needed to manage your registration, your
               consent and its status.</p>
             <p><strong>What we never ask for.</strong> Your address, your Eircode,
@@ -353,7 +354,7 @@ JS = r"""  /* PLOTNUA-G3-INTEREST-BEGIN
    * written into the visible label with textContent — never innerHTML, so no
    * entity can become a typographic quote — and the SAME constant is sent as
    * consent_text. The Worker hashes what arrives and compares it against its
-   * own constant for privacy_version 2026-10-PHASE2-V1. If this page ever
+   * own constant for privacy_version 2026-10-PHASE2-V2. If this page ever
    * drifts from the approved wording it stops working rather than recording a
    * consent to text nobody approved.
    * ======================================================================== */

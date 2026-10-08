@@ -21,7 +21,7 @@ EMAIL_ENABLED   = "false"   # there is NO mail adapter in this Worker. This var
                             # implied by absence, and so a future adapter
                             # cannot be switched on by accident.
 ORIGIN          = "https://plotnua.ie"
-PRIVACY_VERSION = "2026-10-PHASE2-V1"
+PRIVACY_VERSION = "2026-10-PHASE2-V2"
 PILOT_DISTRICTS = "raheny,killester,donnycarney,artane"
 
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here.
