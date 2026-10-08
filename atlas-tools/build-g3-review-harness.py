@@ -74,13 +74,27 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGE = ROOT / "disc025-borrowed-garden-check.html"
-OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else None
+ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
+OUT = pathlib.Path(ARGS[0]) if ARGS else None
 
-# Representative Property Check answers: an owner, a clear corner, side access,
-# still using it. Chosen because it is the ordinary workable case and does NOT
-# trip the founder-Q1 no_garden suppression.
-ANSWERS = ("{tenure:'own',spare_corner:'yes_a_clear_corner',"
-           "way_in:'side_or_rear_access',your_own_use:'now_and_then'}")
+# TENURE, 8 October 2026. Added for the PRE-G5 correction: the founder must see
+# the BUYING state, which did not exist before the correction (a buying
+# homeowner was shown the permission block and could not submit without it).
+# `own` remains the default, so every existing invocation and the 46/0 suite
+# behave exactly as before.
+TENURE = "own"
+for _a in sys.argv[1:]:
+    if _a.startswith("--tenure="):
+        TENURE = _a.split("=", 1)[1]
+if TENURE not in ("own", "rent", "buying"):
+    print("REFUSED: --tenure must be own, rent or buying (got %r)" % TENURE)
+    sys.exit(1)
+
+# Representative Property Check answers: a clear corner, side access, still
+# using it. Chosen because it is the ordinary workable case and does NOT trip
+# the founder-Q1 no_garden suppression. Only the tenure varies.
+ANSWERS = ("{tenure:'%s',spare_corner:'yes_a_clear_corner',"
+           "way_in:'side_or_rear_access',your_own_use:'now_and_then'}" % TENURE)
 
 # The exact closed-state heading the founder approved. Asserted, not assumed.
 CLOSED_HEADING = "The register isn’t open yet"

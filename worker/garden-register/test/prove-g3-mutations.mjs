@@ -127,9 +127,14 @@ const CASES = [
      "      'Nothing has been sent and nothing has been saved.',"),
    ['G14']],
 
+  /* M7 RE-ANCHORED 8 October 2026. The old anchor was
+     "if (tenure === 'rent' || tenure === 'buying') {", which the PRE-G5 tenure
+     alignment deleted. The mutation then stopped APPLYING and this harness
+     reported it VACUOUS — the right outcome, and the reason the harness
+     distinguishes vacuous from caught: an unapplied mutation proves nothing
+     and must never read as a pass. */
   ['M7  the tenure rule never shows the permission block',
-   (h) => sub(h, "    if (tenure === 'rent' || tenure === 'buying') {",
-                 "    if (false) {"),
+   (h) => sub(h, "    if (tenure === 'rent') {", "    if (false) {"),
    ['G8', 'G26b']],
 
   ['M8  the tenure rule stops requiring the statement',
@@ -222,6 +227,28 @@ const CASES = [
    (h) => sub(h, "               (INT_FIELD_NAME[f] || 'one of the answers') +",
                  "               (f || 'one of the answers') +"),
    ['G16b']],
+
+  /* ===================== PRE-G5 TENURE ALIGNMENT MUTATIONS ==============
+     Added 8 October 2026 under founder decision D-G5-1 = option 1. These exist
+     to stop the correction being silently reverted or silently widened. The
+     Worker-side mutations (M27, M29, M30) live in prove-worker-mutations.mjs,
+     because the code they attack is in the Worker, not the page. */
+
+  ['M26 the buying divergence reinstated (page shows the permission block)',
+   (h) => sub(h, "    if (tenure === 'rent') {", "    if (tenure !== 'own') {"),
+   ['T1', 'T2']],
+
+  ['M28 the permission tick demanded of EVERYONE, owners included',
+   (h) => sub(h, "    if (answers.tenure === 'rent') {\n" +
+                 "      if (!$('bgIntPerm').checked) return 'permission_confirmed';",
+                 "    if (true) {\n" +
+                 "      if (!$('bgIntPerm').checked) return 'permission_confirmed';"),
+   /* G10, not G7. My first expectation named G7, which asserts the permission
+      BLOCK is hidden for an owner — that is intPaintTenure, which this
+      mutation does not touch. G10 is the owner actually submitting, which is
+      what breaks. Expectation corrected, product unchanged: the same class of
+      over-broad expectation recorded three times in the G3 build. */
+   ['G10', 'T3']],
 
   ['M25 the funnel event made to carry the district',
    (h) => sub(h, "    interestOpened:    function () { track('garden_interest_opened'); },",

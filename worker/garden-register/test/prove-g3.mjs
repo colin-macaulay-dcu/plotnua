@@ -349,9 +349,14 @@ await scope(async () => {
   w.close();
 });
 
+/* G8 · THE PERMISSION BLOCK, NOW RENT-ONLY.
+   `buying` was removed from this loop on 8 October 2026 under founder decision
+   D-G5-1 = option 1. These five assertions encoded the implementation, which
+   was stricter than FROZEN G1B §5: the contract makes `buying` storable with
+   no permission and no statement. `buying` now has its own assertions (T1-T6)
+   modelled on G7/G7b, the owner case. `rent` is unchanged. */
 for (const [label, answers, who] of [
-  ['rent', RENT_WORKABLE, 'your landlord or the owner'],
-  ['buying', BUYING_WORKABLE, 'the current owner']
+  ['rent', RENT_WORKABLE, 'your landlord or the owner']
 ]) { await scope(async () => {
   const { w, $ } = boot({ search: '?interest=preview', answers });
   $('bgIntOpen').click();
@@ -372,6 +377,62 @@ for (const [label, answers, who] of [
     !/id="bgIntLandlord/.test($('bgIntForm').innerHTML));
   w.close();
 }); }
+
+/* ============================ T1-T6 · BUYING, UNDER FROZEN G1B §5 ========
+   G1B §5: `buying` is storable; permission_confirmed is NOT required merely to
+   store it; garden_note is NOT required merely to store it. It remains
+   non-promotable, which is a G7 decision and not a form control, so nothing
+   here asserts a promotion path — T11 asserts the no-promise wording instead.
+   Added 8 October 2026 under founder decision D-G5-1 = option 1. */
+await scope(async () => {
+  const { w, $ } = boot({ search: '?interest=preview', answers: BUYING_WORKABLE });
+  $('bgIntOpen').click();
+  check('T1 buying: the permission block is HIDDEN, as for an owner',
+    $('bgIntCond').hidden === true);
+  check('T2 buying: the note is optional, as for an owner',
+    /Optional/.test($('bgIntNoteHint').textContent),
+    $('bgIntNoteHint').textContent);
+  check('T2b buying: no "somebody else has to agree" hint is shown',
+    !/somebody else has to agree/.test($('bgIntCondHint').textContent),
+    $('bgIntCondHint').textContent);
+  w.close();
+});
+
+await scope(async () => {
+  /* T3/T4 · a buying homeowner with NO tick and NO note can submit, and the
+     payload carries permission_confirmed nowhere — absent, not false, the same
+     shape G12b already requires of an owner. */
+  const { w, $, sent } = boot({ search: '?interest=preview', answers: BUYING_WORKABLE });
+  $('bgIntOpen').click();
+  fillValid($);
+  $('bgIntForm').dispatchEvent(new w.Event('submit', { cancelable: true, bubbles: true }));
+  await tick();
+  check('T3 buying with no tick and no note IS sent', sent.length === 1,
+    JSON.stringify(sent));
+  const body = sent.length ? JSON.parse(sent[0].opts.body) : {};
+  check('T4 buying: permission_confirmed is ABSENT, not false',
+    !('permission_confirmed' in body), JSON.stringify(Object.keys(body)));
+  check('T4b buying: garden_note is absent when nothing was typed',
+    !('garden_note' in body), JSON.stringify(Object.keys(body)));
+  check('T4c buying: inherited_tenure is buying', body.inherited_tenure === 'buying');
+  w.close();
+});
+
+await scope(async () => {
+  /* T6 · the twenty-character minimum is a RENT rule. A short note from a
+     buying homeowner is kept, not refused. */
+  const { w, $, sent } = boot({ search: '?interest=preview', answers: BUYING_WORKABLE });
+  $('bgIntOpen').click();
+  fillValid($);
+  $('bgIntNote').value = 'bought in May';          /* 13 chars, under the rent minimum */
+  $('bgIntForm').dispatchEvent(new w.Event('submit', { cancelable: true, bubbles: true }));
+  await tick();
+  check('T6 buying with a 13-character note IS sent', sent.length === 1,
+    JSON.stringify(sent));
+  check('T6b buying: the short note is carried as typed',
+    sent.length && JSON.parse(sent[0].opts.body).garden_note === 'bought in May');
+  w.close();
+});
 
 await scope(async () => {
   /* G9 · the tenure rule is enforced, driven through the real form: a

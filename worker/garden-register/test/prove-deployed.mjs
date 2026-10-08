@@ -1,14 +1,27 @@
-/* G2 · DEPLOYED NEGATIVE CONTROLS
+/* G2 · DEPLOYED NEGATIVE CONTROLS — SWITCH-INDEPENDENT ONLY
  * ===========================================================================
  * Run this AFTER deploying, against the real workers.dev hostname. It proves
  * the deployed Worker refuses, rather than proving the local source refuses —
  * a distinction that matters, because a deployment can carry different vars
  * than the file on disk.
  *
- * Every assertion here is a REFUSAL. This script cannot create a record even
- * if the Worker were wide open: it sends no valid consent text for a write it
- * expects to succeed, and the Airtable zero-record check at the end is the
- * backstop.
+ * SAFE WITH WRITES ON. Every assertion here is a refusal that holds in BOTH
+ * switch states: wrong method, wrong origin, wrong Fetch Metadata, unknown
+ * path, preflight. Not one of them carries a body that could be written, so
+ * this file can be run with WRITES_ENABLED=true without creating a record.
+ *
+ * THE TWO SWITCH-DEPENDENT CONTROLS ARE NOT HERE. A valid garden POST and a
+ * valid grower POST return 503 not_open with writes off and 200 received with
+ * writes ON, creating three Airtable rows each. They live in
+ * prove-deployed-switch.mjs, which requires an explicit expected mode.
+ *
+ * CORRECTED 8 October 2026 (founder decision D-G5-3). This file previously
+ * claimed: "This script cannot create a record even if the Worker were wide
+ * open: it sends no valid consent text for a write it expects to succeed."
+ * That was FALSE. Both consent strings were byte-identical to the Worker's
+ * CONSENT_TEXT and both bodies were complete and valid, so D1 and D2 were
+ * valid writes that happened to be stopped by the switch. With writes on they
+ * would have created two records and reported them as FAILURES.
  *
  *   node test/prove-deployed.mjs https://plotnua-garden-register.<sub>.workers.dev
  * ========================================================================= */
@@ -18,9 +31,6 @@ if (!BASE || !/^https:\/\//.test(BASE)) {
   process.exit(2);
 }
 const ORIGIN = 'https://plotnua.ie';
-
-const GARDEN_CONSENT = "I'm over 18, and I'd like PlotNua to keep this and tell me if someone nearby is looking for growing space.";
-const GROWER_CONSENT = "I'm over 18, and I'd like PlotNua to keep this and tell me about possible growing space nearby.";
 
 let pass = 0, fail = 0;
 const line = (s, n, d) => { console.log(`  [${s}] ${n}${d ? '   ' + d : ''}`); };
@@ -42,30 +52,23 @@ async function call(path, body, opts = {}) {
   return { status: r.status, json: j, acao: r.headers.get('access-control-allow-origin') };
 }
 
-const gardenBody = {
-  first_name: 'Deploy', email: 'deployprobe@example.com', district: 'raheny',
-  water: 'outside_tap', size_note: 'small', timing: 'flexible',
-  inherited_tenure: 'own', over_18: true, consent_text: GARDEN_CONSENT
-};
+/* A DELIBERATELY INVALID body, used only to exercise routing, methods, origin
+   and Fetch Metadata. It carries no consent text, so even if every other guard
+   were removed and the write switch were on, the Worker refuses it on
+   `consent_text` before composing an Airtable request. The valid bodies that
+   used to live here have moved to prove-deployed-switch.mjs. */
 const growerBody = {
-  first_name: 'Deploy', email: 'deployprobe2@example.com', district: 'raheny',
+  first_name: 'Deploy', email: 'deployprobe2@plotnua.invalid', district: 'raheny',
   travel_radius: 'walking', space_wanted: 'small', timing: 'flexible',
-  over_18: true, consent_text: GROWER_CONSENT
+  over_18: true
 };
 
-console.log('\n  DEPLOYED NEGATIVE CONTROLS · ' + BASE + '\n');
+console.log('\n  DEPLOYED NEGATIVE CONTROLS (switch-independent) · ' + BASE + '\n');
 
-/* 1 · garden route cannot write while writes are off ---------------------- */
-const g = await call('/v1/garden-register/garden', gardenBody);
-check('D1 garden route refuses: not_open (writes are off)',
-  g.status === 503 && g.json && g.json.state === 'not_open',
-  'got ' + g.status + ' ' + JSON.stringify(g.json));
-
-/* 2 · grower route cannot write while writes are off --------------------- */
-const w = await call('/v1/garden-register/grower', growerBody);
-check('D2 grower route refuses: not_open (writes are off)',
-  w.status === 503 && w.json && w.json.state === 'not_open',
-  'got ' + w.status + ' ' + JSON.stringify(w.json));
+/* 1-2 · D1 and D2 HAVE MOVED to prove-deployed-switch.mjs. They are the only
+   two assertions in this file that inverted when the write switch flipped, and
+   the only two that carried a writable body. Keeping them here made the whole
+   file unsafe to run with writes on. */
 
 /* 3 · GET remains unavailable -------------------------------------------- */
 const gGet = await call('/v1/garden-register/garden', null, { method: 'GET' });
@@ -171,14 +174,18 @@ check('D11 preflight 403 with no CORS header for anyone else',
   preEvil.status === 403 && !preEvil.headers.get('access-control-allow-origin'),
   'got ' + preEvil.status);
 
-/* 6 · no email capability ------------------------------------------------ */
-check('D12 no reply mentions mail, token, confirm or verify',
-  ![g, w].some(r => /mail|token|confirm|verify/i.test(JSON.stringify(r.json))),
-  JSON.stringify([g.json, w.json]));
-
 /* 7 · unknown routes ----------------------------------------------------- */
 const nope = await call('/v1/garden-register/anything', growerBody);
 check('D13 unknown path is 404', nope.status === 404, 'got ' + nope.status);
+
+/* 6 · no email capability ------------------------------------------------ */
+/* Re-sourced from refusal replies, since the two valid-body probes have moved
+   out. These four write nothing in either switch state, so the assertion is
+   switch-independent — and it means MORE with writes on, not less. */
+check('D12 no reply mentions mail, token, confirm or verify',
+  ![noOrigin, evil, sameSite, nope].some(
+    (r) => /mail|token|confirm|verify/i.test(JSON.stringify(r.json))),
+  JSON.stringify([noOrigin.json, evil.json, sameSite.json, nope.json]));
 
 console.log(`\n  ${pass} passed, ${fail} failed`);
 console.log('\n  STILL TO CHECK BY HAND (Airtable, not this Worker):');

@@ -196,8 +196,28 @@ check('G34a owner passes the tenure rule (stopped only by the switch)',
     gb({ inherited_tenure: 'own' })))).status === 503);
 check('G34b tenant with NO permission tick is refused',
   await gardenRefused(gb({ inherited_tenure: 'rent' }), 'permission_confirmed'));
-check('G34c buying with NO permission tick is refused',
-  await gardenRefused(gb({ inherited_tenure: 'buying' }), 'permission_confirmed'));
+/* G34c INVERTED 8 October 2026 under founder decision D-G5-1 = option 1.
+   It previously asserted that `buying` with no permission tick is refused.
+   That encoded the divergence, not the contract: FROZEN G1B §5 makes `buying`
+   storable with no permission and no statement. The assertion now requires the
+   contract's behaviour — the submission passes every validator and is stopped
+   only by the WRITE SWITCH, exactly as an owner's is (G34a). */
+check('G34c buying with NO tick and NO note passes (stopped only by the switch)',
+  (await run(BASE_ENV, post('/v1/garden-register/garden',
+    gb({ inherited_tenure: 'buying' })))).status === 503);
+check('G34c2 buying with NO tick and NO note is NOT refused on permission',
+  !(await gardenRefused(gb({ inherited_tenure: 'buying' }), 'permission_confirmed')));
+check('G34c3 buying with NO tick and NO note is NOT refused on the note',
+  !(await gardenRefused(gb({ inherited_tenure: 'buying' }), 'garden_note')));
+/* T7 · the field is PERMITTED for buying, not forbidden. A homeowner who
+   volunteers a statement is not punished for it. */
+check('T7 buying WITH a tick and a note also passes (stopped only by the switch)',
+  (await run(BASE_ENV, post('/v1/garden-register/garden',
+    gb({ inherited_tenure: 'buying', permission_confirmed: true,
+         garden_note: 'The current owner knows and is happy with the idea.' })))).status === 503);
+check('T7b buying with a 3-character note passes: no minimum applies to buying',
+  (await run(BASE_ENV, post('/v1/garden-register/garden',
+    gb({ inherited_tenure: 'buying', garden_note: 'yes' })))).status === 503);
 check('G35a tenant with tick but NO statement is refused',
   await gardenRefused(gb({ inherited_tenure: 'rent', permission_confirmed: true }), 'garden_note'));
 check('G35b tenant with tick but a too-short statement is refused',
@@ -211,6 +231,36 @@ check('G35d unknown tenure value is refused outright',
   await gardenRefused(gb({ inherited_tenure: 'squatting' }), 'inherited_tenure'));
 check('G35e absent tenure is refused outright',
   await gardenRefused(gb({ inherited_tenure: undefined }), 'inherited_tenure'));
+/* T9 · THE PRESERVED DIVERGENCE. G1B §5 says absent/unconfirmed tenure is
+   storable; the Worker refuses it. Founder instruction, 8 October 2026, is
+   that this is NOT solved in this correction: it is unreachable through the
+   homeowner journey, because decide() only runs once every question is
+   answered, so inherited_tenure is always own/rent/buying when the register
+   panel exists. G35e above is the assertion; this is the record that its
+   survival is deliberate, and a guard against it being quietly "fixed". */
+check('T9 absent tenure STILL refused — the documented divergence is preserved',
+  await gardenRefused(gb({ inherited_tenure: undefined }), 'inherited_tenure'));
+check('T9b empty-string tenure is refused the same way',
+  await gardenRefused(gb({ inherited_tenure: '' }), 'inherited_tenure'));
+
+/* T10 · NON-PROMOTION IS NOT A FORM CONTROL. `buying` is storable and must
+   remain non-promotable, but nothing in this Worker promotes or introduces
+   anybody — G7 does not exist and is BLOCKED. This asserts that remains true
+   of the EXECUTABLE source, with comments stripped, because the comments
+   legitimately discuss introductions and promotion and an earlier guard of
+   this class fired on PlotNua's own denial. */
+{
+  const exe = (await import('node:fs')).readFileSync(
+    new URL('../src/index.js', import.meta.url), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ');
+  check('T10 no introduction / promotion / eligibility logic in the Worker',
+    !/introduc|promot|eligib|matchable/i.test(exe));
+  check('T10b the record status is only ever SUBMIT_STATUS',
+    [...exe.matchAll(/(?<![\w_])status:\s*([A-Za-z_'"][\w'"]*)/g)]
+      .every((m) => m[1] === 'SUBMIT_STATUS'));
+  check('T10c buying is named nowhere in executable logic except the vocabulary',
+    (exe.match(/'buying'/g) || []).length === 1, exe.match(/'buying'/g));
+}
 /* G36 TESTS ASSERTION, NOT MENTION — the DISC-025 failure class, avoided.
    The first version of this test matched the word 'landlord' anywhere, and
    fired on PlotNua's OWN DENIAL in a comment ("never asks for a deed, a lease,
@@ -240,11 +290,22 @@ check('G39 nothing identifying is logged',
   !/console\.(log|info|warn|error)/.test(src));
 
 /* ================================================= 10 · BODY LIMITS ===== */
-const big = await run(BASE_ENV, post('/v1/garden-register/grower',
+/* FRESH ISOLATE. The Worker rate-limits POSTs at 30 per 60 s per isolate
+   (`tooMany('post', Date.now(), 30, 60_000)`), keyed on the literal string
+   'post' — global, not per-caller. The baseline suite sat just under that
+   ceiling; the tenure-alignment additions pushed it over and the last three
+   assertions began returning 429, which reads as three product defects and is
+   none. Re-importing with a cache-busting query gives a new module instance
+   with an empty bucket, which is what a new isolate actually is.
+   Recorded, not worked around quietly: a suite one request away from a false
+   failure was a latent defect in the suite, found 8 October 2026. */
+const worker2 = (await import('../src/index.js?isolate=2')).default;
+const run2 = (env, req) => worker2.fetch(req, env);
+const big = await run2(BASE_ENV, post('/v1/garden-register/grower',
   growerBody({ growing_note: 'x'.repeat(8000) })));
 check('G40 oversized body is refused', big.status === 400 &&
   (await asJson(big)).field === 'body');
-const badJson = await worker.fetch(new Request('https://w.example/v1/garden-register/grower', {
+const badJson = await worker2.fetch(new Request('https://w.example/v1/garden-register/grower', {
   method: 'POST',
   headers: { origin: ORIGIN, 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'cors',
              'content-type': 'application/json' },
@@ -255,7 +316,7 @@ check('G42 note is truncated, not rejected, at the cap',
   T.cleanText('y'.repeat(T.MAX_NOTE_CHARS + 50), T.MAX_NOTE_CHARS).length === T.MAX_NOTE_CHARS);
 
 /* ============================================= 11 · ROUTING / ORACLE ===== */
-const unknown = await run(BASE_ENV, post('/v1/garden-register/nope', growerBody()));
+const unknown = await run2(BASE_ENV, post('/v1/garden-register/nope', growerBody()));
 check('G43 unknown path is 404 with a fixed shape', unknown.status === 404);
 check('G44 reply never distinguishes new from repeat',
   /'received'/.test(src) && !/already_registered|duplicate|repeat:\s*true/.test(src));
