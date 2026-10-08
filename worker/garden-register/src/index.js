@@ -327,13 +327,19 @@ async function handleGarden(env, body, now, cors) {
   /* over_18 must be TRUE. A false is never written — the schema says so. */
   if (body.over_18 !== true) return REFUSED(cors, 'over_18');
 
-  /* G1B TENURE RULE. A non-owner needs the tick AND their own statement.
+  /* G1B §5 TENURE RULE, as frozen. `rent` may reach an introduction ONLY with
+     explicit permission, so `rent` alone requires the tick AND the homeowner's
+     own statement. `buying` is storable with neither, is never promoted, and
+     `own` needs ordinary confirmation only.
      PlotNua never asks for a deed, a lease, or a landlord's details: the
-     homeowner's own sentence is the evidence, and it is evidence of what they
-     said, not of the fact. Storage is still permitted — this refusal exists
-     only because a submission with neither has nothing to review. */
+     homeowner's own sentence is evidence of what they said, not of the fact.
+     Non-promotion is enforced at G7, which is
+     BLOCKED — it is not, and must not become, a form control.
+     Aligned 8 October 2026 under founder decision D-G5-1 = option 1: this
+     block previously read `tenure !== 'own'`, which refused a `buying`
+     homeowner the frozen contract says is storable. */
   const permission_confirmed = body.permission_confirmed === true;
-  if (tenure !== 'own') {
+  if (tenure === 'rent') {
     if (!permission_confirmed) return REFUSED(cors, 'permission_confirmed');
     if (!note || note.length < 20) return REFUSED(cors, 'garden_note');
   }
