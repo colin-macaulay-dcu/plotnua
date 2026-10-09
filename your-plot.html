@@ -11015,10 +11015,21 @@
              already here, as it is on every page load, its relocation
              check is simply a no-op. -->
         <div class="sunlight-controls" id="sunlightControls" hidden>
-          <div class="season-tabs" role="tablist" aria-label="Season">
-            <button type="button" class="season-tab" data-season="summer">Summer</button>
-            <button type="button" class="season-tab is-active" data-season="today">Today</button>
-            <button type="button" class="season-tab" data-season="winter">Winter</button>
+          <!-- JOB 6 · These three controls are NOT tabs. They control no
+               tab panel (this page declares none), they reveal and hide
+               nothing, and they never carried the tab role, a selected
+               state or a roving tabindex. What they actually do is
+               re-aim the sun on the one continuously-displayed Cesium scene,
+               via setActiveSeasonTab() + applySunTime() — the same kind of
+               parameter control as the hour slider beside them, which is
+               correctly not marked up as tabs either. So the tablist was a
+               semantic claim the interaction never honoured. They are a
+               labelled GROUP of toggle buttons, and aria-pressed carries the
+               active season that until now only the visual conveyed. -->
+          <div class="season-tabs" role="group" aria-label="Season">
+            <button type="button" class="season-tab" data-season="summer" aria-pressed="false">Summer</button>
+            <button type="button" class="season-tab is-active" data-season="today" aria-pressed="true">Today</button>
+            <button type="button" class="season-tab" data-season="winter" aria-pressed="false">Winter</button>
           </div>
           <div class="time-current-label" id="timeCurrentLabel" aria-live="polite">12:00</div>
           <div class="time-track">
@@ -13107,7 +13118,14 @@
   }
 
   function setActiveSeasonTab(season){
-    els.seasonTabs.forEach(tab => tab.classList.toggle('is-active', tab.dataset.season === season));
+    els.seasonTabs.forEach(tab => {
+      const on = tab.dataset.season === season;
+      tab.classList.toggle('is-active', on);
+      // JOB 6 — aria-pressed is maintained HERE, on the single existing
+      // state-update path, so the exposed state cannot drift from the
+      // visual one. Every caller of setActiveSeasonTab() gets both.
+      tab.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
   }
   function setActiveTick(hour){
     els.timeTicks.forEach(tick => tick.classList.toggle('is-active', Number(tick.dataset.hour) === hour));

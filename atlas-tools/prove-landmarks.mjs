@@ -45,7 +45,9 @@ const DISC025 = "disc025-borrowed-garden-check.html";
 const DISC025_MAIN =
   "05bf977f0d4fb05a3310e1e3dc9bfb757b2d92d529f226f2c8bb97c805844a29";
 const SEARCH_FROZEN = {
-  "search.js":  "a85193e7dd6982f12cb98e91a0784038a014d7b585cefcabcaabd60735d55a4c",
+  // Re-stamped by JOB 6 (authorised Search V1 runtime change). Same
+  // assertion, same strictness, new frozen value.
+  "search.js":  "c7307b28d8629f278c021aaf105d8bd69f1c42db2890c51d9efd1b6acc63bf27",
   "search.css": "a0a1b07aaf6f729ab41873962a1ab1d5bf3b0a03defb1f8e21c0d9945de82e19",
 };
 

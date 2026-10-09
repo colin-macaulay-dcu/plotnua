@@ -39,7 +39,7 @@ Hashes read from `https://plotnua.ie` and compared against the committed tree at
 
 | File | SHA-256 (16) |
 |---|---|
-| `search.js` | `a85193e7dd6982f1` |
+| `search.js` | `c7307b28d8629f27` | **re-frozen by Job 6** (was `a85193e7dd6982f1`) |
 | `search.css` | `a0a1b07aaf6f729a` |
 | `search-index-v1.json` | `98efc7e85f796ba8` |
 | `search.html` | `a8dd597348413835` |
@@ -300,3 +300,48 @@ visible page still shows that heading exactly once.
   Job 1 journey-exit and 404 builders idempotent · DISC-025 frozen `<main>`
   `05bf977f0d4f…` unchanged · Garden Register `WRITES_ENABLED`,
   `EMAIL_ENABLED`, `INTEREST_PUBLIC` all `false`.
+
+
+---
+
+## JOB 6 RE-FREEZE — Search modal focus containment
+
+Search V1 was deliberately unfrozen, changed and re-frozen under founder
+authorisation B6-1.
+
+**What changed.** `search.js` only. The overlay declared `role="dialog"` with
+`aria-modal="true"` but contained neither focus nor the background: there was no
+Tab handling in the file at all, and `html.pns-open` is only a scroll lock.
+Measured on `index.html` at `8ccca1e`, five Tabs forward from the field reached
+`#brandInfoBtn` behind the overlay, and one Shift+Tab from `#pnsClose` reached
+the Search pill, which is a body sibling sitting before the panel. Job 6 adds a
+panel-scoped Tab/Shift+Tab wrap that recomputes the focusable set on every
+keypress, and makes the other `<body>` children `inert` while the panel is open,
+restoring exactly the elements it changed on all three close routes.
+
+**What did NOT change.** `search.css`, `search-index-v1.json`, `search.html`,
+`atlas-tools/build-search-rail.py`, the generated rail markup on any of the 21
+pages, Search ranking, result order, result presentation, homeowner-visible
+Search copy, Search URLs and Product Detail routes are all untouched. The
+corpus and index hashes below are unchanged.
+
+| File | Before Job 6 | After Job 6 |
+|---|---|---|
+| `search.js` | `a85193e7dd6982f1` | **`c7307b28d8629f27`** |
+| `search.css` | `a0a1b07aaf6f729a` | `a0a1b07aaf6f729a` (unchanged) |
+| `search-index-v1.json` | `98efc7e85f796ba8` | `98efc7e85f796ba8` (unchanged) |
+
+**Assertions re-stamped** — value only; purpose and strictness preserved, and
+each demonstrated still able to fail against a mutated `search.js`:
+
+- `atlas-tools/build-a11y-visual.py` — Job 5 builder S0 protected-state preflight
+- `atlas-tools/prove-landmarks.mjs` — Job 4 preservation assertion
+- this record
+
+**Search V1 is FROZEN AGAIN at `c7307b28d8629f27`.**
+
+**Proofs.** `atlas-tools/prove-job6-interaction.py` (runtime, real Chromium:
+focus containment both directions, background inert, all three close routes,
+dynamic and zero-result states, `search.html` non-trapping, My Plot season
+semantics) and `atlas-tools/prove-job6-capability.py` (9 mutations, each caught
+by the checks that own it).

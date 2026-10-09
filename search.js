@@ -492,6 +492,9 @@
     if (e.panel && e.panel.hidden) {
       e.panel.hidden = false;
       document.documentElement.classList.add('pns-open');
+      /* Back INTO Search re-opens the panel by this path, not openPanel(),
+         so the background must be made inert here as well. */
+      inertBackground();
       if (e.open) { e.open.setAttribute('aria-expanded', 'true'); }
     }
     if (e.input) { e.input.value = snap.q || ''; }
@@ -553,11 +556,99 @@
     if (e.status) { e.status.textContent = t; }
   }
 
+  /* ------------------------------------------------------------------
+     JOB 6 · MODAL FOCUS CONTAINMENT
+
+     The panel has always declared role="dialog" aria-modal="true", but
+     nothing kept focus inside it and nothing removed the background: there
+     was no Tab handling anywhere in this file, and html.pns-open is only a
+     scroll lock. Measured on index.html at 8ccca1e: FIVE Tabs forward from
+     the field reached #brandInfoBtn behind the overlay, and ONE Shift+Tab
+     from #pnsClose reached #pnsOpen, because the pill is a body sibling
+     sitting BEFORE the panel. Both routes are closed here.
+
+     Runtime only. No markup, no CSS, no index, no ranking, no copy.
+     ------------------------------------------------------------------ */
+
+  var FOCUSABLE = 'a[href],area[href],button,input,select,textarea,' +
+                  'iframe,object,embed,[contenteditable="true"],' +
+                  '[tabindex]:not([tabindex="-1"])';
+
+  /* RECOMPUTED ON EVERY KEYPRESS, never snapshotted at open time. Results
+     render asynchronously after the query and the zero-result state carries
+     its own "browse all Discoveries" link, so a list captured when the panel
+     opened would be stale within a keystroke. */
+  function focusablesIn(root) {
+    var out = [];
+    if (!root) { return out; }
+    var all = root.querySelectorAll(FOCUSABLE);
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (el.disabled) { continue; }
+      if (el.getAttribute('aria-hidden') === 'true') { continue; }
+      /* VISIBILITY TEST. getClientRects() — not offsetParent. offsetParent is
+         null for POSITION:FIXED elements, and #pnsClose is fixed, so an
+         offsetParent test silently dropped the close button out of the
+         focusable set and Shift+Tab from it still escaped the dialog. The
+         runtime proof caught exactly that. getClientRects() is empty for
+         display:none subtrees (how the collapsed supplier lists are hidden)
+         but non-empty for fixed elements, which is the behaviour wanted. */
+      if (!el.getClientRects().length) { continue; }
+      if (getComputedStyle(el).visibility === 'hidden') { continue; }
+      out.push(el);
+    }
+    return out;
+  }
+
+  function trapTab(ev) {
+    if (ev.key !== 'Tab') { return; }
+    var e = els();
+    if (!e.panel || e.panel.hidden) { return; }
+    var f = focusablesIn(e.panel);
+    if (!f.length) { return; }
+    var first = f[0], last = f[f.length - 1];
+    var a = document.activeElement;
+    if (!e.panel.contains(a)) {
+      /* Focus is outside an open modal (stray programmatic focus, or the
+         document itself). Pull it back rather than let the next Tab wander. */
+      ev.preventDefault(); first.focus(); return;
+    }
+    if (ev.shiftKey && a === first) { ev.preventDefault(); last.focus(); }
+    else if (!ev.shiftKey && a === last) { ev.preventDefault(); first.focus(); }
+  }
+
+  /* BACKGROUND INERT. Only the body children this code actually changed are
+     recorded, so a sibling that was ALREADY inert for some other reason
+     keeps its inert attribute when Search closes. Restoring exactly what was
+     changed — rather than clearing inert everywhere — is the whole point. */
+  var pnsInerted = [];
+
+  function inertBackground() {
+    var e = els();
+    if (!e.panel) { return; }
+    if (!('inert' in HTMLElement.prototype)) { return; }
+    if (pnsInerted.length) { return; }        /* already applied */
+    var kids = document.body.children;
+    for (var i = 0; i < kids.length; i++) {
+      var k = kids[i];
+      if (k === e.panel || k.contains(e.panel)) { continue; }
+      if (k.inert) { continue; }               /* pre-existing: leave alone */
+      k.inert = true;
+      pnsInerted.push(k);
+    }
+  }
+
+  function restoreBackground() {
+    for (var i = 0; i < pnsInerted.length; i++) { pnsInerted[i].inert = false; }
+    pnsInerted = [];
+  }
+
   function openPanel() {
     var e = els();
     if (!e.panel) { return; }
     e.panel.hidden = false;
     document.documentElement.classList.add('pns-open');
+    inertBackground();
     if (e.open) { e.open.setAttribute('aria-expanded', 'true'); }
     /* Search now occupies a history entry. Without this there was nothing for
        Back to return to, which is the whole root cause above. */
@@ -571,6 +662,10 @@
     if (!e.panel) { return; }
     e.panel.hidden = true;
     document.documentElement.classList.remove('pns-open');
+    /* ORDER MATTERS. The pill is a background sibling, so it is one of the
+       elements made inert on open. Un-inert BEFORE returning focus to it —
+       focusing an inert element silently does nothing. */
+    restoreBackground();
     if (e.open) { e.open.setAttribute('aria-expanded', 'false'); e.open.focus(); }
     /* The term is cleared on close. Nothing was persisted anywhere, so there is
        nothing else to clean up. */
@@ -617,6 +712,10 @@
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape' && e.panel && !e.panel.hidden) { closePanel(); }
     });
+    /* JOB 6 · capture phase, so containment is decided before any other
+       keydown handler can move focus. Early-returns unless a panel is open,
+       so search.html — which has no panel at all — is untouched. */
+    document.addEventListener('keydown', trapTab, true);
 
     /* THE HAND-OFF. A product link is a real <a href>, so it navigates and the
        document is torn down. The snapshot is written into the CURRENT entry
@@ -644,6 +743,9 @@
       if (e.panel && !e.panel.hidden) {
         e.panel.hidden = true;
         document.documentElement.classList.remove('pns-open');
+        /* This is the THIRD close route and it does not call closePanel(),
+           so without this line Back would leave the whole page inert. */
+        restoreBackground();
         if (e.open) { e.open.setAttribute('aria-expanded', 'false'); }
       }
     });

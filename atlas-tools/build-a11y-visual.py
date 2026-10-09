@@ -67,7 +67,10 @@ END = "/* PLOTNUA A11Y VISUAL v1 · END */"
 DISC025 = "disc025-borrowed-garden-check.html"
 DISC025_MAIN_SHA = "05bf977f0d4fb05a3310e1e3dc9bfb757b2d92d529f226f2c8bb97c805844a29"
 FROZEN = {
-    "search.js":  "a85193e7dd6982f12cb98e91a0784038a014d7b585cefcabcaabd60735d55a4c",
+    # Re-stamped by JOB 6, which was authorised to change search.js so the
+    # Search modal actually contains focus. The assertion itself is unchanged
+    # and still refuses the build if search.js moves again.
+    "search.js":  "c7307b28d8629f278c021aaf105d8bd69f1c42db2890c51d9efd1b6acc63bf27",
     "search-index-v1.json": "98efc7e85f796ba818548d254505dca68a7433f03f1b5319962a323cab963d20",
 }
 
