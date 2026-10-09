@@ -472,7 +472,7 @@
   .footer-mark img{ display:block; width:40px; height:40px; }
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -851,9 +851,16 @@
     .pn-continue{ padding:0 7vw 6vh; }
   }
 
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
      Goes to the Discovery Library, NOT to the homepage: the brand mark above
@@ -919,7 +926,8 @@
   </div>
 </header>
 
-<main class="article">
+<main id="pn-main">
+<div class="article">
   <!-- 1 · THE DOMINANT SURFACE. The page's single unbroken surface and its
        highest elevation, and the thing the old page never had at all. The
        revelation is not that a new regulation exists. It is that the
@@ -950,7 +958,7 @@
       </div>
     </div>
   </section>
-</main>
+</div>
 
 <!-- THE BRIDGE. The homeowner has just been shown that the house is full and
      the property is not. Two things can honestly follow, and this says so in two
@@ -1001,7 +1009,7 @@
   <a href="#the-same-building">Not ready yet? Keep exploring <span aria-hidden="true">&darr;</span></a>
 </section>
 
-<main class="article">
+<div class="article">
 
   <!-- 2 · THE THREE POSSIBILITIES. Three, not six. The old list was the
        residue of five Discoveries merged into this one, and it diluted the
@@ -1040,7 +1048,7 @@
 
     <p>The building does not decide what happens inside it.</p>
   </section>
-</main>
+</div>
 
 <!-- THE SECOND PLATE · ONE BUILDING, MANY LIVES.
      The strongest photograph on the page, promoted out of a 16:9 tile inside
@@ -1054,7 +1062,7 @@
   <div class="caption"><p>Tonight it belongs to the teenagers. Tomorrow it could be anything.</p></div>
 </section>
 
-<main class="article">
+<div class="article">
   <!-- 3 · THE ENABLER, NOT THE SUBJECT. The 2026 change earns two short
        paragraphs and no more. Its job on this page is to explain why the
        third possibility above became possible. -->
@@ -1245,6 +1253,7 @@
       </details>
     </div>
   </section>
+</div>
 </main>
 
 <section class="pb-preview reveal" id="discover-your-property">
@@ -1328,9 +1337,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -1339,7 +1348,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -1347,7 +1356,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -1357,10 +1366,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>

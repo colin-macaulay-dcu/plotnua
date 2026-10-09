@@ -9651,9 +9651,16 @@
     #screen-product-detail .pd-next-cta{ width:100%; }
   }
 
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <!-- SEARCH DEEP-LINK BOOT GATE. A CLASSIC script, deliberately: the main
      PlotNua script is a module and modules are DEFERRED, so by the time it
@@ -9731,6 +9738,7 @@
      the document with no h1 at all. It is now always present and correct
      whichever screen is showing, and visually hidden because every screen
      already carries its own visible title. -->
+<main id="pn-main">
 <h1 class="pn-page-title">Your Plot</h1>
 <section id="screen-entry" class="screen">
   <div class="pn-wordmark">PlotNua</div>
@@ -11543,6 +11551,8 @@
     <div class="pd-actions" id="pdActions"></div>
   </div>
 </section>
+
+</main>
 
 <div class="pn-fallback-note" id="fallbackNote"></div>
 

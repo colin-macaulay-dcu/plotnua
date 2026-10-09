@@ -748,7 +748,7 @@
   .footer-mark img{ display:block; width:40px; height:40px; }
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -1086,9 +1086,16 @@
   @media(max-width:760px){
     .hb-cmp{ gap:14px; }
   }
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
      Goes to the Discovery Library, NOT to the homepage: the brand mark above
@@ -1141,7 +1148,8 @@
   </div>
 </header>
 
-<main class="article">
+<main id="pn-main">
+<div class="article">
 
   <section class="article-section reveal" id="the-revelation">
     <div class="kicker">The Revelation</div>
@@ -1152,7 +1160,7 @@
     <p>Film is only part of it. The Irish demand also runs through television, advertising, content production and stills photography &mdash; and the busiest end of that market is advertising and content, not feature film.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 02 - RULE 6. The annotation image, and the same photograph as
        the hero. Founder-frozen 25 September 2026: heading plus exactly three
@@ -1213,7 +1221,7 @@
       </div>
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="what-they-see">
     <div class="kicker">What They See</div>
@@ -1276,7 +1284,7 @@
     <p class="rel-note">PlotNua is not a location agency and does not put properties forward. The routes above are run by other organisations, and PlotNua has no arrangement with any of them.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 04 - inside, with the household's own life still in the room.
        Third-party equipment brand lettering neutralised before shipping;
@@ -1287,7 +1295,7 @@
     <img src="assets/img/7f49094747879fe4.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="An ordinary Irish sitting room during filming, the family's own photographs and a child's toy still in the room, with a camera on a tripod, a boom overhead and two crew at the monitor.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="what-it-involves">
     <div class="kicker">What It Involves</div>
@@ -1302,7 +1310,7 @@
     <p><strong>On putting it back:</strong> the location managers quoted say everything is returned exactly as it was. That is their account of how they work. It is not a guarantee that applies to every production, and it is not a substitute for what your own contract says.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 03 - the same house, same camera position, during a shoot.
        Small, practical and slightly untidy: the honest version of the
@@ -1311,7 +1319,7 @@
     <img src="assets/img/80614bf6b2d7d79a.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="The same house during a small shoot: a lamp on a stand aimed at the front window, a camera on the driveway, taped cable runs across the path, flight cases and a handful of crew.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="the-money">
     <div class="kicker">The Money</div>
@@ -1433,6 +1441,7 @@
     </details>
   </section>
 
+</div>
 </main>
 
 <!-- SECTION 14 - PROPERTY BRAIN, PATTERN C. No form, no Eircode input, no
@@ -1486,9 +1495,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -1497,7 +1506,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -1505,7 +1514,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -1515,10 +1524,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>

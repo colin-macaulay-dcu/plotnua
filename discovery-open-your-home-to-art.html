@@ -294,7 +294,7 @@
   .footer-mark img{ display:block; width:40px; height:40px; }
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -702,9 +702,16 @@
     .imagine-photo.pa-frame::after{ height:18px; }
     .imagine-photo.pa-frame .caption{ padding:26px 8vw 20px; }
   }
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
      Goes to the Discovery Library, NOT to the homepage: the brand mark above
@@ -758,7 +765,8 @@
   <p>What if a room you rarely use could give local art somewhere to be seen?</p>
 </section>
 
-<main class="article">
+<main id="pn-main">
+<div class="article">
 
   <section class="article-section reveal">
     <p>Making the work is rarely an artist&rsquo;s hardest problem. What happens to it afterwards is: where it lives, and who ever sees it.</p>
@@ -823,7 +831,7 @@
     <p class="dq-note"><strong>The more involved you choose to become, the greater the potential return may be</strong> &mdash; and the more there is to agree. You could be paid for providing the space. If a work sells, you and the artist could agree that you receive a share. Neither is a rate: every arrangement is settled between two people, in advance.</p>
 
   </section>
-</main>
+</div>
 
 <section class="imagine-photo pa-frame reveal">
   <!-- POTENTIAL ASSET. The annotation is burned into this JPEG, so the plate
@@ -835,7 +843,7 @@
   <div class="caption"><p>A wall, a floor, and a door that opens.</p></div>
 </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal">
     <div class="kicker">Before Anything Arrives</div>
@@ -878,7 +886,7 @@
     </details>
 
   </section>
-</main>
+</div>
 
 <section class="imagine-photo reveal">
   <!-- THE ARTIST'S PROBLEM. Placed after the ladder on purpose: the homeowner
@@ -909,7 +917,7 @@
      The page reads correctly without the plate.
      ================================================================== -->
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal">
     <div class="kicker">And afterwards</div>
@@ -930,7 +938,7 @@
 
     <p>Nothing has to happen twice. But the artist now knows your wall.</p>
   </section>
-</main>
+</div>
 
 <section class="imagine-photo reveal">
   <!-- OUTCOME. -->
@@ -939,7 +947,7 @@
   <div class="caption"><p>A work leaves with somebody who saw it in a real room.</p></div>
 </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal">
     <div class="kicker">Where this could go</div>
@@ -948,6 +956,7 @@
     <p>Starting with an Eircode, a future version of PlotNua could work out what space a property has, ask how involved you would want to be, and show whether an artist nearby needs exactly that. If both sides were interested, PlotNua could help make an introduction.</p>
     <p class="dq-note">This matching service is not live yet.</p>
   </section>
+</div>
 </main>
 
 <section class="pb-preview reveal" id="discover-your-property">
@@ -1017,9 +1026,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -1028,7 +1037,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -1036,7 +1045,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -1046,10 +1055,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>

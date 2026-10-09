@@ -748,7 +748,7 @@
   .footer-mark img{ display:block; width:40px; height:40px; }
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -1041,9 +1041,16 @@
   @media(max-width:760px){
     .hb-cmp{ gap:14px; }
   }
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
      Goes to the Discovery Library, NOT to the homepage: the brand mark above
@@ -1121,7 +1128,8 @@
   </div>
 </header>
 
-<main class="article">
+<main id="pn-main">
+<div class="article">
 
   <!-- SECTION 2 - PROBLEM. Frozen copy, verbatim. -->
   <section class="article-section reveal">
@@ -1156,7 +1164,7 @@
     <p class="ev-link"><a href="#the-evidence">See the evidence &rarr;</a></p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 02 - AESTHETIC PAYOFF. No annotation. Mechanism not visible or
        inferable. Must precede IMAGE 03 in DOM order. Not lazy-loaded: the
@@ -1165,7 +1173,7 @@
     <img src="assets/img/31b49fb60732073b.jpg" width="1408" height="768" decoding="async" alt="The same frontage with the three wheelie bins gone and the paving running unbroken across the ground they stood on.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <!-- SECTION 5 - OUTCOME, after the payoff image. -->
   <section class="article-section reveal">
@@ -1174,7 +1182,7 @@
     <p>The gain is not only in how it looks. It is floor area returned to the property, in the part of the property everybody sees.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 03 - THE UNDERGROUND REVELATION. The principal revelation image.
        Sits immediately above How It Works. -->
@@ -1182,7 +1190,7 @@
     <img src="assets/img/3bbcedb3f00a3852.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A compact underground chamber open along the right-hand side of the same frontage, with three ordinary wheelie bins standing below normal ground level.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <!-- SECTION 6 - HOW IT WORKS. Founder Review Issue 02: this section has ONE
        job, making the mechanism easy to understand. The technical-question
@@ -1219,7 +1227,7 @@
     <p class="steps-after">The engineering underneath varies by system and by property. The evidence we hold describes the equipment, not your site.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 04 - EVERYDAY CLOSED STATE. CLAIM FIREWALL: the three panels are
        part of the CLOSED ENGINEERED COVER. They are never described as deposit
@@ -1230,7 +1238,7 @@
     <img src="assets/img/b221d2c683fe2f41.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="The same frontage with the system closed: a single dark-charcoal surface set flush into the paving, with three cover panels in it.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <!-- SECTION 7 - WHERE IRELAND STANDS. The availability firewall. -->
   <section class="article-section reveal" id="where-ireland-stands">
@@ -1446,6 +1454,7 @@
     </details>
   </section>
 
+</div>
 </main>
 
 <!-- SECTION 14 - PROPERTY BRAIN, PATTERN C. No form, no Eircode input, no
@@ -1498,9 +1507,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -1509,7 +1518,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -1517,7 +1526,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -1527,10 +1536,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>

@@ -768,7 +768,7 @@
   .footer-mark img{ display:block; width:40px; height:40px; }
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -1086,9 +1086,16 @@
     .closing-line{ padding:9vh 20px 8vh; }
   }
 
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
      Goes to the Discovery Library, NOT to the homepage: the brand mark above
@@ -1169,7 +1176,8 @@
   </div>
 </header>
 
-<main class="article">
+<main id="pn-main">
+<div class="article">
 
   <!-- ====================================================================
        S2 . WHY A HOUSE AT ALL. One mechanism, before any company is named.
@@ -1245,13 +1253,13 @@
         mechanism, not of an installation.</p>
     </div>
   </section>
-</main>
+</div>
 
 <section class="spark reveal">
   <p>Not here yet. But not hypothetical either.</p>
 </section>
 
-<main class="article">
+<div class="article">
 
   <!-- ====================================================================
        S3 . IT IS ALREADY HAPPENING SOMEWHERE. The section that makes the
@@ -1616,7 +1624,7 @@
         precondition of that model, not a detail.</p>
     </div>
   </section>
-</main>
+</div>
 
 <!-- ======================================================================
      S6 . THE HONESTY BREAK. The structural hinge of the whole Discovery.
@@ -1649,7 +1657,7 @@
   </div>
 </section>
 
-<main class="article">
+<div class="article">
 
   <!-- ====================================================================
        S7 . THE ENERGY ANATOMY OF THE PROPERTY. Founder correction 1.
@@ -2186,7 +2194,7 @@
 
     <span class="imgnote">Real installation photography will be added when publication rights are confirmed.</span>
   </section>
-</main>
+</div>
 
 <section class="imagine-photo reveal">
   <!-- CONCEPT IMAGERY, position 1 of 2. The storyboard confines the five
@@ -2206,7 +2214,7 @@
   </div>
 </section>
 
-<main class="article">
+<div class="article">
 
   <!-- ====================================================================
        S8 . WHAT COMES NEXT. Emerging and future, without overclaiming any
@@ -2277,7 +2285,7 @@
       sizes of the same idea: a part of a property doing something with energy
       rather than only consuming it.</strong></p>
   </section>
-</main>
+</div>
 
 <section class="imagine-photo reveal">
   <!-- CONCEPT IMAGERY, position 2 of 2. Asset unchanged and unedited. The
@@ -2291,7 +2299,7 @@
   </div>
 </section>
 
-<main class="article">
+<div class="article">
 
   <!-- ====================================================================
        S9 . WHAT PLOTNUA IS DOING ABOUT IT, then back to the flagship.
@@ -2362,6 +2370,7 @@
       </div>
     </div>
   </section>
+</div>
 </main>
 
 <section class="closing-line reveal">
@@ -2398,9 +2407,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -2409,7 +2418,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -2417,7 +2426,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -2427,10 +2436,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>

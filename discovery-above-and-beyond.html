@@ -748,7 +748,7 @@
   .footer-mark img{ display:block; width:40px; height:40px; }
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -1592,9 +1592,16 @@
   @media(max-width:760px){
     .hb-cmp{ gap:14px; }
   }
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 <script>document.documentElement.className += ' pn-js';</script>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
@@ -1648,7 +1655,8 @@
   </div>
 </header>
 
-<main class="article">
+<main id="pn-main">
+<div class="article">
 
   <section class="article-section reveal" id="look-up">
     <div class="kicker">The Revelation</div>
@@ -1660,7 +1668,7 @@
     <p>People build up there, in Ireland, in ordinary gardens, including small ones. You can buy one this week. And the thing that decides what you end up with is not the thing you would expect.</p>
   </section>
 
-</main>
+</div>
 
   <!-- RULE 6. The annotation image, and the same photograph as the hero.
        Heading plus exactly three observations, on the shipped .pa-* system,
@@ -1721,7 +1729,7 @@
       </div>
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="you-dont-need-a-tree">
     <div class="kicker">The Surprise</div>
@@ -1777,7 +1785,7 @@
     <p class="steps-after">Which route works depends on the garden, the structure and what you want to use it for. The important point is that a suitable tree is not a requirement.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 02 - THE REVEAL, and the payoff of Section 4. One freestanding
        pod on its own legs, on visible concrete pad footings, with the oak
@@ -1787,7 +1795,7 @@
     <img src="assets/img/55f2bd4248ec234f.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="The same back garden with a single sculptural timber pod standing in it, lifted clear of the lawn on its own splayed legs on visible concrete pad footings. A timber stair with a handrail and a small deck lead up to it, a climbing net hangs at one side, and a table and chairs are visible through a large circular window. The mature oak stands beside the pod, not under it, and the mown lawn runs on underneath and past it.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="what-it-can-become">
     <div class="kicker">The Range</div>
@@ -1869,7 +1877,7 @@
     </details>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE 03 - inside. Placed after the opening of Section 6 rather than
        at its head, so that it does not sit immediately beneath Image 02:
@@ -1878,7 +1886,7 @@
     <img src="assets/img/6417da715bd0aabc.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="Inside one of the pods: curved timber ribs, boarded walls and ceiling, tall arched windows filled with green canopy on every side, cushioned window seats with books and headphones, a guitar propped against the wall, and a teenager working at a laptop on a fold-down desk.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="the-one-number">
     <div class="kicker">Why Height Matters</div>
@@ -2584,6 +2592,7 @@
     </details>
   </section>
 
+</div>
 </main>
 
 <section class="related reveal">
@@ -2841,9 +2850,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -2852,7 +2861,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -2860,7 +2869,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -2870,10 +2879,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>

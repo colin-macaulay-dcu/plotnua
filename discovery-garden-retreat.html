@@ -736,7 +736,7 @@
   .footer-mark img{ display:block; width:40px; height:40px; }
   .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -1012,9 +1012,16 @@
   @media(max-width:760px){
     .hb-cmp{ gap:14px; }
   }
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <!-- RESULTS-003 PART D — the floating Back, on every Discovery page.
      Goes to the Discovery Library, NOT to the homepage: the brand mark above
@@ -1069,7 +1076,8 @@
 </header>
 <p class="gr-hero-cap">This is the ambitious end of the idea. You don&rsquo;t have to start here.</p>
 
-<main class="article">
+<main id="pn-main">
+<div class="article">
 
   <section class="article-section reveal" id="the-part-you-walk-past">
     <div class="kicker">The Revelation</div>
@@ -1095,7 +1103,7 @@
     <p>Three different routes are already sold in Ireland, with published prices. They are very different things &mdash; and they ask very different things of a garden.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE B - THE COMPACT SAUNA. A cube sauna in the corner of an
        ordinary garden with the lawn left clear. No flue: this is the
@@ -1106,7 +1114,7 @@
     <img src="assets/img/45a270b7716e4a94.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A small timber cabin sauna with a glazed door, standing in the corner of an established Irish suburban garden with the lawn left clear.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="branch-sauna">
     <h3>A compact sauna</h3>
@@ -1117,7 +1125,7 @@
     <p>Those are product prices, not finished-project costs. The base, electrical connection or other site work may add to what you actually pay.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE C - THE WOOD-FIRED HOT TUB. Stove, flue, firewood and steam,
        plainly a different and larger object than the plunge tub below.
@@ -1129,7 +1137,7 @@
     <img src="assets/img/83da38d51a03414d.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A round timber wood-fired hot tub with a stove and flue beside it, on a small paved area at the end of an established Irish suburban garden.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="branch-hot-tub">
     <h3>A wood-fired hot tub</h3>
@@ -1140,7 +1148,7 @@
     <p>So the trade-off is different from the sauna: less dependence on electricity, but more to think about around weight, fire and where the stove sits.</p>
   </section>
 
-</main>
+</div>
 
   <!-- IMAGE D - THE COLD PLUNGE, the APPROVED REPLACEMENT of 26 September
        2026. A simple round timber tub with a ladder and a lid, on a small
@@ -1154,7 +1162,7 @@
     <img src="assets/img/5d6a5fd0aab3d9ce.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A small round timber cold-plunge tub with a lid and timber steps, tucked into the corner of an established Irish suburban garden with the lawn left clear.">
   </section>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="branch-cold-plunge">
     <h3>A cold plunge</h3>
@@ -1166,9 +1174,9 @@
     <p>That is the scale shift: a private cold-water plunge can be a roughly 1.2&nbsp;m&sup2; object at the edge of a garden, rather than a constructed pool.</p>
   </section>
 
-</main>
+</div>
 
-<main class="article">
+<div class="article">
 
   <section class="article-section reveal" id="what-each-one-asks">
     <div class="kicker">The Real Question</div>
@@ -1327,6 +1335,7 @@
     <p>Whether any of these three is exempted development, or is not. Whether a hot tub or plunge tub counts as a structure at all. The Building Regulations position. Stove and flue clearances. Where the water should go. The Irish insurance position. What a finished project costs. We also found no Irish supplier publishing a price for a chilled plunge or a built plunge pool. And we cannot tell you whether any of this suits your garden &mdash; the question that matters most.</p>
   </section>
 
+</div>
 </main>
 
 <!-- PROPERTY BRAIN, PATTERN C. No form, no Eircode input, no button, no
@@ -1382,9 +1391,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -1393,7 +1402,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -1401,7 +1410,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -1411,10 +1420,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>

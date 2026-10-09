@@ -143,7 +143,7 @@
   .footer-inner{ max-width:1040px; margin:0 auto; }
   .footer-top{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:64px; }
   .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
-  .footer-col h4{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
   .footer-col ul{ list-style:none; margin:0; padding:0; }
   .footer-col li{ margin-bottom:13px; }
   .footer-col li:last-child{ margin-bottom:0; }
@@ -210,9 +210,16 @@
   .hero-link-secondary:hover{ color:#fff; text-decoration-color:#fff; }
 
   a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
+
+/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
+   it is the one affordance a reliable single main landmark makes
+   possible. No other rule on the page is touched. */
+.pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
+.pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
 </style>
 </head>
 <body>
+<a class="pn-skip" href="#pn-main">Skip to main content</a>
 
 <a href="index.html" class="brand-mark" id="brandMark" aria-label="PlotNua — Home">
   <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
@@ -250,6 +257,7 @@
      calls to action below the copy are the only new pieces on this
      page; everything else is the same hero language used to open
      the site. -->
+<main id="pn-main">
 <section class="scene scene-hero">
   <div class="scene-media">
     <img id="heroPhoto" class="scene-img" src="assets/img/310f4249fd0cf381.jpg" alt="A woman with a rolled set of plans walks along a garden path at golden hour, pausing to look toward a weathered gate half-hidden among foxgloves and ferns — a path not yet fully explored.">
@@ -318,7 +326,7 @@
       <button class="d-arrow d-prev" aria-label="Previous example" type="button">
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="d-dots" role="tablist" aria-label="Discovery Library position">
+      <div class="d-dots" role="group" aria-label="Discovery Library position">
         <button class="d-dot" type="button" data-index="0" aria-label="What Could You Build in Your Garden?" aria-current="true"></button>
         <button class="d-dot" type="button" data-index="1" aria-label="Buy Original Irish Art" aria-current="false"></button>
         <button class="d-dot" type="button" data-index="2" aria-label="Open Your Home to Art" aria-current="false"></button>
@@ -330,6 +338,8 @@
     </div>
   </div></section>
 
+</main>
+
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
@@ -339,9 +349,9 @@
       </div>
     </div>
 
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label="Footer">
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h2>Navigation</h2>
         <ul>
           <li><a href="index.html#discover">Discoveries</a></li>
           <li><a href="your-plot.html">Your Plot</a></li>
@@ -350,7 +360,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h2>Company</h2>
         <ul>
           <li><a href="about.html">About PlotNua</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
@@ -358,7 +368,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
@@ -368,10 +378,10 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
-    </div>
+    </nav>
 
     <div class="footer-base">&copy; PlotNua.</div>
   </div>
