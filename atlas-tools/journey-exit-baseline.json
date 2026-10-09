@@ -1,0 +1,45 @@
+{
+  "pages": {
+    "disc005-home-exchange.html": {
+      "after": "5b78ee811fa50b188221175e6145e78aa89c33266d4f70a716f2e515409a14ca",
+      "before": "d56058696f505a8c35297921683b07d3bc2059211a267932280fc12c063ebda6"
+    },
+    "disc014-driveway-income.html": {
+      "after": "10120f16f68a90d63ff954096ea0e8ee960aab9aeae3bfb03d254372925b5090",
+      "before": "e850cbfc77f40dbc43a9849863abba27a48b0809fa511ff3859934c5f58e1a18"
+    },
+    "disc022-hidden-cars-check.html": {
+      "after": "ad6b5cd3044bb258a1a3d597d3a7671ecfadf29dcfbc6bbf64089b1b339e2739",
+      "before": "90dcca2a06e60b1fae53d34689714194638bc72ea3f3a067a93519cc9af48648"
+    },
+    "disc023-buy-original-irish-art.html": {
+      "after": "fc68aa8fa21e5c4700debe4d305f274534a2fc6ae7d073b316e55e25755c0a78",
+      "before": "f86b30b71ec4bd66755149b4fe873c60d093ee45fcaa04417dadbdcb44d873b0"
+    },
+    "disc024-open-your-home-to-art.html": {
+      "after": "8f9bf05210460dfd1e8a62b01080ef8cbfe937c04bf31b7751a43ff2358cb067",
+      "before": "ba3ab4f8ca9575f6220b4f639bb17eac83a5c30f8fb82a12a74d8e90138a355b"
+    },
+    "disc025-borrowed-garden-check.html": {
+      "after": "12e442393b135ab9598890e4ea1936454cb46312e0a47466790b6afb96d6a3c7",
+      "before": "df54fd5e3405d6551f925d94d3df6e5a3a5b0254e7d2353da91b6950cb9c2fd6"
+    },
+    "disc026-compute-readiness-check.html": {
+      "after": "e0c0b1336b75d352ff54dafddc84faaf7c89c19231251a98b114791ecd217d7f",
+      "before": "bf36de261ec2ad48f99393599692ff091a2269fc1e6f9ee325dca1d9b21af8e5"
+    },
+    "disc026-power-station.html": {
+      "after": "8273c9db53d64aa165c24cb60bbde159a69ebc3195e0d7afa13dd0c1a54540b0",
+      "before": "ebc0eddc7bbcee122452784c8bc085a55b9c737aba8c5f709360ce33aafd3feb"
+    },
+    "disc027-neighbourhood-parcel-house.html": {
+      "after": "285e3a1dd36b601ea94c3692d35f2fbbd2569084cb7e4d7ae2c2fb26f347f887",
+      "before": "d2c3ead7b0bf0d9f2b22da05c8739a84bcad20c12df81389c89f0a4cc2d4a6b2"
+    },
+    "disc029-hidden-bins-check.html": {
+      "after": "525ab68ee20b063d4e4e7d7fc9e67bf4b539fd4095c50c64c29533a9136cf732",
+      "before": "e9c857555f7cef974e43cea71d38157b226374991a52e9b8aff3ea7702485848"
+    }
+  },
+  "region": "83dcd3f1418a1b797d94b3707097b23b760738a0c88388c4d477f88d39e03469"
+}

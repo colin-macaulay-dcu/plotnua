@@ -521,9 +521,31 @@ console.log('\n  PART A4 · RETURN PATH (history state, no URL, no storage)\n');
   });
   check('H12a every pill on every page is one of the two approved variants',
     seen.other.length === 0, JSON.stringify(seen.other));
-  check('H12b 19 faded + 2 nofade = the 21 public surfaces',
-    seen.faded === 19 && seen.nofade === 2,
+  /* H12b IS A SCOPE CENSUS, AND IT FIRED — CORRECTLY — ON 9 OCTOBER 2026.
+     Job 1 (P0 journey exits) added the Search entry to 404.html, which had been
+     the one reachable page on the site with no route to Search. It was never
+     in build-search-rail.py's scope because that builder derives its page list
+     from sitemap.xml, and the 404 is deliberately not in the sitemap.
+
+     The pill itself did NOT change: H12a already proves the 404's pill hashes
+     to the approved faded variant byte for byte, because the region was copied
+     from index.html rather than authored (see atlas-tools/build-404-search.py,
+     guard F3). So Search V1's markup, CSS, JS and behaviour are untouched; the
+     only thing that changed is how many surfaces carry it, by one, under
+     founder authorisation.
+
+     The count is therefore RAISED DELIBERATELY and stays exact, naming the
+     extra surface, so the census can still never drift silently. */
+  check('H12b 20 faded + 2 nofade = 21 public surfaces + the 404',
+    seen.faded === 20 && seen.nofade === 2,
     `faded=${seen.faded} nofade=${seen.nofade}`);
+  check('H12b2 the 20th faded surface is 404.html specifically',
+    (function () {
+      const src = fs.readFileSync(path.join(ROOT, '404.html'), 'utf8');
+      const mk = src.match(/<a class="pns-pill"[\s\S]*?<\/a>/);
+      return !!mk && crypto.createHash('sha256').update(mk[0]).digest('hex')
+        === '033652069264d4c4a89f330c90fcc1a2eecc43d8f3070a35ff73151865ab988b';
+    }()));
   check('H12c the two variants differ ONLY by the measured nofade flag',
     (function () {
       const a = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')

@@ -168,3 +168,15 @@ Acceptance was given on the analytics-free 390px harness, in which **Google Font
 The DISC-025 V2 homeowner experience is **visually frozen**. No further copy, spacing, styling or UX change is authorised without a new founder decision.
 
 **Public registration remains CLOSED.**
+
+---
+
+## POST-FREEZE AMENDMENTS
+
+*Append-only. Nothing above this heading has been altered.*
+
+- **9 October 2026** — whole-page hash amended from `df54fd5e3405…` to
+  `12e442393b13…` by founder-authorised `PLOTNUA JOURNEY EXIT v1` site chrome
+  inserted strictly outside the frozen `<main>` experience. The frozen `<main>`
+  hash `05bf977f0d4f…` is **UNCHANGED**. This does **not** reopen DISC-025 V2.
+  See [`DISC-025-V2-POST-FREEZE-AMENDMENT-2026-10-09.md`](DISC-025-V2-POST-FREEZE-AMENDMENT-2026-10-09.md).
