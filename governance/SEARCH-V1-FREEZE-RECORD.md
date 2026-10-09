@@ -221,3 +221,82 @@ Search V1 is **LIVE, VERIFIED and FROZEN** at
 
 No production discrepancy was found. The released artefacts are unchanged by the
 writing of this record.
+
+---
+
+## POST-FREEZE AMENDMENTS
+
+*Append-only. Nothing above this heading has been altered.*
+
+### 9 October 2026 — SEARCH V1 · P0 DEFECT CORRECTION
+
+**Not Search V2. Not a feature. The frozen Search design is not reopened.**
+Founder-authorised exception to the freeze, on the Job 2 audit's demonstration
+of a genuine homeowner-facing functional defect.
+
+**The defect.** On `search.html` the large visible page-level search field was
+inert. Typing into it fired no request and returned no results. Measured in a
+real browser on 9 October 2026: index never fetched, `#pnsResults` empty,
+status line empty.
+
+**Root cause.** `search.html` carried the rail overlay *and* its own page-level
+Search UI, so `#pnsInput`, `#pnsStatus` and `#pnsResults` each appeared twice.
+`search.js` binds through `getElementById`, which returns the first in document
+order — the hidden overlay copy — so the visible field was wired to nothing.
+Dates from `8105b52`, when Search V1 shipped. Not caused by Job 1.
+
+**The correction.** `atlas-tools/build-search-rail.py` now emits the pill
+**without** the overlay panel on `search.html` alone (`PANEL_EXEMPT`). This is
+the architecture `search.js` already expected:
+
+```js
+/* search.html ships its field in the static page, so Search works there with
+   no panel to open. The pill is marked current so it reads as the page the
+   homeowner is on rather than a way to open Search again. */
+if (e.input && !e.panel) {
+  if (e.open) { e.open.setAttribute('data-pns-current', 'true'); }
+  loadIndex();
+}
+```
+
+The builder was over-injecting; that branch now fires as designed.
+**One canonical Search behaviour and one data contract. No second
+implementation.**
+
+**What did NOT change.** `search.js` byte-identical · `search.css`
+byte-identical · `search-index-v1.json` byte-identical, so corpus and ranking
+are untouched · the approved pill on `search.html` byte-identical to its
+pre-correction markup · the other 20 rail surfaces byte-identical · categories,
+supplier/product expansion, URL/history and storage behaviour all unchanged.
+
+**Editorial copy.** Every editorial string on `search.html` is byte-identical.
+The only prose removed belonged to the deleted dialog and was never visible: its
+`×` close glyph and its duplicate `What are you looking for?` heading. The
+visible page still shows that heading exactly once.
+
+**Diff.** `search.html` −11 / +0 lines.
+
+| | |
+|---|---|
+| `search.html` before | `a8dd597348413835…` |
+| `search.html` after | `a781dd80ec9696b7…` |
+
+**Proofs.**
+
+- New runtime proof `atlas-tools/prove-search-page-runtime.py` — **16 passed,
+  0 failed**. It opens a browser, types `powersheds` into the visible field and
+  asserts results, the Powersheds supplier row, its products, the status line,
+  the pill's current-page behaviour, no duplicate governed ids, no horizontal
+  overflow, and that the overlay still works on index, discoveries, about and
+  the 404. Run against the pre-correction page it fails **8 of 16** — the proof
+  the source-level suite could not give.
+- Two new builder guards: **R11** refuses any page carrying a governed Search id
+  twice; **R12** holds `search.html` to pill + `search.js` + exactly one of each
+  field id and no panel. Both demonstrated capable: restoring the pre-fix
+  behaviour is refused by R11 by name.
+- `prove-search-acceptance.mjs` **149 passed, 0 failed** · `prove-search-guards.py`
+  rc=0 · `build-search-rail.py --check` **12 guards passed** · Image Rights gate
+  **37 publishable, 0 refused** · `validate-journey-contract.js` 85 checks ·
+  Job 1 journey-exit and 404 builders idempotent · DISC-025 frozen `<main>`
+  `05bf977f0d4f…` unchanged · Garden Register `WRITES_ENABLED`,
+  `EMAIL_ENABLED`, `INTEREST_PUBLIC` all `false`.
