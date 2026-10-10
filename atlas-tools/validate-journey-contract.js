@@ -741,6 +741,27 @@ function run(src) {
   let uni = null;
   try { uni = JSON.parse(fs.readFileSync(UNIVERSE, 'utf8')); } catch (e) { /* optional */ }
   MARKET_TRUTH.forEach(function (rule) {
+    /* THE ASSERTION COMES FIRST, AND IT DOES NOT DEPEND ON THE DATA.
+
+       It used to sit BELOW the two data-dependent early returns, so when the
+       universe held no row matching this rule the callback returned before
+       reaching it: no ok, no bad, nothing counted, and no mutation could make
+       it fail. A guard that cannot fail is not a guard. What M01 forbids is a
+       claim made in CODE; the data notes below are commentary on the recorded
+       mismatch and are allowed to be skipped.
+
+       The organisation name is matched with its spaces optional, because the
+       contract spells it `Power Sheds` and the universe spells it
+       `Powersheds` -- and an Irish-route claim is a claim either way. */
+    const orgPattern = rule.organisation.replace(/\s+/g, '\\s*');
+    const claim = new RegExp('Irish[^.]{0,40}(route|storefront|site)[^.]{0,40}' + orgPattern, 'i');
+    if (claim.test(code)) {
+      bad('M01', rule.organisation + ': code asserts an Irish route while the recorded route is ' +
+                 rule.recordedHost + '/' + rule.recordedCurrency);
+    } else {
+      ok('M01', rule.organisation + ': no code claims this is the Irish route');
+    }
+
     if (!uni) { note('universe not readable; M01 data check skipped'); return; }
     const rows = uni.products.filter(function (p) {
       return String(p.organisation || '') === rule.organisation && (p.imagery || {}).url;
@@ -755,15 +776,8 @@ function run(src) {
     note(rule.organisation + ': ' + rows.length + ' publishable, ' + bad1.length +
          ' non-' + rule.expectCurrency + ', ' + bad2.length + ' not on ' + rule.verifiedStorefront);
     note('  ' + rule.status);
-    /* The gate does not fail on the data — the contract says it is not repaired
-       here. It fails if the code CLAIMS the mismatched route is the Irish one. */
-    const claim = new RegExp('Irish[^.]{0,40}(route|storefront|site)[^.]{0,40}' + rule.organisation, 'i');
-    if (claim.test(code)) {
-      bad('M01', rule.organisation + ': code asserts an Irish route while the recorded route is ' +
-                 rule.recordedHost + '/' + rule.recordedCurrency);
-    } else {
-      ok('M01', rule.organisation + ': mismatch recorded, and no code claims it is the Irish route');
-    }
+    /* The gate does not fail on the data — the contract says it is not
+       repaired here. It fails only on the code claim asserted above. */
   });
 }
 

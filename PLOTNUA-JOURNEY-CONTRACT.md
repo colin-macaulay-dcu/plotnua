@@ -255,6 +255,18 @@ dispatch route is built. It is test-gated, which is not the same as absent.
     > Ordinary visitors receive the pending status exactly as before. This exception does not
     > authorise opening it; that is a separate founder decision, after Yard Box has been told
     > PlotNua may send them enquiries.
+    >
+    > **The default-template freeze.** `atlas-tools/prove-default-templates.js` asserts that no
+    > supplier is named anywhere in the default product journey. `LEAD_SUPPLIERS` names one
+    > twice — the universe spells it `Yardbox`, the rights grant and consent sentence say
+    > `Yard Box` — so that guard was red. Founder authorisation, 10 October 2026: the exact
+    > `LEAD_SUPPLIERS` literal is **bounded, contract-governed release configuration**, not a
+    > supplier-specific template exception. The guard exempts that one brace-matched literal
+    > and nothing else: it must be declared exactly once, must contain no executable logic,
+    > is length-capped, and must still carry the names it is exempted for. A supplier named in
+    > markup, in CSS, in presentation logic, or in a second copy of the structure still fails.
+    > `atlas-tools/prove-default-templates-capability.mjs` proves all seven of those ways to
+    > break it are caught.
   - `window.open(` must appear **exactly once** in `your-plot.html`, inside `pnSupplierHandover()`.
   - PlotNua must not claim to request a quote, send an enquiry, start a purchase, or track a
     handoff until each is actually built.

@@ -92,11 +92,74 @@ const frozenTable = frozenStart < 0 ? '' :
   code.slice(code.lastIndexOf('{', frozenStart), code.indexOf('}', code.indexOf('Iglucraft', frozenStart)) + 1);
 const codeOutsideFrozenData = frozenTable ? code.split(frozenTable).join('') : code;
 
+/* THE SECOND FROZEN DATA REGION: the First Lead allow-list.
+   -------------------------------------------------------------------------
+   RECORDED EXCEPTION · FIRST LEAD PHASE A, in PLOTNUA-JOURNEY-CONTRACT.md,
+   authorised by the founder on 2026-10-10.
+
+   `LEAD_SUPPLIERS` is RELEASE CONFIGURATION: which organisation and which
+   three product ids the private enquiry route is open for. It must carry the
+   supplier's name twice, because the universe spells it 'Yardbox' while the
+   rights grant, the Atlas organisation record and the consent sentence say
+   'Yard Box', and the mapping is written down here rather than guessed at a
+   call site. It is NOT a template, a layout, a style, or a presentation
+   branch -- and this exception must never be able to become one.
+
+   SO IT IS THE LITERAL THAT IS EXEMPTED, NOT THE IDEA OF SUPPLIER DATA:
+
+     - the declaration must appear EXACTLY ONCE, matched on its full text;
+     - the carve-out is BRACE MATCHED and stops at that object's own closing
+       brace, so no surrounding executable logic travels with it;
+     - the carved text is asserted to be data: no function, arrow, branch,
+       loop, DOM call, class or style reference may appear inside it;
+     - it is length-capped, so the exception cannot be widened later by
+       growing the object into something template-shaped;
+     - the names must still be inside it, or the exemption is vacuous and
+       every assertion below would be passing for the wrong reason.
+
+   Anything naming a supplier OUTSIDE this one literal -- markup, CSS, a
+   presentation branch, or a second copy of this same structure -- still
+   fails, exactly as before. */
+const LEAD_DECL = 'const LEAD_SUPPLIERS = Object.freeze({';
+const leadDeclCount = code.split(LEAD_DECL).length - 1;
+check('the lead allow-list is declared exactly once', leadDeclCount === 1,
+      leadDeclCount + ' declaration(s)');
+
+function braceMatched(text, from) {
+  const open = text.indexOf('{', from);
+  if (open < 0) return '';
+  let d = 0;
+  for (let k = open; k < text.length; k++) {
+    if (text[k] === '{') d++;
+    else if (text[k] === '}') { d--; if (d === 0) return text.slice(from, k + 1); }
+  }
+  return '';
+}
+
+const leadLiteral = leadDeclCount === 1
+  ? braceMatched(code, code.indexOf(LEAD_DECL)) : '';
+check('the lead allow-list literal is brace-matched and bounded',
+      leadLiteral.length > 0 && leadLiteral.length <= 800,
+      leadLiteral ? leadLiteral.length + ' chars' : 'extraction failed');
+
+const EXECUTABLE = /\bfunction\b|=>|\bif\b|\bfor\b|\bwhile\b|\breturn\b|document\.|querySelector|addEventListener|innerHTML|textContent|classList|className|\.style\b|appendChild|createElement/;
+check('the lead allow-list is data only, with no executable logic inside it',
+      leadLiteral.length > 0 && !EXECUTABLE.test(leadLiteral),
+      (leadLiteral.match(EXECUTABLE) || [''])[0]);
+check('the lead allow-list carries the names it is exempted for',
+      /'Yardbox'/.test(leadLiteral) && /'Yard Box'/.test(leadLiteral),
+      'an empty exemption would silently excuse nothing and prove nothing');
+
+const codeOutsideFrozen = leadLiteral
+  ? codeOutsideFrozenData.split(leadLiteral).join('')
+  : codeOutsideFrozenData;
+
 const SUPPLIERS = ['Yardbox', 'Yard Box', 'Power Sheds', 'Shomera', 'Koto',
                    'Iglucraft', 'Kodasema', 'Superior Pergola', 'TRIQBRIQ'];
 SUPPLIERS.forEach(function (s) {
-  const n = codeOutsideFrozenData.split(s).length - 1;
-  check('no "' + s + '" outside the frozen supplier-county data', n === 0,
+  const n = codeOutsideFrozen.split(s).length - 1;
+  check('no "' + s + '" outside the frozen supplier-county data '
+        + 'or the lead allow-list', n === 0,
         n ? n + ' occurrence(s)' : '');
 });
 
