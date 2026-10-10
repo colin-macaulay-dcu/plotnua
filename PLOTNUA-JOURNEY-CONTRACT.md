@@ -227,6 +227,34 @@ dispatch route is built. It is test-gated, which is not the same as absent.
 - **Prohibited bypasses**
   - **No stage earlier than Progress may introduce a supplier handoff** without an explicit
     exception recorded in this document.
+
+    > **RECORDED EXCEPTION · FIRST LEAD PHASE A · 10 October 2026.**
+    > The Resolve close slot may host a PlotNua **enquiry** control for an allow-listed
+    > supplier. This is the exception this clause exists to require, and it is narrow.
+    >
+    > **It is not a handoff.** `pnSupplierHandover()` and the single `window.open(` door are
+    > untouched, and the homeowner is not sent anywhere: the enquiry is composed, consented to
+    > and recorded inside PlotNua, and a person forwards it afterwards. The TRANSACTION stage
+    > is unchanged and still belongs to the supplier.
+    >
+    > **Scope.** One organisation (`ORG-000157`, Yard Box) and three products
+    > (`receaph6vCI7xtS5K`, `reckMDqp4tVjAjM7b`, `recLEonLKyhNTUiAt`). Enforced twice in the
+    > page by `leadSupplierFor()` — once where the control is drawn, once where the screen
+    > opens — and again in the Worker, which refuses any other id before it reads a body.
+    > Guards **J13** (six assertions) and **J14** hold the allow-list, both call sites, the
+    > lead_id requirement and the absence of any key in page source; each has a mutation in
+    > `--self-test` that only it catches.
+    >
+    > **Why Resolve-close rather than Progress.** Progress states readiness; Resolve is where
+    > the homeowner has just read what is still unknown, and an enquiry is how several of
+    > those unknowns — lead time, warranty, what a price would include — are actually
+    > resolved. Asking the supplier *is* the resolution step for an `on-request` lane.
+    >
+    > **Public state: OFF.** The Worker ships `LEAD_PUBLIC_ENABLED="false"` and, while it is
+    > false, refuses every write that does not carry a secret held only in Cloudflare.
+    > Ordinary visitors receive the pending status exactly as before. This exception does not
+    > authorise opening it; that is a separate founder decision, after Yard Box has been told
+    > PlotNua may send them enquiries.
   - `window.open(` must appear **exactly once** in `your-plot.html`, inside `pnSupplierHandover()`.
   - PlotNua must not claim to request a quote, send an enquiry, start a purchase, or track a
     handoff until each is actually built.

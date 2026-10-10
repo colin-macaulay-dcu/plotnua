@@ -1,0 +1,9 @@
+{
+  "name": "plotnua-garden-lead",
+  "private": true,
+  "type": "module",
+  "description": "Garden Room first-lead Worker. Phase A. All three switches ship off.",
+  "scripts": {
+    "prove": "node test/prove-lead-worker.mjs && node test/prove-lead-mutations.mjs"
+  }
+}

@@ -98,6 +98,26 @@ const MUST_EXIST = [
   ['J09', '#screen-enquiry markup',      '<section id="screen-enquiry"', 1],
   ['J07', 'Enquiry route is test-gated', "const ENQUIRY_TEST_MODE = new URLSearchParams(location.search).get('enquiry') === 'test';", 1],
   ['J07', 'Enquiry has one caller only', 'window.PLOTNUA_OPEN_TEST_ENQUIRY = function(){', 1],
+
+  /* FIRST LEAD · PHASE A. The lead route is a SECOND route through the same
+     screen, and the test gate above is unchanged — J07 still protects it.
+     These protect the new route, and they are deliberately stricter than
+     "a gate exists": they pin the allow-list to ONE supplier, pin the gate
+     function, require BOTH call sites to consult it, and require success to
+     depend on a persisted lead_id rather than on a fetch resolving.
+
+     WHAT IS NOT ASSERTED HERE, BECAUSE IT CANNOT BE. Whether the public route
+     is open is a Worker variable, not a fact about this file. The page cannot
+     prove the CTA is off for ordinary visitors; only the Worker can, and its
+     own suite does. What this file can prove is that the page never carries a
+     key of its own — J14. */
+  ['J13', 'Lead allow-list exists and is frozen', 'const LEAD_SUPPLIERS = Object.freeze({', 1],
+  ['J13', 'Lead allow-list holds exactly one supplier', "'Yardbox': Object.freeze({", 1],
+  ['J13', 'Lead gate function',           'function leadSupplierFor(product){', 1],
+  ['J13', 'The CTA consults the gate',    'const leadSup = leadSupplierFor(product);', 1],
+  ['J13', 'The screen re-checks the gate','const sup = leadSupplierFor(product);', 1],
+  ['J13', 'Success requires a persisted lead_id', '!out.lead_id', 1],
+  ['J14', 'The route key comes from the URL, never the file', "get('leadkey')", 1],
 ];
 
 /* The canonical uncertainty taxonomy. J04. */
@@ -864,6 +884,17 @@ function selfTest() {
     ['a new routing function',        function (s) { return s.replace('function pnNextAction(product){', 'function pnQuickBuyAction(p){ return null; }\n  function pnNextAction(product){'); }, 'J10'],
     ['publication gate unwired',      function (s) { return s.replace('const publishableCandidates = allCandidates.filter(pnResultPublishable);', 'const publishableCandidates = allCandidates.slice();'); }, 'J11'],
     ['enquiry transport un-gated',    function (s) { return s.replace("const ENQUIRY_TEST_MODE = new URLSearchParams(location.search).get('enquiry') === 'test';", 'const ENQUIRY_TEST_MODE = true;'); }, 'J07'],
+
+    /* FIRST LEAD · PHASE A. One mutation per new guard, each catchable only by
+       the guard it names. The first two are the ones that would actually hurt:
+       a lead route open to every supplier, and a success screen shown over a
+       lead that was never recorded. */
+    ['lead allow-list opened to everyone', function (s) { return s.replace('const LEAD_SUPPLIERS = Object.freeze({', 'const LEAD_SUPPLIERS_RETIRED = Object.freeze({'); }, 'J13'],
+    ['lead gate bypassed at the CTA',      function (s) { return s.replace('const leadSup = leadSupplierFor(product);', 'const leadSup = LEAD_SUPPLIERS[product.organisation];'); }, 'J13'],
+    ['lead gate bypassed at the screen',   function (s) { return s.replace('const sup = leadSupplierFor(product);', 'const sup = LEAD_SUPPLIERS[product.organisation];'); }, 'J13'],
+    ['success no longer needs a lead_id',  function (s) { return s.replace('!out.lead_id', 'false'); }, 'J13'],
+    ['a second supplier on the allow-list',function (s) { return s.replace("'Yardbox': Object.freeze({", "'Hutsmith': Object.freeze({ orgId:'x', displayName:'x', products:Object.freeze({}) }),\n    'Yardbox2': Object.freeze({"); }, 'J13'],
+    ['a key baked into the page',          function (s) { return s.replace("get('leadkey')", "get('nothing')"); }, 'J14'],
     ['code claims the Irish route',   function (s) { return s.replace('const PB046_NO_PRICE', "const CLAIM='the Irish supplier route for Power Sheds'; const PB046_NO_PRICE"); }, 'M01'],
 
     /* THE GOVERNED PAINTER. Its two rules are new, so they need mutations only

@@ -1,0 +1,45 @@
+name = "plotnua-garden-lead"
+main = "src/index.js"
+compatibility_date = "2026-10-10"
+
+workers_dev = true      # the endpoint the page calls. plotnua.ie is NOT on
+                        # Cloudflare, so there is no zone route. The page calls
+                        # this origin directly and the Worker handles
+                        # cross-origin properly.
+preview_urls = false    # each preview URL would be another live hostname able
+                        # to reach the same lead store. One endpoint, not a
+                        # family.
+
+[vars]
+# ---------------------------------------------------------------------------
+# PHASE A CONTRACT · ALL THREE SWITCHES SHIP OFF.
+#
+# A store holding a real homeowner's name and email is three switches away
+# from live, and none of them is flipped by deploying.
+#
+#   LEAD_PUBLIC_ENABLED  the homeowner-facing route. MUST STAY 'false' until
+#                        the founder has authorised it AND Yard Box has been
+#                        told PlotNua may send them enquiries. While it is
+#                        'false' the only way in is the preview secret, and
+#                        every lead recorded is marked as a Phase A test.
+#   WRITES_ENABLED       nothing is written while this is 'false'.
+#   EMAIL_ENABLED        there is NO mail adapter in this Worker. This var
+#                        exists so the refusal is explicit rather than implied
+#                        by absence, and so a future adapter cannot be switched
+#                        on by accident. Forwarding a lead to a supplier is a
+#                        human act in Phase A and must stay one.
+# ---------------------------------------------------------------------------
+LEAD_PUBLIC_ENABLED = "false"
+WRITES_ENABLED      = "false"
+EMAIL_ENABLED       = "false"
+ORIGIN              = "https://plotnua.ie"
+PRIVACY_VERSION     = "2026-10-FIRSTLEAD-V1"
+
+# NOT SET HERE, AND DELIBERATELY SO:
+#   AIRTABLE_BASE      -> set as a var at deploy time
+#   AIRTABLE_TOKEN     -> wrangler secret put AIRTABLE_TOKEN
+#   LEAD_PREVIEW_KEY   -> wrangler secret put LEAD_PREVIEW_KEY
+#
+# writesEnabled() requires the token and the base, so a missing secret is a
+# hard stop rather than a default-open. releaseOpen() requires a preview key of
+# at least 16 characters, so a deploy that forgets it is CLOSED, not open.

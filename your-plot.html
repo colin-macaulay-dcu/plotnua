@@ -14600,6 +14600,74 @@
   const ENQUIRY_TEST_MODE = new URLSearchParams(location.search).get('enquiry') === 'test';
   const ENQUIRY_TEST_ORG = 'PlotNua Test Supplier (not a real company)';
   const ENQUIRY_TEST_PRODUCT = 'Test Garden Room \u2014 internal testing only';
+
+  /* =====================================================================
+     FIRST LEAD \u00b7 PHASE A \u2014 THE GARDEN ROOM LEAD ROUTE.
+
+     A SECOND ROUTE THROUGH THE SAME SCREEN, and deliberately not a
+     replacement for the one above. The synthetic test route keeps its own
+     transport and its own wording; this one records a real lead through the
+     garden-lead Worker. Two routes, two payloads, one screen.
+
+     THE PUBLIC CTA IS OFF AND THIS IS NOT WHAT KEEPS IT OFF.
+     LEAD_ROUTE_KEY is read from the URL and is a CONVENIENCE for exercising
+     the journey privately. It is not a security control, and nothing here
+     should ever be mistaken for one: anybody can type a query string, and a
+     hand-edited DOM can call anything on this page.
+
+     THE REAL GATE IS SERVER-SIDE. The Worker ships LEAD_PUBLIC_ENABLED
+     'false' and, while it is false, refuses every write that does not carry
+     x-plotnua-lead-preview matching a secret that exists only in Cloudflare.
+     The secret is not in this file, not in the page source, and not in the
+     repository. So an ordinary visitor who finds the query string still
+     cannot record a lead, which is the property that actually matters.
+
+     ONE SUPPLIER AND THREE PRODUCTS. The universe calls this organisation
+     'Yardbox'; the rights grant, the Atlas organisation record and the
+     consent sentence all say 'Yard Box'. Both spellings are real and the
+     mapping is explicit here rather than guessed at a call site.
+     ===================================================================== */
+  const LEAD_ENDPOINT =
+    'https://plotnua-garden-lead.colin-a41.workers.dev/v1/garden-lead/enquiry';
+
+  const LEAD_SUPPLIERS = Object.freeze({
+    'Yardbox': Object.freeze({
+      orgId: 'ORG-000157',
+      displayName: 'Yard Box',
+      products: Object.freeze({
+        'receaph6vCI7xtS5K': 'Yardbox The Whistler',
+        'reckMDqp4tVjAjM7b': 'Yardbox The Vancouver',
+        'recLEonLKyhNTUiAt': 'Yardbox The Toronto'
+      })
+    })
+  });
+
+  const LEAD_ROUTE_KEY =
+    (new URLSearchParams(location.search).get('leadkey') || '').trim();
+  /* A length floor only, mirroring the Worker's. It stops an empty or
+     obviously-absent key opening the convenience route; it does not pretend
+     to authenticate anything. */
+  const LEAD_ROUTE_OPEN = LEAD_ROUTE_KEY.length >= 16;
+
+  /* Which mode the screen is currently serving. Set when it is opened and
+     read by submit, so a test enquiry can never travel on the lead transport
+     and a lead can never travel on the test one. */
+  let enquiryMode = null;
+  let enquiryLeadProduct = null;
+
+  /* THE ONLY TEST THAT DECIDES WHETHER A LEAD CTA MAY BE DRAWN. A product
+     passes only if its organisation is on the allow-list AND its own id is on
+     that organisation's product list. Anything else \u2014 any other supplier, any
+     other product of this supplier, a product with no id \u2014 is false. */
+  function leadSupplierFor(product){
+    if (!LEAD_ROUTE_OPEN) return null;
+    if (!product) return null;
+    const sup = LEAD_SUPPLIERS[product.organisation];
+    if (!sup) return null;
+    const id = product.productId || product.id;
+    if (!id || !sup.products[id]) return null;
+    return sup;
+  }
   /* The screen it was opened from, so Back returns where the homeowner was
      rather than to a fixed destination. */
   let enquiryReturnScreen = null;
@@ -14652,7 +14720,9 @@
     /* Live ONLY in test mode. The markup ships the control disabled, so a
        page whose script never runs cannot present a live button, and
        production — where ENQUIRY_TEST_MODE is false — leaves it disabled. */
-    if (els.enqSendBtn) els.enqSendBtn.disabled = !ENQUIRY_TEST_MODE;
+    if (els.enqSendBtn) {
+      els.enqSendBtn.disabled = !(ENQUIRY_TEST_MODE || enquiryMode === 'lead');
+    }
     /* The pending note now describes the homeowner's control rather than
        the state of the feature, so it is true in both modes and is always
        shown. It is no longer hidden on the test route. */
@@ -14665,6 +14735,8 @@
 
   function openEnquiryScreen(org, product){
     if (!els.enquiryScreen) return;
+    enquiryMode = 'test';
+    enquiryLeadProduct = null;
     enquiryReturnScreen = currentScreenEl || els.myPlotScreen || els.entry;
     enquiryRender(org, product);
     showScreen(els.enquiryScreen);
@@ -14682,6 +14754,25 @@
       if (els.enqMessage) els.enqMessage.value = enquiryComposeMessage();
     });
   });
+
+  /* FIRST LEAD \u00b7 PHASE A \u2014 the lead route in.
+
+     leadSupplierFor() is re-checked HERE as well as at the control that calls
+     it. The control decides whether to DRAW a CTA; this decides whether the
+     screen may OPEN. Two checks, because a hand-called open would otherwise
+     bypass the first one, and because the screen names the supplier in the
+     consent sentence \u2014 it must never name one nobody approved. */
+  function openLeadEnquiry(product){
+    const sup = leadSupplierFor(product);
+    if (!sup || !els.enquiryScreen) return;
+    enquiryMode = 'lead';
+    enquiryLeadProduct = product;
+    enquiryReturnScreen = currentScreenEl || els.myPlotScreen || els.entry;
+    enquiryRender(sup.displayName,
+                  sup.products[product.productId || product.id]);
+    showScreen(els.enquiryScreen);
+    syncHistoryForScreen('enquiry');
+  }
 
   /* The ONLY route to this screen today. A synthetic record whose name says
      what it is, reachable at ?enquiry=test and nowhere else. */
@@ -14766,6 +14857,17 @@
      differs, because only this sentence makes a claim about what happens
      next. */
   function enquirySentMessage(){
+    /* FIRST LEAD \u00b7 PHASE A. A real lead was recorded, so the homeowner is told
+       what will actually happen to it. Checked BEFORE the test branch, because
+       a URL carrying both ?leadkey= and ?enquiry=test must not describe a real
+       recorded lead as a test that goes nowhere. No response time is promised:
+       PlotNua does not control Yard Box's reply and has no arrangement with
+       them to control it. */
+    if (enquiryMode === 'lead') {
+      return 'We\u2019ve received your enquiry and will pass it to '
+           + (enquiryCurrentOrg || 'the supplier you chose')
+           + '. They can reply to you directly using the details you provided.';
+    }
     if (ENQUIRY_TEST_MODE) {
       return 'We\u2019ve received your enquiry. This is a PlotNua test, so it '
            + 'will not be forwarded to a supplier.';
@@ -14785,7 +14887,81 @@
     enquiryClearError();
   }
 
+  /* =====================================================================
+     FIRST LEAD \u00b7 PHASE A \u2014 WHAT TRAVELS ON THE LEAD ROUTE.
+
+     leadPayload() below is the WHOLE request body, and it is a CLOSED object:
+     every value is either typed by the homeowner on this screen or read from
+     the allow-list above. No Eircode, no address, no coordinates, no budget
+     band, no ranking position, no score, no shortlist, no competitor product
+     and nothing from Resolve reaches it. The lead_id is NOT sent \u2014 the Worker
+     mints it, and a caller-supplied one is ignored.
+
+     THE CONSENT SENTENCE IS READ FROM THE RENDERED LABEL, not retyped here.
+     The Worker hashes what it receives and compares it against its own
+     canonical sentence, so if this screen's wording ever drifts the route
+     closes rather than recording a consent to text nobody approved. Reading
+     the DOM is what makes that check meaningful: a constant in this file
+     would simply agree with itself.
+     ===================================================================== */
+  function enquiryConsentSentence(){
+    const label = document.querySelector('.enq-consent span');
+    return label ? label.textContent.replace(/\s+/g, ' ').trim() : '';
+  }
+
+  function leadPayload(){
+    const sup = enquiryLeadProduct ? LEAD_SUPPLIERS[enquiryLeadProduct.organisation] : null;
+    const id = enquiryLeadProduct
+      ? (enquiryLeadProduct.productId || enquiryLeadProduct.id) : '';
+    return {
+      supplier_org_id: sup ? sup.orgId : '',
+      product_id: id,
+      homeowner_name: els.enqName ? els.enqName.value.trim() : '',
+      homeowner_email: els.enqEmail ? els.enqEmail.value.trim() : '',
+      county: els.enqLocation ? els.enqLocation.value.trim() : '',
+      message: els.enqMessage ? els.enqMessage.value : '',
+      consent: !!(els.enqConsent && els.enqConsent.checked),
+      consent_text: enquiryConsentSentence(),
+      gotcha: els.enqGotcha ? els.enqGotcha.value : ''
+    };
+  }
+
+  /* SUCCESS REQUIRES A LEAD THAT EXISTS. A 2xx alone is not success and a
+     resolved fetch certainly is not: the Worker returns the lead_id it just
+     persisted, and without one in the body this treats the attempt as failed,
+     keeps everything the homeowner typed, and says so. */
+  async function leadSubmit(){
+    const problem = enquiryValidate();
+    if (problem) { enquiryShowError(problem); return; }
+    enquiryClearError();
+    const btn = els.enqSendBtn;
+    const label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
+    try {
+      const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+      /* The preview key travels only while the public route is closed, and
+         only ever to the lead endpoint. It is never stored and never logged. */
+      if (LEAD_ROUTE_KEY) headers['x-plotnua-lead-preview'] = LEAD_ROUTE_KEY;
+      const res = await fetch(LEAD_ENDPOINT, {
+        method: 'POST', headers, body: JSON.stringify(leadPayload())
+      });
+      let out = null;
+      try { out = await res.json(); } catch (e) { out = null; }
+      if (!res.ok || !out || out.ok !== true || !out.lead_id) {
+        throw new Error('no lead recorded');
+      }
+      enquiryShowSent();
+    } catch (err) {
+      enquiryShowError('That did not send. Nothing has been lost \u2014 please try again in a moment.');
+      if (btn) { btn.disabled = false; btn.textContent = label; }
+    }
+  }
+
   async function enquirySubmit(){
+    /* TWO ROUTES, ONE BUTTON, AND NO WAY TO CROSS THEM. A test enquiry cannot
+       travel on the lead transport and a lead cannot travel on the test one,
+       because the mode was fixed when the screen was opened. */
+    if (enquiryMode === 'lead') return leadSubmit();
     if (!ENQUIRY_TEST_MODE) return;
     const problem = enquiryValidate();
     if (problem) { enquiryShowError(problem); return; }
@@ -32988,6 +33164,38 @@
          do not have subtitles.
 
          Still not a control: a div, no handler, nothing to fire. */
+      /* FIRST LEAD · PHASE A — THE LIVE CONTROL, WHERE THE SLOT WAS KEPT.
+
+         This is the branch the earlier note reserved. It uses
+         .rsv-close-cta, which is the class the priced "Visit" control
+         already uses, so the padding, radius and type size are the ones that
+         were measured for this slot and NOTHING AROUND IT MOVES.
+
+         ORDINARY VISITORS NEVER SEE IT. leadSupplierFor() returns null
+         unless the private route key is present AND the organisation is on
+         the allow-list AND this product's own id is on that organisation's
+         list. For every other visitor, every other supplier and every other
+         product, the pending status below renders exactly as it does today.
+
+         THE SUB-LINE SAYS ONLY WHAT IS EVIDENCED. Yard Box publishes no
+         price for any model — "Enquire for pricing" on their own models
+         page — so "don't publish prices" is their published position, not an
+         inference. Nothing here claims a price, a currency, VAT treatment,
+         what the price includes, or a warranty, and nothing here says
+         groundworks are included: their comparison table says prices exclude
+         groundworks. */
+      const leadSup = leadSupplierFor(product);
+      if (leadSup) {
+        const ask = rsvEl('button', 'rsv-close-cta',
+          'Ask ' + leadSup.displayName + ' about this');
+        ask.type = 'button';
+        ask.addEventListener('click', function(){ openLeadEnquiry(product); });
+        rsvGo.appendChild(ask);
+        rsvGo.appendChild(rsvEl('span', 'rsv-close-pending-sub',
+          leadSup.displayName + ' don’t publish prices. We’ll pass your '
+          + 'question to them and they’ll reply to you directly.'));
+        rsvHasAction = true;
+      } else {
       const pend = rsvEl('div', 'rsv-close-pending');
       pend.appendChild(rsvEl('span', 'rsv-close-pending-main',
         'Enquiry through PlotNua'));
@@ -32995,6 +33203,7 @@
         'Coming shortly'));
       rsvGo.appendChild(pend);
       rsvHasAction = true;
+      }
     }
 
     if (rsvOut && rsvOut.href) {
