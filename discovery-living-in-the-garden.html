@@ -1579,7 +1579,7 @@
     if (!link) return;
     var destination;
     try { destination = new URL(link.href, window.location.href); } catch (_) { return; }
-    if (destination.origin !== window.location.origin || !/\\/your-plot\\.html$/.test(destination.pathname)) return;
+    if (destination.origin !== window.location.origin || !destination.pathname.endsWith('/your-plot.html')) return;
     var route = destination.searchParams.get('discovery');
     if (route !== 'garden-room' && route !== 'residential') return;
     if (typeof window.gtag === 'function') {
