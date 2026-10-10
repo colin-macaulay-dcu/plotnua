@@ -277,6 +277,25 @@
       "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002",
       "permission_date": "2026-10-02",
       "permitted_delivery_hosts": []
+    },
+    {
+      "organisation_record": "recLW0vZbkBGPRkZ9",
+      "organisation_name": "Irish Sauna Company",
+      "permission_outcome": "Granted — Founder Confirmed",
+      "permitted_domain": "irishsaunacompany.com",
+      "required_credit": "© Irish Sauna Company",
+      "evidence": "Brona, info@irishsaunacompany.com, emailed PlotNua 9 October 2026 at 13:02, subject 'Re: Irish Sauna Company × PlotNua — Irish home wellness': 'we would be delighted for you to use our imagery and product on your site.' Colin confirmed this permission on 10 October 2026. Atlas Image Permission Outreach WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002 (recH6lssOAemyP9rz), Permission Outcome 'Granted — Founder Confirmed'.",
+      "conditions": [
+        "Use selected first-party Irish Sauna Company product imagery only; do not assume rights to images owned by Harvia or another third party beyond supplier's permission.",
+        "Credit © Irish Sauna Company and link back to https://irishsaunacompany.com/.",
+        "Do not represent supplied Harvia residential garden saunas as manufactured in Galway.",
+        "Exclude images with unverified provenance or AI-generated visualisations presented as product photographs.",
+        "No third-party Shopify CDN host authorised until the supplier-specific delivery path prefix is verified."
+      ],
+      "note": "Permission recorded 10 October 2026. Image integration remains held pending selection of verifiable first-party image URLs and a narrowly scoped Shopify delivery-host path; the grant is not a claim that any asset is currently published. Existing private preview is image-free until that work passes guards.",
+      "atlas_permission_record": "recH6lssOAemyP9rz",
+      "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002",
+      "permission_date": "2026-10-09"
     }
   ]
 }
