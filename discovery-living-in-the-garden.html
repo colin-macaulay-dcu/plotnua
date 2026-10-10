@@ -14,8 +14,8 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What Could You Build in Your Garden? | PlotNua Discoveries</title>
-<meta name="description" content="A separate building at the end of your own garden: an office, a studio, a room for the kids &mdash; or, since July 2026, a detached home of 32 to 45 m&sup2; as exempted development. What the rules are, and whether your garden has room.">
+<title>Garden Rooms &amp; Garden Homes in Ireland: 2026 Planning Rules | PlotNua</title>
+<meta name="description" content="Can you build a garden room or a small home in your Irish garden? Understand the different 2026 planning rules, space limits and what to check for your property.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-living-in-the-garden.html">
 
@@ -1571,6 +1571,24 @@
     }
   });
 })();
+</script>
+<!-- Acquisition V1: count intentional assessment entry; GA4 honours existing consent configuration. -->
+<script>
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest('a[href]');
+    if (!link) return;
+    var destination;
+    try { destination = new URL(link.href, window.location.href); } catch (_) { return; }
+    if (destination.origin !== window.location.origin || !/\\/your-plot\\.html$/.test(destination.pathname)) return;
+    var route = destination.searchParams.get('discovery');
+    if (route !== 'garden-room' && route !== 'residential') return;
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'garden_discovery_assessment_click', {
+        discovery_route: route,
+        discovery_page: 'living-in-the-garden'
+      });
+    }
+  });
 </script>
 </body>
 </html>
