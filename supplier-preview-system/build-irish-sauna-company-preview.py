@@ -7,29 +7,48 @@ TEMPLATE: supplier-preview-system/template-provider-led.html
 Reused, not forked. Same certified provider-led system that built the
 TRIQBRIQ, Hutsmith, Honka, BIOBUILDS and Cosy Cabins previews.
 
-*** THE IMAGERY DECISION, AND WHY THERE IS NONE. ***
+*** THE IMAGERY DECISION. STATE A SINCE 9 OCTOBER 2026. ***
 
-Brona replied on 2 October 2026: "I'd be happy to take a look at the private
-preview first, particularly to see how our products, specifications and
-pricing would be presented." The outreach she was answering offered two
-replies -- "YES" for permission to feature the company and use selected
-website imagery, or "PREVIEW" to see the page first. She asked for the
-preview. She did not say YES.
+This page was built in IMAGERY STATE C -- no imagery at all -- because Brona
+had replied "PREVIEW" on 2 October and Atlas held Permission Outcome
+"Unknown -- Awaiting Reply". UNKNOWN is not GRANTED, so G0 refused any
+attempt to fill the image list. That was correct at the time and the
+reasoning is kept here because it is the reason this builder can be trusted
+with the opposite state now.
 
-Atlas therefore holds Permission Outcome "Unknown -- Awaiting Reply", and
-UNKNOWN is not GRANTED. The publish-time rights gate has no page-level
-exemption and does not consult noindex: every external image on every
-deployed .html is treated as published, because a homeowner who reaches the
-URL can see it. This was proven empirically on the Cosy Cabins build, where
-an honest manifest row carrying the outcome Atlas actually holds was still
-refused with "the permission outcome is Unknown -- Awaiting Reply. NOT A
-GRANT". The only way to pass imagery would be to write a live-grant outcome
-for a supplier who has not granted one.
+IT CHANGED. Brona replied on 9 October 2026 at 12:02 UTC from
+info@irishsaunacompany.com, Gmail thread 1a0fd83ddde922b1, message
+1a1208b5549f0e23: "we would be delighted for you to use our imagery and
+product on your site." That answers a follow-up which spelled out what YES
+meant -- "happy for PlotNua to feature us and use selected imagery from our
+website" -- against an original outreach promising to "clearly credit Irish
+Sauna Company, and link back to you". Atlas Image Permission Outreach
+recH6lssOAemyP9rz now reads "Granted -- Founder Confirmed", and the grant is
+recorded in image-rights-records.json and the generated manifest.
 
-THEREFORE: IMAGERY STATE C. No imagery, and the held panel says so in the
-terms Brona will care about -- her images stay hers until she approves the
-approach. G0 refuses any attempt to fill the image list while the outcome is
-unknown.
+G0 NO LONGER TRUSTS A CONSTANT IN THIS FILE. It reads the generated rights
+manifest and refuses unless there is a LIVE grant for irishsaunacompany.com
+carrying the credit this page prints. A comment saying permission exists is
+not permission; the register is.
+
+THE IMAGES ARE FIRST-PARTY AND NEED NO CDN CARVE-OUT. Irish Sauna Company run
+Shopify but serve their images from their OWN domain,
+https://irishsaunacompany.com/cdn/shop/files/..., not from cdn.shopify.com.
+Verified in a real browser against the live product page on 10 October 2026.
+So permitted_domain alone is an exact scope and the Powersheds-style
+permitted_delivery_hosts carve-out would add reach without adding authority.
+
+*** AND THE THING THIS PAGE MUST NOT SAY: "PHOTOGRAPH". ***
+
+The medium of these assets is NOT established. The supplier's own header logo
+is named "ChatGPT_Image_Oct_16_2025_06_35_08_PM.png", and Atlas already
+records that one Alpina product image is named "ChatGPT_Image_Sep_4_2026...",
+so this supplier demonstrably publishes generated imagery. The Legend
+Electric assets are consistent with manufacturer marketing visuals. They are
+therefore called IMAGES, the alt text describes the subject rather than the
+medium, and G12 refuses the build if the visible page calls them
+photographs. Calling a render a photograph is a small lie that a supplier
+notices immediately.
 
 *** WHAT MAKES THIS SUPPLIER DIFFERENT, AND THE TRAP IN IT. ***
 
@@ -75,8 +94,28 @@ PRODUCT_URL = SUPPLIER_SITE + "products/harvia-legend-electric-outdoor-sauna"
 RANGE_URL = SUPPLIER_SITE + "collections/residential-outdoor-saunas-ireland"
 CREDIT = "© Irish Sauna Company"
 
-# IMAGERY STATE C. Empty by governance, not by oversight. G0 enforces it.
-ISC_IMAGES = []
+PERMISSION_DATE = "9 October 2026"
+
+# IMAGERY STATE A. Three images, read live from the Legend Electric product
+# page on 10 October 2026 and served from Irish Sauna Company's OWN domain.
+# The first is the page's own og:image, so the hero is their canonical choice
+# for this product rather than mine. The alt text describes the SUBJECT, never
+# the medium: see the module docstring on why these are images, not
+# photographs.
+ISC_IMAGES = [
+    {"url": "https://irishsaunacompany.com/cdn/shop/files/"
+            "Harvia_Legend_Electric_Outdoor_Sauna_3.png?v=1788468346&width=1200",
+     "alt": "The Harvia Legend Electric outdoor sauna: a dark-stained timber "
+            "cabin with an open front, a pillar heater of sauna stones and a "
+            "timber bench, standing on a paved base in a walled garden"},
+    {"url": "https://irishsaunacompany.com/cdn/shop/files/"
+            "HarviaLegendElectricOutdoorSauna1.png?v=1788467600&width=1200",
+     "alt": "The Harvia Legend Electric outdoor sauna seen in a garden setting"},
+    {"url": "https://irishsaunacompany.com/cdn/shop/files/"
+            "Harvia_Legend_Electric_Outdoor_Sauna_4.png?v=1788468364&width=1200",
+     "alt": "Inside the Harvia Legend Electric: a timber-lined cabin with "
+            "bench seating and the heater in the corner"},
+]
 
 # ── CLAIMS THE EVIDENCE DOES NOT SUPPORT ───────────────────────────────────
 # Phrases, not bare words, and the omissions are as deliberate as the
@@ -239,17 +278,90 @@ FILL = {
 }
 
 
+def live_grant_or_die():
+    """G0 READS THE REGISTER, NOT A COMMENT IN THIS FILE.
+
+    The old G0 refused imagery because a constant here said permission was
+    unknown. A constant is a claim; the generated manifest is the record the
+    publish-time gate itself consults. So this reads that manifest and
+    refuses unless there is a LIVE grant for this supplier's domain carrying
+    the exact credit this page prints. If the grant is ever withdrawn, the
+    next build of this page fails rather than quietly keeping the images."""
+    import json
+    man = SITE / "image-rights-manifest.json"
+    if not man.exists():
+        die("image-rights-manifest.json is missing, so no grant can be "
+            "verified and no supplier image may be rendered.")
+    rows = json.loads(man.read_text(encoding="utf-8")).get("rows") or []
+    live = {
+        "Granted — Founder Confirmed",
+        "Granted with Conditions — Founder Confirmed",
+        "Granted — Supplier Confirmed (one-click)",
+    }
+    for r in rows:
+        if (r.get("permitted_domain") == "irishsaunacompany.com"
+                and r.get("permission_outcome") in live
+                and not r.get("withdrawal_effective_at")):
+            if r.get("required_credit") != CREDIT:
+                die("the rights manifest requires the credit %r but this "
+                    "builder prints %r. They may not drift."
+                    % (r.get("required_credit"), CREDIT))
+            return r
+    die("no LIVE grant for irishsaunacompany.com in image-rights-manifest.json. "
+        "UNKNOWN, UNCLEAR, DECLINED and WITHDRAWN are all not-granted, and the "
+        "publish-time rights gate refuses these images on any deployed page. "
+        "Record the grant and regenerate the manifest first.")
+
+
+def imagery_block():
+    """The hero media inner HTML, decided solely by ISC_IMAGES."""
+    if not ISC_IMAGES:
+        return None
+    hero, rest = ISC_IMAGES[0], ISC_IMAGES[1:]
+    # ONE HERO, THEN THE STRIP -- production's architecture, which
+    # your-plot.html draws as a single image in .results-hero-media with
+    # pnGovernedGallery inserting .pn-gal-strip beside it. The template now
+    # supplies the .pn-media-col wrapper itself, so this emits the media and
+    # the strip and nothing else.
+    out = ['        <div class="results-hero-media has-pn-gallery">',
+           '          <img src="%s" alt="%s" loading="lazy">' % (hero["url"], hero["alt"]),
+           '          <span class="pn-image-credit">%s</span>' % CREDIT,
+           '        </div>']
+    if rest:
+        out.append('        <div class="pn-gal-strip">')
+        # Each thumb carries the image it swaps in AND the credit, so the
+        # attribution can never lag a frame behind the picture it credits.
+        every = [hero] + rest
+        for n, i in enumerate(every):
+            out.append('          <button type="button" class="pn-gal-thumb%s" '
+                       'aria-pressed="%s" aria-label="View image %d of %d" '
+                       'data-full="%s" data-alt="%s" data-credit="%s">'
+                       '<img src="%s" alt=""></button>'
+                       % (" is-on" if n == 0 else "",
+                          "true" if n == 0 else "false",
+                          n + 1, len(every),
+                          i["url"], i["alt"].replace('"', "&quot;"), CREDIT,
+                          i["url"]))
+        out.append('        </div>')
+    return "\n".join(out)
+
+
 def main():
     src = TEMPLATE.read_text(encoding="utf-8")
 
-    # G0 · IMAGERY MAY NOT APPEAR WHILE PERMISSION IS UNKNOWN.
+    # G0 · IMAGERY REQUIRES A LIVE GRANT IN THE REGISTER.
     if ISC_IMAGES:
-        die("Irish Sauna Company imagery was added to this builder, but the "
-            "Atlas Permission Outcome is 'Unknown — Awaiting Reply'. "
-            "Brona asked to see the preview, she did not say YES. UNKNOWN is "
-            "not GRANTED, and the publish-time rights gate refuses these "
-            "images on any deployed page. Get written permission and a "
-            "manifest row first.")
+        grant = live_grant_or_die()
+        # EVERY IMAGE ON THE SUPPLIER'S OWN DOMAIN, and nothing else. The
+        # grant is scoped to irishsaunacompany.com; an image from anywhere
+        # else is outside it however plausible the host looks.
+        allowed = "https://%s/" % grant["permitted_domain"]
+        for i in ISC_IMAGES:
+            if not i["url"].startswith(allowed):
+                die("image %s is not on the permitted domain %s. The grant "
+                    "does not reach it." % (i["url"], grant["permitted_domain"]))
+            if not i.get("alt", "").strip():
+                die("an image was listed with no alt text.")
 
     # G1 · Strip the template's filling instructions (they carry {{TOKEN}}).
     block = re.search(
@@ -286,12 +398,20 @@ def main():
                       OPEN_QUESTIONS + "\n" + journey.strip("\n")
                       + "\n\n" + why_anchor)
 
-    # G3 · IMAGERY STATE C. The held panel is relabelled so it reads as a
-    # deliberate position rather than a missing asset.
-    # G3 · THE IMAGE POSITION CARRIES NO COPY (certified, 5 Oct
-    # 2026). The relabel that stood here rewrote the slot heading into a
-    # sentence about photography. There is no heading and no sentence
-    # now; the rights gate is unchanged and still fails closed.
+    # G3 · IMAGERY STATE A. The whole held media wrapper is replaced, not
+    # the slot inside it: state A emits its own .results-hero-media plus the
+    # gallery strip beside it, which is production's shape. With no images
+    # this branch does nothing and the template's restrained empty panel
+    # stands -- that is still the fail-closed path.
+    imgs = imagery_block()
+    if imgs is not None:
+        slot = re.search(r'        <div class="results-hero-media">\n'
+                         r'          <div class="pn-photo-slot"[^>]*>.*?</div>\n'
+                         r'        </div>\n', src, re.S)
+        if not slot:
+            die("the held media wrapper was not found, so state A cannot "
+                "replace it. Nothing written.")
+        src = src.replace(slot.group(0), imgs + "\n")
 
     # G3c · ATTRIBUTION. Every figure is their published information, so the
     # page says where it came from and links back. The same line carries the
@@ -303,11 +423,13 @@ def main():
         '<a href="%s" rel="noopener">their Harvia Legend Electric page</a> '
         'and <a href="%s" rel="noopener">their garden sauna range</a> on %s. '
         'The Legend is manufactured by Harvia and supplied in Ireland by %s. '
-        'No %s imagery is used anywhere on this page. '
+        'The images are %s\u2019s own, used with their written permission of '
+        '%s, unmodified and served from their website. If %s ask for any of '
+        'them to be changed or removed, we change or remove them. '
         '%s &middot; <a href="%s" rel="noopener">irishsaunacompany.com</a>'
         '</p>\n'
         % (SUPPLIER, PRODUCT_URL, RANGE_URL, EVIDENCE_DATE, SUPPLIER,
-           SUPPLIER, CREDIT, SUPPLIER_SITE))
+           SUPPLIER, PERMISSION_DATE, SUPPLIER, CREDIT, SUPPLIER_SITE))
     foot = "<footer>\n"
     if src.count(foot) != 1:
         die("the footer anchor is not unique. Nothing written.")
@@ -378,15 +500,30 @@ def main():
             "by Irish Sauna Company, which is the supplier's own wording and "
             "the half of the origin that is about them.")
 
-    # G9 · NO IMAGERY, PROVEN ON THE OUTPUT and not merely on the input list.
-    for pattern, what in (
-            (r'<img[^>]+src="https?://', "an external <img>"),
-            (r'<source[^>]+srcset="https?://', "an external <source>"),
-            (r'url\(\s*["\']?https?://', "an external CSS url()"),
-            (r'property="og:image"[^>]+content="https?://', "an og:image")):
-        if re.search(pattern, src, re.I):
-            die("the built page carries %s. No external imagery may appear "
-                "on this preview while permission is unknown." % what)
+    # G9 · THE IMAGERY ON THE OUTPUT, not merely on the input list. Every
+    # external reference the built page makes must be inside the grant.
+    found = re.findall(r'(?:<img[^>]+src|<source[^>]+srcset|data-full)="'
+                       r'(https?://[^"]+)"', src, re.I)
+    found += re.findall(r'url\(\s*["\']?(https?://[^)"\']+)', src, re.I)
+    found += re.findall(r'property="og:image"[^>]+content="(https?://[^"]+)"',
+                        src, re.I)
+    if ISC_IMAGES and not found:
+        die("images are listed but the built page carries none. The media "
+            "wrapper was not replaced.")
+    outside = sorted({u for u in found
+                      if not u.startswith("https://irishsaunacompany.com/")})
+    if outside:
+        die("the built page reaches images outside the grant: "
+            + ", ".join(outside))
+    # NO og:image. This page is noimageindex and unlisted; handing a crawler
+    # or a chat client a social preview of a supplier's image would publish it
+    # somewhere the noindex directives do not reach.
+    if re.search(r'property="og:image"', src, re.I):
+        die("the page declares an og:image. A private preview must not hand "
+            "the supplier's imagery to link unfurlers.")
+    for i in ISC_IMAGES:
+        if i["url"] not in src:
+            die("a listed image did not reach the page: " + i["url"])
     # A REAL LINK, not the word in a sentence.
     if 'href="%s' % SUPPLIER_SITE not in src:
         die("the page does not LINK back to %s. Even with no imagery, the "
@@ -394,6 +531,18 @@ def main():
             "mention in prose is not a link." % SUPPLIER_SITE)
     if CREDIT not in src:
         die("the attribution line is missing the %r credit." % CREDIT)
+
+    # G12 · THE MEDIUM IS NOT ESTABLISHED, SO THE PAGE MAY NOT CLAIM ONE.
+    # This supplier demonstrably publishes generated imagery: their own header
+    # logo is named "ChatGPT_Image_Oct_16_2025...", and Atlas records an Alpina
+    # product image named "ChatGPT_Image_Sep_4_2026...". Calling any of this a
+    # photograph would be a claim about provenance that nobody has verified.
+    for word in ("photograph", "photography", "photo of", "shot of",
+                 "photographed"):
+        if word in low:
+            die("the visible page calls the supplier's imagery %r. The medium "
+                "of these assets is NOT established and may not be claimed. "
+                "Say 'image'." % word)
 
     # G10 · NO PARTNERSHIP, ENDORSEMENT OR COMMERCIAL IMPLICATION.
     for word in ("partner", "approved supplier", "recommended", "trusted "
@@ -412,8 +561,11 @@ def main():
     OUT.write_text(src, encoding="utf-8")
     print("IRISH SAUNA COMPANY PRIVATE PREVIEW")
     print("=" * 74)
-    print("  ok    14 guards passed")
-    print("  ok    0 external images — imagery state C, permission unknown")
+    print("  ok    15 guards passed")
+    print("  ok    %d image(s) — imagery state A, live grant of %s, all on "
+          "irishsaunacompany.com" % (len(ISC_IMAGES), PERMISSION_DATE))
+    print("  ok    credited %s, linked back, no og:image" % CREDIT)
+    print("  ok    medium not claimed: the page never says photograph")
     print("  ok    noindex, nofollow, noarchive, nosnippet, noimageindex")
     print("  ok    origin stated: manufactured by Harvia, supplied by %s"
           % SUPPLIER)

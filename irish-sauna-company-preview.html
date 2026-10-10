@@ -348,7 +348,11 @@ h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); ma
 .pn-stage .hero-secondary .hero-secondary-link + .hero-secondary-link{ flex-basis:100%; }
 
 /* Imagery state C — a purposeful held space, never an apology. */
-.pn-photo-slot{ flex:1 1 auto; display:flex; flex-direction:column;
+/* The panel is empty by certified rule, so it needs its own height: with no
+   children left there is nothing to hold it open. 4/3 keeps the hero's two
+   columns balanced at every width without pretending to be a photograph. */
+.pn-photo-slot{ flex:1 1 auto; min-height:240px; aspect-ratio:4/3;
+  display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px;
   background:
     radial-gradient(120% 90% at 18% 8%, rgba(255,253,246,.85) 0%, rgba(255,253,246,0) 60%),
@@ -892,15 +896,20 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
           </div>
         </div>
         <div class="rh-split">
-        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A purposeful held space
-             that shows the supplier where their photography would sit. Never
-             substitute their pictures because the page is private. -->
+        <!-- IMAGERY STATE C — NOT YET AUTHORISED. A restrained panel carrying
+             ONE neutral label and nothing else: certified rule, 5 Oct 2026,
+             written out in full in SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2. No
+             rights, permission, credit or process copy. The rights gate is
+             unchanged and still fails closed. -->
         <div class="pn-media-col">
-        <div class="results-hero-media">
-          <div class="pn-photo-slot">
-            <b>Your imagery is not used on this page</b>
-            <span>No Irish Sauna Company photography is used on this page. You asked to see the approach before anything is published, so your images stay yours until you tell us otherwise. This is where they would sit, credited to Irish Sauna Company and linked back to irishsaunacompany.com.</span>
-          </div>
+        <div class="results-hero-media has-pn-gallery">
+          <img src="https://irishsaunacompany.com/cdn/shop/files/Harvia_Legend_Electric_Outdoor_Sauna_3.png?v=1788468346&width=1200" alt="The Harvia Legend Electric outdoor sauna: a dark-stained timber cabin with an open front, a pillar heater of sauna stones and a timber bench, standing on a paved base in a walled garden" loading="lazy">
+          <span class="pn-image-credit">© Irish Sauna Company</span>
+        </div>
+        <div class="pn-gal-strip">
+          <button type="button" class="pn-gal-thumb is-on" aria-pressed="true" aria-label="View image 1 of 3" data-full="https://irishsaunacompany.com/cdn/shop/files/Harvia_Legend_Electric_Outdoor_Sauna_3.png?v=1788468346&width=1200" data-alt="The Harvia Legend Electric outdoor sauna: a dark-stained timber cabin with an open front, a pillar heater of sauna stones and a timber bench, standing on a paved base in a walled garden" data-credit="© Irish Sauna Company"><img src="https://irishsaunacompany.com/cdn/shop/files/Harvia_Legend_Electric_Outdoor_Sauna_3.png?v=1788468346&width=1200" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 2 of 3" data-full="https://irishsaunacompany.com/cdn/shop/files/HarviaLegendElectricOutdoorSauna1.png?v=1788467600&width=1200" data-alt="The Harvia Legend Electric outdoor sauna seen in a garden setting" data-credit="© Irish Sauna Company"><img src="https://irishsaunacompany.com/cdn/shop/files/HarviaLegendElectricOutdoorSauna1.png?v=1788467600&width=1200" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 3 of 3" data-full="https://irishsaunacompany.com/cdn/shop/files/Harvia_Legend_Electric_Outdoor_Sauna_4.png?v=1788468364&width=1200" data-alt="Inside the Harvia Legend Electric: a timber-lined cabin with bench seating and the heater in the corner" data-credit="© Irish Sauna Company"><img src="https://irishsaunacompany.com/cdn/shop/files/Harvia_Legend_Electric_Outdoor_Sauna_4.png?v=1788468364&width=1200" alt=""></button>
         </div>
         </div>
         <div class="results-hero-body">
@@ -954,9 +963,8 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
      asks rather than guesses. -->
 <section>
   <h2>Three things we would ask before publishing</h2>
-  <p>Everything above comes from your own product page, so where the page
-     stops we stop too. These are the three points a homeowner would ask us
-     about, and we would rather have your answer than our best guess.</p>
+  <p>These are the three things we&rsquo;d like to check with you before the
+     page goes live.</p>
   <div class="pn-open">
     <ul>
       <li><b>Installation.</b> The Legend page says the final electrical
@@ -977,12 +985,6 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
           story by accident?</li>
     </ul>
   </div>
-  <h3>Where your imagery would go</h3>
-  <p>The space beside the specification is where your product photography
-     would sit, credited to Irish Sauna Company and linked back to your site.
-     We have not used any of it on this page. You asked to see the approach
-     first, so the imagery waits until you have told us you are happy with
-     it.</p>
 </section>
 
 <!-- FROZEN — the real PlotNua homeowner journey. Change only if the
@@ -1023,7 +1025,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   <p>If anything on this page is wrong, out of date or missing, let us know and we&rsquo;ll correct it before publication.</p>
 </section>
 
-          <p class="credit-line">Every figure on this page is published by Irish Sauna Company and was read from <a href="https://irishsaunacompany.com/products/harvia-legend-electric-outdoor-sauna" rel="noopener">their Harvia Legend Electric page</a> and <a href="https://irishsaunacompany.com/collections/residential-outdoor-saunas-ireland" rel="noopener">their garden sauna range</a> on 2 October 2026. The Legend is manufactured by Harvia and supplied in Ireland by Irish Sauna Company. No Irish Sauna Company imagery is used anywhere on this page. © Irish Sauna Company &middot; <a href="https://irishsaunacompany.com/" rel="noopener">irishsaunacompany.com</a></p>
+          <p class="credit-line">Every figure on this page is published by Irish Sauna Company and was read from <a href="https://irishsaunacompany.com/products/harvia-legend-electric-outdoor-sauna" rel="noopener">their Harvia Legend Electric page</a> and <a href="https://irishsaunacompany.com/collections/residential-outdoor-saunas-ireland" rel="noopener">their garden sauna range</a> on 2 October 2026. The Legend is manufactured by Harvia and supplied in Ireland by Irish Sauna Company. The images are Irish Sauna Company’s own, used with their written permission of 9 October 2026, unmodified and served from their website. If Irish Sauna Company ask for any of them to be changed or removed, we change or remove them. © Irish Sauna Company &middot; <a href="https://irishsaunacompany.com/" rel="noopener">irishsaunacompany.com</a></p>
 <footer>
   <p>Private preview prepared for Irish Sauna Company &middot; 2 October 2026</p>
 </footer>

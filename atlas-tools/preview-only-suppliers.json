@@ -5,6 +5,16 @@
   "the_rule_these_rows_enforce": "UNKNOWN is not GRANTED. A supplier in this register has replied PREVIEW, not YES. Their preview page carries their published FACTS, with attribution and a link back. Whether it may also carry their IMAGERY is decided by imagery_mode, and by nothing else.",
   "imagery_mode": "Required on every row, and an unrecognised value is an ERROR rather than a pass. 'none' is the default case: the supplier granted nothing at all, so none of their imagery may appear on ANY page, including their own preview. 'preview-only' is the narrower case where the supplier invited imagery for the preview in writing while withholding publication: their imagery may appear on their own preview page and NOWHERE else, a preview-scoped row must exist in image-rights-records.json carrying that invitation, and that row's conditions must name the page. The two modes are checked by different code paths on purpose -- a 'none' supplier must never pass through the 'preview-only' branch because somebody edited one character.",
   "the_grant_boundary": "A supplier with a full publication grant does not belong in this register at all; they live only in image-rights-records.json. A 'preview-only' supplier appears in BOTH, and that is the one case where both is correct: the rights row is what lets the gate pass the preview, and this register is what stops the row reaching anything else.",
+  "graduated_to_full_grant": [
+    {
+      "name": "Irish Sauna Company",
+      "removed": "2026-10-10",
+      "was": "imagery_mode 'none' — they had replied PREVIEW on 2 October 2026 and granted nothing.",
+      "why_removed": "Brona replied on 9 October 2026 at 12:02 UTC from info@irishsaunacompany.com, Gmail thread 1a0fd83ddde922b1: \u201cwe would be delighted for you to use our imagery and product on your site.\u201d That is a full publication grant, not an invitation to show imagery on a preview, so under this register's own rule (see 'the_grant_boundary') the row does not belong here any more. Containment by ABSENCE is the wrong instrument for a supplier who has said yes: keeping the row at imagery_mode 'none' would have asserted in the repository that they granted nothing, which is now false.",
+      "what_constrains_them_now": "image-rights-records.json and the generated manifest, organisation_record recLW0vZbkBGPRkZ9, permitted_domain irishsaunacompany.com, required_credit \u00a9 Irish Sauna Company. atlas-tools/validate-image-rights.js refuses any image of theirs from another host, and refuses all of them if the credit leaves the page. irish-sauna-company-preview.html remains noindex and unlisted, and the grant has not been exercised on any other page.",
+      "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002"
+    }
+  ],
   "suppliers": [
     {
       "name": "Cosy Cabins",
@@ -24,30 +34,6 @@
       ],
       "evidence": "Bruno replied \"PREVIEW please — I'd like to see how Cosy Cabins would appear on PlotNua before anything is published\" on 2 October 2026, Gmail thread 1a0fd84efd61b0fa, when the outreach offered both YES and PREVIEW.",
       "atlas_permission_ref": "WELLNESS-FIRST-COSY-CABINS-20261002"
-    },
-    {
-      "name": "Irish Sauna Company",
-      "imagery_mode": "none",
-      "legal_name": "Irish Sauna Company",
-      "page": "irish-sauna-company-preview.html",
-      "site_host": "irishsaunacompany.com",
-      "credit": "© Irish Sauna Company",
-      "image_hosts": [
-        { "host": "irishsaunacompany.com", "path_prefix": "/cdn/shop/",
-          "why": "their Shopify CDN path on their own domain" }
-      ],
-      "forbidden_claims": [
-        "irish built", "irish-built", "built in galway", "manufactured in galway",
-        "we manufacture", "handcrafted in", "irish made", "irish-made",
-        "installation included", "we install", "installed by irish sauna",
-        "delivery included", "shipping included", "free delivery",
-        "planning exempt", "no planning permission",
-        "lead time of", "weeks from confirmed order",
-        "warranty", "guaranteed for"
-      ],
-      "forbidden_claims_note": "INSULATION IS DELIBERATELY NOT ON THIS LIST, unlike Cosy Cabins. Irish Sauna Company's garden saunas publish insulated construction three times on the product page and in the specification table, so it is an evidenced fact here and may be stated. The origin claims are the dangerous ones instead: the garden range is manufactured by Harvia and supplied in Ireland by Irish Sauna Company, while the company's own Galway manufacturing is of commercial mobile saunas and accommodation pods. Calling a garden sauna Irish-built would be false.",
-      "evidence": "Brona replied \"I'd be happy to take a look at the private preview first, particularly to see how our products, specifications and pricing would be presented\" on 2 October 2026, Gmail message 1a0fdc60270190fd, when the outreach offered both YES and PREVIEW.",
-      "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002"
     },
     {
       "name": "OGNYX",

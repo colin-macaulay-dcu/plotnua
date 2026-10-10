@@ -64,11 +64,32 @@ print("GUARD-CAPABILITY PROOF — IRISH SAUNA COMPANY PRIVATE PREVIEW")
 print("=" * 78)
 r = results.append
 
-# ---- G0 . the whole point of this build ------------------------------------
-r(run("G0 . supplier imagery is added while permission is unknown",
-      [("ISC_IMAGES = []",
-        'ISC_IMAGES = [{"url": "https://irishsaunacompany.com/cdn/shop/files/'
-        'x.png", "alt": "a sauna"}]')]))
+# ---- G0 . the grant, read from the register and not from this file --------
+# THIS GUARD CHANGED SIDES ON 10 OCTOBER 2026. It used to refuse imagery
+# because permission was unknown; Brona granted it, so it now refuses imagery
+# that is NOT covered by a live grant in the generated manifest. The three
+# breaks are the three ways that cover can be lost.
+r(run("G0 . the register is consulted at a path that does not exist",
+      [('man = SITE / "image-rights-manifest.json"',
+        'man = SITE / "image-rights-manifest-GONE.json"')]))
+
+r(run("G0 . no live grant matches the supplier's domain",
+      [('if (r.get("permitted_domain") == "irishsaunacompany.com"',
+        'if (r.get("permitted_domain") == "irishsaunacompany.invalid"')]))
+
+r(run("G0 . the printed credit drifts from the credit the grant requires",
+      [('CREDIT = "\u00a9 Irish Sauna Company"',
+        'CREDIT = "\u00a9 Irish Sauna Co."')]))
+
+r(run("G0 . an image is taken from outside the permitted domain",
+      [('{"url": "https://irishsaunacompany.com/cdn/shop/files/"\n'
+        '            "HarviaLegendElectricOutdoorSauna1.png?v=1788467600&width=1200",',
+        '{"url": "https://cdn.shopify.com/s/files/1/9999/9999/'
+        'HarviaLegendElectricOutdoorSauna1.png",')]))
+
+r(run("G0 . an image is listed with no alt text",
+      [('"alt": "The Harvia Legend Electric outdoor sauna seen in a garden setting"',
+        '"alt": "   "')]))
 
 # ---- G1 / G1b / G2 . the template anchors ---------------------------------
 r(run("G1 . the instruction-comment anchor no longer matches",
@@ -82,10 +103,10 @@ r(run("G2 . the frozen journey band anchor no longer matches",
       [('r"\\n<!-- FROZEN.*?\\n<div class=\\"journey\\">.*?\\n</div>\\n"',
         'r"\\n<!-- THAWED.*?\\n<div class=\\"journey\\">.*?\\n</div>\\n"')]))
 
-# ---- G3 . the held imagery panel ------------------------------------------
-r(run("G3 . the held photo-slot heading cannot be found",
-      [('ask = "<b>Your project photography here</b>"',
-        'ask = "<b>Your project photographs here</b>"')]))
+# ---- G3 . state A must actually replace the held media wrapper ------------
+r(run("G3 . the held media wrapper anchor no longer matches the template",
+      [('r\'          <div class="pn-photo-slot"[^>]*>.*?</div>\\n\'',
+        'r\'          <div class="pn-photo-SLOTT"[^>]*>.*?</div>\\n\'')]))
 
 # ---- G3c . attribution ----------------------------------------------------
 r(run("G3c . the footer anchor for the attribution line cannot be found",
@@ -166,17 +187,23 @@ r(run("G8b . the page keeps Harvia but drops who supplies it in Ireland",
         '"VERIFIED_PRICE_BASIS": "inc. VAT, exactly as published. '
         'Manufactured by Harvia.",'),
        ('% (SUPPLIER, PRODUCT_URL, RANGE_URL, EVIDENCE_DATE, SUPPLIER,\n'
-        '           SUPPLIER, CREDIT, SUPPLIER_SITE))',
+        '           SUPPLIER, PERMISSION_DATE, SUPPLIER, CREDIT, SUPPLIER_SITE))',
         '% (SUPPLIER, PRODUCT_URL, RANGE_URL, EVIDENCE_DATE,\n'
-        '           SUPPLIER, CREDIT, SUPPLIER_SITE))')]))
+        '           SUPPLIER, PERMISSION_DATE, SUPPLIER, CREDIT, SUPPLIER_SITE))')]))
 
-# ---- G9 . no imagery on the artefact, and a real link back ---------------
-# Aimed past G0: the list stays empty, so only the output check can catch an
-# image that arrives through the markup.
-r(run("G9 . an external image arrives through the markup, not the image list",
+# ---- G9 . the imagery on the OUTPUT, and a real link back ----------------
+# Aimed past G0: the image list stays legitimate, so only the output check can
+# catch something that arrives through the markup instead of through the list.
+r(run("G9 . an off-grant image arrives through the markup, not the image list",
       [('  <h2>Three things we would ask before publishing</h2>',
         '  <h2>Three things we would ask before publishing</h2>\\n'
-        '  <img src="https://irishsaunacompany.com/cdn/shop/files/x.png" alt="">')]))
+        '  <img src="https://images.example.net/sauna.jpg" alt="">')]))
+
+r(run("G9 . an og:image hands the supplier's image to link unfurlers",
+      [('    # G5 \u00b7 PRIVACY.',
+        '    src = src.replace("</head>", \'<meta property="og:image" \'\n'
+        '        \'content="https://irishsaunacompany.com/cdn/shop/files/a.png">\'\n'
+        '        \'</head>\')\n\n    # G5 \u00b7 PRIVACY.')]))
 
 r(run("G9 . every link back to the supplier's site is reduced to prose",
       [('\'<a href="%s" rel="noopener">their Harvia Legend Electric page</a> \'\n'
@@ -200,6 +227,18 @@ r(run("G11 . the template's illustrative-preview tag is stripped out",
 r(run("G11 . the pre-publication review ask is removed from the page",
       [('src = src.replace(old_head, "<h2>Before anything goes live</h2>")',
         'src = src.replace(old_head, "<h2>Next steps</h2>")')]))
+
+# ---- G12 . the medium may not be claimed ----------------------------------
+# The one guard that exists because of what this supplier's own filenames
+# show: they publish generated imagery. A page that calls a render a
+# photograph is making a provenance claim nobody has checked.
+r(run("G12 . the page calls the supplier's imagery a photograph",
+      [('"WHY_1_LABEL": "YOUR SPECIFICATION, NOT OUR SUMMARY",',
+        '"WHY_1_LABEL": "YOUR PHOTOGRAPHY, SHOWN AS PUBLISHED",')]))
+
+r(run("G12 . the alt text describes the medium instead of the subject",
+      [('"alt": "The Harvia Legend Electric outdoor sauna seen in a garden setting"',
+        '"alt": "A photograph of the Harvia Legend Electric outdoor sauna"')]))
 
 # ---- and the unmutated builder must still pass ----------------------------
 print("-" * 78)
