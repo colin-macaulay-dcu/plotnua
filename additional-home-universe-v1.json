@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.additional-home-universe",
   "version": "1.0.0-candidate",
-  "generated": "2026-10-11T17:35:43Z",
+  "generated": "2026-10-11T20:42:38Z",
   "qualificationRuleVersion": "additional-home-qualification-v1.1",
   "publicationGate": {
     "version": "supplier-publication-gate-v1",
@@ -9,8 +9,8 @@
     "heldOrganisations": []
   },
   "sourceCategory": "Additional Home",
-  "sourceCategoryCount": 138,
-  "confirmedHabitationCount": 83,
+  "sourceCategoryCount": 140,
+  "confirmedHabitationCount": 85,
   "categoryWithoutConfirmed": [
     "PROD-000568",
     "PROD-000722",
@@ -108,7 +108,7 @@
     "PROD-000967",
     "PROD-001081"
   ],
-  "eligibleCount": 26,
+  "eligibleCount": 28,
   "heldCount": 112,
   "excludedCount": 0,
   "class3aCandidateCount": 4,
@@ -1606,10 +1606,10 @@
         "noPublishedRoute": false
       },
       "area": {
-        "number": null,
-        "unit": null,
-        "measurementBasis": "UNRESOLVED",
-        "text": "95 m² total floor area. Per BIOBUILDS Homes catalog listing."
+        "number": 77.06,
+        "unit": "m²",
+        "measurementBasis": "VERIFIED_INTERNAL",
+        "text": "77.06 m² / 829 ft² interior floor area, as published by BIOBUILDS on biobuilds.com/ie/design#serenity-95, read 11 October 2026. The supplier's own Irish listing states a range of 77.06–78.21 m² / 829–842 ft² across floorplan options; 77.06 m² is the figure shown on the model panel and is the one recorded here. The 95 in the model name Serenity 95 is BIOBUILDS' own naming and configurator key, and is a different thing from this published interior measurement. DISCREPANCY PRESERVED: the international page at biobuilds.com/design#serenity-95 states 95 m². The Irish page is the authority for an Irish homeowner and is the more specific figure, so it is the one taken. Supersedes the earlier record of '95 m² total floor area. Per BIOBUILDS Homes catalog listing.', which carried no numeric value and therefore produced no usable area."
       },
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
@@ -1686,7 +1686,7 @@
       },
       "class3a": {
         "state": "NOT_A_CANDIDATE",
-        "reason": "no-usable-area",
+        "reason": "outside-pathway-band",
         "caveats": []
       },
       "publicVisibility": "PUBLISHABLE",
@@ -9714,6 +9714,226 @@
       "holdReason": null,
       "imagery": null,
       "imagerySet": null
+    },
+    {
+      "id": "recV5stNWzbeL1L7A",
+      "productCode": "PROD-001215",
+      "productName": "BIOBUILDS Sanctuary",
+      "organisation": "BIOBUILDS",
+      "productCategory": "Additional Home",
+      "habitation": {
+        "state": "CONFIRMED RESIDENTIAL HABITATION",
+        "signals": []
+      },
+      "irish": {
+        "state": "CONFIRMED",
+        "basis": "Confirmation State: Yes",
+        "scope": "Range-Level",
+        "noPublishedRoute": false
+      },
+      "area": {
+        "number": 120.41,
+        "unit": "m²",
+        "measurementBasis": "VERIFIED_INTERNAL",
+        "text": "120.41 m² / 1,296 ft² interior floor area, as published by BIOBUILDS on biobuilds.com/ie/design?model=sanctuary-142, read 11 October 2026. The supplier's Irish listing states a range of 120.41–121.54 m² / 1,296–1,308 ft² across floorplan options; 120.41 m² is the figure on the model panel and is the one recorded. The 142 in the model name is BIOBUILDS' own configurator key, not a published floor area. The international page states 142 m²; the Irish page is the authority for Ireland."
+      },
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 278000.0,
+        "currency": "EUR",
+        "priceType": "Standard Price",
+        "basis": "INCLUDES_VAT",
+        "vatRatePercent": null,
+        "configurations": [
+          {
+            "key": "exterior-finished",
+            "label": "Exterior Finished",
+            "amount": 278000.0,
+            "priceType": "Standard Price",
+            "terms": []
+          },
+          {
+            "key": "turnkey",
+            "label": "Turnkey",
+            "amount": 444000.0,
+            "priceType": "Standard Price",
+            "terms": []
+          }
+        ]
+      },
+      "productUrl": "https://www.biobuilds.com/ie/design#sanctuary-142",
+      "sources": [
+        {
+          "title": "BIOBUILDS — Irish Configurator (Models, Interior Areas & Irish VAT-Inclusive Prices)",
+          "url": "https://www.biobuilds.com/ie/design",
+          "accessed": "2026-10-11"
+        }
+      ],
+      "description": "BIOBUILDS' second-largest catalogued model, published on the Irish configurator: a 4-bedroom modular home with 120.41 m² / 1,296 ft² of interior floor area as published by BIOBUILDS. The supplier's own Irish listing states a range of 120.41–121.54 m² / 1,296–1,308 ft² across floorplan options (4 / 3 / 2 bedrooms). The \"142\" in the model name Sanctuary 142 is BIOBUILDS' own naming and configurator key; it is NOT a published floor area and must not be recorded as one. Sold in two configurations, both Irish prices including VAT as the supplier states them: Exterior Finished €278,000 and Turnkey €444,000. Sea transport and mounting are included in the displayed price, and delivery and installation by BIOBUILDS' partners are included; foundations, utility connections and any required Irish adaptations are quoted separately. Plumbing installation, electrical panel installation and Zehnder ventilation are listed among installations; a fully finished bathroom option covering 2 bathrooms is offered. Passivhaus and built in the EU, per the model panel. NOT VERIFIED AND DELIBERATELY NOT RECORDED: external dimensions, wall and ridge heights, U-values, airtightness, energy demand, lead times, warranty terms and BER. The supplier publishes none of these on the configurator and nothing has been inferred. Source for identity, area, bedroom options, prices and inclusions: biobuilds.com/ie/design and biobuilds.com/ie/design?model=sanctuary-142, read 11 October 2026 (SRC-000677). The international page at biobuilds.com/design states 142 m² and prices excluding VAT; the Irish page is the authority for Ireland and the discrepancy is recorded in the source note.",
+      "qualification": {
+        "rule": "additional-home-qualification-v1.1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": [],
+        "layers": {
+          "membership": true,
+          "habitation": true,
+          "irishAvailability": true,
+          "productEvidence": true
+        }
+      },
+      "class3a": {
+        "state": "NOT_A_CANDIDATE",
+        "reason": "outside-pathway-band",
+        "caveats": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "imagery": {
+        "url": "https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
+        "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing.",
+        "credit": "© BIOBUILDS",
+        "supplier": "BIOBUILDS",
+        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+        "linkBack": "https://www.biobuilds.com/",
+        "presentationTier": "A",
+        "caption": "BIOBUILDS model imagery"
+      },
+      "imagerySet": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
+          "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/142-int-semi.0jp8pj_h42n45.jpg",
+          "alt": "Inside the BIOBUILDS Sanctuary, an open living space with timber finishes and glazing to the garden.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        }
+      ]
+    },
+    {
+      "id": "recjdCtvV26NtbNA0",
+      "productCode": "PROD-001216",
+      "productName": "BIOBUILDS Bloom",
+      "organisation": "BIOBUILDS",
+      "productCategory": "Additional Home",
+      "habitation": {
+        "state": "CONFIRMED RESIDENTIAL HABITATION",
+        "signals": []
+      },
+      "irish": {
+        "state": "CONFIRMED",
+        "basis": "Confirmation State: Yes",
+        "scope": "Range-Level",
+        "noPublishedRoute": false
+      },
+      "area": {
+        "number": 162.68,
+        "unit": "m²",
+        "measurementBasis": "VERIFIED_INTERNAL",
+        "text": "162.68 m² / 1,751 ft² interior floor area, as published by BIOBUILDS on biobuilds.com/ie/design?model=bloom-190, read 11 October 2026. The supplier's Irish listing states a range of 162.68–164.19 m² / 1,751–1,767 ft² across floorplan options; 162.68 m² is the figure on the model panel and is the one recorded. The 190 in the model name is BIOBUILDS' own configurator key, not a published floor area. The international page states 190 m²; the Irish page is the authority for Ireland."
+      },
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 354000.0,
+        "currency": "EUR",
+        "priceType": "Standard Price",
+        "basis": "INCLUDES_VAT",
+        "vatRatePercent": null,
+        "configurations": [
+          {
+            "key": "exterior-finished",
+            "label": "Exterior Finished",
+            "amount": 354000.0,
+            "priceType": "Standard Price",
+            "terms": []
+          },
+          {
+            "key": "turnkey",
+            "label": "Turnkey",
+            "amount": 572000.0,
+            "priceType": "Standard Price",
+            "terms": []
+          }
+        ]
+      },
+      "productUrl": "https://www.biobuilds.com/ie/design#bloom-190",
+      "sources": [
+        {
+          "title": "BIOBUILDS — Irish Configurator (Models, Interior Areas & Irish VAT-Inclusive Prices)",
+          "url": "https://www.biobuilds.com/ie/design",
+          "accessed": "2026-10-11"
+        }
+      ],
+      "description": "BIOBUILDS' largest catalogued model, published on the Irish configurator: a modular home with 162.68 m² / 1,751 ft² of interior floor area as published by BIOBUILDS. The supplier's own Irish listing states a range of 162.68–164.19 m² / 1,751–1,767 ft² across floorplan options. BEDROOM COUNT IS STATED TWO WAYS BY THE SUPPLIER AND BOTH ARE RECORDED RATHER THAN RECONCILED: the model listing card says 4 bedrooms, while the model panel's floorplan selector offers 6 / 5 / 4 bedrooms. The \"190\" in the model name Bloom 190 is BIOBUILDS' own naming and configurator key; it is NOT a published floor area and must not be recorded as one. Sold in two configurations, both Irish prices including VAT as the supplier states them: Exterior Finished €354,000 and Turnkey €572,000. Sea transport and mounting are included in the displayed price, and delivery and installation by BIOBUILDS' partners are included; foundations, utility connections and any required Irish adaptations are quoted separately. Plumbing installation, electrical panel installation and Zehnder ventilation are listed among installations; a fully finished bathroom option covering 2 bathrooms is offered. Passivhaus and built in the EU, per the model panel. NOT VERIFIED AND DELIBERATELY NOT RECORDED: external dimensions, wall and ridge heights, U-values, airtightness, energy demand, lead times, warranty terms and BER. The supplier publishes none of these on the configurator and nothing has been inferred. Source for identity, area, bedroom options, prices and inclusions: biobuilds.com/ie/design and biobuilds.com/ie/design?model=bloom-190, read 11 October 2026 (SRC-000677). The international page at biobuilds.com/design states 190 m² and prices excluding VAT; the Irish page is the authority for Ireland and the discrepancy is recorded in the source note.",
+      "qualification": {
+        "rule": "additional-home-qualification-v1.1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": [],
+        "layers": {
+          "membership": true,
+          "habitation": true,
+          "irishAvailability": true,
+          "productEvidence": true
+        }
+      },
+      "class3a": {
+        "state": "NOT_A_CANDIDATE",
+        "reason": "outside-pathway-band",
+        "caveats": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "imagery": {
+        "url": "https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg",
+        "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding.",
+        "credit": "© BIOBUILDS",
+        "supplier": "BIOBUILDS",
+        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+        "linkBack": "https://www.biobuilds.com/",
+        "presentationTier": "A",
+        "caption": "BIOBUILDS model imagery"
+      },
+      "imagerySet": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg",
+          "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/190-int-semi.3vnsegejmoyvy.jpg",
+          "alt": "Inside the BIOBUILDS Bloom, an open-plan living space with timber finishes.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        }
+      ]
     }
   ]
 }

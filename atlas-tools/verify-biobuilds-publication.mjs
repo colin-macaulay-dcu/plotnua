@@ -62,8 +62,19 @@ const EXPECTED = {
       { label: 'Exterior Finished', amount: 191000 },
       { label: 'Turnkey', amount: 306000 },
     ],
+    /* CORRECTED 11 October 2026. Serenity's area was UNRESOLVED when this
+       expectation was written, so its ineligibility was recorded as
+       'no-usable-area'. The area is now established first-party at
+       77.06 m² / 829 ft² interior (biobuilds.com/ie/design#serenity-95; the
+       Irish listing states a 77.06-78.21 m² range across floorplan options),
+       and the Atlas featureValue carries that number with a VERIFIED_INTERNAL
+       basis. So the reason for the SAME outcome has changed, and the test now
+       asserts the true one: 77.06 m² sits outside the 32-45 m² Class 3A
+       pathway band. "Not a candidate" for the wrong reason would still be
+       wrong, which is why this assertion checks the reason at all. */
+    area: { number: 77.06, unit: 'm²', measurementBasis: 'VERIFIED_INTERNAL' },
     class3a: 'NOT_A_CANDIDATE',
-    class3aReason: 'no-usable-area',
+    class3aReason: 'outside-pathway-band',
     images: 3,
   },
 };
@@ -182,12 +193,18 @@ function run(universe, rights) {
   }
   if (s) {
     const c = s.class3a || {};
-    (c.state === EXPECTED[SERENITY].class3a
-     && c.reason === EXPECTED[SERENITY].class3aReason)
-      ? ok('V7  Serenity is NOT a Class 3A candidate, for want of a usable area',
-           `${c.state} · ${c.reason}`)
-      : bad('V7  Serenity is NOT a Class 3A candidate, for want of a usable area',
-            `got ${c.state} · ${c.reason}`);
+    const sa = s.area || {};
+    const se = EXPECTED[SERENITY];
+    (c.state === se.class3a
+     && c.reason === se.class3aReason
+     && sa.number === se.area.number
+     && sa.measurementBasis === se.area.measurementBasis)
+      ? ok('V7  Serenity has a VERIFIED area and is NOT a Class 3A candidate '
+           + 'because it is outside the 32-45 m² pathway band',
+           `${sa.number} ${sa.unit} ${sa.measurementBasis} · ${c.state} · ${c.reason}`)
+      : bad('V7  Serenity has a VERIFIED area and is NOT a Class 3A candidate '
+            + 'because it is outside the 32-45 m² pathway band',
+            `got ${sa.number} ${sa.measurementBasis} · ${c.state} · ${c.reason}`);
   }
 
   /* V8 — the two named configurations, each with its own label and amount. */

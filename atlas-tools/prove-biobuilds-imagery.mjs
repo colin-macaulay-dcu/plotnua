@@ -306,8 +306,23 @@ console.log('-'.repeat(74));
     .filter(r => r.organisation_code !== 'ORG-000153');
   const withAssets = others.filter(r =>
     Array.isArray(r.approved_assets) && r.approved_assets.length);
+  /* RE-AIMED 11 October 2026, AND IT IS STRONGER, NOT WEAKER.
+     This read `codes.every(c => c === 'PROD-000523' || c === 'PROD-000524')`
+     — a hard-coded pair, written when BIOBUILDS had exactly two products
+     carrying imagery. The founder then added Sanctuary (PROD-001215) and
+     Bloom (PROD-001216) to the same enumeration, and the assertion failed on
+     two BIOBUILDS products: a stale list, not a leak.
+     The question BI10 exists to ask is whether anything OUTSIDE BIOBUILDS
+     gained an index entry. So it is now asked of the data: every code in the
+     index must be a product code BIOBUILDS' own rights row enumerates. That
+     catches a non-BIOBUILDS code the old form could not have caught either,
+     and it cannot go stale when the enumeration changes again. */
   const codes = Object.keys(G.index);
-  const onlyBiobuilds = codes.every(c => c === 'PROD-000523' || c === 'PROD-000524');
+  const bbRow = (recDoc.records || [])
+    .find(r => r.organisation_code === 'ORG-000153') || {};
+  const bbCodes = new Set((bbRow.approved_assets || [])
+    .map(a => a.product_code).filter(Boolean));
+  const onlyBiobuilds = bbCodes.size > 0 && codes.every(c => bbCodes.has(c));
   (!withAssets.length && onlyBiobuilds)
     ? ok('BI10 no other supplier gained an approved asset or an index entry',
          `${others.length} other record(s), index holds ${codes.length}`)

@@ -212,7 +212,7 @@
       "conditions": [
         "Credit '© BIOBUILDS' on every image use.",
         "Link back to https://www.biobuilds.com/ wherever the imagery appears.",
-        "PRE-LIVE REVIEW: BIOBUILDS asked for the listing before it goes live. This grant therefore covers the private, noindexed review preview ONLY. Public publication waits for BIOBUILDS to come back.",
+        "PRE-LIVE REVIEW, OUTSTANDING AND STILL BINDING: BIOBUILDS asked for the listing before it goes live. They reviewed the first preview and asked for factual corrections on 11 October 2026; those corrections are applied and the revised listing awaits their confirmation. THAT CONFIRMATION HAS NOT BEEN RECEIVED. SUPERSEDED SCOPE SENTENCE, PRESERVED VERBATIM FOR THE RECORD: \"This grant therefore covers the private, noindexed review preview ONLY. Public publication waits for BIOBUILDS to come back.\" That sentence was PlotNua's own scoping of its own restraint, not a limit BIOBUILDS placed on the grant; it is superseded by founder decision FX-BIOBUILDS-PUBLISH-20261011, which waives the wait and accepts responsibility for proceeding before confirmation. The supplier's review requirement itself is NOT waived, NOT satisfied, and remains outstanding: if BIOBUILDS objects, remove the exception and the gate returns the product to HOLD.",
         "BIOBUILDS may request change or removal of any image at any time, and PlotNua complies.",
         "No resale, no sublicensing, no unrelated advertising use.",
         "BIOBUILDS retains ownership of the imagery.",
@@ -270,8 +270,9 @@
           "assets-not-approved"
         ],
         "basis": "BIOBUILDS granted written permission on 2 October 2026 to feature its products and to use selected imagery with credit and a link back (C2-GRANT-BIOBUILDS-20261002). The supplier then asked for factual corrections on 11 October 2026; those corrections are implemented in Atlas and in the private preview. The founder has decided to publish the corrected listing without waiting for the supplier's confirmation of the revised preview, and accepts responsibility for proceeding before that confirmation is received.",
-        "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and Compare, AND publication of the SIX ENUMERATED ASSETS in approved_assets, each with the supplier's caption, the credit and a working link back. WIDENED 11 October 2026 by the same founder decision: the earlier version of this scope excluded imagery entirely, because at that point no imagery had been authorised. It does NOT authorise any asset outside that list -- every other BIOBUILDS asset, including the two exercised on the private preview, remains Reference Only, and prove-biobuilds-containment.mjs enforces the difference per asset rather than per domain.",
-        "withdrawal": "BIOBUILDS may request change or removal at any time and PlotNua complies, exactly as the original grant provides. If the supplier objects to the published listing, remove this exception and the gate returns the product to HOLD with no other change."
+        "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and Compare, AND publication of the SIX ENUMERATED ASSETS in approved_assets, each with the supplier's caption, the credit and a working link back. WIDENED 11 October 2026 by the same founder decision: the earlier version of this scope excluded imagery entirely, because at that point no imagery had been authorised. It does NOT authorise any asset outside that list -- every other BIOBUILDS asset, including the two exercised on the private preview, remains Reference Only, and prove-biobuilds-containment.mjs enforces the difference per asset rather than per domain. WIDENED AGAIN 11 October 2026 by the same founder decision, after a permission recheck against the original grant wording (\"use selected images from our website, with credit and a link back to us\"): the enumeration now covers TEN assets, adding two Sanctuary (PROD-001215) and two Bloom (PROD-001216) model images, each served from the permitted domain biobuilds.com, each carrying the supplier's credit and a working link back, each described in medium-neutral terms. Still excluded and still Reference Only: every other BIOBUILDS asset, the two withheld process and construction-detail images, all material swatches and finish thumbnails, and the supplier's own AI-labelled lifestyle image couple-configuring-sofa-ai.",
+        "withdrawal": "BIOBUILDS may request change or removal at any time and PlotNua complies, exactly as the original grant provides. If the supplier objects to the published listing, remove this exception and the gate returns the product to HOLD with no other change.",
+        "assets_enumerated": 10
       },
       "waived_conditions": [
         "listing-review-awaiting-confirmation",
@@ -280,7 +281,7 @@
       "asset_approval": {
         "state": "SELECTED_ASSETS_APPROVED",
         "default_for_unlisted": "REFERENCE_ONLY",
-        "approved_count": 6,
+        "approved_count": 10,
         "withheld_on_preview": 2,
         "governed_total_in_atlas": 34,
         "authorised_by": "FX-BIOBUILDS-PUBLISH-20261011",
@@ -341,6 +342,38 @@
           "role": "interior",
           "primary": false,
           "alt": "A bathroom in the BIOBUILDS Serenity 95, with tiled surfaces and fixed sanitaryware."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
+          "product_code": "PROD-001215",
+          "product_name": "BIOBUILDS Sanctuary",
+          "role": "exterior",
+          "primary": true,
+          "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/142-int-semi.0jp8pj_h42n45.jpg",
+          "product_code": "PROD-001215",
+          "product_name": "BIOBUILDS Sanctuary",
+          "role": "interior",
+          "primary": false,
+          "alt": "Inside the BIOBUILDS Sanctuary, an open living space with timber finishes and glazing to the garden."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg",
+          "product_code": "PROD-001216",
+          "product_name": "BIOBUILDS Bloom",
+          "role": "exterior",
+          "primary": true,
+          "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/190-int-semi.3vnsegejmoyvy.jpg",
+          "product_code": "PROD-001216",
+          "product_name": "BIOBUILDS Bloom",
+          "role": "interior",
+          "primary": false,
+          "alt": "Inside the BIOBUILDS Bloom, an open-plan living space with timber finishes."
         }
       ],
       "withheld_assets": [

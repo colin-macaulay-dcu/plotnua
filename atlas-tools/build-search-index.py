@@ -214,6 +214,78 @@ rows = U.get("products") or U.get("rows") or []
 if not rows:
     die("the universe carries no products")
 
+# ── SECOND DECLARED CORPUS · ADDITIONAL HOME ───────────────────────────────
+# Founder decision, 11 October 2026. Search V1 was frozen against the Garden
+# Room universe alone and the Additional Home corpus arrived after it. The
+# consequence was measured, not guessed: searching "biobuilds" returned
+# nothing, because 0 of the index's 659 records mentioned BIOBUILDS — and the
+# same was true of every Additional Home supplier and all 138 of their
+# products.
+#
+# ONE DIRECTION, UNCHANGED. The index is still generated FROM published
+# universes and never writes back. This declares a second SOURCE. It adds no
+# engine, no schema field, no route, no relevance rule, and search.js is not
+# touched.
+#
+# THE PUBLICATION GATE IS APPLIED HERE, reading the same single field the
+# runtime reader reads, and qualification second: PUBLISHABLE *and* ELIGIBLE.
+# A HELD product is one Atlas cannot yet stand behind and search is a
+# discovery surface, so HELD stays out. That excludes Nest 24 BY RULE rather
+# than by name, and it is why Sanctuary and Bloom will enter on their own
+# merits after regeneration or not at all.
+#
+# ADAPTED, NOT REMODELLED. The Garden Room emitter below is the only product
+# emitter, so each Additional Home product is mapped into the shape it already
+# reads. The tier comes from the record's own Class 3A caveats; nothing is
+# invented and nothing is promoted.
+#
+# NOT SHA-PINNED, AND THE REASON IS DELIBERATE. The Garden Room pin exists
+# because the contract was frozen against that exact corpus. The Additional
+# Home corpus is expected to be regenerated as Atlas changes, so pinning it
+# would refuse the founder's own regeneration. Its sha256 is RECORDED in the
+# envelope instead, so any index can be traced to the corpus that produced it,
+# and it is re-read at the end of the build to prove it did not move mid-build.
+AH_UNIVERSE = ROOT / "additional-home-universe-v1.json"
+ah_rows = []
+AH_SHA = None
+if AH_UNIVERSE.exists():
+    ah_bytes = AH_UNIVERSE.read_bytes()
+    AH_SHA = sha(ah_bytes)
+    print("  AH universe sha  %s" % AH_SHA)
+    AH = json.loads(ah_bytes)
+    for q in (AH.get("products") or []):
+        if q.get("publicVisibility") != "PUBLISHABLE":
+            continue
+        if ((q.get("qualification") or {}).get("state")) != "ELIGIBLE":
+            continue
+        caveats = list((q.get("class3a") or {}).get("caveats") or [])
+        qprice = (q.get("price") or {})
+        amount = qprice.get("amount")
+        safe = qprice.get("state") == "VERIFIED_NUMERIC_PRICE" and amount is not None
+        ah_rows.append({
+            "id": q.get("id"),
+            "productName": q.get("productName"),
+            "organisation": q.get("organisation"),
+            "productType": q.get("productCategory") or "Additional Home",
+            "qualificationTier": "WITH_CAVEAT" if caveats else "HIGH_CONFIDENCE",
+            "noPublishedIrishRoute": False,
+            "qualification": {"status": "ELIGIBLE"},
+            "organisationEvidence": None,
+            "priceSafeForMatching": bool(safe),
+            "price": amount if safe else None,
+            "priceBasis": qprice.get("basis") or None,
+        })
+    print("  AH products      %d  (of %d in the corpus, gate + ELIGIBLE only)"
+          % (len(ah_rows), len(AH.get("products") or [])))
+# DELIBERATELY NOT FOLDED INTO `rows`. The supplier emitter aggregates `rows`
+# by organisation, so appending here silently re-aggregated 20 existing Garden
+# Room supplier records — measured as 20 removed / 46 added against the
+# committed index, when this change must be additions only. Only the PRODUCT
+# emitter reads the second corpus. The supplier corpus stays exactly as the
+# frozen contract left it, which is also why no BIOBUILDS supplier record
+# appears: that would need organisation evidence the Additional Home corpus
+# does not carry, and inventing it is not an option.
+
 sitemap_text = SITEMAP.read_text(encoding="utf-8")
 ALLOW = set(re.findall(r"<loc>https://plotnua\.ie/([^<]*)</loc>", sitemap_text))
 ALLOW = {p for p in ALLOW if p.endswith(".html")}
@@ -306,8 +378,38 @@ if PRODUCT_HOST not in ALLOW and PRODUCT_HOST not in DECLARED_ROUTES:
     die("the product host %r is neither sitemap-listed nor a declared route"
         % PRODUCT_HOST)
 
+# THE CROSS-CORPUS COLLISION, AND WHY SOME ADDITIONAL HOME PRODUCTS STAY OUT.
+# R3 below asserts that a supplier control expanding inside Search delivers
+# exactly the productCount it promises. search.js groups products by
+# ORGANISATION NAME, so an Additional Home product belonging to an
+# organisation that already has a Garden Room supplier record would appear
+# under that control without being counted in it — measured: 'All About
+# Outdoors' promised 4 and expanded to 5, because PROD-000425 Van XL is an
+# Additional Home product of the same organisation.
+#
+# There are only three ways out, and two are refused:
+#   - count them into the supplier record  -> re-aggregates Garden Room
+#     suppliers, which the founder forbade;
+#   - loosen R3                            -> lets a control promise less
+#     than it delivers, which is the defect R3 exists to prevent;
+#   - leave those products out of the index, and SAY SO.
+# The third is taken. It costs nothing for BIOBUILDS, which has no Garden Room
+# supplier record, so every founder acceptance criterion is still met; and the
+# excluded count is printed on every build so the omission can never become
+# invisible. Removing this filter is a one-line change the day supplier
+# records are allowed to span both corpora.
+_gr_orgs = {norm_space(r.get("organisation")) for r in rows}
+_ah_collide = [r for r in ah_rows if norm_space(r.get("organisation")) in _gr_orgs]
+ah_rows = [r for r in ah_rows if norm_space(r.get("organisation")) not in _gr_orgs]
+if _ah_collide:
+    print("  AH withheld      %d  (organisation already has a Garden Room "
+          "supplier record; see the R3 note: %s)"
+          % (len(_ah_collide),
+             ", ".join(sorted({norm_space(r.get("organisation")) for r in _ah_collide}))))
+
 prod_recs = []
-for r in rows:
+AH_REC_IDS = {"prod-" + str(r.get("id")) for r in ah_rows}
+for r in rows + ah_rows:
     tier = r.get("qualificationTier")
     if tier not in ("HIGH_CONFIDENCE", "WITH_CAVEAT"):
         die("product %r carries tier %r, which is outside the closed vocabulary"
@@ -427,6 +529,7 @@ index = {
                                 capture_output=True, text=True).stdout.strip(),
     "sourceCommit": COMMIT,
     "sourceUniverseSha256": UNI_SHA,
+    "sourceAdditionalHomeSha256": AH_SHA,
     "synonymMapVersion": TM.get("version"),
     "counts": counts,
     # THE ROUTE TEMPLATE, stored once instead of 573 times. {id} is the governed
@@ -511,6 +614,8 @@ if "moved" in {str(r.get("title", "")).strip().lower() for r in records}:
 print("  G3  no retired Discovery, no legacy orphan  OK")
 
 # G4 universe unmoved
+if AH_SHA is not None and sha(AH_UNIVERSE.read_bytes()) != AH_SHA:
+    die("the Additional Home corpus changed during the build")
 if sha(UNIVERSE.read_bytes()) != UNI_SHA:
     die("G4 the universe changed DURING the build")
 if index["sourceUniverseSha256"] != UNI_SHA:
@@ -540,20 +645,58 @@ print("  G5  no qualification/evidence/features/imagery/score/rank field  OK")
 tiers = {r["tier"] for r in records if r["type"] == "product"}
 if tiers != {"HIGH_CONFIDENCE", "WITH_CAVEAT"}:
     die("G6 product tiers are %r, expected exactly the two literals" % tiers)
-src_tiers = collections_counter = {}
-for r in rows:
-    src_tiers[r.get("qualificationTier")] = src_tiers.get(r.get("qualificationTier"), 0) + 1
-out_tiers = {}
-for r in records:
-    if r["type"] == "product":
-        out_tiers[r["tier"]] = out_tiers.get(r["tier"], 0) + 1
-if src_tiers != out_tiers:
-    die("G6 tier distribution changed: universe %r vs index %r" % (src_tiers, out_tiers))
-print("  G6  tier literals carried, distribution identical %s  OK" % out_tiers)
+# G6 AMENDED 11 October 2026 BY FOUNDER DECISION: TWO DECLARED CORPORA,
+# VALIDATED INDEPENDENTLY. The assertion used to compare the whole index
+# against the Garden Room universe alone, which a second corpus cannot satisfy
+# by construction — it refused the build with
+#   "universe {'WITH_CAVEAT': 434, 'HIGH_CONFIDENCE': 139}
+#    vs index {'WITH_CAVEAT': 438, 'HIGH_CONFIDENCE': 161}".
+# That was the guard working, not failing. It is NOT relaxed into a sum, which
+# would let a shortfall in one corpus be masked by a surplus in the other.
+# Each corpus is now reconciled against its own emitted records, so Garden
+# Room's distribution is still held to the byte it was frozen at and the
+# second corpus is held to its own. The index carries no corpus field; the
+# partition is computed here from the record ids, so the output schema is
+# unchanged.
+def _tier_counts(seq, key):
+    out = {}
+    for x in seq:
+        t = key(x)
+        out[t] = out.get(t, 0) + 1
+    return out
+
+prod_out = [r for r in records if r["type"] == "product"]
+gr_out = [r for r in prod_out if r["id"] not in AH_REC_IDS]
+ah_out = [r for r in prod_out if r["id"] in AH_REC_IDS]
+
+gr_src = _tier_counts(rows, lambda r: r.get("qualificationTier"))
+gr_idx = _tier_counts(gr_out, lambda r: r["tier"])
+if gr_src != gr_idx:
+    die("G6 Garden Room tier distribution changed: universe %r vs index %r"
+        % (gr_src, gr_idx))
+
+ah_src = _tier_counts(ah_rows, lambda r: r.get("qualificationTier"))
+ah_idx = _tier_counts(ah_out, lambda r: r["tier"])
+if ah_src != ah_idx:
+    die("G6 Additional Home tier distribution changed: corpus %r vs index %r"
+        % (ah_src, ah_idx))
+
+if len(gr_out) + len(ah_out) != len(prod_out):
+    die("G6 the corpus partition does not cover every product record")
+out_tiers = _tier_counts(prod_out, lambda r: r["tier"])
+print("  G6  tier literals carried; per-corpus distributions identical "
+      "— garden-room %s, additional-home %s  OK" % (gr_idx, ah_idx))
 
 # G7 price safety
+# TWO DECLARED CORPORA, same predicate, applied per record. This read `rows`
+# alone, which is the Garden Room corpus — the same single-corpus assumption
+# G6 carried, and it refused an Additional Home product that IS price-safe.
+# The test itself is unchanged and is NOT relaxed: a price may still appear
+# only where its own source record says priceSafeForMatching and the value is
+# a real price.
 safe_ids = {("prod-" + str(r.get("id") or r.get("productId")))
-            for r in rows if r.get("priceSafeForMatching") and is_price(r.get("price"))}
+            for r in rows + ah_rows
+            if r.get("priceSafeForMatching") and is_price(r.get("price"))}
 for r in records:
     if r["type"] == "product" and "price" in r and r["id"] not in safe_ids:
         die("G7 product %r carries a price but is not priceSafeForMatching" % r["id"])
@@ -659,7 +802,12 @@ print("  R3  all %d suppliers expand to exactly their stated product count  OK"
       % sum(1 for r in records if r["type"] == "supplier"))
 
 link_ids = {r["id"][5:] for r in records if r["type"] == "product"}
-universe_ids = {str(r.get("id") or r.get("productId")) for r in rows}
+# TWO DECLARED CORPORA. This read `rows` alone — the same single-corpus
+# assumption G6 and G7 carried — and refused four Additional Home ids that ARE
+# governed, just governed by the second universe. The assertion is unchanged
+# and is NOT relaxed: every deep link must still resolve to a real record id
+# in a declared corpus, and an id in neither still fails.
+universe_ids = {str(r.get("id") or r.get("productId")) for r in rows + ah_rows}
 if not link_ids <= universe_ids:
     die("R4 a deep link points at an id outside the governed universe: %r"
         % sorted(link_ids - universe_ids)[:4])
@@ -691,7 +839,14 @@ for r in records:
     if missing:
         die("G13 record %r is missing %r" % (r.get("id"), sorted(missing)))
 if set(index.keys()) != {"schema", "version", "generated", "sourceCommit",
-                         "sourceUniverseSha256", "synonymMapVersion", "counts",
+                         "sourceUniverseSha256",
+                         # The second declared corpus is RECORDED, not pinned,
+                         # so any index can be traced to the Additional Home
+                         # universe that produced it. Declared here because
+                         # G13 is a closed-envelope guard and an undeclared
+                         # key must fail — which it did, correctly.
+                         "sourceAdditionalHomeSha256",
+                         "synonymMapVersion", "counts",
                          "routes", "records"}:
     die("G13 the envelope carries undeclared keys: %r" % sorted(index.keys()))
 print("  G13 catch-all (LAST): nothing outside the four declared types  OK")

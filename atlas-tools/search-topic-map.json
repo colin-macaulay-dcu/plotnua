@@ -1,19 +1,16 @@
 {
   "schema": "plotnua.search.topicmap",
-  "version": "1",
-  "governance": "Founder is the approval authority for homeowner-facing synonym/topic entries. V1 ships ONLY the four mappings below, each audited against the public corpus before approval on 2026-10-08. No speculative additions during implementation. No AI or API query expansion. No fuzzy matching. Future additions or changes require founder approval.",
-  "notIncluded": [
-    {
-      "phrase": "garden office",
-      "reason": "DELIBERATELY NOT A SYNONYM. The corpus already says it natively in productType: 28 'Contemporary garden office', 12 'UK insulated garden office configuration', 9 'Compact garden office pod', 6 'Garden office', 5 'Prefabricated garden office', and more. A synonym would double-count a term that already matches directly."
-    }
-  ],
+  "version": "2",
+  "governance": "Founder is the approval authority for homeowner-facing synonym/topic entries. V1 ships ONLY the four mappings below, each audited against the public corpus before approval on 2026-10-08. No speculative additions during implementation. No AI or API query expansion. No fuzzy matching. Future additions or changes require founder approval. AMENDED 11 October 2026 by founder decision: a fifth entry, 'garden office' -> discovery-living-in-the-garden.html, possibility scope only, added to restore an association the Discovery's own copy used to carry before it was retitled. The original notIncluded reasoning is preserved verbatim under 'superseded'.",
+  "notIncluded": [],
   "entries": [
     {
       "phrase": "spare garden",
       "concept": "borrowed-garden",
       "scope": "possibility",
-      "targets": ["discovery-the-borrowed-garden.html"],
+      "targets": [
+        "discovery-the-borrowed-garden.html"
+      ],
       "evidence": "Audited 2026-10-08 against the 19-page public corpus: naive token-AND matching returns discovery-open-your-home-to-art.html and about.html on incidental word co-occurrence, and MISSES The Borrowed Garden entirely. The map exists to correct a measured wrong answer, not to add reach.",
       "status": "APPROVED"
     },
@@ -21,7 +18,9 @@
       "phrase": "solar",
       "concept": "house-as-power-station",
       "scope": "possibility",
-      "targets": ["discovery-house-as-power-station.html"],
+      "targets": [
+        "discovery-house-as-power-station.html"
+      ],
       "evidence": "Audited 2026-10-08: zero products in the publishable universe relate to solar. The Discovery is the only truthful answer. Must not imply Atlas covers solar products.",
       "status": "APPROVED"
     },
@@ -29,7 +28,9 @@
       "phrase": "solar battery",
       "concept": "house-as-power-station",
       "scope": "possibility",
-      "targets": ["discovery-house-as-power-station.html"],
+      "targets": [
+        "discovery-house-as-power-station.html"
+      ],
       "evidence": "Audited 2026-10-08: zero products, one public page. Same basis as 'solar'.",
       "status": "APPROVED"
     },
@@ -37,7 +38,9 @@
       "phrase": "sauna",
       "concept": "garden-retreat",
       "scope": "possibility-only",
-      "targets": ["discovery-garden-retreat.html"],
+      "targets": [
+        "discovery-garden-retreat.html"
+      ],
       "evidence": "Audited 2026-10-08. POSSIBILITY ONLY, by founder decision. Four products mention sauna/wellness and every mention is incidental or negative: MyCabin explicitly EXCLUDES the Cube Sauna from that range; Iglucraft Igluoffice 1 is a warranty exclusion for a sauna heater; Igluoffice 2 is an office variant by a maker of saunas; Koto Niwa is 'suited to a sauna or small garden studio'. All four sit in features prose, which is never indexed. Private previews that do hold sauna suppliers (Auroom Wellness and others) are NEVER searchable and must not fill this gap.",
       "status": "APPROVED"
     },
@@ -45,9 +48,31 @@
       "phrase": "parking",
       "concept": "parking-and-driveway",
       "scope": "possibility",
-      "targets": ["discovery-hidden-cars.html", "discovery-driveway-income.html"],
+      "targets": [
+        "discovery-hidden-cars.html",
+        "discovery-driveway-income.html"
+      ],
       "evidence": "Audited 2026-10-08: this is a NARROWING map, not an expanding one. Naive matching returns 7 public pages, including discovery-hidden-bins.html and discovery-your-home-on-screen.html, which match only on incidental body prose. The map restricts the answer to the two Discoveries actually about parking.",
       "status": "APPROVED"
+    },
+    {
+      "phrase": "garden office",
+      "concept": "living-in-the-garden",
+      "scope": "possibility",
+      "targets": [
+        "discovery-living-in-the-garden.html"
+      ],
+      "evidence": "Measured 11 October 2026, not assumed. 'garden office' returned poss-living-in-the-garden against the 8 October index and ZERO possibilities against the regenerated one; the only change was the Discovery's own title and standfirst, which no longer contain the word 'office'. This entry restores a measured association that the corpus used to carry natively. It is scoped to POSSIBILITY, so product matching is untouched: 'garden office' still matches the 60+ productType strings directly and is not double-counted.",
+      "status": "APPROVED"
+    }
+  ],
+  "superseded": [
+    {
+      "phrase": "garden office",
+      "wasNotIncludedBecause": "DELIBERATELY NOT A SYNONYM. The corpus already says it natively in productType: 28 'Contemporary garden office', 12 'UK insulated garden office configuration', 9 'Compact garden office pod', 6 'Garden office', 5 'Prefabricated garden office', and more. A synonym would double-count a term that already matches directly.",
+      "supersededOn": "2026-10-11",
+      "supersededBy": "Founder decision, 11 October 2026.",
+      "reason": "The original judgement was about PRODUCTS and it still holds: 'garden office' matches productType natively and the entry below does not touch product matching. What changed is the POSSIBILITY side. On 8 October the Discovery at discovery-living-in-the-garden.html was titled 'What Could You Build in Your Garden?' with a standfirst reading '...an office, a studio, a room for the kids...', so the word 'office' matched natively there too and no mapping was needed. The Discovery was since retitled 'Garden Rooms & Garden Homes in Ireland: 2026 Planning Rules' with a standfirst about the July 2026 regulations, and neither carries the word 'office' any more. Measured with the same search code against both indexes: the committed index returns poss-living-in-the-garden for 'garden office', the regenerated index returns nothing. prove-search-acceptance A2e caught it. The founder's decision is to keep the published titles and restore the association through this map."
     }
   ]
 }
