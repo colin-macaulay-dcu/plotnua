@@ -115,7 +115,8 @@ ${supplierName ? `<p>Supplied by ${supplierName}.</p>` : ''}
 }
 
 function tree({ regEdit = null, pageOpts = {}, gateEdit = null,
-                omitRights = false, regRaw = null } = {}) {
+                omitRights = false, regRaw = null, rawPage = null,
+                extraFiles = null } = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'pn-prov-'));
   mkdirSync(join(dir, 'atlas-tools'), { recursive: true });
   mkdirSync(join(dir, 'assets', 'img'), { recursive: true });
@@ -129,7 +130,18 @@ function tree({ regEdit = null, pageOpts = {}, gateEdit = null,
   // and P1 has a bounded set to check.
   const src = join(ROOT, anAsset.asset);
   if (existsSync(src)) copyFileSync(src, join(dir, anAsset.asset));
-  writeFileSync(join(dir, 'page.html'), pageFor(anAsset.asset, pageOpts));
+  writeFileSync(join(dir, 'page.html'),
+                rawPage !== null ? rawPage : pageFor(anAsset.asset, pageOpts));
+  /* Extra files let a case plant an image through a mechanism that lives
+     outside the main page -- a web manifest, or a page in a subdirectory,
+     neither of which the first version of the guard ever looked at. */
+  if (extraFiles) {
+    for (const [rel, content] of Object.entries(extraFiles)) {
+      const full = join(dir, rel);
+      mkdirSync(dirname(full), { recursive: true });
+      writeFileSync(full, content);
+    }
+  }
 
   if (!omitRights) copyFileSync(RIGHTS, join(dir, 'image-rights-manifest.json'));
   let gate = readFileSync(GATE, 'utf8');
@@ -265,6 +277,97 @@ const CASES = [
       r.records[0].permission_outcome = 'Granted — Founder Confirmed';
       r.records[0].permitted_domain = 'example.com'; } } },
 
+  /* ── THE NEWLY CLOSED LOADERS ──────────────────────────────────────────
+     A coverage audit on 11 October 2026 found four mechanisms IN ACTUAL USE
+     that the guard had never scanned, and several more that nothing uses
+     yet. Widening a guard without proving the new coverage bites just moves
+     the trust somewhere less visible, so each case below plants an
+     UNDECLARED image through one mechanism and requires P1 to refuse.
+
+     The declared asset is kept off these pages entirely, so the only thing
+     P1 can be reacting to is the planted one. */
+  { id: 'C-LOAD-icon', expect: ['P1'],
+    why: 'undeclared image via <link rel="icon">  (122 real uses)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title>'
+      + '<link rel="icon" href="/undeclared-favicon.png">'
+      + '</head><body></body></html>' } },
+
+  { id: 'C-LOAD-appletouch', expect: ['P1'],
+    why: 'undeclared image via <link rel="apple-touch-icon">',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title>'
+      + '<link rel="apple-touch-icon" href="/undeclared-touch.png">'
+      + '</head><body></body></html>' } },
+
+  { id: 'C-LOAD-twitter', expect: ['P1'],
+    why: 'undeclared image via twitter:image on our own origin  (23 real uses)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title>'
+      + '<meta name="twitter:image" '
+      + 'content="https://plotnua.ie/assets/og/undeclared-card.png">'
+      + '</head><body></body></html>' } },
+
+  { id: 'C-LOAD-manifest', expect: ['P1'],
+    why: 'undeclared image via the web manifest, which is not HTML at all',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title></head>'
+      + '<body></body></html>',
+      extraFiles: { 'site.webmanifest': JSON.stringify(
+        { name: 'x', icons: [{ src: '/undeclared-chrome-192.png' }] }) } } },
+
+  { id: 'C-LOAD-subdir', expect: ['P1'],
+    why: 'undeclared image on a page below the root  (12 real pages)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title></head>'
+      + '<body></body></html>',
+      extraFiles: { 'preview-system/template.html':
+        '<!doctype html><html><head><title>t</title></head><body>'
+        + '<img src="assets/img/undeclared-in-subdir.png" alt="x">'
+        + '</body></html>' } } },
+
+  { id: 'C-LOAD-css', expect: ['P1'],
+    why: 'undeclared image via a CSS background url()',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title>'
+      + '<style>.hero{background-image:url("/undeclared-bg.jpg")}</style>'
+      + '</head><body></body></html>' } },
+
+  { id: 'C-LOAD-imgsrcset', expect: ['P1'],
+    why: 'undeclared image via <img srcset>  (pre-emptive)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title></head><body>'
+      + '<img srcset="/undeclared-1x.png 1x, /undeclared-2x.png 2x" alt="x">'
+      + '</body></html>' } },
+
+  { id: 'C-LOAD-poster', expect: ['P1'],
+    why: 'undeclared image via <video poster>  (pre-emptive)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title></head><body>'
+      + '<video poster="/undeclared-poster.jpg"></video></body></html>' } },
+
+  { id: 'C-LOAD-imageset', expect: ['P1'],
+    why: 'undeclared image via CSS image-set()  (pre-emptive)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title>'
+      + '<style>.h{background:image-set("/undeclared-set.webp" 1x)}</style>'
+      + '</head><body></body></html>' } },
+
+  { id: 'C-LOAD-jssrc', expect: ['P1'],
+    why: 'undeclared image via a JavaScript .src assignment',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title></head><body>'
+      + '<scr' + 'ipt>el.src = "/undeclared-js.png";</scr' + 'ipt>'
+      + '</body></html>' } },
+
+  { id: 'C-LOAD-svgimage', expect: ['P1'],
+    why: 'undeclared image via SVG <image href>  (pre-emptive)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title></head><body>'
+      + '<svg><image href="/undeclared-svg-image.png"/></svg>'
+      + '</body></html>' } },
+
+  { id: 'C-LOAD-datasrc', expect: ['P1'],
+    why: 'undeclared image via a data-src lazy attribute  (pre-emptive)',
+    opts: { rawPage: '<!doctype html><html><head><title>t</title></head><body>'
+      + '<img data-src="/undeclared-lazy.png" alt="x"></body></html>' } },
+
+  /* THE CONTROL FOR THE WIDENING. A DECLARED image arriving through one of
+     the newly covered mechanisms must still PASS. A guard that refuses
+     everything is not a guard either, and this is the case that catches an
+     over-broad regex. */
+  { id: 'C-LOAD-control', mustPass: true, expect: ['(accepts)'],
+    why: 'a DECLARED image via <link rel="icon"> is accepted, not refused' },
+
   /* And the instrument itself must refuse rather than pass when it cannot
      establish the facts. */
   { id: 'C-REFUSE', expect: ['REFUSE'],
@@ -300,6 +403,58 @@ for (const c of CASES) {
     continue;
   }
   const r = run(dir);
+
+  if (c.mustPass) {
+    /* CORRECTED. The first version referenced the DECLARED AI_ILLUSTRATION
+       through the icon mechanism, and the guard refused -- correctly, because
+       P8 requires a declared AI illustration to carry its visible label and a
+       bare <link rel="icon"> carries no caption. The guard was right and the
+       control was wrong.
+       It now references an ENUMERATED LEGACY asset, which is the ordinary
+       case for 110 of 110 assets today: accounted for, so P1 accepts it, and
+       unlabelled, which is exactly what an undeclared asset should be. */
+    const legacyAsset = realReg.legacy_undeclared
+      .find(e => e.asset !== anAsset.asset && /\.(png|ico)$/i.test(e.asset));
+    if (!legacyAsset) {
+      log(`  BLIND         ${c.id}  ${c.why}`);
+      log('                no second legacy asset to build the control on');
+      broken++;
+      continue;
+    }
+    /* BOTH assets on the page. The synthetic register declares the AI
+       illustration, so P8 wants its label and P9 wants it referenced -- a
+       page carrying only the legacy icon trips P9, which is the guard being
+       right about a different thing. The control therefore satisfies the
+       declared record properly AND adds the legacy asset through the newly
+       covered icon mechanism. Only the widening is under test. */
+    const dir2 = tree({ rawPage:
+      '<!doctype html><html><head><title>t</title>'
+      + '<link rel="icon" href="/' + legacyAsset.asset + '">'
+      + '</head><body><figure>'
+      + '<img src="' + anAsset.asset + '" width="10" height="10" alt="A garden.">'
+      + '<figcaption>' + AI_LABEL + '</figcaption>'
+      + '</figure></body></html>' });
+    /* And the legacy asset's BYTES, or P2 refuses it as missing on disk --
+       which it was, and which is P2 doing its job rather than the widening
+       being wrong. */
+    const legacySrc = join(ROOT, legacyAsset.asset);
+    if (existsSync(legacySrc)) {
+      mkdirSync(dirname(join(dir2, legacyAsset.asset)), { recursive: true });
+      copyFileSync(legacySrc, join(dir2, legacyAsset.asset));
+    }
+    const rr = run(dir2);
+    rr.code === 0
+      ? (log(`  PROVED        ${c.id}  ${c.why}`),
+         log('                the guard ACCEPTED it \u2014 the widening is not '
+             + 'over-broad'), proved++)
+      : (log(`  VACUOUS       ${c.id}  ${c.why}`),
+         log('                the guard refused a DECLARED image (exit '
+             + rr.code + '); the widening is over-broad'),
+         log('                ' + rr.out.split('\n')
+               .filter(l => /FAIL|UNAVAILABLE/.test(l)).join('\n                ')),
+         broken++);
+    continue;
+  }
 
   if (c.wantRefusal) {
     (r.code === 2 && /INSTRUMENT UNAVAILABLE/.test(r.out))

@@ -74,7 +74,21 @@ ROOT = HERE.parent
 # the guard refuses any local image that is in neither the records nor the
 # backlog. The inventory is the whole of assets/ so completeness does not
 # depend on remembering a directory.
-IMG_ROOTS = [ROOT / "assets"]
+# EVERY place in the publish tree a local image can live.
+#
+# WIDENED AGAIN, 11 October 2026, and the gap was real. assets/ alone missed
+# EIGHT tracked images at the repository root -- favicon.ico, favicon-16/32/48,
+# apple-touch-icon, android-chrome-192/512 and 404-hidden-discovery -- seven of
+# which are referenced from published pages, 122 <link rel="icon"> references
+# in total. The inventory is a census of what can reach a homeowner, so a
+# directory-by-directory list is the wrong shape: the tree is walked instead,
+# and only genuinely non-published directories are excluded.
+IMG_ROOTS = [ROOT]
+# Not part of the published site: build scratch, captures, version control,
+# and the preview system's own working copies are covered separately when
+# they are referenced.
+SKIP_DIRS = {".git", "node_modules", "outputs", ".github", "__pycache__",
+             "atlas-tools"}
 # The library lives outside the repository, beside it in the PlotNua folder.
 DEFAULT_LIBRARY = ROOT.parent.parent / "Images"
 MATCH_THRESHOLD = 22          # of 256 bits
@@ -189,9 +203,15 @@ def main():
             pass
         return out
 
-    EXT = (".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif", ".svg")
+    EXT = (".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif", ".svg",
+       ".ico")
+    def walkable(p):
+        rel = p.relative_to(ROOT).parts
+        return not any(part in SKIP_DIRS for part in rel)
+
     deployed = sorted({p for d in IMG_ROOTS for p in d.rglob("*")
-                       if p.is_file() and p.suffix.lower() in EXT})
+                       if p.is_file() and p.suffix.lower() in EXT
+                       and walkable(p)})
     masters = sorted(p for p in library.rglob("*")
                      if p.suffix.lower() in EXT and p.is_file())
     if not masters:
@@ -203,15 +223,27 @@ def main():
     # Which published page references each asset. An asset nothing references
     # is a different problem from an asset with no provenance.
     refs = {}
-    for html in sorted(ROOT.glob("*.html")):
+    # Every published page, at any depth, plus the web manifest -- which
+    # references two icons and is not HTML at all.
+    sources = [f for f in ROOT.rglob("*")
+               if f.is_file()
+               and f.suffix.lower() in (".html", ".webmanifest")
+               and not any(part in SKIP_DIRS
+                           for part in f.relative_to(ROOT).parts)]
+    for src in sorted(sources):
         try:
-            body = html.read_text(encoding="utf-8", errors="replace")
+            body = src.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        for m in re.finditer(r"assets/[A-Za-z0-9._/-]+?"
-                             r"\.(?:jpe?g|png|webp|avif|gif|svg)", body,
-                             re.I):
-            refs.setdefault(m.group(0), set()).add(html.name)
+        name = src.relative_to(ROOT).as_posix()
+        # Any path ending in an image extension, wherever it appears: an
+        # attribute, a CSS url(), a JS assignment or a manifest entry. A
+        # loose match is right here -- this builds the "referenced_by" note,
+        # and over-reporting a reference is harmless while missing one is not.
+        for m in re.finditer(r"(?:assets/[A-Za-z0-9._/-]+?|/?[A-Za-z0-9._-]+?)"
+                             r"\.(?:jpe?g|png|webp|avif|gif|svg|ico)",
+                             body, re.I):
+            refs.setdefault(m.group(0).lstrip("/"), set()).add(name)
 
     # The commit that introduced each asset: a date and a release context.
     commits = {}

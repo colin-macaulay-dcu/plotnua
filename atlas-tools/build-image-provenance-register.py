@@ -282,10 +282,40 @@ def main():
 
     # G4 · EVERY LEGACY ENTRY CARRIES A PATH AND A REAL HASH.
     for e in legacy:
-        if not e["asset"].startswith("assets/"):
+        # A relative path inside the publish tree. The assets/ prefix is NOT
+        # required: eight tracked images live at the repository root --
+        # favicon.ico, the favicon sizes, apple-touch-icon, the two
+        # android-chrome icons and 404-hidden-discovery -- and an
+        # assets/-only assertion was what kept them out of the census.
+        if e["asset"].startswith("/") or ".." in e["asset"]:
             die("a legacy entry has an unexpected path %r." % e["asset"])
         if len(e["sha256"]) != 64:
             die("a legacy entry has no usable sha256 (%s)." % e["asset"])
+
+    # G6 · THE EXISTING BACKLOG IS PRESERVED, NOT REWRITTEN.
+    # The founder's instruction was to preserve the 101-entry inventory.
+    # Widening the census ADDS entries; it must not alter or drop one. Every
+    # asset path already recorded must still be present with the same
+    # SHA-256, or this refuses.
+    if TARGET.exists():
+        try:
+            prev = json.loads(TARGET.read_text(encoding="utf-8"))
+        except ValueError:
+            prev = None
+        if prev:
+            old_rows = {e["asset"]: e.get("sha256")
+                        for e in (prev.get("legacy_undeclared") or [])
+                        if isinstance(e, dict) and e.get("asset")}
+            new_rows = {e["asset"]: e.get("sha256") for e in legacy}
+            lost = [a for a in old_rows if a not in new_rows]
+            moved = [a for a, h in old_rows.items()
+                     if a in new_rows and new_rows[a] != h]
+            if lost or moved:
+                die("the existing backlog would not be preserved: %d entr(y/ies) "
+                    "dropped %s, %d hash(es) changed %s. Nothing written."
+                    % (len(lost), lost[:4], len(moved), moved[:4]))
+            print("  ok    G6  all %d existing entries preserved; %d added"
+                  % (len(old_rows), len(new_rows) - len(old_rows)))
 
     # G5 · THE BACKLOG IS COMPLETE. Every deployed asset is accounted for
     # exactly once; a backlog with a gap is a hole in the ratchet.

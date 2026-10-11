@@ -25,7 +25,7 @@
     "tool": "atlas-tools/recover-image-provenance.py",
     "instructed_by": "Founder policy implementation, 11 October 2026, item 2: recover evidence wherever possible, do not invent missing information.",
     "searched": [
-      "embedded metadata on all 101 deployed assets",
+      "embedded metadata on all 110 deployed assets",
       "every path ever added or deleted across all git branches, for generation scripts, prompts and source manifests",
       "the master image library outside the repository",
       "embedded metadata on the matched masters",
@@ -38,7 +38,7 @@
       "assets_whose_master_shows_a_camera_or_phone": 0,
       "assets_with_evidence_sufficient_to_CLASSIFY": 0
     },
-    "conclusion": "Provenance CONTEXT was recovered for 77 of 101 assets: which picture each one is, which Discovery it served, and the commit and date that introduced it. Provenance CLASSIFICATION was recovered for NONE. No deployed image carries any evidence of what made it, so no image is declared. Nine masters in the library DO carry iOS device evidence and are therefore photographs, but not one of them is among the assets that shipped.",
+    "conclusion": "Provenance CONTEXT was recovered for 77 of 110 assets: which picture each one is, which Discovery it served, and the commit and date that introduced it. Provenance CLASSIFICATION was recovered for NONE. No deployed image carries any evidence of what made it, so no image is declared. Nine masters in the library DO carry iOS device evidence and are therefore photographs, but not one of them is among the assets that shipped.",
     "a_fourth_class_may_be_needed": "Those nine masters are photographs taken by PlotNua. They are neither a supplier's image nor an AI illustration, so the approved three-state taxonomy has no place for a first-party photograph. None of them is published today, so nothing is blocked -- but the first one to be published will need a founder decision rather than a guess. Recorded here rather than resolved, because inventing a class was not authorised."
   },
   "how_to_declare_an_asset": [
@@ -58,6 +58,79 @@
   "legacy_undeclared_note": "THE RATCHET. Every asset below is enumerated by path and sha256. The guard refuses any local image on a published page that is in neither records nor this list, so no NEW undeclared image can be added. The count is printed on every CI run and only ever goes down. A legacy entry is NOT a declaration, is NOT verified, is NOT authorised supplier imagery, and may not reach a product card or a supplier context.",
   "records": [],
   "legacy_undeclared": [
+    {
+      "asset": "404-hidden-discovery.png",
+      "sha256": "660e2557866ab8bcc311a2a9f86ae72fe38e87f5c6ac817a1a1845c97e0ddcc0",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 2632196,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "android-chrome-192x192.png",
+      "sha256": "67f271f7fe5e6f4ffac113f3965f4c42249a2f44a5be8b2e9a69d5bad01fc902",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 9965,
+      "pixels": [
+        192,
+        192
+      ],
+      "referenced_by": [
+        "site.webmanifest"
+      ]
+    },
+    {
+      "asset": "android-chrome-512x512.png",
+      "sha256": "39822d1f380fc400c4dd1aa8774862b513573ef8d1e6f9f0a22f0876ca336be8",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 28056,
+      "pixels": [
+        512,
+        512
+      ],
+      "referenced_by": [
+        "site.webmanifest"
+      ]
+    },
+    {
+      "asset": "apple-touch-icon.png",
+      "sha256": "e2a05f3e8905673c17293e9aa7d9218df451192c6a0c6e103c9151a7e1e489ee",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 9349,
+      "pixels": [
+        180,
+        180
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "campaign-look-again.html",
+        "contact.html",
+        "cookie-policy.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "terms.html",
+        "thanks.html",
+        "your-plot.html"
+      ]
+    },
     {
       "asset": "assets/brand/atlas-final-static-approved-transparent.png",
       "sha256": "4714ba1342502286674ee8cb44f3707466de412f91d6fe1cf6b5296002f77fc5",
@@ -2414,6 +2487,161 @@
         "discovery-your-home-on-screen.html",
         "index.html",
         "privacy.html",
+        "terms.html",
+        "thanks.html",
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "atlas-visual-references/atlas-a-sketch-visual-authority.jpg",
+      "sha256": "ed91958b6db21418a50f7293138c09df6719ddfb3628ce739c67aff3788aac15",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 5980,
+      "pixels": [
+        300,
+        274
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "favicon-16x16.png",
+      "sha256": "57dadbd38b90b02f9b94db4f22a080c0a255b38040e7b69e5db898a6843f3d45",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 658,
+      "pixels": [
+        16,
+        16
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "campaign-look-again.html",
+        "contact.html",
+        "cookie-policy.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "terms.html",
+        "thanks.html",
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "favicon-32x32.png",
+      "sha256": "309f135b70cf4d093766e4f3d9d912f50625c949c8bc4ac51e7dde9fd3a94dcf",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1467,
+      "pixels": [
+        32,
+        32
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "campaign-look-again.html",
+        "contact.html",
+        "cookie-policy.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "terms.html",
+        "thanks.html",
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "favicon-48x48.png",
+      "sha256": "f26fb3e2ad08831a0644630cd212b69323f1ddd5290c387d2580e54762fcf033",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 2264,
+      "pixels": [
+        48,
+        48
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "contact.html",
+        "cookie-policy.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "terms.html",
+        "thanks.html",
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "favicon.ico",
+      "sha256": "677394f67713e244b3933e66a350e0497665a93bd4b2d33b878f07eb20bcda04",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 7512,
+      "pixels": [
+        64,
+        64
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "campaign-look-again.html",
+        "contact.html",
+        "cookie-policy.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "private-ireland-compute-preview.html",
         "terms.html",
         "thanks.html",
         "your-plot.html"

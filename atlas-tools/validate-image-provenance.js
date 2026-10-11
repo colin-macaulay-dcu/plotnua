@@ -76,31 +76,93 @@ const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION'];
    away. */
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
                             'about', 'journey', 'preview'];
-const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
+const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg|ico)$/i;
+/* PlotNua's own origins. An absolute self-reference is still one of our
+   images and still needs declaring: twitter:image points at
+   https://plotnua.ie/assets/og/... on 23 pages, which a "skip anything
+   absolute" rule would have missed entirely. */
+const SELF_ORIGINS = [/^https?:\/\/(www\.)?plotnua\.ie\//i];
+/* Not part of the published site. */
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'outputs', '.github',
+                           '__pycache__', 'atlas-tools']);
 
-/* ── every local image a published page can show ──────────────────────── */
+/* ── every local image a published page can show ──────────────────────────
+   WIDENED 11 October 2026 after a coverage audit, and four of the gaps were
+   real and in use:
+
+     <link rel="icon|apple-touch-icon" href>   122 references, never scanned
+     <meta twitter:image>                       23 references, never scanned
+     site.webmanifest icons                      2 images, not HTML at all
+     pages below the root                       12 files, never walked
+
+   The first version walked only readdirSync(ROOT) for *.html and read four
+   attribute shapes. The rights gate next to it walks recursively, so the two
+   disagreed about what "published" means -- which is itself a defect.
+
+   The remaining mechanisms below are covered PRE-EMPTIVELY: <img srcset>,
+   imagesrcset, image-set(), <video poster>, <input type=image>, <object
+   data>, xlink:href, SVG <image href>, msapplication-TileImage and
+   JavaScript .src assignments to literal paths. None is in use today. That
+   is exactly why they are covered -- the ratchet exists for the image
+   somebody adds next month, and a mechanism nobody uses yet is the one most
+   likely to slip in unexamined. */
 function publishedLocalImages() {
   const found = new Map();      // asset path -> Set(pages)
   let pages = 0;
-  for (const name of readdirSync(ROOT)) {
-    if (!name.endsWith('.html')) continue;
-    let html;
-    try { html = readFileSync(join(ROOT, name), 'utf8'); } catch { continue; }
-    pages++;
-    html = html.replace(/<!--[\s\S]*?-->/g, ' ');   // comments are not published
-    const urls = new Set();
-    for (const m of html.matchAll(/<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
-    for (const m of html.matchAll(/<source\b[^>]*?\bsrcset\s*=\s*["']([^"']+)["']/gi)) {
-      m[1].split(',').forEach(part => urls.add(part.trim().split(/\s+/)[0]));
+
+  const sources = [];
+  (function walk(dir, rel) {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (SKIP_DIRS.has(e.name) || e.name.startsWith('.')) continue;
+      const full = join(dir, e.name);
+      const r = rel ? rel + '/' + e.name : e.name;
+      if (e.isDirectory()) walk(full, r);
+      else if (/\.(html|webmanifest)$/i.test(e.name)) sources.push([full, r]);
     }
-    for (const m of html.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi)) urls.add(m[1]);
-    for (const m of html.matchAll(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/gi)) urls.add(m[1]);
+  })(ROOT, '');
+
+  for (const [full, rel] of sources) {
+    let body;
+    try { body = readFileSync(full, 'utf8'); } catch { continue; }
+    pages++;
+    body = body.replace(/<!--[\s\S]*?-->/g, ' ');   // comments are not published
+    const urls = new Set();
+    const addSet = v => v.split(',')
+      .forEach(part => urls.add(part.trim().split(/\s+/)[0]));
+
+    /* ---- in use today ---- */
+    for (const m of body.matchAll(/<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<source\b[^>]*?\bsrcset\s*=\s*["']([^"']+)["']/gi)) addSet(m[1]);
+    for (const m of body.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image|msapplication-TileImage)["'][^>]+content=["']([^"']+)["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<link\b[^>]*\brel=["'][^"']*icon[^"']*["'][^>]*\bhref\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<link\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*\brel=["'][^"']*icon[^"']*["']/gi)) urls.add(m[1]);
+    // the web manifest's icon list
+    for (const m of body.matchAll(/"src"\s*:\s*"([^"]+)"/gi)) urls.add(m[1]);
+    // JS assigning a literal path
+    for (const m of body.matchAll(/\.src\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+
+    /* ---- covered pre-emptively, not in use today ---- */
+    for (const m of body.matchAll(/<img\b[^>]*?\bsrcset\s*=\s*["']([^"']+)["']/gi)) addSet(m[1]);
+    for (const m of body.matchAll(/\bimagesrcset\s*=\s*["']([^"']+)["']/gi)) addSet(m[1]);
+    for (const m of body.matchAll(/image-set\(\s*["']?([^"')]+)["']?/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<video\b[^>]*?\bposter\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<input\b[^>]*?\btype=["']image["'][^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<object\b[^>]*?\bdata\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/<embed\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/(?:xlink:)?href\s*=\s*["']([^"']+\.(?:jpe?g|png|webp|avif|gif|svg|ico))["']/gi)) urls.add(m[1]);
+    for (const m of body.matchAll(/\bdata-(?:src|bg|image|background)\s*=\s*["']([^"']+)["']/gi)) urls.add(m[1]);
+
     for (let u of urls) {
-      if (/^https?:\/\//i.test(u) || u.startsWith('data:')) continue;  // not ours to declare
+      if (!u) continue;
+      if (u.startsWith('data:')) continue;             // inline, nothing to declare
+      const self = SELF_ORIGINS.find(re => re.test(u));
+      if (self) u = u.replace(self, '');               // our own origin, our own image
+      else if (/^(https?:)?\/\//i.test(u)) continue;    // somebody else's: the rights gate's job
       u = u.split('?')[0].split('#')[0].replace(/^\.?\//, '');
-      if (!IMG_EXT.test(u)) continue;
+      if (!u || !IMG_EXT.test(u)) continue;
       if (!found.has(u)) found.set(u, new Set());
-      found.get(u).add(name);
+      found.get(u).add(rel);
     }
   }
   return { found, pages };
