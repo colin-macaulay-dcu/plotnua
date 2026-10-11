@@ -40,7 +40,11 @@ def row(amount=None, config=None, basis=None, rate=None,
     if config is not None:
         f["Configuration"] = config
     if basis is not None:
-        f["Price Basis"] = basis
+        # The EXISTING governed field. Measured against the real base on
+        # 11 October 2026: a "Price Basis" field was never there, and the
+        # first version of this harness invented one, so every test passed
+        # against a field the generator could not see.
+        f["Price Includes VAT"] = basis
     if rate is not None:
         f["VAT Rate %"] = rate
     return {"fields": f}
@@ -65,8 +69,8 @@ check("C1b", "the refusal says how many rows were in conflict",
 
 # ── C2 · the supported two-configuration case ──────────────────────────────
 wanderlust = [
-    row(163000.0, "Turnkey", "Includes VAT", 23),
-    row(105000.0, "Exterior Finished", "Includes VAT", 23),
+    row(163000.0, "Turnkey", "Yes", 23),
+    row(105000.0, "Exterior Finished", "Yes", 23),
 ]
 st, amt, cur, pt, extra = _price_state(wanderlust)
 cfg = extra.get("configurations") or []
@@ -87,8 +91,8 @@ check("C2e", "VAT basis and rate are carried",
 
 # Serenity, the second real pair, ordered the other way round in the input.
 st, amt, _, _, extra = _price_state([
-    row(191000.0, "Exterior Finished", "Includes VAT", 23),
-    row(306000.0, "Turnkey", "Includes VAT", 23)])
+    row(191000.0, "Exterior Finished", "Yes", 23),
+    row(306000.0, "Turnkey", "Yes", 23)])
 check("C2f", "Serenity's pair behaves identically whatever the row order",
       amt == 191000.0
       and [c["amount"] for c in extra["configurations"]] == [191000.0, 306000.0],
@@ -115,18 +119,18 @@ check("C6", "a row with neither number nor quote type stays not-published",
 
 # ── C7 · VAT is never guessed ──────────────────────────────────────────────
 st, amt, _, _, extra = _price_state([row(105000.0)])
-check("C7", "a row with no Price Basis yields VAT_UNKNOWN, never a default",
+check("C7", "a row with no VAT field yields VAT_UNKNOWN, never a default",
       extra.get("basis") == "VAT_UNKNOWN", str(extra.get("basis")))
 
 st, amt, _, _, extra = _price_state([
-    row(105000.0, "Exterior Finished", "Includes VAT", 23),
-    row(163000.0, "Turnkey", "Excludes VAT", 23)])
+    row(105000.0, "Exterior Finished", "Yes", 23),
+    row(163000.0, "Turnkey", "Excluding VAT", 23)])
 check("C7b", "rows that disagree about VAT are NOT averaged into one basis",
       extra.get("basis") == "VAT_UNKNOWN", str(extra.get("basis")))
 
 st, amt, _, _, extra = _price_state([row(105000.0, "Exterior Finished",
-                                         "Not stated")])
-check("C7c", "'Not stated' maps to VAT_UNKNOWN, not to a silent inclusive",
+                                         "Unknown")])
+check("C7c", "'Unknown' maps to VAT_UNKNOWN, not to a silent inclusive",
       extra.get("basis") == "VAT_UNKNOWN", str(extra.get("basis")))
 
 # ── C8 · the numeric fields other than Base Price still work ───────────────
@@ -141,7 +145,7 @@ check("C9", "zero is not treated as a published price",
 
 # ── C10 · one named row is representable without being ambiguous ───────────
 st, amt, _, _, extra = _price_state([row(105000.0, "Exterior Finished",
-                                         "Includes VAT", 23)])
+                                         "Yes", 23)])
 check("C10", "a single NAMED configuration still carries its label",
       st == "VERIFIED_NUMERIC_PRICE" and amt == 105000.0
       and len(extra.get("configurations") or []) == 1,

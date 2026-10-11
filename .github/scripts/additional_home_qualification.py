@@ -161,10 +161,22 @@ NUMERIC_FIELDS = ("Base Price", "Price From", "Price To")
 # where no field could see it, and the prose was wrong by the time anyone
 # looked. VAT_UNKNOWN is a real state and must never be rendered as though it
 # meant VAT-inclusive.
+# MEASURED AGAINST THE REAL BASE, 11 October 2026, NOT DESIGNED IN THE
+# ABSTRACT. My Phase 1 design proposed creating a new "Price Basis" field.
+# Reading Airtable read-only showed that was wrong twice over: a field called
+# "Price Includes VAT" ALREADY EXISTS on Pricing and is already populated, and
+# my first implementation read the invented name, so it returned VAT_UNKNOWN
+# for all 36 priced Additional Home products including the 20 that say "Yes".
+# Inventing a parallel field would have duplicated live data and thrown away
+# evidence somebody had already gathered.
+#
+# The four observed option values, counted across the 44 real pricing rows
+# attached to the 46 Additional Home products.
 VAT_BASIS = {
-    "includes vat": "INCLUDES_VAT",
-    "excludes vat": "EXCLUDES_VAT",
-    "not stated":   "VAT_UNKNOWN",
+    "yes":           "INCLUDES_VAT",
+    "no":            "EXCLUDES_VAT",
+    "excluding vat": "EXCLUDES_VAT",
+    "unknown":       "VAT_UNKNOWN",
 }
 
 
@@ -186,7 +198,9 @@ def _configuration_of(row):
 
 
 def _vat_basis_of(row):
-    raw = txt(cell(row, "Price Basis")).strip().lower()
+    """The EXISTING governed field, not a new one. An unrecognised or absent
+    value is VAT_UNKNOWN, never a silent assumption of inclusive."""
+    raw = txt(cell(row, "Price Includes VAT")).strip().lower()
     return VAT_BASIS.get(raw, "VAT_UNKNOWN")
 
 
