@@ -38098,7 +38098,10 @@
          structure". Diagnostic only; no homeowner copy reads it. */
       heldCeilingBasisInsufficient: 0,
       outsideBand: 0,
-      noUsableArea: 0
+      noUsableArea: 0,
+      /* Counted separately from every evidence gap above. A supplier held
+         from publication is not a supplier whose evidence is thin. */
+      publicationHeld: 0
     };
     var out = [];
     for (var i = 0; i < pool.length; i++) {
@@ -38116,6 +38119,21 @@
         funnel.heldCeilingBasisInsufficient++;
       if (reason === 'outside-pathway-band') funnel.outsideBand++;
       if (reason === 'no-usable-area') funnel.noUsableArea++;
+
+      /* THE PUBLICATION GATE, SECOND LOCK.
+
+         The generator already refuses to mark a held supplier's product as a
+         Class 3A candidate. This is the independent check at the point of
+         use, so a stale or hand-edited artefact cannot put a supplier in
+         front of a homeowner either. Two locks, and neither trusts the other.
+
+         It reads ONE field and never a measurement. BIOBUILDS is on hold
+         because its corrected listing is awaiting the supplier's
+         confirmation, not because of anything about its size or price, and
+         correcting a measurement must never be the thing that publishes
+         somebody. */
+      if (p.publicVisibility === 'HOLD') { funnel.publicationHeld++; continue; }
+
       if (c3 === 'CANDIDATE') { funnel.class3aCandidates++; out.push(p); }
     }
     return { candidates: out, funnel: funnel };

@@ -109,6 +109,66 @@ def derive_signals(basis: str):
     return sorted(tokens), rejected, unmappable
 
 
+# ── the publication gate ────────────────────────────────────────────────────
+RIGHTS = Path(__file__).resolve().parent.parent.parent / "image-rights-records.json"
+
+
+def _gate_index():
+    """organisation name (upper) -> holdReason, or None when publishable.
+
+    Mirrors derivePublicVisibility() in atlas-tools/publication-gate.mjs. The
+    two are pinned together by prove-publication-gate.mjs, which runs this
+    generator's own rule against the same records."""
+    try:
+        doc = json.loads(RIGHTS.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        fail("the publication gate could not read image-rights-records.json "
+             "(%s). Refusing to generate rather than publish ungated." % e)
+    rows = doc if isinstance(doc, list) else next(
+        (v for v in doc.values() if isinstance(v, list) and v and
+         isinstance(v[0], dict)), [])
+    idx = {}
+    for r in rows:
+        name = (r.get("organisation_name") or "").strip().upper()
+        if not name:
+            continue
+        perm = ((r.get("permission") or {}).get("state"))
+        rev = ((r.get("listing_review") or {}).get("state"))
+        assets = r.get("asset_approval_state")
+        if perm is None and rev is None:
+            # A rights row that predates the gate fields. It governs imagery
+            # only and says nothing about publication, so it holds nobody.
+            continue
+        if perm == "DECLINED":
+            idx[name] = "permission-declined"
+        elif perm == "NONE":
+            idx[name] = "no-permission"
+        elif perm == "CONDITIONAL":
+            idx[name] = "permission-conditional-unresolved"
+        elif perm != "GRANTED":
+            idx[name] = "permission-state-missing"
+        elif rev == "AWAITING_CONFIRMATION":
+            idx[name] = "listing-review-awaiting-confirmation"
+        elif rev == "CHANGES_REQUESTED":
+            idx[name] = "listing-review-changes-requested"
+        elif rev not in ("NOT_REQUIRED", "CONFIRMED"):
+            idx[name] = "listing-review-state-missing"
+        elif assets and assets != "APPROVED":
+            idx[name] = "assets-not-approved"
+    return idx
+
+
+_GATE = None
+
+
+def publication_hold(org_name):
+    """The hold reason for this organisation, or None."""
+    global _GATE
+    if _GATE is None:
+        _GATE = _gate_index()
+    return _GATE.get((org_name or "").strip().upper())
+
+
 def main():
     ap = argparse.ArgumentParser(description="Additional Home candidate (snapshot only).")
     ap.add_argument("--snapshot", required=True)
@@ -158,6 +218,24 @@ def main():
         q = qualify(p, org, bucket["price"], bucket["feat"], feat_names, sources)
         c3 = class_3a(q)
 
+        # THE PUBLICATION GATE, APPLIED AT GENERATION TIME.
+        #
+        # Until this existed, a supplier on hold was kept out of public
+        # Results only by accident: BIOBUILDS had no area.number, so
+        # class_3a() returned NOT_A_CANDIDATE with reason no-usable-area, and
+        # nothing else was stopping it. Correcting Wanderlust to its true
+        # 35.54 m2 -- a data fix the supplier themselves asked for -- lands
+        # inside the 32-45 m2 band and would have published the product while
+        # its listing was still under review.
+        #
+        # So the hold is applied HERE, after class_3a and before the record is
+        # built, and it overrides the pathway state rather than depending on
+        # it. A measurement can no longer publish anybody.
+        hold = publication_hold(org)
+        if hold:
+            c3 = {"state": "NOT_A_CANDIDATE", "reason": "publication-hold",
+                  "caveats": ["publication-hold"]}
+
         basis = txt(cell(p, "Habitation Classification Basis"))
         tokens, rejected, unmappable = derive_signals(basis)
 
@@ -179,6 +257,11 @@ def main():
                               "excludedReasons": q["excludedReasons"],
                               "layers": q["layers"]},
             "class3a": c3,
+            # Carried onto the record so the runtime reader can refuse
+            # independently, rather than trusting that the generator did.
+            # Two locks, not one.
+            "publicVisibility": "HOLD" if hold else "PUBLISHABLE",
+            "holdReason": hold,
         }
         # area.text is evidence prose; sanitise it through the same hygiene the
         # Garden Room export uses, and drop it if nothing publishable remains.

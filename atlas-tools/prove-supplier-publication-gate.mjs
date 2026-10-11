@@ -13,11 +13,12 @@
  * product while the supplier is still reviewing the listing. PG6 is the
  * assertion that this cannot happen.
  *
- *   node atlas-tools/prove-publication-gate.mjs [--records PATH]
+ *   node atlas-tools/prove-supplier-publication-gate.mjs [--records PATH]
  *
  * Exit 0 = all pass.
  */
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { derivePublicVisibility, gateIntegrityProblems,
@@ -268,6 +269,59 @@ console.log(`  ${gated.length} gated record(s) under test\n`);
     ? bad('PG10 the scalar price.amount is never labelled turnkey or completed',
           `${hits.length} suspicious construction(s) in your-plot.html`)
     : ok('PG10 the scalar price.amount is never labelled turnkey or completed');
+}
+
+/* ── PG11 · the GENERATOR itself refuses a held supplier ──────────────── */
+{
+  /* PG1-PG10 prove the record is consistent and that no held supplier has a
+     CANDIDATE product in the artefact. None of them proved the GENERATOR
+     would refuse, because until now it never read the gate: a held supplier
+     was kept out by the accident of a null area. This drives the real
+     generator's own gate function over the real records. */
+  const probe = `
+import importlib.util, sys, pathlib
+root = pathlib.Path(${JSON.stringify(BASE)})
+sys.path.insert(0, str(root / ".github" / "scripts"))
+spec = importlib.util.spec_from_file_location(
+    "gen", root / ".github" / "scripts" / "generate_additional_home_universe.py")
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+print(repr(m.publication_hold("BIOBUILDS")))
+print(repr(m.publication_hold("Shomera")))
+`;
+  let out = '';
+  try {
+    out = execFileSync('python3', ['-I', '-c', probe], { encoding: 'utf8' }).trim();
+  } catch (e) { out = 'ERROR ' + ((e.stderr || e.stdout || '') + '').slice(0, 200); }
+  if (/No such file or directory/.test(out)) {
+    // The guard was pointed at a tree with no generator. Say so rather than
+    // passing or failing on an instrument that was never there.
+    bad('PG11 the generator itself holds BIOBUILDS', 'UNREACHABLE: no generator under this root');
+  } else {
+  const lines = out.split('\n');
+  const held = (lines[0] || '').includes('listing-review-awaiting-confirmation');
+  const free = (lines[1] || '').trim() === 'None';
+  (held && free)
+    ? ok('PG11 the generator itself holds BIOBUILDS and frees an ungated supplier',
+         lines.join(' | '))
+    : bad('PG11 the generator itself holds BIOBUILDS and frees an ungated supplier', out.slice(0, 220));
+  }
+}
+
+/* ── PG12 · the RUNTIME reader refuses a held product ─────────────────── */
+{
+  /* The second lock. Proves your-plot.html drops a product carrying
+     publicVisibility HOLD even when every other signal says publish --
+     including class3a CANDIDATE, which is exactly the state an area
+     correction would produce. */
+  const html = readFileSync(PLOT, 'utf8');
+  const hasCheck = /if \(p\.publicVisibility === 'HOLD'\) \{ funnel\.publicationHeld\+\+; continue; \}/.test(html);
+  const beforeCandidate =
+    html.indexOf("p.publicVisibility === 'HOLD'") <
+    html.indexOf("if (c3 === 'CANDIDATE') { funnel.class3aCandidates++; out.push(p); }");
+  (hasCheck && beforeCandidate)
+    ? ok('PG12 the runtime reader drops a HOLD product before the candidate push')
+    : bad('PG12 the runtime reader drops a HOLD product before the candidate push',
+          `check=${hasCheck} ordered=${beforeCandidate}`);
 }
 
 console.log('\n' + '='.repeat(74));

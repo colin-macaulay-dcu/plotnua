@@ -2,7 +2,7 @@
 /**
  * PROVE PUBLICATION-GATE GUARD CAPABILITY
  * =======================================
- * Every guard in prove-publication-gate.mjs demonstrated capable of failing.
+ * Every guard in prove-supplier-publication-gate.mjs demonstrated capable of failing.
  * One deliberate mutation per guard, each in its own disposable copy of the
  * tree, control run first.
  *
@@ -10,9 +10,9 @@
  * are BLIND (nothing caught), VACUOUS (the owner went unreachable) and
  * MISATTRIBUTED (caught only by some other guard).
  *
- *   node atlas-tools/prove-publication-gate-capability.mjs
+ *   node atlas-tools/prove-supplier-publication-gate-capability.mjs
  */
-import { readFileSync, writeFileSync, mkdtempSync, copyFileSync, rmSync }
+import { readFileSync, writeFileSync, mkdtempSync, copyFileSync, rmSync, mkdirSync }
   from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -22,10 +22,18 @@ import { createHash } from 'node:crypto';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = dirname(HERE);
-const GUARD = join(HERE, 'prove-publication-gate.mjs');
+const GUARD = join(HERE, 'prove-supplier-publication-gate.mjs');
 
+/* Every disposable tree gets a COMPLETE copy, including the generator and
+   its two imports. PG11 drives the real generator, so a tree missing it
+   makes PG11 fail for the wrong reason and show up as collateral on
+   unrelated mutations. Copying everything every time costs nothing and
+   keeps each case's result about the thing it mutated. */
 const FILES = ['image-rights-records.json', 'additional-home-universe-v1.json',
-               'garden-room-recommendation-universe-v1.json', 'your-plot.html'];
+               'garden-room-recommendation-universe-v1.json', 'your-plot.html',
+               '.github/scripts/generate_additional_home_universe.py',
+               '.github/scripts/additional_home_qualification.py',
+               '.github/scripts/atlas_common.py'];
 
 const ORG = 'ORG-000153';
 
@@ -84,6 +92,15 @@ const CASES = [
       rows[0].productCategory = 'Additional Home';
     })],
 
+  ['C-PG11', 'PG11', 'the generator gate is made to ignore the review state',
+    t => t.generator(src => src.replace(
+      'elif rev == "AWAITING_CONFIRMATION":',
+      'elif False:'))],
+
+  ['C-PG12', 'PG12', 'the runtime HOLD check is deleted from your-plot.html',
+    t => t.plot(s => s.replace(
+      "      if (p.publicVisibility === 'HOLD') { funnel.publicationHeld++; continue; }\n", ''))],
+
   ['C-PG10', 'PG10', 'the scalar is printed beside turnkey language',
     t => t.plot(s => s.replace('<body',
       '<script>/* var label = price.amount + " turnkey"; */</script><body'))],
@@ -115,7 +132,11 @@ console.log(`  CONTROL  unmutated tree: ${(control.out.match(/(\d+) passed/) || 
 let good = 0, bad = 0;
 for (const [id, owner, desc, mutate] of CASES) {
   const dir = mkdtempSync(join(tmpdir(), 'pgcap-'));
-  for (const f of FILES) copyFileSync(join(ROOT, f), join(dir, f));
+  for (const f of FILES) {
+    // FILES now includes a nested path, so the parent has to exist first.
+    mkdirSync(dirname(join(dir, f)), { recursive: true });
+    copyFileSync(join(ROOT, f), join(dir, f));
+  }
   // The gate module is imported by the guard, so a case that mutates it needs
   // its own copy beside a copy of the guard.
   copyFileSync(join(HERE, 'publication-gate.mjs'), join(dir, 'publication-gate.mjs'));
@@ -144,12 +165,18 @@ for (const [id, owner, desc, mutate] of CASES) {
       const p = join(dir, 'your-plot.html');
       writeFileSync(p, fn(readFileSync(p, 'utf8')));
     },
+    generator(fn) {
+      // The tree already holds a full copy; mutate it in place.
+      const gp = join(dir, '.github', 'scripts',
+                      'generate_additional_home_universe.py');
+      writeFileSync(gp, fn(readFileSync(gp, 'utf8')));
+    },
     gateModule(fn) {
       const gp = join(dir, 'publication-gate.mjs');
       writeFileSync(gp, fn(readFileSync(gp, 'utf8')));
       // Run a copy of the guard FROM the disposable dir so its relative
       // import picks up the mutated module.
-      const g = join(dir, 'prove-publication-gate.mjs');
+      const g = join(dir, 'prove-supplier-publication-gate.mjs');
       writeFileSync(g, readFileSync(GUARD, 'utf8'));
       guardPath = g;
     },

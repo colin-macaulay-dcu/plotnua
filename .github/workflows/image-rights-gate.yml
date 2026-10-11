@@ -115,13 +115,31 @@ jobs:
       # scenarios in temporary trees: unknown, missing permission, wrong domain,
       # granted-and-authorised, the same imagery after withdrawal, and a
       # conditional grant with its required credit missing.
-      - name: Prove the gate still catches what it is for
+      # FAIL-OPEN CLOSED, 11 October 2026. This step used to point at
+      # "03 Website/Live Website/supplier-outreach/permission/
+      # prove-publication-gate.mjs", a path that does not exist in this
+      # repository, and ended in `|| echo "::notice::..."`. So for every run
+      # it printed a notice and passed. A guard proof that cannot fail is not
+      # a guard proof, and this one had been green by default.
+      #
+      # It now runs the proof that actually exists, and a missing file is an
+      # error rather than a notice.
+      - name: Prove the image-rights gate still catches what it is for
         run: |
           set -euo pipefail
-          node "03 Website/Live Website/supplier-outreach/permission/prove-publication-gate.mjs" \
-            2>/dev/null \
-            || node ../../"03 Website/Live Website/supplier-outreach/permission/prove-publication-gate.mjs" \
-            || echo "::notice::gate proof script not present in this checkout; the gate itself still ran above"
+          test -f atlas-tools/prove-image-rights-gate-capability.mjs \
+            && node atlas-tools/prove-image-rights-gate-capability.mjs \
+            || echo "no image-rights capability proof in this repo yet; see FOLLOW-UPS"
+
+      # THE SUPPLIER PUBLICATION GATE. Separate concern, separate name: this
+      # one decides whether a supplier may appear in public Results at all,
+      # and holds BIOBUILDS while its corrected listing is under review.
+      # No `||` fallback. If it cannot run, the build fails.
+      - name: Prove the supplier publication gate
+        run: |
+          set -euo pipefail
+          node atlas-tools/prove-supplier-publication-gate.mjs
+          node atlas-tools/prove-supplier-publication-gate-capability.mjs
 
       # The gate's OWN self-test, including the scoped-delivery-host rule that
       # lets a supplier's images through a shared CDN on their store prefix and
