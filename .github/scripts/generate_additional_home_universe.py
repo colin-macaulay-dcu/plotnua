@@ -472,9 +472,36 @@ def main():
         "sourceCategoryCount": len(ah),
         "confirmedHabitationCount": sum(
             1 for r in emitted if r["habitation"]["state"] == CONFIRMED_HABITATION),
+        # PRODUCT CODE IS NOT GUARANTEED, AND THIS STATISTIC USED TO ASSUME IT
+        # WAS. "Product Code" is requested by the snapshot but is not in
+        # REQUIRED_PRODUCT_FIELDS, and the record above writes it as
+        # `txt(...) or None`. Two uncoded Additional Home products therefore
+        # made sorted() compare None with None, and the generator died on its
+        # last statistic after all the real work was done. Measured 11 October
+        # 2026 against the two Yardbox records created on 29 September.
+        #
+        # The sibling statistic immediately below reads txt() directly and
+        # gets '' -- always sortable. The same quantity was read two ways in
+        # adjacent lines, and only one of them could fail.
+        #
+        # An uncoded product is neither dropped nor given an invented code.
+        # The coded ones remain a sorted list of codes, which is what this key
+        # name promises; the uncoded ones are named in their own key, by
+        # PRODUCT NAME. Not by record id: this key is not one of the declared
+        # provenance keys below, so the firewall's raw-record-id pattern would
+        # catch one here, and it would be right to.
         "categoryWithoutConfirmed": sorted(
             r["productCode"] for r in emitted
-            if r["habitation"]["state"] != CONFIRMED_HABITATION),
+            if r["habitation"]["state"] != CONFIRMED_HABITATION
+            and r["productCode"]),
+        # THE GAP, STATED RATHER THAN INFERRED. Empty on a clean snapshot.
+        # Non-empty means: these products are in the Additional Home category,
+        # their habitation is not confirmed, and they carry no Product Code,
+        # so they cannot be referred to by code in any downstream conversation.
+        "categoryWithoutConfirmedUncoded": sorted(
+            r["productName"] for r in emitted
+            if r["habitation"]["state"] != CONFIRMED_HABITATION
+            and not r["productCode"]),
         "confirmedWithoutCategory": sorted(
             txt(cell(p, "Product Code")) for p in confirmed_anywhere
             if txt(cell(p, "Product Category")) != ADDITIONAL_HOME),

@@ -235,3 +235,36 @@ THE WIDER LESSON. The guard that caught this was written to prevent a product
 publishing with no price. It found a stale capture instead — because a product
 nobody had looked at since intake was the one with the missing field. Worth
 remembering when the next guard seems to be objecting to a technicality.
+
+## AH-STAT-001 · Two Additional Home products carry no Product Code
+Opened 11 October 2026. The CRASH is fixed; the DATA GAP is outstanding.
+
+The Stage 3 generator failure was a code defect and has been corrected. What
+caused it to fire, though, is an Atlas gap that is still there:
+
+```
+recFek9ErsnKt6uKN   Yardbox Aspect Modular Homes
+recPermX1OwzI2o1Y   Yardbox Bothán
+```
+
+Both created 2026-09-29, both Product Category = Additional Home, both with
+NO Product Code and NO Habitation Classification. `Product Code` is requested
+by the snapshot but is not in REQUIRED_PRODUCT_FIELDS, so an uncoded product
+is a legal snapshot and always was.
+
+They now appear in the regenerated artefact as `categoryWithoutConfirmedUncoded`,
+which is the point of that key: the gap is stated rather than inferred from a
+null. Downstream they are inert — habitation `UNKNOWN / NOT YET ASSESSED`, so
+Class 3A `habitation-not-confirmed`; no price published; no imagery.
+
+THE REMEDY is curation, not code: mint Product Codes for both, and assess
+habitation. Until then they sit in the category contributing nothing, which is
+exactly what the statistic is for.
+
+WORTH NOTING for the next intake. These two were created the day after the
+Nest 24 records, in the same week, and carry the same signature: a product
+added to a category before its identifying and classifying fields were filled
+in. Two separate deployment stops have now traced back to that one week of
+intakes. A pre-flight that lists Additional Home products missing a code or a
+habitation classification would have surfaced both before either stopped a
+deployment.
