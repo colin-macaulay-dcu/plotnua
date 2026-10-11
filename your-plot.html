@@ -14398,6 +14398,7 @@
           heldCount: data.heldCount,
           excludedCount: data.excludedCount,
           class3aCandidateCount: data.class3aCandidateCount,
+          publicationGate: data.publicationGate || null,
           rule: data.qualificationRuleVersion
         };
         console.info('[Additional Home] products=' + additionalHomePool.length +
@@ -38103,6 +38104,22 @@
          from publication is not a supplier whose evidence is thin. */
       publicationHeld: 0
     };
+    /* FAIL CLOSED, BUT ONLY ONCE THE ARTEFACT CAN SAY SO.
+
+       An artefact built by a gate-aware generator declares publicationGate.
+       When it does, a product must say PUBLISHABLE to be shown and anything
+       else -- HOLD, missing, misspelt, truncated -- is withheld. That is the
+       fail-closed rule, and it covers the dangerous case: a stale or
+       hand-edited artefact where the field has simply gone.
+
+       An OLDER artefact carries no declaration, and demanding PUBLISHABLE of
+       it would empty the pathway for every supplier until the next
+       regeneration. So the legacy artefact keeps exactly the behaviour it
+       has today. The strictness arrives with the data that can satisfy it. */
+    var meta = (typeof window.__PN_ADDITIONAL_HOME_META__ === 'function')
+      ? window.__PN_ADDITIONAL_HOME_META__() : null;
+    var gateEnforced = !!(meta && meta.publicationGate);
+
     var out = [];
     for (var i = 0; i < pool.length; i++) {
       var p = pool[i] || {};
@@ -38132,7 +38149,10 @@
          confirmation, not because of anything about its size or price, and
          correcting a measurement must never be the thing that publishes
          somebody. */
-      if (p.publicVisibility === 'HOLD') { funnel.publicationHeld++; continue; }
+      if (gateEnforced ? p.publicVisibility !== 'PUBLISHABLE'
+                      : p.publicVisibility === 'HOLD') {
+        funnel.publicationHeld++; continue;
+      }
 
       if (c3 === 'CANDIDATE') { funnel.class3aCandidates++; out.push(p); }
     }

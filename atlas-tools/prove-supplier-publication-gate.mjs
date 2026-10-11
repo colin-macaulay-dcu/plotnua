@@ -80,29 +80,54 @@ console.log(`  ${gated.length} gated record(s) under test\n`);
     : ok('PG1 public_visibility and hold_reason are derived, never literal');
 }
 
-/* ── PG2 · a held supplier reaches no public surface ──────────────────── */
+/* ── PG2 · a held supplier is never PUBLISHABLE in the artefact ───────── */
 {
-  const held = gated.filter(r => derivePublicVisibility(r).visibility === 'HOLD');
+  /* CORRECTED 11 October 2026. PG2 used to assert that a held supplier had
+     no CANDIDATE product. That baked in the wrong architecture: it was only
+     true because the generator was overwriting class_3a, i.e. telling a lie
+     about the building in order to hide it. Class 3A is a TECHNICAL finding
+     about the structure and must stay true whatever the commercial state.
+
+     What must actually hold is this: a held supplier's products may be
+     Class 3A candidates on their merits, and must still never be marked
+     publishable. */
+  const d = JSON.parse(readFileSync(UNIVERSE, 'utf8'));
+  const gated = (d.publicationGate && d.publicationGate.heldOrganisations) || [];
   const problems = [];
-  for (const r of held) {
-    const name = r.organisation_name;
-    for (const [label, file] of [['additional-home universe', UNIVERSE]]) {
-      const txt = readFileSync(file, 'utf8');
-      // Presence in the universe is expected; presence in a PUBLISHED pool is
-      // not. The universe is the candidate set, and class3a decides the pool.
-      const d = JSON.parse(txt);
-      const pool = (d.products || []).filter(p =>
-        String(p.organisation || '').toUpperCase() === name.toUpperCase());
-      const publishable = pool.filter(p => (p.class3a || {}).state === 'CANDIDATE');
-      if (publishable.length) {
-        problems.push(`${name} has ${publishable.length} CANDIDATE product(s) in the ${label} while on HOLD`);
-      }
+  for (const r of rows.filter(x => derivePublicVisibility(x).visibility === 'HOLD')) {
+    const name = String(r.organisation_name || '').toUpperCase();
+    const mine = (d.products || []).filter(p =>
+      String(p.organisation || '').toUpperCase() === name);
+    const leaked = mine.filter(p => p.publicVisibility === 'PUBLISHABLE');
+    if (leaked.length) {
+      problems.push(`${name}: ${leaked.length} product(s) marked PUBLISHABLE while on HOLD`);
+    }
+    if (d.publicationGate && mine.length && !gated.includes(r.organisation_name)) {
+      problems.push(`${name} is on HOLD but absent from publicationGate.heldOrganisations`);
     }
   }
   problems.length
-    ? bad('PG2 a supplier on HOLD reaches no public candidate pool', problems.join(' | '))
-    : ok('PG2 a supplier on HOLD reaches no public candidate pool',
-         `${held.length} held supplier(s) checked`);
+    ? bad('PG2 a supplier on HOLD is never marked PUBLISHABLE', problems.join(' | '))
+    : ok('PG2 a supplier on HOLD is never marked PUBLISHABLE',
+         d.publicationGate ? 'gate-aware artefact' : 'pre-gate artefact, nothing marked either way');
+}
+
+/* ── PG2b · the hold NEVER rewrites the technical assessment ──────────── */
+{
+  /* The founder's correction, asserted directly: a publication hold must not
+     show up as a Class 3A reason. If it ever does again, the commercial
+     state has leaked back into the evidence. */
+  const d = JSON.parse(readFileSync(UNIVERSE, 'utf8'));
+  const leaked = (d.products || []).filter(p =>
+    ((p.class3a || {}).reason === 'publication-hold') ||
+    (((p.class3a || {}).caveats) || []).includes('publication-hold'));
+  const src = readFileSync(join(BASE, '.github', 'scripts',
+                                'generate_additional_home_universe.py'), 'utf8');
+  const overwrites = /c3\s*=\s*\{[^}]*publication-hold/.test(src);
+  (!leaked.length && !overwrites)
+    ? ok('PG2b a publication hold never appears as a Class 3A finding')
+    : bad('PG2b a publication hold never appears as a Class 3A finding',
+          `products=${leaked.length} generatorOverwrites=${overwrites}`);
 }
 
 /* ── PG3 · GRANTED + AWAITING_CONFIRMATION ⇒ HOLD, and CONFIRMED is earned ─ */
@@ -314,14 +339,31 @@ print(repr(m.publication_hold("Shomera")))
      including class3a CANDIDATE, which is exactly the state an area
      correction would produce. */
   const html = readFileSync(PLOT, 'utf8');
-  const hasCheck = /if \(p\.publicVisibility === 'HOLD'\) \{ funnel\.publicationHeld\+\+; continue; \}/.test(html);
+  const hasCheck = /gateEnforced \? p\.publicVisibility !== 'PUBLISHABLE'/.test(html)
+    && /: p\.publicVisibility === 'HOLD'/.test(html);
   const beforeCandidate =
-    html.indexOf("p.publicVisibility === 'HOLD'") <
+    html.indexOf("gateEnforced ? p.publicVisibility !== 'PUBLISHABLE'") <
     html.indexOf("if (c3 === 'CANDIDATE') { funnel.class3aCandidates++; out.push(p); }");
   (hasCheck && beforeCandidate)
     ? ok('PG12 the runtime reader drops a HOLD product before the candidate push')
     : bad('PG12 the runtime reader drops a HOLD product before the candidate push',
           `check=${hasCheck} ordered=${beforeCandidate}`);
+}
+
+/* ── PG13 · the reader fails CLOSED on a gate-aware artefact ──────────── */
+{
+  /* The dangerous case is not HOLD, which is loud. It is a product whose
+     publicVisibility has gone missing -- a truncated file, a hand edit, a
+     half-finished merge. On an artefact that declares the gate, anything
+     that is not exactly PUBLISHABLE must be withheld. */
+  const html = readFileSync(PLOT, 'utf8');
+  const declares = /publicationGate: data\.publicationGate \|\| null/.test(html);
+  const failsClosed = /gateEnforced \? p\.publicVisibility !== 'PUBLISHABLE'/.test(html);
+  const derivesFlag = /var gateEnforced = !!\(meta && meta\.publicationGate\);/.test(html);
+  (declares && failsClosed && derivesFlag)
+    ? ok('PG13 a missing publicVisibility is withheld, not shown, once the gate is declared')
+    : bad('PG13 a missing publicVisibility is withheld, not shown',
+          `meta=${declares} failsClosed=${failsClosed} flag=${derivesFlag}`);
 }
 
 console.log('\n' + '='.repeat(74));

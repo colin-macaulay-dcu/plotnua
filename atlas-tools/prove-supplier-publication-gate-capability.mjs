@@ -42,12 +42,32 @@ const CASES = [
   ['C-PG1', 'PG1', 'a hand-set public_visibility contradicts the derivation',
     t => t.record(r => { r.public_visibility = 'PUBLISHABLE'; })],
 
-  ['C-PG2', 'PG2', 'the held supplier gains a CANDIDATE product in the pool',
+  /* RE-AIMED 11 October 2026. This case used to flip class3a to CANDIDATE.
+     Under the corrected architecture that is no longer a defect -- a held
+     supplier's product MAY be a Class 3A candidate on its technical merits,
+     and saying so is the point. The defect worth catching is the product
+     being marked PUBLISHABLE while its supplier is held. */
+  ['C-PG2', 'PG2', 'a held supplier gains a PUBLISHABLE product',
     t => t.universe(d => {
+      d.publicationGate = { version: 'supplier-publication-gate-v1',
+                            heldOrganisations: ['BIOBUILDS'] };
       const p = d.products.find(x => /BIOBUILDS/i.test(x.organisation || ''));
       p.area = { number: 35.54, unit: 'm²', measurementBasis: 'VERIFIED_INTERNAL' };
       p.class3a = { state: 'CANDIDATE', reason: null, caveats: [] };
+      p.publicVisibility = 'PUBLISHABLE';
     })],
+
+  ['C-PG2b', 'PG2b', 'the hold is written back into the Class 3A finding',
+    t => t.universe(d => {
+      const p = d.products.find(x => /BIOBUILDS/i.test(x.organisation || ''));
+      p.class3a = { state: 'NOT_A_CANDIDATE', reason: 'publication-hold',
+                    caveats: ['publication-hold'] };
+    })],
+
+  ['C-PG13', 'PG13', 'the fail-closed branch is softened to fail open',
+    t => t.plot(s => s.replace(
+      "gateEnforced ? p.publicVisibility !== 'PUBLISHABLE'",
+      "false ? p.publicVisibility !== 'PUBLISHABLE'"))],
 
   ['C-PG3', 'PG3', 'the review state is quietly flipped to CONFIRMED',
     t => t.record(r => {
@@ -97,9 +117,10 @@ const CASES = [
       'elif rev == "AWAITING_CONFIRMATION":',
       'elif False:'))],
 
-  ['C-PG12', 'PG12', 'the runtime HOLD check is deleted from your-plot.html',
+  ['C-PG12', 'PG12', 'the runtime visibility check is deleted entirely',
     t => t.plot(s => s.replace(
-      "      if (p.publicVisibility === 'HOLD') { funnel.publicationHeld++; continue; }\n", ''))],
+      /      if \(gateEnforced \? p\.publicVisibility !== 'PUBLISHABLE'\n[\s\S]*?\n      \}\n/,
+      ''))],
 
   ['C-PG10', 'PG10', 'the scalar is printed beside turnkey language',
     t => t.plot(s => s.replace('<body',
@@ -114,7 +135,10 @@ function run(root) {
     return { code: e.status ?? 1, out: (e.stdout || '') + (e.stderr || '') };
   }
 }
-const failedIds = o => [...o.matchAll(/^ {2}FAIL {2}(PG\d+)/gm)].map(m => m[1]);
+/* The suffixed ids matter. (PG\d+) captured "PG2" out of "PG2b", so a real
+   PG2b failure was reported as PG2 catching it and PG2b going blind. The
+   guard was fine; the harness was reading its own output wrongly. */
+const failedIds = o => [...o.matchAll(/^ {2}FAIL {2}(PG\d+[a-z]?)/gm)].map(m => m[1]);
 
 console.log('\nGUARD-CAPABILITY PROOF · PUBLICATION GATE\n');
 

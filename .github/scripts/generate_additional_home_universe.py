@@ -220,21 +220,21 @@ def main():
 
         # THE PUBLICATION GATE, APPLIED AT GENERATION TIME.
         #
-        # Until this existed, a supplier on hold was kept out of public
-        # Results only by accident: BIOBUILDS had no area.number, so
-        # class_3a() returned NOT_A_CANDIDATE with reason no-usable-area, and
-        # nothing else was stopping it. Correcting Wanderlust to its true
-        # 35.54 m2 -- a data fix the supplier themselves asked for -- lands
-        # inside the 32-45 m2 band and would have published the product while
-        # its listing was still under review.
+        # CORRECTED 11 October 2026. The first version of this overwrote
+        # class_3a with NOT_A_CANDIDATE / publication-hold. That was wrong:
+        # it made a COMMERCIAL state masquerade as a TECHNICAL finding. Class
+        # 3A is an assessment of the structure against the 32-45 m2 pathway
+        # band and its measurement basis. Whether a supplier has countersigned
+        # their listing has nothing to do with it, and writing the hold into
+        # that field would have left Atlas asserting something untrue about
+        # the building and losing the real assessment while the hold lasted.
         #
-        # So the hold is applied HERE, after class_3a and before the record is
-        # built, and it overrides the pathway state rather than depending on
-        # it. A measurement can no longer publish anybody.
+        # The two are now kept apart. class_3a keeps saying what is true about
+        # the structure. publicVisibility says whether anyone may see it. The
+        # gate is enforced through publicVisibility alone, at both the
+        # generator and the reader, and a measurement still cannot publish
+        # anybody because the gate never reads one.
         hold = publication_hold(org)
-        if hold:
-            c3 = {"state": "NOT_A_CANDIDATE", "reason": "publication-hold",
-                  "caveats": ["publication-hold"]}
 
         basis = txt(cell(p, "Habitation Classification Basis"))
         tokens, rejected, unmappable = derive_signals(basis)
@@ -256,10 +256,11 @@ def main():
                               "heldReasons": q["heldReasons"],
                               "excludedReasons": q["excludedReasons"],
                               "layers": q["layers"]},
+            # The technical assessment, untouched by any commercial state.
             "class3a": c3,
-            # Carried onto the record so the runtime reader can refuse
-            # independently, rather than trusting that the generator did.
-            # Two locks, not one.
+            # The commercial state, carried onto every record so the runtime
+            # reader can refuse independently rather than trusting that the
+            # generator did. Two locks, neither reading the other's field.
             "publicVisibility": "HOLD" if hold else "PUBLISHABLE",
             "holdReason": hold,
         }
@@ -286,6 +287,22 @@ def main():
         "schema": SCHEMA, "version": VERSION,
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "qualificationRuleVersion": RULE_VERSION,
+        # THE GATE'S OWN DECLARATION. Its presence is how the runtime reader
+        # knows this artefact was built by a gate-aware generator and can
+        # therefore FAIL CLOSED: require PUBLISHABLE, rather than treating a
+        # missing field as permission. An older artefact carries no such
+        # declaration and keeps its previous behaviour exactly, so nothing
+        # that is live today changes before the first regeneration.
+        "publicationGate": {
+            "version": "supplier-publication-gate-v1",
+            "rule": ("public visibility is derived from permission state, "
+                     "listing-review state and asset approval. It never "
+                     "reads a measurement, and it never alters the Class 3A "
+                     "technical assessment."),
+            "heldOrganisations": sorted(
+                {r["organisation"] for r in emitted
+                 if r.get("publicVisibility") == "HOLD" and r.get("organisation")}),
+        },
         "sourceCategory": ADDITIONAL_HOME,
         "sourceCategoryCount": len(ah),
         "confirmedHabitationCount": sum(
