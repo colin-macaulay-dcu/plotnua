@@ -20,8 +20,16 @@ FIRST-PARTY EVIDENCE, read 2 October 2026:
 
 ATLAS:
     ORG-000153   BIOBUILDS                 recjNpnrIr2KT5BWh
-    PROD-000523  BIOBUILDS Wanderlust      recIBexeX8au55mVn   €112,700
-    PROD-000524  BIOBUILDS Serenity        reczLG8Iw4k7TY2Nq   €208,500
+    PROD-000523  BIOBUILDS Wanderlust      recIBexeX8au55mVn   €105,000 / €163,000
+    PROD-000524  BIOBUILDS Serenity        reczLG8Iw4k7TY2Nq   €191,000 / €306,000
+
+    SUPPLIER CORRECTION, 11 October 2026. BIOBUILDS asked for the prices to be
+    replaced before publication. Two finishes per model now, both Irish prices
+    including 23% VAT, with transport and assembly on prepared ground screws
+    included. The superseded single prices and the €2,400/m² fully-fitted
+    figure are withdrawn. Equipment inclusions are aligned to the supplier's
+    published Turnkey specification (biobuilds.com/ie/turnkey, read
+    11 October 2026): kitchen furniture and appliances are NOT included.
 
 ── IMAGERY, AND THE ONE THING THAT MAKES THIS BUILD DIFFERENT ─────────────
 The 34 governed BIOBUILDS assets are Publication Status "Reference Only —
@@ -70,6 +78,13 @@ EVIDENCE_DATE = "2 October 2026"
 PERMISSION_DATE = "2 October 2026"
 PERMITTED_PREFIX = "https://www.biobuilds.com/"
 CREDIT = "© BIOBUILDS"
+# SUPPLIER CORRECTION, 11 October 2026. BIOBUILDS asked that catalogue images
+# be captioned "BIOBUILDS model imagery". The rights grant separately REQUIRES
+# the credit "© BIOBUILDS", and the G-guard below counts it, so the caption
+# does not replace the credit: both appear in the one overlay band, and
+# data-credit carries the same string so a gallery swap cannot drop either.
+IMAGE_CAPTION = "BIOBUILDS model imagery"
+CAPTION_CREDIT = IMAGE_CAPTION + " &middot; " + CREDIT
 
 # MEDIUM IS NOT ESTABLISHED. Every one of these would assert something about
 # the imagery that BIOBUILDS has not said and PlotNua has not verified.
@@ -145,17 +160,28 @@ FILL = {
 
 
     "OFFER_NAME": "Wanderlust 48",
-    "VERIFIED_PRICE": "from &euro;112,700",
-    "VERIFIED_PRICE_BASIS": "as published by BIOBUILDS. Foundation and "
-                            "installation are quoted separately.",
+    "VERIFIED_PRICE": "&euro;105,000 exterior finished &middot; "
+                      "&euro;163,000 turnkey",
+    "VERIFIED_PRICE_BASIS": "Irish prices published by BIOBUILDS, including "
+                            "23% VAT. Transport and assembly on prepared "
+                            "ground screws are included. Foundations, utility "
+                            "connections and site works are quoted per "
+                            "project.",
 
-    "VERIFIED_FACT_1_LABEL": "Floor area",
-    "VERIFIED_FACT_1_VALUE": "48 m&sup2;",
+    "VERIFIED_FACT_1_LABEL": "Interior floor area",
+    "VERIFIED_FACT_1_VALUE": "35.54 m&sup2;",
     "VERIFIED_FACT_2_LABEL": "Bedrooms",
     "VERIFIED_FACT_2_VALUE": "1&ndash;2",
-    "VERIFIED_FACT_3": "Priced at &euro;2,400 per m&sup2;, fully fitted",
-    "VERIFIED_FACT_4": "Kitchen, bathroom, air conditioning and underfloor "
-                       "heating included",
+    "VERIFIED_FACT_3": "Serenity: &euro;191,000 exterior finished, "
+                       "&euro;306,000 turnkey",
+    # Aligned to biobuilds.com/ie/turnkey, read 11 October 2026. Only what the
+    # supplier publishes. The withdrawn line claimed a kitchen, air
+    # conditioning and underfloor heating: the kitchen is expressly excluded,
+    # and neither air conditioning nor underfloor heating appears in the
+    # specification, so neither is claimed.
+    "VERIFIED_FACT_4": "Turnkey is finished inside and out, including "
+                       "interior finishes and bathroom fixtures. Kitchen "
+                       "furniture and appliances are not included.",
     # The template carries FIVE fact slots. {{VERIFIED_FACT_N}} appears only
     # inside the instruction comment that G1 strips, so a sixth fact has
     # nowhere to go -- the Serenity figure lives in WHY_3_TEXT instead,
@@ -168,8 +194,9 @@ FILL = {
     # out later finds it out badly. No planning claim -- PlotNua has not
     # established the Irish planning position for these and will not imply
     # one here.
-    "THINGS_TO_CHECK": "foundation and installation are quoted separately, "
-                       "so the published figure is the home itself.",
+    "THINGS_TO_CHECK": "foundations, utility connections and site works are "
+                       "quoted per project, and kitchen furniture and "
+                       "appliances are not included.",
 
     # PERSONALISATION GUARDRAIL §6 — locality only. The journey asks for an
     # Eircode and simplifyLocalityDisplay() turns it into exactly this. It
@@ -189,8 +216,8 @@ FILL = {
                   "thought about it than thirty who have not.",
     "WHY_3_LABEL": "A BETTER STARTING POINT",
     "WHY_3_TEXT": "Your published sizes and prices are already in front of "
-                  "them &mdash; Wanderlust 48 at &euro;112,700, Serenity 95 "
-                  "at &euro;208,500 &mdash; so the first conversation can be "
+                  "them &mdash; Wanderlust from &euro;105,000, Serenity from "
+                  "&euro;191,000 &mdash; so the first conversation can be "
                   "about their site rather than your catalogue.",
 
     # THE ENDING IS NOW THE REVIEW ASK, not a commercial question. The grant
@@ -221,7 +248,7 @@ def imagery_block():
     hero, rest = BIOBUILDS_IMAGES[0], BIOBUILDS_IMAGES[1:]
     out = ['        <div class="results-hero-media has-pn-gallery">',
            '          <img src="%s" alt="%s" loading="lazy">' % (hero["url"], hero["alt"]),
-           '          <span class="pn-image-credit">%s</span>' % CREDIT,
+           '          <span class="pn-image-credit">%s</span>' % CAPTION_CREDIT,
            '        </div>']
     if rest:
         every = [hero] + rest
@@ -234,7 +261,7 @@ def imagery_block():
                        % (" is-on" if n == 0 else "",
                           "true" if n == 0 else "false",
                           n + 1, len(every),
-                          i["url"], i["alt"].replace('"', "&quot;"), CREDIT,
+                          i["url"], i["alt"].replace('"', "&quot;"), CAPTION_CREDIT,
                           i["url"]))
         out.append('        </div>')
     return "\n".join(out), None
