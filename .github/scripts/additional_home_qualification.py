@@ -156,24 +156,116 @@ QUOTE_TYPES = {"custom quote"}
 NUMERIC_FIELDS = ("Base Price", "Price From", "Price To")
 
 
+# VAT BASIS. Required wherever an amount exists, and it has no safe default.
+# BIOBUILDS is the argument for this field: Atlas carried "+VAT" in prose
+# where no field could see it, and the prose was wrong by the time anyone
+# looked. VAT_UNKNOWN is a real state and must never be rendered as though it
+# meant VAT-inclusive.
+VAT_BASIS = {
+    "includes vat": "INCLUDES_VAT",
+    "excludes vat": "EXCLUDES_VAT",
+    "not stated":   "VAT_UNKNOWN",
+}
+
+
+def _amount_of(row):
+    """The first positive number across the three numeric price fields."""
+    for f in NUMERIC_FIELDS:
+        v = cell(row, f)
+        if isinstance(v, (int, float)) and v > 0:
+            return float(v)
+    return None
+
+
+def _configuration_of(row):
+    """The named configuration this pricing row prices, or None.
+
+    A row without the field behaves exactly as it did before this change,
+    which is what keeps every other supplier in the universe untouched."""
+    return txt(cell(row, "Configuration")) or None
+
+
+def _vat_basis_of(row):
+    raw = txt(cell(row, "Price Basis")).strip().lower()
+    return VAT_BASIS.get(raw, "VAT_UNKNOWN")
+
+
+def _vat_rate_of(row):
+    v = cell(row, "VAT Rate %")
+    return float(v) if isinstance(v, (int, float)) else None
+
+
 def _price_state(price_rows):
-    """(state, amount, currency, priceType). Founder ruling Q2: a missing price
-    alone neither holds nor excludes, and PRICE_NOT_PUBLISHED is never
-    upgraded to POA by inference."""
-    best = ("PRICE_NOT_PUBLISHED", None, None, None)
+    """(state, amount, currency, priceType, extra).
+
+    Founder ruling Q2 is unchanged: a missing price alone neither holds nor
+    excludes, and PRICE_NOT_PUBLISHED is never upgraded to POA by inference.
+
+    WHAT CHANGED, AND WHY IT HAD TO. This function used to RETURN on the first
+    row carrying a number. A supplier who publishes two prices -- BIOBUILDS
+    publishes Exterior Finished and Turnkey for each model -- would therefore
+    have had one of them chosen by Airtable's row order and the other silently
+    discarded, with no flag, no caveat and no count. The output would have
+    looked exactly as verified as a single-price product. That is the failure
+    this rewrite exists to make impossible.
+
+    Two numeric rows now produce one of two outcomes and never a quiet guess:
+
+      * they carry Configuration -> both are kept, ordered cheapest first
+      * they do not               -> PRICE_AMBIGUOUS_MULTI_ROW, a HELD state
+                                     that says what is true: more than one
+                                     price is published and Atlas cannot say
+                                     which one to show.
+    """
+    best = ("PRICE_NOT_PUBLISHED", None, None, None, {})
+    numeric = [r for r in price_rows if _amount_of(r) is not None]
+
+    if len(numeric) > 1 and not all(_configuration_of(r) for r in numeric):
+        # Refuse rather than pick. An arbitrary figure that looks verified is
+        # worse than an honest hold.
+        return ("PRICE_AMBIGUOUS_MULTI_ROW", None, None, None,
+                {"ambiguousRowCount": len(numeric)})
+
+    if numeric:
+        configs = []
+        for r in numeric:
+            key = _configuration_of(r)
+            configs.append({
+                "key": (key or "").strip().lower().replace(" ", "-") or None,
+                "label": key,
+                "amount": _amount_of(r),
+                "priceType": txt(cell(r, "Price Type")) or None,
+            })
+        # Cheapest first, and the order is part of the contract so a renderer
+        # can take [0] without re-deriving anything.
+        configs.sort(key=lambda c: c["amount"])
+
+        first = numeric[0]
+        bases = {_vat_basis_of(r) for r in numeric}
+        # Rows disagreeing about VAT is not something to average away.
+        basis = bases.pop() if len(bases) == 1 else "VAT_UNKNOWN"
+        rates = {_vat_rate_of(r) for r in numeric if _vat_rate_of(r) is not None}
+        rate = rates.pop() if len(rates) == 1 else None
+
+        extra = {"basis": basis, "vatRatePercent": rate}
+        if len(configs) > 1 or configs[0]["label"]:
+            extra["configurations"] = configs
+
+        # The scalar is RETAINED, not deprecated, and is always the LOWEST
+        # configuration. Founder decision 2. Every existing consumer keeps
+        # working and shows the entry price rather than an arbitrary one.
+        # Founder decision 3 governs how it may be LABELLED: never as an
+        # unqualified turnkey or completed-home price. That is enforced at the
+        # reader, and asserted by PG10.
+        return ("VERIFIED_NUMERIC_PRICE", configs[0]["amount"],
+                txt(cell(first, "Currency")) or None,
+                configs[0]["priceType"], extra)
+
     for r in price_rows:
         ptype = txt(cell(r, "Price Type"))
-        cur = txt(cell(r, "Currency")) or None
-        amount = None
-        for f in NUMERIC_FIELDS:
-            v = cell(r, f)
-            if isinstance(v, (int, float)) and v > 0:
-                amount = float(v)
-                break
-        if amount is not None:
-            return ("VERIFIED_NUMERIC_PRICE", amount, cur, ptype or None)
         if ptype.lower() in QUOTE_TYPES:
-            best = ("EVIDENCED_POA_QUOTE", None, cur, ptype)
+            best = ("EVIDENCED_POA_QUOTE", None,
+                    txt(cell(r, "Currency")) or None, ptype, {})
     return best
 
 
@@ -248,7 +340,7 @@ def qualify(product, org_name, price_rows, feat_rows, feat_names, sources):
     else:
         state = "ELIGIBLE"
 
-    price_state, amount, currency, ptype = _price_state(price_rows)
+    price_state, amount, currency, ptype, price_extra = _price_state(price_rows)
     area_n, area_u, area_basis, area_text = _area_evidence(feat_rows, feat_names)
 
     return {
@@ -261,8 +353,9 @@ def qualify(product, org_name, price_rows, feat_rows, feat_names, sources):
         "habitationState": hab,
         "irish": {"state": ie_state, "basis": ie_basis, "scope": ie_scope,
                   "noPublishedRoute": no_route},
-        "price": {"state": price_state, "amount": amount, "currency": currency,
-                  "priceType": ptype},
+        "price": dict({"state": price_state, "amount": amount,
+                       "currency": currency, "priceType": ptype},
+                      **price_extra),
         "area": {"number": area_n, "unit": area_u, "measurementBasis": area_basis,
                  "text": area_text},
     }
