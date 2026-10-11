@@ -187,8 +187,14 @@ console.log('\nCLUSTER 1 CLAIM GUARDS\n');
 }
 
 // --- the price section ------------------------------------------------------
-const PRICE = slice('P0', 'Why the prices you are quoted will not compare', '<!-- 7 · THE EVIDENCE LAYER');
-if (PRICE) ok('P0', `price section located, ${PRICE.length} chars`);
+const PRICE = slice('P0', 'Garden room prices are hard to compare.', '<!-- 7 · THE EVIDENCE LAYER');
+if (PRICE) {
+  // Founder correction, 11 October 2026. The superseded heading must not come
+  // back through a hand edit or a regeneration from a stale builder.
+  if (VIS.includes('Why the prices you are quoted will not compare'))
+    bad('P0', 'the retired pricing heading is back on the page');
+  else ok('P0', `price section located under the approved heading, ${PRICE.length} chars`);
+}
 
 // --- P1 · no cross-basis arithmetic ----------------------------------------
 if (PRICE) {

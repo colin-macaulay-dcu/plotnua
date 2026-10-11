@@ -201,7 +201,7 @@ PRICE_SECTION = '''
        envelope, because Atlas holds one product in it. -->
   <section class="article-section reveal">
     <div class="kicker">What It Costs</div>
-    <h2>Why the prices you are quoted will not compare.</h2>
+    <h2>Garden room prices are hard to compare.</h2>
     <p>Before you can tell whether one garden room is dearer than another, you have to
       know what each price covers. Most of the time, it is not published.</p>
 
@@ -239,6 +239,14 @@ PRICE_SECTION = '''
     'nobasis': N_NOBASIS, 'novat': N_NOVAT, 'area': N_AREA}
 if '%(' in PRICE_SECTION:
     sys.exit('REFUSE: PRICE_SECTION still carries an unsubstituted placeholder')
+# Founder correction, 11 October 2026: the pricing heading is
+# "Garden room prices are hard to compare." The superseded heading must never
+# come back through a regeneration.
+RETIRED_HEADING = 'Why the prices you are quoted will not compare'
+if RETIRED_HEADING in PRICE_SECTION:
+    sys.exit('REFUSE: the retired pricing heading is back in PRICE_SECTION')
+if 'Garden room prices are hard to compare.' not in PRICE_SECTION:
+    sys.exit('REFUSE: the approved pricing heading is missing from PRICE_SECTION')
 edit('E7-price-section', '\n  <!-- 7 · THE EVIDENCE LAYER.', PRICE_SECTION)
 
 # --- E8 · conditions-as-written, three appends -------------------------------
