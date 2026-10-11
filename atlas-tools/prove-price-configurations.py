@@ -32,9 +32,12 @@ except ImportError as e:
 
 
 def row(amount=None, config=None, basis=None, rate=None,
-        ptype="Published Price", currency="EUR", field="Base Price"):
+        ptype="Published Price", currency="EUR", field="Base Price",
+        exclusions=None):
     """One Airtable pricing row in the shape cell() expects."""
     f = {"Price Type": ptype, "Currency": currency}
+    if exclusions is not None:
+        f["Known Exclusions"] = exclusions
     if amount is not None:
         f[field] = amount
     if config is not None:
@@ -156,6 +159,89 @@ st, amt, _, _, _ = _price_state([
     row(105000.0, "Exterior Finished"), row(163000.0), row(306000.0, "Turnkey")])
 check("C11", "partially named numeric rows refuse; naming some is not enough",
       st == "PRICE_AMBIGUOUS_MULTI_ROW" and amt is None, st)
+
+
+# ── C12-C17 · the commercial terms a price carries ─────────────────────────
+# The governed evidence below is the REAL Known Exclusions text, read from the
+# live base on 11 October 2026. A test written against invented wording would
+# prove only that the anchors match the invention -- which is exactly the
+# error that let an earlier version of this harness pass 20/20 against a
+# "Price Basis" field the generator could not see.
+BB_SHELL = (
+    "Irish price INCLUDING 23% VAT. Transport to Ireland and assembly on "
+    "prepared ground screws are included. Foundations, utility connections "
+    "and site works are quoted per project. Kitchen furniture and appliances "
+    "are NOT included. Source: biobuilds.com/ie/wanderlust and "
+    "biobuilds.com/ie/turnkey, read 11 October 2026. SUPERSEDES the previous "
+    "record of EUR 112,700 +VAT: BIOBUILDS repriced and restated the basis "
+    "on 11 October 2026, and the two do not reconcile arithmetically.")
+BB_TURNKEY = (
+    "Irish price INCLUDING 23% VAT. Turnkey is finished inside and out, "
+    "including interior finishes and bathroom fixtures. Transport to Ireland "
+    "and assembly on prepared ground screws are included. Foundations, "
+    "utility connections and site works are quoted per project. Kitchen "
+    "furniture and appliances are NOT included. Ventilation and smart blinds "
+    "are NOT claimed: biobuilds.com/ie/turnkey lists them within Turnkey "
+    "while the configurator prices them as upgrades, so the contested items "
+    "are omitted rather than guessed.")
+THH = (
+    "Price stated exclusive of VAT (+VAT) — CONFIRMED (not inferred): "
+    "Tiny House Heavens' own Services page states 'All package prices "
+    "exclude VAT. Delivery, installation and foundation are not included and "
+    "are charged separately.' Optima (higher) finishing tier also available "
+    "at €32,830 excl. VAT — recorded as a separate Pricing record.")
+
+st, amt, _, _, extra = _price_state([
+    row(105000.0, "Exterior Finished", "Yes", 23, exclusions=BB_SHELL),
+    row(163000.0, "Turnkey", "Yes", 23, exclusions=BB_TURNKEY)])
+check("C12", "the three BIOBUILDS terms are recognised from the real evidence",
+      extra.get("commercialTerms") == [
+          "TRANSPORT_AND_ASSEMBLY_INCLUDED",
+          "FOUNDATIONS_UTILITIES_SITEWORKS_QUOTED_SEPARATELY",
+          "KITCHEN_FURNITURE_AND_APPLIANCES_EXCLUDED"],
+      str(extra.get("commercialTerms")))
+check("C12b", "every configuration carries its own terms",
+      all(c.get("terms") for c in extra["configurations"]),
+      str([len(c.get("terms") or []) for c in extra["configurations"]]))
+
+st, amt, _, _, extra = _price_state([
+    row(28070.0, "Basic", "Excluding VAT", exclusions=THH),
+    row(32830.0, "Optima", "Excluding VAT", exclusions=THH)])
+check("C13", "a different supplier's own term is recognised, and only theirs",
+      extra.get("commercialTerms") == ["DELIVERY_INSTALLATION_FOUNDATION_EXCLUDED"],
+      str(extra.get("commercialTerms")))
+
+# THE INTERSECTION, NOT THE UNION. A term true of the turnkey row alone must
+# not be published as true of the shell price as well.
+st, amt, _, _, extra = _price_state([
+    row(105000.0, "Exterior Finished", "Yes", 23,
+        exclusions="Kitchen furniture and appliances are NOT included."),
+    row(163000.0, "Turnkey", "Yes", 23, exclusions=BB_TURNKEY)])
+check("C14", "a term present on ONE configuration is not published for both",
+      extra.get("commercialTerms") == ["KITCHEN_FURNITURE_AND_APPLIANCES_EXCLUDED"],
+      str(extra.get("commercialTerms")))
+check("C14b", "but the configuration that owns the extra terms keeps them",
+      len([c for c in extra["configurations"] if len(c["terms"]) == 3]) == 1,
+      str([(c["label"], len(c["terms"])) for c in extra["configurations"]]))
+
+# RECOGNITION FAILS IN THE HONEST DIRECTION.
+st, amt, _, _, extra = _price_state([
+    row(21490.0, exclusions="Delivery is arranged on a case-by-case basis.")])
+check("C15", "unrecognised wording yields NO token rather than a guess",
+      "commercialTerms" not in extra, str(sorted(extra)))
+
+st, amt, _, _, extra = _price_state([row(21490.0)])
+check("C16", "a row with no exclusions evidence emits no terms",
+      "commercialTerms" not in extra, str(sorted(extra)))
+
+# THE CURATOR'S PROSE NEVER LEAVES ATLAS.
+st, amt, _, _, extra = _price_state([
+    row(105000.0, "Exterior Finished", "Yes", 23, exclusions=BB_SHELL)])
+blob = repr(extra)
+check("C17", "no sentence of the governed evidence reaches the contract",
+      "SUPERSEDES" not in blob and "biobuilds.com" not in blob
+      and "reconcile arithmetically" not in blob,
+      "payload is %d chars" % len(blob))
 
 
 print("\nPRICE CONFIGURATIONS AND VAT BASIS")

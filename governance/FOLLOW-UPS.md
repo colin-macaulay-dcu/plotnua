@@ -68,3 +68,51 @@ STILL OPEN
   is no longer the publication trigger it was -- but it is the one write that
   used to be, and it is better done deliberately than at the end of a long
   session. One write, then regenerate.
+
+---
+
+## BB-CFG-001 · The Garden Room VAT basis is held but not shown
+Opened 11 October 2026, with the Results and Compare configuration readers.
+
+The Additional Home price now carries its governed VAT basis to the homeowner,
+because two of the suppliers publishing named configurations publish them on
+OPPOSITE bases — BIOBUILDS including 23% VAT, Tiny House Heavens excluding it —
+and at that rate the basis is not a footnote.
+
+The Garden Room pathway holds the same fact under a different name and a
+different vocabulary: `priceEvidence.includesVat`, valued Yes / No / Unknown,
+against the Additional Home `basis` token INCLUDES_VAT / EXCLUDES_VAT /
+VAT_UNKNOWN. The price presentation reads `basis` only, so a Garden Room price
+renders with no VAT note — exactly as it did before this change, and as
+prove-price-presentation-unchanged.mjs asserts across all 573.
+
+NOT DONE HERE, DELIBERATELY. Surfacing it would be a homeowner-copy change
+across 573 products, and it cannot be done from the field alone: the C1
+reconciliation measured a systemic contradiction in these records, where a
+"Yes" is contradicted by the record's own evidence note. Publishing "including
+VAT" off a field that is wrong 6 times in 19 would be worse than publishing
+nothing. The order is: reconcile the records, then surface the basis.
+
+WHAT IT WOULD TAKE
+  1. Reconcile `Price Includes VAT` against each record's own evidence note
+     for the Garden Room pricing rows, correcting where the evidence is clear
+     and leaving Unknown where it is not.
+  2. Map includesVat -> the basis token in the Garden Room generator, so there
+     is one vocabulary rather than two.
+  3. The reader needs no change: pnVatBasis() already reads the token, and
+     PC6-PC8 already assert the three outcomes.
+
+## BB-CFG-002 · The commercial-term vocabulary is four tokens wide
+Opened 11 October 2026.
+
+COMMERCIAL_TERM_ANCHORS recognises exactly four terms, written against the
+eight pricing rows that carry a Configuration — measured from the live base on
+11 October 2026. It fails in the honest direction: wording the anchors do not
+match produces no token and the term is simply not stated, and nothing
+anywhere renders an absent term as an inclusion.
+
+So a supplier added later whose evidence words these same facts differently
+will show no commercial terms at all. That is safe but thin, and the remedy is
+not a looser anchor — C-C15 in the capability proof demonstrates what a
+loosened anchor does. The remedy is to read the new wording and add a token,
+or to govern the terms as a field rather than recognise them in prose.

@@ -204,6 +204,45 @@ def _vat_basis_of(row):
     return VAT_BASIS.get(raw, "VAT_UNKNOWN")
 
 
+# ── WHAT A PRICE INCLUDES, AS TOKENS RATHER THAN PROSE ─────────────────────
+#
+# The governed evidence is a curator's paragraph in Known Exclusions: sources,
+# supersession notes, items deliberately not claimed. The Garden Room price
+# contract already refuses to let that field reach the runtime, and it is
+# right to -- publishing it would publish PlotNua's working out.
+#
+# These anchors recognise a CLOSED set of commercial terms in it. Each token
+# has one approved homeowner sentence, held in the reader. Recognition is the
+# only inference permitted here, and it fails in the honest direction:
+# wording the anchors do not match produces NO token, so the term is not
+# stated. No token ever means "included" -- absence of evidence is not
+# absence of a cost, and no reader may say otherwise.
+COMMERCIAL_TERM_ANCHORS = (
+    # (token, required substrings -- ALL must appear, case-insensitively)
+    ("TRANSPORT_AND_ASSEMBLY_INCLUDED",
+     ("transport", "assembly", "ground screws", "are included")),
+    ("FOUNDATIONS_UTILITIES_SITEWORKS_QUOTED_SEPARATELY",
+     ("foundations", "utility connections", "site works", "quoted per project")),
+    ("KITCHEN_FURNITURE_AND_APPLIANCES_EXCLUDED",
+     ("kitchen furniture", "appliances", "not included")),
+    ("DELIVERY_INSTALLATION_FOUNDATION_EXCLUDED",
+     ("delivery, installation and foundation", "not included")),
+)
+
+
+def _commercial_terms_of(row):
+    """The recognised terms on ONE pricing row, in anchor order.
+
+    Anchor order, not evidence order, so the same facts always present in the
+    same sequence and a reader cannot be made to reorder by a curator's
+    sentence being rewritten."""
+    blob = txt(cell(row, "Known Exclusions")).lower()
+    if not blob:
+        return []
+    return [tok for tok, needles in COMMERCIAL_TERM_ANCHORS
+            if all(n in blob for n in needles)]
+
+
 def _vat_rate_of(row):
     v = cell(row, "VAT Rate %")
     return float(v) if isinstance(v, (int, float)) else None
@@ -249,6 +288,9 @@ def _price_state(price_rows):
                 "label": key,
                 "amount": _amount_of(r),
                 "priceType": txt(cell(r, "Price Type")) or None,
+                # A term recognised on the Turnkey row is true of Turnkey, and
+                # of nothing else until its own row says so.
+                "terms": _commercial_terms_of(r),
             })
         # Cheapest first, and the order is part of the contract so a renderer
         # can take [0] without re-deriving anything.
@@ -261,7 +303,21 @@ def _price_state(price_rows):
         rates = {_vat_rate_of(r) for r in numeric if _vat_rate_of(r) is not None}
         rate = rates.pop() if len(rates) == 1 else None
 
+        # THE INTERSECTION, NEVER THE UNION. Publishing a Turnkey term as
+        # though it covered the Exterior Finished price too would be exactly
+        # the quiet widening this contract exists to prevent. Only what is
+        # true of EVERY priced configuration reaches the product level, in
+        # anchor order so the sequence cannot be changed by a curator
+        # rewriting a sentence.
+        common = None
+        for c in configs:
+            t = set(c.get("terms") or ())
+            common = t if common is None else (common & t)
+        shared = [t for t, _ in COMMERCIAL_TERM_ANCHORS if t in (common or set())]
+
         extra = {"basis": basis, "vatRatePercent": rate}
+        if shared:
+            extra["commercialTerms"] = shared
         if len(configs) > 1 or configs[0]["label"]:
             extra["configurations"] = configs
 
