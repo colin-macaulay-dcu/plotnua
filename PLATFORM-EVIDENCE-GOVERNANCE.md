@@ -154,3 +154,67 @@ Both preconditions for lifting the hold are now met by this record: the
 canonical vocabulary is established for the existing pilot, and the platform
 completion rule is recorded. **The holds nonetheless remain in force until the
 founder lifts them explicitly.**
+
+---
+
+## 7 · HOMEOWNER WRITING STANDARD — ACTIVE
+
+Founder standard, 11 October 2026. Permanent.
+
+Sections 1 to 6 govern **what PlotNua may claim**. This section governs **how a
+claim is said to a homeowner**. It never relaxes them: nothing here permits a
+claim the evidence does not support, and no simplification may drop a legal
+condition, a safety warning, a qualification or an uncertainty. Simplify the
+explanation, never the underlying truth.
+
+### 7.1 Two layers
+
+| Layer | Where it lives | Standard |
+| --- | --- | --- |
+| **A · Evidence** | claim ledgers, governance records, guards, builder comments, source drawers, quoted legislation | Rigorous and complete. Exact legal wording is retained here. |
+| **B · Homeowner** | Discovery pages, property assessments, recommendation explanations, supplier descriptions, guidance, Atlas-powered experiences | Effortless to understand on a first reading. |
+
+Research-report language is **not** copied from Layer A into Layer B.
+
+### 7.2 The rules
+
+1. **Answer first.** Lead with the useful answer. Qualifications, exceptions and
+   legal detail come after it. A reader must never have to work through
+   legislation to find out whether they can do the thing.
+2. **Plain English.** Natural, conversational Irish English; familiar words over
+   specialist ones. *"Marginal electricity unit rate"* → *"what you pay per unit
+   of electricity."* *"Statutory interpretation"* → *"what the rules appear to
+   mean."* *"Incidental to the enjoyment of the dwelling"* → *"for personal use
+   at home."*
+3. **Short and clear.** Short paragraphs, one idea each. Headings that say what
+   the section is about rather than sounding clever.
+4. **Uncertainty, naturally.** Never disguise it, never inflate it into a legal
+   disclaimer. Say what we know, what is unclear, and what the homeowner can do
+   about it.
+5. **Practical value.** Every section tells the reader what is possible, what
+   the limits are, or what to do next. Content that exists to show how much
+   research was done is cut.
+6. **Evidence survives simplification.** See the opening paragraph. This rule
+   outranks rules 1 to 5 whenever they pull against it.
+
+### 7.3 Readability pass — required before staging any Discovery
+
+A dedicated editorial pass, separate from the evidence work, answering:
+
+1. Would an ordinary Irish homeowner understand this on a first reading?
+2. Can the answer be said more simply?
+3. Is any paragraph longer than it needs to be?
+4. Is any technical term unexplained?
+5. Does the section tell the reader something useful?
+6. Has every material qualification survived?
+7. Does it sound like a helpful person rather than a generated technical report?
+
+A "no" to any of these is a rewrite, not a note.
+
+### 7.4 Scope
+
+Discovery pages · search-authority content · property assessments ·
+recommendation explanations · supplier descriptions · homeowner guidance · all
+future Atlas-powered experiences.
+
+**First applied:** Cluster 2, Garden Retreat, 11 October 2026.
