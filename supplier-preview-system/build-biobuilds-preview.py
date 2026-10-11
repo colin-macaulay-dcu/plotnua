@@ -75,6 +75,7 @@ OUT = (pathlib.Path("/tmp/plotnua-stage/biobuilds-preview.html") if STAGE
 
 SUPPLIER = "BIOBUILDS"
 EVIDENCE_DATE = "2 October 2026"
+REVISION_DATE = "11 October 2026"
 PERMISSION_DATE = "2 October 2026"
 PERMITTED_PREFIX = "https://www.biobuilds.com/"
 CREDIT = "© BIOBUILDS"
@@ -223,13 +224,23 @@ FILL = {
     # THE ENDING IS NOW THE REVIEW ASK, not a commercial question. The grant
     # is conditional on BIOBUILDS seeing the listing first, so the last thing
     # on the page is the thing we actually need from them.
-    "CLOSING_PROPOSITION": "Does this represent BIOBUILDS accurately for an "
-                           "Irish homeowner?",
-    "CLOSING_SUPPORT": "If anything on this page is wrong, out of date or "
-                       "missing, let us know and we&rsquo;ll correct it "
-                       "before publication.",
+    "CLOSING_PROPOSITION": "Thank you for reviewing the original preview.",
+    # Two paragraphs. The token sits inside a single <p>, so the break is
+    # written as a closing and opening tag rather than a second token.
+    "CLOSING_SUPPORT": "We&rsquo;ve updated this page to reflect your "
+                       "feedback, including the revised Irish pricing, "
+                       "what&rsquo;s included in each configuration and the "
+                       "image captions."
+                       "</p>\n  <p>"
+                       "Please take another look and let us know if anything "
+                       "else needs adjusting. Once you&rsquo;re happy that "
+                       "everything is accurate, we can discuss making "
+                       "BIOBUILDS visible to Irish homeowners on PlotNua.",
 
-    "DATE": EVIDENCE_DATE,
+    # DATE is gone from FILL because its only use, the footer line, now
+    # carries REVISION_DATE written in at G3c. G4 refuses on a token it is
+    # given but cannot find, and it was right to: leaving this here crashed
+    # the build rather than writing a page with a stale date in it.
 }
 
 
@@ -350,7 +361,20 @@ def main():
     if src.count(old_head) != 1:
         die("the closing heading was not found exactly once, so it cannot be "
             "replaced. Nothing written.")
-    src = src.replace(old_head, "<h2>Before anything goes live</h2>")
+    src = src.replace(old_head, "<h2>Updated BIOBUILDS Preview</h2>")
+
+    # G3c · THE FOOTER. The template's shape is "Private preview prepared for
+    # NAME . DATE". This is no longer the first preview, so the footer says so
+    # and carries the revision date. SUPPLIER_NAME and DATE are still filled
+    # at G4, so this replacement runs against the unfilled template line.
+    old_foot = ("  <p>Private preview prepared for {{SUPPLIER_NAME}} "
+                "&middot; {{DATE}}</p>")
+    if src.count(old_foot) != 1:
+        die("the footer line was not found exactly once, so it cannot be "
+            "replaced. Nothing written.")
+    src = src.replace(old_foot, "  <p>{{SUPPLIER_NAME}} &middot; Updated "
+                                "private preview &middot; %s</p>"
+                                % REVISION_DATE)
 
     # G4 · Fill every token; refuse if one is missing or one is left behind.
     for key, value in FILL.items():
