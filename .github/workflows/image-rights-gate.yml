@@ -115,21 +115,51 @@ jobs:
       # scenarios in temporary trees: unknown, missing permission, wrong domain,
       # granted-and-authorised, the same imagery after withdrawal, and a
       # conditional grant with its required credit missing.
-      # FAIL-OPEN CLOSED, 11 October 2026. This step used to point at
-      # "03 Website/Live Website/supplier-outreach/permission/
-      # prove-publication-gate.mjs", a path that does not exist in this
-      # repository, and ended in `|| echo "::notice::..."`. So for every run
-      # it printed a notice and passed. A guard proof that cannot fail is not
-      # a guard proof, and this one had been green by default.
+      # FAIL-OPEN CLOSED FOR THE SECOND TIME, 11 October 2026.
       #
-      # It now runs the proof that actually exists, and a missing file is an
-      # error rather than a notice.
+      # The first version pointed at a path in another repository and ended in
+      # `|| echo "::notice::..."`, so it printed a notice and passed on every
+      # run. It was "fixed" by pointing it at
+      # atlas-tools/prove-image-rights-gate-capability.mjs -- a file that did
+      # not exist -- and KEEPING the `|| echo`. So it still passed on every
+      # run. Same defect, same step, introduced twice.
+      #
+      # `test -f X && node X || echo` cannot fail. When X is absent the test
+      # fails, the `&&` is skipped, the `||` runs, echo returns 0 and the step
+      # is green. It is a required check that could never refuse anything.
+      #
+      # The proof now exists and this invokes it directly. No `test -f`, no
+      # `||`, no fallback: if the file is missing, node exits non-zero and the
+      # build fails, which is the correct behaviour for a required test.
+      #
+      # WHAT IT PROVES, and why it is not a duplicate of the self-test below.
+      # `--self-test` drives the gate over a SYNTHETIC asset list. Production
+      # runs `--scan-html .`, which walks the published pages. That is the path
+      # that catches a page which GAINS a supplier image while the manifest is
+      # untouched -- the case this workflow runs on every publish to catch --
+      # and until now nothing proved it could refuse at all.
       - name: Prove the image-rights gate still catches what it is for
-        run: |
-          set -euo pipefail
-          test -f atlas-tools/prove-image-rights-gate-capability.mjs \
-            && node atlas-tools/prove-image-rights-gate-capability.mjs \
-            || echo "no image-rights capability proof in this repo yet; see FOLLOW-UPS"
+        run: node atlas-tools/prove-image-rights-gate-capability.mjs
+
+      # THE PROVENANCE GUARD. A SEPARATE CONCERN, DELIBERATELY SEPARATE CODE.
+      #
+      # validate-image-rights.js skips every locally hosted image:
+      #     if (!/^https?:\/\//i.test(u)) continue;  // relative = PlotNua's own
+      # That was sound when everything local was PlotNua's own artwork. It
+      # means the rights gate examines 40 external supplier images and skips
+      # 101 local ones, so a laundered supplier photograph saved into assets/
+      # would pass it silently.
+      #
+      # This guard declares the local images instead. It never answers a rights
+      # question -- P11 asserts at source that the rights gate does not read
+      # the provenance register and that no provenance record can grant a
+      # permission. Exit 2 (cannot establish the facts) fails the build, same
+      # as exit 1.
+      - name: Every locally hosted image must be declared or enumerated
+        run: node atlas-tools/validate-image-provenance.js
+
+      - name: Prove the provenance guard can actually refuse
+        run: node atlas-tools/prove-image-provenance-capability.mjs
 
       # THE SUPPLIER PUBLICATION GATE. Separate concern, separate name: this
       # one decides whether a supplier may appear in public Results at all,

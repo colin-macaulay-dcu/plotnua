@@ -1,0 +1,2423 @@
+{
+  "schema": "plotnua.image-provenance.records.v1",
+  "what_this_is": "What every locally-hosted published image IS. This is NOT a rights file: image-rights-records.json governs whether PlotNua may publish someone else's image, and this governs what PlotNua's own published images are. A SUPPLIER_IMAGE row here carries a pointer (rights_ref) to that file and duplicates none of it. Nothing in this file grants any permission.",
+  "generated_by": "atlas-tools/build-image-provenance-register.py",
+  "guarded_by": "atlas-tools/validate-image-provenance.js",
+  "asset_classes": {
+    "SUPPLIER_IMAGE": "Actual supplier imagery, published under a documented permission or a valid licence. Carries rights_ref pointing at the authorising organisation row in image-rights-records.json.",
+    "AI_ILLUSTRATION": "Independently generated generic imagery that reproduces no supplier photograph and no distinctive product design. Carries the tool, the date, the prompt, an explicit reference_inputs list and a named human review."
+  },
+  "the_third_state": {
+    "name": "NO_IMAGE",
+    "note": "NO_IMAGE is the state of an image SLOT that has no asset. It is deliberately NOT a class in this register, because a register of assets cannot hold a record for an image that does not exist. It is recorded here so the distinction is explicit: every image slot on a published page resolves to exactly one of three states, two of which point at a record in this file and the third of which points at nothing. NO_IMAGE must stay as easy to choose as the other two -- if it is not a respectable answer, the pressure is always to fill the slot with something, and that pressure is how laundering starts."
+  },
+  "rules": [
+    "Never use AI to launder a copyrighted image.",
+    "AI generation is never evidence of rights. No code path reads this file to answer a rights question.",
+    "Never recreate a supplier photograph.",
+    "Never imply an AI illustration depicts a named supplier's actual product.",
+    "An absent term is never an inclusion: an asset with no record is undeclared, not cleared.",
+    "AI illustrations do not appear on individual supplier product cards. product-card is not an available permitted surface.",
+    "Provenance is never inferred from appearance."
+  ],
+  "recovery": {
+    "performed": "2026-10-11",
+    "tool": "atlas-tools/recover-image-provenance.py",
+    "instructed_by": "Founder policy implementation, 11 October 2026, item 2: recover evidence wherever possible, do not invent missing information.",
+    "searched": [
+      "embedded metadata on all 101 deployed assets",
+      "every path ever added or deleted across all git branches, for generation scripts, prompts and source manifests",
+      "the master image library outside the repository",
+      "embedded metadata on the matched masters",
+      "the git commit that introduced each asset"
+    ],
+    "found": {
+      "assets_with_embedded_metadata": 0,
+      "generation_scripts_or_prompts_in_history": 0,
+      "assets_matched_to_a_named_master": 77,
+      "assets_whose_master_shows_a_camera_or_phone": 0,
+      "assets_with_evidence_sufficient_to_CLASSIFY": 0
+    },
+    "conclusion": "Provenance CONTEXT was recovered for 77 of 101 assets: which picture each one is, which Discovery it served, and the commit and date that introduced it. Provenance CLASSIFICATION was recovered for NONE. No deployed image carries any evidence of what made it, so no image is declared. Nine masters in the library DO carry iOS device evidence and are therefore photographs, but not one of them is among the assets that shipped.",
+    "a_fourth_class_may_be_needed": "Those nine masters are photographs taken by PlotNua. They are neither a supplier's image nor an AI illustration, so the approved three-state taxonomy has no place for a first-party photograph. None of them is published today, so nothing is blocked -- but the first one to be published will need a founder decision rather than a guess. Recorded here rather than resolved, because inventing a class was not authorised."
+  },
+  "how_to_declare_an_asset": [
+    "1. Establish what made the image, from real knowledge. If that is not available, do not declare it.",
+    "2. Move its entry from legacy_undeclared to records, keeping the asset path and recomputing sha256.",
+    "3. For AI_ILLUSTRATION: record tool, date, prompt verbatim, an explicit reference_inputs array (empty is an assertion, absent is an unanswered question), depicts_named_product false, depicts_named_organisation false, a named human_review, and permitted_surfaces.",
+    "4. For SUPPLIER_IMAGE: record rights_ref only. Copy no permission data.",
+    "5. Run atlas-tools/validate-image-provenance.js.",
+    "6. Only once records exist may the corresponding page captions be labelled."
+  ],
+  "labels": {
+    "AI_ILLUSTRATION": "AI-generated illustration",
+    "ILLUSTRATION_VERIFIED_NOT_AI": "Illustration",
+    "LEGACY_UNDECLARED": null
+  },
+  "label_note": "An undeclared asset gets NO label. Inventing a classification to fill a caption is the error this register exists to prevent, and no published caption changes until the matching record exists.",
+  "legacy_undeclared_note": "THE RATCHET. Every asset below is enumerated by path and sha256. The guard refuses any local image on a published page that is in neither records nor this list, so no NEW undeclared image can be added. The count is printed on every CI run and only ever goes down. A legacy entry is NOT a declaration, is NOT verified, is NOT authorised supplier imagery, and may not reach a product card or a supplier context.",
+  "records": [],
+  "legacy_undeclared": [
+    {
+      "asset": "assets/brand/atlas-final-static-approved-transparent.png",
+      "sha256": "4714ba1342502286674ee8cb44f3707466de412f91d6fe1cf6b5296002f77fc5",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1143606,
+      "pixels": [
+        1254,
+        1254
+      ],
+      "referenced_by": [
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "assets/brand/atlas-final-static-approved.png",
+      "sha256": "6284a8265fff00022609d1212a301da2a9438fe98cdf74e8c45f3a4e1507bde0",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1077829,
+      "pixels": [
+        1254,
+        1254
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/atlas-mark-master-reference.png",
+      "sha256": "47982325a6c2b3902f182151b2596c634de4c3a6848f01fea665bb72552b5361",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 611631,
+      "pixels": [
+        1157,
+        1038
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/atlas-mark-micro.svg",
+      "sha256": "3c6d73f2b99035bd42cc3ea7e099e8f70176b3d07580c4ef533508eecd48181f",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 2332,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": [
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "assets/brand/atlas-mark-mono-reversed.svg",
+      "sha256": "81631efd7ac8ff595c4dee9b7c3741b8fb2bfeacd2dbcd42633478b090cb9a3b",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 14364,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/atlas-mark-mono.svg",
+      "sha256": "36431f8abd09e5cee7da6540873016a748bfce2723d79b03ba75fa02d7b4a2f1",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 14334,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/atlas-mark-motion-ready.svg",
+      "sha256": "81abeb950931452d8453e4b4244026a7d7baf6f1832e45ca1547e88468ef0681",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 14419,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": [
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "assets/brand/atlas-mark-reversed.svg",
+      "sha256": "985d3ce198e9cf7a078d0865136a2838bf37678bbc5d3622aed9b8d394a0998c",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 14348,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/atlas-mark.svg",
+      "sha256": "f73e7869b0e61025c8a0f5216e18c183363d765f1a98c0103b3fa33adbf311b9",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 14398,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/plotnua-icon-transparent.svg",
+      "sha256": "5b1707e594cc9e116ea16384a3c4d5e91d42f2c2c6482a113ecdf23aace44204",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 3625,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "campaign-look-again.html",
+        "contact.html",
+        "cookie-policy.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "search.html",
+        "terms.html",
+        "thanks.html"
+      ]
+    },
+    {
+      "asset": "assets/brand/plotnua-mark-master-original.svg",
+      "sha256": "6a113917b6ac12a2b7d16be6c466287259ba92f9d23bd0f4b3816c2745322287",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 3793,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/plotnua-mark-master.png",
+      "sha256": "08045f798f6564b662072f57d96c8b0358531f534ac1e283de1d580f2469249d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 163086,
+      "pixels": [
+        1536,
+        1536
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/plotnua-mark-master.svg",
+      "sha256": "6a113917b6ac12a2b7d16be6c466287259ba92f9d23bd0f4b3816c2745322287",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 3793,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "contact.html",
+        "cookie-policy.html",
+        "disc005-home-exchange.html",
+        "disc014-driveway-income.html",
+        "disc022-hidden-cars-check.html",
+        "disc023-buy-original-irish-art.html",
+        "disc024-open-your-home-to-art.html",
+        "disc025-borrowed-garden-check.html",
+        "disc026-compute-readiness-check.html",
+        "disc027-neighbourhood-parcel-house.html",
+        "disc029-hidden-bins-check.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "private-ireland-compute-preview.html",
+        "search.html",
+        "terms.html",
+        "thanks.html",
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "assets/brand/plotnua-mark-myplot-saved-3000.png",
+      "sha256": "31866d0ed865f6fe8991a6ec9dbf033b4b65759987e8cac5a39bd0711e4d4938",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 136084,
+      "pixels": [
+        3000,
+        3000
+      ],
+      "referenced_by": []
+    },
+    {
+      "asset": "assets/brand/plotnua-mark-myplot-saved.svg",
+      "sha256": "898b9ce0001aab91222cf7f3f4b1cbfefc7c716fefcd7e3defc30553a219d272",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 3972,
+      "pixels": [
+        null,
+        null
+      ],
+      "referenced_by": [
+        "disc005-home-exchange.html",
+        "disc014-driveway-income.html",
+        "disc022-hidden-cars-check.html",
+        "disc023-buy-original-irish-art.html",
+        "disc024-open-your-home-to-art.html",
+        "disc025-borrowed-garden-check.html",
+        "disc026-compute-readiness-check.html",
+        "disc027-neighbourhood-parcel-house.html",
+        "disc029-hidden-bins-check.html",
+        "your-plot.html"
+      ]
+    },
+    {
+      "asset": "assets/img/046ec577a454599b.jpg",
+      "sha256": "046ec577a454599be5112effaa8706380243829b6fdc666d7fc22d09b6e55c2e",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 218549,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-open-your-home-to-art.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-02-Potential-Asset.jpeg",
+        "discovery_folder": "DISC-024 Open Your Home to Art",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/05cab54ac0af83d0.jpg",
+      "sha256": "05cab54ac0af83d0a0d96bf6f134e031308e9556bd581b0aafae61580e96d68f",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 249721,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-open-your-home-to-art.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-05-Art-Finds-a-New-Home.jpeg",
+        "discovery_folder": "DISC-024 Open Your Home to Art",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/080167dafcfa13f0.jpg",
+      "sha256": "080167dafcfa13f012b518bd3ce200e4d2699c09996124f99c05ca58dcd042b9",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 71031,
+      "pixels": [
+        760,
+        415
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-01-Hero.jpeg",
+        "discovery_folder": "DISC-023 A Home for Art ",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/0a2f6594d4ece2a7.jpg",
+      "sha256": "0a2f6594d4ece2a76e595f76e50d2c556cb195d6e56ef180385e009db04b971f",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 237077,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-04-Home-Gym-Wellness-v1.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/1236929aecbf458c.jpg",
+      "sha256": "1236929aecbf458c6cf3bf00477969f9e1b65c4781d65a9535a8f777848210ab",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 351029,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "about.html"
+      ],
+      "introduced": {
+        "commit": "39a8b82",
+        "date": "2026-09-13",
+        "subject": "Externalise About hero asset"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-01-Hero-Frozen-v1-web.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 5 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/14059d71c0c3c3db.jpg",
+      "sha256": "14059d71c0c3c3db2e9d2d08b65f12d6a1e5d9479ce1517341cf7f23da001c67",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 96443,
+      "pixels": [
+        760,
+        424
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
+        "discovery_folder": "DISC-008 Build a Home in Your Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/1ce6a296e2cd1b22.jpg",
+      "sha256": "6e55db33ec1a0ffa0c10cc364725329e1c1444dce3415596e5794da440ce9f3d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 280085,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-home-exchange.html",
+        "discovery-your-home-on-screen.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "9809c4a",
+        "date": "2026-09-11",
+        "subject": "Launch premium Discovery rebuilds and naming consistency"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 — Image 04 — Spanish Destination Home.jpeg",
+        "discovery_folder": "DISC-005 Home Exchange",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/20d0a88f2d48ed09.jpg",
+      "sha256": "20d0a88f2d48ed0918690dfe7a4fa93de01e10b9ff40de8a3f9575e43529553d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 187299,
+      "pixels": [
+        900,
+        491
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-01-Hero.jpeg",
+        "discovery_folder": "DISC-025 The Borrowed Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 1 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/20f1df521da06eb9.jpg",
+      "sha256": "44cd06f7641484e8fb524de8b50bf8503c461915734313d51f53c870bb994cba",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 948009,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "794aeab",
+        "date": "2026-09-01",
+        "subject": "DISC-026 — The House as a Power Station"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 03 - The House as a Power Station - Future Ready.jpeg",
+        "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/27ed4f617d0b05fa.jpg",
+      "sha256": "27ed4f617d0b05fa9aed7bf0a175705a17f41c9cf9140ee0906fe72c930e4b42",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 95897,
+      "pixels": [
+        760,
+        424
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-01-Opportunity.png",
+        "discovery_folder": "previous",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/2dd27e2c7c8018d4.jpg",
+      "sha256": "2dd27e2c7c8018d444a965c2b28265f40b9d126d9addc96f7bebe0def7a6f305",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 791387,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "c46c76d",
+        "date": "2026-09-02",
+        "subject": "DISC-005 — Home Exchange"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Image 02 - Home Exchange - Potential Asset.jpeg",
+        "discovery_folder": "DISC-005 Home Exchange",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/310f4249fd0cf381.jpg",
+      "sha256": "310f4249fd0cf38148d96034866532b22186fe91dd1ed25eaeabcbb45b30d1ee",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 299264,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "404.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      }
+    },
+    {
+      "asset": "assets/img/31b49fb60732073b.jpg",
+      "sha256": "31b49fb60732073b37e5aca32707d92705d58b819b9372b84587e1b06a8dde1c",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 807772,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-hidden-bins.html"
+      ],
+      "introduced": {
+        "commit": "365d08c",
+        "date": "2026-09-16",
+        "subject": "DISC-029 launch The Hidden Bins"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-02-BINS-HIDDEN-MASTER.jpeg",
+        "discovery_folder": "DISC-029 - Hidden Bins",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/35042af2ef89612b.jpg",
+      "sha256": "35042af2ef89612b6bb2770061ee99965ce147c1bcb03202d559852718d02b57",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 839336,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "2d3affb",
+        "date": "2026-09-02",
+        "subject": "Consolidate Space Discoveries — DISC-004 into DISC-006"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-006 Room to Grow/DISC-006 - Image 02 - Four Ways to Add a Room - Potential Asset.jpeg",
+        "discovery_folder": "DISC-006 Room to Grow",
+        "match": "perceptual, 16x16 average hash, Hamming 6 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/3884a467015a395a.jpg",
+      "sha256": "3884a467015a395a8645961d72d931b96b73cfb3f17d2a75516fba56d57b2986",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 535425,
+      "pixels": [
+        1280,
+        1175
+      ],
+      "referenced_by": [
+        "discovery-above-and-beyond.html"
+      ],
+      "introduced": {
+        "commit": "8fa405c",
+        "date": "2026-10-05",
+        "subject": "Rebuild Above and Beyond around a resolved homeowner journey"
+      }
+    },
+    {
+      "asset": "assets/img/3bbcedb3f00a3852.jpg",
+      "sha256": "3bbcedb3f00a3852831d822bc52e4f7accb32ce58de8f1265e1f4d7bc63b0081",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 847009,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-above-and-beyond.html",
+        "discovery-hidden-bins.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "365d08c",
+        "date": "2026-09-16",
+        "subject": "DISC-029 launch The Hidden Bins"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-03-UNDERGROUND-SYSTEM-REVEAL-MASTER.jpeg",
+        "discovery_folder": "DISC-029 - Hidden Bins",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/3cac96685bcd03a5.jpg",
+      "sha256": "3cac96685bcd03a50b3f62cdd14c4b18f46260d4756ea60ea412de7f6f64a5c7",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 221094,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-above-and-beyond.html",
+        "discovery-living-in-the-garden.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-07-Teen-Den-v1.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/41874366bc189197.jpg",
+      "sha256": "4b97249d0eb3c0d749be012e25825fb93d72381b69ae7716248e842b40722d07",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 301626,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "campaign-look-again.html",
+        "discovery-hidden-cars.html"
+      ],
+      "introduced": {
+        "commit": "3cb49ea",
+        "date": "2026-09-01",
+        "subject": "DISC-022 — Hidden Cars"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-03-Outcome.png",
+        "discovery_folder": "DISC-022 Hidden Cars",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/458728c46951cf14.jpg",
+      "sha256": "0bcd5809ac1cc77870ae81b50eea65a97bb3d4879a0760f94d4f3587e34a637d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 301682,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "campaign-look-again.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html"
+      ],
+      "introduced": {
+        "commit": "3cb49ea",
+        "date": "2026-09-01",
+        "subject": "DISC-022 — Hidden Cars"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-02-Problem.png",
+        "discovery_folder": "DISC-022 Hidden Cars",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/45a270b7716e4a94.jpg",
+      "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 557971,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-garden-retreat.html"
+      ],
+      "introduced": {
+        "commit": "08237ff",
+        "date": "2026-09-26",
+        "subject": "Release DISC-001 Garden Retreat"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-001 Garden Retreat/DISC-001-IMAGE-SAUNA-MASTER.png",
+        "discovery_folder": "DISC-001 Garden Retreat",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/4a4a1e4b08edaada.jpg",
+      "sha256": "5b6f0de932d06521f2a94ade347f35e5ff05a7af395609b57d3547734caea63d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 316570,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-driveway-income.html"
+      ],
+      "introduced": {
+        "commit": "9809c4a",
+        "date": "2026-09-11",
+        "subject": "Launch premium Discovery rebuilds and naming consistency"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/DISC-014 — Image 02 — Outcome.jpeg",
+        "discovery_folder": "DISC-014 Driveway Income",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/55f2bd4248ec234f.jpg",
+      "sha256": "55f2bd4248ec234f297281bd6f23a0b5672e255cea974679ef28afdb00a542e2",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 517488,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-above-and-beyond.html",
+        "discovery-garden-retreat.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "fe9890c",
+        "date": "2026-09-25",
+        "subject": "Release DISC-016 Above and Beyond and DISC-021 Your Home On Screen"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-016 Above and Beyond/Above-and-Beyond-02-Freestanding-Reveal-MASTER.png",
+        "discovery_folder": "DISC-016 Above and Beyond",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/571594a8d5b2e80a.jpg",
+      "sha256": "571594a8d5b2e80ac33015745a7477af1c58a126b79b8f1577fe1e0ab4007939",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 233070,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-a-home-for-art.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-05-Living-with-Art.jpeg",
+        "discovery_folder": "DISC-023 A Home for Art ",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/59d566ff7c3a50e8.jpg",
+      "sha256": "59d566ff7c3a50e8c1ced865f2c3129a3bb75c6606f06cd1b96265eb2d3a77c4",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 328188,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-the-borrowed-garden.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-02-Potential-Asset.jpeg",
+        "discovery_folder": "DISC-025 The Borrowed Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/5d43b14a51cf511f.jpg",
+      "sha256": "5d43b14a51cf511f65d5f2c515d3458e3fafbdf321247372ce8eda5d4e40459d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 241689,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-a-home-for-art.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-04-Meet-the-Artist.jpeg",
+        "discovery_folder": "DISC-023 A Home for Art ",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/5d6a5fd0aab3d9ce.jpg",
+      "sha256": "5d6a5fd0aab3d9ce4f3304acc55055641a02ca95f11cbec2679376d1c08199b2",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 504781,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-garden-retreat.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "08237ff",
+        "date": "2026-09-26",
+        "subject": "Release DISC-001 Garden Retreat"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-001 Garden Retreat/DISC-001-IMAGE-COLD-PLUNGE-MASTER.png",
+        "discovery_folder": "DISC-001 Garden Retreat",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/5dc201bef1868b84.jpg",
+      "sha256": "5dc201bef1868b846d5c76d2e2ed307900d309bab8665fc266b8ee1367b862a7",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 200414,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-a-home-for-art.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-02-Potential-Asset.jpeg",
+        "discovery_folder": "DISC-023 A Home for Art ",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/5e17a24f46cdab9e.jpg",
+      "sha256": "5e17a24f46cdab9e3f6786b3235a36f1cb590d8ebce6b624b553d1b1dae8c5f1",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 298166,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "discovery-living-in-the-garden.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-01-Recognition.png",
+        "discovery_folder": "DISC-008 Build a Home in Your Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/622372950ce70b40.jpg",
+      "sha256": "622372950ce70b401d7c4040ef271fbe3b4b4163c1a990ae1c10c18d21a7531e",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 325768,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-01-Hero-Frozen-v1-web.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/63c2ba2cfc78c406.jpg",
+      "sha256": "63c2ba2cfc78c406ca0addd2b4feae160940e27f3def039950df5076560107f8",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 264679,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-06-Reading-Room-v2.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/6417da715bd0aabc.jpg",
+      "sha256": "6417da715bd0aabca187a9d5ef53f8a791d8b76df34bcb5fc715ba231acbf97c",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 442442,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-above-and-beyond.html"
+      ],
+      "introduced": {
+        "commit": "fe9890c",
+        "date": "2026-09-25",
+        "subject": "Release DISC-016 Above and Beyond and DISC-021 Your Home On Screen"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-016 Above and Beyond/Above-and-Beyond-03-Horizon-MASTER.png",
+        "discovery_folder": "DISC-016 Above and Beyond",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/6442d19ec2dd1df0.jpg",
+      "sha256": "6442d19ec2dd1df09803047a4fe323d1b1f75b050c04fe07f03866d495c4023d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 250312,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-open-your-home-to-art.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-04-Meet-the-Artist.jpeg",
+        "discovery_folder": "DISC-024 Open Your Home to Art",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/665ea0c2a3a208b8.jpg",
+      "sha256": "665ea0c2a3a208b83a14d08fa99c3427a0bdee34d0c83e200bafffa891aac28c",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 88207,
+      "pixels": [
+        760,
+        424
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-007 Restore Something/DISC-007-01-Scene.png",
+        "discovery_folder": "DISC-007 Restore Something",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/6f086cee641b8c36.jpg",
+      "sha256": "6f086cee641b8c3664c2d31c02aacdcec365ff31b5d32129cc737b1ddfeb10e0",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 73850,
+      "pixels": [
+        760,
+        415
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-020 Stay in the House You Love/Stay-in-the-House-You-Love-02-Reveal.png",
+        "discovery_folder": "DISC-020 Stay in the House You Love",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/75cd91ea7ac4e1aa.jpg",
+      "sha256": "75cd91ea7ac4e1aa5ba8edca60410d250f3a2bd7467cd52ddaf824a03e086a69",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 163778,
+      "pixels": [
+        900,
+        502
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
+        "discovery_folder": "DISC-008 Build a Home in Your Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/75f721f0513e4f37.jpg",
+      "sha256": "75f721f0513e4f375e29d7d3e337adfccfa162d09be45d2bc7684e9aa4109176",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 325446,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-above-and-beyond.html",
+        "discovery-the-borrowed-garden.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-04-Local-Grower.jpeg",
+        "discovery_folder": "DISC-025 The Borrowed Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/7958d59a4ba26f4c.jpg",
+      "sha256": "203c3b96e21ba19baf5e1d2b453c8c0be2e65f91c769c8e4797c84453e823d6a",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 266805,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "discovery-home-exchange.html"
+      ],
+      "introduced": {
+        "commit": "9809c4a",
+        "date": "2026-09-11",
+        "subject": "Launch premium Discovery rebuilds and naming consistency"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/disc-005-spanish-coast-destination.jpeg",
+        "discovery_folder": "DISC-005 Home Exchange",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/7a7a29cc0ee29ff0.png",
+      "sha256": "7a7a29cc0ee29ff03f9992986d0ec20b585ead0e130239efc2fcc19b64e12228",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 102723,
+      "pixels": [
+        1200,
+        1106
+      ],
+      "referenced_by": [
+        "private-ireland-compute-preview.html"
+      ],
+      "introduced": {
+        "commit": "3a9d013",
+        "date": "2026-09-24",
+        "subject": "SPX-001: private Ireland market-entry preview (noindex, unlisted, not sitemapped)"
+      }
+    },
+    {
+      "asset": "assets/img/7d5f5718cf9cd3da.jpg",
+      "sha256": "7d5f5718cf9cd3dae83519ea285e9be608ad98ea72758d4838e6146896a9cbc3",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 521192,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-garden-retreat.html"
+      ],
+      "introduced": {
+        "commit": "08237ff",
+        "date": "2026-09-26",
+        "subject": "Release DISC-001 Garden Retreat"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-001 Garden Retreat/DISC-001-Hero-MASTER.png",
+        "discovery_folder": "DISC-001 Garden Retreat",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/7e778d0621b22377.jpg",
+      "sha256": "7e778d0621b223771017eb07c76d2130747941942d8c66b5deb7dc841b943dcc",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 89508,
+      "pixels": [
+        760,
+        424
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Hero.png",
+        "discovery_folder": "DISC-005 Home Exchange",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/7f49094747879fe4.jpg",
+      "sha256": "7f49094747879fe492babf1ff0943c11faf8df2a4626be9aea22666ffe4d9c32",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 348947,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-your-home-on-screen.html"
+      ],
+      "introduced": {
+        "commit": "fe9890c",
+        "date": "2026-09-25",
+        "subject": "Release DISC-016 Above and Beyond and DISC-021 Your Home On Screen"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-021 Your Home On Screen/Your-Home-On-Screen-03-Experience.png",
+        "discovery_folder": "DISC-021 Your Home On Screen",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/7fc5e1ff2a342365.jpg",
+      "sha256": "7fc5e1ff2a342365b7b7b1ecb8ff7d2848aac65c986ff95785c9351e02847817",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 200091,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-08-Music-Room-v1.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/80614bf6b2d7d79a.jpg",
+      "sha256": "80614bf6b2d7d79a6153a8d5407989e939428950ed7c66c453faf340bae846da",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 421674,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-your-home-on-screen.html"
+      ],
+      "introduced": {
+        "commit": "fe9890c",
+        "date": "2026-09-25",
+        "subject": "Release DISC-016 Above and Beyond and DISC-021 Your Home On Screen"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-021 Your Home On Screen/Your-Home-On-Screen-03-Reveal-MASTER.png",
+        "discovery_folder": "DISC-021 Your Home On Screen",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/82d9315cd1a854d9.jpg",
+      "sha256": "82d9315cd1a854d99f5b6909fbcd744397124c547befab29b291e0f2ebbcef49",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 224149,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-05-Teen-Study-v1..jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/83da38d51a03414d.jpg",
+      "sha256": "83da38d51a03414d71c7ff076dbe4ff0b6c95fb54825b87077df5f5f25a5596a",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 495640,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-garden-retreat.html"
+      ],
+      "introduced": {
+        "commit": "08237ff",
+        "date": "2026-09-26",
+        "subject": "Release DISC-001 Garden Retreat"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-001 Garden Retreat/DISC-001-IMAGE-WOOD-FIRED-HOT-TUB-MASTER.png",
+        "discovery_folder": "DISC-001 Garden Retreat",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/8b20a0968b1fc5a1.jpg",
+      "sha256": "8353c062eb3aac9ee649c5f1760408094d81a40b6648ca6f0dd6d5984122cd8a",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1110537,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-driveway-income.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-the-borrowed-garden.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "3483278",
+        "date": "2026-09-01",
+        "subject": "DISC-027 — The Neighbourhood Parcel House"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 01 - The Neighbourhood Parcel House.jpeg",
+        "discovery_folder": "DISC-027 The Neighbourhood Parcel House",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/8c60a8f27eb9c697.jpg",
+      "sha256": "8c60a8f27eb9c69734f2d926e1ef5b0fc7a1602d41da2cf33912e56e18da0343",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 292378,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "404.html",
+        "discovery-a-home-for-art.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "index.html",
+        "your-plot.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
+        "discovery_folder": "DISC-008 Build a Home in Your Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/92c60a78f601cedc.jpg",
+      "sha256": "92c60a78f601cedca14a3bac7230b35b8616a1403c26938c66be38de35643a1c",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 186936,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-006 Room to Grow/DISC-006-02-Problem.png",
+        "discovery_folder": "DISC-006 Room to Grow",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/933e80e670e95183.jpg",
+      "sha256": "933e80e670e951831824044856b9eeef5ace8c4248612dafa26648a43cddc88d",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 220580,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-01-Hero.jpeg",
+        "discovery_folder": "DISC-024 Open Your Home to Art",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/9785fd991d2488e9.jpg",
+      "sha256": "9785fd991d2488e999fa03e53d0d348cb7992c0fa37df7545f9c2fa4590cfcd8",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1101274,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      }
+    },
+    {
+      "asset": "assets/img/9805382f8164228a.jpg",
+      "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 959784,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-hidden-bins.html"
+      ],
+      "introduced": {
+        "commit": "365d08c",
+        "date": "2026-09-16",
+        "subject": "DISC-029 launch The Hidden Bins"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg",
+        "discovery_folder": "DISC-029 - Hidden Bins",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/991355de2bd66bcc.jpg",
+      "sha256": "991355de2bd66bcc4dd1e0f027aaa6909d48416bdf39887fe71c5c5ea7ffa5a2",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 802574,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "discovery-home-exchange.html"
+      ],
+      "introduced": {
+        "commit": "c46c76d",
+        "date": "2026-09-02",
+        "subject": "DISC-005 — Home Exchange"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Image 03 - Home Exchange - Outcome.jpeg",
+        "discovery_folder": "DISC-005 Home Exchange",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/9aa6c362d5486001.jpg",
+      "sha256": "4471ced2d4a8867d95556e9173bac06fb6527e7555cbd647a9d2755ced4c1449",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 513136,
+      "pixels": [
+        1448,
+        1086
+      ],
+      "referenced_by": [
+        "campaign-look-again.html",
+        "discoveries.html",
+        "discovery-driveway-income.html",
+        "discovery-hidden-cars.html",
+        "discovery-house-as-power-station.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "3cb49ea",
+        "date": "2026-09-01",
+        "subject": "DISC-022 — Hidden Cars"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-01-Hero.png",
+        "discovery_folder": "DISC-022 Hidden Cars",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/aecece07994fe0db.jpg",
+      "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 537148,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-above-and-beyond.html"
+      ],
+      "introduced": {
+        "commit": "fe9890c",
+        "date": "2026-09-25",
+        "subject": "Release DISC-016 Above and Beyond and DISC-021 Your Home On Screen"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-016 Above and Beyond/Above-and-Beyond-04-Two-Pod-Reveal.png",
+        "discovery_folder": "DISC-016 Above and Beyond",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/b221d2c683fe2f41.jpg",
+      "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 799397,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-hidden-bins.html"
+      ],
+      "introduced": {
+        "commit": "365d08c",
+        "date": "2026-09-16",
+        "subject": "DISC-029 launch The Hidden Bins"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-04-CLOSED-STATE-MASTER.jpeg",
+        "discovery_folder": "DISC-029 - Hidden Bins",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/b52ce590d9e0e41a.jpg",
+      "sha256": "e1dd9976fd1fb83ec21cf5bfd8ad538de6298dcef5d4315d2edd2a0b8a7ae747",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1136226,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-neighbourhood-parcel-house.html"
+      ],
+      "introduced": {
+        "commit": "3483278",
+        "date": "2026-09-01",
+        "subject": "DISC-027 — The Neighbourhood Parcel House"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 02 - The Neighbourhood Parcel House - Potential Asset.jpeg",
+        "discovery_folder": "DISC-027 The Neighbourhood Parcel House",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/b53d75f9dff4af2e.jpg",
+      "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 540581,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-above-and-beyond.html"
+      ],
+      "introduced": {
+        "commit": "fe9890c",
+        "date": "2026-09-25",
+        "subject": "Release DISC-016 Above and Beyond and DISC-021 Your Home On Screen"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-016 Above and Beyond/Above-and-Beyond-01-Before.png",
+        "discovery_folder": "DISC-016 Above and Beyond",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/b5cbac3fff9072d4.jpg",
+      "sha256": "4a4944ffadfb04b8eac147ebd96fd5b8b6aeb1497c7dbf1ed2f55e6efae2aceb",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 322778,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-driveway-income.html",
+        "discovery-home-exchange.html",
+        "discovery-your-home-on-screen.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "9809c4a",
+        "date": "2026-09-11",
+        "subject": "Launch premium Discovery rebuilds and naming consistency"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/Image 01 — Potential Asset.jpeg",
+        "discovery_folder": "DISC-014 Driveway Income",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/b9e81f3bec885469.jpg",
+      "sha256": "b9e81f3bec885469477fee8957be7c3ddd7f66ecfcd3a83e0f7f0d2cb512b9b1",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 195732,
+      "pixels": [
+        1100,
+        600
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-02-Home-Office-Frozen-v1-web.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/ba3fbcc7a04da889.jpg",
+      "sha256": "ba3fbcc7a04da88959d1f6ab3e01c8d7a72b4831deefecd8dabc6c81a1960ad9",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 335530,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-the-borrowed-garden.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-05-The-Result.jpeg",
+        "discovery_folder": "DISC-025 The Borrowed Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/bae47ddb8d4598ec.jpg",
+      "sha256": "eb7128c7d606fc1b04c39d607256b7878b3fd0f90f3a8d885d3b09a19838d815",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 872743,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "794aeab",
+        "date": "2026-09-01",
+        "subject": "DISC-026 — The House as a Power Station"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 04 - The House as a Power Station - Everyday Benefit.jpeg",
+        "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/bb7041bb3227896c.jpg",
+      "sha256": "bb7041bb3227896c86db561a5cbcfddc5ea13d21a54c5792ef4fa17cd837f4c3",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 184394,
+      "pixels": [
+        1100,
+        600
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-03-Artist-Studio.jpg.jpeg",
+        "discovery_folder": "DISC-004 An Extra Room in the Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/be0bd59e87bdad94.jpg",
+      "sha256": "1b21e59de646f1f8ddbc576ec80b748de443f495602dd7559fb22c07bcd0db72",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 293000,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "7b6e32d",
+        "date": "2026-09-02",
+        "subject": "DISC-014 — Driveway Income"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-02-Opportunity.jpeg",
+        "discovery_folder": "previous",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/c0f5bfcde033dea3.jpg",
+      "sha256": "c0f5bfcde033dea36e82c13f2c11196b0b6ffabcce5a32f6d89a5b439712855f",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 219945,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "404.html",
+        "discovery-a-home-for-art.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-open-your-home-to-art.html",
+        "index.html",
+        "your-plot.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-01-Hero.jpeg",
+        "discovery_folder": "DISC-023 A Home for Art ",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/c1d46445b6a79373.jpg",
+      "sha256": "c1d46445b6a79373499c5451f230ee680e1fa3f2798a49dab87176d11a49c300",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 225153,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-a-home-for-art.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-03-Transformation.jpeg",
+        "discovery_folder": "DISC-023 A Home for Art ",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/c2c0e74147b16d38.jpg",
+      "sha256": "a65e2e965fb6ea89952a02508d78de1a28b00ef01dcbd463025a05ade4e98a36",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 205970,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "7b6e32d",
+        "date": "2026-09-02",
+        "subject": "DISC-014 — Driveway Income"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-03-Opportunity.jpeg",
+        "discovery_folder": "previous",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/c4259bc916d091bf.jpg",
+      "sha256": "c4259bc916d091bf5311911a4058b47520b46a1659a6a85d3c1ceba70fc12ccb",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 189113,
+      "pixels": [
+        1200,
+        917
+      ],
+      "referenced_by": [
+        "private-ireland-compute-preview.html"
+      ],
+      "introduced": {
+        "commit": "3a9d013",
+        "date": "2026-09-24",
+        "subject": "SPX-001: private Ireland market-entry preview (noindex, unlisted, not sitemapped)"
+      }
+    },
+    {
+      "asset": "assets/img/ce9da2e51c945693.jpg",
+      "sha256": "9e2f4b6844c55271427d161c35c29bc8cc708ea44d3164e64aa85546cad9e5dc",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1056690,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-driveway-income.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-house-as-power-station.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "794aeab",
+        "date": "2026-09-01",
+        "subject": "DISC-026 — The House as a Power Station"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 01 - Powering the Future from Home.jpeg",
+        "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/d143a33914986b02.jpg",
+      "sha256": "c63616b518891fa101684fdf051162442c1d878b5f44d8496cae6b685c8e97da",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 295505,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "7b6e32d",
+        "date": "2026-09-02",
+        "subject": "DISC-014 — Driveway Income"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-01-Opportunity.png",
+        "discovery_folder": "previous",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/d227722be1e2e4b8.jpg",
+      "sha256": "d227722be1e2e4b8887549f64f82c9800744ab02c05a5eb5e17ee7e170fa60b0",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 129748,
+      "pixels": [
+        900,
+        491
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
+        "discovery_folder": "DISC-024 Open Your Home to Art",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/d2d5d3edb2fa278a.jpg",
+      "sha256": "d2d5d3edb2fa278a779338a51e10dafc62dee7e0cb0289b915e931d2750fbd82",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 95530,
+      "pixels": [
+        760,
+        415
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
+        "discovery_folder": "DISC-024 Open Your Home to Art",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/d387ae4278d69a2d.jpg",
+      "sha256": "d387ae4278d69a2d1c2511297b1b1a2eed8e06a013a6aba99abd01f9ef514518",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 221828,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-03-Living-at-Home-v2.jpeg",
+        "discovery_folder": "DISC-008 Build a Home in Your Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/dbd6a602f13e249b.png",
+      "sha256": "dbd6a602f13e249b08bbd7ba7d766e3baa48709b879b16afd3e38353f7da2cff",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 86304,
+      "pixels": [
+        1200,
+        857
+      ],
+      "referenced_by": [
+        "private-ireland-compute-preview.html"
+      ],
+      "introduced": {
+        "commit": "3a9d013",
+        "date": "2026-09-24",
+        "subject": "SPX-001: private Ireland market-entry preview (noindex, unlisted, not sitemapped)"
+      }
+    },
+    {
+      "asset": "assets/img/de115143d8931901.jpg",
+      "sha256": "de115143d8931901dedb7b2c2eaab0c24ad68bcc7c86a74957fdc8d5083c9b33",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 379632,
+      "pixels": [
+        960,
+        1280
+      ],
+      "referenced_by": [
+        "discovery-above-and-beyond.html"
+      ],
+      "introduced": {
+        "commit": "8fa405c",
+        "date": "2026-10-05",
+        "subject": "Rebuild Above and Beyond around a resolved homeowner journey"
+      }
+    },
+    {
+      "asset": "assets/img/dfb125ba9dd7cd87.jpg",
+      "sha256": "dfb125ba9dd7cd877674acf232b884899991cd2af054f297f00c052e1c8f77a8",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 249746,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "404.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "your-plot.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
+        "discovery_folder": "DISC-024 Open Your Home to Art",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/e0d578046cd29bda.jpg",
+      "sha256": "c00d060923bb832097e8e767b40601bf574391c2dd32b0562ae414d2029a7828",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1162103,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discoveries.html",
+        "discovery-neighbourhood-parcel-house.html"
+      ],
+      "introduced": {
+        "commit": "3483278",
+        "date": "2026-09-01",
+        "subject": "DISC-027 — The Neighbourhood Parcel House"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 03 - The Neighbourhood Parcel House - The Parcel House.jpeg",
+        "discovery_folder": "DISC-027 The Neighbourhood Parcel House",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/e5ecf61c22bb13db.jpg",
+      "sha256": "e5ecf61c22bb13db2c84a5250e36f49729ac9562053b0a3c40fd778add6c158a",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 336981,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "404.html",
+        "discovery-a-home-for-art.html",
+        "discovery-garden-retreat.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "index.html",
+        "your-plot.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-01-Hero.jpeg",
+        "discovery_folder": "DISC-025 The Borrowed Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 1 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/ea3f24eedab76294.jpg",
+      "sha256": "ea3f24eedab762948c561fbc67f63268879678d289d64b335e7f23fa70b5d3a1",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 440594,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-your-home-on-screen.html",
+        "index.html"
+      ],
+      "introduced": {
+        "commit": "fe9890c",
+        "date": "2026-09-25",
+        "subject": "Release DISC-016 Above and Beyond and DISC-021 Your Home On Screen"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-021 Your Home On Screen/Your-Home-On-Screen-01-Before.png",
+        "discovery_folder": "DISC-021 Your Home On Screen",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/eb31144c7faca94f.jpg",
+      "sha256": "630a4f1686e6081afd5ca2c0683a3e6ff4c30e734722779617b8ecb5ef3b7283",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 425789,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "discovery-home-exchange.html"
+      ],
+      "introduced": {
+        "commit": "9809c4a",
+        "date": "2026-09-11",
+        "subject": "Launch premium Discovery rebuilds and naming consistency"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/disc-005-irish-home-slider.jpeg",
+        "discovery_folder": "DISC-005 Home Exchange",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/f0e99db16cefc470.jpg",
+      "sha256": "d0e24c8ac862a239efdeba666d784cc130ae7066889800e07183c2002346dd48",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 1051168,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "disc026-compute-readiness-check.html",
+        "discovery-house-as-power-station.html"
+      ],
+      "introduced": {
+        "commit": "794aeab",
+        "date": "2026-09-01",
+        "subject": "DISC-026 — The House as a Power Station"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 05 - The House as a Power Station - The Future.jpeg",
+        "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/f373883b2d23d27b.jpg",
+      "sha256": "f373883b2d23d27b84fbda86449fe66c160431cf717da5bdeb27a7e06d3bf4b2",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 380712,
+      "pixels": [
+        1376,
+        768
+      ],
+      "referenced_by": [
+        "discovery-hidden-bins.html"
+      ],
+      "introduced": {
+        "commit": "c46c76d",
+        "date": "2026-09-02",
+        "subject": "DISC-005 — Home Exchange"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Hero.png",
+        "discovery_folder": "DISC-005 Home Exchange",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/f769fdcd445be934.png",
+      "sha256": "f769fdcd445be93445c87c575465226a2de20f899bc9348ae72c75a277a2e12f",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 74268,
+      "pixels": [
+        390,
+        1185
+      ],
+      "referenced_by": [
+        "private-ireland-compute-preview.html"
+      ],
+      "introduced": {
+        "commit": "3a9d013",
+        "date": "2026-09-24",
+        "subject": "SPX-001: private Ireland market-entry preview (noindex, unlisted, not sitemapped)"
+      }
+    },
+    {
+      "asset": "assets/img/f93d79efcd6f2e67.jpg",
+      "sha256": "f93d79efcd6f2e672aa07c34d473a1b39d37683964d833b6a7b4dd4ce6660651",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 82295,
+      "pixels": [
+        760,
+        424
+      ],
+      "referenced_by": [],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/artist studio.png",
+        "discovery_folder": "Images",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/faeb58a1d6a8ed1a.jpg",
+      "sha256": "faeb58a1d6a8ed1a2b4e11f710d04e4f5c5cd0c788e6c3abff9f70fd858bd258",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 331402,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-the-borrowed-garden.html"
+      ],
+      "introduced": {
+        "commit": "07762e8",
+        "date": "2026-08-27",
+        "subject": "Launch build v1 — the six-stage journey"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-03-Transformation.jpeg",
+        "discovery_folder": "DISC-025 The Borrowed Garden",
+        "match": "perceptual, 16x16 average hash, Hamming 5 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/fec77c3f0bae107a.jpg",
+      "sha256": "72b854817881f367c7737789feb98215c540ce9a4730fbbb6254510e0286daa3",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 952222,
+      "pixels": [
+        1408,
+        768
+      ],
+      "referenced_by": [
+        "discovery-house-as-power-station.html"
+      ],
+      "introduced": {
+        "commit": "794aeab",
+        "date": "2026-09-01",
+        "subject": "DISC-026 — The House as a Power Station"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 02 -The House as a Power Station - Potential Asset.jpeg",
+        "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/og/plotnua-og-image-1200x630.png",
+      "sha256": "657d27972c7291105ece57f7e83efdf775e2c1f7c468acc3a905cd175d67610e",
+      "status": "LEGACY_UNDECLARED",
+      "bytes": 202511,
+      "pixels": [
+        1200,
+        630
+      ],
+      "referenced_by": [
+        "404.html",
+        "about.html",
+        "contact.html",
+        "cookie-policy.html",
+        "discoveries.html",
+        "discovery-a-home-for-art.html",
+        "discovery-above-and-beyond.html",
+        "discovery-driveway-income.html",
+        "discovery-garden-retreat.html",
+        "discovery-hidden-bins.html",
+        "discovery-hidden-cars.html",
+        "discovery-home-exchange.html",
+        "discovery-house-as-power-station.html",
+        "discovery-living-in-the-garden.html",
+        "discovery-neighbourhood-parcel-house.html",
+        "discovery-open-your-home-to-art.html",
+        "discovery-the-borrowed-garden.html",
+        "discovery-your-home-on-screen.html",
+        "index.html",
+        "privacy.html",
+        "terms.html",
+        "thanks.html",
+        "your-plot.html"
+      ]
+    }
+  ]
+}
