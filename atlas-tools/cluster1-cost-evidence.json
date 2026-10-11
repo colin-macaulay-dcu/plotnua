@@ -1,0 +1,143 @@
+{
+  "schema": "plotnua.cluster1.cost-evidence",
+  "version": 1,
+  "generated": "2026-10-11",
+  "source": {
+    "file": "garden-room-recommendation-universe-v1.json",
+    "generated": "2026-10-07T11:26:27Z",
+    "sha256": "db4ecb7ff99ebaa0e2d88b89ce395f0bcb78c5a2750630aefbc3669413ff82db"
+  },
+  "disclaimer": "PlotNua Atlas is not a census of the Irish garden-room market. These counts describe what Atlas holds, and nothing more. No figure here may be averaged across price bases.",
+  "relevanceFilter": {
+    "currency": "EUR",
+    "priceSafeForMatching": true,
+    "noPublishedIrishRoute": false,
+    "numericPrice": true,
+    "excludes": "availabilityStatus == Out of Stock"
+  },
+  "totals": {
+    "gardenRoomRecords": 573,
+    "organisationsAll": 64,
+    "relevant": 247,
+    "relevantOrganisations": 24,
+    "priceBasisNotEstablished": 177,
+    "vatStatusUnknown": 94,
+    "floorAreaPublished": 45,
+    "floorAreaPublishedOrganisations": 11,
+    "rangeFloorPrices": 77,
+    "quoteOnly": 0
+  },
+  "segments": {
+    "UNKNOWN_NOTHING_PUBLISHED": {
+      "n": 111,
+      "organisations": 6,
+      "minEur": 4713,
+      "medianEur": 9102,
+      "maxEur": 43450,
+      "vatIncluded": 106,
+      "vatExcluded": 0,
+      "vatUnknown": 5,
+      "floorAreaKnown": 7
+    },
+    "UNKNOWN_DIY_OR_INSTALLED": {
+      "n": 65,
+      "organisations": 6,
+      "minEur": 3624,
+      "medianEur": 8570,
+      "maxEur": 23990,
+      "vatIncluded": 21,
+      "vatExcluded": 7,
+      "vatUnknown": 37,
+      "floorAreaKnown": 24
+    },
+    "INSTALLED_FINISHED_TURNKEY": {
+      "n": 47,
+      "organisations": 8,
+      "minEur": 9799,
+      "medianEur": 20400,
+      "maxEur": 43650,
+      "vatIncluded": 2,
+      "vatExcluded": 1,
+      "vatUnknown": 44,
+      "floorAreaKnown": 10
+    },
+    "SUPPLY_ONLY_INSTALL_SEPARATE": {
+      "n": 5,
+      "organisations": 2,
+      "minEur": 17800,
+      "medianEur": 34500,
+      "maxEur": 48000,
+      "vatIncluded": 0,
+      "vatExcluded": 5,
+      "vatUnknown": 0,
+      "floorAreaKnown": 1
+    },
+    "INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED": {
+      "n": 10,
+      "organisations": 2,
+      "minEur": 11810,
+      "medianEur": 87400.0,
+      "maxEur": 149900,
+      "vatIncluded": 3,
+      "vatExcluded": 0,
+      "vatUnknown": 7,
+      "floorAreaKnown": 3
+    },
+    "SUPPLIED_AND_ERECTED": {
+      "n": 8,
+      "organisations": 1,
+      "minEur": 14280,
+      "medianEur": 21235.0,
+      "maxEur": 30610,
+      "vatIncluded": 8,
+      "vatExcluded": 0,
+      "vatUnknown": 0,
+      "floorAreaKnown": 0
+    },
+    "UNKNOWN_DEALER_SOLD": {
+      "n": 1,
+      "organisations": 1,
+      "minEur": 10762,
+      "medianEur": 10762,
+      "maxEur": 10762,
+      "vatIncluded": 0,
+      "vatExcluded": 0,
+      "vatUnknown": 1,
+      "floorAreaKnown": 0
+    }
+  },
+  "classEnvelopes": {
+    "lte30_class3": {
+      "n": 43,
+      "organisations": 11,
+      "minEur": 4870,
+      "maxEur": 94900,
+      "medianEur": 9844
+    },
+    "between32and45_class3A": {
+      "n": 1,
+      "organisations": 1,
+      "minEur": 21490,
+      "maxEur": 21490,
+      "medianEur": 21490
+    },
+    "gt45": {
+      "n": 1,
+      "organisations": 1,
+      "minEur": 23990,
+      "maxEur": 23990,
+      "medianEur": 23990
+    }
+  },
+  "homeownerVisibleFigures": {
+    "relevantProducts": 247,
+    "priceBasisNotEstablished": 177,
+    "vatStatusUnknown": 94,
+    "floorAreaPublished": 45,
+    "class3AProductsInAtlas": 1
+  },
+  "notes": [
+    "The supply-only / DIY-kit segment is thinly represented in the euro set because the large DIY-kit sellers held in Atlas are GBP-priced or carry noPublishedIrishRoute: true. That is a coverage fact about Atlas, not a fact about the Irish market.",
+    "No homeowner-visible copy may state a price for the 32-45 m2 Class 3A envelope: Atlas holds one product in it."
+  ]
+}
