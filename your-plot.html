@@ -12558,7 +12558,19 @@
       /* The lead building's governed pair, from the ctx the renderer is
          about to draw — one source, so the hero and the evidence cannot
          disagree. Hidden entirely when there is no lead. */
-      const lead = results && results.length ? results[0] : null;
+      /* THE LEAD IS THE CANDIDATE THAT SAYS IT IS ONE, not whichever
+         arrived first. The comment above has always promised "Hidden
+         entirely when there is no lead"; it read results[0] unconditionally,
+         so the panel headed "What Atlas has established about this building"
+         was attributed to whichever product sorted first by Product Code.
+         The residential ctx builder sets ctx.isPreferred from the candidate
+         split, so reading it here makes one signal authoritative on both
+         sides. With no lead, `lk` is empty and the existing hidden test below
+         removes the panel. The products themselves are untouched: all four
+         still render, with their own facts, prices, imagery and links. */
+      const lead = (results && results.length
+                    && results[0] && results[0].ctx
+                    && results[0].ctx.isPreferred) ? results[0] : null;
       const lk = (lead && lead.ctx && lead.ctx.residentialKnown) || [];
       const lo = (lead && lead.ctx && lead.ctx.residentialOpen) || [];
       const nextWrap = document.getElementById('hmrNextSteps');
@@ -38035,7 +38047,18 @@
         ctx: {
           discoveryContext: 'residential',
           intendedUse: 'residential',
-          isPreferred: i === 0,
+          /* HONOURS THE CANDIDATE SPLIT. `lead` three lines above already
+             combines position with the split's own verdict:
+                 var lead = (i === 0) && !!split.lead;
+             and the split returns a null lead whenever it cannot name one —
+             which is every case where more than one candidate is caveat-free.
+             This field used to read `i === 0`, so the first product BY
+             PRODUCT CODE was marked preferred. Measured 11 October 2026: that
+             was PROD-000425, which publishes no price and no imagery. Nothing
+             in the residential path reads this field today, but a datum that
+             states an unestablished preference is a defect waiting for its
+             first consumer. Founder decision, Option 1. */
+          isPreferred: lead,
           budgetMatched: true, aboveBudget: false, spaceSpecified: false,
           /* The hero's one line, from the governed evidence. */
           leadReason: ev.say,
