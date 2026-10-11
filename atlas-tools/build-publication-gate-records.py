@@ -52,6 +52,23 @@ PERMISSION = {
     "scope": ["feature", "imagery"],
     "conditions": ["credit", "link-back", "pre-live-review",
                    "withdrawable-on-request"],
+    # The supplier's pre-live-review request is NOT removed and NOT satisfied.
+    # It was asked for, it has not been answered, and the founder decided to
+    # proceed anyway. All three facts are recorded; none is tidied away.
+    "pre_live_review_disposition": {
+        "requested_by_supplier": True,
+        "answered_by_supplier": False,
+        "proceeded_under": "FX-BIOBUILDS-PUBLISH-20261011",
+        "note": ("BIOBUILDS asked to see the listing before it went live. The "
+                 "corrections they requested on 11 October 2026 are "
+                 "implemented. They have not confirmed the revised preview. "
+                 "The founder decided to publish without that confirmation "
+                 "and accepts responsibility for doing so. This supersedes "
+                 "PlotNua's earlier reading that the grant covered the "
+                 "private preview only -- that was PlotNua's own scoping of "
+                 "its own restraint, not a limit BIOBUILDS placed on the "
+                 "grant."),
+    },
 }
 LISTING_REVIEW = {
     "state": "AWAITING_CONFIRMATION",
@@ -99,12 +116,17 @@ FOUNDER_EXCEPTION = {
         "responsibility for proceeding before that confirmation is received."
     ),
     "scope": (
-        "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results, "
-        "Compare and search. Does NOT authorise publication of BIOBUILDS "
-        "imagery on any public page: the imagery grant remains scoped by "
-        "this record's own conditions to the private noindexed review "
-        "preview, the public Additional Home payload carries no image block, "
-        "and prove-biobuilds-containment.mjs continues to enforce it."
+        "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and "
+        "Compare, AND publication of the SIX ENUMERATED ASSETS in "
+        "approved_assets, each with the supplier's caption, the credit and a "
+        "working link back. WIDENED 11 October 2026 by the same founder "
+        "decision: the earlier version of this scope excluded imagery "
+        "entirely, because at that point no imagery had been authorised. It "
+        "does NOT authorise any asset outside that list -- every other "
+        "BIOBUILDS asset, including the two exercised on the private "
+        "preview, remains Reference Only, and "
+        "prove-biobuilds-containment.mjs enforces the difference per asset "
+        "rather than per domain."
     ),
     "withdrawal": (
         "BIOBUILDS may request change or removal at any time and PlotNua "
@@ -112,6 +134,120 @@ FOUNDER_EXCEPTION = {
         "objects to the published listing, remove this exception and the "
         "gate returns the product to HOLD with no other change."
     ),
+}
+
+
+# ── THE APPROVED ASSET SELECTION ─────────────────────────────────────────
+#
+# Founder authorisation, 11 October 2026, under
+# FX-BIOBUILDS-PUBLISH-20261011: selected BIOBUILDS imagery may be published,
+# within the scope of the written grant of 2 October 2026.
+#
+# APPROVAL IS BY ENUMERATION. An asset is publishable because it is in this
+# list, never because it is on the supplier's domain. The two assets exercised
+# on the preview that are NOT here -- wall-section-3.0 and
+# prefab-48-crane-lift -- remain REFERENCE_ONLY, as do the other 26 governed
+# assets.
+#
+# NO ALT TEXT HERE SAYS photograph, photo, render OR visualisation. Grant
+# condition 7 records that BIOBUILDS has never said which the model imagery
+# is, and that until they answer no PlotNua surface may describe it as either.
+# The supplier's own caption is medium-neutral and is used verbatim.
+MEDIA_PREFIX = "https://www.biobuilds.com/_next/static/immutable/media/"
+SUPPLIER_CAPTION = "BIOBUILDS model imagery"
+SUPPLIER_CREDIT = "\u00a9 BIOBUILDS"
+SUPPLIER_LINK = "https://www.biobuilds.com/"
+
+APPROVED_ASSETS = [
+    {
+        "url": MEDIA_PREFIX + "wanderlust-catalog.3-furbv0o-vtc.jpg",
+        "product_code": "PROD-000523",
+        "product_name": "BIOBUILDS Wanderlust",
+        "role": "exterior",
+        "primary": True,
+        "alt": "The BIOBUILDS Wanderlust 48 seen from outside, a timber-clad "
+               "single-storey building with full-height glazing.",
+    },
+    {
+        "url": MEDIA_PREFIX + "wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg",
+        "product_code": "PROD-000523",
+        "product_name": "BIOBUILDS Wanderlust",
+        "role": "interior",
+        "primary": False,
+        "alt": "Inside the BIOBUILDS Wanderlust 48, an open living space with "
+               "timber finishes and glazing to the garden.",
+    },
+    {
+        "url": MEDIA_PREFIX + "wanderlust-48-bedroom.02gun-re0wb_5.jpg",
+        "product_code": "PROD-000523",
+        "product_name": "BIOBUILDS Wanderlust",
+        "role": "interior",
+        "primary": False,
+        "alt": "A bedroom in the BIOBUILDS Wanderlust 48, with timber walls "
+               "and a window to the garden.",
+    },
+    {
+        "url": MEDIA_PREFIX + "serenity-catalog.2xcd8x45pacpa.jpg",
+        "product_code": "PROD-000524",
+        "product_name": "BIOBUILDS Serenity",
+        "role": "exterior",
+        "primary": True,
+        "alt": "The BIOBUILDS Serenity 95 seen from outside, a larger "
+               "timber-clad house with extensive glazing.",
+    },
+    {
+        "url": MEDIA_PREFIX + "serenity-95-int-catalog.0uuneoqa7y-h8.jpg",
+        "product_code": "PROD-000524",
+        "product_name": "BIOBUILDS Serenity",
+        "role": "interior",
+        "primary": False,
+        "alt": "Inside the BIOBUILDS Serenity 95, an open-plan living and "
+               "dining space with timber finishes.",
+    },
+    {
+        "url": MEDIA_PREFIX + "serenity-95-bathroom.1nmu58m7tl0_u.jpg",
+        "product_code": "PROD-000524",
+        "product_name": "BIOBUILDS Serenity",
+        "role": "interior",
+        "primary": False,
+        "alt": "A bathroom in the BIOBUILDS Serenity 95, with tiled surfaces "
+               "and fixed sanitaryware.",
+    },
+]
+
+# Exercised on the private preview and DELIBERATELY NOT approved: neither
+# depicts a product a homeowner is choosing between.
+WITHHELD_ASSETS = [
+    {"url": MEDIA_PREFIX + "wall-section-3.0.26fqr4wmqyq13.jpg",
+     "reason": "a construction detail of the wall build-up, not a product"},
+    {"url": MEDIA_PREFIX + "prefab-48-crane-lift.2fhf6txqe9e82.jpg",
+     "reason": "a process shot of a module being craned, not a product"},
+]
+
+ASSET_APPROVAL = {
+    "state": "SELECTED_ASSETS_APPROVED",
+    "default_for_unlisted": "REFERENCE_ONLY",
+    "approved_count": len(APPROVED_ASSETS),
+    "withheld_on_preview": len(WITHHELD_ASSETS),
+    "governed_total_in_atlas": 34,
+    "authorised_by": "FX-BIOBUILDS-PUBLISH-20261011",
+    "note": ("Approval is by ENUMERATION, per asset. An asset is publishable "
+             "because it appears in approved_assets, never because it is "
+             "served from the supplier's domain. Every asset not listed "
+             "remains Reference Only - Not Published, including the two "
+             "exercised on the private preview. The internal REFERENCE_ONLY "
+             "state was never a refusal by BIOBUILDS; it was PlotNua's own "
+             "publication restriction, and the founder has lifted it for the "
+             "six selected assets only."),
+    "conditions_on_every_use": [
+        "Caption: " + SUPPLIER_CAPTION,
+        "Credit: " + SUPPLIER_CREDIT,
+        "A working link to " + SUPPLIER_LINK,
+        "No PlotNua surface describes the medium: grant condition 7 stands "
+        "until BIOBUILDS answers.",
+        "No surface implies the imagery shows a completed installation in "
+        "Ireland.",
+    ],
 }
 
 
@@ -278,6 +414,9 @@ def main():
         row["permission"] = PERMISSION
         row["listing_review"] = LISTING_REVIEW
         row["asset_approval_state"] = asset_state
+        row["asset_approval"] = ASSET_APPROVAL
+        row["approved_assets"] = APPROVED_ASSETS
+        row["withheld_assets"] = WITHHELD_ASSETS
         row["founder_exception"] = FOUNDER_EXCEPTION
         row["public_visibility"] = visibility
         row["hold_reason"] = hold_reason
@@ -368,7 +507,10 @@ def main():
                          FOUNDER_EXCEPTION["decision_date"]))
     print("The supplier's confirmation of the corrected preview remains "
           "OUTSTANDING and the record says so.")
-    print("Imagery stays scoped to the private review preview.")
+    print("Imagery: %d asset(s) approved for publication, %d withheld on "
+          "the preview," % (len(APPROVED_ASSETS), len(WITHHELD_ASSETS)))
+    print("and every other governed BIOBUILDS asset remains Reference Only.")
+    print("Grant condition 7 stands: no surface describes the medium.")
 
 
 if __name__ == "__main__":

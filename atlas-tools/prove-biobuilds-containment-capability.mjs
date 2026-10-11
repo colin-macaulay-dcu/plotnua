@@ -77,12 +77,32 @@ console.log('='.repeat(76));
 
 /* C1 . the imagery escapes onto a second page. The quiet failure this whole
    file exists for: the manifest row would pass it, the grant does not. */
-scenario('C1 . a second page starts carrying BIOBUILDS imagery', d => {
-  const html = read(d, PAGE);
+/* RE-AIMED 11 October 2026, and the stale version is worth recording.
+   This case used to copy the first BIOBUILDS <img> off the preview onto a
+   second page. Six assets are now approved for publication, and the copied
+   one happened to be among them -- so the mutation planted something
+   LEGITIMATE and the re-aimed per-asset rule rightly passed. The proof
+   reported it MISSED, which was the proof doing its job on my change.
+   It now plants an asset that is NOT enumerated, which is the defect the
+   per-asset rule exists to catch. */
+scenario('C1 . a second page carries an UNAPPROVED BIOBUILDS image', d => {
   write(d, 'garden-rooms.html',
     '<html><head><meta name="robots" content="index"></head><body>'
-    + (html.match(/<img[^>]+biobuilds\.com[^>]*>/) || [''])[0]
+    + '<img src="https://www.biobuilds.com/_next/static/immutable/media/'
+    + 'never-enumerated-asset.jpg" alt="x">'
     + '<p>&copy; BIOBUILDS</p></body></html>');
+});
+
+/* C1b . and a WITHHELD asset is the same breach by a shorter route: it was
+   considered and deliberately not approved. */
+scenario('C1b . a second page carries a WITHHELD BIOBUILDS image', d => {
+  const rec = JSON.parse(read(d, 'image-rights-records.json'));
+  const bb = (rec.records || []).find(r => r.organisation_code === 'ORG-000153');
+  const url = ((bb && bb.withheld_assets) || [{}])[0].url
+    || 'https://www.biobuilds.com/_next/static/immutable/media/x.jpg';
+  write(d, 'garden-rooms.html',
+    '<html><head><meta name="robots" content="index"></head><body>'
+    + '<img src="' + url + '" alt="x"><p>&copy; BIOBUILDS</p></body></html>');
 });
 
 /* C2 . the preview stops being private. */
@@ -130,14 +150,52 @@ scenario('C5b . the pre-live review condition is deleted', d => {
 
 /* C6 . an Atlas asset reached Approved and BIOBUILDS entered the Results
    pool. This is the one that would put them in front of homeowners. */
-scenario('C6 . a BIOBUILDS image appears in the Results pool payload', d => {
-  const pool = JSON.parse(read(d, 'atlas-match-pool.json'));
-  const target = Array.isArray(pool) ? pool : (pool.products || pool.rows || pool);
-  const inject = { image: { url: 'https://www.biobuilds.com/x.jpg',
-    credit: '© BIOBUILDS', supplier: 'BIOBUILDS' } };
-  if (Array.isArray(target)) target.push(inject);
-  else target.__injected = inject;
-  write(d, 'atlas-match-pool.json', JSON.stringify(pool));
+/* RE-AIMED with C1, and for a second reason: the old version injected into
+   atlas-match-pool.json under a key (`image`) that C6 never read, and C6's
+   file pattern did not match additional-home-universe-v1.json at all. So it
+   was testing a payload shape and a filename the check could not see. It now
+   writes a real product record carrying an UNENUMERATED image into the
+   Additional Home universe, which is the payload that decides that pool. */
+scenario('C6 . an UNAPPROVED BIOBUILDS image appears in the Results payload',
+  d => {
+    write(d, 'additional-home-universe-v1.json', JSON.stringify({
+      schema: 'additional-home-universe-v1', products: [{
+        id: 'rec_test', productCode: 'PROD-000523',
+        productName: 'BIOBUILDS Wanderlust', organisation: 'BIOBUILDS',
+        publicVisibility: 'PUBLISHABLE',
+        imagery: {
+          url: 'https://www.biobuilds.com/_next/static/immutable/media/'
+               + 'never-enumerated-asset.jpg',
+          credit: '\u00a9 BIOBUILDS', supplier: 'BIOBUILDS',
+          rightsRecord: 'C2-GRANT-BIOBUILDS-20261002',
+          permittedPrefix:
+            'https://www.biobuilds.com/_next/static/immutable/media/'
+        }
+      }]
+    }));
+  });
+
+/* C6b . and an APPROVED image on the WRONG product. The asset is authorised;
+   the building it is attached to is not the one its record names. */
+scenario('C6b . an approved image is attached to the wrong product', d => {
+  const rec = JSON.parse(read(d, 'image-rights-records.json'));
+  const bb = (rec.records || []).find(r => r.organisation_code === 'ORG-000153');
+  const serenity = ((bb && bb.approved_assets) || [])
+    .find(a => a.product_code === 'PROD-000524');
+  if (!serenity) return;
+  write(d, 'additional-home-universe-v1.json', JSON.stringify({
+    schema: 'additional-home-universe-v1', products: [{
+      id: 'rec_test', productCode: 'PROD-000523',
+      productName: 'BIOBUILDS Wanderlust', organisation: 'BIOBUILDS',
+      publicVisibility: 'PUBLISHABLE',
+      imagery: {
+        url: serenity.url, credit: '\u00a9 BIOBUILDS', supplier: 'BIOBUILDS',
+        rightsRecord: 'C2-GRANT-BIOBUILDS-20261002',
+        permittedPrefix:
+          'https://www.biobuilds.com/_next/static/immutable/media/'
+      }
+    }]
+  }));
 });
 
 /* AND THE UNMUTATED TREE MUST STILL PASS. A check that refuses everything is

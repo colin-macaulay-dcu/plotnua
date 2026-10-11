@@ -236,7 +236,13 @@
           "link-back",
           "pre-live-review",
           "withdrawable-on-request"
-        ]
+        ],
+        "pre_live_review_disposition": {
+          "requested_by_supplier": true,
+          "answered_by_supplier": false,
+          "proceeded_under": "FX-BIOBUILDS-PUBLISH-20261011",
+          "note": "BIOBUILDS asked to see the listing before it went live. The corrections they requested on 11 October 2026 are implemented. They have not confirmed the revised preview. The founder decided to publish without that confirmation and accepts responsibility for doing so. This supersedes PlotNua's earlier reading that the grant covered the private preview only -- that was PlotNua's own scoping of its own restraint, not a limit BIOBUILDS placed on the grant."
+        }
       },
       "listing_review": {
         "state": "AWAITING_CONFIRMATION",
@@ -264,12 +270,88 @@
           "assets-not-approved"
         ],
         "basis": "BIOBUILDS granted written permission on 2 October 2026 to feature its products and to use selected imagery with credit and a link back (C2-GRANT-BIOBUILDS-20261002). The supplier then asked for factual corrections on 11 October 2026; those corrections are implemented in Atlas and in the private preview. The founder has decided to publish the corrected listing without waiting for the supplier's confirmation of the revised preview, and accepts responsibility for proceeding before that confirmation is received.",
-        "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results, Compare and search. Does NOT authorise publication of BIOBUILDS imagery on any public page: the imagery grant remains scoped by this record's own conditions to the private noindexed review preview, the public Additional Home payload carries no image block, and prove-biobuilds-containment.mjs continues to enforce it.",
+        "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and Compare, AND publication of the SIX ENUMERATED ASSETS in approved_assets, each with the supplier's caption, the credit and a working link back. WIDENED 11 October 2026 by the same founder decision: the earlier version of this scope excluded imagery entirely, because at that point no imagery had been authorised. It does NOT authorise any asset outside that list -- every other BIOBUILDS asset, including the two exercised on the private preview, remains Reference Only, and prove-biobuilds-containment.mjs enforces the difference per asset rather than per domain.",
         "withdrawal": "BIOBUILDS may request change or removal at any time and PlotNua complies, exactly as the original grant provides. If the supplier objects to the published listing, remove this exception and the gate returns the product to HOLD with no other change."
       },
       "waived_conditions": [
         "listing-review-awaiting-confirmation",
         "assets-not-approved"
+      ],
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "default_for_unlisted": "REFERENCE_ONLY",
+        "approved_count": 6,
+        "withheld_on_preview": 2,
+        "governed_total_in_atlas": 34,
+        "authorised_by": "FX-BIOBUILDS-PUBLISH-20261011",
+        "note": "Approval is by ENUMERATION, per asset. An asset is publishable because it appears in approved_assets, never because it is served from the supplier's domain. Every asset not listed remains Reference Only - Not Published, including the two exercised on the private preview. The internal REFERENCE_ONLY state was never a refusal by BIOBUILDS; it was PlotNua's own publication restriction, and the founder has lifted it for the six selected assets only.",
+        "conditions_on_every_use": [
+          "Caption: BIOBUILDS model imagery",
+          "Credit: © BIOBUILDS",
+          "A working link to https://www.biobuilds.com/",
+          "No PlotNua surface describes the medium: grant condition 7 stands until BIOBUILDS answers.",
+          "No surface implies the imagery shows a completed installation in Ireland."
+        ]
+      },
+      "approved_assets": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg",
+          "product_code": "PROD-000523",
+          "product_name": "BIOBUILDS Wanderlust",
+          "role": "exterior",
+          "primary": true,
+          "alt": "The BIOBUILDS Wanderlust 48 seen from outside, a timber-clad single-storey building with full-height glazing."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg",
+          "product_code": "PROD-000523",
+          "product_name": "BIOBUILDS Wanderlust",
+          "role": "interior",
+          "primary": false,
+          "alt": "Inside the BIOBUILDS Wanderlust 48, an open living space with timber finishes and glazing to the garden."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg",
+          "product_code": "PROD-000523",
+          "product_name": "BIOBUILDS Wanderlust",
+          "role": "interior",
+          "primary": false,
+          "alt": "A bedroom in the BIOBUILDS Wanderlust 48, with timber walls and a window to the garden."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg",
+          "product_code": "PROD-000524",
+          "product_name": "BIOBUILDS Serenity",
+          "role": "exterior",
+          "primary": true,
+          "alt": "The BIOBUILDS Serenity 95 seen from outside, a larger timber-clad house with extensive glazing."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg",
+          "product_code": "PROD-000524",
+          "product_name": "BIOBUILDS Serenity",
+          "role": "interior",
+          "primary": false,
+          "alt": "Inside the BIOBUILDS Serenity 95, an open-plan living and dining space with timber finishes."
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg",
+          "product_code": "PROD-000524",
+          "product_name": "BIOBUILDS Serenity",
+          "role": "interior",
+          "primary": false,
+          "alt": "A bathroom in the BIOBUILDS Serenity 95, with tiled surfaces and fixed sanitaryware."
+        }
+      ],
+      "withheld_assets": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/wall-section-3.0.26fqr4wmqyq13.jpg",
+          "reason": "a construction detail of the wall build-up, not a product"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg",
+          "reason": "a process shot of a module being craned, not a product"
+        }
       ]
     },
     {

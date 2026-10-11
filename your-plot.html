@@ -37995,6 +37995,19 @@
           Object.prototype.toString.call(p.price.commercialTerms) === '[object Array]')
           ? p.price.commercialTerms : null
       } : null),
+      /* AUTHORISED IMAGERY, STRAIGHT INTO THE EXISTING GOVERNED LAYER.
+         pnImageRightsOk(), pnAuthorisedImage(), pnAuthorisedImages() and the
+         shared gallery already refuse an image missing its url, credit,
+         supplier, rightsRecord or permittedPrefix, refuse any URL that does
+         not begin with that prefix, and refuse anything not https. Passing
+         the generator's block through means Results, Compare, the hero, the
+         cards and the gallery all work with no new display code, and the
+         Garden Room architecture is untouched.
+         A product with no authorised asset passes undefined and every
+         surface takes its existing no-image path. */
+      imagery: p.imagery || undefined,
+      imagerySet: (Object.prototype.toString.call(p.imagerySet) === '[object Array]'
+                   && p.imagerySet.length) ? p.imagerySet : undefined,
       /* Irish availability, in the shape pnIrishConfirmed already reads. */
       irishAvailability: !!(p.irish && p.irish.state === 'CONFIRMED'),
       irishAvailabilityConfirmationState:

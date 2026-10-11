@@ -222,6 +222,101 @@ def _gate_index():
     return idx
 
 
+# ── AUTHORISED IMAGERY, BY ENUMERATION ────────────────────────────────────
+#
+# Reads the same canonical rights records the gate above reads. An asset
+# reaches a homeowner only by being named in approved_assets AND matching the
+# product by productCode. Being served from the supplier's own domain is not
+# enough and never was: the manifest scopes by host and prefix, which would
+# pass any image on that host, and this is the layer that makes the row
+# narrower than the gate would enforce.
+#
+# The emitted shape is the one your-plot.html's existing governed imagery
+# layer already reads for the Garden Room pathway -- url, alt, credit,
+# supplier, rightsRecord, permittedPrefix, linkBack, presentationTier -- so
+# no display code is written anywhere for this.
+_IMAGERY = None
+
+
+def _imagery_index():
+    """productCode -> {primary, set} of authorised images, or {} when none."""
+    try:
+        doc = json.loads(RIGHTS.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        fail("the imagery index could not read image-rights-records.json "
+             "(%s). Refusing to generate rather than publish ungoverned "
+             "imagery." % e)
+    rows = doc if isinstance(doc, list) else next(
+        (v for v in doc.values() if isinstance(v, list) and v and
+         isinstance(v[0], dict)), [])
+    idx = {}
+    for r in rows:
+        assets = r.get("approved_assets")
+        if not isinstance(assets, list) or not assets:
+            continue
+        org = (r.get("organisation_name") or "").strip()
+        prefix = r.get("permitted_domain") or ""
+        ref = r.get("atlas_permission_ref") or r.get("organisation_code")
+        caption = ((r.get("asset_approval") or {}).get("conditions_on_every_use")
+                   or [])
+        credit = r.get("required_credit")
+        if not (org and ref and credit):
+            # A record missing the attribution conditions cannot authorise a
+            # public image, whatever its asset list says.
+            continue
+        for a in assets:
+            url = a.get("url") or ""
+            code = a.get("product_code")
+            alt = a.get("alt")
+            if not (url.startswith("https://") and code and alt):
+                continue
+            # The narrow prefix the asset list itself was built from, not the
+            # bare domain: a shared host is never enough to identify one
+            # supplier's files.
+            media = url[:url.rfind("/") + 1]
+            im = {
+                "url": url,
+                "alt": alt,
+                "credit": credit,
+                "supplier": org,
+                "rightsRecord": ref,
+                "permittedPrefix": media,
+                "linkBack": "https://www." + prefix.lstrip("www.") + "/"
+                            if prefix else None,
+                "presentationTier": "A",
+                "caption": "BIOBUILDS model imagery" if org == "BIOBUILDS"
+                           else None,
+            }
+            slot = idx.setdefault(code, {"primary": None, "set": []})
+            slot["set"].append(im)
+            if a.get("primary") and slot["primary"] is None:
+                slot["primary"] = im
+    # Primary first, always: the hero and the gallery's first frame are then
+    # the same picture by construction.
+    for code, slot in idx.items():
+        if slot["primary"] is None and slot["set"]:
+            slot["primary"] = slot["set"][0]
+        p = slot["primary"]
+        slot["set"] = [p] + [i for i in slot["set"] if i["url"] != p["url"]]
+    return idx
+
+
+def _approved_imagery(product_code, held):
+    """The imagery block for this product, or (None, None).
+
+    A HELD product gets nothing. The gate and the imagery cannot be allowed
+    to disagree about whether a supplier is public."""
+    if held:
+        return (None, None)
+    global _IMAGERY
+    if _IMAGERY is None:
+        _IMAGERY = _imagery_index()
+    slot = _IMAGERY.get(product_code)
+    if not slot:
+        return (None, None)
+    return (slot["primary"], slot["set"])
+
+
 _GATE = None
 
 
@@ -327,6 +422,12 @@ def main():
             # generator did. Two locks, neither reading the other's field.
             "publicVisibility": "HOLD" if hold else "PUBLISHABLE",
             "holdReason": hold,
+            # Written only for an enumerated approved asset matched to this
+            # product code, and never for a held supplier.
+            "imagery": _approved_imagery(
+                txt(cell(p, "Product Code")) or None, bool(hold))[0],
+            "imagerySet": _approved_imagery(
+                txt(cell(p, "Product Code")) or None, bool(hold))[1],
         }
         # area.text is evidence prose; sanitise it through the same hygiene the
         # Garden Room export uses, and drop it if nothing publishable remains.
