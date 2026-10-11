@@ -113,6 +113,61 @@ def derive_signals(basis: str):
 RIGHTS = Path(__file__).resolve().parent.parent.parent / "image-rights-records.json"
 
 
+# The four reasons no decision may waive, kept in step with NEVER_WAIVABLE in
+# atlas-tools/publication-gate.mjs. A founder can accept the risk of
+# publishing early against a grant PlotNua HOLDS; a founder cannot conjure a
+# grant that was never given. prove-supplier-publication-gate.mjs (PG11)
+# refuses if this list and the JS one ever drift apart.
+GATE_NEVER_WAIVABLE = (
+    "permission-declined",
+    "no-permission",
+    "permission-conditional-unresolved",
+    "permission-state-missing",
+)
+
+GATE_WAIVABLE = (
+    "listing-review-awaiting-confirmation",
+    "listing-review-changes-requested",
+    "listing-review-state-missing",
+    "assets-not-approved",
+)
+
+
+def _founder_waives(row):
+    """The hold reasons a well-formed founder exception on this row accepts.
+
+    THIRD MIRROR OF ONE RULE, and the one that was missed when the exception
+    mechanism was built: the generator keeps its own copy of the gate so a
+    held supplier cannot be published even if the runtime reader is bypassed,
+    and that copy knew nothing about exceptions. Regenerating would have put
+    an authorised supplier straight back on HOLD with every guard green.
+
+    A malformed exception waives NOTHING -- it does not half-work and it does
+    not fail open -- and the permission class can never be waived however the
+    record is written."""
+    ex = row.get("founder_exception")
+    if not isinstance(ex, dict):
+        return ()
+    if not isinstance(ex.get("authorised_by"), str) or not ex["authorised_by"]:
+        return ()
+    date = str(ex.get("decision_date") or "")
+    if len(date) != 10 or date[4] != "-" or date[7] != "-":
+        return ()
+    if ex.get("supplier_confirmation_received") is not False:
+        return ()
+    if len(str(ex.get("basis") or "").strip()) < 20:
+        return ()
+    waives = ex.get("waives")
+    if not isinstance(waives, list) or not waives:
+        return ()
+    for w in waives:
+        if w in GATE_NEVER_WAIVABLE or w not in GATE_WAIVABLE:
+            # One bad entry invalidates the whole exception, exactly as
+            # founderExceptionProblems() does in the JS gate.
+            return ()
+    return tuple(waives)
+
+
 def _gate_index():
     """organisation name (upper) -> holdReason, or None when publishable.
 
@@ -139,22 +194,31 @@ def _gate_index():
             # A rights row that predates the gate fields. It governs imagery
             # only and says nothing about publication, so it holds nobody.
             continue
-        if perm == "DECLINED":
-            idx[name] = "permission-declined"
-        elif perm == "NONE":
-            idx[name] = "no-permission"
-        elif perm == "CONDITIONAL":
-            idx[name] = "permission-conditional-unresolved"
-        elif perm != "GRANTED":
-            idx[name] = "permission-state-missing"
-        elif rev == "AWAITING_CONFIRMATION":
-            idx[name] = "listing-review-awaiting-confirmation"
-        elif rev == "CHANGES_REQUESTED":
-            idx[name] = "listing-review-changes-requested"
-        elif rev not in ("NOT_REQUIRED", "CONFIRMED"):
-            idx[name] = "listing-review-state-missing"
-        elif assets and assets != "APPROVED":
-            idx[name] = "assets-not-approved"
+        # Conditions in the gate's fixed order; the first unsatisfied one
+        # decides. Written as a list rather than a chain of elifs so the
+        # founder-exception filter below can be applied uniformly instead of
+        # being threaded through eight branches.
+        conditions = [
+            (perm not in ("GRANTED", "CONDITIONAL", "DECLINED", "NONE"),
+             "permission-state-missing"),
+            (rev not in ("NOT_REQUIRED", "AWAITING_CONFIRMATION", "CONFIRMED",
+                         "CHANGES_REQUESTED"), "listing-review-state-missing"),
+            (perm == "DECLINED", "permission-declined"),
+            (perm == "NONE", "no-permission"),
+            (perm == "CONDITIONAL", "permission-conditional-unresolved"),
+            (rev == "AWAITING_CONFIRMATION",
+             "listing-review-awaiting-confirmation"),
+            (rev == "CHANGES_REQUESTED", "listing-review-changes-requested"),
+            (bool(assets) and assets != "APPROVED", "assets-not-approved"),
+        ]
+        accepted = _founder_waives(r)
+        for unsatisfied, reason in conditions:
+            if not unsatisfied:
+                continue
+            if reason in accepted:
+                continue
+            idx[name] = reason
+            break
     return idx
 
 

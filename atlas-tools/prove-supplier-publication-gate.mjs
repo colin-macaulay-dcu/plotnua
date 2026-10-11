@@ -22,6 +22,7 @@ import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { derivePublicVisibility, gateIntegrityProblems,
+         founderExceptionProblems,
          PRE_LIVE_REVIEW_LANGUAGE } from './publication-gate.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -137,7 +138,29 @@ console.log(`  ${gated.length} gated record(s) under test\n`);
   const d = derivePublicVisibility(probe);
   const real = gated.filter(r => (r.permission || {}).state === 'GRANTED' &&
                                  (r.listing_review || {}).state === 'AWAITING_CONFIRMATION');
-  const allHeld = real.every(r => derivePublicVisibility(r).visibility === 'HOLD');
+  /* AMENDED 11 October 2026, when the founder authorised publishing
+     BIOBUILDS before its review came back.
+
+     PG3's point is that an OUTSTANDING REVIEW HOLDS A SUPPLIER. That is
+     unchanged, and the synthetic probe above -- which carries no exception --
+     still has to derive HOLD, which is the core of this guard.
+
+     What is now allowed is the one thing that was always meant to be
+     possible: a named founder decision, recorded on that supplier's own
+     record, that explicitly accepts this exact condition. The exclusion is
+     deliberately narrow -- the exception must be WELL-FORMED and must name
+     listing-review-awaiting-confirmation by hand. A record that is simply
+     publishable with an outstanding review and no such decision still fails
+     here, and prove-founder-exception.mjs (FX14) separately asserts that no
+     other supplier has acquired one. */
+  const excepted = r => {
+    const ex = r.founder_exception;
+    return !!ex && founderExceptionProblems(r).length === 0 &&
+           (ex.waives || []).includes('listing-review-awaiting-confirmation');
+  };
+  const unexplained = real.filter(r =>
+    derivePublicVisibility(r).visibility !== 'HOLD' && !excepted(r));
+  const allHeld = !unexplained.length;
 
   /* THE CAPABILITY PROOF FOUND THIS HOLE. The first version of PG3 checked
      the synthetic probe plus "every real AWAITING record is HOLD". Flipping
@@ -158,12 +181,17 @@ console.log(`  ${gated.length} gated record(s) under test\n`);
   (d.visibility === 'HOLD' &&
    d.holdReason === 'listing-review-awaiting-confirmation' &&
    allHeld && !unearned.length)
-    ? ok('PG3 AWAITING derives to HOLD, and CONFIRMED requires a date',
-         `${real.length} awaiting, ${gated.filter(r => (r.listing_review || {}).state === 'CONFIRMED').length} confirmed`)
+    ? ok('PG3 AWAITING derives to HOLD unless a founder decision says '
+         + 'otherwise, and CONFIRMED requires a date',
+         `${real.length} awaiting (${real.filter(excepted).length} by founder `
+         + `decision), ${gated.filter(r => (r.listing_review || {}).state === 'CONFIRMED').length} confirmed`)
     : bad('PG3 AWAITING derives to HOLD, and CONFIRMED requires a date',
           unearned.length
             ? `CONFIRMED with no confirmed_at: ${unearned.join(',')}`
-            : JSON.stringify(d));
+            : unexplained.length
+              ? `publishable with an outstanding review and no founder `
+                + `decision: ${unexplained.map(r => r.organisation_code).join(',')}`
+              : JSON.stringify(d));
 }
 
 /* ── PG4 · a pre-live-review grant cannot claim NOT_REQUIRED ──────────── */
@@ -312,6 +340,17 @@ spec = importlib.util.spec_from_file_location(
 m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
 print(repr(m.publication_hold("BIOBUILDS")))
 print(repr(m.publication_hold("Shomera")))
+print(repr(m.GATE_NEVER_WAIVABLE))
+import json, copy, pathlib as P
+rec = json.loads((root / "image-rights-records.json").read_text())
+rows = rec["records"] if isinstance(rec, dict) else rec
+d = copy.deepcopy(rec)
+tgt = [r for r in (d["records"] if isinstance(d, dict) else d)
+       if r.get("organisation_code") == "ORG-000153"][0]
+tgt.pop("founder_exception", None)
+P.Path("/tmp/pg11-no-exception.json").write_text(json.dumps(d))
+m.RIGHTS = P.Path("/tmp/pg11-no-exception.json"); m._GATE = None
+print(repr(m.publication_hold("BIOBUILDS")))
 `;
   let out = '';
   try {
@@ -322,13 +361,41 @@ print(repr(m.publication_hold("Shomera")))
     // passing or failing on an instrument that was never there.
     bad('PG11 the generator itself holds BIOBUILDS', 'UNREACHABLE: no generator under this root');
   } else {
+  /* RE-AIMED 11 October 2026, with the founder's decision to publish.
+     PG11 used to assert that the generator HOLDS BIOBUILDS. That was the
+     correct intent until the decision was taken, and it is now the wrong
+     one -- so this is re-aimed rather than relaxed, and it now asserts four
+     things instead of two.
+
+     IT EXISTS BECAUSE OF A REAL NEAR-MISS. The exception was built, the
+     record written, the JS derivation agreed, eighteen assertions passed and
+     twenty mutations proved capable -- and the GENERATOR'S own copy of the
+     rule still returned 'listing-review-awaiting-confirmation'. Regenerating
+     would have stamped HOLD onto both products and the authorised
+     publication would silently not have happened, with every guard green,
+     because every guard was pointed at the other two mirrors. This now
+     checks the third one, both ways round. */
   const lines = out.split('\n');
-  const held = (lines[0] || '').includes('listing-review-awaiting-confirmation');
-  const free = (lines[1] || '').trim() === 'None';
-  (held && free)
-    ? ok('PG11 the generator itself holds BIOBUILDS and frees an ungated supplier',
-         lines.join(' | '))
-    : bad('PG11 the generator itself holds BIOBUILDS and frees an ungated supplier', out.slice(0, 220));
+  const freedByDecision = (lines[0] || '').trim() === 'None';
+  const ungatedFree = (lines[1] || '').trim() === 'None';
+  const forbidden = (lines[2] || '');
+  const mirrorsAgree = ['permission-declined', 'no-permission',
+                        'permission-conditional-unresolved',
+                        'permission-state-missing']
+    .every(r => forbidden.includes(r));
+  // And WITHOUT the decision the same generator must hold it again, which is
+  // what proves the exception is doing the work rather than the gate having
+  // been loosened.
+  const heldWithoutIt =
+    (lines[3] || '').includes('listing-review-awaiting-confirmation');
+  (freedByDecision && ungatedFree && mirrorsAgree && heldWithoutIt)
+    ? ok('PG11 the generator frees BIOBUILDS on the founder decision, holds '
+         + 'it again without one, and shares the unwaivable list',
+         `biobuilds=${lines[0]} ungated=${lines[1]} without=${(lines[3] || '').slice(0, 42)}`)
+    : bad('PG11 the generator agrees with the decision and with the JS gate',
+          `freed=${freedByDecision} ungated=${ungatedFree} `
+          + `mirrors=${mirrorsAgree} heldWithout=${heldWithoutIt} :: `
+          + out.slice(0, 200));
   }
 }
 

@@ -62,12 +62,16 @@ PRODUCTS, 2 descriptions rewritten
   explicitly labelled AWAITING RE-VERIFICATION rather than stated as fact.
   Wanderlust's description records that "48" is a model name, not an area.
 
-STILL OPEN
-  Wanderlust interior area 35.54 m2 as a FeatureValue. Deliberately last.
-  The gate now holds BIOBUILDS regardless of area (PG6, PG11, PG12), so this
-  is no longer the publication trigger it was -- but it is the one write that
-  used to be, and it is better done deliberately than at the end of a long
-  session. One write, then regenerate.
+CLOSED 11 October 2026 -- THIS ENTRY WAS STALE
+  Wanderlust interior area 35.54 m2 as a FeatureValue. Recorded here as still
+  open; it is not. Verified against the live base on 11 October 2026:
+  FeatureValues receQnVnj37Zfnv5o carries Value Number
+  35.54, Unit m2, Evidence Scope Product-Specific, Status Verified, against
+  Feature Internal Floor Area (rechP7fg3NRe4bWXD) on BIOBUILDS Wanderlust
+  (recIBexeX8au55mVn). Its Value Text records the 48-in-the-model-name
+  distinction. The write had already been made; this note had not been
+  updated. Driving the real _area_evidence() and class_3a() over that record
+  returns area=35.54, basis=VERIFIED_INTERNAL, class3a=CANDIDATE.
 
 ---
 

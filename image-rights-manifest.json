@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.image-rights.manifest.v1",
-  "generated": "2026-10-10",
+  "generated": "2026-10-11",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
   "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
   "reality_note": "PlotNua publishes supplier imagery for 12 supplier(s) under a live grant: TRIQBRIQ AG, Powersheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes, BIOBUILDS, Tanktribe, OGNYX, Irish Sauna Company. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
@@ -253,8 +253,25 @@
         "note": "Mateus reviewed the original preview and asked for factual corrections on 11 October 2026. The corrections are applied and the revised preview awaits his confirmation. This is a granted permission's condition being exercised, not a permission withheld."
       },
       "asset_approval_state": "REFERENCE_ONLY",
-      "public_visibility": "HOLD",
-      "hold_reason": "listing-review-awaiting-confirmation"
+      "public_visibility": "PUBLISHABLE",
+      "founder_exception": {
+        "authorised_by": "Colin MacAulay",
+        "role": "Founder",
+        "decision_date": "2026-10-11",
+        "decision_ref": "FX-BIOBUILDS-PUBLISH-20261011",
+        "supplier_confirmation_received": false,
+        "waives": [
+          "listing-review-awaiting-confirmation",
+          "assets-not-approved"
+        ],
+        "basis": "BIOBUILDS granted written permission on 2 October 2026 to feature its products and to use selected imagery with credit and a link back (C2-GRANT-BIOBUILDS-20261002). The supplier then asked for factual corrections on 11 October 2026; those corrections are implemented in Atlas and in the private preview. The founder has decided to publish the corrected listing without waiting for the supplier's confirmation of the revised preview, and accepts responsibility for proceeding before that confirmation is received.",
+        "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results, Compare and search. Does NOT authorise publication of BIOBUILDS imagery on any public page: the imagery grant remains scoped by this record's own conditions to the private noindexed review preview, the public Additional Home payload carries no image block, and prove-biobuilds-containment.mjs continues to enforce it.",
+        "withdrawal": "BIOBUILDS may request change or removal at any time and PlotNua complies, exactly as the original grant provides. If the supplier objects to the published listing, remove this exception and the gate returns the product to HOLD with no other change."
+      },
+      "waived_conditions": [
+        "listing-review-awaiting-confirmation",
+        "assets-not-approved"
+      ]
     },
     {
       "organisation_record": "reclPfKiOQHdGJNGK",

@@ -39,23 +39,37 @@ const ORG = 'ORG-000153';
 
 /* Each case mutates one disposable tree. `fn` receives a tiny helper API. */
 const CASES = [
+  /* RE-AIMED 11 October 2026, when the founder authorised publication. This
+     case used to hand-set PUBLISHABLE, which the derivation now produces by
+     itself -- so the mutation became a no-op and the proof reported it BLIND.
+     The defect PG1 owns is a hand-set value CONTRADICTING the derivation, and
+     the contradiction now runs the other way. */
   ['C-PG1', 'PG1', 'a hand-set public_visibility contradicts the derivation',
-    t => t.record(r => { r.public_visibility = 'PUBLISHABLE'; })],
+    t => t.record(r => { r.public_visibility = 'HOLD';
+                         r.hold_reason = 'listing-review-awaiting-confirmation'; })],
 
   /* RE-AIMED 11 October 2026. This case used to flip class3a to CANDIDATE.
      Under the corrected architecture that is no longer a defect -- a held
      supplier's product MAY be a Class 3A candidate on its technical merits,
      and saying so is the point. The defect worth catching is the product
      being marked PUBLISHABLE while its supplier is held. */
-  ['C-PG2', 'PG2', 'a held supplier gains a PUBLISHABLE product',
-    t => t.universe(d => {
+  /* RE-AIMED AGAIN, 11 October 2026. The founder's decision made BIOBUILDS
+     genuinely publishable, so marking its product PUBLISHABLE stopped being a
+     contradiction and the proof reported this BLIND. The defect still worth
+     catching is a product published while its SUPPLIER'S OWN RECORD holds it,
+     so the mutation now removes the founder decision and leaves the product
+     published -- which is precisely the state a half-finished revert leaves
+     behind. */
+  ['C-PG2', 'PG2', 'a product stays published after the founder decision is removed',
+    t => { t.record(r => { delete r.founder_exception; });
+           t.universe(d => {
       d.publicationGate = { version: 'supplier-publication-gate-v1',
                             heldOrganisations: ['BIOBUILDS'] };
       const p = d.products.find(x => /BIOBUILDS/i.test(x.organisation || ''));
       p.area = { number: 35.54, unit: 'm²', measurementBasis: 'VERIFIED_INTERNAL' };
       p.class3a = { state: 'CANDIDATE', reason: null, caveats: [] };
       p.publicVisibility = 'PUBLISHABLE';
-    })],
+           }); }],
 
   ['C-PG2b', 'PG2b', 'the hold is written back into the Class 3A finding',
     t => t.universe(d => {
@@ -86,12 +100,18 @@ const CASES = [
   ['C-PG5', 'PG5', 'a GRANTED supplier is labelled no-permission',
     t => t.record(r => { r.hold_reason = 'no-permission'; })],
 
+  /* RE-AIMED 11 October 2026. The injected branch used to return PUBLISHABLE,
+     which is what BIOBUILDS now derives anyway, so varying the area changed
+     nothing and the proof reported this BLIND. It now returns HOLD for an
+     in-band area, so a measurement genuinely moves the visibility -- which is
+     the one thing PG6 exists to forbid. */
   ['C-PG6', 'PG6', 'the derivation is made to read area',
     t => t.gateModule(s => s.replace(
       'const assets = record && record.asset_approval_state;',
       'const assets = record && record.asset_approval_state;\n' +
       '  if (record && record.area && record.area.number >= 32 && ' +
-      'record.area.number <= 45) return { visibility: "PUBLISHABLE", holdReason: null };'))],
+      'record.area.number <= 45) return { visibility: "HOLD", '
+      + 'holdReason: "area-in-band", waived: [] };'))],
 
   ['C-PG7', 'PG7', 'one priced product gains a basis and the rest do not',
     t => t.universe(d => {
@@ -112,10 +132,16 @@ const CASES = [
       rows[0].productCategory = 'Additional Home';
     })],
 
+  /* RE-AIMED 11 October 2026. The generator's elif chain became a conditions
+     list when it learned about founder exceptions, so this mutation stopped
+     matching anything and the proof correctly reported it BLIND. Pointed at
+     the new line: with the review condition dead, the generator stops holding
+     a supplier whose review is outstanding, which PG11's
+     "held again without a decision" arm is there to catch. */
   ['C-PG11', 'PG11', 'the generator gate is made to ignore the review state',
     t => t.generator(src => src.replace(
-      'elif rev == "AWAITING_CONFIRMATION":',
-      'elif False:'))],
+      '(rev == "AWAITING_CONFIRMATION",\n             "listing-review-awaiting-confirmation"),',
+      '(False, "listing-review-awaiting-confirmation"),'))],
 
   ['C-PG12', 'PG12', 'the runtime visibility check is deleted entirely',
     t => t.plot(s => s.replace(

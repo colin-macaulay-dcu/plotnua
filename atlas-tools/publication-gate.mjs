@@ -38,11 +38,93 @@ export const ASSET_STATES = ["APPROVED", "REFERENCE_ONLY", "WITHDRAWN"];
 export const PRE_LIVE_REVIEW_LANGUAGE =
   /before it goes live|check it first|send us the listing|see the listing|review (?:it|the listing) (?:first|before)/i;
 
+/* ── THE FOUNDER-AUTHORISED EXCEPTION ──────────────────────────────────────
+   A founder may decide to publish a supplier before one of the gate's
+   conditions is satisfied, and own that decision. What a founder may NOT do
+   is make the record say the condition was met.
+
+   So an exception does not edit a condition, remove it, or relax it for
+   anyone else. It sits on ONE supplier's record, names the EXACT hold reasons
+   it accepts the risk of, and travels in the derivation's output so no
+   surface can later report a waived hold as a satisfied one.
+
+   THE LINE THAT CANNOT MOVE. A permission that was never given, was declined,
+   or was withdrawn cannot be waived by anybody. The gate exists so PlotNua
+   does not publish a supplier's material without the supplier's permission; a
+   founder can accept the risk of publishing early against a grant PlotNua
+   HOLDS, and cannot conjure a grant that was never made. Without this list
+   the mechanism would be a master key. */
+export const NEVER_WAIVABLE = [
+  "permission-declined",
+  "no-permission",
+  "permission-conditional-unresolved",
+  "permission-state-missing"
+];
+
+/* Everything else is waivable ON AN EXPLICIT, NAMED DECISION -- enumerated
+   rather than derived as "whatever is not forbidden", so adding a new hold
+   reason does not silently make it waivable. */
+export const WAIVABLE_HOLD_REASONS = [
+  "listing-review-awaiting-confirmation",
+  "listing-review-changes-requested",
+  "listing-review-state-missing",
+  "assets-not-approved"
+];
+
 /**
- * Derive public visibility. Returns { visibility, holdReason }.
- * holdReason is null when PUBLISHABLE, and otherwise names the FIRST
- * unsatisfied condition in a fixed order, so the reason is stable and
- * testable rather than dependent on evaluation order.
+ * Is this record's founder_exception usable? Returns an array of problems;
+ * empty means usable. A malformed exception waives NOTHING -- it does not
+ * half-work, and it does not fail open.
+ */
+export function founderExceptionProblems(record) {
+  const ex = record && record.founder_exception;
+  if (!ex) return ["no founder_exception on this record"];
+  const out = [];
+  if (!ex.authorised_by || typeof ex.authorised_by !== "string") {
+    out.push("authorised_by must name the person who decided");
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(ex.decision_date || ""))) {
+    out.push("decision_date must be an ISO date");
+  }
+  if (!Array.isArray(ex.waives) || !ex.waives.length) {
+    out.push("waives must list the exact hold reasons being accepted");
+  } else {
+    for (const r of ex.waives) {
+      if (NEVER_WAIVABLE.includes(r)) {
+        out.push(`${r} can never be waived by anyone`);
+      } else if (!WAIVABLE_HOLD_REASONS.includes(r)) {
+        out.push(`${r} is not a recognised waivable hold reason`);
+      }
+    }
+  }
+  /* The decision's whole character is that the supplier has NOT come back.
+     Recording that explicitly, as a boolean on the exception itself, is what
+     stops the file drifting into implying confirmation. It must be present
+     and it must be false -- an exception is not the place to record a
+     confirmation that arrived. */
+  if (ex.supplier_confirmation_received !== false) {
+    out.push("supplier_confirmation_received must be present and false: an "
+             + "exception records proceeding WITHOUT confirmation");
+  }
+  if (!ex.basis || String(ex.basis).trim().length < 20) {
+    out.push("basis must say why the decision was taken");
+  }
+  return out;
+}
+
+/**
+ * Derive public visibility. Returns { visibility, holdReason, waived }.
+ *
+ * holdReason names the FIRST unsatisfied condition in a fixed order, so the
+ * reason is stable and testable rather than dependent on evaluation order.
+ * `waived` lists any conditions that were unsatisfied and explicitly accepted
+ * by a well-formed founder exception; it is an empty array otherwise.
+ *
+ * The conditions below are the SAME conditions, in the SAME order, with the
+ * SAME vocabulary as before the exception mechanism existed. A record with no
+ * founder_exception derives exactly what it derived before, which
+ * prove-founder-exception.mjs asserts over every real record and a synthetic
+ * matrix rather than leaving it to inspection.
  */
 export function derivePublicVisibility(record) {
   const permission = (record && record.permission) || {};
@@ -51,38 +133,38 @@ export function derivePublicVisibility(record) {
   const rev = review.state;
   const assets = record && record.asset_approval_state;
 
-  if (!PERMISSION_STATES.includes(perm)) {
-    return { visibility: "HOLD", holdReason: "permission-state-missing" };
-  }
-  if (!REVIEW_STATES.includes(rev)) {
-    return { visibility: "HOLD", holdReason: "listing-review-state-missing" };
+  /* Every condition, in order. The first unsatisfied one decides, exactly as
+     the chain of early returns did. */
+  const conditions = [
+    [!PERMISSION_STATES.includes(perm), "permission-state-missing"],
+    [!REVIEW_STATES.includes(rev), "listing-review-state-missing"],
+    [perm === "DECLINED", "permission-declined"],
+    [perm === "NONE", "no-permission"],
+    [perm === "CONDITIONAL", "permission-conditional-unresolved"],
+    // perm === GRANTED from here.
+    [rev === "AWAITING_CONFIRMATION", "listing-review-awaiting-confirmation"],
+    [rev === "CHANGES_REQUESTED", "listing-review-changes-requested"],
+    // The pre-existing Atlas gate, kept as a condition rather than replaced.
+    [!!assets && assets !== "APPROVED", "assets-not-approved"]
+  ];
+
+  /* An exception is consulted ONLY if it is well-formed, and waives ONLY the
+     reasons it names. A malformed one waives nothing. */
+  const ex = record && record.founder_exception;
+  const exUsable = ex && founderExceptionProblems(record).length === 0;
+  const accepted = exUsable ? ex.waives.slice() : [];
+
+  const waived = [];
+  for (const [unsatisfied, reason] of conditions) {
+    if (!unsatisfied) continue;
+    if (accepted.includes(reason) && !NEVER_WAIVABLE.includes(reason)) {
+      waived.push(reason);
+      continue;
+    }
+    return { visibility: "HOLD", holdReason: reason, waived: waived };
   }
 
-  if (perm === "DECLINED") {
-    return { visibility: "HOLD", holdReason: "permission-declined" };
-  }
-  if (perm === "NONE") {
-    return { visibility: "HOLD", holdReason: "no-permission" };
-  }
-  if (perm === "CONDITIONAL") {
-    return { visibility: "HOLD", holdReason: "permission-conditional-unresolved" };
-  }
-
-  // perm === GRANTED from here.
-  if (rev === "AWAITING_CONFIRMATION") {
-    return { visibility: "HOLD",
-             holdReason: "listing-review-awaiting-confirmation" };
-  }
-  if (rev === "CHANGES_REQUESTED") {
-    return { visibility: "HOLD", holdReason: "listing-review-changes-requested" };
-  }
-
-  // The pre-existing Atlas gate, kept as a condition rather than replaced.
-  if (assets && assets !== "APPROVED") {
-    return { visibility: "HOLD", holdReason: "assets-not-approved" };
-  }
-
-  return { visibility: "PUBLISHABLE", holdReason: null };
+  return { visibility: "PUBLISHABLE", holdReason: null, waived: waived };
 }
 
 /**
@@ -119,6 +201,36 @@ export function gateIntegrityProblems(record) {
   if (permission.state === "GRANTED" && derived.holdReason === "no-permission") {
     out.push("holdReason says no-permission for a supplier whose permission " +
              "state is GRANTED");
+  }
+
+  /* PG14 · AN EXCEPTION IS NOT A CONFIRMATION, AND MUST NEVER BECOME ONE.
+     The failure mode this exists for: somebody tidies the record later,
+     notices the supplier is published, and "completes" the review state to
+     match. That would turn a founder's accepted risk into a supplier's
+     endorsement, in writing, on PlotNua's own file. */
+  const ex = record && record.founder_exception;
+  if (ex) {
+    const problems = founderExceptionProblems(record);
+    if (problems.length) {
+      out.push("founder_exception is malformed and therefore waives nothing: "
+               + problems.join("; "));
+    }
+    if (ex.supplier_confirmation_received === false &&
+        review.state === "CONFIRMED") {
+      out.push("the record says the supplier has NOT confirmed and also sets "
+               + "listing_review.state to CONFIRMED");
+    }
+    if (ex.supplier_confirmation_received === false && review.confirmed_at) {
+      out.push("the record says the supplier has NOT confirmed and also "
+               + "carries a confirmed_at timestamp");
+    }
+    /* An exception that waives nothing real is a note pretending to be a
+       decision; it should be removed rather than left to rot. */
+    if (!problems.length && !derived.waived.length) {
+      out.push("founder_exception waives " + JSON.stringify(ex.waives) +
+               " but no such condition is unsatisfied; the exception is "
+               + "inert and should be removed");
+    }
   }
 
   return out;
