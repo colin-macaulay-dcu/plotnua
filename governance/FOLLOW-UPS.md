@@ -268,3 +268,69 @@ in. Two separate deployment stops have now traced back to that one week of
 intakes. A pre-flight that lists Additional Home products missing a code or a
 habitation classification would have surfaced both before either stopped a
 deployment.
+
+## MYCABIN-DESC-001 · The Description field holds a research dossier
+Opened 11 October 2026. **OUTSTANDING, and it is the bigger half of this.**
+
+The firewall stop was caused by one sentence. Fixing that sentence does not
+fix what it was sitting inside.
+
+The MyCabin intake of 28 September wrote a full curator's dossier into the
+Airtable **Description** field — the field the generator publishes — rather
+than into Notes. What now reaches `.description` for PROD-001194 includes:
+
+```
+SKU: ONE BED D 4070-44. WooCommerce product ID 31299, type simple.
+*** AREA IS PUBLISHED - ONE OF ONLY TWO PRODUCTS IN THE RANGE. ***
+MEASUREMENT BASIS: INTERNAL, STATED BY THE SUPPLIER.
+SUPPLIER DATA DEFECT - RECORDED, NOT CORRECTED:
+DEFECT 1 - LOG THICKNESS: spec table 45mm vs WooCommerce attribute 44mm.
+UNKNOWN remains UNKNOWN. NOTHING WAS INFERRED.
+```
+
+None of that is homeowner-facing copy. It is good research in the wrong field.
+
+WHY IT IS NOT FIXED HERE. The lead-phrase rule in `homeowner_text()` is a
+CLOSED vocabulary, and the labels in this dossier — SKU, PRICE, DIMENSIONS,
+CONSTRUCTION, WARRANTY, SHOWROOMS, PROPOSITION — are not internal markers.
+Several carry real homeowner value: warranty duration, dimensions, insulation
+build-up. Adding them all to the closed list would delete genuine evidence
+across 701 products to tidy two records, which is exactly the trade the
+function's own docstring warns against. That is a curation decision and a
+measurement exercise, not a line of regex, and it is the founder's call.
+
+CONTAINMENT TODAY. Both products are Class 3A `NOT_A_CANDIDATE`, so neither
+reaches Results. The descriptions sit in the artefact and would be shown by
+any surface that reads `.description` for an Additional Home product.
+
+THE REMEDY, in order of preference:
+  1. Move the dossier to Notes and write a short Description, in Airtable, by
+     a curator. No code change, and it fixes the class.
+  2. Failing that, extend the lead-phrase vocabulary — but only after
+     measuring, per label, how many of the 701 products would lose text and
+     what that text is.
+
+NOT A REASON TO DELAY THE BIOBUILDS DEPLOYMENT. The authorised release is
+Wanderlux and Serenity; these two MyCabin products reach no homeowner surface.
+But the next intake review should start here.
+
+## FW-PROP-001 · The property-assertion pattern is narrower than its name
+Opened 11 October 2026. Recorded, deliberately not widened.
+
+`PROPERTY_CLAIM_RE` matches `your (property|site|garden) (is|qualifies)`, so it
+caught `If your site is long and narrow` on PROD-001194 and PROD-001201. It
+does NOT catch the sibling record's siting sentence on PROD-001193:
+
+```
+SITING: "With a width of 7m and a depth of just 4m, it maximizes the room
+inside WITHOUT OVERTAKING YOUR GARDEN."
+```
+
+That is second-person language about the homeowner's garden, and it is still
+published. It makes no claim about what the garden IS, so it is a weaker case
+than the two that were caught — but it is the same family.
+
+Widening the pattern is a one-line change and a universe-wide blast radius, so
+it is recorded rather than done. If it is widened, re-run the pre/post
+comparison across all 701 products x 3 text fields, which is the measurement
+that made this fix safe: 0 outputs changed.

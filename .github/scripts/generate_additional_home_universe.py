@@ -20,7 +20,8 @@ import sys
 import time
 from pathlib import Path
 
-from atlas_common import cell, txt, homeowner_text, fail
+from atlas_common import (cell, txt, homeowner_text, fail,
+                           PROPERTY_CLAIM_RE)
 from additional_home_qualification import (
     RULE_VERSION, ADDITIONAL_HOME, CONFIRMED_HABITATION, HABITATION_STATES,
     qualify, class_3a, BAND_MIN, BAND_MAX, BAND_EDGE_TOLERANCE_M2,
@@ -73,9 +74,9 @@ FIREWALL = [
         a + "-qualification-v1" for a in ("additional-home", "garden" + "-room")))),
     ("governance directive", re.compile(r"DO NOT RANK|NOT new inference|PERSISTENCE of an accepted", re.I)),
     ("raw record id", re.compile(r"\brec[A-Za-z0-9]{14}\b")),
-    ("property assertion", re.compile(
-        r"\b(you (?:can|may) build|your (?:property|site|garden) (?:is|qualifies)"
-        r"|exempt(?:ion)? applies|planning permission (?:is )?(?:granted|not required))\b", re.I)),
+    # THE SAME OBJECT the remover in homeowner_text() uses, imported rather
+    # than copied, so the detector and the remover cannot drift apart.
+    ("property assertion", PROPERTY_CLAIM_RE),
 ]
 
 

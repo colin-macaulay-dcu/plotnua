@@ -91,6 +91,15 @@ IE_NO_PUBLISHED_ROUTE = (
 
 _REC_ID_RE = re.compile(r"\brec[A-Za-z0-9]{14}\b")
 
+# SECOND-PERSON PROPERTY CLAIMS. One definition, used by BOTH the remover in
+# homeowner_text() below and the public-disclosure firewall in the generators.
+# Two copies of this regex would drift, and the day they drift is the day the
+# remover stops removing what the detector still catches.
+PROPERTY_CLAIM_RE = re.compile(
+    r"\b(you (?:can|may) build|your (?:property|site|garden) (?:is|qualifies)"
+    r"|exempt(?:ion)? applies|planning permission (?:is )?(?:granted|not required))\b",
+    re.I)
+
 INTERNAL_LEAD_PHRASES = (
     "integrity:", "integrity issue", "integrity note", "do not rank",
     "do not use", "supplier status", "repair:", "gap:", "limitation:",
@@ -211,6 +220,34 @@ def homeowner_text(s: str):
                "", s)
     s = re.sub(r"\bflagged as an integrity issue\b", "flagged", s,
                flags=re.IGNORECASE)
+    # A SECOND-PERSON PROPERTY CLAIM IS NEVER PUBLISHED, WHOEVER WROTE IT.
+    #
+    # Measured 11 October 2026: two MyCabin records carried, inside the
+    # Description field, the supplier's own line
+    #     SITING: "If your site is long and narrow, this residential log
+    #     cabin is the perfect solution! ..."
+    # No lead phrase matched, because "SITING:" is not an internal label, and
+    # the public-disclosure firewall then refused the whole artefact on
+    # `your site is`. It was right to: in PlotNua's own description field that
+    # sentence reads as PlotNua telling a homeowner their site suits the
+    # building — and the same record says, two paragraphs later, that
+    # property-specific eligibility remains a Property Check matter.
+    #
+    # Deliberately about the CLAIM, not the label. Relabelling it, or a
+    # supplier writing the same thing with no label at all, does not get it
+    # published.
+    #
+    # CLAUSE-LEVEL, like the DO NOT RANK rule above, and placed here for a
+    # measured reason rather than a stylistic one: the sentence splitter below
+    # uses (?<=[.!?]), so a sentence ending in `."` is NOT a split point. A
+    # first attempt dropped whole SEGMENTS after the split, and on the real
+    # MyCabin text that merged the RESIDENTIAL CONFIGURATION sentence with the
+    # SITING one and deleted both — throwing away genuine homeowner evidence
+    # to remove a claim standing next to it. Only the sentence carrying the
+    # claim goes; the evidence either side of it stays, and the full text
+    # remains in Airtable for the next researcher.
+    s = re.sub(r"(?:^|(?<=[.!?]))\s*[^.!?]*?(?:" + PROPERTY_CLAIM_RE.pattern
+               + r")[^.!?]*[.!?]", " ", s, flags=re.IGNORECASE)
     parts = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9\"'])", s)
     kept = []
     for part in parts:
