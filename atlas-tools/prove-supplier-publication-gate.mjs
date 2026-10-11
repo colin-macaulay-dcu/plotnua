@@ -254,15 +254,22 @@ console.log(`  ${gated.length} gated record(s) under test\n`);
   const d = JSON.parse(readFileSync(UNIVERSE, 'utf8'));
   const priced = (d.products || []).filter(p => (p.price || {}).amount != null);
   const missing = priced.filter(p => !(p.price || {}).basis);
-  // The universe has not been regenerated yet, so today every priced product
-  // legitimately lacks `basis`. The guard states which world it is in rather
-  // than passing silently in either.
+  // THE MIGRATION BRANCH IS GONE, RETIRED 11 October 2026.
+  //
+  // This guard used to PASS when EVERY priced product lacked `basis`, on the
+  // grounds that the universe had not been regenerated yet and a uniform
+  // absence was the honest pre-migration state. That was true while it was
+  // true. The founder regenerated on 11 October and all 125 priced products
+  // now carry a basis, so the branch became unreachable in normal operation
+  // and dangerous in abnormal operation: a generator regression that stripped
+  // the field from every priced product would have been reported as "ok, not
+  // yet regenerated" — the guard excusing precisely what it exists to forbid.
+  //
+  // Uniform absence now fails like any other absence. With no special case
+  // left, one missing basis and all missing bases are the same code path,
+  // which is why C-PG7 can prove both by removing one.
   if (!priced.length) {
     bad('PG7 VAT basis present wherever an amount exists', 'no priced product found — vacuous');
-  } else if (missing.length === priced.length) {
-    ok('PG7 VAT basis — NOT YET REGENERATED, all ' + priced.length +
-       ' priced products predate the field; re-run after regeneration',
-       'pre-migration state, recorded not hidden');
   } else if (missing.length) {
     bad('PG7 VAT basis present wherever an amount exists',
         `${missing.length} of ${priced.length} priced products have an amount but no basis`);

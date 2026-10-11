@@ -334,3 +334,49 @@ Widening the pattern is a one-line change and a universe-wide blast radius, so
 it is recorded rather than done. If it is widened, re-run the pre/post
 comparison across all 701 products x 3 text fields, which is the measurement
 that made this fix safe: 0 outputs changed.
+
+## PG7-MIG-001 · The VAT-basis migration branch is retired
+Opened and CLOSED 11 October 2026.
+
+`prove-supplier-publication-gate-capability.mjs` reported C-PG7 BLIND after
+the founder's regeneration. Measured against the regenerated artefact:
+
+```
+priced products            125
+of those WITHOUT basis       0
+C-PG7 as written        sets basis = 'INCLUDES_VAT' on the first priced
+                        product -> the artefact was BYTE-IDENTICAL after
+                        the mutation. A no-op cannot be caught.
+```
+
+Before the regeneration no priced product had a basis, so setting one broke
+the uniformity PG7's migration branch excused, and PG7 reported it. After the
+regeneration every priced product already holds that exact value. The mutation
+aged out the moment the migration completed.
+
+TWO HALVES, ONE ROOT CAUSE — the migration finished and two things still
+assumed it had not:
+
+| | PG7 before | PG7 after |
+|---|---|---|
+| unmutated | PASS 125 priced | PASS 125 priced |
+| old mutation (set basis) | PASS | PASS |
+| new mutation (delete one basis) | REFUSE 1 of 125 | REFUSE 1 of 125 |
+| stress (delete ALL bases) | **PASS — migration branch** | REFUSE 125 of 125 |
+
+Row three says the mutation re-aim restores 14/14 on its own. Row four is why
+the branch had to go: a generator regression that stripped VAT basis from all
+125 priced products would have been reported "ok, not yet regenerated" — the
+guard excusing exactly what it exists to forbid.
+
+THE GENERAL LESSON, worth more than the fix. A guard written with a
+"not yet migrated" branch carries an expiry date that nothing enforces. The
+branch was honest when written and became a hole the day the migration
+completed, and the only reason it surfaced is that a mutation aimed at it went
+BLIND. Any future transitional branch should name the condition that retires
+it, so the guard fails rather than excuses once that condition is met.
+
+NOT A WEAKENING. The branch retirement removes an excuse; it adds none. PG7
+keeps its headline assertion, its vacuous arm and its pass arm. All 14
+mutations are caught by their owning guard, and the proof confirms the real
+tree was untouched.

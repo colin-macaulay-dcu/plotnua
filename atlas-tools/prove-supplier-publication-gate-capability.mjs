@@ -113,10 +113,22 @@ const CASES = [
       'record.area.number <= 45) return { visibility: "HOLD", '
       + 'holdReason: "area-in-band", waived: [] };'))],
 
-  ['C-PG7', 'PG7', 'one priced product gains a basis and the rest do not',
+  /* RE-AIMED 11 October 2026, and the reason is the whole point of running
+     this proof. The old mutation SET basis = 'INCLUDES_VAT' on the first
+     priced product. Before the regeneration no priced product had a basis, so
+     that broke the uniformity PG7's migration branch excused and PG7 reported
+     it. After the regeneration every priced product already holds exactly
+     that value, so the mutation changed nothing at all — measured: the
+     artefact was byte-identical afterwards — and the proof correctly called
+     it BLIND. A mutation that cannot alter the artefact cannot test anything.
+
+     Aimed instead at the condition PG7's own headline asserts: an amount with
+     no basis. One product, not all of them, because one is the sensitive case
+     — a guard that only noticed a universal absence would pass this. */
+  ['C-PG7', 'PG7', 'one priced product loses its VAT basis',
     t => t.universe(d => {
       const p = d.products.find(x => (x.price || {}).amount != null);
-      p.price.basis = 'INCLUDES_VAT';
+      delete p.price.basis;
     })],
 
   ['C-PG8', 'PG8', 'a model-name number is recorded as the area',
