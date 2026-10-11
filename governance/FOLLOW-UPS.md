@@ -120,3 +120,61 @@ will show no commercial terms at all. That is safe but thin, and the remedy is
 not a looser anchor — C-C15 in the capability proof demonstrates what a
 loosened anchor does. The remedy is to read the new wording and add a token,
 or to govern the terms as a field rather than recognise them in prose.
+
+## BB-CFG-003 · The acquisition contract had not kept up with the price contract
+Opened and CLOSED 11 October 2026.
+
+`additional_home_qualification._configuration_of()` reads a pricing field
+called `Configuration`. `PRICING_FIELDS` in `snapshot_atlas.py` never asked
+for it, because that list predates the named-configuration price contract.
+Airtable returns only the fields requested, so a fresh snapshot would have
+carried no Configuration at all.
+
+Measured through the real functions against the live BIOBUILDS rows:
+
+```
+with Configuration     VERIFIED_NUMERIC_PRICE  EUR 105,000 / 163,000, both
+                       labelled, INCLUDES_VAT, three commercial terms
+without it             PRICE_AMBIGUOUS_MULTI_ROW, amount None
+```
+
+Wanderlust would have regenerated as a held product with no published price.
+Nothing would have crashed and no guard then in place would have objected.
+
+Closed by `build-snapshot-configuration-field.py`: the field is requested, and
+`configuration_problems()` refuses a snapshot in which an Additional Home
+product carries more than one numeric price and no labels. Deliberately NOT a
+blanket required field — only BIOBUILDS populates it today, so requiring it
+everywhere would fail unrelated snapshots for an absence that is usually
+correct. Proved by `prove-snapshot-configuration.py`, 9/9.
+
+THE GENERAL LESSON, worth more than the fix: a reader that learns to use a new
+field does not teach the acquisition layer to fetch it. Every future field the
+qualification code starts reading needs the same one-line addition, and the
+same question asked of it.
+
+## BB-CFG-004 · Two new guards are not yet in CI
+Opened 11 October 2026.
+
+`prove-snapshot-configuration.py` is safe to run in CI today — no artefact
+dependency, no token. `verify-biobuilds-publication.mjs` is not: it checks a
+REGENERATED `additional-home-universe-v1.json`, and would fail against the
+artefact currently committed, correctly, because that artefact predates the
+regeneration. Wire the first now and the second immediately after the
+regenerated universe is committed. A guard outside CI rots.
+
+## GR-SAN-001 · test_qualification_batch1 has three pre-existing failures
+Opened 11 October 2026. NOT caused by, and not related to, the BIOBUILDS work.
+
+Measured at HEAD before any change in this session, and again after: identical.
+
+```
+the 8 governed-zero placeholder records are corrected    0 corrected
+sanitiser removes at least 95% of leaking strings        8 -> 8
+useful sentences behind an internal label are kept       label removed
+```
+
+These test the GARDEN ROOM universe, which has not been regenerated since the
+sanitiser work landed. The test is measuring a stale artefact, not a broken
+sanitiser — but that is a claim to verify, not to assume, and it needs a
+Garden Room regeneration to settle either way.

@@ -92,6 +92,13 @@ PRICING_FIELDS = [
     "Product", "Base Price", "Price From", "Price To", "Currency",
     "Price Type", "Price Includes VAT", "Status", "Primary Price",
     "Evidence Scope", "Known Exclusions", "Last Price Check", "Sources",
+    # THE NAMED CONFIGURATION. additional_home_qualification reads this field
+    # to tell an Exterior Finished price from a Turnkey one. Airtable returns
+    # only the fields requested, so omitting it here does not produce a
+    # missing label — it produces PRICE_AMBIGUOUS_MULTI_ROW and a product
+    # with no published price at all. Added 11 October 2026, after that was
+    # measured against the live BIOBUILDS rows.
+    "Configuration",
 ]
 REQUIRED_PRICING_FIELDS = ["Product", "Price Type", "Status"]
 
@@ -142,6 +149,48 @@ HABITATION_STATES = [
     "CONTRADICTED",
     "UNKNOWN / NOT YET ASSESSED",
 ]
+
+
+def configuration_problems(ah, pricing):
+    """Additional Home products whose multiple numeric prices are unlabelled.
+
+    NOT a blanket required field. "Configuration" is populated on only a
+    handful of rows today, so requiring it everywhere would fail a snapshot
+    for an absence that is usually correct. This fires on the condition that
+    actually breaks publication: a product with MORE THAN ONE numeric price
+    and nothing to tell those prices apart. additional_home_qualification
+    then returns PRICE_AMBIGUOUS_MULTI_ROW -- an honest held state, and a
+    product with no published price at all. Better caught here, loudly, than
+    discovered as a blank price on Results."""
+    ah_ids = {p["id"] for p in ah}
+    numeric_by_product = {}
+    for r in pricing:
+        f = r.get("fields", {})
+        linked = [x.get("id") if isinstance(x, dict) else x
+                  for x in (f.get("Product") or [])]
+        if not any(isinstance(f.get(k), (int, float))
+                   for k in ("Base Price", "Price From", "Price To")):
+            continue
+        for pid in linked:
+            if pid in ah_ids:
+                numeric_by_product.setdefault(pid, []).append(r)
+
+    out = []
+    for pid, rows in sorted(numeric_by_product.items()):
+        if len(rows) < 2:
+            continue
+        unlabelled = [r.get("id") for r in rows
+                      if not txt(cell(r, "Configuration"))]
+        if unlabelled:
+            name = next((txt(cell(p, "Product Name")) for p in ah
+                         if p["id"] == pid), pid)
+            out.append(
+                f"{name} carries {len(rows)} numeric pricing rows and "
+                f"{len(unlabelled)} of them have no Configuration. Atlas "
+                "cannot say which price to show, so the product would be "
+                "published with no price at all. Rows: "
+                + ", ".join(str(u) for u in unlabelled))
+    return out
 
 
 def coverage(rows, field):
@@ -213,6 +262,8 @@ def main():
     if unrecognised:
         problems.append(f"{unrecognised} product(s) carry a Habitation "
                         "Classification value outside the six governed states.")
+
+    problems.extend(configuration_problems(ah, raw["pricing"]))
 
     if problems:
         for p in problems:
