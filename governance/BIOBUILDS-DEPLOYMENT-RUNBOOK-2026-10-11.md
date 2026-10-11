@@ -4,7 +4,38 @@ Founder authorisation **FX-BIOBUILDS-PUBLISH-20261011**. Compare imagery is
 unchanged for this release, by founder decision, 11 October 2026.
 
 Run on the founder's Mac, which holds the authoritative Airtable environment.
-Twelve commits are waiting on `main`; `d4820f0` is the tip.
+
+**AMENDED 11 October 2026, after the code was pushed.** When this runbook was
+written, twelve commits were waiting on `main`. They have since been pushed:
+`origin/main` is now `0af94f3`, and `git rev-list --count origin/main..HEAD`
+reads **0**, not 12. So the *code* for this release — the publication gate,
+the imagery pipeline, the `Configuration` fix, the verifier — is already live.
+The **data** is not: the deployed `additional-home-universe-v1.json` is still
+the 22 September artefact, carrying the superseded €112,700 and €208,500 and
+no imagery, which was confirmed by fetching it from plotnua.ie.
+
+What remains is therefore only: snapshot, regenerate, verify, commit that one
+file, push, and check live.
+
+## THE SHORT PATH
+
+Sections 3 to 8 are now one reviewed, tested script. Prefer it — it makes the
+same checks in the same order and cannot skip one by mis-paste:
+
+```bash
+cd ~/Documents/PlotNua/04\ Deploy/plotnua-github
+read -rs AIRTABLE_TOKEN && export AIRTABLE_TOKEN     # does not echo, no history
+./atlas-tools/deploy-biobuilds.sh
+```
+
+It stops at the first failure, never prints the token, writes only
+`additional-home-universe-v1.json`, touches no untracked file, and does not
+stage, commit or push — it prints those commands for you to run. Proved to
+stop on a missing token, a dirty tracked tree, and an artefact whose area is
+wrong; proved to pass on good data and leave the tree clean.
+
+The sections below remain as the manual equivalent, and as the explanation of
+what the script is doing and why.
 
 **Every block stops on the first failure.** Nothing here uses `git add .`,
 `git reset`, `git clean` or `git push --force`, and nothing prints the
@@ -40,10 +71,14 @@ echo "--- working tree (tracked files only) ---"
 git status --porcelain --untracked-files=no
 ```
 
-Expect the branch `main`, **12** unpushed commits with `d4820f0` at the top,
-and **no modified tracked files**. If `git status` lists anything, stop and
-read it before going further — the regeneration is about to write one file and
-you want to know what was already dirty.
+Expect the branch `main`, **0** unpushed commits with `0af94f3` at the top
+(the twelve were pushed on 11 October), and **no modified tracked files**. If
+`git status` lists anything, stop and read it before going further — the
+regeneration is about to write one file and you want to know what was already
+dirty.
+
+Untracked files are not listed by `--untracked-files=no` and are not touched
+by anything in this runbook.
 
 ---
 

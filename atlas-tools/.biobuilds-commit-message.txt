@@ -1,0 +1,16 @@
+Regenerate the Additional Home universe from a fresh authoritative snapshot
+
+Publishes BIOBUILDS Wanderlust under FX-BIOBUILDS-PUBLISH-20261011: EUR
+105,000 Exterior Finished and EUR 163,000 Turnkey, both labelled, VAT
+inclusive, 35.54 m2 verified internal area, Class 3A candidate, with the
+three authorised supplier images, credit and link back.
+
+Serenity is authorised and publishable but remains outside the 32-45 m2
+Class 3A band with no usable area recorded, so it reaches no public surface.
+No area was invented and the band was not widened.
+
+The superseded EUR 112,700 and EUR 208,500 are gone from the artefact, which
+is the point of taking the snapshot fresh rather than regenerating from the
+one on disk.
+
+verify-biobuilds-publication.mjs 20/20. Guards green.
