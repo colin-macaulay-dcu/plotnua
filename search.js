@@ -299,11 +299,12 @@
 
     if (!total) {
       h.push('<div class="pns-zero">');
-      h.push('<p class="pns-zero-lead">We have nothing on <strong>' +
-             esc(res.query) + '</strong> yet.</p>');
-      h.push('<p>PlotNua only shows what it can stand behind. If a supplier or ' +
-             'product is not here, it is because we have not researched it to a ' +
-             'standard we would publish — not because it does not exist.</p>');
+      h.push('<p class="pns-zero-lead">We couldn’t find a published ' +
+             'result for that search.</p>');
+      h.push('<p>PlotNua is continually researching new products and ' +
+             'suppliers. Some are still being checked or prepared for ' +
+             'publication, so not everything we’ve researched is ' +
+             'visible yet.</p>');
       h.push('<p>You could try a possibility instead: ' +
              '<a href="discoveries.html">browse all Discoveries</a>.</p>');
       h.push('</div>');

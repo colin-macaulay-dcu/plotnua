@@ -45,9 +45,12 @@ const DISC025 = "disc025-borrowed-garden-check.html";
 const DISC025_MAIN =
   "05bf977f0d4fb05a3310e1e3dc9bfb757b2d92d529f226f2c8bb97c805844a29";
 const SEARCH_FROZEN = {
-  // Re-stamped by JOB 6 (authorised Search V1 runtime change). Same
-  // assertion, same strictness, new frozen value.
-  "search.js":  "c7307b28d8629f278c021aaf105d8bd69f1c42db2890c51d9efd1b6acc63bf27",
+  // Re-stamped by JOB 6 (authorised Search V1 runtime change), then again on
+  // 11 October 2026 for the authorised no-results copy correction applied by
+  // atlas-tools/build-search-zero-state.py. Same assertion, same strictness,
+  // new frozen value. The previous value was
+  // c7307b28d8629f278c021aaf105d8bd69f1c42db2890c51d9efd1b6acc63bf27.
+  "search.js":  "3e91e8793f40159082267b2190c02edb923c21618e1e8aa33715ad4db8f7901d",
   "search.css": "a0a1b07aaf6f729ab41873962a1ab1d5bf3b0a03defb1f8e21c0d9945de82e19",
 };
 
