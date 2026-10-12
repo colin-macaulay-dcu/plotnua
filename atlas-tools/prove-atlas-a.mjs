@@ -32,6 +32,30 @@ import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
+/* EVERY OCCURRENCE IS THE APPROVED LOCKUP, NOT JUST THE RIGHT COUNT.
+   The old `exactly once` test could not see HOW the mark was placed. This
+   one does: each reference must sit in the .pn-atlas-still span, at the
+   approved 60x60, with the empty alt and aria-hidden that keep it out of
+   the accessibility tree. A reference that escapes the lockup fails here
+   even though the count is right. */
+function pnMarkLockups(pageSrc, asset){
+  const parts = pageSrc.split(asset);
+  const escaped = [];
+  for (let i = 1; i < parts.length; i++) {
+    const before = parts[i - 1].slice(-600);
+    const after = parts[i].slice(0, 400);
+    const win = before + asset + after;
+    const need = ["aaEl('span', 'pn-atlas-still')",
+                  "mastImg.width = 60; mastImg.height = 60;",
+                  "mastImg.alt = ''",
+                  "aria-hidden"];
+    const missing = need.filter(function(n){ return win.indexOf(n) === -1; });
+    if (missing.length) escaped.push('occurrence ' + i + ' lacks ' + missing.join(', '));
+  }
+  return escaped;
+}
+
+
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const PAGE = path.join(ROOT, 'your-plot.html');
@@ -283,9 +307,23 @@ else {
      asset is used as supplied and that nothing anywhere makes it move. */
   {
     const IMG = 'assets/brand/atlas-final-static-approved-transparent.png';
-    (src.split(IMG).length - 1) === 1
-      ? ok('the approved static mark is referenced exactly once')
-      : bad('the approved static mark reference count is wrong');
+    /* TWO MASTHEADS, ONE MARK. The Garden Room Atlas Assessment and the
+       Additional Home Atlas Assessment both carry it, on the founder's
+       instruction to reuse the exact existing branding rather than clone
+       a second Atlas template. Measured: the two constructions are
+       byte-identical. A THIRD reference still fails here. */
+    const pnMarks = src.split(IMG).length - 1;
+    pnMarks === 2
+      ? ok('the approved static mark is referenced exactly twice — the two Atlas Assessment mastheads')
+      : bad('the approved static mark reference count is wrong',
+            'expected 2 (Garden Room + Additional Home), found ' + pnMarks);
+    {
+      const escaped = pnMarkLockups(src, IMG);
+      escaped.length === 0
+        ? ok('every occurrence sits in the approved .pn-atlas-still lockup at 60x60, alt empty, aria-hidden')
+        : bad('a reference to the approved mark escapes the approved lockup',
+              escaped.join(' | '));
+    }
     fs.existsSync(path.join(ROOT, IMG))
       ? ok('the supplied asset is present on disk')
       : bad('the supplied asset is missing from the repo');

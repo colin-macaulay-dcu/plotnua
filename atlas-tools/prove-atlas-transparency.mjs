@@ -31,6 +31,30 @@ import path from 'path';
 import zlib from 'zlib';
 import { fileURLToPath } from 'url';
 
+/* EVERY OCCURRENCE IS THE APPROVED LOCKUP, NOT JUST THE RIGHT COUNT.
+   The old `exactly once` test could not see HOW the mark was placed. This
+   one does: each reference must sit in the .pn-atlas-still span, at the
+   approved 60x60, with the empty alt and aria-hidden that keep it out of
+   the accessibility tree. A reference that escapes the lockup fails here
+   even though the count is right. */
+function pnMarkLockups(pageSrc, asset){
+  const parts = pageSrc.split(asset);
+  const escaped = [];
+  for (let i = 1; i < parts.length; i++) {
+    const before = parts[i - 1].slice(-600);
+    const after = parts[i].slice(0, 400);
+    const win = before + asset + after;
+    const need = ["aaEl('span', 'pn-atlas-still')",
+                  "mastImg.width = 60; mastImg.height = 60;",
+                  "mastImg.alt = ''",
+                  "aria-hidden"];
+    const missing = need.filter(function(n){ return win.indexOf(n) === -1; });
+    if (missing.length) escaped.push('occurrence ' + i + ' lacks ' + missing.join(', '));
+  }
+  return escaped;
+}
+
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SHIPPED  = 'assets/brand/atlas-final-static-approved-transparent.png';
 const APPROVED = 'assets/brand/atlas-final-static-approved.png';
@@ -196,9 +220,20 @@ if (ship && appr) {
 
 /* ---- (5) AND THE PAGE SHIPS THE TRANSPARENT ONE. ---------------------- */
 const src = fs.readFileSync(path.join(ROOT, 'your-plot.html'), 'utf8');
-(src.split(SHIPPED).length - 1) === 1
-  ? ok('your-plot.html references the transparent asset exactly once')
-  : bad('the page does not reference the transparent asset exactly once');
+/* TWO MASTHEADS CARRY IT — Garden Room and Additional Home — and both are
+   the same approved transparent asset in the same approved lockup. */
+const pnShipped = src.split(SHIPPED).length - 1;
+pnShipped === 2
+  ? ok('your-plot.html references the transparent asset exactly twice — the two Atlas Assessment mastheads')
+  : bad('the page does not reference the transparent asset exactly twice',
+        'found ' + pnShipped);
+{
+  const escaped = pnMarkLockups(src, SHIPPED);
+  escaped.length === 0
+    ? ok('both occurrences sit in the approved .pn-atlas-still lockup at 60x60')
+    : bad('a reference to the transparent asset escapes the approved lockup',
+          escaped.join(' | '));
+}
 !new RegExp("src = '" + APPROVED.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + "'").test(src)
   ? ok('the page does not load the opaque file')
   : bad('the page has been pointed back at the opaque asset', 'that is the pale rectangle');
