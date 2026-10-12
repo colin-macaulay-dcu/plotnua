@@ -47,8 +47,12 @@ const DISC025 = "disc025-borrowed-garden-check.html";
 // recorded in governance/DISC-025-V2-POST-FREEZE-AMENDMENT-2-2026-10-12.md.
 // Same assertion, same strictness, new frozen value. The previous value was
 // 05bf977f0d4fb05a3310e1e3dc9bfb757b2d92d529f226f2c8bb97c805844a29.
+// Re-stamped again 12 October 2026 for the founder-authorised G6 entry-link
+// UX change (atlas-tools/build-g6-entry-links.py): one secondary link added
+// under START THE CHECK. Previous value was
+// 338f6f0c3070f86ae008bc82214c666a10394f1ff60a34765ad5be45431bd7ab.
 const DISC025_MAIN =
-  "338f6f0c3070f86ae008bc82214c666a10394f1ff60a34765ad5be45431bd7ab";
+  "4aec70baa55c7733eb34f1159e7a669b034211d8417191880de39567f3bc48d5";
 const SEARCH_FROZEN = {
   // Re-stamped by JOB 6 (authorised Search V1 runtime change), then again on
   // 11 October 2026 for the authorised no-results copy correction applied by

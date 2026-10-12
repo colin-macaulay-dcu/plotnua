@@ -546,6 +546,12 @@ window.PlotNuaFunnel = (function () {
   .pc-cta:hover{background:var(--accent);transform:translateY(-2px);
     box-shadow:0 16px 34px rgba(31,59,46,.28);}
   .pc-cta:active{transform:translateY(0);}
+  /* G6 entry link: secondary to the pill - text weight, no fill. */
+  .pc-discover{margin:22px 0 0;font-size:15px;line-height:1.5;}
+  .pc-discover a{display:inline-block;padding:8px 0;color:var(--ink);
+    text-decoration:none;}
+  .pc-discover a:hover,.pc-discover a:focus-visible{text-decoration:underline;
+    text-underline-offset:4px;}
   .pc-cta .pc-arrow{font-size:16px;line-height:1;
     transition:transform .22s ease;}
   .pc-cta:hover .pc-arrow{transform:translateX(3px);}
@@ -971,7 +977,7 @@ window.PlotNuaFunnel = (function () {
       <span class="bg-brand">PlotNua</span>
       <span class="bg-ctx">The Borrowed Garden</span>
     </span>
-    <a class="bg-back" href="discovery-the-borrowed-garden.html">Back to the story</a>
+    <a class="bg-back" href="discovery-the-borrowed-garden.html">Explore The Borrowed Garden <span aria-hidden="true">&rarr;</span></a>
   </div>
 </header>
 
@@ -992,6 +998,8 @@ window.PlotNuaFunnel = (function () {
       somebody could reach it, and how you use it now.</p>
     <button class="pc-cta" id="bgStart">Start the check
       <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+    <!-- PLOTNUA-G6-ENTRY-LINKS · for first-time visitors arriving from social -->
+    <p class="pc-discover"><a href="discovery-the-borrowed-garden.html"><span aria-hidden="true">&#127807;</span> New to The Borrowed Garden? Discover how it works <span aria-hidden="true">&rarr;</span></a></p>
   </section>
 
   <section class="bg-screen pc-qscreen" id="bgQ">
