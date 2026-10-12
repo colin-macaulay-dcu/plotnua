@@ -51,8 +51,11 @@ const DISC025 = "disc025-borrowed-garden-check.html";
 // UX change (atlas-tools/build-g6-entry-links.py): one secondary link added
 // under START THE CHECK. Previous value was
 // 338f6f0c3070f86ae008bc82214c666a10394f1ff60a34765ad5be45431bd7ab.
+// Re-stamped again 12 October 2026: the entry link became an outlined
+// secondary pill (atlas-tools/build-g6-discover-button.py). Previous value
+// was 4aec70baa55c7733eb34f1159e7a669b034211d8417191880de39567f3bc48d5.
 const DISC025_MAIN =
-  "4aec70baa55c7733eb34f1159e7a669b034211d8417191880de39567f3bc48d5";
+  "15924561a4daeb23ade8bbc3e046a66c0c8b0af74d633f339a13dd1ff58a9fc2";
 const SEARCH_FROZEN = {
   // Re-stamped by JOB 6 (authorised Search V1 runtime change), then again on
   // 11 October 2026 for the authorised no-results copy correction applied by

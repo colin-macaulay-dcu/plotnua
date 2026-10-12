@@ -546,12 +546,34 @@ window.PlotNuaFunnel = (function () {
   .pc-cta:hover{background:var(--accent);transform:translateY(-2px);
     box-shadow:0 16px 34px rgba(31,59,46,.28);}
   .pc-cta:active{transform:translateY(0);}
-  /* G6 entry link: secondary to the pill - text weight, no fill. */
-  .pc-discover{margin:22px 0 0;font-size:15px;line-height:1.5;}
-  .pc-discover a{display:inline-block;padding:8px 0;color:var(--ink);
-    text-decoration:none;}
-  .pc-discover a:hover,.pc-discover a:focus-visible{text-decoration:underline;
-    text-underline-offset:4px;}
+  /* G6 discover button: the outlined twin of the primary pill. Same type,
+     radius and height; no fill, no shadow, so Start stays the action. */
+  .pc-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;
+    align-self:flex-start;max-width:100%;}
+  .pc-ghost{display:inline-flex;align-items:center;justify-content:center;
+    gap:11px;background:transparent;color:var(--ink);
+    border:1.5px solid var(--ink);font-family:'Work Sans',sans-serif;
+    padding:15px 26.5px;font-size:13.5px;letter-spacing:.09em;
+    text-transform:uppercase;border-radius:32px;cursor:pointer;
+    text-decoration:none;text-align:center;line-height:normal;
+    transition:transform .22s cubic-bezier(.2,.85,.32,1.1),
+      background .22s ease;}
+  .pc-ghost:hover{background:var(--cream);transform:translateY(-2px);}
+  .pc-ghost:active{transform:translateY(0);}
+  .pc-ghost .pc-arrow{font-size:16px;line-height:1;transition:transform .22s ease;}
+  .pc-ghost:hover .pc-arrow{transform:translateX(3px);}
+  .pc-actions .pc-cta:focus-visible,.pc-ghost:focus-visible{
+    outline:2px solid var(--accent);outline-offset:3px;}
+  @media (max-width:780px){
+    /* Phones: stacked, equal width, capped so neither reads as a banner.
+       The outlined label may wrap on the narrowest phones; it wraps as
+       centred text with the arrow kept on the last line. */
+    .pc-actions{display:flex;flex-direction:column;align-items:stretch;
+      gap:12px;max-width:340px;}
+    .pc-actions .pc-cta{align-self:stretch;justify-content:center;}
+    .pc-ghost{display:block;padding:14px 20px;letter-spacing:.07em;}
+    .pc-ghost .pc-arrow{display:inline-block;margin-left:4px;}
+  }
   .pc-cta .pc-arrow{font-size:16px;line-height:1;
     transition:transform .22s ease;}
   .pc-cta:hover .pc-arrow{transform:translateX(3px);}
@@ -996,10 +1018,13 @@ window.PlotNuaFunnel = (function () {
     <h1 class="pc-introh">Could a corner of your garden work for somebody else?</h1>
     <p class="pc-introsub">Four quick questions about the space you have, how
       somebody could reach it, and how you use it now.</p>
+    <div class="pc-actions">
     <button class="pc-cta" id="bgStart">Start the check
       <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
-    <!-- PLOTNUA-G6-ENTRY-LINKS · for first-time visitors arriving from social -->
-    <p class="pc-discover"><a href="discovery-the-borrowed-garden.html"><span aria-hidden="true">&#127807;</span> New to The Borrowed Garden? Discover how it works <span aria-hidden="true">&rarr;</span></a></p>
+    <!-- PLOTNUA-G6-ENTRY-LINKS · PLOTNUA-G6-DISCOVER-BUTTON · for first-time visitors arriving from social -->
+    <a class="pc-ghost" href="discovery-the-borrowed-garden.html">Discover The Borrowed Garden
+      <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
   </section>
 
   <section class="bg-screen pc-qscreen" id="bgQ">
