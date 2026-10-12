@@ -122,3 +122,11 @@ Each step is yours. **Stop** if any check fails. Steps 1–6 can happen with not
 7. **Retention.** Erase any record whose `submitted_at` is more than 24 months old (first possible: October 2028). Record the date you checked.
 8. **Log the week** in a short private table with no personal data: date, new records, genuine (in-pilot / elsewhere), junk removed, leaving requests, notes edited.
 9. **Target check.** The research target is **five genuine garden-owner expressions of interest**. Proposed review point: when five genuine records exist, or eight weeks after opening, whichever comes first, decide whether to continue, widen or close (R10). This is a count, not a promise to anyone on the register.
+
+---
+
+## ADDENDUM · 12 October 2026, later the same day (append-only)
+
+- **R3 CLOSED IN SOURCE.** See [`G6-R3-WORKER-DEPRECATED-FIELDS-2026-10-12.md`](G6-R3-WORKER-DEPRECATED-FIELDS-2026-10-12.md). The Worker now refuses any garden submission carrying one of the four deprecated keys. It is not yet deployed.
+- **R1:** the founder reports the Airtable DPA signed on 12 October 2026.
+- **Activation step 6** is now mandatory, because the Worker source changed. Add to it: one direct request to the deployed Worker carrying `inherited_result_key` → expect `400 refused`, field `inherited_result_key`, and nothing in Airtable.

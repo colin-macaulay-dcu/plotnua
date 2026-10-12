@@ -294,6 +294,27 @@ async function writeRecord(env, side, fields, emailKey, consentHash, now) {
   });
 }
 
+/* ------------------------------------------------ deprecated garden keys --
+   G6-R3-DEPRECATED-FIELDS · founder instruction, 12 October 2026 (closes G6 R3).
+   Under privacy notice 2026-10-PHASE2-V3 the register keeps ONE Property
+   Check answer: tenure. These four keys were accepted as optional fields
+   until then. The page stopped sending them (D2), and the Worker now REFUSES
+   any garden submission that carries one — by presence, whatever the value —
+   rather than silently dropping it, so a caller that is still sending them
+   finds out, and nothing about the refused request is stored.
+   They are also no longer parsed or written below: two independent layers. */
+const DEPRECATED_GARDEN_KEYS = Object.freeze([
+  'inherited_spare_corner', 'inherited_way_in',
+  'inherited_your_own_use', 'inherited_result_key'
+]);
+
+function deprecatedKeyIn(body) {
+  for (const k of DEPRECATED_GARDEN_KEYS) {
+    if (Object.prototype.hasOwnProperty.call(body, k)) return k;
+  }
+  return null;
+}
+
 /* --------------------------------------------------------- garden handler -- */
 async function handleGarden(env, body, now, cors) {
   /* HARD STOP FOUR, RETAINED AFTER APPROVAL. The canonical consent string is
@@ -303,6 +324,12 @@ async function handleGarden(env, body, now, cors) {
      there on the day it becomes necessary again. */
   if (!CONSENT_TEXT.garden) return NOT_OPEN(cors);
 
+  /* G6 R3 · refused FIRST: before validation, before the write switch, before
+     any Airtable call. Ordering matters — placed after the switch, a request
+     with writes off would get 'not_open' and the refusal would be invisible. */
+  const deprecated = deprecatedKeyIn(body);
+  if (deprecated) return REFUSED(cors, deprecated);
+
   const first_name = cleanText(body.first_name, MAX_NAME_CHARS);
   const email = cleanText(body.email, MAX_EMAIL_CHARS);
   const district = pickEnum(V.district, body.district);
@@ -310,9 +337,6 @@ async function handleGarden(env, body, now, cors) {
   const size_note = pickEnum(V.space_band, body.size_note);
   const timing = pickEnum(V.timing, body.timing);
   const tenure = pickEnum(V.tenure, body.inherited_tenure);
-  const spare = pickEnum(V.spare_corner, body.inherited_spare_corner);
-  const wayIn = pickEnum(V.way_in, body.inherited_way_in);
-  const ownUse = pickEnum(V.your_own_use, body.inherited_your_own_use);
   const source = pickEnum(V.garden_source, body.source) || 'direct';
   const note = cleanText(body.garden_note, MAX_NOTE_CHARS);
 
@@ -369,11 +393,6 @@ async function handleGarden(env, body, now, cors) {
   };
   if (permission_confirmed) fields.permission_confirmed = true;
   if (note) fields.garden_note = note;
-  if (spare) fields.inherited_spare_corner = spare;
-  if (wayIn) fields.inherited_way_in = wayIn;
-  if (ownUse) fields.inherited_your_own_use = ownUse;
-  const resultKey = cleanText(body.inherited_result_key, 60);
-  if (resultKey) fields.inherited_result_key = resultKey;
   const checkSaved = cleanText(body.check_saved_at, 40);
   if (checkSaved && !Number.isNaN(Date.parse(checkSaved))) {
     fields.check_saved_at = utcStamp(new Date(checkSaved));
