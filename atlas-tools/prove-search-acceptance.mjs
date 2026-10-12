@@ -585,8 +585,12 @@ console.log('\n  PART A4 · RETURN PATH (history state, no URL, no storage)\n');
 
      The count is therefore RAISED DELIBERATELY and stays exact, naming the
      extra surface, so the census can still never drift silently. */
-  check('H12b 20 faded + 2 nofade = 21 public surfaces + the 404',
-    seen.faded === 20 && seen.nofade === 2,
+  /* RAISED DELIBERATELY AGAIN, 12 October 2026: triq-cube.html, the TRIQ CUBE
+     public page, entered the sitemap by founder decision. It carries the
+     canonical nofade pill (its brand mark has no fade), so H12a still holds
+     byte for byte; only the nofade count moves, from 2 to 3. */
+  check('H12b 20 faded + 3 nofade = 22 public surfaces + the 404',
+    seen.faded === 20 && seen.nofade === 3,
     `faded=${seen.faded} nofade=${seen.nofade}`);
   check('H12b2 the 20th faded surface is 404.html specifically',
     (function () {

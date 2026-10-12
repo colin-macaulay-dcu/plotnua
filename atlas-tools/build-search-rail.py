@@ -166,7 +166,10 @@ pages = sorted(set(pages + ["index.html"]))
 # THIS GUARD FIRED when search.html was added, and it was right to. The expected
 # count is stated explicitly so the rail scope can never drift silently — if a
 # new public page appears, the builder stops and a human decides.
-EXPECTED_PAGES = 21
+# 22 since 12 October 2026: triq-cube.html, the TRIQ CUBE public page, entered
+# the sitemap by founder decision. It was built carrying the canonical nofade
+# stub, so a re-run of this builder reproduces it rather than changing it.
+EXPECTED_PAGES = 22
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "
