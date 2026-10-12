@@ -37,6 +37,7 @@ not established".
 3. Private-preview bar, "preview only" eyebrow, the stage rail and the "what this preview is / is not" block removed.
 4. Stages 3–5 (Save to My Plot / Compare / Decide) **not carried over**: the TRIQ CUBE is not an Atlas product, so it cannot be saved or compared on PlotNua. Publishing them would claim a capability PlotNua does not have for this product.
 5. The inert "Continue to TRIQBRIQ →" control is made live. The image-permission line no longer names the individual who granted it.
+6. *(13 October 2026)* "Made in Germany" chip and "Country of manufacture: Germany" row removed: not independently verifiable (§6.3).
 
 **Added:** the standard public chrome (Cookiebot, GA4 `G-PKKJ0RK6N8`, favicons, brand mark,
 canonical search pill, site footer), one link to *Living in the Garden*, and the GA4 outbound event.
@@ -83,16 +84,63 @@ clicks recorded before it exist only as raw event counts and cannot be broken do
 Starts on the date the page is verified live (`public_page_live_at`, recorded in the supplier
 contact register at verification) and runs one calendar month.
 
-## 6 · Open founder decisions (not done)
+## 6 · Founder decisions, 13 October 2026
 
-1. **Commercial position.** `09 Commercial/TRIQ-COMMERCIAL-POSITION.md` §4.3 says *do not
-   activate an ordinary untracked outbound link* before terms are agreed. This page activates an
-   outbound link with PlotNua-side click measurement, but **no attribution agreement or
-   commercial terms exist**. Publishing means accepting that, by founder decision.
-2. **Irish availability** is still unanswered by TRIQBRIQ; the page states it as not established.
-3. **Results / Atlas product.** Entering the TRIQ CUBE as an Atlas Garden Room product would put it in
-   homeowners' Results and Compare. That needs a full Atlas ingestion and a universe refresh, and it is a
-   recommendation decision. Not done.
-4. **Country of manufacture.** The approved page shows "Germany" / "Made in Germany". On 12 October 2026
-   the product page itself did not state it, although the rest of the specification matched. It is kept
-   because TRIQBRIQ approved it. Consider confirming it with Christian.
+**Design and presentation approved** by the founder after review.
+
+### 6.1 · BOUNDED EXCEPTION to the commercial-position hold
+
+`09 Commercial/TRIQ-COMMERCIAL-POSITION.md` §4.3 and §9 prohibit activating an ordinary
+untracked outbound link before commercial terms are agreed. **The founder authorises an ordinary
+outbound link to TRIQBRIQ as an explicit, bounded exception, for this initial supplier-approved
+listing only.**
+
+| | |
+|---|---|
+| Scope | One link destination, `https://triqbriq.de/produkt/triq-gartenoffice-3x3/`, from `triq-cube.html` only |
+| Basis | TRIQBRIQ product management approved the page; Christian requested a one-month performance report |
+| Nature | An **informational supplier listing, not a commercial partnership** |
+| Commercial terms | **None.** No commission, referral fee or attribution agreement exists |
+| Does NOT extend to | any other TRIQBRIQ page or product, any other supplier, Results/Compare/My Plot, CONNECT, or any future listing |
+| Unchanged | §4.2 remains entirely open; PREFERRED PARTNER — NONE; CONNECT — NOT AUTHORISED; no percentage or term proposed |
+
+Copy rules that follow from it: TRIQBRIQ is never described as a commercial partner, and the page
+does not imply that Irish delivery, installation, availability or final Irish pricing is confirmed.
+
+### 6.2 · Atlas
+
+**The TRIQ CUBE stays outside Atlas recommendations, Results and Compare until its Irish
+availability is established.** No product record is created.
+
+### 6.3 · Product claim
+
+The "Made in Germany" chip and the "Country of manufacture: Germany" row are **removed**, because the
+claim could not be independently verified. On 13 October 2026, triqbriq.de's product page did not
+state where the TRIQ Office 3×3 is made. Its production page names a Stammwerk in Tübingen and
+licensed production in Austria, with Sweden, Portugal, Switzerland and the USA in preparation, and
+never ties this product to a country. **Kept:** "Manufacturer: TRIQBRIQ AG, Stuttgart" (the AG's
+published address).
+
+### 6.4 · Analytics — the three GA4 custom dimensions
+
+GA4 Admin → Data display → Custom definitions → Create custom dimension:
+
+| Dimension name | Scope | Event parameter |
+|---|---|---|
+| Link location | Event | `link_location` |
+| Supplier ID | Event | `supplier_id` |
+| Product ID | Event | `product_id` |
+
+`link_url`, `link_domain` and `outbound` map to GA4's built-in Link URL / Link domain / Outbound
+dimensions and need no registration.
+
+**Consent behaviour, verified on the live site 13 October 2026** (about.html, whose Cookiebot and
+gtag block `triq-cube.html` copies byte for byte): Cookiebot auto-blocking holds the GA4 script
+(`type="text/plain"`), and **no measurement request is sent before consent**, including for a
+`supplier_outbound_click` fired before consent, or after a decline. Firing after consent could not
+be exercised headlessly, because Cookiebot treats the test browser as a crawler. Confirm it in GA4
+Realtime after publication.
+
+### 6.5 · Still open
+
+Irish availability (unanswered by TRIQBRIQ); §4.2 commercial terms.

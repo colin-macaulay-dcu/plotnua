@@ -17,7 +17,9 @@ Lifted verbatim from the approved preview (each must occur exactly once):
   PRICE  the published price card, options and the German-price basis note
   SPEC   the specification table (heading reworded: "How Atlas would record
          it" -> "Published specification"; TRIQ is not an Atlas product)
-  EQUIP  the published equipment card and its chips
+  EQUIP  the published equipment card and its chips (minus "Made in
+         Germany", and the spec loses "Country of manufacture": founder
+         decision 13 Oct 2026, claim not verifiable on triqbriq.de)
   OPEN   "What PlotNua has not established", every gap unchanged (one
          supplier-addressed sentence dropped: "A homeowner sees this panel too.")
 
@@ -73,6 +75,23 @@ if IMG.count("© TRIQBRIQ AG") != 2: die("IMG must carry two credits")
 SPEC_OLD = "<h3>How Atlas would record it</h3>"
 if PRICE_SPEC.count(SPEC_OLD) != 1: die("SPEC heading anchor")
 PRICE_SPEC_PUB = PRICE_SPEC.replace(SPEC_OLD, "<h3>Published specification</h3>")
+
+# FOUNDER DECISION, 13 October 2026: remove the "Made in Germany" claim unless
+# it can be independently verified; keep the factual manufacturer location.
+# Checked on triqbriq.de the same night: the product page does not state where
+# the TRIQ Office 3x3 is made; the production page names a Stammwerk in
+# Tuebingen and licensed production in Austria (with more countries planned),
+# and never ties this product to a country. So both forms of the claim go:
+# the "Made in Germany" chip and the "Country of manufacture: Germany" row.
+# "Manufacturer: TRIQBRIQ AG, Stuttgart" stays (the AG's published address).
+ROW_COUNTRY = "        <tr><th>Country of manufacture</th><td>Germany</td></tr>\n"
+CHIP_MIG = "      <li class=\"known\">Made in Germany</li>\n"
+ROW_MAKER = "<tr><th>Manufacturer</th><td>TRIQBRIQ AG, Stuttgart</td></tr>"
+if PRICE_SPEC_PUB.count(ROW_COUNTRY) != 1: die("country-of-manufacture row anchor")
+if PRICE_SPEC_PUB.count(ROW_MAKER) != 1: die("manufacturer location row must be kept")
+PRICE_SPEC_PUB = PRICE_SPEC_PUB.replace(ROW_COUNTRY, "")
+if EQUIP.count(CHIP_MIG) != 1: die("Made in Germany chip anchor")
+EQUIP_PUB = EQUIP.replace(CHIP_MIG, "")
 
 ab = ABOUT.read_text(encoding="utf-8")
 HEAD_TAGS = one(ab, r'^(<!DOCTYPE html>.*?gtag\(\'config\', \'G-PKKJ0RK6N8\'\);\n</script>\n)', "about head tags")
@@ -190,7 +209,7 @@ footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px;
 
 {PRICE_SPEC_PUB}
 
-{EQUIP}
+{EQUIP_PUB}
 
 {OPEN_PUB}
 </section>
@@ -247,9 +266,12 @@ footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px;
 '''
 
 # ── gates ────────────────────────────────────────────────────────────────────
-for lab, blk in (("IMG", IMG), ("PRICE+SPEC", PRICE_SPEC_PUB), ("EQUIP", EQUIP), ("OPEN", OPEN_PUB)):
+for lab, blk in (("IMG", IMG), ("PRICE+SPEC", PRICE_SPEC_PUB), ("EQUIP", EQUIP_PUB), ("OPEN", OPEN_PUB)):
     if page.count(blk) != 1: die(f"GATE {lab}: approved block not present exactly once")
 if "noindex" in page: die("GATE: noindex left on the public page")
+for gone in ("Made in Germany", "Country of manufacture"):
+    if gone in page: die("GATE: unverified manufacture claim present: " + gone)
+if "TRIQBRIQ AG, Stuttgart" not in page: die("GATE: manufacturer location missing")
 if "Private preview" in page or 'onclick="return false' in page: die("GATE: preview-only control left on the page")
 if page.count(f'href="{PRODUCT_URL}"') != 2: die("GATE: product URL must appear twice (CTA + source note)")
 if "noreferrer" in page: die("GATE: noreferrer would hide plotnua.ie from TRIQBRIQ's analytics")
