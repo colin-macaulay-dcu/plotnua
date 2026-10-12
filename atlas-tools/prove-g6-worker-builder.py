@@ -2,7 +2,7 @@
 """
 GUARD-CAPABILITY PROOF for build-g6-worker-deprecated-fields.py
 ===============================================================================
-Runs the builder against the PRE-BUILD Worker source read from git (9287489),
+Runs the builder against the PRE-BUILD Worker source read from git (c64e63a),
 breaking one precondition at a time. The builder must REFUSE and write nothing.
 A control proves the unmutated source applies.
 
@@ -13,7 +13,10 @@ from contextlib import redirect_stdout
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
-PRE = subprocess.run(["git", "show", "9287489:worker/garden-register/src/index.js"],
+# Re-pinned 12 October 2026 (Commit A) from 9287489 (local-only) to c64e63a
+# (on GitHub main). worker/garden-register/src/index.js is byte-identical at
+# both: git blob 171b73af. The proof's meaning is unchanged.
+PRE = subprocess.run(["git", "show", "c64e63a:worker/garden-register/src/index.js"],
                      cwd=ROOT, check=True, capture_output=True).stdout.decode()
 PASS = FAIL = 0
 

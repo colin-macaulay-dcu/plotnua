@@ -19,7 +19,12 @@ from contextlib import redirect_stdout
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
-PRE_REF = "9a0c517"          # the commit the builder was applied over
+# Re-pinned 12 October 2026 (Commit A) from 9a0c517, a commit that existed
+# only on the founder's machine, to c64e63a, which is on GitHub main. The
+# three input files are byte-identical at both (same git blob ids:
+# disc025 1665871d, privacy.html 80b04149, wrangler.toml 9de56898), so the
+# proof is unchanged in meaning and now runs in any clean clone.
+PRE_REF = "c64e63a"
 
 PASS = FAIL = 0
 
