@@ -15,7 +15,12 @@ preview_urls = false    # each preview URL would be another live hostname able
 # A register holding real people's details is one switch away from live, so
 # there are two, and neither is flipped by deploying.
 # ---------------------------------------------------------------------------
-WRITES_ENABLED  = "false"
+# PRODUCTION STATE, committed deliberately (G6 opening, 12 October 2026,
+# founder-authorised): the Garden Owner Register is OPEN, so a routine
+# `wrangler deploy` from this file keeps writes on. To close it, deploy
+# with WRITES_ENABLED = "false" (04 Deploy/g6-launch.sh stop, or the
+# rollback in governance/G6-CONTROLLED-ACTIVATION-RUNBOOK-2026-10-12.md).
+WRITES_ENABLED  = "true"
 EMAIL_ENABLED   = "false"   # there is NO mail adapter in this Worker. This var
                             # exists so the refusal is explicit rather than
                             # implied by absence, and so a future adapter
