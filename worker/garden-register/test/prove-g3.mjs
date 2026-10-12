@@ -173,17 +173,20 @@ function fillValid($, { district = 'raheny' } = {}) {
 /* ================================================== 1 · THE THREE GATES == */
 
 await scope(async () => {
-  /* G1 · SHIPPED CLOSED. No query string, a perfectly eligible homeowner.
-     The section must be GONE from the DOM, not merely hidden: a hidden form
-     on a public page is still a form on a public page. */
+  /* G1 · INVERTED BY THE OPENING COMMIT (opening/g6-register, founder
+     approval required before it is applied). Until then these asserted
+     SHIPPED CLOSED — the section removed from the DOM on the plain URL —
+     and that version remains the guard on release/g6-register. Now: no
+     query string, a perfectly eligible homeowner, and the register is there,
+     in its first (offer) state, with no preview marking. */
   const { w, $ } = boot({ answers: OWN_WORKABLE });
-  check('G1 shipped closed: the section is REMOVED from the DOM',
-    $('bgInterest') === null, 'section still present');
-  check('G1b no interest form anywhere in the closed DOM',
-    $('bgIntForm') === null && $('bgIntConsent') === null &&
-    $('bgIntOpen') === null);
-  check('G1c the closed DOM contains no endpoint-bearing form control',
-    !/id="bgIntEmail"/.test(w.document.body.innerHTML));
+  check('G1 OPEN: the section is present on the plain URL',
+    $('bgInterest') !== null && $('bgInterest').hidden === false, 'section absent');
+  check('G1b OPEN: the offer is shown first and the form waits behind it',
+    !!$('bgIntOffer') && !!$('bgIntForm') && !!$('bgIntOpen') &&
+    $('bgIntOffer').hidden === false && $('bgIntForm').hidden === true);
+  check('G1c OPEN: the public panel carries no "private preview" marking',
+    !$('bgIntPrev') || $('bgIntPrev').hidden === true);
   /* And the result itself must be untouched by the removal. */
   check('G1d the result still rendered with the section removed',
     /\S/.test($('bgRevealH').textContent) &&
@@ -202,9 +205,11 @@ await scope(async () => {
   const { w, $ } = boot({ search: '?interest=preview', answers: OWN_WORKABLE });
   check('G2 ?interest=preview reveals the section',
     $('bgInterest') !== null && $('bgInterest').hidden === false);
-  check('G2b the preview ribbon says it is not public',
-    !!$('bgIntPrev') && $('bgIntPrev').hidden === false &&
-    /not public/i.test($('bgIntPrev').textContent));
+  /* G2b INVERTED BY THE OPENING COMMIT: once public, the "not public"
+     ribbon must never show — not even on the old preview URL, which may
+     still be bookmarked. */
+  check('G2b OPEN: the preview ribbon never shows, even on ?interest=preview',
+    !!$('bgIntPrev') && $('bgIntPrev').hidden === true);
   check('G2c the offer is the first state, not the form',
     !!$('bgIntOffer') && !!$('bgIntForm') &&
     $('bgIntOffer').hidden === false && $('bgIntForm').hidden === true);
@@ -212,11 +217,21 @@ await scope(async () => {
 });
 
 await scope(async () => {
-  /* G2d · a near-miss query string must NOT open the gate. */
+  /* G2d INVERTED BY THE OPENING COMMIT. Closed, a near-miss query string
+     had to leave the gate shut. Open, the query string must be IRRELEVANT:
+     the same strings must all show the register. */
   for (const q of ['?interest=previews', '?interest=PREVIEW', '?interest=1',
                    '?preview=interest', '?x=interest%3Dpreview']) {
     const { w, $ } = boot({ search: q, answers: OWN_WORKABLE });
-    check('G2d gate stays shut for ' + q, $('bgInterest') === null);
+    check('G2d OPEN: shown regardless of query ' + q, $('bgInterest') !== null);
+    w.close();
+  }
+  /* G2f · founder decision Q1 survives opening: no_garden on the PLAIN URL
+     still removes the section entirely. */
+  {
+    const { w, $ } = boot({ answers: NO_GARDEN });
+    check('G2f OPEN: no_garden still removes the section on the plain URL',
+      $('bgInterest') === null);
     w.close();
   }
   /* ...but a legitimate second parameter must not break it. */
