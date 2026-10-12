@@ -8627,7 +8627,140 @@
     gap:clamp(20px,2.2vw,28px);
     align-items:stretch;
   }
+  /* NATURAL HEIGHTS WHERE THE SET IS MIXED.
+
+     MEASURED: the panel is 910px, so auto-fit against a 300px minimum gives
+     two 441px columns. A 4/3 media well is then 331px tall. `align-items:
+     stretch` plus `height:100%` stretched every card in a row to the tallest
+     — so a card whose media well is collapsed by the governed no-image rule
+     was padded to the height of a card carrying a photograph, and
+     `:last-child{margin-top:auto}` put that gap in the middle of the plate.
+
+     Only the stretch is withdrawn, and only in the residential no-lead
+     state. The plate, the hairline, the radius, the 4/3 well, the type scale
+     and the governed collapse are all untouched; the feet still align within
+     a card because the body is still a column with margin-top:auto on its
+     last child. Garden Room cannot reach this: #matchPrimary carries
+     data-pn-verdict only when the property verdict is the main result. */
+  #screen-match-results #matchPrimary[data-pn-verdict="1"] ~ #altResults{
+    align-items:start;
+  }
+  #screen-match-results #matchPrimary[data-pn-verdict="1"] ~ #altResults > *{
+    height:auto;
+  }
+  /* The hero's trailing space was sized for a ten-block product hero. The
+     verdict hero is substantial but shorter, so the gap steps down one place
+     on the existing scale. No new value. */
+  #screen-match-results #matchPrimary[data-pn-verdict="1"]{
+    margin-bottom:var(--pn-space-lg);
+    padding-bottom:0;
+  }
+  /* C3 — THE DEAD SPACE. Measured in the browser: roughly 140px between the
+     hero's last line and the property check, from the hero's own 40px
+     bottom padding plus a 96px section gap sized for a ten-block product
+     hero. The gap steps to 32px and the hero's bottom padding goes, because
+     the onward link is already the hero's closing line. */
+  #screen-match-results #matchPrimary[data-pn-verdict="1"] .hero-secondary{
+    margin-top:22px;
+  }
+  /* C5 — THE ACTIONS BELONG AT THE FOOT OF THE PLATE.
+     .match-card-actions carries no `order`, so it defaulted to 0 and sat
+     ABOVE the maker, the name and the price — measured on the rendered
+     page. Garden Room's own order runs maker(1), name(2), price(3),
+     reason(4), explain(5), and the renderer appends the actions last. This
+     gives them the number that matches where they are appended. */
+  #screen-match-results #altResults .match-card-actions{ order:8; }
+  #screen-match-results #altResults .results-gallery-body > :last-child{
+    order:9;
+  }
+  /* THE 3D VIEW IN THE HERO, at the proportions the product photograph
+     uses. No new values: the same 4/3 frame and the same column width the
+     hero media already declares. */
+  #screen-match-results #matchPrimary[data-pn-verdict="1"] .results-hero-media{
+    aspect-ratio:4/3; border-radius:6px; overflow:hidden;
+    background:var(--pn-hair);
+  }
+  #screen-match-results #matchPrimary[data-pn-verdict="1"]
+    .results-hero-media #resultsMapViewport{
+    width:100%; height:100%; min-height:0;
+  }
   #screen-match-results #altResults > *{ height:100%; }
+  /* THE EXAMPLE CAPTION. Three stacked lines under the hero visual, in the
+     page's existing meta and caption sizes. Scoped to the residential
+     verdict hero, so the Garden Room hero cannot inherit it. */
+  #screen-match-results #matchPrimary[data-pn-verdict] .pn-hero-example-note{
+    display:flex; flex-direction:column; gap:4px;
+    margin:10px 0 0; padding:0;
+  }
+  #screen-match-results #matchPrimary[data-pn-verdict] .pn-hero-example-name{
+    font-size:var(--pn-w-caption); letter-spacing:.06em; color:var(--pn-ink);
+  }
+  #screen-match-results #matchPrimary[data-pn-verdict] .pn-hero-example-role{
+    font-size:var(--pn-w-meta); color:var(--pn-stone); line-height:1.5;
+  }
+  #screen-match-results #matchPrimary[data-pn-verdict] .pn-hero-example-link{
+    font-size:var(--pn-w-meta); color:var(--pn-stone);
+  }
+  /* M1 - THE PLATE HOLDS THE PHOTOGRAPH; THE PHOTOGRAPH DOES NOT SET THE
+     PLATE. Measured on the rendered page: card heights [350,350,350,700].
+     Three buildings have no authorised photograph so their media well
+     collapses; the fourth has a 2000x2500 portrait, and because the image
+     sits in flow at automatic height it overrides the 4/3 frame the
+     stylesheet already declares and doubles its plate. The image is given
+     the height of the frame it was always meant to fill, and object-fit
+     (already declared) crops it. Scoped to the residential verdict hero's
+     siblings, so the Garden Room gallery is not reached. */
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .results-gallery-media{ overflow:hidden; }
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .results-gallery-media > img{
+    position:absolute; inset:0; width:100%; height:100%; display:block;
+  }
+  /* P1 - THE NO-IMAGE PLATE. Three of the four buildings have no image
+     Atlas may publish, so their media well collapsed and the grid read as
+     three small text boxes beside one picture card. The frame stays, at
+     the 4/3 the stylesheet already declares, in the page's own hair tone.
+     The shipped collapse rule is overridden ONLY inside this grid. */
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .results-gallery-media:has(img.pn-image-fallback){
+    display:block; aspect-ratio:4/3; background:var(--pn-hair);
+    border-radius:6px; overflow:hidden; position:relative;
+  }
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .results-gallery-media > img.pn-image-fallback{ display:none; }
+  /* ONE LINE, IN THE EXISTING MICRO-CAPS, SAYING WHAT IS TRUE. Not a
+     placeholder for a picture that exists: a statement that none does. */
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .results-gallery-media:has(img.pn-image-fallback)::after{
+    content:'No image Atlas may publish';
+    position:absolute; inset:auto 0 0 0; padding:0 12px 10px;
+    font-size:var(--pn-w-meta); letter-spacing:.06em;
+    text-transform:uppercase; color:var(--pn-stone);
+  }
+  /* F3 - THE ABSENCE, COMPOSED. A flat field read as an unfinished box.
+     The frame keeps an inset hairline and a short centred rule in the
+     page's own hair tone, so the plate reads as a considered absence.
+     Existing tokens only: no artwork, no mark, no supplier imagery. */
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .results-gallery-media:has(img.pn-image-fallback){
+    box-shadow:inset 0 0 0 1px var(--pn-hair);
+    background:linear-gradient(180deg,
+      color-mix(in srgb, var(--pn-hair) 55%, transparent) 0%,
+      var(--pn-hair) 100%);
+  }
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .results-gallery-media:has(img.pn-image-fallback)::before{
+    content:''; position:absolute; left:50%; top:50%;
+    width:48px; height:1px; margin-left:-24px;
+    background:var(--pn-stone); opacity:.35;
+  }
+  /* F1 - CHECK WITH ATLAS CLOSES THE COMPOSITION. Measured at 1280: the
+     four plates are 599px in two columns and this card is 263px, so it
+     sat alone on a third row looking appended. It spans both columns and
+     becomes the grid's closing row. The grid itself is unchanged, all
+     four buildings stay, and none is promoted or demoted. */
+  #screen-match-results #matchPrimary[data-pn-verdict] ~ #altResults
+    .match-bring-your-own{ grid-column:1 / -1; }
 
   /* A COLUMN, NOT A LISTING. image-left/text-right is the shape of a
      directory; a photograph across the top of a plate is the shape of a
@@ -8673,6 +8806,16 @@
   #screen-match-results #altResults .results-gallery-role{
     order:4; margin:0 0 6px; font-size:12px; font-weight:600;
     letter-spacing:.01em; color:var(--pn-stone);
+  }
+  /* A SENTENCE, SET AS ONE. This slot was written for a short cue — "A
+     different maker — Outdoor Living (ModPod)" — and 12px semibold stone
+     is right for that. The residential rows carry a full governed sentence,
+     which at label weight reads as filler. Same text, same order, same
+     colour family, set at the body size it actually is. Residential only. */
+  #screen-match-results #matchPrimary[data-pn-verdict="1"] ~ #altResults
+    .results-gallery-role{
+    font-size:13.5px; font-weight:400; line-height:1.5;
+    letter-spacing:normal; color:var(--pn-body); margin:0 0 12px;
   }
   /* The out-of-band warnings keep their weight: they are a caution, not a
      comparison cue, and the card is the only place they are said. */
@@ -12546,6 +12689,431 @@
   }
   window.__PN_MATCH_STATE__ = function(results){ return pnMatchStateCopy(results); };
 
+  /* THE PROPERTY VERDICT, IN THE POSITION THE RECOMMENDATION OCCUPIES.
+
+     Recovered from renderHomeVerdictHero() (removed at fdfa3f8) and
+     re-tracked onto the CURRENT hero tree: .rh-identity carries the name,
+     .rh-split carries the body. The product hero builder is NOT called — it
+     is bound to a {role, product, ctx} triple and reaches the price view,
+     the Save actions, the Irish route note and the governed gallery, none
+     of which a property verdict has. What is reused is the PRESENTATION:
+     the tinted field, its depth layers, the display-size name and the
+     editorial line.
+
+     `is-fieldonly` is the shipped no-photograph hero variant, which the
+     product hero sets for itself whenever a product has no imageUrl. Every
+     class below is already in the stylesheet. No CSS is added.
+
+     The three strings are COPY[state], unchanged and in their existing
+     order: the verdict, the homeowner-first sentence, the explanation. */
+  /* THE PROPERTY ASSESSMENT AS THE CENTREPIECE.
+
+     Garden Room's hero is substantial because it is FULL, not because it
+     carries a photograph — measured: imageUrl is set on 0 of 573 products,
+     so that hero has never rendered one. Its weight comes from ten content
+     blocks across the identity band and the body.
+
+     This gives the property assessment the same density from the same
+     classes, using only figures and findings the assessment already
+     computed:
+
+       .rh-identity        the verdict headline, then the locality and the
+                           regulated range as the meta row
+       .results-hero-price-row   the figures, in the shipped spec-row shape
+       .results-hero-editorial   the homeowner-first sentence
+       .hero-trust               the confirmed findings as a tick list, with
+                           the open-question count as its own link down to
+                           the full check. First consumer of these classes.
+       .results-hero-budget-note the planning boundary
+       .hero-secondary           the onward route
+
+     Every class already has rules. The only new CSS in this build is P9's
+     spacing scope. */
+  function pnVerdictFactsRow(facts){
+    if (!facts || !facts.length) return null;
+    const row = document.createElement('div');
+    row.className = 'results-hero-price-row';
+    facts.forEach(function (f) {
+      const s = document.createElement('span');
+      s.className = 'results-hero-area';
+      s.textContent = f.k + ' \u2014 ' + f.v;
+      row.appendChild(s);
+    });
+    return row;
+  }
+
+  function pnVerdictTrust(known, openCount){
+    if (!known || !known.length) return null;
+    const box = document.createElement('div');
+    box.className = 'hero-trust';
+    const title = document.createElement('p');
+    title.className = 'hero-trust-title';
+    title.textContent = 'What Atlas has confirmed';
+    box.appendChild(title);
+    const list = document.createElement('ul');
+    list.className = 'hero-trust-list';
+    known.forEach(function (text) {
+      const li = document.createElement('li');
+      const tick = document.createElement('span');
+      tick.className = 'hero-tick';
+      tick.setAttribute('aria-hidden', 'true');
+      tick.textContent = '\u2713';
+      const t = document.createElement('span');
+      t.textContent = text;
+      li.appendChild(tick); li.appendChild(t);
+      list.appendChild(li);
+    });
+    box.appendChild(list);
+    /* THE OPEN QUESTIONS ARE COUNTED, NOT HIDDEN, and the count is the real
+       one. The link goes to the check that lists them in full. */
+    if (openCount > 0) {
+      const more = document.createElement('a');
+      more.className = 'hero-trust-more';
+      more.href = '#hmrPropertyFit';
+      more.textContent = openCount + (openCount === 1
+        ? ' thing still to confirm' : ' things still to confirm');
+      box.appendChild(more);
+    }
+    return box;
+  }
+
+  /* THE ONE AUTHORISED EXAMPLE IN THIS RESULT SET.
+
+     Walks the candidates and returns the first whose imagery the governed
+     reader allows. The gate is pnAuthorisedImage(), unchanged: it checks
+     credit, supplier, rights record, the supplier's own permitted prefix
+     and https. A supplier whose grant does not enumerate the asset is
+     refused here exactly as it is refused on a card. */
+  function pnVerdictExampleImage(results){
+    if (!results || !results.length) return null;
+    for (let i = 0; i < results.length; i++) {
+      const p = results[i] && (results[i].product || results[i]);
+      if (!p) continue;
+      const im = pnAuthorisedImage(p);
+      if (!im) continue;
+      return { im: im, label: p.name || im.supplier,
+               site: (im.permittedPrefix && /^https:\/\/[^\/]+/.exec(im.permittedPrefix)
+                      || [null])[0] };
+    }
+    return null;
+  }
+
+  function pnRenderVerdictHero(parts, fit, results){
+    const host = els.matchPrimary;
+    if (!host || !parts || !parts.length || !parts[0]) return false;
+    host.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'results-hero-inner is-fieldonly';
+    const identity = document.createElement('div');
+    identity.className = 'rh-identity';
+    const name = document.createElement('h2');
+    name.className = 'results-hero-name';
+    name.textContent = parts[0];
+    identity.appendChild(name);
+    /* THE META ROW. Garden Room carries maker and price here; the property
+       carries where it is and which pathway was assessed. Both come from
+       what the journey already established. */
+    const meta = document.createElement('div');
+    meta.className = 'rh-identity-meta';
+    const place = document.createElement('span');
+    place.className = 'results-hero-org';
+    const placeEl = document.getElementById('propConfirmPlace');
+    place.textContent = (placeEl && placeEl.textContent.trim())
+      ? placeEl.textContent.trim() : 'Your property';
+    meta.appendChild(place);
+    const sep = document.createElement('span');
+    sep.className = 'rh-identity-sep';
+    sep.setAttribute('aria-hidden', 'true');
+    sep.textContent = '\u00b7';
+    meta.appendChild(sep);
+    const band = document.createElement('span');
+    band.className = 'results-hero-org';
+    band.textContent = 'Assessed against the 32\u201345 m\u00b2 pathway';
+    meta.appendChild(band);
+    identity.appendChild(meta);
+
+    const split = document.createElement('div');
+    split.className = 'rh-split';
+
+    /* THE HERO'S VISUAL — AN AUTHORISED EXAMPLE, NOT THE RESULT.
+
+       Garden Room fills this column with the recommended building's
+       picture. The Additional Home result is a PROPERTY VERDICT, and no
+       building has been established as better than the others, so nothing
+       here may read as a recommendation.
+
+       What this column carries is an illustrative example of what an
+       additional home in this range looks like: the one asset PlotNua
+       holds written permission to show. It is resolved through
+       pnAuthorisedImage(), the governed reader every other surface uses,
+       from the candidate already in this result set — so the rights gate
+       decides, not this function. No URL is written here.
+
+       THE MEDIUM IS NOT CLAIMED. The BIOBUILDS grant records that Atlas
+       does not know whether the model imagery is photographic or a
+       visualisation, and that until BIOBUILDS answer, no PlotNua surface
+       may describe it as either. The caption says neither.
+
+       THE GRANT'S CONDITIONS ARE RENDERED WITH IT. The credit is attached
+       by the shipped pnAttachImageCredit(); the required link back to the
+       supplier sits beside the caption. If the reader refuses the asset,
+       no media column is appended and the hero keeps the shipped
+       is-fieldonly treatment. Nothing half-built is ever shown. */
+    /* MEASURED IN THE BROWSER, 12 October 2026, AND WITHDRAWN.
+
+       The viewport mounted (624x468, live canvas) but the composition did
+       not: .rh-split computes to flex-direction:column and
+       .results-hero-inner to display:block at this width, so the view and
+       the decision column stacked full-bleed instead of splitting, and the
+       camera had not flown — the hero showed space with a Cesium ion
+       watermark across it.
+
+       The founder's condition was "provided it works reliably in the
+       existing hero composition". It does not, so the mount is disabled and
+       the hero keeps the shipped is-fieldonly treatment, which renders
+       correctly. The code stays, on this file's leave-defined convention,
+       because the two faults are a layout rule and a camera call, not the
+       idea — and Sun & Light keeps its viewport, undisturbed. */
+    const pnEx = pnVerdictExampleImage(results);
+    if (pnEx) {
+      const mediaCol = document.createElement('div');
+      mediaCol.className = 'pn-media-col';
+      const frame = document.createElement('div');
+      frame.className = 'results-hero-media';
+      const img = document.createElement('img');
+      img.src = pnEx.im.url;
+      img.alt = pnEx.im.alt || '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      frame.appendChild(img);
+      pnAttachImageCredit(frame, pnEx.im);
+      mediaCol.appendChild(frame);
+      /* THE CAPTION. Names the building and the courtesy, claims no medium,
+         and says in terms that it is not a recommendation. */
+      const cap = document.createElement('p');
+      cap.className = 'pn-hero-example-note';
+      const capName = document.createElement('span');
+      capName.className = 'pn-hero-example-name';
+      capName.textContent = pnEx.label + ' \u00b7 Image courtesy of ' + pnEx.im.supplier;
+      cap.appendChild(capName);
+      const capRole = document.createElement('span');
+      capRole.className = 'pn-hero-example-role';
+      capRole.textContent = 'An example of an additional home in this range. '
+        + 'Atlas has not placed it ahead of the other options.';
+      cap.appendChild(capRole);
+      if (pnEx.site) {
+        const capLink = document.createElement('a');
+        capLink.className = 'pn-hero-example-link';
+        capLink.href = pnEx.site;
+        capLink.target = '_blank';
+        capLink.rel = 'noopener noreferrer';
+        capLink.textContent = pnEx.im.supplier + ' \u2192';
+        cap.appendChild(capLink);
+      }
+      mediaCol.appendChild(cap);
+      split.appendChild(mediaCol);
+      wrap.classList.remove('is-fieldonly');
+    }
+
+    /* THE BODY IS ONE SENTENCE, AS GARDEN ROOM'S IS.
+
+       The figures, the confirmed findings and the outstanding checks used
+       to be rendered here AND again in the dossier below. They belong to
+       the dossier: it is the page's single authoritative account of what
+       Atlas found. The hero introduces the verdict and points at it. */
+    const body = document.createElement('div');
+    body.className = 'results-hero-body';
+    if (parts[1]) {
+      const ed = document.createElement('p');
+      ed.className = 'results-hero-editorial';
+      ed.textContent = parts[1];
+      body.appendChild(ed);
+    }
+    /* THE BOUNDARY. Its own note, in the shipped note class, so it reads as
+       a condition on the finding and never as part of it. */
+    if (parts[3]) {
+      const bound = document.createElement('p');
+      bound.className = 'results-hero-budget-note';
+      bound.textContent = parts[3];
+      body.appendChild(bound);
+    }
+    /* THE ONWARD ROUTE, in the shipped secondary-action shape. */
+    const secondary = document.createElement('div');
+    secondary.className = 'hero-secondary';
+    const go = document.createElement('a');
+    go.className = 'hero-secondary-link';
+    go.href = '#hmrPropertyFit';
+    go.textContent = 'See what Atlas checked \u2192';
+    secondary.appendChild(go);
+    body.appendChild(secondary);
+    split.appendChild(body);
+    wrap.appendChild(identity);
+    wrap.appendChild(split);
+    host.appendChild(wrap);
+    /* THE ZERO-RESULT ANSWER, WITHOUT RECLASSIFYING THE CONTAINER.
+       The zero path hides every product section, #matchPrimary among them,
+       and this render runs after it. One assignment is therefore the whole
+       of it: the two shared section lists and the assertion that keeps them
+       disjoint are untouched, so a Garden Room render with an empty set
+       behaves exactly as it ships. */
+    host.hidden = false;
+    host.setAttribute('data-pn-verdict', '1');
+    return true;
+  }
+
+  /* THE LENSES FOLLOW THE OPTIONS — AND GO BACK WHEN THEY SHOULD NOT.
+
+     Three existing sibling nodes, moved. No lens resolver, no lens copy, no
+     CSS, no new element. Because a DOM move persists for the life of the
+     page, this is SYMMETRIC: called with `after` false it restores the
+     shipped order, so a Garden Room search later in the same session, and a
+     genuine residential lead, both read exactly as they ship. Called twice
+     in the same direction it mutates nothing. */
+  function pnLensRailAfterOptions(after){
+    const opts = document.getElementById('altResults');
+    const optsHead = document.getElementById('altResultsHeading');
+    if (!opts || !opts.parentNode || !optsHead) return false;
+    const parent = opts.parentNode;
+    if (optsHead.parentNode !== parent) return false;
+    const ref = after ? opts.nextSibling : optsHead;
+    ['matchAlternativesHeading', 'altRailNote', 'altRailWrap']
+      .forEach(function (id) {
+        const n = document.getElementById(id);
+        if (n && n.parentNode === parent) parent.insertBefore(n, ref);
+      });
+    return true;
+  }
+
+  /* ================= THE PROPERTY'S ATLAS ASSESSMENT =====================
+
+     THE SAME EDITORIAL SPREAD, A DIFFERENT SUBJECT.
+
+     aaRenderAssessment() is NOT called: it is bound to a product, a
+     supplier and their evidence, and inventing a product to satisfy it
+     would be the HOME-as-Garden-Room confusion this branch exists to
+     avoid. What is reused is the GRAMMAR — aaEl(), aaFig(), and the frozen
+     .aa-mast / .aa-head / .aa-rule / .aa-finds / .aa-find / .aa-fig /
+     .aa-mkr classes — so the property assessment reads as the same
+     editorial spread, in the same section, at the same rhythm.
+
+     Every figure and every finding comes from the assessment the page has
+     already computed. Nothing is derived here, nothing is rounded again,
+     and a datum the assessment did not produce is absent rather than
+     estimated. */
+  function pnRenderPropertyAssessment(fit){
+    const sec  = document.getElementById('aboutSupplier');
+    const host = document.getElementById('supplierRow');
+    const t    = document.getElementById('supplierTitle');
+    const foot = document.getElementById('supplierFoot');
+    if (!sec || !host || !fit) return false;
+    const facts = fit.verdictFacts || [];
+    const known = fit.verdictKnown || [];
+    const calc  = fit.verdictCalc  || [];
+    const check = fit.verdictCheck || [];
+    if (!facts.length && !known.length) return false;
+
+    host.innerHTML = '';
+    host.classList.add('aa');
+
+    /* (1) MASTHEAD — the section's dateline, two-ended as Garden Room's is. */
+    const mast = aaEl('div', 'aa-mast');
+    const lead = aaEl('span', 'aa-mast-lead');
+    /* THE EXACT GARDEN ROOM ATLAS MARK.
+
+       This previously cloned #pn-atlas-a-template, a different asset with
+       no intrinsic size, which rendered the symbol oversized and pushed
+       the wordmark onto a second line. These are the same six lines the
+       Garden Room masthead uses, against the same approved asset, at the
+       same 60x60, with the same hydration call — not an approximation of
+       them. */
+    const mastMark = aaEl('span', 'pn-atlas-still');
+    const mastImg = document.createElement('img');
+    mastImg.className = 'pn-atlas-still-img';
+    mastImg.src = 'assets/brand/atlas-final-static-approved-transparent.png';
+    mastImg.alt = '';
+    mastImg.width = 60; mastImg.height = 60;
+    mastImg.decoding = 'async';
+    mastImg.setAttribute('aria-hidden', 'true');
+    mastMark.appendChild(mastImg);
+    lead.appendChild(mastMark);
+    lead.appendChild(aaEl('span', 'aa-mast-l', 'Atlas assessment'));
+    if (window.pnAtlasHydrate) window.pnAtlasHydrate(lead);
+    mast.appendChild(lead);
+    const placeEl = document.getElementById('propConfirmPlace');
+    mast.appendChild(aaEl('span', 'aa-mast-r',
+      (placeEl && placeEl.textContent.trim()) || 'Your property'));
+    host.appendChild(mast);
+
+    /* (2) THE CONCLUSION AND ITS STANDFIRST. */
+    const head = aaEl('div', 'aa-head');
+    const hl = aaEl('div', 'aa-head-l');
+    hl.appendChild(aaEl('p', 'aa-find-lab', 'Atlas assessed your property for'));
+    hl.appendChild(aaEl('h4', 'aa-title', 'An additional home'));
+    const hr = aaEl('div', 'aa-head-r');
+    hr.appendChild(aaEl('p', 'aa-stand',
+      'Against the published conditions for a home of 32\u201345 m\u00b2 in the '
+      + 'garden of an existing house, using the measurements and answers you '
+      + 'gave.'));
+    head.appendChild(hl); head.appendChild(hr);
+    host.appendChild(head);
+    host.appendChild(aaEl('div', 'aa-rule'));
+
+    /* (3) THE EVIDENCE MATRIX — the figures, at display size. */
+    if (facts.length) {
+      const finds = aaEl('div', 'aa-finds');
+      facts.forEach(function (f, i) {
+        const cell = aaEl('div', 'aa-find' + (i === 0 ? ' aa-find--lead' : ''));
+        cell.setAttribute('data-level', 'key');
+        cell.appendChild(aaEl('p', 'aa-find-lab', f.k));
+        const v = aaFig('aa-fig' + (i === 0 ? ' aa-fig--big' : ''), f.v, 0);
+        v.setAttribute('data-primary', '1');
+        cell.appendChild(v);
+        finds.appendChild(cell);
+      });
+      host.appendChild(finds);
+    }
+
+    /* (4) THE SUPPORTING ARITHMETIC, in the tighter spec grid. */
+    if (calc.length) {
+      const spec = aaEl('div', 'aa-finds');
+      spec.setAttribute('data-group', 'spec');
+      calc.forEach(function (c) {
+        const cell = aaEl('div', 'aa-find');
+        cell.setAttribute('data-level', 'spec');
+        cell.appendChild(aaEl('p', 'aa-find-lab', c.k));
+        cell.appendChild(aaFig('aa-fig', c.v, 0));
+        spec.appendChild(cell);
+      });
+      host.appendChild(spec);
+    }
+
+    /* (5) WHAT ATLAS HOLDS — the maker band, carrying the findings. */
+    if (known.length) {
+      const band = aaEl('div', 'aa-mkr');
+      band.appendChild(aaEl('p', 'aa-find-lab', 'What Atlas confirmed about your garden'));
+      known.forEach(function (k) {
+        band.appendChild(aaEl('p', 'aa-stand', '\u2713  ' + k));
+      });
+      host.appendChild(band);
+    }
+
+    /* (6) STILL CHECKING — the open questions, named, never counted away. */
+    if (check.length) {
+      const band = aaEl('div', 'aa-mkr');
+      band.appendChild(aaEl('p', 'aa-find-lab', 'Still checking'));
+      check.forEach(function (c) {
+        band.appendChild(aaEl('p', 'aa-stand', c));
+      });
+      host.appendChild(band);
+    }
+
+    if (t) { t.textContent = 'Atlas assessment of your property'; t.classList.add('aa-sr'); }
+    if (foot) { foot.textContent = ''; foot.hidden = true; }
+    sec.hidden = false;
+    sec.setAttribute('data-pn-property-assessment', '1');
+    return true;
+  }
+
   window.__PN_RENDER_RESIDENTIAL__ = function (results, fit) {
     const fitEl = document.getElementById('hmrPropertyFit');
     if (fitEl && fit) {
@@ -12633,6 +13201,36 @@
         const e = document.getElementById(id); if (e) e.hidden = true;
       });
     }
+    /* THE MAIN RESULT IS THE PROPERTY, NOT A SUPPLIER PRODUCT.
+
+       Order matters twice over. renderMatchResults() clears #matchPrimary
+       on entry, and the zero branch above hides it, so the verdict is
+       rendered HERE, after both, or it would be erased by one of them.
+
+       Gated on the governed no-lead state. Where the split names exactly
+       one caveat-free candidate that product is not arbitrary, and the
+       shipped hero keeps its price, supplier, Save and next step. */
+    try {
+      const pnHasLead = !!(results && results.length && results[0]
+                           && results[0].ctx && results[0].ctx.isPreferred);
+      const pnVerdictShown = !pnHasLead
+        && pnRenderVerdictHero(fit && fit.verdictParts, fit, results);
+      /* NO DUPLICATE VERDICT. #hmrFitVerdict carries the same three strings
+         concatenated. It is HIDDEN, not emptied: the text stays in the DOM
+         for diagnosis and the property check reads correctly again the
+         moment the hero does not render. */
+      const pnFitV = document.getElementById('hmrFitVerdict');
+      if (pnFitV) pnFitV.hidden = !!pnVerdictShown;
+      if (!pnVerdictShown) pnLensRailAfterOptions(false);
+      /* THE DOSSIER. Same section, same grammar, the property's own
+         evidence. Rendered only where the verdict is the main result, so
+         Garden Room's supplier assessment is never displaced. */
+      if (pnVerdictShown) pnRenderPropertyAssessment(fit);
+      /* THE CLOSING EXPERIENCE. Same section, same components, the
+         property's own three topics. Rendered after the product branch,
+         which hides the section when there is no product. */
+      if (pnVerdictShown) pnRenderResidentialDecide(fit);
+    } catch (e) { /* the concatenated verdict below stands on its own */ }
     showScreen(els.matchResultsScreen);
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
@@ -14463,8 +15061,24 @@
 
     var want = (qs.get('state') || 'normal').toLowerCase();
 
+    /* WHICH GOVERNED VERDICT STATE TO REVIEW. ?verdict=1|2|3|4, default 1.
+       The strings come from the governed table itself through the module's
+       named export — the fixture does not carry a copy of them, so it
+       cannot drift from what a homeowner actually reads. With the export
+       unavailable this returns null, the fixture adds no verdictParts key,
+       and the page behaves exactly as it did before this harness change. */
+    function reviewVerdictParts(){
+      var want = parseInt(qs.get('verdict') || '1', 10);
+      if (!(want >= 1 && want <= 4)) want = 1;
+      var table = (typeof window.__PN_VERDICT_COPY__ === 'function')
+        ? window.__PN_VERDICT_COPY__() : null;
+      var parts = table && table[want];
+      return (parts && parts.length) ? parts : null;
+    }
+
     function fixture(){
-      return {
+      var vp = reviewVerdictParts();
+      var f = {
         verdict: 'Your garden can take a home — worth taking further. '
                + 'The conditions look workable.',
         whyHtml: '<p>REVIEW FIXTURE. This paragraph stands in for the property '
@@ -14477,6 +15091,51 @@
                 + '<li>Establish services — water, drainage and power.</li>'
                 + '<li>Run a Property Check before approaching anyone.</li>'
       };
+      /* THE REAL GOVERNED TRIPLE, so the verdict hero renders in review the
+         way it renders in production. Absent when the table cannot be read,
+         rather than filled with a stand-in: an invented verdict is the one
+         thing this surface may never show. */
+      if (vp) f.verdictParts = vp;
+      /* THE FIGURES AND FINDINGS, SO THE PREVIEW SHOWS THE REAL HERO.
+
+         The fixture supplied the verdict strings but not the measurement
+         figures or the confirmed findings, so the hero rendered its headline
+         and its sentences and nothing else — and every visual review of this
+         page has been of a hero missing half its content.
+
+         These are fixture values in the fixture's own shape, in the same
+         units and the same sentences the real assessment produces, and the
+         banner above the page says so in as many words. The production path
+         is untouched: renderResult() passes its own `c` and `why`. */
+      f.verdictFacts = [
+        { k: 'Potential area from your measurements', v: '38.4 m\u00b2' },
+        { k: 'The range these regulations allow',     v: '32\u201345 m\u00b2' },
+        { k: 'Allowance left in the garden',          v: '45 m\u00b2' }
+      ];
+      f.verdictKnown = [
+        'Your measurements leave room for about 38.4 m\u00b2, inside the '
+          + '32\u201345 m\u00b2 range',
+        'Nothing is built in the garden yet, so the full 45 m\u00b2 allowance '
+          + 'is available',
+        'You told us the far end of the garden can be reached inside your own '
+          + 'property',
+        'No new entrance onto the road would be needed',
+        'Water and drains would run off the existing house'
+      ];
+      f.verdictOpenCount = 2;
+      f.verdictCalc = [
+        { k: 'Garden area',                               v: '186 m\u00b2' },
+        { k: 'Buildings in the garden',                   v: 'none' },
+        { k: 'Private open space the house keeps',        v: '\u2212 60 m\u00b2' },
+        { k: 'Limited by',                                v: 'the open space rule' }
+      ];
+      f.verdictCheck = [
+        'The tax treatment of a home like this. The Government has said it '
+          + 'will be clarified; it is not settled yet.',
+        'What \u201coccupied in conjunction with the main house\u201d means in '
+          + 'practice. The regulations use the phrase and do not define it.'
+      ];
+      return f;
     }
 
     function banner(state, n){
@@ -14489,12 +15148,13 @@
           + 'letter-spacing:.06em;padding:8px 16px;text-align:center;';
         document.body.appendChild(b);
       }
-      b.textContent = 'LOCAL REVIEW MODE · state=' + state + ' · '
+      b.textContent = 'LOCAL REVIEW MODE · state=' + state
+        + ' · verdict=' + (qs.get('verdict') || '1') + ' · '
         + n + ' real Additional Home candidate(s) · '
-        + 'THE PROPERTY ASSESSMENT ABOVE IS A FIXTURE. THE PRODUCT DATA IS REAL.';
+        + 'THE PROPERTY MEASUREMENTS AND LOCATION ARE FIXTURES. THE PRODUCT DATA IS REAL.';
     }
 
-    additionalHomePoolReady.then(function () {
+    additionalHomePoolReady.then(async function () {
     /* THE ADDRESS THE REAL JOURNEY WOULD HAVE PRODUCED.
 
        STEP 5B. The harness supplied the property assessment but NOT the
@@ -14526,6 +15186,50 @@
       formattedAddress: 'Dundrum, Co. Dublin (LOCAL DEV REVIEW — not a real customer address)',
       locationType: 'ROOFTOP', placeId: null, isRooftop: true
     };
+
+      /* THE PROPERTY IS LOCATED, SO THE PROPERTY VIEW CAN BE REVIEWED.
+
+         The harness set the coordinates but never brought the viewer up or
+         wrote the locality, so the hero's located-property guard refused —
+         correctly — to show a 3D view of a property the page had no
+         position for, and fell back to the shipped field-only treatment.
+
+         These are the SAME FOUR FUNCTIONS enterResultsReviewMode() calls,
+         in the same order, unchanged, against the SAME fixture coordinates
+         already declared three lines above. No new camera code, no second
+         viewer, and nothing here can run outside the four gates at the top
+         of this block. */
+      try {
+        if (els.localityLabel)
+          els.localityLabel.textContent = 'Dundrum, Co. Dublin (review mode)';
+        var pcp = document.getElementById('propConfirmPlace');
+        if (pcp) pcp.textContent = 'Dundrum, Co. Dublin';
+        var pc = document.getElementById('propConfirm');
+        if (pc) pc.hidden = false;
+      } catch (e) {}
+      /* THE REVIEW MUST NOT DEPEND ON THE PROPERTY VIEW LOADING.
+         Measured: Google Photorealistic 3D Tiles answer 403 from a
+         localhost origin, and the fly-to promise then never settles. When
+         this block was awaited, the whole harness stalled before rendering
+         and the page sat on the entry screen. The viewer is raised beside
+         the review now, not in front of it. */
+      (function raisePropertyView() {
+        Promise.resolve()
+          .then(function () { return initCesium(); })
+          .then(function (cesOk) {
+            if (!cesOk) return null;
+            return flyToLocation(geocodedResult.lat, geocodedResult.lon, true)
+              .then(function (fr) {
+                lastResolvedTarget = fr.resolvedC;
+                if (tilesetLoaded && fr.resolvedC) showLocationMarker(fr.resolvedC);
+                enableShadowsForSunLight();
+                return moveCloserForPlotIntelligence();
+              });
+          })
+          .catch(function (e) {
+            console.warn('[REVIEW] property view unavailable', e);
+          });
+      })();
 
       var all = [];
       try {
@@ -19965,6 +20669,35 @@
      Every product in the universe carries organisationEvidence[0].id, and the
      suppliers partition is keyed by exactly that. The old consumers used
      product.organisation — a NAME — which matched 0 of 61 organisations. */
+  /* THE NAME → ORGANISATION-ID RESOLVER.
+
+     The suppliers detail partition is keyed by Airtable record id and each
+     record carries its own `name`. Additional Home records carry the
+     organisation NAME and no id, so this is the join, and it is deliberately
+     strict: exact string match after trimming, first match wins, null
+     otherwise. A near-miss must resolve to nothing rather than to the wrong
+     supplier's evidence.
+
+     Memoised per partition load, because the AH view is built once per
+     candidate on every render. */
+  let pnOrgIdByNameCache = null;
+  function pnSupplierOrgIdByName(name){
+    const want = (typeof name === 'string') ? name.trim() : '';
+    if (!want) return null;
+    const store = pnDetailParts['suppliers'];
+    if (!store) return null;
+    if (!pnOrgIdByNameCache || pnOrgIdByNameCache.store !== store) {
+      const map = Object.create(null);
+      Object.keys(store).forEach(function (id) {
+        const rec = store[id];
+        const n = rec && typeof rec.name === 'string' ? rec.name.trim() : '';
+        if (n && !(n in map)) map[n] = id;
+      });
+      pnOrgIdByNameCache = { store: store, map: map };
+    }
+    return pnOrgIdByNameCache.map[want] || null;
+  }
+
   function pnSupplierOrgId(product){
     const ev = product && product.organisationEvidence;
     return (Array.isArray(ev) && ev.length && ev[0] && ev[0].id) ? ev[0].id : null;
@@ -22012,7 +22745,21 @@
        so the composition is whole rather than waiting. The <img> above is
        still built, so restoring the panel is one class away, and a real
        imageUrl renders it exactly as before. */
-    if (product.imageUrl) {
+    /* THE GOVERNED READER, NOT THE DEAD FIELD.
+
+       MEASURED: imageUrl is set on 0 of 573 Garden Room products and 0 of
+       37 in the legacy pool, so this branch has never once fired and the
+       hero has never rendered a photograph. Six Garden Room products DO
+       carry an authorised imagery block, and the gallery card finds them
+       through the governed reader — the same one checked three lines
+       above — the same governed reader. The hero and the card disagreed about what "has a photograph"
+       means; they now agree.
+
+       Nothing about rights changes: the governed reader is the gate, and it
+       already refuses an asset missing its url, credit, supplier, rights
+       record or permitted prefix. A product with no authorised asset takes
+       the is-fieldonly path exactly as before. */
+    if (pnImg || product.imageUrl) {
       mediaCol.appendChild(imgWrap);
       split.appendChild(mediaCol);
       /* NOW the gallery can be built: imgWrap holds the <img> and sits inside
@@ -28646,9 +29393,15 @@
     // Construction system, where the Atlas record actually states one — the
     // other axis of difference the carousel is meant to show.
     const build = product.productType && !/^garden room$/i.test(product.productType) ? product.productType : '';
-    priceRow.textContent = pnPriceDisplay(product) // BATCH 2 PIECE 1
-      + (hasValidArea(product.floorAreaM2) ? ' · ' + product.floorAreaM2 + 'm²' : '')
-      + (build ? ' · ' + build : '');
+    /* JOINED, NOT CONCATENATED. The separator was unconditional, so a
+       product with no published price rendered "· 33m²" — a leading
+       separator with nothing before it. Measured on Van XL, which publishes
+       no price. The parts are unchanged; only the join is. */
+    priceRow.textContent = [
+      pnPriceDisplay(product),
+      hasValidArea(product.floorAreaM2) ? (product.floorAreaM2 + 'm\u00b2') : '',
+      build
+    ].filter(function (s) { return s; }).join(' \u00b7 ');
     body.appendChild(priceRow);
 
     const reasons = buildMatchReasons(product, role, ctx);
@@ -28692,6 +29445,21 @@
        are all unchanged. */
 
     const { actions, openMyPlotLink } = buildSaveActions(product);
+    /* THE ROUTE TO OPTION DETAIL, RESIDENTIAL NO-LEAD ONLY.
+
+       pnViewOptionButton() and `#altResults .pn-view-option` have both been
+       in this file since JC-2. Y1 retired the CALL from this card — not the
+       control — on one stated ground: "The Next steps block below the hero
+       carries the journey now." In residential no-lead there is no hero and
+       #matchNextStep is hidden, so that ground does not hold and the card
+       would otherwise offer Save as its only action.
+
+       `primaryResult` is this builder's own second parameter, so the test
+       needs no new state. Garden Room always passes a primary, and so does
+       a genuine residential lead, which is why neither can reach this. */
+    if (pnResultUse === 'residential' && !primaryResult) {
+      actions.insertBefore(pnViewOptionButton(product), actions.firstChild);
+    }
     body.appendChild(actions);
     body.appendChild(openMyPlotLink);
 
@@ -28895,6 +29663,11 @@
     return bydByoRef;
   }
 
+  /* The count words, so the approved explanation reads as a sentence rather
+     than a figure. A fixed list, read by index. */
+  const PN_AH_COUNT_WORDS = ['no', 'one', 'two', 'three', 'four', 'five',
+    'six', 'seven', 'eight', 'nine', 'ten'];
+
   function renderAltResults(primaryResult, alternativeResults){
     const host = document.getElementById('altResults');
     const head = document.getElementById('altResultsHeading');
@@ -28937,7 +29710,19 @@
        rows. Neither exists on the residential path, where the set is a
        governed evidence filter and arrives in pool order carrying its own
        reason and its own caveat. */
-    const picks = !(primary && candidates.length) ? []
+    /* OPTION B — THE GRID MAY RENDER WITHOUT A PRIMARY, RESIDENTIAL ONLY.
+
+       This gate existed because every sentence on this surface was stated
+       relative to the recommendation above it. In residential no-lead there
+       is no recommendation and the rows carry their own governed sentences
+       already (see the residential branch below), so the gate is the only
+       thing standing between four qualifying buildings and the surface
+       built to show them equally.
+
+       Garden Room cannot reach pnNoLeadHere: pnResultUse is 'garden-room'
+       there, and a Garden Room render always has a primary in any case. */
+    const pnNoLeadHere = (pnResultUse === 'residential') && !primary;
+    const picks = !((primary || pnNoLeadHere) && candidates.length) ? []
       : (pnResultUse === 'residential')
         ? candidates.map(function (r) {
             return Object.assign({}, r, { __alt: {
@@ -28987,7 +29772,30 @@
     if (n && bydByoNode()) host.appendChild(bydByoNode());
     host.hidden = n === 0;
     if (head) head.hidden = n === 0;
-    if (note) {
+    /* THE TWO APPROVED STRINGS — OPTION B, 11 October 2026.
+
+       "Other options worth considering" and "N alternatives Atlas found in
+       the same search" are both stated RELATIVE TO A PRIMARY. Neither can
+       honestly be said when Atlas has named no lead, so in that state the
+       two founder-approved strings of 11 October are used instead. They are
+       set here rather than in new markup, and the lead case re-asserts the
+       shipped heading, so nothing persists from one render to the next.
+
+       The heading carries the figure and the explanation carries the word,
+       which is exactly how the two approved sentences were written. */
+    if (head) head.textContent = pnNoLeadHere
+      ? (String(n) + ' possibilities worth exploring')
+      : 'Other options worth considering';
+    if (pnNoLeadHere) {
+      if (note) {
+        const w = PN_AH_COUNT_WORDS[n] || String(n);
+        note.textContent = 'Atlas has identified ' + w
+          + (n === 1 ? ' building that meets' : ' buildings that meet')
+          + ' the current assessment criteria. None has been established as '
+          + 'a better match for your property.';
+        note.hidden = n === 0;
+      }
+    } else if (note) {
       /* P1 — say the number that is on the page. `n` is measured above,
          before the bring-your-own block is attached, so it is exactly the
          count of alternatives and nothing else. */
@@ -29556,7 +30364,37 @@
       console.info('Match: all three results are from ' + [...suppliers][0] + '. A comparable alternative exists in the approved 7-product pool depending on filters selected.');
     }
 
-    const [primaryResult, ...alternativeResults] = results;
+    /* THE LEAD IS DERIVED, NOT ASSUMED — OPTION B, 11 October 2026.
+
+       Additional Home runs a governed evidence filter, not a ranking, so
+       `results[0]` is the lowest Product Code. The residential candidate
+       split has already decided whether a lead can be named at all and
+       recorded that verdict per row as ctx.isPreferred; this reads that one
+       datum and nothing else. Nothing is scored, nothing is re-ordered, no
+       supplier is favoured.
+
+       Garden Room sets isPreferred from its OWN ranking (index === 0), so
+       pnNoLead is false on every Garden Room render and every line below
+       behaves exactly as it has always behaved. */
+    const [pnFirstRow, ...alternativeResults] = results;
+    const pnNoLead = pnResidential && !(pnFirstRow && pnFirstRow.ctx
+                                        && pnFirstRow.ctx.isPreferred);
+    const primaryResult = pnNoLead ? null : pnFirstRow;
+    /* ONE PRODUCT SURFACE. With no lead there is no row 0 being held back
+       for a hero, so the existing alternatives grid and the existing lens
+       rail both receive the whole qualifying set — otherwise the first
+       candidate would be lost to a distinction that no longer exists.
+       Garden Room passes the tail, exactly as before. */
+    const pnProductRows = pnNoLead ? results : alternativeResults;
+    /* READING ORDER. With the property verdict as the main result the lens
+       rail belongs after the buildings it asks questions about; with a
+       recommendation above it, it belongs where it ships. One call, both
+       directions, so neither journey can inherit the other's order. */
+    try { pnLensRailAfterOptions(pnResidential && pnNoLead); } catch (e) {}
+    /* The hero container collapses rather than holding an empty plate's
+       bottom margin. Residential only, so Garden Room never touches the
+       attribute. */
+    if (pnResidential && els.matchPrimary) els.matchPrimary.hidden = !!pnNoLead;
     /* Rest-destructuring builds another new array, so the eligible set is
        carried once more — onto the exact object renderLensRail() and
        renderAltResults() already receive. No function signature changes. */
@@ -29655,6 +30493,26 @@
       if (els.resultsReassurance) els.resultsReassurance.hidden = true;
     }
 
+    /* EXPLORE YOUR PROPERTY IN 3D — A PROPERTY FEATURE, SO IT STAYS.
+       Founder decision, 12 October 2026. Measured before reinstating:
+       activateResultsSunlightCentrepiece() does not read its argument at all
+       — the one line that read chain.inferred is commented out under
+       ISSUE 007. What it renders is the homeowner's own geocoded property,
+       the sun position calculated for that location, and the season and time
+       controls. There is no product datum in it, so withholding it when no
+       building has been preferred was withholding a property feature over a
+       product distinction.
+
+       Scene 4's reassurance list stays suppressed: buildPrimaryWorthChecking()
+       IS product-specific, and the property's own open questions are already
+       in the check above. */
+    if (pnResidential && !primaryResult && els.resultsSunlightCentrepiece) {
+      try {
+        activateResultsSunlightCentrepiece(null);
+        els.resultsSunlightCentrepiece.hidden = false;
+      } catch (e) { /* the panel stays hidden rather than half-built */ }
+    }
+
     // SCENE 5
     // RESULTS V2 SPRINT 2 — at most three, each carrying its own argument.
     // buildResultsGalleryCard is left defined and unused, per this file's
@@ -29663,7 +30521,7 @@
     /* The presentation is shared; the selection is not, because the Garden
        Room selection is a ranking comparison. See the builder note. */
     const reasoned = pnResidential
-      ? (alternativeResults || []).map(function (r) {
+      ? (pnProductRows || []).map(function (r) {
           return Object.assign({}, r, { __alt: {
             dimension: 'residential-evidence',
             reason: (r.ctx && r.ctx.leadReason) || '',
@@ -29734,7 +30592,7 @@
        line above, because the wildcard is mounted by renderPlotTwist() one
        line earlier. Everything the five lenses need now exists. */
     const twistIdea = pickHiddenPotential();
-    const lensCount = renderLensRail(primaryResult, alternativeResults, twistIdea);
+    const lensCount = renderLensRail(primaryResult, pnProductRows, twistIdea);
     /* AR-2 — the deck. One line, stating what the rail is so the reader does
        not have to infer it from four cards. */
     const railNote = document.getElementById('altRailNote');
@@ -29749,7 +30607,7 @@
        and repainted in the same pass below, so the Local Option exclusion is
        always computed against the same supplier-evidence state the rail is
        showing. */
-    renderAltResults(primaryResult, alternativeResults);
+    renderAltResults(primaryResult, pnProductRows);
 
     /* PAINT NOW, REPAINT ONCE — the convention renderTrustProfile() already
        uses eleven hundred lines above, for the identical reason.
@@ -29778,10 +30636,10 @@
         /* A repaint scheduled by an earlier render must never overwrite a
            later one. */
         if (els.matchAlternatives.getAttribute('data-rail-run') !== railRun) return;
-        const settledCount = renderLensRail(primaryResult, alternativeResults, twistIdea);
+        const settledCount = renderLensRail(primaryResult, pnProductRows, twistIdea);
         /* The exclusion depends on the same supplier evidence the rail does,
            so the two sections settle together. */
-        renderAltResults(primaryResult, alternativeResults);
+        renderAltResults(primaryResult, pnProductRows);
         if (railNote) railNote.hidden = settledCount === 0;
         if (els.matchAlternativesHeading) els.matchAlternativesHeading.hidden = settledCount === 0;
         if (els.altRailWrap) els.altRailWrap.hidden = settledCount === 0;
@@ -32804,10 +33662,140 @@
     return e;
   }
 
+  /* ===== THE RESIDENTIAL CLOSING EXPERIENCE ===========================
+
+     THE SAME COMPONENTS, A DIFFERENT SUBJECT. renderResultsDecide() is
+     bound to a product and hides itself without one, which is why the
+     Additional Home page stopped after the options. This builds the
+     identical .byd-point articles — bydEl(), .byd-head, .byd-num,
+     .byd-cat, .byd-q, .byd-body, .byd-act — into the identical
+     #bydPoints host, and then lets the shipped #bydClose panel stand.
+
+     EVERY CLAIM IS THE ASSESSMENT'S OWN. Point 02 lists the conditions
+     Atlas has already recorded as outstanding; where it has recorded
+     none, the card says so rather than inventing one. Point 03 names
+     what a published building price may not include, as possibilities,
+     and states no figure. */
+  function pnResidentialDecidePoints(fit){
+    /* The recorded conditions are full sentences. Joining them raw gave
+       "yet.;" and "it..", so each is trimmed of its terminal stop and the
+       list is joined with a semicolon. Wording is untouched. */
+    const open = ((fit && fit.verdictCheck) || []).map(function(t){
+      return String(t).trim().replace(/\.+$/, '');
+    }).filter(Boolean);
+    const pts = [];
+
+    pts.push({
+      key: 'property',
+      category: 'Your property',
+      question: 'Where could an additional home actually go?',
+      body: 'The assessment measures what the regulations allow. Where a '
+          + 'building could physically sit is a separate question: how you '
+          + 'reach the far end of the garden, what the boundaries do, which '
+          + 'way the space faces, and what is already in the way. The 3D '
+          + 'view of your property is the quickest way to think it through.',
+      actionLabel: 'Open the 3D view \u2192',
+      action: function(){
+        const t = document.getElementById('yourProperty');
+        if (!t) return;
+        try { if (t.tagName === 'DETAILS') t.open = true; } catch (e) {}
+        t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    pts.push({
+      key: 'planning',
+      category: 'Planning',
+      question: 'What still needs to be confirmed?',
+      body: (open.length
+        ? ('This is an assessment against the published conditions, not a '
+           + 'planning decision and not a guarantee of eligibility. Atlas '
+           + 'has ' + (open.length === 1 ? 'one condition' : open.length
+           + ' conditions') + ' still open on your answers: '
+           + open.join('; ') + '. Your local authority is the only body '
+           + 'that can settle any of it.')
+        : ('This is an assessment against the published conditions, not a '
+           + 'planning decision and not a guarantee of eligibility. Atlas '
+           + 'has recorded no outstanding condition on what you told us, '
+           + 'which is not the same as approval. Your local authority is '
+           + 'the only body that can settle that.')),
+      actionLabel: 'See what Atlas checked \u2192',
+      action: function(){
+        const t = document.getElementById('aboutSupplier');
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    pts.push({
+      key: 'truecost',
+      category: 'True cost',
+      question: 'What would an additional home actually cost?',
+      body: 'A published building price is the building. Depending on the '
+          + 'supplier and the site it may not include foundations, site '
+          + 'preparation, water, drainage or electrical connections, '
+          + 'delivery, craning, installation or finishing. Atlas does not '
+          + 'hold a confirmed scope for every option here, so treat each '
+          + 'of those as a question to put to the supplier rather than a '
+          + 'cost that is already counted.'
+    });
+
+    return pts;
+  }
+
+  function pnRenderResidentialDecide(fit){
+    const sec = els.resultsDecide;
+    if (!sec || !els.bydPoints) return 0;
+    const points = pnResidentialDecidePoints(fit);
+    if (!points.length) return 0;
+    sec.removeAttribute('data-byd-product');
+    /* OWNERSHIP. renderResultsDecide(null) runs later on this journey and
+       hides the section and empties the host — measured: the points
+       rendered and were then cleared. The marker tells it this section
+       belongs to the property result, not to an absent product. */
+    sec.setAttribute('data-pn-residential-decide', '1');
+    els.bydPoints.innerHTML = '';
+    points.forEach(function(p, i){
+      const art = bydEl('article', 'byd-point');
+      art.setAttribute('data-key', p.key);
+      const head = bydEl('div', 'byd-head');
+      head.appendChild(bydEl('span', 'byd-num', ('0' + (i + 1)).slice(-2)));
+      head.appendChild(bydEl('span', 'byd-cat', p.category));
+      art.appendChild(head);
+      art.appendChild(bydEl('h3', 'byd-q', p.question));
+      art.appendChild(bydEl('p', 'byd-body', p.body));
+      if (p.actionLabel && p.action) {
+        const b = bydEl('button', 'byd-act', p.actionLabel);
+        b.type = 'button';
+        b.addEventListener('click', p.action);
+        art.appendChild(b);
+      }
+      els.bydPoints.appendChild(art);
+    });
+    sec.hidden = false;
+    /* THE CLOSING BEAT, ADAPTED. The panel, the heading and the Ask
+       control are the shipped nodes; only the one supporting sentence
+       changes, because this journey narrowed a PROPERTY question. */
+    const cb = document.querySelector('#bydClose .byd-close-body');
+    if (cb) cb.textContent = 'Atlas has taken your property as far as a '
+      + 'published assessment can. If there is still something you want to '
+      + 'understand before you go further, ask us.';
+    const cl = document.getElementById('bydClose');
+    if (cl) cl.hidden = false;
+    try { if (typeof bydRehomeAsk === 'function') bydRehomeAsk(); } catch (e) {}
+    return points.length;
+  }
+
   function renderResultsDecide(product){
     const sec = els.resultsDecide;
     if (!sec || !els.bydPoints) return 0;
-    if (!product) { sec.hidden = true; els.bydPoints.innerHTML = ''; return 0; }
+    /* THE PROPERTY RESULT OWNS THIS SECTION WHEN IT RENDERED IT. Absent a
+       product this cleared the section unconditionally, which erased the
+       Additional Home closing experience a moment after it was built. A
+       Garden Room render is unaffected: it never sets the marker. */
+    if (!product) {
+      if (sec.getAttribute('data-pn-residential-decide') === '1') return 0;
+      sec.hidden = true; els.bydPoints.innerHTML = ''; return 0;
+    }
 
     /* Guarded against a stale async repaint: the planning partition may land
        after the homeowner has already moved to another recommendation. */
@@ -37507,14 +38495,38 @@
     // Bring the real, single Cesium viewer up and fly it to the same
     // point, reusing the exact functions the real journey uses — no new
     // camera or viewer code.
-    const ok = await initCesium();
-    if (ok) {
-      const flightResult = await flyToLocation(geocodedResult.lat, geocodedResult.lon, true);
-      lastResolvedTarget = flightResult.resolvedC;
-      if (tilesetLoaded && flightResult.resolvedC) showLocationMarker(flightResult.resolvedC);
-      enableShadowsForSunLight();
-      await moveCloserForPlotIntelligence();
-    }
+    /* THE REVIEW MUST NOT DEPEND ON THE PROPERTY VIEW LOADING.
+
+       Measured, 12 October 2026: Google Photorealistic 3D Tiles answer
+       403 Forbidden from a localhost origin. Awaited here, the fly-to
+       promise never settled and computeAndShowResults() below was never
+       reached, so the review Results page sat on the entry screen and
+       could not be inspected at all.
+
+       SAME FOUR FUNCTIONS, SAME ORDER, SAME FIXTURE. Nothing about the
+       viewer changes; it is simply no longer in front of the render. The
+       chain has its own catch, so a refused tile request is reported and
+       ignored rather than stalling the page. REVIEW MODE ONLY — this
+       function is reachable only through ?review=… and is not on any
+       homeowner's path. */
+    (function raiseReviewPropertyView(){
+      Promise.resolve()
+        .then(function(){ return initCesium(); })
+        .then(function(ok){
+          if (!ok) return null;
+          return flyToLocation(geocodedResult.lat, geocodedResult.lon, true)
+            .then(function(flightResult){
+              lastResolvedTarget = flightResult.resolvedC;
+              if (tilesetLoaded && flightResult.resolvedC)
+                showLocationMarker(flightResult.resolvedC);
+              enableShadowsForSunLight();
+              return moveCloserForPlotIntelligence();
+            });
+        })
+        .catch(function(e){
+          console.warn('[REVIEW] property view unavailable', e);
+        });
+    })();
 
     // Compute results using the real, untouched selection logic, and jump
     // straight to Results — skipInterstitial=true is a review-mode-only
@@ -37880,16 +38892,47 @@
     return { st:st, open:open, flags:flags };
   }
 
+  /* THE GOVERNED VERDICT. Founder decision, 12 October 2026: professional
+     homeowner language in place of the tentative phrasing, and the planning
+     boundary stated outright rather than implied.
+
+     FOUR STRINGS PER STATE:
+       [0] the headline, at display scale in the hero
+       [1] the homeowner-first sentence, as the editorial line
+       [2] the explanation, unchanged in substance from the governed original
+       [3] THE BOUNDARY — what this assessment is not. Identical on every
+           state, because an initial assessment is never a consent, whatever
+           the verdict. It is rendered as its own note so it can never be
+           read as part of the finding above it.
+
+     WHAT THESE MAY NOT SAY, and do not: that permission exists, that
+     eligibility is settled, that any authority has decided anything, or
+     that PlotNua has applied for or obtained anything. */
+  /* THE BOUNDARY, SAID ONCE. An initial assessment against published
+     conditions is not a planning decision, and nobody has applied for one.
+     This sentence is the same in all four states by design. */
+  var PN_VERDICT_BOUND = 'This is Atlas\u2019s assessment against the published '
+    + 'conditions \u2014 not a planning decision, and not a guarantee of '
+    + 'eligibility. Your local authority is the only body that can settle that.';
   var COPY = {
-    1:['Worth exploring','Your garden looks like it could take one',
-       'On what you told us there is room for a home inside the 32–45 m² range these regulations set, with enough garden still left for the house, and none of the other conditions is in the way.'],
-    2:['A few things need checking','Nothing is ruled out',
-       'The space itself works. What is not settled yet is listed below — none of it counts against you, and each one has a straightforward way to resolve it.'],
-    3:['Space looks like the limit','The garden is what decides it here',
-       'Once the house keeps the open space it has to keep, what is left is smaller than the minimum size these regulations allow. That is a fact about the garden, not about permission.'],
-    4:['A key condition doesn’t fit','Something outside the measurements',
-       'One of the conditions these regulations set is not met, and it is not about size. Whatever the garden measures, that condition would need to change first.']
+    1:['Your property meets the initial criteria for an additional home',
+       'Atlas has checked your measurements against every condition these regulations set, and found nothing that rules your garden out.',
+       'On what you told us there is room for a home inside the 32–45 m² range these regulations set, with enough garden still left for the house, and none of the other conditions is in the way.',
+       PN_VERDICT_BOUND],
+    2:['Your property meets the initial criteria, with points to confirm',
+       'The space itself works. A small number of things are not settled yet, and each has a straightforward way to resolve it.',
+       'The space itself works. What is not settled yet is listed below — none of it counts against you, and each one has a straightforward way to resolve it.',
+       PN_VERDICT_BOUND],
+    3:['Your garden is below the minimum size these regulations allow',
+       'Once the house keeps the open space it must keep, what is left is smaller than the minimum. That is a measurement, not a refusal.',
+       'Once the house keeps the open space it has to keep, what is left is smaller than the minimum size these regulations allow. That is a fact about the garden, not about permission.',
+       PN_VERDICT_BOUND],
+    4:['One condition these regulations set is not met',
+       'It is not about size. Whatever the garden measures, this condition would need to change first.',
+       'One of the conditions these regulations set is not met, and it is not about size. Whatever the garden measures, that condition would need to change first.',
+       PN_VERDICT_BOUND]
   };
+
   var ASK = {
     access:'whether someone could reach the far end of the garden on foot and by wheelchair, inside your own boundaries',
     entrance:'whether a new entrance onto the road would be needed',
@@ -38028,7 +39071,23 @@
       /* The governed record, intact, under a name that cannot be mistaken for
          a Garden Room field. */
       additionalHome: p,
-      class3a: p.class3a
+      class3a: p.class3a,
+      /* THE SUPPLIER JOIN. pnSupplierOrgId() reads
+         product.organisationEvidence[0].id, and every shared supplier
+         surface reads it from there: locality, organisation type, last
+         reviewed, the Local Option lens, and pnGoogleIdentity().
+
+         Resolved by EXACT organisation-name match against the suppliers
+         detail partition Atlas already publishes. No fuzzy match, no alias
+         table, no fallback — an unmatched name yields an absent key and
+         every surface takes its existing no-evidence path, which is the
+         truthful one. Nothing about the product, its price, its imagery or
+         its eligibility is affected either way. */
+      organisationEvidence: (function(){
+        var id = (typeof pnSupplierOrgIdByName === 'function')
+          ? pnSupplierOrgIdByName(p.organisation) : null;
+        return id ? [{ id: id, name: p.organisation }] : undefined;
+      })()
     };
     return v;
   }
@@ -38196,6 +39255,31 @@
     if (typeof window.__PN_RENDER_RESIDENTIAL__ === 'function'){
       window.__PN_RENDER_RESIDENTIAL__(results, {
         verdict: C[0] + ' — ' + C[1] + '. ' + C[2],
+        /* THE SAME THREE GOVERNED STRINGS, UNCONCATENATED. The verdict hero
+           sets them as three elements; the sentence above stays as the
+           fallback and is suppressed, not deleted, when the hero renders.
+           Nothing new is computed: this is COPY[d.st] by reference. */
+        verdictParts: C,
+        /* THE FIGURES THE HERO SHOWS, from the SAME `c` object that builds
+           the calculation disclosure below. Nothing is recomputed and
+           nothing is rounded differently: a figure absent from `c` is
+           absent here rather than estimated. */
+        verdictFacts: (function(){
+          var f = [];
+          if (c.measured) f.push({ k: 'Potential area from your measurements',
+                                   v: c.maxArea + ' m\u00b2' });
+          f.push({ k: 'The range these regulations allow',
+                   v: R.MIN + '\u2013' + R.MAX + ' m\u00b2' });
+          if (c.measured) f.push({ k: 'Allowance left in the garden',
+                                   v: c.allowance + ' m\u00b2' });
+          return f;
+        })(),
+        /* THE CONFIRMED FINDINGS, for the hero's evidence list. Only the
+           affirmative ones: the open questions keep their own place in the
+           property check, where they are not competing with a verdict. */
+        verdictKnown: why.filter(function(w){ return w[0] === 'hm-yes'; })
+                         .map(function(w){ return w[2]; }),
+        verdictOpenCount: why.filter(function(w){ return w[0] !== 'hm-yes'; }).length,
         whyHtml: $('dhWhy') ? $('dhWhy').innerHTML : '',
         calcHtml: $('dhCalc') ? $('dhCalc').innerHTML : '',
         checkHtml: $('dhCheck') ? $('dhCheck').innerHTML : '',
@@ -38398,6 +39482,21 @@
      lives in the HOME module scope, which the page script cannot see — the
      boundary this file already documents for renderMatchResults and els. */
   window.__PN_RESIDENTIAL_RESULTS__ = function () { return pnResidentialResults(); };
+
+  /* THE GOVERNED VERDICT TABLE, FOR THE LOCAL REVIEW HARNESS ONLY.
+
+     Same named-export convention as the two above: one named destination,
+     no element, no state, no way to reach anything else. It returns a COPY
+     of COPY, so a reader cannot mutate the governed strings, and every
+     string in it is already homeowner-visible on this screen.
+
+     The production path does not read this. renderResult() passes
+     COPY[d.st] directly. */
+  window.__PN_VERDICT_COPY__ = function () {
+    var out = {};
+    Object.keys(COPY).forEach(function (k) { out[k] = COPY[k].slice(); });
+    return out;
+  };
 
   /* How many buildings sit in or near the band but cannot be assessed —
      stated so the absence is explained rather than silent. UNKNOWN IS NOT

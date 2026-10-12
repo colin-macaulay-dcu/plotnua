@@ -1,6 +1,17 @@
 # ADDITIONAL HOME RESULTS — TRUE NO-LEAD EQUALITY
 
-**Status: APPROVED ARCHITECTURE. NOT IMPLEMENTED.**
+> **SUPERSEDED, 12 October 2026 — RETIRED BEFORE IMPLEMENTATION.**
+> The architecture below (`#ahCandidateSet` / `#ahCandidateGrid`, a separate
+> residential candidate section) was **never built**. The founder directed
+> instead that the Additional Home Results page reuse the existing Garden Room
+> Results composition, so no-lead equality is now expressed through the shipped
+> `#altResults` gallery. **The equality principle in section 1 still governs; the
+> markup, selectors and renderers described here do not exist.**
+> For the implemented design, read
+> `governance/ADDITIONAL-HOME-RESULTS-CHECKPOINT-2026-10-12.md`.
+> This document is retained as the decision record only.
+
+**Status: APPROVED ARCHITECTURE. NOT IMPLEMENTED. SUPERSEDED.**
 Founder decision, 11 October 2026. Deferred behind the BIOBUILDS release.
 
 **The shipped Results renderer is not modified by this record.** `your-plot.html`
