@@ -106,6 +106,27 @@ async function payloadFor(pageFile, tenure, note) {
 
 const RENT_NOTE = 'My landlord knows and has said it is fine with her.';
 
+/* D2 · ADDED 12 October 2026. Founder decision D2 option (ii) removed four
+   keys from EVERY payload, after this proof was written. "after" is the page
+   on disk, so without accounting for that this proof would fail on a change
+   it was never about. The accounting is EXACT, not a loosening:
+     - BEFORE is compared with exactly these four keys deleted, and nothing
+       else; any other drift still fails T5b / T5d / T5i;
+     - each of the four must really have been PRESENT before (T5k), so the
+       deletion cannot make the comparison pass vacuously;
+     - none of them may be present after (T5l).
+   The tenure correction this file proves is untouched by D2. */
+const D2_REMOVED = ['inherited_spare_corner', 'inherited_way_in',
+                    'inherited_your_own_use', 'inherited_result_key'];
+const minusD2 = (json) => {
+  if (!json) return json;
+  const o = JSON.parse(json);
+  for (const k of D2_REMOVED) delete o[k];
+  return JSON.stringify(o);
+};
+const hadAllD2 = (json) => !!json && D2_REMOVED.every((k) => k in JSON.parse(json));
+const hasAnyD2 = (json) => !!json && D2_REMOVED.some((k) => k in JSON.parse(json));
+
 console.log('\n  T5 · PAYLOAD INVARIANCE ACROSS THE TENURE CORRECTION');
 console.log('  before: ' + BASE_REF);
 console.log('  after : disc025-borrowed-garden-check.html (on disk)\n');
@@ -114,15 +135,15 @@ console.log('  after : disc025-borrowed-garden-check.html (on disk)\n');
 const ownA = await payloadFor(BEFORE, 'own');
 const ownB = await payloadFor(LIVE, 'own');
 check('T5a an OWNER payload is produced at all', !!ownA && !!ownB);
-check('T5b the OWNER payload is byte-identical before and after',
-  ownA === ownB, '\n    before ' + ownA + '\n    after  ' + ownB);
+check('T5b the OWNER payload is byte-identical before and after (less the D2 keys)',
+  minusD2(ownA) === ownB, '\n    before ' + minusD2(ownA) + '\n    after  ' + ownB);
 
 /* ---- rent: must be byte-identical --------------------------------------- */
 const rentA = await payloadFor(BEFORE, 'rent', RENT_NOTE);
 const rentB = await payloadFor(LIVE, 'rent', RENT_NOTE);
 check('T5c a RENT payload is produced at all', !!rentA && !!rentB);
-check('T5d the RENT payload is byte-identical before and after',
-  rentA === rentB, '\n    before ' + rentA + '\n    after  ' + rentB);
+check('T5d the RENT payload is byte-identical before and after (less the D2 keys)',
+  minusD2(rentA) === rentB, '\n    before ' + minusD2(rentA) + '\n    after  ' + rentB);
 check('T5e the RENT payload still carries permission_confirmed true',
   rentB && JSON.parse(rentB).permission_confirmed === true, rentB);
 
@@ -138,7 +159,7 @@ const buyA = await payloadFor(BEFORE, 'buying', BUY_NOTE);
 const buyB = await payloadFor(LIVE, 'buying', BUY_NOTE);
 check('T5f a BUYING payload is produced at all', !!buyA && !!buyB);
 if (buyA && buyB) {
-  const a = JSON.parse(buyA), b = JSON.parse(buyB);
+  const a = JSON.parse(minusD2(buyA)), b = JSON.parse(buyB);
   const keysA = Object.keys(a).sort(), keysB = Object.keys(b).sort();
   const dropped = keysA.filter((k) => !keysB.includes(k));
   const added = keysB.filter((k) => !keysA.includes(k));
@@ -152,6 +173,11 @@ if (buyA && buyB) {
   check('T5j BUYING previously carried permission_confirmed (so the drop is real)',
     'permission_confirmed' in a, JSON.stringify(keysA));
 }
+
+check('T5k every D2-removed key was present BEFORE, for all three tenures',
+  hadAllD2(ownA) && hadAllD2(rentA) && hadAllD2(buyA));
+check('T5l no D2-removed key is present AFTER, for any tenure',
+  !hasAnyD2(ownB) && !hasAnyD2(rentB) && !hasAnyD2(buyB));
 
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log(`\n  ${pass} passed, ${fail} failed\n`);

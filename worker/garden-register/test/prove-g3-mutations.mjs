@@ -174,10 +174,17 @@ const CASES = [
                  '          void 0;'),
    ['G24b']],
 
-  ['M15 result PROSE sent instead of the result key',
-   (h) => sub(h, '      if (k) body.inherited_result_key = k;',
-     "      if (k) body.inherited_result_key = 'A corner of your garden looks workable';"),
-   ['G11e']],
+  /* M15 / M19 INVERTED 12 October 2026 under founder decision D2 (ii).
+     Their old anchors — the result-key block and inherited_spare_corner —
+     were removed from the page by build-g6-owner-register.py, so as written
+     they would only ever report VACUOUS. The property they protected was
+     reversed by the founder; they now attack the REVERSAL, re-introducing
+     exactly what D2 removed, and the re-pointed G11d / G11e must catch it. */
+  ['M15 the result key re-added to the payload (D2 reversed)',
+   (h) => sub(h, "      inherited_tenure: answers.tenure || ''\n    };",
+     "      inherited_tenure: answers.tenure || '',\n" +
+     "      inherited_result_key: 'ARRANGEMENT'\n    };"),
+   ['G11d', 'G11e']],
 
   ['M16 interest made conditional on a prior Save (founder Q2 broken)',
    (h) => sub(h, '    sec.hidden = false;\n    if (!INTEREST_PUBLIC)',
@@ -197,8 +204,10 @@ const CASES = [
                  "      over_18: String($('bgIntConsent').checked),"),
    ['G11b']],
 
-  ['M19 the inherited Property Check answers dropped',
-   (h) => sub(h, "      inherited_spare_corner: answers.spare_corner || '',", ''),
+  ['M19 another Property Check answer re-added to the payload (D2 reversed)',
+   (h) => sub(h, "      inherited_tenure: answers.tenure || ''\n    };",
+     "      inherited_tenure: answers.tenure || '',\n" +
+     "      inherited_spare_corner: answers.spare_corner || ''\n    };"),
    ['G11d']],
 
   ['M20 the retention sentence altered in the notice',
@@ -254,6 +263,47 @@ const CASES = [
       over-broad expectation recorded three times in the G3 build. */
    ['G10', 'T3']],
 
+  /* ======================= G6 PREPARATION MUTATIONS · 12 October 2026 === */
+
+  ['M31 tenure itself dropped from the payload (Worker would refuse all)',
+   (h) => sub(h, "      inherited_tenure: answers.tenure || ''\n    };", "    };"),
+   ['G11d']],
+
+  ['M32 the honeypot check removed (a bot submission goes through)',
+   (h) => sub(h, "    if (hp && hp.value !== '') { intUnavailable(); return; }", ''),
+   ['G30c', 'G30d']],
+
+  ['M33 the honeypot tells a filled form it is on the register',
+   (h) => sub(h, "    if (hp && hp.value !== '') { intUnavailable(); return; }",
+     "    if (hp && hp.value !== '') { intReceived($('bgIntDistrict').value); return; }"),
+   ['G30d']],
+
+  ['M34 the honeypot field made tabbable',
+   (h) => sub(h, 'id="bgIntWebsite" name="website" tabindex="-1"', 'id="bgIntWebsite" name="website"'),
+   ['G30a']],
+
+  ['M35 the no-introduction statement dropped from the offer (D3)',
+   (h) => sub(h, "<strong>We can&rsquo;t promise an introduction.</strong> We may never\n            find anybody near you.", "<strong>We&rsquo;ll find someone.</strong>"),
+   ['G23a', 'G23h3']],
+
+  ['M36 matching claimed to be live',
+   (h) => sub(h, "<strong>Matching isn&rsquo;t live yet.</strong>", "<strong>Matching is live.</strong>"),
+   ['G23h1']],
+
+  ['M37 the CTA reverted to the old wording',
+   (h) => sub(h, ">I&rsquo;m interested in offering garden space</button>", ">Yes &mdash; let me know</button>"),
+   ['G23j']],
+
+  ['M38 the V2 result-disclosure sentence reinstated in the notice',
+   (h) => sub(h, "Your other Property Check answers and its\n              result are not sent to us.",
+     "We also keep the result the Property Check produced from those answers."),
+   ['G23f3', 'G23f4']],
+
+  ['M39 out-of-area homeowners told matching is available there',
+   (h) => sub(h, "'Artane, and we are not looking for anybody to introduce ' +\n               'outside those areas. You are on the register either way.'",
+     "'Artane, and we will look for somebody near you too.'"),
+   ['G15e']],
+
   ['M25 the funnel event made to carry the district',
    (h) => sub(h, "    interestOpened:    function () { track('garden_interest_opened'); },",
      "    interestOpened:    function () {\n" +
@@ -262,7 +312,17 @@ const CASES = [
    ['G24f', 'G24h']],
 ];
 
-for (const [name, mutate, expectPrefixes] of CASES) {
+/* MUT_SLICE="a:b" runs CASES.slice(a, b). For environments that cap a
+   single command's run time. Unset = every case, exactly as before. The
+   summary line names the slice so a partial run never reads as a full one. */
+const SLICE = (process.env.MUT_SLICE || '').split(':');
+const RUN = process.env.MUT_SLICE
+  ? CASES.slice(+SLICE[0] || 0, SLICE[1] === '' ? undefined : +SLICE[1])
+  : CASES;
+if (process.env.MUT_SLICE) console.log('  slice ' + process.env.MUT_SLICE +
+  ' of ' + CASES.length + ' cases\n');
+
+for (const [name, mutate, expectPrefixes] of RUN) {
   let r;
   try {
     r = runSuite(mutate(SRC));

@@ -501,16 +501,24 @@ await scope(async () => {
     body.over_18 === true, JSON.stringify(body.over_18));
   check('G11c source is garden_interest',
     body.source === 'garden_interest', body.source);
-  check('G11d the four Property Check answers are inherited, not re-asked',
-    body.inherited_tenure === 'own' &&
-    body.inherited_spare_corner === 'yes_a_clear_corner' &&
-    body.inherited_way_in === 'side_or_rear_access' &&
-    body.inherited_your_own_use === 'now_and_then',
-    JSON.stringify(body));
-  check('G11e the result KEY is sent, never the result prose',
-    body.inherited_result_key === 'ARRANGEMENT' &&
-    !/workable|corner of your garden/i.test(JSON.stringify(body)),
-    body.inherited_result_key);
+  /* G11d / G11e · RE-POINTED 12 October 2026 under founder decision D2
+     option (ii). These previously asserted that four Property Check answers
+     and the result key WERE sent; the founder reversed that. They now assert
+     the minimisation, and they range over EVERY key in the real payload —
+     not over a fixed list that could empty — so any inherited_* key other
+     than tenure fails, whatever it is called. The Property Check here was
+     answered with all four answers (OWN_WORKABLE) and produced a result, so
+     the page HAD the data to leak: the absence is a decision, not a gap. */
+  const inherited = Object.keys(body).filter((k) => /^inherited_/.test(k));
+  check('G11d only tenure is inherited from the Property Check (D2)',
+    inherited.length === 1 && inherited[0] === 'inherited_tenure' &&
+    body.inherited_tenure === 'own', inherited.join(','));
+  check('G11e no result key and no result prose is sent (D2)',
+    !('inherited_result_key' in body) &&
+    !/ARRANGEMENT|workable|corner of your garden/i.test(JSON.stringify(body)),
+    JSON.stringify(body).slice(0, 160));
+  check('G11f the honeypot never reaches the payload (D4)',
+    !('website' in body) && !/bgIntWebsite/.test(JSON.stringify(body)));
 
   /* THE PROHIBITION LIST, ASSERTED ON THE REAL PAYLOAD. */
   const keys = Object.keys(body);
@@ -526,9 +534,7 @@ await scope(async () => {
     keys.every((k) => [
       'first_name', 'email', 'district', 'water', 'size_note', 'timing',
       'over_18', 'consent_text', 'source', 'garden_note',
-      'permission_confirmed', 'inherited_tenure', 'inherited_spare_corner',
-      'inherited_way_in', 'inherited_your_own_use', 'inherited_result_key',
-      'check_saved_at'
+      'permission_confirmed', 'inherited_tenure'
     ].includes(k)), keys.join(','));
   w.close();
 });
@@ -602,8 +608,13 @@ await scope(async () => {
     /may never find anybody/.test(txt));
   check('G15c received gives the way off the register',
     /hello@plotnua\.ie/.test(txt) && /nothing to cancel/.test(txt));
+  /* G15d RE-ANCHORED 12 October 2026. It asserted the ABSENCE of the old
+     'small part of Dublin 5' line; once that wording was replaced the check
+     would have passed whatever the page did. It now asserts the absence of
+     the current out-of-pilot sentence, which G15e proves is reachable. */
   check('G15d received does not add the out-of-pilot line for Raheny',
-    !/small part of Dublin 5/.test(txt));
+    !/not looking for anybody to introduce outside those areas/.test(txt) &&
+    /register, not a match/.test(txt));
   w.close();
 });
 
@@ -618,8 +629,10 @@ await scope(async () => {
   fillValid($, { district: 'elsewhere_in_ireland' });
   $('bgIntForm').dispatchEvent(new w.Event('submit', { cancelable: true, bubbles: true }));
   await tick(); await tick();
-  check('G15e an out-of-pilot district is told the pilot is small',
-    /small part of Dublin 5/.test($('bgIntDone').textContent));
+  const done15e = $('bgIntDone').textContent.replace(/\s+/g, ' ');
+  check('G15e an out-of-pilot district is told no introductions happen there (D3)',
+    /We are starting in Raheny, Killester, Donnycarney and Artane, and we are not looking for anybody to introduce outside those areas\. You are on the register either way\./
+      .test(done15e), done15e.slice(0, 200));
   w.close();
 });
 
@@ -845,9 +858,93 @@ await scope(async () => {
      amended the notice; 2026-10-PHASE2-V2 is that amendment.
      This guard exists because the "What we keep" sentence was previously
      unasserted, which is exactly how the omission survived a freeze. */
-  check('G23f3 the notice discloses the stored Property Check result',
-    /and whether you own the property . and the result the Property Check produced from those answers\./
-      .test(notice), notice.slice(0, 120));
+  /* G23f3 RE-POINTED 12 October 2026 (privacy 2026-10-PHASE2-V3, D2). The
+     notice must now say what is kept from the Property Check — tenure only —
+     and that the other answers and the result are NOT sent. The old V2
+     disclosure sentence must be gone, or the notice would promise storage
+     that no longer happens. */
+  check('G23f3 the notice says tenure is the only Property Check answer kept',
+    /From your Property Check we keep one answer only: whether you own the home, rent it or are buying it, because if you rent, the owner would have to agree before anything could happen\. Your other Property Check answers and its result are not sent to us\./
+      .test(notice), notice.slice(0, 160));
+  check('G23f4 the V2 result-disclosure sentence is gone from the notice',
+    !/result the Property Check produced/.test(notice));
+
+  /* G23h · THE FOUR D3 STATEMENTS, founder-approved 12 October 2026. Each is
+     asserted separately so dropping any one fails. */
+  const offerOnly = $('bgIntOffer').textContent.replace(/\s+/g, ' ');
+  for (const [id, re] of [
+      ['G23h1 matching is not live', /Matching isn’t live yet\. Joining the register doesn’t arrange anything\./],
+      ['G23h2 there is no obligation', /There’s no obligation\. Registering interest commits you to nothing/],
+      ['G23h3 no introduction is promised', /We can’t promise an introduction\. We may never find anybody near you\./],
+      ['G23h4 the homeowner stays in control', /You stay in control\. Nobody else sees your details\./],
+      ['G23h5 the pilot areas are named', /We’re starting in Raheny, Killester, Donnycarney and Artane\./],
+      ['G23h6 elsewhere is welcome without implying matching', /If you live somewhere else, you’re still welcome to tell us\. Your interest goes on the register, but we aren’t looking for anyone to introduce outside those four areas\./]]) {
+    check(id, re.test(offerOnly), offerOnly.slice(0, 120));
+  }
+  check('G23i the heading is the approved D3 question',
+    $('bgIntH').textContent.replace(/\s+/g, ' ').trim() ===
+      'Could you see yourself sharing part of your garden?',
+    $('bgIntH').textContent);
+  check('G23j the call to action is the approved D3 wording',
+    $('bgIntOpen').textContent.trim() === 'I’m interested in offering garden space',
+    $('bgIntOpen').textContent);
+  w.close();
+});
+
+/* ======================================== 8b · D4 PAGE-ONLY HONEYPOT === */
+
+await scope(async () => {
+  const { w, $ } = boot({ search: '?interest=preview', answers: OWN_WORKABLE });
+  const hp = $('bgIntWebsite');
+  check('G30 the honeypot field exists inside the form',
+    !!hp && $('bgIntForm').contains(hp));
+  check('G30a it is out of the tab order, not required and not autofilled',
+    hp.getAttribute('tabindex') === '-1' && !hp.required &&
+    hp.getAttribute('autocomplete') === 'off' && hp.value === '');
+  check('G30b it is hidden from assistive technology and off-screen',
+    hp.parentNode.getAttribute('aria-hidden') === 'true' &&
+    hp.parentNode.classList.contains('bg-int-hp') &&
+    /\.bg-int-hp\{position:absolute !important;left:-10000px/.test(HTML));
+  w.close();
+});
+
+await scope(async () => {
+  /* A FILLED honeypot: nothing sent, and the TRUTHFUL state shown. The
+     reply stub would say 'received' if anything reached it, so a page that
+     sent anyway would land in 'received' and fail G30d as well as G30c. */
+  const { w, $, sent, events } = boot({
+    search: '?interest=preview', answers: OWN_WORKABLE,
+    reply: { status: 200, body: { state: 'received' } }
+  });
+  $('bgIntOpen').click();
+  fillValid($, { district: 'raheny' });
+  $('bgIntWebsite').value = 'http://spam.example';
+  $('bgIntForm').dispatchEvent(new w.Event('submit', { cancelable: true, bubbles: true }));
+  await tick(); await tick();
+  const txt = $('bgIntDone').textContent.replace(/\s+/g, ' ');
+  check('G30c a filled honeypot sends NOTHING', sent.length === 0, sent.length);
+  check('G30d it shows the truthful not-saved state, never "on the register"',
+    $('bgIntDone').hidden === false &&
+    /haven’t been saved/.test(txt) && !/You’re on the register/.test(txt),
+    txt.slice(0, 120));
+  check('G30e no interest_submitted event fires for it',
+    !events().map((e) => e[0]).includes('garden_interest_submitted'));
+  w.close();
+});
+
+await scope(async () => {
+  /* CONTROL: the same submission with the honeypot EMPTY goes through. This
+     is what makes G30c meaningful — the same fill otherwise sends. */
+  const { w, $, sent } = boot({
+    search: '?interest=preview', answers: OWN_WORKABLE,
+    reply: { status: 200, body: { state: 'received' } }
+  });
+  $('bgIntOpen').click();
+  fillValid($, { district: 'raheny' });
+  $('bgIntForm').dispatchEvent(new w.Event('submit', { cancelable: true, bubbles: true }));
+  await tick(); await tick();
+  check('G30f control: an empty honeypot sends exactly one request',
+    sent.length === 1, sent.length);
   w.close();
 });
 

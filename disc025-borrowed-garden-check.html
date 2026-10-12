@@ -949,6 +949,13 @@ window.PlotNuaFunnel = (function () {
     font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
     color:var(--oak);border:1px solid rgba(139,111,78,.4);border-radius:20px;
     padding:5px 12px;display:inline-block;}
+  /* G6 prep · the four offer statements, and the honeypot (never visible). */
+  .bg-int-list{margin:2px 0 14px;padding:0 0 0 1.15em;}
+  .bg-int-list li{margin:0 0 8px;font-size:15px;line-height:1.6;color:var(--body);
+    max-width:68ch;}  /* the offer's existing measure, as #bgIntOffer .bg-int-p */
+  .bg-int-list strong{font-weight:600;color:var(--ink);}
+  .bg-int-hp{position:absolute !important;left:-10000px;top:auto;width:1px;
+    height:1px;overflow:hidden;}
   @media(max-width:560px){ .bg-int{padding:26px 20px;} }
   /* PLOTNUA-G3-CSS-END */
 </style>
@@ -1015,20 +1022,35 @@ window.PlotNuaFunnel = (function () {
          constant, so no HTML entity can drift the string that gets hashed. -->
     <section class="bg-int" id="bgInterest" hidden aria-labelledby="bgIntH">
       <p class="bg-int-prev" id="bgIntPrev" hidden>Private preview &middot; not public</p>
-      <h2 class="bg-int-h" id="bgIntH">If somebody nearby needed a corner, would you
-        want to know?</h2>
+      <h2 class="bg-int-h" id="bgIntH">Could you see yourself sharing part of
+        your garden?</h2>
 
+      <!-- PLOTNUA-G6-PREP-2026-10-12 · D3 offer wording, founder-approved 12 October 2026.
+           Every proposition the G6 guards protect is still stated: not a
+           match, may never find anybody, no public listing, nothing shared
+           until a yes. -->
       <div id="bgIntOffer">
-        <p class="bg-int-p">Tell us about the part you have in mind. If somebody
-          nearby is looking for growing space, we&rsquo;ll email you and ask first.</p>
-        <p class="bg-int-p">Nobody else sees your details. There is no public listing,
-          no map and no profile page. Nothing is shared with anybody until you say yes
-          to one specific introduction.</p>
+        <p class="bg-int-p">PlotNua is exploring a small pilot that would introduce
+          homeowners with a spare corner to people nearby who&rsquo;d like somewhere
+          to grow. We&rsquo;re starting in Raheny, Killester, Donnycarney and Artane.</p>
+        <ul class="bg-int-list">
+          <li><strong>Matching isn&rsquo;t live yet.</strong> Joining the register
+            doesn&rsquo;t arrange anything.</li>
+          <li><strong>There&rsquo;s no obligation.</strong> Registering interest
+            commits you to nothing, and you can come off the register at any time.</li>
+          <li><strong>We can&rsquo;t promise an introduction.</strong> We may never
+            find anybody near you.</li>
+          <li><strong>You stay in control.</strong> Nobody else sees your details.
+            There is no public listing, no map and no profile page. Nothing is shared
+            with anybody until you say yes to one specific introduction.</li>
+        </ul>
+        <p class="bg-int-p">If you live somewhere else, you&rsquo;re still welcome to
+          tell us. Your interest goes on the register, but we aren&rsquo;t looking for
+          anyone to introduce outside those four areas.</p>
         <p class="bg-int-cta">
-          <button class="pc-cta" type="button" id="bgIntOpen">Yes &mdash; let me know</button>
+          <button class="pc-cta" type="button" id="bgIntOpen">I&rsquo;m interested in offering garden space</button>
         </p>
-        <p class="bg-int-caveat">This is a register, not a match.
-          We may never find anybody near you.</p>
+        <p class="bg-int-caveat">This is a register, not a match.</p>
       </div>
 
       <form class="bg-int-form" id="bgIntForm" hidden novalidate>
@@ -1081,6 +1103,17 @@ window.PlotNuaFunnel = (function () {
           <p class="bg-int-hint" id="bgIntCondHint"></p>
         </div>
 
+        <!-- D4 · PAGE-ONLY HONEYPOT. Off-screen, out of the tab order and
+             hidden from assistive technology. A person never sees it. If it
+             arrives filled, the page sends NOTHING and shows the truthful
+             'didn't go through' state — never a false 'you're on the
+             register'. Never part of the payload. -->
+        <div class="bg-int-hp" aria-hidden="true">
+          <label for="bgIntWebsite">Leave this field empty</label>
+          <input type="text" id="bgIntWebsite" name="website" tabindex="-1"
+                 autocomplete="off" value="">
+        </div>
+
         <!-- The canonical consent control. ONE tick. The sentence itself
              carries the over-18 statement, so there is no second box asking
              the same thing twice. The text is written by JS from the frozen
@@ -1094,12 +1127,14 @@ window.PlotNuaFunnel = (function () {
           <summary>Before you join the register &mdash; what we keep, and what we never ask for</summary>
           <div class="bg-int-noticebody">
             <p><strong>What we keep about you and your garden.</strong> Your first
-              name, your email address, the district you chose, and what you told the
-              Property Check about your garden &mdash; its size band, water, how
-              someone would get in, and whether you own the property &mdash; and the
-              result the Property Check produced from those answers. We also keep
-              the administrative records needed to manage your registration, your
-              consent and its status.</p>
+              name, your email address, the district you chose, and what you tell us
+              here about the space &mdash; roughly how big it is, whether there is
+              water, roughly when, and anything you add in the note. From your
+              Property Check we keep one answer only: whether you own the home, rent
+              it or are buying it, because if you rent, the owner would have to agree
+              before anything could happen. Your other Property Check answers and its
+              result are not sent to us. We also keep the administrative records
+              needed to manage your registration, your consent and its status.</p>
             <p><strong>What we never ask for.</strong> Your address, your Eircode,
               your phone number, your surname, your age, photographs of your garden,
               or anything about your health. We don&rsquo;t collect them, so we
@@ -2650,7 +2685,7 @@ window.PlotNuaDisc025Check = module.exports;
    * written into the visible label with textContent — never innerHTML, so no
    * entity can become a typographic quote — and the SAME constant is sent as
    * consent_text. The Worker hashes what arrives and compares it against its
-   * own constant for privacy_version 2026-10-PHASE2-V2. If this page ever
+   * own constant (unchanged since V1; privacy notice now V3). If this page ever
    * drifts from the approved wording it stops working rather than recording a
    * consent to text nobody approved.
    * ======================================================================== */
@@ -2815,9 +2850,9 @@ window.PlotNuaDisc025Check = module.exports;
       'will email you and ask first. We may never find anybody near you.'
     ];
     if (PILOT_DISTRICTS.indexOf(district) === -1) {
-      out.push('We are starting in a small part of Dublin 5, so it may be a ' +
-               'while before there is anybody near you at all. You are on the ' +
-               'register either way.');
+      out.push('We are starting in Raheny, Killester, Donnycarney and ' +
+               'Artane, and we are not looking for anybody to introduce ' +
+               'outside those areas. You are on the register either way.');
     }
     out.push('To come off it, email hello@plotnua.ie. There is nothing to ' +
              'cancel and no notice period.');
@@ -2869,28 +2904,20 @@ window.PlotNuaDisc025Check = module.exports;
       over_18: $('bgIntConsent').checked === true,
       consent_text: CONSENT_TEXT,
       source: 'garden_interest',
-      /* INHERITED FROM THE PROPERTY CHECK, not re-asked. These are the four
-         answers the homeowner already gave this page. inherited_tenure is the
-         one the Worker requires; the other three are context the register is
-         allowed to hold. */
-      inherited_tenure: answers.tenure || '',
-      inherited_spare_corner: answers.spare_corner || '',
-      inherited_way_in: answers.way_in || '',
-      inherited_your_own_use: answers.your_own_use || ''
+      /* D2 · DATA MINIMISATION, founder decision 12 October 2026, option (ii).
+         ONE answer is inherited from the Property Check: tenure. It is the
+         input to the G1B §5 renter-permission safeguard, and the deployed
+         Worker refuses a garden submission without it, so it is sent on every
+         submission — an owner's 'own' is what tells the Worker no permission
+         is needed. The other Property Check answers and the result key are
+         NOT sent. The Worker still accepts them as optional fields; the page
+         simply never supplies them. Privacy notice 2026-10-PHASE2-V3. */
+      inherited_tenure: answers.tenure || ''
     };
     var note = $('bgIntNote').value;
     if (note) body.garden_note = note;
     if (answers.tenure === 'rent') {
       body.permission_confirmed = $('bgIntPerm').checked === true;
-    }
-    /* The result KEY, never the result prose — the same rule the save
-       component applies, and for the same reason: a stored paragraph would
-       keep asserting something PlotNua may have stopped standing over. */
-    if (lastEval) {
-      var k = (lastEval.kind === 'early_exit')
-        ? lastEval.exit.headline
-        : (lastEval.results && lastEval.results[0] ? lastEval.results[0].key : '');
-      if (k) body.inherited_result_key = k;
     }
     return body;
   }
@@ -2924,6 +2951,12 @@ window.PlotNuaDisc025Check = module.exports;
       return;
     }
     intMsg('', null);
+
+    /* D4 honeypot. Checked after the local field checks, so a person whose
+       browser somehow filled it still meets ordinary validation first. */
+    var hp = $('bgIntWebsite');
+    if (hp && hp.value !== '') { intUnavailable(); return; }
+
     intShow('sending');
 
     var body = intPayload();

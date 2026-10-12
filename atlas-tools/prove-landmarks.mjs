@@ -42,8 +42,13 @@ const FOOTER  = ["index.html", "404.html", "about.html", "contact.html",
 const CAROUSEL = ["index.html", "404.html"];
 
 const DISC025 = "disc025-borrowed-garden-check.html";
+// Re-stamped 12 October 2026 for the founder-authorised G6 preparation
+// amendment applied by atlas-tools/build-g6-owner-register.py (D2/D3/D4),
+// recorded in governance/DISC-025-V2-POST-FREEZE-AMENDMENT-2-2026-10-12.md.
+// Same assertion, same strictness, new frozen value. The previous value was
+// 05bf977f0d4fb05a3310e1e3dc9bfb757b2d92d529f226f2c8bb97c805844a29.
 const DISC025_MAIN =
-  "05bf977f0d4fb05a3310e1e3dc9bfb757b2d92d529f226f2c8bb97c805844a29";
+  "338f6f0c3070f86ae008bc82214c666a10394f1ff60a34765ad5be45431bd7ab";
 const SEARCH_FROZEN = {
   // Re-stamped by JOB 6 (authorised Search V1 runtime change), then again on
   // 11 October 2026 for the authorised no-results copy correction applied by

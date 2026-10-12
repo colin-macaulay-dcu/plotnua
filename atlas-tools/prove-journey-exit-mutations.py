@@ -48,11 +48,23 @@ E0E_BLOCK = '''    if sha(base)[:12] != EXPECTED_BEFORE[f]:'''
 E0E_OFF = '''    if False:'''
 
 
+# The ten pages are read from the commit this builder was certified over
+# (Job 1, 9a7c136), not from the working tree. Re-pinned 12 October 2026:
+# E0e compares each page, region stripped, against its PRE-Job-1 hash, so
+# any LATER authorised edit to one of the ten pages (the first was the G6
+# preparation amendment to disc025) made the CONTROL fail and every case
+# below meaningless. The proof is about the builder, so its input is the
+# builder's own certified input. Same convention as prove-tenure-invariance.
+JOB1_REF = "9a7c136"
+
+
 def mk(tmp):
     """A throwaway repo: the ten checks and the builder, nothing else."""
     (tmp / "atlas-tools").mkdir(parents=True, exist_ok=True)
     for f in CHECKS:
-        shutil.copy2(ROOT / f, tmp / f)
+        (tmp / f).write_bytes(subprocess.run(
+            ["git", "show", JOB1_REF + ":" + f], cwd=ROOT, check=True,
+            capture_output=True).stdout)
     shutil.copy2(BUILDER, tmp / "atlas-tools" / "build-journey-exit.py")
     return tmp / "atlas-tools" / "build-journey-exit.py"
 
