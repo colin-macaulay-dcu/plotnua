@@ -216,11 +216,9 @@ for (const [f, want] of Object.entries(SEARCH_FROZEN)) {
 // ---- L13 · Garden Register switch -----------------------------------------
 {
   const t = read(DISC025);
-  // Inverted by the opening commit (opening/g6-register): the register is
-  // open by founder decision. On release/g6-register this still asserts false.
-  /INTEREST_PUBLIC\s*=\s*true/.test(t) && !/INTEREST_PUBLIC\s*=\s*false/.test(t)
-    ? ok("L13 INTEREST_PUBLIC is true (register opened by founder decision)")
-    : bad("L13 INTEREST_PUBLIC", "not true");
+  /INTEREST_PUBLIC\s*=\s*false/.test(t)
+    ? ok("L13 INTEREST_PUBLIC remains false")
+    : bad("L13 INTEREST_PUBLIC", "not false");
 }
 
 console.log("\n  " + pass + " passed, " + fail + " failed\n");

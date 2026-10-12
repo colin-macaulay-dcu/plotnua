@@ -97,10 +97,8 @@ const CASES = [
            from the payload field, so the local gate is unaffected.
      Each of those is the page being better than I assumed, not a gap. */
 
-  /* M1 INVERTED BY THE OPENING COMMIT: the page now ships open, so the
-     mutation that matters is the register silently closing again. */
-  ['M1  INTEREST_PUBLIC flipped back to false (ships closed)',
-   (h) => sub(h, 'var INTEREST_PUBLIC = true;', 'var INTEREST_PUBLIC = false;'),
+  ['M1  INTEREST_PUBLIC flipped to true (ships open)',
+   (h) => sub(h, 'var INTEREST_PUBLIC = false;', 'var INTEREST_PUBLIC = true;'),
    ['G1', 'G2b', 'G2d']],
 
   ['M2  the no_garden suppression removed (founder Q1 broken)',
@@ -160,13 +158,10 @@ const CASES = [
    (h) => sub(h, "    if (INT_STATE === 'sending') return;", "    if (false) return;"),
    ['G18c']],
 
-  /* M12 EXPECTATION CORRECTED BY THE OPENING COMMIT: G1 no longer exercises
-     the removal path once the page is public (the gates pass on the plain
-     URL). The path now fires only for no_garden, owned by G2f and G3. */
   ['M12 the section hidden instead of removed when the gates fail',
    (h) => sub(h, '      if (sec.parentNode) sec.parentNode.removeChild(sec);',
                  '      sec.hidden = true;'),
-   ['G2f', 'G3', 'G27b']],
+   ['G1', 'G3', 'G27b']],
 
   ['M13 a promise of a match added to the offer',
    (h) => sub(h, '        <p class="bg-int-cta">',
@@ -228,14 +223,10 @@ const CASES = [
                  "      'If somebody nearby is looking, we ' +"),
    ['G15']],
 
-  /* M22 RE-POINTED BY THE OPENING COMMIT. Loosening the preview test has no
-     effect once the page is public, so as written it could only be BLIND.
-     The gate's job now is to honour the public flag; this breaks exactly
-     that, making the preview parameter required again. */
-  ['M22 the public flag ignored (the preview parameter required again)',
-   (h) => sub(h, '    if (!INTEREST_PUBLIC && !intPreviewRequested()) return false;',
-                 '    if (!intPreviewRequested()) return false;'),
-   ['G1', 'G2d']],
+  ['M22 the preview gate loosened to any ?interest value',
+   (h) => sub(h, '      return /(?:^|[?&])interest=preview(?:&|$)/.test(location.search);',
+                 '      return /interest/.test(location.search);'),
+   ['G2d']],
 
   ['M23 a second over-18 checkbox added (double-asking)',
    (h) => sub(h,

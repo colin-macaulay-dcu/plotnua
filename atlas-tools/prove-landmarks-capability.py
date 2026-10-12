@@ -112,11 +112,9 @@ MUTATIONS = [
      "disc029-hidden-bins-check.html",
      lambda t: t.replace("PLOTNUA JOURNEY EXIT v1", "REMOVED", 1)),
 
-    # Inverted by the opening commit: the page ships open, so the mutation
-    # that matters is the switch silently returning to false.
-    ("INTEREST_PUBLIC is flipped back to false", "L13",
+    ("INTEREST_PUBLIC is flipped to true", "L13",
      "disc025-borrowed-garden-check.html",
-     lambda t: t.replace("INTEREST_PUBLIC = true", "INTEREST_PUBLIC = false", 1)),
+     lambda t: t.replace("INTEREST_PUBLIC = false", "INTEREST_PUBLIC = true", 1)),
 ]
 
 
