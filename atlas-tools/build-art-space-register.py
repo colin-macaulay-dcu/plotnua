@@ -18,8 +18,14 @@ Writes ONE file: disc024-open-your-home-to-art.html. Four bounded insertions:
 GUARDS
   R1  the rest of the page is byte-identical to git HEAD (questions, outcomes,
       engine, save band, save keys, journey exit — everything)
-  R2  ships closed: INTEREST_PUBLIC is false. Opening is refused unless
-      privacy.html carries the Art Space Register section (it does not yet)
+  R2  ships closed: INTEREST_PUBLIC is false. OPENING GATE (activation
+      preparation, 13 Oct 2026): INTEREST_PUBLIC may be true only when ALL of
+        (a) privacy.html carries the governed V4 Section 8, exactly as
+            atlas-tools/build-privacy-v4.py renders it (published_ok);
+        (b) the Art Worker's PRIVACY_VERSION is that section's version;
+        (c) OPEN_APPROVAL records the founder's approval to open, the legal
+            review and the dry run, each as a non-empty string.
+      None of these holds today, and INTEREST_PUBLIC stays false.
   R3  the consent sentence on the page equals the Worker's, character for
       character, and equals the founder-approved text
   R4  the page's vocabularies equal the Worker's (county, ways, space, money)
@@ -35,7 +41,14 @@ GUARDS
   R11 the mount call passes only space, level and money
   R12 the register script reads no My Plot / localStorage / save contract and
       calls only the art Worker endpoint — never the garden one
-  R13 journey exit, save band and Garden Owner Register files are untouched
+  R7b the founder's commitment statement (13 Oct 2026, 21:09) is present
+      verbatim, once, pinned by SHA-256
+  R13 journey exit, save band and Garden Owner Register files are untouched;
+      privacy.html may differ from git HEAD only by exactly the governed V4
+      change (build-privacy-v4.py), never otherwise
+  R14 the Airtable schema (worker/art-space-register/airtable-schema.json)
+      carries every field the Worker writes, with option lists identical to
+      the Worker's vocabularies, and the Worker's three table names
 
 Usage:
   python3 atlas-tools/build-art-space-register.py --apply
@@ -54,6 +67,13 @@ WORKER = ROOT / "worker" / "art-space-register" / "src" / "index.js"
 PRIVACY = ROOT / "privacy.html"
 
 INTEREST_PUBLIC = False          # founder decision: ships CLOSED
+# The opening gate's founder record (R2c). None = opening not approved.
+# To open, a committed founder-authorised change fills all three, e.g.
+#   {"founder_approval": "Colin MacAulay, <date>", "legal_review": "<reviewer>, <date>",
+#    "dry_run": "<date>: two own records, fields/consent proof/status log checked, erased"}
+OPEN_APPROVAL = None
+SCHEMA = ROOT / "worker" / "art-space-register" / "airtable-schema.json"
+ART_WRANGLER = ROOT / "worker" / "art-space-register" / "wrangler.toml"
 ENDPOINT = "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/host"
 CONSENT = ("I'm over 18 and agree that PlotNua may keep my registration details and contact me about "
            "the Open Your Home to Art pilot. I understand I can withdraw my consent at any time.")
@@ -76,6 +96,11 @@ INVITATION_SHA256 = "f704a644935f5fd8ad2f228598671617ac87d2f016b2a3ed4ae474433ca
 COUNTIES_ROI = ["carlow", "cavan", "clare", "cork", "donegal", "dublin", "galway", "kerry", "kildare",
                 "kilkenny", "laois", "leitrim", "limerick", "longford", "louth", "mayo", "meath", "monaghan",
                 "offaly", "roscommon", "sligo", "tipperary", "waterford", "westmeath", "wexford", "wicklow"]
+# Founder statement, 13 Oct 2026 (21:09): "Add or preserve a clear statement".
+COMMITMENT = ("Registering your interest doesn&rsquo;t commit you to hosting artwork, inviting visitors into "
+              "your home or entering into any arrangement. PlotNua is simply exploring whether homeowners "
+              "might be interested in these possibilities.")
+COMMITMENT_SHA256 = "f2d8e3302d9d52dd09da5845e92191b07601923cc31245ed476dced0ea0c1653"
 HEADING = "Could your home become a home for art?"
 CTA = "Register my interest"
 
@@ -192,7 +217,8 @@ NOTICE = [
     ("One thing we keep after deletion.",
      "A separate note that you gave permission and that we honoured your request to remove it. It "
      "holds a one-way digital fingerprint made from your email address, not the address itself, so "
-     "that we can show we did what you asked."),
+     "that we can show we did what you asked. We keep that note for 12 months after the deletion is "
+     "completed, and then delete it."),
 ]
 
 
@@ -210,6 +236,7 @@ def html_section():
         '      <h2 class="asr-h" id="asrH" tabindex="-1">%s</h2>\n' % HEADING +
         '      <div id="asrOffer">\n' + paras + "\n"
         '        <p class="asr-assure">%s</p>\n' % INVITATION[-1] +
+        '        <p class="asr-p" id="asrCommit">%s</p>\n' % COMMITMENT +
         '        <p class="asr-cta"><button class="pc-cta" type="button" id="asrOpen">%s</button></p>\n' % CTA +
         '      </div>\n'
         '      <form class="asr-form" id="asrForm" hidden novalidate>\n'
@@ -586,6 +613,14 @@ def die(msg):
     sys.exit(2)
 
 
+def privacy_builder():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_privacy_v4", ROOT / "atlas-tools" / "build-privacy-v4.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def worker_src():
     return WORKER.read_text(encoding="utf-8")
 
@@ -654,10 +689,20 @@ def guards(html):
     except (subprocess.CalledProcessError, FileNotFoundError):
         print("  R1 skipped: git HEAD not available")
     # R2
-    if code_js.count("var INTEREST_PUBLIC = false;") != 1 or "INTEREST_PUBLIC = true" in code_js:
-        if 'id="art-space-register"' not in PRIVACY.read_text(encoding="utf-8"):
-            die("R2 the register may not open: privacy.html has no Art Space Register section")
-        die("R2 opening is a separate, founder-authorised step; this builder ships the register closed")
+    opening = code_js.count("var INTEREST_PUBLIC = false;") != 1 or "INTEREST_PUBLIC = true" in code_js
+    if opening:
+        pv4 = privacy_builder()
+        if not pv4.published_ok():
+            die("R2 the register may not open: privacy.html does not carry the governed V4 Art Space Register section")
+        m = re.search(r'^PRIVACY_VERSION\s*=\s*"([^"]+)"', ART_WRANGLER.read_text(encoding="utf-8"), re.M)
+        if not m or m.group(1) != pv4.VERSION:
+            die("R2 the register may not open: the Art Worker's PRIVACY_VERSION is not the published %s" % pv4.VERSION)
+        if not (isinstance(OPEN_APPROVAL, dict) and all(isinstance(OPEN_APPROVAL.get(k), str) and OPEN_APPROVAL[k].strip()
+                                                         for k in ("founder_approval", "legal_review", "dry_run"))):
+            die("R2 the register may not open: OPEN_APPROVAL does not record the founder's approval, the legal review "
+                "and the dry run")
+        if code_js.count("var INTEREST_PUBLIC = true;") != 1:
+            die("R2 the public switch is malformed")
     # R3
     if worker_consent() != CONSENT:
         die("R3 the Worker's consent sentence differs from the founder-approved text")
@@ -701,6 +746,8 @@ def guards(html):
     for p in INVITATION:
         if p not in sec:
             die("R7 approved invitation text missing: " + p[:50])
+    if hashlib.sha256(COMMITMENT.encode("utf-8")).hexdigest() != COMMITMENT_SHA256 or sec.count(COMMITMENT) != 1:
+        die("R7b the founder's commitment statement is missing or differs from the approved wording")
     strings = [a or b for a, b in re.findall(r"'((?:[^'\\\n]|\\.)*)'|\"((?:[^\"\\\n]|\\.)*)\"", code_js)]
     vis = visible_text(sec).lower() + " " + visible_text(" ".join(strings)).lower()
     for need in ("no matching service", "nothing will be arranged without your agreement", "no payment",
@@ -739,12 +786,57 @@ def guards(html):
         die("R13 journey exit or save band changed")
     try:
         d = subprocess.run(["git", "-C", str(ROOT), "diff", "--name-only", "HEAD", "--",
-                            "disc025-borrowed-garden-check.html", "worker/garden-register", "privacy.html"],
+                            "disc025-borrowed-garden-check.html", "worker/garden-register"],
                            capture_output=True, text=True, check=True).stdout.strip()
         if d:
-            die("R13 Garden Owner Register or privacy files changed: " + d)
+            die("R13 Garden Owner Register files changed: " + d)
+        head_priv = subprocess.run(["git", "-C", str(ROOT), "show", "HEAD:privacy.html"],
+                                   capture_output=True, text=True, check=True).stdout
+        cur_priv = PRIVACY.read_text(encoding="utf-8")
+        if cur_priv != head_priv:
+            pv4 = privacy_builder()
+            ok = False
+            if pv4.MARK not in head_priv:
+                m = pv4.UPDATED_RE.search(cur_priv)
+                try:
+                    ok = cur_priv == pv4.transform(head_priv, m.group(1) if m else None)
+                except SystemExit:
+                    ok = False
+            if not ok:
+                die("R13 privacy.html changed other than by the governed V4 builder")
     except (subprocess.CalledProcessError, FileNotFoundError):
         pass
+    # R14
+    try:
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        die("R14 the Airtable schema file is missing or unreadable")
+    wsrc = worker_src()
+    tables = {t["name"]: t for t in schema.get("tables", [])}
+    for const in ("T_HOSTS", "T_STATUS_LOG", "T_CONSENT"):
+        tm = re.search(r"const %s = '([^']+)';" % const, wsrc)
+        if not tm or tm.group(1) not in tables:
+            die("R14 the schema has no table for the Worker's %s" % const)
+    hosts = {f["name"]: f for f in tables[re.search(r"const T_HOSTS = '([^']+)';", wsrc).group(1)]["fields"]}
+    block = re.search(r"const fields = \{([\s\S]*?)\};", wsrc).group(1)
+    written = {item.split(":")[0].strip() for item in block.split(",") if item.strip()}
+    written |= set(re.findall(r"fields\.([a-z_]+) =", wsrc))
+    for w in sorted(written):
+        if w not in hosts:
+            die("R14 the Worker writes Hosts.%s but the schema lacks it" % w)
+    wv = worker_vocab()
+    for key in ("county", "ways", "space", "money", "source"):
+        if hosts.get(key, {}).get("options") != wv[key]:
+            die("R14 schema options for Hosts.%s differ from the Worker" % key)
+    if hosts.get("status", {}).get("options") != ["interest_submitted"]:
+        die("R14 Hosts.status must have exactly one option, interest_submitted")
+    for tname, call in (("T_STATUS_LOG", r"atCreate\(env, T_STATUS_LOG, \{([\s\S]*?)\}\)"),
+                        ("T_CONSENT", r"atCreate\(env, T_CONSENT, \{([\s\S]*?)\}\)")):
+        tn = re.search(r"const %s = '([^']+)';" % tname, wsrc).group(1)
+        names = {f["name"] for f in tables[tn]["fields"]}
+        for w in re.findall(r"([a-z_]+):", re.search(call, wsrc).group(1)):
+            if w not in names:
+                die("R14 the Worker writes %s.%s but the schema lacks it" % (tn, w))
 
 
 def main(argv):
@@ -756,9 +848,10 @@ def main(argv):
     if "--check" in argv:
         if html != current:
             print("CHECK FAILED: %s is out of date; run --apply" % PAGE_NAME); sys.exit(1)
-        print("%s: Art Space Register present, CLOSED · CHECK OK — R1-R13 pass" % PAGE_NAME); return
+        print("%s: Art Space Register present, %s · CHECK OK — R1-R14 pass"
+              % (PAGE_NAME, "OPEN" if INTEREST_PUBLIC else "CLOSED")); return
     PAGE.write_text(html, encoding="utf-8")
-    print("%s: Art Space Register placed, CLOSED · APPLIED — R1-R13 pass" % PAGE_NAME)
+    print("%s: Art Space Register placed, CLOSED · APPLIED — R1-R14 pass" % PAGE_NAME)
 
 
 if __name__ == "__main__":

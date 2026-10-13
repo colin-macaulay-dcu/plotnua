@@ -21,7 +21,17 @@ RB = ROOT / "atlas-tools" / "build-art-space-register.py"
 PAGE = ROOT / "disc024-open-your-home-to-art.html"
 WORKER = ROOT / "worker" / "art-space-register" / "src" / "index.js"
 GARDEN = ROOT / "disc025-borrowed-garden-check.html"
-FILES = [RB, PAGE, WORKER, GARDEN]
+PRIVACY = ROOT / "privacy.html"
+ART_WRANGLER = ROOT / "worker" / "art-space-register" / "wrangler.toml"
+SCHEMA = ROOT / "worker" / "art-space-register" / "airtable-schema.json"
+FILES = [RB, PAGE, WORKER, GARDEN, PRIVACY, ART_WRANGLER, SCHEMA]
+
+import importlib.util
+_spec = importlib.util.spec_from_file_location("pv4", ROOT / "atlas-tools" / "build-privacy-v4.py")
+PV4 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(PV4)
+V4_PAGE = PV4.transform(PRIVACY.read_text(encoding="utf-8"))   # in memory; written only inside a case
+APPROVED = ('OPEN_APPROVAL = {"founder_approval": "proof", "legal_review": "proof", '
+            '"dry_run": "proof"}')
 
 h = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 BEFORE = {p.name: h(p) for p in FILES}
@@ -46,6 +56,35 @@ def case(label, path, old, new, builder=RB, expect="REFUSED"):
     finally:
         path.write_bytes(orig)
 
+
+def multi(label, edits, expect="REFUSED", positive=False):
+    """Several coordinated edits (path, old, new) or (path, None, whole_text)."""
+    saved = {p: p.read_bytes() for p, _, _ in edits}
+    try:
+        for path, old, new in edits:
+            text = path.read_text(encoding="utf-8")
+            if old is None:
+                text = new
+            else:
+                if old not in text:
+                    results.append((label, False, "mutation anchor not found")); return
+                text = text.replace(old, new, 1)
+            path.write_text(text, encoding="utf-8")
+        r = run(RB)
+        line = (r.stdout.strip().splitlines() or [""])[-1]
+        if positive:
+            caught = "REFUSED" not in r.stdout and "out of date" in r.stdout
+        else:
+            caught = r.returncode != 0 and expect in r.stdout
+        results.append((label, caught, line[:110]))
+    finally:
+        for path, b in saved.items():
+            path.write_bytes(b)
+
+
+OPEN = (RB, "INTEREST_PUBLIC = False", "INTEREST_PUBLIC = True")
+APPROVE = (RB, "OPEN_APPROVAL = None", APPROVED)
+V4 = (PRIVACY, None, V4_PAGE)
 
 ctl0 = run(RB).returncode == 0
 
@@ -97,6 +136,35 @@ case("R12 register script calls the garden Worker", RB,
      'ENDPOINT = "https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/garden"')
 case("R13 Garden Owner Register page touched", GARDEN,
      "This is a register, not a match.</p>", "This is a register.</p>")
+# ---- the opening gate (activation preparation, 13 Oct 2026)
+multi("R2 opening approved but privacy still V3", [OPEN, APPROVE])
+multi("R2 privacy V4 live but no OPEN_APPROVAL", [OPEN, V4])
+multi("R2 OPEN_APPROVAL lacks the dry run", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
+      'OPEN_APPROVAL = {"founder_approval": "proof", "legal_review": "proof", "dry_run": " "}')])
+multi("R2 Art Worker not on the published version", [OPEN, V4, APPROVE,
+      (ART_WRANGLER, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')])
+assert V4_PAGE.count("We keep that note for 12 months after the deletion is completed") == 1
+multi("R2 published Section 8 differs (deletion note 36 months)", [OPEN, APPROVE,
+      (PRIVACY, None, V4_PAGE.replace("We keep that note for 12 months after the deletion is completed",
+                                      "We keep that note for 36 months after the deletion is completed", 1))],
+      expect="REFUSED: R2")
+multi("R13 the V4 page also alters Garden Section 7", [OPEN, V4, APPROVE,
+      (PRIVACY, "your phone number, your surname, your age, photographs of your garden",
+       "your phone number, your age, photographs of your garden")], expect="REFUSED: R13")
+multi("POSITIVE all three conditions met: gate opens", [OPEN, V4, APPROVE], positive=True)
+multi("CONTROL privacy V4 staged, register closed: passes", [V4], positive=False, expect="CHECK OK")
+results[-1] = (results[-1][0], not results[-1][1] and "CHECK OK" in results[-1][2], results[-1][2])
+# ---- R7b, R13, R14
+case("R7b commitment statement weakened", RB, "PlotNua is simply exploring whether homeowners",
+     "PlotNua is exploring whether homeowners")
+case("R7b commitment statement dropped from the form", RB,
+     "        '        <p class=\"asr-p\" id=\"asrCommit\">%s</p>\\n' % COMMITMENT +\n", "")
+multi("R13 privacy.html hand-edited, not by the V4 builder", [(PRIVACY, "<h2>8. Cookies</h2>", "<h2>8. Cookie use</h2>")])
+multi("R14 schema lacks a field the Worker writes", [(SCHEMA, '{"name": "consent_text_hash", "type": "singleLineText", "writer": "worker"},\n        {"name": "source"',
+      '{"name": "source"')])
+multi("R14 schema county options drift", [(SCHEMA, '"westmeath", "wexford", "wicklow"]', '"westmeath", "wexford", "wicklow", "antrim"]')])
+multi("R14 schema gives status a second option", [(SCHEMA, '"options": ["interest_submitted"]', '"options": ["interest_submitted", "introduced"]')])
+multi("R14 Status log table missing", [(SCHEMA, '"name": "Status log"', '"name": "Log"')])
 case("CHECK page hand-edited inside the register", PAGE,
      "Could your home become a home for art?</h2>", "Could your home host art?</h2>", expect="CHECK FAILED")
 

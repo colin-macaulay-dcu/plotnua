@@ -23,7 +23,17 @@ ORIGIN          = "https://plotnua.ie"
 PRIVACY_VERSION = "2026-10-PHASE2-V4"
 
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
-#   AIRTABLE_BASE  -> var at deploy: the NEW "PlotNua Art Space Register" base id
-#   AIRTABLE_TOKEN -> SECRET only:   wrangler secret put AIRTABLE_TOKEN
-#                     (a token scoped to the art base alone)
-# writesEnabled() requires all three, so a missing token is a third hard stop.
+# BOTH ARE PERSISTENT SECRETS (corrected 13 Oct 2026, activation preparation):
+#   AIRTABLE_BASE  -> wrangler secret put AIRTABLE_BASE
+#                     the NEW "PlotNua Art Space Register" base id
+#   AIRTABLE_TOKEN -> wrangler secret put AIRTABLE_TOKEN
+#                     a token scoped to the art base alone
+# Not a deploy-time `--var`: vars passed with --var last only for that deploy,
+# so the next plain `wrangler deploy` (for example, switching writes back off)
+# would silently drop the base. Secrets persist across deploys.
+# writesEnabled() requires the switch, the token and the base, so a missing
+# secret is a hard stop.
+#
+# The ONLY deploy-time override ever used is the dry-run / opening switch:
+#   npx wrangler deploy --var WRITES_ENABLED:true    (founder-approved step only)
+#   npx wrangler deploy                              (back to this file: writes off)

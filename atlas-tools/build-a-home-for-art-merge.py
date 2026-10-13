@@ -38,7 +38,8 @@ GUARDS
       PlotArt and "not live yet" sentences present verbatim
   M7  redirect page: canonical to the merged page, query string preserved,
       hash target #open-your-home-to-art, no <main>, not in the sitemap
-  M8  the DISC-024 check changes by its back-link only; register untouched
+  M8  the DISC-024 check changes by its back-link only, outside the Art Space
+      Register's own marked blocks (governed by build-art-space-register.py)
   M9  every consolidation edit applied exactly once
   M10 the founder's hierarchy: hosting story first, Open > Live with > Discover & own
   M11 ORIGINAL HOSTING IMAGERY (founder image correction, 13 Oct 2026): the hero
@@ -551,6 +552,20 @@ CONSOLIDATION.append(("your-plot.html", "{ name: 'Buy Original Irish Art', categ
                       "{ name: 'A Home for Art', category: 'art', href: 'discovery-a-home-for-art.html'"))
 
 
+REGISTER_BLOCKS = (("/* PLOTNUA-ART-REGISTER-CSS-BEGIN", "/* PLOTNUA-ART-REGISTER-CSS-END */\n"),
+                   ("    <!-- PLOTNUA-ART-REGISTER-HTML-BEGIN", "    <!-- PLOTNUA-ART-REGISTER-HTML-END -->\n"),
+                   ("    /* PLOTNUA-ART-REGISTER-CALL-BEGIN", "    /* PLOTNUA-ART-REGISTER-CALL-END */\n"),
+                   ("<script>\n/* PLOTNUA-ART-REGISTER-JS-BEGIN", "/* PLOTNUA-ART-REGISTER-JS-END */\n</script>\n"))
+
+
+def strip_register(html):
+    for b, e in REGISTER_BLOCKS:
+        if html.count(b) != 1 or html.count(e) != 1:
+            die("M8 the Art Space Register blocks on the DISC-024 check are not intact")
+        html = re.sub(re.escape(b) + r"[\s\S]*?" + re.escape(e), "", html)
+    return html
+
+
 def apply_edits(write):
     for f, old, new in CONSOLIDATION:
         p = ROOT / f
@@ -631,8 +646,11 @@ def guards(page):
         die("M7 redirect page is not the governed redirect")
     if OLD in (ROOT / "sitemap.xml").read_text(encoding="utf-8"):
         die("M7 the redirect page is still in the sitemap")
-    head24 = base(C24)
-    cur24 = (ROOT / C24).read_text(encoding="utf-8")
+    # The Art Space Register's own four marked blocks on the DISC-024 check are
+    # governed by atlas-tools/build-art-space-register.py (R1-R14), which proves
+    # the rest of that page byte-identical. M8 compares everything else.
+    head24 = strip_register(base(C24))
+    cur24 = strip_register((ROOT / C24).read_text(encoding="utf-8"))
     if cur24.replace('href="%s">Back to the story' % TARGET, 'href="%s">Back to the story' % OLD) != head24:
         die("M8 the DISC-024 check changed beyond its back-link")
     # M10 · founder hierarchy: hosting story first, then Open > Live with > Discover & own; hosting check first

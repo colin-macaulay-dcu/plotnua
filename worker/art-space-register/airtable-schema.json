@@ -1,0 +1,81 @@
+{
+  "schema": "plotnua.art-space-register.airtable.v1",
+  "status": "SPECIFICATION ONLY. The base does not exist and must not be created until the founder approves (decision of 13 Oct 2026). Guard R14 in atlas-tools/build-art-space-register.py keeps this file identical to what the Worker writes.",
+  "base": {
+    "name": "PlotNua Art Space Register",
+    "separate_from": ["PlotNua Gardener Register", "PlotArt — Artist Evidence (E1)", "PlotNua Atlas Core", "PlotNua Leads"],
+    "collaborators": "the founder only",
+    "never": ["share links or shared views", "forms", "interfaces", "automations", "syncs", "extensions that send data out", "sample rows"]
+  },
+  "token": {
+    "name": "plotnua-art-space-register-worker",
+    "scopes": ["data.records:read", "data.records:write"],
+    "access": "this base only",
+    "why_read": "the duplicate-address check (one equality filter, one field, at most one row)",
+    "never": ["schema scopes", "workspace access", "reuse of the Garden token", "pasting into chat or the repository"],
+    "stored_as": "Cloudflare Worker secret AIRTABLE_TOKEN"
+  },
+  "dates": "Every date field: Date, include time, 24-hour, 'Use the same time zone (GMT) for all collaborators'.",
+  "tables": [
+    {
+      "name": "Hosts",
+      "fields": [
+        {"name": "first_name", "type": "singleLineText", "primary": true, "writer": "worker"},
+        {"name": "email", "type": "email", "writer": "worker"},
+        {"name": "email_key", "type": "singleLineText", "writer": "worker", "note": "lower-case email, for the duplicate check"},
+        {"name": "county", "type": "singleSelect", "writer": "worker",
+         "options": ["carlow", "cavan", "clare", "cork", "donegal", "dublin", "galway", "kerry", "kildare", "kilkenny", "laois", "leitrim", "limerick", "longford", "louth", "mayo", "meath", "monaghan", "offaly", "roscommon", "sligo", "tipperary", "waterford", "westmeath", "wexford", "wicklow"]},
+        {"name": "ways", "type": "multipleSelects", "writer": "worker", "options": ["store", "display", "open", "help_sell"]},
+        {"name": "space", "type": "singleSelect", "writer": "worker", "optional": true, "options": ["a_wall", "a_room", "dry_store", "not_sure"]},
+        {"name": "money", "type": "singleSelect", "writer": "worker", "optional": true, "options": ["no_money", "fee_for_space", "share_if_sells", "not_decided"]},
+        {"name": "host_note", "type": "multilineText", "writer": "worker", "optional": true},
+        {"name": "over_18", "type": "checkbox", "writer": "worker"},
+        {"name": "status", "type": "singleSelect", "writer": "worker", "options": ["interest_submitted"]},
+        {"name": "submitted_at", "type": "dateTime", "writer": "worker"},
+        {"name": "privacy_version", "type": "singleLineText", "writer": "worker"},
+        {"name": "consent_text_hash", "type": "singleLineText", "writer": "worker"},
+        {"name": "source", "type": "singleSelect", "writer": "worker", "options": ["property_check"]},
+        {"name": "human_review_by", "type": "singleLineText", "writer": "reserved", "note": "leave blank; introductions are not authorised"},
+        {"name": "human_review_at", "type": "dateTime", "writer": "reserved", "note": "leave blank"},
+        {"name": "erase_after", "type": "formula", "writer": "airtable", "formula": "DATEADD({submitted_at}, 24, 'months')"}
+      ],
+      "views": [
+        {"name": "New this week", "type": "grid", "filter": "submitted_at is within the past week", "sort": "submitted_at, newest first"},
+        {"name": "Notes to screen", "type": "grid", "filter": "host_note is not empty", "purpose": "strip any address, Eircode, phone number or valuables from notes"},
+        {"name": "Erasure due", "type": "grid", "filter": "erase_after is on or before today", "purpose": "erase at 24 months"},
+        {"name": "By county", "type": "grid", "group": "county"}
+      ]
+    },
+    {
+      "name": "Status log",
+      "fields": [
+        {"name": "record_ref", "type": "singleLineText", "primary": true, "writer": "worker", "note": "the Hosts record id as text: deliberately NOT a linked record, so the log survives the record's deletion"},
+        {"name": "from_status", "type": "singleLineText", "writer": "worker"},
+        {"name": "to_status", "type": "singleLineText", "writer": "worker"},
+        {"name": "at", "type": "dateTime", "writer": "worker"},
+        {"name": "actor", "type": "singleLineText", "writer": "worker"},
+        {"name": "reason", "type": "singleLineText", "writer": "worker"}
+      ],
+      "views": [
+        {"name": "Latest", "type": "grid", "sort": "at, newest first"}
+      ]
+    },
+    {
+      "name": "Consent proofs",
+      "fields": [
+        {"name": "email_hash", "type": "singleLineText", "primary": true, "writer": "worker", "note": "SHA-256 of the lower-case email; never the address. Deliberately NOT linked to Hosts, so it survives the record's deletion"},
+        {"name": "privacy_version", "type": "singleLineText", "writer": "worker"},
+        {"name": "consent_text_hash", "type": "singleLineText", "writer": "worker"},
+        {"name": "given_at", "type": "dateTime", "writer": "worker"},
+        {"name": "withdrawn_at", "type": "dateTime", "writer": "human", "note": "filled by hand when a withdrawal request arrives"},
+        {"name": "deletion_honoured_at", "type": "dateTime", "writer": "human", "note": "filled by hand when the Hosts record is deleted (withdrawal or 24-month erasure)"},
+        {"name": "remove_after", "type": "formula", "writer": "airtable", "formula": "IF({deletion_honoured_at}, DATEADD({deletion_honoured_at}, 12, 'months'), BLANK())", "note": "provisional 12-month deletion-record retention (founder, 13 Oct 2026), subject to privacy and legal review"}
+      ],
+      "views": [
+        {"name": "Withdrawals to action", "type": "grid", "filter": "withdrawn_at is not empty AND deletion_honoured_at is empty"},
+        {"name": "Deletion records due for removal", "type": "grid", "filter": "remove_after is on or before today"}
+      ]
+    }
+  ],
+  "relationships": "None, by design. Neither the Status log nor Consent proofs links to Hosts, so deleting a Hosts record leaves the minimal proof that the deletion was honoured."
+}

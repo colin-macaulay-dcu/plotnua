@@ -1,7 +1,12 @@
 # ART SPACE REGISTER · DISC-024 OPEN YOUR HOME TO ART · CONTROLLED BUILD
 
 **Date:** 13 October 2026
-**Status:** BUILT AND TESTED LOCALLY · **CLOSED** (`INTEREST_PUBLIC = false`) · Worker **not deployed** (`WRITES_ENABLED = "false"`, `EMAIL_ENABLED = "false"`) · no Airtable base, record or token created · privacy notice **not changed** · not pushed.
+**Status:** BUILT AND TESTED · **CLOSED** (`INTEREST_PUBLIC = false`) · Worker **not deployed** (`WRITES_ENABLED = "false"`, `EMAIL_ENABLED = "false"`) · no Airtable base, record or token created · privacy notice **not changed** (V4 builder ready, unpublished). See **§11, Activation preparation**, which supersedes §7–§9 where they differ.
+
+> **Since this build (13 Oct 2026):**
+> - The two art Discoveries merged into **A Home for Art** (`discovery-a-home-for-art.html`). Open Your Home to Art is its primary branch (`#open-your-home-to-art`). The old Discovery URL is a redirect.
+> - The DISC-024 Property Check (`disc024-open-your-home-to-art.html`) and its saved-result identity (`disc024-open-your-home-to-art`) are **unchanged**, and the register still lives on that check.
+> - The two cross-links and `atlas-tools/build-art-cross-links.py` were **retired** with the merge (see `governance/A-HOME-FOR-ART-MERGE-2026-10-13.md`).
 **Authority:** founder decision of 13 October 2026, "Art Space Register · controlled build".
 
 ## 1 · What it is, and what it is not
@@ -19,10 +24,10 @@
 | file | change |
 |---|---|
 | `disc024-open-your-home-to-art.html` | **Four bounded insertions only (449 lines added, 0 removed):** scoped CSS; the register section after the My Plot save band; one call at the end of `reveal()`, passing only `space`, `level` and `money`; the register script. Questions, outcomes, engine, save keys, journey exit: byte-identical. |
-| `discovery-open-your-home-to-art.html` | One contextual cross-link to Buy Original Irish Art, plus a scoped `.pn-xlink` style. |
-| `discovery-a-home-for-art.html` | One contextual cross-link to Open Your Home to Art, plus the same style. |
+| `discovery-open-your-home-to-art.html` | *(retired 13 Oct 2026)* One cross-link. The page is now a redirect to A Home for Art. |
+| `discovery-a-home-for-art.html` | *(retired 13 Oct 2026)* One cross-link. The page is now the merged Discovery. |
 | `atlas-tools/build-art-space-register.py` | **new** · bounded builder, guards R1–R13 |
-| `atlas-tools/build-art-cross-links.py` | **new** · bounded builder, guards X1–X4 |
+| `atlas-tools/build-art-cross-links.py` | *(retired and deleted 13 Oct 2026 with the merge)* |
 | `atlas-tools/prove-art-space-register.py` | **new** · guard-capability proof, 27 breaks |
 | `worker/art-space-register/src/index.js` | **new** · the Worker |
 | `worker/art-space-register/wrangler.toml` | **new** · both switches `"false"`; no base id and no secret |
@@ -95,6 +100,8 @@
 
 ## 7 · Airtable setup — FOUNDER ONLY (do not do until approved)
 
+> **Superseded by §11.2.** The canonical schema is now `worker/art-space-register/airtable-schema.json`, checked against the Worker by guard R14. It adds two formula fields and the views. The list below is kept for history.
+
 1. In the same Airtable account (its DPA is signed), create a **new base** named **"PlotNua Art Space Register"**. Collaborators: you only. Share-to-web: off.
 2. Create table **Hosts**, with fields named exactly:
    - `first_name` — Single line text (primary field)
@@ -123,6 +130,8 @@
 7. Note the new base id (`app…`) for the deploy step.
 
 ## 8 · Cloudflare setup — FOUNDER ONLY
+
+> **Superseded by §11.3.** `AIRTABLE_BASE` is now a **persistent secret**, not a deploy-time `--var`. With `--var`, the next plain `wrangler deploy` would drop it.
 
 Run from `04 Deploy/plotnua-g6-release/worker/art-space-register/`:
 
@@ -169,3 +178,110 @@ Run from `04 Deploy/plotnua-g6-release/worker/art-space-register/`:
 
 - **No analytics events.** The register adds none. The existing anonymous funnel events are unchanged. If you want "register opened" or "submitted" counts, that's a separate decision.
 - **The artist side** (a future validation process) is not part of this build and needs its own consent, table and privacy text before any artist data is stored.
+
+## 11 · Activation preparation (founder direction, 13 Oct 2026, 21:09)
+
+**The register remains CLOSED.** Nothing external was created:
+- no base, token, record or deploy;
+- no privacy publication;
+- no change to the Garden Owner Register's Worker, consent, base, page or privacy version (it stays **V3**).
+
+### 11.1 · Founder decisions recorded
+
+| # | Decision |
+|---|---|
+| 1 | **Wording.** The invitation, consent sentence and four participation categories are retained. A commitment statement is added: *"Registering your interest doesn't commit you to hosting artwork, inviting visitors into your home or entering into any arrangement. PlotNua is simply exploring whether homeowners might be interested in these possibilities."* It is pinned by SHA-256 (guard R7b). |
+| 2 | **Retention (provisional until privacy and legal review).** Homeowner registrations: 24 months. Minimal deletion records: 12 months after the deletion is completed. |
+| 3 | **Garden Owner Register.** Stays on privacy version V3. Untouched. |
+| 4 | **Spam.** Existing protections retained. No Turnstile. |
+| 5 | **Airtable.** Schema prepared. The base and token are **not** created. |
+| 6 | **Privacy.** A bounded V4 builder is implemented. **Unpublished** until founder approval and legal review. |
+| 7 | **Worker.** `AIRTABLE_BASE` is a persistent secret. **Not deployed.** |
+| 8 | **Opening guard.** Activation is possible only once the privacy and Worker-version conditions hold. **Not activated.** |
+
+### 11.2 · Airtable
+
+The canonical, machine-checked specification is `worker/art-space-register/airtable-schema.json`. It covers:
+- three tables: Hosts, Status log, Consent proofs;
+- field types and option lists;
+- two formula fields: `erase_after` (24 months) and `remove_after` (12 months after `deletion_honoured_at`);
+- views;
+- token scopes and access rules.
+
+There are **no linked-record relationships, by design**, so the minimal proof survives a deletion. Guard R14 refuses if the file lacks a field the Worker writes or if its options differ from the Worker's vocabularies.
+
+### 11.3 · Cloudflare (founder, when approved)
+
+Run from `04 Deploy/plotnua-g6-release/worker/art-space-register/`:
+1. `npx wrangler whoami` — confirm it is the same account as the Garden Worker.
+2. `npx wrangler deploy` — this deploys **closed**, because `wrangler.toml` keeps writes off.
+3. `npx wrangler secret put AIRTABLE_BASE` — paste the new base id.
+4. `npx wrangler secret put AIRTABLE_TOKEN` — paste the art-only token at the prompt. Never paste it into chat.
+5. `npx wrangler secret list` — expect exactly `AIRTABLE_BASE` and `AIRTABLE_TOKEN`.
+6. **Closed probe.** A POST from `?interest=preview` returns "The register isn't open yet", and Airtable stays at 0 records.
+
+**Strict-key probe:** a request carrying `eircode` returns `400`, `refused`, `unexpected_field`, and nothing is stored.
+
+**Dry run (founder-approved, and only after privacy V4 is live):**
+1. `npx wrangler deploy --var WRITES_ENABLED:true`.
+2. Submit two of your own records from `?interest=preview`.
+3. Check the fields, the consent proof and the status log in Airtable.
+4. Erase both records.
+5. `npx wrangler deploy` to switch writes back off.
+
+Keep the dry run short: `?interest=preview` works on the live page, so while writes are on it records real submissions.
+
+**Rollback, fastest first:**
+1. Revoke the Airtable token.
+2. `npx wrangler deploy` (writes off).
+3. `npx wrangler rollback`.
+4. Close the page through the builder and push.
+5. `npx wrangler delete`.
+
+### 11.4 · Privacy V4
+
+- **Builder:** `atlas-tools/build-privacy-v4.py`.
+  - `--check` builds V4 in memory from the live V3 page. Guards:
+    - V1: the text matches the draft word for word;
+    - V2: numbering 1–18, and Section 7 is pinned and unchanged;
+    - V3: required statements are present;
+    - V4: consistency with the Worker, the on-page notice and both Workers' version labels;
+    - V5: no invented assurances;
+    - V6: only the five declared changes.
+  - `--preview PATH` writes outside the repository only.
+  - `--apply` is refused until `APPROVAL` records the founder's approval, the legal review and the "Last updated" label.
+- **Five declared changes:**
+  1. a new Section 8;
+  2. Sections 8–17 renumbered to 9–18;
+  3. one third-party sentence;
+  4. one retention line;
+  5. the "Last updated" label.
+- **Publication co-edits.** `atlas-tools/prove-g6-owner-register.py` gets three bounded edits:
+  - the section count, 1–17 becomes 1–18;
+  - one heading used as a mutation anchor follows the renumbering;
+  - mutation anchors are taken inside Section 7 when they occur there, because Section 8 repeats six of Section 7's legal sentences.
+
+  On a V3 page these are behaviour-identical. Nothing else of the Garden register changes.
+- **Rehearsal.** `atlas-tools/prove-privacy-v4.py` rehearses publication in a throwaway clone. It checks that the Garden privacy proof (43/43), the Garden open-gate proof (14/14), landmarks (133), first-lead (35) and the closed register (R1–R14) all pass on V4, and that the Garden Worker and check page are untouched.
+
+### 11.5 · Opening guard (R2), as of this change
+
+`INTEREST_PUBLIC` may be `true` only when **all** of these hold:
+- (a) `privacy.html` carries exactly the governed V4 Section 8;
+- (b) the Art Worker's `PRIVACY_VERSION` equals that version;
+- (c) `OPEN_APPROVAL` records the founder's approval to open, the legal review and the dry run.
+
+R13 now allows `privacy.html` to differ from git HEAD only by exactly the V4 builder's output. The merge builder's M8 now ignores only the register's four marked blocks on the DISC-024 check, which this builder governs.
+
+### 11.6 · Remaining steps to open, in order
+
+1. **Founder:** review the final wording (form labels, on-page notice, end states, commitment statement).
+2. **Legal review:** Section 8 and both retention periods. Also confirm the 12-month deletion-note period for **24-month erasures**, not only for withdrawals.
+3. **Founder:** set `APPROVAL` in the V4 builder (as a committed change), run `--apply`, and push. This publishes privacy V4.
+4. **Founder:** create the base exactly as in `airtable-schema.json` (or approve Claude creating the empty base through the connector), then create the token yourself.
+5. **Founder:** follow §11.3 steps 1–6, plus the strict-key probe.
+6. **Founder:** the dry run (§11.3).
+7. **Founder:** set `OPEN_APPROVAL`, set `INTEREST_PUBLIC = True`, run `--apply`, deploy with writes on, and push.
+8. **Smoke test:** one public record of your own, then erase it. The weekly review starts.
+
+The review trigger is unchanged: **10 genuine registrations or 8 weeks**. It is a review only and does not authorise matching.
