@@ -102,7 +102,7 @@ APPROVAL_KEYS = ("founder_approval", "self_assessment", "risks_resolved", "last_
 # on Free, 1 year on Team, longer above). None = not yet confirmed: the notice
 # then says "for a limited period" and --apply is REFUSED until the founder
 # records the plan's period here, e.g. "for up to 2 weeks".
-BACKUP_PERIOD = None
+BACKUP_PERIOD = "up to 1 year"   # Airtable Team plan, confirmed by the founder 13 Oct 2026 (22:51)
 
 HOSTS = "Art Space Register"
 SECTION8 = [
@@ -120,8 +120,8 @@ SECTION8 = [
     ("p", "Your record is private to PlotNua. It is not published, and there is no public listing, map, profile or directory. Records are reviewed by a person at PlotNua. Registration details are accessible only to authorised people managing the register and to service providers where necessary to operate it. They are not shared with artists or made publicly available. Your email address would only be shared with another person if you agreed to a specific arrangement, and no such arrangements are available."),
     ("p", "The form sends your details to a PlotNua service hosted on infrastructure provided by Cloudflare, which records them in the register. The register is stored in Airtable, a database service. Cloudflare and Airtable are both based in the United States, so your information may be processed outside the European Economic Area. Cloudflare states that it relies on the EU Standard Contractual Clauses, and on its certification under the EU-U.S. Data Privacy Framework, for such transfers. Airtable's Data Processing Addendum states that the EU Standard Contractual Clauses apply to personal data transferred from the European Economic Area. Visitors should refer to Cloudflare's and Airtable's own privacy policies for more about how they process personal information."),
     ("p", "The services that carry the form, such as Cloudflare, process technical information such as your IP address so that your request can be delivered securely. PlotNua does not record it in the register."),
-    ("p", "We keep your record for no longer than 12 months, and we delete it sooner if the pilot ends or no longer needs it. You can ask us to delete it at any time."),
-    ("p", "To leave the register or ask us to delete your record, email <a href=\"mailto:hello@plotnua.ie\">hello@plotnua.ie</a>. There is nothing to cancel and no notice period. When we delete your record, we delete everything the register holds about you, including the record of your consent. A deleted record can be restored from our database provider's trash for 7 days, and it remains in that provider's automatic backups %s, until those backups expire. We do not restore deleted registration records. We keep only an anonymous entry in our deletion log, recording when a deletion was requested or became due, when it was completed and why, so that we can show deletions are carried out. That entry contains nothing that identifies you." % (BACKUP_PERIOD or "for a limited period")),
+    ("p", "We keep your record for no longer than 12 months, and we delete it sooner if the pilot ends or no longer needs it. You can ask us to delete it at any time. This is how long PlotNua keeps your record; the recovery copies kept by our database provider are described below."),
+    ("p", "To leave the register or ask us to delete your record, email <a href=\"mailto:hello@plotnua.ie\">hello@plotnua.ie</a>. There is nothing to cancel and no notice period. When we delete your record, we delete everything the register holds about you, including the record of your consent. A deleted record can be restored from our database provider's trash for 7 days. Separately, the provider keeps its own automatic recovery copies of the database for %s, and these may still contain a deleted record until they expire. Those copies are managed by the provider, not used by PlotNua, and we never restore deleted registration records from them. We keep only an anonymous entry in our deletion log, recording when a deletion was requested or became due, when it was completed and why, so that we can show deletions are carried out. That entry contains nothing that identifies you." % (BACKUP_PERIOD or "a limited period")),
 ]
 THIRD_ANCHOR = ("    <p>The Garden Owner Register described in Section 7 also runs on a PlotNua service hosted on "
                 "infrastructure provided by Cloudflare.</p>\n")
@@ -286,7 +286,8 @@ def guards(v3, v4):
                  "We rely on your consent", "You can withdraw it at any time",
                  "no longer than 12 months", "including the record of your consent",
                  "We keep only an anonymous entry in our deletion log", "That entry contains nothing that identifies you",
-                 "trash for 7 days", "automatic backups",
+                 "trash for 7 days", "automatic recovery copies",
+                 "This is how long PlotNua keeps your record",
                  "not shared with artists or made publicly available",
                  "process technical information such as your IP address",
                  "email hello@plotnua.ie", "outside the European Economic Area", "Standard Contractual Clauses",
@@ -302,7 +303,8 @@ def guards(v3, v4):
     reg = plain((ROOT / "disc024-open-your-home-to-art.html").read_text(encoding="utf-8"))
     if ("A maximum of 12 months" not in reg or "We keep only an anonymous log entry" not in reg
             or "They are not shared with artists or made publicly available." not in reg
-            or "fingerprint" in reg):
+            or "fingerprint" in reg
+            or (BACKUP_PERIOD and ("recovery copies for " + BACKUP_PERIOD) not in reg)):
         refuse("V4 the register's on-page notice (as built on the DISC-024 check) does not carry the same retention figures")
     if toml_version(ART_WRANGLER) != VERSION:
         refuse("V4 the Art Worker's PRIVACY_VERSION is not %s" % VERSION)

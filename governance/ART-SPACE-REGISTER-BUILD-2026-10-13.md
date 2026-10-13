@@ -401,3 +401,11 @@ While writes are off, the token is never used. It is first exercised in the dry 
 **Accountability limitation, documented.** An anonymous log shows that deletions happen, how many, why and how promptly. It **cannot prove** that a particular individual's record was deleted. For a voluntary, unpaid pilot interest register this is judged proportionate in the GDPR self-assessment. EU consent guidance (EDPB 05/2020, paras 106–107) asks that proof of consent be kept after processing ends only where strictly necessary. If a person later disputes a deletion, PlotNua can show the dated log entry and confirm that no record matching their email exists.
 
 **Unused fields.** `Consent proofs.withdrawn_at`, `deletion_honoured_at` and `remove_after` are unused under Option A. They are left in place, empty, and may be removed. Retiring the Consent proofs table altogether, because the Hosts record already carries the consent evidence, would be a separate, approved Worker change.
+
+### 11.11 · Airtable plan confirmed (founder, 13 Oct 2026, 22:51)
+
+The register's Airtable workspace, "My First Workspace", is on the **Team** plan (monthly). Airtable documents Team snapshot retention of **up to 1 year**; deleted records also stay in its trash for 7 days.
+- The V4 builder sets `BACKUP_PERIOD = "up to 1 year"`.
+- Section 8 now separates **PlotNua's active record retention (at most 12 months)** from **the provider-managed recovery copies (up to 1 year)**, which PlotNua does not use and never restores from.
+- The form's short notice says the same. Guard V4 checks the notice carries the period.
+- If the plan changes, update `BACKUP_PERIOD`, the V4 draft and the notice together.

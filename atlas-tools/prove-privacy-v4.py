@@ -91,8 +91,10 @@ action("--preview inside the repository", ["--preview", str(ROOT / "privacy-v4-p
 action("--apply while APPROVAL is None", ["--apply"])
 case("--apply with an incomplete APPROVAL", PB, "APPROVAL = None",
      'APPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "", "last_updated": "November 2026"}', args=["--apply"])
-case("--apply approved but BACKUP_PERIOD unconfirmed", PB, "APPROVAL = None",
-     'APPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "x", "last_updated": "November 2026"}', args=["--apply"])
+# SAFETY: this case must never reach a real write. It unsets BACKUP_PERIOD on the same line that fills APPROVAL,
+# so APPROVAL is complete but the period is not, and --apply must refuse.
+case("--apply approved but BACKUP_PERIOD unconfirmed", PB, 'BACKUP_PERIOD = "up to 1 year"',
+     'BACKUP_PERIOD = None\nAPPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "x", "last_updated": "November 2026"}', args=["--apply"])
 
 # ---- Part B · publication rehearsal in a throwaway clone
 rehearsal = []
@@ -106,13 +108,8 @@ try:
     cb.write_text(cb.read_text(encoding="utf-8").replace(
         "APPROVAL = None",
         'APPROVAL = {"founder_approval": "rehearsal", "self_assessment": "rehearsal", "risks_resolved": "rehearsal", '
-        '"last_updated": "October 2026"}', 1).replace("BACKUP_PERIOD = None", 'BACKUP_PERIOD = "for up to 2 weeks"', 1),
+        '"last_updated": "October 2026"}', 1),
         encoding="utf-8")
-    # Publication changes the backup period in the builder AND the draft together (guard V1).
-    cd = clone / "governance" / "PRIVACY-VERSION-2026-10-PHASE2-V4-DRAFT.md"
-    cd.write_text(cd.read_text(encoding="utf-8").replace(
-        "automatic backups for a limited period, until those backups expire",
-        "automatic backups for up to 2 weeks, until those backups expire", 1), encoding="utf-8")
     steps = [
         ("V4 --apply in the clone", [str(cb), "--apply"], "APPLIED"),
         ("V4 builder verifies the published page", [str(cb), "--check"], "PUBLISHED"),

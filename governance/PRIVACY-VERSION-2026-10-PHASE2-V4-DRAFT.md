@@ -27,7 +27,7 @@ The register cannot open until all of these hold. The opening guard (R2 in `atla
 
 The V4 builder refuses to write `privacy.html` until:
 - `APPROVAL` records the founder's approval, the self-assessment, the resolution of material risks and the "Last updated" label;
-- `BACKUP_PERIOD` records the Airtable plan's snapshot retention.
+- `BACKUP_PERIOD` records the Airtable plan's snapshot retention (now set: up to 1 year, Team plan).
 
 ## Changes from V3
 
@@ -52,11 +52,11 @@ The V4 builder refuses to write `privacy.html` until:
 
   It holds no name, email, email hash, county or record identifier, and it is kept for the life of the pilot.
 - **Limitation, accepted by the founder:** an anonymous log proves that deletions are carried out. It **cannot prove** that a particular person's record was deleted. For a voluntary, unpaid pilot interest register, that is judged proportionate (see the GDPR self-assessment).
-- **Provider recovery:**
-  - Airtable keeps deleted records in its trash for 7 days.
-  - Airtable also keeps automatic base snapshots for a period set by the plan: 2 weeks on Free, 1 year on Team, longer on higher plans.
-  - PlotNua never restores deleted registration records.
-  - `BACKUP_PERIOD` must hold the plan's actual figure before publication.
+- **Two retention periods, kept distinct:**
+  - **PlotNua's active record:** a maximum of 12 months, deleted sooner when no longer needed.
+  - **The provider's recovery copies:** managed by Airtable, not used by PlotNua. Airtable keeps deleted records in its trash for 7 days, and its own automatic snapshots for **up to 1 year** on the **Team plan**. The founder confirmed on 13 October 2026 that the register's workspace, "My First Workspace", is on Team (monthly).
+  - PlotNua never restores deleted registration records from either.
+  - `BACKUP_PERIOD = "up to 1 year"`. If the plan changes, update `BACKUP_PERIOD`, this draft and the form notice together; guards V1 and V4 enforce this.
 
 ## Proposed Section 8 — exact text
 
@@ -85,9 +85,9 @@ The V4 builder refuses to write `privacy.html` until:
 >
 > The services that carry the form, such as Cloudflare, process technical information such as your IP address so that your request can be delivered securely. PlotNua does not record it in the register.
 >
-> We keep your record for no longer than 12 months, and we delete it sooner if the pilot ends or no longer needs it. You can ask us to delete it at any time.
+> We keep your record for no longer than 12 months, and we delete it sooner if the pilot ends or no longer needs it. You can ask us to delete it at any time. This is how long PlotNua keeps your record; the recovery copies kept by our database provider are described below.
 >
-> To leave the register or ask us to delete your record, email hello@plotnua.ie. There is nothing to cancel and no notice period. When we delete your record, we delete everything the register holds about you, including the record of your consent. A deleted record can be restored from our database provider's trash for 7 days, and it remains in that provider's automatic backups for a limited period, until those backups expire. We do not restore deleted registration records. We keep only an anonymous entry in our deletion log, recording when a deletion was requested or became due, when it was completed and why, so that we can show deletions are carried out. That entry contains nothing that identifies you.
+> To leave the register or ask us to delete your record, email hello@plotnua.ie. There is nothing to cancel and no notice period. When we delete your record, we delete everything the register holds about you, including the record of your consent. A deleted record can be restored from our database provider's trash for 7 days. Separately, the provider keeps its own automatic recovery copies of the database for up to 1 year, and these may still contain a deleted record until they expire. Those copies are managed by the provider, not used by PlotNua, and we never restore deleted registration records from them. We keep only an anonymous entry in our deletion log, recording when a deletion was requested or became due, when it was completed and why, so that we can show deletions are carried out. That entry contains nothing that identifies you.
 
 ## Consistency enforced
 

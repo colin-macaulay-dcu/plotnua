@@ -224,9 +224,9 @@ NOTICE = [
      "it at any time."),
     ("After deletion.",
      "We delete everything the register holds about you, including the record of your consent. "
-     "Our database provider's backups expire after a limited period, and we never restore deleted "
-     "records. We keep only an anonymous log entry with the dates and the reason, which contains "
-     "nothing that identifies you."),
+     "Our database provider keeps deleted records in its trash for 7 days and its own recovery copies "
+     "for up to 1 year; we never restore deleted records from them. We keep only an anonymous log "
+     "entry with the dates and the reason, which contains nothing that identifies you."),
 ]
 
 

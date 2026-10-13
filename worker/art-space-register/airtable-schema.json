@@ -20,7 +20,8 @@
       "syncs",
       "extensions that send data out",
       "sample rows"
-    ]
+    ],
+    "plan": "Team (monthly), workspace 'My First Workspace' (founder, 13 Oct 2026). Snapshot retention: up to 1 year; trash: 7 days."
   },
   "token": {
     "name": "plotnua-art-space-register-worker",
@@ -38,7 +39,7 @@
     ],
     "stored_as": "Cloudflare Worker secret AIRTABLE_TOKEN"
   },
-  "retention_is_manual": "FOUNDER DECISION 13 Oct 2026 22:18 (R1 + Option A). Registrations are kept for at most 12 months and deleted sooner when no longer needed. Hosts.erase_after and the 'Erasure due' view only FLAG records; nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: (1) delete the Hosts record; (2) delete its Consent proofs row and its Status log row, found by the identical timestamp the Worker writes to all three (Hosts.submitted_at = Consent proofs.given_at = Status log.at; the Status log row also carries record_ref = the Hosts record id); (3) add ONE anonymous row to 'Deletion log'. No email, email hash, name or record id survives a deletion. Airtable keeps deleted records in its trash for 7 days and in automatic base snapshots for the plan's snapshot period; PlotNua never restores deleted registration records.",
+  "retention_is_manual": "FOUNDER DECISION 13 Oct 2026 22:18 (R1 + Option A). Registrations are kept for at most 12 months and deleted sooner when no longer needed. Hosts.erase_after and the 'Erasure due' view only FLAG records; nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: (1) delete the Hosts record; (2) delete its Consent proofs row and its Status log row, found by the identical timestamp the Worker writes to all three (Hosts.submitted_at = Consent proofs.given_at = Status log.at; the Status log row also carries record_ref = the Hosts record id); (3) add ONE anonymous row to 'Deletion log'. No email, email hash, name or record id survives a deletion. Airtable keeps deleted records in its trash for 7 days and in automatic base snapshots for the plan's snapshot period (Team plan, confirmed 13 Oct 2026: up to 1 year); PlotNua never restores deleted registration records.",
   "dates": "Every date field: Date (ISO), include time, 24-hour, one fixed time zone for all collaborators. Created with Europe/Dublin, which is accepted: the Worker always sends UTC instants with a trailing Z, Airtable stores every dateTime as a UTC instant and returns UTC through the API, so the time zone setting changes only what a person sees. Formula results (erase_after, remove_after) should display in ISO date format (YYYY-MM-DD); they were created in US format (M/D/YYYY), which is a display-only change.",
   "tables": [
     {
