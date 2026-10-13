@@ -8,6 +8,10 @@ metadata use TRIQ QUBE. The frozen preview, which still says CUBE, is NOT
 edited: its approved blocks are lifted verbatim and the product name is then
 corrected as one explicit, gated step (NAME_FIX below), exactly as this
 builder already rewords one heading and drops the "Made in Germany" claim.
+DELIVERY EVIDENCE (13 October 2026, TRIQBRIQ AG in writing): international
+delivery in principle, Irish delivery subject to individual confirmation; the
+founder-approved wording replaces two "not established" panel items (DELIVERY
+below, with its own gate).
 Identifiers are deliberately kept: the URL triq-cube.html (existing links),
 the page marker, and the GA4 product_id 'triq-cube' (so the first-month
 outbound report to TRIQBRIQ is one continuous series).
@@ -124,6 +128,25 @@ FAVICONS = one(ab, r'(<!-- Favicons — PlotNua Brand Package v1\.0 -->.*?<meta 
 
 IMG, PRICE_SPEC_PUB, EQUIP_PUB, OPEN_PUB = (name_fix(IMG), name_fix(PRICE_SPEC_PUB),
                                            name_fix(EQUIP_PUB), name_fix(OPEN_PUB))
+
+# DELIVERY EVIDENCE, 13 October 2026. Christian Klerner (TRIQBRIQ AG), in
+# writing: "In principle, our building kit is available for delivery
+# worldwide. We would be happy to review specific delivery addresses
+# individually with each prospective customer upon enquiry." The two panel
+# items that said Irish supply/delivery was not established are replaced by
+# the FOUNDER-APPROVED wording below, word for word. Still NOT claimed: Irish
+# delivery as guaranteed, any shipping price or time, Irish installation, or
+# the German price as an Irish delivered price ("No Irish price" and
+# "Installation" items stay unchanged).
+DELIVERY_OLD = (
+    "      <li><strong>Irish availability is not yet confirmed.</strong> PlotNua holds no confirmation that the TRIQ&nbsp;QUBE can be supplied to the Republic of Ireland.</li>\n"
+    "      <li><strong>Delivery to Ireland is not established.</strong> Atlas records where a building is made, not who will deliver and install it here. Those are different facts and PlotNua will not treat one as the other.</li>\n")
+DELIVERY_TEXT = ("International delivery is available in principle. Delivery to Ireland is subject to "
+                 "individual confirmation by TRIQBRIQ AG based on the customer's delivery address. "
+                 "Contact the manufacturer to confirm delivery arrangements and obtain a quotation.")
+DELIVERY_NEW = "      <li><strong>Delivery to Ireland.</strong> " + DELIVERY_TEXT.replace("'", "&rsquo;") + "</li>\n"
+if OPEN_PUB.count(DELIVERY_OLD) != 1: die("DELIVERY: the two superseded panel items were not found exactly once")
+OPEN_PUB = OPEN_PUB.replace(DELIVERY_OLD, DELIVERY_NEW)
 
 TITLE = "TRIQ QUBE garden office by TRIQBRIQ AG | PlotNua"
 DESC = ("The TRIQ QUBE (TRIQ Office 3×3): a 9 m² solid-timber garden office from TRIQBRIQ AG, "
@@ -310,6 +333,20 @@ visible = re.sub(r"<!--.*?-->|<script.*?</script>", "", page, flags=re.S)
 if re.search(r"TRIQ(\s|&nbsp;|\u00a0)*CUBE", visible, re.I): die("GATE NAME: 'TRIQ CUBE' still visible")
 if "<h1>TRIQ&nbsp;QUBE by TRIQBRIQ&nbsp;AG</h1>" not in page: die("GATE NAME: heading must name the TRIQ QUBE")
 if "product_id: 'triq-cube'" not in page: die("GATE NAME: GA4 product_id identifier must be kept for report continuity")
+# DELIVERY gate (13 Oct 2026): the approved wording once, the superseded claims
+# gone, and nothing that promises Irish delivery, a shipping price or time, or
+# installation.
+if page.count(DELIVERY_NEW) != 1: die("GATE DELIVERY: approved delivery wording must appear exactly once")
+for gone in ("holds no confirmation that the TRIQ", "Delivery to Ireland is not established"):
+    if gone in page: die("GATE DELIVERY: superseded wording still present: " + gone)
+for bad in ("guaranteed", "free delivery", "free shipping", "delivery included", "installation included",
+            "installed in Ireland", "Irish delivered price is", "ships to Ireland", "delivers to Ireland"):
+    if bad.lower() in page.lower(): die("GATE DELIVERY: overclaim present: " + bad)
+li = DELIVERY_NEW
+if re.search(r"€|EUR|\d+\s*(day|week|month)", li, re.I): die("GATE DELIVERY: no shipping price or delivery time may be stated")
+if "PlotNua does not restate it as an Irish delivered price" not in page: die("GATE DELIVERY: German-price caveat must stay")
+for keep in ("<strong>No Irish price.</strong>", "<strong>Installation.</strong>"):
+    if keep not in page: die("GATE DELIVERY: must keep the item " + keep)
 
 mode = sys.argv[1] if len(sys.argv) > 1 else "--check"
 print("preview sha256", sha)

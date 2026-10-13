@@ -172,3 +172,31 @@ The Search record title now reads "TRIQ QUBE by TRIQBRIQ AG". The sitemap commen
 - Atlas eligibility (still not in Results, Compare or the Maker Explorer).
 
 This file keeps its original name for traceability.
+
+---
+
+## Addendum, 13 October 2026: manufacturer delivery confirmation
+
+Christian Klerner (TRIQBRIQ AG), in writing:
+
+> "In principle, our building kit is available for delivery worldwide. We would be happy to review specific delivery addresses individually with each prospective customer upon enquiry."
+
+**Change on `triq-cube.html`:** two items in "What PlotNua has not established" are replaced by one item carrying the founder-approved wording, verbatim. The two items were "Irish availability is not yet confirmed … no confirmation that the TRIQ QUBE can be supplied" and "Delivery to Ireland is not established". The new item reads:
+
+> **Delivery to Ireland.** International delivery is available in principle. Delivery to Ireland is subject to individual confirmation by TRIQBRIQ AG based on the customer's delivery address. Contact the manufacturer to confirm delivery arrangements and obtain a quotation.
+
+**Unchanged on purpose:**
+- **"No Irish price" item:** the German price is not an Irish delivered price.
+- **"Installation … not established" item.**
+- **German-price caveat on the price card.**
+- **"Irish availability not yet confirmed" tag, and the Search summary:** delivery to an Irish address still needs individual confirmation.
+- **The outbound link and GA4 event.**
+- **Manufacturer-information status.** TRIQ QUBE remains outside Atlas Results, Compare and the Maker Explorer; there is no product record.
+
+The builder gate refuses the page if any of the following is missing or present:
+- **missing:** the approved wording (exactly once), the "No Irish price" and "Installation" items, or the German-price caveat;
+- **present:** guaranteed or included delivery or installation, a shipping price, or a delivery time.
+
+**Evidence recorded in:**
+- Atlas ORG-000195 notes (dated entry);
+- `supplier-contact-register.json` (`delivery_evidence`, `delivery_evidence_state` INTERNATIONAL_IN_PRINCIPLE_IRELAND_CASE_BY_CASE). `irish_route_state` is deliberately left empty, because DELIVERY_TO_IRELAND would overclaim.
