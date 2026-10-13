@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
 """
-TRIQ CUBE · PUBLIC PAGE — BOUNDED BUILDER (12 October 2026)
+TRIQ QUBE · PUBLIC PAGE — BOUNDED BUILDER (12 October 2026)
+
+PRODUCT NAME CORRECTION, 13 October 2026. TRIQBRIQ AG (Christian Klerner)
+confirmed the product is "TRIQ QUBE", not "TRIQ CUBE". The visible name and
+metadata use TRIQ QUBE. The frozen preview, which still says CUBE, is NOT
+edited: its approved blocks are lifted verbatim and the product name is then
+corrected as one explicit, gated step (NAME_FIX below), exactly as this
+builder already rewords one heading and drops the "Made in Germany" claim.
+Identifiers are deliberately kept: the URL triq-cube.html (existing links),
+the page marker, and the GA4 product_id 'triq-cube' (so the first-month
+outbound report to TRIQBRIQ is one continuous series).
 
 Founder decision, 12 October 2026: TRIQBRIQ AG's product management approved
 the landing page (Christian Klerner, email of 12 October 2026). The approved
@@ -68,6 +78,15 @@ OPEN = one(pv, r'(  <div class="open-panel" style="margin-top:var\(--pn-space-md
 OPEN_DROP = " A homeowner sees this panel too."
 if OPEN.count(OPEN_DROP) != 1: die("OPEN: supplier-addressed sentence anchor")
 OPEN_PUB = OPEN.replace(OPEN_DROP, "")
+
+# PRODUCT NAME CORRECTION (13 Oct 2026, manufacturer-confirmed): TRIQ QUBE.
+# Applied to visible text only; identifiers (URL, marker, GA4 product_id) keep
+# "triq-cube". Each lifted block is corrected before it is placed.
+NAME_FIX = (("TRIQ&nbsp;CUBE", "TRIQ&nbsp;QUBE"), ("TRIQ CUBE", "TRIQ QUBE"))
+def name_fix(s):
+    for a, b in NAME_FIX:
+        s = s.replace(a, b)
+    return s
 CSS = one(pv, r'<style>\n(.*?)</style>', "CSS")
 for need in ("© TRIQBRIQ AG", "Exterior-3x3-1-scaled.jpg", "Interior-3x3-1-scaled.jpg"):
     if need not in IMG: die("IMG block lost " + need)
@@ -103,8 +122,11 @@ if 'data-pns-nofade="true"' not in RAIL: die("rail: expected the nofade variant"
 FOOTER = one(ab, r'(<footer>\n  <div class="footer-inner">.*?</footer>)', "footer")
 FAVICONS = one(ab, r'(<!-- Favicons — PlotNua Brand Package v1\.0 -->.*?<meta name="theme-color" content="#1F3B2E">)', "favicons")
 
-TITLE = "TRIQ CUBE garden office by TRIQBRIQ AG | PlotNua"
-DESC = ("The TRIQ CUBE (TRIQ Office 3×3): a 9 m² solid-timber garden office from TRIQBRIQ AG, "
+IMG, PRICE_SPEC_PUB, EQUIP_PUB, OPEN_PUB = (name_fix(IMG), name_fix(PRICE_SPEC_PUB),
+                                           name_fix(EQUIP_PUB), name_fix(OPEN_PUB))
+
+TITLE = "TRIQ QUBE garden office by TRIQBRIQ AG | PlotNua"
+DESC = ("The TRIQ QUBE (TRIQ Office 3×3): a 9 m² solid-timber garden office from TRIQBRIQ AG, "
         "Stuttgart. Published price, specification and what isn't yet established for Ireland.")
 
 page = HEAD_TAGS + f'''
@@ -194,7 +216,7 @@ footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px;
     <div class="brand">PlotNua</div>
     <div class="eyebrow" style="margin:0">Garden Room · Garden office</div>
   </div>
-  <h1>TRIQ&nbsp;CUBE by TRIQBRIQ&nbsp;AG</h1>
+  <h1>TRIQ&nbsp;QUBE by TRIQBRIQ&nbsp;AG</h1>
   <p class="standfirst">A 9&nbsp;m² garden office from TRIQBRIQ AG in Stuttgart, built from solid timber rather than panels. Below is what TRIQBRIQ publishes about it, and what PlotNua hasn't yet been able to establish for a buyer in Ireland.</p>
 </header>
 
@@ -218,8 +240,8 @@ footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px;
   <div class="handoff">
     <div class="eyebrow" style="color:rgba(245,242,232,.62)">Questions and purchase</div>
     <h2>Continue with TRIQBRIQ</h2>
-    <p><strong>TRIQBRIQ handles all product-specific and technical consultation, the transaction and fulfilment</strong>, and purchases complete on the official TRIQ product page. If you have a question about the TRIQ&nbsp;CUBE, TRIQBRIQ is the right place to ask it.</p>
-    <p>PlotNua does not advise on the TRIQ&nbsp;CUBE, does not quote for it, and does not take payment.</p>
+    <p><strong>TRIQBRIQ handles all product-specific and technical consultation, the transaction and fulfilment</strong>, and purchases complete on the official TRIQ product page. If you have a question about the TRIQ&nbsp;QUBE, TRIQBRIQ is the right place to ask it.</p>
+    <p>PlotNua does not advise on the TRIQ&nbsp;QUBE, does not quote for it, and does not take payment.</p>
 
     <a class="handoff-btn" href="{PRODUCT_URL}" target="_blank" rel="noopener" data-outbound="triqbriq" data-loc="handoff">Continue to TRIQBRIQ →</a>
     <span class="handoff-note">Opens TRIQBRIQ's product page on triqbriq.de in a new tab.</span>
@@ -281,6 +303,13 @@ for banned in ("partner of", "recommended by PlotNua", "approved by PlotNua", "p
 if page.count("supplier_outbound_click") != 1: die("GATE: exactly one event definition")
 if len(re.findall(r'<a [^>]*data-outbound="triqbriq"', page)) != 4: die("GATE: four tagged triqbriq.de links expected")
 if page.count('G-PKKJ0RK6N8') != 2: die("GATE: GA4 tag must be the site's existing one, once")
+# NAME gate (13 Oct 2026): the superseded product name must not appear anywhere
+# a visitor or a search engine can read it (comments and scripts excluded, so
+# the marker and the GA4 product_id identifier may keep "triq-cube").
+visible = re.sub(r"<!--.*?-->|<script.*?</script>", "", page, flags=re.S)
+if re.search(r"TRIQ(\s|&nbsp;|\u00a0)*CUBE", visible, re.I): die("GATE NAME: 'TRIQ CUBE' still visible")
+if "<h1>TRIQ&nbsp;QUBE by TRIQBRIQ&nbsp;AG</h1>" not in page: die("GATE NAME: heading must name the TRIQ QUBE")
+if "product_id: 'triq-cube'" not in page: die("GATE NAME: GA4 product_id identifier must be kept for report continuity")
 
 mode = sys.argv[1] if len(sys.argv) > 1 else "--check"
 print("preview sha256", sha)

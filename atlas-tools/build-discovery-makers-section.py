@@ -16,7 +16,7 @@ WHAT IT IS
     search.html, which reaches every indexed garden room and garden home and,
     from each product, its Option Detail;
   * one "Manufacturer information" panel listing the published supplier
-    information pages. Today that is TRIQ CUBE only -> triq-cube.html.
+    information pages. Today that is TRIQ QUBE only -> triq-cube.html (product name corrected 13 Oct 2026).
 
 THE "9 m2" WAS LEFT OFF THIS PAGE, DELIBERATELY. The founder's copy reads
 "9 m2 timber garden office." On this page that figure trips Cluster 1 guard
@@ -79,9 +79,9 @@ SECTION = '''      differ, the prices were never comparable in the first place.<
       </div>
       <div class="handoff">
         <span class="dq-cat">Manufacturer information</span>
-        <h3>TRIQ CUBE by TRIQBRIQ AG</h3>
+        <h3>TRIQ QUBE by TRIQBRIQ AG</h3>
         <p>Timber garden office. Irish availability not yet confirmed.</p>
-        <a href="triq-cube.html">Explore TRIQ CUBE&nbsp;&rarr;</a>
+        <a href="triq-cube.html">Explore TRIQ QUBE&nbsp;&rarr;</a>
       </div>
     </div>
   </section>

@@ -585,7 +585,7 @@ console.log('\n  PART A4 · RETURN PATH (history state, no URL, no storage)\n');
 
      The count is therefore RAISED DELIBERATELY and stays exact, naming the
      extra surface, so the census can still never drift silently. */
-  /* RAISED DELIBERATELY AGAIN, 12 October 2026: triq-cube.html, the TRIQ CUBE
+  /* RAISED DELIBERATELY AGAIN, 12 October 2026: triq-cube.html, the TRIQ QUBE
      public page, entered the sitemap by founder decision. It carries the
      canonical nofade pill (its brand mark has no fade), so H12a still holds
      byte for byte; only the nofade count moves, from 2 to 3. */

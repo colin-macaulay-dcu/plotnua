@@ -144,3 +144,31 @@ Realtime after publication.
 ### 6.5 · Still open
 
 Irish availability (unanswered by TRIQBRIQ); §4.2 commercial terms.
+
+---
+
+## Addendum, 13 October 2026: product name corrected to TRIQ QUBE
+
+TRIQBRIQ AG (Christian Klerner) confirmed that the correct product name is **TRIQ QUBE**, not "TRIQ CUBE". The founder instructed the correction the same day.
+
+**Corrected:** every visible use on the public page:
+- title, meta description, Open Graph and Twitter metadata;
+- the H1;
+- the Irish-availability sentence;
+- the two handoff sentences.
+
+The Search record title now reads "TRIQ QUBE by TRIQBRIQ AG". The sitemap comment is updated and lastmod is set to 2026-10-13.
+
+**Kept on purpose:**
+- **The URL `triq-cube.html`**, so existing links don't break.
+- **The page marker, the Search record id `info-triq-cube`, and the GA4 `product_id: 'triq-cube'`.** These are identifiers, not visible text. Keeping them means the first-month outbound report to TRIQBRIQ is one continuous series.
+- **The frozen supplier preview `triq-cube-preview.html`.** It is private (noindex, unlinked, not in the sitemap) and remains the approved record. The public-page builder corrects the name as an explicit, gated step after lifting its approved blocks.
+
+**Old searches:** "TRIQ CUBE" is kept only as a hidden Search alias (record topics), so older searches still find the page while visitors only ever see TRIQ QUBE.
+
+**Not changed:**
+- specifications, prices, imagery permissions and availability statements;
+- Irish delivery, which remains unconfirmed;
+- Atlas eligibility (still not in Results, Compare or the Maker Explorer).
+
+This file keeps its original name for traceability.

@@ -6,7 +6,7 @@ HISTORY
   v1 (13 Oct 2026) built the explorer into Living in the Garden with its
   JavaScript and CSS inline. Founder decisions that day: concept approved,
   twelve refinements, "The Scannal" display name, top "Show fewer makers",
-  compact reset, and the TRIQ CUBE box removed.
+  compact reset, and the TRIQ QUBE box removed (product name corrected 13 Oct 2026).
   v2 (13 Oct 2026, founder: "Reusable component · Phase 2") extracts ONE
   shared implementation and drives it from per-Discovery configuration,
   without changing appearance, behaviour or eligibility.
@@ -366,7 +366,7 @@ def build(fname, P, src):
         if f in blk: die("G7 supplier information page linked from the explorer: " + f)
         if not (ROOT / f).exists(): die("G7 supplier information page missing: " + f)
         if "https://plotnua.ie/" + f not in sitemap: die("G7 supplier information page left the sitemap: " + f)
-    if "triq-cube.html" not in ip: die("G7 TRIQ CUBE must stay in Search (SUPPLIER_INFO_PAGES)")
+    if "triq-cube.html" not in ip: die("G7 TRIQ QUBE (triq-cube.html) must stay in Search (SUPPLIER_INFO_PAGES)")
     # G8 no area figure in the page's own prose (Cluster 1 L1)
     if re.search(r"\d\s*(m²|m&sup2;|square metres)", visible): die("G8 an area figure would reach the page")
     # G9 nothing outside the block and the stylesheet link changes; placement

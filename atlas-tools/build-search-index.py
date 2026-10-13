@@ -372,18 +372,27 @@ print("  possibilities     %d" % len(possibility_route_by_file))
 # (founder wording) and checked against the page, never lifted from body copy.
 # Deliberately NOT a product record: no Atlas id, no price, no tier, no
 # organisation field, and no route to Results / My Plot / Compare. The TRIQ
-# CUBE is not an Atlas product and stays out of recommendations until its
+# QUBE is not an Atlas product and stays out of recommendations until its
 # Irish availability is established.
+#
+# PRODUCT NAME CORRECTION, 13 October 2026: TRIQBRIQ AG confirmed the name is
+# "TRIQ QUBE", not "TRIQ CUBE". The visible title uses TRIQ QUBE. The former
+# spelling is kept ONLY as a search alias ("former_names" -> topics), which
+# search.js matches on but never displays, so a homeowner who searches the old
+# spelling still finds the page and only ever sees the correct name. The record
+# id and route keep "triq-cube" (identifiers; the URL is unchanged).
 SUPPLIER_INFO_PAGES = {
     "triq-cube.html": {
         "id": "info-triq-cube",
-        "title": "TRIQ CUBE by TRIQBRIQ AG",
+        "title": "TRIQ QUBE by TRIQBRIQ AG",
         "standfirst": ("9 m\u00b2 timber garden office. Manufacturer information. "
                        "Irish availability not yet confirmed."),
         # Words the page itself must carry, so the record can never describe a
         # page that says something else.
-        "page_must_contain": ["TRIQ&nbsp;CUBE by TRIQBRIQ&nbsp;AG", "9&nbsp;m\u00b2",
+        "page_must_contain": ["TRIQ&nbsp;QUBE by TRIQBRIQ&nbsp;AG", "9&nbsp;m\u00b2",
                               "Irish availability not yet confirmed"],
+        # Superseded spellings: searchable, never shown, never on the page.
+        "former_names": ["TRIQ CUBE"],
     },
 }
 info_recs = []
@@ -393,13 +402,18 @@ for fname, spec in sorted(SUPPLIER_INFO_PAGES.items()):
     src = (ROOT / fname).read_text(encoding="utf-8")
     if re.search(r'<meta[^>]*name=["\']robots["\'][^>]*noindex', src, re.I):
         die("G15 %r is noindex, so it is not a published page" % fname)
+    for old in spec.get("former_names", []):
+        vis = re.sub(r"<!--.*?-->|<script.*?</script>", "", src, flags=re.S)
+        if re.search(re.escape(old).replace("\\ ", r"(\s|&nbsp;)+"), vis, re.I) or old in spec["title"] or old in spec["standfirst"]:
+            die("G15 superseded name %r is still visible on %r or in its record" % (old, fname))
     for must in spec["page_must_contain"]:
         if must not in src:
             die("G15 %r no longer carries %r; the search record would misdescribe it"
                 % (fname, must))
     info_recs.append({
         "id": spec["id"], "type": "possibility", "title": spec["title"],
-        "standfirst": spec["standfirst"], "topics": [], "route": fname,
+        "standfirst": spec["standfirst"],
+        "topics": sorted(n.lower() for n in spec.get("former_names", [])), "route": fname,
     })
 records.extend(info_recs)
 print("  supplier info     %d  (published supplier information pages, possibility shape)"
