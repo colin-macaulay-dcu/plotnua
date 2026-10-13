@@ -53,7 +53,13 @@ V1_CSS_MARK = "PLOTNUA MAKER EXPLORER v1"          # the inline block v1 wrote
 SHARED_JS, SHARED_CSS = "maker-explorer.js", "maker-explorer.css"
 PINS = {
     SHARED_JS:  "fe884244bbbbd0bedfcf9eb543b19d06590322972860dadc3d42b17484deb83b",
-    SHARED_CSS: "30d1c90403c73cdf71794c916515b70415997b85737dad8b48178acd540443ee",
+    # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
+    # Explorer (The Borrowed Garden). Every rule is scoped to
+    # :is(#explore-makers, #explore-providers), which keeps each rule's
+    # specificity identical; Living in the Garden is pixel-identical (10-state
+    # parity capture). Previous pin:
+    # 30d1c90403c73cdf71794c916515b70415997b85737dad8b48178acd540443ee
+    SHARED_CSS: "d571b8ca399ce2653231f9293aeb261eed2eaf909196b446edb473b5a781c2c7",
 }
 CSS_LINK = '<link rel="stylesheet" href="maker-explorer.css">'
 JS_TAG = '<script src="maker-explorer.js"></script>'

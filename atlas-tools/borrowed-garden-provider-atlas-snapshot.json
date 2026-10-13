@@ -1,0 +1,24 @@
+{
+  "_about": "Read-back of the Atlas records created 13 Oct 2026 on founder approval (Provider Explorer evidence pack, 13 Oct 2026). Transcribed from the Airtable read-back of base appoLZFWesvoPhZGR. This is the ONLY Atlas input the Borrowed Garden provider universe may use. No Airtable call is made at build time.",
+  "base": "appoLZFWesvoPhZGR",
+  "readBackOn": "2026-10-13",
+  "discovery": { "record": "recLkjbt4kCyQWTsT", "code": "DISC-025", "title": "The Borrowed Garden", "discoveryStatus": "Published", "linkedOrganisations": ["recjAV6RKIhEjMzzd", "recmsuYqFwv29IsW1", "recY9h82QghJ1oB4a", "recfdDnGD3G3iblUc", "recSbjcpAu8SmOoFa"], "products": [], "partners": [] },
+  "organisations": [
+    { "record": "recjAV6RKIhEjMzzd", "code": "ORG-000202", "name": "Community Roots", "type": "Service Provider", "partnerStatus": "Researching", "status": "Researching", "lastReviewed": "2026-10-13", "discoveries": ["recLkjbt4kCyQWTsT"], "sources": ["SRC-DISC025-01", "SRC-DISC025-02", "SRC-DISC025-03", "SRC-DISC025-04"], "products": [], "partners": [] },
+    { "record": "recmsuYqFwv29IsW1", "code": "ORG-000203", "name": "Homegrown.ie", "type": "Service Provider", "partnerStatus": "Strategic Hold", "status": "Researching", "lastReviewed": "2026-10-13", "discoveries": ["recLkjbt4kCyQWTsT"], "sources": ["SRC-DISC025-05"], "products": [], "partners": [] },
+    { "record": "recY9h82QghJ1oB4a", "code": "ORG-000204", "name": "Dublin City Council", "type": "Government", "partnerStatus": "Researching", "status": "Researching", "lastReviewed": "2026-10-13", "discoveries": ["recLkjbt4kCyQWTsT"], "sources": ["SRC-DISC025-06"], "products": [], "partners": [] },
+    { "record": "recfdDnGD3G3iblUc", "code": "ORG-000205", "name": "Fingal County Council", "type": "Government", "partnerStatus": "Researching", "status": "Researching", "lastReviewed": "2026-10-13", "discoveries": ["recLkjbt4kCyQWTsT"], "sources": ["SRC-DISC025-07", "SRC-DISC025-08"], "products": [], "partners": [] },
+    { "record": "recSbjcpAu8SmOoFa", "code": "ORG-000206", "name": "Dún Laoghaire-Rathdown County Council", "type": "Government", "partnerStatus": "Researching", "status": "Researching", "lastReviewed": "2026-10-13", "discoveries": ["recLkjbt4kCyQWTsT"], "sources": ["SRC-DISC025-09"], "products": [], "partners": [] }
+  ],
+  "sources": [
+    { "record": "recXdXbfC2QmKMGsc", "code": "SRC-DISC025-01", "org": "ORG-000202", "type": "Third-Party Media", "quality": "Supporting Source", "status": "Verified", "lastVerified": "2026-10-13", "url": "https://www.changex.org/ie/community-roots" },
+    { "record": "recYQb3P01rXdDHku", "code": "SRC-DISC025-02", "org": "ORG-000202", "type": "Third-Party Media", "quality": "Supporting Source", "status": "Verified", "lastVerified": "2026-10-13", "url": "https://www.wheel.ie/jobs/programme_coordinator" },
+    { "record": "rec4ocA7Ow1pybLYV", "code": "SRC-DISC025-03", "org": "ORG-000202", "type": "Supplier Website", "quality": "Unverified", "status": "Research", "lastVerified": "2026-09-16", "url": "https://www.communityroots.ie/", "backgroundOnly": true },
+    { "record": "recKU4XxTWU0xJw88", "code": "SRC-DISC025-04", "org": "ORG-000202", "type": "Third-Party Media", "quality": "Supporting Source", "status": "Verified", "lastVerified": "2026-09-16", "url": "https://www.changex.org/community-roots/rush-co-dublin-k56-k004-ireland/" },
+    { "record": "recgdQO7KC9pKeNPQ", "code": "SRC-DISC025-05", "org": "ORG-000203", "type": "Supplier Website", "quality": "Primary Source", "status": "Verified", "lastVerified": "2026-10-13", "url": "https://homegrown.ie/" },
+    { "record": "recckUjIE7DYHHGRC", "code": "SRC-DISC025-06", "org": "ORG-000204", "type": "Government Website", "quality": "Primary Source", "status": "Verified", "lastVerified": "2026-10-13", "url": "https://www.dublincity.ie/residential/improving-my-community/allotments-and-community-gardens" },
+    { "record": "recrWiGbliUwSOo8M", "code": "SRC-DISC025-07", "org": "ORG-000205", "type": "Government Website", "quality": "Primary Source", "status": "Verified", "lastVerified": "2026-10-13", "url": "https://fingal.ie/council/service/allotments-management" },
+    { "record": "rec47cVCeQua018mB", "code": "SRC-DISC025-08", "org": "ORG-000205", "type": "Government Website", "quality": "Primary Source", "status": "Verified", "lastVerified": "2026-10-13", "url": "https://www.fingal.ie/sites/default/files/2025-12/2026-al1-allotment-application-form.pdf" },
+    { "record": "recvqN0Gl2u9VDMdI", "code": "SRC-DISC025-09", "org": "ORG-000206", "type": "Government Website", "quality": "Primary Source", "status": "Verified", "lastVerified": "2026-10-13", "url": "https://www.dlrcoco.ie/sports-recreation/allotments" }
+  ]
+}
