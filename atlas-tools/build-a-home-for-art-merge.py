@@ -38,7 +38,8 @@ GUARDS
       PlotArt and "not live yet" sentences present verbatim
   M7  redirect page: canonical to the merged page, query string preserved,
       hash target #open-your-home-to-art, no <main>, not in the sitemap
-  M8  the DISC-024 check changes by its back-link only, outside the Art Space
+  M8  the DISC-024 check changes by its back-link and the two declared
+      founder wording changes (CHECK24_WORDING) only, outside the Art Space
       Register's own marked blocks (governed by build-art-space-register.py)
   M9  every consolidation edit applied exactly once
   M10 the founder's hierarchy: hosting story first, Open > Live with > Discover & own
@@ -558,6 +559,19 @@ REGISTER_BLOCKS = (("/* PLOTNUA-ART-REGISTER-CSS-BEGIN", "/* PLOTNUA-ART-REGISTE
                    ("<script>\n/* PLOTNUA-ART-REGISTER-JS-BEGIN", "/* PLOTNUA-ART-REGISTER-JS-END */\n</script>\n"))
 
 
+# FOUNDER-APPROVED DISC-024 CHECK WORDING (13 Oct 2026, 21:30): the storage
+# option's note and its result sentence no longer suggest that attics, garages
+# or under-stairs spaces suit finished artwork. Text only: question ids, answer
+# values, scoring, outcomes, save keys and the register pre-fill are unchanged.
+CHECK24_WORDING = [
+    ("{v:'dry_store',      l:'Storage only', n:'An attic, a garage, under the stairs'},",
+     "{v:'dry_store',      l:'Storage only', n:'Subject to suitability'},"),
+    ("'space_store':          'What you could offer is storage &mdash; attic, garage, under the stairs.',",
+     "'space_store':          'You might have space suitable for storing finished artwork, subject to the "
+     "artist&rsquo;s requirements.',"),
+]
+
+
 def strip_register(html):
     for b, e in REGISTER_BLOCKS:
         if html.count(b) != 1 or html.count(e) != 1:
@@ -650,6 +664,10 @@ def guards(page):
     # governed by atlas-tools/build-art-space-register.py (R1-R14), which proves
     # the rest of that page byte-identical. M8 compares everything else.
     head24 = strip_register(base(C24))
+    for a, b in CHECK24_WORDING:
+        if head24.count(a) != 1:
+            die("M8 a declared DISC-024 wording change no longer matches BASE: " + a[:60])
+        head24 = head24.replace(a, b)
     cur24 = strip_register((ROOT / C24).read_text(encoding="utf-8"))
     if cur24.replace('href="%s">Back to the story' % TARGET, 'href="%s">Back to the story' % OLD) != head24:
         die("M8 the DISC-024 check changed beyond its back-link")

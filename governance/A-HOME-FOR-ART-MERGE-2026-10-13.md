@@ -176,3 +176,11 @@ The priority correction reordered the content but left the page opening on the b
 - Landmarks 133 / 133.
 - Art Space Register R1–R13, 24 / 24; Worker 64 / 64; still closed.
 - Two builders refuse identically on the previous commit and are not touched here: `build-404-search.py`, whose 404 baseline hash has been stale since the merge, and `build-landmarks.py`, whose DISC-025 frozen-main hash is stale. Both need re-baselining separately.
+
+## Addendum 3: DISC-024 check wording (founder, 13 Oct 2026, 21:30)
+
+Guard M8 allows two declared, founder-approved text changes on the DISC-024 check (`CHECK24_WORDING`):
+- the storage option's note becomes "Subject to suitability";
+- the `space_store` result becomes "You might have space suitable for storing finished artwork, subject to the artist's requirements."
+
+Question ids, values, scoring, outcomes and save keys are unchanged. See `ART-SPACE-REGISTER-BUILD-2026-10-13.md` §11.8.

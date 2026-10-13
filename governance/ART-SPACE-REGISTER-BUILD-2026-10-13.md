@@ -302,3 +302,20 @@ The activation preparation (`680ddd5`) was accepted, with these corrections:
 - **Retention confirmed as proposed,** subject to legal review: 24 months for registrations, 12 months for deletion records.
 - **Pseudonymised data:** Section 8 and the on-page notice both state that the email fingerprint is pseudonymised personal data, not anonymous data.
 - **Manual deletion:** Airtable's retention formulas flag records but do not erase them (§11.2, `airtable-schema.json`).
+
+### 11.8 · Property Check wording alignment (founder, 13 Oct 2026, 21:30)
+
+This supersedes the "not changed" note in §11.7. The DISC-024 check no longer suggests that attics, garages or under-stairs spaces suit finished artwork.
+
+| Where | Was | Now |
+|---|---|---|
+| Question "What could you actually offer?", option `dry_store` (note) | Storage only — *An attic, a garage, under the stairs* | Storage only — *Subject to suitability* |
+| Result sentence `space_store` | What you could offer is storage — attic, garage, under the stairs. | You might have space suitable for storing finished artwork, subject to the artist's requirements. |
+
+**Text only.** Unchanged:
+- question ids, answer values (`dry_store`), scoring and outcome logic;
+- My Plot save keys (`disc024-open-your-home-to-art`);
+- the register's pre-fill mapping (`dry_store` → `dry_store`);
+- the closed register and the Garden Owner Register.
+
+The merge builder declares both edits in `CHECK24_WORDING`, and guard M8 still refuses any other change to the check. `build-journey-exit.py` already refused before this change: its frozen page fingerprint has been out of date since the register was added (460c97a), because it is a one-time builder. Its working proof, `prove-journey-exit-mutations.py`, passes.
