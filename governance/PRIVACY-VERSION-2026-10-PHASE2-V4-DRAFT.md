@@ -51,6 +51,11 @@ The V4 builder refuses to write `privacy.html` until:
   - the reason: withdrawal, retention limit, pilot ended or other.
 
   It holds no name, email, email hash, county or record identifier, and it is kept for the life of the pilot.
+- **Withdrawals** (founder policy, 13 October 2026):
+  1. delete the record, consent proof and status-log row;
+  2. email the homeowner confirming the deletion;
+  3. delete the request and the confirmation email, including from Sent and Trash;
+  4. keep only the anonymous log entry.
 - **Limitation, accepted by the founder:** an anonymous log proves that deletions are carried out. It **cannot prove** that a particular person's record was deleted. For a voluntary, unpaid pilot interest register, that is judged proportionate (see the GDPR self-assessment).
 - **Two retention periods, kept distinct:**
   - **PlotNua's active record:** a maximum of 12 months, deleted sooner when no longer needed.

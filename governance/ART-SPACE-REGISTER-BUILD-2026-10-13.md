@@ -395,7 +395,7 @@ While writes are off, the token is never used. It is first exercised in the dry 
 3. Delete its **Status log** row: the one whose `record_ref` is the record's id.
 4. Delete the **Hosts** record.
 5. Add **one** row to **Deletion log**: `completed_on`, `requested_on`, `reason`. Never a name, email, hash, county, record id or free text.
-6. Reply to a withdrawal request, then delete the request email and the reply from the mailbox (founder decision pending; see the self-assessment).
+6. For a withdrawal: email the homeowner confirming the deletion, then delete the withdrawal request and the confirmation email from the mailbox, including Sent and Trash (founder policy, 13 Oct 2026; §11.12).
 7. Never restore deleted registration records from Airtable's trash or snapshots.
 
 **Accountability limitation, documented.** An anonymous log shows that deletions happen, how many, why and how promptly. It **cannot prove** that a particular individual's record was deleted. For a voluntary, unpaid pilot interest register this is judged proportionate in the GDPR self-assessment. EU consent guidance (EDPB 05/2020, paras 106–107) asks that proof of consent be kept after processing ends only where strictly necessary. If a person later disputes a deletion, PlotNua can show the dated log entry and confirm that no record matching their email exists.
@@ -409,3 +409,13 @@ The register's Airtable workspace, "My First Workspace", is on the **Team** plan
 - Section 8 now separates **PlotNua's active record retention (at most 12 months)** from **the provider-managed recovery copies (up to 1 year)**, which PlotNua does not use and never restores from.
 - The form's short notice says the same. Guard V4 checks the notice carries the period.
 - If the plan changes, update `BACKUP_PERIOD`, the V4 draft and the notice together.
+
+### 11.12 · Withdrawal email policy (founder approval, 13 Oct 2026, 23:21)
+
+When a homeowner withdraws from the Art Space Register:
+1. Delete their **Hosts** record, its **Consent proofs** row and its **Status log** row (matched by the shared timestamp; §11.10).
+2. **Email the homeowner** from hello@plotnua.ie confirming the deletion.
+3. **Delete the withdrawal request and the confirmation email** once the confirmation is sent. Empty them from the mailbox's Sent and Trash folders too.
+4. Keep only the **anonymous Deletion log** entry: `completed_on`, `requested_on`, `reason` = `withdrawal`.
+
+**Result:** after a withdrawal, PlotNua holds nothing that identifies the person, either in the register or in the mailbox. This matches Section 8 of the V4 draft ("We keep only an anonymous entry in our deletion log"), which needs no wording change. Copies held in the email provider's own backups are outside PlotNua's control; they are never restored or used. The withdrawal-email question in the GDPR self-assessment is **resolved**.
