@@ -124,3 +124,55 @@ The merged page was approved in principle, but it led with buying. It now leads 
 - **Unchanged:** both checks, the My Plot keys, the redirect, every caution, the closed register and imagery permissions.
 - **New guard M10** enforces this order.
 - **Browser validation:** 58 / 58.
+
+## Addendum 2: image correction, original hosting imagery (founder, 13 Oct 2026, 20:45)
+
+The priority correction reordered the content but left the page opening on the buyer Discovery's hero, the coastal living room. The founder's success criterion: a homeowner opening A Home for Art must first see the visual identity of Open Your Home to Art. This is an image correction only. No wording, structure, check, redirect, My Plot key, Search entry or register setting changed.
+
+**Git history of the DISC-024 hero (`discovery-open-your-home-to-art.html`):**
+
+| Period | Hero | Master file (provenance register) | Status |
+|---|---|---|---|
+| 27 Aug – 11 Sep 2026 (`07762e8` … `9809c4a`) | `933e80e670e95183.jpg` — the same room with a large **empty** wall | `DISC-024-01-Hero.jpeg` | Retired by the founder in `f383204` (11 Sep, "strengthen art discovery revelation"). Today it is referenced by no page and listed only as LEGACY_UNDECLARED. **Not used**, because putting it back would republish an image nothing currently publishes. Your Plot's own record also retired it as "the POTENTIAL state". |
+| 11 Sep – 13 Oct 2026 (`f383204` … `460c97a`) | **`dfb125ba9dd7cd87.jpg`** — the home open as a gallery, with visitors looking at the work | `DISC-024-03-Gallery-at-Home.jpeg` | The DISC-024 hero for the rest of the Discovery's life, live on plotnua.ie until today. **Used.** |
+
+**Rights position.**
+- `dfb125…` is PlotNua's own Discovery artwork: a master in the DISC-024 folder, with no supplier and no third-party photograph.
+- It is published today on the merged page, the old Library card and the Your Home on Screen card.
+- Its register status, LEGACY_UNDECLARED, is the same as every other image on this page, including the buyer hero it replaces. So the correction adds no new publication and no new rights exposure.
+- The rights gate, run as CI runs it, passes: 47 publishable, 0 refused. The provenance guard passes 11 / 11.
+
+**Image changes:**
+- **Hero:** `c0f5bfcde033dea3.jpg` (buyer, coastal room) becomes `dfb125ba9dd7cd87.jpg`, carrying the DISC-024 hero tag and its alt text verbatim from `460c97a`.
+- **Hosting sequence**, restored in its original order:
+  1. hero `dfb125`;
+  2. `046ec577` (the same room, its wall empty and annotated). Its original alt, "The same living room…", is restored now that the hero precedes it again;
+  3. `6442d19e` (the artist);
+  4. after the Open ladder, `05cab54a` (the outcome).
+- The "after" plate added in the priority correction is gone. It repeated the hero, so its caption, "The same room, once the work has somewhere to be seen.", left `NEW_TEXT`.
+- **Buyer imagery:** `571594a8` stays with Live with art and `c1d46445` stays in Discover & own. `c0f5bf` is no longer on the merged page. It is a near-duplicate of `c1d46445`, the same sea-view room with a painting over the fireplace.
+- **Cards for this Discovery** now show `dfb125`:
+  - homepage, 404 and the Living in the Garden related card use the alt text those card slots already used for this image;
+  - the My Plot Hidden Potential entry uses the alt text from its own earlier correction record;
+  - the Discovery Library uses `discovery-library-images.json` (row updated, `previous` = `c1d46445`), applied by `build-discovery-library-images.py`.
+  - Card wording is unchanged.
+
+**Guards and proofs:**
+- **New guard M11:**
+  - the hero is the BASE DISC-024 hero tag, exactly once;
+  - `c0f5bf` is absent;
+  - the hosting sequence is in order;
+  - buyer images sit inside their branches;
+  - all five cards show `dfb125`.
+- **M10** now includes the hero and the outcome plate.
+- **Library capability proof:** the A Home for Art potential-asset case now uses the page's real potential-asset plate (`046ec577`), because `5dc201` left the page in the priority correction. It is caught by the potential-asset test, as intended.
+
+**Tests:**
+- Merge builder M1–M11 pass.
+- Browser: 67 / 67, including axe on desktop and mobile, the redirect, both checks saved and reopened from My Plot, four Search queries, the card images on five surfaces, and 11 other Discoveries.
+- Library 12 / 12, Library images governed.
+- Image provenance 11 / 11, capability 33 / 33, rights gate PASS.
+- Search index and rail pass.
+- Landmarks 133 / 133.
+- Art Space Register R1–R13, 24 / 24; Worker 64 / 64; still closed.
+- Two builders refuse identically on the previous commit and are not touched here: `build-404-search.py`, whose 404 baseline hash has been stale since the merge, and `build-landmarks.py`, whose DISC-025 frozen-main hash is stale. Both need re-baselining separately.

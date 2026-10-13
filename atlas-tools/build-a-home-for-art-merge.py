@@ -40,6 +40,13 @@ GUARDS
       hash target #open-your-home-to-art, no <main>, not in the sitemap
   M8  the DISC-024 check changes by its back-link only; register untouched
   M9  every consolidation edit applied exactly once
+  M10 the founder's hierarchy: hosting story first, Open > Live with > Discover & own
+  M11 ORIGINAL HOSTING IMAGERY (founder image correction, 13 Oct 2026): the hero
+      is DISC-024's own published hero (dfb125ba9dd7cd87, DISC-024-03-Gallery-
+      at-Home) with its own alt text; the hosting sequence follows it in its
+      original order (046ec -> 6442d -> 05cab54); the buyer hero c0f5bf is not
+      on the page; every card that represents this Discovery shows the hosting
+      image
 
 Usage:
   python3 atlas-tools/build-a-home-for-art-merge.py --apply
@@ -147,8 +154,15 @@ B2_P1 = ("Some artists and galleries may agree to let you experience an artwork 
 B2_P2 = ("PlotNua does not currently arrange artwork loans, rentals or placements. Any arrangement would "
          "need to be agreed directly with the artist or gallery.")
 OVERLOOKED_H2 = "You may already have something an artist needs."
-AFTER_CAPTION = "The same room, once the work has somewhere to be seen."
 HOST_HERO_ALT = re.search(r'<img id="dHeroImg"[^>]*alt="([^"]*)"', O0).group(1)
+# IMAGE CORRECTION (founder, 13 Oct 2026, 20:45): the merged Discovery opens on
+# the hosting Discovery's own hero, verbatim from BASE, not the buyer hero.
+HOST_HERO_TAG = re.search(r'  <img id="dHeroImg"[^>]*>', O0).group(0)
+BUY_HERO_TAG = re.search(r'  <img id="dHeroImg"[^>]*>', A0).group(0)
+HOST_HERO = "assets/img/dfb125ba9dd7cd87.jpg"
+BUY_HERO = "assets/img/c0f5bfcde033dea3.jpg"
+if HOST_HERO not in HOST_HERO_TAG or BUY_HERO not in BUY_HERO_TAG:
+    die("M11 the BASE heroes are not the recorded images")
 CHECK23 = "Check your wall"
 CHECK24 = "Check how far you&rsquo;d go"
 SUB23 = ("Five short questions about the wall itself, and we&rsquo;ll set out what it will take, what to "
@@ -157,7 +171,7 @@ SUB24 = ("Five short questions about the space you have and how far you&rsquo;d 
          "what you&rsquo;d need to settle before anything arrived. No address, no contact details, and nothing "
          "sent anywhere.")
 # Interface wording (labels, signposts) — new, non-factual, declared.
-NEW_TEXT = ["A Home for Art", OVERLOOKED_H2, AFTER_CAPTION, "The overlooked opportunity", HERO_SUB, HERO_INTRO, LEDE, B1[0], B1[1], B2[0], B2[1], B3[0], B3[1], B2_P1, B2_P2,
+NEW_TEXT = ["A Home for Art", OVERLOOKED_H2, "The overlooked opportunity", HERO_SUB, HERO_INTRO, LEDE, B1[0], B1[1], B2[0], B2[1], B3[0], B3[1], B2_P1, B2_P2,
             CHECK23, CHECK24, "Possibility one", "Possibility two", "Possibility three",
             "Three possibilities. One home.", "Which sounds like you?",
             "Before anything arrives, the custody, insurance and money questions below apply here too.",
@@ -251,14 +265,10 @@ def main_html():
                                  '  <section class="article-section reveal">\n'
                                  '    <div class="kicker">The overlooked opportunity</div>\n'
                                  '    <h2>%s</h2>\n' % OVERLOOKED_H2, 1) + "  </section>\n"
-    before_plate = O_IMG_PA.replace(
-        'alt="The same living room with its large wall empty, annotated by PlotNua as a potential asset."',
-        'alt="An Irish living room with its large wall empty, annotated by PlotNua as a potential asset."')
-    after_plate = ('<section class="imagine-photo reveal">\n'
-                   '  <img src="assets/img/dfb125ba9dd7cd87.jpg" width="1408" height="768" loading="lazy" decoding="async"\n'
-                   '       alt="%s">\n'
-                   '  <div class="caption"><p>%s</p></div>\n'
-                   '</section>\n' % (HOST_HERO_ALT, AFTER_CAPTION))
+    # The hosting hero leads again, so the hosting plates keep their original
+    # alt text and order: the same room empty -> the artist -> (after the
+    # ladder) the outcome. (The earlier "after" plate repeated the hero.)
+    before_plate = O_IMG_PA
     display_li = re.search(r'<li>\s*<span class="dq-adv-label">Display</span>\s*(<span class="dq-fact">.*?</span>)\s*'
                            r'(<span class="dq-note">.*?</span>)\s*</li>', O_FIRST, re.S)
     seller = "<strong>The artist is the seller.</strong> They own the work, set the price, deal with the buyer and receive the payment."
@@ -286,7 +296,7 @@ def main_html():
     art = lambda *xs: '<div class="article">\n\n' + "\n".join(xs) + '\n</div>\n\n'
     return ('<main id="pn-main">\n' +
             art(overlooked) +
-            before_plate + "\n" + O_IMG_ARTIST + "\n" + after_plate + "\n" +
+            before_plate + "\n" + O_IMG_ARTIST + "\n" +
             art(intro) +
             art(b_open) + O_IMG_OUTCOME + "\n" +
             art(b_live) + A_IMG_EVENING + "\n" +
@@ -360,6 +370,7 @@ def merged_page():
          'rgba(31,68,53,.24);border-radius:999px;color:#214635;text-decoration:none;font-family:Arial,sans-serif;'
          'font-size:.92rem;">Could your home give art somewhere to be seen? →</a>', ""),
     ]
+    rep.append((BUY_HERO_TAG, HOST_HERO_TAG))
     for old, new in rep:
         once(s, old, "A head/hero")
         s = s.replace(old, new)
@@ -501,6 +512,36 @@ CONSOLIDATION += [
     ("atlas-tools/prove-discovery-library-capability.py", '("Buy Original Irish Art", "discovery-a-home-for-art.html",',
      '("A Home for Art", "discovery-a-home-for-art.html",'),
 ]
+# IMAGE CORRECTION (13 Oct 2026): every card that represents A Home for Art shows
+# the hosting Discovery's hero, with the alt text that card slot already used for it.
+HOST_CARD_ALT = ("A generous Irish living room hung with large, bold contemporary canvases, with visitors talking "
+                 "and looking at the work.")
+BUY_CARD = ('<img src="assets/img/c0f5bfcde033dea3.jpg" loading="lazy" decoding="async" alt="A calm Irish living room '
+            'with a timber ceiling and a wide sea view, and one large original painting hanging above the fireplace.">')
+HOST_CARD = '<img src="assets/img/dfb125ba9dd7cd87.jpg" loading="lazy" decoding="async" alt="%s">' % HOST_CARD_ALT
+CONSOLIDATION += [
+    ("index.html", '        <div class="d-card-media">%s</div>\n        <div class="d-card-copy">\n          <h3>A Home for Art</h3>' % BUY_CARD,
+     '        <div class="d-card-media">%s</div>\n        <div class="d-card-copy">\n          <h3>A Home for Art</h3>' % HOST_CARD),
+    ("404.html", '        <div class="d-card-media">%s</div>\n' % BUY_CARD, '        <div class="d-card-media">%s</div>\n' % HOST_CARD),
+    ("discovery-living-in-the-garden.html",
+     '      <div class="thumb"><img src="assets/img/c0f5bfcde033dea3.jpg" loading="lazy" decoding="async" alt="A calm Irish '
+     'living room with a timber ceiling and a wide sea view, and one large original painting of a coastline hanging above the fireplace."></div>',
+     '      <div class="thumb">%s</div>' % HOST_CARD),
+    ("your-plot.html",
+     "      img: 'assets/img/c0f5bfcde033dea3.jpg',\n"
+     "      alt: 'A calm Irish living room with a timber ceiling and one large painting on the wall.',",
+     "      img: 'assets/img/dfb125ba9dd7cd87.jpg',\n"
+     "      alt: 'An Irish living room hung with large contemporary canvases, half a dozen visitors talking and looking at the work, the sofa and rug still in place.',"),
+    ("atlas-tools/discovery-library-images.json",
+     '      "image": "assets/img/c1d46445b6a79373.jpg",\n'
+     '      "alt": "An Irish living room with a large original landscape painting hung above the fireplace and flowers on the table.",\n'
+     '      "why": "The artwork bought and hung. The selector rule chose 5dc201bef1868b84 -- the same room with the wall above the fireplace empty, annotated as a potential asset.",\n'
+     '      "previous": "assets/img/c0f5bfcde033dea3.jpg"',
+     '      "image": "assets/img/dfb125ba9dd7cd87.jpg",\n'
+     '      "alt": "A living room with exposed timber beams, hung with large contemporary canvases, with half a dozen visitors talking and looking at the work.",\n'
+     '      "why": "Founder image correction, 13 Oct 2026: A Home for Art leads with Open Your Home to Art, so the card shows that Discovery\'s own hero -- the home open and the art being seen by people -- not the buyer room.",\n'
+     '      "previous": "assets/img/c1d46445b6a79373.jpg"'),
+]
 # your-plot.html · Hidden Potential: one entry for the merged Discovery.
 YP = (ROOT / "your-plot.html").read_text(encoding="utf-8")
 m = re.search(r"    \{ name: 'Open Your Home to Art', category: 'home-use', href: 'discovery-open-your-home-to-art\.html'.*?\},\n", YP, re.S)
@@ -595,13 +636,32 @@ def guards(page):
     if cur24.replace('href="%s">Back to the story' % TARGET, 'href="%s">Back to the story' % OLD) != head24:
         die("M8 the DISC-024 check changed beyond its back-link")
     # M10 · founder hierarchy: hosting story first, then Open > Live with > Discover & own; hosting check first
-    order = [page.find(x) for x in ("<h2>%s</h2>" % OVERLOOKED_H2, "assets/img/046ec577a454599b.jpg",
-                                     "assets/img/6442d19ec2dd1df0.jpg", AFTER_CAPTION, 'class="hfa-paths"',
-                                     'id="open-your-home-to-art"', 'id="live-with-art"', 'id="discover-and-own"',
+    order = [page.find(x) for x in (HOST_HERO_TAG, "<h2>%s</h2>" % OVERLOOKED_H2, "assets/img/046ec577a454599b.jpg",
+                                     "assets/img/6442d19ec2dd1df0.jpg", 'class="hfa-paths"',
+                                     'id="open-your-home-to-art"', "assets/img/05cab54ac0af83d0.jpg", 'id="live-with-art"', 'id="discover-and-own"',
                                      'id="before-anything-arrives"', "<h3>Living with or hosting work</h3>",
                                      "<h3>Buying or commissioning</h3>")]
     if -1 in order or order != sorted(order):
         die("M10 the founder's visual and narrative hierarchy is not in order: %r" % order)
+    # M11 · original hosting imagery leads, and every card for this Discovery shows it
+    if page.count(HOST_HERO_TAG) != 1 or page.count(HOST_HERO) != 1:
+        die("M11 the hero is not the original Open Your Home to Art hero (exactly once)")
+    if BUY_HERO in page:
+        die("M11 the buyer hero c0f5bf is back on the merged page")
+    hosting_seq = [page.find(x) for x in (HOST_HERO, "assets/img/046ec577a454599b.jpg",
+                                           "assets/img/6442d19ec2dd1df0.jpg", "assets/img/05cab54ac0af83d0.jpg")]
+    buyer_imgs = [page.find(x) for x in ("assets/img/571594a8d5b2e80a.jpg", "assets/img/c1d46445b6a79373.jpg")]
+    if -1 in hosting_seq + buyer_imgs or hosting_seq != sorted(hosting_seq) or \
+            page.find('id="discover-and-own"') > page.find("assets/img/c1d46445b6a79373.jpg"):
+        die("M11 the hosting image sequence or the buyer image placement is wrong: %r %r" % (hosting_seq, buyer_imgs))
+    for f, pat in (("index.html", r'<a class="d-card" href="%s">\s*<div class="d-card-media"><img src="([^"]+)"'),
+                   ("404.html", r'<a class="d-card" href="%s">\s*<div class="d-card-media"><img src="([^"]+)"'),
+                   ("discoveries.html", r'<a class="lib-card" href="%s"[^>]*>\s*<span class="lib-shot"><img src="([^"]+)"'),
+                   ("discovery-living-in-the-garden.html", r'<a class="related-card" href="%s">\s*<div class="thumb"><img src="([^"]+)"'),
+                   ("your-plot.html", r"href: '%s', built: true,[\s\S]*?img: '([^']+)'")):
+        cards = re.findall(pat % re.escape(MERGED), (ROOT / f).read_text(encoding="utf-8"))
+        if len(cards) != 1 or cards[0] != HOST_HERO:
+            die("M11 the %s card for A Home for Art does not show the hosting image: %r" % (f, cards))
     stale = [f.name for f in ROOT.glob("*.html") if f.name != OLD and
              re.search(r"""href=["']%s["']|'%s'""" % (re.escape(OLD), re.escape(OLD)), f.read_text(encoding="utf-8"))]
     if stale:
@@ -624,7 +684,7 @@ def main(argv):
             print("CHECK FAILED: %s is out of date; run --apply" % MERGED); sys.exit(1)
         apply_edits(False)
     guards((ROOT / MERGED).read_text(encoding="utf-8"))
-    print("A Home for Art: merged page, redirect and %d consolidation edits · %s — M1-M10 pass"
+    print("A Home for Art: merged page, redirect and %d consolidation edits · %s — M1-M11 pass"
           % (len(CONSOLIDATION), "APPLIED" if "--apply" in argv else "CHECK OK"))
 
 

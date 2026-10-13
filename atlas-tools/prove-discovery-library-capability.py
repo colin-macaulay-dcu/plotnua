@@ -46,8 +46,10 @@ for f in TOUCHED + [PROOF]:
 # REAL potential-asset plates, lifted from the real pages. Each is the image
 # the discarded "first non-cmp .imagine-photo" rule actually chose.
 REAL_PA = [
+    # 046ec577a454599b since 13 Oct 2026: the merged page's own potential-asset
+    # plate (5dc201bef1868b84 left the page in the priority correction).
     ("A Home for Art", "discovery-a-home-for-art.html",
-     "assets/img/5dc201bef1868b84.jpg", "the wall above the fireplace, empty"),
+     "assets/img/046ec577a454599b.jpg", "the large wall, empty and annotated"),
     ("The Borrowed Garden", "discovery-the-borrowed-garden.html",
      "assets/img/59d566ff7c3a50e8.jpg", "the lawn before anything is planted"),
     ("The House as a Power Station", "discovery-house-as-power-station.html",
