@@ -20,7 +20,8 @@ GUARDS
   P4  the explorer section contains no <a>, href, form, input or iframe; the
       rest of the page gains no external link
   P5  no partner label: every organisation partner:false, partnersCount 0,
-      and the section says plainly that none is a PlotNua partner
+      and the section carries the single founder-approved statement exactly
+      once (no repeated partnership disclaimers)
   P6  exactly two tabs ("Garden-sharing services", "Other growing
       opportunities"); councils only in the second
   P7  the configuration embedded in the page equals the universe exactly
@@ -54,7 +55,7 @@ PINS = {
     "maker-explorer.css": "d571b8ca399ce2653231f9293aeb261eed2eaf909196b446edb473b5a781c2c7",
     "provider-explorer.js": None,  # filled below from PROVIDER_JS_PIN
 }
-PROVIDER_JS_PIN = "7b95f952e3a83c6477005b01d9855cb1464eafa394e270b30e6f17d289865a26"
+PROVIDER_JS_PIN = "8b0d8c5014df639e66b358efadb884a1209c5f01f56442911fcde9ceb7faaadf"
 PINS["provider-explorer.js"] = PROVIDER_JS_PIN
 
 STYLE_END = "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>"
@@ -64,6 +65,9 @@ END = "  <!-- PLOTNUA-PROVIDER-EXPLORER-V1 · END -->\n"
 ANCHOR = "conversation rather than a dispute.</div>\n    </details>\n\n  </section>\n"
 TOKENS = ("--paper", "--cream", "--ink", "--soft", "--accent", "--oak")
 PC_LINK = 'href="disc025-borrowed-garden-check.html?start=1"'
+# Presentation polish, 13 Oct 2026: ONE clear statement replaces the repeated
+# partnership disclaimers (intro, legend, per-row label, per-drawer line, footer).
+STATEMENT = "These organisations have been independently researched by PlotNua. They are not PlotNua partners."
 
 CORRECTIONS = [
     ("Homegrown.ie review date (founder-approved correction, 13 Oct 2026: the site shows no review date)",
@@ -105,20 +109,19 @@ def section(u):
         BEGIN +
         '  <section class="article-section reveal" id="explore-providers" data-pn-provider-explorer aria-labelledby="px-title">\n'
         '    <div class="kicker">Organisations and Services</div>\n'
-        '    <h2 id="px-title">Who already helps people find growing space</h2>\n'
-        '    <p>Organisations PlotNua has independently researched. None of them is a PlotNua partner.</p>\n'
+        '    <h2 id="px-title">Explore garden-sharing organisations</h2>\n'
+        '    <p>Discover services and organisations already helping people access growing space in Ireland.</p>\n'
         '    <div class="mx" id="px">\n'
         '      <div class="mx-tabs" role="tablist" aria-label="Kind of organisation">\n' + "\n".join(btns) + "\n"
         '      </div>\n'
         '      <div class="mx-pane" id="px-pane" role="tabpanel" aria-labelledby="px-t-%s">\n' % tabs[0]["key"] +
         '        <p class="mx-line" id="px-line">%s</p>\n' % esc(tabs[0]["note"]) +
-        '        <ul class="mx-legend"><li><span class="px-ring" aria-hidden="true"></span>%s</li><li>PlotNua partners: none</li></ul>\n' % esc(u["statusLabel"]) +
+        '        <ul class="mx-legend"><li><span class="px-ring" aria-hidden="true"></span>%s</li></ul>\n' % esc(STATEMENT) +
         '        <ul class="mx-grid" id="px-grid"></ul>\n'
         '        <noscript><p class="mx-line">%s.</p></noscript>\n' % esc(names) +
         '      </div>\n'
         '    </div>\n'
-        '    <p class="mx-foot">Listed A to Z and never ranked. PlotNua has no relationship with any organisation listed here,\n'
-        '      is not paid by any of them and sends them nothing. Nothing here is an introduction.</p>\n'
+        '    <p class="mx-foot">Listed A to Z and never ranked. Nothing here is an introduction.</p>\n'
         '    <script type="application/json" class="pn-px-config" id="px-data">' + cfg + '</script>\n'
         '    <script src="provider-explorer.js"></script>\n'
         '  </section>\n' + END)
@@ -180,8 +183,10 @@ def guards(html, u):
         for o in t["orgs"]:
             if o.get("partner") is not False:
                 die("P5 %s is not partner:false" % o["code"])
-    if "None of them is a PlotNua partner." not in sec or "PlotNua partners: none" not in sec:
-        die("P5 the section does not say plainly that none is a PlotNua partner")
+    if sec.count(STATEMENT) != 1:
+        die("P5 the single statement that these organisations are researched, not partners, is missing or repeated")
+    if re.search(r"no relationship with|PlotNua partners: none|None of them is a PlotNua partner", sec):
+        die("P5 a repeated partnership disclaimer has come back")
     # P6
     labels = [t["label"] for t in u["tabs"]]
     if labels != ["Garden-sharing services", "Other growing opportunities"]:

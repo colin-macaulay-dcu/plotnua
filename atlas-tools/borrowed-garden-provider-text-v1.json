@@ -1,5 +1,5 @@
 {
-  "_about": "FOUNDER-APPROVED public wording for the Borrowed Garden Provider Explorer (evidence pack approved 13 Oct 2026, with conditions). Every sentence names its Atlas sources and whether it is time-sensitive. Edit only with founder approval. The unconfirmed Community Roots referee requirement is deliberately absent (founder ruling 13 Oct 2026).",
+  "_about": "FOUNDER-APPROVED public wording for the Borrowed Garden Provider Explorer (evidence pack approved 13 Oct 2026, with conditions). Every sentence names its Atlas sources and whether it is time-sensitive. Edit only with founder approval. The unconfirmed Community Roots referee requirement is deliberately absent (founder ruling 13 Oct 2026). Per-organisation partnership disclaimers were removed in the presentation polish of 13 Oct 2026: the section carries ONE statement instead; \"relationship\" now holds only factual qualifiers (Homegrown.ie: early and unproven).",
   "approvedOn": "2026-10-13",
   "sourceLabels": {
     "SRC-DISC025-01": "ChangeX",
@@ -22,30 +22,30 @@
       "where":  [ { "t": "Dublin, where it has made pairings since 2022, with a programme in the Liberties, Dublin 8.", "s": ["SRC-DISC025-01", "SRC-DISC025-02"], "ts": false },
                   { "t": "Six local projects have been started through ChangeX, including Rush, Co. Dublin.", "s": ["SRC-DISC025-01", "SRC-DISC025-04"], "ts": true } ],
       "how":    [ { "t": "A local volunteer coordinator matches garden owners with growers and introduces them at a pairing meeting.", "s": ["SRC-DISC025-01"], "ts": false } ],
-      "relationship": "PlotNua has no relationship with Community Roots." },
+      "relationship": "" },
     "ORG-000203": { "kind": "Garden-sharing service", "subtitle": "Online matching service, free to join",
       "offers": [ { "t": "A free online service where people looking for growing space and people with spare garden or land register separately.", "s": ["SRC-DISC025-05"], "ts": false } ],
       "where":  [ { "t": "Starting in Irish cities, suburbs and nearby towns.", "s": ["SRC-DISC025-05"], "ts": false } ],
       "how":    [ { "t": "Exact addresses stay private and contact details are shared only when both people say yes; any arrangement is then made directly between them.", "s": ["SRC-DISC025-05"], "ts": false },
                   { "t": "On its own published figures it has 78 grower requests, 3 offers of space and no matches so far, and the insurance it hopes to arrange is not yet in place.", "s": ["SRC-DISC025-05"], "ts": true } ],
-      "relationship": "Early and unproven. PlotNua has no relationship with Homegrown.ie." },
+      "relationship": "Early and unproven." },
     "ORG-000204": { "kind": "Council allotments", "subtitle": "Allotments and community gardens",
       "offers": [ { "t": "Council-run allotments and community gardens at nine sites. This is not garden-sharing.", "s": ["SRC-DISC025-06"], "ts": false } ],
       "where":  [ { "t": "Dublin city. Most of the listed sites are in Dublin 8 and Dublin 12.", "s": ["SRC-DISC025-06"], "ts": false } ],
       "how":    [ { "t": "You email the site you want and join its waiting list; licences are assigned as plots become free.", "s": ["SRC-DISC025-06"], "ts": false },
                   { "t": "The council says all available allotments are currently assigned.", "s": ["SRC-DISC025-06"], "ts": true } ],
-      "relationship": "PlotNua has no relationship with Dublin City Council." },
+      "relationship": "" },
     "ORG-000205": { "kind": "Council allotments", "subtitle": "Allotments",
       "offers": [ { "t": "About 900 council allotments across four sites: Balbriggan, Skerries, Turvey and Powerstown. This is not garden-sharing.", "s": ["SRC-DISC025-07"], "ts": false } ],
       "where":  [ { "t": "Fingal. Only Fingal residents can apply, with one plot per household.", "s": ["SRC-DISC025-07", "SRC-DISC025-08"], "ts": false } ],
       "how":    [ { "t": "Applications open once a year, in January, and each site's waiting list is capped at 50.", "s": ["SRC-DISC025-07", "SRC-DISC025-08"], "ts": true },
                   { "t": "For 2026 Powerstown and Turvey took no new applications because their lists were full.", "s": ["SRC-DISC025-07"], "ts": true } ],
-      "relationship": "PlotNua has no relationship with Fingal County Council." },
+      "relationship": "" },
     "ORG-000206": { "kind": "Council allotments", "subtitle": "Allotments",
       "offers": [ { "t": "Council allotments at two sites: Goatstown (136 plots) and Shankill (95 plots). This is not garden-sharing.", "s": ["SRC-DISC025-09"], "ts": false } ],
       "where":  [ { "t": "Dún Laoghaire-Rathdown. Residents only, one plot per person.", "s": ["SRC-DISC025-09"], "ts": false } ],
       "how":    [ { "t": "Plots are allocated first come, first served from a waiting list.", "s": ["SRC-DISC025-09"], "ts": false },
                   { "t": "The council is not currently accepting applications because both waiting lists are extensive (its notice is dated September 2024).", "s": ["SRC-DISC025-09"], "ts": true } ],
-      "relationship": "PlotNua has no relationship with Dún Laoghaire-Rathdown County Council." }
+      "relationship": "" }
   }
 }

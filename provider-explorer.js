@@ -13,7 +13,10 @@
 
    WHAT IT NEVER DOES
      no link of any kind, no fetch, no storage, no analytics, no URL state, no
-     form, no ranking, no random order, no partner label. Organisations are
+     form, no ranking, no random order, no partner label. The section states
+     once, in its legend, that these organisations are independently
+     researched and are not PlotNua partners (presentation polish, 13 Oct
+     2026). Organisations are
      listed A to Z exactly as the builder emitted them. Nothing here contacts,
      introduces or matches anybody.
    ========================================================================== */
@@ -44,13 +47,13 @@
           (on ? ' aria-controls="' + id + '"' : '') + ' data-o="' + esc(o.code) + '">' +
           '<span class="px-ring" aria-hidden="true"></span>' +
           '<span class="mx-nm">' + esc(o.name) + '<span class="px-kind">' + esc(o.kind) + ' · ' + esc(o.subtitle) + '</span></span>' +
-          '<span class="px-status">Researched</span></button></li>';
+          '</button></li>';
         if (on) {
           var rows = [['What it offers', o.offers], ['Where it operates', o.where], ['How it works', o.how], ['Evidence', o.evidence]];
           h += '<li class="mx-drawer" id="' + id + '"><h3>' + esc(o.name) + '</h3><dl class="px-facts">' +
             rows.filter(function (r) { return r[1]; }).map(function (r) {
               return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>';
-            }).join('') + '</dl><p class="px-rel">' + esc(o.relationship) + '</p></li>';
+            }).join('') + '</dl>' + (o.relationship ? '<p class="px-rel">' + esc(o.relationship) + '</p>' : '') + '</li>';
         }
       });
       $('px-grid').innerHTML = h;
