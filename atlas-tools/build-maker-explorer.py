@@ -26,8 +26,12 @@ WHAT A HOMEOWNER SEES
     Irish availability filters;
   * a maker opens in place to its eligible products, each linking to its
     existing PlotNua product page, your-plot.html?product=<governed id>;
-  * TRIQ CUBE in a separate, visibly different "Manufacturer information"
-    box, driven by SUPPLIER_INFO_PAGES in build-search-index.py.
+  * (13 Oct 2026, Part 2) NO manufacturer-information box: TRIQ CUBE is not
+    placed on this Discovery page; it stays published at triq-cube.html and
+    findable through Search (guard G7);
+  * (13 Oct 2026, Part 1) "Show fewer makers" at the top and bottom of the
+    expanded directory; both, and a tab switch, return to six makers, and
+    collapsing scrolls back to the start of the explorer.
 
 WHAT IT NEVER DOES (guards G1-G9)
   no external link, no ranking or featured order, no endorsement vocabulary,
@@ -133,21 +137,11 @@ def info_pages():
     return ast.literal_eval(m.group(1))
 
 # ── markup ───────────────────────────────────────────────────────────────────
-def section(data, F, ip):
-    e = html.escape
-    info = []
-    for f, spec in sorted(ip.items()):
-        name = spec["title"]
-        status = "Irish availability not yet confirmed." if "Irish availability not yet confirmed" in spec["standfirst"] else ""
-        info.append(f'''      <div class="mx-info">
-        <span class="mx-lab">Manufacturer information</span>
-        <div class="mx-info-copy">
-          <h3>{e(name)}</h3>
-          <p>Timber garden office. Information published by the manufacturer, not part of
-            PlotNua&rsquo;s product research. {status}</p>
-        </div>
-        <a href="{e(f)}">Explore {e(name.split(" by ")[0])}&nbsp;&rarr;</a>
-      </div>''')
+def section(data, F):
+    # PART 2, founder decision 13 Oct 2026: the separate TRIQ CUBE
+    # "Manufacturer information" box is removed from this Discovery page as
+    # special supplier placement. triq-cube.html, its Search record and its
+    # outbound-link exception are untouched (guard G7).
     payload = json.dumps({"data": data, "figures": F}, ensure_ascii=False, separators=(",", ":"))
     payload = payload.replace("</", "<\\/")
     return f'''  <!-- 6c · {MARK} · Founder decisions 13 Oct 2026 (concept approved,
@@ -175,6 +169,7 @@ def section(data, F, ip):
       <div class="mx-pane" id="mx-pane" role="tabpanel" aria-labelledby="mx-t-rooms">
         <p class="mx-line" id="mx-line"></p>
         <ul class="mx-legend" id="mx-legend"></ul>
+        <div class="mx-top" id="mx-top" hidden><button type="button" class="mx-btn" id="mx-less-top">Show fewer makers</button></div>
         <div class="mx-tools" id="mx-tools" hidden>
           <input class="mx-find" id="mx-find" type="search" placeholder="Find a maker" aria-label="Find a maker" autocomplete="off">
           <div class="mx-chips" id="mx-chips" role="group" aria-label="Irish availability">
@@ -191,7 +186,6 @@ def section(data, F, ip):
       </div>
     </div>
 
-{chr(10).join(info)}
 
     <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
       products still being checked are not shown. Makers are not ranked, and PlotNua has no
@@ -263,6 +257,7 @@ def section(data, F, ip):
           (k.s ? '<li><span class="mx-dot mx-s" aria-hidden="true"></span>Some products confirmed (' + k.s + ')</li>' : '') +
           (k.u ? '<li><span class="mx-dot mx-u" aria-hidden="true"></span>Not yet confirmed (' + k.u + ')</li>' : '');
         $('mx-tools').hidden = !expanded;
+        $('mx-top').hidden = !expanded;
         $('mx-chips').hidden = (k.s + k.u) === 0;
         var rows = expanded ? list : ORDER[tab].slice(0, INITIAL);
         if (expanded) {{
@@ -290,12 +285,26 @@ def section(data, F, ip):
         $('mx-all').textContent = expanded ? 'Show fewer makers' : 'Show all ' + total + ' makers';
         $('mx-shown').textContent = (expanded ? rows.length : Math.min(INITIAL, total)) + ' of ' + total + ' shown';
       }}
+      /* PART 1, founder decision 13 Oct 2026. Both "Show fewer makers"
+         controls, and a tab switch, return the directory to its six-maker
+         state: search, filter and any open maker are cleared. Collapsing also
+         brings the visitor back to the start of the explorer. */
+      function resetDirectory() {{
+        expanded = false; open = null; q = ''; filter = 'all'; $('mx-find').value = '';
+        [].forEach.call(document.querySelectorAll('.mx-chip'), function (c) {{
+          c.setAttribute('aria-pressed', c.getAttribute('data-f') === 'all'); }});
+      }}
+      function collapse() {{
+        resetDirectory(); render();
+        var top = $('mx'), reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (top && top.scrollIntoView) {{ top.scrollIntoView({{ behavior: reduce ? 'auto' : 'smooth', block: 'start' }}); }}
+        var active = document.querySelector('.mx-tab[aria-selected="true"]');
+        if (active) {{ try {{ active.focus({{ preventScroll: true }}); }} catch (e) {{ active.focus(); }} }}
+      }}
       var tabs = [$('mx-t-rooms'), $('mx-t-homes')];
       tabs.forEach(function (b) {{
         b.addEventListener('click', function () {{
-          tab = b.getAttribute('data-k'); open = null; q = ''; filter = 'all'; $('mx-find').value = '';
-          [].forEach.call(document.querySelectorAll('.mx-chip'), function (c) {{
-            c.setAttribute('aria-pressed', c.getAttribute('data-f') === 'all'); }});
+          tab = b.getAttribute('data-k'); resetDirectory();
           tabs.forEach(function (t) {{ var on = t === b; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; }});
           $('mx-pane').setAttribute('aria-labelledby', b.id);
           render();
@@ -312,8 +321,10 @@ def section(data, F, ip):
         if (again) {{ again.focus(); }}
       }});
       $('mx-all').addEventListener('click', function () {{
-        expanded = !expanded; open = null; render(); if (expanded) {{ $('mx-find').focus(); }}
+        if (expanded) {{ collapse(); return; }}
+        expanded = true; open = null; render(); $('mx-find').focus();
       }});
+      $('mx-less-top').addEventListener('click', collapse);
       $('mx-find').addEventListener('input', function (ev) {{ q = ev.target.value.trim(); open = null; render(); }});
       [].forEach.call(document.querySelectorAll('.mx-chip'), function (c) {{
         c.addEventListener('click', function () {{
@@ -400,16 +411,11 @@ CSS = '''
   white-space:nowrap; display:flex; align-items:center; }
 #explore-makers .mx-more{ margin-top:12px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
 #explore-makers .mx-more .mx-order{ margin:0; }
+#explore-makers .mx-top{ margin:0 0 12px; }
+#explore-makers .mx{ scroll-margin-top:96px; }
 #explore-makers .mx-btn{ appearance:none; background:none; border:0; padding:0 0 2px; cursor:pointer;
   font:500 14px 'Work Sans',sans-serif; color:var(--accent); border-bottom:1px solid rgba(79,107,74,.35); }
 #explore-makers .mx-empty{ font-size:13.5px; color:var(--soft); padding:8px 0; }
-#explore-makers .mx-info{ margin-top:16px; border:1px dashed rgba(31,59,46,.35); border-radius:3px; padding:15px 18px;
-  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 18px; align-items:center; }
-#explore-makers .mx-lab{ grid-column:1/-1; font-size:9.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--oak); }
-#explore-makers .mx-info h3{ font-family:'Fraunces',serif; font-weight:600; font-size:17px; margin:0; }
-#explore-makers .mx-info p{ margin:2px 0 0; font-size:13px; line-height:1.55; color:var(--soft); max-width:none; }
-#explore-makers .mx-info a{ font-size:14px; font-weight:500; color:var(--accent); text-decoration:none;
-  border-bottom:1px solid rgba(79,107,74,.35); white-space:nowrap; }
 #explore-makers p.mx-foot{ margin-top:14px; font-size:12px; line-height:1.6; color:var(--soft); max-width:62ch; }
 @media (max-width:720px){
   #explore-makers .mx-figs > div{ padding:14px 10px 4px 0; }
@@ -418,7 +424,6 @@ CSS = '''
   #explore-makers .mx-grid{ grid-template-columns:1fr; }
   #explore-makers .mx-pane{ padding:14px 14px 16px; }
   #explore-makers .mx-tab{ flex-direction:column; align-items:center; gap:2px; padding:11px 6px; }
-  #explore-makers .mx-info{ grid-template-columns:1fr; }
 }
 /* ==== ''' + CSS_MARK + ''' · END ==== */
 '''
@@ -447,7 +452,7 @@ def build(src):
 
     data, F, held_ids, all_orgs = load()
     ip = info_pages()
-    new_block = section(data, F, ip)
+    new_block = section(data, F)
     out = src[:start] + new_block + src[end:]
     css_anchor = "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>"
     if out.count(css_anchor) != 1: die("CSS anchor not found exactly once")
@@ -506,11 +511,17 @@ def build(src):
     texts = vtext + " " + " ".join(re.findall(r"'([^']*)'", js)).lower()
     for w in BANNED:
         if w in texts: die("G6 banned word: " + w.strip())
-    # G7 manufacturer information mirrors SUPPLIER_INFO_PAGES and keeps its status
-    for f, spec in ip.items():
-        if f'href="{f}"' not in blk: die("G7 manufacturer page not linked: " + f)
-        if "irish availability not yet confirmed" not in vtext: die("G7 availability status dropped")
-    if blk.count('class="mx-info"') != len(ip): die("G7 manufacturer boxes != SUPPLIER_INFO_PAGES")
+    # G7 no special supplier placement: no manufacturer box and no link to a
+    # supplier information page on this Discovery page. The information page
+    # itself stays published and findable: it must still be in the sitemap and
+    # in SUPPLIER_INFO_PAGES (Search), and the file must still exist.
+    if "mx-info" in blk or "Manufacturer information" in blk: die("G7 a manufacturer box is back")
+    sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+    for f in ip:
+        if f in blk: die("G7 supplier information page linked from the explorer: " + f)
+        if not (ROOT / f).exists(): die("G7 supplier information page missing: " + f)
+        if "https://plotnua.ie/" + f not in sitemap: die("G7 supplier information page left the sitemap: " + f)
+    if "triq-cube.html" not in ip: die("G7 TRIQ CUBE must stay in Search (SUPPLIER_INFO_PAGES)")
     # G8 the planning page's own text carries no area figure from this block
     # (Cluster 1 L1). Static markup only: 94 makers' own PRODUCT NAMES contain
     # a size ("Concept Modular Cabin 17m2") and appear only once a homeowner

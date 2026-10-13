@@ -976,16 +976,11 @@
   white-space:nowrap; display:flex; align-items:center; }
 #explore-makers .mx-more{ margin-top:12px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
 #explore-makers .mx-more .mx-order{ margin:0; }
+#explore-makers .mx-top{ margin:0 0 12px; }
+#explore-makers .mx{ scroll-margin-top:96px; }
 #explore-makers .mx-btn{ appearance:none; background:none; border:0; padding:0 0 2px; cursor:pointer;
   font:500 14px 'Work Sans',sans-serif; color:var(--accent); border-bottom:1px solid rgba(79,107,74,.35); }
 #explore-makers .mx-empty{ font-size:13.5px; color:var(--soft); padding:8px 0; }
-#explore-makers .mx-info{ margin-top:16px; border:1px dashed rgba(31,59,46,.35); border-radius:3px; padding:15px 18px;
-  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 18px; align-items:center; }
-#explore-makers .mx-lab{ grid-column:1/-1; font-size:9.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--oak); }
-#explore-makers .mx-info h3{ font-family:'Fraunces',serif; font-weight:600; font-size:17px; margin:0; }
-#explore-makers .mx-info p{ margin:2px 0 0; font-size:13px; line-height:1.55; color:var(--soft); max-width:none; }
-#explore-makers .mx-info a{ font-size:14px; font-weight:500; color:var(--accent); text-decoration:none;
-  border-bottom:1px solid rgba(79,107,74,.35); white-space:nowrap; }
 #explore-makers p.mx-foot{ margin-top:14px; font-size:12px; line-height:1.6; color:var(--soft); max-width:62ch; }
 @media (max-width:720px){
   #explore-makers .mx-figs > div{ padding:14px 10px 4px 0; }
@@ -994,7 +989,6 @@
   #explore-makers .mx-grid{ grid-template-columns:1fr; }
   #explore-makers .mx-pane{ padding:14px 14px 16px; }
   #explore-makers .mx-tab{ flex-direction:column; align-items:center; gap:2px; padding:11px 6px; }
-  #explore-makers .mx-info{ grid-template-columns:1fr; }
 }
 /* ==== PLOTNUA MAKER EXPLORER v1 · END ==== */
 </style>
@@ -1450,6 +1444,7 @@
       <div class="mx-pane" id="mx-pane" role="tabpanel" aria-labelledby="mx-t-rooms">
         <p class="mx-line" id="mx-line"></p>
         <ul class="mx-legend" id="mx-legend"></ul>
+        <div class="mx-top" id="mx-top" hidden><button type="button" class="mx-btn" id="mx-less-top">Show fewer makers</button></div>
         <div class="mx-tools" id="mx-tools" hidden>
           <input class="mx-find" id="mx-find" type="search" placeholder="Find a maker" aria-label="Find a maker" autocomplete="off">
           <div class="mx-chips" id="mx-chips" role="group" aria-label="Irish availability">
@@ -1466,15 +1461,6 @@
       </div>
     </div>
 
-      <div class="mx-info">
-        <span class="mx-lab">Manufacturer information</span>
-        <div class="mx-info-copy">
-          <h3>TRIQ CUBE by TRIQBRIQ AG</h3>
-          <p>Timber garden office. Information published by the manufacturer, not part of
-            PlotNua&rsquo;s product research. Irish availability not yet confirmed.</p>
-        </div>
-        <a href="triq-cube.html">Explore TRIQ CUBE&nbsp;&rarr;</a>
-      </div>
 
     <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
       products still being checked are not shown. Makers are not ranked, and PlotNua has no
@@ -1546,6 +1532,7 @@
           (k.s ? '<li><span class="mx-dot mx-s" aria-hidden="true"></span>Some products confirmed (' + k.s + ')</li>' : '') +
           (k.u ? '<li><span class="mx-dot mx-u" aria-hidden="true"></span>Not yet confirmed (' + k.u + ')</li>' : '');
         $('mx-tools').hidden = !expanded;
+        $('mx-top').hidden = !expanded;
         $('mx-chips').hidden = (k.s + k.u) === 0;
         var rows = expanded ? list : ORDER[tab].slice(0, INITIAL);
         if (expanded) {
@@ -1573,12 +1560,26 @@
         $('mx-all').textContent = expanded ? 'Show fewer makers' : 'Show all ' + total + ' makers';
         $('mx-shown').textContent = (expanded ? rows.length : Math.min(INITIAL, total)) + ' of ' + total + ' shown';
       }
+      /* PART 1, founder decision 13 Oct 2026. Both "Show fewer makers"
+         controls, and a tab switch, return the directory to its six-maker
+         state: search, filter and any open maker are cleared. Collapsing also
+         brings the visitor back to the start of the explorer. */
+      function resetDirectory() {
+        expanded = false; open = null; q = ''; filter = 'all'; $('mx-find').value = '';
+        [].forEach.call(document.querySelectorAll('.mx-chip'), function (c) {
+          c.setAttribute('aria-pressed', c.getAttribute('data-f') === 'all'); });
+      }
+      function collapse() {
+        resetDirectory(); render();
+        var top = $('mx'), reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (top && top.scrollIntoView) { top.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+        var active = document.querySelector('.mx-tab[aria-selected="true"]');
+        if (active) { try { active.focus({ preventScroll: true }); } catch (e) { active.focus(); } }
+      }
       var tabs = [$('mx-t-rooms'), $('mx-t-homes')];
       tabs.forEach(function (b) {
         b.addEventListener('click', function () {
-          tab = b.getAttribute('data-k'); open = null; q = ''; filter = 'all'; $('mx-find').value = '';
-          [].forEach.call(document.querySelectorAll('.mx-chip'), function (c) {
-            c.setAttribute('aria-pressed', c.getAttribute('data-f') === 'all'); });
+          tab = b.getAttribute('data-k'); resetDirectory();
           tabs.forEach(function (t) { var on = t === b; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; });
           $('mx-pane').setAttribute('aria-labelledby', b.id);
           render();
@@ -1595,8 +1596,10 @@
         if (again) { again.focus(); }
       });
       $('mx-all').addEventListener('click', function () {
-        expanded = !expanded; open = null; render(); if (expanded) { $('mx-find').focus(); }
+        if (expanded) { collapse(); return; }
+        expanded = true; open = null; render(); $('mx-find').focus();
       });
+      $('mx-less-top').addEventListener('click', collapse);
       $('mx-find').addEventListener('input', function (ev) { q = ev.target.value.trim(); open = null; render(); });
       [].forEach.call(document.querySelectorAll('.mx-chip'), function (c) {
         c.addEventListener('click', function () {
