@@ -3,13 +3,18 @@
 
 Founder direction, 13 October 2026 ("Art Space Register · activation
 preparation approved"): implement the V4 privacy-page builder from the
-existing draft, KEEP THE SECTION UNPUBLISHED until founder approval and legal
-review.
+existing draft, and keep the section unpublished until founder approval.
 
-THIS BUILDER DOES NOT PUBLISH ANYTHING TODAY.
-  --check            (default) dry run: build V4 in memory from the live V3
-                     privacy.html, run every guard, write nothing. After
-                     publication it verifies the published page instead.
+PUBLICATION APPROVED, 13 October 2026 (23:50): the founder approved the Art
+Space Register GDPR Self-Assessment dated 13 October 2026 and authorised
+publication of Privacy Notice V4, dated October 2026 (APPROVAL below). The
+approval covers the privacy notice ONLY: the Art Space Register stays CLOSED
+(OPEN_APPROVAL in build-art-space-register.py remains None).
+  --check            (default) before publication: build V4 in memory from the
+                     live V3 privacy.html, run every guard, write nothing.
+                     After publication: verify the published page. It
+                     rebuilds V3 from it, checks Section 7 against its pin,
+                     rebuilds V4 and runs guards V1-V6 again.
   --preview PATH     write the V4 page to PATH for review. PATH must be
                      OUTSIDE the repository: every file in the repository is
                      served by GitHub Pages, so a preview inside it would be a
@@ -95,7 +100,18 @@ MARK = "<!-- PLOTNUA-ART-PRIVACY-V4 · Art Space Register, privacy notice %s -->
 # documented resolution of material risks and explicit founder approval replace
 # the mandatory external legal review. Paid advice is not required by default.
 # Every technical guard below still applies.
-APPROVAL = None
+APPROVAL = {
+    "founder_approval": "Colin MacAulay, founder, 13 October 2026 (23:50): publication of PlotNua Privacy Notice V4, "
+                        "dated October 2026, is authorised. The approval covers the privacy notice ONLY; the Art "
+                        "Space Register remains CLOSED.",
+    "self_assessment": "Art Space Register GDPR Self-Assessment, dated 13 October 2026, approved by the founder on "
+                       "13 October 2026, with its documented limitations and remaining risks accepted subject to "
+                       "the safeguards and opening conditions it records.",
+    "risks_resolved": "governance/ART-SPACE-REGISTER-BUILD-2026-10-13.md sections 11.10-11.15 and the self-assessment, "
+                      "Section B: each material risk is resolved, or gated before opening (fully executed Airtable "
+                      "DPA, the six database views, a recorded dry run, OPEN_APPROVAL).",
+    "last_updated": "October 2026",
+}
 APPROVAL_KEYS = ("founder_approval", "self_assessment", "risks_resolved", "last_updated")
 
 # Airtable keeps automatic base snapshots for a period set by the plan (2 weeks
@@ -137,6 +153,11 @@ UPDATED_RE = re.compile(r'<p class="policy-updated">Last updated: ([^<]+)</p>')
 # Section 7 as approved and published in V3 (Garden Owner Register). Pinned so
 # a V4 page can never be built over an altered Garden section (guard V2).
 GARDEN7_SHA256 = "fb90a58b549f4aff353004f10efa003d43e76cee20da3ef2f9586686825648cc"
+
+# After publication: the V3 page that V4 was built from, pinned so that no
+# sentence outside the declared V4 changes can be edited without a deliberate,
+# reviewed update of this pin (set at publication, 13 Oct 2026).
+PUBLISHED_V3_SHA256 = "49e347398345a42f83147a1e92b09f6b8afd7077298135c4dd6243376832f588"
 
 G6_CO_EDITS = [
     ('g["PV14"] = [int(n) for n in re.findall(r"<h2>(\\d+)\\. ", src)] == list(range(1, 18))',
@@ -352,9 +373,26 @@ def main(argv):
         print("privacy.html: V4 APPLIED (Section 8 · Art Space Register) and %d Garden proof co-edits" % len(G6_CO_EDITS))
         return
     if MARK in cur:
+        if "--preview" in argv:
+            refuse("V4 is already published; there is nothing to preview")
+        if not (isinstance(APPROVAL, dict) and all(isinstance(APPROVAL.get(k), str) and APPROVAL[k].strip()
+                                                     for k in APPROVAL_KEYS)):
+            refuse("privacy.html carries V4 but APPROVAL does not record its approval")
         if not published_ok(cur):
             refuse("the published Section 8 differs from the governed text")
-        print("privacy.html: V4 PUBLISHED · Section 8 matches the governed text")
+        m = UPDATED_RE.search(cur)
+        if not m or m.group(1) != APPROVAL["last_updated"]:
+            refuse("the published Last updated label is not the approved one (%s)" % APPROVAL["last_updated"])
+        v3 = untransform(cur)
+        if hashlib.sha256(v3.encode("utf-8")).hexdigest() != PUBLISHED_V3_SHA256:
+            refuse("V6 the published page differs from the pinned V3 base outside the declared V4 changes")
+        g7 = garden7(v3)
+        if not g7 or hashlib.sha256(g7.encode("utf-8")).hexdigest() != GARDEN7_SHA256:
+            refuse("V2 the published Section 7 is not the approved Garden Owner Register text")
+        if transform(v3, APPROVAL["last_updated"]) != cur:
+            refuse("V6 the published page is not exactly the governed V4 transform of V3")
+        guards(v3, cur)
+        print("privacy.html: V4 PUBLISHED · Section 8 matches the governed text · V1-V6 pass")
         return
     v4 = transform(cur)
     guards(cur, v4)

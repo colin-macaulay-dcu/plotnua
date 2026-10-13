@@ -74,7 +74,7 @@ def guards(src):
     g["PV12"] = ("Airtable, a database service that holds records kept by PlotNua's own services, "
                  "including the Garden Owner Register;") in whole
     g["PV13"] = "Garden Owner Register records are kept for a maximum of 24 months" in whole
-    g["PV14"] = [int(n) for n in re.findall(r"<h2>(\d+)\. ", src)] == list(range(1, 18))
+    g["PV14"] = [int(n) for n in re.findall(r"<h2>(\d+)\. ", src)] == list(range(1, 19))  # 18 since privacy V4
     # no invented legal assurance and no match promise, ranged over the WHOLE page
     # AFFIRMATIVE forms only. The first version matched any "guarantee", and
     # the unmutated control failed on the pre-existing Section 12 disclaimer
@@ -111,8 +111,8 @@ MUTS = [
      "To leave the register, write to"),
     ("PV12", "Airtable dropped from the third-party list",
      "      <li>Airtable, a database service that holds records kept by PlotNua's own services, including the Garden Owner Register;</li>\n", ""),
-    ("PV14", "a section number left stale", "<h2>9. Third-Party Services and Links</h2>",
-     "<h2>8. Third-Party Services and Links</h2>"),
+    ("PV14", "a section number left stale", "<h2>10. Third-Party Services and Links</h2>",
+     "<h2>9. Third-Party Services and Links</h2>"),
     ("PV15", "a legal assurance invented", "Visitors should refer to Cloudflare's",
      "PlotNua is fully compliant with GDPR. Visitors should refer to Cloudflare's"),
     ("PV16", "an un-consented research purpose added", "looking for growing space. We rely",
@@ -122,10 +122,15 @@ base = guards(LIVE)
 if not all(base.values()):
     print("  [ABORT] privacy guards do not pass unmutated"); sys.exit(1)
 for gid, name, old, new in MUTS:
-    n = LIVE.count(old)
-    if n != 1:
-        say(False, f"[VACUOUS] {gid} {name}", f"anchor found {n} times"); continue
-    got = guards(LIVE.replace(old, new))
+    g7 = re.search(r"<h2>7\. The Garden Owner Register</h2>[\s\S]*?</section>", LIVE).group(0)
+    if g7.count(old) == 1:   # since privacy V4, Section 8 repeats some Section 7 sentences
+        mutated = LIVE.replace(g7, g7.replace(old, new), 1)
+    else:
+        n = LIVE.count(old)
+        if n != 1:
+            say(False, f"[VACUOUS] {gid} {name}", f"anchor found {n} times"); continue
+        mutated = LIVE.replace(old, new)
+    got = guards(mutated)
     failed = [k for k, v in got.items() if not v]
     if not failed:
         say(False, f"[BLIND] {gid} {name}")

@@ -11,6 +11,13 @@ Part B · PUBLICATION REHEARSAL in a throwaway clone (never in this tree):
          published check, the landmarks proof and the first-lead proof.
          Nothing from the rehearsal is kept.
 
+AFTER PUBLICATION (founder approval, 13 Oct 2026, 23:50; notice only, the
+register stays closed): Part A keeps every content case, which --check now
+runs against the published page, and replaces the pre-publication approval
+cases with their published-state equivalents. Part B becomes a post-publication
+verification in a throwaway clone: the same downstream proofs, the register
+still CLOSED, and the Garden proof carrying exactly the declared co-edits.
+
 Exit 0 = every break caught, the rehearsal passes, this tree byte-identical.
 Run: python3 atlas-tools/prove-privacy-v4.py
 """
@@ -61,6 +68,7 @@ def action(label, args, expect="REFUSED"):
 
 
 ctl0 = run([str(PB), "--check"]).returncode == 0
+PUBLISHED = "PLOTNUA-ART-PRIVACY-V4" in PRIVACY.read_text(encoding="utf-8")
 
 # ---- Part A
 case("V1 builder Section 8 drifts from the draft", PB, "no payment is offered", "no payment is offered yet")
@@ -88,13 +96,22 @@ case("V1 Section 2 sentence drifts from the draft", PB,
      'SEC2_NEW = "    <p>If you join the Art Space Register, we also collect')
 case("V2 input already altered in Section 7", PRIVACY, "photographs of your garden", "photos of your garden")
 action("--preview inside the repository", ["--preview", str(ROOT / "privacy-v4-preview.html")])
-action("--apply while APPROVAL is None", ["--apply"])
-case("--apply with an incomplete APPROVAL", PB, "APPROVAL = None",
-     'APPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "", "last_updated": "November 2026"}', args=["--apply"])
-# SAFETY: this case must never reach a real write. It unsets BACKUP_PERIOD on the same line that fills APPROVAL,
-# so APPROVAL is complete but the period is not, and --apply must refuse.
-case("--apply approved but BACKUP_PERIOD unconfirmed", PB, 'BACKUP_PERIOD = "up to 1 year"',
-     'BACKUP_PERIOD = None\nAPPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "x", "last_updated": "November 2026"}', args=["--apply"])
+if not PUBLISHED:
+    action("--apply while APPROVAL is None", ["--apply"])
+    case("--apply with an incomplete APPROVAL", PB, "APPROVAL = None",
+         'APPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "", "last_updated": "November 2026"}', args=["--apply"])
+    # SAFETY: this case must never reach a real write. It unsets BACKUP_PERIOD on the same line that fills APPROVAL,
+    # so APPROVAL is complete but the period is not, and --apply must refuse.
+    case("--apply approved but BACKUP_PERIOD unconfirmed", PB, 'BACKUP_PERIOD = "up to 1 year"',
+         'BACKUP_PERIOD = None\nAPPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "x", "last_updated": "November 2026"}', args=["--apply"])
+else:
+    # Published state. --apply can never write again: the page already carries Section 8.
+    action("--apply again on the published page", ["--apply"])
+    case("published V4 with APPROVAL removed", PB, "APPROVAL = {", "APPROVAL = None\n_WITHDRAWN = {")
+    case("published V4 with an incomplete APPROVAL", PB, '"risks_resolved": "governance/', '"risks_unrecorded": "governance/')
+    case("published Last updated label not the approved one", PRIVACY,
+         "Last updated: October 2026", "Last updated: November 2026")
+    case("published page altered outside Section 8", PRIVACY, "<h2>9. Cookies</h2>", "<h2>9. Cookie use</h2>")
 
 # ---- Part B · publication rehearsal in a throwaway clone
 rehearsal = []
@@ -110,8 +127,8 @@ try:
         'APPROVAL = {"founder_approval": "rehearsal", "self_assessment": "rehearsal", "risks_resolved": "rehearsal", '
         '"last_updated": "October 2026"}', 1),
         encoding="utf-8")
-    steps = [
-        ("V4 --apply in the clone", [str(cb), "--apply"], "APPLIED"),
+    steps = [] if PUBLISHED else [("V4 --apply in the clone", [str(cb), "--apply"], "APPLIED")]
+    steps += [
         ("V4 builder verifies the published page", [str(cb), "--check"], "PUBLISHED"),
         ("Garden privacy proof passes on V4", [str(clone / "atlas-tools" / "prove-g6-owner-register.py")], "0 failed"),
         ("Garden open-gate proof passes on V4", [str(clone / "atlas-tools" / "prove-g6-open-register.py")], ""),
@@ -128,12 +145,18 @@ try:
     import importlib.util
     spec = importlib.util.spec_from_file_location("pv4", PB)
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
-    expected = G6.read_text(encoding="utf-8")
-    for a, b in mod.G6_CO_EDITS:
-        expected = expected.replace(a, b, 1)
     got = (clone / "atlas-tools" / "prove-g6-owner-register.py").read_text(encoding="utf-8")
-    rehearsal.append(("Garden proof: only the %d declared co-edits" % len(mod.G6_CO_EDITS),
-                      got == expected and got != G6.read_text(encoding="utf-8"), ""))
+    if PUBLISHED:
+        # Undo the declared co-edits: what remains must be the V3-era Garden proof, i.e. no
+        # V3 anchor survives and each declared replacement occurs exactly once.
+        ok_co = all(got.count(b) == 1 and a not in got for a, b in mod.G6_CO_EDITS)
+        rehearsal.append(("Garden proof: exactly the %d declared co-edits" % len(mod.G6_CO_EDITS), ok_co, ""))
+    else:
+        expected = G6.read_text(encoding="utf-8")
+        for a, b in mod.G6_CO_EDITS:
+            expected = expected.replace(a, b, 1)
+        rehearsal.append(("Garden proof: only the %d declared co-edits" % len(mod.G6_CO_EDITS),
+                          got == expected and got != G6.read_text(encoding="utf-8"), ""))
     for label, rel in (("Garden Worker untouched by publication", "worker/garden-register"),
                        ("Garden check page untouched by publication", "disc025-borrowed-garden-check.html")):
         d = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", rel], cwd=str(clone))

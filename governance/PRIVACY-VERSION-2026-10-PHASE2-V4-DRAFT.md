@@ -1,6 +1,11 @@
-# PRIVACY NOTICE · VERSION 2026-10-PHASE2-V4 · DRAFT — NOT PUBLISHED
+# PRIVACY NOTICE · VERSION 2026-10-PHASE2-V4 · APPROVED FOR PUBLICATION
 
-**Status:** DRAFT. `privacy.html` is **not changed**; the live notice remains **2026-10-PHASE2-V3**.
+**Status:** **APPROVED, 13 October 2026 (23:50).**
+- The founder approved the Art Space Register GDPR Self-Assessment dated 13 October 2026 and authorised publication of Privacy Notice V4, dated **October 2026**.
+- `privacy.html` now carries this V4 text, built by the V4 builder with its approval recorded in `APPROVAL`.
+- It goes live on plotnua.ie when the founder pushes the commit.
+- **The approval covers the privacy notice only. The Art Space Register stays CLOSED.**
+- The file keeps its "-DRAFT" name, because guard V1 reads the governed text from it.
 **Purpose:** add a dedicated Art Space Register section (DISC-024 Open Your Home to Art, part of the A Home for Art Discovery), kept separate in data, purpose and consent from the Garden Owner Register (Section 7).
 **Builder:** `atlas-tools/build-privacy-v4.py`. Guard V1 refuses to build unless every sentence below appears in this file, so this draft and the builder cannot drift apart.
 

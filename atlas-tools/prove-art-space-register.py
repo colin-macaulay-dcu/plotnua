@@ -29,7 +29,14 @@ FILES = [RB, PAGE, WORKER, GARDEN, PRIVACY, ART_WRANGLER, SCHEMA]
 import importlib.util
 _spec = importlib.util.spec_from_file_location("pv4", ROOT / "atlas-tools" / "build-privacy-v4.py")
 PV4 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(PV4)
-V4_PAGE = PV4.transform(PRIVACY.read_text(encoding="utf-8"))   # in memory; written only inside a case
+_LIVE = PRIVACY.read_text(encoding="utf-8")
+# Privacy V4 was published on 13 Oct 2026 (founder approval, notice only). The
+# proof works on either state: V3_PAGE and V4_PAGE are built in memory and
+# written only inside a case.
+PUBLISHED = PV4.MARK in _LIVE
+V3_PAGE = PV4.untransform(_LIVE) if PUBLISHED else _LIVE
+V4_PAGE = _LIVE if PUBLISHED else PV4.transform(_LIVE)
+COOKIES_H2 = "<h2>9. Cookies</h2>" if PUBLISHED else "<h2>8. Cookies</h2>"
 APPROVED = ('OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", '
             '"risks_resolved": "proof", "dry_run": "proof"}')
 
@@ -85,6 +92,7 @@ def multi(label, edits, expect="REFUSED", positive=False):
 OPEN = (RB, "INTEREST_PUBLIC = False", "INTEREST_PUBLIC = True")
 APPROVE = (RB, "OPEN_APPROVAL = None", APPROVED)
 V4 = (PRIVACY, None, V4_PAGE)
+V3 = (PRIVACY, None, V3_PAGE)
 
 ctl0 = run(RB).returncode == 0
 
@@ -137,7 +145,7 @@ case("R12 register script calls the garden Worker", RB,
 case("R13 Garden Owner Register page touched", GARDEN,
      "This is a register, not a match.</p>", "This is a register.</p>")
 # ---- the opening gate (activation preparation, 13 Oct 2026)
-multi("R2 opening approved but privacy still V3", [OPEN, APPROVE])
+multi("R2 opening approved but privacy still V3", [OPEN, APPROVE, V3], expect="REFUSED: R2")
 multi("R2 privacy V4 live but no OPEN_APPROVAL", [OPEN, V4])
 multi("R2 OPEN_APPROVAL lacks the dry run", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
       'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "risks_resolved": "proof", "dry_run": " "}')])
@@ -161,7 +169,7 @@ case("R7b commitment statement weakened", RB, "PlotNua is simply exploring wheth
      "PlotNua is exploring whether homeowners")
 case("R7b commitment statement dropped from the form", RB,
      "        '        <p class=\"asr-p\" id=\"asrCommit\">%s</p>\\n' % COMMITMENT +\n", "")
-multi("R13 privacy.html hand-edited, not by the V4 builder", [(PRIVACY, "<h2>8. Cookies</h2>", "<h2>8. Cookie use</h2>")])
+multi("R13 privacy.html hand-edited, not by the V4 builder", [(PRIVACY, COOKIES_H2, COOKIES_H2.replace("Cookies", "Cookie use"))])
 import json as _json
 
 

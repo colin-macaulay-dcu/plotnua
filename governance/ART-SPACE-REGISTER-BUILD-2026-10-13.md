@@ -493,3 +493,73 @@ No acceptance of the Airtable DPA is claimed. The V4 Section 8 sentence on Airta
 2. When Airtable's fully executed DPA arrives, file it (gates opening).
 3. Create the six views (gates opening).
 4. Push the local commits.
+
+### 11.15 · Privacy V4 publication approved; register stays closed (founder, 13 Oct 2026, 23:50)
+
+**Founder decision.**
+- He approves the Art Space Register GDPR Self-Assessment dated 13 October 2026.
+- He accepts the documented limitations and remaining risks, subject to the safeguards and opening conditions recorded in the assessment.
+- He authorises publication of PlotNua Privacy Notice V4, dated October 2026.
+- **The approval is for publication of the privacy notice ONLY. The Art Space Register must remain CLOSED.**
+
+**Gate updated.** `APPROVAL` in `atlas-tools/build-privacy-v4.py` records:
+- the founder's approval;
+- the dated self-assessment and its approval;
+- where the resolution of material risks is documented (§11.10–§11.15 and the self-assessment, Section B);
+- the "Last updated" label, `October 2026`.
+
+`--apply` was run once. `privacy.html` now carries exactly the governed V4 change and nothing else:
+- Section 8, "The Art Space Register";
+- Sections 8–17 renumbered 9–18;
+- the Section 2, third-party and retention sentences.
+
+"Last updated" stays October 2026. The Garden proof received its three declared co-edits.
+
+**Post-publication safeguards (new).** The builder's `--check` now verifies the published page in full:
+- `APPROVAL` must be complete;
+- Section 8 must match the governed text;
+- the "Last updated" label must be the approved one;
+- the V3 base rebuilt from the page must match the pinned V3 hash (`PUBLISHED_V3_SHA256`, the V3 page at HEAD before publication);
+- Section 7 must match its pin;
+- rebuilding V4 must reproduce the page byte for byte;
+- guards V1–V6 run again.
+
+As a result, no sentence anywhere on the privacy page can change without a deliberate, reviewed update of the pin. `--apply` cannot write again, and `--preview` refuses once V4 is published. `prove-privacy-v4.py` and `prove-art-space-register.py` now work in either state. The published-state cases replace the approval cases that no longer apply, and the throwaway-clone rehearsal now verifies the published state.
+
+**Unchanged.**
+- `OPEN_APPROVAL = None` and `INTEREST_PUBLIC = False`: the register is CLOSED, and the form is not shown.
+- The Worker keeps `WRITES_ENABLED = "false"` and `EMAIL_ENABLED = "false"`, and is not redeployed. Its code returns `not_open` before any Airtable call while writes are off.
+- The Airtable tables Hosts, Consent proofs and Status log hold 0 records (checked read-only, 13 Oct 2026).
+- The Garden Owner Register is unchanged: its Worker, its page, its consent and its privacy version V3. Its Section 7 is byte-identical and pinned.
+- No other page changed.
+
+**Opening still requires:**
+- confirmation that the Airtable DPA is fully executed (§11.14);
+- the six views;
+- a recorded dry run;
+- `OPEN_APPROVAL`.
+
+**Abuse protection review (findings only; the service is not changed).** The service has these protections:
+- an exact `Origin` match and `Sec-Fetch` checks;
+- one in-memory rate limit of 30 POSTs per minute per isolate, global rather than per client;
+- a 4 KB body cap;
+- strict allowed keys and enum validation, with `typecast:false`;
+- an exact consent-text hash;
+- the page's honeypot;
+- a duplicate-email check that never reveals whether an address is registered.
+
+Findings:
+1. **The origin checks stop browsers only.** `Origin` and `Sec-Fetch-*` are request headers that any script can set or omit. A test request from a non-browser client with a forged `Origin` passed both checks and reached field validation.
+2. **The rate limit is weak, and can block genuine users.** It is one counter shared by all callers, kept per isolate. A single sender can use up the 30 per minute and refuse genuine homeowners. Across Cloudflare's many isolates, the real total is much higher than 30 per minute.
+3. **There is no cap on total writes.** While open, a scripted sender could create many valid records, each with up to 4 Airtable calls. This can hit Airtable's 5 requests per second per base (genuine users then see "unavailable") and fill the base with junk.
+4. **Email ownership is not verified.** Anyone can register someone else's address. No email is sent, so nobody is spammed, but the register could hold a third party's details without consent until review.
+5. **The honeypot** only stops unsophisticated bots.
+6. **Abuse is hard to see.** With logging off, the only signal is the record count in the weekly review.
+
+Recommendations for the founder to decide before opening, without Turnstile (founder decision):
+- a durable daily write cap that switches the register to `not_open` when reached, for example 20 new records a day for a small pilot;
+- a per-client limit using Cloudflare's Workers Rate Limiting binding, keyed on the connecting IP and held only transiently, never stored;
+- a daily look at the record count during the first weeks;
+- later, a confirmation email (double opt-in) if the pilot grows.
+
+None of this affects the closed state. The service is adequate while closed, but not yet sufficient to open without at least the daily cap.
