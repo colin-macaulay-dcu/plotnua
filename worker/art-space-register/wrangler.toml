@@ -39,3 +39,14 @@ PRIVACY_VERSION = "2026-10-PHASE2-V4"
 # The ONLY deploy-time override ever used is the dry-run / opening switch:
 #   npx wrangler deploy --var WRITES_ENABLED:true    (founder-approved step only)
 #   npx wrangler deploy                              (back to this file: writes off)
+
+# ---------------------------------------------------------------------------
+# REQUEST LOGGING OFF (founder decision R3, 13 Oct 2026). Cloudflare's
+# documentation is inconsistent on whether "Workers Logs" is on by default for
+# new Workers; this makes the setting explicit and governed. With it off,
+# Cloudflare keeps no invocation logs (request details) for this Worker in
+# Workers Logs. The code itself logs nothing (no console calls, no IP, no
+# user agent). Takes effect on the next `npx wrangler deploy` (writes stay off).
+# ---------------------------------------------------------------------------
+[observability]
+enabled = false

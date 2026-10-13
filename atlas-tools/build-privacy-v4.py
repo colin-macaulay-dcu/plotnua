@@ -14,11 +14,14 @@ THIS BUILDER DOES NOT PUBLISH ANYTHING TODAY.
                      OUTSIDE the repository: every file in the repository is
                      served by GitHub Pages, so a preview inside it would be a
                      publication.
-  --apply            write privacy.html (and two Garden proof expectations, see
-                     CO-EDITS). REFUSED while APPROVAL is None. Setting
-                     APPROVAL is a committed, founder-authorised change that
-                     records the approval, the legal review and the
-                     "Last updated" label.
+  --apply            write privacy.html (and the Garden proof co-edits, see
+                     CO-EDITS). REFUSED while APPROVAL is None or incomplete,
+                     or while BACKUP_PERIOD is None. Setting APPROVAL is a
+                     committed, founder-authorised change recording the
+                     founder's approval, the dated GDPR self-assessment, the
+                     documented resolution of material risks and the
+                     "Last updated" label (founder decision, 13 Oct 2026:
+                     no external legal review by default).
 
 THE CHANGE, AND NOTHING ELSE (guard V6 proves it)
   1. Sections 8-17 renumbered 9-18.
@@ -84,10 +87,22 @@ VERSION = "2026-10-PHASE2-V4"
 MARK = "<!-- PLOTNUA-ART-PRIVACY-V4 · Art Space Register, privacy notice %s -->" % VERSION
 
 # None = NOT APPROVED. Publication requires a committed change that fills all
-# three, e.g. {"founder_approval": "Colin MacAulay, <date>",
-#              "legal_review": "<reviewer>, <date>",
-#              "last_updated": "November 2026"}
+# four, e.g. {"founder_approval": "Colin MacAulay, <date>",
+#             "self_assessment": "Art Space Register GDPR Self-Assessment, <date>, v<n>",
+#             "risks_resolved": "<where the resolution of each material risk is documented>",
+#             "last_updated": "November 2026"}
+# Founder decision, 13 Oct 2026 22:18: a completed, dated GDPR self-assessment,
+# documented resolution of material risks and explicit founder approval replace
+# the mandatory external legal review. Paid advice is not required by default.
+# Every technical guard below still applies.
 APPROVAL = None
+APPROVAL_KEYS = ("founder_approval", "self_assessment", "risks_resolved", "last_updated")
+
+# Airtable keeps automatic base snapshots for a period set by the plan (2 weeks
+# on Free, 1 year on Team, longer above). None = not yet confirmed: the notice
+# then says "for a limited period" and --apply is REFUSED until the founder
+# records the plan's period here, e.g. "for up to 2 weeks".
+BACKUP_PERIOD = None
 
 HOSTS = "Art Space Register"
 SECTION8 = [
@@ -102,10 +117,11 @@ SECTION8 = [
             "a record that you gave your consent, which version of this notice applied, and when you joined."]),
     ("p", "We do not collect your address, your Eircode, your town, your phone number, your surname, your age, photographs of your home, or anything about the value of what is in it. The form starts with three of your Property Check answers filled in, and only what is in the form when you submit it is sent. Your other Property Check answers and your Property Check result are not sent to the register."),
     ("p", "We use this information to contact you about the Open Your Home to Art pilot, for example to ask a few questions about what you would consider, or to let you know if the pilot develops. We rely on your consent, which you give by ticking the box when you join. You can withdraw it at any time."),
-    ("p", "Your record is private to PlotNua. It is not published, and there is no public listing, map, profile or directory. Records are reviewed by a person at PlotNua. No artist or other person sees your record. Your email address would only be shared with another person if you agreed to a specific arrangement, and no such arrangements are available."),
+    ("p", "Your record is private to PlotNua. It is not published, and there is no public listing, map, profile or directory. Records are reviewed by a person at PlotNua. Registration details are accessible only to authorised people managing the register and to service providers where necessary to operate it. They are not shared with artists or made publicly available. Your email address would only be shared with another person if you agreed to a specific arrangement, and no such arrangements are available."),
     ("p", "The form sends your details to a PlotNua service hosted on infrastructure provided by Cloudflare, which records them in the register. The register is stored in Airtable, a database service. Cloudflare and Airtable are both based in the United States, so your information may be processed outside the European Economic Area. Cloudflare states that it relies on the EU Standard Contractual Clauses, and on its certification under the EU-U.S. Data Privacy Framework, for such transfers. Airtable's Data Processing Addendum states that the EU Standard Contractual Clauses apply to personal data transferred from the European Economic Area. Visitors should refer to Cloudflare's and Airtable's own privacy policies for more about how they process personal information."),
-    ("p", "We keep your record for a maximum of 24 months. You can ask us to delete it at any time, and we may delete it sooner if it is no longer needed."),
-    ("p", "To leave the register or ask us to delete your record, email <a href=\"mailto:hello@plotnua.ie\">hello@plotnua.ie</a>. There is nothing to cancel and no notice period. When we delete your record we keep a separate note that you gave permission and that we honoured your request. That note holds a one-way digital fingerprint made from your email address, not the address itself, so that we can show we did what you asked. The fingerprint is pseudonymised, not anonymous: it is still personal data, because anyone who already knows your email address could match it to the fingerprint. We keep that note for 12 months after the deletion is completed, and then delete it."),
+    ("p", "The services that carry the form, such as Cloudflare, process technical information such as your IP address so that your request can be delivered securely. PlotNua does not record it in the register."),
+    ("p", "We keep your record for no longer than 12 months, and we delete it sooner if the pilot ends or no longer needs it. You can ask us to delete it at any time."),
+    ("p", "To leave the register or ask us to delete your record, email <a href=\"mailto:hello@plotnua.ie\">hello@plotnua.ie</a>. There is nothing to cancel and no notice period. When we delete your record, we delete everything the register holds about you, including the record of your consent. A deleted record can be restored from our database provider's trash for 7 days, and it remains in that provider's automatic backups %s, until those backups expire. We do not restore deleted registration records. We keep only an anonymous entry in our deletion log, recording when a deletion was requested or became due, when it was completed and why, so that we can show deletions are carried out. That entry contains nothing that identifies you." % (BACKUP_PERIOD or "for a limited period")),
 ]
 THIRD_ANCHOR = ("    <p>The Garden Owner Register described in Section 7 also runs on a PlotNua service hosted on "
                 "infrastructure provided by Cloudflare.</p>\n")
@@ -113,7 +129,7 @@ THIRD_NEW = ("    <p>The Art Space Register described in Section 8 also runs on 
              "infrastructure provided by Cloudflare, and its records are stored in Airtable in a database kept "
              "separate from the Garden Owner Register.</p>\n")
 RET_ANCHOR = "    <p>Garden Owner Register records are kept for a maximum of 24 months, as described in Section 7.</p>\n"
-RET_NEW = "    <p>Art Space Register records are kept for a maximum of 24 months, as described in Section 8.</p>\n"
+RET_NEW = "    <p>Art Space Register records are kept for a maximum of 12 months, as described in Section 8.</p>\n"
 SEC2_ANCHOR = "    <p>If you choose to join the Garden Owner Register, we also collect the information described in Section 7.</p>\n"
 SEC2_NEW = "    <p>If you choose to join the Art Space Register, we also collect the information described in Section 8.</p>\n"
 UPDATED_RE = re.compile(r'<p class="policy-updated">Last updated: ([^<]+)</p>')
@@ -268,10 +284,13 @@ def guards(v3, v4):
                  "which of storing, displaying, opening to visitors or helping to sell you would consider;",
                  "We do not collect your address, your Eircode, your town, your phone number, your surname",
                  "We rely on your consent", "You can withdraw it at any time",
-                 "maximum of 24 months", "We keep that note for 12 months after the deletion is completed",
+                 "no longer than 12 months", "including the record of your consent",
+                 "We keep only an anonymous entry in our deletion log", "That entry contains nothing that identifies you",
+                 "trash for 7 days", "automatic backups",
+                 "not shared with artists or made publicly available",
+                 "process technical information such as your IP address",
                  "email hello@plotnua.ie", "outside the European Economic Area", "Standard Contractual Clauses",
-                 "No artist or other person sees your record",
-                 "The fingerprint is pseudonymised, not anonymous: it is still personal data"):
+                 "accessible only to authorised people managing the register"):
         if need not in s8t:
             refuse("V3 Section 8 lacks: " + need)
     # V4
@@ -281,8 +300,9 @@ def guards(v3, v4):
         refuse("V4 the Worker's ALLOWED_KEYS no longer match the fields this section describes: %r"
                % sorted(worker_allowed()))
     reg = plain((ROOT / "disc024-open-your-home-to-art.html").read_text(encoding="utf-8"))
-    if ("A maximum of 24 months." not in reg or "We keep that note for 12 months after the deletion is completed" not in reg
-            or "The fingerprint is pseudonymised, not anonymous: it is still personal data" not in reg):
+    if ("A maximum of 12 months" not in reg or "We keep only an anonymous log entry" not in reg
+            or "They are not shared with artists or made publicly available." not in reg
+            or "fingerprint" in reg):
         refuse("V4 the register's on-page notice (as built on the DISC-024 check) does not carry the same retention figures")
     if toml_version(ART_WRANGLER) != VERSION:
         refuse("V4 the Art Worker's PRIVACY_VERSION is not %s" % VERSION)
@@ -313,9 +333,11 @@ def main(argv):
     cur = PRIVACY.read_text(encoding="utf-8")
     if "--apply" in argv:
         if not (isinstance(APPROVAL, dict) and all(isinstance(APPROVAL.get(k), str) and APPROVAL[k].strip()
-                                                     for k in ("founder_approval", "legal_review", "last_updated"))):
-            refuse("V4 is NOT APPROVED for publication: APPROVAL must record the founder's approval, the "
-                   "legal review and the Last updated label")
+                                                     for k in APPROVAL_KEYS)):
+            refuse("V4 is NOT APPROVED for publication: APPROVAL must record the founder's approval, the dated GDPR "
+                   "self-assessment, the documented resolution of material risks and the Last updated label")
+        if not (isinstance(BACKUP_PERIOD, str) and BACKUP_PERIOD.strip()):
+            refuse("V4 may not be published until BACKUP_PERIOD records the Airtable plan's snapshot retention")
         v4 = transform(cur, APPROVAL["last_updated"])
         guards(cur, v4)
         g6 = G6_PROOF.read_text(encoding="utf-8")

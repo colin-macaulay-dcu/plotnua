@@ -1,84 +1,358 @@
 {
   "schema": "plotnua.art-space-register.airtable.v1",
-  "status": "BASE CREATED by the founder, 13 Oct 2026 (appS4gWOxuZqJyWvU). Its tables, fields, types and select options were verified read-only against this file the same evening: all match. Views beyond the default Grid view are still to be configured. Guard R14 in atlas-tools/build-art-space-register.py keeps this file identical to what the Worker writes.",
+  "status": "BASE CREATED by the founder, 13 Oct 2026 (appS4gWOxuZqJyWvU). Its tables, fields, types and select options were verified read-only against this file the same evening: all match. Views beyond the default Grid view are still to be configured. 13 Oct 2026 22:18: erase_after changed to 12 months and the 'Deletion log' table added (founder decisions R1, Option A). Guard R14 in atlas-tools/build-art-space-register.py keeps this file identical to what the Worker writes.",
   "base": {
     "name": "PlotNua Art Space Register",
     "id": "appS4gWOxuZqJyWvU",
     "id_note": "An identifier, not a credential: useless without the token. Stored in the Worker as the secret AIRTABLE_BASE so that it persists across deploys.",
-    "separate_from": ["PlotNua Gardener Register", "PlotArt — Artist Evidence (E1)", "PlotNua Atlas Core", "PlotNua Leads"],
+    "separate_from": [
+      "PlotNua Gardener Register",
+      "PlotArt — Artist Evidence (E1)",
+      "PlotNua Atlas Core",
+      "PlotNua Leads"
+    ],
     "collaborators": "the founder only",
-    "never": ["share links or shared views", "forms", "interfaces", "automations", "syncs", "extensions that send data out", "sample rows"]
+    "never": [
+      "share links or shared views",
+      "forms",
+      "interfaces",
+      "automations",
+      "syncs",
+      "extensions that send data out",
+      "sample rows"
+    ]
   },
   "token": {
     "name": "plotnua-art-space-register-worker",
-    "scopes": ["data.records:read", "data.records:write"],
+    "scopes": [
+      "data.records:read",
+      "data.records:write"
+    ],
     "access": "this base only",
     "why_read": "the duplicate-address check (one equality filter, one field, at most one row)",
-    "never": ["schema scopes", "workspace access", "reuse of the Garden token", "pasting into chat or the repository"],
+    "never": [
+      "schema scopes",
+      "workspace access",
+      "reuse of the Garden token",
+      "pasting into chat or the repository"
+    ],
     "stored_as": "Cloudflare Worker secret AIRTABLE_TOKEN"
   },
-  "retention_is_manual": "The two formula fields (erase_after, remove_after) and the two views built on them only FLAG records that are due. Nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: delete the Hosts record, then fill deletion_honoured_at on its consent proof; 12 months later, delete that consent proof.",
+  "retention_is_manual": "FOUNDER DECISION 13 Oct 2026 22:18 (R1 + Option A). Registrations are kept for at most 12 months and deleted sooner when no longer needed. Hosts.erase_after and the 'Erasure due' view only FLAG records; nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: (1) delete the Hosts record; (2) delete its Consent proofs row and its Status log row, found by the identical timestamp the Worker writes to all three (Hosts.submitted_at = Consent proofs.given_at = Status log.at; the Status log row also carries record_ref = the Hosts record id); (3) add ONE anonymous row to 'Deletion log'. No email, email hash, name or record id survives a deletion. Airtable keeps deleted records in its trash for 7 days and in automatic base snapshots for the plan's snapshot period; PlotNua never restores deleted registration records.",
   "dates": "Every date field: Date (ISO), include time, 24-hour, one fixed time zone for all collaborators. Created with Europe/Dublin, which is accepted: the Worker always sends UTC instants with a trailing Z, Airtable stores every dateTime as a UTC instant and returns UTC through the API, so the time zone setting changes only what a person sees. Formula results (erase_after, remove_after) should display in ISO date format (YYYY-MM-DD); they were created in US format (M/D/YYYY), which is a display-only change.",
   "tables": [
     {
       "name": "Hosts",
       "fields": [
-        {"name": "first_name", "type": "singleLineText", "primary": true, "writer": "worker"},
-        {"name": "email", "type": "email", "writer": "worker"},
-        {"name": "email_key", "type": "singleLineText", "writer": "worker", "note": "lower-case email, for the duplicate check"},
-        {"name": "county", "type": "singleSelect", "writer": "worker",
-         "options": ["carlow", "cavan", "clare", "cork", "donegal", "dublin", "galway", "kerry", "kildare", "kilkenny", "laois", "leitrim", "limerick", "longford", "louth", "mayo", "meath", "monaghan", "offaly", "roscommon", "sligo", "tipperary", "waterford", "westmeath", "wexford", "wicklow"]},
-        {"name": "ways", "type": "multipleSelects", "writer": "worker", "options": ["store", "display", "open", "help_sell"]},
-        {"name": "space", "type": "singleSelect", "writer": "worker", "optional": true, "options": ["a_wall", "a_room", "dry_store", "not_sure"]},
-        {"name": "money", "type": "singleSelect", "writer": "worker", "optional": true, "options": ["no_money", "fee_for_space", "share_if_sells", "not_decided"]},
-        {"name": "host_note", "type": "multilineText", "writer": "worker", "optional": true},
-        {"name": "over_18", "type": "checkbox", "writer": "worker"},
-        {"name": "status", "type": "singleSelect", "writer": "worker", "options": ["interest_submitted"]},
-        {"name": "submitted_at", "type": "dateTime", "writer": "worker"},
-        {"name": "privacy_version", "type": "singleLineText", "writer": "worker"},
-        {"name": "consent_text_hash", "type": "singleLineText", "writer": "worker"},
-        {"name": "source", "type": "singleSelect", "writer": "worker", "options": ["property_check"]},
-        {"name": "human_review_by", "type": "singleLineText", "writer": "reserved", "note": "leave blank; introductions are not authorised"},
-        {"name": "human_review_at", "type": "dateTime", "writer": "reserved", "note": "leave blank"},
-        {"name": "erase_after", "type": "formula", "writer": "airtable", "formula": "DATEADD({submitted_at}, 24, 'months')", "note": "FLAG ONLY: this formula and its view flag records that are due; Airtable does NOT delete anything automatically. A person deletes them in the weekly review."}
+        {
+          "name": "first_name",
+          "type": "singleLineText",
+          "primary": true,
+          "writer": "worker"
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "writer": "worker"
+        },
+        {
+          "name": "email_key",
+          "type": "singleLineText",
+          "writer": "worker",
+          "note": "lower-case email, for the duplicate check"
+        },
+        {
+          "name": "county",
+          "type": "singleSelect",
+          "writer": "worker",
+          "options": [
+            "carlow",
+            "cavan",
+            "clare",
+            "cork",
+            "donegal",
+            "dublin",
+            "galway",
+            "kerry",
+            "kildare",
+            "kilkenny",
+            "laois",
+            "leitrim",
+            "limerick",
+            "longford",
+            "louth",
+            "mayo",
+            "meath",
+            "monaghan",
+            "offaly",
+            "roscommon",
+            "sligo",
+            "tipperary",
+            "waterford",
+            "westmeath",
+            "wexford",
+            "wicklow"
+          ]
+        },
+        {
+          "name": "ways",
+          "type": "multipleSelects",
+          "writer": "worker",
+          "options": [
+            "store",
+            "display",
+            "open",
+            "help_sell"
+          ]
+        },
+        {
+          "name": "space",
+          "type": "singleSelect",
+          "writer": "worker",
+          "optional": true,
+          "options": [
+            "a_wall",
+            "a_room",
+            "dry_store",
+            "not_sure"
+          ]
+        },
+        {
+          "name": "money",
+          "type": "singleSelect",
+          "writer": "worker",
+          "optional": true,
+          "options": [
+            "no_money",
+            "fee_for_space",
+            "share_if_sells",
+            "not_decided"
+          ]
+        },
+        {
+          "name": "host_note",
+          "type": "multilineText",
+          "writer": "worker",
+          "optional": true
+        },
+        {
+          "name": "over_18",
+          "type": "checkbox",
+          "writer": "worker"
+        },
+        {
+          "name": "status",
+          "type": "singleSelect",
+          "writer": "worker",
+          "options": [
+            "interest_submitted"
+          ]
+        },
+        {
+          "name": "submitted_at",
+          "type": "dateTime",
+          "writer": "worker"
+        },
+        {
+          "name": "privacy_version",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "consent_text_hash",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "source",
+          "type": "singleSelect",
+          "writer": "worker",
+          "options": [
+            "property_check"
+          ]
+        },
+        {
+          "name": "human_review_by",
+          "type": "singleLineText",
+          "writer": "reserved",
+          "note": "leave blank; introductions are not authorised"
+        },
+        {
+          "name": "human_review_at",
+          "type": "dateTime",
+          "writer": "reserved",
+          "note": "leave blank"
+        },
+        {
+          "name": "erase_after",
+          "type": "formula",
+          "writer": "airtable",
+          "formula": "DATEADD({submitted_at}, 12, 'months')",
+          "note": "FLAG ONLY: 12-month maximum (founder, 13 Oct 2026). The formula and its view flag records that are due; a person deletes them."
+        }
       ],
       "views": [
-        {"name": "New this week", "type": "grid", "filter": "submitted_at is within the past week", "sort": "submitted_at, newest first"},
-        {"name": "Notes to screen", "type": "grid", "filter": "host_note is not empty", "purpose": "strip any address, Eircode, phone number or valuables from notes"},
-        {"name": "Erasure due", "type": "grid", "filter": "erase_after is on or before today", "purpose": "flags records reaching 24 months; a person deletes them"},
-        {"name": "By county", "type": "grid", "group": "county"}
+        {
+          "name": "New this week",
+          "type": "grid",
+          "filter": "submitted_at is within the past week",
+          "sort": "submitted_at, newest first"
+        },
+        {
+          "name": "Notes to screen",
+          "type": "grid",
+          "filter": "host_note is not empty",
+          "purpose": "strip any address, Eircode, phone number or valuables from notes"
+        },
+        {
+          "name": "Erasure due",
+          "type": "grid",
+          "filter": "erase_after is on or before today",
+          "purpose": "flags records reaching 12 months; a person deletes them and their consent proof and status-log row"
+        },
+        {
+          "name": "By county",
+          "type": "grid",
+          "group": "county"
+        }
       ]
     },
     {
       "name": "Status log",
       "fields": [
-        {"name": "record_ref", "type": "singleLineText", "primary": true, "writer": "worker", "note": "the Hosts record id as text: deliberately NOT a linked record, so the log survives the record's deletion"},
-        {"name": "from_status", "type": "singleLineText", "writer": "worker"},
-        {"name": "to_status", "type": "singleLineText", "writer": "worker"},
-        {"name": "at", "type": "dateTime", "writer": "worker"},
-        {"name": "actor", "type": "singleLineText", "writer": "worker"},
-        {"name": "reason", "type": "singleLineText", "writer": "worker"}
+        {
+          "name": "record_ref",
+          "type": "singleLineText",
+          "primary": true,
+          "writer": "worker",
+          "note": "the Hosts record id as text: deliberately NOT a linked record, so the log survives the record's deletion"
+        },
+        {
+          "name": "from_status",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "to_status",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "at",
+          "type": "dateTime",
+          "writer": "worker"
+        },
+        {
+          "name": "actor",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "reason",
+          "type": "singleLineText",
+          "writer": "worker"
+        }
       ],
       "views": [
-        {"name": "Latest", "type": "grid", "sort": "at, newest first"}
+        {
+          "name": "Latest",
+          "type": "grid",
+          "sort": "at, newest first"
+        }
       ]
     },
     {
       "name": "Consent proofs",
       "fields": [
-        {"name": "email_hash", "type": "singleLineText", "primary": true, "writer": "worker", "note": "SHA-256 of the lower-case email; never the address. Deliberately NOT linked to Hosts, so it survives the record's deletion"},
-        {"name": "privacy_version", "type": "singleLineText", "writer": "worker"},
-        {"name": "consent_text_hash", "type": "singleLineText", "writer": "worker"},
-        {"name": "given_at", "type": "dateTime", "writer": "worker"},
-        {"name": "withdrawn_at", "type": "dateTime", "writer": "human", "note": "filled by hand when a withdrawal request arrives"},
-        {"name": "deletion_honoured_at", "type": "dateTime", "writer": "human", "note": "filled by hand when the Hosts record is deleted (withdrawal or 24-month erasure)"},
-        {"name": "remove_after", "type": "formula", "writer": "airtable", "formula": "IF({deletion_honoured_at}, DATEADD({deletion_honoured_at}, 12, 'months'), BLANK())", "note": "12-month deletion-record retention (founder, 13 Oct 2026), subject to legal review. FLAG ONLY: this formula and its view flag records that are due; Airtable does NOT delete anything automatically. A person deletes them in the weekly review."}
+        {
+          "name": "email_hash",
+          "type": "singleLineText",
+          "primary": true,
+          "writer": "worker",
+          "note": "SHA-256 of the lower-case email, written at registration. Under Option A this row is DELETED with the Hosts record; no fingerprint is kept after deletion."
+        },
+        {
+          "name": "privacy_version",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "consent_text_hash",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "given_at",
+          "type": "dateTime",
+          "writer": "worker"
+        },
+        {
+          "name": "withdrawn_at",
+          "type": "dateTime",
+          "writer": "human",
+          "note": "UNUSED under Option A (13 Oct 2026): the consent proof is deleted with the record, so nothing is left to date or flag. May be removed from the base."
+        },
+        {
+          "name": "deletion_honoured_at",
+          "type": "dateTime",
+          "writer": "human",
+          "note": "UNUSED under Option A (13 Oct 2026): the consent proof is deleted with the record, so nothing is left to date or flag. May be removed from the base."
+        },
+        {
+          "name": "remove_after",
+          "type": "formula",
+          "writer": "airtable",
+          "formula": "IF({deletion_honoured_at}, DATEADD({deletion_honoured_at}, 12, 'months'), BLANK())",
+          "note": "UNUSED under Option A (13 Oct 2026): the consent proof is deleted with the record, so nothing is left to date or flag. May be removed from the base."
+        }
       ],
+      "views": [],
+      "note": "Consent evidence while a person is registered. Deleted together with the Hosts record (Option A)."
+    },
+    {
+      "name": "Deletion log",
+      "writer": "human only; the Worker has no access route to it",
+      "purpose": "Anonymous administrative evidence that deletions are carried out (Option A, founder 13 Oct 2026). LIMITATION: it cannot prove that a particular individual's record was deleted.",
+      "fields": [
+        {
+          "name": "completed_on",
+          "type": "date",
+          "primary": true,
+          "note": "date the deletion was completed"
+        },
+        {
+          "name": "requested_on",
+          "type": "date",
+          "note": "date the deletion was requested or became due"
+        },
+        {
+          "name": "reason",
+          "type": "singleSelect",
+          "options": [
+            "withdrawal",
+            "retention_limit",
+            "pilot_ended",
+            "other"
+          ]
+        }
+      ],
+      "never": [
+        "name",
+        "email",
+        "email hash",
+        "county",
+        "Hosts record id",
+        "note or free text"
+      ],
+      "kept_for": "the life of the pilot",
       "views": [
-        {"name": "Withdrawals to action", "type": "grid", "filter": "withdrawn_at is not empty AND deletion_honoured_at is empty"},
-        {"name": "Deletion records due for removal", "type": "grid", "filter": "remove_after is on or before today", "purpose": "flags notes 12 months after deletion; a person deletes them"}
+        {
+          "name": "All deletions",
+          "type": "grid",
+          "sort": "completed_on, newest first"
+        }
       ]
     }
   ],
-  "relationships": "None, by design. Neither the Status log nor Consent proofs links to Hosts, so deleting a Hosts record leaves the minimal proof that the deletion was honoured."
+  "relationships": "None, by design. Under Option A nothing about a person survives their deletion: the Consent proofs and Status log rows are deleted with the Hosts record, matched by timestamp. The Deletion log holds no link or identifier."
 }

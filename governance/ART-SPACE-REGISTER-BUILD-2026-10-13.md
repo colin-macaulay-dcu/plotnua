@@ -378,3 +378,26 @@ Deploy before adding secrets: `secret put` on a Worker that does not exist yet w
 - **Airtable.** All three tables still show **0 records**.
 
 While writes are off, the token is never used. It is first exercised in the dry run, which comes **after** privacy V4 is live (§11.3).
+
+### 11.10 · Founder decisions R1–R4 and the publication gate (13 Oct 2026, 22:18)
+
+| Decision | Implemented |
+|---|---|
+| **R1** Retention: a 12-month maximum, deleted sooner when no longer needed | Privacy V4 Section 8 and the retention line, the form's short notice, `airtable-schema.json`, and the live Airtable formula `Hosts.erase_after` = `DATEADD({submitted_at}, 12, "months")` |
+| **R2** Option A: no email fingerprint after deletion; an anonymous deletion log | Section 8 and the short notice rewritten; the fingerprint wording removed (guard V4 refuses it on the form); live Airtable table **Deletion log** created (`completed_on`, `requested_on`, `reason`; no identifier field); procedure below |
+| **R3** Technical data, verified | Hosting: plotnua.ie resolves to GitHub Pages (`server: GitHub.com`; `www` CNAME `colin-macaulay-dcu.github.io`). Section 8 states that carriers such as Cloudflare process IP addresses and that PlotNua does not record them. Worker `wrangler.toml` now sets `[observability] enabled = false` (takes effect at the next deploy). Airtable recovery is disclosed: 7-day trash plus automatic snapshots for the plan's period, with `BACKUP_PERIOD` required before publication. |
+| **R4** Access | The founder's wording, in Section 8 and the short notice |
+| **Gate** | `APPROVAL` (privacy V4) and `OPEN_APPROVAL` (opening) now require `founder_approval`, `self_assessment` (a dated GDPR self-assessment) and `risks_resolved` (documented resolution of material risks), plus `last_updated` or `dry_run` respectively. No external legal review is required by default. Every technical guard is unchanged. |
+
+**Weekly deletion procedure (Option A).** The Worker writes one identical timestamp to all three tables (`Hosts.submitted_at` = `Consent proofs.given_at` = `Status log.at`), so a person's rows can be found without any hash.
+1. In *Erasure due*, or for each withdrawal request, open the Hosts record.
+2. Delete its **Consent proofs** row: the one with the same timestamp, `privacy_version` and `consent_text_hash`.
+3. Delete its **Status log** row: the one whose `record_ref` is the record's id.
+4. Delete the **Hosts** record.
+5. Add **one** row to **Deletion log**: `completed_on`, `requested_on`, `reason`. Never a name, email, hash, county, record id or free text.
+6. Reply to a withdrawal request, then delete the request email and the reply from the mailbox (founder decision pending; see the self-assessment).
+7. Never restore deleted registration records from Airtable's trash or snapshots.
+
+**Accountability limitation, documented.** An anonymous log shows that deletions happen, how many, why and how promptly. It **cannot prove** that a particular individual's record was deleted. For a voluntary, unpaid pilot interest register this is judged proportionate in the GDPR self-assessment. EU consent guidance (EDPB 05/2020, paras 106–107) asks that proof of consent be kept after processing ends only where strictly necessary. If a person later disputes a deletion, PlotNua can show the dated log entry and confirm that no record matching their email exists.
+
+**Unused fields.** `Consent proofs.withdrawn_at`, `deletion_honoured_at` and `remove_after` are unused under Option A. They are left in place, empty, and may be removed. Retiring the Consent proofs table altogether, because the Hosts record already carries the consent evidence, would be a separate, approved Worker change.

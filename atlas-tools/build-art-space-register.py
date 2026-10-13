@@ -23,8 +23,9 @@ GUARDS
         (a) privacy.html carries the governed V4 Section 8, exactly as
             atlas-tools/build-privacy-v4.py renders it (published_ok);
         (b) the Art Worker's PRIVACY_VERSION is that section's version;
-        (c) OPEN_APPROVAL records the founder's approval to open, the legal
-            review and the dry run, each as a non-empty string.
+        (c) OPEN_APPROVAL records the founder's approval to open, the dated
+            GDPR self-assessment, the documented resolution of material risks
+            and the dry run, each as a non-empty string.
       None of these holds today, and INTEREST_PUBLIC stays false.
   R3  the consent sentence on the page equals the Worker's, character for
       character, and equals the founder-approved text
@@ -68,10 +69,15 @@ PRIVACY = ROOT / "privacy.html"
 
 INTEREST_PUBLIC = False          # founder decision: ships CLOSED
 # The opening gate's founder record (R2c). None = opening not approved.
-# To open, a committed founder-authorised change fills all three, e.g.
-#   {"founder_approval": "Colin MacAulay, <date>", "legal_review": "<reviewer>, <date>",
+# To open, a committed founder-authorised change fills all four, e.g.
+#   {"founder_approval": "Colin MacAulay, <date>",
+#    "self_assessment": "Art Space Register GDPR Self-Assessment, <date>, v<n>",
+#    "risks_resolved": "<where the resolution of each material risk is documented>",
 #    "dry_run": "<date>: two own records, fields/consent proof/status log checked, erased"}
+# Founder decision, 13 Oct 2026 22:18: a dated GDPR self-assessment and documented
+# resolution of material risks replace the external legal review.
 OPEN_APPROVAL = None
+OPEN_APPROVAL_KEYS = ("founder_approval", "self_assessment", "risks_resolved", "dry_run")
 SCHEMA = ROOT / "worker" / "art-space-register" / "airtable-schema.json"
 ART_WRANGLER = ROOT / "worker" / "art-space-register" / "wrangler.toml"
 ENDPOINT = "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/host"
@@ -205,21 +211,22 @@ NOTICE = [
      "So that we can contact you about the Open Your Home to Art pilot &mdash; for example to ask a "
      "few questions about what you would consider, or to let you know if the pilot develops."),
     ("Your details stay private.",
-     "Registering does not share them with anyone. There is no public listing, no map, no profile "
-     "and no directory, no artist sees your record, and nothing will be arranged without your "
-     "agreement. We never sell your information or pass it to anyone for advertising."),
+     "Registration details are accessible only to authorised people managing the register and to "
+     "service providers where necessary to operate it. They are not shared with artists or made "
+     "publicly available. There is no listing, map, profile or directory, and nothing will be "
+     "arranged without your agreement. We never sell your information or pass it to anyone for "
+     "advertising."),
     ("Leaving.",
      "You can withdraw your consent at any time. Email hello@plotnua.ie and we will delete your "
      "record. There is nothing to cancel and no notice period."),
     ("How long we keep it.",
-     "A maximum of 24 months. You can ask us to delete it at any time, and we may delete it sooner "
-     "if it is no longer needed."),
-    ("One thing we keep after deletion.",
-     "A separate note that you gave permission and that we honoured your request to remove it. It "
-     "holds a one-way digital fingerprint made from your email address, not the address itself, so "
-     "that we can show we did what you asked. The fingerprint is pseudonymised, not anonymous: it is "
-     "still personal data, because anyone who already knows your email address could match it to the "
-     "fingerprint. We keep that note for 12 months after the deletion is completed, and then delete it."),
+     "A maximum of 12 months, and less if the pilot no longer needs it. You can ask us to delete "
+     "it at any time."),
+    ("After deletion.",
+     "We delete everything the register holds about you, including the record of your consent. "
+     "Our database provider's backups expire after a limited period, and we never restore deleted "
+     "records. We keep only an anonymous log entry with the dates and the reason, which contains "
+     "nothing that identifies you."),
 ]
 
 
@@ -699,9 +706,9 @@ def guards(html):
         if not m or m.group(1) != pv4.VERSION:
             die("R2 the register may not open: the Art Worker's PRIVACY_VERSION is not the published %s" % pv4.VERSION)
         if not (isinstance(OPEN_APPROVAL, dict) and all(isinstance(OPEN_APPROVAL.get(k), str) and OPEN_APPROVAL[k].strip()
-                                                         for k in ("founder_approval", "legal_review", "dry_run"))):
-            die("R2 the register may not open: OPEN_APPROVAL does not record the founder's approval, the legal review "
-                "and the dry run")
+                                                         for k in OPEN_APPROVAL_KEYS)):
+            die("R2 the register may not open: OPEN_APPROVAL does not record the founder's approval, the GDPR "
+                "self-assessment, the resolution of material risks and the dry run")
         if code_js.count("var INTEREST_PUBLIC = true;") != 1:
             die("R2 the public switch is malformed")
     # R3

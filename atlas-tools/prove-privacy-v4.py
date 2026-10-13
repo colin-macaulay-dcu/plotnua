@@ -64,12 +64,15 @@ ctl0 = run([str(PB), "--check"]).returncode == 0
 
 # ---- Part A
 case("V1 builder Section 8 drifts from the draft", PB, "no payment is offered", "no payment is offered yet")
-case("V1 draft drifts from the builder", DRAFT, "We keep that note for 12 months after the deletion is completed, and then delete it.",
-     "We keep that note for as long as needed.")
+case("V1 draft drifts from the builder", DRAFT, "That entry contains nothing that identifies you.",
+     "That entry contains very little.")
 case("V3 the no-matching statement removed", PB, "there is no matching or booking service, ", "")
-case("V3 deletion-note retention removed", PB, " We keep that note for 12 months after the deletion is completed, and then delete it.", "")
-case("V4 on-page notice retention differs", PAGE, "We keep that note for 12 months after the deletion is",
-     "We keep that note for 18 months after the deletion is")
+case("V3 anonymous-log assurance removed", PB, " That entry contains nothing that identifies you.", "", )
+case("V3 retention lengthened to 24 months", PB, "We keep your record for no longer than 12 months", "We keep your record for no longer than 24 months")
+case("V4 on-page notice retention differs", PAGE, "A maximum of 12 months, and less",
+     "A maximum of 18 months, and less")
+case("V4 on-page notice reintroduces a fingerprint", PAGE, "We keep only an anonymous log entry",
+     "We keep a fingerprint and an anonymous log entry")
 case("V4 Art Worker not on V4", ART_WR, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')
 case("V4 Garden Worker moved off V3", GARDEN_WR, 'PRIVACY_VERSION = "2026-10-PHASE2-V3"', 'PRIVACY_VERSION = "2026-10-PHASE2-V4"')
 case("V5 an invented legal assurance", PB, "Records are reviewed by a person at PlotNua.",
@@ -87,7 +90,9 @@ case("V2 input already altered in Section 7", PRIVACY, "photographs of your gard
 action("--preview inside the repository", ["--preview", str(ROOT / "privacy-v4-preview.html")])
 action("--apply while APPROVAL is None", ["--apply"])
 case("--apply with an incomplete APPROVAL", PB, "APPROVAL = None",
-     'APPROVAL = {"founder_approval": "x", "legal_review": "", "last_updated": "November 2026"}', args=["--apply"])
+     'APPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "", "last_updated": "November 2026"}', args=["--apply"])
+case("--apply approved but BACKUP_PERIOD unconfirmed", PB, "APPROVAL = None",
+     'APPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "x", "last_updated": "November 2026"}', args=["--apply"])
 
 # ---- Part B · publication rehearsal in a throwaway clone
 rehearsal = []
@@ -100,8 +105,14 @@ try:
     cb = clone / "atlas-tools" / "build-privacy-v4.py"
     cb.write_text(cb.read_text(encoding="utf-8").replace(
         "APPROVAL = None",
-        'APPROVAL = {"founder_approval": "rehearsal", "legal_review": "rehearsal", "last_updated": "October 2026"}', 1),
+        'APPROVAL = {"founder_approval": "rehearsal", "self_assessment": "rehearsal", "risks_resolved": "rehearsal", '
+        '"last_updated": "October 2026"}', 1).replace("BACKUP_PERIOD = None", 'BACKUP_PERIOD = "for up to 2 weeks"', 1),
         encoding="utf-8")
+    # Publication changes the backup period in the builder AND the draft together (guard V1).
+    cd = clone / "governance" / "PRIVACY-VERSION-2026-10-PHASE2-V4-DRAFT.md"
+    cd.write_text(cd.read_text(encoding="utf-8").replace(
+        "automatic backups for a limited period, until those backups expire",
+        "automatic backups for up to 2 weeks, until those backups expire", 1), encoding="utf-8")
     steps = [
         ("V4 --apply in the clone", [str(cb), "--apply"], "APPLIED"),
         ("V4 builder verifies the published page", [str(cb), "--check"], "PUBLISHED"),

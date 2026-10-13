@@ -1,60 +1,62 @@
 # PRIVACY NOTICE · VERSION 2026-10-PHASE2-V4 · DRAFT — NOT PUBLISHED
 
-**Status:** DRAFT for founder approval and legal review. `privacy.html` is **not changed**. The live notice remains **2026-10-PHASE2-V3**.
-**Purpose:** add a dedicated Art Space Register section (DISC-024 Open Your Home to Art, now part of the A Home for Art Discovery), kept separate in data, purpose and consent from the Garden Owner Register (Section 7).
-**Prepared:** 13 October 2026, with the Art Space Register build (`governance/ART-SPACE-REGISTER-BUILD-2026-10-13.md`).
-**Revised:** 13 October 2026, activation preparation. Changes in this revision:
-- deletion-note retention of 12 months added (provisional);
-- third-party sentence added;
-- "artists' finished work" list punctuated with a colon, not a dash;
-- the Garden Worker stays on V3.
-
-**Final preparation correction (13 Oct 2026, 21:25):**
-- Section 8 states that the email fingerprint is pseudonymised personal data, not anonymous. The register's on-page notice says the same.
-- Retention confirmed as proposed: 24 months for registrations, 12 months for deletion records.
-- Airtable's retention formulas **flag** records for deletion. They do not erase anything; a person does, in the weekly review.
-
+**Status:** DRAFT. `privacy.html` is **not changed**; the live notice remains **2026-10-PHASE2-V3**.
+**Purpose:** add a dedicated Art Space Register section (DISC-024 Open Your Home to Art, part of the A Home for Art Discovery), kept separate in data, purpose and consent from the Garden Owner Register (Section 7).
 **Builder:** `atlas-tools/build-privacy-v4.py`. Guard V1 refuses to build unless every sentence below appears in this file, so this draft and the builder cannot drift apart.
+
+## Founder decisions, 13 October 2026 (22:18)
+
+- **R1, retention:** a maximum of **12 months** for registrations, deleted sooner when no longer needed.
+- **R2, deletion evidence, Option A:**
+  - no email fingerprint is kept after deletion;
+  - the person's record, consent proof and status-log entries are deleted together;
+  - only an anonymous administrative deletion log is kept (§ Retention).
+- **R3, technical data:** the clarification is adopted.
+  - Hosting is verified: plotnua.ie is served by GitHub Pages; the form service runs on Cloudflare.
+  - The Worker's request logging is to be switched off explicitly.
+  - Airtable's 7-day trash and its automatic snapshots are disclosed.
+- **R4, access:** the founder's access wording is adopted.
+- **Publication gate:** the external legal-review requirement is replaced. Publication now needs a completed, dated GDPR self-assessment, documented resolution of material risks, and explicit founder approval. All technical safeguards remain. Paid advice is not required by default.
 
 ## Gate
 
-The register cannot open until three things hold. The opening guard (R2 in `atlas-tools/build-art-space-register.py`) refuses until:
+The register cannot open until all of these hold. The opening guard (R2 in `atlas-tools/build-art-space-register.py`) refuses until:
 - `privacy.html` carries exactly the Section 8 below, as rendered by the V4 builder;
 - the Art Worker's `PRIVACY_VERSION` is `2026-10-PHASE2-V4`;
-- `OPEN_APPROVAL` records the founder's approval, the legal review and the dry run.
+- `OPEN_APPROVAL` records the founder's approval, the self-assessment, the resolution of material risks and the dry run.
 
-The V4 builder itself refuses to write `privacy.html` until its `APPROVAL` records the founder's approval, the legal review and the "Last updated" label.
+The V4 builder refuses to write `privacy.html` until:
+- `APPROVAL` records the founder's approval, the self-assessment, the resolution of material risks and the "Last updated" label;
+- `BACKUP_PERIOD` records the Airtable plan's snapshot retention.
 
 ## Changes from V3
 
-1. **New Section 8, "The Art Space Register"** (text below). It goes after Section 7, "The Garden Owner Register", whose wording is unchanged.
-2. **Renumbering.** Current Sections 8–17 become 9–18 (Cookies → 9 … Contact → 18).
-3. **"Third-Party Services and Links"** (currently 9, becomes 10) gains one sentence after the Garden Owner Register sentence:
-   *"The Art Space Register described in Section 8 also runs on a PlotNua service hosted on infrastructure provided by Cloudflare, and its records are stored in Airtable in a database kept separate from the Garden Owner Register."*
-4. **"How Long We Keep Information"** (currently 11, becomes 12) gains one line:
-   *"Art Space Register records are kept for a maximum of 24 months, as described in Section 8."*
-5. **"Last updated"** changes to the publication month.
-6. **"Information We Collect"** (Section 2, not renumbered) gains one sentence after the Garden Owner Register sentence (founder approval, 13 Oct 2026, 22:00):
-   *"If you choose to join the Art Space Register, we also collect the information described in Section 8."*
-7. **No other change.** Legal basis, rights, complaints and processors are unchanged.
+1. **New Section 8, "The Art Space Register"** (text below), after Section 7, whose wording is unchanged.
+2. **Renumbering:** Sections 8–17 become 9–18.
+3. **Section 2:** one sentence: *"If you choose to join the Art Space Register, we also collect the information described in Section 8."*
+4. **Third-Party Services and Links** (becomes Section 10): one sentence: *"The Art Space Register described in Section 8 also runs on a PlotNua service hosted on infrastructure provided by Cloudflare, and its records are stored in Airtable in a database kept separate from the Garden Owner Register."*
+5. **How Long We Keep Information** (becomes Section 12): one line: *"Art Space Register records are kept for a maximum of 12 months, as described in Section 8."*
+6. **"Last updated"** set to the publication month.
+7. **No other change.**
 
-**On publication only, two Garden proof expectations follow the renumbering.** `atlas-tools/prove-g6-owner-register.py` currently expects sections 1–17 and uses a "9. Third-Party" heading as a mutation anchor. The builder updates those two lines in the same act. The Garden Worker, its consent, its database and its registration experience are not touched. The Garden Worker keeps privacy version **2026-10-PHASE2-V3** (founder decision, 13 Oct 2026), because Section 7's text does not change.
+**On publication only:** `atlas-tools/prove-g6-owner-register.py` receives three bounded co-edits (the section count, one heading anchor, and mutation anchors scoped to Section 7). The Garden Worker keeps privacy version V3. Its Worker, consent, database and registration experience are untouched.
 
-## Retention (provisional until privacy and legal review)
+## Retention and deletion
 
-- **Homeowner registrations:** a maximum of **24 months**.
-- **Minimal deletion records** (consent proofs: an email fingerprint, the notice version, the consent-text fingerprint and the dates): **12 months after the deletion is completed**, then deleted.
-  - This applies whether the deletion followed a withdrawal or the 24-month limit. The founder's instruction named withdrawals; extending it to 24-month erasures is flagged for confirmation.
+- **Registrations:** a maximum of 12 months, deleted sooner if the pilot ends or no longer needs them. The Airtable formula `erase_after` flags each record at 12 months. **The formula only flags: a person deletes.**
+- **At deletion:** the Hosts record, its Consent proofs row and its Status log rows are all deleted together. No email, email fingerprint, name or record identifier survives.
+- **Anonymous deletion log** (Airtable table `Deletion log`), one row per deletion:
+  - the date it was requested or became due;
+  - the date it was completed;
+  - the reason: withdrawal, retention limit, pilot ended or other.
 
-If the review changes either figure, change all four of these together:
-- this draft;
-- the builder's `SECTION8`;
-- the register's on-page notice (`NOTICE` in `build-art-space-register.py`);
-- the Airtable formula fields in `worker/art-space-register/airtable-schema.json`.
-
-Guard V4 keeps the first three consistent.
-
-**Deletion is manual.** The Airtable formula fields `erase_after` and `remove_after`, and their views, only flag records that are due. Nothing deletes automatically. A person deletes the flagged records in the weekly review, as the build record §11.2 describes.
+  It holds no name, email, email hash, county or record identifier, and it is kept for the life of the pilot.
+- **Limitation, accepted by the founder:** an anonymous log proves that deletions are carried out. It **cannot prove** that a particular person's record was deleted. For a voluntary, unpaid pilot interest register, that is judged proportionate (see the GDPR self-assessment).
+- **Provider recovery:**
+  - Airtable keeps deleted records in its trash for 7 days.
+  - Airtable also keeps automatic base snapshots for a period set by the plan: 2 weeks on Free, 1 year on Team, longer on higher plans.
+  - PlotNua never restores deleted registration records.
+  - `BACKUP_PERIOD` must hold the plan's actual figure before publication.
 
 ## Proposed Section 8 — exact text
 
@@ -77,39 +79,22 @@ Guard V4 keeps the first three consistent.
 >
 > We use this information to contact you about the Open Your Home to Art pilot, for example to ask a few questions about what you would consider, or to let you know if the pilot develops. We rely on your consent, which you give by ticking the box when you join. You can withdraw it at any time.
 >
-> Your record is private to PlotNua. It is not published, and there is no public listing, map, profile or directory. Records are reviewed by a person at PlotNua. No artist or other person sees your record. Your email address would only be shared with another person if you agreed to a specific arrangement, and no such arrangements are available.
+> Your record is private to PlotNua. It is not published, and there is no public listing, map, profile or directory. Records are reviewed by a person at PlotNua. Registration details are accessible only to authorised people managing the register and to service providers where necessary to operate it. They are not shared with artists or made publicly available. Your email address would only be shared with another person if you agreed to a specific arrangement, and no such arrangements are available.
 >
 > The form sends your details to a PlotNua service hosted on infrastructure provided by Cloudflare, which records them in the register. The register is stored in Airtable, a database service. Cloudflare and Airtable are both based in the United States, so your information may be processed outside the European Economic Area. Cloudflare states that it relies on the EU Standard Contractual Clauses, and on its certification under the EU-U.S. Data Privacy Framework, for such transfers. Airtable's Data Processing Addendum states that the EU Standard Contractual Clauses apply to personal data transferred from the European Economic Area. Visitors should refer to Cloudflare's and Airtable's own privacy policies for more about how they process personal information.
 >
-> We keep your record for a maximum of 24 months. You can ask us to delete it at any time, and we may delete it sooner if it is no longer needed.
+> The services that carry the form, such as Cloudflare, process technical information such as your IP address so that your request can be delivered securely. PlotNua does not record it in the register.
 >
-> To leave the register or ask us to delete your record, email hello@plotnua.ie. There is nothing to cancel and no notice period. When we delete your record we keep a separate note that you gave permission and that we honoured your request. That note holds a one-way digital fingerprint made from your email address, not the address itself, so that we can show we did what you asked. The fingerprint is pseudonymised, not anonymous: it is still personal data, because anyone who already knows your email address could match it to the fingerprint. We keep that note for 12 months after the deletion is completed, and then delete it.
+> We keep your record for no longer than 12 months, and we delete it sooner if the pilot ends or no longer needs it. You can ask us to delete it at any time.
+>
+> To leave the register or ask us to delete your record, email hello@plotnua.ie. There is nothing to cancel and no notice period. When we delete your record, we delete everything the register holds about you, including the record of your consent. A deleted record can be restored from our database provider's trash for 7 days, and it remains in that provider's automatic backups for a limited period, until those backups expire. We do not restore deleted registration records. We keep only an anonymous entry in our deletion log, recording when a deletion was requested or became due, when it was completed and why, so that we can show deletions are carried out. That entry contains nothing that identifies you.
 
-## For legal review
+## Consistency enforced
 
-1. **Consent as the legal basis**, with an over-18 self-declaration in the consent sentence.
-2. **The email fingerprint is pseudonymised personal data, not anonymous data**, and Section 8 now says so. Confirm the wording, and that 12 months is an adequate and proportionate period for keeping proof of consent and of deletion.
-3. **The Cloudflare and Airtable transfer statements**, which are the same wording as Section 7.
-4. **Whether a record of processing entry is needed** for the register.
-
-## Consistency already enforced
-
-- **On-page notice:** the register's own notice states the same fields, purpose, retention and deletion-note terms (guard V4).
+- **On-page notice:** the register's short notice states the same retention, access and deletion terms, and contains no fingerprint wording (guard V4).
 - **Fields:** the collected fields match the Worker's allowed keys (guard V4).
-- **Version:** the Worker records `privacy_version = 2026-10-PHASE2-V4` (`worker/art-space-register/wrangler.toml`), and the register cannot open until this notice is published (guard R2).
+- **Version:** the Worker records `privacy_version = 2026-10-PHASE2-V4`. The register cannot open until this notice is published (guard R2).
 
-## Proposed clarification: keeping deletion evidence after withdrawal
+## Superseded
 
-**Status: for privacy-reviewer approval. Not part of the V4 build.** The legal basis is **not settled**. Both retention periods remain subject to legal review: 24 months for registration records, and 12 months for minimal deletion evidence.
-
-**Proposed wording**, to follow the last paragraph of Section 8:
-
-> **Why we keep that note after you leave.** When you withdraw your consent or ask us to delete your record, we stop using your registration details and delete them. We keep only the separate note described above, so that we can show, if we are asked, that you gave your consent and that we acted on your request. We use the note for nothing else and never to contact you, and we delete it 12 months after the deletion is completed. [LEGAL BASIS — for the reviewer to confirm or replace: *"We keep it because we have a legitimate interest in being able to demonstrate that we have complied with data protection law."* or *"We keep it because we must be able to demonstrate that consent was given."*]
-
-**Questions for the reviewer:**
-- Which basis applies: legitimate interests (GDPR Article 6(1)(f)), or the accountability and consent-demonstration duties (Articles 5(2) and 7(1))?
-- If legitimate interests, is a balancing note needed?
-- Is 12 months proportionate?
-- Should the same clarification also apply to records erased at the 24-month limit?
-
-If approved, it becomes a seventh declared builder change with its own guard, and the register's on-page notice is aligned with it.
+The earlier deletion-note proposal (email fingerprint kept for 12 months, "Option B") and its legal-basis question were withdrawn on 13 October 2026, when the founder adopted Option A.

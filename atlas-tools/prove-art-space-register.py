@@ -30,8 +30,8 @@ import importlib.util
 _spec = importlib.util.spec_from_file_location("pv4", ROOT / "atlas-tools" / "build-privacy-v4.py")
 PV4 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(PV4)
 V4_PAGE = PV4.transform(PRIVACY.read_text(encoding="utf-8"))   # in memory; written only inside a case
-APPROVED = ('OPEN_APPROVAL = {"founder_approval": "proof", "legal_review": "proof", '
-            '"dry_run": "proof"}')
+APPROVED = ('OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", '
+            '"risks_resolved": "proof", "dry_run": "proof"}')
 
 h = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 BEFORE = {p.name: h(p) for p in FILES}
@@ -140,13 +140,15 @@ case("R13 Garden Owner Register page touched", GARDEN,
 multi("R2 opening approved but privacy still V3", [OPEN, APPROVE])
 multi("R2 privacy V4 live but no OPEN_APPROVAL", [OPEN, V4])
 multi("R2 OPEN_APPROVAL lacks the dry run", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
-      'OPEN_APPROVAL = {"founder_approval": "proof", "legal_review": "proof", "dry_run": " "}')])
+      'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "risks_resolved": "proof", "dry_run": " "}')])
+multi("R2 OPEN_APPROVAL lacks the risk resolution", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
+      'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "dry_run": "proof"}')])
 multi("R2 Art Worker not on the published version", [OPEN, V4, APPROVE,
       (ART_WRANGLER, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')])
-assert V4_PAGE.count("We keep that note for 12 months after the deletion is completed") == 1
-multi("R2 published Section 8 differs (deletion note 36 months)", [OPEN, APPROVE,
-      (PRIVACY, None, V4_PAGE.replace("We keep that note for 12 months after the deletion is completed",
-                                      "We keep that note for 36 months after the deletion is completed", 1))],
+assert V4_PAGE.count("We keep your record for no longer than 12 months") == 1
+multi("R2 published Section 8 differs (36-month retention)", [OPEN, APPROVE,
+      (PRIVACY, None, V4_PAGE.replace("We keep your record for no longer than 12 months",
+                                      "We keep your record for no longer than 36 months", 1))],
       expect="REFUSED: R2")
 multi("R13 the V4 page also alters Garden Section 7", [OPEN, V4, APPROVE,
       (PRIVACY, "your phone number, your surname, your age, photographs of your garden",
@@ -160,10 +162,28 @@ case("R7b commitment statement weakened", RB, "PlotNua is simply exploring wheth
 case("R7b commitment statement dropped from the form", RB,
      "        '        <p class=\"asr-p\" id=\"asrCommit\">%s</p>\\n' % COMMITMENT +\n", "")
 multi("R13 privacy.html hand-edited, not by the V4 builder", [(PRIVACY, "<h2>8. Cookies</h2>", "<h2>8. Cookie use</h2>")])
-multi("R14 schema lacks a field the Worker writes", [(SCHEMA, '{"name": "consent_text_hash", "type": "singleLineText", "writer": "worker"},\n        {"name": "source"',
-      '{"name": "source"')])
-multi("R14 schema county options drift", [(SCHEMA, '"westmeath", "wexford", "wicklow"]', '"westmeath", "wexford", "wicklow", "antrim"]')])
-multi("R14 schema gives status a second option", [(SCHEMA, '"options": ["interest_submitted"]', '"options": ["interest_submitted", "introduced"]')])
+import json as _json
+
+
+def schema_with(fn):
+    """A whole-file schema mutation made on the parsed JSON, so file formatting cannot blind a case."""
+    d = _json.loads(SCHEMA.read_text(encoding="utf-8"))
+    fn(d)
+    return (SCHEMA, None, _json.dumps(d, indent=2, ensure_ascii=False) + "\n")
+
+
+def _hosts(d):
+    return [t for t in d["tables"] if t["name"] == "Hosts"][0]["fields"]
+
+
+def _drop_field(d, name):
+    t = [t for t in d["tables"] if t["name"] == "Hosts"][0]
+    t["fields"] = [f for f in t["fields"] if f["name"] != name]
+
+
+multi("R14 schema lacks a field the Worker writes", [schema_with(lambda d: _drop_field(d, "consent_text_hash"))])
+multi("R14 schema county options drift", [schema_with(lambda d: [f for f in _hosts(d) if f["name"] == "county"][0]["options"].append("antrim"))])
+multi("R14 schema gives status a second option", [schema_with(lambda d: [f for f in _hosts(d) if f["name"] == "status"][0]["options"].append("introduced"))])
 multi("R14 Status log table missing", [(SCHEMA, '"name": "Status log"', '"name": "Log"')])
 case("CHECK page hand-edited inside the register", PAGE,
      "Could your home become a home for art?</h2>", "Could your home host art?</h2>", expect="CHECK FAILED")
