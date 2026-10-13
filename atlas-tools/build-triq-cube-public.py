@@ -148,6 +148,132 @@ DELIVERY_NEW = "      <li><strong>Delivery to Ireland.</strong> " + DELIVERY_TEX
 if OPEN_PUB.count(DELIVERY_OLD) != 1: die("DELIVERY: the two superseded panel items were not found exactly once")
 OPEN_PUB = OPEN_PUB.replace(DELIVERY_OLD, DELIVERY_NEW)
 
+# CONSTRUCTION STORY, 13 October 2026 (founder decision: "Built differently").
+# Facts are TRIQBRIQ's own, from triqbriq.de/triq/ (TRIQ QUBE page) and
+# triqbriq.de/en/triqbriq-system/ (read 13 Oct 2026), each attributed on the
+# page. Imagery: five further official triqbriq.de images, hot-linked and
+# unmodified, each credited "© TRIQBRIQ AG", within the written grant of
+# 22 September 2026 (images from triqbriq.de, used in featuring TRIQBRIQ).
+# An image whose file name credits an outside photographer was deliberately
+# NOT used (rights unclear).
+BUILT_CSS = """/* ── BUILT DIFFERENTLY · construction story (13 Oct 2026) ───────── */
+.built-lede{ font-size:var(--pn-w-body-lg); max-width:62ch; }
+.built-keys{ display:flex; flex-wrap:wrap; gap:8px; margin:var(--pn-space-md) 0 0; padding:0; }
+.built-keys li{ list-style:none; font-size:var(--pn-w-caption); letter-spacing:.04em; padding:6px 12px;
+  border:1px solid var(--pn-wild); border-radius:2px; color:var(--pn-wild); }
+.build-flow{ list-style:none; margin:var(--pn-space-xl) 0 0; padding:0; }
+.build-step{ display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:var(--pn-space-xl);
+  align-items:center; padding:var(--pn-space-xl) 0; border-top:1px solid var(--pn-hair); }
+.build-step:nth-child(even) .build-media{ order:2; }
+.build-pair{ display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:14px; align-items:end; }
+.build-step--tall .build-media figure{ max-width:360px; margin:0 auto; }
+.build-step--final{ grid-template-columns:minmax(0,1fr); gap:var(--pn-space-lg); }
+.build-step--final.build-step .build-media{ order:0; }
+.build-step--final .build-text{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:var(--pn-space-xl); align-items:start; }
+.build-label{ display:flex; align-items:baseline; gap:12px; font-size:var(--pn-w-meta); font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--pn-stone); margin:0 0 14px; }
+.build-no{ font-family:'Fraunces',Georgia,serif; font-weight:300; font-size:44px; line-height:.8;
+  letter-spacing:0; color:var(--pn-wild); }
+.build-text h3{ font-size:var(--pn-s-statement); line-height:1.18; margin:0 0 12px; }
+.build-text p{ font-size:var(--pn-w-body-lg); }
+.built-source{ font-size:var(--pn-w-body-sm); color:var(--pn-stone); border-top:1px solid var(--pn-hair);
+  padding-top:var(--pn-space-sm); max-width:none; }
+@media (max-width:820px){
+  .build-step, .build-step--final .build-text{ grid-template-columns:minmax(0,1fr); gap:var(--pn-space-md); }
+  .build-step{ padding:var(--pn-space-lg) 0; }
+  .build-step:nth-child(even) .build-media{ order:0; }
+  .build-step--tall .build-media figure{ max-width:300px; }
+  .build-no{ font-size:36px; }
+}
+"""
+BUILT = """<section class="built" aria-labelledby="built-title">
+  <div class="stage-no">Built differently</div>
+  <h2 id="built-title">A garden office built from solid-wood blocks</h2>
+  <p class="built-lede">The TRIQ&nbsp;QUBE isn&rsquo;t a timber frame clad in panels. Its walls are stacked from solid-wood building blocks that TRIQBRIQ calls BRIQs. Here is how they come together, as TRIQBRIQ describes it.</p>
+  <ul class="built-keys" aria-label="The construction system at a glance">
+    <li>Solid softwood blocks</li><li>Beechwood dowels</li><li>No glue, no mortar, no screws</li><li>Can be taken apart and reused</li>
+  </ul>
+
+  <ol class="build-flow">
+    <li class="build-step">
+      <div class="build-media build-pair">
+        <figure>
+          <img src="https://triqbriq.de/wp-content/uploads/2024/01/briq-25-50-1.png" width="1361" height="907" loading="lazy" decoding="async"
+               alt="A single TRIQBRIQ BRIQ seen from the side: solid softwood pieces with two pegged studs on top and dowel holes through it">
+          <figcaption><span>A single BRIQ</span><span class="credit">© TRIQBRIQ AG</span></figcaption>
+        </figure>
+        <figure>
+          <img src="https://triqbriq.de/wp-content/uploads/2023/02/IMG_7644-scaled-e1676563466189.jpg" width="1141" height="1141" loading="lazy" decoding="async"
+               alt="TRIQBRIQ BRIQs stacked on wooden pallets, ready for delivery">
+          <figcaption><span>BRIQs stacked on pallets</span><span class="credit">© TRIQBRIQ AG</span></figcaption>
+        </figure>
+      </div>
+      <div class="build-text">
+        <div class="build-label"><span class="build-no">01</span> The building blocks</div>
+        <h3>Solid wood, cut to fit</h3>
+        <p>Each BRIQ is a block of solid softwood. TRIQBRIQ makes them partly from timber that would otherwise mostly be burned for energy, such as storm-damaged wood and surplus construction timber, on a robot-assisted line that cuts every block to a precise fit. The BRIQs leave the factory stacked on pallets.</p>
+      </div>
+    </li>
+
+    <li class="build-step">
+      <div class="build-media">
+        <figure>
+          <img src="https://triqbriq.de/wp-content/uploads/2024/03/Verriegelung-Holzbausteine-1.jpg" width="1920" height="1080" loading="lazy" decoding="async"
+               alt="Close-up of two BRIQs being joined: a stud fits into the block above and a round beechwood dowel locks them together">
+          <figcaption><span>A beechwood dowel locking two BRIQs together</span><span class="credit">© TRIQBRIQ AG</span></figcaption>
+        </figure>
+      </div>
+      <div class="build-text">
+        <div class="build-label"><span class="build-no">02</span> How they connect</div>
+        <h3>Wood locked into wood</h3>
+        <p>The BRIQs fit together through studs and blind holes, and beechwood dowels lock them in place. There is no glue, no mortar and no screws: every connection is wood in wood.</p>
+      </div>
+    </li>
+
+    <li class="build-step build-step--tall">
+      <div class="build-media">
+        <figure>
+          <img src="https://triqbriq.de/wp-content/uploads/2019/11/Proof-of-concept-anbau-53.jpg" width="1365" height="2048" loading="lazy" decoding="async"
+               alt="A building crew laying BRIQs course by course to raise solid-timber walls on a TRIQBRIQ construction site">
+          <figcaption><span>BRIQ walls going up on TRIQBRIQ&rsquo;s Frankfurt pilot project</span><span class="credit">© TRIQBRIQ AG</span></figcaption>
+        </figure>
+      </div>
+      <div class="build-text">
+        <div class="build-label"><span class="build-no">03</span> How the structure comes together</div>
+        <h3>Laid like bricks, with no drying time</h3>
+        <p>The BRIQs are laid course by course, like bricks, into a solid-timber wall, and there is nothing to dry or cure. TRIQBRIQ says a TRIQ&nbsp;QUBE arrives as a kit and can stand within a single day. Who would assemble it in Ireland is not yet established; see below.</p>
+        <p>Because nothing is glued, TRIQBRIQ says a structure built this way can later be taken apart and its timber reused.</p>
+      </div>
+    </li>
+
+    <li class="build-step build-step--final">
+      <div class="build-media">
+        <figure>
+          <img src="https://triqbriq.de/wp-content/uploads/2026/08/TRIQ-QUBE_Tiny-House-Park.jpg" width="1264" height="848" loading="lazy" decoding="async"
+               alt="A finished TRIQ QUBE with a covered deck and outdoor seating, set among planted gardens">
+          <figcaption><span>The finished TRIQ&nbsp;QUBE</span><span class="credit">© TRIQBRIQ AG</span></figcaption>
+        </figure>
+      </div>
+      <div class="build-text">
+        <div class="build-head">
+          <div class="build-label"><span class="build-no">04</span> The finished TRIQ&nbsp;QUBE</div>
+          <h3>The blocks are the building</h3>
+        </div>
+        <p>The result is a 9&nbsp;m² garden office whose solid-timber walls are its structure. TRIQBRIQ says the solid wood helps regulate indoor temperature and humidity. Its published price, specification and what PlotNua hasn&rsquo;t established for Ireland follow below.</p>
+      </div>
+    </li>
+  </ol>
+  <p class="built-source">Source: TRIQBRIQ&rsquo;s own TRIQ&nbsp;QUBE and TRIQBRIQ-System pages on triqbriq.de, read 13 October 2026. PlotNua reports what TRIQBRIQ says and has not tested these claims.</p>
+</section>
+"""
+BUILT_IMAGES = (
+    "https://triqbriq.de/wp-content/uploads/2024/01/briq-25-50-1.png",
+    "https://triqbriq.de/wp-content/uploads/2023/02/IMG_7644-scaled-e1676563466189.jpg",
+    "https://triqbriq.de/wp-content/uploads/2024/03/Verriegelung-Holzbausteine-1.jpg",
+    "https://triqbriq.de/wp-content/uploads/2019/11/Proof-of-concept-anbau-53.jpg",
+    "https://triqbriq.de/wp-content/uploads/2026/08/TRIQ-QUBE_Tiny-House-Park.jpg",
+)
+
 TITLE = "TRIQ QUBE garden office by TRIQBRIQ AG | PlotNua"
 DESC = ("The TRIQ QUBE (TRIQ Office 3×3): a 9 m² solid-timber garden office from TRIQBRIQ AG, "
         "Stuttgart. Published price, specification and what isn't yet established for Ireland.")
@@ -223,7 +349,7 @@ footer.site .footer-col p{{ font-size:14px; color:#B7AF9C; line-height:1.7; }}
 footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px; letter-spacing:.04em; color:#A39D8E; }}
 @media(max-width:820px){{ footer.site .footer-cols{{ grid-template-columns:repeat(2, minmax(0,1fr)); text-align:center; gap:40px 24px; }} }}
 @media(max-width:520px){{ footer.site .footer-cols{{ grid-template-columns:1fr; gap:36px; }} }}
-</style>
+{BUILT_CSS}</style>
 </head>
 <body>
 
@@ -246,6 +372,8 @@ footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px;
 <section style="padding-top:0">
 {IMG}
 </section>
+
+{BUILT}
 
 <section>
   <div class="stage-no">From the manufacturer</div>
@@ -276,7 +404,7 @@ footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px;
 </section>
 
 <footer class="page-notes">
-  <p><strong>Imagery.</strong> The two photographs above are official TRIQBRIQ website imagery, reproduced with TRIQBRIQ AG's written permission and credited “© TRIQBRIQ AG” as required. Sources: <a href="https://triqbriq.de/wp-content/uploads/2025/12/Exterior-3x3-1-scaled.jpg" data-outbound="triqbriq" data-loc="image_source">Exterior-3x3-1</a> and <a href="https://triqbriq.de/wp-content/uploads/2025/12/Interior-3x3-1-scaled.jpg" data-outbound="triqbriq" data-loc="image_source">Interior-3x3-1</a>, both published on the official product page <a href="{PRODUCT_URL}" data-outbound="triqbriq" data-loc="source_note">triqbriq.de/produkt/triq-gartenoffice-3x3</a>. Images are served from TRIQBRIQ's own website and are unmodified.</p>
+  <p><strong>Imagery.</strong> The photographs on this page are official TRIQBRIQ website imagery, reproduced with TRIQBRIQ AG's written permission and credited “© TRIQBRIQ AG” as required. Sources: <a href="https://triqbriq.de/wp-content/uploads/2025/12/Exterior-3x3-1-scaled.jpg" data-outbound="triqbriq" data-loc="image_source">Exterior-3x3-1</a> and <a href="https://triqbriq.de/wp-content/uploads/2025/12/Interior-3x3-1-scaled.jpg" data-outbound="triqbriq" data-loc="image_source">Interior-3x3-1</a>, both published on the official product page <a href="{PRODUCT_URL}" data-outbound="triqbriq" data-loc="source_note">triqbriq.de/produkt/triq-gartenoffice-3x3</a>; the five construction photographs are published on TRIQBRIQ&rsquo;s TRIQ&nbsp;QUBE, TRIQBRIQ-System, Massivholzhaus and Produktion pages on triqbriq.de. Images are served from TRIQBRIQ's own website and are unmodified.</p>
   <p><strong>Product information.</strong> Every figure and specification on this page is taken from that same official product page, read on 22 September 2026 and checked again on 12 October 2026. PlotNua has added nothing to it.</p>
   <p><strong>Independence.</strong> PlotNua is an independent platform operated by Colin MacAulay. TRIQBRIQ is not a PlotNua partner, and PlotNua does not describe it as approved, recommended or preferred.</p>
 </footer>
@@ -336,6 +464,17 @@ if "product_id: 'triq-cube'" not in page: die("GATE NAME: GA4 product_id identif
 # DELIVERY gate (13 Oct 2026): the approved wording once, the superseded claims
 # gone, and nothing that promises Irish delivery, a shipping price or time, or
 # installation.
+# BUILT gates (13 Oct 2026): the story sits between the opening photographs and
+# the factual product information; every construction image is an official
+# triqbriq.de image from the approved list and carries the credit.
+if page.count(BUILT) != 1: die("GATE BUILT: construction story must appear exactly once")
+i_img = page.index('Interior-3x3-1-scaled.jpg'); i_b = page.index('id="built-title"'); i_f = page.index('<h2>Factual product information</h2>')
+if not (i_img < i_b < i_f): die("GATE BUILT: story must sit after the opening photographs and before the product information")
+b_imgs = re.findall(r'<img src="([^"]+)"', BUILT)
+if tuple(b_imgs) != BUILT_IMAGES: die("GATE BUILT: construction images differ from the approved list")
+if BUILT.count('<span class="credit">\u00a9 TRIQBRIQ AG</span>') != len(b_imgs): die("GATE BUILT: every construction image needs the \u00a9 TRIQBRIQ AG credit")
+if re.search(r"Schwier|data-outbound|<a ", BUILT): die("GATE BUILT: no unclear-rights image and no links inside the story")
+if re.search(r"TRIQ(\s|&nbsp;)*CUBE", BUILT, re.I): die("GATE BUILT: product name must be TRIQ QUBE")
 if page.count(DELIVERY_NEW) != 1: die("GATE DELIVERY: approved delivery wording must appear exactly once")
 for gone in ("holds no confirmation that the TRIQ", "Delivery to Ireland is not established"):
     if gone in page: die("GATE DELIVERY: superseded wording still present: " + gone)
