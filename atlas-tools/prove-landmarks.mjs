@@ -62,8 +62,14 @@ const SEARCH_FROZEN = {
   // atlas-tools/build-search-zero-state.py. Same assertion, same strictness,
   // new frozen value. The previous value was
   // c7307b28d8629f278c021aaf105d8bd69f1c42db2890c51d9efd1b6acc63bf27.
-  "search.js":  "3e91e8793f40159082267b2190c02edb923c21618e1e8aa33715ad4db8f7901d",
-  "search.css": "a0a1b07aaf6f729ab41873962a1ab1d5bf3b0a03defb1f8e21c0d9945de82e19",
+  // Re-stamped again on 13 October 2026 for the founder-approved mobile
+  // floating navigation (Option B: compact logo and Search icon, hide on
+  // downward scroll), which lives in these two shared files. Same assertion,
+  // same strictness. Previous values: search.js
+  // 3e91e8793f40159082267b2190c02edb923c21618e1e8aa33715ad4db8f7901d,
+  // search.css a0a1b07aaf6f729ab41873962a1ab1d5bf3b0a03defb1f8e21c0d9945de82e19.
+  "search.js":  "53a462294de862f8563c2698cf14979874d276139c6ebc2fef0c1d135ba40d88",
+  "search.css": "5923bcbcf3ccf31224f662d860d5f59d6f420ff9ace128f397b092b4a603fd55",
 };
 
 let pass = 0, fail = 0;

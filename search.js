@@ -678,7 +678,50 @@
   function boot() {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', wire);
-    } else { wire(); }
+      document.addEventListener('DOMContentLoaded', wireFloatingNav);
+    } else { wire(); wireFloatingNav(); }
+  }
+
+  /* MOBILE FLOATING NAVIGATION · Option B (founder approval, 13 October 2026).
+     On screens up to 720px the logo and the Search control step aside while
+     the visitor scrolls DOWN, and come back on any upward scroll. Styling
+     lives in search.css (html.pns-nav-tuck); this only sets and clears that
+     one class. It reads scroll position and nothing else: no storage, no URL,
+     no analytics, and it never touches the Search term. Desktop never tucks. */
+  function wireFloatingNav() {
+    if (!window.matchMedia || !document.querySelector('.brand-mark, .pns-pill')) { return; }
+    var mq = window.matchMedia('(max-width:720px)'), html = document.documentElement;
+    var TOP = 96, STEP = 8, last = window.pageYOffset || 0, CTRL = '.brand-mark, .pns-pill, .brand-info, .brand-info-pop';
+    function mustShow() {
+      if (!mq.matches || html.classList.contains('pns-open')) { return true; }
+      var a = document.activeElement;
+      if (a && a.closest && a.closest(CTRL)) { return true; }
+      var pop = document.querySelector('.brand-info-pop');
+      return !!(pop && !pop.hidden);
+    }
+    /* Only write when the class is present: the observer below watches this
+       element's class, and an unconditional write would re-trigger it. */
+    function show() { if (html.classList.contains('pns-nav-tuck')) { html.classList.remove('pns-nav-tuck'); } }
+    function tuck() { if (mustShow() || html.classList.contains('pns-nav-tuck')) { return; } html.classList.add('pns-nav-live', 'pns-nav-tuck'); }
+    window.addEventListener('scroll', function () {
+      var y = window.pageYOffset || 0, d = y - last;
+      if (y < TOP) { show(); last = y; return; }
+      if (d > STEP) { tuck(); last = y; } else if (d < -STEP) { show(); last = y; }
+    }, { passive: true });
+    document.addEventListener('focusin', function (ev) {
+      if (ev.target && ev.target.closest && ev.target.closest(CTRL)) { show(); }
+    });
+    /* Opening Search or the information panel always brings the controls back. */
+    if (window.MutationObserver) {
+      new MutationObserver(function () { if (mustShow()) { show(); } })
+        .observe(html, { attributes: true, attributeFilter: ['class'] });
+      var pop = document.querySelector('.brand-info-pop');
+      if (pop) { new MutationObserver(function () { if (!pop.hidden) { show(); } })
+        .observe(pop, { attributes: true, attributeFilter: ['hidden'] }); }
+    }
+    var onChange = function () { if (!mq.matches) { show(); } };
+    if (mq.addEventListener) { mq.addEventListener('change', onChange); }
+    else if (mq.addListener) { mq.addListener(onChange); }
   }
 
   function wire() {

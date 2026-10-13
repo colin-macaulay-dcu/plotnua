@@ -5,6 +5,13 @@
    SEARCH: nothing here restyles an existing component, and no existing inline
    CSS was extracted.
 
+   MOBILE FLOATING NAVIGATION (founder approval, 13 October 2026, Option B).
+   At 720px and below this file now ALSO declares the compact geometry of
+   .brand-mark and .brand-info, and the hide-on-scroll state for both floating
+   controls. That is the one deliberate exception to the paragraph below, which
+   describes the original rail and still holds for every width above 720px.
+   See the MOBILE FLOATING NAVIGATION section at the end of this file.
+
    THE LEFT-HAND CONTROLS ARE NOT TOUCHED.
    The earlier design put Search into the left rail as MARK -> SEARCH -> INFO,
    which required moving the information control and re-anchoring its popover.
@@ -16,10 +23,12 @@
 
    SEARCH IS A TOP-RIGHT PILL:   [icon] Search PlotNua
 
-   The label is kept at every width, 390px included. The founder asked for a
-   proper labelled control, not an unexplained magnifying glass, and the
-   measurement supports it: at 390px the pill is about 150px against 358px of
-   usable width.
+   SUPERSEDED AT 720px AND BELOW (founder approval, 13 October 2026): the
+   label was originally kept at every width. Measured on the live pages, the
+   labelled pill and the logo together covered 58% of the top of a 390px
+   screen as content scrolled beneath them, so on mobile Search is now a
+   compact icon circle whose accessible name is still "Search PlotNua". Above
+   720px the labelled pill is unchanged.
 
    Namespacing: every selector is .pns-*. There is exactly one exception,
    html.pns-open, which locks scroll behind the overlay.
@@ -87,11 +96,21 @@
 .pns-pill[data-pns-current="true"] .pns-pill-cue{ opacity:0; }
 
 @media(max-width:720px){
-  /* The LABEL IS KEPT. Measured: the pill is about 150px at this size against
-     390 - 16 - 56 = 318px of free width beside the brand mark. */
-  .pns-pill{ top:16px; right:16px; height:36px; padding:0 12px 0 5px; gap:7px; }
-  .pns-pill-ico-wrap{ width:26px; height:26px; }
-  .pns-pill-label{ font-size:13.5px; }
+  /* COMPACT SEARCH (Option B). A 36px circle carrying the same sage icon disc.
+     The label is hidden VISUALLY only: it stays in the accessibility tree, and
+     the link's aria-label is unchanged, so the control is still announced as
+     "Search PlotNua". The ::after layer gives a 44px tap target without
+     enlarging what is drawn. */
+  .pns-pill{ top:12px; right:12px; width:36px; height:36px; padding:0; gap:0;
+             justify-content:center; border-radius:50%; }
+  .pns-pill::after{ content:''; position:absolute; left:50%; top:50%;
+             width:44px; height:44px; transform:translate(-50%,-50%); }
+  .pns-pill-ico-wrap{ width:28px; height:28px; }
+  .pns-pill-ico{ width:14px; height:14px; }
+  .pns-pill-label{ position:absolute; width:1px; height:1px; margin:-1px; padding:0;
+             overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%);
+             white-space:nowrap; border:0; }
+  .pns-pill-cue{ display:none; }
 }
 
 /* ------------------------------------------------------------- the overlay */
@@ -236,4 +255,49 @@ a.pns-title:hover{ text-decoration:underline; }
 
 @media(prefers-reduced-motion:reduce){
   .pns-pill, .pns-chev{ transition:none; }
+}
+
+/* ==========================================================================
+   MOBILE FLOATING NAVIGATION · Option B (founder approval, 13 October 2026)
+   ==========================================================================
+   Everything below is inside max-width:720px. Desktop is untouched.
+
+   1. COMPACT LOGO. The mark keeps its ivory tile, radius family and shadow;
+      only the tile shrinks (40 -> 36px) and moves 4px nearer the corner. The
+      homepage information control follows it up, centred under the tile.
+      Specificity is raised to html body so this shared file wins over each
+      page's own head <style>, whatever order the two are parsed in.
+
+   2. STEP ASIDE WHILE READING. search.js sets html.pns-nav-tuck while the
+      visitor scrolls DOWN beyond the opening area, and removes it on any
+      upward scroll, near the top, while Search or the homepage information
+      panel is open, and whenever either control has keyboard focus. Tucked
+      controls are faded, not removed: they stay in the tab order, and focusing
+      one brings both back. There is no header bar and no background strip, so
+      no screen space is reserved.
+
+   3. REDUCED MOTION. Every Discovery page forces .brand-mark to opacity:1 and
+      transform:none with !important under prefers-reduced-motion. The hidden
+      state therefore uses !important on opacity, and under reduced motion the
+      controls do not move at all: they fade, instantly.
+   ========================================================================== */
+@media(max-width:720px){
+  html body .brand-mark{ top:12px; left:12px; width:36px; height:36px; border-radius:10px; }
+  html body .brand-mark img{ width:26px; height:26px; border-radius:7px; }
+  html body .brand-info{ top:58px; left:20px; }
+  html body .brand-info-pop{ top:86px; left:12px; width:min(340px, calc(100vw - 24px));
+                             max-height:calc(100vh - 102px); }
+
+  /* The fast transition applies only once the behaviour is live, so each
+     page's own slow fade-in of the mark on arrival is unchanged. */
+  html.pns-nav-live .brand-mark, html.pns-nav-live .pns-pill, html.pns-nav-live .brand-info{
+    transition:opacity .22s ease, transform .28s cubic-bezier(.4,0,.2,1); }
+  html.pns-nav-tuck .brand-mark, html.pns-nav-tuck .pns-pill, html.pns-nav-tuck .brand-info{
+    opacity:0 !important; transform:translateY(-64px); pointer-events:none; }
+}
+@media(max-width:720px) and (prefers-reduced-motion:reduce){
+  html.pns-nav-live .brand-mark, html.pns-nav-live .pns-pill, html.pns-nav-live .brand-info{
+    transition:none !important; }
+  html.pns-nav-tuck .brand-mark, html.pns-nav-tuck .pns-pill, html.pns-nav-tuck .brand-info{
+    transform:none !important; }
 }
