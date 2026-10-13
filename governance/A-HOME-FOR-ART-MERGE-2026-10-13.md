@@ -99,3 +99,28 @@
 | `prove-landmarks.mjs` | 133 / 133 (7 fewer than before because the redirect page is no longer a Discovery) |
 | Search index and rail · library images and capability · image provenance 11 / 11 · image-rights manifest up to date | pass |
 | House as Power Station and Borrowed Garden Explorers · G6 privacy 43 / 43 · Garden Worker 74 / 74 · disclosure firewall 27 / 27 · journey-exit mutations 19 caught | pass |
+
+## Addendum: visual and narrative priority correction (founder, 13 Oct 2026, 20:34)
+
+The merged page was approved in principle, but it led with buying. It now leads with **Open Your Home to Art**, told in that Discovery's own pictures:
+
+1. **Hero:** A Home for Art, unchanged. The spark is the hosting Discovery's own: *"What if a room you rarely use could give local art somewhere to be seen?"*
+2. **The overlooked opportunity.** New heading: *"You may already have something an artist needs."* Underneath: *"Making the work is rarely an artist's hardest problem…"* and the **Space ↔ Space** board, verbatim.
+3. **Before and after, in pictures:**
+   - the empty wall annotated as a potential asset ("A wall, a floor, and a door that opens.");
+   - the artist among finished work ("The work exists already. What it lacks is a room.");
+   - the same room hung with art. This was the hosting Discovery's hero. New caption: *"The same room, once the work has somewhere to be seen."*
+4. **Three possibilities**, in the founder's order:
+   - **Open your home to art** (the four-way ladder; "Check how far you'd go"), followed by the outcome plate ("A work leaves with somebody who saw it in a real room.");
+   - **Live with art**, followed by the evening plate;
+   - **Discover & own** (why a blank wall matters, what you are buying, sizing, where to look, commissioning, before you buy; "Check your wall").
+5. **Shared guidance:** before anything arrives, three people are better off, the FAQ, and where this could go.
+6. **Both checks**, hosting first.
+
+**Other changes:**
+- **Title and description** reordered: Host, Live With or Buy. Search rebuilt through its builder.
+- **Two buyer-side plates dropped** because they repeated the empty-wall and artist concepts: `5dc201…` (annotated fireplace wall) and `5d43b14…` (artist at easel).
+- **Unpublished image not used:** the original DISC-024 "empty room" master (`933e80…`) is not published and not declared, so it was not introduced.
+- **Unchanged:** both checks, the My Plot keys, the redirect, every caution, the closed register and imagery permissions.
+- **New guard M10** enforces this order.
+- **Browser validation:** 58 / 58.

@@ -146,6 +146,9 @@ B2_P1 = ("Some artists and galleries may agree to let you experience an artwork 
          "purchasing it. Others may consider temporary displays by individual arrangement.")
 B2_P2 = ("PlotNua does not currently arrange artwork loans, rentals or placements. Any arrangement would "
          "need to be agreed directly with the artist or gallery.")
+OVERLOOKED_H2 = "You may already have something an artist needs."
+AFTER_CAPTION = "The same room, once the work has somewhere to be seen."
+HOST_HERO_ALT = re.search(r'<img id="dHeroImg"[^>]*alt="([^"]*)"', O0).group(1)
 CHECK23 = "Check your wall"
 CHECK24 = "Check how far you&rsquo;d go"
 SUB23 = ("Five short questions about the wall itself, and we&rsquo;ll set out what it will take, what to "
@@ -154,7 +157,7 @@ SUB24 = ("Five short questions about the space you have and how far you&rsquo;d 
          "what you&rsquo;d need to settle before anything arrived. No address, no contact details, and nothing "
          "sent anywhere.")
 # Interface wording (labels, signposts) — new, non-factual, declared.
-NEW_TEXT = ["A Home for Art", HERO_SUB, HERO_INTRO, LEDE, B1[0], B1[1], B2[0], B2[1], B3[0], B3[1], B2_P1, B2_P2,
+NEW_TEXT = ["A Home for Art", OVERLOOKED_H2, AFTER_CAPTION, "The overlooked opportunity", HERO_SUB, HERO_INTRO, LEDE, B1[0], B1[1], B2[0], B2[1], B3[0], B3[1], B2_P1, B2_P2,
             CHECK23, CHECK24, "Possibility one", "Possibility two", "Possibility three",
             "Three possibilities. One home.", "Which sounds like you?",
             "Before anything arrives, the custody, insurance and money questions below apply here too.",
@@ -167,9 +170,9 @@ NEW_TEXT = ["A Home for Art", HERO_SUB, HERO_INTRO, LEDE, B1[0], B1[1], B2[0], B
             "The Borrowed Garden", "Room To Build", "What Could You Build in Your Garden?", "On Screen",
             "Your Home on Screen", "Explore another possibility"]
 
-TITLE = "A Home for Art: Buy, Live With or Host Original Irish Art | PlotNua"
-DESC = ("Find, buy or commission original Irish art, live with an artist&rsquo;s work by direct arrangement, "
-        "or open your home to art by offering space for finished work. What to agree, insure and settle in Ireland.")
+TITLE = "A Home for Art: Host, Live With or Buy Original Irish Art | PlotNua"
+DESC = ("Open your home to art by offering space for an artist&rsquo;s finished work, live with an artist&rsquo;s work "
+        "by direct arrangement, or find, buy or commission original Irish art. What to agree, insure and settle in Ireland.")
 OG_T = "A Home for Art | PlotNua Discoveries"
 OG_D = "Your home could be more than somewhere to hang art. Three possibilities, one home, and you decide how far to go."
 
@@ -225,11 +228,15 @@ def cta(href, label, note):
 
 
 def main_html():
+    # VISUAL AND NARRATIVE PRIORITY CORRECTION (founder, 13 Oct 2026): the hosting
+    # story leads. Order: the overlooked opportunity (SPACE <-> SPACE) -> before
+    # and after in pictures -> three possibilities -> Open your home (primary) ->
+    # Live with art -> Discover & own -> shared guidance -> both checks.
     paths = "".join(
         '      <li><a class="hfa-path" href="#%s"><span class="hfa-path-n">%s</span>'
         '<span class="hfa-path-t">%s</span><span class="hfa-path-l">%s</span></a></li>\n' % (a, n, t, l)
-        for a, n, (t, l) in (("discover-and-own", "Possibility one", B1), ("live-with-art", "Possibility two", B2),
-                             ("open-your-home-to-art", "Possibility three", B3)))
+        for a, n, (t, l) in (("open-your-home-to-art", "Possibility one", B3), ("live-with-art", "Possibility two", B2),
+                             ("discover-and-own", "Possibility three", B1)))
     intro = ('  <section class="article-section reveal">\n'
              '    <div class="kicker">Three possibilities. One home.</div>\n'
              '    <p class="hfa-lede">%s</p>\n'
@@ -237,24 +244,39 @@ def main_html():
              '      <p class="hfa-choose-h" id="hfaChooseH">Which sounds like you?</p>\n'
              '    <ul class="hfa-paths">\n%s    </ul>\n    </nav>\n'
              '  </section>\n' % (LEDE, paths))
+    split_at = O_FIRST.index('    <p class="dq-note"><strong>Nobody has to come to your door.</strong>')
+    first_a = O_FIRST[:split_at].rsplit("\n\n", 1)[0] + "\n"     # opening line + SPACE <-> SPACE
+    first_b = O_FIRST[split_at:].rsplit("  </section>\n", 1)[0]    # no visitors, the ladder, money
+    overlooked = first_a.replace('  <section class="article-section reveal">\n',
+                                 '  <section class="article-section reveal">\n'
+                                 '    <div class="kicker">The overlooked opportunity</div>\n'
+                                 '    <h2>%s</h2>\n' % OVERLOOKED_H2, 1) + "  </section>\n"
+    before_plate = O_IMG_PA.replace(
+        'alt="The same living room with its large wall empty, annotated by PlotNua as a potential asset."',
+        'alt="An Irish living room with its large wall empty, annotated by PlotNua as a potential asset."')
+    after_plate = ('<section class="imagine-photo reveal">\n'
+                   '  <img src="assets/img/dfb125ba9dd7cd87.jpg" width="1408" height="768" loading="lazy" decoding="async"\n'
+                   '       alt="%s">\n'
+                   '  <div class="caption"><p>%s</p></div>\n'
+                   '</section>\n' % (HOST_HERO_ALT, AFTER_CAPTION))
     display_li = re.search(r'<li>\s*<span class="dq-adv-label">Display</span>\s*(<span class="dq-fact">.*?</span>)\s*'
                            r'(<span class="dq-note">.*?</span>)\s*</li>', O_FIRST, re.S)
     seller = "<strong>The artist is the seller.</strong> They own the work, set the price, deal with the buyer and receive the payment."
     if seller not in O0:
         die("M1 source sentence moved: the artist is the seller")
-    b2 = (branch_open("Possibility two", "live-with-art", B2[0], B2[1]) +
-          '    <p>%s</p>\n    <p><strong>%s</strong></p>\n' % (B2_P1, B2_P2) +
-          '    <div class="dq-adv">\n      <span class="dq-cat dq-adv-cat">Display</span>\n'
-          '      <ul class="dq-rows">\n        <li>%s\n            %s</li>\n      </ul>\n    </div>\n'
-          % (display_li.group(1), display_li.group(2)) +
-          '    <p class="dq-note"><strong>If you come to love the work:</strong> %s</p>\n' % seller.replace(
-              "<strong>The artist is the seller.</strong>", "the artist is the seller.") +
-          '    <p class="dq-note"><a class="hfa-jump" href="#before-anything-arrives">Before anything arrives, the custody, insurance '
-          'and money questions below apply here too.</a></p>\n' +
-          cta(C24, CHECK24, SUB24) + "  </section>\n")
-    b1 = branch_open("Possibility one", "discover-and-own", B1[0], B1[1]) + "  </section>\n"
-    b3 = (branch_open("Possibility three", "open-your-home-to-art", B3[0], B3[1]) +
-          O_FIRST.split("\n", 1)[1].rsplit("  </section>\n", 1)[0] + cta(C24, CHECK24, SUB24) + "  </section>\n")
+    b_open = (branch_open("Possibility one", "open-your-home-to-art", B3[0], B3[1]) +
+              first_b + cta(C24, CHECK24, SUB24) + "  </section>\n")
+    b_live = (branch_open("Possibility two", "live-with-art", B2[0], B2[1]) +
+              '    <p>%s</p>\n    <p><strong>%s</strong></p>\n' % (B2_P1, B2_P2) +
+              '    <div class="dq-adv">\n      <span class="dq-cat dq-adv-cat">Display</span>\n'
+              '      <ul class="dq-rows">\n        <li>%s\n            %s</li>\n      </ul>\n    </div>\n'
+              % (display_li.group(1), display_li.group(2)) +
+              '    <p class="dq-note"><strong>If you come to love the work:</strong> %s</p>\n' % seller.replace(
+                  "<strong>The artist is the seller.</strong>", "the artist is the seller.") +
+              '    <p class="dq-note"><a class="hfa-jump" href="#before-anything-arrives">Before anything arrives, the custody, insurance '
+              'and money questions below apply here too.</a></p>\n' +
+              cta(C24, CHECK24, SUB24) + "  </section>\n")
+    b_own = branch_open("Possibility three", "discover-and-own", B1[0], B1[1]) + "  </section>\n"
     settle = O_SETTLE.replace('<section class="article-section reveal">',
                               '<section class="article-section reveal" id="before-anything-arrives">', 1)
     before_cta = A_BEFORE.rsplit("  </section>\n", 1)[0] + cta(C23, CHECK23, SUB23) + "  </section>\n"
@@ -263,14 +285,15 @@ def main_html():
               "".join(re.findall(r"    <p[^>]*>.*?</p>\n", O_FUTURE, re.S)) + "  </section>\n")
     art = lambda *xs: '<div class="article">\n\n' + "\n".join(xs) + '\n</div>\n\n'
     return ('<main id="pn-main">\n' +
-            art(intro, A_WHY) + A_IMG_WALL + "\n" +
-            art(A_SIZE) + A_IMG_SAME + "\n" +
-            art(b1, A_BUYING) + A_IMG_STUDIO + "\n" +
+            art(overlooked) +
+            before_plate + "\n" + O_IMG_ARTIST + "\n" + after_plate + "\n" +
+            art(intro) +
+            art(b_open) + O_IMG_OUTCOME + "\n" +
+            art(b_live) + A_IMG_EVENING + "\n" +
+            art(b_own, A_WHY, A_BUYING, A_SIZE) + A_IMG_SAME + "\n" +
             art(A_LOOK, A_COMM, before_cta) +
-            art(b2) + A_IMG_EVENING + "\n" +
-            art(b3) + O_IMG_PA + "\n" +
-            art(settle) + O_IMG_ARTIST + "\n" +
-            art(O_BETTER) + O_IMG_OUTCOME + "\n" +
+            art(settle) +
+            art(O_BETTER) +
             art(A_FAQ, future).rstrip("\n") + "\n</main>\n")
 
 
@@ -281,9 +304,9 @@ PANEL = ('<section class="pb-preview reveal" id="discover-your-property">\n'
          '    <h2 class="pb-headline">Check this against your own home</h2>\n'
          '    <p class="pb-subhead">Two short checks. Nothing about your address.</p>\n'
          '    <div class="hfa-checks">\n'
-         '      <div class="hfa-check"><h3>Buying or commissioning</h3><p>%s</p>\n'
-         '        <a class="btn-primary" href="%s">%s</a></div>\n'
          '      <div class="hfa-check"><h3>Living with or hosting work</h3><p>%s</p>\n'
+         '        <a class="btn-primary" href="%s">%s</a></div>\n'
+         '      <div class="hfa-check"><h3>Buying or commissioning</h3><p>%s</p>\n'
          '        <a class="btn-primary" href="%s">%s</a></div>\n'
          '    </div>\n'
          '    <div class="cs-exits">\n'
@@ -291,7 +314,7 @@ PANEL = ('<section class="pb-preview reveal" id="discover-your-property">\n'
          '      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>\n'
          '      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>\n'
          '    </div>\n'
-         '  </section>\n' % (SUB23, C23, CHECK23, SUB24, C24, CHECK24))
+         '  </section>\n' % (SUB24, C24, CHECK24, SUB23, C23, CHECK23))
 
 
 def related():
@@ -329,6 +352,8 @@ def merged_page():
         ("    <h1>Buy Original Irish Art</h1>\n    <p class=\"subtitle\">One original work, made by someone you could meet.</p>\n"
          "    <p class=\"intro\">You may already have the place for something original.</p>",
          "    <h1>A Home for Art</h1>\n    <p class=\"subtitle\">%s</p>\n    <p class=\"intro\">%s</p>" % (HERO_SUB, HERO_INTRO)),
+        ("  <p>What if the wall you stopped noticing became the part of the room you noticed first?</p>",
+         "  <p>What if a room you rarely use could give local art somewhere to be seen?</p>"),
         ("  /* ---- DOMINANT OPPORTUNITY SURFACE (property-revelation pilot).",
          PORTED_CSS + "  /* ---- DOMINANT OPPORTUNITY SURFACE (property-revelation pilot)."),
         ('<a href="discovery-open-your-home-to-art.html" style="display:inline-block;padding:10px 14px;border:1px solid '
@@ -569,6 +594,14 @@ def guards(page):
     cur24 = (ROOT / C24).read_text(encoding="utf-8")
     if cur24.replace('href="%s">Back to the story' % TARGET, 'href="%s">Back to the story' % OLD) != head24:
         die("M8 the DISC-024 check changed beyond its back-link")
+    # M10 · founder hierarchy: hosting story first, then Open > Live with > Discover & own; hosting check first
+    order = [page.find(x) for x in ("<h2>%s</h2>" % OVERLOOKED_H2, "assets/img/046ec577a454599b.jpg",
+                                     "assets/img/6442d19ec2dd1df0.jpg", AFTER_CAPTION, 'class="hfa-paths"',
+                                     'id="open-your-home-to-art"', 'id="live-with-art"', 'id="discover-and-own"',
+                                     'id="before-anything-arrives"', "<h3>Living with or hosting work</h3>",
+                                     "<h3>Buying or commissioning</h3>")]
+    if -1 in order or order != sorted(order):
+        die("M10 the founder's visual and narrative hierarchy is not in order: %r" % order)
     stale = [f.name for f in ROOT.glob("*.html") if f.name != OLD and
              re.search(r"""href=["']%s["']|'%s'""" % (re.escape(OLD), re.escape(OLD)), f.read_text(encoding="utf-8"))]
     if stale:
@@ -591,7 +624,7 @@ def main(argv):
             print("CHECK FAILED: %s is out of date; run --apply" % MERGED); sys.exit(1)
         apply_edits(False)
     guards((ROOT / MERGED).read_text(encoding="utf-8"))
-    print("A Home for Art: merged page, redirect and %d consolidation edits · %s — M1-M9 pass"
+    print("A Home for Art: merged page, redirect and %d consolidation edits · %s — M1-M10 pass"
           % (len(CONSOLIDATION), "APPLIED" if "--apply" in argv else "CHECK OK"))
 
 
