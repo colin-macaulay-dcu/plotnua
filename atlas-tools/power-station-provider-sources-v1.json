@@ -1,0 +1,71 @@
+{
+ "_about": "Official supplier pages for the House as Power Station Provider Explorer, re-read on 13 October 2026 at founder instruction. Every quote is copied verbatim from the supplier's own page as served that day. These re-checks supersede the 22 September 2026 pilot capture for the Explorer only; supplier-export-evidence.json is not changed by this file. Rates and earnings figures appear on these pages but are deliberately NOT quoted here: the Explorer shows neither.",
+ "checked": "2026-10-13",
+ "sources": [
+  {
+   "code": "SRC-PS-EI",
+   "org": "ORG-ESUP-EI",
+   "title": "Electric Ireland — Microgeneration for Homes",
+   "url": "https://www.electricireland.ie/residential/products/microgeneration",
+   "lastVerified": "2026-10-13",
+   "quotes": {
+    "customer": "Only Electric Ireland customers who meet the criteria above are eligible for the Microgeneration Scheme through Electric Ireland.",
+    "nc6": "You must have notified ESB Networks via an NC6 form of your export grid connection.",
+    "meter": "Eligible customers will need a smart meter installed to be paid for Microgeneration export.",
+    "deemed": "If you're not eligible to have a smart meter installed, then you'll be paid a deemed export calculation.",
+    "credit": "you will then receive a microgeneration credit on each bill thereafter in line with your billing cycle.",
+    "variable": "This rate is variable and subject to change."
+   }
+  },
+  {
+   "code": "SRC-PS-BGE",
+   "org": "ORG-ESUP-BGE",
+   "title": "Bord Gáis Energy — Microgeneration",
+   "url": "https://www.bordgaisenergy.ie/home/microgeneration",
+   "lastVerified": "2026-10-13",
+   "quotes": {
+    "customer": "You're an existing Bord Gáis Energy electricity customer, or you're signing up for an electricity or Dual Fuel plan with Bord Gáis Energy.",
+    "nc6": "You're exporting electricity to the grid and have sent an NC6 or equivalent form to ESB Networks to connect your microgenerator to the grid.",
+    "meter": "If you're eligible for a smart meter, you must have one installed to qualify for a payment*.",
+    "deemed": "This rate is offered to both metered and eligible deemed customers.  Deemed customers are customers who are not eligible to have a smart meter installed.  In this case, your export amount will be calculated (deemed) using a pre-determined formula.",
+    "plan": "Microgen Export Plan T&Cs",
+    "freq4": "Once you’ve exported for at least 3 months, payments will be made 4 times per year as a credit to your electricity bill.",
+    "freq6": "Payment will be made every six months as a credit to your supply invoice.",
+    "variable": "This rate is subject to change."
+   }
+  },
+  {
+   "code": "SRC-PS-ENERGIA",
+   "org": "ORG-ESUP-ENERGIA",
+   "title": "Energia — Microgeneration Scheme",
+   "url": "https://www.energia.ie/home-upgrades/energia-and-the-microgeneration-scheme",
+   "lastVerified": "2026-10-13",
+   "quotes": {
+    "customer": "No, not at the moment. To join the Microgeneration Scheme, your electricity import and export must be with the same supplier.",
+    "meter": "You’ll need a smart meter to join the Microgeneration Scheme and receive payments for exported electricity.",
+    "meterreq": "Have a smart meter installed (Energia can request one for you)",
+    "nc6": "Submit the NC6 form to ESBN (your installer may do this for you)",
+    "credit": "Payments are issued as a credit on your bi-monthly electricity bill, not as direct bank transfers.",
+    "readings": "Thanks to your smart meter, readings are taken every 30 minutes and automatically sent to ESBN.",
+    "period": "Please note: The export period shown on your bill might sometimes differ from your import period due to ESBN data delivery timings."
+   }
+  },
+  {
+   "code": "SRC-PS-FLOGAS",
+   "org": "ORG-ESUP-FLOGAS",
+   "title": "Flogas — Micro-generation",
+   "url": "https://www.flogas.ie/help-centre/flogas-micro-generation/",
+   "lastVerified": "2026-10-13",
+   "quotes": {
+    "customer": "Customers must be registered with Flogas for their import electricity to be remunerated by Flogas for excess export electricity.",
+    "nc6": "Have installed microgeneration and informed ESBN using the NC6 or equivalent form, and;",
+    "meter": "If you are eligible for a Smart Meter but have not had one installed, then you are not eligible for the Clean Export Guarantee.",
+    "deemed": "If you don’t have a Smart Meter as you are not currently eligible for one, ESBN (ESB Networks) will calculate a “deemed” amount",
+    "credit": "Excess exported electricity will be applied to your account as credit every two months using the metered or deemed calculation provided by ESBN that is applicable to your account.",
+    "statement": "Statements will be issued to you detailing the export, rate(s) and if the credit is based on the metered or deemed calculation.",
+    "notice": "A notification by email or letter will be issued to you 30 days in advance of the effective date of the tariff change",
+    "vary": "Flogas reserve the right to vary rates."
+   }
+  }
+ ]
+}

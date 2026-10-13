@@ -1,0 +1,11 @@
+{
+ "_about": "Read-back of the four Atlas Organisation records the House as Power Station Provider Explorer may show, taken read-only on 13 October 2026. Organisation codes only: no Airtable record identifiers are held in this publicly served file. Nothing in Atlas was created or changed.",
+ "readBack": "2026-10-13",
+ "discovery": {"code": "DISC-026", "page": "discovery-house-as-power-station.html"},
+ "organisations": [
+  {"code": "ORG-ESUP-BGE", "name": "Bord Gáis Energy", "type": "Service Provider", "products": 0, "partners": 0, "partnerStatus": null, "atlasSource": "Bord Gáis Energy — Microgeneration"},
+  {"code": "ORG-ESUP-EI", "name": "Electric Ireland", "type": "Service Provider", "products": 0, "partners": 0, "partnerStatus": null, "atlasSource": "Electric Ireland — Microgeneration for Homes"},
+  {"code": "ORG-ESUP-ENERGIA", "name": "Energia", "type": "Service Provider", "products": 0, "partners": 0, "partnerStatus": null, "atlasSource": "Energia — Microgeneration Scheme"},
+  {"code": "ORG-ESUP-FLOGAS", "name": "Flogas", "type": "Service Provider", "products": 0, "partners": 0, "partnerStatus": null, "atlasSource": "Flogas — Micro-generation"}
+ ]
+}

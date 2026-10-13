@@ -1,0 +1,75 @@
+{
+ "_about": "Public wording for the House as Power Station Provider Explorer. Prepared 13 October 2026 under the founder's instruction to resume the electricity-export Provider Explorer (verified, current official evidence; no rankings, recommendations, rates, earnings or implied partnerships). For founder review before publication. Every sentence cites the supplier's own page AND the verbatim quote(s) it rests on (s = source codes, q = quote keys). ts = time-sensitive: withheld once its evidence is more than 90 days old.",
+ "sourceLabels": {
+  "SRC-PS-EI": "Electric Ireland's microgeneration page",
+  "SRC-PS-BGE": "Bord Gáis Energy's microgeneration page",
+  "SRC-PS-ENERGIA": "Energia's microgeneration page",
+  "SRC-PS-FLOGAS": "Flogas's micro-generation page"
+ },
+ "tabs": [
+  {
+   "key": "suppliers",
+   "label": "Electricity suppliers",
+   "note": "Every electricity supplier must pay for eligible export. These are four that PlotNua has checked, not a complete list. Each pays only households that also buy their electricity from it.",
+   "orgs": ["ORG-ESUP-BGE", "ORG-ESUP-EI", "ORG-ESUP-ENERGIA", "ORG-ESUP-FLOGAS"]
+  }
+ ],
+ "organisations": {
+  "ORG-ESUP-EI": {
+   "kind": "Electricity supplier",
+   "subtitle": "Microgeneration Scheme",
+   "relationship": "",
+   "offers": [
+    {"t": "Pays its own customers for the electricity their home exports, as a credit on each bill in line with the billing cycle.", "s": ["SRC-PS-EI"], "q": ["customer", "credit"], "ts": true}
+   ],
+   "where": [],
+   "how": [
+    {"t": "To be paid, the home needs a smart meter, and ESB Networks must have been told about the export connection on an NC6 form.", "s": ["SRC-PS-EI"], "q": ["meter", "nc6"], "ts": true},
+    {"t": "Where a home is not eligible for a smart meter, Electric Ireland says it pays on a deemed export calculation instead.", "s": ["SRC-PS-EI"], "q": ["deemed"], "ts": true},
+    {"t": "It describes its rate as variable and subject to change.", "s": ["SRC-PS-EI"], "q": ["variable"], "ts": true}
+   ]
+  },
+  "ORG-ESUP-BGE": {
+   "kind": "Electricity supplier",
+   "subtitle": "Microgen Export Plan",
+   "relationship": "",
+   "offers": [
+    {"t": "Pays its own electricity customers for exported electricity under its Microgen Export Plan, as a credit to the electricity bill.", "s": ["SRC-PS-BGE"], "q": ["customer", "plan", "freq4"], "ts": true}
+   ],
+   "where": [],
+   "how": [
+    {"t": "A home that is eligible for a smart meter must have one installed, and ESB Networks must have received an NC6 or equivalent form.", "s": ["SRC-PS-BGE"], "q": ["meter", "nc6"], "ts": true},
+    {"t": "A home that is not eligible for a smart meter is paid on a deemed amount, calculated by formula.", "s": ["SRC-PS-BGE"], "q": ["deemed"], "ts": true},
+    {"t": "Payments start after at least three months of export. Its page gives the frequency as four times a year in one place and every six months in another, so confirm it with Bord Gáis Energy.", "s": ["SRC-PS-BGE"], "q": ["freq4", "freq6"], "ts": true},
+    {"t": "It says its rate is subject to change.", "s": ["SRC-PS-BGE"], "q": ["variable"], "ts": true}
+   ]
+  },
+  "ORG-ESUP-ENERGIA": {
+   "kind": "Electricity supplier",
+   "subtitle": "Microgeneration Scheme",
+   "relationship": "",
+   "offers": [
+    {"t": "Credits exported electricity to the bill of a household whose import and export are both with Energia, on the two-monthly bill, as a credit rather than a bank transfer.", "s": ["SRC-PS-ENERGIA"], "q": ["customer", "credit"], "ts": true}
+   ],
+   "where": [],
+   "how": [
+    {"t": "A smart meter is needed to join, and Energia says it can request one. The NC6 form must be submitted to ESB Networks, which an installer may do.", "s": ["SRC-PS-ENERGIA"], "q": ["meter", "meterreq", "nc6"], "ts": true},
+    {"t": "Readings are taken every thirty minutes, and Energia notes that the export period on a bill can differ from the import period.", "s": ["SRC-PS-ENERGIA"], "q": ["readings", "period"], "ts": true}
+   ]
+  },
+  "ORG-ESUP-FLOGAS": {
+   "kind": "Electricity supplier",
+   "subtitle": "Micro-generation",
+   "relationship": "",
+   "offers": [
+    {"t": "Credits excess exported electricity to a household's Flogas electricity account every two months, with a statement showing whether the credit was metered or deemed.", "s": ["SRC-PS-FLOGAS"], "q": ["credit", "statement"], "ts": true}
+   ],
+   "where": [],
+   "how": [
+    {"t": "The household must be registered with Flogas for its import electricity, and ESB Networks must have been informed on an NC6 or equivalent form.", "s": ["SRC-PS-FLOGAS"], "q": ["customer", "nc6"], "ts": true},
+    {"t": "A home that is eligible for a smart meter but does not have one is not eligible. A home not currently eligible for one is paid on a deemed amount calculated by ESB Networks.", "s": ["SRC-PS-FLOGAS"], "q": ["meter", "deemed"], "ts": true},
+    {"t": "Flogas reserves the right to vary its rate and says it gives thirty days' notice of a change by email or letter.", "s": ["SRC-PS-FLOGAS"], "q": ["vary", "notice"], "ts": true}
+   ]
+  }
+ }
+}
