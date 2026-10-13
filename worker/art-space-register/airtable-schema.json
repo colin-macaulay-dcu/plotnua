@@ -1,8 +1,10 @@
 {
   "schema": "plotnua.art-space-register.airtable.v1",
-  "status": "SPECIFICATION ONLY. The base does not exist and must not be created until the founder approves (decision of 13 Oct 2026). Guard R14 in atlas-tools/build-art-space-register.py keeps this file identical to what the Worker writes.",
+  "status": "BASE CREATED by the founder, 13 Oct 2026 (appS4gWOxuZqJyWvU). Its tables, fields, types and select options were verified read-only against this file the same evening: all match. Views beyond the default Grid view are still to be configured. Guard R14 in atlas-tools/build-art-space-register.py keeps this file identical to what the Worker writes.",
   "base": {
     "name": "PlotNua Art Space Register",
+    "id": "appS4gWOxuZqJyWvU",
+    "id_note": "An identifier, not a credential: useless without the token. Stored in the Worker as the secret AIRTABLE_BASE so that it persists across deploys.",
     "separate_from": ["PlotNua Gardener Register", "PlotArt — Artist Evidence (E1)", "PlotNua Atlas Core", "PlotNua Leads"],
     "collaborators": "the founder only",
     "never": ["share links or shared views", "forms", "interfaces", "automations", "syncs", "extensions that send data out", "sample rows"]
@@ -16,7 +18,7 @@
     "stored_as": "Cloudflare Worker secret AIRTABLE_TOKEN"
   },
   "retention_is_manual": "The two formula fields (erase_after, remove_after) and the two views built on them only FLAG records that are due. Nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: delete the Hosts record, then fill deletion_honoured_at on its consent proof; 12 months later, delete that consent proof.",
-  "dates": "Every date field: Date, include time, 24-hour, 'Use the same time zone (GMT) for all collaborators'.",
+  "dates": "Every date field: Date (ISO), include time, 24-hour, one fixed time zone for all collaborators. Created with Europe/Dublin, which is accepted: the Worker always sends UTC instants with a trailing Z, Airtable stores every dateTime as a UTC instant and returns UTC through the API, so the time zone setting changes only what a person sees. Formula results (erase_after, remove_after) should display in ISO date format (YYYY-MM-DD); they were created in US format (M/D/YYYY), which is a display-only change.",
   "tables": [
     {
       "name": "Hosts",

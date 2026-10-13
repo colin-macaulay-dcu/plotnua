@@ -319,3 +319,62 @@ This supersedes the "not changed" note in §11.7. The DISC-024 check no longer s
 - the closed register and the Garden Owner Register.
 
 The merge builder declares both edits in `CHECK24_WORDING`, and guard M8 still refuses any other change to the check. `build-journey-exit.py` already refused before this change: its frozen page fingerprint has been out of date since the register was added (460c97a), because it is a one-time builder. Its working proof, `prove-journey-exit-mutations.py`, passes.
+
+### 11.9 · Airtable base created (founder, 13 Oct 2026, 21:40)
+
+**Base:** "PlotNua Art Space Register", **`appS4gWOxuZqJyWvU`**. The base id is an identifier, not a credential. It goes into the Worker as the persistent secret `AIRTABLE_BASE`. It is separate from the Gardener Register, PlotArt, Atlas Core and Leads bases.
+
+**Read-only schema verification by Claude, 13 Oct 2026.** No records were read and no structure was changed.
+
+| Table | Result |
+|---|---|
+| Hosts (`tbljKq3sv9xjDSGBs`) | All 14 Worker-written fields are present, with the right names and types. `county` has the 26 options; `ways`, `space`, `money` and `source` match the Worker exactly; `status` has only `interest_submitted`. The reserved fields are present. `erase_after` = `DATEADD({submitted_at}, 24, "months")`. Primary field: `first_name`. |
+| Status log (`tbleRleTvhEe1yjAl`) | All 6 fields, right types. Primary field: `record_ref`. |
+| Consent proofs (`tblCF9F8iaoNtpoOh`) | All 4 Worker-written fields, plus `withdrawn_at` and `deletion_honoured_at`. `remove_after` = `IF({deletion_honoured_at}, DATEADD({deletion_honoured_at}, 12, "months"))`. Primary field: `email_hash`. |
+
+**Nothing blocks the Worker.** It needs no code change.
+
+**Time zone.** The date-time fields use Europe/Dublin, and that is compatible.
+- The Worker sends UTC instants ending in `Z` (for example `2026-10-13T20:40:00Z`).
+- Airtable stores every date-time as a UTC instant and returns UTC through the API.
+- The time zone setting only changes what a person sees in the base.
+- The formulas and the "on or before today" view filters work on the stored instants. The only effect is that a record near midnight may be flagged a day early or late, which is immaterial for 24- and 12-month periods.
+
+**Display fix (optional):** set the format of `erase_after` and `remove_after` to ISO (YYYY-MM-DD) rather than the US format (M/D/YYYY) they were created with, so that dates such as 3/4/2028 cannot be misread.
+
+**Still to do in Airtable (founder):**
+- **Views.** Only the default "Grid view" exists in each table. Create:
+  - **Hosts:** "New this week" (`submitted_at` is within the past week; sort newest first) · "Notes to screen" (`host_note` is not empty) · "Erasure due" (`erase_after` is on or before today) · "By county" (grouped by `county`).
+  - **Status log:** "Latest" (sort `at`, newest first).
+  - **Consent proofs:** "Withdrawals to action" (`withdrawn_at` is not empty AND `deletion_honoured_at` is empty) · "Deletion records due for removal" (`remove_after` is on or before today).
+- **Confirm by eye:**
+  - all three tables show **0 records**;
+  - no share links, shared views, forms, interfaces, automations or syncs exist;
+  - you are the only collaborator.
+
+**Token (founder only; never into chat, a file or the repository):**
+1. In Airtable, go to Builder hub, then Personal access tokens, then Create token.
+2. Name it `plotnua-art-space-register-worker`.
+3. Scopes: **`data.records:read`** and **`data.records:write`** only. No schema, comment, webhook or workspace scopes.
+4. Access: **PlotNua Art Space Register** only. Do not add any other base or workspace.
+5. Create it, copy it once, and paste it **only** at the `wrangler secret put AIRTABLE_TOKEN` prompt.
+6. **Never reuse the Garden Register token**, and never widen this one.
+
+**Cloudflare (founder, when the deploy is approved),** from `04 Deploy/plotnua-g6-release/worker/art-space-register/`:
+1. `npx wrangler whoami` — confirm the same account as the Garden Worker.
+2. `npx wrangler deploy` — this creates the Worker **closed**, because `wrangler.toml` keeps writes off.
+3. `npx wrangler secret put AIRTABLE_BASE` — enter `appS4gWOxuZqJyWvU`.
+4. `npx wrangler secret put AIRTABLE_TOKEN` — paste the art token.
+5. `npx wrangler secret list` — expect exactly `AIRTABLE_BASE` and `AIRTABLE_TOKEN`.
+
+Deploy before adding secrets: `secret put` on a Worker that does not exist yet would offer to create an empty one.
+
+**Closed probes, before any writes are enabled.** These use fake test values only.
+- **Preflight.** Expect `204`:
+  `curl -i -X OPTIONS -H "Origin: https://plotnua.ie" -H "Access-Control-Request-Method: POST" https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/host`
+- **Strict keys.** Expect `400 {"ok":false,"state":"refused","field":"unexpected_field"}`:
+  `curl -i -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -H "Sec-Fetch-Site: cross-site" -H "Sec-Fetch-Mode: cors" --data '{"eircode":"TEST"}' https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/host`
+- **Closed register.** On `plotnua.ie/disc024-open-your-home-to-art.html?interest=preview`, complete the check and submit the form with "Test" and `test@example.com`. Expect **"The register isn't open yet"**.
+- **Airtable.** All three tables still show **0 records**.
+
+While writes are off, the token is never used. It is first exercised in the dry run, which comes **after** privacy V4 is live (§11.3).

@@ -25,7 +25,9 @@ PRIVACY_VERSION = "2026-10-PHASE2-V4"
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
 # BOTH ARE PERSISTENT SECRETS (corrected 13 Oct 2026, activation preparation):
 #   AIRTABLE_BASE  -> wrangler secret put AIRTABLE_BASE
-#                     the NEW "PlotNua Art Space Register" base id
+#                     the "PlotNua Art Space Register" base id (created 13 Oct
+#                     2026; recorded in governance/ART-SPACE-REGISTER-BUILD-2026-10-13.md
+#                     §11.9 and airtable-schema.json, never in this file: guard S6)
 #   AIRTABLE_TOKEN -> wrangler secret put AIRTABLE_TOKEN
 #                     a token scoped to the art base alone
 # Not a deploy-time `--var`: vars passed with --var last only for that deploy,
