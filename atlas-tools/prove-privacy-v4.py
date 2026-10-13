@@ -78,6 +78,11 @@ case("V6 the builder slips in an undeclared change", PB,
      "    out = out.replace(g7, g7 + \"\\n\" + section8_html().rstrip(\"\\n\") + \"\\n\", 1)\n",
      "    out = out.replace(g7, g7 + \"\\n\" + section8_html().rstrip(\"\\n\") + \"\\n\", 1)\n"
      "    out = out.replace(\"Google Analytics;\", \"Google Analytics (anonymised);\", 1)\n")
+case("V2 Section 2 pointer to Section 8 dropped", PB,
+     '((SEC2_ANCHOR, SEC2_NEW, "Section 2 anchor"), (THIRD_ANCHOR', '((THIRD_ANCHOR')
+case("V1 Section 2 sentence drifts from the draft", PB,
+     'SEC2_NEW = "    <p>If you choose to join the Art Space Register, we also collect',
+     'SEC2_NEW = "    <p>If you join the Art Space Register, we also collect')
 case("V2 input already altered in Section 7", PRIVACY, "photographs of your garden", "photos of your garden")
 action("--preview inside the repository", ["--preview", str(ROOT / "privacy-v4-preview.html")])
 action("--apply while APPROVAL is None", ["--apply"])

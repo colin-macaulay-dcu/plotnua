@@ -28,6 +28,9 @@ THE CHANGE, AND NOTHING ELSE (guard V6 proves it)
      Cloudflare service and its separate Airtable database.
   4. Retention section: one line for Art Space Register records.
   5. "Last updated" label, from APPROVAL, only if it differs.
+  6. Section 2 ("Information We Collect"): one sentence pointing to Section 8,
+     after the existing Garden Owner Register sentence (founder approval,
+     13 Oct 2026, 22:00).
 Section 7 (the Garden Owner Register) is byte-identical. The Garden Worker
 keeps privacy version 2026-10-PHASE2-V3 (founder decision, 13 Oct 2026).
 
@@ -55,7 +58,7 @@ GUARDS
      PRIVACY_VERSION is the version this section carries; the Garden Worker
      stays on V3
   V5 no invented legal assurance or match promise anywhere on the page
-  V6 removing exactly the five declared changes from the output gives back
+  V6 removing exactly the six declared changes from the output gives back
      the input, byte for byte
 
 Usage:
@@ -111,6 +114,8 @@ THIRD_NEW = ("    <p>The Art Space Register described in Section 8 also runs on 
              "separate from the Garden Owner Register.</p>\n")
 RET_ANCHOR = "    <p>Garden Owner Register records are kept for a maximum of 24 months, as described in Section 7.</p>\n"
 RET_NEW = "    <p>Art Space Register records are kept for a maximum of 24 months, as described in Section 8.</p>\n"
+SEC2_ANCHOR = "    <p>If you choose to join the Garden Owner Register, we also collect the information described in Section 7.</p>\n"
+SEC2_NEW = "    <p>If you choose to join the Art Space Register, we also collect the information described in Section 8.</p>\n"
 UPDATED_RE = re.compile(r'<p class="policy-updated">Last updated: ([^<]+)</p>')
 
 # Section 7 as approved and published in V3 (Garden Owner Register). Pinned so
@@ -195,7 +200,8 @@ def transform(v3, last_updated=None):
         old = re.search(r"<h2>%d\. ([^<]+)</h2>" % n, out)
         out = out.replace(old.group(0), "<h2>%d. %s</h2>" % (n + 1, old.group(1)), 1)
     out = out.replace(g7, g7 + "\n" + section8_html().rstrip("\n") + "\n", 1)
-    for anchor, new, lab in ((THIRD_ANCHOR, THIRD_NEW, "third-party anchor"), (RET_ANCHOR, RET_NEW, "retention anchor")):
+    for anchor, new, lab in ((SEC2_ANCHOR, SEC2_NEW, "Section 2 anchor"), (THIRD_ANCHOR, THIRD_NEW, "third-party anchor"),
+                             (RET_ANCHOR, RET_NEW, "retention anchor")):
         if out.count(anchor) != 1:
             refuse(lab + " not found exactly once")
         out = out.replace(anchor, anchor + new, 1)
@@ -210,7 +216,7 @@ def transform(v3, last_updated=None):
 def untransform(v4):
     """Remove exactly the declared changes (guard V6)."""
     s = v4.replace("\n" + section8_html().rstrip("\n") + "\n", "", 1)
-    s = s.replace(THIRD_NEW, "", 1).replace(RET_NEW, "", 1)
+    s = s.replace(SEC2_NEW, "", 1).replace(THIRD_NEW, "", 1).replace(RET_NEW, "", 1)
     for n in range(9, 19):
         old = re.search(r"<h2>%d\. ([^<]+)</h2>" % n, s)
         if old:
@@ -239,12 +245,15 @@ def guards(v3, v4):
         for piece in ([body] if kind == "p" else body):
             if plain(piece) not in draft:
                 refuse("V1 Section 8 text is not in the V4 draft: " + plain(piece)[:70])
-    for piece in (THIRD_NEW, RET_NEW):
+    for piece in (SEC2_NEW, THIRD_NEW, RET_NEW):
         if plain(piece) not in draft:
             refuse("V1 a declared change is not in the V4 draft: " + plain(piece)[:70])
     # V2
     if [n for n, _ in sections(v4)] != list(range(1, 19)):
         refuse("V2 sections not numbered 1..18")
+    if v4.count(SEC2_NEW) != 1 or v4.index(SEC2_ANCHOR) > v4.index(SEC2_NEW) \
+            or v4.index(SEC2_NEW) > v4.index("<h2>3. How We Use Your Information</h2>"):
+        refuse("V2 Section 2 does not point to Section 8 once, after the Garden sentence")
     titles = dict(sections(v4))
     if titles[7] != "The Garden Owner Register" or titles[8] != "The Art Space Register":
         refuse("V2 Sections 7 and 8 are not Garden then Art")
@@ -289,7 +298,7 @@ def guards(v3, v4):
     if m3 and m4:
         back = back.replace(m4.group(0), m3.group(0), 1)
     if back != v3:
-        refuse("V6 something other than the five declared changes differs")
+        refuse("V6 something other than the six declared changes differs")
 
 
 def published_ok(text=None):

@@ -34,7 +34,9 @@ The V4 builder itself refuses to write `privacy.html` until its `APPROVAL` recor
 4. **"How Long We Keep Information"** (currently 11, becomes 12) gains one line:
    *"Art Space Register records are kept for a maximum of 24 months, as described in Section 8."*
 5. **"Last updated"** changes to the publication month.
-6. **No other change.** Legal basis, rights, complaints and processors are unchanged.
+6. **"Information We Collect"** (Section 2, not renumbered) gains one sentence after the Garden Owner Register sentence (founder approval, 13 Oct 2026, 22:00):
+   *"If you choose to join the Art Space Register, we also collect the information described in Section 8."*
+7. **No other change.** Legal basis, rights, complaints and processors are unchanged.
 
 **On publication only, two Garden proof expectations follow the renumbering.** `atlas-tools/prove-g6-owner-register.py` currently expects sections 1–17 and uses a "9. Third-Party" heading as a mutation anchor. The builder updates those two lines in the same act. The Garden Worker, its consent, its database and its registration experience are not touched. The Garden Worker keeps privacy version **2026-10-PHASE2-V3** (founder decision, 13 Oct 2026), because Section 7's text does not change.
 
@@ -95,3 +97,19 @@ Guard V4 keeps the first three consistent.
 - **On-page notice:** the register's own notice states the same fields, purpose, retention and deletion-note terms (guard V4).
 - **Fields:** the collected fields match the Worker's allowed keys (guard V4).
 - **Version:** the Worker records `privacy_version = 2026-10-PHASE2-V4` (`worker/art-space-register/wrangler.toml`), and the register cannot open until this notice is published (guard R2).
+
+## Proposed clarification: keeping deletion evidence after withdrawal
+
+**Status: for privacy-reviewer approval. Not part of the V4 build.** The legal basis is **not settled**. Both retention periods remain subject to legal review: 24 months for registration records, and 12 months for minimal deletion evidence.
+
+**Proposed wording**, to follow the last paragraph of Section 8:
+
+> **Why we keep that note after you leave.** When you withdraw your consent or ask us to delete your record, we stop using your registration details and delete them. We keep only the separate note described above, so that we can show, if we are asked, that you gave your consent and that we acted on your request. We use the note for nothing else and never to contact you, and we delete it 12 months after the deletion is completed. [LEGAL BASIS — for the reviewer to confirm or replace: *"We keep it because we have a legitimate interest in being able to demonstrate that we have complied with data protection law."* or *"We keep it because we must be able to demonstrate that consent was given."*]
+
+**Questions for the reviewer:**
+- Which basis applies: legitimate interests (GDPR Article 6(1)(f)), or the accountability and consent-demonstration duties (Articles 5(2) and 7(1))?
+- If legitimate interests, is a balancing note needed?
+- Is 12 months proportionate?
+- Should the same clarification also apply to records erased at the 24-month limit?
+
+If approved, it becomes a seventh declared builder change with its own guard, and the register's on-page notice is aligned with it.
