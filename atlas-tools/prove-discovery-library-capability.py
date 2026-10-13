@@ -46,7 +46,7 @@ for f in TOUCHED + [PROOF]:
 # REAL potential-asset plates, lifted from the real pages. Each is the image
 # the discarded "first non-cmp .imagine-photo" rule actually chose.
 REAL_PA = [
-    ("Buy Original Irish Art", "discovery-a-home-for-art.html",
+    ("A Home for Art", "discovery-a-home-for-art.html",
      "assets/img/5dc201bef1868b84.jpg", "the wall above the fireplace, empty"),
     ("The Borrowed Garden", "discovery-the-borrowed-garden.html",
      "assets/img/59d566ff7c3a50e8.jpg", "the lawn before anything is planted"),

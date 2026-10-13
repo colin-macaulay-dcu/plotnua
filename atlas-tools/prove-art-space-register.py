@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""GUARD-CAPABILITY PROOF · Art Space Register builder (R1-R13) and art
-cross-link builder (X1-X4).
+"""GUARD-CAPABILITY PROOF · Art Space Register builder (R1-R13).
+(The art cross-link builder, X1-X4, was retired on 13 Oct 2026 when the two
+art Discoveries merged into A Home for Art.)
 
 Each case breaks ONE thing in a real file (the page, a builder, the Worker or
 a protected Garden file), runs the builder's --check, asserts the break is
@@ -17,13 +18,10 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RB = ROOT / "atlas-tools" / "build-art-space-register.py"
-XB = ROOT / "atlas-tools" / "build-art-cross-links.py"
 PAGE = ROOT / "disc024-open-your-home-to-art.html"
 WORKER = ROOT / "worker" / "art-space-register" / "src" / "index.js"
 GARDEN = ROOT / "disc025-borrowed-garden-check.html"
-OY = ROOT / "discovery-open-your-home-to-art.html"
-HA = ROOT / "discovery-a-home-for-art.html"
-FILES = [RB, XB, PAGE, WORKER, GARDEN, OY, HA]
+FILES = [RB, PAGE, WORKER, GARDEN]
 
 h = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 BEFORE = {p.name: h(p) for p in FILES}
@@ -49,7 +47,7 @@ def case(label, path, old, new, builder=RB, expect="REFUSED"):
         path.write_bytes(orig)
 
 
-ctl0 = run(RB).returncode == 0 and run(XB).returncode == 0
+ctl0 = run(RB).returncode == 0
 
 case("R1 page edited outside the register", PAGE,
      "How far would you actually want this to go?", "How far would you go?")
@@ -101,14 +99,8 @@ case("R13 Garden Owner Register page touched", GARDEN,
      "This is a register, not a match.</p>", "This is a register.</p>")
 case("CHECK page hand-edited inside the register", PAGE,
      "Could your home become a home for art?</h2>", "Could your home host art?</h2>", expect="CHECK FAILED")
-case("X1 Discovery edited outside the cross-link", OY,
-     "Nothing has to happen twice.", "Nothing needs to happen twice.", builder=XB)
-case("X2 cross-link pointed at a missing page", XB,
-     '"target": "discovery-a-home-for-art.html"', '"target": "discovery-art.html"', builder=XB)
-case("X3 a Property Check link changed", HA,
-     'href="disc023-buy-original-irish-art.html"', 'href="disc023-buy-original-irish-art.html?x=1"', builder=XB)
 
-ctl1 = run(RB).returncode == 0 and run(XB).returncode == 0
+ctl1 = run(RB).returncode == 0
 same = BEFORE == {p.name: h(p) for p in FILES}
 
 print("=" * 76)

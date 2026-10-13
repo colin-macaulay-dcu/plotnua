@@ -108,7 +108,9 @@ JOURNEYS = {
     "disc014-driveway-income.html": "discovery-driveway-income.html",
     "disc005-home-exchange.html": "discovery-home-exchange.html",
     "disc027-neighbourhood-parcel-house.html": "discovery-neighbourhood-parcel-house.html",
-    "disc024-open-your-home-to-art.html": "discovery-open-your-home-to-art.html",
+    # DISC-024 consolidated into DISC-023 at the Discovery-page level (13 Oct 2026):
+    # the check is unchanged and now routes onward to A Home for Art.
+    "disc024-open-your-home-to-art.html": "discovery-a-home-for-art.html",
     "disc023-buy-original-irish-art.html": "discovery-a-home-for-art.html",
 }
 

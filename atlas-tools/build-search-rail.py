@@ -169,7 +169,9 @@ pages = sorted(set(pages + ["index.html"]))
 # 22 since 12 October 2026: triq-cube.html, the TRIQ QUBE public page, entered
 # the sitemap by founder decision. It was built carrying the canonical nofade
 # stub, so a re-run of this builder reproduces it rather than changing it.
-EXPECTED_PAGES = 22
+# 21 since 13 October 2026: discovery-open-your-home-to-art.html became a
+# redirect to A Home for Art and left the sitemap (founder decision).
+EXPECTED_PAGES = 21
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "

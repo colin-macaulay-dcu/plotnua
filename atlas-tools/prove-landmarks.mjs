@@ -28,7 +28,8 @@ const ROOT = argDir > -1
 
 const DISCOVERIES = [
   "discovery-living-in-the-garden.html", "discovery-a-home-for-art.html",
-  "discovery-open-your-home-to-art.html", "discovery-the-borrowed-garden.html",
+  // discovery-open-your-home-to-art.html is now a redirect to A Home for Art (13 Oct 2026)
+  "discovery-the-borrowed-garden.html",
   "discovery-house-as-power-station.html", "discovery-neighbourhood-parcel-house.html",
   "discovery-hidden-cars.html", "discovery-hidden-bins.html",
   "discovery-garden-retreat.html", "discovery-above-and-beyond.html",
@@ -98,11 +99,11 @@ for (const f of [...SKIPPED, "about.html", "contact.html", "privacy.html",
   else bad("L1 " + f, `<main> x${opens}, </main> x${closes}, role="main" x${roleMain}`);
 }
 
-// ---- L2 · all 13 public Discoveries, stated separately ---------------------
+// ---- L2 · all 12 public Discoveries, stated separately ---------------------
 {
   const bads = DISCOVERIES.filter(f => (code(read(f)).match(/<main[\b\s>]/g) || []).length !== 1);
-  bads.length ? bad("L2 all 13 public Discoveries have one main", bads.join(", "))
-              : ok("L2 all 13 public Discoveries have exactly one main landmark");
+  bads.length ? bad("L2 all 12 public Discoveries have one main", bads.join(", "))
+              : ok("L2 all 12 public Discoveries have exactly one main landmark");
 }
 
 // ---- L3 · the full-bleed sections survived the collapse --------------------
