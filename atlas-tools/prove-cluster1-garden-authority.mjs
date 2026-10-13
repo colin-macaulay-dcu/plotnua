@@ -187,7 +187,14 @@ console.log('\nCLUSTER 1 CLAIM GUARDS\n');
 }
 
 // --- the price section ------------------------------------------------------
-const PRICE = slice('P0', 'Garden room prices are hard to compare.', '<!-- 7 · THE EVIDENCE LAYER');
+/* The price section ends where the next section begins. Since 13 October 2026
+   that is the Maker Explorer (marker 6c, atlas-tools/build-maker-explorer.py),
+   whose own figures are traced to the published universes by that builder's
+   guard G1; before it existed, the next section was 7. Ending the slice at the
+   section boundary keeps P1-P4 exactly as strict over the price section and
+   does not let the explorer's counts be misread as price-section figures. */
+const PRICE_END = src.indexOf('<!-- 6c · ') > -1 ? '<!-- 6c · ' : '<!-- 7 · THE EVIDENCE LAYER';
+const PRICE = slice('P0', 'Garden room prices are hard to compare.', PRICE_END);
 if (PRICE) {
   // Founder correction, 11 October 2026. The superseded heading must not come
   // back through a hand edit or a regeneration from a stale builder.
