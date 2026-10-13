@@ -419,3 +419,49 @@ When a homeowner withdraws from the Art Space Register:
 4. Keep only the **anonymous Deletion log** entry: `completed_on`, `requested_on`, `reason` = `withdrawal`.
 
 **Result:** after a withdrawal, PlotNua holds nothing that identifies the person, either in the register or in the mailbox. This matches Section 8 of the V4 draft ("We keep only an anonymous entry in our deletion log"), which needs no wording change. Copies held in the email provider's own backups are outside PlotNua's control; they are never restored or used. The withdrawal-email question in the GDPR self-assessment is **resolved**.
+
+### 11.13 · GDPR readiness record (13 Oct 2026, 23:24)
+
+Status: Privacy V4 **not published**; register **closed**; Worker writes **off**. Nothing in this section changes code, consent wording, the Worker or the Garden Register.
+
+**Completed: founder-confirmed on 13 Oct 2026.**
+- Airtable Team plan.
+- Backup retention documented (§11.11).
+- Worker redeployed with `[observability] enabled = false`; Worker logging disabled.
+- Cloudflare two-factor sign-in (email).
+- Google 2-Step Verification on the account used to sign in to Airtable.
+- One collaborator on the base; Airtable "Share to web" disabled.
+- Withdrawal email policy approved (§11.12).
+
+**Completed: verified here, read-only, on 13 Oct 2026.**
+- Base `appS4gWOxuZqJyWvU`:
+  - automations: none;
+  - interfaces, interface drafts and forms: none.
+- No records were read beyond confirming the tables are empty, and none were created.
+
+**Not verifiable from here.**
+- Token scope (`data.records:read`, `data.records:write`, this base only). It rests on the founder's confirmation, because the token is never shared or exposed.
+- Optional record: a screenshot of the token's page in Airtable's Builder hub.
+
+**Processor agreements, checked 13 Oct 2026.**
+
+| | Cloudflare | Airtable |
+|---|---|---|
+| Title | Cloudflare Data Processing Addendum v6.4, effective 3 Apr 2026 | Airtable Data Processing Addendum (page states last updated 8 Sep 2026) |
+| Source | https://www.cloudflare.com/cloudflare-customer-dpa/ ; Self-Serve Subscription Agreement §6.1, https://www.cloudflare.com/terms/ | https://www.airtable.com/company/dpa ; https://support.airtable.com/articles/4245698629-airtable-s-data-processing-addendum |
+| Applies | Incorporated by reference into the Self-Serve Subscription Agreement where content includes European personal data; no signature | "will not become binding and enforceable unless and until it has been validly executed"; requested through Airtable's form and signed by DocuSign |
+| Status | In force under the account's terms | **Not executed. Founder action** |
+| Transfers | EU SCCs, Modules 2 and 3; DPF-certified transfers not treated as restricted | EU SCCs, Modules 2 and 3, Irish law; DPF not mentioned |
+| Sub-processors | Published list; 30 days' notice | Published list; 10 days' notice |
+| Breach notice | Without undue delay | Within 72 hours of substantiation |
+| End of service | Delete or return | Delete or anonymise on request; backups follow Airtable's retention |
+
+No acceptance of the Airtable DPA is claimed. The V4 Section 8 sentence on Airtable reports what Airtable's DPA states. Executing the DPA before publication makes it applicable to this account.
+
+**Views: not yet created.** The Airtable API and connector cannot create views. The built-in browser was not signed in to the founder's Airtable account: it opened on an account set-up page, which was left untouched. The founder creates the six views in `airtable-schema.json` (New this week, Notes to screen, Erasure due, By county; Latest; All deletions). Each is a filter, sort or group only, and creating them needs no records.
+
+**Remaining founder actions:**
+1. Execute the Airtable DPA (before publishing V4).
+2. Create the six views (before opening).
+3. Sign off and date the GDPR self-assessment; approve V4 publication.
+4. Push the local commits.
