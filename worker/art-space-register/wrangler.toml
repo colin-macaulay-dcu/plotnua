@@ -1,0 +1,29 @@
+name = "plotnua-art-space-register"
+main = "src/index.js"
+compatibility_date = "2026-10-07"
+
+workers_dev = true      # plotnua.ie is not on Cloudflare; the page calls this
+                        # Worker's workers.dev origin directly.
+preview_urls = false    # one endpoint, not a family of live hostnames.
+
+[vars]
+# ---------------------------------------------------------------------------
+# ART SPACE REGISTER · BOTH SWITCHES SHIP OFF. NOT DEPLOYED.
+# Founder approval for BUILD only, 13 October 2026. Deploying, enabling writes
+# and opening the register each need the founder's explicit approval.
+# This Worker shares NO binding, base or credential with
+# worker/garden-register.
+# ---------------------------------------------------------------------------
+WRITES_ENABLED  = "false"
+EMAIL_ENABLED   = "false"   # there is NO mail adapter in this Worker.
+ORIGIN          = "https://plotnua.ie"
+# The privacy notice version that will carry the Art Space Register section.
+# DRAFT — governance/PRIVACY-VERSION-2026-10-PHASE2-V4-DRAFT.md. It must be
+# approved AND published on plotnua.ie before writes are ever enabled.
+PRIVACY_VERSION = "2026-10-PHASE2-V4"
+
+# AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
+#   AIRTABLE_BASE  -> var at deploy: the NEW "PlotNua Art Space Register" base id
+#   AIRTABLE_TOKEN -> SECRET only:   wrangler secret put AIRTABLE_TOKEN
+#                     (a token scoped to the art base alone)
+# writesEnabled() requires all three, so a missing token is a third hard stop.
