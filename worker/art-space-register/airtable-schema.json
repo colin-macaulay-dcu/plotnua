@@ -15,6 +15,7 @@
     "never": ["schema scopes", "workspace access", "reuse of the Garden token", "pasting into chat or the repository"],
     "stored_as": "Cloudflare Worker secret AIRTABLE_TOKEN"
   },
+  "retention_is_manual": "The two formula fields (erase_after, remove_after) and the two views built on them only FLAG records that are due. Nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: delete the Hosts record, then fill deletion_honoured_at on its consent proof; 12 months later, delete that consent proof.",
   "dates": "Every date field: Date, include time, 24-hour, 'Use the same time zone (GMT) for all collaborators'.",
   "tables": [
     {
@@ -37,12 +38,12 @@
         {"name": "source", "type": "singleSelect", "writer": "worker", "options": ["property_check"]},
         {"name": "human_review_by", "type": "singleLineText", "writer": "reserved", "note": "leave blank; introductions are not authorised"},
         {"name": "human_review_at", "type": "dateTime", "writer": "reserved", "note": "leave blank"},
-        {"name": "erase_after", "type": "formula", "writer": "airtable", "formula": "DATEADD({submitted_at}, 24, 'months')"}
+        {"name": "erase_after", "type": "formula", "writer": "airtable", "formula": "DATEADD({submitted_at}, 24, 'months')", "note": "FLAG ONLY: this formula and its view flag records that are due; Airtable does NOT delete anything automatically. A person deletes them in the weekly review."}
       ],
       "views": [
         {"name": "New this week", "type": "grid", "filter": "submitted_at is within the past week", "sort": "submitted_at, newest first"},
         {"name": "Notes to screen", "type": "grid", "filter": "host_note is not empty", "purpose": "strip any address, Eircode, phone number or valuables from notes"},
-        {"name": "Erasure due", "type": "grid", "filter": "erase_after is on or before today", "purpose": "erase at 24 months"},
+        {"name": "Erasure due", "type": "grid", "filter": "erase_after is on or before today", "purpose": "flags records reaching 24 months; a person deletes them"},
         {"name": "By county", "type": "grid", "group": "county"}
       ]
     },
@@ -69,11 +70,11 @@
         {"name": "given_at", "type": "dateTime", "writer": "worker"},
         {"name": "withdrawn_at", "type": "dateTime", "writer": "human", "note": "filled by hand when a withdrawal request arrives"},
         {"name": "deletion_honoured_at", "type": "dateTime", "writer": "human", "note": "filled by hand when the Hosts record is deleted (withdrawal or 24-month erasure)"},
-        {"name": "remove_after", "type": "formula", "writer": "airtable", "formula": "IF({deletion_honoured_at}, DATEADD({deletion_honoured_at}, 12, 'months'), BLANK())", "note": "provisional 12-month deletion-record retention (founder, 13 Oct 2026), subject to privacy and legal review"}
+        {"name": "remove_after", "type": "formula", "writer": "airtable", "formula": "IF({deletion_honoured_at}, DATEADD({deletion_honoured_at}, 12, 'months'), BLANK())", "note": "12-month deletion-record retention (founder, 13 Oct 2026), subject to legal review. FLAG ONLY: this formula and its view flag records that are due; Airtable does NOT delete anything automatically. A person deletes them in the weekly review."}
       ],
       "views": [
         {"name": "Withdrawals to action", "type": "grid", "filter": "withdrawn_at is not empty AND deletion_honoured_at is empty"},
-        {"name": "Deletion records due for removal", "type": "grid", "filter": "remove_after is on or before today"}
+        {"name": "Deletion records due for removal", "type": "grid", "filter": "remove_after is on or before today", "purpose": "flags notes 12 months after deletion; a person deletes them"}
       ]
     }
   ],

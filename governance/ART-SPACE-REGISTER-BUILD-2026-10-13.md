@@ -208,7 +208,14 @@ The canonical, machine-checked specification is `worker/art-space-register/airta
 - views;
 - token scopes and access rules.
 
-There are **no linked-record relationships, by design**, so the minimal proof survives a deletion. Guard R14 refuses if the file lacks a field the Worker writes or if its options differ from the Worker's vocabularies.
+There are **no linked-record relationships, by design**, so the minimal proof survives a deletion.
+
+**Retention is manual.** The two formula fields and the views built on them (*Erasure due*, *Deletion records due for removal*) only **flag** records that are due. Nothing deletes anything automatically: not Airtable, not the Worker, not the schema. No Airtable automation may be added to do it. Each weekly review:
+1. open *Erasure due* and delete each flagged Hosts record;
+2. fill `deletion_honoured_at` on its consent proof (match by the email fingerprint);
+3. open *Withdrawals to action* and do the same for withdrawals;
+4. open *Deletion records due for removal* and delete each flagged consent proof;
+5. log the totals only, with no personal data. Guard R14 refuses if the file lacks a field the Worker writes or if its options differ from the Worker's vocabularies.
 
 ### 11.3 · Cloudflare (founder, when approved)
 
@@ -285,3 +292,13 @@ R13 now allows `privacy.html` to differ from git HEAD only by exactly the V4 bui
 8. **Smoke test:** one public record of your own, then erase it. The weekly review starts.
 
 The review trigger is unchanged: **10 genuine registrations or 8 weeks**. It is a review only and does not authorise matching.
+
+### 11.7 · Final preparation correction (founder, 13 Oct 2026, 21:25)
+
+The activation preparation (`680ddd5`) was accepted, with these corrections:
+- **Register option label:** "Storage only (an attic, a garage, under the stairs)" becomes **"A suitable dry storage space"**.
+  - The stored value `dry_store`, the Worker vocabulary and the Airtable schema are unchanged.
+  - The Property Check's own option ("Storage only", with the note "An attic, a garage, under the stairs") and its result sentence ("What you could offer is storage — attic, garage, under the stairs.") are **not changed**. They are part of the check's locked questions and results, protected by R1 and the merge builder's M8, and are left for a separate founder decision.
+- **Retention confirmed as proposed,** subject to legal review: 24 months for registrations, 12 months for deletion records.
+- **Pseudonymised data:** Section 8 and the on-page notice both state that the email fingerprint is pseudonymised personal data, not anonymous data.
+- **Manual deletion:** Airtable's retention formulas flag records but do not erase them (§11.2, `airtable-schema.json`).

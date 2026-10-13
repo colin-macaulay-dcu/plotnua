@@ -217,8 +217,9 @@ NOTICE = [
     ("One thing we keep after deletion.",
      "A separate note that you gave permission and that we honoured your request to remove it. It "
      "holds a one-way digital fingerprint made from your email address, not the address itself, so "
-     "that we can show we did what you asked. We keep that note for 12 months after the deletion is "
-     "completed, and then delete it."),
+     "that we can show we did what you asked. The fingerprint is pseudonymised, not anonymous: it is "
+     "still personal data, because anyone who already knows your email address could match it to the "
+     "fingerprint. We keep that note for 12 months after the deletion is completed, and then delete it."),
 ]
 
 
@@ -333,7 +334,7 @@ window.PlotNuaArtRegister = (function () {
       ['', 'Choose one (optional)'],
       ['a_wall', 'A wall in a room I use'],
       ['a_room', 'A spare room, or one I rarely use'],
-      ['dry_store', 'Storage only (an attic, a garage, under the stairs)'],
+      ['dry_store', 'A suitable dry storage space'],
       ['not_sure', 'I\\u2019m not sure yet']
     ],
     money: [

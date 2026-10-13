@@ -102,7 +102,7 @@ SECTION8 = [
     ("p", "Your record is private to PlotNua. It is not published, and there is no public listing, map, profile or directory. Records are reviewed by a person at PlotNua. No artist or other person sees your record. Your email address would only be shared with another person if you agreed to a specific arrangement, and no such arrangements are available."),
     ("p", "The form sends your details to a PlotNua service hosted on infrastructure provided by Cloudflare, which records them in the register. The register is stored in Airtable, a database service. Cloudflare and Airtable are both based in the United States, so your information may be processed outside the European Economic Area. Cloudflare states that it relies on the EU Standard Contractual Clauses, and on its certification under the EU-U.S. Data Privacy Framework, for such transfers. Airtable's Data Processing Addendum states that the EU Standard Contractual Clauses apply to personal data transferred from the European Economic Area. Visitors should refer to Cloudflare's and Airtable's own privacy policies for more about how they process personal information."),
     ("p", "We keep your record for a maximum of 24 months. You can ask us to delete it at any time, and we may delete it sooner if it is no longer needed."),
-    ("p", "To leave the register or ask us to delete your record, email <a href=\"mailto:hello@plotnua.ie\">hello@plotnua.ie</a>. There is nothing to cancel and no notice period. When we delete your record we keep a separate note that you gave permission and that we honoured your request. That note holds a one-way digital fingerprint made from your email address, not the address itself, so that we can show we did what you asked. We keep that note for 12 months after the deletion is completed, and then delete it."),
+    ("p", "To leave the register or ask us to delete your record, email <a href=\"mailto:hello@plotnua.ie\">hello@plotnua.ie</a>. There is nothing to cancel and no notice period. When we delete your record we keep a separate note that you gave permission and that we honoured your request. That note holds a one-way digital fingerprint made from your email address, not the address itself, so that we can show we did what you asked. The fingerprint is pseudonymised, not anonymous: it is still personal data, because anyone who already knows your email address could match it to the fingerprint. We keep that note for 12 months after the deletion is completed, and then delete it."),
 ]
 THIRD_ANCHOR = ("    <p>The Garden Owner Register described in Section 7 also runs on a PlotNua service hosted on "
                 "infrastructure provided by Cloudflare.</p>\n")
@@ -261,7 +261,8 @@ def guards(v3, v4):
                  "We rely on your consent", "You can withdraw it at any time",
                  "maximum of 24 months", "We keep that note for 12 months after the deletion is completed",
                  "email hello@plotnua.ie", "outside the European Economic Area", "Standard Contractual Clauses",
-                 "No artist or other person sees your record"):
+                 "No artist or other person sees your record",
+                 "The fingerprint is pseudonymised, not anonymous: it is still personal data"):
         if need not in s8t:
             refuse("V3 Section 8 lacks: " + need)
     # V4
@@ -271,7 +272,8 @@ def guards(v3, v4):
         refuse("V4 the Worker's ALLOWED_KEYS no longer match the fields this section describes: %r"
                % sorted(worker_allowed()))
     reg = plain((ROOT / "disc024-open-your-home-to-art.html").read_text(encoding="utf-8"))
-    if "A maximum of 24 months." not in reg or "We keep that note for 12 months after the deletion is completed" not in reg:
+    if ("A maximum of 24 months." not in reg or "We keep that note for 12 months after the deletion is completed" not in reg
+            or "The fingerprint is pseudonymised, not anonymous: it is still personal data" not in reg):
         refuse("V4 the register's on-page notice (as built on the DISC-024 check) does not carry the same retention figures")
     if toml_version(ART_WRANGLER) != VERSION:
         refuse("V4 the Art Worker's PRIVACY_VERSION is not %s" % VERSION)

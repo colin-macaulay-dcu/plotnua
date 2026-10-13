@@ -9,6 +9,11 @@
 - "artists' finished work" list punctuated with a colon, not a dash;
 - the Garden Worker stays on V3.
 
+**Final preparation correction (13 Oct 2026, 21:25):**
+- Section 8 states that the email fingerprint is pseudonymised personal data, not anonymous. The register's on-page notice says the same.
+- Retention confirmed as proposed: 24 months for registrations, 12 months for deletion records.
+- Airtable's retention formulas **flag** records for deletion. They do not erase anything; a person does, in the weekly review.
+
 **Builder:** `atlas-tools/build-privacy-v4.py`. Guard V1 refuses to build unless every sentence below appears in this file, so this draft and the builder cannot drift apart.
 
 ## Gate
@@ -47,6 +52,8 @@ If the review changes either figure, change all four of these together:
 
 Guard V4 keeps the first three consistent.
 
+**Deletion is manual.** The Airtable formula fields `erase_after` and `remove_after`, and their views, only flag records that are due. Nothing deletes automatically. A person deletes the flagged records in the weekly review, as the build record §11.2 describes.
+
 ## Proposed Section 8 — exact text
 
 > ### 8. The Art Space Register
@@ -74,12 +81,12 @@ Guard V4 keeps the first three consistent.
 >
 > We keep your record for a maximum of 24 months. You can ask us to delete it at any time, and we may delete it sooner if it is no longer needed.
 >
-> To leave the register or ask us to delete your record, email hello@plotnua.ie. There is nothing to cancel and no notice period. When we delete your record we keep a separate note that you gave permission and that we honoured your request. That note holds a one-way digital fingerprint made from your email address, not the address itself, so that we can show we did what you asked. We keep that note for 12 months after the deletion is completed, and then delete it.
+> To leave the register or ask us to delete your record, email hello@plotnua.ie. There is nothing to cancel and no notice period. When we delete your record we keep a separate note that you gave permission and that we honoured your request. That note holds a one-way digital fingerprint made from your email address, not the address itself, so that we can show we did what you asked. The fingerprint is pseudonymised, not anonymous: it is still personal data, because anyone who already knows your email address could match it to the fingerprint. We keep that note for 12 months after the deletion is completed, and then delete it.
 
 ## For legal review
 
 1. **Consent as the legal basis**, with an over-18 self-declaration in the consent sentence.
-2. **The email fingerprint is pseudonymised personal data, not anonymous data.** Anyone who already knows an address can recompute it. Check whether the 12-month retention and the wording "one-way digital fingerprint … not the address itself" are adequate.
+2. **The email fingerprint is pseudonymised personal data, not anonymous data**, and Section 8 now says so. Confirm the wording, and that 12 months is an adequate and proportionate period for keeping proof of consent and of deletion.
 3. **The Cloudflare and Airtable transfer statements**, which are the same wording as Section 7.
 4. **Whether a record of processing entry is needed** for the register.
 
