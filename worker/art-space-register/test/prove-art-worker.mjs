@@ -23,10 +23,14 @@ const ON = { ...OFF, WRITES_ENABLED: 'true', AIRTABLE_BASE: 'appARTTESTONLY0001'
 let calls = [];
 let existing = false;
 let failWith = 0;
+let recent = 0;   // Hosts records submitted in the last 24 hours, as the cap query sees them
 globalThis.fetch = async (url, init = {}) => {
   calls.push({ url: String(url), method: init.method, body: init.body ? JSON.parse(init.body) : null,
                auth: init.headers && init.headers.authorization });
   if (failWith) return new Response('{}', { status: failWith });
+  if (init.method === 'GET' && String(url).includes('IS_AFTER')) {
+    return new Response(JSON.stringify({ records: Array.from({ length: recent }, (_, i) => ({ id: 'recR' + i, fields: {} })) }), { status: 200 });
+  }
   if (init.method === 'GET') {
     return new Response(JSON.stringify({ records: existing ? [{ id: 'recX', fields: {} }] : [] }), { status: 200 });
   }
@@ -124,8 +128,8 @@ const host = posts.find(c => c.url.endsWith('/Hosts'));
 const log = posts.find(c => c.url.endsWith('/Status%20log'));
 const proof = posts.find(c => c.url.endsWith('/Consent%20proofs'));
 check('P1 received', r.s === 200 && r.j.state === 'received');
-check('P2 exactly one lookup and three creates, all to the configured base only',
-  calls.length === 4 && calls.every(c => c.url.startsWith('https://api.airtable.com/v0/appARTTESTONLY0001/')));
+check('P2 two lookups (duplicate, daily cap) and three creates, all to the configured base only',
+  calls.length === 5 && calls.every(c => c.url.startsWith('https://api.airtable.com/v0/appARTTESTONLY0001/')));
 check('P3 every create has typecast:false', posts.every(c => c.body.typecast === false));
 const hf = host && host.body.records[0].fields;
 check('P4 status ceiling: interest_submitted only', hf && hf.status === 'interest_submitted');
@@ -157,6 +161,25 @@ failWith = 422;
 r = await run(ON, req(R, good()));
 check('U1 Airtable 422 -> unavailable with a status class only', r.s === 503 && r.j.state === 'unavailable' && r.j.reason === 'at422');
 failWith = 0;
+
+/* ---- 9a · durable daily cap ---- */
+recent = T.DAILY_CAP;
+r = await run(ON, req(R, good()));
+check('CAP1 at the daily cap -> slow_down, nothing created', r.s === 429 && r.j.state === 'slow_down' && calls.filter(c => c.method === 'POST').length === 0);
+const capQ = calls.find(c => c.method === 'GET' && c.url.includes('IS_AFTER'));
+check('CAP2 the cap query reads one field of at most DAILY_CAP rows, last 24 hours',
+  capQ && capQ.url.includes('maxRecords=' + T.DAILY_CAP) && capQ.url.includes('fields%5B%5D=submitted_at') &&
+  decodeURIComponent(capQ.url).includes("DATEADD(NOW(), -1, 'days')"));
+recent = T.DAILY_CAP - 1;
+r = await run(ON, req(R, good()));
+check('CAP3 one below the cap -> received and written', r.s === 200 && r.j.state === 'received' && calls.filter(c => c.method === 'POST').length === 3);
+recent = T.DAILY_CAP + 50; existing = true;
+r = await run(ON, req(R, good()));
+check('CAP4 at the cap a repeat address gets the same slow_down (the cap is never an oracle)', r.s === 429 && r.j.state === 'slow_down' && calls.filter(c => c.method === 'POST').length === 0);
+existing = false; recent = 0;
+check('CAP5 the cap is a small, fixed number', Number.isInteger(T.DAILY_CAP) && T.DAILY_CAP > 0 && T.DAILY_CAP <= 50);
+r = await run(OFF, req(R, good()));
+check('CAP6 writes off -> no cap query either (closed means no Airtable call)', r.s === 503 && calls.length === 0);
 
 /* ---- 9b · rate limit ---- */
 T.resetRateLimit();

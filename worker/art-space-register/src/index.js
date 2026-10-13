@@ -1,7 +1,7 @@
 /* PlotNua — ART SPACE REGISTER WORKER  (DISC-024 · Open Your Home to Art)
  * ===========================================================================
- * NOT DEPLOYED. WRITES_ENABLED and EMAIL_ENABLED both ship 'false'.
- * Deploying this file registers nobody.
+ * Deployed CLOSED (13 Oct 2026). WRITES_ENABLED and EMAIL_ENABLED both ship
+ * 'false'. Deploying this file registers nobody.
  *
  * Founder approval for build: 13 October 2026. The technical reference is the
  * Borrowed Garden register Worker (worker/garden-register), which is NOT
@@ -44,13 +44,24 @@
  * a REJECTED write, never a silently created one.
  *
  * NOTHING IDENTIFYING IS LOGGED. No IP, no IP hash, no user agent. Abuse
- * control is in-memory, per isolate, and dies with the isolate.
+ * control is (1) an in-memory burst limit, per isolate, and (2) a DURABLE
+ * DAILY CAP: before creating a record, the Worker counts the Hosts records
+ * submitted in the last 24 hours (in Airtable itself, so it holds across
+ * isolates and restarts, costs nothing and needs no new binding). At
+ * DAILY_CAP it creates nothing and replies slow_down. A flood can therefore
+ * never add more than DAILY_CAP records a day, whatever the origin headers
+ * say. If the count cannot be read, nothing is written (fail closed).
  * ========================================================================= */
 
 const MAX_BODY_BYTES = 4 * 1024;
 const MAX_NOTE_CHARS = 400;
 const MAX_NAME_CHARS = 40;
 const MAX_EMAIL_CHARS = 120;
+
+/* At most this many NEW records in any rolling 24 hours (founder brief,
+   14 Oct 2026: proportionate, simple, free). A small pilot expects far fewer;
+   reaching it means automation or an unexpected surge, and a person looks. */
+const DAILY_CAP = 25;
 
 /* Tables, by name, exactly as the setup instructions create them. */
 const T_HOSTS = 'Hosts';
@@ -202,6 +213,16 @@ async function emailKeyExists(env, emailKey) {
   return Array.isArray(out.records) && out.records.length > 0;
 }
 
+/* The durable daily cap: how many Hosts records were submitted in the last
+   24 hours, read as at most DAILY_CAP rows of one field. */
+async function dailyCapReached(env) {
+  const f = encodeURIComponent("IS_AFTER({submitted_at}, DATEADD(NOW(), -1, 'days'))");
+  const out = await atRequest(env, 'GET',
+    '/' + encodeURIComponent(T_HOSTS) + '?filterByFormula=' + f + '&maxRecords=' + DAILY_CAP +
+    '&fields%5B%5D=submitted_at');
+  return !Array.isArray(out.records) || out.records.length >= DAILY_CAP;
+}
+
 const utcStamp = (d) => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 /* ---------------------------------------------------------- validation ---- */
@@ -279,6 +300,9 @@ async function handleHost(env, body, now, cors) {
   if (note) fields.host_note = note;
 
   try {
+    /* Cap first: at the cap EVERY new submission, repeat address or not, gets
+       the same slow_down, so the cap can never reveal who is registered. */
+    if (await dailyCapReached(env)) return SLOW_DOWN(cors);
     if (!(await emailKeyExists(env, emailKey))) {
       const created = await atCreate(env, T_HOSTS, fields);
       const recId = created && created.records && created.records[0] && created.records[0].id;
@@ -340,6 +364,6 @@ export default {
 export const __test = {
   V, ALLOWED_KEYS, CONSENT_TEXT, SUBMIT_STATUS, ROUTE, writesEnabled,
   allowedOrigin, fetchMetadataOk, sha256Hex, pickWays, cleanText,
-  MAX_BODY_BYTES, MAX_NOTE_CHARS,
+  MAX_BODY_BYTES, MAX_NOTE_CHARS, DAILY_CAP,
   resetRateLimit: () => hits.clear()
 };

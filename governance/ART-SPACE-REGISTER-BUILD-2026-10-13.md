@@ -229,14 +229,18 @@ Run from `04 Deploy/plotnua-g6-release/worker/art-space-register/`:
 
 **Strict-key probe:** a request carrying `eircode` returns `400`, `refused`, `unexpected_field`, and nothing is stored.
 
-**Dry run (founder-approved, and only after privacy V4 is live):**
-1. `npx wrangler deploy --var WRITES_ENABLED:true`.
-2. Submit two of your own records from `?interest=preview`.
-3. Check the fields, the consent proof and the status log in Airtable.
-4. Erase both records.
-5. `npx wrangler deploy` to switch writes back off.
+**Controlled registration and deletion test (one record; founder-approved; privacy V4 is live).** First push and deploy the daily-cap Worker change with writes off (`npx wrangler deploy`), then:
+1. `npx wrangler deploy --var WRITES_ENABLED:true` (note the time).
+2. On `https://plotnua.ie/disc024-open-your-home-to-art.html?interest=preview`, complete the Property Check. Then register **once** with your own first name and an email you control.
+   - Expect "You're on the register".
+   - Submit the same email again. Expect the same reply and no second record.
+3. `npx wrangler deploy` at once: writes off. The window is minutes.
+4. In Airtable, check that there is one Hosts row, one Consent proofs row and one Status log row, sharing one timestamp, with `privacy_version` 2026-10-PHASE2-V4 and no field beyond the form's.
+5. Delete them by the Option A procedure: the Consent proofs row, the Status log row and the Hosts row. Then add one Deletion log row with `completed_on` and `requested_on` set to today and `reason` = `other`.
+6. Confirm Hosts, Consent proofs and Status log are back to 0. Empty the base's trash, or note that it clears itself after 7 days.
+7. Record the date in `OPEN_APPROVAL["dry_run"]`.
 
-Keep the dry run short: `?interest=preview` works on the live page, so while writes are on it records real submissions.
+While writes are on, `?interest=preview` accepts real submissions, so keep step 1 to step 3 short. The daily cap bounds the exposure meanwhile.
 
 **Rollback, fastest first:**
 1. Revoke the Airtable token.
