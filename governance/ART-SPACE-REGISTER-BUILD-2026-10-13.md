@@ -465,3 +465,31 @@ No acceptance of the Airtable DPA is claimed. The V4 Section 8 sentence on Airta
 2. Create the six views (before opening).
 3. Sign off and date the GDPR self-assessment; approve V4 publication.
 4. Push the local commits.
+
+### 11.14 · Airtable DPA signed by the founder (13 Oct 2026, 23:43)
+
+**Airtable DPA status:** "Signed by founder; awaiting confirmation of fully executed agreement."
+- The founder confirmed that he signed Airtable's Data Processing Addendum on 13 Oct 2026.
+- No countersigned or completed copy has been seen. The agreement is **not** recorded as fully executed.
+- When Airtable's completed copy arrives (normally the DocuSign completion email), file it privately, outside this repository, and record the date here.
+
+**Publication blockers, reassessed.**
+
+| Step | Still blocked by |
+|---|---|
+| Publish Privacy V4 | Founder sign-off of the GDPR self-assessment (final version prepared with a sign-off section); `APPROVAL` recorded with the publication month |
+| Open the register (enable writes) | Confirmation that the Airtable DPA is fully executed; the six views (§11.13); a recorded dry run; `OPEN_APPROVAL` |
+
+**Recommendation, for the founder to decide.** The executed Airtable DPA should gate **opening**, not publication. Publishing V4 sends no personal data to Airtable, and Section 8 only reports what Airtable's DPA states. Personal data first reaches Airtable when writes are enabled. If the founder prefers, publication can also wait for the executed copy.
+
+**Unchanged.**
+- Privacy V4 is not published.
+- Registrations and Worker writes stay off.
+- No code, consent wording or Worker setting changed.
+- The Garden Register is untouched.
+
+**Remaining founder actions (supersedes the list in §11.13).**
+1. Sign off and date the GDPR self-assessment, then approve V4 publication.
+2. When Airtable's fully executed DPA arrives, file it (gates opening).
+3. Create the six views (gates opening).
+4. Push the local commits.
