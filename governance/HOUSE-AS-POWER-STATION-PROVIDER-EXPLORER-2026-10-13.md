@@ -47,3 +47,12 @@ Bord Gáis Energy (ORG-ESUP-BGE) · Electric Ireland (ORG-ESUP-EI) · Energia (O
 ## Not changed
 
 Property Check and its calculations · Compute Readiness check · `supplier-export-evidence.json` · `disc026-evidence.json` · Atlas · Results and Compare · Borrowed Garden and Living in the Garden Explorers · shared Explorer files · other Discoveries · search index (passes `--check` unchanged).
+
+## Addendum — final wording (founder approval, 13 October 2026, 19:19)
+
+Explorer approved subject to two tab-note corrections, applied verbatim:
+
+1. "Every electricity supplier must pay for eligible export." → "Under Ireland's Clean Export Guarantee, electricity suppliers are required to offer payment for eligible exported electricity, subject to the applicable rules." Checked against `disc026-evidence.json` record `supplier_must_pay_for_export` (CRU Microgeneration Q&A, CRU/202366, verified 14 Sep 2026) and the Clean Export Guarantee as named on Energia's and Flogas's pages (re-read 13 Oct 2026).
+2. "Each pays only households that also buy their electricity from it." → "The four suppliers listed here require customers to purchase their electricity from them to receive export payments under their published arrangements." Checked against the four `customer` quotes in `atlas-tools/power-station-provider-sources-v1.json`.
+
+Layout, supplier records, evidence rules and the journey unchanged.

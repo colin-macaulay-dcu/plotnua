@@ -10,7 +10,7 @@
   {
    "key": "suppliers",
    "label": "Electricity suppliers",
-   "note": "Every electricity supplier must pay for eligible export. These are four that PlotNua has checked, not a complete list. Each pays only households that also buy their electricity from it.",
+   "note": "Under Ireland's Clean Export Guarantee, electricity suppliers are required to offer payment for eligible exported electricity, subject to the applicable rules. These are four that PlotNua has checked, not a complete list. The four suppliers listed here require customers to purchase their electricity from them to receive export payments under their published arrangements.",
    "orgs": ["ORG-ESUP-BGE", "ORG-ESUP-EI", "ORG-ESUP-ENERGIA", "ORG-ESUP-FLOGAS"]
   }
  ],
