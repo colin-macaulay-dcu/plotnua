@@ -357,6 +357,54 @@ for fname in sorted(ALLOW):
     })
 print("  possibilities     %d" % len(possibility_route_by_file))
 
+# ---- published supplier information pages -----------------------------------
+# FOUNDER DECISION, 13 October 2026: a supplier information page that PlotNua
+# has PUBLISHED (sitemap-listed, indexable) must be findable through Search.
+# Measured before the change: "triq" returned "No results" while
+# https://plotnua.ie/triq-cube.html was live.
+#
+# SAME RECORD SHAPE, NO NEW TYPE. Each page is emitted as a record of the
+# existing "possibility" shape (id, type, title, standfirst, topics, route):
+# the only shape that carries a navigable route and a line of text, so
+# search.js, its relevance rule and its renderer are untouched.
+#
+# CURATED, NOT SCRAPED. Title and standfirst are declared here word for word
+# (founder wording) and checked against the page, never lifted from body copy.
+# Deliberately NOT a product record: no Atlas id, no price, no tier, no
+# organisation field, and no route to Results / My Plot / Compare. The TRIQ
+# CUBE is not an Atlas product and stays out of recommendations until its
+# Irish availability is established.
+SUPPLIER_INFO_PAGES = {
+    "triq-cube.html": {
+        "id": "info-triq-cube",
+        "title": "TRIQ CUBE by TRIQBRIQ AG",
+        "standfirst": ("9 m\u00b2 timber garden office. Manufacturer information. "
+                       "Irish availability not yet confirmed."),
+        # Words the page itself must carry, so the record can never describe a
+        # page that says something else.
+        "page_must_contain": ["TRIQ&nbsp;CUBE by TRIQBRIQ&nbsp;AG", "9&nbsp;m\u00b2",
+                              "Irish availability not yet confirmed"],
+    },
+}
+info_recs = []
+for fname, spec in sorted(SUPPLIER_INFO_PAGES.items()):
+    if fname not in ALLOW:
+        die("G15 supplier information page %r is not in sitemap.xml" % fname)
+    src = (ROOT / fname).read_text(encoding="utf-8")
+    if re.search(r'<meta[^>]*name=["\']robots["\'][^>]*noindex', src, re.I):
+        die("G15 %r is noindex, so it is not a published page" % fname)
+    for must in spec["page_must_contain"]:
+        if must not in src:
+            die("G15 %r no longer carries %r; the search record would misdescribe it"
+                % (fname, must))
+    info_recs.append({
+        "id": spec["id"], "type": "possibility", "title": spec["title"],
+        "standfirst": spec["standfirst"], "topics": [], "route": fname,
+    })
+records.extend(info_recs)
+print("  supplier info     %d  (published supplier information pages, possibility shape)"
+      % len(info_recs))
+
 # ---- products ----------------------------------------------------------------
 # THE PRODUCT DEEP LINK.
 #
@@ -734,6 +782,20 @@ if size > SIZE_GUARD:
         "reconsidered. Do not reduce the corpus."
         % (size / 1024, SIZE_GUARD // 1024))
 
+# G15 supplier information records: possibility shape only, own page only
+for r in info_recs:
+    if set(r) != ALLOWED_FIELDS["possibility"]:
+        die("G15 %r carries fields %r beyond the possibility shape" % (r["id"], sorted(r)))
+    if r["route"].startswith("your-plot.html") or "?" in r["route"]:
+        die("G15 %r must route to its own page, never to Results / My Plot" % r["id"])
+    if not r["id"].startswith("info-"):
+        die("G15 %r must carry the info- prefix" % r["id"])
+ids_seen = [r["id"] for r in records]
+if len(ids_seen) != len(set(ids_seen)):
+    die("G15 duplicate record id in the index")
+print("  G15 %d supplier information record(s): possibility shape, own page, "
+      "no product fields  OK" % len(info_recs))
+
 # G12 routes exist
 for r in records:
     if "route" not in r:
@@ -851,7 +913,7 @@ if set(index.keys()) != {"schema", "version", "generated", "sourceCommit",
     die("G13 the envelope carries undeclared keys: %r" % sorted(index.keys()))
 print("  G13 catch-all (LAST): nothing outside the four declared types  OK")
 
-print("\n  13 guards passed. counts=%r" % counts)
+print("\n  14 guards passed. counts=%r" % counts)
 
 if CHECK:
     print("  --check: nothing written.\n")
