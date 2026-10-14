@@ -30,7 +30,8 @@ GUARDS
   M1  traceability: every visible text block is verbatim from BASE or declared
   M2  the three branch anchors and #before-anything-arrives exist exactly once
   M3  both Property Checks are linked from their branches and from the closing
-      panel; the merged page links nowhere to the old URL
+      panel, always with ?start=1 (two-option entry, 14 Oct 2026); the merged
+      page links nowhere to the old URL
   M4  no new service claim: no loan/rental/placement/matching/booking offer
   M5  imagery: only images already published on the two source pages (plus one
       existing related-card thumbnail); no new asset file
@@ -73,6 +74,13 @@ OLD = "discovery-open-your-home-to-art.html"
 C23 = "disc023-buy-original-irish-art.html"
 C24 = "disc024-open-your-home-to-art.html"
 TARGET = MERGED + "#open-your-home-to-art"
+# TWO-OPTION ENTRY (founder approval, 14 Oct 2026). Every link from this
+# Discovery to a check carries ?start=1, so a homeowner who has just read the
+# section begins at Question 1; the check's own intro, with its Start and
+# Discover choices, is for visitors arriving from anywhere else. The entry
+# itself is governed by atlas-tools/build-art-space-register.py (E0-E7).
+START24 = C24 + "?start=1"
+START23 = C23 + "?start=1"
 
 
 def die(msg):
@@ -283,7 +291,7 @@ def main_html():
     if seller not in O0:
         die("M1 source sentence moved: the artist is the seller")
     b_open = (branch_open("Possibility one", "open-your-home-to-art", B3[0], B3[1]) +
-              first_b + cta(C24, CHECK24, SUB24) + "  </section>\n")
+              first_b + cta(START24, CHECK24, SUB24) + "  </section>\n")
     b_live = (branch_open("Possibility two", "live-with-art", B2[0], B2[1]) +
               '    <p>%s</p>\n    <p><strong>%s</strong></p>\n' % (B2_P1, B2_P2) +
               '    <div class="dq-adv">\n      <span class="dq-cat dq-adv-cat">Display</span>\n'
@@ -293,11 +301,11 @@ def main_html():
                   "<strong>The artist is the seller.</strong>", "the artist is the seller.") +
               '    <p class="dq-note"><a class="hfa-jump" href="#before-anything-arrives">Before anything arrives, the custody, insurance '
               'and money questions below apply here too.</a></p>\n' +
-              cta(C24, CHECK24, SUB24) + "  </section>\n")
+              cta(START24, CHECK24, SUB24) + "  </section>\n")
     b_own = branch_open("Possibility three", "discover-and-own", B1[0], B1[1]) + "  </section>\n"
     settle = O_SETTLE.replace('<section class="article-section reveal">',
                               '<section class="article-section reveal" id="before-anything-arrives">', 1)
-    before_cta = A_BEFORE.rsplit("  </section>\n", 1)[0] + cta(C23, CHECK23, SUB23) + "  </section>\n"
+    before_cta = A_BEFORE.rsplit("  </section>\n", 1)[0] + cta(START23, CHECK23, SUB23) + "  </section>\n"
     future = (A_FUTURE.rsplit("  </section>\n", 1)[0] +
               '    <h3>Finding each other</h3>\n' +
               "".join(re.findall(r"    <p[^>]*>.*?</p>\n", O_FUTURE, re.S)) + "  </section>\n")
@@ -332,7 +340,7 @@ PANEL = ('<section class="pb-preview reveal" id="discover-your-property">\n'
          '      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>\n'
          '      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>\n'
          '    </div>\n'
-         '  </section>\n' % (SUB24, C24, CHECK24, SUB23, C23, CHECK23))
+         '  </section>\n' % (SUB24, START24, CHECK24, SUB23, START23, CHECK23))
 
 
 def related():
@@ -490,7 +498,9 @@ CONSOLIDATION = [
     ("your-plot.html", "    'disc024-open-your-home-to-art': 'discovery-open-your-home-to-art.html',",
      "    'disc024-open-your-home-to-art': '%s'," % TARGET),
     (C24, '    <a class="ho-back" href="discovery-open-your-home-to-art.html">Back to the story</a>',
-     '    <a class="ho-back" id="hoBack" href="%s" aria-label="Back to A Home for Art">' % TARGET),
+     # 14 Oct 2026: on the intro the control is now labelled "Explore A Home for
+     # Art" (two-option entry, governed by build-art-space-register.py E4).
+     '    <a class="ho-back" id="hoBack" href="%s" aria-label="Explore A Home for Art">' % TARGET),
     ("sitemap.xml", "  <url><loc>https://plotnua.ie/discovery-open-your-home-to-art.html</loc><lastmod>2026-08-27</lastmod>"
      "<changefreq>monthly</changefreq><priority>0.8</priority></url>\n", ""),
     ("sitemap.xml", "<loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-08-27</lastmod>",
@@ -605,6 +615,15 @@ def check24_savecall(t):
     return (m.group(1), m.group(2))
 
 
+def art_entry():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "art_space_register", ROOT / "atlas-tools" / "build-art-space-register.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def strip_register(html):
     for b, e in REGISTER_BLOCKS:
         if html.count(b) != 1 or html.count(e) != 1:
@@ -664,8 +683,10 @@ def guards(page):
     for a in ("discover-and-own", "live-with-art", "open-your-home-to-art", "before-anything-arrives"):
         if page.count('id="%s"' % a) != 1:
             die("M2 anchor #%s not present exactly once" % a)
-    if page.count('href="%s"' % C23) < 2 or page.count('href="%s"' % C24) < 3:
+    if page.count('href="%s"' % START23) < 2 or page.count('href="%s"' % START24) < 3:
         die("M3 the Property Checks are not linked from their branches and the panel")
+    if page.count('href="%s"' % C23) or page.count('href="%s"' % C24):
+        die("M3 a Property Check is linked without ?start=1")
     if 'href="%s"' % OLD in page:
         die("M3 the merged page links to the old URL")
     vis = norm(body).lower()
@@ -743,9 +764,11 @@ def guards(page):
              re.search(r"""href=["']%s["']|'%s'""" % (re.escape(OLD), re.escape(OLD)), f.read_text(encoding="utf-8"))]
     if stale:
         die("M9 live pages still link to the old URL: " + ", ".join(sorted(stale)))
+    # The two-option entry (14 Oct 2026) is the only permitted change to the
+    # DISC-023 check; it is reverted with the art builder's own pairs first.
     head23 = base(C23)
-    if (ROOT / C23).read_text(encoding="utf-8") != head23:
-        die("M8 the DISC-023 check changed")
+    if art_entry().entry_revert(C23, (ROOT / C23).read_text(encoding="utf-8")) != head23:
+        die("M8 the DISC-023 check changed beyond the two-option entry")
 
 
 def main(argv):

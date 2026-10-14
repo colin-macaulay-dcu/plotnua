@@ -685,6 +685,37 @@ window.PlotNuaFunnel = (function () {
     /* Contained on phones too — never the full measure. */
     .pc-cta{width:auto;padding:15px 26px;}
   }
+  /* PLOTNUA-ART-ENTRY-CSS · the Borrowed Garden discover button (disc025):
+     the outlined twin of the primary pill. Same type, radius and height; no
+     fill, no shadow, so Start stays the action. */
+  .pc-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;
+    align-self:flex-start;max-width:100%;}
+  .pc-ghost{display:inline-flex;align-items:center;justify-content:center;
+    gap:11px;background:transparent;color:var(--ink);
+    border:1.5px solid var(--ink);font-family:'Work Sans',sans-serif;
+    padding:15px 26.5px;font-size:13.5px;letter-spacing:.09em;
+    text-transform:uppercase;border-radius:32px;cursor:pointer;
+    text-decoration:none;text-align:center;line-height:normal;
+    transition:transform .22s cubic-bezier(.2,.85,.32,1.1),
+      background .22s ease;}
+  .pc-ghost:hover{background:var(--cream);transform:translateY(-2px);}
+  .pc-ghost:active{transform:translateY(0);}
+  .pc-ghost .pc-arrow{font-size:16px;line-height:1;transition:transform .22s ease;}
+  .pc-ghost:hover .pc-arrow{transform:translateX(3px);}
+  .pc-actions .pc-cta:focus-visible,.pc-ghost:focus-visible{
+    outline:2px solid var(--accent);outline-offset:3px;}
+  @media (max-width:780px){
+    /* Phones: stacked, equal width, capped so neither reads as a banner. */
+    .pc-actions{display:flex;flex-direction:column;align-items:stretch;
+      gap:12px;max-width:340px;}
+    .pc-actions .pc-cta{align-self:stretch;justify-content:center;}
+    .pc-ghost{display:block;padding:14px 20px;letter-spacing:.07em;}
+    .pc-ghost .pc-arrow{display:inline-block;margin-left:4px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .pc-ghost,.pc-ghost .pc-arrow{transition:none;}
+  }
+  /* PLOTNUA-ART-ENTRY-CSS-END */
   /* PLOTNUA-PROPERTY-CHECK-SHELL-END */
 
   /* ---- evidence drawer ------------------------------------------------- */
@@ -770,6 +801,16 @@ window.PlotNuaFunnel = (function () {
   .ho-back:hover{border-color:var(--ink);background:#fff;color:var(--ink);}
   .ho-back:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   .ho-back-i{flex:0 0 auto;}
+  /* PLOTNUA-ART-ENTRY-HEADER · one control, two labels: Explore on the intro, Back inside. */
+  .ho-back-x,.ho-back-b{display:inline-flex;align-items:center;gap:4px;}
+  .ho-back-x{padding-left:5px;}
+  .ho-back [hidden]{display:none;}
+  /* Phones: the longer Explore label wraps inside the pill, so the header
+     keeps its height and the check's name keeps its room. */
+  @media (max-width:480px){
+    .ho-back-x{display:inline-block;white-space:normal;max-width:8.6em;
+      line-height:1.22;font-size:13px;padding:5px 0 5px 4px;}
+  }
 
   /* -- shared column ---------------------------------------------------- */
   .ho-wrap{max-width:720px;padding:0 20px;}
@@ -1043,7 +1084,7 @@ window.PlotNuaFunnel = (function () {
 
 <header class="ho-top">
   <div class="ho-topin">
-    <a class="ho-back" id="hoBack" href="discovery-a-home-for-art.html#open-your-home-to-art" aria-label="Back to A Home for Art"><svg class="ho-back-i" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+    <a class="ho-back" id="hoBack" href="discovery-a-home-for-art.html#open-your-home-to-art" aria-label="Explore A Home for Art"><span class="ho-back-x" id="hoBackX">Explore A Home for Art <span aria-hidden="true">&rarr;</span></span><span class="ho-back-b" id="hoBackB" hidden><svg class="ho-back-i" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</span></a>
     <span class="ho-ident">
       <span class="ho-brand">PlotNua</span>
       <span class="ho-ctx">Open Your Home to Art</span>
@@ -1065,8 +1106,13 @@ window.PlotNuaFunnel = (function () {
     <ul class="pc-facts" aria-label="About this check">
       <li>5 questions</li><li>About a minute</li><li>No address needed</li>
     </ul>
+    <!-- PLOTNUA-ART-ENTRY · two-option entry (founder approval 14 Oct 2026), the Borrowed Garden pattern -->
+    <div class="pc-actions">
     <button class="pc-cta" id="hoStart">Start the check
       <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
+    <a class="pc-ghost" id="hoDiscover" href="discovery-a-home-for-art.html#open-your-home-to-art">Discover A Home for Art
+      <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
   </section>
 
   <section class="ho-screen pc-qscreen" id="hoQ">
@@ -2294,7 +2340,10 @@ if (typeof module !== 'undefined' && module.exports) {
     var b = $('hoBack');
     if (!b) return;
     var onIntro = $('hoIntro').classList.contains('is-on');
-    b.setAttribute('aria-label', onIntro ? 'Back to A Home for Art' : 'Back to the previous question');
+    b.setAttribute('aria-label', onIntro ? 'Explore A Home for Art' : 'Back to the previous question');
+    /* PLOTNUA-ART-ENTRY-HEADER: the visible label follows the same state. */
+    if ($('hoBackX')) $('hoBackX').hidden = !onIntro;
+    if ($('hoBackB')) $('hoBackB').hidden = onIntro;
   }
   function goBack(e){
     if ($('hoIntro').classList.contains('is-on')) return;
@@ -2524,6 +2573,15 @@ if (typeof module !== 'undefined' && module.exports) {
   $('hoBack').addEventListener('click', goBack);
   paintBack();
   hoUpdatePlotPill();
+
+  /* PLOTNUA-ART-ENTRY-START · `?start=1` skips straight to Question 1, for the
+     links on A Home for Art. ONE implementation, not two: this calls the same
+     advance() the intro CTA calls, so flow, engine, tracking and every
+     downstream state are identical whichever way the homeowner arrived. A
+     direct visit to the bare URL still meets the introduction. */
+  if (/(?:^|[?&])start=1(?:&|$)/.test(location.search.replace(/^\?/, '?'))) {
+    advance();
+  }
 
 })();
 </script>

@@ -24,7 +24,9 @@ GARDEN = ROOT / "disc025-borrowed-garden-check.html"
 PRIVACY = ROOT / "privacy.html"
 ART_WRANGLER = ROOT / "worker" / "art-space-register" / "wrangler.toml"
 SCHEMA = ROOT / "worker" / "art-space-register" / "airtable-schema.json"
-FILES = [RB, PAGE, WORKER, GARDEN, PRIVACY, ART_WRANGLER, SCHEMA]
+PAGE23 = ROOT / "disc023-buy-original-irish-art.html"
+DISCOVERY = ROOT / "discovery-a-home-for-art.html"
+FILES = [RB, PAGE, WORKER, GARDEN, PRIVACY, ART_WRANGLER, SCHEMA, PAGE23, DISCOVERY]
 
 import importlib.util
 _spec = importlib.util.spec_from_file_location("pv4", ROOT / "atlas-tools" / "build-privacy-v4.py")
@@ -231,6 +233,71 @@ multi("R14 schema gives status a second option", [schema_with(lambda d: [f for f
 multi("R14 Status log table missing", [(SCHEMA, '"name": "Status log"', '"name": "Log"')])
 case("CHECK page hand-edited inside the register", PAGE,
      "Could your home become a home for art?</h2>", "Could your home host art?</h2>", expect="CHECK FAILED")
+
+# ---- E0-E7 · A Home for Art two-option entry (founder approval 14 Oct 2026)
+case("E0 DISC-023 Start button hand-edited", PAGE23,
+     '<button class="pc-cta" id="arStart">Start the check', '<button class="pc-cta" id="arStart">Begin',
+     expect="REFUSED: E0")
+case("E2 Discovery loses #discover-and-own", DISCOVERY,
+     'id="discover-and-own"', 'id="discover-own"', expect="REFUSED: E2")
+case("E5 Discovery links to a check without ?start=1", DISCOVERY,
+     'href="disc023-buy-original-irish-art.html?start=1"', 'href="disc023-buy-original-irish-art.html"',
+     expect="REFUSED: E5")
+case("E6 DISC-023 edited outside the entry", PAGE23,
+     "What will your wall actually take?", "What will your wall take?", expect="REFUSED: E6")
+
+
+def guard_case(label, path, old, new, expect):
+    """A page as a broken build would emit it, given straight to entry_guards():
+    the E0 anchors cannot mask the guard under test. Nothing is written."""
+    import contextlib, importlib.util, io
+    spec = importlib.util.spec_from_file_location("asr_proof", RB)
+    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+    text = path.read_text(encoding="utf-8")
+    if text.count(old) != 1:
+        results.append((label, False, "mutation anchor not found exactly once")); return
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        try:
+            mod.entry_guards(path.name, text.replace(old, new))
+            code = 0
+        except SystemExit as e:
+            code = e.code
+    out = buf.getvalue().strip()
+    results.append((label, bool(code) and expect in out, (out.splitlines() or [""])[-1][:110]))
+
+
+guard_case("E1 Discover button sent to the wrong section", PAGE23,
+           'href="discovery-a-home-for-art.html#discover-and-own">Discover A Home for Art',
+           'href="discovery-a-home-for-art.html#live-with-art">Discover A Home for Art', "REFUSED: E1")
+guard_case("E1 Discover relabelled", PAGE,
+           '">Discover A Home for Art\n', '">Learn more\n', "REFUSED: E1")
+guard_case("E1 Discover placed before Start", PAGE23,
+           '    <button class="pc-cta" id="arStart">Start the check\n'
+           '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>\n'
+           '    <a class="pc-ghost" id="arDiscover" href="discovery-a-home-for-art.html#discover-and-own">Discover A Home for Art\n'
+           '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>\n',
+           '    <a class="pc-ghost" id="arDiscover" href="discovery-a-home-for-art.html#discover-and-own">Discover A Home for Art\n'
+           '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>\n'
+           '    <button class="pc-cta" id="arStart">Start the check\n'
+           '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>\n', "REFUSED: E1")
+guard_case("E7 Discover opens a new tab", PAGE,
+           'id="hoDiscover" href="discovery-a-home-for-art.html#open-your-home-to-art">',
+           'id="hoDiscover" href="discovery-a-home-for-art.html#open-your-home-to-art" target="_blank">', "REFUSED: E")
+guard_case("E3 ?start=1 does more than advance()", PAGE,
+           "  if (/(?:^|[?&])start=1(?:&|$)/.test(location.search.replace(/^\\?/, '?'))) {\n    advance();",
+           "  if (/(?:^|[?&])start=1(?:&|$)/.test(location.search.replace(/^\\?/, '?'))) {\n    advance(); show('hoQ');",
+           "REFUSED: E3")
+guard_case("E3 ?start=1 handler removed", PAGE23,
+           "/(?:^|[?&])start=1(?:&|$)/.test(", "/(?:^|[?&])begin=1(?:&|$)/.test(", "REFUSED: E3")
+guard_case("E4 DISC-023 header link loses its section", PAGE23,
+           '<a class="ar-back" href="discovery-a-home-for-art.html#discover-and-own">',
+           '<a class="ar-back" href="discovery-a-home-for-art.html">', "REFUSED: E4")
+guard_case("E4 DISC-024 header label reverted", PAGE,
+           '<span class="ho-back-x" id="hoBackX">Explore A Home for Art <span aria-hidden="true">&rarr;</span>',
+           '<span class="ho-back-x" id="hoBackX">Back to the story', "REFUSED: E4")
+case("E6 DISC-024 question edited outside the entry", PAGE,
+     "Could your home hold an artist&rsquo;s work?", "Could your home hold art?", expect="REFUSED: R1")
 
 ctl1 = run(RB).returncode == 0
 same = BEFORE == {p.name: h(p) for p in FILES}

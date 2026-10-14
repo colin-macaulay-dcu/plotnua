@@ -9,7 +9,8 @@ the controlled registration-and-deletion test of the same day. Expressions of in
 payments, automatic emails or promises of income. Technical reference: the
 Borrowed Garden G3 register, which this builder never touches.
 
-Writes ONE file: disc024-open-your-home-to-art.html. Four bounded insertions:
+Writes disc024-open-your-home-to-art.html and, for the two-option entry only,
+disc023-buy-original-irish-art.html. The register is four bounded insertions:
   1. a scoped stylesheet block at the end of the page's own <style>;
   2. the register section inside #hoReveal, after the My Plot save band;
   3. ONE call at the end of reveal(), after the save band is mounted, passing
@@ -54,6 +55,24 @@ GUARDS
   R14 the Airtable schema (worker/art-space-register/airtable-schema.json)
       carries every field the Worker writes, with option lists identical to
       the Worker's vocabularies, and the Worker's three table names
+
+TWO-OPTION ENTRY (founder approval to implement, 14 October 2026). Both A
+Home for Art checks open with the Borrowed Garden pattern: START THE CHECK
+plus an outlined "Discover A Home for Art ->" to the check's own Discovery
+section, a header "Explore A Home for Art ->", and ?start=1 to begin at
+Question 1. Bounded (before, after) pairs in ENTRY, reverted before every
+comparison with HEAD.
+  E0  every entry anchor is found exactly once (an unexpected page refuses)
+  E1  the intro holds one .pc-actions: Start first, then the Discover link
+      with the approved label and destination
+  E2  the Discover destination exists exactly once on the Discovery
+  E3  ?start=1: one handler, bound after the Start listener, calling advance()
+      and nothing else
+  E4  the header "Explore A Home for Art ->" goes to the check's section
+  E5  the Discovery links to each check with ?start=1, never the bare URL
+      (those links are written by build-a-home-for-art-merge.py)
+  E6  every other byte of both pages is git HEAD's
+  E7  Discover is a same-tab link, never a new tab or a script action
 
 Usage:
   python3 atlas-tools/build-art-space-register.py --apply
@@ -155,6 +174,230 @@ A_HTML = "    <div class=\"ho-primary\" id=\"hoEstablished\"></div>\n"
 A_CALL = "    hoPaintClose();\n    hoUpdatePlotPill();\n"
 A_CALL_NEXT = "  }\n\n  $('hoStart').addEventListener('click', function(){ advance(); });"
 A_JS = "</body>\n</html>"
+
+# ── A HOME FOR ART · TWO-OPTION ENTRY ────────────────────────────────────────
+# Founder approval to implement: 14 October 2026. BOTH A Home for Art checks
+# open with the Borrowed Garden entry pattern (disc025, commits c05ee36 and
+# df7d492): the primary START THE CHECK pill and an outlined secondary
+# "Discover A Home for Art ->" pill to that check's own Discovery section, a
+# header "Explore A Home for Art ->" link, and ?start=1 to skip the intro and
+# begin at Question 1. Presentation and entry only: the questions, engines,
+# results, My Plot saves, tracking and the register are unchanged, and E6
+# proves every other byte of both pages against git HEAD.
+#
+# Each change is ONE bounded (before, after) pair. The builder reverts every
+# pair before comparing a page with HEAD, so R1/E6 hold both before and after
+# the change is committed, and --apply is idempotent.
+PAGE23_NAME = "disc023-buy-original-irish-art.html"
+PAGE23 = ROOT / PAGE23_NAME
+DISCOVERY_NAME = "discovery-a-home-for-art.html"
+DISCOVER_LABEL = "Discover A Home for Art"
+HEADER_LABEL = "Explore A Home for Art"
+START_RE = r"/(?:^|[?&])start=1(?:&|$)/"
+ENTRY_MARK = "PLOTNUA-ART-ENTRY"
+
+ENTRY_CSS = """  /* PLOTNUA-ART-ENTRY-CSS · the Borrowed Garden discover button (disc025):
+     the outlined twin of the primary pill. Same type, radius and height; no
+     fill, no shadow, so Start stays the action. */
+  .pc-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;
+    align-self:flex-start;max-width:100%;}
+  .pc-ghost{display:inline-flex;align-items:center;justify-content:center;
+    gap:11px;background:transparent;color:var(--ink);
+    border:1.5px solid var(--ink);font-family:'Work Sans',sans-serif;
+    padding:15px 26.5px;font-size:13.5px;letter-spacing:.09em;
+    text-transform:uppercase;border-radius:32px;cursor:pointer;
+    text-decoration:none;text-align:center;line-height:normal;
+    transition:transform .22s cubic-bezier(.2,.85,.32,1.1),
+      background .22s ease;}
+  .pc-ghost:hover{background:var(--cream);transform:translateY(-2px);}
+  .pc-ghost:active{transform:translateY(0);}
+  .pc-ghost .pc-arrow{font-size:16px;line-height:1;transition:transform .22s ease;}
+  .pc-ghost:hover .pc-arrow{transform:translateX(3px);}
+  .pc-actions .pc-cta:focus-visible,.pc-ghost:focus-visible{
+    outline:2px solid var(--accent);outline-offset:3px;}
+  @media (max-width:780px){
+    /* Phones: stacked, equal width, capped so neither reads as a banner. */
+    .pc-actions{display:flex;flex-direction:column;align-items:stretch;
+      gap:12px;max-width:340px;}
+    .pc-actions .pc-cta{align-self:stretch;justify-content:center;}
+    .pc-ghost{display:block;padding:14px 20px;letter-spacing:.07em;}
+    .pc-ghost .pc-arrow{display:inline-block;margin-left:4px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .pc-ghost,.pc-ghost .pc-arrow{transition:none;}
+  }
+  /* PLOTNUA-ART-ENTRY-CSS-END */
+"""
+_SHELL_END = "  /* PLOTNUA-PROPERTY-CHECK-SHELL-END */\n"
+
+
+def _actions(start_id, discover_id, anchor):
+    return ("    <!-- PLOTNUA-ART-ENTRY · two-option entry (founder approval 14 Oct 2026),"
+            " the Borrowed Garden pattern -->\n"
+            '    <div class="pc-actions">\n'
+            '    <button class="pc-cta" id="%s">Start the check\n'
+            '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>\n'
+            '    <a class="pc-ghost" id="%s" href="%s#%s">%s\n'
+            '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>\n'
+            '    </div>\n'
+            '  </section>\n' % (start_id, discover_id, DISCOVERY_NAME, anchor, DISCOVER_LABEL))
+
+
+def _start_js(lead):
+    return (lead +
+            "\n  /* PLOTNUA-ART-ENTRY-START · `?start=1` skips straight to Question 1, for the\n"
+            "     links on A Home for Art. ONE implementation, not two: this calls the same\n"
+            "     advance() the intro CTA calls, so flow, engine, tracking and every\n"
+            "     downstream state are identical whichever way the homeowner arrived. A\n"
+            "     direct visit to the bare URL still meets the introduction. */\n"
+            "  if (%s.test(location.search.replace(/^\\?/, '?'))) {\n"
+            "    advance();\n"
+            "  }\n"
+            "\n})();" % START_RE)
+
+
+_BACK_SVG = ('<svg class="ho-back-i" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" '
+             'focusable="false"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" '
+             'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+_HO_HREF = DISCOVERY_NAME + "#open-your-home-to-art"
+
+ENTRY = {
+    PAGE_NAME: {
+        "path": PAGE, "start_id": "hoStart", "discover_id": "hoDiscover",
+        "anchor": "open-your-home-to-art", "intro_id": "hoIntro",
+        "edits": [
+            ("entry stylesheet", _SHELL_END, ENTRY_CSS + _SHELL_END),
+            ("intro actions",
+             '    <button class="pc-cta" id="hoStart">Start the check\n'
+             '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>\n'
+             '  </section>\n',
+             _actions("hoStart", "hoDiscover", "open-your-home-to-art")),
+            # THE ONE BACK CONTROL keeps both duties. On the intro it now reads
+            # "Explore A Home for Art ->" (the Borrowed Garden header link);
+            # inside the check it is still "< Back" and steps back a question.
+            ("header link",
+             '    <a class="ho-back" id="hoBack" href="%s" aria-label="Back to A Home for Art">%sBack</a>\n'
+             % (_HO_HREF, _BACK_SVG),
+             '    <a class="ho-back" id="hoBack" href="%s" aria-label="%s">'
+             '<span class="ho-back-x" id="hoBackX">%s <span aria-hidden="true">&rarr;</span></span>'
+             '<span class="ho-back-b" id="hoBackB" hidden>%sBack</span></a>\n'
+             % (_HO_HREF, HEADER_LABEL, HEADER_LABEL, _BACK_SVG)),
+            ("header stylesheet",
+             "  .ho-back-i{flex:0 0 auto;}\n",
+             "  .ho-back-i{flex:0 0 auto;}\n"
+             "  /* PLOTNUA-ART-ENTRY-HEADER · one control, two labels: Explore on the intro, Back inside. */\n"
+             "  .ho-back-x,.ho-back-b{display:inline-flex;align-items:center;gap:4px;}\n"
+             "  .ho-back-x{padding-left:5px;}\n"
+             "  .ho-back [hidden]{display:none;}\n"
+             "  /* Phones: the longer Explore label wraps inside the pill, so the header\n"
+             "     keeps its height and the check's name keeps its room. */\n"
+             "  @media (max-width:480px){\n"
+             "    .ho-back-x{display:inline-block;white-space:normal;max-width:8.6em;\n"
+             "      line-height:1.22;font-size:13px;padding:5px 0 5px 4px;}\n"
+             "  }\n"),
+            ("header label switch",
+             "    b.setAttribute('aria-label', onIntro ? 'Back to A Home for Art' : 'Back to the previous question');\n",
+             "    b.setAttribute('aria-label', onIntro ? '%s' : 'Back to the previous question');\n"
+             "    /* PLOTNUA-ART-ENTRY-HEADER: the visible label follows the same state. */\n"
+             "    if ($('hoBackX')) $('hoBackX').hidden = !onIntro;\n"
+             "    if ($('hoBackB')) $('hoBackB').hidden = onIntro;\n" % HEADER_LABEL),
+            ("start=1", "  paintBack();\n  hoUpdatePlotPill();\n\n})();",
+             _start_js("  paintBack();\n  hoUpdatePlotPill();\n")),
+        ],
+    },
+    PAGE23_NAME: {
+        "path": PAGE23, "start_id": "arStart", "discover_id": "arDiscover",
+        "anchor": "discover-and-own", "intro_id": "arIntro",
+        "edits": [
+            ("entry stylesheet", _SHELL_END, ENTRY_CSS + _SHELL_END),
+            ("intro actions",
+             '    <button class="pc-cta" id="arStart">Start the check\n'
+             '      <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>\n'
+             '  </section>\n',
+             _actions("arStart", "arDiscover", "discover-and-own")),
+            ("header link",
+             '    <a class="ar-back" href="%s">Back to the story</a>\n' % DISCOVERY_NAME,
+             '    <a class="ar-back" href="%s#discover-and-own">%s <span aria-hidden="true">&rarr;</span></a>\n'
+             % (DISCOVERY_NAME, HEADER_LABEL)),
+            ("start=1",
+             "  $('arBack').addEventListener('click', back);\n  arUpdatePlotPill();\n\n})();",
+             _start_js("  $('arBack').addEventListener('click', back);\n  arUpdatePlotPill();\n")),
+        ],
+    },
+}
+
+
+def entry_revert(name, html):
+    """The page with every entry pair put back to its 'before' text."""
+    for label, before, after in reversed(ENTRY[name]["edits"]):
+        if html.count(after) > 1:
+            die("E0 %s: entry change '%s' present more than once" % (name, label))
+        html = html.replace(after, before)
+    return html
+
+
+def entry_apply(name, html):
+    """Apply every entry pair to a page that has none of them."""
+    for label, before, after in ENTRY[name]["edits"]:
+        if html.count(before) != 1:
+            die("E0 %s: entry anchor '%s' not found exactly once" % (name, label))
+        html = html.replace(before, after)
+    return html
+
+
+def entry_guards(name, html):
+    spec = ENTRY[name]
+    sid, did, anchor = spec["start_id"], spec["discover_id"], spec["anchor"]
+    href = "%s#%s" % (DISCOVERY_NAME, anchor)
+    # E1 two options on the intro: the primary Start pill first, then the
+    # outlined Discover link, both inside one .pc-actions in the intro section.
+    i = html.index('id="%s"' % spec["intro_id"])
+    intro = html[i:html.index("</section>", i)]
+    if html.count('class="pc-actions"') != 1 or intro.count('class="pc-actions"') != 1:
+        die("E1 %s: the two-option entry is not in the intro exactly once" % name)
+    if html.count('id="%s"' % sid) != 1 or html.count('class="pc-ghost"') != 1:
+        die("E1 %s: Start or Discover is not present exactly once" % name)
+    acts = intro[intro.index('class="pc-actions"'):]
+    if not (0 <= acts.find('id="%s"' % sid) < acts.find('class="pc-ghost"')):
+        die("E1 %s: Start must lead and Discover follow" % name)
+    ghost = re.search(r'<a class="pc-ghost" id="%s" href="([^"]+)">([^<]+)<' % did, intro)
+    if not ghost or ghost.group(1) != href or ghost.group(2).strip() != DISCOVER_LABEL:
+        die("E1 %s: the Discover button label or destination is not the approved one" % name)
+    # E7 navigation, not an action: a same-tab link, never a button or a new tab.
+    if re.search(r'<a class="pc-ghost"[^>]*(target=|onclick=)', html):
+        die("E7 %s: the Discover link opens a new tab or runs script" % name)
+    # E2 the Discover destination exists exactly once on the Discovery.
+    disc = (ROOT / DISCOVERY_NAME).read_text(encoding="utf-8")
+    if disc.count('id="%s"' % anchor) != 1:
+        die("E2 %s: #%s is not on %s exactly once" % (name, anchor, DISCOVERY_NAME))
+    # E3 ?start=1: one handler, after the Start listener, calling advance() only.
+    code = re.sub(r"/\*[\s\S]*?\*/", "", html)
+    hits = [m.start() for m in re.finditer(re.escape(START_RE) + r"\.test\(location\.search", code)]
+    if len(hits) != 1:
+        die("E3 %s: the ?start=1 handler is not present exactly once" % name)
+    body = code[hits[0]:code.index("}", hits[0])]
+    if re.sub(r"\s", "", body.split("{", 1)[1]) != "advance();":
+        die("E3 %s: ?start=1 must call advance() and nothing else" % name)
+    bound = code.find("$('%s').addEventListener('click', function(){ advance(); });" % sid)
+    if bound < 0 or bound > hits[0]:
+        die("E3 %s: ?start=1 runs before the Start listener is bound" % name)
+    # E4 the header link names A Home for Art and goes to this check's section.
+    if html.count('href="%s"' % href) < 2 or HEADER_LABEL + ' <span aria-hidden="true">&rarr;</span>' not in html:
+        die("E4 %s: the header Explore link is missing or misdirected" % name)
+    # E5 the Discovery hands off with ?start=1, never to the bare intro.
+    n_start = disc.count('href="%s?start=1"' % name)
+    if disc.count('href="%s"' % name) or n_start < 1:
+        die("E5 %s: A Home for Art links to this check without ?start=1 (%d with)" % (name, n_start))
+    # E6 every other byte of the page is git HEAD's.
+    try:
+        head = subprocess.run(["git", "-C", str(ROOT), "show", "HEAD:" + name],
+                              capture_output=True, text=True, check=True).stdout
+        head_core = entry_revert(name, strip(head) if name == PAGE_NAME else head)
+        cur_core = entry_revert(name, strip(html) if name == PAGE_NAME else html)
+        if head_core != cur_core:
+            die("E6 %s: the page differs from git HEAD beyond the entry changes" % name)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        print("  E6 skipped: git HEAD not available")
 
 CSS = """/* PLOTNUA-ART-REGISTER-CSS-BEGIN · Art Space Register (DISC-024), founder-approved
    for build 13 Oct 2026. Generated by atlas-tools/build-art-space-register.py.
@@ -767,11 +1010,12 @@ def worker_allowed():
 def strip(html):
     for b, e in (("css_b", "css_e"), ("html_b", "html_e"), ("call_b", "call_e"), ("js_b", "js_e")):
         html = re.sub(re.escape(M[b]) + r"[\s\S]*?" + re.escape(M[e]), "", html)
-    return html
+    # The two-option entry is governed by E0-E7, not R1: put it back too.
+    return entry_revert(PAGE_NAME, html)
 
 
 def build(current):
-    html = strip(current)
+    html = entry_apply(PAGE_NAME, strip(current))
     for a, label in ((A_CSS, "head style end"), (A_HTML, "save band end"), (A_JS, "</body>")):
         if html.count(a) != 1:
             die("R1 anchor not found exactly once: " + label)
@@ -980,14 +1224,23 @@ def main(argv):
     current = PAGE.read_text(encoding="utf-8")
     html = build(current)
     guards(html)
+    cur23 = PAGE23.read_text(encoding="utf-8")
+    html23 = entry_apply(PAGE23_NAME, entry_revert(PAGE23_NAME, cur23))
+    entry_guards(PAGE_NAME, html)
+    entry_guards(PAGE23_NAME, html23)
     if "--check" in argv:
         if html != current:
             print("CHECK FAILED: %s is out of date; run --apply" % PAGE_NAME); sys.exit(1)
+        if html23 != cur23:
+            print("CHECK FAILED: %s is out of date; run --apply" % PAGE23_NAME); sys.exit(1)
+        print("Two-option entry (DISC-023, DISC-024) · CHECK OK — E0-E7 pass")
         print("%s: Art Space Register present, %s · CHECK OK — R1-R14 pass"
               % (PAGE_NAME, "OPEN" if INTEREST_PUBLIC else "CLOSED")); return
     PAGE.write_text(html, encoding="utf-8")
+    PAGE23.write_text(html23, encoding="utf-8")
     print("%s: Art Space Register placed, %s · APPLIED — R1-R14 pass"
           % (PAGE_NAME, "OPEN" if INTEREST_PUBLIC else "CLOSED"))
+    print("Two-option entry (DISC-023, DISC-024) · APPLIED — E0-E7 pass")
 
 
 if __name__ == "__main__":
