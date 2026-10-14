@@ -46,7 +46,9 @@ GUARDS
       Art is the only page that links to it
   A11 A Home for Art: the two-pathway "Take part" section (founder decision,
       14 Oct 2026, 20:33; rendered by build-a-home-for-art-merge.py) is present
-      exactly once, after FUTURE_ANCHOR, only while open; absent while closed
+      exactly once, after FUTURE_ANCHOR, and the top-of-page "Be part of the
+      idea" invitation (14 Oct 2026, 21:11) exactly once, before it; both only
+      while open, both absent while closed
   A12 the homeowner register is untouched: the disc024 page and the homeowner
       Worker's vocabulary, allow-list, consent and handler are git HEAD's.
       (Its builder is not pinned here: Privacy V5 legitimately updates its
@@ -129,6 +131,7 @@ DISCLAIMER = ("Registering doesn&rsquo;t mean you&rsquo;ll be offered a space, a
 # the page's only link to this register; closed -> absent.
 FUTURE_ANCHOR = '    <p class="dq-note">This matching service is not live yet.</p>\n'
 TAKE_PART_MARK = "<!-- PLOTNUA-TAKE-PART"
+BE_PART_MARK = "<!-- PLOTNUA-BE-PART"
 SITEMAP_ANCHOR = ('  <url><loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-10-13</lastmod>'
                   '<changefreq>monthly</changefreq><priority>0.8</priority></url>\n')
 SITEMAP_LINE = ('  <url><loc>https://plotnua.ie/artist-register.html</loc><lastmod>2026-10-14</lastmod>'
@@ -785,11 +788,14 @@ def guards(page):
     if disc.count(FUTURE_ANCHOR) != 1:
         die("A11 the A Home for Art PlotArt anchor is not found exactly once")
     if ARTIST_PUBLIC:
+        # Two links: the top-of-page invitation (BE_PART_MARK, founder 14 Oct 2026, 21:11)
+        # and the Take part section after the PlotArt anchor.
         if disc.count(TAKE_PART_MARK) != 1 or disc.index(TAKE_PART_MARK) < disc.index(FUTURE_ANCHOR) \
-                or disc.count('href="artist-register.html"') != 1:
-            die("A11 A Home for Art must carry the Take part section once, after the PlotArt anchor, "
-                "with exactly one link to this register")
-    elif TAKE_PART_MARK in disc or "artist-register.html" in disc:
+                or disc.count(BE_PART_MARK) != 1 or disc.index(BE_PART_MARK) > disc.index(FUTURE_ANCHOR) \
+                or disc.count('href="artist-register.html"') != 2:
+            die("A11 A Home for Art must carry the top invitation once and the Take part section once, "
+                "after the PlotArt anchor, with exactly two links to this register")
+    elif TAKE_PART_MARK in disc or BE_PART_MARK in disc or "artist-register.html" in disc:
         die("A11 the A Home for Art Take part section is visible while the register is closed")
     # A12
     try:
