@@ -372,10 +372,13 @@ const ARTIST_ALLOWED_KEYS = Object.freeze([
   'needs', 'portfolio', 'statement', 'over_18', 'consent_text'
 ]);
 
-/* Proposed 14 Oct 2026; the founder approves the final wording with Privacy
-   Notice V5, before opening. The page sends the sentence it rendered. */
+/* FOUNDER WORDING, 14 Oct 2026 (19:25), replacing the proposal of the same day.
+   It is final only when the founder approves Privacy Notice V5's exact text,
+   before opening. The page sends the sentence it rendered; this Worker hashes
+   it and compares. Change it here, in build-artist-register.py (CONSENT) and in
+   the V5 draft together, in one commit: guard A3 refuses any mismatch. */
 const ARTIST_CONSENT_TEXT =
-  "I'm over 18 and agree that PlotNua may keep my registration details and contact me about the A Home for Art pilot and the development of PlotArt. I understand I can withdraw my consent at any time.";
+  "I confirm that I am 18 or over and consent to PlotNua storing my Artist Register details and contacting me about the development of PlotArt and potential opportunities to connect with homeowners. I understand that registering does not guarantee an opportunity and that I can withdraw my consent at any time.";
 
 function artistWritesEnabled(env) {
   return env.ARTIST_WRITES_ENABLED === 'true' && !!env.ARTIST_PRIVACY_VERSION &&

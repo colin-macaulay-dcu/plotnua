@@ -89,10 +89,12 @@ V5_MARK = "PLOTNUA-ARTIST-PRIVACY-V5"
 ENDPOINT = "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/artist"
 HOST_ENDPOINT_PATH = "/v1/art-space-register/host"
 
-# Proposed 14 Oct 2026; the founder approves the final wording with V5.
-CONSENT = ("I'm over 18 and agree that PlotNua may keep my registration details and contact me about "
-           "the A Home for Art pilot and the development of PlotArt. I understand I can withdraw my "
-           "consent at any time.")
+# FOUNDER WORDING, 14 Oct 2026 (19:25). Final only with the founder's approval of
+# Privacy Notice V5. Kept identical to the Worker's ARTIST_CONSENT_TEXT (guard A3).
+CONSENT = ("I confirm that I am 18 or over and consent to PlotNua storing my Artist Register details "
+           "and contacting me about the development of PlotArt and potential opportunities to connect "
+           "with homeowners. I understand that registering does not guarantee an opportunity and that "
+           "I can withdraw my consent at any time.")
 
 HEADING = "Your art. Somewhere unexpected."
 STANDFIRST = "What if the perfect place for your artwork wasn&rsquo;t a gallery?"
@@ -149,8 +151,9 @@ NOTICE = [
      "Your home address, your phone number, your date of birth, photographs, prices or details of "
      "your sales."),
     ("Why we keep it.",
-     "So that we can contact you about the A Home for Art pilot and the development of PlotArt &mdash; "
-     "for example to ask what would be useful to you, or to let you know if the idea develops."),
+     "So that we can contact you about the development of PlotArt and about potential opportunities to "
+     "connect with homeowners &mdash; for example to ask what would be useful to you, or to let you know "
+     "if the idea develops."),
     ("Your details stay private.",
      "Registration details are accessible only to authorised people managing the register and to "
      "service providers where necessary to operate it. They are not shared with homeowners or made "
@@ -706,7 +709,10 @@ def guards(page):
     if page.count(DISCLAIMER) != 1 or "PlotArt is in development" not in visible(main):
         die("A7 the developmental status or the disclaimer is missing")
     strings = " ".join(a or b for a, b in re.findall(r"'((?:[^'\\\n]|\\.)*)'|\"((?:[^\"\\\n]|\\.)*)\"", code_js))
-    vis = (visible(main).replace(_html.unescape(DISCLAIMER), " ") + " " + strings).lower()
+    # The disclaimer and the consent sentence are the two places that NAME what is
+    # not offered ("does not guarantee"); both are pinned elsewhere (A3, A7) and
+    # removed before the scan, so any other promise wording still refuses.
+    vis = (visible(main).replace(_html.unescape(DISCLAIMER), " ") + " " + strings.replace(CONSENT, " ")).lower()
     bad = re.search(r"\b(guarantee[ds]?|earn(ings)?|commissions?|bookings?|book a|matched|we will (introduce|match|"
                     r"exhibit|sell|book|find)|we'll (introduce|match|exhibit|sell|find)|you will be (paid|offered|"
                     r"matched)|get paid|be paid|sell your work|exhibition guaranteed)\b", vis)

@@ -130,7 +130,7 @@ The founder runs this with their own details only. It mirrors the homeowner test
 9. [ ] A Home for Art: apply the prepared `FUTURE_LINK` after `FUTURE_ANCHOR` (via `build-a-home-for-art-merge.py`), and add the page to `sitemap.xml`. Guard A10 refuses both while the register is closed.
 10. [ ] The founder pushes.
 11. [ ] Weekly review covers the `Artists` table and the "Statements to screen" view.
-12. [ ] Review trigger agreed. The suggestion is the same as for homeowners: 10 genuine registrations or 8 weeks, whichever comes first, as a review only.
+12. [x] Review trigger set by the founder (14 Oct 2026, 19:25): 10 genuine artist registrations or 8 weeks after public opening, whichever comes first. It triggers a review only.
 
 ## 6 · Guards and tests
 
@@ -145,6 +145,21 @@ The founder runs this with their own details only. It mirrors the homeowner test
   - `prove-art-worker.mjs`: 70 checks;
   - `prove-art-space-register.py`: 57 out of 57 breaks caught;
   - `build-art-space-register.py --check`: R1–R14.
+
+## 6a · Founder decisions, 14 Oct 2026 (19:25)
+
+The closed build at `9725254` was accepted. Registrations stay closed.
+
+1. Privacy Section 8 is renamed "The Art Space Register and the Artist Register".
+2. Review trigger: as in checklist item 12.
+3. Homeowner site-specific installations: a future improvement only (see §7).
+4. The artist consent wording is the founder's. It was applied in ONE commit to:
+   - the Worker (`ARTIST_CONSENT_TEXT`);
+   - the page builder (`CONSENT`) and the rebuilt page;
+   - the Worker tests (C4 pins it exactly; C5 checks the V5 draft carries it);
+   - the V5 draft.
+
+   Guard A7 previously refused any page containing the word "guarantee". It now removes the pinned consent sentence before scanning, exactly as it already did for the disclaimer, so "does not guarantee" is allowed there and nowhere else.
 
 ## 7 · Recorded for later (not part of this build)
 

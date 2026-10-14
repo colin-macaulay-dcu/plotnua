@@ -127,6 +127,13 @@ check('C2 incidental whitespace still matches (reaches the closed switch)', r.s 
 check('C3 the artist consent names PlotArt and withdrawal, and differs from the homeowner one',
   /PlotArt/.test(T.ARTIST_CONSENT_TEXT) && /withdraw my consent at any time/.test(T.ARTIST_CONSENT_TEXT) &&
   T.ARTIST_CONSENT_TEXT !== T.CONSENT_TEXT);
+check('C4 the artist consent is the founder wording of 14 Oct 2026, ASCII only, character for character',
+  T.ARTIST_CONSENT_TEXT === 'I confirm that I am 18 or over and consent to PlotNua storing my Artist Register details and ' +
+  'contacting me about the development of PlotArt and potential opportunities to connect with homeowners. I understand ' +
+  'that registering does not guarantee an opportunity and that I can withdraw my consent at any time.' &&
+  /^[\x20-\x7e]+$/.test(T.ARTIST_CONSENT_TEXT));
+const v5 = readFileSync(new URL('../../../governance/PRIVACY-VERSION-2026-10-PHASE2-V5-DRAFT.md', import.meta.url), 'utf8');
+check('C5 the V5 draft carries the same consent sentence', v5.includes(T.ARTIST_CONSENT_TEXT));
 for (const ok of ['outside_ireland', 'antrim', 'derry', 'tyrone']) {
   const rr = await run(LIVE, req(A, good({ based_in: ok })));
   check('L based_in ' + ok + ' accepted (32 counties or outside Ireland)', rr.s === 503 && rr.j.state === 'not_open');
