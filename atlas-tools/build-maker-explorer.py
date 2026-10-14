@@ -57,8 +57,12 @@ PINS = {
     # maker already fits (Garden Retreat lists one maker). Output for any
     # directory larger than six makers is unchanged, so Living in the Garden
     # is identical.
-    # Previous pin: fe884244bbbbd0bedfcf9eb543b19d06590322972860dadc3d42b17484deb83b
-    SHARED_JS:  "76846752dc52234d91aee875ed4e5afd0d409f41e1d52fd87474cccebcba3358",
+    # Re-pinned 14 Oct 2026 (Garden Retreat restructure): optional per-tab
+    # availabilityNote and an optional price line per product. A tab without
+    # either renders exactly as before (Living in the Garden is unchanged;
+    # proved by an output comparison before and after the re-pin).
+    # Previous pin: 76846752dc52234d91aee875ed4e5afd0d409f41e1d52fd87474cccebcba3358
+    SHARED_JS:  "983a253b77d400033d9c45b324adec17e7c0c8f27b6b2f530c392bc13c6ecb39",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -137,9 +141,40 @@ def _wl(W):
            and q.get("publicVisibility") == "PUBLISHABLE"]
     held = {q["id"] for q in rows} - {q["id"] for q in pub}
     def st(q): return "c" if (q.get("irish") or {}).get("state") == "CONFIRMED" else "u"
-    eligible = [(q["organisation"], q["id"], q["productName"], q.get("productType") or "", st(q)) for q in pub]
-    header = {"products": W["eligibleCount"], "makers": W["organisationCount"]}
+    # Sixth element (14 Oct 2026): the kinds a product carries and a price
+    # line, both composed here from the published record only.
+    def ptype(q):
+        ks = q.get("kinds") or []
+        if len(ks) > 1:   # dual-use (WILD TUB): say so rather than pick one
+            return " or ".join(KIND_LABEL[k] for k in ks).capitalize()
+        return q.get("productType") or KIND_LABEL.get((ks or [""])[0], "")
+    eligible = [(q["organisation"], q["id"], q["productName"], ptype(q), st(q),
+                 {"kinds": q.get("kinds") or [], "price": price_line(q.get("price") or {})})
+                for q in pub]
+    header = {"products": W["eligibleCount"], "makers": W["organisationCount"],
+              "kindCounts": W.get("kindCounts") or {},
+              "kindOrganisationCounts": W.get("kindOrganisationCounts") or {}}
     return eligible, held, {q["organisation"] for q in rows if q.get("organisation")}, header
+
+KIND_LABEL = {"sauna": "Outdoor sauna", "hot-tub": "Hot tub", "cold-plunge": "Cold plunge",
+              "combination": "Sauna and hot tub building"}
+
+
+def price_line(pr):
+    """A short, homeowner-readable price line from a VERIFIED_NUMERIC_PRICE
+    record. Its VAT position is carried over exactly; nothing is inferred."""
+    if pr.get("state") != "VERIFIED_NUMERIC_PRICE" or pr.get("currency") != "EUR":
+        return ""
+    amt = "€{:,.0f}".format(pr["amount"]) if float(pr["amount"]).is_integer() else "€{:,.2f}".format(pr["amount"])
+    basis = pr.get("basis") or ""
+    lead = "From " + amt if pr.get("type") == "Starting From" else amt
+    if "for the range" in basis:
+        lead += " (range price)"
+    if "including VAT" in basis:
+        return lead + " incl. VAT"
+    if "excluding VAT" in basis:
+        return lead + " excl. VAT"
+    return lead + " · VAT not stated"
 
 SOURCES = {
     "garden-room-universe-v1": {
@@ -169,6 +204,8 @@ SOURCES = {
 ALLOWED_ROUTES = {"your-plot.html?discovery=residential", "your-plot.html?discovery=garden-room"}
 
 # ── per-Discovery configuration ──────────────────────────────────────────────
+AVAIL_NOTE = ("Prices are as each maker publishes them. Confirm delivery and "
+              "installation details directly with the supplier.")
 PAGES = {
     "discovery-living-in-the-garden.html": {
         "kicker": "Makers and Products",
@@ -205,20 +242,33 @@ PAGES = {
     "discovery-garden-retreat.html": {
         "kicker": "Makers and Products",
         "heading": "Explore makers and products",
-        "intro": ("Outdoor saunas, hot tubs and cold plunges that PlotNua has researched from\n"
-                  "      each maker&rsquo;s own published information. Makers are listed A to Z; open one\n"
-                  "      to see the products PlotNua lists for it."),
+        "intro": ("Saunas, hot tubs and cold plunges from makers whose published products PlotNua\n"
+                  "      has checked. Makers are never ranked; open one to see its products and the\n"
+                  "      prices it publishes."),
+        # Three kind tabs over one universe (restructure brief 14 Oct 2026:
+        # "Saunas, Hot Tubs, Cold Plunges"). Irish availability is not
+        # established per product for any of them, so each tab says what a
+        # homeowner should do rather than counting zero.
         "tabs": [
-            {"key": "wellness", "id": "wellness", "label": "Saunas, hot tubs and plunges",
-             "nouns": ["product", "products"], "source": "wellness-universe-v1"},
+            {"key": "saunas", "id": "saunas", "label": "Saunas", "kinds": ["sauna"],
+             "nouns": ["sauna", "saunas"], "source": "wellness-universe-v1",
+             "availabilityNote": AVAIL_NOTE},
+            {"key": "hotTubs", "id": "hot-tubs", "label": "Hot tubs", "kinds": ["hot-tub"],
+             "nouns": ["hot tub", "hot tubs"], "source": "wellness-universe-v1",
+             "availabilityNote": AVAIL_NOTE},
+            {"key": "coldPlunges", "id": "cold-plunges", "label": "Cold plunges", "kinds": ["cold-plunge"],
+             "nouns": ["cold plunge", "cold plunges"], "source": "wellness-universe-v1",
+             "availabilityNote": AVAIL_NOTE},
         ],
-        "headline": [("tab:wellness", "products listed")],
+        "headline": [("tab:saunas", "saunas"), ("tab:hotTubs", "hot tubs"), ("tab:coldPlunges", "cold plunges")],
         "noscript": "search PlotNua&rsquo;s saunas, hot tubs and cold plunges",
-        "after": "Where this is sold in Ireland",
-        "before": "Where this comes from",
+        # Restructure, 14 Oct 2026: the directory sits after "Could it work for
+        # your property?" and before the practical considerations.
+        "after": "<h2>Could it work for your property?</h2>",
+        "before": "<h2>What you need to sort out</h2>",
         "insert_first_build": True,
-        "first_build_anchor": '  <section class="article-section reveal" id="where-this-comes-from">',
-        "block_end": '  <section class="article-section reveal" id="where-this-comes-from">',
+        "first_build_anchor": '  <section class="article-section reveal" id="the-practical-part">',
+        "block_end": '  <section class="article-section reveal" id="the-practical-part">',
         "css_anchor": "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>",
         "keep_links": ('href="discovery-living-in-the-garden.html"',),
     },
@@ -251,9 +301,21 @@ def load(P):
             cache[T["source"]] = S["read"](json.loads((ROOT / S["file"]).read_text(encoding="utf-8")))
         eligible, held, orgs, header = cache[T["source"]]
         all_orgs |= orgs; held_all |= held
+        if T.get("kinds"):
+            # A kind tab (14 Oct 2026): exactly the source's products of that
+            # kind, held to the universe's own per-kind header.
+            if len(T["kinds"]) != 1: die("tab %r: a kind tab names exactly one kind" % T["key"])
+            k = T["kinds"][0]
+            if k not in header.get("kindCounts", {}): die("tab %r: the source declares no count for kind %r" % (T["key"], k))
+            eligible = [e for e in eligible if len(e) > 5 and k in e[5]["kinds"]]
+            header = {"products": header["kindCounts"][k], "makers": header["kindOrganisationCounts"][k]}
         by = {}
-        for org, pid, pname, ptype, st in eligible:
-            by.setdefault(org, []).append([pid, name(pid, pname), ptype, st])
+        for e in eligible:
+            org, pid, pname, ptype, st = e[:5]
+            row = [pid, name(pid, pname), ptype, st]
+            if len(e) > 5 and e[5].get("price"):
+                row.append(e[5]["price"])
+            by.setdefault(org, []).append(row)
         makers = [{"m": DISPLAY_ALIAS.get(k, k), "p": sorted(v, key=lambda x: x[1].lower())}
                   for k, v in sorted(by.items(), key=lambda kv: kv[0].lower())]
         figures = {"products": len(eligible), "makers": len(by),
@@ -261,6 +323,9 @@ def load(P):
                    "noRoute": sum(1 for e in eligible if e[4] == "r")}
         cfg = {"key": T["key"], "nouns": T["nouns"], "figures": figures, "makers": makers,
                "productLink": S["productPage"]}
+        if T.get("availabilityNote"):
+            if figures["confirmed"]: die("tab %r: an availability note replaces a count of zero only" % T["key"])
+            cfg["availabilityNote"] = T["availabilityNote"]
         if not S["productPage"]:
             if T.get("route"):
                 if S.get("noJourneyYet"): die("tab %r routes to a journey its source says does not exist" % T["key"])
@@ -429,7 +494,9 @@ def build(fname, P, src):
         if names != sorted(names): die("G5 directory is not A to Z")
     if "Math.random" not in js or ".sort(" in js: die("G5 initial order must be a shuffle, never a sort")
     # G6 no endorsement vocabulary: page text, configuration strings, script strings
-    cfg_text = " ".join([" ".join(c["nouns"]) + " " + " ".join((c.get("route") or {}).values()) for c in cfgs])
+    cfg_text = " ".join([" ".join(c["nouns"]) + " " + " ".join((c.get("route") or {}).values()) + " " +
+                         c.get("availabilityNote", "") + " " +
+                         " ".join(p[4] for m in c["makers"] for p in m["p"] if len(p) > 4) for c in cfgs])
     texts = (vtext + " " + cfg_text + " " + " ".join(re.findall(r"'([^']*)'", js))).lower()
     for w in BANNED:
         if w in texts: die("G6 banned word: " + w.strip())

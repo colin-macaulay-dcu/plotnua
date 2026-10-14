@@ -19,11 +19,31 @@ Additional Home pattern, narrowed:
       EXCLUDED  no organisation, no product URL, or no source;
       HELD      Atlas records a contradiction or evidence gap (Standards
                 carries BLOCKED) -- the supplier's own page disagrees with
-                itself, so PlotNua shows neither figure;
+                itself, so PlotNua shows neither figure -- or no single
+                verified EUR price is recorded;
       ELIGIBLE  otherwise.
     A product is PUBLIC only if it is ELIGIBLE and its organisation derives
     PUBLISHABLE. Nothing is published "automatically": a new wellness
     supplier with no rights record holds (publication-record-missing).
+
+REVISION 2, 14 Oct 2026 (Garden Retreat restructure brief: "populate the
+full wellness maker universe ... use the established gate ... no
+legacy-baseline additions"):
+  * The gate is the Additional Home rule MINUS its legacy baseline. That
+    baseline grandfathers organisations published on Additional Home before
+    14 Oct 2026; it never covered wellness, so a wellness organisation with
+    no rights record holds (publication-record-missing) even if the baseline
+    names it (MyCabin.ie and Hansa24 Group are both named there).
+  * Availability is no longer required: Irish availability is UNCONFIRMED
+    for every record and is never emitted as a claim, so its absence cannot
+    make a record less true. A verified EUR price IS required.
+  * Price: Base Price, or Price From when Base Price is absent (Tanktribe
+    records its 'from' prices there). The basis names the price type, the
+    evidence scope when it is range-level, and the VAT position.
+  * kinds: closed tokens sauna / hot-tub / cold-plunge / combination, from
+    the Atlas Product Type, else from the product's own name; a product
+    that is genuinely more than one (Tanktribe WILD TUB, recorded in Atlas
+    as dual-use) carries both. Unclassifiable records hold.
 
 PUBLIC-DISCLOSURE FIREWALL. Description, Notes, Standards prose and Habitation
 basis are read and NEVER exported. What reaches the artefact is identity,
@@ -42,22 +62,26 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from atlas_common import cell, links, txt, fail          # noqa: E402
-from generate_additional_home_universe import (           # noqa: E402
-    publication_hold, NO_RECORD_HOLD)
+import generate_additional_home_universe as AH              # noqa: E402
+from generate_additional_home_universe import NO_RECORD_HOLD  # noqa: E402
 
 SCHEMA = "plotnua.wellness-universe"
-VERSION = "1.0.0"
-RULE_VERSION = "wellness-qualification-v1"
+VERSION = "1.1.0"
+RULE_VERSION = "wellness-qualification-v2"
 CATEGORY = "Wellness / Sauna"
-PRICE_BASIS = {
-    "Unknown": "Published 'from' price for the basic set. The supplier does not "
-               "state whether it includes VAT.",
-    "Yes": "Published 'from' price for the basic set, including VAT.",
-    "No": "Published 'from' price for the basic set, excluding VAT.",
-}
+PRICE_LEAD = {"Starting From": "Published 'from' price",
+              "Standard Price": "Published price",
+              "Sale Price": "Published sale price"}
+VAT_TAIL = {"Unknown": ". The supplier does not state whether it includes VAT.",
+            "Yes": ", including VAT.",
+            "No": ", excluding VAT."}
+KINDS = ("sauna", "hot-tub", "cold-plunge", "combination")
+# Atlas records WILD TUB as dual-use: "wood-fired hot tub when the heating
+# coil is lit and natural cold plunge when it is not" (Product description).
+KIND_OVERRIDES = {"recdsCR4RW4h9D9TO": ["hot-tub", "cold-plunge"]}
 # The closed set of fields a public record may carry.
 PUBLIC_FIELDS = {"id", "productCode", "productName", "organisation",
-                 "productCategory", "productType", "price", "irish",
+                 "productCategory", "productType", "kinds", "price", "irish",
                  "qualification", "publicVisibility", "holdReason"}
 
 
@@ -68,15 +92,56 @@ def price_of(rows):
         return {"state": "PRICE_NOT_ESTABLISHED"}
     r = live[0]
     amt = cell(r, "Base Price")
+    if amt in (None, ""):
+        amt = cell(r, "Price From")
     if not isinstance(amt, (int, float)) or amt <= 0 or txt(cell(r, "Currency")) != "EUR":
         return {"state": "PRICE_NOT_ESTABLISHED"}
+    ptype = txt(cell(r, "Price Type"))
+    if ptype not in PRICE_LEAD:
+        return {"state": "PRICE_NOT_ESTABLISHED"}
     vat = txt(cell(r, "Price Includes VAT")) or "Unknown"
+    lead = PRICE_LEAD[ptype]
+    if txt(cell(r, "Evidence Scope")) == "Range-Level":
+        lead += " for the range, read from the supplier's range page"
     return {"state": "VERIFIED_NUMERIC_PRICE", "amount": amt, "currency": "EUR",
-            "type": txt(cell(r, "Price Type")) or None,
-            "basis": PRICE_BASIS.get(vat, PRICE_BASIS["Unknown"])}
+            "type": ptype, "basis": lead + VAT_TAIL.get(vat, VAT_TAIL["Unknown"])}
 
 
-def qualify(p, org, nprice, navail):
+def kinds_of(p):
+    """Closed kind tokens; [] when the record cannot be classified."""
+    if p["id"] in KIND_OVERRIDES:
+        return list(KIND_OVERRIDES[p["id"]])
+    for s in (txt(cell(p, "Product Type")), txt(cell(p, "Product Name"))):
+        low = s.lower()
+        if not low:
+            continue
+        if "sauna" in low and "hot tub" in low:
+            return ["combination"]
+        if "cold plunge" in low or "ice bath" in low:
+            return ["cold-plunge"]
+        if "hot tub" in low:
+            return ["hot-tub"]
+        if "sauna" in low:
+            return ["sauna"]
+    return []
+
+
+_WGATE = None
+
+
+def wellness_hold(org_name):
+    """The Additional Home gate WITHOUT its legacy baseline: an organisation
+    is publishable only on its own rights record."""
+    global _WGATE
+    if _WGATE is None:
+        _WGATE = AH._gate_index()
+    key = AH._norm_org(org_name)
+    if not key or key not in _WGATE:
+        return NO_RECORD_HOLD
+    return _WGATE[key]
+
+
+def qualify(p, org, price, kinds):
     excluded, held = [], []
     if not org:
         excluded.append("no-organisation")
@@ -84,8 +149,10 @@ def qualify(p, org, nprice, navail):
         excluded.append("no-product-url")
     if not links(p, "Sources"):
         excluded.append("no-source")
-    if not nprice or not navail:
+    if price["state"] != "VERIFIED_NUMERIC_PRICE":
         held.append("evidence-incomplete")
+    if not kinds:
+        held.append("kind-unclassified")
     if "BLOCKED" in txt(cell(p, "Standards")).upper():
         held.append("recorded-contradiction")
     state = "EXCLUDED" if excluded else ("HELD" if held else "ELIGIBLE")
@@ -104,7 +171,7 @@ def main():
     orgs = {r["id"]: txt(cell(r, "Organisation Name")) for r in raw["organisations"]}
     by_prod = lambda rows: {pid: [r for r in rows if pid in links(r, "Product")]
                             for pid in {x for r in rows for x in links(r, "Product")}}
-    pricing, avail = by_prod(raw.get("pricing", [])), by_prod(raw.get("availability", []))
+    pricing = by_prod(raw.get("pricing", []))
 
     src = [p for p in raw["products"] if txt(cell(p, "Product Category")) == CATEGORY]
     if not src:
@@ -114,9 +181,10 @@ def main():
     for p in src:
         oid = (links(p, "Organisation") or [None])[0]
         org = orgs.get(oid) if oid else None
-        prs = pricing.get(p["id"], [])
-        q = qualify(p, org, len(prs), len(avail.get(p["id"], [])))
-        hold = publication_hold(org) if org else NO_RECORD_HOLD
+        price = price_of(pricing.get(p["id"], []))
+        kinds = kinds_of(p)
+        q = qualify(p, org, price, kinds)
+        hold = wellness_hold(org) if org else NO_RECORD_HOLD
         rec = {
             "id": p["id"],
             "productCode": txt(cell(p, "Product Code")) or None,
@@ -124,7 +192,8 @@ def main():
             "organisation": org,
             "productCategory": CATEGORY,
             "productType": txt(cell(p, "Product Type")) or None,
-            "price": price_of(prs),
+            "kinds": kinds,
+            "price": price,
             # Irish availability is a per-product Atlas feature value. None is
             # recorded for these products, so it is UNCONFIRMED -- never
             # inferred from where a company is registered.
@@ -149,8 +218,9 @@ def main():
             "version": "supplier-publication-gate-v1",
             "rule": ("public visibility is derived from permission state, "
                      "listing-review state and asset approval by the Additional "
-                     "Home generator's publication_hold(); a product is public "
-                     "only when ELIGIBLE and PUBLISHABLE."),
+                     "Home generator's gate index, without its legacy baseline: "
+                     "an organisation with no rights record holds. A product is "
+                     "public only when ELIGIBLE and PUBLISHABLE."),
             "heldOrganisations": sorted({r["organisation"] for r in emitted
                                          if r["publicVisibility"] == "HOLD" and r["organisation"]}),
         },
@@ -161,6 +231,11 @@ def main():
         # eligibleCount counts what a homeowner may see: ELIGIBLE AND PUBLISHABLE.
         "eligibleCount": len(public),
         "organisationCount": len({r["organisation"] for r in public}),
+        # Public products per kind (a dual-use product counts under each kind
+        # it carries), so a page that shows one kind can be held to a header.
+        "kindCounts": {k: sum(1 for r in public if k in r["kinds"]) for k in KINDS},
+        "kindOrganisationCounts": {k: len({r["organisation"] for r in public if k in r["kinds"]})
+                                   for k in KINDS},
         "heldCount": count("HELD"),
         "excludedCount": count("EXCLUDED"),
         "gateHeldCount": sum(1 for r in emitted if r["qualification"]["state"] == "ELIGIBLE"

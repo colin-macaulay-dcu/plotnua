@@ -268,8 +268,17 @@ jobs:
           set -euo pipefail
           node atlas-tools/prove-ognyx-imagery-containment.mjs
           python3 atlas-tools/prove-ognyx-imagery-capability.py
-          python3 atlas-tools/build-garden-retreat-maker-imagery.py --check
-          python3 atlas-tools/prove-garden-retreat-maker-imagery.py
+          # The Garden Retreat maker-image section (build/prove-garden-retreat-
+          # maker-imagery) was retired by the 14 Oct 2026 restructure brief:
+          # OGNYX is not presented as a standalone catalogue in the editorial.
+          # The four images stay authorised (ognyx-preview.html) and contained.
+          python3 atlas-tools/build-garden-retreat-restructure.py --check
+          python3 atlas-tools/prove-garden-retreat-restructure.py
+          # Wellness publication states (Tanktribe, Irish Sauna Company) are
+          # recorded only from their own replies, and the universe is gated.
+          python3 atlas-tools/build-wellness-publication-records.py --check
+          python3 .github/scripts/test_wellness_universe.py
+          node atlas-tools/prove-cluster2-garden-retreat.mjs
 
       - name: Summary
         if: always()

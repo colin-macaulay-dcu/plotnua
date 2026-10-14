@@ -420,7 +420,34 @@
           "what_this_is_not": "NOT a new grant and NOT an expansion of the existing licence. The operative imagery permission remains the 2 October 2026 grant recorded in 'evidence' above: permission to feature Tanktribe, use selected imagery from its website, clear credit, link back. Scope, conditions and permitted hosts are unchanged by this reply.",
           "does_not_resolve": "This reply does not answer the open TANKKD provenance question recorded against IMG_8455 and DSC_2111, and must not be read as doing so."
         }
-      ]
+      ],
+      "permission": {
+        "state": "GRANTED",
+        "ref": "WELLNESS-FIRST-TANKTRIBE-20261002",
+        "record": "recHf6UOaAVMmmoGA",
+        "date": "2026-10-02",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "link-back",
+          "selected-first-party-imagery-only"
+        ],
+        "asked": "PlotNua asked on 2 Oct 2026 for permission to feature Tanktribe and use selected imagery from its website, with credit and a link back (Gmail 1a0fd832b4b384f2).",
+        "answered": "\"YES\" (Tanktribe, 2 Oct 2026, Gmail 1a0fd9de5ac55e40)",
+        "note": "Recorded 14 Oct 2026 from the supplier's own reply. Images are not enumerated here, so no Tanktribe image is published by this record."
+      },
+      "listing_review": {
+        "state": "CONFIRMED",
+        "requested_by": "plotnua",
+        "requested_in": "Gmail 1a0fe7aaf1258126, 2 Oct 2026 (private preview sent)",
+        "confirmed_at": "2026-10-08",
+        "confirmed_in": "Gmail 1a11bff8584a50b1",
+        "note": "\"yes all looks great thanks\" — Tanktribe on the private preview, 8 Oct 2026."
+      },
+      "public_visibility": "PUBLISHABLE"
     },
     {
       "organisation_record": "recGxi1agXCBR1FLt",
@@ -542,7 +569,34 @@
       "note": "Permission recorded 10 October 2026. Image integration remains held pending selection of verifiable first-party image URLs and a narrowly scoped Shopify delivery-host path; the grant is not a claim that any asset is currently published. Existing private preview is image-free until that work passes guards.",
       "atlas_permission_record": "recH6lssOAemyP9rz",
       "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002",
-      "permission_date": "2026-10-09"
+      "permission_date": "2026-10-09",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002",
+        "record": "recH6lssOAemyP9rz",
+        "date": "2026-10-09",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "link-back",
+          "no-third-party-manufacturer-imagery-until-confirmed"
+        ],
+        "asked": "PlotNua asked to feature Irish Sauna Company and use selected imagery from its website (Gmail 1a0fd83ddde922b1, 2 and 9 Oct 2026).",
+        "answered": "\"we would be delighted for you to use our imagery and product on your site\" (Irish Sauna Company, 9 Oct 2026, Gmail 1a1208b5549f0e23)",
+        "note": "Recorded 14 Oct 2026. PlotNua's 12 Oct question about Harvia manufacturer photographs (Gmail 1a13036feca9cc4b) is unanswered, so no image is enumerated: the listing is text only."
+      },
+      "listing_review": {
+        "state": "CONFIRMED",
+        "requested_by": "supplier",
+        "requested_in": "Irish Sauna Company, 2 Oct 2026: happy to take a look at the private preview first (Gmail 1a0fdc60270190fd)",
+        "confirmed_at": "2026-10-12",
+        "confirmed_in": "Gmail 1a12f28526374227",
+        "note": "\"That looks great, I am happy for it to go.\" — Irish Sauna Company on the private preview, 12 Oct 2026."
+      },
+      "public_visibility": "PUBLISHABLE"
     },
     {
       "organisation_record": "rec2URqKyVwlhHSBw",

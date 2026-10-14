@@ -327,7 +327,12 @@ if WL_UNIVERSE.exists():
             "id": q.get("id"),
             "productName": q.get("productName"),
             "organisation": q.get("organisation"),
-            "productType": q.get("productType") or "",
+            # Atlas records no type for some wellness products; the universe's
+            # closed kind tokens name what they are, so "hot tub" finds a
+            # dual-use tub (14 Oct 2026, Garden Retreat restructure).
+            "productType": q.get("productType") or " or ".join(
+                {"sauna": "Outdoor sauna", "hot-tub": "Hot tub", "cold-plunge": "Cold plunge",
+                 "combination": "Sauna and hot tub building"}[k] for k in (q.get("kinds") or [])),
             # Irish availability is not confirmed for these products, which is
             # a caveat, never a high-confidence claim.
             "qualificationTier": ("HIGH_CONFIDENCE"

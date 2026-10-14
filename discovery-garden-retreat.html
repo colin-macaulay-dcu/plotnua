@@ -1065,25 +1065,74 @@
   }
   html{ scroll-behavior:auto !important; }
 }
-/* PLOTNUA-GR-MAKER-IMAGERY-CSS-BEGIN · Garden Retreat, the maker's own images (14 Oct 2026).
-   PlotNua's credited-figure pattern (as on triq-cube.html), in this page's own
-   tokens. The images are shown WHOLE at their natural aspect ratio: no
-   object-fit crop, no filter, no transform -- unmodified, as authorised. */
-  .gr-mi-grid{ display:grid; grid-template-columns:1fr; gap:28px; margin:34px 0 8px; }
-  @media (min-width:720px){ .gr-mi-grid{ grid-template-columns:1fr 1fr; gap:32px 28px; } }
-  .gr-mi-fig{ margin:0; }
-  .gr-mi-fig img{ display:block; width:100%; height:auto; border-radius:3px;
-    background:var(--cream); }
-  .gr-mi-cap{ display:grid; grid-template-columns:1fr auto; align-items:start; gap:4px 16px;
-    margin-top:10px; font-size:14px; line-height:1.5; color:var(--soft); }
-  .gr-mi-kind{ display:block; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:2px; }
-  .gr-mi-credit{ align-self:end; }
-  .gr-mi-cap .gr-mi-credit{ font-weight:600; letter-spacing:.04em; color:var(--ink); white-space:nowrap;
-    text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
-  .gr-mi-credit:hover,.gr-mi-credit:focus-visible{ color:var(--accent); }
-  .gr-mi-note{ font-size:15px; line-height:1.6; color:var(--soft); max-width:62ch; margin-top:22px; }
-/* PLOTNUA-GR-MAKER-IMAGERY-CSS-END */
+/* PLOTNUA-GR-RESTRUCTURE-CSS-BEGIN · Garden Retreat restructure (14 Oct 2026).
+   Built by atlas-tools/build-garden-retreat-restructure.py; page tokens only.
+   Images are shown whole at their natural ratio (no crop). */
+  .gr-hero-actions{ margin:26px auto 0; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+  .gr-hero-actions a{ display:inline-block; padding:14px 22px; border-radius:2px; text-decoration:none;
+    font:500 13px/1.2 'Work Sans',sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+  .gr-hero-actions .is-primary{ background:var(--brand-ivory); color:var(--ink); }
+  .gr-hero-actions .is-secondary{ color:var(--brand-ivory); border:1px solid rgba(248,245,236,.75);
+    background:rgba(15,14,10,.18); }
+  .gr-hero-actions a:hover{ opacity:.92; }
+  .gr-hero-actions a:focus-visible{ outline:2px solid var(--brand-ivory); outline-offset:3px; }
+  .gr-cards{ list-style:none; margin:34px 0 0; padding:0; display:grid; grid-template-columns:1fr; gap:22px; align-items:start; }
+  @media (min-width:900px){ .gr-cards{ grid-template-columns:repeat(3,1fr); gap:20px; } }
+  @media (min-width:600px) and (max-width:899px){ .gr-cards{ grid-template-columns:1fr 1fr; } }
+  .gr-card{ background:var(--paper); border:1px solid rgba(31,59,46,.10); border-radius:3px;
+    display:flex; flex-direction:column; min-width:0; }
+  .gr-card-img{ margin:0; position:relative; }
+  .gr-card-img img{ display:block; width:100%; height:auto; border-radius:3px 3px 0 0; background:var(--cream); }
+  .gr-card-label{ position:absolute; left:10px; bottom:10px; font:500 10px/1 'Work Sans',sans-serif;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--ink); background:rgba(248,245,236,.88);
+    padding:5px 7px; border-radius:2px; }
+  .gr-card-body{ padding:18px 20px 20px; display:flex; flex-direction:column; flex:1; }
+  .gr-card h3{ font-size:clamp(20px,2vw,23px); margin:0 0 8px; }
+  .article-section .gr-card p{ font-size:15px; line-height:1.65; max-width:none; }
+  .article-section .gr-card p + p{ margin-top:12px; }
+  .gr-card-fact{ display:block; font:500 10px/1.2 'Work Sans',sans-serif; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:3px; }
+  .gr-card-more{ margin-top:14px; border-top:1px solid rgba(31,59,46,.10); }
+  .gr-card-more summary{ cursor:pointer; padding:12px 0 4px; font:500 14px 'Work Sans',sans-serif; color:var(--accent); }
+  .gr-card-more summary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .article-section .gr-card-more p{ font-size:14.5px; }
+  .gr-card-link{ margin-top:auto; padding-top:16px; font:500 14px 'Work Sans',sans-serif; color:var(--accent);
+    text-decoration:none; }
+  .gr-card-link span{ border-bottom:1px solid rgba(79,107,74,.35); }
+  .gr-cmp-wrap{ margin-top:30px; }
+  .gr-cmp{ width:100%; border-collapse:collapse; font-size:14.5px; line-height:1.55; color:var(--soft); }
+  .gr-cmp caption{ text-align:left; font-size:14px; color:var(--soft); padding-bottom:12px; }
+  .gr-cmp th, .gr-cmp td{ text-align:left; vertical-align:top; padding:12px 14px 12px 0;
+    border-top:1px solid rgba(31,59,46,.10); }
+  .gr-cmp thead th{ font-family:'Fraunces',serif; font-weight:500; font-size:17px; color:var(--ink); border-top:none; }
+  .gr-cmp tbody th{ font:500 10px/1.5 'Work Sans',sans-serif; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--soft); width:16%; padding-top:15px; }
+  .gr-cmp td strong{ color:var(--ink); font-weight:600; }
+  .gr-cmp .gr-cmp-ex{ display:block; font-size:12.5px; }
+  @media (max-width:760px){
+    .gr-cmp thead{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+    .gr-cmp, .gr-cmp tbody, .gr-cmp tr, .gr-cmp th, .gr-cmp td{ display:block; width:auto; }
+    .gr-cmp tr{ padding:14px 0 6px; border-top:1px solid rgba(31,59,46,.14); }
+    .gr-cmp th, .gr-cmp td{ border-top:none; padding:3px 0; }
+    .gr-cmp tbody th{ padding:0 0 6px; width:auto; }
+    .gr-cmp td::before{ content:attr(data-label); display:block; font-weight:600; color:var(--ink); font-size:13.5px; }
+    .gr-cmp td{ padding-bottom:10px; }
+  }
+  .gr-cmp-lines{ margin-top:22px; }
+  .gr-note{ margin-top:22px; font-size:14.5px !important; line-height:1.7 !important; }
+  .gr-list{ margin:18px 0 0; padding-left:1.1em; color:var(--soft); font-size:16px; line-height:1.75; max-width:60ch; }
+  .gr-list li + li{ margin-top:6px; }
+  .article-section .gr-list + p{ margin-top:20px; }
+  #compare .rel-note{ margin-top:14px; font-size:14.5px; line-height:1.7; }
+  .gr-acc{ margin-top:6px; }
+  .gr-acc summary h3{ font-size:clamp(18px,1.9vw,21px); }
+  .gr-acc summary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .gr-acc .faq-a > p{ font-size:16px; }
+  .gr-acc .faq-a .rule-group:first-child{ margin-top:0; }
+  .gr-warn{ margin-top:28px; padding:18px 20px; background:var(--paper); border-left:2px solid rgba(31,59,46,.42); }
+  .practical-group .gr-warn:first-child{ padding-top:18px; }
+  #explore-makers .mx-plist li .mx-pp{ grid-column:1; font-size:13px; color:var(--ink); }
+/* PLOTNUA-GR-RESTRUCTURE-CSS-END */
 /* PLOTNUA A11Y VISUAL v1 · END */
 </style>
 <link rel="stylesheet" href="maker-explorer.css">
@@ -1104,7 +1153,7 @@
       "name": "Garden Saunas, Hot Tubs & Cold Plunges in Ireland: the Planning Rules",
       "description": "How Irish planning law reads for a sauna cabin, a freestanding hot tub, a sunken tub and a cold plunge \u2014 and what it does not settle.",
       "inLanguage": "en-IE",
-      "dateModified": "2026-10-11",
+      "dateModified": "2026-10-14",
       "isPartOf": { "@id": "https://plotnua.ie/#website" },
       "publisher": { "@id": "https://plotnua.ie/#organisation" },
       "breadcrumb": { "@id": "https://plotnua.ie/discovery-garden-retreat.html#breadcrumb" }
@@ -1187,178 +1236,189 @@
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">Garden &middot; Discovery</div>
     <h1>Garden Retreat</h1>
-    <p class="subtitle">An ordinary garden may already contain somewhere to retreat to. Getting there can mean one compact thing in a corner &mdash; or a garden you gradually turn into somewhere you go.</p>
+    <p class="subtitle">A sauna, a hot tub or a cold plunge &mdash; one thing in one part of the garden. See what each asks of your garden, then the makers selling them in Ireland.</p>
+    <div class="gr-hero-actions">
+      <a class="is-primary" href="#compare">Compare the options</a>
+      <a class="is-secondary" href="#explore-makers">Explore makers and products</a>
+    </div>
   </div>
 </header>
 <p class="gr-hero-cap">This is the ambitious end of the idea. You don&rsquo;t have to start here.</p>
 
 <main id="pn-main">
+<!-- PLOTNUA-GR-RESTRUCTURE-V1 · built by atlas-tools/build-garden-retreat-restructure.py from the
+     page's own copy (founder brief, 14 Oct 2026). The maker directory below is
+     owned by atlas-tools/build-maker-explorer.py. Do not hand-edit. -->
 <div class="article">
-
-  <section class="article-section reveal" id="the-part-you-walk-past">
-    <div class="kicker">The Revelation</div>
-    <h2>The part you walk past</h2>
-    <p>Most gardens have a part nobody really uses. The corner past the shed. The strip down the side. The end of the lawn you mow but rarely stand in.</p>
-    <p>It isn&rsquo;t wasted. It just isn&rsquo;t somewhere yet.</p>
-    <p>What would it take to turn one part of your garden into somewhere you actually go?</p>
-    <p>The answer can be much smaller than the picture above.</p>
-  </section>
-
-  <section class="article-section reveal" id="you-dont-have-to-do-all-of-this">
-    <div class="kicker">The Pull-back</div>
-    <h2>You don&rsquo;t have to do all of this</h2>
-    <p>The garden above shows the full idea: a room, a sauna, a hot tub and a plunge.</p>
-    <p>But a garden retreat doesn&rsquo;t have to mean transforming the whole garden.</p>
-    <p>It can begin with one thing in one part of it.</p>
-    <p>The three examples below show just how different that can be &mdash; from a compact cold-plunge tub occupying about 1.2&nbsp;m&sup2;, to a sauna, a wood-fired hot tub, or eventually something much more ambitious.</p>
-  </section>
 
   <section class="article-section reveal" id="three-ways-in">
     <div class="kicker">Start With One Thing</div>
     <h2>Three ways in</h2>
-    <p>Three different routes are already sold in Ireland, with published prices. They are very different things &mdash; and they ask very different things of a garden.</p>
-  </section>
-
-</div>
-
-  <!-- IMAGE B - THE COMPACT SAUNA. A cube sauna in the corner of an
-       ordinary garden with the lawn left clear. No flue: this is the
-       ELECTRIC arrangement, which is the one the evidenced MyCabin Cube M
-       ships with. The wood-fired option named in the copy is an option,
-       and the copy does not claim this photograph shows it. -->
-  <section class="imagine-photo pa-frame reveal">
-    <img src="assets/img/45a270b7716e4a94.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A small timber cabin sauna with a glazed door, standing in the corner of an established Irish suburban garden with the lawn left clear.">
-  </section>
-
-<div class="article">
-
-  <section class="article-section reveal" id="branch-sauna">
-    <h3>A compact sauna</h3>
-    <p>This is the one that looks as though it should need the most room. It doesn&rsquo;t necessarily.</p>
-    <p>As a sense of scale, MyCabin&rsquo;s Cube Sauna M is 3 metres by 2.17 metres &mdash; a little over 6.5&nbsp;m&sup2; &mdash; and is sold as a four-to-six-person sauna at a published &euro;9,620 including VAT.</p>
-    <p>That is one specific product, not a general sauna size. Other models are smaller and larger, and several Irish suppliers do not publish dimensions at all. Across the three suppliers PlotNua checked, published garden-sauna prices run from about &euro;4,649 to &euro;11,650.</p>
-    <p>Electric heating brings electrical work with it. MyCabin also publishes a &euro;596 wood-fired heater option including the chimney system for this range. Choosing that route changes what has to be accommodated, because it introduces a stove and flue.</p>
-    <p>Those are product prices, not finished-project costs. The base, electrical connection or other site work may add to what you actually pay.</p>
-  </section>
-
-</div>
-
-  <!-- IMAGE C - THE WOOD-FIRED HOT TUB. Stove, flue, firewood and steam,
-       plainly a different and larger object than the plunge tub below.
-       NOTE: this photograph shows an EXTERNAL stove; the evidenced
-       Gardenhouse24 DeLux 220 has an INTEGRAL one. Both arrangements are
-       sold, so the copy asserts neither - it names a wood-burning stove
-       and flue and leaves placement alone. -->
-  <section class="imagine-photo pa-frame reveal">
-    <img src="assets/img/83da38d51a03414d.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A round timber wood-fired hot tub with a stove and flue beside it, on a small paved area at the end of an established Irish suburban garden.">
-  </section>
-
-<div class="article">
-
-  <section class="article-section reveal" id="branch-hot-tub">
-    <h3>A wood-fired hot tub</h3>
-    <p>This takes a different route. The water is heated by a wood-burning stove rather than an electric spa system, so there is no electrical connection evidenced for the standard tub itself.</p>
-    <p>The verified Gardenhouse24 example is about 2.26 metres across &mdash; roughly 4&nbsp;m&sup2; of garden space before allowing for access and the stove &mdash; with a published base price of &euro;4,340.</p>
-    <p>But the starting price is not the whole story. The configuration PlotNua checked reached &euro;6,430 once selected options were added. A bubble system alone adds &euro;650.</p>
-    <p>Those are product prices, not a finished-project cost. The tub still needs a suitable base, space for its wood-burning stove and flue, and safe access around it. Delivery, site preparation and other work should only be treated as included where the supplier explicitly says so.</p>
-    <p>So the trade-off is different from the sauna: less dependence on electricity, but more to think about around weight, fire and where the stove sits.</p>
-  </section>
-
-</div>
-
-  <!-- IMAGE D - THE COLD PLUNGE, the APPROVED REPLACEMENT of 26 September
-       2026. A simple round timber tub with a ladder and a lid, on a small
-       pad in the corner, lawn unbroken across the frame.
-       The rejected image showed a rectangular, permanent-looking built-in
-       plunge. PlotNua has NO Irish evidence for a constructed or a
-       mechanically chilled plunge, so that picture argued for a route the
-       page cannot support. This one depicts the category the evidence
-       actually covers. -->
-  <section class="imagine-photo pa-frame reveal">
-    <img src="assets/img/5d6a5fd0aab3d9ce.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A small round timber cold-plunge tub with a lid and timber steps, tucked into the corner of an established Irish suburban garden with the lawn left clear.">
-  </section>
-
-<div class="article">
-
-  <section class="article-section reveal" id="branch-cold-plunge">
-    <h3>A cold plunge</h3>
-    <p>This is the smallest intervention of the three.</p>
-    <p>The verified Timbertrove cold-plunge tub is 1.25 metres across &mdash; about 1.2&nbsp;m&sup2; of garden space &mdash; and just over a metre high. Its published price is &euro;1,699.</p>
-    <p>That price includes the timber tub, waterproof liner, stainless-steel bands, access ladder and matching timber lid. It is available flat-packed or fully assembled, and the supplier states delivery throughout Ireland.</p>
-    <p>What it does not establish is just as important. PlotNua found no evidence that this model includes mechanical chilling or filtration, and no electrical requirement is published for it. It should therefore be understood as a simple cold-water plunge tub, not a self-chilling spa.</p>
-    <p>It still needs a suitable level base and somewhere sensible for the water to go when it is emptied.</p>
-    <p>That is the scale shift: a private cold-water plunge can be a roughly 1.2&nbsp;m&sup2; object at the edge of a garden, rather than a constructed pool.</p>
-  </section>
-
-</div>
-
-<div class="article">
-
-  <section class="article-section reveal" id="what-each-one-asks">
-    <div class="kicker">The Real Question</div>
-    <h2>What each one asks of your garden</h2>
-    <p>Three products PlotNua checked directly. Not averages, not quotes.</p>
-    <ul class="dq-adv-cols hb-cmp">
-      <li>
-        <span class="dq-adv-label">Cold plunge</span>
-        <span class="hb-cmp-field">Product checked</span>
-        <span class="dq-fact">Timbertrove Cold Plunge &amp; Ice Bath</span>
-        <span class="hb-cmp-field">Space</span>
-        <span class="dq-fact">About 1.2&nbsp;m&sup2;. 1.25&nbsp;m across, a metre high.</span>
-        <span class="hb-cmp-field">Base</span>
-        <span class="dq-note">Level ground. The supplier says no more.</span>
-        <span class="hb-cmp-field">Power, fire, water</span>
-        <span class="dq-fact">None. Fill it, use it, drain it.</span>
-        <span class="hb-cmp-field">Installation</span>
-        <span class="dq-fact">Flat-packed or assembled.</span>
-        <span class="hb-cmp-field">Product price</span>
-        <span class="dq-fact">&euro;1,699</span>
-        <span class="hb-cmp-field">Known extras</span>
-        <span class="dq-fact">None published.</span>
-        <span class="hb-cmp-field">Quote required or not established</span>
-        <span class="dq-note">Delivery. Capacity, volume, base, warranty.</span>
+    <p>A garden retreat doesn&rsquo;t have to mean transforming the whole garden. It can begin with one thing in one part of it &mdash; and these three ask very different things of a garden. Each price below is one product PlotNua checked, not a finished-project cost.</p>
+    <ul class="gr-cards">
+      <li class="gr-card" id="option-sauna">
+        <!-- IMAGE B - THE COMPACT SAUNA. A cube sauna in the corner of an
+             ordinary garden with the lawn left clear. No flue: this is the
+             ELECTRIC arrangement, which is the one the evidenced MyCabin Cube M
+             ships with. The wood-fired option named in the copy is an option,
+             and the copy does not claim this photograph shows it. -->
+        <figure class="gr-card-img"><img src="assets/img/45a270b7716e4a94.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A small timber cabin sauna with a glazed door, standing in the corner of an established Irish suburban garden with the lawn left clear."><figcaption class="gr-card-label">Illustrative image</figcaption></figure>
+        <div class="gr-card-body">
+          <h3>Outdoor sauna</h3>
+          <p>A small timber cabin with a heater. It looks as though it needs the most room; it doesn&rsquo;t necessarily.</p>
+          <p><span class="gr-card-fact">Example price</span>&euro;9,620 including VAT &mdash; MyCabin Cube Sauna M, about 6.5&nbsp;m&sup2;</p>
+          <p><span class="gr-card-fact">Key consideration</span>An electric heater needs a Registered Electrical Contractor, and the cabin needs a level, load-bearing base.</p>
+          <details class="gr-card-more">
+            <summary>More about saunas</summary>
+            <p>This is the one that looks as though it should need the most room. It doesn&rsquo;t necessarily.</p>
+            <p>As a sense of scale, MyCabin&rsquo;s Cube Sauna M is 3 metres by 2.17 metres &mdash; a little over 6.5&nbsp;m&sup2; &mdash; and is sold as a four-to-six-person sauna at a published &euro;9,620 including VAT.</p>
+            <p>That is one specific product, not a general sauna size. Other models are smaller and larger, and several Irish suppliers do not publish dimensions at all. Across the three suppliers PlotNua checked, published garden-sauna prices run from about &euro;4,649 to &euro;11,650.</p>
+            <p>Electric heating brings electrical work with it. MyCabin also publishes a &euro;596 wood-fired heater option including the chimney system for this range. Choosing that route changes what has to be accommodated, because it introduces a stove and flue.</p>
+            <p>Those are product prices, not finished-project costs. The base, electrical connection or other site work may add to what you actually pay.</p>
+          </details>
+          <a class="gr-card-link" href="#explore-makers"><span>Browse saunas from listed makers</span>&nbsp;&rarr;</a>
+        </div>
       </li>
-      <li>
-        <span class="dq-adv-label">Compact sauna</span>
-        <span class="hb-cmp-field">Product checked</span>
-        <span class="dq-fact">MyCabin Cube Sauna M</span>
-        <span class="hb-cmp-field">Space</span>
-        <span class="dq-fact">About 6.5&nbsp;m&sup2;. 3&nbsp;m by 2.17&nbsp;m.</span>
-        <span class="hb-cmp-field">Base</span>
-        <span class="dq-fact">Level and load-bearing.</span>
-        <span class="hb-cmp-field">Power, fire, water</span>
-        <span class="dq-fact">Electricity. The only one needing an electrician.</span>
-        <span class="hb-cmp-field">Installation</span>
-        <span class="dq-fact">Included by this supplier.</span>
-        <span class="hb-cmp-field">Product price</span>
-        <span class="dq-fact">&euro;9,620 including VAT</span>
-        <span class="hb-cmp-field">Known extras</span>
-        <span class="dq-fact">Wood-fired heater &euro;596, chimney included.</span>
-        <span class="hb-cmp-field">Quote required or not established</span>
-        <span class="dq-note">Base, connection, the sauna planning question.</span>
+      <li class="gr-card" id="option-hot-tub">
+        <!-- IMAGE C - THE WOOD-FIRED HOT TUB. Stove, flue, firewood and steam,
+             plainly a different and larger object than the plunge tub below.
+             NOTE: this photograph shows an EXTERNAL stove; the evidenced
+             Gardenhouse24 DeLux 220 has an INTEGRAL one. Both arrangements are
+             sold, so the copy asserts neither - it names a wood-burning stove
+             and flue and leaves placement alone. -->
+        <figure class="gr-card-img"><img src="assets/img/83da38d51a03414d.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A round timber wood-fired hot tub with a stove and flue beside it, on a small paved area at the end of an established Irish suburban garden."><figcaption class="gr-card-label">Illustrative image</figcaption></figure>
+        <div class="gr-card-body">
+          <h3>Wood-fired hot tub</h3>
+          <p>Water heated by a wood-burning stove rather than an electric spa system.</p>
+          <p><span class="gr-card-fact">Example price</span>From &euro;4,340 &mdash; Gardenhouse24 Hot Tub DeLux 220, about 4&nbsp;m&sup2;</p>
+          <p><span class="gr-card-fact">Key consideration</span>Close to 1,900&nbsp;kg when full, plus a stove and flue to place safely.</p>
+          <details class="gr-card-more">
+            <summary>More about hot tubs</summary>
+            <p>This takes a different route. The water is heated by a wood-burning stove rather than an electric spa system, so there is no electrical connection evidenced for the standard tub itself.</p>
+            <p>The verified Gardenhouse24 example is about 2.26 metres across &mdash; roughly 4&nbsp;m&sup2; of garden space before allowing for access and the stove &mdash; with a published base price of &euro;4,340.</p>
+            <p>But the starting price is not the whole story. The configuration PlotNua checked reached &euro;6,430 once selected options were added. A bubble system alone adds &euro;650.</p>
+            <p>Those are product prices, not a finished-project cost. The tub still needs a suitable base, space for its wood-burning stove and flue, and safe access around it. Delivery, site preparation and other work should only be treated as included where the supplier explicitly says so.</p>
+            <p>So the trade-off is different from the sauna: less dependence on electricity, but more to think about around weight, fire and where the stove sits.</p>
+          </details>
+          <a class="gr-card-link" href="#explore-makers"><span>Browse hot tubs from listed makers</span>&nbsp;&rarr;</a>
+        </div>
       </li>
-      <li>
-        <span class="dq-adv-label">Wood-fired hot tub</span>
-        <span class="hb-cmp-field">Product checked</span>
-        <span class="dq-fact">Gardenhouse24 Hot Tub DeLux 220</span>
-        <span class="hb-cmp-field">Space</span>
-        <span class="dq-fact">About 4&nbsp;m&sup2;. 2.26&nbsp;m across, plus a chimney.</span>
-        <span class="hb-cmp-field">Base</span>
-        <span class="dq-fact">Roughly 1,900&nbsp;kg full. A concrete base is sold.</span>
-        <span class="hb-cmp-field">Power, fire, water</span>
-        <span class="dq-fact">Wood and water. Electricity only if you add bubbles, lights or a filter.</span>
-        <span class="hb-cmp-field">Installation</span>
-        <span class="dq-fact">A paid option, Ireland-based installer.</span>
-        <span class="hb-cmp-field">Product price</span>
-        <span class="dq-fact">&euro;4,340</span>
-        <span class="hb-cmp-field">Known extras</span>
-        <span class="dq-fact">&euro;6,430 as configured. Bubbles &euro;650.</span>
-        <span class="hb-cmp-field">Quote required or not established</span>
-        <span class="dq-note">Foundation, installation, drainage, clearances.</span>
+      <li class="gr-card" id="option-cold-plunge">
+        <!-- IMAGE D - THE COLD PLUNGE, the APPROVED REPLACEMENT of 26 September
+             2026. A simple round timber tub with a ladder and a lid, on a small
+             pad in the corner, lawn unbroken across the frame.
+             The rejected image showed a rectangular, permanent-looking built-in
+             plunge. PlotNua has NO Irish evidence for a constructed or a
+             mechanically chilled plunge, so that picture argued for a route the
+             page cannot support. This one depicts the category the evidence
+             actually covers. -->
+        <figure class="gr-card-img"><img src="assets/img/5d6a5fd0aab3d9ce.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A small round timber cold-plunge tub with a lid and timber steps, tucked into the corner of an established Irish suburban garden with the lawn left clear."><figcaption class="gr-card-label">Illustrative image</figcaption></figure>
+        <div class="gr-card-body">
+          <h3>Cold plunge</h3>
+          <p>The smallest of the three: a cold-water tub at the edge of the garden.</p>
+          <p><span class="gr-card-fact">Example price</span>&euro;1,699 &mdash; Timbertrove cold-plunge tub, about 1.2&nbsp;m&sup2;</p>
+          <p><span class="gr-card-fact">Key consideration</span>Needs level ground and somewhere for the water to go. No chilling or filtration was evidenced for this model.</p>
+          <details class="gr-card-more">
+            <summary>More about cold plunges</summary>
+            <p>This is the smallest intervention of the three.</p>
+            <p>The verified Timbertrove cold-plunge tub is 1.25 metres across &mdash; about 1.2&nbsp;m&sup2; of garden space &mdash; and just over a metre high. Its published price is &euro;1,699.</p>
+            <p>That price includes the timber tub, waterproof liner, stainless-steel bands, access ladder and matching timber lid. It is available flat-packed or fully assembled, and the supplier states delivery throughout Ireland.</p>
+            <p>What it does not establish is just as important. PlotNua found no evidence that this model includes mechanical chilling or filtration, and no electrical requirement is published for it. It should therefore be understood as a simple cold-water plunge tub, not a self-chilling spa.</p>
+            <p>It still needs a suitable level base and somewhere sensible for the water to go when it is emptied.</p>
+            <p>That is the scale shift: a private cold-water plunge can be a roughly 1.2&nbsp;m&sup2; object at the edge of a garden, rather than a constructed pool.</p>
+          </details>
+          <a class="gr-card-link" href="#explore-makers"><span>Browse cold plunges from listed makers</span>&nbsp;&rarr;</a>
+        </div>
       </li>
     </ul>
-    <p><strong>The cheapest way in is &euro;1,699 and about a square metre.</strong> <strong>Only one of the three needs an electrician, and it is not the one with the fire.</strong> <strong>And the heaviest thing here is the water, not the structure.</strong></p>
-    <p class="hb-cmp-foot">Prices come from the suppliers&rsquo; own pages, read in September 2026, and they change. VAT is only shown where the supplier states it. None of these is a finished-project cost: bases, connections and site work are quoted separately.</p>
+  </section>
+
+  <section class="article-section reveal" id="compare">
+    <div class="kicker">The Real Question</div>
+    <h2>What each one asks of your garden</h2>
+    <div class="gr-cmp-wrap">
+      <table class="gr-cmp">
+        <caption>Three products PlotNua checked directly. Not averages, not quotes.</caption>
+        <thead><tr><td></td><th scope="col">Compact sauna<span class="gr-cmp-ex">MyCabin Cube Sauna M</span></th><th scope="col">Wood-fired hot tub<span class="gr-cmp-ex">Gardenhouse24 Hot Tub DeLux 220</span></th><th scope="col">Cold plunge<span class="gr-cmp-ex">Timbertrove Cold Plunge &amp; Ice Bath</span></th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Space</th><td data-label="Compact sauna">About 6.5&nbsp;m&sup2;: 3&nbsp;m by 2.17&nbsp;m</td><td data-label="Wood-fired hot tub">About 4&nbsp;m&sup2;: 2.26&nbsp;m across, plus a chimney</td><td data-label="Cold plunge">About 1.2&nbsp;m&sup2;: 1.25&nbsp;m across, a metre high</td></tr>
+          <tr><th scope="row">Product price</th><td data-label="Compact sauna"><strong>&euro;9,620</strong> including VAT. Wood-fired heater option &euro;596, chimney included</td><td data-label="Wood-fired hot tub"><strong>&euro;4,340</strong>; &euro;6,430 as configured. Bubbles &euro;650</td><td data-label="Cold plunge"><strong>&euro;1,699</strong>. None published as extras</td></tr>
+          <tr><th scope="row">Power or heat</th><td data-label="Compact sauna">Electricity. The only one needing an electrician</td><td data-label="Wood-fired hot tub">Wood. Electricity only if you add bubbles, lights or a filter</td><td data-label="Cold plunge">None. No chilling or filtration evidenced</td></tr>
+          <tr><th scope="row">Water</th><td data-label="Compact sauna">None</td><td data-label="Wood-fired hot tub">1,650 litres. No supplier says where it should go</td><td data-label="Cold plunge">Fill it, use it, drain it. The route is yours to plan</td></tr>
+          <tr><th scope="row">Base and installation</th><td data-label="Compact sauna">Level and load-bearing. Installation included by this supplier</td><td data-label="Wood-fired hot tub">Roughly 1,900&nbsp;kg full; a concrete base is sold. Installation a paid option</td><td data-label="Cold plunge">Level ground. Flat-packed or assembled</td></tr>
+          <tr><th scope="row">Planning</th><td data-label="Compact sauna">A building: the garden-building rules apply</td><td data-label="Wood-fired hot tub">On an existing patio it appears to fall outside the rules; dig or build around it and it is back in</td><td data-label="Cold plunge">Stood on the ground, as for a hot tub on a patio</td></tr>
+          <tr><th scope="row">Upkeep</th><td data-label="Compact sauna">No routine published</td><td data-label="Wood-fired hot tub">The anti-rot warranty depends on the maker&rsquo;s care guidelines</td><td data-label="Cold plunge">No water-treatment routine published</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="gr-cmp-lines"><strong>The cheapest way in is &euro;1,699 and about a square metre.</strong> <strong>Only one of the three needs an electrician, and it is not the one with the fire.</strong> <strong>And the heaviest thing here is the water, not the structure.</strong></p>
+    <p class="hb-cmp-foot">Prices come from the suppliers&rsquo; own pages, read in September 2026, and they change. VAT is only shown where the supplier states it. None of these is a finished-project cost: bases, connections and site work are quoted separately. Planning is a reading of the rules, not a decision &mdash; see <a href="#the-practical-part">What you need to sort out</a>.</p>
+    <p class="gr-note"><a href="https://mycabin.ie/" target="_blank" rel="noopener noreferrer">MyCabin</a> has showrooms in Blessington, Cobh and Wexford, and publishes the sauna sizes and prices above. <a href="https://gardenhouse24.ie/" target="_blank" rel="noopener noreferrer">Gardenhouse24</a> trades here as ABC Gardenhouse IRL Ltd and publishes the hot tub and its options. <a href="https://timbertrove.com/" target="_blank" rel="noopener noreferrer">Timbertrove</a> works from O&rsquo;Kelly&rsquo;s Sawmill in Dublin and publishes the cold plunge. <strong>They are named here because they publish, not because PlotNua rates them.</strong> No ranking, no recommendation. Other Irish suppliers exist that PlotNua has not checked.</p>
+    <p class="rel-note">PlotNua has no commercial relationship with any supplier named on this page. The suppliers named in this section were not contacted: everything quoted here was read from their own public pages in September 2026.</p>
+  </section>
+
+  <section class="article-section reveal" id="could-it-work">
+    <div class="kicker">Your Property</div>
+    <h2>Could it work for your property?</h2>
+    <p>That depends on your garden more than on the product: the clear space you have and where it is, whether power and water reach it, the ground, and what is already built there. PlotNua is preparing a check that asks those questions. <strong>It is not ready yet, and nothing on this page assesses your property.</strong></p>
+    <ul class="gr-list">
+      <li>Measure the clear space, and count what is already built in the garden: a shed counts towards the garden-building limits.</li>
+      <li>Check how far power and water would have to travel. Running them underground means digging.</li>
+      <li>Ask the maker to confirm delivery to your address, installation and the base it needs, in writing.</li>
+    </ul>
+    <p>One thing in one corner is a complete answer, and for most gardens it is probably the right one. Some people keep going: a tub one year, a sauna the next. <strong>PlotNua cannot tell you which of those steps your garden would take.</strong></p>
+  </section>
+
+  <!-- 6c · PLOTNUA-MAKER-EXPLORER-V1 · Founder decisions 13 Oct 2026. Shared component
+       (maker-explorer.js / maker-explorer.css) configured for this page by
+       atlas-tools/build-maker-explorer.py from published eligibility files;
+       do not hand-edit. -->
+  <section class="article-section reveal" id="explore-makers" data-pn-maker-explorer>
+    <div class="kicker">Makers and Products</div>
+    <h2>Explore makers and products</h2>
+    <p>Saunas, hot tubs and cold plunges from makers whose published products PlotNua
+      has checked. Makers are never ranked; open one to see its products and the
+      prices it publishes.</p>
+
+    <div class="mx-figs">
+      <div><span class="mx-fig">15</span><span class="mx-fig-l">saunas</span></div>
+      <div><span class="mx-fig">14</span><span class="mx-fig-l">hot tubs</span></div>
+      <div><span class="mx-fig">7</span><span class="mx-fig-l">cold plunges</span></div>
+    </div>
+
+    <div class="mx" id="mx">
+      <div class="mx-tabs" role="tablist" aria-label="Product type">
+        <button type="button" class="mx-tab" role="tab" id="mx-t-saunas" aria-selected="true" aria-controls="mx-pane" data-k="saunas">Saunas <span class="mx-n">15</span></button>
+        <button type="button" class="mx-tab" role="tab" id="mx-t-hot-tubs" aria-selected="false" aria-controls="mx-pane" data-k="hotTubs" tabindex="-1">Hot tubs <span class="mx-n">14</span></button>
+        <button type="button" class="mx-tab" role="tab" id="mx-t-cold-plunges" aria-selected="false" aria-controls="mx-pane" data-k="coldPlunges" tabindex="-1">Cold plunges <span class="mx-n">7</span></button>
+      </div>
+      <div class="mx-pane" id="mx-pane" role="tabpanel" aria-labelledby="mx-t-saunas">
+        <p class="mx-line" id="mx-line"></p>
+        <ul class="mx-legend" id="mx-legend"></ul>
+        <div class="mx-top" id="mx-top" hidden><button type="button" class="mx-btn" id="mx-less-top">Show fewer makers</button></div>
+        <div class="mx-tools" id="mx-tools" hidden>
+          <input class="mx-find" id="mx-find" type="search" placeholder="Find a maker" aria-label="Find a maker" autocomplete="off">
+          <div class="mx-chips" id="mx-chips" role="group" aria-label="Irish availability">
+            <button type="button" class="mx-chip" data-f="all" aria-pressed="true">All</button>
+            <button type="button" class="mx-chip" data-f="c" aria-pressed="false">Confirmed</button>
+            <button type="button" class="mx-chip" data-f="u" aria-pressed="false">Not yet confirmed</button>
+          </div>
+        </div>
+        <p class="mx-order" id="mx-order"></p>
+        <ul class="mx-grid" id="mx-grid"></ul>
+        <div class="mx-more"><button type="button" class="mx-btn" id="mx-all"></button><span class="mx-order" id="mx-shown"></span></div>
+        <noscript><p class="mx-line">The maker list needs JavaScript. You can still
+          <a href="search.html">search PlotNua&rsquo;s saunas, hot tubs and cold plunges</a>.</p></noscript>
+      </div>
+    </div>
+
+
+    <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
+      products still being checked are not shown. Makers are not ranked, and PlotNua has no
+      commercial arrangement with any maker listed.</p>
+
+    <script type="application/json" class="pn-mx-config" id="mx-data">{"initial":6,"tabs":[{"key":"saunas","nouns":["sauna","saunas"],"figures":{"products":15,"makers":2,"confirmed":0,"noRoute":0},"makers":[{"m":"Irish Sauna Company","p":[["recRgVJcPwTtY1ikY","Harvia Alpina View Large Outdoor Sauna (supplied by Irish Sauna Company)","Outdoor sauna","u","€27,978 incl. VAT"],["recSYzKR0BjBrdYMQ","Harvia Legend Electric Outdoor Sauna (supplied by Irish Sauna Company)","Outdoor sauna","u","€17,880 incl. VAT"]]},{"m":"OGNYX","p":[["recsNO8DyDCOyzaaf","OGNYX 1,6m Outdoor Sauna for 3 people","Configurable Outdoor Sauna Pod","u","From €2,850 · VAT not stated"],["rec839i9u1AuIyWA5","OGNYX 2-2.3m Outdoor Sauna for 4 people","Configurable Outdoor Sauna Pod","u","From €3,580 · VAT not stated"],["rec9qtid9KJX8EQpy","OGNYX 2.4m Outdoor Sauna with Outside Seats for 4 people","Configurable Outdoor Sauna Pod","u","From €3,660 · VAT not stated"],["recVazyerS81xoeq4","OGNYX 3.6m Outdoor Sauna with Outside Seats for 6 people","Configurable Outdoor Sauna Pod","u","From €4,290 · VAT not stated"],["recKBqAycJhUbV7Ts","OGNYX 3m Cube Barrel Sauna for 6 people","Configurable Outdoor Sauna Pod","u","From €4,340 · VAT not stated"],["rec1Y7hhBe5xJlcWx","OGNYX 3m Cube Barrel Sauna with dressing room for 4 people","Configurable Outdoor Sauna Pod","u","From €4,610 · VAT not stated"],["rec3KR7xUz1j9CkOG","OGNYX 3m Outdoor Sauna for 6 people","Configurable Outdoor Sauna Pod","u","From €4,140 · VAT not stated"],["rec7vDvqZSiQupeYe","OGNYX 3m Outdoor Sauna with Dressing Room for 4 people","Configurable Outdoor Sauna Pod","u","From €4,360 · VAT not stated"],["recaUH7DRxp9t37yA","OGNYX 4m Cube Barrel Sauna with dressing room and outside seats for 4 people","Configurable Outdoor Sauna Pod","u","From €5,270 · VAT not stated"],["recdPMdChAStDH8sp","OGNYX 4m Outdoor Sauna with Dressing Room and Outside Seats for 4 people","Configurable Outdoor Sauna Pod","u","From €4,920 · VAT not stated"],["recZsz3qTuwssgzRR","OGNYX 4m Two-room Outdoor Sauna for 4-6 people","Configurable Outdoor Sauna Pod","u","From €4,960 · VAT not stated"],["recM91mb6JaOREuEm","OGNYX 5m Outdoor Sauna with seats or bed for 6 people","Configurable Outdoor Sauna Pod","u","From €6,820 · VAT not stated"],["recx144QzENy1GSwf","OGNYX Vertical Outdoor Sauna for 2 people","Configurable Outdoor Sauna Pod","u","From €3,950 · VAT not stated"]]}],"productLink":null,"availabilityNote":"Prices are as each maker publishes them. Confirm delivery and installation details directly with the supplier."},{"key":"hotTubs","nouns":["hot tub","hot tubs"],"figures":{"products":14,"makers":2,"confirmed":0,"noRoute":0},"makers":[{"m":"OGNYX","p":[["recjMSl8ncVIuUkQm","OGNYX Round Hot Tub with integrated wood-fired stove for 5 people","Hot tub","u","From €2,440 · VAT not stated"],["recDQiVW2kmzKqpoG","OGNYX Stainless Steel Wooden Hot Tub with a Wood-Fired Heater","Hot tub","u","From €3,460 · VAT not stated"],["rec1nKZYJJMd6dksA","OGNYX Wood-fired Hot Tub from Fiberglass for 2 people","Hot tub","u","From €2,490 · VAT not stated"],["recwlPfitJ6tzSN26","OGNYX Wood-fired Hot Tub with an Inside Heater for 3 people","Hot tub","u","From €2,600 · VAT not stated"],["recLYdYxpg3De2N11","OGNYX Wood-fired Hot Tub with an Outside Heater for 4 people","Hot tub","u","From €2,570 · VAT not stated"],["recaT6TVXSTHy7NWv","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 6 people","Hot tub","u","From €2,850 · VAT not stated"],["recfXgvAW6ctZw9k1","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 7 people","Hot tub","u","From €2,940 · VAT not stated"],["recD9K20z7I9Fj6SP","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 9 people","Hot tub","u","From €3,130 · VAT not stated"],["recPyhpq3k9A7DMmU","OGNYX Wood-fired Hot Tub “Quattro” from Fiberglass for 8 people","Hot tub","u","From €3,250 · VAT not stated"],["recXbFA0tXLF6SvgL","OGNYX Wooden Hot Tub with an Inside Heater for 3-10 people","Hot tub","u","From €2,050 · VAT not stated"],["recB34Lc8Nza9LIEJ","OGNYX Wooden Hot Tub with an Outside Heater for 2 people","Hot tub","u","From €1,890 · VAT not stated"],["rec7GhVuWTNx9fSj8","OGNYX Wooden Hot Tub with an Outside Heater for 4-12 people","Hot tub","u","From €2,050 · VAT not stated"],["recrPVog4GNA3ERhf","OGNYX Wooden Hot Tub without Heater","Hot tub","u","From €1,160 · VAT not stated"]]},{"m":"Tanktribe","p":[["recdsCR4RW4h9D9TO","Tanktribe WILD TUB","Hot tub or cold plunge","u","From €1,485 · VAT not stated"]]}],"productLink":null,"availabilityNote":"Prices are as each maker publishes them. Confirm delivery and installation details directly with the supplier."},{"key":"coldPlunges","nouns":["cold plunge","cold plunges"],"figures":{"products":7,"makers":2,"confirmed":0,"noRoute":0},"makers":[{"m":"OGNYX","p":[["recntSXUahjfycM7P","OGNYX Cold Plunge Tub from fiberglass for 2 people","Cold Plunge / Ice Bath","u","From €2,080 · VAT not stated"],["recSN0nR2ykCjobcF","OGNYX Fiberglass Cold Plunge Tub for One","Cold Plunge / Ice Bath","u","From €1,690 · VAT not stated"],["recTXhjMxUj7DKm6P","OGNYX Stainless Steel Cold Plunge Tub for One","Cold Plunge / Ice Bath","u","From €2,310 · VAT not stated"]]},{"m":"Tanktribe","p":[["rectI1zTBPed5RhGY","Tanktribe ACTIVE Cold Plunge","Cold Plunge / Ice Bath","u","From €1,939 (range price) · VAT not stated"],["recvpsDrimklpZkFO","Tanktribe CORE Cold Plunge","Cold Plunge / Ice Bath","u","From €510 · VAT not stated"],["recyXCCmJM0LQEAAg","Tanktribe FLOW Cold Plunge","Cold Plunge / Ice Bath","u","From €850 (range price) · VAT not stated"],["recdsCR4RW4h9D9TO","Tanktribe WILD TUB","Hot tub or cold plunge","u","From €1,485 · VAT not stated"]]}],"productLink":null,"availabilityNote":"Prices are as each maker publishes them. Confirm delivery and installation details directly with the supplier."}]}</script>
+    <script src="maker-explorer.js"></script>
   </section>
 
   <section class="article-section reveal" id="the-practical-part">
@@ -1375,6 +1435,9 @@
         deck or a shelter around it</strong> and you are building. Either way you are back inside the rules.</p>
       <p>That is the useful answer. The rest of this section is why, and where it stops being that simple.</p>
     </div>
+      <details class="faq-item gr-acc">
+        <summary><h3>Planning in more detail</h3><span class="icon"></span></summary>
+        <div class="faq-a">
     <div class="rule-group">
       <h3>Why building something and putting something down are treated differently</h3>
       <p>The Planning and Development Act only bites on two things: carrying out <em>works</em>, or changing
@@ -1435,8 +1498,10 @@
         going to read that silence as a yes. If your plans turn on it, ask the council in writing. That is what
         a Section&nbsp;5 declaration is for: there is a fee, and they have four weeks to answer.</p>
     </div>
+    </div>
+      </details>
     <div class="practical-group">
-      <div class="practical-item">
+      <div class="practical-item gr-warn">
         <h3>Electricity and fire</h3>
         <p>A sauna heater wires into the house like a cooker, not a kettle. In Ireland that work has to be
           done by a <strong>Registered Electrical Contractor</strong>, and they have to give you a
@@ -1449,18 +1514,23 @@
           electrical contractor can advise you and carry out the work safely.</p>
         <p>A wood-fired tub puts a 30&nbsp;kW solid-fuel stove and a 2-metre chimney in the garden. <strong>No Irish supplier we checked publishes a clearance distance</strong> &mdash; how far it should sit from a fence, hedge or boundary. Get that in writing before you decide where it goes.</p>
       </div>
-      <div class="practical-item">
-        <h3>Base and weight</h3>
+      <details class="faq-item gr-acc">
+        <summary><h3>Base and weight</h3><span class="icon"></span></summary>
+        <div class="faq-a">
         <p>The sauna and the hot tub both need a proper base. The plunge tub needs level ground; the supplier says no more.</p>
         <p>The hot tub is the one to watch: 250&nbsp;kg empty, 1,650 litres of water, so close to <strong>1,900&nbsp;kg on about four square metres</strong>. Gardenhouse24 sells a concrete base and quotes for the foundation separately.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Water</h3>
+        </div>
+      </details>
+      <details class="faq-item gr-acc">
+        <summary><h3>Water</h3><span class="icon"></span></summary>
+        <div class="faq-a">
         <p>A hot tub fill is 1,650 litres. <strong>No Irish supplier page we read says where that water should go</strong>. The plunge tub has a drain outlet, but the route is your problem, and emptying into the same corner will show in the lawn.</p>
         <p>Gardenhouse24&rsquo;s five-year anti-rot warranty depends on following its care guidelines, and no supplier publishes a water-treatment routine. Ask before you buy.</p>
-      </div>
-      <div class="practical-item">
-        <h3>What it costs to run</h3>
+        </div>
+      </details>
+      <details class="faq-item gr-acc">
+        <summary><h3>What it costs to run</h3><span class="icon"></span></summary>
+        <div class="faq-a">
         <p>Start with the simple sum. A 9&nbsp;kW heater running flat out for an hour uses
           9&nbsp;units of electricity. Multiply that by what you pay per unit &mdash; the figure on your
           own bill, not an average.</p>
@@ -1475,116 +1545,17 @@
         <p class="rule-note">One thing to watch in other people&rsquo;s running costs: <strong>standing charges
           belong to your house, not to your sauna.</strong> You pay them whether or not you ever switch the
           heater on, so a figure that folds them in makes a session look dearer than it really is.</p>
-      </div>
-      <div class="practical-item">
-        <h3>Insurance</h3>
+        </div>
+      </details>
+      <details class="faq-item gr-acc">
+        <summary><h3>Insurance</h3><span class="icon"></span></summary>
+        <div class="faq-a">
         <p><strong>Not established.</strong> We found no Irish insurer or industry body publishing a position on a garden building with a heater, a garden stove, or a large vessel of water.</p>
         <p>The <a href="https://www.ccpc.ie/manage-your-money/day-to-day-finances/insurance/home-insurance/" target="_blank" rel="noopener noreferrer">CCPC</a> says buildings cover usually includes outbuildings such as a shed, that improving your home may mean raising your cover, and that exclusions vary. General guidance, and it does not cover any of this.</p>
         <p>Tell your insurer before you buy. Ask about the structure, its contents, your liability if someone is hurt, and whether a stove or a lot of water changes anything.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="article-section reveal" id="how-far-do-you-want-to-take-it">
-    <div class="kicker">Looking Ahead</div>
-    <h2>How far do you want to take it?</h2>
-    <p class="quarantine-lede">Everything above is what is sold in Ireland now, at published prices. This last part is not evidence. It is the shape of the idea.</p>
-    <p>One thing in one corner is a complete answer, and for most gardens it is probably the right one.</p>
-    <p>Some people keep going. A tub one year, a sauna the next, the paving and planting later. That is how a garden like the one at the top of this page gets built: one decision at a time.</p>
-    <p><strong>PlotNua cannot tell you which of those steps your garden would take.</strong> That is the check below, and it is not built yet.</p>
-  </section>
-
-  <section class="article-section reveal" id="where-this-is-sold-in-ireland">
-    <div class="kicker">Irish Routes</div>
-    <h2>Where this is sold in Ireland</h2>
-    <p>PlotNua could not find a bespoke garden-retreat builder in Ireland. <strong>All three routes are products, bought from suppliers</strong> &mdash; which is why the prices are published at all.</p>
-    <p><a href="https://mycabin.ie/" target="_blank" rel="noopener noreferrer">MyCabin</a> has showrooms in Blessington, Cobh and Wexford, and publishes the sauna sizes and prices above. <a href="https://gardenhouse24.ie/" target="_blank" rel="noopener noreferrer">Gardenhouse24</a> trades here as ABC Gardenhouse IRL Ltd and publishes the hot tub and its options. <a href="https://timbertrove.com/" target="_blank" rel="noopener noreferrer">Timbertrove</a> works from O&rsquo;Kelly&rsquo;s Sawmill in Dublin and publishes the cold plunge.</p>
-    <p><strong>They are named here because they publish, not because PlotNua rates them.</strong> No ranking, no recommendation. Other Irish suppliers exist that PlotNua has not checked.</p>
-    <p class="rel-note">PlotNua has no commercial relationship with any supplier named on this page. The suppliers named in this section were not contacted: everything quoted here was read from their own public pages in September 2026.</p>
-  </section>
-
-  <!-- PLOTNUA-GR-MAKER-IMAGERY-BEGIN · the maker's own images, founder decision 14 Oct 2026.
-       Generated by atlas-tools/build-garden-retreat-maker-imagery.py from the
-       OGNYX approved_assets in image-rights-records.json; do not hand-edit. -->
-  <section class="article-section reveal" id="what-these-look-like">
-    <div class="kicker">What These Look Like</div>
-    <h2>Three of the listed products, in the maker&rsquo;s own images</h2>
-    <p>The saunas, hot tubs and cold plunges listed below are from OGNYX, and these
-      four images are OGNYX&rsquo;s, shown with its permission. Two are photographs of
-      a cold plunge tub. Two are computer-generated visualisations: they show how a
-      sauna and a hot tub look, not a real installation.</p>
-    <div class="gr-mi-grid">
-      <figure class="gr-mi-fig">
-        <img src="https://www.ognyx.com/cdn/shop/files/Screenshot2025-08-13at21.01.07.png?v=1755111942&amp;width=1024" alt="Photograph of the OGNYX stainless steel cold plunge tub, clad in vertical timber staves with two steel hoops and a stainless inner rim, standing on gravel with a timber step stool beside it" width="1024" height="1026" loading="lazy" decoding="async">
-        <figcaption class="gr-mi-cap"><span><span class="gr-mi-kind">Photograph</span> Stainless steel cold plunge tub for one</span><a class="gr-mi-credit" href="https://www.ognyx.com/" target="_blank" rel="noopener noreferrer">© OGNYX</a></figcaption>
-      </figure>
-      <figure class="gr-mi-fig">
-        <img src="https://www.ognyx.com/cdn/shop/files/Screenshot2025-08-13at21.01.20.png?v=1755111942&amp;width=1024" alt="Photograph looking down into the same empty cold plunge tub, showing the stainless steel interior, the timber staves and the two steel hoops, on gravel" width="1024" height="1031" loading="lazy" decoding="async">
-        <figcaption class="gr-mi-cap"><span><span class="gr-mi-kind">Photograph</span> The same tub, from above</span><a class="gr-mi-credit" href="https://www.ognyx.com/" target="_blank" rel="noopener noreferrer">© OGNYX</a></figcaption>
-      </figure>
-      <figure class="gr-mi-fig">
-        <img src="https://www.ognyx.com/cdn/shop/files/Screenshot2025-08-12at19.20.47.png?v=1755025372&amp;width=1024" alt="Visualisation of the OGNYX round hot tub, clad in timber with a stainless chimney rising from the integrated stove inside it and a timber step stool alongside, beside a swimming pool" width="1024" height="1024" loading="lazy" decoding="async">
-        <figcaption class="gr-mi-cap"><span><span class="gr-mi-kind">Visualisation</span> Round hot tub with an integrated wood-fired stove</span><a class="gr-mi-credit" href="https://www.ognyx.com/" target="_blank" rel="noopener noreferrer">© OGNYX</a></figcaption>
-      </figure>
-      <figure class="gr-mi-fig">
-        <img src="https://www.ognyx.com/cdn/shop/files/Screenshot2025-08-11at18.27.16_33889bd3-cb18-4369-83b3-b0be9a8d8586.png?v=1754936822&amp;width=1024" alt="Visualisation of the OGNYX 1.6m outdoor barrel sauna on a timber deck in a garden, with a glass door, a dark shingled roof and garden furniture beside it" width="1024" height="1022" loading="lazy" decoding="async">
-        <figcaption class="gr-mi-cap"><span><span class="gr-mi-kind">Visualisation</span> 1.6m outdoor sauna</span><a class="gr-mi-credit" href="https://www.ognyx.com/" target="_blank" rel="noopener noreferrer">© OGNYX</a></figcaption>
-      </figure>
-    </div>
-    <p class="gr-mi-note">Each image shows a product, not a finished garden in
-      Ireland. PlotNua has not established delivery to your address, installation or
-      timing for any of these; that is for the maker to confirm. Images
-      &copy;&nbsp;OGNYX, shown as supplied, from <a href="https://www.ognyx.com/" target="_blank"
-      rel="noopener noreferrer">ognyx.com</a>.</p>
-  </section>
-
-  <!-- PLOTNUA-GR-MAKER-IMAGERY-END -->
-  <!-- 6c · PLOTNUA-MAKER-EXPLORER-V1 · Founder decisions 13 Oct 2026. Shared component
-       (maker-explorer.js / maker-explorer.css) configured for this page by
-       atlas-tools/build-maker-explorer.py from published eligibility files;
-       do not hand-edit. -->
-  <section class="article-section reveal" id="explore-makers" data-pn-maker-explorer>
-    <div class="kicker">Makers and Products</div>
-    <h2>Explore makers and products</h2>
-    <p>Outdoor saunas, hot tubs and cold plunges that PlotNua has researched from
-      each maker&rsquo;s own published information. Makers are listed A to Z; open one
-      to see the products PlotNua lists for it.</p>
-
-    <div class="mx-figs">
-      <div><span class="mx-fig">29</span><span class="mx-fig-l">products listed</span></div>
-    </div>
-
-    <div class="mx" id="mx">
-      <div class="mx-tabs" role="tablist" aria-label="Product type">
-        <button type="button" class="mx-tab" role="tab" id="mx-t-wellness" aria-selected="true" aria-controls="mx-pane" data-k="wellness">Saunas, hot tubs and plunges <span class="mx-n">29</span></button>
-      </div>
-      <div class="mx-pane" id="mx-pane" role="tabpanel" aria-labelledby="mx-t-wellness">
-        <p class="mx-line" id="mx-line"></p>
-        <ul class="mx-legend" id="mx-legend"></ul>
-        <div class="mx-top" id="mx-top" hidden><button type="button" class="mx-btn" id="mx-less-top">Show fewer makers</button></div>
-        <div class="mx-tools" id="mx-tools" hidden>
-          <input class="mx-find" id="mx-find" type="search" placeholder="Find a maker" aria-label="Find a maker" autocomplete="off">
-          <div class="mx-chips" id="mx-chips" role="group" aria-label="Irish availability">
-            <button type="button" class="mx-chip" data-f="all" aria-pressed="true">All</button>
-            <button type="button" class="mx-chip" data-f="c" aria-pressed="false">Confirmed</button>
-            <button type="button" class="mx-chip" data-f="u" aria-pressed="false">Not yet confirmed</button>
-          </div>
         </div>
-        <p class="mx-order" id="mx-order"></p>
-        <ul class="mx-grid" id="mx-grid"></ul>
-        <div class="mx-more"><button type="button" class="mx-btn" id="mx-all"></button><span class="mx-order" id="mx-shown"></span></div>
-        <noscript><p class="mx-line">The maker list needs JavaScript. You can still
-          <a href="search.html">search PlotNua&rsquo;s saunas, hot tubs and cold plunges</a>.</p></noscript>
-      </div>
+      </details>
     </div>
-
-
-    <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
-      products still being checked are not shown. Makers are not ranked, and PlotNua has no
-      commercial arrangement with any maker listed.</p>
-
-    <script type="application/json" class="pn-mx-config" id="mx-data">{"initial":6,"tabs":[{"key":"wellness","nouns":["product","products"],"figures":{"products":29,"makers":1,"confirmed":0,"noRoute":0},"makers":[{"m":"OGNYX","p":[["recsNO8DyDCOyzaaf","OGNYX 1,6m Outdoor Sauna for 3 people","Configurable Outdoor Sauna Pod","u"],["rec839i9u1AuIyWA5","OGNYX 2-2.3m Outdoor Sauna for 4 people","Configurable Outdoor Sauna Pod","u"],["rec9qtid9KJX8EQpy","OGNYX 2.4m Outdoor Sauna with Outside Seats for 4 people","Configurable Outdoor Sauna Pod","u"],["recVazyerS81xoeq4","OGNYX 3.6m Outdoor Sauna with Outside Seats for 6 people","Configurable Outdoor Sauna Pod","u"],["recKBqAycJhUbV7Ts","OGNYX 3m Cube Barrel Sauna for 6 people","Configurable Outdoor Sauna Pod","u"],["rec1Y7hhBe5xJlcWx","OGNYX 3m Cube Barrel Sauna with dressing room for 4 people","Configurable Outdoor Sauna Pod","u"],["rec3KR7xUz1j9CkOG","OGNYX 3m Outdoor Sauna for 6 people","Configurable Outdoor Sauna Pod","u"],["rec7vDvqZSiQupeYe","OGNYX 3m Outdoor Sauna with Dressing Room for 4 people","Configurable Outdoor Sauna Pod","u"],["recaUH7DRxp9t37yA","OGNYX 4m Cube Barrel Sauna with dressing room and outside seats for 4 people","Configurable Outdoor Sauna Pod","u"],["recdPMdChAStDH8sp","OGNYX 4m Outdoor Sauna with Dressing Room and Outside Seats for 4 people","Configurable Outdoor Sauna Pod","u"],["recZsz3qTuwssgzRR","OGNYX 4m Two-room Outdoor Sauna for 4-6 people","Configurable Outdoor Sauna Pod","u"],["recM91mb6JaOREuEm","OGNYX 5m Outdoor Sauna with seats or bed for 6 people","Configurable Outdoor Sauna Pod","u"],["recntSXUahjfycM7P","OGNYX Cold Plunge Tub from fiberglass for 2 people","Cold Plunge / Ice Bath","u"],["recSN0nR2ykCjobcF","OGNYX Fiberglass Cold Plunge Tub for One","Cold Plunge / Ice Bath","u"],["recjMSl8ncVIuUkQm","OGNYX Round Hot Tub with integrated wood-fired stove for 5 people","","u"],["recTXhjMxUj7DKm6P","OGNYX Stainless Steel Cold Plunge Tub for One","Cold Plunge / Ice Bath","u"],["recDQiVW2kmzKqpoG","OGNYX Stainless Steel Wooden Hot Tub with a Wood-Fired Heater","","u"],["recx144QzENy1GSwf","OGNYX Vertical Outdoor Sauna for 2 people","Configurable Outdoor Sauna Pod","u"],["rec1nKZYJJMd6dksA","OGNYX Wood-fired Hot Tub from Fiberglass for 2 people","","u"],["recwlPfitJ6tzSN26","OGNYX Wood-fired Hot Tub with an Inside Heater for 3 people","","u"],["recLYdYxpg3De2N11","OGNYX Wood-fired Hot Tub with an Outside Heater for 4 people","","u"],["recaT6TVXSTHy7NWv","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 6 people","","u"],["recfXgvAW6ctZw9k1","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 7 people","","u"],["recD9K20z7I9Fj6SP","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 9 people","","u"],["recPyhpq3k9A7DMmU","OGNYX Wood-fired Hot Tub “Quattro” from Fiberglass for 8 people","","u"],["recXbFA0tXLF6SvgL","OGNYX Wooden Hot Tub with an Inside Heater for 3-10 people","","u"],["recB34Lc8Nza9LIEJ","OGNYX Wooden Hot Tub with an Outside Heater for 2 people","","u"],["rec7GhVuWTNx9fSj8","OGNYX Wooden Hot Tub with an Outside Heater for 4-12 people","","u"],["recrPVog4GNA3ERhf","OGNYX Wooden Hot Tub without Heater","","u"]]}],"productLink":null}]}</script>
-    <script src="maker-explorer.js"></script>
   </section>
 
   <section class="article-section reveal" id="where-this-comes-from">
@@ -1643,8 +1614,14 @@
       <div class="faq-a">The Competition and Consumer Protection Commission&rsquo;s published home insurance guidance.</div>
     </details>
 
-    <h3>What this evidence does not establish</h3>
-    <p>Whether your council would read the rules the way we have &mdash; only a Section&nbsp;5 declaration
+    <details class="faq-item is-inline">
+      <summary><h3>Maker directory</h3><span class="icon"></span></summary>
+      <div class="faq-a">Products and prices in the maker directory are read from each maker&rsquo;s own published product pages. A price is shown only where the maker publishes one, with the VAT position the maker states; where it does not say, the directory says so. Delivery, installation and lead times are not stated for any listed product: confirm them with the maker.</div>
+    </details>
+
+    <details class="faq-item is-inline">
+      <summary><h3>What this evidence does not establish</h3><span class="icon"></span></summary>
+      <div class="faq-a">Whether your council would read the rules the way we have &mdash; only a Section&nbsp;5 declaration
       settles that for your garden. Whether a sauna&rsquo;s heater changes anything about the
       personal-use condition. Whether a council counts a free-standing tub towards the 30&nbsp;m&sup2;,
       given that the garden-building rule mentions &ldquo;placing&rdquo; an &ldquo;object&rdquo; while the Act
@@ -1652,7 +1629,8 @@
       electrical jobs need a registered contractor&rsquo;s certificate. Stove and flue clearances. Where the
       water should go. The Irish insurance position. What a finished project costs. We also found no Irish
       supplier publishing a price for a chilled plunge or a built plunge pool. And we cannot tell you whether
-      any of this suits your garden &mdash; the question that matters most.</p>
+      any of this suits your garden &mdash; the question that matters most.</div>
+    </details>
   </section>
 
 </div>

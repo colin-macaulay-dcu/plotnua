@@ -1,23 +1,1314 @@
 {
   "schema": "plotnua.wellness-universe",
-  "version": "1.0.0",
-  "generated": "2026-10-14T11:11:09Z",
-  "qualificationRuleVersion": "wellness-qualification-v1",
+  "version": "1.1.0",
+  "generated": "2026-10-14T11:57:39Z",
+  "qualificationRuleVersion": "wellness-qualification-v2",
   "publicationGate": {
     "version": "supplier-publication-gate-v1",
-    "rule": "public visibility is derived from permission state, listing-review state and asset approval by the Additional Home generator's publication_hold(); a product is public only when ELIGIBLE and PUBLISHABLE.",
-    "heldOrganisations": []
+    "rule": "public visibility is derived from permission state, listing-review state and asset approval by the Additional Home generator's gate index, without its legacy baseline: an organisation with no rights record holds. A product is public only when ELIGIBLE and PUBLISHABLE.",
+    "heldOrganisations": [
+      "Auroom Wellness",
+      "Cosy Cabins",
+      "Hansa24 Group",
+      "MyCabin.ie",
+      "Pineca Ireland",
+      "Polaris Sauna",
+      "Sommarnöjen",
+      "TimberIN"
+    ]
   },
-  "snapshotSha256": "e3d7aa88d17efc657759b761e2ee0ab0eaf91ae007f4d9ac75061ee85cbb2c09",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026 (OGNYX subset); internal governance data, never committed",
+  "snapshotSha256": "0579eb09d5de9263153e82a0d49f735a75b35dfcb873180514e553c229d1e08c",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026 (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed",
   "sourceCategory": "Wellness / Sauna",
-  "sourceCategoryCount": 41,
-  "eligibleCount": 29,
-  "organisationCount": 1,
-  "heldCount": 12,
+  "sourceCategoryCount": 153,
+  "eligibleCount": 35,
+  "organisationCount": 3,
+  "kindCounts": {
+    "sauna": 15,
+    "hot-tub": 14,
+    "cold-plunge": 7,
+    "combination": 0
+  },
+  "kindOrganisationCounts": {
+    "sauna": 2,
+    "hot-tub": 2,
+    "cold-plunge": 2,
+    "combination": 0
+  },
+  "heldCount": 16,
   "excludedCount": 0,
-  "gateHeldCount": 0,
+  "gateHeldCount": 102,
   "products": [
+    {
+      "id": "recpZW4echDhHtEVv",
+      "productCode": "PROD-000522",
+      "productName": "Auroom Aurea",
+      "organisation": "Auroom Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Architect-Led Panoramic Wellness Pavilion",
+      "kinds": [],
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete",
+          "kind-unclassified"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recEZ678YSRDJ16Ox",
+      "productCode": "PROD-000521",
+      "productName": "Auroom Quu",
+      "organisation": "Auroom Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Architect-Led Panoramic Wellness Pavilion",
+      "kinds": [],
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete",
+          "kind-unclassified"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recfKAVUrOeYVPHt0",
+      "productCode": "PROD-001208",
+      "productName": "Cosy Cabins Sauna 2m",
+      "organisation": "Cosy Cabins",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4800,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recIy8ghdKxo7PTjP",
+      "productCode": "PROD-001039",
+      "productName": "Contemporary garden sauna Aurland (G0428)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8530,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rechcjLRXGYZwcTce",
+      "productCode": "PROD-001097",
+      "productName": "Corner garden house with sauna Devon 3 (G0284)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 21100,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recou7176RVmPtiWd",
+      "productCode": "PROD-001027",
+      "productName": "Finnish sauna cabin Mini 1 (G0362)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7150,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rectx34lUohqXaX2R",
+      "productCode": "PROD-001019",
+      "productName": "Garden room with sauna Hansa Lounge XXL (G0164)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 19120,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec6SaFDgJAZhJCgZ",
+      "productCode": "PROD-001022",
+      "productName": "Garden sauna cabin Oliver 1 (G0207)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 15590,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recM79iKbieloM03Z",
+      "productCode": "PROD-001024",
+      "productName": "Garden sauna cabin Oliver 3 (G0220)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 14470,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reczn24i5qEsTty2T",
+      "productCode": "PROD-001018",
+      "productName": "Garden sauna cabin Paula (G0127)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11400,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recwCRZKkYefKr01I",
+      "productCode": "PROD-001023",
+      "productName": "Garden sauna cabin with terrace Oliver 2 (G0208)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 13090,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec6vfMZxsFc20EPe",
+      "productCode": "PROD-001015",
+      "productName": "Garden sauna with porch Nora (G0285)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 17310,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recZeunzPTfmYZgCO",
+      "productCode": "PROD-001038",
+      "productName": "Large contemporary sauna Lyngen (G0427)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 10850,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recZcGYcwzf2Fa1re",
+      "productCode": "PROD-001034",
+      "productName": "Modern outdoor sauna Geira (G0423)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9910,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recStbWNjbPyrxVIL",
+      "productCode": "PROD-001035",
+      "productName": "Modern outdoor sauna Nord (G0424)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9800,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recVO4KIkap60rzUa",
+      "productCode": "PROD-001017",
+      "productName": "Outdoor garden sauna cabin Oslo (G0112)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8940,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recNSWmB5pGoLuUus",
+      "productCode": "PROD-001020",
+      "productName": "Outdoor sauna cabin Corner A (G0205)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 19890,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recLQTDvK9e3GBsRv",
+      "productCode": "PROD-001021",
+      "productName": "Outdoor sauna cabin Corner B (G0206)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 19810,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec9E19OXuIHGeAme",
+      "productCode": "PROD-001030",
+      "productName": "Outdoor sauna cabin Kirkenes (G0376)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9990,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recu6KOXm4cJngQHW",
+      "productCode": "PROD-001016",
+      "productName": "Outdoor sauna cabin Lisette (G0093)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8700,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recgTeJmEvbX5xIzv",
+      "productCode": "PROD-001025",
+      "productName": "Outdoor sauna Finland (G0239)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 12660,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recNZXMlr2yccTZTY",
+      "productCode": "PROD-001032",
+      "productName": "Outdoor sauna Serenity (G0409)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 13660,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recI1mKwDj3BgtVmN",
+      "productCode": "PROD-001014",
+      "productName": "Outdoor sauna with veranda Lucas E (G0271)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 18170,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recNczuBRDbwJACfc",
+      "productCode": "PROD-001031",
+      "productName": "Small garden sauna cabin (G0383)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5460,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recCStH9W8b9YMedU",
+      "productCode": "PROD-001036",
+      "productName": "Small modern garden sauna Sogne (G0425)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7360,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recfybYdMq9vHsXM9",
+      "productCode": "PROD-001026",
+      "productName": "Small outdoor sauna Hansa Lounge (G0331)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11280,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recJeHpbbdejJQJpR",
+      "productCode": "PROD-001037",
+      "productName": "Small outdoor sauna room Lyse (G0426)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6190,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recW9poG90rNRjAjp",
+      "productCode": "PROD-001028",
+      "productName": "Small sauna cabin Mini 2 (G0363)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7150,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec2BobXUhOPoEKyX",
+      "productCode": "PROD-001029",
+      "productName": "Small sauna cabin Mini 3 (G0364)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7150,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recS7Gk3xnHsMh6yy",
+      "productCode": "PROD-001033",
+      "productName": "Small sauna with porch Felix (G0413)",
+      "organisation": "Hansa24 Group",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6890,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recRgVJcPwTtY1ikY",
+      "productCode": "PROD-001210",
+      "productName": "Harvia Alpina View Large Outdoor Sauna (supplied by Irish Sauna Company)",
+      "organisation": "Irish Sauna Company",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 27978,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recSYzKR0BjBrdYMQ",
+      "productCode": "PROD-001209",
+      "productName": "Harvia Legend Electric Outdoor Sauna (supplied by Irish Sauna Company)",
+      "organisation": "Irish Sauna Company",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 17880,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recWYh1cQPtKDBsvL",
+      "productCode": "PROD-000446",
+      "productName": "Cube Sauna M",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Garden house",
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9620,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recWDq1GRzEQBVJMP",
+      "productCode": "PROD-001180",
+      "productName": "MyCabin Barrel Sauna L (4m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8900,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recVYoBHX5X4A1BDl",
+      "productCode": "PROD-001179",
+      "productName": "MyCabin Barrel Sauna M (3m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7400,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec05goiqcMZ78YXg",
+      "productCode": "PROD-001178",
+      "productName": "MyCabin Barrel Sauna S (2.5m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6700,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec9Whhcs3cbMFNOZ",
+      "productCode": "PROD-001181",
+      "productName": "MyCabin Barrel Sauna XL (6m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11650,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recQT6LbDFnfrssoi",
+      "productCode": "PROD-001177",
+      "productName": "MyCabin Barrel Sauna XS (2m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6190,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recnSB9JjkNaO0grC",
+      "productCode": "PROD-001175",
+      "productName": "MyCabin Cube Sauna L (4m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11570,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec3ZJCZRFIwSgMwb",
+      "productCode": "PROD-001174",
+      "productName": "MyCabin Cube Sauna S (2.5m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8710,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recrt70iQ4TsMykMf",
+      "productCode": "PROD-001176",
+      "productName": "MyCabin Cube Sauna XL (6m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 15145,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recRTybecObQLoxyw",
+      "productCode": "PROD-001173",
+      "productName": "MyCabin Cube Sauna XS (2m)",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8047,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reclP6OKulrEN7QRs",
+      "productCode": "PROD-001182",
+      "productName": "MyCabin Luxury Outdoor Sauna — 4 Person",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 21080,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rectXEcIBSgq92QFn",
+      "productCode": "PROD-001183",
+      "productName": "MyCabin Luxury Outdoor Sauna — 5 Person",
+      "organisation": "MyCabin.ie",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 24970,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
     {
       "id": "recsNO8DyDCOyzaaf",
       "productCode": "PROD-001257",
@@ -25,18 +1316,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2850,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -51,18 +1345,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3160,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -79,18 +1376,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4580,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -107,18 +1407,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3580,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -133,18 +1436,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3880,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -161,18 +1467,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3660,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -187,18 +1496,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3860,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -215,18 +1527,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3810,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -243,18 +1558,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4810,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -271,18 +1589,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4290,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -297,18 +1618,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4340,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -323,18 +1647,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4610,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -349,18 +1676,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5340,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -377,18 +1707,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5140,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -405,18 +1738,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4140,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -431,18 +1767,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4360,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -457,18 +1796,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5270,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -483,18 +1825,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4920,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -509,18 +1854,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4870,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -537,18 +1885,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4960,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -563,18 +1914,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6820,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -589,18 +1943,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9970,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -617,18 +1974,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2080,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -643,18 +2003,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1690,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -669,18 +2032,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6680,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -697,18 +2063,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6780,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -725,18 +2094,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2440,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -751,18 +2123,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2310,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -777,18 +2152,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3460,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -803,18 +2181,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3950,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -829,18 +2210,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2490,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -855,18 +2239,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2600,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -881,18 +2268,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2570,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -907,18 +2297,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2850,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -933,18 +2326,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2940,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -959,18 +2355,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3130,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -985,18 +2384,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3250,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -1011,18 +2413,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2050,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -1037,18 +2442,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1890,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -1063,18 +2471,21 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2050,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
@@ -1089,24 +2500,1996 @@
       "organisation": "OGNYX",
       "productCategory": "Wellness / Sauna",
       "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1160,
         "currency": "EUR",
         "type": "Starting From",
-        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v1",
+        "rule": "wellness-qualification-v2",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
       "holdReason": null
+    },
+    {
+      "id": "recnnzXeiXIoKdP7d",
+      "productCode": "PROD-000848",
+      "productName": "Outdoor Barrel Sauna HELGA 17 — 46 mm, 1.7 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5157,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recScMV22mIrgij6w",
+      "productCode": "PROD-000850",
+      "productName": "Outdoor Barrel Sauna HELGA 17 — panoramic window, full height",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6008,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec6oVostIGd6JNxR",
+      "productCode": "PROD-000849",
+      "productName": "Outdoor Barrel Sauna HELGA 17 — panoramic window, half-height",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5535,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rechMoa1ZWtcAMvKX",
+      "productCode": "PROD-000851",
+      "productName": "Outdoor Barrel Sauna HELGA 24 — 46 mm, 2.4 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6905,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recmDjaXN4SF70Ifr",
+      "productCode": "PROD-000852",
+      "productName": "Outdoor Barrel Sauna HELGA 30 — 46 mm, 3.0 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7690,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recJCju35GC3GOUAo",
+      "productCode": "PROD-000856",
+      "productName": "Outdoor Barrel Sauna HELGA 40 — panoramic window, full height",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11118,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reckAzBLbtQLK46Gz",
+      "productCode": "PROD-000855",
+      "productName": "Outdoor Barrel Sauna HELGA 40 — panoramic window, half-height",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 10645,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recUHbn0U2qqKQYCl",
+      "productCode": "PROD-000853",
+      "productName": "Outdoor Barrel Sauna with changing room HELGA 35 — 46 mm, 3.5 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9669,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec7EZDz2AVIVHqwb",
+      "productCode": "PROD-000854",
+      "productName": "Outdoor Barrel Sauna with changing room HELGA 40 — 46 mm, 4.0 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 10266,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rech22hBIhQ5ypYrf",
+      "productCode": "PROD-000857",
+      "productName": "Outdoor Barrel Sauna with changing room HELGA 45 — 46 mm, 4.5 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 10883,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recemLQAqOSIKhCI5",
+      "productCode": "PROD-000858",
+      "productName": "Outdoor Barrel Sauna with changing room HELGA 48 — 46 mm, 4.8 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11143,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reciclyouGByVnjyy",
+      "productCode": "PROD-000859",
+      "productName": "Outdoor Barrel Sauna with changing room HELGA 59 — 46 mm, 5.9 m",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 13282,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec3ZEySd0n7wowm2",
+      "productCode": "PROD-000836",
+      "productName": "Outdoor Sauna DELLA 34 mm + Cladding — 2.6 × 2.1 m, 3.8 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4856,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recFozPL70R9FYfDj",
+      "productCode": "PROD-000838",
+      "productName": "Outdoor Sauna DELLA — 2.6 × 2.6 m, 5 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5208,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recaYnMVQyFJSSSBw",
+      "productCode": "PROD-000840",
+      "productName": "Outdoor Sauna DELLA — 3.6 × 2.1 m, 5.5 m² + 5 m² terrace",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8586,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recs5RhdwFIrdEh0o",
+      "productCode": "PROD-000837",
+      "productName": "Outdoor Sauna DELLA — 3.8 m² + 3 m² terrace",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6405,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recIasmbt67BrogkF",
+      "productCode": "PROD-000825",
+      "productName": "Outdoor Sauna ELDA 44 mm — 2 × 2 m, 4 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4018,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recRWg0ZciauFPdlC",
+      "productCode": "PROD-000827",
+      "productName": "Outdoor Sauna ELDA 44 mm — 2.5 × 2.9 m, 7 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4480,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recev6BrPKTiWkomb",
+      "productCode": "PROD-000828",
+      "productName": "Outdoor Sauna ELDA 44 mm — 2.5 × 3.2 m, 8 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4849,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec4qnJON1gEbCT62",
+      "productCode": "PROD-000829",
+      "productName": "Outdoor Sauna ELDA 44 mm — 3 × 4 m, 12 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6294,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recwW2OeFYlhQ1o20",
+      "productCode": "PROD-000830",
+      "productName": "Outdoor Sauna ELDA 44 mm — 4 × 4 m, 16 m² (3 rooms)",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7438,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reciOtvf4FhzPE7vz",
+      "productCode": "PROD-000831",
+      "productName": "Outdoor Sauna ELDA 44 mm — 4 × 4 m, 16 m² (4 rooms)",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7690,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recu1Y1kHvG90k7GL",
+      "productCode": "PROD-000826",
+      "productName": "Outdoor Sauna ELDA 44 mm — 5 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3930,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recaBRv5sobM9Exvy",
+      "productCode": "PROD-000832",
+      "productName": "Outdoor Sauna ELDA 44 mm — 5 × 5 m, 25 m² (3 rooms)",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 10226,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recME6y19ziTIzC5J",
+      "productCode": "PROD-000833",
+      "productName": "Outdoor Sauna ELDA 44 mm — 5 × 5 m, 25 m² (4 rooms)",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 10638,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recfWu1hLmcJPZSo7",
+      "productCode": "PROD-000834",
+      "productName": "Outdoor Sauna ELDA 44 mm — 5 × 7.5 m, 25 m² (3 rooms) + 12 m² terrace",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11656,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec6BCzxZ5jITxE8Q",
+      "productCode": "PROD-000835",
+      "productName": "Outdoor Sauna ELDA 44 mm — 5 × 7.5 m, 25 m² (4 rooms) + 12 m² terrace",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 12069,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reczDDWlkGCzinMCm",
+      "productCode": "PROD-000839",
+      "productName": "Outdoor Sauna with changing room DELLA — 3.6 × 2.1 m, 5.5 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6676,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reck2zLfXcxNSIgJ8",
+      "productCode": "PROD-000841",
+      "productName": "Outdoor Sauna with changing room DELLA — 4.6 × 2.1 m, 7.2 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7476,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recTIZL9Z61tonRaZ",
+      "productCode": "PROD-000843",
+      "productName": "Outdoor Sauna with changing room DELLA — 4.6 × 2.6 m, 9.3 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7815,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec9UC4R71N1xOz9s",
+      "productCode": "PROD-000847",
+      "productName": "Outdoor Sauna with changing room DELLA — 5.1 × 5.1 m, 22 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 12195,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reczrQJvhvSVag3QP",
+      "productCode": "PROD-000846",
+      "productName": "Outdoor Sauna with changing room DELLA — 6.1 × 2.6 m, 12.5 m²",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9774,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recqWyGu5FDvta874",
+      "productCode": "PROD-000842",
+      "productName": "Outdoor Sauna with changing room DELLA — 7.2 m² + 6.7 m² terrace",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9605,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recHpiHApAiJgA5CR",
+      "productCode": "PROD-000844",
+      "productName": "Outdoor Sauna with changing room DELLA — 9.3 m² + 3.6 m² terrace",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9660,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recU5cehhAJfWqrXy",
+      "productCode": "PROD-000845",
+      "productName": "Outdoor Sauna with changing room DELLA — 9.3 m² + 6.7 m² terrace",
+      "organisation": "Pineca Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 10116,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recAOXD7lxH1fXFT2",
+      "productCode": "PROD-000969",
+      "productName": "Polaris Comfort Barrel Sauna (1.6-2.4 m configurable)",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5900,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec8WtKz8vX98KGrX",
+      "productCode": "PROD-000970",
+      "productName": "Polaris Comfort Cube Sauna (1.7-2.4 m configurable)",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6300,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rechiRVBDdCmsbEft",
+      "productCode": "PROD-000968",
+      "productName": "Polaris Compact MiniCube 1.6 m Outdoor Sauna",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4700,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec2AZfhqqSoRvz6R",
+      "productCode": "PROD-000981",
+      "productName": "Polaris Fibreglass Cold Plunge Tub — 1 Person",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2500,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recYmBOQUd8AhqeeA",
+      "productCode": "PROD-000982",
+      "productName": "Polaris Fibreglass Cold Plunge Tub — 2 People",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3500,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recAZhmenlMg9656d",
+      "productCode": "PROD-000974",
+      "productName": "Polaris Luna 1.6 m Outdoor Sauna",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7490,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec9PFKkSdeEtY3sj",
+      "productCode": "PROD-000976",
+      "productName": "Polaris Lyra 2.4 m Outdoor Sauna",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9790,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recyAgZGKKSsG3eAC",
+      "productCode": "PROD-000978",
+      "productName": "Polaris Modern 2in1 Cabin Sauna 5.2 m",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11400,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recDMLGgnPan7sSvo",
+      "productCode": "PROD-000979",
+      "productName": "Polaris Modern 2in1 Cube Sauna 5.3 m",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11500,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recFzQwf5JJNv7FyC",
+      "productCode": "PROD-000971",
+      "productName": "Polaris Modern Sauna Cabin (2.0-4.0 m configurable)",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6500,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recTTzUUkBmTcOo7O",
+      "productCode": "PROD-000972",
+      "productName": "Polaris Premium Barrel Sauna (2.7-4.0 m configurable)",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6900,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reccLWbU1CYCukkbA",
+      "productCode": "PROD-000973",
+      "productName": "Polaris Premium Cube Sauna (2.4-4.0 m configurable)",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7100,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recJUpkps3vf8bB89",
+      "productCode": "PROD-000975",
+      "productName": "Polaris Premium Igloo Sauna (2.8-4.0 m configurable)",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7500,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recyM2NCtohRcsh08",
+      "productCode": "PROD-000977",
+      "productName": "Polaris Premium Oval Sauna 4.0 m",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9900,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recNLsLFg4gUi1bMY",
+      "productCode": "PROD-000980",
+      "productName": "Polaris Vega 2.8 m Igloo Sauna",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 12090,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recPrtVFdTXzhJ95d",
+      "productCode": "PROD-000983",
+      "productName": "Polaris Wood-Fired Hot Tub 1.8 m Oval",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3200,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "reckaGYr8cbtCe5Rx",
+      "productCode": "PROD-000984",
+      "productName": "Polaris Wood-Fired Hot Tub 1.8 m Round",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3700,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recMgf4ECktDZz1hM",
+      "productCode": "PROD-000985",
+      "productName": "Polaris Wood-Fired Hot Tub 1.8 m x 1.8 m Octagonal",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3900,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recNYnxzGnrAUFmvs",
+      "productCode": "PROD-000986",
+      "productName": "Polaris Wood-Fired Hot Tub 2 m x 2 m Octagonal",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4200,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec7P7dqXXbHwRPzg",
+      "productCode": "PROD-000987",
+      "productName": "Poolex Spawer IceSpa 7 kW Cold Plunge Heat Pump / Chiller",
+      "organisation": "Polaris Sauna",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 1299,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recS8dchktTu60Ni6",
+      "productCode": "PROD-000569",
+      "productName": "Sommarnöjen Sauna 30",
+      "organisation": "Sommarnöjen",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Turnkey Scandinavian Sauna House",
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 98000,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rectI1zTBPed5RhGY",
+      "productCode": "PROD-001213",
+      "productName": "Tanktribe ACTIVE Cold Plunge",
+      "organisation": "Tanktribe",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 1939,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the range, read from the supplier's range page. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recvpsDrimklpZkFO",
+      "productCode": "PROD-001211",
+      "productName": "Tanktribe CORE Cold Plunge",
+      "organisation": "Tanktribe",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 510,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recyXCCmJM0LQEAAg",
+      "productCode": "PROD-001212",
+      "productName": "Tanktribe FLOW Cold Plunge",
+      "organisation": "Tanktribe",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 850,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the range, read from the supplier's range page. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recdsCR4RW4h9D9TO",
+      "productCode": "PROD-001214",
+      "productName": "Tanktribe WILD TUB",
+      "organisation": "Tanktribe",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "hot-tub",
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 1485,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recbqK8aatwfEhbh2",
+      "productCode": "PROD-001205",
+      "productName": "TimberIN Nordic Barrel Duo (Barrel Sauna & Hot Tub Combination Building)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Sauna & Hot Tub Combination Building",
+      "kinds": [
+        "combination"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 14990,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recsgRXeV6TNzxCYa",
+      "productCode": "PROD-000591",
+      "productName": "TimberIN Nordic Hobbiton (Sauna & Hot Tub Combo)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Sauna & Hot Tub Combination Building",
+      "kinds": [
+        "combination"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 14990,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rechyMNmPvPrIhZKx",
+      "productCode": "PROD-000589",
+      "productName": "TimberIN Nordic Ice (Cold Plunge Tub)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3350,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec8uGWg6iRGi34BB",
+      "productCode": "PROD-001204",
+      "productName": "TimberIN Nordic Modular Spa (Modular Sauna / Dressing Room / Hot Tub Building)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Sauna & Hot Tub Combination Building",
+      "kinds": [
+        "combination"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5292,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recgmL8p4EKPREiWf",
+      "productCode": "PROD-000590",
+      "productName": "TimberIN Nordic Pod Custom (Outdoor Sauna)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recyPCyF2mmxolq2t",
+      "productCode": "PROD-001206",
+      "productName": "TimberIN Nordic Pod Duo (Pod Sauna & Hot Tub Combination Building)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Sauna & Hot Tub Combination Building",
+      "kinds": [
+        "combination"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 14990,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "rec9EpRGhwrOZo686",
+      "productCode": "PROD-000588",
+      "productName": "TimberIN Nordic Rojal (Wood-Fired Hot Tub with Jets, 4-8 Person)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Wood-Fired Massage Hot Tub",
+      "kinds": [
+        "hot-tub"
+      ],
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
+    },
+    {
+      "id": "recQSbuYJxaeKaNAu",
+      "productCode": "PROD-001203",
+      "productName": "TimberIN Thermowood Cold Plunge Ø90 cm (AISI 316 Stainless-Steel Tub)",
+      "organisation": "TimberIN",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4990,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v2",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "HOLD",
+      "holdReason": "publication-record-missing"
     }
   ]
 }

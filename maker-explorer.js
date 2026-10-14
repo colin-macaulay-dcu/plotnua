@@ -19,6 +19,14 @@
      Product links are composed ONLY from a tab's configured productLink
      template, which the builder permits only for a source whose products
      have a PlotNua product page (guard G3).
+
+   OPTIONAL PER-TAB PRESENTATION (14 Oct 2026, Garden Retreat restructure)
+     * availabilityNote: a tab for which PlotNua holds no per-product Irish
+       availability evidence shows this one sentence instead of a count of
+       zero, and drops the per-product availability marks, legend and
+       filter. A tab without it renders exactly as before.
+     * a product's optional fifth element is a price line the builder
+       composed from the published universe; shown as text, never a link.
    ========================================================================== */
 (function () {
   'use strict';
@@ -47,6 +55,7 @@
       var T = TABS[tab], F = T.figures, n = F.products, conf = F.confirmed;
       var s = '<strong>' + n + ' ' + T.nouns[n === 1 ? 0 : 1] + '</strong> from <strong>' + F.makers +
         (F.makers === 1 ? ' maker' : ' makers') + '</strong>. ';
+      if (T.availabilityNote) { return s + esc(T.availabilityNote); }
       if (conf === n) { return s + 'Irish availability is confirmed for all ' + n + '.'; }
       return s + 'Irish availability is confirmed for ' + conf + ' and not yet confirmed for ' +
         (n - conf) + (F.noRoute ? ', including ' + F.noRoute +
@@ -56,15 +65,18 @@
     function drawer(m, id) {
       var T = TABS[tab];
       var c = m.p.filter(function (p) { return p[3] === 'c'; }).length;
+      var NA = T.availabilityNote;
       var h = '<li class="mx-drawer" id="' + id + '"><h3>' + esc(m.m) + '</h3>' +
         '<p class="mx-meta">' + m.p.length + ' ' + T.nouns[m.p.length === 1 ? 0 : 1] +
-        ' · Irish availability confirmed for ' + c + ' of ' + m.p.length + '</p><ul class="mx-plist">';
+        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p><ul class="mx-plist">';
       m.p.forEach(function (p) {
         h += '<li>' + (T.productLink
             ? '<a class="mx-pn" href="' + T.productLink.replace('{id}', encodeURIComponent(p[0])) + '">' + esc(p[1]) + '</a>'
             : '<span class="mx-pn-text">' + esc(p[1]) + '</span>') +
           (p[2] ? '<span class="mx-pt">' + esc(p[2]) + '</span>' : '') +
-          '<span class="mx-st"><span class="mx-dot mx-' + p[3] + '" aria-hidden="true"></span>' + label(p[3]) + '</span></li>';
+          (p[4] ? '<span class="mx-pp">' + esc(p[4]) + '</span>' : '') +
+          (NA ? '' : '<span class="mx-st"><span class="mx-dot mx-' + p[3] + '" aria-hidden="true"></span>' + label(p[3]) + '</span>') +
+          '</li>';
       });
       h += '</ul>';
       /* A tab whose products have no PlotNua product page carries a route to
@@ -76,19 +88,21 @@
       return h + '</li>';
     }
     function render() {
-      var list = TABS[tab].makers, k = counts(list);
+      var list = TABS[tab].makers, k = counts(list), NA = TABS[tab].availabilityNote;
       $('mx-line').innerHTML = line();
-      $('mx-legend').innerHTML =
+      $('mx-legend').hidden = !!NA;
+      $('mx-legend').innerHTML = NA ? '' :
         '<li><span class="mx-dot mx-c" aria-hidden="true"></span>All products confirmed (' + k.c + ')</li>' +
         (k.s ? '<li><span class="mx-dot mx-s" aria-hidden="true"></span>Some products confirmed (' + k.s + ')</li>' : '') +
         (k.u ? '<li><span class="mx-dot mx-u" aria-hidden="true"></span>Not yet confirmed (' + k.u + ')</li>' : '');
       $('mx-tools').hidden = !expanded;
       $('mx-top').hidden = !expanded;
-      $('mx-chips').hidden = (k.s + k.u) === 0;
+      $('mx-chips').hidden = !!NA || (k.s + k.u) === 0;
       var rows = expanded ? list : ORDER[tab].slice(0, INITIAL);
       if (expanded) {
         if (q) { rows = rows.filter(function (m) { return m.m.toLowerCase().indexOf(q.toLowerCase()) !== -1; }); }
-        if (filter === 'c') { rows = rows.filter(function (m) { return mstate(m) !== 'u'; }); }
+        if (NA) { /* no availability filter on this tab */ }
+        else if (filter === 'c') { rows = rows.filter(function (m) { return mstate(m) !== 'u'; }); }
         if (filter === 'u') { rows = rows.filter(function (m) { return mstate(m) !== 'c'; }); }
       }
       $('mx-order').textContent = expanded
@@ -99,10 +113,10 @@
         var st = mstate(m), id = 'mx-d-' + tab + '-' + i, isOpen = open === m.m;
         h += '<li><button type="button" class="mx-maker" aria-expanded="' + isOpen + '"' +
           (isOpen ? ' aria-controls="' + id + '"' : '') + ' data-m="' + esc(m.m) + '">' +
-          '<span class="mx-dot mx-' + st + '" aria-hidden="true"></span>' +
-          '<span class="mx-nm">' + esc(m.m) + '<span class="mx-sr"> — ' +
+          (NA ? '' : '<span class="mx-dot mx-' + st + '" aria-hidden="true"></span>') +
+          '<span class="mx-nm">' + esc(m.m) + (NA ? '' : '<span class="mx-sr"> — ' +
           (st === 'c' ? 'Irish availability confirmed' : st === 's' ? 'Irish availability confirmed for some products' : 'Irish availability not yet confirmed') +
-          '</span></span><span class="mx-ct">' + m.p.length + ' product' + (m.p.length === 1 ? '' : 's') + '</span></button></li>';
+          '</span>') + '</span><span class="mx-ct">' + m.p.length + ' product' + (m.p.length === 1 ? '' : 's') + '</span></button></li>';
         if (isOpen) { h += drawer(m, id); }
       });
       if (!rows.length) { h = '<li class="mx-empty">No maker matches that search.</li>'; }

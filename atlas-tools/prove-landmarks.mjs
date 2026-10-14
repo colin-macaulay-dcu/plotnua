@@ -121,6 +121,17 @@ for (const f of [...SKIPPED, "about.html", "contact.html", "privacy.html",
     // every page keeps its full-bleed sections; the ones that had N mains now
     // have N article divs inside one main
     if (bleed === 0 && arts === 0) continue;               // single-main pages
+    // ONE DECLARED SUBSTITUTION (14 Oct 2026, Garden Retreat restructure
+    // brief). Its three full-bleed photographs were moved, deliberately, into
+    // the option cards; build-garden-retreat-restructure.py owns that page's
+    // structure (GR1-GR9). Not an exemption from losing pictures: each of the
+    // three must still be on the page, inside a card, or this fails.
+    if (bleed === 0 && f === "discovery-garden-retreat.html") {
+      const cardImgs = ["45a270b7716e4a94", "83da38d51a03414d", "5d6a5fd0aab3d9ce"]
+        .filter(h => new RegExp('<figure class="gr-card-img"><img src="assets/img/' + h + '\\.jpg"').test(t));
+      if (cardImgs.length !== 3) broken.push(f + " lost its full-bleed photographs without the declared card substitution");
+      continue;
+    }
     if (bleed === 0) broken.push(f + " lost all full-bleed sections");
   }
   broken.length ? bad("L3 full-bleed sections preserved", broken.join("; "))
