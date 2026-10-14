@@ -1,44 +1,49 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-BOUNDED BUILDER — THE OGNYX PRIVATE SUPPLIER PREVIEW.
+BOUNDED BUILDER — THE OGNYX PRIVATE SUPPLIER PREVIEW, ONBOARDING EDITION.
 
-TEMPLATE: supplier-preview-system/template-provider-led.html, reused.
+TEMPLATE: supplier-preview-system/template-provider-led.html (variant B).
 
-*** IMAGERY IS PREVIEW-ONLY HERE, AND THAT IS THE DIFFERENCE. ***
+WHAT CHANGED, AND WHY THE SENT PAGE WAS NOT LEFT FROZEN.
+The first edition of this page (commit b7cddb8, 2 October 2026) was sent to
+Fabian at OGNYX and is preserved in git. On 13 October 2026 he replied to the
+12 October follow-up -- "We have reviewed your offer and can confirm we would
+be happy to proceed with this" -- and on 14 October the founder decided to
+onboard OGNYX as a participating supplier. That reply is the "genuine reason"
+SUPPLIER-PREVIEW-SYSTEM-V1 §10.1 requires before a sent preview is edited:
+the page now has to show what OGNYX will look like once their full range is in
+Atlas, not the three-product sketch they were first shown. Nothing here is
+sent; the §10.1 send gate still applies.
 
-Fabian at OGNYX asked to see the preview before proceeding and invited
-"any example imagery, product presentation and links you propose to use".
-That is written permission for THIS PAGE. It is not publication permission:
-Atlas Permission Outcome stays "Unknown — Awaiting Reply".
+THE STRUCTURE. One production Results card, filled three times -- cold plunge,
+sauna, hot tub -- and switched by a row of category names above the frame, so
+the frozen seven-part structure is unchanged. Below the frame: the whole
+OGNYX range now in Atlas (41 products, text only, each linked to its own
+ognyx.com page) and the one PlotNua Discovery it belongs to, DISC-001 Garden
+Retreat.
 
-The preview-scoped rights record comes from
-.github/scripts/build-ognyx-grant.py, and what keeps it to this one page is
-atlas-tools/prove-preview-only-containment.mjs, which refuses an OGNYX image
-anywhere else in the tree. The rights gate was not weakened to make this
-possible; the record was made narrower than the gate would enforce.
+IMAGERY — STILL THE SAME FOUR, STILL PREVIEW-SCOPED.
+Fabian's 2 October reply invited "any example imagery ... you propose to use"
+for this preview, and the 12 October ask that he said yes to named "the
+selected product images shown there". That is the four images below and no
+others. Whether the 13 October reply also carries those four into publication
+is a founder decision recorded in Atlas (WELLNESS-FIRST-OGNYX-20261002,
+"Proposes: Granted with Conditions"); until it is made, the preview-only
+containment in atlas-tools/preview-only-suppliers.json stays in force and no
+other OGNYX image is used anywhere. The other 38 products are text-only.
 
-*** THREE CATEGORIES, ONE FRAMED PRODUCT. *** OGNYX sell cold plunges,
-saunas and hot tubs, and the point of the preview is that they can support
-several Garden Retreat routes. But the hero image IS the product card's
-image -- same <section> as the name and the price -- so the framed product
-and the first image must be the same thing. The cold plunge is framed because
-it is the only one of the three with genuine first-party PHOTOGRAPHS of the
-product; the sauna and hot tub follow in their own sections.
+PHOTOGRAPH VERSUS VISUALISATION. Unchanged from the first edition: two of the
+four are renders and the page says so wherever they appear.
 
-*** PHOTOGRAPH VERSUS VISUALISATION. *** Every image below was opened and
-looked at. Filenames are no guide here: the files named "Screenshot..." are
-the real photographs and the ones named after the product are the renders.
-Two of the four are visualisations and the page says so, because a render
-shown as a photograph misrepresents what a homeowner would receive.
-
-*** THE SEND GATE APPLIES. *** SUPPLIER-PREVIEW-SYSTEM-V1 §10.1: build,
-prove, deploy, hand the URL to the founder, STOP. Nothing here sends
-anything, and a clean run is not approval to email Fabian.
+EVIDENCE, read live 14 October 2026 from ognyx.com: product pages and the
+store's own product data; Terms (OGNYX LIMITED, CRO 800095, 134A Herbert Park,
+Bray, Co. Wicklow); Shipping & Delivery Policy, last updated 2 September 2026.
 
 Run: python3 build-ognyx-preview.py [--stage]
 """
 
+import html
 import pathlib
 import re
 import sys
@@ -52,69 +57,150 @@ OUT = (pathlib.Path("/tmp/plotnua-stage/ognyx-preview.html") if STAGE
        else SITE / "ognyx-preview.html")
 
 SUPPLIER = "OGNYX"
-EVIDENCE_DATE = "2 October 2026"
+EVIDENCE_DATE = "14 October 2026"
 PERMISSION_DATE = "2 October 2026"
 SUPPLIER_SITE = "https://www.ognyx.com/"
+PRODUCT_BASE = "https://www.ognyx.com/products/"
 CREDIT = "© OGNYX"
 PERMITTED_PREFIX = "https://www.ognyx.com/cdn/shop/files/"
+LOCALITY = "Co. Wicklow"
 
-PLUNGE_URL = ("https://www.ognyx.com/products/"
-              "stainless-steel-cold-plunge-tub-for-one")
-SAUNA_URL = "https://www.ognyx.com/products/1-6m-outdoor-sauna-for-3-persons"
-TUB_URL = ("https://www.ognyx.com/products/"
-           "round-hot-tub-with-integrated-wood-fired-stove-for-5-people")
+# ── THE FOUR IMAGES, EACH ONE LOOKED AT (first edition, re-checked live) ──
+IMG = {
+    "plunge1": {"url": PERMITTED_PREFIX + "Screenshot2025-08-13at21.01.07.png"
+                       "?v=1755111942&width=1024",
+                "kind": "photograph",
+                "alt": "Photograph of the OGNYX stainless steel cold plunge "
+                       "tub, clad in vertical timber staves with two steel "
+                       "hoops and a stainless inner rim, standing on gravel "
+                       "with a timber step stool beside it"},
+    "plunge2": {"url": PERMITTED_PREFIX + "Screenshot2025-08-13at21.01.20.png"
+                       "?v=1755111942&width=1024",
+                "kind": "photograph",
+                "alt": "Photograph looking down into the same empty cold "
+                       "plunge tub, showing the stainless steel interior, the "
+                       "timber staves and the two steel hoops, on gravel"},
+    "sauna": {"url": PERMITTED_PREFIX + "Screenshot2025-08-11at18.27.16"
+                     "_33889bd3-cb18-4369-83b3-b0be9a8d8586.png"
+                     "?v=1754936822&width=1024",
+              "kind": "visualisation",
+              "alt": "Visualisation of the OGNYX 1.6m outdoor barrel sauna on "
+                     "a timber deck in a garden, with a glass door, a dark "
+                     "shingled roof and garden furniture beside it"},
+    "tub": {"url": PERMITTED_PREFIX + "Screenshot2025-08-12at19.20.47.png"
+                   "?v=1755025372&width=1024",
+            "kind": "visualisation",
+            "alt": "Visualisation of the OGNYX round hot tub, clad in timber "
+                   "with a stainless chimney rising from the integrated stove "
+                   "inside it and a timber step stool alongside, beside a "
+                   "swimming pool. The image carries OGNYX's own caption bar "
+                   "reading Ø 2M FOR 5 PERS"},
+}
 
-# ── THE FOUR IMAGES, EACH ONE ACTUALLY LOOKED AT ──────────────────────────
-# Inspected in a browser on 2 October 2026. Alt text describes what is
-# visible and nothing else: no inference from the filename, the product title
-# or the page it sits on. None of the four contains a person or third-party
-# branding. Images 3 and 4 are visualisations, not photographs, and the page
-# labels them.
-OGNYX_IMAGES = [
-    # 1 — PHOTOGRAPH. The hero, and the strongest accurate first-party
-    #     photograph of any of the three products.
-    {"url": PERMITTED_PREFIX + "Screenshot2025-08-13at21.01.07.png"
-            "?v=1755111942&width=1024",
-     "kind": "photograph",
-     "alt": "Photograph of the OGNYX stainless steel cold plunge tub, clad "
-            "in vertical timber staves with two steel hoops and a stainless "
-            "inner rim, standing on gravel with a timber step stool beside "
-            "it"},
-    # 2 — PHOTOGRAPH. The stainless interior, which is the material claim.
-    {"url": PERMITTED_PREFIX + "Screenshot2025-08-13at21.01.20.png"
-            "?v=1755111942&width=1024",
-     "kind": "photograph",
-     "alt": "Photograph looking down into the same empty cold plunge tub, "
-            "showing the stainless steel interior, the timber staves and the "
-            "two steel hoops, on gravel"},
-    # 3 — VISUALISATION. Barrel sauna exterior in a garden setting.
-    {"url": PERMITTED_PREFIX + "Screenshot2025-08-11at18.27.16"
-            "_33889bd3-cb18-4369-83b3-b0be9a8d8586.png"
-            "?v=1754936822&width=1024",
-     "kind": "visualisation",
-     "alt": "Visualisation of the OGNYX 1.6m outdoor barrel sauna on a "
-            "timber deck in a garden, with a glass door, a dark shingled "
-            "roof and garden furniture beside it"},
-    # 4 — VISUALISATION. Carries a caption bar burned into the image by
-    #     OGNYX reading "Ø 2M FOR 5 PERS". Recorded rather than cropped
-    #     around: the images are used unmodified.
-    {"url": PERMITTED_PREFIX + "Screenshot2025-08-12at19.20.47.png"
-            "?v=1755025372&width=1024",
-     "kind": "visualisation",
-     "alt": "Visualisation of the OGNYX round hot tub, clad in timber with a "
-            "stainless chimney rising from the integrated stove inside it "
-            "and a timber step stool alongside, beside a swimming pool. The "
-            "image carries OGNYX's own caption bar reading Ø 2M FOR 5 PERS"},
+PRICE_BASIS = ("Basic-set price as published on ognyx.com; options chosen in "
+               "the configurator add to it. The page doesn&rsquo;t say "
+               "whether VAT is in the figure, and delivery is priced at "
+               "checkout.")
+CHECK = ("delivery to the homeowner&rsquo;s address is priced at checkout, "
+         "assembly or installation is quoted separately, and production "
+         "time depends on the configuration chosen.")
+
+PANELS = [
+    {"key": "plunge", "tab": "Cold plunge",
+     "name": "Stainless Steel Cold Plunge Tub for One", "price": "&euro;2,310",
+     "handle": "stainless-steel-cold-plunge-tub-for-one",
+     "images": ["plunge1", "plunge2"],
+     "f1": ("Size", "86 cm across, 105 cm high"),
+     "f2": ("Capacity", "400 litres, for one person"),
+     "f3": "Stainless steel interior inside an 18 mm thermowood exterior",
+     "f4": "Basic set: the tub, waterproof plywood flooring, two stainless "
+           "hoops, a thermowood bench and a drain",
+     "f5": "Options include a cooler, a cover, stairs and an electric chiller "
+           "that both cools and heats"},
+    {"key": "sauna", "tab": "Sauna",
+     "name": "1.6m Outdoor Sauna for 3 people", "price": "&euro;2,850",
+     "handle": "1-6m-outdoor-sauna-for-3-persons",
+     "images": ["sauna"],
+     "f1": ("Size", "160 &times; 200 &times; 210 cm assembled"),
+     "f2": ("Steam room", "4.2 m&sup3;, about two to three people"),
+     "f3": "40 mm spruce body, thermowood benches, tempered glass door and a "
+           "bitumen shingle roof",
+     "f4": "Supplied flat-packed or fully assembled",
+     "f5": "The configurator covers the electric stove, a glass or mirror "
+           "front wall and lighting"},
+    {"key": "tub", "tab": "Hot tub",
+     "name": "Round Hot Tub with integrated wood-fired stove for 5 people",
+     "price": "&euro;2,440",
+     "handle": "round-hot-tub-with-integrated-wood-fired-stove-for-5-people",
+     "images": ["tub"],
+     "f1": ("Capacity", "4&ndash;6 people, 1,100 litres"),
+     "f2": ("Size", "2.0 m round, 1.1 m high, 0.83 m deep"),
+     "f3": "Fibreglass bath planked in 18 mm thermowood, with a 30 kW "
+           "stainless steel stove inside the tub",
+     "f4": "Chimney guard, waterproof plywood flooring and a drain valve in "
+           "the basic set",
+     "f5": "Options include bubble and hydro massage, LED lighting, an "
+           "electric heater and a filter"},
 ]
 
-# ── CLAIMS THIS PAGE MUST NOT MAKE ─────────────────────────────────────────
-# OGNYX sell wellness products and their own copy uses "health benefits of
-# cold immersion" and "therapeutic". PlotNua does not repeat a health claim
-# to a homeowner, whoever first wrote it. The delivery, VAT and lead-time
-# bans exist because their published policies are deliberately conditional:
-# free delivery applies to eligible saunas "where stated", VAT is confirmed
-# at checkout, and production time varies by configuration. Stating any of
-# them flatly would turn a conditional into a promise.
+# ── THE WHOLE RANGE NOW IN ATLAS (PROD-001217 to PROD-001257) ─────────────
+# Titles exactly as OGNYX publish them; basic-set prices in euro.
+RANGE = [
+    ("plunge", "Stainless Steel Cold Plunge Tub for One", 2310, "stainless-steel-cold-plunge-tub-for-one"),
+    ("plunge", "Cold Plunge Tub from fiberglass for 2 people", 2080, "cold-plunge-tub-from-fiberglass-for-2-persons"),
+    ("plunge", "Fiberglass Cold Plunge Tub for One", 1690, "fiberglass-cold-plunge-tub-for-one"),
+    ("tub", "Wooden Hot Tub without Heater", 1160, "wooden-hot-tub-without-heater"),
+    ("tub", "Wooden Hot Tub with an Inside Heater for 3-10 people", 2050, "for-3-10-persons-wooden-hot-tub-with-an-inside-heater"),
+    ("tub", "Wooden Hot Tub with an Outside Heater for 2 people", 1890, "for-2-persons-wooden-hot-tub-with-an-outside-heater"),
+    ("tub", "Stainless Steel Wooden Hot Tub with a Wood-Fired Heater", 3460, "stainless-steel-wooden-hot-tub-with-a-wood-fired-heater"),
+    ("tub", "Wooden Hot Tub with an Outside Heater for 4-12 people", 2050, "for-4-12-persons-wooden-hot-tub-with-an-outside-heater"),
+    ("tub", "Wood-fired Hot Tub from Fiberglass for 2 people", 2490, "for-2-persons-wood-fired-hot-tub-from-fiberglass"),
+    ("tub", "Wood-fired Hot Tub with an Inside Heater for 3 people", 2600, "for-3-persons-wood-fired-hot-tub-with-an-inside-heater"),
+    ("tub", "Wood-fired Hot Tub with an Outside Heater for 4 people", 2570, "for-4-persons-wood-fired-hot-tub-with-an-outside-heater"),
+    ("tub", "Wood-fired Hot Tub “Octa” from Fiberglass for 6 people", 2850, "for-6-persons-wood-fired-hot-tub-octa-from-fiberglass"),
+    ("tub", "Wood-fired Hot Tub “Octa” from Fiberglass for 7 people", 2940, "for-7-persons-wood-fired-hot-tub-octa-from-fiberglass"),
+    ("tub", "Wood-fired Hot Tub “Octa” from Fiberglass for 9 people", 3130, "for-9-persons-wood-fired-hot-tub-octa-from-fiberglass"),
+    ("tub", "Wood-fired Hot Tub “Quattro” from Fiberglass for 8 people", 3250, "for-8-persons-wood-fired-hot-tub-quattro-from-fiberglass"),
+    ("tub", "Round Hot Tub with integrated wood-fired stove for 5 people", 2440, "round-hot-tub-with-integrated-wood-fired-stove-for-5-people"),
+    ("sauna", "Vertical Outdoor Sauna for 2 people", 3950, "vertical-outdoor-sauna-for-2-persons"),
+    ("sauna", "Big Oval Outdoor Sauna for 6 people", 9970, "big-oval-outdoor-sauna-for-6-persons"),
+    ("sauna", "Oval Outdoor Sauna for 6 people", 6780, "oval-outdoor-sauna-for-6-persons"),
+    ("sauna", "Oval Outdoor Sauna for 4 people", 6680, "oval-outdoor-sauna-for-4-persons"),
+    ("sauna", "3m Mirrored Sauna for 6 people", 5140, "3m-for-6-persons-mirrored-sauna"),
+    ("sauna", "3m Mirrored Cube Barrel Sauna for 6 people", 5340, "3m-for-6-persons-mirrored-cube-barrel-sauna"),
+    ("sauna", "2/2.3m Mirrored Cube Barrel Sauna for 4 people", 4810, "2-2-3m-for-4-persons-mirrored-cube-barrel-sauna"),
+    ("sauna", "2-2.3m Mirrored Sauna for 4 people", 4580, "2-2-3m-for-4-persons-mirrored-sauna"),
+    ("sauna", "4m Cube Barrel Sauna with dressing room and outside seats for 4 people", 5270, "4m-for-4-persons-cube-barrel-sauna-with-dressing-room-and-outside-seats"),
+    ("sauna", "3m Cube Barrel Sauna for 6 people", 4340, "3m-for-6-persons-cube-barrel-sauna"),
+    ("sauna", "3m Cube Barrel Sauna with dressing room for 4 people", 4610, "3m-for-4-persons-cube-barrel-sauna-with-dressing-room"),
+    ("sauna", "2.4m Cube Barrel Sauna with outside seats for 4 people", 3880, "2-4m-for-4-persons-cube-barrel-sauna-with-outside-seats"),
+    ("sauna", "2/2.3m Cube Barrel Sauna for 3 people", 3810, "2-2-3m-for-4-persons-cube-barrel-sauna"),
+    ("sauna", "1.7m Cube Barrel Sauna for 3 people", 3160, "1-7m-for-3-persons-cube-barrel-sauna"),
+    ("sauna", "5m Outdoor Sauna with seats or bed for 6 people", 6820, "5m-outdoor-sauna-for-6-persons-with-seats-or-bed"),
+    ("sauna", "4m Outdoor Sauna with Dressing Room for 8 people", 4870, "4m-for-8-persons-outdoor-sauna-with-dressing-room"),
+    ("sauna", "4m Two-room Outdoor Sauna for 4-6 people", 4960, "4m-for-4-6-persons-two-room-outdoor-sauna"),
+    ("sauna", "4m Outdoor Sauna with Dressing Room and Outside Seats for 4 people", 4920, "4m-for-4-persons-outdoor-sauna-with-dressing-room-and-outside-seats"),
+    ("sauna", "3.6m Outdoor Sauna with Outside Seats for 6 people", 4290, "3-6m-for-6-persons-outdoor-sauna-with-outside-seats"),
+    ("sauna", "3m Outdoor Sauna for 6 people", 4140, "3m-for-6-persons-outdoor-sauna"),
+    ("sauna", "3m Outdoor Sauna with Dressing Room for 4 people", 4360, "3m-for-4-persons-outdoor-sauna-with-dressing-room"),
+    ("sauna", "2.8m Outdoor Sauna with Outside Seats for 4 people", 3860, "2-8m-for-4-persons-outdoor-sauna-with-outside-seats"),
+    ("sauna", "2.4m Outdoor Sauna with Outside Seats for 4 people", 3660, "2-4m-for-4-persons-outdoor-sauna-with-outside-seats"),
+    ("sauna", "2-2.3m Outdoor Sauna for 4 people", 3580, "2-2-3m-for-4-persons-outdoor-sauna"),
+    ("sauna", "1,6m Outdoor Sauna for 3 people", 2850, "1-6m-outdoor-sauna-for-3-persons"),
+]
+FAMILY = {"plunge": "Cold plunges", "tub": "Hot tubs", "sauna": "Saunas"}
+
+# The OGNYX pages that contradict themselves. Put to OGNYX, never resolved by
+# PlotNua choosing one of the two figures.
+CONTRADICTIONS = [
+    "The <b>4m Outdoor Sauna with Dressing Room</b> is titled for 8 people "
+    "but its specification gives a steam room for about 4;",
+    "the <b>2.8m Outdoor Sauna with Outside Seats</b> is titled for 4 people "
+    "but its specification says about 6;",
+    "the <b>2/2.3m Cube Barrel Sauna</b> is titled for 3 people, but its "
+    "web address and specification say 4.",
+]
+
 BANNED_CLAIM_PHRASES = [
     "health benefit", "therapeutic", "improves recovery", "boosts",
     "reduces inflammation", "immune", "detox", "cures", "treats ",
@@ -123,10 +209,154 @@ BANNED_CLAIM_PHRASES = [
     "installation included", "we install", "fully installed",
     "assembled on site", "warranty included", "guaranteed",
     "in stock", "next day", "ships in", "lead time of",
+    "planning exempt", "no planning permission",
 ]
-
 AI_ASSET_TOKENS = ["chatgpt", "midjourney", "ai-generated", "ai generated",
                    "dall-e", "stable diffusion"]
+OTHER_SUPPLIERS = ("Cosy Cabins", "Irish Sauna Company", "Hutsmith",
+                   "Yard Box", "Power Sheds", "TRIQ", "BIOBUILDS",
+                   "Superior Pergola", "Honka", "MyCabin", "Harvia",
+                   "Tanktribe", "TANKKD", "ÖÖD", "Polaris", "Pineca")
+RELATIONSHIP_WORDS = ("partner", "approved supplier", "recommended",
+                      "trusted supplier", "preferred supplier", "endorsed",
+                      "commission", "exclusive")
+
+FILL = {
+    "SUPPLIER_NAME": SUPPLIER,
+    "DEMO_HEADING": "How OGNYX would appear within PlotNua",
+    "DEMO_LEDE": "This is a shortened example of the Results "
+                 "experience &mdash; a homeowner would see additional "
+                 "property-specific checks, comparison information and "
+                 "supporting detail as they continue through PlotNua.",
+    "WHY_1_LABEL": "THREE ROUTES, ONE SUPPLIER",
+    "WHY_1_TEXT": "A homeowner looking at a garden retreat doesn&rsquo;t "
+                  "arrive knowing whether they want a sauna, a hot tub or "
+                  "cold water. OGNYX cover all three, so you stay relevant "
+                  "whichever way their thinking goes.",
+    "WHY_2_LABEL": "AN IRISH COMPANY",
+    "WHY_2_TEXT": "OGNYX LIMITED is registered in Ireland, in Bray, Co. "
+                  "Wicklow. For someone comparing outdoor wellness options, "
+                  "that&rsquo;s a real difference from ordering from abroad.",
+    "WHY_3_LABEL": "REACHED THROUGH WELLNESS",
+    "WHY_3_TEXT": "People arrive here having decided they want a garden "
+                  "retreat, not having typed your name into a search box. "
+                  "That&rsquo;s a different kind of enquiry from a directory "
+                  "click.",
+    "CLOSING_PROPOSITION": "Is everything here right before Irish "
+                           "homeowners see it?",
+    "CLOSING_SUPPORT": "Your 41 products are now in our catalogue, each linked to "
+                       "its own page on ognyx.com. Three things we&rsquo;d "
+                       "like to check with you before the range goes live: "
+                       "</p>\n  <ul class=\"og-questions\">\n"
+                       "    <li><b>VAT.</b> Is the price on the product page "
+                       "the full price for an Irish buyer, or does VAT change "
+                       "it at checkout?</li>\n"
+                       "    <li><b>Delivery and timing.</b> What would you "
+                       "tell someone in Ireland to expect for delivery cost "
+                       "and time from order, for a standard sauna, hot tub "
+                       "or plunge?</li>\n"
+                       "    <li><b>Three capacities.</b> " + " ".join(CONTRADICTIONS)
+                       + " Which figure should we use?</li>\n"
+                       "  </ul>\n  <p>",
+    "DATE": EVIDENCE_DATE,
+}
+
+CSS = """
+/* ── OGNYX PREVIEW · category switcher, range and discovery ───────── */
+.og-tabs{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 var(--pn-sm); }
+.og-tab{ font:inherit; font-size:var(--pn-w-body-sm); color:var(--pn-voice);
+  background:transparent; border:1px solid var(--pn-edge); border-radius:999px;
+  padding:7px 16px; cursor:pointer; line-height:1.2; }
+.og-tab:hover{ border-color:var(--pn-voice); }
+.og-tab[aria-selected="true"]{ background:var(--pn-voice); color:var(--pn-on-dark);
+  border-color:var(--pn-voice); }
+.og-tab:focus-visible{ outline:2px solid var(--pn-voice); outline-offset:2px; }
+.og-panel[hidden]{ display:none !important; }
+.og-block{ margin-top:var(--pn-lg); }
+.og-block.is-last{ margin-bottom:var(--pn-xl); }
+.og-block h3{ font-size:var(--pn-s-quote); margin:0 0 6px; }
+.og-block > p{ font-size:var(--pn-w-body-sm); margin:0 0 var(--pn-sm); }
+.og-where{ display:block; text-decoration:none; color:inherit; border:1px solid var(--pn-hair);
+  border-radius:5px; padding:16px 18px; background:var(--pn-ground); max-width:640px; }
+.og-where:hover{ border-color:var(--pn-voice); }
+.og-where b{ display:block; font-family:'Fraunces',Georgia,serif; font-weight:400;
+  font-size:19px; color:var(--pn-voice); margin-bottom:2px; }
+.og-where span{ font-size:var(--pn-w-body-sm); }
+.og-range{ display:grid; grid-template-columns:1fr 1fr 2fr; gap:16px; align-items:start; }
+.og-fam{ background:var(--pn-paper); border:1px solid var(--pn-hair); border-radius:5px;
+  padding:14px 16px 10px; }
+.og-fam h4{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:18px;
+  color:var(--pn-voice); margin:0 0 8px; }
+.og-fam h4 small{ display:block; margin-top:3px; font-family:'Work Sans',system-ui,sans-serif; font-size:var(--pn-w-meta);
+  letter-spacing:.14em; text-transform:uppercase; color:var(--pn-stone); }
+.og-fam ul{ list-style:none; margin:0; padding:0; }
+.og-fam.is-wide ul{ columns:2; column-gap:20px; }
+.og-fam li{ break-inside:avoid; border-top:1px solid var(--pn-hair); padding:7px 0;
+  font-size:var(--pn-w-body-sm); line-height:1.35; }
+.og-fam li:first-child{ border-top:0; }
+.og-fam li a{ color:var(--pn-fact); text-decoration:none; }
+.og-fam li a:hover{ text-decoration:underline; }
+.og-fam li span{ display:block; color:var(--pn-stone); font-size:12px; margin-top:1px; }
+.og-questions{ margin:0 0 15px; padding-left:18px; max-width:62ch; }
+.og-questions li{ margin-bottom:8px; }
+@media (max-width:900px){
+  .og-range{ grid-template-columns:1fr 1fr; }
+  .og-fam.is-wide{ grid-column:1 / -1; }
+}
+@media (max-width:600px){
+  .og-range{ grid-template-columns:1fr; }
+  .og-fam.is-wide ul{ columns:1; }
+}
+"""
+
+SCRIPT = """<script>
+/* OGNYX PREVIEW — the template's gallery, per card, plus the category
+   switcher. The credit is swapped in the same statement as the picture. */
+(function(){
+  var panels = document.querySelectorAll('.og-panel');
+  Array.prototype.forEach.call(panels, function(panel){
+    var strip = panel.querySelector('.pn-gal-strip');
+    var media = panel.querySelector('.results-hero-media');
+    var main = media && media.querySelector('img');
+    var credit = media && media.querySelector('.pn-image-credit');
+    if (!strip || !main) return;
+    var thumbs = strip.querySelectorAll('.pn-gal-thumb');
+    Array.prototype.forEach.call(thumbs, function(btn, idx){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        var full = btn.getAttribute('data-full');
+        if (!full) return;
+        main.src = full;
+        main.alt = btn.getAttribute('data-alt') || '';
+        if (credit) credit.textContent = btn.getAttribute('data-credit') || '';
+        for (var k = 0; k < thumbs.length; k++){
+          thumbs[k].classList.toggle('is-on', k === idx);
+          thumbs[k].setAttribute('aria-pressed', k === idx ? 'true' : 'false');
+        }
+      });
+    });
+  });
+  var tabs = document.querySelectorAll('.og-tab');
+  Array.prototype.forEach.call(tabs, function(tab){
+    tab.addEventListener('click', function(){
+      var id = tab.getAttribute('aria-controls');
+      for (var i = 0; i < tabs.length; i++){
+        var on = tabs[i] === tab;
+        tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+        tabs[i].tabIndex = on ? 0 : -1;
+      }
+      Array.prototype.forEach.call(panels, function(p){ p.hidden = (p.id !== id); });
+    });
+    tab.addEventListener('keydown', function(e){
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var list = Array.prototype.slice.call(tabs);
+      var i = list.indexOf(tab) + (e.key === 'ArrowRight' ? 1 : -1);
+      var next = list[(i + list.length) % list.length];
+      next.focus(); next.click(); e.preventDefault();
+    });
+  });
+})();
+</script>"""
 
 
 def die(msg):
@@ -134,437 +364,324 @@ def die(msg):
     sys.exit(1)
 
 
-# ── G0a · THE COUNT, CHECKED BEFORE ANYTHING INDEXES THE LIST ─────────────
-# This sits above OTHER_CATEGORIES because that block indexes OGNYX_IMAGES[2]
-# and [3] at import time. With the check only inside main(), removing an asset
-# raised IndexError before any guard ran -- and a builder that CRASHES has not
-# refused, it has merely failed. Found by the guard-capability proof, which is
-# what that proof is for.
-if len(OGNYX_IMAGES) != 4:
-    die("expected the 4 inspected assets, found %d. Each one was opened and "
-        "looked at; a different number means the list changed without that "
-        "happening." % len(OGNYX_IMAGES))
-
-# ── THE OTHER TWO CATEGORIES ───────────────────────────────────────────────
-# A SECTION EACH, not a second price in the same hero. The brief is that
-# OGNYX can support several Garden Retreat routes, and the way to show that
-# honestly is to show the three products separately with their own published
-# figures. Markup is <section>, h2, h3, p, b, br and .pn-open — all already
-# in the template's stylesheet, so no new CSS. The two images here are
-# inline-styled on purpose: .results-hero-media and .pn-image-credit are both
-# scoped '.pn-stage .…' and these sections sit outside the stage, so the class
-# names alone would ship unstyled natural-width images that overflow at 390.
-def media(img):
-    return (
-        '  <div style="position:relative; max-width:460px; aspect-ratio:4/3;\n'
-        '              border-radius:14px; overflow:hidden; margin:18px 0 0;\n'
-        '              box-shadow:0 14px 28px -14px rgba(36,53,31,.18);">\n'
-        '    <img src="%s" alt="%s" loading="lazy"\n'
-        '         style="width:100%%; height:100%%; object-fit:cover; '
-        'display:block;">\n'
-        '    <span style="position:absolute; left:0; right:0; bottom:0;\n'
-        '                 padding:16px 14px 8px; font-size:10.5px; '
-        'color:#fff;\n'
-        '                 background:linear-gradient(0deg, '
-        'rgba(20,34,26,.62) 0%%,\n'
-        '                   rgba(20,34,26,0) 100%%);">%s</span>\n'
-        '  </div>\n' % (img["url"], img["alt"].replace('"', "&quot;"), CREDIT))
+def credit_for(i):
+    return CREDIT + (" · Visualisation" if i["kind"] == "visualisation" else "")
 
 
-OTHER_CATEGORIES = """<!-- THE OTHER TWO CATEGORIES. Shown as their own sections so each one
-     carries its own published price and specification. Every figure is from
-     the OGNYX product page linked in the heading, read on %s. -->
-<section>
-  <h2>The sauna</h2>
-  <p><b>1.6m Outdoor Sauna for 3 people</b><br>€2,850</p>
-  <p>Model S16E. 160 &times; 200 &times; 210 cm assembled, 200 &times; 120
-     &times; 150 cm flat-packed, around 500 kg. Steam room 4.2 m&sup3; with a
-     stated capacity of about two to three people. Wood thickness 40 mm,
-     spruce body, thermowood benches, tempered glass door, bitumen shingle
-     roof and stainless steel hoops. Heating time is given as about an hour.</p>
-  <p>It is available flat-packed or fully assembled, and the configurator
-     covers the electric stove, a glass or mirror front wall and lighting.</p>
-%s  <p><a href="%s" rel="noopener">See the sauna on ognyx.com</a></p>
-</section>
-
-<section>
-  <h2>The hot tub</h2>
-  <p><b>Round Hot Tub with integrated wood-fired stove for 5 people</b><br>€2,440</p>
-  <p>Model Round &Oslash;2.0 with integrated stove. Stated capacity four to
-     six people, 1,100 litres, 265 kg, 1.1 m high and 0.83 m deep. A
-     fiberglass bath planked with 18 mm thermowood, with a 30 kW stainless
-     steel stove inside the tub, a chimney guard, waterproof plywood flooring
-     and a drain valve. The configurator covers a bubble and hydro massage
-     system, LED lighting, an electric heater and a filter.</p>
-%s  <p><a href="%s" rel="noopener">See the hot tub on ognyx.com</a></p>
-</section>
-""" % (EVIDENCE_DATE,
-       media(OGNYX_IMAGES[2]), SAUNA_URL,
-       media(OGNYX_IMAGES[3]), TUB_URL)
-
-# ── THE OPEN QUESTIONS ─────────────────────────────────────────────────────
-# FOUR, and every one survived a read of the OGNYX shipping policy and terms
-# of 2 September 2026. Questions that policy already answers were dropped:
-# "do you install?" is answered (assembly is the customer's unless agreed;
-# installation needs a separate quotation), and so is the general dispatch
-# window. What is left is what those documents leave conditional.
-OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — only what the OGNYX site does not already answer. -->
-<section>
-  <h2>A few things we would ask before publishing</h2>
-  <p>Everything above is from your own pages, so where they stop we stop too.
-     These four are the points a homeowner would ask us about.</p>
-  <div class="pn-open">
-    <ul>
-      <li><b>VAT.</b> Your terms say the total payable, with any applicable
-          VAT, is shown before checkout. Is the figure on the product page
-          itself the VAT-inclusive price for an Irish buyer, or does it
-          change at checkout?</li>
-      <!-- G8 refused two earlier drafts of this one: "delivery is free" and
-           "delivery included" are both banned phrases, because OGNYX's own
-           policy makes each of them conditional. The copy moved; the bans
-           stayed. -->
-      <li><b>Delivery within Ireland.</b> Your shipping policy makes standard
-          delivery free of charge for eligible saunas where the product page
-          says so. For these three products and an Irish address, is delivery
-          part of the price or quoted separately?</li>
-      <li><b>Positioning and assembly.</b> You list assembled delivery,
-          positioning and lifting as services needing a separate quotation.
-          Is there a typical Irish package and an indicative figure we could
-          show, or is it quoted case by case?</li>
-      <li><b>Lead time.</b> Production time is stated as varying by
-          configuration. For these three in a standard specification, what
-          would you tell an Irish homeowner to expect from order to
-          delivery?</li>
-    </ul>
-  </div>
-</section>
-"""
-
-# ── THE COPY ───────────────────────────────────────────────────────────────
-# Plain, short, product-led, supplier-facing. No invented homeowner. Every
-# figure traces to the OGNYX page linked beside it, read on 2 October 2026.
-FILL = {
-    "SUPPLIER_NAME": SUPPLIER,
-    "SUPPLIER_SHORT": SUPPLIER,
-
-    "DEMO_HEADING": "How OGNYX could appear within PlotNua",
-    "DEMO_LEDE": "Here is a simple example of how OGNYX could appear within "
-                 "PlotNua. It uses your published products, prices and "
-                 "specifications, and nothing else.",
-
-
-    "OFFER_NAME": "Stainless Steel Cold Plunge Tub for One",
-    "VERIFIED_PRICE": "&euro;2,310",
-    "VERIFIED_PRICE_BASIS": "exactly as published on ognyx.com. The product "
-                            "page does not state whether the figure is "
-                            "VAT-inclusive, so neither do we.",
-
-    "VERIFIED_FACT_1_LABEL": "Size",
-    "VERIFIED_FACT_1_VALUE": "86 cm diameter, 105 cm high, 400-litre capacity",
-    "VERIFIED_FACT_2_LABEL": "Build",
-    "VERIFIED_FACT_2_VALUE": "stainless steel interior inside an 18 mm "
-                             "thermowood exterior",
-    "VERIFIED_FACT_3": "The basic set includes the tub with thermowood "
-                       "planking, waterproof plywood flooring, two stainless "
-                       "steel hoops, a thermowood bench and a drain",
-    "VERIFIED_FACT_4": "A cooler, a cover, stairs and an electric chiller are "
-                       "listed as options; the chiller both cools and heats",
-    "VERIFIED_FACT_5": "Designed for one person",
-
-    "THINGS_TO_CHECK": "the page does not say whether the price includes "
-                       "VAT, and delivery within Ireland, positioning and "
-                       "lead time are the other things a homeowner would "
-                       "want settled before ordering.",
-
-    # PERSONALISATION GUARDRAIL §6 — LOCALITY ONLY. Nothing here claims a
-    # capability PlotNua does not have.
-    "HOMEOWNER_LOCALITY": "Co. Wicklow",
-    "PERSONALISATION": "Shown for a homeowner in Co. Wicklow, from the "
-                       "location they gave us. We do not ask them about "
-                       "ground conditions, drainage or power, so we would "
-                       "not pretend to know &mdash; those stay as things to "
-                       "raise with you.",
-
-    "WHY_1_LABEL": "THREE ROUTES, ONE SUPPLIER",
-    "WHY_1_TEXT": "A homeowner looking at a garden retreat does not arrive "
-                  "knowing whether they want a sauna, a hot tub or cold "
-                  "water. OGNYX cover all three, so the same supplier stays "
-                  "relevant whichever way the thinking goes.",
-    "WHY_2_LABEL": "AN IRISH COMPANY",
-    "WHY_2_TEXT": "OGNYX LIMITED is registered in Ireland, in Bray, Co. "
-                  "Wicklow. For an Irish homeowner comparing outdoor "
-                  "wellness options, that is a material difference from "
-                  "ordering from abroad.",
-    "WHY_3_LABEL": "REACHED THROUGH WELLNESS",
-    "WHY_3_TEXT": "A homeowner arrives here having decided they want a "
-                  "garden retreat, not having typed your name into a search "
-                  "box. That is a different kind of enquiry from a directory "
-                  "click.",
-
-    "CLOSING_PROPOSITION": "Does this represent OGNYX accurately for an Irish "
-                           "homeowner?",
-    "CLOSING_SUPPORT": "If anything here is wrong, out of date or missing, "
-                       "tell us and we&rsquo;ll correct it. Nothing is "
-                       "published until you say so.",
-
-    "DATE": EVIDENCE_DATE,
-}
-
-
-def imagery_block():
-    """The hero media inner HTML. The cold plunge photographs lead."""
-    if not OGNYX_IMAGES:
-        return None
-    hero, rest = OGNYX_IMAGES[0], OGNYX_IMAGES[1:]
+def gallery(panel):
+    imgs = [IMG[k] for k in panel["images"]]
+    hero = imgs[0]
     out = ['        <div class="results-hero-media has-pn-gallery">',
            '          <img src="%s" alt="%s" loading="lazy">'
-           % (hero["url"], hero["alt"]),
-           '          <span class="pn-image-credit">%s</span>' % CREDIT,
+           % (hero["url"], html.escape(hero["alt"], quote=True)),
+           '          <span class="pn-image-credit">%s</span>' % credit_for(hero),
            '        </div>']
-    if rest:
-        every = [hero] + rest
+    if len(imgs) > 1:
         out.append('        <div class="pn-gal-strip">')
-        for n, i in enumerate(every):
+        for n, i in enumerate(imgs):
             out.append('          <button type="button" class="pn-gal-thumb%s" '
                        'aria-pressed="%s" aria-label="View image %d of %d" '
                        'data-full="%s" data-alt="%s" data-credit="%s">'
                        '<img src="%s" alt=""></button>'
                        % (" is-on" if n == 0 else "",
-                          "true" if n == 0 else "false",
-                          n + 1, len(every),
-                          i["url"], i["alt"].replace('"', "&quot;"), CREDIT,
-                          i["url"]))
+                          "true" if n == 0 else "false", n + 1, len(imgs),
+                          i["url"], html.escape(i["alt"], quote=True),
+                          credit_for(i), i["url"]))
         out.append('        </div>')
     return "\n".join(out)
+
+
+def panel_html(inner, p, n):
+    s = inner
+    slot = re.search(r'        <div class="results-hero-media">\n'
+                     r'          <div class="pn-photo-slot"[^>]*>.*?</div>\n'
+                     r'        </div>\n', s, re.S)
+    if not slot:
+        die("the held media wrapper was not found in the Results card.")
+    s = s.replace(slot.group(0), gallery(p) + "\n")
+    if s.count("pnMarkClipSave") != 2:
+        die("the Save mark clipPath id is not where the template had it.")
+    s = s.replace("pnMarkClipSave", "pnMarkClipSave%d" % n)
+    old_link = ('<a class="hero-secondary-link" href="#">Explore with '
+                '{{SUPPLIER_SHORT}} &rarr;</a>')
+    if s.count(old_link) != 1:
+        die("the 'Explore with' link is not in the Results card exactly once.")
+    s = s.replace(old_link, '<a class="hero-secondary-link" href="%s%s" '
+                  'target="_blank" rel="noopener">See it on ognyx.com &rarr;</a>'
+                  % (PRODUCT_BASE, p["handle"]))
+    fills = {
+        "OFFER_NAME": p["name"], "SUPPLIER_NAME": SUPPLIER,
+        "VERIFIED_PRICE": p["price"], "VERIFIED_PRICE_BASIS": PRICE_BASIS,
+        "HOMEOWNER_LOCALITY": LOCALITY,
+        "PERSONALISATION": "Shown for a homeowner in %s, from the location "
+                           "they gave us." % LOCALITY,
+        "VERIFIED_FACT_1_LABEL": p["f1"][0], "VERIFIED_FACT_1_VALUE": p["f1"][1],
+        "VERIFIED_FACT_2_LABEL": p["f2"][0], "VERIFIED_FACT_2_VALUE": p["f2"][1],
+        "VERIFIED_FACT_3": p["f3"], "VERIFIED_FACT_4": p["f4"],
+        "VERIFIED_FACT_5": p["f5"], "THINGS_TO_CHECK": CHECK,
+    }
+    for k, v in fills.items():
+        needle = "{{%s}}" % k
+        if needle not in s:
+            die("token %s is not in the Results card." % needle)
+        s = s.replace(needle, v)
+    left = sorted(set(re.findall(r"\{\{[A-Z_0-9]+\}\}", s)))
+    if left:
+        die("unfilled tokens in the %s card: %s" % (p["tab"], left))
+    open_tag = '      <div class="results-hero-inner">'
+    if not s.startswith(open_tag):
+        die("the Results card does not open where expected.")
+    return ('      <div class="results-hero-inner og-panel" id="og-%s" '
+            'role="tabpanel" aria-label="%s"%s>'
+            % (p["key"], p["tab"], "" if n == 0 else " hidden")
+            + s[len(open_tag):])
+
+
+def tabs_html():
+    out = ['  <div class="og-tabs" role="tablist" aria-label="OGNYX ranges">']
+    for n, p in enumerate(PANELS):
+        out.append('    <button type="button" class="og-tab" role="tab" '
+                   'id="og-tab-%s" aria-controls="og-%s" aria-selected="%s"%s>'
+                   '%s</button>' % (p["key"], p["key"],
+                                    "true" if n == 0 else "false",
+                                    "" if n == 0 else ' tabindex="-1"', p["tab"]))
+    out.append('  </div>')
+    return "\n".join(out) + "\n"
+
+
+def range_html():
+    fams = []
+    for f in ("plunge", "tub", "sauna"):
+        rows = [r for r in RANGE if r[0] == f]
+        lo = min(r[2] for r in rows)
+        items = "\n".join(
+            '        <li><a href="%s%s" target="_blank" rel="noopener">%s</a>'
+            '<span>&euro;%s</span></li>'
+            % (PRODUCT_BASE, r[3], html.escape(r[1]), "{:,}".format(r[2]))
+            for r in rows)
+        fams.append(
+            '    <div class="og-fam%s">\n'
+            '      <h4>%s <small>%d &middot; from &euro;%s</small></h4>\n'
+            '      <ul>\n%s\n      </ul>\n    </div>'
+            % (" is-wide" if f == "sauna" else "", FAMILY[f], len(rows),
+               "{:,}".format(lo), items))
+    return (
+        '\n  <div class="og-block">\n'
+        '    <h3>Where OGNYX would sit on PlotNua</h3>\n'
+        '    <a class="og-where" href="https://plotnua.ie/discovery-garden-retreat.html" '
+        'target="_blank" rel="noopener"><b>Garden Retreat</b>'
+        '<span>Saunas, hot tubs and cold plunges &mdash; all three of your '
+        'ranges belong here.</span></a>\n'
+        '  </div>\n'
+        '\n  <div class="og-block is-last">\n'
+        '    <h3>Your full range in PlotNua</h3>\n'
+        '    <p>Every product as you publish it, with its basic-set price in '
+        'euro and a link to its own page.</p>\n'
+        '    <div class="og-range">\n' + "\n".join(fams) + '\n    </div>\n'
+        '  </div>\n')
 
 
 def main():
     src = TEMPLATE.read_text(encoding="utf-8")
 
-    # G0 · EVERY IMAGE INSIDE THE PERMITTED SCOPE, UNMODIFIED.
-    # The count is already settled by G0a above, before the category blocks
-    # index the list. This is the per-asset check.
-    for i in OGNYX_IMAGES:
+    # G0 · THE FOUR AUTHORISED IMAGES AND NOTHING ELSE, EACH CLASSIFIED.
+    if len(IMG) != 4:
+        die("expected the 4 inspected assets, found %d." % len(IMG))
+    for k, i in IMG.items():
         if not i["url"].startswith(PERMITTED_PREFIX):
             die("image outside OGNYX's own file namespace: " + i["url"])
-        if not i["url"].startswith("https://"):
-            die("image is not https: " + i["url"])
         if i["kind"] not in ("photograph", "visualisation"):
-            die("image %s is neither a photograph nor a visualisation (%r). "
-                "Every asset must be classified, because the page says which "
-                "is which." % (i["url"], i["kind"]))
-
+            die("image %s is neither a photograph nor a visualisation." % k)
+    used = [k for p in PANELS for k in p["images"]]
+    if sorted(used) != sorted(IMG):
+        die("each of the four images must be used exactly once: %s" % used)
     # G0b · NO AI-LABELLED ASSET.
-    for i in OGNYX_IMAGES:
+    for i in IMG.values():
         blob = (i["url"] + " " + i["alt"]).lower()
         for tok in AI_ASSET_TOKENS:
             if tok in blob:
-                die("an AI-labelled asset reached the image list (%r in %s)."
-                    % (tok, i["url"]))
-
-    # G0c · A VISUALISATION MUST SAY SO IN ITS OWN ALT TEXT.
-    # The alt text is what a screen-reader user and the Atlas record both
-    # get. A render described as a photograph is the misrepresentation this
-    # whole classification exists to stop.
-    for i in OGNYX_IMAGES:
-        if i["kind"] == "visualisation" \
-                and "visualisation" not in i["alt"].lower():
-            die("a visualisation's alt text does not say it is one: "
-                + i["url"] + ". Showing a render as a photograph "
-                "misrepresents what a homeowner would receive.")
-        if i["kind"] == "photograph" \
-                and "photograph" not in i["alt"].lower():
-            die("a photograph's alt text does not say so: " + i["url"]
-                + ". The distinction is only honest if it is made on both "
-                "sides.")
+                die("an AI-labelled asset reached the image list: " + tok)
+    # G0c · A VISUALISATION SAYS SO IN ITS ALT TEXT, A PHOTOGRAPH LIKEWISE.
+    for i in IMG.values():
+        if i["kind"] not in i["alt"].lower():
+            die("alt text does not state the medium (%s): %s"
+                % (i["kind"], i["url"]))
+    # G0d · THE RANGE IS THE 41 ATLAS PRODUCTS, EACH ON ITS OWN PAGE.
+    if len(RANGE) != 41 or len({r[3] for r in RANGE}) != 41:
+        die("the range must list the 41 Atlas products once each.")
+    for r in RANGE:
+        if not re.match(r"^[a-z0-9-]+$", r[3]) or r[0] not in FAMILY:
+            die("malformed range row: %r" % (r,))
+    for p in PANELS:
+        if not any(r[3] == p["handle"] for r in RANGE):
+            die("the %s card is not one of the range products." % p["tab"])
 
     # G1 · Strip the template's filling instructions.
-    block = re.search(
-        r"\n<!--\s*[═=]{10,}.*?PROVIDER-LED.*?[═=]{10,}\s*-->\n",
-        src, re.S)
+    block = re.search(r"\n<!--\s*[═=]{10,}.*?PROVIDER-LED.*?[═=]{10,}\s*-->\n",
+                      src, re.S)
     if not block:
-        die("the template's instruction comment was not found. Not guessing.")
+        die("the template's instruction comment was not found.")
     src = src.replace(block.group(0), "\n")
 
     # G1b · Remove the introductory hero.
     hero = re.search(r"\n<div class=\"wrap\">\n  <header class=\"hero\">.*?"
                      r"\n  </header>\n</div>\n", src, re.S)
-    if not hero:
-        die("the introductory hero block was not found. Not guessing.")
-    if "{{PROPOSITION}}" not in hero.group(0) or "{{LEDE}}" not in hero.group(0):
-        die("the matched hero block does not carry the headline tokens.")
+    if not hero or "{{PROPOSITION}}" not in hero.group(0):
+        die("the introductory hero block was not found.")
     src = src.replace(hero.group(0), "\n")
-    FILL.pop("PROPOSITION", None)
-    FILL.pop("LEDE", None)
 
-    # G2 · Relocate the frozen journey band; the other categories and the
-    # questions sit between.
+    # G2 · Relocate the frozen journey band, byte-for-byte.
     jm = re.search(r"\n<!-- FROZEN.*?\n<div class=\"journey\">.*?\n</div>\n",
                    src, re.S)
     if not jm:
-        die("the frozen journey band was not found. Not guessing.")
+        die("the frozen journey band was not found.")
     journey = jm.group(0)
     src = src.replace(journey, "\n")
     why_anchor = "<!-- WHY THIS COULD BE USEFUL"
     if src.count(why_anchor) != 1:
-        die("the 'why' section anchor is not unique. Nothing written.")
-    src = src.replace(why_anchor,
-                      OTHER_CATEGORIES + "\n" + OPEN_QUESTIONS + "\n"
-                      + journey.strip("\n") + "\n\n" + why_anchor)
+        die("the 'why' section anchor is not unique.")
+    src = src.replace(why_anchor, journey.strip("\n") + "\n\n" + why_anchor)
 
-    # G3 · IMAGERY, PREVIEW-SCOPED.
-    imgs = imagery_block()
-    if imgs is None:
-        die("the image list is empty, but Fabian asked to see the imagery we "
-            "propose. A held slot here would not answer what he asked.")
-    slot = re.search(r'        <div class="results-hero-media">\n'
-                     r'          <div class="pn-photo-slot"[^>]*>.*?</div>\n'
-                     r'        </div>\n', src, re.S)
-    if not slot:
-        die("the held media wrapper was not found, so the imagery cannot "
-            "replace it. Nothing written.")
-    src = src.replace(slot.group(0), imgs + "\n")
-    FILL.pop("PHOTO_SLOT_LINE", None)
+    # G3 · Three fillings of the one production Results card.
+    start_tag = '      <div class="results-hero-inner">'
+    end_tag = '\n    </div>\n  </div>\n</section>'
+    if src.count(start_tag) != 1 or src.count(end_tag) != 1:
+        die("the Results card boundaries are not unique.")
+    a, b = src.index(start_tag), src.index(end_tag)
+    inner = src[a:b] + "\n"
+    panels = "".join(panel_html(inner, p, n) for n, p in enumerate(PANELS))
+    src = src[:a] + panels.rstrip("\n") + src[b:]
 
-    # G3c · CREDIT, LINK BACK, AND THE SCOPE IN PLAIN WORDS.
-    # A LITERAL © CHARACTER, never &copy;: the rights gate scans raw HTML for
-    # the exact credit token, so the entity form would read as credited to a
-    # person while the gate saw no credit at all.
-    credit_line = (
-        '          <p class="credit-line">%s. Images are used unmodified and '
-        'served from <a href="%s" rel="noopener">ognyx.com</a>, with '
-        'permission given %s to prepare this preview. They are used on this '
-        'page only and are not published anywhere else; if OGNYX ask for any '
-        'of them to be changed or removed, we change or remove them. Every '
-        'figure on this page is published by OGNYX and was read on %s.</p>\n'
-        % (CREDIT, SUPPLIER_SITE, PERMISSION_DATE, EVIDENCE_DATE))
-    foot = "<footer>\n"
-    if src.count(foot) != 1:
-        die("the footer anchor is not unique. Nothing written.")
-    src = src.replace(foot, credit_line + foot)
+    # G3a · The switcher above the frame; Discovery and range below it.
+    if src.count('  <div class="screen">') != 1:
+        die("the screen frame is not unique.")
+    src = src.replace('  <div class="screen">', tabs_html() + '  <div class="screen">')
+    if src.count(end_tag) != 1:
+        die("the demonstration section end is not unique.")
+    src = src.replace(end_tag, "\n    </div>\n  </div>\n" + range_html()
+                      + "</section>")
 
-    # G3b · THE CLOSING HEADING is hardcoded in the template, not a token.
+    # G3b · The closing heading becomes the pre-publication review ask.
     old_head = "<h2>What we&rsquo;d like to explore</h2>"
     if src.count(old_head) != 1:
-        die("the closing heading was not found exactly once. Nothing written.")
+        die("the closing heading was not found exactly once.")
     src = src.replace(old_head, "<h2>Before anything goes live</h2>")
 
-    # G4 · Fill every token; refuse if one is missing or left behind.
+    # G3c · Credit, link back and medium, in plain words.
+    credit_line = (
+        '<p class="credit-line">%s. The four images are OGNYX&rsquo;s own, '
+        'used unmodified and served from <a href="%s" rel="noopener">'
+        'ognyx.com</a> with permission given on %s for this preview. Two are '
+        'visualisations and are labelled as such. If OGNYX ask for any image '
+        'to be changed or removed, we change or remove it. Every figure on '
+        'this page is published by OGNYX and was read on %s.</p>\n'
+        % (CREDIT, SUPPLIER_SITE, PERMISSION_DATE, EVIDENCE_DATE))
+    if src.count("<footer>\n") != 1:
+        die("the footer anchor is not unique.")
+    src = src.replace("<footer>\n", credit_line + "<footer>\n")
+
+    # G3d · Per-card gallery script replaces the template's single-card one.
+    sm = re.search(r"<script>\n\(function\(\)\{\n  var strip = "
+                   r"document\.querySelector\('\.pn-gal-strip'\);.*?</script>",
+                   src, re.S)
+    if not sm:
+        die("the template gallery script was not found.")
+    src = src.replace(sm.group(0), SCRIPT)
+    if "</style>\n</head>" not in src:
+        die("no stylesheet to extend.")
+    src = src.replace("</style>\n</head>", CSS + "</style>\n</head>", 1)
+
+    # G4 · Fill the page-level tokens; refuse on anything left behind.
     for key, value in FILL.items():
         needle = "{{%s}}" % key
         if needle not in src:
-            die("token %s is not in the template. The template has moved."
-                % needle)
+            die("token %s is not in the template." % needle)
         src = src.replace(needle, value)
     leftover = sorted(set(re.findall(r"\{\{[A-Z_0-9]+\}\}", src)))
     if leftover:
         die("unfilled tokens remain: " + ", ".join(leftover))
 
     # G5 · PRIVACY.
-    for directive in ("noindex", "nofollow", "noarchive", "nosnippet",
-                      "noimageindex"):
-        if directive not in src:
-            die("the robots directive '%s' is missing." % directive)
+    for d in ("noindex", "nofollow", "noarchive", "nosnippet", "noimageindex"):
+        if d not in src:
+            die("the robots directive '%s' is missing." % d)
 
     visible = re.sub(r"<!--.*?-->", " ", src, flags=re.S)
     visible = re.sub(r"<style\b.*?</style>", " ", visible, flags=re.S | re.I)
     visible = re.sub(r"<script\b.*?</script>", " ", visible, flags=re.S | re.I)
-    low = re.sub(r"\s+", " ", visible).lower()
+    low = re.sub(r"\s+", " ", html.unescape(visible)).lower()
 
     # G6 · NO OTHER SUPPLIER'S CONTENT.
-    for other in ("Cosy Cabins", "Irish Sauna Company", "Hutsmith",
-                  "Yard Box", "Power Sheds", "TRIQ", "BIOBUILDS",
-                  "Superior Pergola", "Honka", "MyCabin", "Harvia",
-                  "Tanktribe", "TANKKD"):
-        if other in src:
+    for other in OTHER_SUPPLIERS:
+        if other.lower() in low:
             die("another supplier's content reached the page: " + other)
 
     # G7 · The frozen journey band travelled byte-for-byte.
     if journey.strip("\n") not in src:
-        die("the frozen journey band was altered in transit, not relocated.")
+        die("the frozen journey band was altered in transit.")
 
     # G8 · NO UNEVIDENCED CLAIM.
     for phrase in BANNED_CLAIM_PHRASES:
         if phrase in low:
-            die("the visible page makes a claim the first-party evidence does "
-                "not support: %r. OGNYX's own policies leave VAT, delivery, "
-                "installation and lead time conditional, and their product "
-                "copy makes health claims PlotNua does not repeat." % phrase)
+            die("the visible page makes a claim the evidence does not "
+                "support: %r." % phrase)
 
-    # G8b · THE VISUALISATIONS MUST BE LABELLED ON THE PAGE, not only in the
-    # image list. An honest classification that never reaches the reader is
-    # not a classification.
-    vis = sum(1 for i in OGNYX_IMAGES if i["kind"] == "visualisation")
-    if low.count("visualisation") < vis:
-        die("the page shows %d visualisation(s) but says 'visualisation' "
-            "fewer times than that. A render presented as a photograph is "
-            "the one thing this classification exists to prevent." % vis)
+    # G8b · EACH VISUALISATION IS LABELLED WHERE IT IS SHOWN.
+    vis = sum(1 for i in IMG.values() if i["kind"] == "visualisation")
+    if src.count('class="pn-image-credit">%s · Visualisation' % CREDIT) != vis:
+        die("a visualisation is shown without its on-image label.")
 
-    # G9 · THE CREDIT AND THE LINK BACK, proven on the artefact.
-    #
-    # THE CONSTANT IS CHECKED BEFORE IT IS COUNTED. src.count("") returns the
-    # page length, so an emptied CREDIT would make a count-only guard pass
-    # while shipping an uncredited page.
+    # G9 · CREDIT AND LINK BACK.
     if CREDIT != "© OGNYX":
-        die("the required credit constant is not '© OGNYX' but %r. The "
-            "rights record requires that exact wording." % CREDIT)
+        die("the required credit constant has changed: %r" % CREDIT)
     if "&copy;" in src:
-        die("the credit is written as the HTML entity &copy;. The rights gate "
-            "scans raw HTML for a literal ©, so the entity form would read "
-            "as credited while the gate saw no credit.")
-    if src.count(CREDIT) < 2:
-        die("imagery without the %s credit present at least twice (the image "
-            "caption and the rights line)." % CREDIT)
-    if 'href="%s' % SUPPLIER_SITE not in src:
-        die("the page does not LINK back to %s. A mention in prose is not a "
-            "link." % SUPPLIER_SITE)
-    # Four in the strip, the hero repeated as its own first thumbnail, and
-    # the sauna and hot tub images in their own sections: 4 + 1 + 2.
-    EXPECTED_IMGS = len(OGNYX_IMAGES) + 3
-    if len(re.findall(r'<img[^>]+src="' + re.escape(PERMITTED_PREFIX), src)) \
-            != EXPECTED_IMGS:
-        die("the rendered image count is not the four assets plus the hero "
-            "repeat in the thumbnail strip plus the two category images "
-            "(expected %d). Something was dropped or duplicated."
-            % EXPECTED_IMGS)
-    stray = [u for u in re.findall(r'<img[^>]+src="(https?://[^"]+)"', src)
-             if not u.startswith(PERMITTED_PREFIX)]
+        die("the credit is written as the &copy; entity.")
+    if src.count('class="pn-image-credit">' + CREDIT) != len(PANELS):
+        die("a Results card shows an image without the %s credit." % CREDIT)
+    if 'href="%s"' % SUPPLIER_SITE not in src:
+        die("the page does not link back to %s." % SUPPLIER_SITE)
+    # The literal, not the constant: a guard that counts its own subject
+    # passes whatever the subject is changed to.
+    if src.count('href="https://www.ognyx.com/products/') < len(RANGE) + len(PANELS):
+        die("a product is listed without a link to its own ognyx.com page.")
+    imgs = re.findall(r'<img[^>]+src="(https?://[^"]+)"', src)
+    stray = [u for u in imgs if not u.startswith(PERMITTED_PREFIX)]
     if stray:
-        die("an image outside the permitted scope reached the page: "
-            + stray[0])
+        die("an image outside the permitted scope reached the page: " + stray[0])
+    expected = len(PANELS) + sum(len(p["images"]) for p in PANELS
+                                 if len(p["images"]) > 1)
+    if len(imgs) != expected:   # one per card, plus a thumbnail per gallery image
+        die("expected %d <img> tags, found %d." % (expected, len(imgs)))
 
-    # G10 · NO PARTNERSHIP, ENDORSEMENT OR COMMERCIAL IMPLICATION.
-    for word in ("partner", "approved supplier", "recommended", "trusted "
-                 "supplier", "preferred supplier", "endorsed", "commission",
-                 "exclusive"):
-        if word in low:
-            die("the page implies a relationship that does not exist: " + word)
+    # G10 · NO RELATIONSHIP IMPLICATION.
+    for w in RELATIONSHIP_WORDS:
+        if w in low:
+            die("the page implies a relationship that does not exist: " + w)
 
-    # G11 · THE PREVIEW MUST SAY WHAT IT IS.
-    if "illustrative preview" not in low:
-        die("the page does not identify itself as an illustrative preview.")
+    # G11 · ILLUSTRATIVE LABEL ONCE, AND THE REVIEW ASK.
+    if src.count("Illustrative preview") != 1:
+        die("the illustrative label must appear exactly once.")
     if "before anything goes live" not in low:
-        die("the pre-publication review ask is missing from the page.")
+        die("the pre-publication review ask is missing.")
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(src, encoding="utf-8")
-    print("OGNYX PRIVATE PREVIEW")
+    print("OGNYX PRIVATE PREVIEW — ONBOARDING EDITION")
     print("=" * 74)
-    print("  ok    15 guards passed")
-    print("  ok    %d inspected images, all served from ognyx.com"
-          % len(OGNYX_IMAGES))
-    print("  ok    %d photograph(s), %d visualisation(s), each labelled"
-          % (len(OGNYX_IMAGES) - vis, vis))
-    print("  ok    credit %r present %d times, and the link back is a link"
-          % (CREDIT, src.count(CREDIT)))
+    print("  ok    guards G0-G11 passed")
+    print("  ok    3 Results cards, %d range products, all linked to ognyx.com"
+          % len(RANGE))
+    print("  ok    4 authorised images (%d photograph, %d visualisation), "
+          "each credited and labelled" % (len(IMG) - vis, vis))
     print("  ok    noindex, nofollow, noarchive, nosnippet, noimageindex")
     print("  ok    no VAT, health, delivery, installation or lead-time claim")
     print("-" * 74)
     print("wrote %s (%d bytes)" % (OUT, len(src.encode("utf-8"))))
     if STAGE:
         print("STAGED ONLY. The deployed tree is untouched.")
-    print("SEND GATE: §10.1 — hand the URL to the founder and STOP. A clean "
-          "run is not approval to email the supplier.")
+    print("SEND GATE: §10.1 — hand it to the founder and STOP.")
+    return 0
 
 
-main()
+if __name__ == "__main__":
+    sys.exit(main())
