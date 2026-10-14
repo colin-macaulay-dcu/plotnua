@@ -76,6 +76,8 @@ import subprocess
 import sys
 import tempfile
 import unicodedata
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -96,6 +98,9 @@ GARDEN_GEN = ".github/scripts/generate_garden_room_universe.py"
 WELLNESS_GEN = ".github/scripts/generate_wellness_universe.py"
 REPORT_DIR = "atlas-tools/targeted-updates"
 ASSETS_WHAT = ("A read of Atlas Assets (tblFMzOKcNQTjXVYS) for organisations whose imagery is published, in the Atlas REST shape. An entry here is NOT permission: apply_authorised_imagery.py publishes an asset only if Rights Status is 'Supplier Provided', Publication Status is 'Approved', the Notes record whether it is a photograph or a visualisation, the organisation holds a LIVE grant in image-rights-manifest.json, the URL sits inside that grant's scoped prefix and the asset is linked to the product. publish-targeted-update.py replaces one organisation's rows from a fresh Atlas read; it never adds rows for anyone else.")
+# The Asset fields approved-image-assets-v1.json carries, and no others.
+ASSET_FIELDS = ("Asset Name", "Asset Type", "Products", "Organisations", "Alt Text", "Source URL",
+                "Rights Status", "Publication Status", "Display Order", "Notes")
 LAST = "targeted-update-last.json"          # inside .git, never committed
 
 # Artefacts that hold product ids but are NOT Discovery publication surfaces.
@@ -205,18 +210,28 @@ def fetch_snapshot(org_id, products):
               "features": "tblH2EpBiV9bt1rdD", "organisations": "tblngwmviAcWxFKsW",
               "assets": "tblFMzOKcNQTjXVYS"}
 
-    def get(table, formula=None):
+    def get(table, formula=None, fields=None):
         out, offset = [], None
         while True:
-            q = {"pageSize": "100"}
+            q = [("pageSize", "100")]
             if formula:
-                q["filterByFormula"] = formula
+                q.append(("filterByFormula", formula))
+            q += [("fields[]", f) for f in fields or ()]
             if offset:
-                q["offset"] = offset
+                q.append(("offset", offset))
             url = "https://api.airtable.com/v0/%s/%s?%s" % (base, table, urllib.parse.urlencode(q))
             req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                d = json.loads(r.read())
+            for attempt in range(5):           # Airtable allows 5 requests/s per base
+                try:
+                    with urllib.request.urlopen(req, timeout=60) as r:
+                        d = json.loads(r.read())
+                    break
+                except urllib.error.HTTPError as e:
+                    if e.code == 429 and attempt < 4:
+                        time.sleep(30 if attempt else 1)
+                        continue
+                    refuse("Atlas read failed: HTTP %d (%s)" % (e.code, "check AIRTABLE_TOKEN"
+                                                                if e.code in (401, 403) else table))
             out += d.get("records", [])
             offset = d.get("offset")
             if not offset:
@@ -247,9 +262,20 @@ def fetch_snapshot(org_id, products):
 
     fvals = linked(tables["featureValues"])
     feats = {i for r in fvals for i in link_ids(r, "Feature")}
-    assets = [a for a in get(tables["assets"], "FIND('%s', ARRAYJOIN({Organisations}))"
-                             % name.replace("'", "\\'"))
-              if link_ids(a, "Organisations") == [org_id]]
+    # The REST API returns linked records as bare ids; Atlas Asset rows are
+    # stored in the connector shape ({id, name}), which the imagery pass reads.
+    pname = {p["id"]: p["fields"].get("Product Name", "") for p in prods}
+    assets = []
+    for a in get(tables["assets"], "FIND('%s', ARRAYJOIN({Organisations}))"
+                 % name.replace("'", "\\'"), ASSET_FIELDS):
+        if link_ids(a, "Organisations") != [org_id]:
+            continue
+        linked_p = link_ids(a, "Products")
+        if products and not set(linked_p) <= ids:
+            continue                       # another product's image: out of scope
+        a["fields"]["Organisations"] = [{"id": org_id, "name": name}]
+        a["fields"]["Products"] = [{"id": i, "name": pname.get(i, "")} for i in linked_p]
+        assets.append(a)
     return {"source": "Atlas read %s (publish-targeted-update --fetch)"
                       % _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "products": prods, "pricing": linked(tables["pricing"]),
