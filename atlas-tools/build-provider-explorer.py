@@ -15,7 +15,9 @@ GUARDS
   P1  universe up to date with Atlas read-back and approved wording (and its
       own U1-U6 / W1-W3 guards pass)
   P2  shared files match their pins (maker-explorer.css, provider-explorer.js)
-  P3  the shared script contains no link, fetch, storage, analytics, URL
+  P3  the shared script contains no link (apart from the pinned offLink(),
+      which renders nothing here: no organisation carries a link), fetch,
+      storage, analytics, URL
       state, random order or sort
   P4  the explorer section contains no <a>, href, form, input or iframe; the
       rest of the page gains no external link
@@ -55,7 +57,7 @@ PINS = {
     "maker-explorer.css": "d571b8ca399ce2653231f9293aeb261eed2eaf909196b446edb473b5a781c2c7",
     "provider-explorer.js": None,  # filled below from PROVIDER_JS_PIN
 }
-PROVIDER_JS_PIN = "8b0d8c5014df639e66b358efadb884a1209c5f01f56442911fcde9ceb7faaadf"
+PROVIDER_JS_PIN = "fa571dabb4d2ea653838aab92ec8961bb13809d0f43d5a4184ac889ad5bdbadf"  # re-pinned 14 Oct 2026: offLink() added (previous 8b0d8c5014df639e66b358efadb884a1209c5f01f56442911fcde9ceb7faaadf)
 PINS["provider-explorer.js"] = PROVIDER_JS_PIN
 
 STYLE_END = "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>"
@@ -86,6 +88,23 @@ FORBIDDEN_JS = ("fetch(", "XMLHttpRequest", "localStorage", "sessionStorage", "d
 def die(msg):
     print("REFUSED: " + msg + " -- nothing written")
     sys.exit(2)
+
+# THE ONE PERMITTED LINK (14 Oct 2026, founder decision "House as Power Station
+# Provider Explorer · final refinement"). provider-explorer.js may contain
+# exactly one link construct: the offLink() function, pinned here by sha256 and
+# called once. It is removed before the forbidden-content scan, so every other
+# link, fetch or storage use still refuses.
+OFFLINK_SHA = "caf2a7f7229b2e5aaf003d74665cd96f8256ddd2bb766338239779c4a9b7f255"
+
+
+def strip_offlink(code):
+    i = code.find("  function offLink(o) {")
+    if i < 0 or code.count("function offLink(") != 1 or code.count("offLink(o)") != 2:
+        die("P3 provider-explorer.js must define offLink() once and call it once")
+    j = code.index("\n  }\n", i) + len("\n  }\n")
+    if hashlib.sha256(code[i:j].encode()).hexdigest() != OFFLINK_SHA:
+        die("P3 offLink() in provider-explorer.js differs from its pinned form")
+    return code[:i] + code[j:]
 
 
 def sha(path):
@@ -153,6 +172,10 @@ def build(current):
 
 
 def guards(html, u):
+    # P3b · the Borrowed Garden carries no official link, so offLink() renders
+    # nothing here and the page is unchanged (14 Oct 2026)
+    if any("link" in o for t in u["tabs"] for o in t["orgs"]):
+        die("P3 a Borrowed Garden organisation carries a link; offLink() is for the House as Power Station only")
     # P1
     r = subprocess.run([sys.executable, str(UBUILD), "--check"], capture_output=True, text=True)
     if r.returncode != 0:
@@ -163,7 +186,7 @@ def guards(html, u):
             die("P2 %s does not match its pin (%s)" % (f, sha(f)))
     # P3
     js = (ROOT / "provider-explorer.js").read_text(encoding="utf-8")
-    code = re.sub(r"/\*[\s\S]*?\*/", "", js)
+    code = strip_offlink(re.sub(r"/\*[\s\S]*?\*/", "", js))
     for bad in FORBIDDEN_JS:
         if bad in code:
             die("P3 provider-explorer.js contains %r" % bad)

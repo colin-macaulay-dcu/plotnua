@@ -24,7 +24,9 @@ SRCS = T / "power-station-provider-sources-v1.json"
 SNAP = T / "power-station-provider-atlas-snapshot.json"
 PAGE = ROOT / "discovery-house-as-power-station.html"
 JS = ROOT / "provider-explorer.js"
-FILES = [TEXT, SRCS, SNAP, PAGE, JS, ROOT / "power-station-provider-universe-v1.json"]
+BGB = T / "build-provider-explorer.py"
+BGU = ROOT / "borrowed-garden-provider-universe-v1.json"
+FILES = [TEXT, SRCS, SNAP, PAGE, JS, ROOT / "power-station-provider-universe-v1.json", BGU]
 
 
 def h(p):
@@ -39,17 +41,35 @@ def run(builder, *args):
     return subprocess.run([sys.executable, str(builder), "--check", *args], capture_output=True, text=True)
 
 
-def case(label, path, mutate, builder=UB, args=(), expect_code=2):
+def case(label, path, mutate, builder=UB, args=(), expect_code=2, need=None):
     orig = path.read_bytes()
     try:
         path.write_bytes(mutate(orig.decode("utf-8")).encode("utf-8"))
         r = run(builder, *args)
         caught = r.returncode == expect_code and ("REFUSED" in r.stdout or "CHECK FAILED" in r.stdout)
+        if need:   # the SPECIFIC guard must speak, not just any refusal
+            caught = caught and need in r.stdout
         why = (r.stdout.strip().splitlines() or [""])[-1][:110]
     finally:
         path.write_bytes(orig)
     results.append((label, caught, why))
 
+
+def case_repinned(label, mutate, builder, need):
+    """Change the shared script AND re-pin it in the builder (as a deliberate
+    re-pin would), so the pin (P2) passes and P3 itself must refuse."""
+    js0, b0 = JS.read_bytes(), builder.read_bytes()
+    try:
+        new = mutate(js0.decode("utf-8"))
+        JS.write_text(new, encoding="utf-8")
+        old_pin, new_pin = hashlib.sha256(js0).hexdigest(), hashlib.sha256(new.encode("utf-8")).hexdigest()
+        builder.write_text(b0.decode("utf-8").replace(old_pin, new_pin), encoding="utf-8")
+        r = run(builder)
+        caught = r.returncode == 2 and need in r.stdout
+        why = (r.stdout.strip().splitlines() or [""])[-1][:110]
+    finally:
+        JS.write_bytes(js0); builder.write_bytes(b0)
+    results.append((label, caught, why))
 
 def jedit(fn):
     def m(s):
@@ -86,6 +106,32 @@ case("P9 page hand-edited outside the explorer", PAGE,
      lambda s: s.replace("The energy anatomy of your property</h2>", "The energy anatomy of your house</h2>"), builder=PB)
 case("P9/P10 computing caveat removed", PAGE,
      lambda s: s.replace("A proposition, not a service an Irish household can buy.", ""), builder=PB)
+
+# ── official supplier links (14 Oct 2026) ─────────────────────────────────
+def src(d, code):
+    return next(s for s in d["sources"] if s["org"] == code)
+case("W6 link source on another supplier's domain is withheld", SRCS,
+     jedit(lambda d: src(d, "ORG-ESUP-EI").update(url="https://www.energia.ie/x",
+                                                  linkCheck=dict(src(d, "ORG-ESUP-EI")["linkCheck"], finalUrl="https://www.energia.ie/x"))),
+     expect_code=1, need="ORG-ESUP-EI link WITHHELD")
+case("W6 failed link check (HTTP 404) is withheld", SRCS,
+     jedit(lambda d: src(d, "ORG-ESUP-BGE")["linkCheck"].update(status=404)), expect_code=1, need="ORG-ESUP-BGE link WITHHELD")
+case("W6 redirected link is withheld", SRCS,
+     jedit(lambda d: src(d, "ORG-ESUP-FLOGAS")["linkCheck"].update(redirects=1)), expect_code=1, need="ORG-ESUP-FLOGAS link WITHHELD")
+case("W6 link check older than 90 days is withheld", SRCS,
+     jedit(lambda d: src(d, "ORG-ESUP-ENERGIA")["linkCheck"].update(checked="2026-07-01")),
+     expect_code=1, need="ORG-ESUP-ENERGIA link WITHHELD")
+case_repinned("P3 offLink() loosened (https test removed)", lambda s: s.replace("if (!L || !/^https:", "if (!L || !/^http"), PB, "P3")
+case_repinned("P3 a second link construct in the script",
+              lambda s: s.replace("function boot(root) {", "function boot(root) {\n    var x = '<a ' + 'hr' + 'ef=#>';"), PB, "P3")
+case_repinned("P3 offLink() called twice", lambda s: s.replace("+ offLink(o) + '</li>';", "+ offLink(o) + offLink(o) + '</li>';"), PB, "P3")
+case_repinned("P3 Borrowed Garden: same script change refused there too", lambda s: s.replace("if (!L || !/^https:", "if (!L || !/^http"), BGB, "P3")
+case("P3b Borrowed Garden organisation given a link", BGU,
+     jedit(lambda d: d["tabs"][0]["orgs"][0].update(link={"href": "https://example.ie/", "label": "x"})),
+     builder=BGB, need="P3 a Borrowed Garden organisation carries a link")
+case("P4/P7 page config link swapped to another site", PAGE,
+     lambda s: s.replace("https://www.flogas.ie/help-centre/flogas-micro-generation/", "https://www.flogas.ie/offers/"),
+     builder=PB, expect_code=1)
 
 ctl1 = run(UB).returncode == 0 and run(PB).returncode == 0
 AFTER = {p.name: h(p) for p in FILES}

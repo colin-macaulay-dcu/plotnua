@@ -12,7 +12,8 @@
    shared stylesheet (maker-explorer.css), so the two read as one family.
 
    WHAT IT NEVER DOES
-     no link of any kind, no fetch, no storage, no analytics, no URL state, no
+     no link except offLink() below (one supplier's own checked official
+     page, House as Power Station only), no fetch, no storage, no analytics, no URL state, no
      form, no ranking, no random order, no partner label. The section states
      once, in its legend, that these organisations are independently
      researched and are not PlotNua partners (presentation polish, 13 Oct
@@ -27,6 +28,18 @@
     return String(s).replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
+  }
+
+  /* OFFICIAL SUPPLIER LINK (14 Oct 2026, House as Power Station). Rendered
+     only when the builder supplied o.link, which it does only for a supplier's
+     own checked official page (build-power-station-provider-universe.py, W6);
+     the Borrowed Garden supplies none, so its output is unchanged. One fixed
+     template, https only, opens in a new tab, implies nothing more. */
+  function offLink(o) {
+    var L = o.link;
+    if (!L || !/^https:\/\/[a-z0-9.-]+\.ie\/[A-Za-z0-9._~\/-]*$/.test(L.href)) { return ''; }
+    return '<p><a class="mx-route" href="' + esc(L.href) + '" target="_blank" rel="noopener noreferrer">' + esc(L.label) +
+      '<span class="mx-sr"> (the supplier&rsquo;s own website, opens in a new tab)</span>&nbsp;&rarr;</a></p>';
   }
 
   function boot(root) {
@@ -53,7 +66,7 @@
           h += '<li class="mx-drawer" id="' + id + '"><h3>' + esc(o.name) + '</h3><dl class="px-facts">' +
             rows.filter(function (r) { return r[1]; }).map(function (r) {
               return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>';
-            }).join('') + '</dl>' + (o.relationship ? '<p class="px-rel">' + esc(o.relationship) + '</p>' : '') + '</li>';
+            }).join('') + '</dl>' + (o.relationship ? '<p class="px-rel">' + esc(o.relationship) + '</p>' : '') + offLink(o) + '</li>';
         }
       });
       $('px-grid').innerHTML = h;

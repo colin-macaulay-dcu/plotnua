@@ -194,11 +194,24 @@ def main() -> int:
         ck("deemed export is evidenced for Bord Gáis",
            any(c["claim_field"] == "deemed_export_supported"
                and c["value"]["deemed"] for c in bg))
-        ck("deemed export is NOT_PUBLICLY_EVIDENCED for the other three",
-           all(next(c for c in claims if c["supplier_key"] == k
-                    and c["claim_field"] == "deemed_export_treatment"
-                    )["evidence_state_derived"] == "NOT_PUBLICLY_EVIDENCED"
-               for k in ("electric-ireland", "energia", "flogas")))
+        # Reconciled 14 Oct 2026 against the 13 Oct re-read of each page:
+        # Electric Ireland and Flogas now publish deemed treatment (quoted,
+        # dated 13 Oct); Energia still does not, and stays an absence.
+        ck("deemed export evidenced (13 Oct re-read) for Electric Ireland and Flogas",
+           all((lambda c: c["evidence_state_derived"] == "SUPPLIER-CLAIMED" and c["quote"]
+                and c["last_verified"] == "2026-10-13" and c["value"]["deemed"] is True)(
+                   next(c for c in claims if c["supplier_key"] == k
+                        and c["claim_field"] == "deemed_export_treatment"))
+               for k in ("electric-ireland", "flogas")))
+        ck("deemed export still NOT_PUBLICLY_EVIDENCED for Energia",
+           next(c for c in claims if c["supplier_key"] == "energia"
+                and c["claim_field"] == "deemed_export_treatment"
+                )["evidence_state_derived"] == "NOT_PUBLICLY_EVIDENCED")
+        ck("the Bord Gais payment-frequency contradiction is recorded, value unchanged",
+           (lambda c: c["value"]["as_published"] == "4 times per year"
+            and "every six months" in " ".join(c["limitations"]))(
+               next(c for c in claims if c["supplier_key"] == "bord-gais-energy"
+                    and c["claim_field"] == "payment_frequency")))
         ck("customer-of-supplier requirement evidenced for Electric Ireland",
            next(c for c in claims if c["supplier_key"] == "electric-ireland"
                 and c["claim_field"] == "customer_of_supplier_required"

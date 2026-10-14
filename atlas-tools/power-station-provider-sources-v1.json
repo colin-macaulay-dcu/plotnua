@@ -1,5 +1,5 @@
 {
- "_about": "Official supplier pages for the House as Power Station Provider Explorer, re-read on 13 October 2026 at founder instruction. Every quote is copied verbatim from the supplier's own page as served that day. These re-checks supersede the 22 September 2026 pilot capture for the Explorer only; supplier-export-evidence.json is not changed by this file. Rates and earnings figures appear on these pages but are deliberately NOT quoted here: the Explorer shows neither.",
+ "_about": "Official supplier pages for the House as Power Station Provider Explorer, re-read on 13 October 2026 at founder instruction. Every quote is copied verbatim from the supplier's own page as served that day. These re-checks supersede the 22 September 2026 pilot capture for the Explorer only; supplier-export-evidence.json is not changed by this file. Rates and earnings figures appear on these pages but are deliberately NOT quoted here: the Explorer shows neither. linkCheck (14 Oct 2026): each source URL re-requested, HTTP 200 at its own address with no redirect; it is the only official link the Explorer may show for that supplier.",
  "checked": "2026-10-13",
  "sources": [
   {
@@ -15,6 +15,13 @@
     "deemed": "If you're not eligible to have a smart meter installed, then you'll be paid a deemed export calculation.",
     "credit": "you will then receive a microgeneration credit on each bill thereafter in line with your billing cycle.",
     "variable": "This rate is variable and subject to change."
+   },
+   "linkCheck": {
+    "checked": "2026-10-14",
+    "status": 200,
+    "finalUrl": "https://www.electricireland.ie/residential/products/microgeneration",
+    "redirects": 0,
+    "method": "GET from the founder's machine; page names microgeneration and export"
    }
   },
   {
@@ -32,6 +39,13 @@
     "freq4": "Once you’ve exported for at least 3 months, payments will be made 4 times per year as a credit to your electricity bill.",
     "freq6": "Payment will be made every six months as a credit to your supply invoice.",
     "variable": "This rate is subject to change."
+   },
+   "linkCheck": {
+    "checked": "2026-10-14",
+    "status": 200,
+    "finalUrl": "https://www.bordgaisenergy.ie/home/microgeneration",
+    "redirects": 0,
+    "method": "GET from the founder's machine; page names microgeneration and export"
    }
   },
   {
@@ -48,6 +62,13 @@
     "credit": "Payments are issued as a credit on your bi-monthly electricity bill, not as direct bank transfers.",
     "readings": "Thanks to your smart meter, readings are taken every 30 minutes and automatically sent to ESBN.",
     "period": "Please note: The export period shown on your bill might sometimes differ from your import period due to ESBN data delivery timings."
+   },
+   "linkCheck": {
+    "checked": "2026-10-14",
+    "status": 200,
+    "finalUrl": "https://www.energia.ie/home-upgrades/energia-and-the-microgeneration-scheme",
+    "redirects": 0,
+    "method": "GET from the founder's machine; page names microgeneration and export"
    }
   },
   {
@@ -65,6 +86,13 @@
     "statement": "Statements will be issued to you detailing the export, rate(s) and if the credit is based on the metered or deemed calculation.",
     "notice": "A notification by email or letter will be issued to you 30 days in advance of the effective date of the tariff change",
     "vary": "Flogas reserve the right to vary rates."
+   },
+   "linkCheck": {
+    "checked": "2026-10-14",
+    "status": 200,
+    "finalUrl": "https://www.flogas.ie/help-centre/flogas-micro-generation/",
+    "redirects": 0,
+    "method": "GET from the founder's machine; page names microgeneration and export"
    }
   }
  ]

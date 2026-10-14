@@ -19,8 +19,11 @@ GUARDS
   P1  universe up to date with its inputs (and its own U1-U5 / W1-W4 pass)
   P2  shared files match their existing pins (unchanged by this work)
   P3  the shared script contains no link, fetch, storage, analytics, URL
-      state, random order or sort
-  P4  the explorer section contains no <a>, href, form, input or iframe, and
+      state, random order or sort, apart from offLink(): one pinned template
+      for a supplier's own checked official page (14 Oct 2026)
+  P4  the explorer section contains no <a>, href, form, input or iframe
+      (each supplier's one official link, in the configuration only, is the
+      exception: exactly one per supplier, proved by the universe's W6), and
       no money: no currency, cent, kWh or numeral beyond "NC6"; the rest of
       the page gains no external link
   P5  no partner label: partner:false everywhere, partnersCount 0, and the
@@ -57,10 +60,11 @@ PAGE = ROOT / PAGE_NAME
 UNIVERSE = ROOT / "power-station-provider-universe-v1.json"
 UBUILD = ROOT / "atlas-tools" / "build-power-station-provider-universe.py"
 
-# The SAME pins the Borrowed Garden builder holds. This work changes neither file.
+# The SAME pins the Borrowed Garden builder holds. provider-explorer.js re-pinned
+# 14 Oct 2026 for offLink() (official supplier link); maker-explorer.css unchanged.
 PINS = {
     "maker-explorer.css": "d571b8ca399ce2653231f9293aeb261eed2eaf909196b446edb473b5a781c2c7",
-    "provider-explorer.js": "8b0d8c5014df639e66b358efadb884a1209c5f01f56442911fcde9ceb7faaadf",
+    "provider-explorer.js": "fa571dabb4d2ea653838aab92ec8961bb13809d0f43d5a4184ac889ad5bdbadf",  # re-pinned 14 Oct 2026: offLink() added (previous 8b0d8c5014df639e66b358efadb884a1209c5f01f56442911fcde9ceb7faaadf)
 }
 
 STYLE_END = "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>"
@@ -101,6 +105,23 @@ MONEY = re.compile(r"€|&euro;|£|&pound;|\bcent\b|c/kWh|kWh|\bearn|\bsaving", 
 def die(msg):
     print("REFUSED: " + msg + " -- nothing written")
     sys.exit(2)
+
+# THE ONE PERMITTED LINK (14 Oct 2026, founder decision "House as Power Station
+# Provider Explorer · final refinement"). provider-explorer.js may contain
+# exactly one link construct: the offLink() function, pinned here by sha256 and
+# called once. It is removed before the forbidden-content scan, so every other
+# link, fetch or storage use still refuses.
+OFFLINK_SHA = "caf2a7f7229b2e5aaf003d74665cd96f8256ddd2bb766338239779c4a9b7f255"
+
+
+def strip_offlink(code):
+    i = code.find("  function offLink(o) {")
+    if i < 0 or code.count("function offLink(") != 1 or code.count("offLink(o)") != 2:
+        die("P3 provider-explorer.js must define offLink() once and call it once")
+    j = code.index("\n  }\n", i) + len("\n  }\n")
+    if hashlib.sha256(code[i:j].encode()).hexdigest() != OFFLINK_SHA:
+        die("P3 offLink() in provider-explorer.js differs from its pinned form")
+    return code[:i] + code[j:]
 
 
 def sha(path):
@@ -177,7 +198,7 @@ def guards(html, u):
         if sha(f) != pin:
             die("P2 %s does not match its pin (%s)" % (f, sha(f)))
     # P3
-    code = re.sub(r"/\*[\s\S]*?\*/", "", (ROOT / "provider-explorer.js").read_text(encoding="utf-8"))
+    code = strip_offlink(re.sub(r"/\*[\s\S]*?\*/", "", (ROOT / "provider-explorer.js").read_text(encoding="utf-8")))
     for bad in FORBIDDEN_JS:
         if bad in code:
             die("P3 provider-explorer.js contains %r" % bad)
@@ -185,6 +206,19 @@ def guards(html, u):
     a = html.index(BEGIN); b = html.index(END)
     sec = html[a:b]
     visible = sec.replace('src="provider-explorer.js"', "")
+    # The official links (14 Oct 2026) live in the config only, one per
+    # supplier, each already proved by the universe builder's W6. They are
+    # the only "http" the section may hold; anything else still refuses.
+    # A link the universe withheld (stale or failed check) simply is not there;
+    # the supplier stays listed.
+    links = [o["link"] for t in u["tabs"] for o in t["orgs"] if "link" in o]
+    if len(links) > len(SUPPLIERS) or any(set(L) != {"href", "label"} for L in links):
+        die("P4 a supplier carries more than one official link, or a malformed one")
+    for L in links:
+        frag = '"href":%s' % json.dumps(L["href"], ensure_ascii=False, separators=(",", ":"))
+        if visible.count(frag) != 1:
+            die("P4 an official link is not in the configuration exactly once: %s" % L["href"])
+        visible = visible.replace(frag, "")
     for bad in ("<a ", "href=", "<form", "<input", "<iframe", "http"):
         if bad in visible:
             die("P4 the explorer section contains %r" % bad)

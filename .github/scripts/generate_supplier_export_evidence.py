@@ -128,7 +128,7 @@ def claim(supplier, key, text, value, *, basis="STATED",
           provenance="PUBLIC_PRIMARY", maturity="CURRENT_PUBLISHED",
           quote=None, effective_date=None, months=3,
           method="PRIMARY_FETCH", homeowner_safe=True, logic_safe=True,
-          triggers=None, prohibited=None, limitations=None, notes=None):
+          triggers=None, prohibited=None, limitations=None, notes=None, verified=None):
     s = SUPPLIERS[supplier]
     title, url = s["source"]
     return {
@@ -149,7 +149,7 @@ def claim(supplier, key, text, value, *, basis="STATED",
         "source_title": title,
         "source_url": url,
         "quote": quote,
-        "last_verified": VERIFIED_ON,
+        "last_verified": verified or VERIFIED_ON,
         "effective_date": effective_date,
         "valid_until": None,
         "review_interval_months": months,
@@ -169,6 +169,20 @@ def absent(supplier, key, text, **kw):
     return claim(supplier, key, text, None, evidence_type="ABSENCE_OF_RECORD",
                  maturity="BOUNDED_SEARCH", method="TARGETED_SEARCH", **kw)
 
+
+# EVIDENCE RECONCILIATION, 14 Oct 2026 (founder: "Provider Explorer · final
+# refinement", item 4). The four supplier pages were re-read word for word on
+# 13 Oct 2026 for the House as Power Station Provider Explorer
+# (atlas-tools/power-station-provider-sources-v1.json). Where that re-read
+# EVIDENCES something this pilot recorded as absent, the absence becomes a
+# STATED claim with the re-read quote and verified date; where it CONTRADICTS
+# a recorded claim, the contradiction is a limitation. Every other claim keeps
+# its 22 Sep 2026 capture and date. The four export rates were re-checked on
+# the suppliers' pages on 14 Oct 2026 and are unchanged; they are not re-dated.
+REREAD_ON = "2026-10-13"
+REREAD_NOTE = ("Recorded as not publicly evidenced in the 22 Sep 2026 capture. Evidenced when the "
+               "supplier's page was re-read on 13 Oct 2026 (atlas-tools/power-station-provider-"
+               "sources-v1.json); quote verbatim from that re-read.")
 
 VAT_UNKNOWN_PROHIBITED = [
     "Any inference that the published rate is VAT-inclusive or VAT-exclusive.",
@@ -222,8 +236,11 @@ C += [
           quote=("You must have an export grid connection… Your solar PV "
                  "installer would have registered an NC6 form on your behalf to "
                  "ESB Networks.")),
-    absent(s, "deemed_export_treatment",
-           "Whether export is paid where the home cannot have a smart meter."),
+    claim(s, "deemed_export_treatment",
+          "Export is paid on a deemed calculation where the home is not eligible for a smart meter.",
+          {"deemed": True, "condition": "not eligible for a smart meter"},
+          quote="If you're not eligible to have a smart meter installed, then you'll be paid a deemed export calculation.",
+          verified=REREAD_ON, notes=REREAD_NOTE),
     claim(s, "payment_mechanism",
           "How the benefit reaches the customer, in the supplier's own words.",
           {"as_published": "microgeneration credit on each bill"},
@@ -268,8 +285,9 @@ C += [
     absent(s, "export_rate_vat_basis",
            "Whether the published rate is inclusive or exclusive of VAT.",
            prohibited=VAT_UNKNOWN_PROHIBITED),
-    absent(s, "rate_variability",
-           "An explicit warning that the rate may change."),
+    claim(s, "rate_variability", "The supplier states that the rate may change.",
+          {"variable": True}, quote="This rate is subject to change.",
+          verified=REREAD_ON, notes=REREAD_NOTE),
     absent(s, "rate_effective_date", "The date the published rate took effect.",
            notes="The page carries 'Updated October 2025' but dates the page, not the rate."),
     claim(s, "deemed_export_supported",
@@ -309,16 +327,21 @@ C += [
           "How often payment is made, and the qualifying period before it starts.",
           {"as_published": "4 times per year",
            "qualifying_period": "after at least 3 months of export"},
-          quote="Once you've exported for at least 3 months, payments will be made 4 times per year"),
+          quote="Once you've exported for at least 3 months, payments will be made 4 times per year",
+          limitations=["CONTRADICTION on the supplier's own page (re-read 13 Oct 2026): it also says "
+                       "'Payment will be made every six months as a credit to your supply invoice.' "
+                       "Both statements are on the page; neither is preferred. The public Provider "
+                       "Explorer tells homeowners to confirm the frequency with the supplier."]),
     claim(s, "backdating",
           "Payments are back-dated to legislation date or to eligibility.",
           {"legislation_date": "2022-02-15"},
           quote=("If you were a Bord Gáis Energy customer on February 15th 2022 "
                  "(date of legislation) and microgenerating at that time, your "
                  "payment will be back-dated.")),
-    absent(s, "customer_of_supplier_required",
-           "Whether only the supplier's own customers are eligible.",
-           notes="Implied by 'our Microgen Export Plan' but not explicitly stated."),
+    claim(s, "customer_of_supplier_required",
+          "Only the supplier's own electricity customers (existing, or signing up) are eligible.",
+          {"required": True}, quote="You're an existing Bord Gáis Energy electricity customer, or you're signing up for an electricity or Dual Fuel plan with Bord Gáis Energy.",
+          verified=REREAD_ON, notes=REREAD_NOTE),
     absent(s, "caps_minimum_terms_exclusions",
            "Published caps, minimum terms or exclusions."),
 ]
@@ -386,8 +409,10 @@ C += [
                  "from your import period due to ESBN data delivery timings.")),
     absent(s, "deemed_export_treatment",
            "Whether export is paid where the home cannot have a smart meter."),
-    absent(s, "customer_of_supplier_required",
-           "Whether only the supplier's own customers are eligible."),
+    claim(s, "customer_of_supplier_required",
+          "Import and export must be with the same supplier; an export-only arrangement is not offered.",
+          {"required": True}, quote="No, not at the moment. To join the Microgeneration Scheme, your electricity import and export must be with the same supplier.",
+          verified=REREAD_ON, notes=REREAD_NOTE),
     absent(s, "caps_minimum_terms_exclusions",
            "Published caps, minimum terms or exclusions."),
 ]
@@ -438,19 +463,30 @@ C += [
     claim(s, "payment_frequency", "How often the credit is applied.",
           {"as_published": "same frequency and time as your regular bill"},
           source_type="SUPPLIER_HELP_CONTENT",
-          quote="at the same frequency and time as your regular bill"),
-    absent(s, "eligibility_conditions",
-           "Published eligibility conditions.",
-           notes=("An 'What is the Eligibility Criteria?' section exists on the "
-                  "page but its content was not captured in this pass. Recorded "
-                  "as not evidenced rather than assumed.")),
-    absent(s, "smart_meter_required", "Whether a smart meter is required."),
-    absent(s, "deemed_export_treatment",
-           "Whether export is paid where the home cannot have a smart meter."),
-    absent(s, "customer_of_supplier_required",
-           "Whether only the supplier's own customers are eligible.",
-           notes="A 'Can you sign with Flogas for an export tariff only?' "
-                 "section exists but was not captured."),
+          quote="at the same frequency and time as your regular bill",
+          notes=("Re-read 13 Oct 2026: the page also says excess export is credited 'every two "
+                 "months'. Consistent with a two-monthly bill; recorded, not substituted.")),
+    claim(s, "eligibility_conditions",
+          "Published eligibility conditions for the Clean Export Guarantee.",
+          {"conditions": ["import electricity registered with Flogas",
+                          "microgeneration installed and ESBN informed by NC6 or equivalent",
+                          "a smart meter where the home is eligible for one"]},
+          source_type="SUPPLIER_HELP_CONTENT", quote="Have installed microgeneration and informed ESBN using the NC6 or equivalent form, and;",
+          verified=REREAD_ON, notes=REREAD_NOTE),
+    claim(s, "smart_meter_required",
+          "A smart meter is required only where the home is eligible for one.",
+          {"required": "conditional", "condition": "if eligible for a smart meter"},
+          source_type="SUPPLIER_HELP_CONTENT", quote="If you are eligible for a Smart Meter but have not had one installed, then you are not eligible for the Clean Export Guarantee.",
+          verified=REREAD_ON, notes=REREAD_NOTE),
+    claim(s, "deemed_export_treatment",
+          "Where the home is not yet eligible for a smart meter, ESB Networks calculates a deemed amount.",
+          {"deemed": True, "condition": "not currently eligible for a smart meter"},
+          source_type="SUPPLIER_HELP_CONTENT", quote="If you don’t have a Smart Meter as you are not currently eligible for one, ESBN (ESB Networks) will calculate a “deemed” amount",
+          verified=REREAD_ON, notes=REREAD_NOTE),
+    claim(s, "customer_of_supplier_required",
+          "Only customers whose import electricity is registered with Flogas are paid for export.",
+          {"required": True}, source_type="SUPPLIER_HELP_CONTENT", quote="Customers must be registered with Flogas for their import electricity to be remunerated by Flogas for excess export electricity.",
+          verified=REREAD_ON, notes=REREAD_NOTE),
     absent(s, "caps_minimum_terms_exclusions",
            "Published caps, minimum terms or exclusions."),
 ]
