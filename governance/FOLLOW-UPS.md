@@ -380,3 +380,66 @@ NOT A WEAKENING. The branch retirement removes an excuse; it adds none. PG7
 keeps its headline assertion, its vacuous arm and its pass arm. All 14
 mutations are caught by their owning guard, and the proof confirms the real
 tree was untouched.
+
+## GR-CHECK-001 · Garden Retreat has no property assessment (opened 14 October 2026)
+
+A FUTURE DEVELOPMENT, recorded by founder instruction ("Garden Retreat — final
+pre-launch corrections", item 5). It is NOT built and must not be implied.
+
+The intended journey is Discovery → Check → Result → Makers. Today it stops at
+Makers:
+
+- **Check — missing.** `your-plot.html` holds DISCOVERY_CONTENT for
+  garden-room and residential only. There is no Garden Retreat question set,
+  and Cluster 2 guard E1 forbids a `?discovery=` route from this page.
+- **Result — missing.** No wellness matching exists. Nothing reads
+  `wellness-universe-v1.json` except the maker explorer and Search.
+- **Makers — live.** The explorer lists the public wellness products by kind.
+
+What the page says instead: the hero offers no "Check your garden" action;
+"Could it work for your property?" says PlotNua does not yet have a property
+check for garden retreats and that nothing on the page assesses a property;
+the shared Property Brain panel says the check is being prepared and is not
+ready. `build-garden-retreat-restructure.py` GR2 refuses a "Check your
+garden" action in the hero.
+
+Needs, before anything is built: a founder-approved scope for the questions
+(clear space and where it is, power and water routes, ground, existing
+structures and the 30 m² allowance), a decision on whether results match
+products or only explain feasibility, and an amendment to Cluster 2 E1 if a
+route from this page is wanted.
+
+## WL-HOLD-001 · 118 held wellness products: what holds each (opened 14 October 2026)
+
+Founder brief "Garden Retreat — final pre-launch corrections", item 2. Of 153
+Atlas Wellness / Sauna products from 11 organisations, 35 from 3 makers are
+public (OGNYX 29, Tanktribe 4, Irish Sauna Company 2). The other 118:
+
+| Class | What holds them | Products |
+|---|---|---|
+| A · evidence | OGNYX 12 (their own pages contradict themselves; Standards BLOCKED); TimberIN 2 (no verified price); Auroom Wellness 2 (no verified price, type unclassified) | 16 |
+| B · image rights alone | none. Text listing does not need images. MyCabin declined image permission (17 Sep 2026), which bars its imagery; its text is held under C | 0 |
+| C · no permission record, factual evidence otherwise sufficient | Pineca Ireland 35, Hansa24 Group (Gardenhouse24) 27, Polaris Sauna 20, MyCabin.ie 12, TimberIN 6, Sommarnöjen 1 | 101 |
+| D · another established rule | Cosy Cabins 1 (asked for a preview first: §10.1, publication stays blocked until it answers). Auroom Wellness is also preview-only and never searchable (counted under A) | 1 |
+
+WHY C IS NOT PUBLISHED. The wellness universe uses the supplier publication
+gate (founder decision, OGNYX integration, 14 Oct 2026). The gate fails closed:
+an organisation with no rights record derives `publication-record-missing`,
+which is NEVER_WAIVABLE, and the legacy baseline that grandfathers older
+Additional Home listings "may only shrink" and was never extended to wellness.
+So the existing rules do not clearly permit a text-only listing without a
+permission record, and none was added.
+
+THE PRECEDENT THAT POINTS THE OTHER WAY. The garden-room universe has no gate
+and publishes factual text listings for 64 organisations without supplier
+approval; MyCabin.ie, Pineca Ireland, Hansa24 Group and Cosy Cabins are among
+them on Living in the Garden today. The founder's standing rule that a
+supplier's participation or image decision must not affect Atlas's factual
+assessment supports text-only listing; the 14 Oct gate decision does not.
+
+DECISION REQUIRED (not taken here): whether gated universes may carry a
+text-only "public information" listing — e.g. a recorded permission state
+meaning "no imagery, factual listing from the maker's own public pages" —
+without supplier approval. If yes, the gate needs that state defined, the 101
+products in C would follow at the next regeneration, and MyCabin's decline
+would still bar its images.

@@ -162,6 +162,40 @@ CSS = NEW_CSS_BEGIN + """ · Garden Retreat restructure (14 Oct 2026).
   .gr-warn{ margin-top:28px; padding:18px 20px; background:var(--paper); border-left:2px solid rgba(31,59,46,.42); }
   .practical-group .gr-warn:first-child{ padding-top:18px; }
   #explore-makers .mx-plist li .mx-pp{ grid-column:1; font-size:13px; color:var(--ink); }
+  /* Product navigation (14 Oct 2026, pre-launch corrections): the maker's own
+     page, authorised images shown whole with label and credit, and the
+     product a link pointed to. */
+  #explore-makers .mx-plist li .mx-ext{ grid-column:1; justify-self:start; margin-top:4px; font-size:13px;
+    font-weight:500; color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); }
+  #explore-makers .mx-plist li .mx-ext:hover{ border-bottom-color:var(--accent); }
+  #explore-makers .mx-plist li .mx-ext:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  #explore-makers .mx-plist li .mx-imgs{ grid-column:1; display:flex; flex-wrap:wrap; gap:10px; margin:8px 0 2px; }
+  #explore-makers .mx-img{ margin:0; width:132px; }
+  #explore-makers .mx-img img{ display:block; width:100%; height:auto; border-radius:2px; background:var(--cream); }
+  #explore-makers .mx-img figcaption{ margin-top:4px; font-size:11px; line-height:1.4; color:var(--soft); }
+  #explore-makers .mx-img-kind{ display:block; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+  #explore-makers .mx-img figcaption a{ color:var(--ink); text-decoration:underline; text-underline-offset:2px; }
+  #explore-makers .mx-plist li.mx-target{ background:rgba(79,107,74,.09); box-shadow:inset 3px 0 0 var(--accent);
+    padding-left:10px; }
+  #explore-makers p.mx-credit{ margin-top:6px; }
+  /* Mobile (14 Oct 2026): the first screen ends with a 140px caption band.
+     The hero stops 140px short of the fold; the caption sits at the top of
+     that band and the floating Back control (fixed, 16px from the bottom,
+     44px tall) sits in its empty lower half -- so at load the Back covers
+     neither the caption nor the first heading. Section rhythm is tightened. */
+  @media (max-width:600px){
+    .d-hero{ height:calc(100vh - 140px); height:calc(100svh - 140px); min-height:420px; }
+    .gr-hero-cap{ box-sizing:border-box; min-height:140px; margin:0 auto; padding:14px 6vw 0; }
+    #pn-main > .article > .article-section:first-child{ padding-top:24px; }
+    .d-hero-copy{ padding-bottom:7vh; }
+    .gr-hero-actions{ margin-top:18px; gap:10px; }
+    .gr-hero-actions a{ padding:12px 18px; }
+    #pn-main .article-section{ padding:46px 0; }
+    #pn-main .article-section h2{ margin-bottom:18px; }
+    .gr-cards{ margin-top:24px; gap:16px; }
+    .gr-cmp tr{ padding:10px 0 2px; }
+    .gr-cmp td{ padding-bottom:6px; }
+  }
 """ + NEW_CSS_END
 
 
@@ -332,9 +366,9 @@ def build(src):
         '    <div class="kicker">Your Property</div>\n'
         '    <h2>Could it work for your property?</h2>\n'
         '    <p>That depends on your garden more than on the product: the clear space you have and where '
-        'it is, whether power and water reach it, the ground, and what is already built there. PlotNua is '
-        'preparing a check that asks those questions. <strong>It is not ready yet, and nothing on this page '
-        'assesses your property.</strong></p>\n'
+        'it is, whether power and water reach it, the ground, and what is already built there. '
+        '<strong>PlotNua does not yet have a property check for garden retreats, and nothing on this page '
+        'assesses your property.</strong> Start with these:</p>\n'
         '    <ul class="gr-list">\n'
         '      <li>Measure the clear space, and count what is already built in the garden: a shed counts '
         'towards the garden-building limits.</li>\n'
@@ -477,6 +511,14 @@ def guards(page, before=None):
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "--check"
     src = PAGE.read_text(encoding="utf-8")
+    if mode == "--rebuild-from":
+        # Re-derive the AFTER page from the pinned BEFORE page in git, so a
+        # change to this builder is applied the same way the first build was.
+        import subprocess
+        rev = sys.argv[2]
+        src = subprocess.run(["git", "show", "%s:discovery-garden-retreat.html" % rev], cwd=ROOT,
+                             check=True, capture_output=True, text=True).stdout
+        mode = "--apply"
     if mode == "--apply":
         out = build(src)
         errs, words = guards(out, before=src)

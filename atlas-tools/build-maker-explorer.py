@@ -62,7 +62,13 @@ PINS = {
     # either renders exactly as before (Living in the Garden is unchanged;
     # proved by an output comparison before and after the re-pin).
     # Previous pin: 76846752dc52234d91aee875ed4e5afd0d409f41e1d52fd87474cccebcba3358
-    SHARED_JS:  "983a253b77d400033d9c45b324adec17e7c0c8f27b6b2f530c392bc13c6ecb39",
+    # Re-pinned 14 Oct 2026 (Garden Retreat pre-launch corrections): optional
+    # per-product navigation proved by the builder (maker's own page where the
+    # grant includes a link back; enumerated authorised images with label and
+    # credit), and one read of the URL fragment (#p-<product id>) to open a
+    # listed product. Living in the Garden carries none of it and is unchanged.
+    # Previous pin: 983a253b77d400033d9c45b324adec17e7c0c8f27b6b2f530c392bc13c6ecb39
+    SHARED_JS:  "11335fd6f56cdb9bcc2aca96a36b9b432d4e83eff7d931d03b47a41924ddc984",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -149,12 +155,77 @@ def _wl(W):
             return " or ".join(KIND_LABEL[k] for k in ks).capitalize()
         return q.get("productType") or KIND_LABEL.get((ks or [""])[0], "")
     eligible = [(q["organisation"], q["id"], q["productName"], ptype(q), st(q),
-                 {"kinds": q.get("kinds") or [], "price": price_line(q.get("price") or {})})
+                 {"kinds": q.get("kinds") or [], "price": price_line(q.get("price") or {}),
+                  "nav": product_nav(q)})
                 for q in pub]
     header = {"products": W["eligibleCount"], "makers": W["organisationCount"],
               "kindCounts": W.get("kindCounts") or {},
               "kindOrganisationCounts": W.get("kindOrganisationCounts") or {}}
     return eligible, held, {q["organisation"] for q in rows if q.get("organisation")}, header
+
+# ── PRODUCT NAVIGATION, PROVED HERE (14 Oct 2026) ─────────────────────────────
+# Founder brief "Garden Retreat — final pre-launch corrections", item 1: the
+# smallest safe change. Nothing is allowed by default. A product gets
+#   href  the maker's own product page, ONLY if the maker's rights record
+#         derives PUBLISHABLE, its grant's conditions include "link-back",
+#         and the URL is https on the record's permitted_domain;
+#   img   ONLY images enumerated in that maker's approved_assets for this
+#         exact product code, under a grant whose scope includes "imagery"
+#         and whose asset approval is APPROVED; each with its kind label
+#         (a visualisation's alt must say so) and the required credit.
+# Every published product URL was fetched on 14 Oct 2026 and returned 200 at
+# its own address.
+RIGHTS = ROOT / "image-rights-records.json"
+_RIGHTS = None
+# Natural pixel sizes of the four OGNYX assets (fetched 14 Oct 2026), so the
+# page reserves their space and nothing jumps when they load.
+IMG_DIMS = {"recdcMBs7onIACLiO": (1024, 1026), "recOfcMW6ZjQh8PHj": (1024, 1031),
+            "reczY9wkymWQg9df3": (1024, 1022), "reccvs54yEV48AY7R": (1024, 1024)}
+
+
+def rights_row(org):
+    global _RIGHTS
+    if _RIGHTS is None:
+        _RIGHTS = {r["organisation_name"]: r for r in
+                   json.loads(RIGHTS.read_text(encoding="utf-8"))["records"]}
+    return _RIGHTS.get(org)
+
+
+def _host(u):
+    m = re.match(r"https://([^/?#]+)(/|$)", u or "")
+    return m.group(1).lower() if m else None
+
+
+def product_nav(q):
+    r = rights_row(q.get("organisation"))
+    if not r or r.get("public_visibility") != "PUBLISHABLE":
+        return {}
+    perm = r.get("permission") or {}
+    if perm.get("state") != "GRANTED" or "feature" not in (perm.get("scope") or []):
+        return {}
+    dom = (r.get("permitted_domain") or "").lower()
+    nav = {}
+    u = q.get("productUrl")
+    if "link-back" in (perm.get("conditions") or []) and u and _host(u) in (dom, "www." + dom):
+        nav["href"], nav["site"] = u, dom
+    if ("imagery" in (perm.get("scope") or []) and r.get("asset_approval_state") == "APPROVED"
+            and r.get("required_credit")):
+        imgs = []
+        for a in r.get("approved_assets") or []:
+            if a.get("product_code") != q.get("productCode"):
+                continue
+            if _host(a.get("url")) not in (dom, "www." + dom) or a.get("atlas_asset") not in IMG_DIMS:
+                die("an approved asset is off-domain or has no recorded size: %r" % a.get("atlas_asset"))
+            kind = {"photograph": "Photograph", "visualisation": "Visualisation"}[a["kind"]]
+            if not a.get("alt", "").startswith(kind):
+                die("asset %s alt text does not open with its kind (%s)" % (a["atlas_asset"], kind))
+            w, h = IMG_DIMS[a["atlas_asset"]]
+            imgs.append({"src": a["url"], "alt": a["alt"], "kind": kind, "w": w, "h": h,
+                         "credit": r["required_credit"], "creditHref": "https://www.%s/" % dom})
+        if imgs:
+            nav["img"] = imgs
+    return nav
+
 
 KIND_LABEL = {"sauna": "Outdoor sauna", "hot-tub": "Hot tub", "cold-plunge": "Cold plunge",
               "combination": "Sauna and hot tub building"}
@@ -315,6 +386,10 @@ def load(P):
             row = [pid, name(pid, pname), ptype, st]
             if len(e) > 5 and e[5].get("price"):
                 row.append(e[5]["price"])
+            if len(e) > 5 and e[5].get("nav"):
+                if len(row) == 4:
+                    row.append("")
+                row.append(e[5]["nav"])
             by.setdefault(org, []).append(row)
         makers = [{"m": DISPLAY_ALIAS.get(k, k), "p": sorted(v, key=lambda x: x[1].lower())}
                   for k, v in sorted(by.items(), key=lambda kv: kv[0].lower())]
@@ -354,6 +429,10 @@ def section(P, tabs, researched):
     btns = "\n".join(btn)
     config = {"initial": 6, "tabs": [t["cfg"] for t in tabs]}
     pages = " Product pages open within PlotNua." if any(t["cfg"]["productLink"] for t in tabs) else ""
+    if any(len(p) > 5 and p[5].get("href") for t in tabs for m in t["cfg"]["makers"] for p in m["p"]):
+        pages += (" Where a maker has agreed to be linked, &ldquo;See it on&rdquo; opens its own"
+                  " product page in a new tab.")
+    credits = image_credits(tabs)
     payload = json.dumps(config, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     return f'''  <!-- 6c · {MARK} · Founder decisions 13 Oct 2026. Shared component
        (maker-explorer.js / maker-explorer.css) configured for this page by
@@ -396,12 +475,31 @@ def section(P, tabs, researched):
     <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
       products still being checked are not shown. Makers are not ranked, and PlotNua has no
       commercial arrangement with any maker listed.{pages}</p>
-
+{credits}
     <script type="application/json" class="pn-mx-config" id="mx-data">{payload}</script>
     {JS_TAG}
   </section>
 
 '''
+
+def image_credits(tabs):
+    """One static credit line per maker whose authorised images the
+    directory can show: the credit and the link back are grant conditions,
+    so they are on the page itself, not only inside a drawer."""
+    seen = {}
+    for t in tabs:
+        for m in t["cfg"]["makers"]:
+            for p in m["p"]:
+                for im in (p[5].get("img") or []) if len(p) > 5 else []:
+                    seen[im["creditHref"]] = im["credit"]
+    out = ""
+    for href, credit in sorted(seen.items()):
+        out += ('    <p class="mx-foot mx-credit">Product images: <a href="%s" target="_blank" '
+                'rel="noopener noreferrer">%s</a>, shown as supplied. Images labelled '
+                '&ldquo;Visualisation&rdquo; are computer-generated, not photographs.</p>\n'
+                % (href, html.escape(credit)))
+    return out
+
 
 def sha(p): return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
 
@@ -470,10 +568,49 @@ def build(fname, P, src):
             if ANNOTATION_RE.search(m["m"]): die("G10 maker name carries a note: " + m["m"])
             for p in m["p"]:
                 if ANNOTATION_RE.search(p[1]): die("G10 product name carries a research note: " + p[1])
-    # G3 no external link; product links only where the source has a product page
+    # G3 no external link; product links only where the source has a product page.
+    # NARROWED 14 Oct 2026, not relaxed: the static block may carry an external
+    # link only as an image credit's link back, and only to the domain of a
+    # maker whose images the directory actually shows. Per-product links live
+    # in the configuration and are re-proved below against the rights record.
+    credit_hrefs = {im["creditHref"] for c in cfgs for m in c["makers"] for p in m["p"]
+                    if len(p) > 5 for im in (p[5].get("img") or [])}
     for h in re.findall(r'href="([^"]+)"', blk):
-        if re.match(r"[a-z]+:", h) or h.startswith("//"): die("G3 external link: " + h)
+        if re.match(r"[a-z]+:", h) or h.startswith("//"):
+            if h not in credit_hrefs: die("G3 external link: " + h)
+            continue
         if not (ROOT / h.split("?")[0]).exists(): die("G3 link target missing: " + h)
+    for c in cfgs:
+        for m in c["makers"]:
+            for p in m["p"]:
+                if len(p) <= 5:
+                    continue
+                X = p[5]
+                if set(X) - {"href", "site", "img"}: die("G3 unexpected navigation field on " + p[0])
+                # Re-derived from the rights record, independently of product_nav().
+                R = rights_row(m["m"]) or {}
+                perm = R.get("permission") or {}
+                dom = (R.get("permitted_domain") or "").lower()
+                if (X.get("href") or X.get("img")) and (R.get("public_visibility") != "PUBLISHABLE"
+                                                       or perm.get("state") != "GRANTED"):
+                    die("G3 navigation for a maker whose rights record is not PUBLISHABLE: " + m["m"])
+                if X.get("href") and ("link-back" not in (perm.get("conditions") or []) or X.get("site") != dom):
+                    die("G3 a product link for a maker whose grant has no link back: " + m["m"])
+                if X.get("img"):
+                    allowed = {a["url"] for a in R.get("approved_assets") or []}
+                    for im in X["img"]:
+                        if im["src"] not in allowed: die("G3 an image not in the maker's approved assets: " + im["src"][:80])
+                        if im["credit"] != R.get("required_credit"): die("G3 an image without the required credit")
+                        if im["kind"] == "Visualisation" and not im["alt"].startswith("Visualisation"):
+                            die("G3 a visualisation not labelled as one")
+                if X.get("href"):
+                    host = _host(X["href"])
+                    if not host or not X["href"].startswith("https://") or host.replace("www.", "", 1) != X.get("site"):
+                        die("G3 product link off the maker's permitted domain: " + X["href"])
+                    if not re.fullmatch(r"https://[A-Za-z0-9.-]+/[A-Za-z0-9._~/%+-]*", X["href"]):
+                        die("G3 product link carries a query, fragment or unexpected character: " + X["href"])
+    if "http" in js or "window.open" in js or "your-plot.html" in js:
+        die("G3 the shared script may compose links only from configuration")
     if "http" in js or "window.open" in js or "your-plot.html" in js:
         die("G3 the shared script may compose links only from configuration")
     for t in tabs:
@@ -486,8 +623,16 @@ def build(fname, P, src):
             if not (ROOT / c["route"]["href"].split("?")[0]).exists(): die("G3 route target missing")
     # G4 no storage, fetch, analytics or URL state in the shared script
     for bad in ("localStorage", "sessionStorage", "indexedDB", "fetch(", "XMLHttpRequest",
-                "gtag", "dataLayer", "history.", "location.", "document.cookie", "sendBeacon"):
+                "gtag", "dataLayer", "history.", "document.cookie", "sendBeacon",
+                "location.href", "location.assign", "location.replace", "location.search",
+                "location.reload", "pushState", "replaceState"):
         if bad in js: die("G4 forbidden in the shared script: " + bad)
+    # NARROWED 14 Oct 2026: the one URL READ permitted is the fragment, exactly
+    # once, and it is never written.
+    if js.count("location.") != 1 or js.count("window.location.hash || ''") != 1:
+        die("G4 the script may read window.location.hash once and touch no other URL state")
+    if re.search(r"location\.hash\s*=[^=]", js): die("G4 the script writes the URL fragment")
+    if "/^#p-(rec[A-Za-z0-9]{14})$/" not in js: die("G4 the fragment is not matched against the product-id pattern")
     # G5 A-Z directory; the only order at rest is a shuffle
     for c in cfgs:
         names = [m["m"].lower() for m in c["makers"]]

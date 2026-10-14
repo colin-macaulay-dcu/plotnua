@@ -307,6 +307,11 @@ if AH_UNIVERSE.exists():
 WL_UNIVERSE = ROOT / "wellness-universe-v1.json"
 WL_PAGE = "discovery-garden-retreat.html"
 WL_ROUTE = WL_PAGE + "#explore-makers"
+# 14 Oct 2026 (pre-launch corrections): each wellness product routes to its
+# own entry in the explorer, WL_PAGE#p-<its own record id>, which the explorer
+# opens. R1 proves the page lists that exact id.
+def wl_route(rid):
+    return WL_PAGE + "#p-" + rid
 wl_rows = []
 WL_SHA = None
 if WL_UNIVERSE.exists():
@@ -562,7 +567,7 @@ for r in rows + ah_rows + wl_rows:
         "caveats": caveats,
     }
     if rec["id"] in WL_REC_IDS:
-        rec["route"] = WL_ROUTE
+        rec["route"] = wl_route(rec["id"][5:] if rec["id"].startswith("prod-") else rec["id"])
     # G7 at source: a price key exists ONLY where the universe says the price is
     # safe for matching. 279 of 573 are not, and those carry no price at all, so
     # there is nothing for a filter or a card to show wrongly.
@@ -924,7 +929,7 @@ for r in records:
     if r["type"] != "product":
         continue
     if "route" in r:
-        if r["id"] not in WL_REC_IDS or r["route"] != WL_ROUTE:
+        if r["id"] not in WL_REC_IDS or r["route"] != wl_route(r["id"][5:]):
             die("R1 product %r carries a per-record route; the template is canonical"
                 % r["id"])
         if r["id"] not in _wl_listed:
@@ -941,7 +946,7 @@ for r in records:
     if page_of(url) != PRODUCT_HOST or ("prod-" + url.split("product=")[1]) != r["id"]:
         die("R1 product %r composes to %r, which does not reach it" % (r["id"], url))
 print("  R1  %d products compose to %s?product=<own governed id>; %d wellness "
-      "products route to %s, which lists each one  OK"
+      "products route to %s (#p-<own id>), which lists each one  OK"
       % (sum(1 for r in records if r["type"] == "product") - len(WL_REC_IDS),
          PRODUCT_HOST, len(WL_REC_IDS), WL_ROUTE))
 

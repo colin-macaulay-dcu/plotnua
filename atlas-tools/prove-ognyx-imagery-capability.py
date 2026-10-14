@@ -103,6 +103,16 @@ case("an OGNYX record in the wellness universe promises free delivery",
      wellness(lambda p: p.__setitem__("productType", "Sauna with free delivery")), "BREACHED")
 case("an OGNYX record repeats a health claim",
      wellness(lambda p: p["price"].__setitem__("basis", "A therapeutic cold plunge")), "BREACHED")
+case("a visualisation in a maker-explorer configuration labelled as a photograph",
+     decoy('<p>© OGNYX</p><a href="https://www.ognyx.com/">OGNYX</a>'
+           '<script type="application/json" class="pn-mx-config">{"tabs":[{"makers":[{"m":"OGNYX","p":'
+           '[["recAAAAAAAAAAAAAA","P","","u","",{"img":[{"src":"' + VIS + '","alt":"Photograph of the round hot tub",'
+           '"kind":"Photograph"}]}]]}]}]}</script>'), "BREACHED")
+case("an unenumerated OGNYX image in a maker-explorer configuration",
+     decoy('<p>© OGNYX</p><a href="https://www.ognyx.com/">OGNYX</a>'
+           '<script type="application/json" class="pn-mx-config">{"tabs":[{"makers":[{"m":"OGNYX","p":'
+           '[["recAAAAAAAAAAAAAA","P","","u","",{"img":[{"src":"https://www.ognyx.com/cdn/shop/files/other.png",'
+           '"alt":"Photograph","kind":"Photograph"}]}]]}]}]}</script>'), "BREACHED")
 case("CONTROL a properly credited, linked, enumerated use",
      decoy('<p>© OGNYX</p><a href="https://www.ognyx.com/">OGNYX</a>'
            '<img src="' + VIS + '" alt="Visualisation of the round hot tub">'), "CONTAINED")

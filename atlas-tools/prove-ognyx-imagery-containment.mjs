@@ -106,6 +106,24 @@ for (const f of files) {
     const alt = (tag.match(/\balt\s*=\s*["']([^"']*)/i) || [])[1] || '';
     if (!/^visualisation/i.test(alt)) bad('I3 ' + rel + ' labels the visualisation as one', alt.slice(0, 80));
   }
+  /* I3, script-rendered (14 Oct 2026): images the maker explorer draws from
+     its configuration carry the same label in their alt text and kind. */
+  for (const m of src.matchAll(/<script\b[^>]*\bpn-mx-config\b[^>]*>([\s\S]*?)<\/script>/gi)) {
+    let cfg;
+    try { cfg = JSON.parse(m[1].replace(/<\\\//g, '</')); } catch (e) { cannot('maker-explorer configuration on ' + rel + ' does not parse'); continue; }
+    (function walkCfg(v) {
+      if (Array.isArray(v)) return v.forEach(walkCfg);
+      if (!v || typeof v !== 'object') return;
+      if (typeof v.src === 'string') {
+        const a = approved.get(keyOf(v.src));
+        if (a && a.kind === 'visualisation' && !(/^visualisation/i.test(v.alt || '') && v.kind === 'Visualisation'))
+          bad('I3 ' + rel + ' (explorer) labels the visualisation as one', String(v.alt).slice(0, 80));
+        if (a && a.kind === 'photograph' && v.kind !== 'Photograph')
+          bad('I3 ' + rel + ' (explorer) labels the photograph as one', String(v.kind));
+      }
+      Object.values(v).forEach(walkCfg);
+    })(cfg);
+  }
 }
 if (!carriers) ok('I1 no OGNYX image appears anywhere in the deployed tree');
 

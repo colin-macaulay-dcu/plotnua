@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.wellness-universe",
   "version": "1.1.0",
-  "generated": "2026-10-14T11:57:39Z",
+  "generated": "2026-10-14T13:01:41Z",
   "qualificationRuleVersion": "wellness-qualification-v2",
   "publicationGate": {
     "version": "supplier-publication-gate-v1",
@@ -47,6 +47,7 @@
       "productCategory": "Wellness / Sauna",
       "productType": "Architect-Led Panoramic Wellness Pavilion",
       "kinds": [],
+      "productUrl": null,
       "price": {
         "state": "PRICE_NOT_ESTABLISHED"
       },
@@ -73,6 +74,7 @@
       "productCategory": "Wellness / Sauna",
       "productType": "Architect-Led Panoramic Wellness Pavilion",
       "kinds": [],
+      "productUrl": null,
       "price": {
         "state": "PRICE_NOT_ESTABLISHED"
       },
@@ -101,6 +103,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4800,
@@ -130,6 +133,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8530,
@@ -159,6 +163,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 21100,
@@ -188,6 +193,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7150,
@@ -217,6 +223,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 19120,
@@ -246,6 +253,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 15590,
@@ -275,6 +283,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14470,
@@ -304,6 +313,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11400,
@@ -333,6 +343,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 13090,
@@ -362,6 +373,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 17310,
@@ -391,6 +403,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10850,
@@ -420,6 +433,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9910,
@@ -449,6 +463,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9800,
@@ -478,6 +493,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8940,
@@ -507,6 +523,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 19890,
@@ -536,6 +553,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 19810,
@@ -565,6 +583,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9990,
@@ -594,6 +613,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8700,
@@ -623,6 +643,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12660,
@@ -652,6 +673,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 13660,
@@ -681,6 +703,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 18170,
@@ -710,6 +733,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5460,
@@ -739,6 +763,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7360,
@@ -768,6 +793,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11280,
@@ -797,6 +823,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6190,
@@ -826,6 +853,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7150,
@@ -855,6 +883,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7150,
@@ -884,6 +913,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6890,
@@ -913,6 +943,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://irishsaunacompany.com/products/harvia-alpina-view-large-outdoor-sauna-ireland",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 27978,
@@ -942,6 +973,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://irishsaunacompany.com/products/harvia-legend-electric-outdoor-sauna",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 17880,
@@ -971,6 +1003,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9620,
@@ -1000,6 +1033,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8900,
@@ -1029,6 +1063,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7400,
@@ -1058,6 +1093,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6700,
@@ -1087,6 +1123,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11650,
@@ -1116,6 +1153,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6190,
@@ -1145,6 +1183,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11570,
@@ -1174,6 +1213,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8710,
@@ -1203,6 +1243,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 15145,
@@ -1232,6 +1273,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8047,
@@ -1261,6 +1303,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 21080,
@@ -1290,6 +1333,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 24970,
@@ -1319,6 +1363,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/1-6m-outdoor-sauna-for-3-persons",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2850,
@@ -1348,6 +1393,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3160,
@@ -1379,6 +1425,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4580,
@@ -1410,6 +1457,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/2-2-3m-for-4-persons-outdoor-sauna",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3580,
@@ -1439,6 +1487,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3880,
@@ -1470,6 +1519,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/2-4m-for-4-persons-outdoor-sauna-with-outside-seats",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3660,
@@ -1499,6 +1549,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3860,
@@ -1530,6 +1581,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3810,
@@ -1561,6 +1613,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4810,
@@ -1592,6 +1645,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/3-6m-for-6-persons-outdoor-sauna-with-outside-seats",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4290,
@@ -1621,6 +1675,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/3m-for-6-persons-cube-barrel-sauna",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4340,
@@ -1650,6 +1705,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/3m-for-4-persons-cube-barrel-sauna-with-dressing-room",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4610,
@@ -1679,6 +1735,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5340,
@@ -1710,6 +1767,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5140,
@@ -1741,6 +1799,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/3m-for-6-persons-outdoor-sauna",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4140,
@@ -1770,6 +1829,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/3m-for-4-persons-outdoor-sauna-with-dressing-room",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4360,
@@ -1799,6 +1859,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/4m-for-4-persons-cube-barrel-sauna-with-dressing-room-and-outside-seats",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5270,
@@ -1828,6 +1889,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/4m-for-4-persons-outdoor-sauna-with-dressing-room-and-outside-seats",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4920,
@@ -1857,6 +1919,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4870,
@@ -1888,6 +1951,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/4m-for-4-6-persons-two-room-outdoor-sauna",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4960,
@@ -1917,6 +1981,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/5m-outdoor-sauna-for-6-persons-with-seats-or-bed",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6820,
@@ -1946,6 +2011,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9970,
@@ -1977,6 +2043,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": "https://www.ognyx.com/products/cold-plunge-tub-from-fiberglass-for-2-persons",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2080,
@@ -2006,6 +2073,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": "https://www.ognyx.com/products/fiberglass-cold-plunge-tub-for-one",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1690,
@@ -2035,6 +2103,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6680,
@@ -2066,6 +2135,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6780,
@@ -2097,6 +2167,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/round-hot-tub-with-integrated-wood-fired-stove-for-5-people",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2440,
@@ -2126,6 +2197,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": "https://www.ognyx.com/products/stainless-steel-cold-plunge-tub-for-one",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2310,
@@ -2155,6 +2227,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/stainless-steel-wooden-hot-tub-with-a-wood-fired-heater",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3460,
@@ -2184,6 +2257,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": "https://www.ognyx.com/products/vertical-outdoor-sauna-for-2-persons",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3950,
@@ -2213,6 +2287,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-2-persons-wood-fired-hot-tub-from-fiberglass",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2490,
@@ -2242,6 +2317,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-3-persons-wood-fired-hot-tub-with-an-inside-heater",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2600,
@@ -2271,6 +2347,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-4-persons-wood-fired-hot-tub-with-an-outside-heater",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2570,
@@ -2300,6 +2377,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-6-persons-wood-fired-hot-tub-octa-from-fiberglass",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2850,
@@ -2329,6 +2407,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-7-persons-wood-fired-hot-tub-octa-from-fiberglass",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2940,
@@ -2358,6 +2437,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-9-persons-wood-fired-hot-tub-octa-from-fiberglass",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3130,
@@ -2387,6 +2467,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-8-persons-wood-fired-hot-tub-quattro-from-fiberglass",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3250,
@@ -2416,6 +2497,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-3-10-persons-wooden-hot-tub-with-an-inside-heater",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2050,
@@ -2445,6 +2527,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-2-persons-wooden-hot-tub-with-an-outside-heater",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1890,
@@ -2474,6 +2557,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/for-4-12-persons-wooden-hot-tub-with-an-outside-heater",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2050,
@@ -2503,6 +2587,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": "https://www.ognyx.com/products/wooden-hot-tub-without-heater",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1160,
@@ -2532,6 +2617,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5157,
@@ -2561,6 +2647,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6008,
@@ -2590,6 +2677,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5535,
@@ -2619,6 +2707,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6905,
@@ -2648,6 +2737,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7690,
@@ -2677,6 +2767,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11118,
@@ -2706,6 +2797,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10645,
@@ -2735,6 +2827,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9669,
@@ -2764,6 +2857,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10266,
@@ -2793,6 +2887,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10883,
@@ -2822,6 +2917,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11143,
@@ -2851,6 +2947,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 13282,
@@ -2880,6 +2977,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4856,
@@ -2909,6 +3007,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5208,
@@ -2938,6 +3037,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8586,
@@ -2967,6 +3067,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6405,
@@ -2996,6 +3097,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4018,
@@ -3025,6 +3127,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4480,
@@ -3054,6 +3157,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4849,
@@ -3083,6 +3187,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6294,
@@ -3112,6 +3217,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7438,
@@ -3141,6 +3247,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7690,
@@ -3170,6 +3277,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3930,
@@ -3199,6 +3307,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10226,
@@ -3228,6 +3337,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10638,
@@ -3257,6 +3367,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11656,
@@ -3286,6 +3397,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12069,
@@ -3315,6 +3427,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6676,
@@ -3344,6 +3457,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7476,
@@ -3373,6 +3487,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7815,
@@ -3402,6 +3517,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12195,
@@ -3431,6 +3547,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9774,
@@ -3460,6 +3577,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9605,
@@ -3489,6 +3607,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9660,
@@ -3518,6 +3637,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10116,
@@ -3547,6 +3667,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5900,
@@ -3576,6 +3697,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6300,
@@ -3605,6 +3727,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4700,
@@ -3634,6 +3757,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2500,
@@ -3663,6 +3787,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3500,
@@ -3692,6 +3817,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7490,
@@ -3721,6 +3847,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9790,
@@ -3750,6 +3877,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11400,
@@ -3779,6 +3907,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11500,
@@ -3808,6 +3937,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6500,
@@ -3837,6 +3967,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6900,
@@ -3866,6 +3997,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7100,
@@ -3895,6 +4027,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7500,
@@ -3924,6 +4057,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9900,
@@ -3953,6 +4087,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12090,
@@ -3982,6 +4117,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3200,
@@ -4011,6 +4147,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3700,
@@ -4040,6 +4177,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3900,
@@ -4069,6 +4207,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4200,
@@ -4098,6 +4237,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1299,
@@ -4127,6 +4267,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 98000,
@@ -4156,6 +4297,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": "https://www.tanktribe.ie/tanktribeie/ice-baths-ireland/p/active-cold-plunge",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1939,
@@ -4185,6 +4327,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": "https://www.tanktribe.ie/tanktribeie/ice-baths-ireland/p/core-stock-tank-cold-plunge",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 510,
@@ -4214,6 +4357,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": "https://www.tanktribe.ie/tanktribeie/ice-baths-ireland/p/flow-filtered-cold-plunge",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 850,
@@ -4244,6 +4388,7 @@
         "hot-tub",
         "cold-plunge"
       ],
+      "productUrl": "https://www.tanktribe.ie/hot-tubs/p/wild-tub-wood-fired-hot-tub",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1485,
@@ -4273,6 +4418,7 @@
       "kinds": [
         "combination"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
@@ -4302,6 +4448,7 @@
       "kinds": [
         "combination"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
@@ -4331,6 +4478,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3350,
@@ -4360,6 +4508,7 @@
       "kinds": [
         "combination"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5292,
@@ -4389,6 +4538,7 @@
       "kinds": [
         "sauna"
       ],
+      "productUrl": null,
       "price": {
         "state": "PRICE_NOT_ESTABLISHED"
       },
@@ -4416,6 +4566,7 @@
       "kinds": [
         "combination"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
@@ -4445,6 +4596,7 @@
       "kinds": [
         "hot-tub"
       ],
+      "productUrl": null,
       "price": {
         "state": "PRICE_NOT_ESTABLISHED"
       },
@@ -4472,6 +4624,7 @@
       "kinds": [
         "cold-plunge"
       ],
+      "productUrl": null,
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4990,

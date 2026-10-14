@@ -261,9 +261,12 @@ console.log('  PART A · THE EIGHT REPRESENTATIVE QUERIES\n');
        === 'discovery-garden-retreat.html',
     JSON.stringify(ids(r.groups.possibility)));
   const ps = r.groups.product;
-  check('A8b sauna returns only governed wellness saunas, each routed to the ' +
-        'Garden Retreat explorer',
-    ps.length > 0 && ps.every((p) => route(p) === 'discovery-garden-retreat.html#explore-makers'
+  // AMENDED 14 Oct 2026 (pre-launch corrections): each result now opens its
+  // OWN entry in the explorer, #p-<its record id>, never another product's.
+  check('A8b sauna returns only governed wellness saunas, each routed to its ' +
+        'own entry in the Garden Retreat explorer',
+    ps.length > 0 && ps.every((p) => route(p) === 'discovery-garden-retreat.html#p-' + p.id.slice(5)
+      && /^prod-rec[A-Za-z0-9]{14}$/.test(p.id)
       && /sauna/i.test((p.name || '') + ' ' + (p.productType || ''))),
     JSON.stringify(ps.map((p) => [p.name, route(p)]).slice(0, 4)));
   check('A8c sauna returns ZERO suppliers', r.counts.supplier === 0,

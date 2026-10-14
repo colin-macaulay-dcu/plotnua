@@ -296,7 +296,7 @@ links to all 13 public Discoveries. Search then enhances it.
 | artist | 1 product — Hutsmith Type III Cabin, on `productType` — plus art possibilities; must NOT surface the retired Artist Studio Discovery |
 | spare garden | The Borrowed Garden; must NOT return open-your-home-to-art or about |
 | parking | Hidden Cars + Driveway Income; must NOT return hidden-bins or your-home-on-screen |
-| sauna | **Garden Retreat first.** Then only saunas from the governed wellness corpus (wellness-universe-v1.json, published through the supplier publication gate), each routed to the Garden Retreat maker explorer that lists it. Zero suppliers. Auroom and every other private preview stay invisible; the incidental features mentions still cannot answer. *Amended 14 Oct 2026 by founder decision (OGNYX public integration); until then: Garden Retreat only, zero products.* |
+| sauna | **Garden Retreat first.** Then only saunas from the governed wellness corpus (wellness-universe-v1.json, published through the supplier publication gate), each routed to its own entry in the Garden Retreat maker explorer (`discovery-garden-retreat.html#p-<record id>`, which the explorer opens; amended 14 Oct 2026, pre-launch corrections). Zero suppliers. Auroom and every other private preview stay invisible; the incidental features mentions still cannot answer. *Amended 14 Oct 2026 by founder decision (OGNYX public integration); until then: Garden Retreat only, zero products.* |
 
 ---
 

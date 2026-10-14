@@ -27,6 +27,19 @@
        filter. A tab without it renders exactly as before.
      * a product's optional fifth element is a price line the builder
        composed from the published universe; shown as text, never a link.
+
+   PRODUCT NAVIGATION (14 Oct 2026, Garden Retreat pre-launch corrections)
+     * the optional sixth element of a product carries what the BUILDER has
+       already proved against the rights record: `href`/`site`, the own
+       product page of the maker (only where its grant includes a link back,
+       on its permitted domain), and `img`, images enumerated for that exact
+       product in the rights record, each with its label and credit. This
+       file composes no URL of its own and contains no address.
+     * one URL read, never a write: on load and on `hashchange` the
+       fragment is matched against /^#p-rec[A-Za-z0-9]{14}$/ and against the
+       ids this page lists. A match opens that product's maker and points to
+       the product; anything else is ignored. Nothing is stored, sent, or
+       written back to the address bar.
    ========================================================================== */
 (function () {
   'use strict';
@@ -70,11 +83,15 @@
         '<p class="mx-meta">' + m.p.length + ' ' + T.nouns[m.p.length === 1 ? 0 : 1] +
         (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p><ul class="mx-plist">';
       m.p.forEach(function (p) {
-        h += '<li>' + (T.productLink
+        var X = p[5] || {};
+        h += '<li id="mx-p-' + esc(p[0]) + '"' + (p[0] === target ? ' class="mx-target"' : '') + '>' + (T.productLink
             ? '<a class="mx-pn" href="' + T.productLink.replace('{id}', encodeURIComponent(p[0])) + '">' + esc(p[1]) + '</a>'
             : '<span class="mx-pn-text">' + esc(p[1]) + '</span>') +
           (p[2] ? '<span class="mx-pt">' + esc(p[2]) + '</span>' : '') +
           (p[4] ? '<span class="mx-pp">' + esc(p[4]) + '</span>' : '') +
+          (X.img ? images(X.img) : '') +
+          (X.href ? '<a class="mx-ext" href="' + esc(X.href) + '" target="_blank" rel="noopener noreferrer">See it on ' +
+            esc(X.site) + '<span class="mx-sr"> (the maker&rsquo;s own page, opens in a new tab)</span>&nbsp;&rarr;</a>' : '') +
           (NA ? '' : '<span class="mx-st"><span class="mx-dot mx-' + p[3] + '" aria-hidden="true"></span>' + label(p[3]) + '</span>') +
           '</li>';
       });
@@ -86,6 +103,46 @@
              '<a class="mx-route" href="' + T.route.href + '">' + esc(T.route.label) + '&nbsp;&rarr;</a>';
       }
       return h + '</li>';
+    }
+    function images(list) {
+      var h = '<span class="mx-imgs">';
+      list.forEach(function (im) {
+        h += '<figure class="mx-img"><img src="' + esc(im.src) + '" alt="' + esc(im.alt) + '" width="' + im.w +
+          '" height="' + im.h + '" loading="lazy" decoding="async"><figcaption><span class="mx-img-kind">' +
+          esc(im.kind) + '</span> <a href="' + esc(im.creditHref) + '" target="_blank" rel="noopener noreferrer">' +
+          esc(im.credit) + '</a></figcaption></figure>';
+      });
+      return h + '</span>';
+    }
+    /* THE ONE URL READ. A fragment naming a product this page lists opens
+       that product's maker in the first tab that lists it. */
+    var target = null;
+    function fromHash() {
+      var m = /^#p-(rec[A-Za-z0-9]{14})$/.exec(window.location.hash || '');
+      if (!m) { return false; }
+      for (var i = 0; i < CFG.tabs.length; i++) {
+        var t = CFG.tabs[i];
+        for (var j = 0; j < t.makers.length; j++) {
+          for (var k = 0; k < t.makers[j].p.length; k++) {
+            if (t.makers[j].p[k][0] === m[1]) {
+              target = m[1]; tab = t.key; resetDirectory(); expanded = true; open = t.makers[j].m;
+              tabs.forEach(function (b) { var on = b.getAttribute('data-k') === tab;
+                b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1;
+                if (on) { $('mx-pane').setAttribute('aria-labelledby', b.id); } });
+              render();
+              var row = root.querySelector('#mx-p-' + m[1]);
+              if (row && row.scrollIntoView) {
+                var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                row.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+              }
+              var btn = root.querySelector('.mx-maker[aria-expanded="true"]');
+              if (btn) { try { btn.focus({ preventScroll: true }); } catch (e) { btn.focus(); } }
+              return true;
+            }
+          }
+        }
+      }
+      return false;
     }
     function render() {
       var list = TABS[tab].makers, k = counts(list), NA = TABS[tab].availabilityNote;
@@ -178,6 +235,8 @@
       });
     });
     render();
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
   }
 
   [].forEach.call(document.querySelectorAll('[data-pn-maker-explorer]'), boot);

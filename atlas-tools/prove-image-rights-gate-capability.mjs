@@ -151,6 +151,19 @@ const CASES = [
     html: page(granted.permitted_domain),      // no credit anywhere
     expect: /REFUSE|credit|GATE FAIL/i },
 
+  { id: 'C-SCAN6',
+    why: 'an ungranted image hidden in a maker-explorer configuration (no <img> tag)',
+    html: `<!doctype html><html><head><title>t</title></head><body>
+<script type="application/json" class="pn-mx-config" id="mx-data">{"tabs":[{"makers":[{"m":"X","p":[["recAAAAAAAAAAAAAA","P","","u","",{"img":[{"src":"https://${UNGRANTED}/hidden.jpg","alt":"Photograph"}]}]]}]}]}</script>
+</body></html>`,
+    expect: /REFUSE|GATE FAIL|no live grant/i },
+
+  { id: 'C-SCAN7',
+    why: 'a maker-explorer configuration that does not parse',
+    html: `<!doctype html><html><head><title>t</title></head><body>
+<script type="application/json" class="pn-mx-config">{"tabs":[ broken</script></body></html>`,
+    expect: /does not parse/i },
+
   { id: 'C-SCAN5',
     why: 'the manifest is removed entirely',
     html: page(granted.permitted_domain),

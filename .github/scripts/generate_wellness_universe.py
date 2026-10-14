@@ -81,7 +81,7 @@ KINDS = ("sauna", "hot-tub", "cold-plunge", "combination")
 KIND_OVERRIDES = {"recdsCR4RW4h9D9TO": ["hot-tub", "cold-plunge"]}
 # The closed set of fields a public record may carry.
 PUBLIC_FIELDS = {"id", "productCode", "productName", "organisation",
-                 "productCategory", "productType", "kinds", "price", "irish",
+                 "productCategory", "productType", "kinds", "productUrl", "price", "irish",
                  "qualification", "publicVisibility", "holdReason"}
 
 
@@ -193,6 +193,10 @@ def main():
             "productCategory": CATEGORY,
             "productType": txt(cell(p, "Product Type")) or None,
             "kinds": kinds,
+            # The maker's own product page (Atlas Product URL), emitted only
+            # for a record that is public; whether it may be LINKED is decided
+            # by the maker explorer against the rights record (link-back).
+            "productUrl": None,
             "price": price,
             # Irish availability is a per-product Atlas feature value. None is
             # recorded for these products, so it is UNCONFIRMED -- never
@@ -206,6 +210,11 @@ def main():
             fail("a record carries a field outside the public set")
         emitted.append(rec)
 
+    url_of = {p["id"]: txt(cell(p, "Product URL")) or None for p in src}
+    for r in emitted:
+        if r["qualification"]["state"] == "ELIGIBLE" and r["publicVisibility"] == "PUBLISHABLE":
+            u = url_of.get(r["id"])
+            r["productUrl"] = u if u and u.startswith("https://") else None
     emitted.sort(key=lambda r: (r["organisation"] or "", r["productName"].lower()))
     public = [r for r in emitted if r["qualification"]["state"] == "ELIGIBLE"
               and r["publicVisibility"] == "PUBLISHABLE"]

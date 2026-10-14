@@ -390,6 +390,24 @@ function scanHtml(dir) {
     }
     for (const m of html.matchAll(/url\(\s*["']?(https?:\/\/[^"')]+)["']?\s*\)/gi)) urls.add(m[1]);
     for (const m of html.matchAll(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/gi)) urls.add(m[1]);
+    /* SCRIPT-RENDERED IMAGES ARE PUBLISHED IMAGES (14 Oct 2026). The maker
+       explorer draws product images from its JSON configuration, so they are
+       in no <img> tag until a visitor opens a drawer. Every "src" in that
+       configuration is collected here, so the gate sees what a homeowner can
+       see. A configuration that does not parse is a failure, not a skip. */
+    for (const m of html.matchAll(/<script\b[^>]*class=["'][^"']*\bpn-mx-config\b[^"']*["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+      let cfg;
+      try { cfg = JSON.parse(m[1].replace(/<\\\//g, '</')); }
+      catch (e) { fail(2, ['the maker-explorer configuration on ' + rel + ' does not parse; its images cannot be checked']); }
+      (function collect(v) {
+        if (Array.isArray(v)) v.forEach(collect);
+        else if (v && typeof v === 'object') {
+          for (const [k, x] of Object.entries(v)) {
+            if (k === 'src' && typeof x === 'string') urls.add(x); else collect(x);
+          }
+        }
+      })(cfg);
+    }
 
     for (const u of urls) {
       if (!/^https?:\/\//i.test(u)) continue;          /* relative = PlotNua's own */

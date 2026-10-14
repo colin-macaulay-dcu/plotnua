@@ -13,6 +13,7 @@
       with no rights record holds
   W8  every public record carries closed kind tokens; Price From is read when
       Base Price is absent
+  W9  productUrl is emitted for public records only (https), never for held ones
   W6  no OGNYX record carries a VAT, delivery, installation, health or
       lead-time statement; a price whose VAT is unknown says so
 Run: python3 .github/scripts/test_wellness_universe.py
@@ -133,5 +134,8 @@ check("W6 Tanktribe's unknown-VAT prices say so",
           for r in pub if r["organisation"] == "Tanktribe"))
 check("W6 every public record has a verified EUR price",
       all(r["price"]["state"] == "VERIFIED_NUMERIC_PRICE" and r["price"]["currency"] == "EUR" for r in pub))
+check("W9 a product URL is published only for public records, and only as https",
+      all((r["productUrl"] is None) or (r in pub and r["productUrl"].startswith("https://"))
+          for r in A["products"]) and all(r["productUrl"] for r in pub))
 print("RESULT: %s" % ("PASS" if not fails else "%d FAILURE(S)" % fails))
 sys.exit(1 if fails else 0)
