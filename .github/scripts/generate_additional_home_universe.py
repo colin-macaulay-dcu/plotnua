@@ -112,6 +112,16 @@ def derive_signals(basis: str):
 
 # ── the publication gate ────────────────────────────────────────────────────
 RIGHTS = Path(__file__).resolve().parent.parent.parent / "image-rights-records.json"
+# Organisations already public with no rights record, preserved by name and
+# reported for manual review. Not an approval; the list may only shrink.
+LEGACY = (Path(__file__).resolve().parent.parent.parent / "atlas-tools" /
+          "publication-gate-legacy-baseline.json")
+NO_RECORD_HOLD = "publication-record-missing"
+
+
+def _norm_org(name):
+    """Mirror of normaliseOrganisationName() in publication-gate.mjs."""
+    return re.sub(r"[^A-Z0-9]+", "", (name or "").upper())
 
 
 # The four reasons no decision may waive, kept in step with NEVER_WAIVABLE in
@@ -124,6 +134,9 @@ GATE_NEVER_WAIVABLE = (
     "no-permission",
     "permission-conditional-unresolved",
     "permission-state-missing",
+    # Fail-closed correction, 14 Oct 2026 (see _gate_index).
+    "permission-scope-excludes-listing",
+    "publication-record-missing",
 )
 
 GATE_WAIVABLE = (
@@ -170,11 +183,19 @@ def _founder_waives(row):
 
 
 def _gate_index():
-    """organisation name (upper) -> holdReason, or None when publishable.
+    """normalised organisation name -> holdReason, or None when publishable.
 
-    Mirrors derivePublicVisibility() in atlas-tools/publication-gate.mjs. The
-    two are pinned together by prove-publication-gate.mjs, which runs this
-    generator's own rule against the same records."""
+    Mirrors derivePublicVisibility() and deriveOrganisationVisibility() in
+    atlas-tools/publication-gate.mjs; prove-supplier-publication-gate.mjs
+    (PG11, PG15) runs this generator's own rule against the JS one.
+
+    FAIL-CLOSED CORRECTION, 14 October 2026. This used to skip a rights row
+    with neither state as "pre-gate, holds nobody", and publication_hold()
+    returned None for any organisation it could not find. Absent evidence
+    therefore derived PUBLISHABLE. A row with missing states now holds
+    (permission-state-missing, as the JS gate always said), and an
+    organisation with no row holds unless it is named in the legacy baseline
+    (see publication_hold)."""
     try:
         doc = json.loads(RIGHTS.read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
@@ -183,22 +204,20 @@ def _gate_index():
     rows = doc if isinstance(doc, list) else next(
         (v for v in doc.values() if isinstance(v, list) and v and
          isinstance(v[0], dict)), [])
-    idx = {}
+    idx, seen = {}, {}
     for r in rows:
-        name = (r.get("organisation_name") or "").strip().upper()
+        name = _norm_org(r.get("organisation_name"))
         if not name:
             continue
-        perm = ((r.get("permission") or {}).get("state"))
+        seen[name] = seen.get(name, 0) + 1
+        permission = r.get("permission") or {}
+        perm = permission.get("state")
         rev = ((r.get("listing_review") or {}).get("state"))
         assets = r.get("asset_approval_state")
-        if perm is None and rev is None:
-            # A rights row that predates the gate fields. It governs imagery
-            # only and says nothing about publication, so it holds nobody.
-            continue
+        scope = permission.get("scope")
         # Conditions in the gate's fixed order; the first unsatisfied one
-        # decides. Written as a list rather than a chain of elifs so the
-        # founder-exception filter below can be applied uniformly instead of
-        # being threaded through eight branches.
+        # decides. A row with no states is NOT skipped: it derives
+        # permission-state-missing exactly as the JS gate does.
         conditions = [
             (perm not in ("GRANTED", "CONDITIONAL", "DECLINED", "NONE"),
              "permission-state-missing"),
@@ -207,20 +226,61 @@ def _gate_index():
             (perm == "DECLINED", "permission-declined"),
             (perm == "NONE", "no-permission"),
             (perm == "CONDITIONAL", "permission-conditional-unresolved"),
+            (not (isinstance(scope, list) and "feature" in scope),
+             "permission-scope-excludes-listing"),
             (rev == "AWAITING_CONFIRMATION",
              "listing-review-awaiting-confirmation"),
             (rev == "CHANGES_REQUESTED", "listing-review-changes-requested"),
             (bool(assets) and assets != "APPROVED", "assets-not-approved"),
         ]
         accepted = _founder_waives(r)
+        idx[name] = None
         for unsatisfied, reason in conditions:
             if not unsatisfied:
                 continue
-            if reason in accepted:
+            if reason in accepted and reason not in GATE_NEVER_WAIVABLE:
                 continue
             idx[name] = reason
             break
+    for name, n in seen.items():
+        if n > 1:
+            # Two records answering to one name is a HOLD, never a choice.
+            idx[name] = "permission-state-missing"
     return idx
+
+
+def _legacy_names():
+    try:
+        doc = json.loads(LEGACY.read_text(encoding="utf-8"))
+        names = [e["organisation"] for e in doc["organisations"]]
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        fail("the publication gate could not read the legacy baseline "
+             "(%s). Refusing to generate rather than publish ungated." % e)
+    return {_norm_org(n) for n in names}
+
+
+_GATE = None
+_LEGACY = None
+
+
+def publication_hold(org_name):
+    """The hold reason for this organisation, or None.
+
+    None only when its rights record derives PUBLISHABLE, or when it has no
+    record and is named in the legacy baseline (published before 14 Oct 2026,
+    awaiting manual review). Everything else -- including a new organisation
+    nobody has recorded -- holds."""
+    global _GATE, _LEGACY
+    if _GATE is None:
+        _GATE = _gate_index()
+    if _LEGACY is None:
+        _LEGACY = _legacy_names()
+    key = _norm_org(org_name)
+    if not key:
+        return NO_RECORD_HOLD
+    if key in _GATE:
+        return _GATE[key]
+    return None if key in _LEGACY else NO_RECORD_HOLD
 
 
 # ── AUTHORISED IMAGERY, BY ENUMERATION ────────────────────────────────────
@@ -316,17 +376,6 @@ def _approved_imagery(product_code, held):
     if not slot:
         return (None, None)
     return (slot["primary"], slot["set"])
-
-
-_GATE = None
-
-
-def publication_hold(org_name):
-    """The hold reason for this organisation, or None."""
-    global _GATE
-    if _GATE is None:
-        _GATE = _gate_index()
-    return _GATE.get((org_name or "").strip().upper())
 
 
 def main():

@@ -218,7 +218,9 @@ console.log('='.repeat(74));
 {
   /* A malformed exception is not a half-exception. */
   const base = {
-    permission: { state: 'GRANTED' },
+    // a FEATURING grant (scope required since 14 Oct 2026), so the review
+    // and the exception are what is under test, not the scope
+    permission: { state: 'GRANTED', scope: ['feature'] },
     listing_review: { state: 'AWAITING_CONFIRMATION' }
   };
   const malformed = [
@@ -248,7 +250,9 @@ console.log('='.repeat(74));
 {
   /* An exception waives ONLY what it names. */
   const r = {
-    permission: { state: 'GRANTED' },
+    // a FEATURING grant (scope required since 14 Oct 2026), so the review
+    // and the exception are what is under test, not the scope
+    permission: { state: 'GRANTED', scope: ['feature'] },
     listing_review: { state: 'AWAITING_CONFIRMATION' },
     asset_approval_state: 'REFERENCE_ONLY',
     founder_exception: {

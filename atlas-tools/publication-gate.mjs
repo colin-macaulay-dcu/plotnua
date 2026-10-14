@@ -58,7 +58,14 @@ export const NEVER_WAIVABLE = [
   "permission-declined",
   "no-permission",
   "permission-conditional-unresolved",
-  "permission-state-missing"
+  "permission-state-missing",
+  /* FAIL-CLOSED CORRECTION, 14 October 2026. A permission that does not
+     cover featuring the supplier's products (OGNYX: four images on one
+     private preview) is not a permission to list them, and an organisation
+     with no rights record at all has no grant for anybody to accept the risk
+     of. Neither is waivable: there is no grant behind either to proceed on. */
+  "permission-scope-excludes-listing",
+  "publication-record-missing"
 ];
 
 /* Everything else is waivable ON AN EXPLICIT, NAMED DECISION -- enumerated
@@ -141,7 +148,11 @@ export function derivePublicVisibility(record) {
     [perm === "DECLINED", "permission-declined"],
     [perm === "NONE", "no-permission"],
     [perm === "CONDITIONAL", "permission-conditional-unresolved"],
-    // perm === GRANTED from here.
+    // perm === GRANTED from here. A grant must SAY it covers featuring the
+    // products; a scope that is missing, or names imagery or a preview only,
+    // fails closed (14 Oct 2026).
+    [!(Array.isArray(permission.scope) && permission.scope.includes("feature")),
+     "permission-scope-excludes-listing"],
     [rev === "AWAITING_CONFIRMATION", "listing-review-awaiting-confirmation"],
     [rev === "CHANGES_REQUESTED", "listing-review-changes-requested"],
     // The pre-existing Atlas gate, kept as a condition rather than replaced.
@@ -234,4 +245,59 @@ export function gateIntegrityProblems(record) {
   }
 
   return out;
+}
+
+/* ── THE ORGANISATION-LEVEL DERIVATION · FAIL-CLOSED CORRECTION ─────────────
+   14 October 2026. derivePublicVisibility() above was always fail-closed for
+   a record: missing states derive permission-state-missing. The hole was one
+   level up, in how a generator FOUND the record:
+
+     * a rights row with neither state was skipped as "pre-gate, holds nobody";
+     * an organisation with no rights row at all was treated as publishable;
+     * names were matched case-insensitively but otherwise exactly, so
+       "Yardbox" never found "Yard Box".
+
+   Each of those turned ABSENT evidence into PUBLISHABLE. This function is the
+   one answer for an organisation by name, and the generator mirrors it.
+
+   EXISTING PUBLICATION IS PRESERVED, NOT APPROVED. The organisations already
+   public in Results with no rights record are listed by name in
+   atlas-tools/publication-gate-legacy-baseline.json. They stay publishable
+   so nothing live changes, they are reported for manual review, and the list
+   can only shrink: anybody not on it, and every NEW organisation, needs a
+   rights record that derives PUBLISHABLE. */
+export const NO_RECORD_HOLD = "publication-record-missing";
+
+export function normaliseOrganisationName(name) {
+  return String(name || "").toUpperCase().replace(/[^A-Z0-9]+/g, "");
+}
+
+/**
+ * Derive visibility for an organisation by name. rows = the rights records;
+ * legacy = the baseline's organisation names. Returns the record derivation
+ * plus { matched: bool, legacy: bool }. Two records answering to one name is
+ * a HOLD, never a choice between them.
+ */
+export function deriveOrganisationVisibility(name, rows, legacy = []) {
+  const key = normaliseOrganisationName(name);
+  if (!key) {
+    return { visibility: "HOLD", holdReason: NO_RECORD_HOLD, waived: [],
+             matched: false, legacy: false };
+  }
+  const hits = (rows || []).filter(r =>
+    normaliseOrganisationName(r && r.organisation_name) === key);
+  if (hits.length > 1) {
+    return { visibility: "HOLD", holdReason: "permission-state-missing",
+             waived: [], matched: true, legacy: false };
+  }
+  if (hits.length === 1) {
+    return Object.assign(derivePublicVisibility(hits[0]),
+                         { matched: true, legacy: false });
+  }
+  if ((legacy || []).some(n => normaliseOrganisationName(n) === key)) {
+    return { visibility: "PUBLISHABLE", holdReason: null, waived: [],
+             matched: false, legacy: true };
+  }
+  return { visibility: "HOLD", holdReason: NO_RECORD_HOLD, waived: [],
+           matched: false, legacy: false };
 }

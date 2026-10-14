@@ -33,7 +33,8 @@ const FILES = ['image-rights-records.json', 'additional-home-universe-v1.json',
                'garden-room-recommendation-universe-v1.json', 'your-plot.html',
                '.github/scripts/generate_additional_home_universe.py',
                '.github/scripts/additional_home_qualification.py',
-               '.github/scripts/atlas_common.py'];
+               '.github/scripts/atlas_common.py',
+               'atlas-tools/publication-gate-legacy-baseline.json'];
 
 const ORG = 'ORG-000153';
 
@@ -155,6 +156,25 @@ const CASES = [
       '(rev == "AWAITING_CONFIRMATION",\n             "listing-review-awaiting-confirmation"),',
       '(False, "listing-review-awaiting-confirmation"),'))],
 
+  /* FAIL-CLOSED CORRECTION, 14 October 2026. Each case puts one of the
+     original fail-open paths back, and PG14 must catch it. */
+  ['C-PG14a', 'PG14', 'the generator skips a rights row with no states again',
+    t => t.generator(src => src.replace(
+      '        seen[name] = seen.get(name, 0) + 1\n',
+      '        seen[name] = seen.get(name, 0) + 1\n'
+      + '        if r.get("permission") is None and r.get("listing_review") is None:\n'
+      + '            continue\n'))],
+  ['C-PG14b', 'PG14', 'an organisation with no rights record is publishable again',
+    t => t.generator(src => src.replace(
+      '    return None if key in _LEGACY else NO_RECORD_HOLD\n', '    return None\n'))],
+  ['C-PG14c', 'PG14', 'the gate stops checking that a grant covers featuring',
+    t => t.gateModule(src => src.replace(
+      '[!(Array.isArray(permission.scope) && permission.scope.includes("feature")),',
+      '[false &&'))],
+  ['C-PG15', 'PG15', 'the legacy baseline grows to admit an unrecorded supplier',
+    t => t.legacy(d => { d.organisations.push({ organisation: 'Pineca Ireland',
+      publicProducts: 0, status: 'LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED' }); })],
+
   ['C-PG12', 'PG12', 'the runtime visibility check is deleted entirely',
     t => t.plot(s => s.replace(
       /      if \(gateEnforced \? p\.publicVisibility !== 'PUBLISHABLE'\n[\s\S]*?\n      \}\n/,
@@ -220,6 +240,11 @@ for (const [id, owner, desc, mutate] of CASES) {
     },
     garden(fn) {
       const p = join(dir, 'garden-room-recommendation-universe-v1.json');
+      const d = JSON.parse(readFileSync(p, 'utf8')); fn(d);
+      writeFileSync(p, JSON.stringify(d, null, 2));
+    },
+    legacy(fn) {
+      const p = join(dir, 'atlas-tools', 'publication-gate-legacy-baseline.json');
       const d = JSON.parse(readFileSync(p, 'utf8')); fn(d);
       writeFileSync(p, JSON.stringify(d, null, 2));
     },

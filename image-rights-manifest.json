@@ -440,7 +440,35 @@
       "note": "SCOPE: ognyx.com only. OGNYX serve their product images from their own domain, so there is no shared CDN to scope by prefix and no delivery host is declared.\n\nTHIS ROW EXISTS TO LET THE PRIVATE PREVIEW PASS THE GATE, AND FOR NOTHING ELSE. The gate scopes a grant by host and has no notion of a page, so on its own this row would authorise OGNYX imagery anywhere in the tree. atlas-tools/prove-preview-only-containment.mjs is what keeps it to ognyx-preview.html, and that proof runs in CI beside the gate on every publish. If the preview is ever deleted, this record should go with it.\n\nFOUR ASSETS, all read first-party from ognyx.com on 2 October 2026 and all visually inspected before use: two photographs of the Stainless Steel Cold Plunge Tub for One, one visualisation of the 1.6m Outdoor Sauna, and one visualisation of the Round Hot Tub with integrated wood-fired stove. The two visualisations are labelled as visualisations on the page, because showing a render as a photograph would misrepresent what a homeowner would receive.\n\n14 OCTOBER 2026 — ONBOARDING, SCOPE UNCHANGED. Fabian replied on 13 October 2026 (Gmail 1a13699d55beb7f9) \"happy to proceed\" to the 12 October ask that named \"the selected product images shown there\". The founder confirmed that reading on 14 October 2026, limited to those four images on this one page; Atlas Permission Outcome is now \"Granted with Conditions — Founder Confirmed\". ognyx-preview.html was rebuilt for onboarding with the SAME four images and the 41-product range as text only. This record and its preview-only containment are unchanged.",
       "atlas_permission_record": "recIjRDMQ55nk6cOn",
       "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002",
-      "permission_date": "2026-10-02"
+      "permission_date": "2026-10-02",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "WELLNESS-FIRST-OGNYX-20261002",
+        "record": "recIjRDMQ55nk6cOn",
+        "date": "2026-10-14",
+        "scope": [
+          "imagery-preview-only"
+        ],
+        "conditions": [
+          "four-named-images-only",
+          "ognyx-preview-html-only",
+          "credit",
+          "link-back",
+          "visualisations-labelled",
+          "withdrawable-on-request",
+          "wider-use-needs-new-written-grant"
+        ],
+        "note": "Granted with conditions, preview-only (founder decision 14 October 2026 on Fabian's reply of 13 October 2026). The scope is the four named images on ognyx-preview.html and nothing else. It does NOT include \"feature\": it is not permission to list OGNYX products in public Results or search, and not permission for public product imagery. The gate therefore derives HOLD (permission-scope-excludes-listing), which no founder exception can waive."
+      },
+      "listing_review": {
+        "state": "AWAITING_CONFIRMATION",
+        "requested_by": "plotnua",
+        "requested_in": "WELLNESS-FIRST-OGNYX-20261002",
+        "confirmed_at": null,
+        "note": "No public listing has been shown to OGNYX or confirmed by them. The onboarding preview is private and has not been sent (founder SEND gate). Recorded 14 October 2026 so the publication gate reads an explicit state rather than an absent one."
+      },
+      "public_visibility": "HOLD",
+      "hold_reason": "permission-scope-excludes-listing"
     },
     {
       "organisation_record": "recLW0vZbkBGPRkZ9",

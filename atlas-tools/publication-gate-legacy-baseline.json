@@ -1,0 +1,58 @@
+{
+  "schema": "plotnua.publication-gate-legacy-baseline",
+  "version": "1.0.0",
+  "recorded": "2026-10-14",
+  "purpose": "Organisations already public in Results and search on 14 October 2026 with NO rights record. The publication gate used to treat a missing record as PUBLISHABLE; it now fails closed. These organisations are preserved BY NAME so nothing live changes. This is NOT an approval and records no permission. Each needs manual review: record its permission and listing-review states in image-rights-records.json, then remove it from this list. The list may only shrink.",
+  "source": {
+    "artefact": "additional-home-universe-v1.json",
+    "sha256": "e799560ed62283dd78da629ead0c8834e2bad6cda1dc37bd2a8c200bfa6688ea",
+    "rule": "publicVisibility PUBLISHABLE and qualification ELIGIBLE, no rights record by normalised name"
+  },
+  "organisations": [
+    {
+      "organisation": "All About Outdoors",
+      "publicProducts": 1,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "All In One Cabins",
+      "publicProducts": 8,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "Concept Modular",
+      "publicProducts": 3,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "Granny Flats Dublin",
+      "publicProducts": 4,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "Hansa24 Group",
+      "publicProducts": 1,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "Kodasema",
+      "publicProducts": 3,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "Koto",
+      "publicProducts": 1,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "Modular House",
+      "publicProducts": 2,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    },
+    {
+      "organisation": "MyCabin.ie",
+      "publicProducts": 1,
+      "status": "LEGACY_PUBLISHED_MANUAL_REVIEW_REQUIRED"
+    }
+  ]
+}

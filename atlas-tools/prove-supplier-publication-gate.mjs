@@ -22,7 +22,8 @@ import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { derivePublicVisibility, gateIntegrityProblems,
-         founderExceptionProblems,
+         founderExceptionProblems, deriveOrganisationVisibility,
+         NEVER_WAIVABLE, NO_RECORD_HOLD,
          PRE_LIVE_REVIEW_LANGUAGE } from './publication-gate.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -38,6 +39,7 @@ function arg(name, dflt) {
 const BASE = arg('root', ROOT);
 const RECORDS = arg('records', join(BASE, 'image-rights-records.json'));
 const UNIVERSE = join(BASE, 'additional-home-universe-v1.json');
+const LEGACY = join(BASE, 'atlas-tools', 'publication-gate-legacy-baseline.json');
 const GARDEN = join(BASE, 'garden-room-recommendation-universe-v1.json');
 const PLOT = join(BASE, 'your-plot.html');
 
@@ -65,7 +67,7 @@ if (!gated.length) {
   process.exit(1);
 }
 
-console.log('\nPUBLICATION GATE · PG1–PG10');
+console.log('\nPUBLICATION GATE · PG1–PG15');
 console.log('='.repeat(74));
 console.log(`  ${gated.length} gated record(s) under test\n`);
 
@@ -133,7 +135,9 @@ console.log(`  ${gated.length} gated record(s) under test\n`);
 
 /* ── PG3 · GRANTED + AWAITING_CONFIRMATION ⇒ HOLD, and CONFIRMED is earned ─ */
 {
-  const probe = { permission: { state: 'GRANTED' },
+  // scope: a FEATURING grant, so the review is what holds it (since 14 Oct
+  // 2026 a grant without "feature" in scope holds earlier, on its scope).
+  const probe = { permission: { state: 'GRANTED', scope: ['feature'] },
                   listing_review: { state: 'AWAITING_CONFIRMATION' } };
   const d = derivePublicVisibility(probe);
   const real = gated.filter(r => (r.permission || {}).state === 'GRANTED' &&
@@ -346,7 +350,7 @@ spec = importlib.util.spec_from_file_location(
     "gen", root / ".github" / "scripts" / "generate_additional_home_universe.py")
 m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
 print(repr(m.publication_hold("BIOBUILDS")))
-print(repr(m.publication_hold("Shomera")))
+print(repr(m.publication_hold("Shomera")) + " " + repr(m.publication_hold("Kodasema")))
 print(repr(m.GATE_NEVER_WAIVABLE))
 import json, copy, pathlib as P
 rec = json.loads((root / "image-rights-records.json").read_text())
@@ -384,12 +388,14 @@ print(repr(m.publication_hold("BIOBUILDS")))
      checks the third one, both ways round. */
   const lines = out.split('\n');
   const freedByDecision = (lines[0] || '').trim() === 'None';
-  const ungatedFree = (lines[1] || '').trim() === 'None';
+  /* RE-AIMED 14 October 2026 (fail-closed correction). This line used to
+     assert that an organisation with NO rights record is free -- the
+     fail-open, written down as a requirement. It now asserts the opposite:
+     an unrecorded organisation holds, and only a name in the legacy
+     baseline (already public before the correction) is preserved. */
+  const ungatedFree = (lines[1] || '').trim() === `'${NO_RECORD_HOLD}' None`;
   const forbidden = (lines[2] || '');
-  const mirrorsAgree = ['permission-declined', 'no-permission',
-                        'permission-conditional-unresolved',
-                        'permission-state-missing']
-    .every(r => forbidden.includes(r));
+  const mirrorsAgree = NEVER_WAIVABLE.every(r => forbidden.includes(r));
   // And WITHOUT the decision the same generator must hold it again, which is
   // what proves the exception is doing the work rather than the gate having
   // been loosened.
@@ -438,6 +444,130 @@ print(repr(m.publication_hold("BIOBUILDS")))
     ? ok('PG13 a missing publicVisibility is withheld, not shown, once the gate is declared')
     : bad('PG13 a missing publicVisibility is withheld, not shown',
           `meta=${declares} failsClosed=${failsClosed} flag=${derivesFlag}`);
+}
+
+/* ── PG14 · FAIL-CLOSED REGRESSION · missing evidence never publishes ───── */
+{
+  /* 14 October 2026. The record derivation was always fail-closed; the hole
+     was in how a generator found the record. Each case below is a way
+     ABSENT or INCOMPLETE evidence used to come out PUBLISHABLE, run through
+     BOTH the JS gate and the generator's own copy, which must agree. */
+  const legacy = JSON.parse(readFileSync(LEGACY, 'utf8')).organisations.map(o => o.organisation);
+  const G = (scope, rev, extra) => Object.assign({ organisation_name: 'PROBE',
+    permission: { state: 'GRANTED', scope }, listing_review: { state: rev } }, extra || {});
+  const FX = { authorised_by: 'Probe', decision_date: '2026-10-14',
+    supplier_confirmation_received: false, basis: 'a probe decision, long enough to pass',
+    waives: ['permission-scope-excludes-listing'] };
+  const cases = [
+    // [label, records, name, expected holdReason (null = PUBLISHABLE)]
+    ['a record with neither state', [{ organisation_name: 'PROBE' }], 'PROBE', 'permission-state-missing'],
+    ['a record with permission but no review state', [{ organisation_name: 'PROBE', permission: { state: 'GRANTED', scope: ['feature'] } }], 'PROBE', 'listing-review-state-missing'],
+    ['an unknown permission state', [G(['feature'], 'CONFIRMED', { permission: { state: 'MAYBE', scope: ['feature'] } })], 'PROBE', 'permission-state-missing'],
+    ['GRANTED with no scope', [G(undefined, 'CONFIRMED')], 'PROBE', 'permission-scope-excludes-listing'],
+    ['GRANTED for preview imagery only, review CONFIRMED', [G(['imagery-preview-only'], 'CONFIRMED')], 'PROBE', 'permission-scope-excludes-listing'],
+    ['a founder exception cannot waive the scope', [G(['imagery'], 'CONFIRMED', { founder_exception: FX })], 'PROBE', 'permission-scope-excludes-listing'],
+    ['no rights record at all', [], 'NEWCO', NO_RECORD_HOLD],
+    ['an empty organisation name', [], '', NO_RECORD_HOLD],
+    ['two records answer to one name', [G(['feature'], 'CONFIRMED'), G(['feature'], 'CONFIRMED', { organisation_name: 'Probe' })], 'PROBE', 'permission-state-missing'],
+    ['a spacing variant still finds its record', [{ organisation_name: 'Yard Box' }], 'Yardbox', 'permission-state-missing'],
+    ['a legacy org that gains a record is governed by the record', [{ organisation_name: legacy[0] }], legacy[0], 'permission-state-missing'],
+    ['CONTROL a complete, confirmed, featured grant publishes', [G(['feature'], 'CONFIRMED', { listing_review: { state: 'CONFIRMED', confirmed_at: '2026-10-14' } })], 'PROBE', null],
+    ['CONTROL a legacy-baseline org with no record is preserved', [], legacy[0], null],
+  ];
+  const probe = `
+import importlib.util, sys, json, pathlib, tempfile
+root = pathlib.Path(${JSON.stringify(BASE)})
+sys.path.insert(0, str(root / ".github" / "scripts"))
+spec = importlib.util.spec_from_file_location("gen", root / ".github" / "scripts" / "generate_additional_home_universe.py")
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+cases = json.loads(sys.stdin.read())
+out = []
+for recs, name in cases:
+    p = pathlib.Path(tempfile.mkstemp(suffix=".json")[1]); p.write_text(json.dumps({"records": recs}))
+    m.RIGHTS = p; m._GATE = None; m._LEGACY = None
+    out.append(m.publication_hold(name))
+# an unreadable baseline refuses to generate
+m.RIGHTS = root / "image-rights-records.json"; m._GATE = None; m._LEGACY = None
+m.LEGACY = pathlib.Path("/nonexistent/baseline.json")
+try:
+    m.publication_hold("Kodasema"); out.append("NO-REFUSAL")
+except SystemExit:
+    out.append("REFUSED")
+print(json.dumps(out))
+`;
+  let py = null;
+  try {
+    // stderr is captured: the baseline-refusal case is SUPPOSED to print an error.
+    py = JSON.parse(execFileSync('python3', ['-I', '-c', probe], { encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+      input: JSON.stringify(cases.map(c => [c[1], c[2]])) }).trim().split('\n').pop());
+  } catch (e) { py = null; }
+  const problems = [];
+  cases.forEach(([label, recs, name, want], i) => {
+    const js = deriveOrganisationVisibility(name, recs, legacy).holdReason;
+    if (js !== want) problems.push(`JS ${label}: ${js}`);
+    if (!py || py[i] !== want) problems.push(`generator ${label}: ${py ? py[i] : 'unavailable'}`);
+  });
+  if (!py || py[cases.length] !== 'REFUSED') problems.push('generator ran without its legacy baseline');
+  problems.length
+    ? bad('PG14 missing, unknown or incomplete evidence never derives PUBLISHABLE', problems.join(' | '))
+    : ok('PG14 missing, unknown or incomplete evidence never derives PUBLISHABLE',
+         `${cases.length} cases, JS and generator agree; no baseline -> refuses`);
+}
+
+/* ── PG15 · the correction changes nothing that is live ───────────────── */
+{
+  /* Every product public today (PUBLISHABLE and ELIGIBLE in the committed
+     artefact) must still derive PUBLISHABLE under the corrected generator,
+     every real record must derive the same in JS and in the generator, and
+     the legacy baseline may only shrink and may never shadow a record. */
+  const d = JSON.parse(readFileSync(UNIVERSE, 'utf8'));
+  const legacyDoc = JSON.parse(readFileSync(LEGACY, 'utf8'));
+  const legacy = legacyDoc.organisations.map(o => o.organisation);
+  const FROZEN = ['All About Outdoors', 'All In One Cabins', 'Concept Modular',
+    'Granny Flats Dublin', 'Hansa24 Group', 'Kodasema', 'Koto', 'Modular House', 'MyCabin.ie'];
+  const live = [...new Set((d.products || []).filter(p => p.publicVisibility === 'PUBLISHABLE' &&
+    ((p.qualification || {}).state === 'ELIGIBLE')).map(p => p.organisation))];
+  const names = [...new Set([...live, ...rows.map(r => r.organisation_name)])];
+  const probe = `
+import importlib.util, sys, json, pathlib
+root = pathlib.Path(${JSON.stringify(BASE)})
+sys.path.insert(0, str(root / ".github" / "scripts"))
+spec = importlib.util.spec_from_file_location("gen", root / ".github" / "scripts" / "generate_additional_home_universe.py")
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+print(json.dumps({n: m.publication_hold(n) for n in json.loads(sys.stdin.read())}))
+`;
+  let py = {};
+  try { py = JSON.parse(execFileSync('python3', ['-I', '-c', probe], { encoding: 'utf8',
+          input: JSON.stringify(names) }).trim().split('\n').pop()); } catch (e) { py = null; }
+  const problems = [];
+  if (!py) problems.push('generator unavailable');
+  for (const o of live) {
+    const js = deriveOrganisationVisibility(o, rows, legacy);
+    if (js.visibility !== 'PUBLISHABLE') problems.push(`live ${o} now ${js.holdReason} (JS)`);
+    if (py && py[o] !== null) problems.push(`live ${o} now ${py[o]} (generator)`);
+  }
+  for (const r of rows) {
+    const js = deriveOrganisationVisibility(r.organisation_name, rows, legacy).holdReason;
+    if (py && py[r.organisation_name] !== js) problems.push(`${r.organisation_name}: JS ${js} vs generator ${py[r.organisation_name]}`);
+  }
+  for (const n of legacy) {
+    if (!FROZEN.includes(n)) problems.push(`baseline grew: ${n}`);
+    if (deriveOrganisationVisibility(n, rows, []).matched) problems.push(`baseline shadows a record: ${n}`);
+  }
+  const og = rows.find(r => r.organisation_name === 'OGNYX');
+  const ogd = og && derivePublicVisibility(og);
+  if (!og || (og.listing_review || {}).state !== 'AWAITING_CONFIRMATION' ||
+      (og.permission || {}).state !== 'GRANTED' || ((og.permission || {}).scope || []).includes('feature') ||
+      ogd.holdReason !== 'permission-scope-excludes-listing' ||
+      !NEVER_WAIVABLE.includes(ogd.holdReason)) {
+    problems.push('OGNYX is not held on an explicit, unwaivable preview-only scope: ' + JSON.stringify(ogd));
+  }
+  problems.length
+    ? bad('PG15 nothing live changes, JS and generator agree on every record, OGNYX held', problems.join(' | '))
+    : ok('PG15 nothing live changes, JS and generator agree on every record, OGNYX held',
+         `${live.length} live organisations still publishable (${legacy.length} by legacy baseline), `
+         + `${rows.length} records agree`);
 }
 
 console.log('\n' + '='.repeat(74));
