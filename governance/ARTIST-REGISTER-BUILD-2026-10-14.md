@@ -119,8 +119,8 @@ The founder runs this with their own details only. It mirrors the homeowner test
 
 ## 5 · Launch checklist (each item needs the founder's explicit approval)
 
-1. [ ] Privacy V5 wording and the self-assessment addendum approved and dated (`governance/PRIVACY-VERSION-2026-10-PHASE2-V5-DRAFT.md`).
-2. [ ] `build-privacy-v5.py` written and run; `privacy.html` carries every governed line and the `PLOTNUA-ARTIST-PRIVACY-V5` marker; the founder pushes.
+1. [x] (14 Oct 2026, 19:45) Privacy V5 wording and the self-assessment addendum approved and dated (`governance/PRIVACY-VERSION-2026-10-PHASE2-V5-DRAFT.md`).
+2. [x] (14 Oct 2026, applied locally; live on the founder's push) `build-privacy-v5.py` written and run; `privacy.html` carries every governed line and the `PLOTNUA-ARTIST-PRIVACY-V5` marker; the founder pushes.
 3. [ ] Airtable `Artists` table and `register` fields created and verified against the schema file.
 4. [ ] Worker deployed (artist route closed).
 5. [ ] Controlled test (§4) passed, and its date recorded.

@@ -103,7 +103,21 @@ if not LIVE:
          'APPROVAL = {"founder_approval": "x", "self_assessment": "x", "risks_resolved": "", "last_updated": "October 2026"}',
          args=["--apply"])
 r = run([PB, "--preview", ROOT / "privacy-v5-preview.html"])
-results.append(("--preview inside the repository", r.returncode != 0 and "inside the repository" in r.stdout, ""))
+results.append(("--preview inside the repository" if not LIVE else "--preview once V5 is published",
+                r.returncode != 0 and ("already published" if LIVE else "inside the repository") in r.stdout, ""))
+if LIVE:
+    # Published state (founder approval, 14 Oct 2026, 19:45). --apply can never write again.
+    r = run([PB, "--apply"])
+    results.append(("--apply again on the published page", r.returncode != 0 and "already carries V5" in r.stdout, ""))
+    case("published V5 with APPROVAL removed", PB, "APPROVAL = {", "APPROVAL = None\n_WITHDRAWN = {")
+    case("published V5 artist text altered", PRIVACY, "Your registration is stored privately.",
+         "Your registration is stored.")
+    case("published V5 Section 10 sentence altered", PRIVACY, "with artist registrations kept as separate records",
+         "with artist registrations kept")
+    case("published Last updated label not the approved one", PRIVACY, "Last updated: October 2026",
+         "Last updated: November 2026")
+    case("published V5 but the homeowner Worker still records V4", ART_WR, 'PRIVACY_VERSION = "2026-10-PHASE2-V5"\n',
+         'PRIVACY_VERSION = "2026-10-PHASE2-V4"\n')
 
 # ---- Part B · publication rehearsal in a throwaway clone
 rehearsal = []

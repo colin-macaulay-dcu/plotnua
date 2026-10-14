@@ -1,6 +1,6 @@
 # PRIVACY NOTICE · VERSION 2026-10-PHASE2-V5 · FINAL DRAFT FOR FOUNDER APPROVAL
 
-**Status:** FINAL DRAFT, 14 October 2026. It reflects the founder decisions of 19:25 and the two founder corrections of 19:39 (the Section 10 infrastructure sentence; registration "opens later" wording). **Not published.**
+**Status:** **APPROVED FOR PUBLICATION, 14 October 2026 (19:45).** The founder approved publication of this exact wording, including the two corrections of 19:39, and the self-assessment addendum dated 14 October 2026. `privacy.html` carries V5 (built by `atlas-tools/build-privacy-v5.py`, approval recorded in `APPROVAL`). It goes live when the founder pushes. **The approval covers the privacy notice only. The Artist Register stays CLOSED.**
 - `privacy.html` is unchanged and still carries V4.
 - The Artist Register stays **CLOSED**.
 - Approval of this exact wording is required before anything is published. Opening the register is a separate approval (`ARTIST_OPEN_APPROVAL` in `atlas-tools/build-artist-register.py`).

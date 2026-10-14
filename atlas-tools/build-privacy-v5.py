@@ -83,7 +83,17 @@ MARK = "  <!-- PLOTNUA-ARTIST-PRIVACY-V5 · Art Space Register and Artist Regist
 #  "self_assessment": "Artist Register addendum to the Art Space Register GDPR self-assessment, <date>",
 #  "risks_resolved": "<where each material risk's resolution is documented>",
 #  "last_updated": "<Month YYYY>"}
-APPROVAL = None
+APPROVAL = {
+    "founder_approval": "Colin MacAulay, founder, 14 October 2026 (19:45): approves publication of PlotNua Privacy "
+                        "Notice V5, dated October 2026, in the reviewed wording of "
+                        "governance/PRIVACY-VERSION-2026-10-PHASE2-V5-DRAFT.md including both corrections of 19:39. "
+                        "The approval covers the privacy notice ONLY; the Artist Register remains CLOSED.",
+    "self_assessment": "Artist Register addendum to the Art Space Register GDPR self-assessment, dated 14 October "
+                       "2026, approved by the founder on 14 October 2026 (19:45).",
+    "risks_resolved": "governance/PRIVACY-VERSION-2026-10-PHASE2-V5-DRAFT.md, 'Risks and resolution' (six risks, "
+                      "each resolved), and governance/ARTIST-REGISTER-BUILD-2026-10-14.md (opening conditions).",
+    "last_updated": "October 2026",
+}
 APPROVAL_KEYS = ("founder_approval", "self_assessment", "risks_resolved", "last_updated")
 
 

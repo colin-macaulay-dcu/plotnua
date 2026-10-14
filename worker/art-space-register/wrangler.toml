@@ -24,7 +24,7 @@ ORIGIN          = "https://plotnua.ie"
 # The privacy notice version that will carry the Art Space Register section.
 # DRAFT — governance/PRIVACY-VERSION-2026-10-PHASE2-V4-DRAFT.md. It must be
 # approved AND published on plotnua.ie before writes are ever enabled.
-PRIVACY_VERSION = "2026-10-PHASE2-V4"
+PRIVACY_VERSION = "2026-10-PHASE2-V5"
 
 # ---------------------------------------------------------------------------
 # ARTIST REGISTER (PlotArt) · CLOSED. Founder approval to BUILD: 14 Oct 2026.
