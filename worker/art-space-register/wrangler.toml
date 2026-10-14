@@ -8,13 +8,17 @@ preview_urls = false    # one endpoint, not a family of live hostnames.
 
 [vars]
 # ---------------------------------------------------------------------------
-# ART SPACE REGISTER · BOTH SWITCHES SHIP OFF. NOT DEPLOYED.
-# Founder approval for BUILD only, 13 October 2026. Deploying, enabling writes
-# and opening the register each need the founder's explicit approval.
-# This Worker shares NO binding, base or credential with
-# worker/garden-register.
+# ART SPACE REGISTER · OPEN. Founder approval to open: 14 October 2026, after
+# the controlled registration-and-deletion test of the same day
+# (OPEN_APPROVAL in atlas-tools/build-art-space-register.py). Guard R2 refuses
+# WRITES_ENABLED = "true" unless the register page is open and approved.
+# To CLOSE fast: set WRITES_ENABLED = "false" and `npx wrangler deploy`
+# (the page then answers "not open"); revoke the token for a hard stop.
+# EMAIL_ENABLED stays off: there is no mail adapter. Writes are bounded by
+# the Worker's durable 25-per-day cap. This Worker shares NO binding, base or
+# credential with worker/garden-register.
 # ---------------------------------------------------------------------------
-WRITES_ENABLED  = "false"
+WRITES_ENABLED  = "true"
 EMAIL_ENABLED   = "false"   # there is NO mail adapter in this Worker.
 ORIGIN          = "https://plotnua.ie"
 # The privacy notice version that will carry the Art Space Register section.
@@ -36,9 +40,8 @@ PRIVACY_VERSION = "2026-10-PHASE2-V4"
 # writesEnabled() requires the switch, the token and the base, so a missing
 # secret is a hard stop.
 #
-# The ONLY deploy-time override ever used is the dry-run / opening switch:
-#   npx wrangler deploy --var WRITES_ENABLED:true    (founder-approved step only)
-#   npx wrangler deploy                              (back to this file: writes off)
+# Writes are now set in this file (opening, 14 Oct 2026). A plain
+# `npx wrangler deploy` deploys exactly what this file says.
 
 # ---------------------------------------------------------------------------
 # REQUEST LOGGING OFF (founder decision R3, 13 Oct 2026). Cloudflare's

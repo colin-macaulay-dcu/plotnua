@@ -197,7 +197,8 @@ check('S2 the only status literal written is interest_submitted', (code.match(/'
 check('S3 no garden base id, table or route in the code', !/appUie3wPmPITfMW7|Gardens|Growers|garden-register\/(garden|grower)/.test(code));
 check('S4 no console logging of request data', !/console\./.test(code));
 const toml = readFileSync(new URL('../wrangler.toml', import.meta.url), 'utf8');
-check('S5 wrangler ships WRITES_ENABLED and EMAIL_ENABLED "false"', /WRITES_ENABLED\s*=\s*"false"/.test(toml) && /EMAIL_ENABLED\s*=\s*"false"/.test(toml));
+check('S5 wrangler: EMAIL_ENABLED "false"; WRITES_ENABLED exactly "true" or "false" (opening is gated by guard R2)',
+  /EMAIL_ENABLED\s*=\s*"false"/.test(toml) && /^WRITES_ENABLED\s*=\s*"(true|false)"/m.test(toml));
 check('S6 no secret, token or base id in wrangler.toml', !/pat[A-Za-z0-9]{10}|app[A-Za-z0-9]{14}/.test(toml));
 check('S7 worker name is its own', /name = "plotnua-art-space-register"/.test(toml));
 

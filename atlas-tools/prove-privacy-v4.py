@@ -132,7 +132,7 @@ try:
         ("V4 builder verifies the published page", [str(cb), "--check"], "PUBLISHED"),
         ("Garden privacy proof passes on V4", [str(clone / "atlas-tools" / "prove-g6-owner-register.py")], "0 failed"),
         ("Garden open-gate proof passes on V4", [str(clone / "atlas-tools" / "prove-g6-open-register.py")], ""),
-        ("register builder: still CLOSED, R1-R14 pass", [str(clone / "atlas-tools" / "build-art-space-register.py"), "--check"], "CLOSED"),
+        ("register builder: R1-R14 pass (open since 14 Oct 2026)", [str(clone / "atlas-tools" / "build-art-space-register.py"), "--check"], "CHECK OK"),
     ]
     for label, args, need in steps:
         r = run(args, cwd=clone)

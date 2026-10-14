@@ -89,6 +89,7 @@ def multi(label, edits, expect="REFUSED", positive=False):
             path.write_bytes(b)
 
 
+OPENED = "INTEREST_PUBLIC = True " in RB.read_text(encoding="utf-8")   # opened 14 Oct 2026
 OPEN = (RB, "INTEREST_PUBLIC = False", "INTEREST_PUBLIC = True")
 APPROVE = (RB, "OPEN_APPROVAL = None", APPROVED)
 V4 = (PRIVACY, None, V4_PAGE)
@@ -102,8 +103,9 @@ case("R1 a Property Check question changed", PAGE,
      "q:'What could you actually offer?'", "q:'What space could you offer?'")
 case("R1 a save key changed", PAGE,
      "journeyId: 'disc024-open-your-home-to-art'", "journeyId: 'disc024-art'")
-case("R2 builder set to open the register", RB,
-     "INTEREST_PUBLIC = False", "INTEREST_PUBLIC = True")
+if not OPENED:
+    case("R2 builder set to open the register", RB,
+         "INTEREST_PUBLIC = False", "INTEREST_PUBLIC = True")
 case("R3 Worker consent sentence drifts", WORKER,
      "withdraw my consent at any time.\";", "withdraw at any time.\";")
 case("R3 page consent sentence drifts", RB,
@@ -145,25 +147,59 @@ case("R12 register script calls the garden Worker", RB,
 case("R13 Garden Owner Register page touched", GARDEN,
      "This is a register, not a match.</p>", "This is a register.</p>")
 # ---- the opening gate (activation preparation, 13 Oct 2026)
-multi("R2 opening approved but privacy still V3", [OPEN, APPROVE, V3], expect="REFUSED: R2")
-multi("R2 privacy V4 live but no OPEN_APPROVAL", [OPEN, V4])
-multi("R2 OPEN_APPROVAL lacks the dry run", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
-      'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "risks_resolved": "proof", "dry_run": " "}')])
-multi("R2 OPEN_APPROVAL lacks the risk resolution", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
-      'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "dry_run": "proof"}')])
-multi("R2 Art Worker not on the published version", [OPEN, V4, APPROVE,
-      (ART_WRANGLER, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')])
-assert V4_PAGE.count("We keep your record for no longer than 12 months") == 1
-multi("R2 published Section 8 differs (36-month retention)", [OPEN, APPROVE,
-      (PRIVACY, None, V4_PAGE.replace("We keep your record for no longer than 12 months",
-                                      "We keep your record for no longer than 36 months", 1))],
-      expect="REFUSED: R2")
-multi("R13 the V4 page also alters Garden Section 7", [OPEN, V4, APPROVE,
-      (PRIVACY, "your phone number, your surname, your age, photographs of your garden",
-       "your phone number, your age, photographs of your garden")], expect="REFUSED: R13")
-multi("POSITIVE all three conditions met: gate opens", [OPEN, V4, APPROVE], positive=True)
-multi("CONTROL privacy V4 staged, register closed: passes", [V4], positive=False, expect="CHECK OK")
-results[-1] = (results[-1][0], not results[-1][1] and "CHECK OK" in results[-1][2], results[-1][2])
+if OPENED:
+    # The register is OPEN (founder approval, 14 Oct 2026). Every condition of the gate must keep holding.
+    WOFF = (ART_WRANGLER, 'WRITES_ENABLED  = "true"', 'WRITES_ENABLED  = "false"')
+    CLOSE = (RB, "INTEREST_PUBLIC = True ", "INTEREST_PUBLIC = False ")
+    multi("R2 open, but OPEN_APPROVAL withdrawn", [(RB, "OPEN_APPROVAL = {", "OPEN_APPROVAL = None\n_WITHDRAWN = {")],
+          expect="REFUSED: R2")
+    multi("R2 open, but OPEN_APPROVAL lacks the dry run", [(RB, '"dry_run": "14 October', '"dry_run_x": "14 October')], expect="REFUSED: R2")
+    multi("R2 open, but OPEN_APPROVAL lacks the risk resolution", [(RB, '    "risks_resolved": "Privacy',
+          '    "risks_x": "Privacy')], expect="REFUSED: R2")
+    multi("R2 open, but privacy back to V3", [V3], expect="REFUSED: R2")
+    multi("R2 open, but Art Worker not on the published version",
+          [(ART_WRANGLER, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')], expect="REFUSED: R2")
+    assert V4_PAGE.count("We keep your record for no longer than 12 months") == 1
+    multi("R2 open, but published Section 8 differs (36-month retention)",
+          [(PRIVACY, None, V4_PAGE.replace("We keep your record for no longer than 12 months",
+                                           "We keep your record for no longer than 36 months", 1))], expect="REFUSED: R2")
+    multi("R2 page closed while the Worker would still take writes", [CLOSE], expect="REFUSED: R2")
+    multi("R2 WRITES_ENABLED neither true nor false", [(ART_WRANGLER, 'WRITES_ENABLED  = "true"', 'WRITES_ENABLED  = "yes"')],
+          expect="REFUSED: R2")
+    multi("R2 builder keeps the private-preview label on the public page",
+          [(RB, "('' if INTEREST_PUBLIC else", "('' if False else")], expect="REFUSED: R2")
+    multi("CHECK private-preview label hand-added to the public page",
+          [(PAGE, '<section class="asr" id="asrSection" hidden aria-labelledby="asrH">\n',
+            '<section class="asr" id="asrSection" hidden aria-labelledby="asrH">\n      <p class="asr-prev" id="asrPrev" hidden>Private preview</p>\n')],
+          expect="CHECK FAILED")
+    multi("R13 open, but privacy.html alters Garden Section 7",
+          [(PRIVACY, "your phone number, your surname, your age, photographs of your garden",
+            "your phone number, your age, photographs of your garden")], expect="REFUSED: R13")
+    multi("R7 send button relabelled back to the CTA", [(RB, 'SEND_LABEL = "Submit my registration"', 'SEND_LABEL = "Register my interest"')],
+          expect="REFUSED: R7")
+    multi("POSITIVE closing (page and Worker together) is allowed", [CLOSE, WOFF], positive=True)
+    multi("CONTROL open register passes", [], positive=False, expect="CHECK OK")
+    results[-1] = (results[-1][0], not results[-1][1] and "CHECK OK" in results[-1][2], results[-1][2])
+if not OPENED:
+  multi("R2 opening approved but privacy still V3", [OPEN, APPROVE, V3], expect="REFUSED: R2")
+  multi("R2 privacy V4 live but no OPEN_APPROVAL", [OPEN, V4])
+  multi("R2 OPEN_APPROVAL lacks the dry run", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
+        'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "risks_resolved": "proof", "dry_run": " "}')])
+  multi("R2 OPEN_APPROVAL lacks the risk resolution", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
+        'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "dry_run": "proof"}')])
+  multi("R2 Art Worker not on the published version", [OPEN, V4, APPROVE,
+        (ART_WRANGLER, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')])
+  assert V4_PAGE.count("We keep your record for no longer than 12 months") == 1
+  multi("R2 published Section 8 differs (36-month retention)", [OPEN, APPROVE,
+        (PRIVACY, None, V4_PAGE.replace("We keep your record for no longer than 12 months",
+                                        "We keep your record for no longer than 36 months", 1))],
+        expect="REFUSED: R2")
+  multi("R13 the V4 page also alters Garden Section 7", [OPEN, V4, APPROVE,
+        (PRIVACY, "your phone number, your surname, your age, photographs of your garden",
+         "your phone number, your age, photographs of your garden")], expect="REFUSED: R13")
+  multi("POSITIVE all three conditions met: gate opens", [OPEN, V4, APPROVE], positive=True)
+  multi("CONTROL privacy V4 staged, register closed: passes", [V4], positive=False, expect="CHECK OK")
+  results[-1] = (results[-1][0], not results[-1][1] and "CHECK OK" in results[-1][2], results[-1][2])
 # ---- R7b, R13, R14
 case("R7b commitment statement weakened", RB, "PlotNua is simply exploring whether homeowners",
      "PlotNua is exploring whether homeowners")
