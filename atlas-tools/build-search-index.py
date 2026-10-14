@@ -50,7 +50,12 @@ ALLOWED_FIELDS = {
     # runtime composes it. 28.5 KB of duplicated strings removed, zero data
     # lost — every record, price, tier and caveat is still here.
     "product": {"id", "type", "name", "organisation", "productType", "price",
-                "priceBasis", "tier", "caveats"},
+                "priceBasis", "tier", "caveats",
+                # 14 Oct 2026: a per-record "route" is allowed ONLY for a product
+                # with NO PlotNua product page (the wellness corpus), and R1
+                # proves it reaches the page that lists that exact product. The
+                # template stays canonical for everything else.
+                "route"},
     # NO "route": a supplier expands inside Search (D-7) and cannot navigate.
     # Likewise no "productIds": a supplier's products are exactly the product
     # records whose organisation matches its name, which the runtime already
@@ -288,6 +293,56 @@ if AH_UNIVERSE.exists():
 # appears: that would need organisation evidence the Additional Home corpus
 # does not carry, and inventing it is not an option.
 
+# ── THIRD DECLARED CORPUS · WELLNESS / SAUNA ───────────────────────────────
+# Founder decision, 14 October 2026: "OGNYX public integration — PROCEED".
+# Same rules as the second corpus: the PUBLICATION GATE is applied here
+# (publicVisibility == PUBLISHABLE, read from the record) and qualification
+# second (ELIGIBLE). Adapted into the one product shape, never remodelled.
+#
+# THE ROUTE IS THE DIFFERENCE, AND IT IS STATED. your-plot.html?product=
+# resolves the Garden Room pool only, so it would drop a homeowner on the
+# entry screen -- the exact release blocker R1 exists for. A wellness product
+# is listed in Garden Retreat's maker explorer, so that is where its result
+# goes, and R1 below proves the page lists that exact id.
+WL_UNIVERSE = ROOT / "wellness-universe-v1.json"
+WL_PAGE = "discovery-garden-retreat.html"
+WL_ROUTE = WL_PAGE + "#explore-makers"
+wl_rows = []
+WL_SHA = None
+if WL_UNIVERSE.exists():
+    wl_bytes = WL_UNIVERSE.read_bytes()
+    WL_SHA = sha(wl_bytes)
+    print("  WL universe sha  %s" % WL_SHA)
+    WL = json.loads(wl_bytes)
+    if not WL.get("publicationGate"):
+        die("the wellness universe does not declare the publication gate")
+    for q in (WL.get("products") or []):
+        if q.get("publicVisibility") != "PUBLISHABLE":
+            continue
+        if ((q.get("qualification") or {}).get("state")) != "ELIGIBLE":
+            continue
+        qp = q.get("price") or {}
+        safe = qp.get("state") == "VERIFIED_NUMERIC_PRICE" and is_price(qp.get("amount"))
+        wl_rows.append({
+            "id": q.get("id"),
+            "productName": q.get("productName"),
+            "organisation": q.get("organisation"),
+            "productType": q.get("productType") or "",
+            # Irish availability is not confirmed for these products, which is
+            # a caveat, never a high-confidence claim.
+            "qualificationTier": ("HIGH_CONFIDENCE"
+                                  if (q.get("irish") or {}).get("state") == "CONFIRMED"
+                                  else "WITH_CAVEAT"),
+            "noPublishedIrishRoute": False,
+            "qualification": {"status": "ELIGIBLE"},
+            "organisationEvidence": None,
+            "priceSafeForMatching": bool(safe),
+            "price": qp.get("amount") if safe else None,
+            "priceBasis": qp.get("basis") or None,
+        })
+    print("  WL products      %d  (of %d in the corpus, gate + ELIGIBLE only)"
+          % (len(wl_rows), len(WL.get("products") or [])))
+
 sitemap_text = SITEMAP.read_text(encoding="utf-8")
 ALLOW = set(re.findall(r"<loc>https://plotnua\.ie/([^<]*)</loc>", sitemap_text))
 ALLOW = {p for p in ALLOW if p.endswith(".html")}
@@ -463,6 +518,12 @@ if PRODUCT_HOST not in ALLOW and PRODUCT_HOST not in DECLARED_ROUTES:
 # invisible. Removing this filter is a one-line change the day supplier
 # records are allowed to span both corpora.
 _gr_orgs = {norm_space(r.get("organisation")) for r in rows}
+# The same collision rule, for the same reason, applied to the third corpus.
+_wl_collide = [r for r in wl_rows if norm_space(r.get("organisation")) in _gr_orgs]
+wl_rows = [r for r in wl_rows if norm_space(r.get("organisation")) not in _gr_orgs]
+if _wl_collide:
+    print("  WL withheld      %d  (organisation already has a Garden Room "
+          "supplier record)" % len(_wl_collide))
 _ah_collide = [r for r in ah_rows if norm_space(r.get("organisation")) in _gr_orgs]
 ah_rows = [r for r in ah_rows if norm_space(r.get("organisation")) not in _gr_orgs]
 if _ah_collide:
@@ -473,7 +534,8 @@ if _ah_collide:
 
 prod_recs = []
 AH_REC_IDS = {"prod-" + str(r.get("id")) for r in ah_rows}
-for r in rows + ah_rows:
+WL_REC_IDS = {"prod-" + str(r.get("id")) for r in wl_rows}
+for r in rows + ah_rows + wl_rows:
     tier = r.get("qualificationTier")
     if tier not in ("HIGH_CONFIDENCE", "WITH_CAVEAT"):
         die("product %r carries tier %r, which is outside the closed vocabulary"
@@ -494,6 +556,8 @@ for r in rows + ah_rows:
         "tier": tier,
         "caveats": caveats,
     }
+    if rec["id"] in WL_REC_IDS:
+        rec["route"] = WL_ROUTE
     # G7 at source: a price key exists ONLY where the universe says the price is
     # safe for matching. 279 of 573 are not, and those carry no price at all, so
     # there is nothing for a filter or a card to show wrongly.
@@ -594,6 +658,7 @@ index = {
     "sourceCommit": COMMIT,
     "sourceUniverseSha256": UNI_SHA,
     "sourceAdditionalHomeSha256": AH_SHA,
+    "sourceWellnessSha256": WL_SHA,
     "synonymMapVersion": TM.get("version"),
     "counts": counts,
     # THE ROUTE TEMPLATE, stored once instead of 573 times. {id} is the governed
@@ -618,7 +683,7 @@ PERMITTED = set(ALLOW) | set(DECLARED_ROUTES) | set(JOURNEYS)
 # gates the PAGE and R1-R4 below gate the parameter. Splitting them keeps the
 # allowlist exactly as strict as it was: the page must still be sitemap-listed
 # or explicitly declared.
-page_of = lambda route: route.split("?", 1)[0]
+page_of = lambda route: route.split("?", 1)[0].split("#", 1)[0]
 for r in records:
     if "route" not in r:
         continue                      # suppliers carry no route, by design (D-7)
@@ -680,6 +745,8 @@ print("  G3  no retired Discovery, no legacy orphan  OK")
 # G4 universe unmoved
 if AH_SHA is not None and sha(AH_UNIVERSE.read_bytes()) != AH_SHA:
     die("the Additional Home corpus changed during the build")
+if WL_SHA is not None and sha(WL_UNIVERSE.read_bytes()) != WL_SHA:
+    die("the Wellness corpus changed during the build")
 if sha(UNIVERSE.read_bytes()) != UNI_SHA:
     die("G4 the universe changed DURING the build")
 if index["sourceUniverseSha256"] != UNI_SHA:
@@ -730,8 +797,9 @@ def _tier_counts(seq, key):
     return out
 
 prod_out = [r for r in records if r["type"] == "product"]
-gr_out = [r for r in prod_out if r["id"] not in AH_REC_IDS]
+gr_out = [r for r in prod_out if r["id"] not in AH_REC_IDS and r["id"] not in WL_REC_IDS]
 ah_out = [r for r in prod_out if r["id"] in AH_REC_IDS]
+wl_out = [r for r in prod_out if r["id"] in WL_REC_IDS]
 
 gr_src = _tier_counts(rows, lambda r: r.get("qualificationTier"))
 gr_idx = _tier_counts(gr_out, lambda r: r["tier"])
@@ -745,7 +813,12 @@ if ah_src != ah_idx:
     die("G6 Additional Home tier distribution changed: corpus %r vs index %r"
         % (ah_src, ah_idx))
 
-if len(gr_out) + len(ah_out) != len(prod_out):
+wl_src = _tier_counts(wl_rows, lambda r: r.get("qualificationTier"))
+wl_idx = _tier_counts(wl_out, lambda r: r["tier"])
+if wl_src != wl_idx:
+    die("G6 Wellness tier distribution changed: corpus %r vs index %r" % (wl_src, wl_idx))
+
+if len(gr_out) + len(ah_out) + len(wl_out) != len(prod_out):
     die("G6 the corpus partition does not cover every product record")
 out_tiers = _tier_counts(prod_out, lambda r: r["tier"])
 print("  G6  tier literals carried; per-corpus distributions identical "
@@ -759,7 +832,7 @@ print("  G6  tier literals carried; per-corpus distributions identical "
 # only where its own source record says priceSafeForMatching and the value is
 # a real price.
 safe_ids = {("prod-" + str(r.get("id") or r.get("productId")))
-            for r in rows + ah_rows
+            for r in rows + ah_rows + wl_rows
             if r.get("priceSafeForMatching") and is_price(r.get("price"))}
 for r in records:
     if r["type"] == "product" and "price" in r and r["id"] not in safe_ids:
@@ -829,12 +902,30 @@ prod_ids = {("prod-" + str(r.get("id") or r.get("productId"))) for r in rows}
 TPL = index["routes"]["product"]
 if not re.fullmatch(re.escape(PRODUCT_HOST) + r"\?product=\{id\}", TPL):
     die("R1 the product route template is %r, not the governed deep-link shape" % TPL)
+# THE ONE PERMITTED PER-RECORD ROUTE (14 Oct 2026). A wellness product has no
+# PlotNua product page; its route must be Garden Retreat's maker explorer, and
+# that page's explorer configuration must list this exact id. Anything else
+# carrying a route still fails.
+_wl_listed = set()
+if WL_REC_IDS:
+    _gr_src = (ROOT / WL_PAGE).read_text(encoding="utf-8")
+    _m = re.search(r'<script type="application/json" class="pn-mx-config" id="mx-data">(.*?)</script>',
+                   _gr_src, re.S)
+    if not _m:
+        die("R1 %s carries no maker-explorer configuration to route wellness products to" % WL_PAGE)
+    _cfg = json.loads(_m.group(1).replace("<\\/", "</"))
+    _wl_listed = {"prod-" + p[0] for t in _cfg["tabs"] for mk in t["makers"] for p in mk["p"]}
 for r in records:
     if r["type"] != "product":
         continue
     if "route" in r:
-        die("R1 product %r carries a per-record route; the template is canonical"
-            % r["id"])
+        if r["id"] not in WL_REC_IDS or r["route"] != WL_ROUTE:
+            die("R1 product %r carries a per-record route; the template is canonical"
+                % r["id"])
+        if r["id"] not in _wl_listed:
+            die("R1 wellness product %r routes to %s, which does not list it"
+                % (r["id"], WL_ROUTE))
+        continue
     rid = r["id"][5:] if r["id"].startswith("prod-") else ""
     if not re.fullmatch(r"rec[A-Za-z0-9]{14,17}", rid):
         die("R1 product %r has no governed record id to compose a route from"
@@ -844,8 +935,10 @@ for r in records:
     url = TPL.replace("{id}", rid)
     if page_of(url) != PRODUCT_HOST or ("prod-" + url.split("product=")[1]) != r["id"]:
         die("R1 product %r composes to %r, which does not reach it" % (r["id"], url))
-print("  R1  all %d products compose to %s?product=<own governed id>  OK"
-      % (sum(1 for r in records if r["type"] == "product"), PRODUCT_HOST))
+print("  R1  %d products compose to %s?product=<own governed id>; %d wellness "
+      "products route to %s, which lists each one  OK"
+      % (sum(1 for r in records if r["type"] == "product") - len(WL_REC_IDS),
+         PRODUCT_HOST, len(WL_REC_IDS), WL_ROUTE))
 
 for r in records:
     if r["type"] != "supplier":
@@ -879,13 +972,13 @@ for r in records:
 print("  R3  all %d suppliers expand to exactly their stated product count  OK"
       % sum(1 for r in records if r["type"] == "supplier"))
 
-link_ids = {r["id"][5:] for r in records if r["type"] == "product"}
+link_ids = {r["id"][5:] for r in records if r["type"] == "product" and "route" not in r}
 # TWO DECLARED CORPORA. This read `rows` alone — the same single-corpus
 # assumption G6 and G7 carried — and refused four Additional Home ids that ARE
 # governed, just governed by the second universe. The assertion is unchanged
 # and is NOT relaxed: every deep link must still resolve to a real record id
 # in a declared corpus, and an id in neither still fails.
-universe_ids = {str(r.get("id") or r.get("productId")) for r in rows + ah_rows}
+universe_ids = {str(r.get("id") or r.get("productId")) for r in rows + ah_rows + wl_rows}
 if not link_ids <= universe_ids:
     die("R4 a deep link points at an id outside the governed universe: %r"
         % sorted(link_ids - universe_ids)[:4])
@@ -924,6 +1017,7 @@ if set(index.keys()) != {"schema", "version", "generated", "sourceCommit",
                          # G13 is a closed-envelope guard and an undeclared
                          # key must fail — which it did, correctly.
                          "sourceAdditionalHomeSha256",
+                         "sourceWellnessSha256",
                          "synonymMapVersion", "counts",
                          "routes", "records"}:
     die("G13 the envelope carries undeclared keys: %r" % sorted(index.keys()))

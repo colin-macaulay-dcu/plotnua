@@ -160,7 +160,7 @@ Founder is the approval authority. V1 ships ONLY these four audited mappings:
 |---|---|---|
 | `spare garden` | The Borrowed Garden | naive matching returns open-your-home-to-art + about and MISSES the right page |
 | `solar`, `solar battery` | The House as a Power Station | 0 products; this Discovery is the only truthful answer |
-| `sauna` | Garden Retreat | **POSSIBILITY ONLY** — see §2 features |
+| `sauna` | Garden Retreat | Garden Retreat first, then governed wellness saunas only (amended 14 Oct 2026; was POSSIBILITY ONLY — see §2 features) |
 | `parking` | Hidden Cars + Driveway Income | narrowing map; naive matching returns 7 pages on incidental prose |
 
 `garden office` is deliberately NOT a synonym: the corpus already says it natively in
@@ -296,7 +296,7 @@ links to all 13 public Discoveries. Search then enhances it.
 | artist | 1 product — Hutsmith Type III Cabin, on `productType` — plus art possibilities; must NOT surface the retired Artist Studio Discovery |
 | spare garden | The Borrowed Garden; must NOT return open-your-home-to-art or about |
 | parking | Hidden Cars + Driveway Income; must NOT return hidden-bins or your-home-on-screen |
-| sauna | **Garden Retreat only.** Zero products, zero suppliers, helpful zero-state. Auroom and every other private preview stay invisible. |
+| sauna | **Garden Retreat first.** Then only saunas from the governed wellness corpus (wellness-universe-v1.json, published through the supplier publication gate), each routed to the Garden Retreat maker explorer that lists it. Zero suppliers. Auroom and every other private preview stay invisible; the incidental features mentions still cannot answer. *Amended 14 Oct 2026 by founder decision (OGNYX public integration); until then: Garden Retreat only, zero products.* |
 
 ---
 

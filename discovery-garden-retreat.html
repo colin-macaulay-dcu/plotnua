@@ -1067,6 +1067,7 @@
 }
 /* PLOTNUA A11Y VISUAL v1 · END */
 </style>
+<link rel="stylesheet" href="maker-explorer.css">
 <!-- STRUCTURED DATA. Technical hygiene, not the ranking strategy. WebPage,
      not Article: a standing resource, not a dated piece. Deliberately absent:
      FAQPage (the answers are prose inside the narrative, not a Q&A list), and
@@ -1480,7 +1481,55 @@
     <p>PlotNua could not find a bespoke garden-retreat builder in Ireland. <strong>All three routes are products, bought from suppliers</strong> &mdash; which is why the prices are published at all.</p>
     <p><a href="https://mycabin.ie/" target="_blank" rel="noopener noreferrer">MyCabin</a> has showrooms in Blessington, Cobh and Wexford, and publishes the sauna sizes and prices above. <a href="https://gardenhouse24.ie/" target="_blank" rel="noopener noreferrer">Gardenhouse24</a> trades here as ABC Gardenhouse IRL Ltd and publishes the hot tub and its options. <a href="https://timbertrove.com/" target="_blank" rel="noopener noreferrer">Timbertrove</a> works from O&rsquo;Kelly&rsquo;s Sawmill in Dublin and publishes the cold plunge.</p>
     <p><strong>They are named here because they publish, not because PlotNua rates them.</strong> No ranking, no recommendation. Other Irish suppliers exist that PlotNua has not checked.</p>
-    <p class="rel-note">PlotNua has no commercial relationship with any supplier named on this page, and none was contacted. Everything quoted was read from their own public pages in September 2026.</p>
+    <p class="rel-note">PlotNua has no commercial relationship with any supplier named on this page. The suppliers named in this section were not contacted: everything quoted here was read from their own public pages in September 2026.</p>
+  </section>
+
+  <!-- 6c · PLOTNUA-MAKER-EXPLORER-V1 · Founder decisions 13 Oct 2026. Shared component
+       (maker-explorer.js / maker-explorer.css) configured for this page by
+       atlas-tools/build-maker-explorer.py from published eligibility files;
+       do not hand-edit. -->
+  <section class="article-section reveal" id="explore-makers" data-pn-maker-explorer>
+    <div class="kicker">Makers and Products</div>
+    <h2>Explore makers and products</h2>
+    <p>Outdoor saunas, hot tubs and cold plunges that PlotNua has researched from
+      each maker&rsquo;s own published information. Makers are listed A to Z; open one
+      to see the products PlotNua lists for it.</p>
+
+    <div class="mx-figs">
+      <div><span class="mx-fig">29</span><span class="mx-fig-l">products listed</span></div>
+    </div>
+
+    <div class="mx" id="mx">
+      <div class="mx-tabs" role="tablist" aria-label="Product type">
+        <button type="button" class="mx-tab" role="tab" id="mx-t-wellness" aria-selected="true" aria-controls="mx-pane" data-k="wellness">Saunas, hot tubs and plunges <span class="mx-n">29</span></button>
+      </div>
+      <div class="mx-pane" id="mx-pane" role="tabpanel" aria-labelledby="mx-t-wellness">
+        <p class="mx-line" id="mx-line"></p>
+        <ul class="mx-legend" id="mx-legend"></ul>
+        <div class="mx-top" id="mx-top" hidden><button type="button" class="mx-btn" id="mx-less-top">Show fewer makers</button></div>
+        <div class="mx-tools" id="mx-tools" hidden>
+          <input class="mx-find" id="mx-find" type="search" placeholder="Find a maker" aria-label="Find a maker" autocomplete="off">
+          <div class="mx-chips" id="mx-chips" role="group" aria-label="Irish availability">
+            <button type="button" class="mx-chip" data-f="all" aria-pressed="true">All</button>
+            <button type="button" class="mx-chip" data-f="c" aria-pressed="false">Confirmed</button>
+            <button type="button" class="mx-chip" data-f="u" aria-pressed="false">Not yet confirmed</button>
+          </div>
+        </div>
+        <p class="mx-order" id="mx-order"></p>
+        <ul class="mx-grid" id="mx-grid"></ul>
+        <div class="mx-more"><button type="button" class="mx-btn" id="mx-all"></button><span class="mx-order" id="mx-shown"></span></div>
+        <noscript><p class="mx-line">The maker list needs JavaScript. You can still
+          <a href="search.html">search PlotNua&rsquo;s saunas, hot tubs and cold plunges</a>.</p></noscript>
+      </div>
+    </div>
+
+
+    <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
+      products still being checked are not shown. Makers are not ranked, and PlotNua has no
+      commercial arrangement with any maker listed.</p>
+
+    <script type="application/json" class="pn-mx-config" id="mx-data">{"initial":6,"tabs":[{"key":"wellness","nouns":["product","products"],"figures":{"products":29,"makers":1,"confirmed":0,"noRoute":0},"makers":[{"m":"OGNYX","p":[["recsNO8DyDCOyzaaf","OGNYX 1,6m Outdoor Sauna for 3 people","Configurable Outdoor Sauna Pod","u"],["rec839i9u1AuIyWA5","OGNYX 2-2.3m Outdoor Sauna for 4 people","Configurable Outdoor Sauna Pod","u"],["rec9qtid9KJX8EQpy","OGNYX 2.4m Outdoor Sauna with Outside Seats for 4 people","Configurable Outdoor Sauna Pod","u"],["recVazyerS81xoeq4","OGNYX 3.6m Outdoor Sauna with Outside Seats for 6 people","Configurable Outdoor Sauna Pod","u"],["recKBqAycJhUbV7Ts","OGNYX 3m Cube Barrel Sauna for 6 people","Configurable Outdoor Sauna Pod","u"],["rec1Y7hhBe5xJlcWx","OGNYX 3m Cube Barrel Sauna with dressing room for 4 people","Configurable Outdoor Sauna Pod","u"],["rec3KR7xUz1j9CkOG","OGNYX 3m Outdoor Sauna for 6 people","Configurable Outdoor Sauna Pod","u"],["rec7vDvqZSiQupeYe","OGNYX 3m Outdoor Sauna with Dressing Room for 4 people","Configurable Outdoor Sauna Pod","u"],["recaUH7DRxp9t37yA","OGNYX 4m Cube Barrel Sauna with dressing room and outside seats for 4 people","Configurable Outdoor Sauna Pod","u"],["recdPMdChAStDH8sp","OGNYX 4m Outdoor Sauna with Dressing Room and Outside Seats for 4 people","Configurable Outdoor Sauna Pod","u"],["recZsz3qTuwssgzRR","OGNYX 4m Two-room Outdoor Sauna for 4-6 people","Configurable Outdoor Sauna Pod","u"],["recM91mb6JaOREuEm","OGNYX 5m Outdoor Sauna with seats or bed for 6 people","Configurable Outdoor Sauna Pod","u"],["recntSXUahjfycM7P","OGNYX Cold Plunge Tub from fiberglass for 2 people","Cold Plunge / Ice Bath","u"],["recSN0nR2ykCjobcF","OGNYX Fiberglass Cold Plunge Tub for One","Cold Plunge / Ice Bath","u"],["recjMSl8ncVIuUkQm","OGNYX Round Hot Tub with integrated wood-fired stove for 5 people","","u"],["recTXhjMxUj7DKm6P","OGNYX Stainless Steel Cold Plunge Tub for One","Cold Plunge / Ice Bath","u"],["recDQiVW2kmzKqpoG","OGNYX Stainless Steel Wooden Hot Tub with a Wood-Fired Heater","","u"],["recx144QzENy1GSwf","OGNYX Vertical Outdoor Sauna for 2 people","Configurable Outdoor Sauna Pod","u"],["rec1nKZYJJMd6dksA","OGNYX Wood-fired Hot Tub from Fiberglass for 2 people","","u"],["recwlPfitJ6tzSN26","OGNYX Wood-fired Hot Tub with an Inside Heater for 3 people","","u"],["recLYdYxpg3De2N11","OGNYX Wood-fired Hot Tub with an Outside Heater for 4 people","","u"],["recaT6TVXSTHy7NWv","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 6 people","","u"],["recfXgvAW6ctZw9k1","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 7 people","","u"],["recD9K20z7I9Fj6SP","OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 9 people","","u"],["recPyhpq3k9A7DMmU","OGNYX Wood-fired Hot Tub “Quattro” from Fiberglass for 8 people","","u"],["recXbFA0tXLF6SvgL","OGNYX Wooden Hot Tub with an Inside Heater for 3-10 people","","u"],["recB34Lc8Nza9LIEJ","OGNYX Wooden Hot Tub with an Outside Heater for 2 people","","u"],["rec7GhVuWTNx9fSj8","OGNYX Wooden Hot Tub with an Outside Heater for 4-12 people","","u"],["recrPVog4GNA3ERhf","OGNYX Wooden Hot Tub without Heater","","u"]]}],"productLink":null}]}</script>
+    <script src="maker-explorer.js"></script>
   </section>
 
   <section class="article-section reveal" id="where-this-comes-from">

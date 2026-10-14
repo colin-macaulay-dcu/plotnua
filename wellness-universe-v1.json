@@ -1,0 +1,1112 @@
+{
+  "schema": "plotnua.wellness-universe",
+  "version": "1.0.0",
+  "generated": "2026-10-14T11:11:09Z",
+  "qualificationRuleVersion": "wellness-qualification-v1",
+  "publicationGate": {
+    "version": "supplier-publication-gate-v1",
+    "rule": "public visibility is derived from permission state, listing-review state and asset approval by the Additional Home generator's publication_hold(); a product is public only when ELIGIBLE and PUBLISHABLE.",
+    "heldOrganisations": []
+  },
+  "snapshotSha256": "e3d7aa88d17efc657759b761e2ee0ab0eaf91ae007f4d9ac75061ee85cbb2c09",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026 (OGNYX subset); internal governance data, never committed",
+  "sourceCategory": "Wellness / Sauna",
+  "sourceCategoryCount": 41,
+  "eligibleCount": 29,
+  "organisationCount": 1,
+  "heldCount": 12,
+  "excludedCount": 0,
+  "gateHeldCount": 0,
+  "products": [
+    {
+      "id": "recsNO8DyDCOyzaaf",
+      "productCode": "PROD-001257",
+      "productName": "OGNYX 1,6m Outdoor Sauna for 3 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2850,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recB4sNoD3z8XpYgL",
+      "productCode": "PROD-001246",
+      "productName": "OGNYX 1.7m Cube Barrel Sauna for 3 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3160,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recJuwIn7bBk5mDQL",
+      "productCode": "PROD-001240",
+      "productName": "OGNYX 2-2.3m Mirrored Sauna for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4580,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec839i9u1AuIyWA5",
+      "productCode": "PROD-001256",
+      "productName": "OGNYX 2-2.3m Outdoor Sauna for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3580,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec3DxmwdTEumUwJ8",
+      "productCode": "PROD-001244",
+      "productName": "OGNYX 2.4m Cube Barrel Sauna with outside seats for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3880,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec9qtid9KJX8EQpy",
+      "productCode": "PROD-001255",
+      "productName": "OGNYX 2.4m Outdoor Sauna with Outside Seats for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3660,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recX7IRnkD0PNDUhp",
+      "productCode": "PROD-001254",
+      "productName": "OGNYX 2.8m Outdoor Sauna with Outside Seats for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3860,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recPEyrQcz5iHzaSM",
+      "productCode": "PROD-001245",
+      "productName": "OGNYX 2/2.3m Cube Barrel Sauna for 3 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3810,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recGyqJHsZTHoORPS",
+      "productCode": "PROD-001239",
+      "productName": "OGNYX 2/2.3m Mirrored Cube Barrel Sauna for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4810,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recVazyerS81xoeq4",
+      "productCode": "PROD-001251",
+      "productName": "OGNYX 3.6m Outdoor Sauna with Outside Seats for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4290,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recKBqAycJhUbV7Ts",
+      "productCode": "PROD-001242",
+      "productName": "OGNYX 3m Cube Barrel Sauna for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4340,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec1Y7hhBe5xJlcWx",
+      "productCode": "PROD-001243",
+      "productName": "OGNYX 3m Cube Barrel Sauna with dressing room for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4610,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recBgWBAcQwWLb9oT",
+      "productCode": "PROD-001238",
+      "productName": "OGNYX 3m Mirrored Cube Barrel Sauna for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5340,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recisLeRIkpgRCEFu",
+      "productCode": "PROD-001237",
+      "productName": "OGNYX 3m Mirrored Sauna for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5140,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec3KR7xUz1j9CkOG",
+      "productCode": "PROD-001252",
+      "productName": "OGNYX 3m Outdoor Sauna for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4140,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec7vDvqZSiQupeYe",
+      "productCode": "PROD-001253",
+      "productName": "OGNYX 3m Outdoor Sauna with Dressing Room for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4360,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recaUH7DRxp9t37yA",
+      "productCode": "PROD-001241",
+      "productName": "OGNYX 4m Cube Barrel Sauna with dressing room and outside seats for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5270,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recdPMdChAStDH8sp",
+      "productCode": "PROD-001250",
+      "productName": "OGNYX 4m Outdoor Sauna with Dressing Room and Outside Seats for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4920,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recursLY4Q1bFn4rh",
+      "productCode": "PROD-001248",
+      "productName": "OGNYX 4m Outdoor Sauna with Dressing Room for 8 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4870,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recZsz3qTuwssgzRR",
+      "productCode": "PROD-001249",
+      "productName": "OGNYX 4m Two-room Outdoor Sauna for 4-6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4960,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recM91mb6JaOREuEm",
+      "productCode": "PROD-001247",
+      "productName": "OGNYX 5m Outdoor Sauna with seats or bed for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6820,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recqZvNgpcTOUOe9D",
+      "productCode": "PROD-001234",
+      "productName": "OGNYX Big Oval Outdoor Sauna for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 9970,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recntSXUahjfycM7P",
+      "productCode": "PROD-001218",
+      "productName": "OGNYX Cold Plunge Tub from fiberglass for 2 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2080,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recSN0nR2ykCjobcF",
+      "productCode": "PROD-001219",
+      "productName": "OGNYX Fiberglass Cold Plunge Tub for One",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 1690,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recHEBSdisGB9AnmT",
+      "productCode": "PROD-001236",
+      "productName": "OGNYX Oval Outdoor Sauna for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6680,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recRPkVJdIB1mifpa",
+      "productCode": "PROD-001235",
+      "productName": "OGNYX Oval Outdoor Sauna for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6780,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recjMSl8ncVIuUkQm",
+      "productCode": "PROD-001232",
+      "productName": "OGNYX Round Hot Tub with integrated wood-fired stove for 5 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2440,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recTXhjMxUj7DKm6P",
+      "productCode": "PROD-001217",
+      "productName": "OGNYX Stainless Steel Cold Plunge Tub for One",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2310,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recDQiVW2kmzKqpoG",
+      "productCode": "PROD-001223",
+      "productName": "OGNYX Stainless Steel Wooden Hot Tub with a Wood-Fired Heater",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3460,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recx144QzENy1GSwf",
+      "productCode": "PROD-001233",
+      "productName": "OGNYX Vertical Outdoor Sauna for 2 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3950,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec1nKZYJJMd6dksA",
+      "productCode": "PROD-001225",
+      "productName": "OGNYX Wood-fired Hot Tub from Fiberglass for 2 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2490,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recwlPfitJ6tzSN26",
+      "productCode": "PROD-001226",
+      "productName": "OGNYX Wood-fired Hot Tub with an Inside Heater for 3 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2600,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recLYdYxpg3De2N11",
+      "productCode": "PROD-001227",
+      "productName": "OGNYX Wood-fired Hot Tub with an Outside Heater for 4 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2570,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recaT6TVXSTHy7NWv",
+      "productCode": "PROD-001228",
+      "productName": "OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 6 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2850,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recfXgvAW6ctZw9k1",
+      "productCode": "PROD-001229",
+      "productName": "OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 7 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2940,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recD9K20z7I9Fj6SP",
+      "productCode": "PROD-001230",
+      "productName": "OGNYX Wood-fired Hot Tub “Octa” from Fiberglass for 9 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3130,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recPyhpq3k9A7DMmU",
+      "productCode": "PROD-001231",
+      "productName": "OGNYX Wood-fired Hot Tub “Quattro” from Fiberglass for 8 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3250,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recXbFA0tXLF6SvgL",
+      "productCode": "PROD-001221",
+      "productName": "OGNYX Wooden Hot Tub with an Inside Heater for 3-10 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2050,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recB34Lc8Nza9LIEJ",
+      "productCode": "PROD-001222",
+      "productName": "OGNYX Wooden Hot Tub with an Outside Heater for 2 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 1890,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "rec7GhVuWTNx9fSj8",
+      "productCode": "PROD-001224",
+      "productName": "OGNYX Wooden Hot Tub with an Outside Heater for 4-12 people",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 2050,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    },
+    {
+      "id": "recrPVog4GNA3ERhf",
+      "productCode": "PROD-001220",
+      "productName": "OGNYX Wooden Hot Tub without Heater",
+      "organisation": "OGNYX",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 1160,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price for the basic set. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v1",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null
+    }
+  ]
+}

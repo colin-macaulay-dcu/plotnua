@@ -245,7 +245,14 @@ console.log('  PART A · THE EIGHT REPRESENTATIVE QUERIES\n');
     r.counts.possibility === 2, String(r.counts.possibility));
 }
 
-/* --- A8 sauna: HONEST EMPTY ---------------------------------------------- */
+/* --- A8 sauna: GARDEN RETREAT FIRST, THEN ONLY GOVERNED SAUNAS -------------
+   AMENDED 14 Oct 2026 (founder decision, OGNYX public integration). "sauna"
+   used to be an HONEST EMPTY: the corpus held no sauna that could truthfully
+   answer it. The governed wellness corpus now does, published through the
+   supplier publication gate. What must still hold is everything that made the
+   empty answer honest: Garden Retreat leads; the incidental features mentions
+   cannot answer; no supplier control appears; no private preview leaks; and
+   every product shown routes to the Garden Retreat explorer that lists it. */
 {
   const r = q('sauna');
   check('A8a sauna returns Garden Retreat',
@@ -253,16 +260,23 @@ console.log('  PART A · THE EIGHT REPRESENTATIVE QUERIES\n');
     && route(r.groups.possibility.find((x) => x.id === 'poss-garden-retreat'))
        === 'discovery-garden-retreat.html',
     JSON.stringify(ids(r.groups.possibility)));
-  check('A8b sauna returns ZERO products', r.counts.product === 0,
-    JSON.stringify(names(r.groups.product)));
+  const ps = r.groups.product;
+  check('A8b sauna returns only governed wellness saunas, each routed to the ' +
+        'Garden Retreat explorer',
+    ps.length > 0 && ps.every((p) => route(p) === 'discovery-garden-retreat.html#explore-makers'
+      && /sauna/i.test((p.name || '') + ' ' + (p.productType || ''))),
+    JSON.stringify(ps.map((p) => [p.name, route(p)]).slice(0, 4)));
   check('A8c sauna returns ZERO suppliers', r.counts.supplier === 0,
     JSON.stringify(names(r.groups.supplier)));
-  check('A8d the possibility-only flag is set', r.possibilityOnly === true);
+  check('A8d the possibility-only special case is retired and Garden Retreat ' +
+        'is mapped, not guessed', r.possibilityOnly === false
+    && r.groups.possibility[0] && r.groups.possibility[0].id === 'poss-garden-retreat');
   check('A8e Auroom Wellness is nowhere in the answer',
     !JSON.stringify(r).toLowerCase().includes('auroom'));
   check('A8f the 4 incidental features mentions did not leak: no MyCabin, ' +
         'Iglucraft or Koto product',
-    !names(r.groups.product).length, JSON.stringify(names(r.groups.product)));
+    !ps.some((p) => /mycabin|iglucraft|koto/i.test((p.organisation || '') + ' ' + p.name)),
+    JSON.stringify(names(ps)));
 }
 
 /* ============================= PART A2 · SEARCH -> PRODUCT ROUTING ========

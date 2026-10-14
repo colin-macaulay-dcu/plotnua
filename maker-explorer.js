@@ -45,7 +45,8 @@
     }
     function line() {
       var T = TABS[tab], F = T.figures, n = F.products, conf = F.confirmed;
-      var s = '<strong>' + n + ' ' + T.nouns[1] + '</strong> from <strong>' + F.makers + ' makers</strong>. ';
+      var s = '<strong>' + n + ' ' + T.nouns[n === 1 ? 0 : 1] + '</strong> from <strong>' + F.makers +
+        (F.makers === 1 ? ' maker' : ' makers') + '</strong>. ';
       if (conf === n) { return s + 'Irish availability is confirmed for all ' + n + '.'; }
       return s + 'Irish availability is confirmed for ' + conf + ' and not yet confirmed for ' +
         (n - conf) + (F.noRoute ? ', including ' + F.noRoute +
@@ -109,6 +110,10 @@
       var total = list.length;
       $('mx-all').textContent = expanded ? 'Show fewer makers' : 'Show all ' + total + ' makers';
       $('mx-shown').textContent = (expanded ? rows.length : Math.min(INITIAL, total)) + ' of ' + total + ' shown';
+      /* Nothing more to show when every maker already fits (14 Oct 2026:
+         Garden Retreat lists one maker). A directory larger than INITIAL is
+         unchanged. */
+      $('mx-all').parentNode.style.display = total <= INITIAL ? 'none' : '';
     }
     /* Both "Show fewer makers" controls, and a tab switch, return the
        directory to its compact state: search, filter and any open maker are

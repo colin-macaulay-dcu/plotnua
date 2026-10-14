@@ -57,8 +57,15 @@
      dropped the homeowner on the Eircode landing screen. The id is the governed
      record id; no product-name string is ever an identifier. */
   function productRoute(index, rec) {
+    if (!rec || rec.type !== 'product') { return null; }
+    /* A product with NO PlotNua product page carries its own route (14 Oct
+       2026: the wellness corpus, routed to the Garden Retreat maker explorer
+       that lists it). The index builder's R1 proves that page lists the exact
+       id, so this never invents a destination. Nothing is appended: the
+       explorer has no Back-to-Search label to correct. */
+    if (typeof rec.route === 'string' && rec.route) { return rec.route; }
     var tpl = index && index.routes && index.routes.product;
-    if (!tpl || !rec || rec.type !== 'product') { return null; }
+    if (!tpl) { return null; }
     var id = String(rec.id || '');
     if (id.indexOf('prod-') !== 0) { return null; }
     /* &from=search is appended HERE, by Search, not stored in the index — the
@@ -171,12 +178,15 @@
     var mappedIds = {};
     mapped.forEach(function (r) { mappedIds[r.id] = true; });
 
-    /* A possibility-only mapping ("sauna") answers with possibilities and
-       suppresses product and supplier guesses entirely. That is what keeps the
-       answer honest when the corpus holds nothing: the four sauna mentions in
-       the universe are incidental or negative prose and features is never
-       indexed, so there is nothing truthful to show. */
-    var possibilityOnly = mapped.length > 0 && qnorm === 'sauna';
+    /* RETIRED 14 Oct 2026: "sauna" was possibility-only because the corpus
+       held no sauna that could truthfully answer it (four incidental or
+       negative mentions, in features prose that is never indexed). The
+       governed wellness corpus now holds real saunas, published through the
+       same gate, so "sauna" answers like every other phrase: Garden Retreat
+       first (the mapped possibility), then products whose own name or type
+       says sauna. Features prose is still never indexed, so the four
+       incidental mentions still cannot answer. */
+    var possibilityOnly = false;
 
     var scored = [];
     records.forEach(function (r) {

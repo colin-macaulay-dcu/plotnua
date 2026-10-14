@@ -555,17 +555,23 @@ print(json.dumps({n: m.publication_hold(n) for n in json.loads(sys.stdin.read())
     if (!FROZEN.includes(n)) problems.push(`baseline grew: ${n}`);
     if (deriveOrganisationVisibility(n, rows, []).matched) problems.push(`baseline shadows a record: ${n}`);
   }
+  /* RE-AIMED 14 October 2026 (founder decision: PROCEED on OGNYX's own words).
+     This used to assert OGNYX was HELD on a preview-only scope. It now asserts
+     the publication is EARNED: a featuring grant, a confirmed review with a
+     date, exactly four enumerated assets, and no founder exception doing the
+     work evidence must do. */
   const og = rows.find(r => r.organisation_name === 'OGNYX');
   const ogd = og && derivePublicVisibility(og);
-  if (!og || (og.listing_review || {}).state !== 'AWAITING_CONFIRMATION' ||
-      (og.permission || {}).state !== 'GRANTED' || ((og.permission || {}).scope || []).includes('feature') ||
-      ogd.holdReason !== 'permission-scope-excludes-listing' ||
-      !NEVER_WAIVABLE.includes(ogd.holdReason)) {
-    problems.push('OGNYX is not held on an explicit, unwaivable preview-only scope: ' + JSON.stringify(ogd));
+  const sc = ((og || {}).permission || {}).scope || [];
+  if (!og || ogd.visibility !== 'PUBLISHABLE' || og.founder_exception ||
+      !sc.includes('feature') || !sc.includes('imagery') ||
+      (og.listing_review || {}).state !== 'CONFIRMED' || !(og.listing_review || {}).confirmed_at ||
+      (og.approved_assets || []).length !== 4) {
+    problems.push('OGNYX is not published on evidence alone: ' + JSON.stringify(ogd));
   }
   problems.length
-    ? bad('PG15 nothing live changes, JS and generator agree on every record, OGNYX held', problems.join(' | '))
-    : ok('PG15 nothing live changes, JS and generator agree on every record, OGNYX held',
+    ? bad('PG15 nothing live changes, JS and generator agree on every record, OGNYX earned', problems.join(' | '))
+    : ok('PG15 nothing live changes, JS and generator agree on every record, OGNYX earned',
          `${live.length} live organisations still publishable (${legacy.length} by legacy baseline), `
          + `${rows.length} records agree`);
 }

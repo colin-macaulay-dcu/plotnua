@@ -251,10 +251,23 @@ jobs:
       # AND THAT PROOF'S OWN CAPABILITY. It gained a second imagery mode for
       # OGNYX, who invited imagery for their preview while withholding
       # publication, and new containment code that has never been seen to
-      # refuse is a comment. Seven sabotages, each restored in a finally
-      # block, with every touched file hashed before and after.
+      # refuse is a comment. Since OGNYX graduated (14 Oct 2026) no real
+      # supplier uses that mode, so the sabotages run against a synthetic
+      # fixture installed and removed per case; every touched file is hashed
+      # before and after.
       - name: The containment proof must still catch what it is for
         run: python3 atlas-tools/prove-preview-only-capability.py
+
+      # OGNYX, BY ENUMERATION. A publication grant for FOUR named images,
+      # while the manifest row would pass any ognyx.com image anywhere. This
+      # is the difference: only the four, credited and linked wherever they
+      # appear, visualisations labelled, and no unsupported claim in any
+      # published OGNYX record.
+      - name: OGNYX imagery stays the four enumerated assets
+        run: |
+          set -euo pipefail
+          node atlas-tools/prove-ognyx-imagery-containment.mjs
+          python3 atlas-tools/prove-ognyx-imagery-capability.py
 
       - name: Summary
         if: always()

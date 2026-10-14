@@ -37,11 +37,11 @@
     {
       "phrase": "sauna",
       "concept": "garden-retreat",
-      "scope": "possibility-only",
+      "scope": "possibility",
       "targets": [
         "discovery-garden-retreat.html"
       ],
-      "evidence": "Audited 2026-10-08. POSSIBILITY ONLY, by founder decision. Four products mention sauna/wellness and every mention is incidental or negative: MyCabin explicitly EXCLUDES the Cube Sauna from that range; Iglucraft Igluoffice 1 is a warranty exclusion for a sauna heater; Igluoffice 2 is an office variant by a maker of saunas; Koto Niwa is 'suited to a sauna or small garden studio'. All four sit in features prose, which is never indexed. Private previews that do hold sauna suppliers (Auroom Wellness and others) are NEVER searchable and must not fill this gap.",
+      "evidence": "Audited 2026-10-08. POSSIBILITY ONLY, by founder decision. Four products mention sauna/wellness and every mention is incidental or negative: MyCabin explicitly EXCLUDES the Cube Sauna from that range; Iglucraft Igluoffice 1 is a warranty exclusion for a sauna heater; Igluoffice 2 is an office variant by a maker of saunas; Koto Niwa is 'suited to a sauna or small garden studio'. All four sit in features prose, which is never indexed. Private previews that do hold sauna suppliers (Auroom Wellness and others) are NEVER searchable and must not fill this gap. AMENDED 2026-10-14, founder decision (OGNYX public integration, PROCEED): scope possibility, not possibility-only. The governed wellness corpus (wellness-universe-v1.json, published through the supplier publication gate) now holds real saunas, so the phrase answers with Garden Retreat first and then products whose own name or type says sauna. Features prose is still never indexed, so the four incidental mentions above still cannot answer, and private previews are still never searchable.",
       "status": "APPROVED"
     },
     {

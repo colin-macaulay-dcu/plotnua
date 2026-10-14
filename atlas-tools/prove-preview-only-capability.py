@@ -5,6 +5,14 @@ CAPABILITY PROOF — atlas-tools/prove-preview-only-containment.mjs.
 
 The containment proof gained a second imagery mode on 2 October 2026, for
 OGNYX, who invited imagery for their preview while withholding publication.
+
+RE-AIMED 14 OCTOBER 2026. OGNYX graduated to a publication grant and left the
+register, so no real supplier uses the preview-only mode today. The branch is
+still live code, so it is still proved -- against a SYNTHETIC FIXTURE that is
+installed before every case and removed after it: one register row, one rights
+row and one decoy preview page, all named "ZZ Capability Fixture" on the
+reserved .invalid domain. Nothing about the fixture survives the run, and the
+hash line proves it.
 That branch is new code, and a guard that has never refused anything is a
 comment. This breaks the containment proof once per check and every break
 must be caught.
@@ -34,11 +42,35 @@ HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
 REGISTER = HERE / "preview-only-suppliers.json"
 RECORDS = ROOT / "image-rights-records.json"
-PREVIEW = ROOT / "ognyx-preview.html"
+PREVIEW = ROOT / "zz-capability-fixture-preview.html"
+FIX_NAME = "ZZ Capability Fixture"
+FIX_HOST = "capability-fixture.invalid"
+FIX_IMG = "https://" + FIX_HOST + "/cdn/files/"
+FIX_ROW = {
+    "name": FIX_NAME, "imagery_mode": "preview-only", "page": PREVIEW.name,
+    "site_host": FIX_HOST, "credit": "\u00a9 " + FIX_NAME,
+    "image_hosts": [{"host": FIX_HOST, "path_prefix": "/cdn/", "why": "synthetic fixture"}],
+    "imagery_evidence": "Synthetic capability fixture; never a real supplier.",
+    "forbidden_claims": ["guaranteed"],
+}
+FIX_RECORD = {
+    "organisation_name": FIX_NAME,
+    "permission_outcome": "Granted with Conditions \u2014 Founder Confirmed",
+    "permitted_domain": FIX_HOST, "required_credit": "\u00a9 " + FIX_NAME,
+    "conditions": ["PREVIEW ONLY: imagery on " + PREVIEW.name + " and nowhere else."],
+}
+FIX_PAGE = ('<!doctype html><html><head><meta name="robots" content="noindex, '
+            'nofollow, noarchive, nosnippet, noimageindex"></head><body>'
+            '<p>\u00a9 ' + FIX_NAME + '</p><a href="https://' + FIX_HOST + '/">site</a>'
+            '<img src="' + FIX_IMG + 'a.png" alt=""><img src="' + FIX_IMG + 'b.png" alt="">'
+            '</body></html>')
 PROOF = HERE / "prove-preview-only-containment.mjs"
 DECOY = ROOT / "zz-capability-decoy.html"
 
-TOUCHED = [REGISTER, RECORDS, PREVIEW]
+TOUCHED = [REGISTER, RECORDS]
+if PREVIEW.exists():
+    print("refusing: a fixture page is already on disk: " + PREVIEW.name)
+    sys.exit(2)
 for f in TOUCHED + [PROOF]:
     if not f.exists():
         print("missing: " + str(f))
@@ -63,17 +95,28 @@ def containment():
     return verdict, detail
 
 
+def install_fixture():
+    edit_register(lambda d: d["suppliers"].append(dict(FIX_ROW)))
+    d = json.loads(RECORDS.read_text(encoding="utf-8"))
+    d["records"].append(dict(FIX_RECORD))
+    RECORDS.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n",
+                       encoding="utf-8")
+    PREVIEW.write_text(FIX_PAGE, encoding="utf-8")
+
+
 def case(label, mutate, expect):
     """mutate() changes the tree; everything is restored afterwards."""
     saved = {f: f.read_bytes() for f in TOUCHED}
     try:
+        install_fixture()
         mutate()
         got, detail = containment()
     finally:
         for f, b in saved.items():
             f.write_bytes(b)
-        if DECOY.exists():
-            DECOY.unlink()
+        for extra in (DECOY, PREVIEW):
+            if extra.exists():
+                extra.unlink()
     hit = got == expect
     print("  %s %-16s %s" % ("CAUGHT " if hit else "MISSED ", got, label))
     print("          -> %s" % (detail[:104] if detail else "(nothing reported)"))
@@ -88,7 +131,8 @@ def edit_register(fn):
 
 
 def ognyx(d):
-    return [s for s in d["suppliers"] if s["name"] == "OGNYX"][0]
+    """The preview-only row under test: the synthetic fixture (see header)."""
+    return [s for s in d["suppliers"] if s["name"] == FIX_NAME][0]
 
 
 print("CAPABILITY PROOF — PREVIEW-ONLY CONTAINMENT")
@@ -118,10 +162,10 @@ r(case("a page carries imagery while the mode says none was granted",
 
 # ---- confinement ----------------------------------------------------------
 # The whole point of the mode: their imagery on their page and nowhere else.
-r(case("an OGNYX image appears on a second page",
+r(case("a preview-only image appears on a second page",
        lambda: DECOY.write_text(
            '<!doctype html><html><body><img src="'
-           'https://www.ognyx.com/cdn/shop/files/x.png" alt=""></body></html>',
+           + FIX_IMG + 'x.png" alt=""></body></html>',
            encoding="utf-8"),
        "BREACHED"))
 
@@ -131,7 +175,7 @@ r(case("an OGNYX image appears on a second page",
 r(case("the preview loses the imagery the row permits",
        lambda: PREVIEW.write_text(
            PREVIEW.read_text(encoding="utf-8")
-           .replace("https://www.ognyx.com/cdn/shop/files/", "about:blank#"),
+           .replace(FIX_IMG, "about:blank#"),
            encoding="utf-8"),
        "BREACHED"))
 
@@ -140,7 +184,7 @@ def drop_condition(needle):
     def go():
         d = json.loads(RECORDS.read_text(encoding="utf-8"))
         for rec in d["records"]:
-            if rec.get("organisation_name") == "OGNYX":
+            if rec.get("organisation_name") == FIX_NAME:
                 rec["conditions"] = [c for c in rec["conditions"]
                                      if needle not in c.lower()]
         RECORDS.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n",
@@ -155,7 +199,7 @@ r(case("the PREVIEW ONLY condition is dropped from the rights record",
 def remove_record():
     d = json.loads(RECORDS.read_text(encoding="utf-8"))
     d["records"] = [x for x in d["records"]
-                    if x.get("organisation_name") != "OGNYX"]
+                    if x.get("organisation_name") != FIX_NAME]
     RECORDS.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n",
                        encoding="utf-8")
 
@@ -163,8 +207,9 @@ def remove_record():
 r(case("the rights record disappears entirely",
        remove_record, "BREACHED"))
 
-# ---- and the untouched tree must still be contained ----------------------
+# ---- the fixture alone is contained, and so is the untouched tree --------
 print("-" * 78)
+r(case("CONTROL the installed fixture is contained", lambda: None, "CONTAINED"))
 got, _ = containment()
 hit = got == "CONTAINED"
 r(hit)

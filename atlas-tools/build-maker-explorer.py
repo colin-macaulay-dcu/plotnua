@@ -52,7 +52,13 @@ MARK = "PLOTNUA-MAKER-EXPLORER-V1"
 V1_CSS_MARK = "PLOTNUA MAKER EXPLORER v1"          # the inline block v1 wrote
 SHARED_JS, SHARED_CSS = "maker-explorer.js", "maker-explorer.css"
 PINS = {
-    SHARED_JS:  "fe884244bbbbd0bedfcf9eb543b19d06590322972860dadc3d42b17484deb83b",
+    # Re-pinned 14 Oct 2026: the summary line now says "1 maker" / "1 product"
+    # rather than "1 makers", and the "Show all" control is hidden when every
+    # maker already fits (Garden Retreat lists one maker). Output for any
+    # directory larger than six makers is unchanged, so Living in the Garden
+    # is identical.
+    # Previous pin: fe884244bbbbd0bedfcf9eb543b19d06590322972860dadc3d42b17484deb83b
+    SHARED_JS:  "76846752dc52234d91aee875ed4e5afd0d409f41e1d52fd87474cccebcba3358",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -111,7 +117,29 @@ def _ah(A):
     def st(q): return "c" if (q.get("irish") or {}).get("state") == "CONFIRMED" else "u"
     eligible = [(q["organisation"], q["id"], q["productName"], "", st(q)) for q in el]
     header = {"products": A["eligibleCount"]}
+    # THE PUBLICATION GATE, READ HERE TOO (14 Oct 2026). An artefact that
+    # declares the gate is read fail-closed: a product that is not exactly
+    # PUBLISHABLE is held, never listed. G1 then refuses the build if the
+    # header counted it, rather than quietly showing fewer.
+    if A.get("publicationGate"):
+        gated = {q["id"] for q in el if q.get("publicVisibility") != "PUBLISHABLE"}
+        held |= gated
+        eligible = [e for e in eligible if e[1] not in gated]
     return eligible, held, {q["organisation"] for q in rows}, header
+
+def _wl(W):
+    # The wellness universe (DISC-001 Garden Retreat). Public = ELIGIBLE AND
+    # PUBLISHABLE, read from the record itself; the header's eligibleCount
+    # counts exactly that, so G1 holds the two together.
+    if not W.get("publicationGate"): die("the wellness universe does not declare the publication gate")
+    rows = W["products"]
+    pub = [q for q in rows if (q.get("qualification") or {}).get("state") == "ELIGIBLE"
+           and q.get("publicVisibility") == "PUBLISHABLE"]
+    held = {q["id"] for q in rows} - {q["id"] for q in pub}
+    def st(q): return "c" if (q.get("irish") or {}).get("state") == "CONFIRMED" else "u"
+    eligible = [(q["organisation"], q["id"], q["productName"], q.get("productType") or "", st(q)) for q in pub]
+    header = {"products": W["eligibleCount"], "makers": W["organisationCount"]}
+    return eligible, held, {q["organisation"] for q in rows if q.get("organisation")}, header
 
 SOURCES = {
     "garden-room-universe-v1": {
@@ -125,6 +153,16 @@ SOURCES = {
         # The deep link resolves the Garden Room pool only and fails closed
         # for a garden home, so these products have NO product page yet.
         "productPage": None,
+    },
+    "wellness-universe-v1": {
+        "file": "wellness-universe-v1.json", "read": _wl,
+        "productPage": None,
+        # NO JOURNEY YET, SAID PLAINLY. Garden Retreat's property check is
+        # "being prepared" (its own page says so) and no product page resolves
+        # a wellness product, so there is nowhere honest to send anyone. The
+        # tab therefore lists products as TEXT with no onward link, rather
+        # than routing to a journey that would not show them.
+        "noJourneyYet": True,
     },
 }
 # Journeys a tab may route to when its products have no product page.
@@ -160,6 +198,29 @@ PAGES = {
         "css_anchor": "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>",
         "keep_links": ('href="your-plot.html?discovery=residential"',
                        'href="your-plot.html?discovery=garden-room"'),
+    },    # DISC-001 Garden Retreat. Founder decision 14 Oct 2026: "OGNYX public
+    # integration — PROCEED". One tab over the wellness universe; products are
+    # listed as text (see SOURCES: noJourneyYet). Inserted after "Where this is
+    # sold in Ireland" and before the evidence section, on first build.
+    "discovery-garden-retreat.html": {
+        "kicker": "Makers and Products",
+        "heading": "Explore makers and products",
+        "intro": ("Outdoor saunas, hot tubs and cold plunges that PlotNua has researched from\n"
+                  "      each maker&rsquo;s own published information. Makers are listed A to Z; open one\n"
+                  "      to see the products PlotNua lists for it."),
+        "tabs": [
+            {"key": "wellness", "id": "wellness", "label": "Saunas, hot tubs and plunges",
+             "nouns": ["product", "products"], "source": "wellness-universe-v1"},
+        ],
+        "headline": [("tab:wellness", "products listed")],
+        "noscript": "search PlotNua&rsquo;s saunas, hot tubs and cold plunges",
+        "after": "Where this is sold in Ireland",
+        "before": "Where this comes from",
+        "insert_first_build": True,
+        "first_build_anchor": '  <section class="article-section reveal" id="where-this-comes-from">',
+        "block_end": '  <section class="article-section reveal" id="where-this-comes-from">',
+        "css_anchor": "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>",
+        "keep_links": ('href="discovery-living-in-the-garden.html"',),
     },
 }
 
@@ -168,6 +229,10 @@ def info_pages():
     m = re.search(r"^SUPPLIER_INFO_PAGES = (\{.*?^\})", src, re.S | re.M)
     if not m: die("SUPPLIER_INFO_PAGES not found in build-search-index.py")
     return ast.literal_eval(m.group(1))
+
+# Display-name overrides seen across EVERY page in one run. Checked once, in
+# main(): an override must name a product some page lists, not every page.
+SEEN_OVERRIDES = set()
 
 # ── data for one page ────────────────────────────────────────────────────────
 def load(P):
@@ -197,14 +262,15 @@ def load(P):
         cfg = {"key": T["key"], "nouns": T["nouns"], "figures": figures, "makers": makers,
                "productLink": S["productPage"]}
         if not S["productPage"]:
-            if not T.get("route"): die("tab %r has no product page and no route" % T["key"])
-            cfg["route"] = T["route"]
+            if T.get("route"):
+                if S.get("noJourneyYet"): die("tab %r routes to a journey its source says does not exist" % T["key"])
+                cfg["route"] = T["route"]
+            elif not S.get("noJourneyYet"):
+                die("tab %r has no product page and no route" % T["key"])
         elif T.get("route"):
             die("tab %r links products; it must not also carry a route" % T["key"])
         tabs.append({"T": T, "cfg": cfg, "header": header, "eligible_ids": {e[1] for e in eligible}})
-    if not set(DISPLAY_NAME_BY_ID) <= seen_override:
-        die("display-name override for a product that is not publicly listed: %s"
-            % sorted(set(DISPLAY_NAME_BY_ID) - seen_override))
+    SEEN_OVERRIDES.update(seen_override)
     return tabs, len(all_orgs), held_all
 
 # ── markup ───────────────────────────────────────────────────────────────────
@@ -222,6 +288,7 @@ def section(P, tabs, researched):
                    f'{extra}>{html.escape(t["T"]["label"])} <span class="mx-n">{t["cfg"]["figures"]["products"]}</span></button>')
     btns = "\n".join(btn)
     config = {"initial": 6, "tabs": [t["cfg"] for t in tabs]}
+    pages = " Product pages open within PlotNua." if any(t["cfg"]["productLink"] for t in tabs) else ""
     payload = json.dumps(config, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     return f'''  <!-- 6c · {MARK} · Founder decisions 13 Oct 2026. Shared component
        (maker-explorer.js / maker-explorer.css) configured for this page by
@@ -263,7 +330,7 @@ def section(P, tabs, researched):
 
     <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
       products still being checked are not shown. Makers are not ranked, and PlotNua has no
-      commercial arrangement with any maker listed. Product pages open within PlotNua.</p>
+      commercial arrangement with any maker listed.{pages}</p>
 
     <script type="application/json" class="pn-mx-config" id="mx-data">{payload}</script>
     {JS_TAG}
@@ -292,10 +359,15 @@ def build(fname, P, src):
     if src.count(CSS_LINK) == 1:
         src = src.replace(P["css_anchor"] + "\n" + CSS_LINK, P["css_anchor"], 1)
         if CSS_LINK in src: die("existing stylesheet link not where the builder puts it")
-    start = src.find("  <!-- 6c · " + MARK) if MARK in src else src.find(P["first_build_anchor"])
+    existing = MARK in src
+    start = src.find("  <!-- 6c · " + MARK) if existing else src.find(P["first_build_anchor"])
     end = src.find(P["block_end"])
+    # A page whose first build REPLACES a placeholder section (Living in the
+    # Garden) has one section between the anchors; a page whose first build
+    # INSERTS (insert_first_build) has none. Every later build has exactly one.
+    want = 0 if (P.get("insert_first_build") and not existing) else 1
     if start < 0 or end < 0 or end < start: die("explorer block anchors not found")
-    if src[start:end].count("<section") != 1: die("block shape unexpected")
+    if src[start:end].count("<section") != want: die("block shape unexpected")
 
     tabs, researched, held_ids = load(P)
     ip = info_pages()
@@ -318,7 +390,9 @@ def build(fname, P, src):
             if F[k] != v: die("G1 %s %s=%d disagrees with the universe header %d" % (t["T"]["key"], k, F[k], v))
         if sum(len(m["p"]) for m in t["cfg"]["makers"]) != F["products"]: die("G1 products not all listed")
         if f'<span class="mx-fig">{F["products"]}</span>' not in blk: die("G1 headline figure missing")
-    if f'<span class="mx-fig">{researched}</span>' not in blk: die("G1 makers researched missing")
+    if any(k == "researchedMakers" for k, _ in P["headline"]) and \
+            f'<span class="mx-fig">{researched}</span>' not in blk:
+        die("G1 makers researched missing")
     # G2 no held or excluded product; each tab lists exactly its eligible set
     for hid in held_ids:
         if hid in out: die("G2 a held product id appears on the page: " + hid)
@@ -391,6 +465,9 @@ def main():
         out = build(fname, P, page.read_text(encoding="utf-8"))
         if mode == "--apply":
             page.write_text(out, encoding="utf-8")
+    if not set(DISPLAY_NAME_BY_ID) <= SEEN_OVERRIDES:
+        die("display-name override for a product that is not publicly listed: %s"
+            % sorted(set(DISPLAY_NAME_BY_ID) - SEEN_OVERRIDES))
     print(("APPLIED" if mode == "--apply" else "CHECK OK") + f" — G1-G11 pass for {len(PAGES)} page(s)")
 
 if __name__ == "__main__":

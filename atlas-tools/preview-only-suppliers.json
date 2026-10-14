@@ -13,6 +13,14 @@
       "why_removed": "Brona replied on 9 October 2026 at 12:02 UTC from info@irishsaunacompany.com, Gmail thread 1a0fd83ddde922b1: \u201cwe would be delighted for you to use our imagery and product on your site.\u201d That is a full publication grant, not an invitation to show imagery on a preview, so under this register's own rule (see 'the_grant_boundary') the row does not belong here any more. Containment by ABSENCE is the wrong instrument for a supplier who has said yes: keeping the row at imagery_mode 'none' would have asserted in the repository that they granted nothing, which is now false.",
       "what_constrains_them_now": "image-rights-records.json and the generated manifest, organisation_record recLW0vZbkBGPRkZ9, permitted_domain irishsaunacompany.com, required_credit \u00a9 Irish Sauna Company. atlas-tools/validate-image-rights.js refuses any image of theirs from another host, and refuses all of them if the credit leaves the page. irish-sauna-company-preview.html remains noindex and unlisted, and the grant has not been exercised on any other page.",
       "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002"
+    },
+    {
+      "name": "OGNYX",
+      "removed": "2026-10-14",
+      "was": "imagery_mode 'preview-only' -- four images invited for ognyx-preview.html while publication was withheld.",
+      "why_removed": "OGNYX answered the 12 October 2026 ask to \"feature OGNYX and use the selected product images shown there\" with \"We have reviewed your offer and can confirm we would be happy to proceed with this\" (13 Oct 2026, Gmail 1a13699d55beb7f9). The founder decided on 14 October 2026 to proceed on those words. That is a publication grant, so under this register's own rule (the_grant_boundary) the row does not belong here any more.",
+      "what_constrains_them_now": "image-rights-records.json (approved_assets: exactly four images, by enumeration) and atlas-tools/prove-ognyx-imagery-containment.mjs, which refuses any other OGNYX image on any page and requires the credit, the link back and the visualisation labels wherever one appears. The publication gate derives PUBLISHABLE on evidence, with no founder exception.",
+      "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002"
     }
   ],
   "suppliers": [
@@ -34,32 +42,6 @@
       ],
       "evidence": "Bruno replied \"PREVIEW please — I'd like to see how Cosy Cabins would appear on PlotNua before anything is published\" on 2 October 2026, Gmail thread 1a0fd84efd61b0fa, when the outreach offered both YES and PREVIEW.",
       "atlas_permission_ref": "WELLNESS-FIRST-COSY-CABINS-20261002"
-    },
-    {
-      "name": "OGNYX",
-      "legal_name": "OGNYX LIMITED",
-      "imagery_mode": "preview-only",
-      "page": "ognyx-preview.html",
-      "site_host": "ognyx.com",
-      "credit": "\u00a9 OGNYX",
-      "image_hosts": [
-        { "host": "ognyx.com", "path_prefix": "/cdn/shop/",
-          "why": "their Shopify file path on their own domain; no third-party CDN is involved, so the scope is the domain itself" }
-      ],
-      "imagery_evidence": "Fabian of OGNYX wrote, on 2 October 2026, Gmail message 1a0fe3d7b43366cf: \"Please feel free to prepare the preview, including any example imagery, product presentation and links you propose to use.\" That is written permission for THIS PAGE. It is not publication permission, and the sentence before it asks to see the preview before proceeding. FOUNDER DECISION, 14 October 2026: Fabian's 13 October reply (Gmail 1a13699d55beb7f9, \"happy to proceed\") is treated as permission for the same four images shown on this page, within this approved context only. It does not extend to other images or other pages, so this row and its containment stay exactly as they are.",
-      "rights_record_must_be_preview_scoped": true,
-      "forbidden_claims": [
-        "health benefit", "therapeutic", "improves recovery",
-        "inc. vat", "including vat", "vat included",
-        "free delivery", "delivery included", "delivery is free",
-        "installation included", "we install", "fully installed",
-        "warranty included", "guaranteed",
-        "in stock", "next day", "lead time of",
-        "planning exempt", "no planning permission"
-      ],
-      "forbidden_claims_note": "OGNYX's own product copy calls cold immersion a health benefit and the tub therapeutically versatile. PlotNua does not repeat a health claim to a homeowner whoever first wrote it, so those stay on this list even though the supplier does make them. The money, delivery, installation and lead-time bans exist for the opposite reason: the OGNYX shipping policy and terms of 2 September 2026 make each of them CONDITIONAL -- free standard delivery applies to eligible saunas where the product page says so, VAT is confirmed at checkout, installation needs a separate quotation, and production time varies by configuration. Stating any of them flatly would turn a condition into a promise.",
-      "evidence": "Fabian replied on 2 October 2026, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: \"Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua.\" Atlas Permission Outcome was \"Unknown \u2014 Awaiting Reply\" until 14 October 2026, when the founder confirmed \"Granted with Conditions\" for the four preview images only.",
-      "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002"
     },
     {
       "name": "Switch Electrical",

@@ -69,7 +69,12 @@ const SEARCH_FROZEN = {
   // same strictness. Previous values: search.js
   // 3e91e8793f40159082267b2190c02edb923c21618e1e8aa33715ad4db8f7901d,
   // search.css a0a1b07aaf6f729ab41873962a1ab1d5bf3b0a03defb1f8e21c0d9945de82e19.
-  "search.js":  "53a462294de862f8563c2698cf14979874d276139c6ebc2fef0c1d135ba40d88",
+  // Re-stamped 14 October 2026 for the authorised OGNYX public integration:
+  // productRoute() honours a product's own route (wellness products, which
+  // have no PlotNua product page) and the "sauna" possibility-only special
+  // case is retired now that a governed corpus answers it. Previous value:
+  // 53a462294de862f8563c2698cf14979874d276139c6ebc2fef0c1d135ba40d88.
+  "search.js":  "7ae73e451c516dae274cc53d61ab98b4d86310f41fbdfa78ee96f880cacfd7ab",
   "search.css": "5923bcbcf3ccf31224f662d860d5f59d6f420ff9ace128f397b092b4a603fd55",
 };
 
