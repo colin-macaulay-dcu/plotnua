@@ -353,7 +353,14 @@ if WL_UNIVERSE.exists():
             "organisationEvidence": None,
             "priceSafeForMatching": bool(safe),
             "price": qp.get("amount") if safe else None,
-            "priceBasis": qp.get("basis") or None,
+            # The garden-room corpus's own token, not the explorer's sentence.
+            # search.js never displays priceBasis; the full basis (VAT
+            # position included) is published in the wellness universe and
+            # shown in the Garden Retreat directory. 14 Oct 2026: carrying 120
+            # copies of that sentence here was the redundancy that took the
+            # index past G10 when the 59 shared-maker products joined, and G10
+            # forbids dropping records -- so the redundancy went, not records.
+            "priceBasis": "Verified" if safe else None,
         })
     print("  WL products      %d  (of %d in the corpus, gate + ELIGIBLE only)"
           % (len(wl_rows), len(WL.get("products") or [])))
@@ -533,12 +540,20 @@ if PRODUCT_HOST not in ALLOW and PRODUCT_HOST not in DECLARED_ROUTES:
 # invisible. Removing this filter is a one-line change the day supplier
 # records are allowed to span both corpora.
 _gr_orgs = {norm_space(r.get("organisation")) for r in rows}
-# The same collision rule, for the same reason, applied to the third corpus.
-_wl_collide = [r for r in wl_rows if norm_space(r.get("organisation")) in _gr_orgs]
-wl_rows = [r for r in wl_rows if norm_space(r.get("organisation")) not in _gr_orgs]
-if _wl_collide:
-    print("  WL withheld      %d  (organisation already has a Garden Room "
-          "supplier record)" % len(_wl_collide))
+# THE WELLNESS CORPUS IS NOT WITHHELD (founder decision, 14 Oct 2026, "final
+# publication consistency corrections"): a maker appearing in the garden-room
+# universe must not exclude its eligible wellness products. Search eligibility
+# is decided per product by the wellness publication rules above (ELIGIBLE and
+# PUBLISHABLE). R3 still holds because the supplier record for such a maker
+# counts BOTH corpora (see the supplier emitter): the control promises exactly
+# what its expansion shows. The Additional Home rule below is unchanged.
+_wl_by_org = {}
+for r in wl_rows:
+    _wl_by_org.setdefault(norm_space(r.get("organisation")), []).append(r)
+_wl_shared = sorted(o for o in _wl_by_org if o in _gr_orgs)
+if _wl_shared:
+    print("  WL shared makers %d  (%s: wellness products searchable, counted in "
+          "the maker's supplier record)" % (len(_wl_shared), ", ".join(_wl_shared)))
 _ah_collide = [r for r in ah_rows if norm_space(r.get("organisation")) in _gr_orgs]
 ah_rows = [r for r in ah_rows if norm_space(r.get("organisation")) not in _gr_orgs]
 if _ah_collide:
@@ -620,6 +635,11 @@ for org, rs in sorted(by_org.items()):
     # in the universe, so having a preview as WELL is fine (Powersheds does);
     # what is refused is an org KNOWN ONLY from a preview, which cannot reach
     # here at all. The assertion stays so the rule is readable in code.
+    # A maker with eligible wellness products too: the record speaks for
+    # every product its expansion shows (R3), so count and price range cover
+    # both corpora. Whether the supplier record EXISTS is still decided by the
+    # garden-room rows alone (S1-S5 above).
+    rs = rs + _wl_by_org.get(org, [])
     caveats = []
     if all(x.get("noPublishedIrishRoute") for x in rs):
         caveats.append("no-published-irish-route")

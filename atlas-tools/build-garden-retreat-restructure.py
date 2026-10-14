@@ -46,6 +46,8 @@ GUARDS (run by --check, and on the output of --apply before it is written)
       accordions <= 55% of the 2,994 measured before
   GR7 no internal governance or permission language reaches the reader
   GR8 no "Irish availability is confirmed for 0" style statement
+  GR10 no maker held from the directory (MyCabin, Cosy Cabins, Sommarnöjen,
+       Auroom) is named anywhere on the page (14 Oct 2026)
   GR9 nothing outside <main>, the hero copy, the CSS block, dateModified and
       the sitemap lastmod changes
 """
@@ -266,9 +268,9 @@ def build(src):
         ("sauna", "option-sauna", "Outdoor sauna",
          "A small timber cabin with a heater. It looks as though it needs the most room; "
          "it doesn&rsquo;t necessarily.",
-         "&euro;9,620 including VAT &mdash; MyCabin Cube Sauna M, about 6.5&nbsp;m&sup2;",
-         "An electric heater needs a Registered Electrical Contractor, and the cabin needs "
-         "a level, load-bearing base.",
+         "&euro;8,700 including VAT &mdash; Hansa24 Lisette sauna cabin, about 7.6&nbsp;m&sup2;",
+         "Ask which heater it comes with: electric needs a Registered Electrical Contractor, "
+         "wood-fired needs a flue. The cabin needs a level, load-bearing base.",
          "More about saunas", "Browse saunas"),
         ("hot", "option-hot-tub", "Wood-fired hot tub",
          "Water heated by a wood-burning stove rather than an electric spa system.",
@@ -303,18 +305,18 @@ def build(src):
 
     # ── C · comparison ─────────────────────────────────────────────────────
     ROWS = [
-        ("Space", ["About 6.5&nbsp;m&sup2;: 3&nbsp;m by 2.17&nbsp;m",
+        ("Space", ["About 7.6&nbsp;m&sup2;: 3.65&nbsp;m by 2.08&nbsp;m outside; 7&nbsp;m&sup2; inside, two rooms",
                    "About 4&nbsp;m&sup2;: 2.26&nbsp;m across, plus a chimney",
                    "About 1.2&nbsp;m&sup2;: 1.25&nbsp;m across, a metre high"]),
-        ("Product price", ["<strong>&euro;9,620</strong> including VAT. Wood-fired heater option &euro;596, chimney included",
+        ("Product price", ["<strong>&euro;8,700</strong> including VAT. Heater not stated",
                            "<strong>&euro;4,340</strong>; &euro;6,430 as configured. Bubbles &euro;650",
                            "<strong>&euro;1,699</strong>. None published as extras"]),
-        ("Power or heat", ["Electricity. The only one needing an electrician",
+        ("Power or heat", ["A heater, type not published: electric needs an electrician, wood a flue",
                            "Wood. Electricity only if you add bubbles, lights or a filter",
                            "None. No chilling or filtration evidenced"]),
-        ("Water", ["None", "1,650 litres. No supplier says where it should go",
+        ("Water", ["None published", "1,650 litres. No supplier says where it should go",
                    "Fill it, use it, drain it. The route is yours to plan"]),
-        ("Base and installation", ["Level and load-bearing. Installation included by this supplier",
+        ("Base and installation", ["Level and load-bearing. Installation not published: ask the maker",
                                    "Roughly 1,900&nbsp;kg full; a concrete base is sold. Installation a paid option",
                                    "Level ground. Flat-packed or assembled"]),
         ("Planning", ["A building: the garden-building rules apply",
@@ -325,7 +327,7 @@ def build(src):
                     "No water-treatment routine published"]),
     ]
     heads = ["Compact sauna", "Wood-fired hot tub", "Cold plunge"]
-    ex = ["MyCabin Cube Sauna M", "Gardenhouse24 Hot Tub DeLux 220", "Timbertrove Cold Plunge &amp; Ice Bath"]
+    ex = ["Hansa24 Lisette sauna cabin", "Gardenhouse24 Hot Tub DeLux 220", "Timbertrove Cold Plunge &amp; Ice Bath"]
     thead = "".join('<th scope="col">%s<span class="gr-cmp-ex">%s</span></th>' % (h, e) for h, e in zip(heads, ex))
     tbody = ""
     for lab, cells in ROWS:
@@ -358,7 +360,7 @@ def build(src):
         '      </table>\n'
         '    </div>\n'
         '    <p class="gr-cmp-lines"><strong>The cheapest way in is &euro;1,699 and about a square metre.</strong> '
-        '<strong>Only one of the three needs an electrician, and it is not the one with the fire.</strong> '
+        '<strong>Ask which heater the sauna comes with: it decides between an electrician and a flue.</strong> '
         '<strong>And the heaviest thing here is the water, not the structure.</strong></p>\n'
         '    <p class="hb-cmp-foot">Prices come from the suppliers&rsquo; own pages, read in September 2026, '
         'and they change. VAT is only shown where the supplier states it. None of these is a finished-project '
@@ -443,7 +445,59 @@ def build(src):
     c1 = one(out, CSS_END, "imagery CSS end") + len(CSS_END)
     out = out[:c0] + CSS + out[c1:]
     out = re.sub(r'"dateModified":\s*"[0-9-]+"', '"dateModified": "%s"' % TODAY, out, count=1)
+    # ── THE SAUNA EXAMPLE (14 Oct 2026, final publication consistency
+    # corrections). MyCabin is held from the Garden Retreat directory and
+    # replied "This is not something we are interested in" (17 Sep 2026), so
+    # its Cube Sauna M, price and showrooms leave the comparison. The
+    # replacement is a product the directory publishes: Hansa24's Lisette
+    # (G0093), Atlas recu6KOXm4cJngQHW -- external 365 x 208 cm, room area
+    # 7 m2, two rooms, EUR 8,700 including VAT, heater not published -- read
+    # from summerhouse24.ie in September 2026 and VERIFIED live on 14 Oct.
+    # Each passage below is the base page's own text and must match exactly
+    # once; nothing is inferred beyond the Atlas record.
+    for old, new in SAUNA_EXAMPLE:
+        if out.count(old) != 1:
+            die("sauna-example passage not found exactly once: " + old[:70])
+        out = out.replace(old, new)
     return out
+
+
+LISETTE = "https://summerhouse24.ie/outdoor-sauna-cabin-lisette-g0093/"
+SAUNA_EXAMPLE = [
+    ("ELECTRIC arrangement, which is the one the evidenced MyCabin Cube M\n"
+     "             ships with. The wood-fired option named in the copy is an option,\n"
+     "             and the copy does not claim this photograph shows it.",
+     "ELECTRIC arrangement; the evidenced Hansa24 Lisette publishes no\n"
+     "             heater, so the copy names neither arrangement and does not claim\n"
+     "             this photograph shows one."),
+    ("As a sense of scale, MyCabin&rsquo;s Cube Sauna M is 3 metres by 2.17 metres &mdash; a little over "
+     "6.5&nbsp;m&sup2; &mdash; and is sold as a four-to-six-person sauna at a published &euro;9,620 including VAT.",
+     "As a sense of scale, Hansa24&rsquo;s Lisette sauna cabin is 3.65 metres by 2.08 metres outside "
+     "&mdash; about 7.6&nbsp;m&sup2; &mdash; with a 7&nbsp;m&sup2; room area over two rooms, at a published "
+     "&euro;8,700 including VAT."),
+    ("Other models are smaller and larger, and several Irish suppliers do not publish dimensions at all. "
+     "Across the three suppliers PlotNua checked, published garden-sauna prices run from about &euro;4,649 "
+     "to &euro;11,650.",
+     "Other models are smaller and larger, and some makers do not publish dimensions at all. The maker "
+     "directory below lists each maker&rsquo;s published products and prices."),
+    ("Electric heating brings electrical work with it. MyCabin also publishes a &euro;596 wood-fired heater "
+     "option including the chimney system for this range. Choosing that route changes what has to be "
+     "accommodated, because it introduces a stove and flue.",
+     "Hansa24 does not publish which heater comes with it. Electric heating brings electrical work with it; "
+     "a wood-fired stove brings a flue. Either changes what has to be accommodated, so settle the heater "
+     "before the base."),
+    ('<a href="https://mycabin.ie/" target="_blank" rel="noopener noreferrer">MyCabin</a> has showrooms in '
+     'Blessington, Cobh and Wexford, and publishes the sauna sizes and prices above.',
+     '<a href="' + LISETTE + '" target="_blank" rel="noopener noreferrer">Summerhouse24 Ireland</a> '
+     '(Hansa24 Group) publishes the sauna&rsquo;s size and price above.'),
+    ("The suppliers named in this section were not contacted: everything quoted here was read from their "
+     "own public pages in September 2026.",
+     "Everything quoted here was read from the suppliers&rsquo; own public pages in September 2026."),
+    ("MyCabin&rsquo;s Cube Sauna M page, Gardenhouse24",
+     "Hansa24&rsquo;s Lisette sauna cabin page on summerhouse24.ie, Gardenhouse24"),
+]
+# Makers the directory holds may not be named anywhere on the page (GR10).
+HELD_NAME_RE = re.compile(r"my\s*cabin|cosy\s*cabins|sommarn|auroom", re.I)
 
 
 # ── guards ───────────────────────────────────────────────────────────────────
@@ -480,6 +534,9 @@ def guards(page, before=None):
             errs.append("GR2 hero action does not reach a section on this page: " + h)
     if re.search(r"check your garden", hero, re.I):
         errs.append("GR2 a 'Check your garden' action would promise a check that does not exist")
+    held = HELD_NAME_RE.search(page)
+    if held:
+        errs.append("GR10 a maker held from the directory is named on the page: " + held.group(0))
     if re.search(r'<img[^>]+src="https?://', main) or "gr-mi-" in page or "what-these-look-like" in page:
         errs.append("GR3 a supplier image or the maker-image section is on the page")
     closed = re.sub(r"<details.*?</details>", " ", main, flags=re.S)
@@ -544,7 +601,7 @@ def main():
     if errs:
         print("CHECK FAILED:\n  " + "\n  ".join(errs))
         sys.exit(1)
-    print("Garden Retreat restructure · CHECK OK — GR1-GR8 pass · default view %d words (was %d)"
+    print("Garden Retreat restructure · CHECK OK — GR1-GR8, GR10 pass · default view %d words (was %d)"
           % (words, WORDS_BEFORE))
 
 

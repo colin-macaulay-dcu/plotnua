@@ -481,17 +481,24 @@ written to Atlas Standards 14 Oct), TimberIN 2 (no verified price), Auroom 2,
 Cosy Cabins 1 (asked for a preview first), Sommarnöjen 1 (page 404).
 
 OPEN:
-* SEARCH-WL-COLLIDE · 59 of the 85 (Pineca 34, Hansa24 25) are in the
+* SEARCH-WL-COLLIDE · RESOLVED 14 Oct 2026 (founder: FIX). Search now decides
+  wellness eligibility per product; the supplier record of a maker in both
+  corpora counts both (R3 holds). Index 175.0 KB of the 180 KB G10 guard:
+  about 5 KB of headroom left. Original note: 59 of the 85 (Pineca 34, Hansa24 25) are in the
   Garden Retreat directory but NOT in Search: build-search-index.py withholds
   wellness products of an organisation that already has a Garden Room
   supplier record (R3: a supplier control must deliver exactly the count it
   promises). Lifting it means letting supplier records span corpora — a
   founder decision, not taken here.
-* MYCABIN-EDITORIAL · Garden Retreat's comparison section names MyCabin's
+* MYCABIN-EDITORIAL · RESOLVED 14 Oct 2026: the sauna example is now Hansa24's
+  Lisette (G0093); GR10 refuses any held maker's name on the page. Original
+  note: Garden Retreat's comparison section names MyCabin's
   Cube Sauna M with its price and showrooms (editorial since September).
   MyCabin replied "This is not something we are interested in" (17 Sep).
   The directory holds MyCabin; the editorial does not. Founder to decide.
-* COSY-CLUSTER1 · Living in the Garden's cost section still says "out of 573
+* COSY-CLUSTER1 · RESOLVED 14 Oct 2026: the figure is the 7 October research
+  snapshot (B); the page now says so, with the date derived from the evidence
+  file's own stamp. Original note: Living in the Garden's cost section still says "out of 573
   garden-room records" (frozen Cluster 1 evidence, 7 Oct); the universe is now
   572 after the Cosy Cabins hold. Refresh that evidence at the next Cluster 1
   update.

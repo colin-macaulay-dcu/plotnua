@@ -113,7 +113,7 @@ console.log('\nCLUSTER 2 CLAIM GUARDS\n');
   if (!VIS.includes('rather than for a business')) errs.push('the not-a-business condition is absent');
   if (!VIS.includes('for personal use at home')) errs.push('the personal-use condition is absent');
   // Scoped to the planning block. Product footprints elsewhere on the page
-  // (1.2 m² Timbertrove plunge, 6.5 m² MyCabin Cube Sauna M) are
+  // (1.2 m² Timbertrove plunge, 7.6 m² Hansa24 Lisette sauna) are
   // supplier-sourced and pre-existing; this guard owns the statutory figures.
   const plan = src.indexOf('<h3>Planning</h3>');
   const planEnd = src.indexOf('<div class="practical-group">', plan);
@@ -296,7 +296,10 @@ console.log('\nCLUSTER 2 CLAIM GUARDS\n');
     'title': '<title>Garden Saunas, Hot Tubs &amp; Cold Plunges in Ireland | PlotNua</title>',
     'canonical': '<link rel="canonical" href="https://plotnua.ie/discovery-garden-retreat.html">',
     'no-commercial-relationship note': 'PlotNua has no commercial relationship with any supplier named on this page',
-    'MyCabin': 'mycabin.ie', 'Gardenhouse24': 'gardenhouse24.ie', 'Timbertrove': 'timbertrove.com',
+    // 14 Oct 2026 (final publication consistency corrections): MyCabin, held
+    // from the directory, left the comparison; the sauna example is now
+    // Hansa24's Lisette on summerhouse24.ie. GR10 refuses a held maker's name.
+    'Summerhouse24 (Hansa24)': 'summerhouse24.ie', 'Gardenhouse24': 'gardenhouse24.ie', 'Timbertrove': 'timbertrove.com',
   };
   const miss = Object.entries(toks).filter(([, t]) => !src.includes(t)).map(([k]) => k);
   miss.length ? bad('J1', `lost: ${miss.join(', ')}`)

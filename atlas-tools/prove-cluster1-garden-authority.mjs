@@ -117,6 +117,13 @@ console.log('\nCLUSTER 1 CLAIM GUARDS\n');
 // --- L5 · dates --------------------------------------------------------------
 {
   const ALLOWED = new Set(['16 July 2026', '27 July 2026', '31 December 2030', '1 October 1964']);
+  // 14 Oct 2026: the price section names the research snapshot its figures
+  // come from. That date is not typed here: it is traced to the evidence
+  // file's own source stamp, so only THAT date is allowed.
+  if (typeof EV !== 'undefined' && EV && EV.source && EV.source.generated) {
+    const d = new Date(EV.source.generated.slice(0, 10) + 'T00:00:00Z');
+    ALLOWED.add(`${d.getUTCDate()} ${d.toLocaleString('en-GB', { month: 'long', timeZone: 'UTC' })} ${d.getUTCFullYear()}`);
+  }
   const found = [...VIS.matchAll(/\b\d{1,2} (?:January|February|March|April|May|June|July|August|September|October|November|December) \d{4}\b/g)].map(m => m[0]);
   if (!found.length) bad('L5', 'UNREACHABLE: no full dates on the page — the signing date should be here');
   else {
@@ -228,7 +235,9 @@ if (PRICE) {
   };
   const missing = Object.entries(want).filter(([, n]) => !new RegExp(`\\b${n}\\b`).test(v)).map(([k, n]) => `${k}=${n}`);
   // and no untraced integer >= 10 other than the allowed set
-  const allowed = new Set([...Object.values(want).map(String), '25', '30', '32', '45']);
+  const allowed = new Set([...Object.values(want).map(String), '25', '30', '32', '45',
+    // the snapshot date's day and year, traced to the evidence stamp (14 Oct 2026)
+    ...EV.source.generated.slice(0, 10).split('-').map(x => String(Number(x)))]);
   const rogue = [...new Set([...v.matchAll(/\b(\d{2,})\b/g)].map(m => m[1]))].filter(n => !allowed.has(n));
   if (missing.length) bad('P2', `artefact figure(s) absent from the page: ${missing.join(', ')}`);
   else if (rogue.length) bad('P2', `untraced figure(s) in the price section: ${rogue.join(', ')}`);

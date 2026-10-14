@@ -850,7 +850,11 @@ def has_contradiction(product, feat_rows, price_rows) -> str:
     return ""
 
 
-PREVIEW_REGISTER = Path(__file__).resolve().parent.parent.parent / "atlas-tools" / "preview-only-suppliers.json"
+# Located through the shared atlas_common module, not this file: the
+# provenance tests run deliberately mutated COPIES of this generator from a
+# temporary directory, and those still resolve atlas_common from the repo.
+import atlas_common as _ac  # noqa: E402
+PREVIEW_REGISTER = Path(_ac.__file__).resolve().parent.parent.parent / "atlas-tools" / "preview-only-suppliers.json"
 _PREVIEW = None
 
 

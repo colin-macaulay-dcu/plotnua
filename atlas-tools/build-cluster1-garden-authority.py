@@ -54,6 +54,14 @@ N_NOVAT    = FIG['vatStatusUnknown']            #  94
 N_AREA     = FIG['floorAreaPublished']          #  45
 N_3A       = FIG['class3AProductsInAtlas']      #   1
 N_RECORDS  = EV['totals']['gardenRoomRecords']  # 573
+# 14 Oct 2026 (final publication consistency corrections): every figure in the
+# price section is the 7 October research snapshot this evidence file was
+# computed from, not the live universe (572 after the Cosy Cabins hold). The
+# date is DERIVED from the evidence file's own source stamp, so it can never
+# drift from the counts beside it, and no new hand-maintained number appears.
+import datetime as _dt
+_d = _dt.date.fromisoformat(EV['source']['generated'][:10])
+AS_OF = "%d %s %d" % (_d.day, _d.strftime("%B"), _d.year)
 N_ORGS     = EV['totals']['relevantOrganisations']  # 24
 
 if N_3A > 2:
@@ -209,7 +217,7 @@ PRICE_SECTION = '''
       <li><span class="dq-fact">%(rel)d garden-room products with a euro price we can
             stand behind.</span>
           <span class="dq-note">From %(orgs)d suppliers, out of %(records)d garden-room
-            products PlotNua holds.</span></li>
+            products in PlotNua&rsquo;s %(asof)s research snapshot.</span></li>
       <li><span class="dq-fact">%(nobasis)d of them do not establish what the price
             includes.</span>
           <span class="dq-note">A kit you assemble, a building delivered and erected,
@@ -235,7 +243,7 @@ PRICE_SECTION = '''
   </section>
 
   <!-- 7 · THE EVIDENCE LAYER.''' % {
-    'rel': N_REL, 'orgs': N_ORGS, 'records': N_RECORDS,
+    'rel': N_REL, 'orgs': N_ORGS, 'records': N_RECORDS, 'asof': AS_OF,
     'nobasis': N_NOBASIS, 'novat': N_NOVAT, 'area': N_AREA}
 if '%(' in PRICE_SECTION:
     sys.exit('REFUSE: PRICE_SECTION still carries an unsubstituted placeholder')
