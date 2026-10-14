@@ -249,9 +249,13 @@ def build(src):
                 '      </details>\n' % (h, inner, close))
 
     # ── A · hero ───────────────────────────────────────────────────────────
+    # 14 Oct 2026 (controlled text-only expansion): "the makers selling them in
+    # Ireland" became "the makers who publish them". The directory now lists
+    # makers whose Irish delivery is not confirmed (TimberIN, a UK site), and no
+    # wellness record states Irish availability, so the hero must not either.
     new_hero = ('    <p class="subtitle">A sauna, a hot tub or a cold plunge &mdash; one thing in one '
-                'part of the garden. See what each asks of your garden, then the makers selling them '
-                'in Ireland.</p>\n'
+                'part of the garden. See what each asks of your garden, then the makers who publish '
+                'them.</p>\n'
                 '    <div class="gr-hero-actions">\n'
                 '      <a class="is-primary" href="#compare">Compare the options</a>\n'
                 '      <a class="is-secondary" href="#explore-makers">Explore makers and products</a>\n'

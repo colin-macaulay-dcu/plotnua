@@ -301,3 +301,38 @@ export function deriveOrganisationVisibility(name, rows, legacy = []) {
   return { visibility: "HOLD", holdReason: NO_RECORD_HOLD, waived: [],
            matched: false, legacy: false };
 }
+
+/* ── THE PUBLIC-INFORMATION LISTING BASIS · 14 October 2026 ────────────────
+   Founder decision, "Garden Retreat — controlled text-only publication
+   expansion": a factual, text-only listing for a maker who has NOT given
+   permission, read from its own public product pages. It is not a
+   permission and is never recorded as one.
+
+   The order is the whole rule: a rights record ALWAYS decides first, so a
+   decline, a hold or a review request can never be overridden by the
+   register; the legacy baseline is not consulted (wellness never had one);
+   only an organisation with no record that the register names, in scope,
+   with no objection, no permission claim and no imagery, may be listed --
+   and then only as text. The wellness generator mirrors this in
+   wellness_hold(); test_wellness_universe.py W10 exercises it. */
+export const PUBLIC_INFORMATION = "PUBLIC_INFORMATION";
+
+export function derivePublicInformationListing(name, rows, register, scope) {
+  const key = normaliseOrganisationName(name);
+  const hits = (rows || []).filter(r =>
+    normaliseOrganisationName(r && r.organisation_name) === key);
+  if (hits.length) {
+    const d = deriveOrganisationVisibility(name, rows, []);
+    return Object.assign(d, { basis: d.visibility === "PUBLISHABLE" ? "SUPPLIER_PERMISSION" : null });
+  }
+  const reg = register || {};
+  if (((reg.decision || {}).scope) !== scope) {
+    return { visibility: "HOLD", holdReason: NO_RECORD_HOLD, waived: [], basis: null };
+  }
+  const row = (reg.organisations || []).find(o => normaliseOrganisationName(o.name) === key);
+  const wellFormed = row && row.basis === PUBLIC_INFORMATION && row.supplier_permission === false
+    && row.imagery === "none" && row.objection === "none recorded";
+  return wellFormed
+    ? { visibility: "PUBLISHABLE", holdReason: null, waived: [], basis: PUBLIC_INFORMATION }
+    : { visibility: "HOLD", holdReason: NO_RECORD_HOLD, waived: [], basis: null };
+}

@@ -1,0 +1,76 @@
+{
+ "schema": "plotnua.public-information-listings.v1",
+ "what_this_is": "The register of makers PlotNua may list from their own public product pages WITHOUT supplier permission, on the founder's decision of 14 October 2026 (Garden Retreat — controlled text-only publication expansion). A row here records a LISTING BASIS, not a permission: it says that PlotNua's factual research about this maker's public products may be shown as text. It grants no image rights, records no consent, and implies no partnership or endorsement.",
+ "decision": {
+  "authorised_by": "Colin MacAulay (founder)",
+  "decision_date": "2026-10-14",
+  "words": "Approve a controlled factual text-only publication pathway for eligible products. The objective is to make PlotNua's existing verified research useful to homeowners, without implying supplier endorsement or reproducing unauthorised imagery.",
+  "scope": "Wellness / Sauna",
+  "scope_note": "Atlas Product Category Wellness / Sauna only (DISC-001 Garden Retreat). Garden rooms and garden homes are untouched."
+ },
+ "never": [
+  "a row here is never a permission, a grant or a confirmation; supplier_permission is always false",
+  "a row here never authorises an image: imagery is always 'none' and the image-rights gate is untouched",
+  "a rights record always wins: an organisation with its own rights record is decided by that record and never by this register",
+  "a maker who has objected, declined or asked to see a preview before publication does not belong here"
+ ],
+ "product_criteria": {
+  "maker identity verified": "the product's organisation is an Atlas organisation listed here, and its product URL is on a domain this register attributes to that maker (atlas-tools/maker-product-links-v1.json makerDomains)",
+  "product page is live": "the product's entry in atlas-tools/maker-product-links-v1.json is VERIFIED (HTTPS, maker's own domain, HTTP 200, same-host same-path redirects only, the page names the product)",
+  "product type classified": "the universe assigns at least one closed kind token",
+  "price and price basis evidenced": "exactly one Verified EUR price record with a recognised price type; its VAT position is carried over, never inferred",
+  "material specifications consistent": "Atlas Standards carries no BLOCKED recorded contradiction",
+  "no relevant supplier objection": "organisation-level, recorded per row below",
+  "source provenance recorded": "the product links at least one Atlas Source",
+  "no unsupported Irish availability": "every wellness record emits Irish availability as UNCONFIRMED; nothing in this pathway can state it"
+ },
+ "organisations": [
+  {
+   "name": "Hansa24 Group",
+   "organisation_record": "receufKmrd8c4QgMv",
+   "basis": "PUBLIC_INFORMATION",
+   "supplier_permission": false,
+   "imagery": "none",
+   "maker_identity": "Atlas organisation ORG-000020; products are published on summerhouse24.ie, which describes itself as \"Summerhouse24 Ireland (Hansa24 Group)\" (read 14 Oct 2026).",
+   "objection_check": "No reply of any kind from hansa24.com, summerhouse24.ie or gardenhouse24.ie (Gmail searched 14 Oct 2026, including trash). PlotNua's 9 Sep 2026 email already told them it had \"included published information about ... Hansa24 Group\"; no objection was raised.",
+   "objection": "none recorded"
+  },
+  {
+   "name": "Pineca Ireland",
+   "organisation_record": "recAbCMI3LkwWO3Z6",
+   "basis": "PUBLIC_INFORMATION",
+   "supplier_permission": false,
+   "imagery": "none",
+   "maker_identity": "Atlas organisation, Website https://www.pineca.ie/; every product URL is on www.pineca.ie.",
+   "objection_check": "Only an automatic web-form acknowledgement from clients@pineca.ie (24 Sep 2026); no reply from pineca.ie or pinecagroup.com (Gmail searched 14 Oct 2026, including trash).",
+   "objection": "none recorded"
+  },
+  {
+   "name": "Polaris Sauna",
+   "organisation_record": "recimEazcddGRzmxk",
+   "basis": "PUBLIC_INFORMATION",
+   "supplier_permission": false,
+   "imagery": "none",
+   "maker_identity": "Atlas organisation, Website https://polaris-sauna.ie/; every product URL is on polaris-sauna.ie.",
+   "objection_check": "Outreach 2 Oct and 9 Oct 2026 (Gmail 1a0fd8a12a864ab8) unanswered; the 9 Oct email offered NO as a reply and none came (Gmail searched 14 Oct 2026, including trash).",
+   "objection": "none recorded"
+  },
+  {
+   "name": "TimberIN",
+   "organisation_record": "recP4lqMNuNceOyNh",
+   "basis": "PUBLIC_INFORMATION",
+   "supplier_permission": false,
+   "imagery": "none",
+   "maker_identity": "Atlas organisation, Website https://www.woodenhottubsale.co.uk/; every product URL is on www.woodenhottubsale.co.uk.",
+   "objection_check": "Outreach 2 Oct and 9 Oct 2026 (Gmail 1a0fd82f2f874b01) unanswered; the 9 Oct email offered NO as a reply and none came (Gmail searched 14 Oct 2026, including trash).",
+   "objection": "none recorded",
+   "note": "Delivery to the Republic of Ireland is not confirmed for TimberIN and is never stated: every wellness record carries Irish availability UNCONFIRMED."
+  }
+ ],
+ "not_listed": [
+  {"name": "MyCabin.ie", "why": "Founder review pending (14 Oct 2026 brief: \"10 MyCabin products pending founder review\"). MyCabin replied on 17 Sep 2026, \"This is not something we are interested in\" (Gmail 1a0aaefbe7bdea42), and declined image permission."},
+  {"name": "Cosy Cabins", "why": "Asked on 2 Oct 2026 to see a preview \"before anything is published\" (Gmail 1a0fd84efd61b0fa); unanswered since. Held in atlas-tools/preview-only-suppliers.json."},
+  {"name": "Auroom Wellness", "why": "Preview-only and never searchable; its two products also lack a verified price and a classified type."},
+  {"name": "Sommarnöjen", "why": "Its one product page returns HTTP 404, so the product page is not live."}
+ ]
+}

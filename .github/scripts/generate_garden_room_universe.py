@@ -850,6 +850,30 @@ def has_contradiction(product, feat_rows, price_rows) -> str:
     return ""
 
 
+PREVIEW_REGISTER = Path(__file__).resolve().parent.parent.parent / "atlas-tools" / "preview-only-suppliers.json"
+_PREVIEW = None
+
+
+def _norm_org_name(n):
+    return re.sub(r"[^A-Z0-9]+", "", str(n or "").upper())
+
+
+def preview_requested():
+    """Normalised names of suppliers who asked to see a preview first. An
+    unreadable register refuses the run: holding nobody by accident is the
+    failure this exists to prevent."""
+    global _PREVIEW
+    if _PREVIEW is None:
+        try:
+            doc = json.loads(PREVIEW_REGISTER.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as e:
+            fail("the preview-only register could not be read (%s)" % e)
+        _PREVIEW = {_norm_org_name(r["name"]) for r in doc.get("suppliers") or []}
+        if not _PREVIEW:
+            fail("the preview-only register is empty; refusing to treat that as 'nobody asked'")
+    return _PREVIEW
+
+
 def qualify(product, orgs, price_rows, avail_rows, feat_rows,
             all_feat_rows=None) -> dict:
     """Deterministic. Same inputs, same output, every run.
@@ -900,6 +924,21 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows,
                      "sourceFields": ["Product Feature Values: category adjudication"],
                      "evidence": _phrase,
                      "evidenceRecordId": _rec_id})
+
+    # ---- BLOCKER F (14 Oct 2026) — THE SUPPLIER ASKED TO SEE IT FIRST -------
+    # Founder brief "Garden Retreat — controlled text-only publication
+    # expansion", item 5. A supplier in atlas-tools/preview-only-suppliers.json
+    # replied PREVIEW to PlotNua's outreach -- Cosy Cabins: "I'd like to see how
+    # Cosy Cabins would appear on PlotNua before anything is published" (2 Oct
+    # 2026) -- and PlotNua's own reply put its garden-room journey inside that
+    # preview. That is evidence of a reason, not absence of evidence, so it
+    # excludes until the supplier answers. Leaving the register lifts it.
+    held_for_preview = sorted(n for n in org_names if _norm_org_name(n) in preview_requested())
+    if held_for_preview:
+        hard.append({"code": "F",
+                     "reason": "The supplier asked to see a preview before anything is published",
+                     "sourceFields": ["atlas-tools/preview-only-suppliers.json"],
+                     "evidence": ", ".join(held_for_preview)})
 
     # ---- evidence signals ----
     scopes = [cell(r, "Evidence Scope") for r in feat_rows if cell(r, "Evidence Scope")]

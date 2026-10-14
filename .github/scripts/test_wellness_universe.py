@@ -16,6 +16,16 @@
   W9  productUrl is emitted for public records only (https), never for held ones
   W6  no OGNYX record carries a VAT, delivery, installation, health or
       lead-time statement; a price whose VAT is unknown says so
+  W10 the public-information basis (founder decision 14 Oct 2026): a listed
+      maker with no rights record publishes text only; an unlisted one
+      holds; a rights record always wins over the register; a product whose
+      page is not VERIFIED holds; a register row claiming permission,
+      imagery or an objection refuses the build
+  W11 the committed artefact: 120 public from 7 makers (35 on supplier
+      permission, 85 on the public-information basis); MyCabin, Cosy Cabins,
+      Sommarnöjen and Auroom held; the five 14 Oct contradictions held;
+      every public-information product has a VERIFIED page; TimberIN's
+      combination buildings are one record each, under sauna AND hot tub
 Run: python3 .github/scripts/test_wellness_universe.py
 """
 import json
@@ -102,6 +112,46 @@ check("W3 no price holds", by["recNOPRICE000001"]["qualification"]["state"] == "
 check("W4 no Description, Notes or Standards prose leaks",
       not any(s in text for s in ("SECRET-DESCRIPTION", "SECRET-NOTES", "SECRET-STD")))
 
+# W10 — the register, exercised in-process against synthetic rows.
+import importlib.util
+def gen_module(register_doc, links_doc):
+    spec = importlib.util.spec_from_file_location("wgen", GEN)
+    m = importlib.util.module_from_spec(spec)
+    sys.path.insert(0, str(HERE))
+    spec.loader.exec_module(m)
+    d = pathlib.Path(tempfile.mkdtemp())
+    (d / "r.json").write_text(json.dumps(register_doc)); (d / "l.json").write_text(json.dumps(links_doc))
+    m.REGISTER, m.LINKS = d / "r.json", d / "l.json"
+    return m
+ROW = {"name": "Brand New Saunas Ltd", "basis": "PUBLIC_INFORMATION", "supplier_permission": False,
+       "imagery": "none", "objection": "none recorded", "objection_check": "searched",
+       "maker_identity": "Atlas organisation"}
+DEC = {"decision": {"scope": "Wellness / Sauna"}}
+m = gen_module(dict(DEC, organisations=[ROW]), {"links": {}})
+check("W10 a listed maker with no rights record publishes on the public-information basis",
+      m.wellness_hold("Brand New Saunas Ltd") == (None, "PUBLIC_INFORMATION"))
+check("W10 an unlisted maker with no rights record still holds",
+      m.wellness_hold("Somebody Else Ltd") == ("publication-record-missing", None))
+m = gen_module(dict(DEC, organisations=[dict(ROW, name="OGNYX")]), {"links": {}})
+check("W10 a rights record always wins over the register",
+      m.wellness_hold("OGNYX")[1] == "SUPPLIER_PERMISSION")
+m2 = gen_module(dict(DEC, organisations=[dict(ROW, name="Cosy Cabins")]), {"links": {}})
+check("W10 listing one maker never lets an unlisted maker through",
+      m2.wellness_hold("MyCabin.ie")[0] == "publication-record-missing")
+for bad, label in ((dict(ROW, supplier_permission=True), "claims permission"),
+                   (dict(ROW, imagery="selected"), "claims imagery"),
+                   (dict(ROW, objection="asked not to be listed"), "records an objection")):
+    mb = gen_module(dict(DEC, organisations=[bad]), {"links": {}})
+    try:
+        mb.public_information_register(); refused = False
+    except SystemExit:
+        refused = True
+    check("W10 a register row that %s refuses the build" % label, refused)
+m = gen_module(dict(DEC, organisations=[ROW]), {"links": {"recX": {"state": "VERIFIED", "url": "https://a.ie/x"}}})
+check("W10 a product page counts only when VERIFIED at the record's own URL",
+      m.page_verified("recX", "https://a.ie/x") and not m.page_verified("recX", "https://a.ie/y")
+      and not m.page_verified("recY", "https://a.ie/x"))
+
 A = json.loads(ART.read_text(encoding="utf-8"))
 pub = [r for r in A["products"] if r["qualification"]["state"] == "ELIGIBLE"
        and r["publicVisibility"] == "PUBLISHABLE"]
@@ -111,11 +161,38 @@ HELD = {"recursLY4Q1bFn4rh", "recX7IRnkD0PNDUhp", "recPEyrQcz5iHzaSM", "recB4sNo
 check("W5 the artefact declares the publication gate", bool(A.get("publicationGate")))
 import collections
 per = collections.Counter(r["organisation"] for r in pub)
-check("W5 35 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 2",
-      per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 2}, dict(per))
-check("W7 no organisation without its own PUBLISHABLE rights record is public",
-      not ({r["organisation"] for r in pub} & {"MyCabin.ie", "Hansa24 Group", "Pineca Ireland",
-           "Polaris Sauna", "TimberIN", "Sommarnöjen", "Auroom Wellness", "Cosy Cabins"}))
+check("W11 120 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 2, Pineca 34, "
+      "Hansa24 25, Polaris 20, TimberIN 6",
+      per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 2, "Pineca Ireland": 34,
+              "Hansa24 Group": 25, "Polaris Sauna": 20, "TimberIN": 6}, dict(per))
+REG = json.loads((ROOT / "atlas-tools" / "public-information-listings.json").read_text(encoding="utf-8"))
+listed = {o["name"] for o in REG["organisations"]}
+rights = {r["organisation_name"] for r in json.loads((ROOT / "image-rights-records.json")
+          .read_text(encoding="utf-8"))["records"]}
+check("W7/W11 every public maker is either on its own rights record or on the register, never both",
+      all((r["organisation"] in rights) != (r["organisation"] in listed) for r in pub)
+      and not (listed & rights), sorted(listed & rights))
+check("W11 basis matches: supplier permission for rights-record makers, public information otherwise",
+      all(r["listingBasis"] == ("SUPPLIER_PERMISSION" if r["organisation"] in rights else "PUBLIC_INFORMATION")
+          for r in pub) and A["listingBasisCounts"] == {"SUPPLIER_PERMISSION": 35, "PUBLIC_INFORMATION": 85})
+check("W11 MyCabin, Cosy Cabins, Sommarnöjen and Auroom Wellness are not public",
+      not ({r["organisation"] for r in pub} & {"MyCabin.ie", "Cosy Cabins", "Sommarnöjen", "Auroom Wellness"}))
+BLOCKERS = {"rectXEcIBSgq92QFn", "recQT6LbDFnfrssoi", "recu1Y1kHvG90k7GL", "recZcGYcwzf2Fa1re",
+            "recStbWNjbPyrxVIL"}
+byid = {r["id"]: r for r in A["products"]}
+check("W11 the five 14 Oct contradictions are held on evidence",
+      all(byid[i]["qualification"]["state"] == "HELD"
+          and "recorded-contradiction" in byid[i]["qualification"]["heldReasons"] for i in BLOCKERS))
+LINKS = json.loads((ROOT / "atlas-tools" / "maker-product-links-v1.json").read_text(encoding="utf-8"))["links"]
+check("W11 every public-information product has a VERIFIED page at its own URL",
+      all(LINKS.get(r["id"], {}).get("state") == "VERIFIED" and LINKS[r["id"]]["url"] == r["productUrl"]
+          for r in pub if r["listingBasis"] == "PUBLIC_INFORMATION"))
+combo = [r for r in pub if "combination" in r["kinds"]]
+check("W11 TimberIN's four combination buildings: one record each, under sauna and hot tub",
+      len(combo) == 4 and all(r["organisation"] == "TimberIN" and {"sauna", "hot-tub"} <= set(r["kinds"])
+                              for r in combo) and len({r["id"] for r in pub}) == len(pub))
+check("W11 no record claims Irish availability",
+      all(r["irish"] == {"state": "UNCONFIRMED"} for r in A["products"]))
 check("W8 every public record has closed kind tokens",
       all(r["kinds"] and set(r["kinds"]) <= {"sauna", "hot-tub", "cold-plunge", "combination"} for r in pub))
 check("W5 header eligibleCount reconciles", A["eligibleCount"] == len(pub))

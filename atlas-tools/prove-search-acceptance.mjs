@@ -267,7 +267,12 @@ console.log('  PART A · THE EIGHT REPRESENTATIVE QUERIES\n');
         'own entry in the Garden Retreat explorer',
     ps.length > 0 && ps.every((p) => route(p) === 'discovery-garden-retreat.html#p-' + p.id.slice(5)
       && /^prod-rec[A-Za-z0-9]{14}$/.test(p.id)
-      && /sauna/i.test((p.name || '') + ' ' + (p.productType || ''))),
+      // AMENDED 14 Oct 2026 (controlled text-only expansion): a maker whose own
+      // name says "Sauna" (Polaris Sauna) is matched on its name, so its hot
+      // tubs and cold plunges answer "sauna" too. Still wellness only, still
+      // routed to their own entries; every OTHER result must be a sauna.
+      && (/sauna/i.test((p.name || '') + ' ' + (p.productType || ''))
+          || /sauna/i.test(p.organisation || ''))),
     JSON.stringify(ps.map((p) => [p.name, route(p)]).slice(0, 4)));
   check('A8c sauna returns ZERO suppliers', r.counts.supplier === 0,
     JSON.stringify(names(r.groups.supplier)));

@@ -6,13 +6,14 @@
  "qualificationRuleVersion": "garden-room-qualification-v1",
  "dryRun": false,
  "sourceGardenRoomCount": 575,
- "eligibleCount": 573,
+ "eligibleCount": 572,
  "highConfidenceCount": 146,
- "withCaveatCount": 427,
+ "withCaveatCount": 426,
  "limitedEvidenceCount": 0,
- "excludedCount": 2,
+ "excludedCount": 3,
  "exclusionSummaryByReason": {
-  "E": 2
+  "E": 2,
+  "F": 1
  },
  "confirmedIrishAvailabilityCount": 263,
  "unknownIrishAvailabilityCount": 312,
@@ -21,15 +22,15 @@
  "noPublishedIrishRouteCount": 43,
  "missingPriceCount": 223,
  "priceEvidenceSummary": {
-  "verified": 276,
+  "verified": 275,
   "present-unverified": 53,
   "quote-only": 21,
   "missing": 223
  },
  "quoteOnlyPriceCount": 21,
- "organisationCount": 64,
+ "organisationCount": 63,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "8480b3307faec3bfd414664c822ddac0251b1e64915c33f3f3c3637983eb2a1e",
+ "governedDigest": "d3c8a788ab4ba23d6eea9d7eeb2bb16f6a83ca4c47dd96bca356fbd8a01db4dc",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -8045,117 +8046,6 @@
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-09-28",
-    "basisSource": null,
-    "basisLeadPhrase": null
-   }
-  },
-  {
-   "id": "recPl3XVtnOR9ZJ9g",
-   "name": "Cosy Cabins Athlone Garden Room 4.5m x 2.5m",
-   "organisation": "Cosy Cabins",
-   "productId": "recPl3XVtnOR9ZJ9g",
-   "productCode": "PROD-001207",
-   "productName": "Cosy Cabins Athlone Garden Room 4.5m x 2.5m",
-   "productType": "",
-   "productCategory": "Garden Rooms",
-   "organisationEvidence": [
-    {
-     "id": "recxzs6QrQ1DYVuMG",
-     "name": "Cosy Cabins"
-    }
-   ],
-   "productUrl": "https://www.cosycabins.ie/garden-rooms/athlone-garden-room-4.5m-x-2.5m",
-   "verificationStatus": null,
-   "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "verified",
-    "reasons": [
-     "A verified price is recorded.",
-     "A product-level source is recorded.",
-     "Supplier attribution is confirmed: Cosy Cabins."
-    ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
-    "hardBlockers": [],
-    "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "no irish-availability evidence recorded",
-     "irishAvailabilityScope": null,
-     "irishAvailabilityClassified": true,
-     "noPublishedIrishRoute": false,
-     "price": "verified",
-     "source": "product-level",
-     "supplierAttribution": "confirmed",
-     "manufacturerAttribution": "unknown",
-     "productUrl": "present",
-     "contradiction": "none",
-     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 0,
-     "pricingRecordCount": 1,
-     "availabilityRecordCount": 0
-    }
-   },
-   "priceEvidence": {
-    "base": 10940,
-    "from": null,
-    "to": null,
-    "currency": "EUR",
-    "priceType": "Standard Price",
-    "status": "Verified",
-    "includesVat": "Yes",
-    "evidenceScope": "Product-Specific",
-    "adjudication": "adjudicated",
-    "quoteOnly": false,
-    "candidateCount": 1
-   },
-   "features": {},
-   "price": 10940,
-   "currency": "EUR",
-   "priceBasis": "Verified",
-   "floorAreaM2": null,
-   "glazing": null,
-   "insulation": null,
-   "manufactureCountry": null,
-   "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
-   "availabilityStatus": null,
-   "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
-   "priceRecordIds": [
-    "recvLRWZLfhRyP0jx"
-   ],
-   "priceRecordIdsAvailable": 1,
-   "priceStatus": "Verified",
-   "priceType": "Standard Price",
-   "priceScope": "Product-Specific",
-   "vatStatus": "Yes",
-   "vatRate": null,
-   "priceBasisAxes": {
-    "erection": "UNKNOWN",
-    "siteWorks": "UNKNOWN",
-    "delivery": "UNKNOWN"
-   },
-   "priceBasisClass": "UNKNOWN",
-   "priceBasisConfidence": "NO_BASIS_STATED",
-   "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceEvidenceRef": {
-    "recordIds": [
-     "recvLRWZLfhRyP0jx"
-    ],
-    "adjudication": "adjudicated",
-    "candidateCount": 1,
-    "status": "Verified",
-    "priceType": "Standard Price",
-    "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-10-02",
     "basisSource": null,
     "basisLeadPhrase": null
    }

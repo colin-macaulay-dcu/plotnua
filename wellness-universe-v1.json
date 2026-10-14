@@ -1,43 +1,50 @@
 {
   "schema": "plotnua.wellness-universe",
-  "version": "1.1.0",
-  "generated": "2026-10-14T13:01:41Z",
-  "qualificationRuleVersion": "wellness-qualification-v2",
+  "version": "1.2.0",
+  "generated": "2026-10-14T15:36:35Z",
+  "qualificationRuleVersion": "wellness-qualification-v3",
   "publicationGate": {
     "version": "supplier-publication-gate-v1",
-    "rule": "public visibility is derived from permission state, listing-review state and asset approval by the Additional Home generator's gate index, without its legacy baseline: an organisation with no rights record holds. A product is public only when ELIGIBLE and PUBLISHABLE.",
+    "rule": "public visibility is derived from permission state, listing-review state and asset approval by the Additional Home generator's gate index, without its legacy baseline. An organisation with no rights record holds unless the founder's public-information register (14 Oct 2026) lists it, in which case each product also needs a VERIFIED product page; that basis is factual text only, never permission or imagery. A product is public only when ELIGIBLE and PUBLISHABLE.",
+    "publicInformationRegister": "atlas-tools/public-information-listings.json",
+    "publicInformationOrganisations": [
+      "Hansa24 Group",
+      "Pineca Ireland",
+      "Polaris Sauna",
+      "TimberIN"
+    ],
     "heldOrganisations": [
       "Auroom Wellness",
       "Cosy Cabins",
-      "Hansa24 Group",
       "MyCabin.ie",
-      "Pineca Ireland",
-      "Polaris Sauna",
-      "Sommarnöjen",
-      "TimberIN"
+      "Sommarnöjen"
     ]
   },
-  "snapshotSha256": "0579eb09d5de9263153e82a0d49f735a75b35dfcb873180514e553c229d1e08c",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026 (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed",
+  "snapshotSha256": "31397887e2de5dc534d100a32c8a6791c3e9c9339b08df718f94dd0b45a66613",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed",
   "sourceCategory": "Wellness / Sauna",
   "sourceCategoryCount": 153,
-  "eligibleCount": 35,
-  "organisationCount": 3,
+  "eligibleCount": 120,
+  "organisationCount": 7,
   "kindCounts": {
-    "sauna": 15,
-    "hot-tub": 14,
-    "cold-plunge": 7,
-    "combination": 0
+    "sauna": 91,
+    "hot-tub": 22,
+    "cold-plunge": 12,
+    "combination": 4
   },
   "kindOrganisationCounts": {
-    "sauna": 2,
-    "hot-tub": 2,
-    "cold-plunge": 2,
-    "combination": 0
+    "sauna": 6,
+    "hot-tub": 4,
+    "cold-plunge": 4,
+    "combination": 1
   },
-  "heldCount": 16,
+  "heldCount": 21,
   "excludedCount": 0,
-  "gateHeldCount": 102,
+  "gateHeldCount": 12,
+  "listingBasisCounts": {
+    "SUPPLIER_PERMISSION": 35,
+    "PUBLIC_INFORMATION": 85
+  },
   "products": [
     {
       "id": "recpZW4echDhHtEVv",
@@ -55,7 +62,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "evidence-incomplete",
@@ -64,7 +71,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recEZ678YSRDJ16Ox",
@@ -82,7 +90,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "evidence-incomplete",
@@ -91,7 +99,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recfKAVUrOeYVPHt0",
@@ -115,13 +124,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recIy8ghdKxo7PTjP",
@@ -133,7 +143,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/contemporary-garden-sauna-aurland-g0428/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8530,
@@ -145,13 +155,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rechcjLRXGYZwcTce",
@@ -163,7 +174,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/corner-garden-house-with-sauna-devon-3-g0284/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 21100,
@@ -175,13 +186,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recou7176RVmPtiWd",
@@ -193,7 +205,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/finnish-sauna-cabin-mini-1-g0362/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7150,
@@ -205,13 +217,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rectx34lUohqXaX2R",
@@ -223,7 +236,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/garden-room-with-sauna-hansa-lounge-xxl-g0164/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 19120,
@@ -235,13 +248,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec6SaFDgJAZhJCgZ",
@@ -253,7 +267,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/garden-sauna-cabin-oliver-1-g0207/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 15590,
@@ -265,13 +279,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recM79iKbieloM03Z",
@@ -283,7 +298,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/garden-sauna-cabin-oliver-3-g0220/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14470,
@@ -295,13 +310,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reczn24i5qEsTty2T",
@@ -313,7 +329,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/garden-sauna-cabin-paula-g0127/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11400,
@@ -325,13 +341,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recwCRZKkYefKr01I",
@@ -343,7 +360,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/garden-sauna-cabin-with-terrace-oliver-2-g0208/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 13090,
@@ -355,13 +372,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec6vfMZxsFc20EPe",
@@ -373,7 +391,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/garden-sauna-with-porch-nora-g0285/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 17310,
@@ -385,13 +403,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recZeunzPTfmYZgCO",
@@ -403,7 +422,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/large-contemporary-sauna-lyngen-g0427/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10850,
@@ -415,13 +434,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recZcGYcwzf2Fa1re",
@@ -445,13 +465,16 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recStbWNjbPyrxVIL",
@@ -475,13 +498,16 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recVO4KIkap60rzUa",
@@ -493,7 +519,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-garden-sauna-cabin-oslo-g0112/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8940,
@@ -505,13 +531,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recNSWmB5pGoLuUus",
@@ -523,7 +550,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-sauna-cabin-corner-a-g0205/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 19890,
@@ -535,13 +562,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recLQTDvK9e3GBsRv",
@@ -553,7 +581,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-sauna-cabin-corner-b-g0206/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 19810,
@@ -565,13 +593,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec9E19OXuIHGeAme",
@@ -583,7 +612,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-sauna-cabin-kirkenes-g0376/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9990,
@@ -595,13 +624,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recu6KOXm4cJngQHW",
@@ -613,7 +643,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-sauna-cabin-lisette-g0093/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8700,
@@ -625,13 +655,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recgTeJmEvbX5xIzv",
@@ -643,7 +674,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-sauna-finland-g0239/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12660,
@@ -655,13 +686,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recNZXMlr2yccTZTY",
@@ -673,7 +705,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-sauna-serenity-g0409/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 13660,
@@ -685,13 +717,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recI1mKwDj3BgtVmN",
@@ -703,7 +736,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/outdoor-sauna-with-veranda-lucas-e-g0271/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 18170,
@@ -715,13 +748,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recNczuBRDbwJACfc",
@@ -733,7 +767,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/garden-sauna-cabin-g0383/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5460,
@@ -745,13 +779,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recCStH9W8b9YMedU",
@@ -763,7 +798,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/small-modern-garden-sauna-sogne-g0425/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7360,
@@ -775,13 +810,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recfybYdMq9vHsXM9",
@@ -793,7 +829,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/small-outdoor-sauna-hansa-lounge-g0331/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11280,
@@ -805,13 +841,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recJeHpbbdejJQJpR",
@@ -823,7 +860,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/small-outdoor-sauna-lyse-g0426/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6190,
@@ -835,13 +872,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recW9poG90rNRjAjp",
@@ -853,7 +891,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/small-sauna-cabin-mini-2-g0363/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7150,
@@ -865,13 +903,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec2BobXUhOPoEKyX",
@@ -883,7 +922,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/small-sauna-cabin-mini-3-g0364/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7150,
@@ -895,13 +934,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recS7Gk3xnHsMh6yy",
@@ -913,7 +953,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://summerhouse24.ie/sauna-cabin-felix-g0413/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6890,
@@ -925,13 +965,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recRgVJcPwTtY1ikY",
@@ -955,13 +996,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recSYzKR0BjBrdYMQ",
@@ -985,13 +1027,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recWYh1cQPtKDBsvL",
@@ -1015,13 +1058,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recWDq1GRzEQBVJMP",
@@ -1045,13 +1089,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recVYoBHX5X4A1BDl",
@@ -1075,13 +1120,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "rec05goiqcMZ78YXg",
@@ -1105,13 +1151,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "rec9Whhcs3cbMFNOZ",
@@ -1135,13 +1182,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recQT6LbDFnfrssoi",
@@ -1165,13 +1213,16 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recnSB9JjkNaO0grC",
@@ -1195,13 +1246,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "rec3ZJCZRFIwSgMwb",
@@ -1225,13 +1277,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recrt70iQ4TsMykMf",
@@ -1255,13 +1308,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recRTybecObQLoxyw",
@@ -1285,13 +1339,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "reclP6OKulrEN7QRs",
@@ -1315,13 +1370,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "rectXEcIBSgq92QFn",
@@ -1345,13 +1401,16 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "recsNO8DyDCOyzaaf",
@@ -1375,13 +1434,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recB4sNoD3z8XpYgL",
@@ -1405,7 +1465,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1413,7 +1473,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recJuwIn7bBk5mDQL",
@@ -1437,7 +1498,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1445,7 +1506,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "rec839i9u1AuIyWA5",
@@ -1469,13 +1531,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "rec3DxmwdTEumUwJ8",
@@ -1499,7 +1562,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1507,7 +1570,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "rec9qtid9KJX8EQpy",
@@ -1531,13 +1595,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recX7IRnkD0PNDUhp",
@@ -1561,7 +1626,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1569,7 +1634,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recPEyrQcz5iHzaSM",
@@ -1593,7 +1659,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1601,7 +1667,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recGyqJHsZTHoORPS",
@@ -1625,7 +1692,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1633,7 +1700,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recVazyerS81xoeq4",
@@ -1657,13 +1725,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recKBqAycJhUbV7Ts",
@@ -1687,13 +1756,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "rec1Y7hhBe5xJlcWx",
@@ -1717,13 +1787,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recBgWBAcQwWLb9oT",
@@ -1747,7 +1818,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1755,7 +1826,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recisLeRIkpgRCEFu",
@@ -1779,7 +1851,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1787,7 +1859,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "rec3KR7xUz1j9CkOG",
@@ -1811,13 +1884,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "rec7vDvqZSiQupeYe",
@@ -1841,13 +1915,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recaUH7DRxp9t37yA",
@@ -1871,13 +1946,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recdPMdChAStDH8sp",
@@ -1901,13 +1977,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recursLY4Q1bFn4rh",
@@ -1931,7 +2008,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -1939,7 +2016,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recZsz3qTuwssgzRR",
@@ -1963,13 +2041,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recM91mb6JaOREuEm",
@@ -1993,13 +2072,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recqZvNgpcTOUOe9D",
@@ -2023,7 +2103,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -2031,7 +2111,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recntSXUahjfycM7P",
@@ -2055,13 +2136,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recSN0nR2ykCjobcF",
@@ -2085,13 +2167,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recHEBSdisGB9AnmT",
@@ -2115,7 +2198,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -2123,7 +2206,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recRPkVJdIB1mifpa",
@@ -2147,7 +2231,7 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "recorded-contradiction"
@@ -2155,7 +2239,8 @@
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recjMSl8ncVIuUkQm",
@@ -2179,13 +2264,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recTXhjMxUj7DKm6P",
@@ -2209,13 +2295,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recDQiVW2kmzKqpoG",
@@ -2239,13 +2326,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recx144QzENy1GSwf",
@@ -2269,13 +2357,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "rec1nKZYJJMd6dksA",
@@ -2299,13 +2388,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recwlPfitJ6tzSN26",
@@ -2329,13 +2419,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recLYdYxpg3De2N11",
@@ -2359,13 +2450,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recaT6TVXSTHy7NWv",
@@ -2389,13 +2481,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recfXgvAW6ctZw9k1",
@@ -2419,13 +2512,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recD9K20z7I9Fj6SP",
@@ -2449,13 +2543,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recPyhpq3k9A7DMmU",
@@ -2479,13 +2574,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recXbFA0tXLF6SvgL",
@@ -2509,13 +2605,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recB34Lc8Nza9LIEJ",
@@ -2539,13 +2636,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "rec7GhVuWTNx9fSj8",
@@ -2569,13 +2667,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recrPVog4GNA3ERhf",
@@ -2599,13 +2698,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recnnzXeiXIoKdP7d",
@@ -2617,7 +2717,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-46mm-1-7m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5157,
@@ -2629,13 +2729,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recScMV22mIrgij6w",
@@ -2647,7 +2748,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga17-with-panoramic-windowfull-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6008,
@@ -2659,13 +2760,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec6oVostIGd6JNxR",
@@ -2677,7 +2779,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-with-panoramic-window-half-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5535,
@@ -2689,13 +2791,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rechMoa1ZWtcAMvKX",
@@ -2707,7 +2810,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-24-46mm-2-4m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6905,
@@ -2719,13 +2822,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recmDjaXN4SF70Ifr",
@@ -2737,7 +2841,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-30-46mm-3m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7690,
@@ -2749,13 +2853,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recJCju35GC3GOUAo",
@@ -2767,7 +2872,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-full-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11118,
@@ -2779,13 +2884,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reckAzBLbtQLK46Gz",
@@ -2797,7 +2903,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-half-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10645,
@@ -2809,13 +2915,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recUHbn0U2qqKQYCl",
@@ -2827,7 +2934,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-35-46mm-3-5m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9669,
@@ -2839,13 +2946,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec7EZDz2AVIVHqwb",
@@ -2857,7 +2965,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10266,
@@ -2869,13 +2977,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rech22hBIhQ5ypYrf",
@@ -2887,7 +2996,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-45.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10883,
@@ -2899,13 +3008,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recemLQAqOSIKhCI5",
@@ -2917,7 +3027,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-48.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11143,
@@ -2929,13 +3039,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reciclyouGByVnjyy",
@@ -2947,7 +3058,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-59.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 13282,
@@ -2959,13 +3070,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec3ZEySd0n7wowm2",
@@ -2977,7 +3089,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4856,
@@ -2989,13 +3101,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recFozPL70R9FYfDj",
@@ -3007,7 +3120,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-6m-5m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5208,
@@ -3019,13 +3132,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recaYnMVQyFJSSSBw",
@@ -3037,7 +3151,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-3-6x2-1m-5-5m2-terrace-5m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8586,
@@ -3049,13 +3163,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recs5RhdwFIrdEh0o",
@@ -3067,7 +3182,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2-terrace-3m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6405,
@@ -3079,13 +3194,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recIasmbt67BrogkF",
@@ -3097,7 +3213,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4018,
@@ -3109,13 +3225,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recRWg0ZciauFPdlC",
@@ -3127,7 +3244,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x2-9m-7m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4480,
@@ -3139,13 +3256,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recev6BrPKTiWkomb",
@@ -3157,7 +3275,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x3-2m-8m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4849,
@@ -3169,13 +3287,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec4qnJON1gEbCT62",
@@ -3187,7 +3306,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-3x4m-12m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6294,
@@ -3199,13 +3318,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recwW2OeFYlhQ1o20",
@@ -3217,7 +3337,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-3rooms.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7438,
@@ -3229,13 +3349,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reciOtvf4FhzPE7vz",
@@ -3247,7 +3368,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-4rooms.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7690,
@@ -3259,13 +3380,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recu1Y1kHvG90k7GL",
@@ -3289,13 +3411,16 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "recorded-contradiction"
+        ],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recaBRv5sobM9Exvy",
@@ -3307,7 +3432,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-3rooms.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10226,
@@ -3319,13 +3444,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recME6y19ziTIzC5J",
@@ -3337,7 +3463,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-4-rooms.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10638,
@@ -3349,13 +3475,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recfWu1hLmcJPZSo7",
@@ -3367,7 +3494,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-3rooms-terrace-12m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11656,
@@ -3379,13 +3506,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec6BCzxZ5jITxE8Q",
@@ -3397,7 +3525,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-4rooms-terrace-12m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12069,
@@ -3409,13 +3537,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reczDDWlkGCzinMCm",
@@ -3427,7 +3556,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-3-6x2-1m-5-5m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6676,
@@ -3439,13 +3568,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reck2zLfXcxNSIgJ8",
@@ -3457,7 +3587,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7476,
@@ -3469,13 +3599,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recTIZL9Z61tonRaZ",
@@ -3487,7 +3618,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7815,
@@ -3499,13 +3630,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec9UC4R71N1xOz9s",
@@ -3517,7 +3649,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-5-1x5-1m-22m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12195,
@@ -3529,13 +3661,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reczrQJvhvSVag3QP",
@@ -3547,7 +3680,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-6-1x2-6m-12-5m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9774,
@@ -3559,13 +3692,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recqWyGu5FDvta874",
@@ -3577,7 +3711,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2-terrace-6-7m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9605,
@@ -3589,13 +3723,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recHpiHApAiJgA5CR",
@@ -3607,7 +3742,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-3-6m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9660,
@@ -3619,13 +3754,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recU5cehhAJfWqrXy",
@@ -3637,7 +3773,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-6-7m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 10116,
@@ -3649,13 +3785,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recAOXD7lxH1fXFT2",
@@ -3667,7 +3804,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/comfort-barrel-sauna-flexible-sizing-from-1-6m-to-2-4m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5900,
@@ -3679,13 +3816,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec8WtKz8vX98KGrX",
@@ -3697,7 +3835,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/comfort-cube-sauna-flexible-sizing-from-1-7m-to-2-4m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6300,
@@ -3709,13 +3847,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rechiRVBDdCmsbEft",
@@ -3727,7 +3866,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/compact-minicube-1-6m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4700,
@@ -3739,13 +3878,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec2AZfhqqSoRvz6R",
@@ -3757,7 +3897,7 @@
       "kinds": [
         "cold-plunge"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/fibreglass-cold-plunge-tub-1-person/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 2500,
@@ -3769,13 +3909,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recYmBOQUd8AhqeeA",
@@ -3787,7 +3928,7 @@
       "kinds": [
         "cold-plunge"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/fibreglass-cold-plunge-tub-2-people/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3500,
@@ -3799,13 +3940,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recAZhmenlMg9656d",
@@ -3817,7 +3959,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/polaris-luna-1-6m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7490,
@@ -3829,13 +3971,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec9PFKkSdeEtY3sj",
@@ -3847,7 +3990,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/polaris-lyra-2-4m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9790,
@@ -3859,13 +4002,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recyAgZGKKSsG3eAC",
@@ -3877,7 +4021,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/modern-2in1-cabin-sauna-5-2m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11400,
@@ -3889,13 +4033,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recDMLGgnPan7sSvo",
@@ -3907,7 +4052,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/modern-2in1-cube-sauna-5-3m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 11500,
@@ -3919,13 +4064,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recFzQwf5JJNv7FyC",
@@ -3937,7 +4083,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/modern-sauna-cabin-flexible-sizing-from-2-0m-to-4-0m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6500,
@@ -3949,13 +4095,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recTTzUUkBmTcOo7O",
@@ -3967,7 +4114,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/premium-barrel-sauna-2-7m-4-0m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 6900,
@@ -3979,13 +4126,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reccLWbU1CYCukkbA",
@@ -3997,7 +4145,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/premium-cube-sauna-flexible-sizing-from-2-4m-to-4-0m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7100,
@@ -4009,13 +4157,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recJUpkps3vf8bB89",
@@ -4027,7 +4176,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/premium-igloo-sauna-flexible-sizing-from-2-8m-to-4-0m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 7500,
@@ -4039,13 +4188,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recyM2NCtohRcsh08",
@@ -4057,7 +4207,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/oval-sauna-4m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 9900,
@@ -4069,13 +4219,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recNLsLFg4gUi1bMY",
@@ -4087,7 +4238,7 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/polaris-vega-2-8m/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 12090,
@@ -4099,13 +4250,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recPrtVFdTXzhJ95d",
@@ -4117,7 +4269,7 @@
       "kinds": [
         "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/hot-tub-1-8m-oval/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3200,
@@ -4129,13 +4281,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "reckaGYr8cbtCe5Rx",
@@ -4147,7 +4300,7 @@
       "kinds": [
         "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/hot-tub-1-8m-diameter-4-persons/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3700,
@@ -4159,13 +4312,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recMgf4ECktDZz1hM",
@@ -4177,7 +4331,7 @@
       "kinds": [
         "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/hot-tub-1-8m-x-1-8m-octagonal-6-persons/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3900,
@@ -4189,13 +4343,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recNYnxzGnrAUFmvs",
@@ -4207,7 +4362,7 @@
       "kinds": [
         "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/hot-tub-2m-x-2m-octagonal-7-persons/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4200,
@@ -4219,13 +4374,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec7P7dqXXbHwRPzg",
@@ -4237,7 +4393,7 @@
       "kinds": [
         "cold-plunge"
       ],
-      "productUrl": null,
+      "productUrl": "https://polaris-sauna.ie/product/poolex-spawer-icespa-7kw-heat-pump-cold-plunge-chiller/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 1299,
@@ -4249,13 +4405,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recS8dchktTu60Ni6",
@@ -4279,13 +4436,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "holdReason": "publication-record-missing",
+      "listingBasis": null
     },
     {
       "id": "rectI1zTBPed5RhGY",
@@ -4309,13 +4467,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recvpsDrimklpZkFO",
@@ -4339,13 +4498,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recyXCCmJM0LQEAAg",
@@ -4369,13 +4529,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recdsCR4RW4h9D9TO",
@@ -4400,13 +4561,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
-      "holdReason": null
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recbqK8aatwfEhbh2",
@@ -4416,9 +4578,11 @@
       "productCategory": "Wellness / Sauna",
       "productType": "Sauna & Hot Tub Combination Building",
       "kinds": [
-        "combination"
+        "combination",
+        "sauna",
+        "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/nordic-barrel-duo/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
@@ -4430,13 +4594,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recsgRXeV6TNzxCYa",
@@ -4446,9 +4611,11 @@
       "productCategory": "Wellness / Sauna",
       "productType": "Sauna & Hot Tub Combination Building",
       "kinds": [
-        "combination"
+        "combination",
+        "sauna",
+        "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/imberin-nordic-sauna-hot-tub-combo-hobbiton/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
@@ -4460,13 +4627,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rechyMNmPvPrIhZKx",
@@ -4478,7 +4646,7 @@
       "kinds": [
         "cold-plunge"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/timberin-nordic-ice-cold-plunge/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3350,
@@ -4490,13 +4658,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec8uGWg6iRGi34BB",
@@ -4506,9 +4675,11 @@
       "productCategory": "Wellness / Sauna",
       "productType": "Sauna & Hot Tub Combination Building",
       "kinds": [
-        "combination"
+        "combination",
+        "sauna",
+        "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/nordic-modular-spa/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5292,
@@ -4520,13 +4691,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "recgmL8p4EKPREiWf",
@@ -4546,15 +4718,16 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "evidence-incomplete"
         ],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recyPCyF2mmxolq2t",
@@ -4564,9 +4737,11 @@
       "productCategory": "Wellness / Sauna",
       "productType": "Sauna & Hot Tub Combination Building",
       "kinds": [
-        "combination"
+        "combination",
+        "sauna",
+        "hot-tub"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/nordic-pod-duo/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
@@ -4578,13 +4753,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     },
     {
       "id": "rec9EpRGhwrOZo686",
@@ -4604,15 +4780,16 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "HELD",
         "heldReasons": [
           "evidence-incomplete"
         ],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recQSbuYJxaeKaNAu",
@@ -4624,7 +4801,7 @@
       "kinds": [
         "cold-plunge"
       ],
-      "productUrl": null,
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/cold-plunge-tub-thermowood-90cm/",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4990,
@@ -4636,13 +4813,14 @@
         "state": "UNCONFIRMED"
       },
       "qualification": {
-        "rule": "wellness-qualification-v2",
+        "rule": "wellness-qualification-v3",
         "state": "ELIGIBLE",
         "heldReasons": [],
         "excludedReasons": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "publication-record-missing"
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "PUBLIC_INFORMATION"
     }
   ]
 }

@@ -151,6 +151,8 @@ def _wl(W):
     # line, both composed here from the published record only.
     def ptype(q):
         ks = q.get("kinds") or []
+        if "combination" in ks:   # one building that is both: Atlas's own type
+            return q.get("productType") or KIND_LABEL["combination"]
         if len(ks) > 1:   # dual-use (WILD TUB): say so rather than pick one
             return " or ".join(KIND_LABEL[k] for k in ks).capitalize()
         return q.get("productType") or KIND_LABEL.get((ks or [""])[0], "")
@@ -166,9 +168,15 @@ def _wl(W):
 # ── PRODUCT NAVIGATION, PROVED HERE (14 Oct 2026) ─────────────────────────────
 # Founder brief "Garden Retreat — final pre-launch corrections", item 1: the
 # smallest safe change. Nothing is allowed by default. A product gets
-#   href  the maker's own product page, ONLY if the maker's rights record
-#         derives PUBLISHABLE, its grant's conditions include "link-back",
-#         and the URL is https on the record's permitted_domain;
+#   href  the maker's own product page, ONLY if that exact URL is VERIFIED in
+#         atlas-tools/maker-product-links-v1.json (HTTPS, on a domain that
+#         file attributes to THIS maker, HTTP 200, same-host same-path
+#         redirects only, no query or fragment, and the page names the
+#         product). REVISED 14 Oct 2026 (controlled text-only publication
+#         expansion, item 3): an ordinary link to a maker's own public product
+#         page no longer needs a supplier permission state -- "do not require
+#         an invented supplier permission state for an ordinary link" -- but it
+#         needs verified evidence, and arbitrary domains stay impossible;
 #   img   ONLY images enumerated in that maker's approved_assets for this
 #         exact product code, under a grant whose scope includes "imagery"
 #         and whose asset approval is APPROVED; each with its kind label
@@ -196,18 +204,47 @@ def _host(u):
     return m.group(1).lower() if m else None
 
 
+LINKS = ROOT / "atlas-tools" / "maker-product-links-v1.json"
+_LINKS = None
+SAFE_URL = re.compile(r"https://[A-Za-z0-9.-]+/[A-Za-z0-9._~/%+-]*")
+
+
+def links_doc():
+    global _LINKS
+    if _LINKS is None:
+        _LINKS = json.loads(LINKS.read_text(encoding="utf-8"))
+    return _LINKS
+
+
+def verified_link(pid, org, url):
+    """The site label to show when this product's own page is VERIFIED for
+    this maker at exactly this URL, else None."""
+    D = links_doc()
+    e = D["links"].get(pid) or {}
+    doms = (D["makerDomains"].get(org) or {}).get("domains") or []
+    if (e.get("state") != "VERIFIED" or e.get("organisation") != org or not url
+            or e.get("url") != url or e.get("status") != 200 or not SAFE_URL.fullmatch(url)
+            or _host(url) not in doms):
+        return None
+    h = _host(url)
+    return h[4:] if h.startswith("www.") else h
+
+
 def product_nav(q):
-    r = rights_row(q.get("organisation"))
-    if not r or r.get("public_visibility") != "PUBLISHABLE":
-        return {}
-    perm = r.get("permission") or {}
-    if perm.get("state") != "GRANTED" or "feature" not in (perm.get("scope") or []):
-        return {}
-    dom = (r.get("permitted_domain") or "").lower()
     nav = {}
     u = q.get("productUrl")
-    if "link-back" in (perm.get("conditions") or []) and u and _host(u) in (dom, "www." + dom):
-        nav["href"], nav["site"] = u, dom
+    site = verified_link(q.get("id"), q.get("organisation"), u)
+    if site:
+        nav["href"], nav["site"] = u, site
+    # IMAGES ARE STILL GOVERNED BY THE RIGHTS RECORD ALONE. A public-
+    # information listing has no rights record, so it can never reach here.
+    r = rights_row(q.get("organisation"))
+    if not r or r.get("public_visibility") != "PUBLISHABLE":
+        return nav
+    perm = r.get("permission") or {}
+    if perm.get("state") != "GRANTED" or "feature" not in (perm.get("scope") or []):
+        return nav
+    dom = (r.get("permitted_domain") or "").lower()
     if ("imagery" in (perm.get("scope") or []) and r.get("asset_approval_state") == "APPROVED"
             and r.get("required_credit")):
         imgs = []
@@ -430,8 +467,8 @@ def section(P, tabs, researched):
     config = {"initial": 6, "tabs": [t["cfg"] for t in tabs]}
     pages = " Product pages open within PlotNua." if any(t["cfg"]["productLink"] for t in tabs) else ""
     if any(len(p) > 5 and p[5].get("href") for t in tabs for m in t["cfg"]["makers"] for p in m["p"]):
-        pages += (" Where a maker has agreed to be linked, &ldquo;See it on&rdquo; opens its own"
-                  " product page in a new tab.")
+        pages += (" Listings come from each maker&rsquo;s own published product pages;"
+                  " &ldquo;See it on&rdquo; opens that page in a new tab.")
     credits = image_credits(tabs)
     payload = json.dumps(config, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     return f'''  <!-- 6c · {MARK} · Founder decisions 13 Oct 2026. Shared component
@@ -591,11 +628,17 @@ def build(fname, P, src):
                 R = rights_row(m["m"]) or {}
                 perm = R.get("permission") or {}
                 dom = (R.get("permitted_domain") or "").lower()
-                if (X.get("href") or X.get("img")) and (R.get("public_visibility") != "PUBLISHABLE"
-                                                       or perm.get("state") != "GRANTED"):
-                    die("G3 navigation for a maker whose rights record is not PUBLISHABLE: " + m["m"])
-                if X.get("href") and ("link-back" not in (perm.get("conditions") or []) or X.get("site") != dom):
-                    die("G3 a product link for a maker whose grant has no link back: " + m["m"])
+                if X.get("img") and (R.get("public_visibility") != "PUBLISHABLE"
+                                     or perm.get("state") != "GRANTED"):
+                    die("G3 images for a maker whose rights record is not PUBLISHABLE: " + m["m"])
+                # Re-derived from the link evidence, independently of product_nav().
+                if X.get("href"):
+                    E = links_doc()["links"].get(p[0]) or {}
+                    doms = (links_doc()["makerDomains"].get(m["m"]) or {}).get("domains") or []
+                    if E.get("state") != "VERIFIED" or E.get("url") != X["href"] or E.get("organisation") != m["m"]:
+                        die("G3 a product link not VERIFIED for this product and maker: " + p[0])
+                    if _host(X["href"]) not in doms:
+                        die("G3 a product link off the maker's own domain: " + X["href"])
                 if X.get("img"):
                     allowed = {a["url"] for a in R.get("approved_assets") or []}
                     for im in X["img"]:
@@ -606,7 +649,7 @@ def build(fname, P, src):
                 if X.get("href"):
                     host = _host(X["href"])
                     if not host or not X["href"].startswith("https://") or host.replace("www.", "", 1) != X.get("site"):
-                        die("G3 product link off the maker's permitted domain: " + X["href"])
+                        die("G3 product link label does not match its destination: " + X["href"])
                     if not re.fullmatch(r"https://[A-Za-z0-9.-]+/[A-Za-z0-9._~/%+-]*", X["href"]):
                         die("G3 product link carries a query, fragment or unexpected character: " + X["href"])
     if "http" in js or "window.open" in js or "your-plot.html" in js:

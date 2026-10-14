@@ -42,7 +42,7 @@ SIZE_GUARD = 180 * 1024
 # the only universe change is the seven ÖÖD products (Irish availability
 # confirmed, tier WITH_CAVEAT -> HIGH_CONFIDENCE, installation axis UNKNOWN,
 # authorised imagery). Every other product is byte-identical.
-BASE_UNIVERSE_SHA = "389402d0431b3a8923a3c5e002b96418374edd1c4fedeed5422ab774ac47527f"
+BASE_UNIVERSE_SHA = "c64fe26ebb5b5cf35abe0abe3e6effa82845a81f24f627ab974624bfdcc9d3c7"
 
 ALLOWED_FIELDS = {
     "possibility": {"id", "type", "title", "standfirst", "topics", "route"},

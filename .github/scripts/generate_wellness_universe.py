@@ -45,6 +45,24 @@ legacy-baseline additions"):
     that is genuinely more than one (Tanktribe WILD TUB, recorded in Atlas
     as dual-use) carries both. Unclassifiable records hold.
 
+REVISION 3, 14 Oct 2026 (founder decision "Garden Retreat — controlled
+text-only publication expansion"): a SECOND, NARROWER listing basis.
+  * A product is public when ELIGIBLE and either (a) its organisation's own
+    rights record derives PUBLISHABLE (listingBasis SUPPLIER_PERMISSION), or
+    (b) its organisation has NO rights record and is listed in
+    atlas-tools/public-information-listings.json (listingBasis
+    PUBLIC_INFORMATION). A rights record always wins: a decline, a hold or a
+    review request in a record is never overridden by the register.
+  * PUBLIC_INFORMATION is not permission. It grants no image (the maker
+    explorer draws images only from rights records), records no consent and
+    adds one product-level condition: the product's own page must be VERIFIED
+    in atlas-tools/maker-product-links-v1.json (HTTPS, the maker's own domain,
+    HTTP 200, same-host same-path redirects only, the page names the product).
+    A product that fails it holds (product-page-not-verified).
+  * A product Atlas records as a sauna-and-hot-tub combination building
+    carries the kinds combination, sauna AND hot-tub: one record, shown under
+    both tabs, never duplicated.
+
 PUBLIC-DISCLOSURE FIREWALL. Description, Notes, Standards prose and Habitation
 basis are read and NEVER exported. What reaches the artefact is identity,
 the Atlas product type, a verified 'from' price with its basis, and closed
@@ -66,8 +84,8 @@ import generate_additional_home_universe as AH              # noqa: E402
 from generate_additional_home_universe import NO_RECORD_HOLD  # noqa: E402
 
 SCHEMA = "plotnua.wellness-universe"
-VERSION = "1.1.0"
-RULE_VERSION = "wellness-qualification-v2"
+VERSION = "1.2.0"
+RULE_VERSION = "wellness-qualification-v3"
 CATEGORY = "Wellness / Sauna"
 PRICE_LEAD = {"Starting From": "Published 'from' price",
               "Standard Price": "Published price",
@@ -82,7 +100,12 @@ KIND_OVERRIDES = {"recdsCR4RW4h9D9TO": ["hot-tub", "cold-plunge"]}
 # The closed set of fields a public record may carry.
 PUBLIC_FIELDS = {"id", "productCode", "productName", "organisation",
                  "productCategory", "productType", "kinds", "productUrl", "price", "irish",
-                 "qualification", "publicVisibility", "holdReason"}
+                 "qualification", "publicVisibility", "holdReason", "listingBasis"}
+REPO = Path(__file__).resolve().parent.parent.parent
+REGISTER = REPO / "atlas-tools" / "public-information-listings.json"
+LINKS = REPO / "atlas-tools" / "maker-product-links-v1.json"
+SUPPLIER_PERMISSION, PUBLIC_INFORMATION = "SUPPLIER_PERMISSION", "PUBLIC_INFORMATION"
+PAGE_NOT_VERIFIED = "product-page-not-verified"
 
 
 def price_of(rows):
@@ -116,7 +139,8 @@ def kinds_of(p):
         if not low:
             continue
         if "sauna" in low and "hot tub" in low:
-            return ["combination"]
+            # One building that is both: listed under both, never duplicated.
+            return ["combination", "sauna", "hot-tub"]
         if "cold plunge" in low or "ice bath" in low:
             return ["cold-plunge"]
         if "hot tub" in low:
@@ -129,16 +153,60 @@ def kinds_of(p):
 _WGATE = None
 
 
+_REGISTER = None
+
+
+def public_information_register():
+    """{normalised name: row} for rows that meet the register's own rules.
+    A row that claims permission, imagery or an objection is refused, not
+    skipped: the register cannot be used to smuggle consent in."""
+    global _REGISTER
+    if _REGISTER is None:
+        doc = json.loads(REGISTER.read_text(encoding="utf-8"))
+        if (doc.get("decision") or {}).get("scope") != CATEGORY:
+            fail("the public-information register is not scoped to %r" % CATEGORY)
+        out = {}
+        for row in doc.get("organisations") or []:
+            if (row.get("basis") != PUBLIC_INFORMATION or row.get("supplier_permission") is not False
+                    or row.get("imagery") != "none" or row.get("objection") != "none recorded"
+                    or not row.get("objection_check") or not row.get("maker_identity")):
+                fail("public-information register row for %r is malformed" % row.get("name"))
+            out[AH._norm_org(row["name"])] = row
+        for row in doc.get("not_listed") or []:
+            if AH._norm_org(row["name"]) in out:
+                fail("%r is both listed and not listed" % row["name"])
+        _REGISTER = out
+    return _REGISTER
+
+
 def wellness_hold(org_name):
-    """The Additional Home gate WITHOUT its legacy baseline: an organisation
-    is publishable only on its own rights record."""
+    """(hold reason or None, listing basis or None).
+
+    The Additional Home gate WITHOUT its legacy baseline decides first: an
+    organisation with a rights record is decided by that record, whatever it
+    says. Only an organisation with NO rights record may be listed on the
+    public-information basis, and only if the register names it."""
     global _WGATE
     if _WGATE is None:
         _WGATE = AH._gate_index()
     key = AH._norm_org(org_name)
-    if not key or key not in _WGATE:
-        return NO_RECORD_HOLD
-    return _WGATE[key]
+    if key and key in _WGATE:
+        hold = _WGATE[key]
+        return hold, (None if hold else SUPPLIER_PERMISSION)
+    if key and key in public_information_register():
+        return None, PUBLIC_INFORMATION
+    return NO_RECORD_HOLD, None
+
+
+_LINKS = None
+
+
+def page_verified(pid, url):
+    global _LINKS
+    if _LINKS is None:
+        _LINKS = json.loads(LINKS.read_text(encoding="utf-8"))["links"] if LINKS.exists() else {}
+    e = _LINKS.get(pid)
+    return bool(e and e.get("state") == "VERIFIED" and url and e.get("url") == url)
 
 
 def qualify(p, org, price, kinds):
@@ -184,7 +252,13 @@ def main():
         price = price_of(pricing.get(p["id"], []))
         kinds = kinds_of(p)
         q = qualify(p, org, price, kinds)
-        hold = wellness_hold(org) if org else NO_RECORD_HOLD
+        hold, basis = wellness_hold(org) if org else (NO_RECORD_HOLD, None)
+        # The page condition is a PUBLICATION condition for an otherwise
+        # eligible product; a product already held on evidence keeps that
+        # reason rather than gaining a second one.
+        if (basis == PUBLIC_INFORMATION and q["state"] == "ELIGIBLE"
+                and not page_verified(p["id"], txt(cell(p, "Product URL")))):
+            hold, basis = PAGE_NOT_VERIFIED, None
         rec = {
             "id": p["id"],
             "productCode": txt(cell(p, "Product Code")) or None,
@@ -205,6 +279,10 @@ def main():
             "qualification": q,
             "publicVisibility": "HOLD" if hold else "PUBLISHABLE",
             "holdReason": hold,
+            # Why a public record may be shown: the maker's own rights record,
+            # or PlotNua's factual research on the public-information basis.
+            # Never both, never a permission when it is the second.
+            "listingBasis": basis if (not hold and q["state"] == "ELIGIBLE") else None,
         }
         if set(rec) != PUBLIC_FIELDS:
             fail("a record carries a field outside the public set")
@@ -227,9 +305,15 @@ def main():
             "version": "supplier-publication-gate-v1",
             "rule": ("public visibility is derived from permission state, "
                      "listing-review state and asset approval by the Additional "
-                     "Home generator's gate index, without its legacy baseline: "
-                     "an organisation with no rights record holds. A product is "
-                     "public only when ELIGIBLE and PUBLISHABLE."),
+                     "Home generator's gate index, without its legacy baseline. "
+                     "An organisation with no rights record holds unless the "
+                     "founder's public-information register (14 Oct 2026) lists it, "
+                     "in which case each product also needs a VERIFIED product page; "
+                     "that basis is factual text only, never permission or imagery. "
+                     "A product is public only when ELIGIBLE and PUBLISHABLE."),
+            "publicInformationRegister": "atlas-tools/public-information-listings.json",
+            "publicInformationOrganisations": sorted({r["organisation"] for r in emitted
+                                                     if r["listingBasis"] == PUBLIC_INFORMATION}),
             "heldOrganisations": sorted({r["organisation"] for r in emitted
                                          if r["publicVisibility"] == "HOLD" and r["organisation"]}),
         },
@@ -249,6 +333,8 @@ def main():
         "excludedCount": count("EXCLUDED"),
         "gateHeldCount": sum(1 for r in emitted if r["qualification"]["state"] == "ELIGIBLE"
                              and r["publicVisibility"] != "PUBLISHABLE"),
+        "listingBasisCounts": {b: sum(1 for r in public if r["listingBasis"] == b)
+                               for b in (SUPPLIER_PERMISSION, PUBLIC_INFORMATION)},
         "products": emitted,
     }
     out = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"

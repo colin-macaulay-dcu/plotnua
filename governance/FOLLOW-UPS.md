@@ -465,3 +465,33 @@ Box, and now ÖÖD) showed without its required credit. The clear now runs
 before the paint. Found by browser test of the ÖÖD update. A proof that
 asserts a credit chip is present after Option Detail opens would stop a
 regression; none exists yet.
+
+## WL-HOLD-001 · RESOLVED IN PART, 14 Oct 2026 (controlled text-only publication)
+
+Founder decision: a factual, text-only listing basis
+(`atlas-tools/public-information-listings.json`), never a permission, never
+imagery; a rights record always decides first. Garden Retreat now lists 120
+products from 7 makers: 35 on supplier permission (OGNYX 29, Tanktribe 4,
+Irish Sauna Company 2) and 85 on the public-information basis (Pineca 34,
+Hansa24 25, Polaris 20, TimberIN 6), each with a VERIFIED product page
+(`atlas-tools/maker-product-links-v1.json`). Still held (33): OGNYX 12
+(recorded contradictions), MyCabin 12 (10 pending founder review + 2
+contradictions), Pineca ELDA 5 m², Hansa Geira and Nord (contradictions,
+written to Atlas Standards 14 Oct), TimberIN 2 (no verified price), Auroom 2,
+Cosy Cabins 1 (asked for a preview first), Sommarnöjen 1 (page 404).
+
+OPEN:
+* SEARCH-WL-COLLIDE · 59 of the 85 (Pineca 34, Hansa24 25) are in the
+  Garden Retreat directory but NOT in Search: build-search-index.py withholds
+  wellness products of an organisation that already has a Garden Room
+  supplier record (R3: a supplier control must deliver exactly the count it
+  promises). Lifting it means letting supplier records span corpora — a
+  founder decision, not taken here.
+* MYCABIN-EDITORIAL · Garden Retreat's comparison section names MyCabin's
+  Cube Sauna M with its price and showrooms (editorial since September).
+  MyCabin replied "This is not something we are interested in" (17 Sep).
+  The directory holds MyCabin; the editorial does not. Founder to decide.
+* COSY-CLUSTER1 · Living in the Garden's cost section still says "out of 573
+  garden-room records" (frozen Cluster 1 evidence, 7 Oct); the universe is now
+  572 after the Cosy Cabins hold. Refresh that evidence at the next Cluster 1
+  update.
