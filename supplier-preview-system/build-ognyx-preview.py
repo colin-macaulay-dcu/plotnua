@@ -27,11 +27,12 @@ IMAGERY — STILL THE SAME FOUR, STILL PREVIEW-SCOPED.
 Fabian's 2 October reply invited "any example imagery ... you propose to use"
 for this preview, and the 12 October ask that he said yes to named "the
 selected product images shown there". That is the four images below and no
-others. Whether the 13 October reply also carries those four into publication
-is a founder decision recorded in Atlas (WELLNESS-FIRST-OGNYX-20261002,
-"Proposes: Granted with Conditions"); until it is made, the preview-only
-containment in atlas-tools/preview-only-suppliers.json stays in force and no
-other OGNYX image is used anywhere. The other 38 products are text-only.
+others. On 14 October 2026 the founder confirmed that the 13 October reply
+covers those four images, within this approved context and no wider (Atlas
+WELLNESS-FIRST-OGNYX-20261002: "Granted with Conditions — Founder
+Confirmed"). The preview-only containment in
+atlas-tools/preview-only-suppliers.json stays in force, so the four images
+appear on this page only and no other OGNYX image is used anywhere. The other 38 products are text-only.
 
 PHOTOGRAPH VERSUS VISUALISATION. Unchanged from the first edition: two of the
 four are renders and the page says so wherever they appear.

@@ -46,7 +46,7 @@
         { "host": "ognyx.com", "path_prefix": "/cdn/shop/",
           "why": "their Shopify file path on their own domain; no third-party CDN is involved, so the scope is the domain itself" }
       ],
-      "imagery_evidence": "Fabian of OGNYX wrote, on 2 October 2026, Gmail message 1a0fe3d7b43366cf: \"Please feel free to prepare the preview, including any example imagery, product presentation and links you propose to use.\" That is written permission for THIS PAGE. It is not publication permission, and the sentence before it asks to see the preview before proceeding.",
+      "imagery_evidence": "Fabian of OGNYX wrote, on 2 October 2026, Gmail message 1a0fe3d7b43366cf: \"Please feel free to prepare the preview, including any example imagery, product presentation and links you propose to use.\" That is written permission for THIS PAGE. It is not publication permission, and the sentence before it asks to see the preview before proceeding. FOUNDER DECISION, 14 October 2026: Fabian's 13 October reply (Gmail 1a13699d55beb7f9, \"happy to proceed\") is treated as permission for the same four images shown on this page, within this approved context only. It does not extend to other images or other pages, so this row and its containment stay exactly as they are.",
       "rights_record_must_be_preview_scoped": true,
       "forbidden_claims": [
         "health benefit", "therapeutic", "improves recovery",
@@ -58,7 +58,7 @@
         "planning exempt", "no planning permission"
       ],
       "forbidden_claims_note": "OGNYX's own product copy calls cold immersion a health benefit and the tub therapeutically versatile. PlotNua does not repeat a health claim to a homeowner whoever first wrote it, so those stay on this list even though the supplier does make them. The money, delivery, installation and lead-time bans exist for the opposite reason: the OGNYX shipping policy and terms of 2 September 2026 make each of them CONDITIONAL -- free standard delivery applies to eligible saunas where the product page says so, VAT is confirmed at checkout, installation needs a separate quotation, and production time varies by configuration. Stating any of them flatly would turn a condition into a promise.",
-      "evidence": "Fabian replied on 2 October 2026, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: \"Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua.\" Atlas Permission Outcome remains \"Unknown \u2014 Awaiting Reply\".",
+      "evidence": "Fabian replied on 2 October 2026, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: \"Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua.\" Atlas Permission Outcome was \"Unknown \u2014 Awaiting Reply\" until 14 October 2026, when the founder confirmed \"Granted with Conditions\" for the four preview images only.",
       "atlas_permission_ref": "WELLNESS-FIRST-OGNYX-20261002"
     },
     {
