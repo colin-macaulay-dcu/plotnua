@@ -68,6 +68,12 @@ case("W1 draft drifts from the builder", DRAFT, "> Your registration is stored p
 case("W1 a governed draft line not on the page", DRAFT, "> We keep your registration for no longer than 12 months",
      "> We review every registration monthly.\n\n> We keep your registration for no longer than 12 months")
 case("W3 no-automatic-sharing statement removed", PB, "Your details are not shared with homeowners, \"\n          \"automatically or otherwise. ", "\"\n          \"")
+case("W6 the Section 10 infrastructure sentence dropped", PB,
+     '(THIRD_ANCHOR, THIRD_NEW, "Section 10 anchor"),\n                             ', '')
+case("W3 Section 8 says artists can already register", PB,
+     '"potential buyers through a home setting. When registrations open, artists will be able to join through "\n'
+     '          "PlotArt\'s Artist Register page. Joining is "',
+     '"potential buyers through a home setting. You can join it from PlotArt\'s Artist Register page. Joining is "')
 case("W3 retention lengthened", PB, "We keep your registration for no longer than 12 months",
      "We keep your registration for no longer than 24 months")
 case("W4 consent drifts in the Worker only", ART_W, "does not guarantee an opportunity and that I can withdraw",

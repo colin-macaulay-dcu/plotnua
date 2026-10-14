@@ -32,6 +32,9 @@ THE CHANGE, AND NOTHING ELSE (guard W7 proves it)
      is unchanged word for word.
   3. Section 8: the Artist Register sub-section, AFTER the V4 text.
   4. Section 2: one sentence, after the Art Space Register sentence.
+  4a. Section 10 (Third-Party Services and Links): one sentence after the
+      Art Space Register sentence: the same Cloudflare service and Airtable
+      database, separate records (founder correction, 14 Oct 2026, 19:39).
   5. Section 12: one line, after the Art Space Register line.
   6. One scoped style rule for the two sub-headings (.pv5-sub).
   7. "Last updated" label, from APPROVAL, only if it differs.
@@ -112,7 +115,8 @@ SUB_ARTISTS = "The Artist Register (artists)"
 ARTIST = [
     ("p", "The Artist Register is a list, kept privately by PlotNua, of artists who might be interested in "
           "displaying, showing, installing or storing their work in homes and gardens in Ireland, or in reaching "
-          "potential buyers through a home setting. You can join it from PlotArt's Artist Register page. Joining is "
+          "potential buyers through a home setting. When registrations open, artists will be able to join through "
+          "PlotArt's Artist Register page. Joining is "
           "voluntary and free, and it does not commit you to anything."),
     ("p", "PlotArt is in development. There is no matching service at present. PlotNua is not introducing artists "
           "to homeowners, there is no exhibition, booking or sales service, no payment is offered, and registering "
@@ -151,6 +155,13 @@ ARTIST = [
 ]
 SEC2_ANCHOR = "    <p>If you choose to join the Art Space Register, we also collect the information described in Section 8.</p>\n"
 SEC2_NEW = "    <p>If you choose to join the Artist Register, we also collect the information described in Section 8.</p>\n"
+THIRD_ANCHOR = ("    <p>The Art Space Register described in Section 8 also runs on a PlotNua service hosted on "
+                "infrastructure provided by Cloudflare, and its records are stored in Airtable in a database kept "
+                "separate from the Garden Owner Register.</p>\n")
+# Founder correction, 14 Oct 2026 (19:39): Section 10 names the shared infrastructure, with separate records.
+THIRD_NEW = ("    <p>The Artist Register described in Section 8 uses the same PlotNua service on infrastructure "
+             "provided by Cloudflare, and the same Airtable database, as the Art Space Register, with artist "
+             "registrations kept as separate records in their own table.</p>\n")
 RET_ANCHOR = "    <p>Art Space Register records are kept for a maximum of 12 months, as described in Section 8.</p>\n"
 RET_NEW = "    <p>Artist Register records are kept for a maximum of 12 months, as described in Section 8.</p>\n"
 CSS_ANCHOR = "</style>\n</head>"
@@ -215,7 +226,8 @@ def transform(v4, last_updated=None):
     new8 = s8.replace(HEAD_OLD, HEAD_NEW + intro_html(), 1)
     new8 = new8[:-len("  </section>\n")] + artist_html() + "  </section>\n"
     out = v4.replace(s8, new8, 1)
-    for anchor, new, lab in ((SEC2_ANCHOR, SEC2_NEW, "Section 2 anchor"), (RET_ANCHOR, RET_NEW, "retention anchor")):
+    for anchor, new, lab in ((SEC2_ANCHOR, SEC2_NEW, "Section 2 anchor"), (THIRD_ANCHOR, THIRD_NEW, "Section 10 anchor"),
+                             (RET_ANCHOR, RET_NEW, "retention anchor")):
         if out.count(anchor) != 1:
             refuse(lab + " not found exactly once")
         out = out.replace(anchor, anchor + new, 1)
@@ -235,7 +247,7 @@ def untransform(v5):
     the caller's to restore."""
     s = v5.replace(HEAD_NEW + intro_html(), HEAD_OLD, 1)
     s = s.replace(artist_html() + "  </section>\n", "  </section>\n", 1)
-    s = s.replace(SEC2_NEW, "", 1).replace(RET_NEW, "", 1).replace(CSS_NEW, "", 1)
+    s = s.replace(SEC2_NEW, "", 1).replace(THIRD_NEW, "", 1).replace(RET_NEW, "", 1).replace(CSS_NEW, "", 1)
     return s
 
 
@@ -249,7 +261,7 @@ def published_ok(text=None):
     the V4 builder accepts (used by the register guards once V5 is live)."""
     text = PRIVACY.read_text(encoding="utf-8") if text is None else text
     if text.count(MARK) != 1 or (HEAD_NEW + intro_html()) not in text or artist_html() not in text \
-            or SEC2_NEW not in text or RET_NEW not in text:
+            or SEC2_NEW not in text or THIRD_NEW not in text or RET_NEW not in text:
         return False
     return pv4().published_exact(text)
 
@@ -271,7 +283,12 @@ def guards(v4, v5):
     s8t, page = plain(s8), plain(v5)
     gov = governed()
     # W1 both ways
-    pieces = [plain(HEAD_NEW), INTRO, SUB_HOMES, SUB_ARTISTS, plain(SEC2_NEW), plain(RET_NEW)]
+    pieces = [plain(HEAD_NEW), INTRO, SUB_HOMES, SUB_ARTISTS, plain(SEC2_NEW), plain(THIRD_NEW), plain(RET_NEW)]
+    if v5.count(THIRD_NEW) != 1 or v5.index(THIRD_ANCHOR) > v5.index(THIRD_NEW) \
+            or v5.index(THIRD_NEW) > v5.index("<h2>11. "):
+        refuse("W6 Section 10 does not carry the Artist Register infrastructure sentence once, after the Art Space Register one")
+    if "When registrations open, artists will be able to join" not in s8t:
+        refuse("W3 Section 8 must say that artist registration opens later")
     for kind, body in ARTIST:
         pieces += [plain(x) for x in ([body] if kind == "p" else body)]
     for p in pieces:

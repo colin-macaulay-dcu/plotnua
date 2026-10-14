@@ -1,6 +1,6 @@
 # PRIVACY NOTICE · VERSION 2026-10-PHASE2-V5 · FINAL DRAFT FOR FOUNDER APPROVAL
 
-**Status:** FINAL DRAFT, 14 October 2026 (after the founder decisions of 19:25). **Not published.**
+**Status:** FINAL DRAFT, 14 October 2026. It reflects the founder decisions of 19:25 and the two founder corrections of 19:39 (the Section 10 infrastructure sentence; registration "opens later" wording). **Not published.**
 - `privacy.html` is unchanged and still carries V4.
 - The Artist Register stays **CLOSED**.
 - Approval of this exact wording is required before anything is published. Opening the register is a separate approval (`ARTIST_OPEN_APPROVAL` in `atlas-tools/build-artist-register.py`).
@@ -21,6 +21,7 @@
    - The existing homeowner text follows unchanged, word for word, under the sub-heading "The Art Space Register (homeowners)".
    - The new artist text follows under "The Artist Register (artists)".
 3. **Section 2:** one added sentence.
+3a. **Section 10** (Third-Party Services and Links): one added sentence. It says the Artist Register uses the same Cloudflare service and Airtable database as the Art Space Register, with separate records (founder correction, 19:39).
 4. **Section 12** (How Long We Keep Information): one added line.
 5. **"Last updated":** set to the publication month.
 6. **No other change.** In particular:
@@ -42,7 +43,7 @@
 
 > The Artist Register (artists)
 
-> The Artist Register is a list, kept privately by PlotNua, of artists who might be interested in displaying, showing, installing or storing their work in homes and gardens in Ireland, or in reaching potential buyers through a home setting. You can join it from PlotArt's Artist Register page. Joining is voluntary and free, and it does not commit you to anything.
+> The Artist Register is a list, kept privately by PlotNua, of artists who might be interested in displaying, showing, installing or storing their work in homes and gardens in Ireland, or in reaching potential buyers through a home setting. When registrations open, artists will be able to join through PlotArt's Artist Register page. Joining is voluntary and free, and it does not commit you to anything.
 
 > PlotArt is in development. There is no matching service at present. PlotNua is not introducing artists to homeowners, there is no exhibition, booking or sales service, no payment is offered, and registering does not guarantee an opportunity of any kind.
 
@@ -79,6 +80,12 @@ The following is published as a list. Each item is governed.
 ### Section 2 · one sentence
 
 > If you choose to join the Artist Register, we also collect the information described in Section 8.
+
+### Section 10 (Third-Party Services and Links) · one sentence
+
+Founder correction, 14 Oct 2026, 19:39. It follows the existing Art Space Register sentence.
+
+> The Artist Register described in Section 8 uses the same PlotNua service on infrastructure provided by Cloudflare, and the same Airtable database, as the Art Space Register, with artist registrations kept as separate records in their own table.
 
 ### Section 12 · one line
 
@@ -152,7 +159,7 @@ No material risk is left unresolved. Paid advice is not required under the found
 **Builder:** `atlas-tools/build-privacy-v5.py`, guards W1–W7. `APPROVAL = None`, so `--apply` is refused.
 - `--check` builds V5 in memory from the live V4 page and writes nothing.
 - `--preview PATH` writes the proposed page outside the repository, for review only.
-- Its declared changes (W7) are the seven listed in its docstring.
+- Its declared changes (W7) are those listed in its docstring, including the Section 10 sentence added at 19:39.
 
 **Proof:** `atlas-tools/prove-privacy-v5.py`.
 - It runs 19 deliberate breaks, each refused.
