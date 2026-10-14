@@ -227,6 +227,49 @@ CSS = """/* PLOTNUA-ART-REGISTER-CSS-BEGIN · Art Space Register (DISC-024), fou
     font-size:13px;line-height:1.6;color:var(--muted);}
   .asr-hp{position:absolute !important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
   @media(max-width:560px){ .asr{padding:26px 20px;} }
+  /* V3 · REFINED PRESENTATION (founder UX direction, 14 Oct 2026). Same
+     fields, same wording, same order; a softer card, sentence-case labels,
+     larger touch targets, option rows and consent as cards, a clear success
+     state. Nothing here changes what is collected or sent. */
+  .asr{margin:0 0 26px;padding:26px 22px 24px;border:0;border-radius:18px;background:var(--stone);}
+  .asr-h{font-weight:500;font-size:clamp(23px,5.6vw,28px);line-height:1.18;letter-spacing:-.01em;margin:0 0 10px;}
+  .asr-lead{font-size:16px;line-height:1.6;color:var(--body);margin:0;}
+  .asr-choices{margin:20px 0 4px;gap:14px 20px;}
+  .asr-explore{font-weight:500;}
+  .asr-assure,#asrCommit{margin:18px 0 0;padding:0;border:0;font-size:13.5px;line-height:1.6;color:var(--muted);}
+  #asrCommit{margin-top:8px;}
+  .asr-more{margin:16px 0 0;border-top:1px solid var(--rule-soft);}
+  .asr-more .asr-p{font-size:14.5px;}
+  .asr-note{border-top:1px solid var(--rule-soft);font-size:12.5px;}
+  .asr-form{margin:18px 0 0;}
+  .asr-privline{font-size:14px;margin:0 0 20px;}
+  .asr-grid{gap:16px;}
+  .asr-f > label,.asr-ways legend{font-size:14.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink);}
+  .asr-opt{letter-spacing:0;font-weight:400;}
+  .asr-f input[type=text],.asr-f input[type=email],.asr-f select,.asr-f textarea{
+    min-height:50px;padding:12px 14px;border-radius:12px;border:1px solid var(--rule);background:#FFFDF7;}
+  .asr-f select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
+    linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+    background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;
+    background-repeat:no-repeat;padding-right:40px;}
+  .asr-f input:focus,.asr-f select:focus,.asr-f textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .asr-ways .asr-tick{margin:8px 0 0;padding:12px 14px;border-radius:12px;background:#FFFDF7;
+    border:1px solid var(--rule-soft);align-items:center;}
+  .asr-ways .asr-tick:has(input:checked){border-color:var(--ink);}
+  .asr-tick input[type=checkbox]{width:20px;height:20px;margin:1px 0 0;}
+  .asr-tick label{font-size:15px;}
+  #asrForm > .asr-tick{margin:20px 0 0;padding:14px 16px;border-radius:12px;background:#FFFDF7;
+    border:1px solid var(--rule);}
+  .asr-notice{border-top:0;margin:10px 0 0;}
+  .asr-actions{margin:20px 0 0;gap:14px 20px;}
+  @media(max-width:560px){
+    .asr-actions .pc-cta,.asr-choices .pc-cta{width:100%;justify-content:center;}
+    .asr-actions{justify-content:center;}
+  }
+  .asr-done{padding:6px 0 0;}
+  .asr-done[data-state=received]::before{content:"";display:block;width:44px;height:44px;margin:0 0 14px;
+    border-radius:50%;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23F2EFE6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px no-repeat;}
+  .asr-done-h{font-weight:500;font-size:clamp(22px,5.2vw,26px);line-height:1.2;}
 """
 
 NOTICE = [
@@ -463,6 +506,7 @@ window.PlotNuaArtRegister = (function () {
     $('asrOffer').hidden = (which !== 'offer');
     $('asrForm').hidden = !(which === 'form' || which === 'sending');
     $('asrDone').hidden = !(which === 'received' || which === 'not_open' || which === 'unavailable');
+    $('asrDone').setAttribute('data-state', which);
     var send = $('asrSend');
     send.disabled = (which === 'sending');
     send.textContent = (which === 'sending') ? 'Sending\\u2026' : %(cta)s;

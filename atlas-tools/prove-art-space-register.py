@@ -98,7 +98,7 @@ V3 = (PRIVACY, None, V3_PAGE)
 ctl0 = run(RB).returncode == 0
 
 case("R1 page edited outside the register", PAGE,
-     "How far would you actually want this to go?", "How far would you go?")
+     "Could your home hold an artist&rsquo;s work?", "Could your home hold art?")
 case("R1 a Property Check question changed", PAGE,
      "q:'What could you actually offer?'", "q:'What space could you offer?'")
 case("R1 a save key changed", PAGE,

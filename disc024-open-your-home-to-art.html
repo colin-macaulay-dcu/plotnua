@@ -742,6 +742,146 @@ window.PlotNuaFunnel = (function () {
   .ho-part:last-child{ margin-bottom:0; }
   .ho-part.is-lead{ border-left:2px solid rgba(31,59,46,.42); padding-left:14px; }
   .ho-partlab{ margin:0 0 4px; font-weight:600; letter-spacing:.01em; }
+  /* ======================================================================
+     V3 · THE REFINED JOURNEY (founder UX direction, 14 Oct 2026)
+     Presentation only. Same brand tokens and faces; calmer, card-led, mobile
+     first. One bold surface: the result card in brand green. Everything else
+     stays quiet: paper, one warm card colour, hairlines used sparingly.
+     ====================================================================== */
+  :root{ --card:#FFFDF7; --sage-wash:#EEF2E8; --oak-wash:#F6EEE2; }
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+  /* -- header: slim, sticky, with one floating Back control -------------- */
+  .ho-top{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line-soft);
+    background:rgba(248,245,236,.9);-webkit-backdrop-filter:saturate(1.2) blur(10px);
+    backdrop-filter:saturate(1.2) blur(10px);}
+  .ho-topin{max-width:720px;padding:10px 20px;gap:12px;}
+  .ho-ident{flex:1 1 auto;gap:1px;align-items:center;text-align:center;}
+  .ho-brand{font-size:18px;line-height:1.1;}
+  .ho-ctx{font-size:12.5px;letter-spacing:0;text-transform:none;color:var(--muted);font-weight:400;}
+  .ho-mark img{width:36px;height:36px;border-radius:10px;}
+  .ho-mark{border-radius:10px;}
+  .ho-back{display:inline-flex;align-items:center;gap:4px;flex:0 0 auto;min-height:38px;
+    padding:0 14px 0 9px;margin:0;border:1px solid var(--rule);border-radius:999px;
+    background:var(--card);color:var(--ink);font-size:14px;font-weight:500;letter-spacing:0;
+    text-decoration:none;border-bottom:1px solid var(--rule);
+    box-shadow:0 1px 2px rgba(31,59,46,.06);transition:border-color .2s ease, background .2s ease;}
+  .ho-back:hover{border-color:var(--ink);background:#fff;color:var(--ink);}
+  .ho-back:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .ho-back-i{flex:0 0 auto;}
+
+  /* -- shared column ---------------------------------------------------- */
+  .ho-wrap{max-width:720px;padding:0 20px;}
+  .ho-screen.is-on{padding-top:28px;padding-bottom:56px;}
+
+  /* -- intro ------------------------------------------------------------ */
+  .pc-intro.is-on,.pc-qscreen.is-on{display:block;min-height:0;}
+  .pc-intro,.pc-qscreen{padding:28px 0 56px;max-width:none;}
+  .pc-qscreen .pc-opts{max-width:560px;}
+  .pc-kicker{margin:0 0 14px;font-size:14px;font-weight:500;color:var(--accent);}
+  .pc-introh{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.015em;
+    font-size:clamp(34px,8.4vw,52px);line-height:1.06;margin:0 0 18px;max-width:15ch;}
+  .pc-introsub{font-size:17px;line-height:1.6;color:var(--body);max-width:44ch;margin:0 0 22px;}
+  .pc-facts{list-style:none;margin:0 0 30px;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+  .pc-facts li{font-size:13.5px;color:var(--ink);background:var(--sage-wash);
+    border-radius:999px;padding:6px 12px;}
+
+  /* -- question --------------------------------------------------------- */
+  .pc-progress{display:flex;align-items:center;gap:14px;margin:0 0 26px;}
+  .pc-dots{flex:1 1 auto;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;margin:0;}
+  .pc-dot{display:block;width:auto;height:4px;border-radius:2px;background:var(--rule-soft);
+    box-shadow:none;transform:none;transition:background .3s ease;}
+  .pc-dot.is-done{background:var(--brand-sage);}
+  .pc-dot.is-on{background:var(--ink);width:auto;height:4px;box-shadow:none;outline:0;transform:none;}
+  .pc-dot::before,.pc-dot::after{content:none;display:none;}
+  .pc-qlab{flex:0 0 auto;margin:0;font-size:13px;font-weight:500;letter-spacing:0;
+    text-transform:none;color:var(--muted);}
+  .pc-qh{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.01em;
+    font-size:clamp(26px,6.6vw,36px);line-height:1.14;margin:0 0 10px;max-width:22ch;}
+  .pc-qnote{font-size:15px;line-height:1.55;color:var(--muted);margin:0 0 22px;max-width:46ch;}
+  .pc-opts,.pc-opts.is-stacked,.pc-opts.is-inline{display:grid;grid-template-columns:1fr;gap:10px;margin:0;}
+  .pc-opts .pc-opt,.pc-opts.is-stacked .pc-opt,.pc-opts.is-inline .pc-opt{
+    position:relative;display:flex;flex-direction:column;justify-content:center;width:100%;
+    min-height:62px;margin:0;padding:15px 18px 15px 54px;text-align:left;
+    font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;line-height:1.35;color:var(--ink);
+    background:var(--card);border:1px solid var(--rule-soft);border-radius:14px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05);cursor:pointer;
+    transition:border-color .18s ease, background .18s ease, box-shadow .18s ease;}
+  .pc-opts .pc-opt::before,.pc-opts.is-stacked .pc-opt::before,.pc-opts.is-stacked .pc-opt:has(.pc-optn)::before{
+    content:"";position:absolute;left:18px;top:50%;width:20px;height:20px;margin:-10px 0 0;
+    border-radius:50%;border:1.5px solid var(--rule);background:#fff;box-sizing:border-box;
+    transition:border-color .18s ease, background .18s ease;}
+  .pc-opts .pc-opt:hover{border-color:var(--accent);background:#fff;
+    box-shadow:0 3px 12px rgba(31,59,46,.08);}
+  .pc-opts .pc-opt:hover::before{border-color:var(--accent);}
+  .pc-opts .pc-opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .pc-opts .pc-opt.is-prev{border-color:var(--brand-sage);background:var(--sage-wash);}
+  .pc-opts .pc-opt.is-chosen,.pc-opts.is-stacked .pc-opt.is-chosen{border-color:var(--ink);background:var(--sage-wash);}
+  .pc-opts .pc-opt.is-chosen::before,.pc-opts .pc-opt.is-prev::before,
+  .pc-opts.is-stacked .pc-opt.is-chosen::before{border-color:var(--ink);background:var(--ink);
+    box-shadow:inset 0 0 0 4px #fff;}
+  .pc-optn,.pc-opt.is-chosen .pc-optn{display:block;margin:3px 0 0;font-size:13.5px;font-weight:400;
+    letter-spacing:0;text-transform:none;color:var(--muted);}
+
+  /* -- result: one bold card, then a short, calm column ------------------ */
+  .ho-revealband{margin:0 0 22px;padding:28px 24px 26px;border:0;border-radius:20px;
+    background:var(--brand-green);color:var(--brand-ivory);}
+  .ho-revealband .ho-eyebrow,.ho-eyebrow{margin:0 0 12px;font-size:13.5px;font-weight:500;
+    letter-spacing:0;text-transform:none;color:var(--brand-sage);}
+  .ho-reveal-h{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.015em;
+    font-size:clamp(28px,7vw,40px);line-height:1.1;margin:0 0 12px;color:var(--brand-ivory);max-width:18ch;}
+  .ho-reveal-sub{font-size:17px;line-height:1.55;margin:0;color:rgba(242,239,230,.84);max-width:42ch;}
+  .ho-primary{margin:0 0 26px;padding:0;border:0;}
+  .ho-lead{margin:0;font-size:17px;line-height:1.65;color:var(--body);max-width:60ch;}
+  .ho-caution{margin:16px 0 0;padding:14px 16px;border-radius:12px;background:var(--oak-wash);
+    border-left:3px solid var(--oak);}
+  .ho-caution p{margin:0;font-size:15px;line-height:1.6;color:var(--body);}
+  .ho-caution p + p{margin-top:8px;}
+  .ho-whyd{margin:0 0 14px;border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);}
+  .ho-whyd[hidden]{display:none;}
+  .ho-whyd summary{list-style:none;cursor:pointer;display:flex;align-items:center;
+    justify-content:space-between;padding:16px 2px;font-size:15.5px;font-weight:500;color:var(--ink);}
+  .ho-whyd summary::-webkit-details-marker{display:none;}
+  .ho-whyd summary::after{content:"";width:9px;height:9px;margin-right:4px;
+    border-right:1.6px solid var(--muted);border-bottom:1.6px solid var(--muted);
+    transform:rotate(45deg) translateY(-3px);transition:transform .2s ease;}
+  .ho-whyd[open] summary::after{transform:rotate(-135deg) translateY(-1px);}
+  .ho-whyd summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .ho-whyd .ho-why{list-style:none;margin:0 0 6px;padding:0;}
+  .ho-whyd .ho-why li{position:relative;margin:0 0 8px;padding:0 0 0 18px;font-size:15px;
+    line-height:1.55;color:var(--body);}
+  .ho-whyd .ho-why li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;
+    border-radius:50%;background:var(--brand-sage);}
+  .ho-whyd .ho-nextlab{margin:14px 0 4px;font-size:13.5px;font-weight:500;letter-spacing:0;
+    text-transform:none;color:var(--accent);}
+  .ho-whyd .ho-nextbody{margin:0 0 18px;font-size:15px;line-height:1.6;color:var(--body);max-width:60ch;}
+  .ho-know{margin:6px 0 26px;}
+  .ho-know[hidden]{display:none;}
+  .ho-knowh{margin:0 0 8px;font-size:15.5px;font-weight:500;color:var(--ink);}
+  .ho-knowl{list-style:none;margin:0;padding:0;}
+  .ho-knowl li{position:relative;margin:0 0 6px;padding:0 0 0 18px;font-size:14.5px;line-height:1.55;
+    color:var(--body);}
+  .ho-knowl li::before{content:"";position:absolute;left:2px;top:.6em;width:6px;height:6px;
+    border-radius:50%;border:1.5px solid var(--accent);box-sizing:border-box;}
+  .ho-knowmore{margin:10px 0 0;font-size:14.5px;}
+  .ho-knowmore a{color:var(--accent);text-underline-offset:3px;}
+  .ho-knowmore a:hover{color:var(--ink);}
+  .ho-save,.pc-saveband{margin:0 0 18px;border-radius:16px;background:var(--card);
+    border:1px solid var(--rule-soft);}
+  .ho-foot{margin:0;font-size:13px;line-height:1.6;color:var(--muted);max-width:60ch;}
+
+  @media (min-width:760px){
+    .ho-topin{padding:12px 28px;}
+    .ho-ident{align-items:flex-start;text-align:left;}
+    .ho-wrap{padding:0 28px;}
+    .ho-screen.is-on,.pc-intro,.pc-qscreen{padding-top:48px;}
+    .pc-opts.is-inline{grid-template-columns:1fr 1fr;}
+    .ho-revealband{padding:38px 40px 36px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .pc-opts .pc-opt,.pc-dot,.ho-back,.ho-whyd summary::after{transition:none;}
+  }
   .ho-partbody{ margin:0; }
 /* PLOTNUA-ART-REGISTER-CSS-BEGIN · Art Space Register (DISC-024), founder-approved
    for build 13 Oct 2026. Generated by atlas-tools/build-art-space-register.py.
@@ -816,6 +956,49 @@ window.PlotNuaFunnel = (function () {
     font-size:13px;line-height:1.6;color:var(--muted);}
   .asr-hp{position:absolute !important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
   @media(max-width:560px){ .asr{padding:26px 20px;} }
+  /* V3 · REFINED PRESENTATION (founder UX direction, 14 Oct 2026). Same
+     fields, same wording, same order; a softer card, sentence-case labels,
+     larger touch targets, option rows and consent as cards, a clear success
+     state. Nothing here changes what is collected or sent. */
+  .asr{margin:0 0 26px;padding:26px 22px 24px;border:0;border-radius:18px;background:var(--stone);}
+  .asr-h{font-weight:500;font-size:clamp(23px,5.6vw,28px);line-height:1.18;letter-spacing:-.01em;margin:0 0 10px;}
+  .asr-lead{font-size:16px;line-height:1.6;color:var(--body);margin:0;}
+  .asr-choices{margin:20px 0 4px;gap:14px 20px;}
+  .asr-explore{font-weight:500;}
+  .asr-assure,#asrCommit{margin:18px 0 0;padding:0;border:0;font-size:13.5px;line-height:1.6;color:var(--muted);}
+  #asrCommit{margin-top:8px;}
+  .asr-more{margin:16px 0 0;border-top:1px solid var(--rule-soft);}
+  .asr-more .asr-p{font-size:14.5px;}
+  .asr-note{border-top:1px solid var(--rule-soft);font-size:12.5px;}
+  .asr-form{margin:18px 0 0;}
+  .asr-privline{font-size:14px;margin:0 0 20px;}
+  .asr-grid{gap:16px;}
+  .asr-f > label,.asr-ways legend{font-size:14.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink);}
+  .asr-opt{letter-spacing:0;font-weight:400;}
+  .asr-f input[type=text],.asr-f input[type=email],.asr-f select,.asr-f textarea{
+    min-height:50px;padding:12px 14px;border-radius:12px;border:1px solid var(--rule);background:#FFFDF7;}
+  .asr-f select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
+    linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+    background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;
+    background-repeat:no-repeat;padding-right:40px;}
+  .asr-f input:focus,.asr-f select:focus,.asr-f textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .asr-ways .asr-tick{margin:8px 0 0;padding:12px 14px;border-radius:12px;background:#FFFDF7;
+    border:1px solid var(--rule-soft);align-items:center;}
+  .asr-ways .asr-tick:has(input:checked){border-color:var(--ink);}
+  .asr-tick input[type=checkbox]{width:20px;height:20px;margin:1px 0 0;}
+  .asr-tick label{font-size:15px;}
+  #asrForm > .asr-tick{margin:20px 0 0;padding:14px 16px;border-radius:12px;background:#FFFDF7;
+    border:1px solid var(--rule);}
+  .asr-notice{border-top:0;margin:10px 0 0;}
+  .asr-actions{margin:20px 0 0;gap:14px 20px;}
+  @media(max-width:560px){
+    .asr-actions .pc-cta,.asr-choices .pc-cta{width:100%;justify-content:center;}
+    .asr-actions{justify-content:center;}
+  }
+  .asr-done{padding:6px 0 0;}
+  .asr-done[data-state=received]::before{content:"";display:block;width:44px;height:44px;margin:0 0 14px;
+    border-radius:50%;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23F2EFE6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px no-repeat;}
+  .asr-done-h{font-weight:500;font-size:clamp(22px,5.2vw,26px);line-height:1.2;}
 /* PLOTNUA-ART-REGISTER-CSS-END */
 </style>
 </head>
@@ -823,51 +1006,46 @@ window.PlotNuaFunnel = (function () {
 
 <header class="ho-top">
   <div class="ho-topin">
-    <a class="ho-mark" href="index.html" aria-label="PlotNua &mdash; home">
-      <img src="assets/brand/plotnua-mark-master.svg" alt="" width="44" height="44">
-    </a>
+    <a class="ho-back" id="hoBack" href="discovery-a-home-for-art.html#open-your-home-to-art" aria-label="Back to A Home for Art"><svg class="ho-back-i" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
     <span class="ho-ident">
       <span class="ho-brand">PlotNua</span>
       <span class="ho-ctx">Open Your Home to Art</span>
     </span>
-    <a class="ho-back" href="discovery-a-home-for-art.html#open-your-home-to-art">Back to the story</a>
+    <a class="ho-mark" href="index.html" aria-label="PlotNua &mdash; home">
+      <img src="assets/brand/plotnua-mark-master.svg" alt="" width="44" height="44">
+    </a>
   </div>
 </header>
 
 <main class="ho-wrap">
 
   <section class="ho-screen pc-intro is-on" id="hoIntro">
-    <div class="pc-crest">
-      <span class="pc-mark" aria-hidden="true">
-        <img src="assets/brand/plotnua-mark-master.svg" alt="" width="56" height="56">
-      </span>
-      <span class="pc-crestlab">
-        <b>Open Your Home to Art</b>
-        <span>Property Check</span>
-      </span>
-    </div>
-    <h1 class="pc-introh">How far would you actually want this to go?</h1>
-    <p class="pc-introsub">Five short questions about your house and your
-      willingness. Nothing about your address, nothing about who you are, and
-      nothing that reaches anybody else &mdash; this check runs entirely in
-      this browser.</p>
+    <p class="pc-kicker">Property Check</p>
+    <h1 class="pc-introh">Could your home hold an artist&rsquo;s work?</h1>
+    <p class="pc-introsub">Five quick questions about your space and how far
+      you&rsquo;d go. It runs in your browser: nothing is sent anywhere unless
+      you choose to register at the end.</p>
+    <ul class="pc-facts" aria-label="About this check">
+      <li>5 questions</li><li>About a minute</li><li>No address needed</li>
+    </ul>
     <button class="pc-cta" id="hoStart">Start the check
       <span class="pc-arrow" aria-hidden="true">&rarr;</span></button>
   </section>
 
   <section class="ho-screen pc-qscreen" id="hoQ">
-    <div class="pc-dots" id="hoDots" aria-hidden="true"></div>
-    <p class="ho-prog sr-only" id="hoProg"></p>
-    <p class="pc-qlab" id="hoQEyebrow"></p>
+    <div class="pc-progress">
+      <div class="pc-dots" id="hoDots" aria-hidden="true"></div>
+      <p class="pc-qlab" id="hoQEyebrow" aria-hidden="true"></p>
+    </div>
+    <p class="ho-prog sr-only" id="hoProg" aria-live="polite"></p>
     <h2 class="pc-qh" id="hoQText"></h2>
     <p class="pc-qnote" id="hoQNote"></p>
     <div class="pc-opts is-stacked" id="hoOpts"></div>
-    <p class="ho-nav"><button type="button" class="pc-back" id="hoBack">Back</button></p>
   </section>
 
   <section class="ho-screen" id="hoReveal">
     <div class="ho-revealband">
-      <p class="ho-eyebrow">Your home</p>
+      <p class="ho-eyebrow">Your result</p>
       <h2 class="ho-reveal-h" id="hoRevealH"></h2>
       <p class="ho-reveal-sub" id="hoRevealSub"></p>
     </div>
@@ -949,16 +1127,12 @@ window.PlotNuaFunnel = (function () {
       <p class="asr-note">PlotNua does not verify anybody&rsquo;s identity and has not met anyone on this register. Nothing is arranged through this page.</p>
     </section>
     <!-- PLOTNUA-ART-REGISTER-HTML-END -->
-    <div class="ho-next" id="hoWhy"></div>
-    <div class="ho-next" id="hoAction"></div>
-    <div class="ho-adv" id="hoApplies" hidden>
-      <p class="ho-advlab">What applies whichever way you go</p>
-      <div class="ho-parts" id="hoAppliesBody"></div>
-    </div>
-    <div class="ho-adv" id="hoUnknown">
-      <p class="ho-advlab">What PlotNua does not know</p>
-      <div class="ho-parts" id="hoUnknownBody"></div>
-    </div>
+    <details class="ho-whyd" id="hoWhyWrap">
+      <summary>Why this result</summary>
+      <div id="hoWhy"></div>
+      <div id="hoAction"></div>
+    </details>
+    <div class="ho-know" id="hoKnow" hidden></div>
     <div class="ho-save pc-saveband">
       <div class="ho-saveinner pc-saveinner">
         <p class="pc-savelab">My Plot</p>
@@ -977,9 +1151,9 @@ window.PlotNuaFunnel = (function () {
         </div>
       </div>
     </div>
-    <p class="ho-foot">Nothing here is legal or tax advice. PlotNua has not seen
-      your home and has measured nothing, so everything above about the space is
-      your own description of it rather than a finding of ours.</p>
+    <p class="ho-foot">This result is based only on your answers. PlotNua hasn&rsquo;t
+      seen your space and can&rsquo;t promise any artist will be interested. Not
+      legal or tax advice.</p>
   </section>
 
 </main>
@@ -1827,51 +2001,39 @@ if (typeof module !== 'undefined' && module.exports) {
     'not_settled':
       'How far this goes is the one thing everything else depends on.',
     'condition_first':
-      'You have told us the space is not right yet, and it would be holding ' +
-      'somebody else&rsquo;s finished work.',
+      'The space might need some work before it could hold somebody else&rsquo;s art.',
     'open_needs_a_route':
       'The willingness is there. The route through the house is the part to settle.',
     'open_workable':
-      'On your own account of it, the pieces line up. There is more to agree here ' +
-      'than on any other rung.',
+      'On your own account of it, the pieces line up.',
     'display_no_visitors':
       'A wall you would live with, and nobody on the doorstep.',
     'storage_first':
-      'The quietest rung, and on the Discovery&rsquo;s own reading the most useful.'
+      'The quietest option, and often the most useful one.'
   };
 
   var ESTABLISHED = {
     'help_only':
-      'You chose the one rung where nothing enters the home. No storage, no ' +
-      'display, no visitors &mdash; so no custody question, no change to tell ' +
-      'your insurer about, and nothing for a planning authority to look at.',
+      'Nothing would come into your home: no storage, no display and no visitors.',
     'not_settled':
-      'You have not settled how far this would go, and that is the answer the ' +
-      'rest hangs off. It is not a failure to have left it open; the four rungs ' +
-      'are genuinely different arrangements and you can change your mind between ' +
-      'one and the next.',
+      'You haven&rsquo;t decided how far this would go yet, and that&rsquo;s fine. Storing, ' +
+      'displaying, opening up and helping sell are quite different, and you can change your mind.',
     'condition_first':
-      'You report some dampness or exposure in the space, so it might need improvements &mdash; ' +
-      'and somebody else&rsquo;s finished work would be kept in it. That is the ' +
-      'one thing on this page worth settling before anything else, and it is ' +
-      'settleable before anything arrives.',
+      'You report some dampness or exposure, so the space might need improvements. ' +
+      'That&rsquo;s worth sorting before any work arrives, and it can be.',
     'open_needs_a_route':
-      'You would let somebody in. What you have told us is that the way to the ' +
-      'space runs through the parts of the house you would consider private, or ' +
-      'that you have not thought about the route yet. That is the ordinary case, ' +
-      'and it is the most common reason a willing host finds this does not suit them.',
+      'You&rsquo;d let somebody in, but the way to the space runs through private parts of ' +
+      'your home, or you haven&rsquo;t thought about the route yet. That&rsquo;s the usual ' +
+      'sticking point, and worth deciding early.',
     'open_workable':
-      'A space you report as dry and sheltered. A way in you say ' +
-      'avoids the private rooms. And the willingness to use both. This is the most ' +
-      'involved rung of the four and the one with the most to agree in advance.',
+      'You report a dry, sheltered space and a way in that avoids the private rooms. ' +
+      'Opening up to visitors is the most involved option, with the most to agree in advance.',
     'display_no_visitors':
-      'You would live with work on the wall and keep the door shut. Taking custody ' +
-      'of it still applies, and so does telling your insurer. The doorstep question ' +
-      'does not arise at all.',
+      'You&rsquo;d live with work on your wall and keep the door closed. You&rsquo;d still be ' +
+      'looking after somebody else&rsquo;s work, so your insurer should know.',
     'storage_first':
-      'You report a dry, sheltered space, with no display and no ' +
-      'visitors. The Discovery&rsquo;s own observation applies here: to an artist ' +
-      'with a small studio, this is worth more than it sounds.'
+      'You report a dry, sheltered space for storage only, with no display and no visitors. ' +
+      'To an artist short of room, that can be worth more than it sounds.'
   };
 
   /* =====================================================================
@@ -1894,35 +2056,24 @@ if (typeof module !== 'undefined' && module.exports) {
      ===================================================================== */
   var ESTABLISHED_UNSTATED = {
     'storage_first':
-      'You would use the space for storage, with no display and no visitors. ' +
-      'What you have not established yet is whether it is dry, stable and out ' +
-      'of direct sun. Settle that, and the Discovery&rsquo;s own observation ' +
-      'applies: to an artist with a small studio, this is worth more than it ' +
-      'sounds.',
+      'You&rsquo;d store work, with no display and no visitors. You haven&rsquo;t checked the ' +
+      'space&rsquo;s conditions yet; once you have, this can be worth more to an artist than it sounds.',
     'open_workable':
-      'You would let somebody in, and you say they could reach the space ' +
-      'without crossing the parts of the house you consider private. What you ' +
-      'have not established yet is whether the space is dry, stable and out of ' +
-      'direct sun. This is the most involved rung of the four and the one with ' +
-      'the most to agree in advance.'
+      'You&rsquo;d let somebody in, by a way that avoids the private rooms. You haven&rsquo;t ' +
+      'checked the space&rsquo;s conditions yet, and opening up has the most to agree in advance.'
   };
 
   /* THE CONDITION LINE. Four values, and every one of them names the homeowner
      as the source. There is no value meaning "PlotNua checked", because PlotNua
      did not check. */
   var CONDITION = {
-    'reported_dry':
-      'On the space itself: you report it as dry and sheltered. ' +
-      'PlotNua has not seen it and has measured nothing, so that stays your ' +
-      'description rather than something we have established.',
+    'reported_dry': '',
     'reported_not_dry_or_sunny':
-      'On the space itself: you report some dampness or exposure, so it might ' +
-      'need improvements before it could hold finished work. Sunlight fades works ' +
-      'on paper and damages varnish, and damp is worse.',
+      'You report some dampness or exposure, so the space might need improvements first. ' +
+      'Damp and direct sun both damage artwork.',
     'reported_unknown':
-      'On the space itself: you have not established whether it is dry, stable ' +
-      'and out of direct sun. That is not a mark against it. It simply is not ' +
-      'settled yet, and it would be holding somebody else&rsquo;s work.',
+      'You haven&rsquo;t checked the conditions yet: whether the space is dry, stable and out ' +
+      'of direct sun. That&rsquo;s not a mark against it, just the first thing to settle.',
     'condition_not_needed': ''
   };
 
@@ -1931,17 +2082,14 @@ if (typeof module !== 'undefined' && module.exports) {
   var SPACE = {
     'space_reported': '',
     'space_unstated':
-      'You are not sure yet what you could offer, which is worth pinning down ' +
-      'before you agree to anything &mdash; the rungs have different physical ' +
-      'requirements.',
+      'You&rsquo;re not sure yet what you could offer. Worth pinning down first, as each option ' +
+      'needs a different kind of space.',
     'no_wall_reported':
-      'One mismatch worth naming: you would display work, but what you described ' +
-      'is storage rather than a wall in a room you use. Worth deciding which it ' +
-      'really is before you offer it.',
+      'You&rsquo;d display work, but you described storage rather than a wall in a room you use. ' +
+      'Worth deciding which it really is.',
     'no_room_reported':
-      'One mismatch worth naming: you would let somebody in to see work, but what ' +
-      'you described is storage rather than a space somebody could stand in. Worth ' +
-      'deciding which it really is before you offer it.',
+      'You&rsquo;d let somebody in, but you described storage rather than a space somebody could ' +
+      'stand in. Worth deciding which it really is.',
     'space_not_needed': ''
   };
 
@@ -2014,87 +2162,23 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 
   /* =====================================================================
-     CROSS-CUTTING CONSEQUENCES
-     These are keyed to the ENGINE'S FLAGS, which are computed from the
-     answers and never from the winning headline. A caution therefore cannot
-     be lost because a different state took precedence. Rendered in this
-     fixed order, inside whichever headline won.
+     CROSS-CUTTING CONSEQUENCES — concise (founder UX direction, 14 Oct 2026)
+     Still keyed to the ENGINE'S FLAGS, computed from the answers and never
+     from the winning headline, so no caution is lost to precedence. The full
+     guidance (insurance, tax, planning, custody, sales) lives on the A Home
+     for Art Discovery; the result keeps one line per essential point.
+     condition_unknown is shown as the condition callout above instead.
      ===================================================================== */
-  var FLAG_ORDER = ['condition_unknown', 'custody', 'insurance', 'income',
-                    'planning', 'artist_is_seller'];
+  var FLAG_ORDER = ['custody', 'insurance', 'income', 'planning', 'artist_is_seller'];
 
-  var FLAG_LABEL = {
-    'condition_unknown': 'The space is not settled yet',
-    'custody':           'What is coming, and in what condition',
-    'insurance':         'Your insurer',
-    'income':            'If money is part of it',
-    'planning':          'Planning',
-    'artist_is_seller':  'The artist is the seller'
+  var KNOW = {
+    'custody':          'Agree what&rsquo;s coming, and photograph each piece the day it arrives.',
+    'insurance':        'Tell your home insurer before any work arrives.',
+    'income':           'Any money you receive counts as income for tax.',
+    'planning':         'Whether this needs planning permission is your local authority&rsquo;s call.',
+    'artist_is_seller': 'The artist owns the work, sets the price and deals with any buyer.'
   };
-
-  var FLAG_BODY = {
-    /* FOUNDER RULING, 18 SEPTEMBER 2026. "Not sure" no longer wins the
-       headline. It raises this instead, in every state where work would
-       arrive — including the three encouraging ones. */
-    'condition_unknown':
-      'You have not established whether the space is dry, stable and out of ' +
-      'direct sun, and it would be holding somebody else&rsquo;s finished work. ' +
-      'Settle it before anything arrives: watch the space across a week, morning ' +
-      'and afternoon. PlotNua has not seen it and cannot settle it for you.',
-    'custody':
-      'Agree what work is coming, how many pieces, what each is worth and the ' +
-      'condition it arrives in &mdash; and photograph them on the day. It takes ' +
-      'about twenty minutes and it is the single most useful protective step. It ' +
-      'does not create insurance and it does not move the risk; it records what ' +
-      'arrived, which is what every later argument turns on.',
-    'insurance':
-      'Tell your insurer before anything arrives. Allianz lists visitors&rsquo; ' +
-      'property as a standard benefit on its Irish home policy, to a limit of ' +
-      '&euro;2,000, but only where contents cover is held and only for loss or ' +
-      'damage the policy already deals with &mdash; and that is a benefit for a ' +
-      'visitor&rsquo;s belongings, not storage cover for somebody&rsquo;s finished ' +
-      'work. Visual Artists Ireland advises artists to hold their own public ' +
-      'liability insurance even where a venue is insured, because a visitor hurt ' +
-      'by an artwork can be the artist&rsquo;s responsibility rather than the ' +
-      'venue&rsquo;s &mdash; that is about harm to people, not damage to the work, ' +
-      'so it protects neither the work nor your contents. Most such policies do ' +
-      'not reach work in transit.',
-    'income':
-      'Anything you receive is income. Rent-a-Room Relief does not reach this: ' +
-      'Revenue&rsquo;s scheme covers letting a room as residential accommodation, ' +
-      'with a minimum letting period, and not for commercial purposes. There is no ' +
-      'tax-free allowance here. If your non-PAYE income for the year reaches ' +
-      '&euro;5,000, Revenue treats you as a chargeable person and a different ' +
-      'return applies. The Artists&rsquo; Exemption &mdash; up to &euro;50,000 a ' +
-      'year, and only where Revenue has made a determination for that ' +
-      'artist&rsquo;s work &mdash; is the artist&rsquo;s relief and never the ' +
-      'host&rsquo;s; it does nothing for you.',
-    'planning':
-      'Planning permission is needed only where a change of use is material, and ' +
-      'whether a change is material depends on the facts. That judgement belongs ' +
-      'to your local authority, not to PlotNua, and we are not telling you which ' +
-      'side of the line this falls on. The Discovery gives only a direction of ' +
-      'travel: keeping a few pieces is a long way from running a sales business ' +
-      'out of a dwelling. If you want a formal answer, a Section 5 declaration ' +
-      'gives one for &euro;80, decided within four weeks.',
-    'artist_is_seller':
-      'The artist owns the work, sets the price, deals with the buyer and receives ' +
-      'the payment. Anything you are paid is a separate agreement between you and ' +
-      'the artist, arranged directly between the two of you. PlotNua is not a party ' +
-      'to it and takes nothing from it.'
-  };
-
-  /* SAID IN EVERY RESULT, not only where it is comfortable. */
-  var UNKNOWN =
-    'Whether any artist wants what you have, whether any artist is working near ' +
-    'you, and whether anybody needs this at all &mdash; PlotNua does not know, ' +
-    'and cannot find one for you. ' +
-    'What your space is worth, or what any work is worth. ' +
-    'Whether your own insurer will agree, and on what terms. ' +
-    'Whether your local authority would call this a material change of use. ' +
-    'And whether the space is genuinely dry, stable or out of direct sun ' +
-    '&mdash; PlotNua has not seen it and has measured nothing, so everything ' +
-    'above about the space rests on your own account of it.';
+  var KNOW_MORE = 'discovery-a-home-for-art.html#before-anything-arrives';
 
   var QUESTIONS = [
     {var:'space', eyebrow:'What you have',
@@ -2158,6 +2242,22 @@ if (typeof module !== 'undefined' && module.exports) {
       $(s).classList.toggle('is-on', s === id);
     });
     window.scrollTo(0,0);
+    paintBack();
+  }
+
+  /* THE ONE BACK CONTROL (header). On the intro it is a plain link back to
+     the Discovery; inside the check it steps back one question, and from the
+     result it returns to the last question with that answer marked. */
+  function paintBack(){
+    var b = $('hoBack');
+    if (!b) return;
+    var onIntro = $('hoIntro').classList.contains('is-on');
+    b.setAttribute('aria-label', onIntro ? 'Back to A Home for Art' : 'Back to the previous question');
+  }
+  function goBack(e){
+    if ($('hoIntro').classList.contains('is-on')) return;
+    if (e) e.preventDefault();
+    if (trail.length) back(); else show('hoIntro');
   }
 
   function pending(){
@@ -2167,7 +2267,7 @@ if (typeof module !== 'undefined' && module.exports) {
     return null;
   }
 
-  function renderQuestion(q){
+  function renderQuestion(q, prev){
     var total = QUESTIONS.length;
     var idx = QUESTIONS.indexOf(q) + 1;
     $('hoProg').textContent = 'Question ' + idx + ' of ' + total;
@@ -2182,7 +2282,7 @@ if (typeof module !== 'undefined' && module.exports) {
         dots.appendChild(dot);
       }
     }
-    $('hoQEyebrow').textContent = q.eyebrow;
+    $('hoQEyebrow').textContent = 'Question ' + idx + ' of ' + total;
     $('hoQText').innerHTML = q.q;
     var note = $('hoQNote');
     if (q.note){ note.innerHTML = q.note; note.style.display=''; }
@@ -2200,11 +2300,11 @@ if (typeof module !== 'undefined' && module.exports) {
       b.type = 'button';
       b.className = 'pc-opt';
       b.innerHTML = o.l + (o.n ? '<span class="pc-optn">'+o.n+'</span>' : '');
+      if (prev === o.v) b.classList.add('is-prev');
       b.addEventListener('click', function(){ this.classList.add('is-chosen'); });
       b.addEventListener('click', function(){ choose(q, o.v); });
       box.appendChild(b);
     });
-    $('hoBack').style.display = trail.length ? '' : 'none';
     show('hoQ');
   }
 
@@ -2217,9 +2317,10 @@ if (typeof module !== 'undefined' && module.exports) {
   function back(){
     if (!trail.length) return;
     var last = trail.pop();
+    var prev = answers[last];
     delete answers[last];
     var q = QUESTIONS.filter(function(x){ return x.var === last; })[0];
-    if (q) renderQuestion(q); else advance();
+    if (q) renderQuestion(q, prev); else advance();
   }
 
   function advance(){
@@ -2295,8 +2396,8 @@ if (typeof module !== 'undefined' && module.exports) {
       $('hoEstablished').innerHTML = '';
       $('hoWhy').innerHTML = '';
       $('hoAction').innerHTML = '';
-      $('hoApplies').hidden = true;
-      $('hoUnknown').hidden = true;
+      $('hoWhyWrap').hidden = true;
+      $('hoKnow').hidden = true;
       show('hoReveal');
       return;
     }
@@ -2304,50 +2405,47 @@ if (typeof module !== 'undefined' && module.exports) {
     $('hoRevealH').innerHTML = HEADLINES[r.state];
     $('hoRevealSub').innerHTML = SUBS[r.state];
 
-    /* 1 · WHAT PLOTNUA HAS ESTABLISHED — answers and published evidence only.
-       ATTRIBUTION FOLLOWS THE ANSWER. A positive self-report is only ever
-       rendered when the homeowner actually gave one; where the condition was
-       left unstated the variant above is used instead. */
+    /* B · WHAT YOUR ANSWERS SUGGEST. ATTRIBUTION FOLLOWS THE ANSWER: a
+       positive self-report is only ever rendered when the homeowner gave one;
+       where the condition was left unstated the variant is used instead. */
     var estText = (r.condition === 'reported_unknown' &&
                    ESTABLISHED_UNSTATED[r.state]) ?
                   ESTABLISHED_UNSTATED[r.state] : ESTABLISHED[r.state];
-    var est = '<p class="ho-primarybody">' + estText + '</p>';
-    if (CONDITION[r.condition]){
-      est += '<p class="ho-primarybody">' + CONDITION[r.condition] + '</p>';
+    var est = '<p class="ho-lead">' + estText + '</p>';
+    /* The one suitability callout: a space reported as damp or exposed, or
+       not yet checked, and any mismatch between the rung and the space. Never
+       a statement that the space is suitable. */
+    var notes = [];
+    if ((r.condition === 'reported_not_dry_or_sunny' && r.state !== 'condition_first') ||
+        r.condition === 'reported_unknown'){
+      notes.push(CONDITION[r.condition]);
     }
-    if (SPACE[r.space]){
-      est += '<p class="ho-primarybody ho-caution">' + SPACE[r.space] + '</p>';
+    if (SPACE[r.space]) notes.push(SPACE[r.space]);
+    if (notes.length){
+      est += '<div class="ho-caution">' + notes.map(function(t){ return '<p>' + t + '</p>'; }).join('') + '</div>';
     }
     $('hoEstablished').innerHTML = est;
 
-    /* 2 · WHY YOUR ANSWERS LED HERE — the engine's own reason keys */
+    /* D · WHY THIS RESULT — the engine's own reason keys, and the one next step. */
     var why = '<ul class="ho-why">';
     r.reasons.forEach(function(k){
       if (REASONS[k]) why += '<li>' + REASONS[k] + '</li>';
     });
     why += '</ul>';
-    $('hoWhy').innerHTML = block('Why your answers led here', why);
-
-    /* 3 · ONE NEXT ACTION */
+    $('hoWhy').innerHTML = why;
     $('hoAction').innerHTML = block(ACTION_LABEL[r.state], ACTIONS[r.state]);
+    $('hoWhyWrap').hidden = false;
+    $('hoWhyWrap').open = false;
 
-    /* 4 · WHAT APPLIES WHICHEVER WAY YOU GO.
-       Driven by r.flags, which the engine computed from the answers. The
-       headline has no vote here, which is the whole point: a consequence
-       cannot disappear because a different state won. */
-    var parts = '';
+    /* WORTH KNOWING — one line per flag the engine raised. */
+    var know = '';
     FLAG_ORDER.forEach(function(f){
-      if (!r.flags[f]) return;
-      parts += '<div class="ho-part' + (f === 'condition_unknown' ? ' is-lead' : '') +
-               '"><p class="ho-partlab">' + esc(FLAG_LABEL[f]) + '</p>' +
-               '<p class="ho-partbody">' + FLAG_BODY[f] + '</p></div>';
+      if (r.flags[f] && KNOW[f]) know += '<li>' + KNOW[f] + '</li>';
     });
-    $('hoApplies').hidden = !parts;
-    $('hoAppliesBody').innerHTML = parts;
-
-    /* 5 · WHAT PLOTNUA DOES NOT KNOW — in every result, without exception */
-    $('hoUnknown').hidden = false;
-    $('hoUnknownBody').innerHTML = '<p class="ho-unknownbody">' + UNKNOWN + '</p>';
+    $('hoKnow').innerHTML = know ?
+      '<p class="ho-knowh">Worth knowing</p><ul class="ho-knowl">' + know + '</ul>' +
+      '<p class="ho-knowmore"><a href="' + KNOW_MORE + '">Insurance, planning and tax in detail</a></p>' : '';
+    $('hoKnow').hidden = !know;
 
     show('hoReveal');
 
@@ -2381,7 +2479,8 @@ if (typeof module !== 'undefined' && module.exports) {
   }
 
   $('hoStart').addEventListener('click', function(){ advance(); });
-  $('hoBack').addEventListener('click', back);
+  $('hoBack').addEventListener('click', goBack);
+  paintBack();
   hoUpdatePlotPill();
 
 })();
@@ -2504,6 +2603,7 @@ window.PlotNuaArtRegister = (function () {
     $('asrOffer').hidden = (which !== 'offer');
     $('asrForm').hidden = !(which === 'form' || which === 'sending');
     $('asrDone').hidden = !(which === 'received' || which === 'not_open' || which === 'unavailable');
+    $('asrDone').setAttribute('data-state', which);
     var send = $('asrSend');
     send.disabled = (which === 'sending');
     send.textContent = (which === 'sending') ? 'Sending\u2026' : "Submit my registration";

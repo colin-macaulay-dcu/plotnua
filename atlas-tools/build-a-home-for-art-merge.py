@@ -38,9 +38,15 @@ GUARDS
       PlotArt and "not live yet" sentences present verbatim
   M7  redirect page: canonical to the merged page, query string preserved,
       hash target #open-your-home-to-art, no <main>, not in the sitemap
-  M8  the DISC-024 check changes by its back-link and the two declared
-      founder wording changes (CHECK24_WORDING) only, outside the Art Space
-      Register's own marked blocks (governed by build-art-space-register.py)
+  M8  the DISC-024 check's ASSESSMENT is unchanged from BASE: the head
+      scripts, the engine script, the My Plot save script, every question's
+      variable and answer values, and the save call (journeyId and payload)
+      are byte-identical; the Back control routes to the merged page; the
+      founder-approved question wording (CHECK24_APPROVED) is present.
+      Revised 14 Oct 2026 (founder UX direction): the check's PRESENTATION
+      (layout, styles, result copy, the floating Back control) was redesigned,
+      so a whole-page byte comparison no longer applies; what decides a
+      result is still pinned to BASE.
   M9  every consolidation edit applied exactly once
   M10 the founder's hierarchy: hosting story first, Open > Live with > Discover & own
   M11 ORIGINAL HOSTING IMAGERY (founder image correction, 13 Oct 2026): the hero
@@ -484,7 +490,7 @@ CONSOLIDATION = [
     ("your-plot.html", "    'disc024-open-your-home-to-art': 'discovery-open-your-home-to-art.html',",
      "    'disc024-open-your-home-to-art': '%s'," % TARGET),
     (C24, '    <a class="ho-back" href="discovery-open-your-home-to-art.html">Back to the story</a>',
-     '    <a class="ho-back" href="%s">Back to the story</a>' % TARGET),
+     '    <a class="ho-back" id="hoBack" href="%s" aria-label="Back to A Home for Art">' % TARGET),
     ("sitemap.xml", "  <url><loc>https://plotnua.ie/discovery-open-your-home-to-art.html</loc><lastmod>2026-08-27</lastmod>"
      "<changefreq>monthly</changefreq><priority>0.8</priority></url>\n", ""),
     ("sitemap.xml", "<loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-08-27</lastmod>",
@@ -559,43 +565,44 @@ REGISTER_BLOCKS = (("/* PLOTNUA-ART-REGISTER-CSS-BEGIN", "/* PLOTNUA-ART-REGISTE
                    ("<script>\n/* PLOTNUA-ART-REGISTER-JS-BEGIN", "/* PLOTNUA-ART-REGISTER-JS-END */\n</script>\n"))
 
 
-# FOUNDER-APPROVED DISC-024 CHECK WORDING (13 Oct 2026, 21:30): the storage
-# option's note and its result sentence no longer suggest that attics, garages
-# or under-stairs spaces suit finished artwork. Text only: question ids, answer
-# values, scoring, outcomes, save keys and the register pre-fill are unchanged.
-CHECK24_WORDING = [
-    ("{v:'dry_store',      l:'Storage only', n:'An attic, a garage, under the stairs'},",
-     "{v:'dry_store',      l:'Storage only', n:'Subject to suitability'},"),
-    ("'space_store':          'What you could offer is storage &mdash; attic, garage, under the stairs.',",
-     "'space_store':          'You might have space suitable for storing finished artwork, subject to the "
-     "artist&rsquo;s requirements.',"),
-    # FOUNDER DIRECTION (14 Oct 2026): the space-conditions question and its options are reworded, and every
-    # "you report ..." sentence follows the new answers. Text only: the variable, the three answer values
-    # (dry_stable, not_dry_or_sunny, not_sure_condition), the engine, outcomes and save keys are unchanged.
-    # A space with dampness or exposure is still never described as suitable: it still leads to condition_first.
-    ("     q:'Is that space dry, stable and out of direct sun?',",
-     "     q:'What are the conditions like in the space you&rsquo;re considering?',"),
-    ("       {v:'dry_stable',         l:'Yes &mdash; dry, stable, no direct sun on it', n:null},",
-     "       {v:'dry_stable',         l:'Dry and sheltered', n:null},"),
-    ("       {v:'not_dry_or_sunny',   l:'No &mdash; it&rsquo;s damp, changeable, or gets direct sun', n:null},",
-     "       {v:'not_dry_or_sunny',   l:'Some dampness or exposure &mdash; the space might need improvements', n:null},"),
-    ("       {v:'not_sure_condition', l:'I&rsquo;m not sure', n:null}]},",
-     "       {v:'not_sure_condition', l:'I&rsquo;m not sure &mdash; I&rsquo;d need to check', n:null}]},"),
-    ("      'You report the space as damp, changeable, or getting direct sun &mdash; ' +",
-     "      'You report some dampness or exposure in the space, so it might need improvements &mdash; ' +"),
-    ("      'A space you report as dry, stable and out of direct sun. A way in you say ' +",
-     "      'A space you report as dry and sheltered. A way in you say ' +"),
-    ("      'You report a dry, stable space out of direct sun, with no display and no ' +",
-     "      'You report a dry, sheltered space, with no display and no ' +"),
-    ("      'On the space itself: you report it as dry, stable and out of direct sun. ' +",
-     "      'On the space itself: you report it as dry and sheltered. ' +"),
-    ("      'On the space itself: you report it as damp, changeable, or reached by ' +\n      'direct sun. Sunlight fades works on paper and damages varnish, and damp ' +\n      'is worse.',",
-     "      'On the space itself: you report some dampness or exposure, so it might ' +\n      'need improvements before it could hold finished work. Sunlight fades works ' +\n      'on paper and damages varnish, and damp is worse.',"),
-    ("      'You report the space as dry, stable and out of direct sun.',",
-     "      'You report the space as dry and sheltered.',"),
-    ("      'You report the space as damp, changeable, or reached by direct sun.',",
-     "      'You report some dampness or exposure; the space might need improvements.',"),
+# FOUNDER-APPROVED DISC-024 CHECK WORDING. 13 Oct 2026 (21:30): the storage
+# option no longer suggests attics, garages or under-stairs spaces. 14 Oct 2026:
+# the space-conditions question and its three options. Text only: the answer
+# values below them, the engine, outcomes and save keys are pinned to BASE (M8).
+CHECK24_APPROVED = [
+    "{v:'dry_store',      l:'Storage only', n:'Subject to suitability'},",
+    "'space_store':          'You might have space suitable for storing finished artwork, subject to the "
+    "artist&rsquo;s requirements.',",
+    "q:'What are the conditions like in the space you&rsquo;re considering?',",
+    "{v:'dry_stable',         l:'Dry and sheltered', n:null},",
+    "{v:'not_dry_or_sunny',   l:'Some dampness or exposure &mdash; the space might need improvements', n:null},",
+    "{v:'not_sure_condition', l:'I&rsquo;m not sure &mdash; I&rsquo;d need to check', n:null}]},",
 ]
+
+
+def check24_head(t):
+    return t[:t.index("<style>")]
+
+
+def check24_engine(t):
+    blocks = [x for x in re.findall(r"<script>[\s\S]*?</script>", t) if "root.PlotNuaHostEngine = {" in x]
+    if len(blocks) != 1:
+        raise ValueError("engine")
+    return blocks[0]
+
+
+def check24_save(t):
+    return re.search(r"/\* PLOTNUA-JOURNEY-SAVE-BEGIN \*/[\s\S]*?/\* PLOTNUA-JOURNEY-SAVE-END \*/", t).group(0)
+
+
+def check24_values(t):
+    q = re.search(r"var QUESTIONS = \[([\s\S]*?)\n  \];", t).group(1)
+    return re.findall(r"\{var:'(\w+)'|\{v:'(\w+)'", q)
+
+
+def check24_savecall(t):
+    m = re.search(r"journeyId: '([^']+)',[\s\S]*?return (\{ answers: answers, resultKeys: \{ host_state: r\.state \} \});", t)
+    return (m.group(1), m.group(2))
 
 
 def strip_register(html):
@@ -689,14 +696,22 @@ def guards(page):
     # The Art Space Register's own four marked blocks on the DISC-024 check are
     # governed by atlas-tools/build-art-space-register.py (R1-R14), which proves
     # the rest of that page byte-identical. M8 compares everything else.
-    head24 = strip_register(base(C24))
-    for a, b in CHECK24_WORDING:
-        if head24.count(a) != 1:
-            die("M8 a declared DISC-024 wording change no longer matches BASE: " + a[:60])
-        head24 = head24.replace(a, b)
-    cur24 = strip_register((ROOT / C24).read_text(encoding="utf-8"))
-    if cur24.replace('href="%s">Back to the story' % TARGET, 'href="%s">Back to the story' % OLD) != head24:
-        die("M8 the DISC-024 check changed beyond its back-link")
+    head24, cur24 = base(C24), (ROOT / C24).read_text(encoding="utf-8")
+    strip_register(cur24)                       # the register's four blocks must be intact
+    for label, fn in (("head scripts", check24_head), ("engine script", check24_engine),
+                      ("My Plot save script", check24_save), ("question variables and answer values", check24_values),
+                      ("save call (journeyId and payload)", check24_savecall)):
+        try:
+            same = fn(head24) == fn(cur24)
+        except (AttributeError, ValueError, IndexError):
+            same = False
+        if not same:
+            die("M8 the DISC-024 check's %s differ from BASE" % label)
+    if ('id="hoBack" href="%s"' % TARGET) not in cur24 or OLD in cur24:
+        die("M8 the DISC-024 Back control does not route to the merged page")
+    for phrase in CHECK24_APPROVED:
+        if cur24.count(phrase) != 1:
+            die("M8 founder-approved DISC-024 wording missing: " + phrase[:60])
     # M10 · founder hierarchy: hosting story first, then Open > Live with > Discover & own; hosting check first
     order = [page.find(x) for x in (HOST_HERO_TAG, "<h2>%s</h2>" % OVERLOOKED_H2, "assets/img/046ec577a454599b.jpg",
                                      "assets/img/6442d19ec2dd1df0.jpg", 'class="hfa-paths"',
