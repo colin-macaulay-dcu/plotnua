@@ -126,7 +126,13 @@ COMMITMENT = ("Registering your interest doesn&rsquo;t commit you to hosting art
 COMMITMENT_SHA256 = "f2d8e3302d9d52dd09da5845e92191b07601923cc31245ed476dced0ea0c1653"
 HEADING = "Could your home become a home for art?"
 CTA = "Register my interest"          # opens the form
-SEND_LABEL = "Submit my registration"  # sends it (founder, 14 Oct 2026: distinct from the CTA)
+SEND_LABEL = "Submit my registration"
+# Founder direction, 14 Oct 2026: two clear actions after the result.
+SUPPORT = ("Registering is a non-binding expression of interest in PlotNua&rsquo;s Art Space Register. "
+           "It is not an assessment of your space, and you can register even if the space might need "
+           "improvements first.")
+EXPLORE_LABEL = "Explore A Home for Art"
+EXPLORE_HREF = "discovery-a-home-for-art.html#open-your-home-to-art"  # sends it (founder, 14 Oct 2026: distinct from the CTA)
 
 M = {
     "css_b": "/* PLOTNUA-ART-REGISTER-CSS-BEGIN",
@@ -139,8 +145,11 @@ M = {
     "js_e": "/* PLOTNUA-ART-REGISTER-JS-END */\n</script>\n",
 }
 A_CSS = "  .ho-partbody{ margin:0; }\n</style>\n</head>"
-A_HTML = ("          <a class=\"pc-savelink\" id=\"hoSaveLink\" href=\"your-plot.html?myplot=1\" hidden>View in My Plot "
-          "<span class=\"pc-arrow\" aria-hidden=\"true\">&rarr;</span></a>\n        </div>\n      </div>\n    </div>\n")
+# Founder direction, 14 Oct 2026: the invitation sits HIGH on the result,
+# straight after the homeowner's personalised result (headline, sub and "what
+# PlotNua has established"), before the reasons, the next action and the long
+# practical guidance (insurance, planning, tax), as on the Garden check.
+A_HTML = "    <div class=\"ho-primary\" id=\"hoEstablished\"></div>\n"
 A_CALL = "    hoPaintClose();\n    hoUpdatePlotPill();\n"
 A_CALL_NEXT = "  }\n\n  $('hoStart').addEventListener('click', function(){ advance(); });"
 A_JS = "</body>\n</html>"
@@ -158,6 +167,15 @@ CSS = """/* PLOTNUA-ART-REGISTER-CSS-BEGIN · Art Space Register (DISC-024), fou
   .asr-assure{margin:16px 0 0;padding:14px 0 0;border-top:1px solid rgba(31,59,46,.14);
     font-size:14.5px;line-height:1.65;color:var(--ink);max-width:68ch;}
   .asr-cta{margin:20px 0 0;}
+  .asr-lead{margin:0 0 4px;font-size:15.5px;line-height:1.6;color:var(--ink);max-width:62ch;}
+  .asr-choices{margin:18px 0 0;display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;}
+  .asr-explore{font-family:'Work Sans',sans-serif;font-size:14.5px;color:var(--accent);
+    text-decoration:underline;text-underline-offset:3px;}
+  .asr-explore:hover{color:var(--ink);}
+  .asr-more{margin:18px 0 0;border-top:1px solid rgba(31,59,46,.14);}
+  .asr-more summary{cursor:pointer;padding:14px 0 10px;font-family:'Work Sans',sans-serif;
+    font-size:13.5px;color:var(--soft);}
+  .asr-more summary:hover,.asr-more[open] summary{color:var(--ink);}
   .asr-prev{margin:0 0 16px;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:500;
     letter-spacing:.2em;text-transform:uppercase;color:#6E5639;
     border:1px solid rgba(139,111,78,.4);border-radius:20px;padding:5px 12px;display:inline-block;}
@@ -261,10 +279,18 @@ def html_section():
         ('' if INTEREST_PUBLIC else
          '      <p class="asr-prev" id="asrPrev" hidden>Private preview &middot; not public</p>\n') +
         '      <h2 class="asr-h" id="asrH" tabindex="-1">%s</h2>\n' % HEADING +
-        '      <div id="asrOffer">\n' + paras + "\n"
+        '      <div id="asrOffer">\n'
+        '        <p class="asr-lead" id="asrLead">%s</p>\n' % SUPPORT +
+        '        <div class="asr-choices">\n'
+        '          <button class="pc-cta" type="button" id="asrOpen">%s</button>\n' % CTA +
+        '          <a class="asr-explore" id="asrExplore" href="%s">%s <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>\n'
+        % (EXPLORE_HREF, EXPLORE_LABEL) +
+        '        </div>\n'
         '        <p class="asr-assure">%s</p>\n' % INVITATION[-1] +
         '        <p class="asr-p" id="asrCommit">%s</p>\n' % COMMITMENT +
-        '        <p class="asr-cta"><button class="pc-cta" type="button" id="asrOpen">%s</button></p>\n' % CTA +
+        '        <details class="asr-more">\n'
+        '          <summary>About the idea</summary>\n' + paras.replace("        <p", "          <p") + "\n"
+        '        </details>\n'
         '      </div>\n'
         '      <form class="asr-form" id="asrForm" hidden novalidate>\n'
         '        <p class="asr-privline">A first name, an email address and a county. No surname, no address, no Eircode, no phone number.</p>\n'
@@ -774,6 +800,11 @@ def guards(html):
     # R7
     if HEADING not in sec or sec.count('id="asrOpen">%s<' % CTA) != 1:
         die("R7 the approved heading or CTA is missing")
+    if sec.count('<p class="asr-lead" id="asrLead">%s</p>' % SUPPORT) != 1 \
+            or sec.count('id="asrExplore" href="%s">%s ' % (EXPLORE_HREF, EXPLORE_LABEL)) != 1:
+        die("R7 the two actions (register, explore) or their supporting line are missing")
+    if sec.index('id="asrOpen"') > sec.index("asr-assure") or sec.index('id="asrOpen"') > sec.index('class="asr-more"'):
+        die("R7 the register action must come before the longer invitation text")
     if sec.count('id="asrSend">%s<' % SEND_LABEL) != 1 or SEND_LABEL == CTA:
         die("R7 the send button is not labelled %r, distinct from the CTA" % SEND_LABEL)
     import hashlib

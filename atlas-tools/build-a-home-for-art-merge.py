@@ -569,6 +569,32 @@ CHECK24_WORDING = [
     ("'space_store':          'What you could offer is storage &mdash; attic, garage, under the stairs.',",
      "'space_store':          'You might have space suitable for storing finished artwork, subject to the "
      "artist&rsquo;s requirements.',"),
+    # FOUNDER DIRECTION (14 Oct 2026): the space-conditions question and its options are reworded, and every
+    # "you report ..." sentence follows the new answers. Text only: the variable, the three answer values
+    # (dry_stable, not_dry_or_sunny, not_sure_condition), the engine, outcomes and save keys are unchanged.
+    # A space with dampness or exposure is still never described as suitable: it still leads to condition_first.
+    ("     q:'Is that space dry, stable and out of direct sun?',",
+     "     q:'What are the conditions like in the space you&rsquo;re considering?',"),
+    ("       {v:'dry_stable',         l:'Yes &mdash; dry, stable, no direct sun on it', n:null},",
+     "       {v:'dry_stable',         l:'Dry and sheltered', n:null},"),
+    ("       {v:'not_dry_or_sunny',   l:'No &mdash; it&rsquo;s damp, changeable, or gets direct sun', n:null},",
+     "       {v:'not_dry_or_sunny',   l:'Some dampness or exposure &mdash; the space might need improvements', n:null},"),
+    ("       {v:'not_sure_condition', l:'I&rsquo;m not sure', n:null}]},",
+     "       {v:'not_sure_condition', l:'I&rsquo;m not sure &mdash; I&rsquo;d need to check', n:null}]},"),
+    ("      'You report the space as damp, changeable, or getting direct sun &mdash; ' +",
+     "      'You report some dampness or exposure in the space, so it might need improvements &mdash; ' +"),
+    ("      'A space you report as dry, stable and out of direct sun. A way in you say ' +",
+     "      'A space you report as dry and sheltered. A way in you say ' +"),
+    ("      'You report a dry, stable space out of direct sun, with no display and no ' +",
+     "      'You report a dry, sheltered space, with no display and no ' +"),
+    ("      'On the space itself: you report it as dry, stable and out of direct sun. ' +",
+     "      'On the space itself: you report it as dry and sheltered. ' +"),
+    ("      'On the space itself: you report it as damp, changeable, or reached by ' +\n      'direct sun. Sunlight fades works on paper and damages varnish, and damp ' +\n      'is worse.',",
+     "      'On the space itself: you report some dampness or exposure, so it might ' +\n      'need improvements before it could hold finished work. Sunlight fades works ' +\n      'on paper and damages varnish, and damp is worse.',"),
+    ("      'You report the space as dry, stable and out of direct sun.',",
+     "      'You report the space as dry and sheltered.',"),
+    ("      'You report the space as damp, changeable, or reached by direct sun.',",
+     "      'You report some dampness or exposure; the space might need improvements.',"),
 ]
 
 

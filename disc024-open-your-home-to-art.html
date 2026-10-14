@@ -756,6 +756,15 @@ window.PlotNuaFunnel = (function () {
   .asr-assure{margin:16px 0 0;padding:14px 0 0;border-top:1px solid rgba(31,59,46,.14);
     font-size:14.5px;line-height:1.65;color:var(--ink);max-width:68ch;}
   .asr-cta{margin:20px 0 0;}
+  .asr-lead{margin:0 0 4px;font-size:15.5px;line-height:1.6;color:var(--ink);max-width:62ch;}
+  .asr-choices{margin:18px 0 0;display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;}
+  .asr-explore{font-family:'Work Sans',sans-serif;font-size:14.5px;color:var(--accent);
+    text-decoration:underline;text-underline-offset:3px;}
+  .asr-explore:hover{color:var(--ink);}
+  .asr-more{margin:18px 0 0;border-top:1px solid rgba(31,59,46,.14);}
+  .asr-more summary{cursor:pointer;padding:14px 0 10px;font-family:'Work Sans',sans-serif;
+    font-size:13.5px;color:var(--soft);}
+  .asr-more summary:hover,.asr-more[open] summary{color:var(--ink);}
   .asr-prev{margin:0 0 16px;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:500;
     letter-spacing:.2em;text-transform:uppercase;color:#6E5639;
     border:1px solid rgba(139,111,78,.4);border-radius:20px;padding:5px 12px;display:inline-block;}
@@ -863,34 +872,6 @@ window.PlotNuaFunnel = (function () {
       <p class="ho-reveal-sub" id="hoRevealSub"></p>
     </div>
     <div class="ho-primary" id="hoEstablished"></div>
-    <div class="ho-next" id="hoWhy"></div>
-    <div class="ho-next" id="hoAction"></div>
-    <div class="ho-adv" id="hoApplies" hidden>
-      <p class="ho-advlab">What applies whichever way you go</p>
-      <div class="ho-parts" id="hoAppliesBody"></div>
-    </div>
-    <div class="ho-adv" id="hoUnknown">
-      <p class="ho-advlab">What PlotNua does not know</p>
-      <div class="ho-parts" id="hoUnknownBody"></div>
-    </div>
-    <div class="ho-save pc-saveband">
-      <div class="ho-saveinner pc-saveinner">
-        <p class="pc-savelab">My Plot</p>
-        <div class="ho-savebody">
-          <div class="pc-savehead" id="hoSaveCrest">
-            <span class="pc-mark" id="hoSaveMark" aria-hidden="true">
-              <img src="assets/brand/plotnua-mark-master.svg" alt="" width="64" height="64">
-              <img class="pc-mark-on" src="assets/brand/plotnua-mark-myplot-saved.svg" alt="" width="64" height="64">
-            </span>
-            <p class="pc-saveh" id="hoSaveHead">Somewhere to come back to</p>
-          </div>
-          <p class="pc-savemeta" id="hoSaveMeta" hidden></p>
-          <button class="pc-cta" type="button" id="hoSave" hidden>Save to My Plot</button>
-          <p class="pc-savenote" id="hoSaveNote"></p>
-          <a class="pc-savelink" id="hoSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
-        </div>
-      </div>
-    </div>
     <!-- PLOTNUA-ART-REGISTER-HTML-BEGIN
          ART SPACE REGISTER · homeowner expression of interest (DISC-024). Founder-approved for
          build 13 Oct 2026. SHIPPED CLOSED: hidden here and REMOVED FROM THE DOM on reveal
@@ -899,14 +880,21 @@ window.PlotNuaFunnel = (function () {
     <section class="asr" id="asrSection" hidden aria-labelledby="asrH">
       <h2 class="asr-h" id="asrH" tabindex="-1">Could your home become a home for art?</h2>
       <div id="asrOffer">
-        <p class="asr-p">Imagine an original artwork displayed in your living room, a spare room becoming a temporary exhibition space, or an artist&rsquo;s work finding a new audience through your home.</p>
-        <p class="asr-p">PlotNua is exploring whether Irish homeowners would be interested in offering space for artists&rsquo; finished work.</p>
-        <p class="asr-p">You could simply display a piece privately, offer somewhere to store it, or potentially welcome visitors by arrangement. It&rsquo;s entirely up to you.</p>
-        <p class="asr-p">Would you be interested in hearing more?</p>
-        <p class="asr-p">Register your interest and help us explore whether this idea could work in Ireland.</p>
+        <p class="asr-lead" id="asrLead">Registering is a non-binding expression of interest in PlotNua&rsquo;s Art Space Register. It is not an assessment of your space, and you can register even if the space might need improvements first.</p>
+        <div class="asr-choices">
+          <button class="pc-cta" type="button" id="asrOpen">Register my interest</button>
+          <a class="asr-explore" id="asrExplore" href="discovery-a-home-for-art.html#open-your-home-to-art">Explore A Home for Art <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
         <p class="asr-assure">There&rsquo;s no commitment, no payment and no matching service operating at this stage. Your details remain private, and nothing will be arranged without your agreement.</p>
         <p class="asr-p" id="asrCommit">Registering your interest doesn&rsquo;t commit you to hosting artwork, inviting visitors into your home or entering into any arrangement. PlotNua is simply exploring whether homeowners might be interested in these possibilities.</p>
-        <p class="asr-cta"><button class="pc-cta" type="button" id="asrOpen">Register my interest</button></p>
+        <details class="asr-more">
+          <summary>About the idea</summary>
+          <p class="asr-p">Imagine an original artwork displayed in your living room, a spare room becoming a temporary exhibition space, or an artist&rsquo;s work finding a new audience through your home.</p>
+          <p class="asr-p">PlotNua is exploring whether Irish homeowners would be interested in offering space for artists&rsquo; finished work.</p>
+          <p class="asr-p">You could simply display a piece privately, offer somewhere to store it, or potentially welcome visitors by arrangement. It&rsquo;s entirely up to you.</p>
+          <p class="asr-p">Would you be interested in hearing more?</p>
+          <p class="asr-p">Register your interest and help us explore whether this idea could work in Ireland.</p>
+        </details>
       </div>
       <form class="asr-form" id="asrForm" hidden novalidate>
         <p class="asr-privline">A first name, an email address and a county. No surname, no address, no Eircode, no phone number.</p>
@@ -961,6 +949,34 @@ window.PlotNuaFunnel = (function () {
       <p class="asr-note">PlotNua does not verify anybody&rsquo;s identity and has not met anyone on this register. Nothing is arranged through this page.</p>
     </section>
     <!-- PLOTNUA-ART-REGISTER-HTML-END -->
+    <div class="ho-next" id="hoWhy"></div>
+    <div class="ho-next" id="hoAction"></div>
+    <div class="ho-adv" id="hoApplies" hidden>
+      <p class="ho-advlab">What applies whichever way you go</p>
+      <div class="ho-parts" id="hoAppliesBody"></div>
+    </div>
+    <div class="ho-adv" id="hoUnknown">
+      <p class="ho-advlab">What PlotNua does not know</p>
+      <div class="ho-parts" id="hoUnknownBody"></div>
+    </div>
+    <div class="ho-save pc-saveband">
+      <div class="ho-saveinner pc-saveinner">
+        <p class="pc-savelab">My Plot</p>
+        <div class="ho-savebody">
+          <div class="pc-savehead" id="hoSaveCrest">
+            <span class="pc-mark" id="hoSaveMark" aria-hidden="true">
+              <img src="assets/brand/plotnua-mark-master.svg" alt="" width="64" height="64">
+              <img class="pc-mark-on" src="assets/brand/plotnua-mark-myplot-saved.svg" alt="" width="64" height="64">
+            </span>
+            <p class="pc-saveh" id="hoSaveHead">Somewhere to come back to</p>
+          </div>
+          <p class="pc-savemeta" id="hoSaveMeta" hidden></p>
+          <button class="pc-cta" type="button" id="hoSave" hidden>Save to My Plot</button>
+          <p class="pc-savenote" id="hoSaveNote"></p>
+          <a class="pc-savelink" id="hoSaveLink" href="your-plot.html?myplot=1" hidden>View in My Plot <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
     <p class="ho-foot">Nothing here is legal or tax advice. PlotNua has not seen
       your home and has measured nothing, so everything above about the space is
       your own description of it rather than a finding of ours.</p>
@@ -1835,7 +1851,7 @@ if (typeof module !== 'undefined' && module.exports) {
       'are genuinely different arrangements and you can change your mind between ' +
       'one and the next.',
     'condition_first':
-      'You report the space as damp, changeable, or getting direct sun &mdash; ' +
+      'You report some dampness or exposure in the space, so it might need improvements &mdash; ' +
       'and somebody else&rsquo;s finished work would be kept in it. That is the ' +
       'one thing on this page worth settling before anything else, and it is ' +
       'settleable before anything arrives.',
@@ -1845,7 +1861,7 @@ if (typeof module !== 'undefined' && module.exports) {
       'that you have not thought about the route yet. That is the ordinary case, ' +
       'and it is the most common reason a willing host finds this does not suit them.',
     'open_workable':
-      'A space you report as dry, stable and out of direct sun. A way in you say ' +
+      'A space you report as dry and sheltered. A way in you say ' +
       'avoids the private rooms. And the willingness to use both. This is the most ' +
       'involved rung of the four and the one with the most to agree in advance.',
     'display_no_visitors':
@@ -1853,7 +1869,7 @@ if (typeof module !== 'undefined' && module.exports) {
       'of it still applies, and so does telling your insurer. The doorstep question ' +
       'does not arise at all.',
     'storage_first':
-      'You report a dry, stable space out of direct sun, with no display and no ' +
+      'You report a dry, sheltered space, with no display and no ' +
       'visitors. The Discovery&rsquo;s own observation applies here: to an artist ' +
       'with a small studio, this is worth more than it sounds.'
   };
@@ -1896,13 +1912,13 @@ if (typeof module !== 'undefined' && module.exports) {
      did not check. */
   var CONDITION = {
     'reported_dry':
-      'On the space itself: you report it as dry, stable and out of direct sun. ' +
+      'On the space itself: you report it as dry and sheltered. ' +
       'PlotNua has not seen it and has measured nothing, so that stays your ' +
       'description rather than something we have established.',
     'reported_not_dry_or_sunny':
-      'On the space itself: you report it as damp, changeable, or reached by ' +
-      'direct sun. Sunlight fades works on paper and damages varnish, and damp ' +
-      'is worse.',
+      'On the space itself: you report some dampness or exposure, so it might ' +
+      'need improvements before it could hold finished work. Sunlight fades works ' +
+      'on paper and damages varnish, and damp is worse.',
     'reported_unknown':
       'On the space itself: you have not established whether it is dry, stable ' +
       'and out of direct sun. That is not a mark against it. It simply is not ' +
@@ -1938,9 +1954,9 @@ if (typeof module !== 'undefined' && module.exports) {
     'level_display':        'You would live with work on the wall, without visitors.',
     'level_open':           'You would let somebody in &mdash; a viewing, or a short show.',
     'condition_reported_dry':
-      'You report the space as dry, stable and out of direct sun.',
+      'You report the space as dry and sheltered.',
     'condition_reported_not_dry_or_sunny':
-      'You report the space as damp, changeable, or reached by direct sun.',
+      'You report some dampness or exposure; the space might need improvements.',
     'condition_reported_unknown':
       'You have not established the condition of the space.',
     'space_wall':           'What you could offer is a wall in a room you use.',
@@ -2109,12 +2125,12 @@ if (typeof module !== 'undefined' && module.exports) {
        {v:'not_decided', l:'I don&rsquo;t know how far yet', n:null}]},
 
     {var:'condition', eyebrow:'The space',
-     q:'Is that space dry, stable and out of direct sun?',
+     q:'What are the conditions like in the space you&rsquo;re considering?',
      note:'We&rsquo;re asking because it would be somebody else&rsquo;s work.',
      opts:[
-       {v:'dry_stable',         l:'Yes &mdash; dry, stable, no direct sun on it', n:null},
-       {v:'not_dry_or_sunny',   l:'No &mdash; it&rsquo;s damp, changeable, or gets direct sun', n:null},
-       {v:'not_sure_condition', l:'I&rsquo;m not sure', n:null}]},
+       {v:'dry_stable',         l:'Dry and sheltered', n:null},
+       {v:'not_dry_or_sunny',   l:'Some dampness or exposure &mdash; the space might need improvements', n:null},
+       {v:'not_sure_condition', l:'I&rsquo;m not sure &mdash; I&rsquo;d need to check', n:null}]},
 
     {var:'money', eyebrow:'Money',
      q:'Is money part of it for you?',
