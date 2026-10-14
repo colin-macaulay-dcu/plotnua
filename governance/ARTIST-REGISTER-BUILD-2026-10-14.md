@@ -121,10 +121,10 @@ The founder runs this with their own details only. It mirrors the homeowner test
 
 1. [x] (14 Oct 2026, 19:45) Privacy V5 wording and the self-assessment addendum approved and dated (`governance/PRIVACY-VERSION-2026-10-PHASE2-V5-DRAFT.md`).
 2. [x] (14 Oct 2026, applied locally; live on the founder's push) `build-privacy-v5.py` written and run; `privacy.html` carries every governed line and the `PLOTNUA-ARTIST-PRIVACY-V5` marker; the founder pushes.
-3. [ ] Airtable `Artists` table and `register` fields created and verified against the schema file.
-4. [ ] Worker deployed (artist route closed).
-5. [ ] Controlled test (§4) passed, and its date recorded.
-6. [ ] `ARTIST_OPEN_APPROVAL` completed in `build-artist-register.py`: founder approval, V5 approval, self-assessment, Airtable created, controlled test.
+3. [x] (14 Oct 2026) Airtable `Artists` table and `register` fields created and verified against the schema file.
+4. [x] (14 Oct 2026) Worker deployed (artist route closed). Current closed version: `33f42f08-0729-4cc3-b666-a69703ef4274`.
+5. [x] (14 Oct 2026) Controlled test (§4) passed, and its date recorded (§8).
+6. [ ] `ARTIST_OPEN_APPROVAL` completed (four of five recorded 14 Oct 2026; the founder's approval to open is still to come) in `build-artist-register.py`: founder approval, V5 approval, self-assessment, Airtable created, controlled test.
 7. [ ] `ARTIST_PUBLIC = True`, rebuilt. This makes the page indexable, removes the preview label and shows the form.
 8. [ ] `ARTIST_WRITES_ENABLED = "true"` in `wrangler.toml`; the founder deploys.
 9. [ ] A Home for Art: apply the prepared `FUTURE_LINK` after `FUTURE_ANCHOR` (via `build-a-home-for-art-merge.py`), and add the page to `sitemap.xml`. Guard A10 refuses both while the register is closed.
@@ -165,3 +165,60 @@ The closed build at `9725254` was accepted. Registrations stay closed.
 
 - **Homeowner site-specific installations:** artists can now say they are interested in creating a site-specific installation. The homeowner form has no matching option. Adding one to the homeowner register means a new `ways` value in the Worker, page and schema. It is a separate founder decision and build.
 - **Homeowner form, message clearing:** in testing, the artist form showed that clearing a validation message on `change` can shift the Submit button out from under a click that has already started. The artist form keeps the message until the next submit. The homeowner form has the same pattern and was not changed here (the brief excluded it).
+
+## 8 · Controlled live test: PASSED (14 October 2026)
+
+The founder ran the test with their own details, using the `--var ARTIST_WRITES_ENABLED:true` deploy. That method was checked in advance by a dry run, which showed all six settings kept and only the artist switch changed.
+
+| Check | Result |
+|---|---|
+| Valid artist registration | PASS |
+| Airtable Artists record | PASS |
+| Privacy V5 consent proof (`register = artist`) | PASS |
+| Status log (`register = artist`) | PASS |
+| Duplicate prevention | PASS |
+| Homeowner isolation | PASS |
+| Test-record deletion | PASS |
+| Deletion log entry | PASS |
+
+**Closing:** the artist route was closed again by a plain deploy from the committed `wrangler.toml`. The closed Worker version is `33f42f08-0729-4cc3-b666-a69703ef4274`. Homeowner registrations stayed open throughout.
+
+**Final Airtable state:** verified read-only by Claude, 14 Oct 2026, about 20:25.
+- Artists, Hosts, Consent proofs and Status log: 0 rows each.
+- Deletion log: 2 rows, both anonymous. One is the homeowner test of 14 Oct, which predates the register field. The other is this test, with `register = artist`, reason "other" and dates of 14 Oct 2026.
+
+## 9 · Remaining before public opening, and the smallest safe opening plan
+
+### Still required
+
+1. **The founder's dated approval to open.** This goes into `ARTIST_OPEN_APPROVAL["founder_approval"]`. Guard A2 refuses opening without it.
+2. **Privacy Section 8 wording.** The live V5 text says "When registrations open, artists will be able to join through PlotArt's Artist Register page." That stops being accurate the moment the register opens.
+   - Recommended replacement, true both before and after opening: "Artists can join through PlotArt's Artist Register page while registrations are open."
+   - It is a one-sentence, editorial-only amendment: no change to data, purposes, retention or rights.
+   - Proposed handling: a V5 amendment through the V5 builder, keeping version `2026-10-PHASE2-V5`.
+   - This needs the founder's approval of the wording, and of keeping the version label.
+3. **Two Airtable views before real registrations arrive:** "Statements to screen" (statement is not empty) and "Erasure due" (erase_after on or before today). They are part of the weekly review and retention procedure. "New this week" is optional.
+4. **The weekly review** extends to the Artists table. The review trigger is 10 genuine artist registrations or 8 weeks after opening, whichever comes first.
+
+### Smallest safe opening plan (one commit, one push, one deploy)
+
+1. The founder approves opening and the Section 8 amendment, with a date.
+2. Claude prepares, in one local commit:
+   - the opening approval recorded and `ARTIST_PUBLIC = True`, with the page rebuilt (indexable, no preview label, form visible);
+   - `ARTIST_WRITES_ENABLED = "true"` in `wrangler.toml` (guard A2 allows it only when everything above is in place);
+   - the Section 8 amendment applied;
+   - the prepared A Home for Art link applied, and the page added to `sitemap.xml`;
+   - all checks run: privacy V4 and V5, both registers, both Worker proofs and a browser check.
+3. The founder pushes, then confirms that `artist-register.html` shows the form and that the privacy notice carries the amended sentence.
+4. The founder deploys the Worker immediately, with a plain `npx wrangler deploy`. The bindings must show `ARTIST_WRITES_ENABLED ("true")` and `WRITES_ENABLED ("true")`.
+   - Between the push and the deploy, the page answers "isn't open yet". Nobody can register early.
+5. No test submission is made against the open register. The controlled test already covered that path.
+
+**Fast close (no commit):**
+```
+npx wrangler deploy --var ARTIST_WRITES_ENABLED:false
+```
+Then follow up with a committed close.
+
+**Variant: soft opening.** Steps 2–4 can be done without the A Home for Art link and sitemap entry, so the page is reachable only from a shared link. The link is added in a later commit. It is safer, but nobody finds the page unprompted.
+

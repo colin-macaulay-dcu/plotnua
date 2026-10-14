@@ -79,11 +79,21 @@ SEARCH = ROOT / "search-index-v1.json"
 # ----------------------------------------------------------------- the gate
 ARTIST_PUBLIC = False            # CLOSED. Founder approval to build only, 14 Oct 2026.
 ARTIST_OPEN_APPROVAL = {
-    "founder_approval": "",      # founder's approval to open, dated
-    "privacy_v5": "",            # founder's approval of the final V5 wording, dated
-    "self_assessment": "",       # updated GDPR self-assessment, dated
-    "airtable_created": "",      # Artists table and register fields created and verified
-    "controlled_test": "",       # registration-and-deletion test with the founder's details
+    # NOT YET GIVEN. The founder's dated approval to OPEN goes here; until then
+    # ARTIST_PUBLIC stays False and guard A2 refuses any opening.
+    "founder_approval": "",
+    "privacy_v5": "Privacy Notice V5 approved for publication by the founder, 14 October 2026 (19:45); "
+                  "live on plotnua.ie from main 2c4e9dc.",
+    "self_assessment": "Artist Register addendum to the Art Space Register GDPR self-assessment, dated and "
+                       "approved by the founder, 14 October 2026 (19:45).",
+    "airtable_created": "Artists table (tblwsmo1HGwd2ZG47) and the register fields on Status log, Consent proofs "
+                        "and Deletion log created by the founder, 14 October 2026; verified read-only against "
+                        "airtable-schema.json and the Worker the same evening (19 fields, all options match).",
+    "controlled_test": "Controlled live registration-and-deletion test by the founder, 14 October 2026: valid "
+                       "registration, Artists record, V5 consent proof, status log, duplicate prevention, "
+                       "homeowner isolation, deletion and Deletion log entry all PASS; artist route closed again "
+                       "(Worker version 33f42f08-0729-4cc3-b666-a69703ef4274). See "
+                       "governance/ARTIST-REGISTER-BUILD-2026-10-14.md §8.",
 }
 V5_VERSION = "2026-10-PHASE2-V5"
 V5_MARK = "PLOTNUA-ARTIST-PRIVACY-V5"
