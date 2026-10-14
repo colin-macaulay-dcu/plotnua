@@ -5,6 +5,9 @@ additional decisions recorded below.
 **Baseline commit:** `1bf7d4b`
 **Baseline universe:** `garden-room-recommendation-universe-v1.json`
 sha256 `db4ecb7ff99ebaa0e2d88b89ce395f0bcb78c5a2750630aefbc3669413ff82db`
+(re-frozen 14 Oct 2026 for the ÖÖD House targeted update: sha256
+`389402d0431b3a8923a3c5e002b96418374edd1c4fedeed5422ab774ac47527f`; only the seven ÖÖD
+records differ)
 
 ---
 

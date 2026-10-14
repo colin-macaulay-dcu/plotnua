@@ -7,15 +7,15 @@
  "dryRun": false,
  "sourceGardenRoomCount": 575,
  "eligibleCount": 573,
- "highConfidenceCount": 139,
- "withCaveatCount": 434,
+ "highConfidenceCount": 146,
+ "withCaveatCount": 427,
  "limitedEvidenceCount": 0,
  "excludedCount": 2,
  "exclusionSummaryByReason": {
   "E": 2
  },
- "confirmedIrishAvailabilityCount": 256,
- "unknownIrishAvailabilityCount": 319,
+ "confirmedIrishAvailabilityCount": 263,
+ "unknownIrishAvailabilityCount": 312,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
  "noPublishedIrishRouteCount": 43,
@@ -29,7 +29,7 @@
  "quoteOnlyPriceCount": 21,
  "organisationCount": 64,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "3c9460a022cdfc51a71e58397df5b1d3c8598391a124531cc5117218860b2586",
+ "governedDigest": "8480b3307faec3bfd414664c822ddac0251b1e64915c33f3f3c3637983eb2a1e",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -86510,21 +86510,20 @@
    "productUrl": "https://oodhouse.com/en/products/houses/extended-house",
    "verificationStatus": "Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: ÖÖD House."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "REPUBLIC OF IRELAND UNCONFIRMED. ÖÖD House is an Estonian manufacturer selling through an international distributor network. No Irish premises, no Irish distributor and no Ireland-specific delivery or",
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
@@ -86577,7 +86576,7 @@
        "feature": "Floor Area"
       },
       {
-       "text": "NO AREA PUBLISHED. No floor area or dimensions held; nothing estimated. PLANNING: area test cannot be run. NOTE: ÖÖD is Estonia-based; no Irish installation route is published.",
+       "text": "NO AREA PUBLISHED. No floor area or dimensions held; nothing estimated. PLANNING: area test cannot be run. NOTE: ÖÖD is Estonia-based and has no installation team in Ireland; installation is arranged by the buyer locally (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
        "number": null,
        "unit": null,
        "evidenceScope": "Product-Specific",
@@ -86599,19 +86598,21 @@
      "status": "Verified"
     },
     "irishAvailability": {
-     "text": "REPUBLIC OF IRELAND UNCONFIRMED. ÖÖD House is an Estonian manufacturer selling through an international distributor network. No Irish premises, no Irish distributor and no Ireland-specific delivery or installation terms were located. Nothing inferred. HOMEOWNER IMPLICATION: establish whether an Irish or UK distributor serves your address, and who handles delivery, craning and installation, before committing.",
+     "text": "REPUBLIC OF IRELAND CONFIRMED — SUPPLIER-CONFIRMED 14 OCT 2026. ÖÖD House serves customers in the Republic of Ireland (Keir Tetsmann, Sales Consultant for UK and Irish clients, email 14 Oct 2026, Gmail 1a13a4b45780ba3b). DELIVERY: ÖÖD helps organise transport from its factory in Estonia to the customer; every transport is quoted individually. No delivery price, free delivery or delivery lead time is stated or implied. INSTALLATION: customer-arranged; ÖÖD has no local team in Ireland (see Installation Model). HOMEOWNER IMPLICATION: ask ÖÖD for a transport quotation to your address, and price foundations, craning/siting and utility connections with local professionals, before committing. RECORD NOTE — superseded pre-14 Oct 2026 research, kept for the record: [previous classification: Irish availability unconfirmed]. ÖÖD House is an Estonian manufacturer selling through an international distributor network. No Irish premises, no Irish distributor and no Ireland-specific delivery or installation terms were located. Nothing inferred. previous implication: establish whether an Irish or UK distributor serves your address, and who handles delivery, craning and installation, before committing.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     },
     "insulation": {
-     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. IRISH AVAILABILITY UNCONFIRMED.",
+     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — UNIT ONLY, FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, built by the client's own local contractor to local regulations. Nothing inferred. HOMEOWNER IMPLICATION: a larger unit means a larger delivery and a larger base. Confirm road access and craneage arrangements alongside the groundworks quotation, since neither is covered by the published one-day installation claim.",
+     "text": "INSTALLATION CUSTOMER-ARRANGED IN IRELAND — SUPPLIER-CONFIRMED 14 OCT 2026. Keir Tetsmann (ÖÖD, UK and Irish clients), email 14 Oct 2026, Gmail 1a13a4b45780ba3b: installation, foundations and utility connections are 'organized by clients, as we do not have a local team there'; ÖÖD provides technical drawings from which local professionals determine the foundation and utility connections. No Irish installation partner is named and none is inferred; installation is NOT included for Irish customers on this evidence. The unit itself is factory-built (published). PUBLISHED GENERAL STATEMENT (ÖÖD website, recorded before the Irish confirmation; its 'turnkey' wording does not describe the Irish arrangement): [previous lead: turnkey installation, unit only], FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, built by the client's own local contractor to local regulations. Nothing inferred. HOMEOWNER IMPLICATION: a larger unit means a larger delivery and a larger base. Confirm road access and craneage arrangements alongside the groundworks quotation, since neither is covered by the published one-day installation claim.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -86622,18 +86623,16 @@
    "priceBasis": "Verified",
    "floorAreaM2": 26.3,
    "glazing": null,
-   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. IRISH AVAILABILITY UNCONFIRMED.",
+   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recboj0wmA5FCLdtZ"
    ],
@@ -86644,12 +86643,12 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
    "priceEvidenceRef": {
@@ -86663,8 +86662,65 @@
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-08-15",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
+    "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=w1600",
+    "alt": "Extended House with its long mirrored side reflecting dark hills and cloud",
+    "credit": "ÖÖD House",
+    "supplier": "ÖÖD House",
+    "rightsRecord": "IPO-007",
+    "assetRecord": "recyz2arjsX1KE6dq",
+    "permittedPrefix": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=",
+    "linkBack": "https://www.oodhouse.com/",
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=w1600",
+     "alt": "Extended House with its long mirrored side reflecting dark hills and cloud",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recyz2arjsX1KE6dq",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa=w1600",
+     "alt": "A timber-clad Extended House on a boardwalk in an open volcanic landscape",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recreVS6GWDvjQuEi",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI=w1600",
+     "alt": "Extended House on a boardwalk among lava fields, with a mountain behind",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recOkzwdhI2ByNfhY",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y=w1600",
+     "alt": "Inside an Extended House: a long room with a table, kitchen and glass along one side",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recSHXVbzqzkbGF00",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    }
+   ]
   },
   {
    "id": "recyc7vNON16NzYFD",
@@ -86684,21 +86740,20 @@
    "productUrl": "https://oodhouse.com/en/products/houses/glamping-house",
    "verificationStatus": "Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: ÖÖD House."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. CATEGORY NOTE: a glamping unit categorised under Garden Room",
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
@@ -86729,7 +86784,7 @@
    },
    "features": {
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — UNIT ONLY, FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, construction by the client's own contractor to local regulations. Nothing inferred. HOMEOWNER IMPLICATION: this model is published for glamping and hospitality operation rather than domestic garden use, where one-day placement across multiple units is the commercial point. The foundation contract multiplies with the number of units.",
+     "text": "INSTALLATION CUSTOMER-ARRANGED IN IRELAND — SUPPLIER-CONFIRMED 14 OCT 2026. Keir Tetsmann (ÖÖD, UK and Irish clients), email 14 Oct 2026, Gmail 1a13a4b45780ba3b: installation, foundations and utility connections are 'organized by clients, as we do not have a local team there'; ÖÖD provides technical drawings from which local professionals determine the foundation and utility connections. No Irish installation partner is named and none is inferred; installation is NOT included for Irish customers on this evidence. The unit itself is factory-built (published). PUBLISHED GENERAL STATEMENT (ÖÖD website, recorded before the Irish confirmation; its 'turnkey' wording does not describe the Irish arrangement): [previous lead: turnkey installation, unit only], FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, construction by the client's own contractor to local regulations. Nothing inferred. HOMEOWNER IMPLICATION: this model is published for glamping and hospitality operation rather than domestic garden use, where one-day placement across multiple units is the commercial point. The foundation contract multiplies with the number of units.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -86765,7 +86820,7 @@
      "evidenceScope": "Organisation-Wide"
     },
     "insulation": {
-     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: this model is positioned for glamping/hospitality use rather than domestic garden-room use; its Atlas Garden Rooms classification MAY REQUIRE REVIEW. IRISH AVAILABILITY UNCONFIRMED.",
+     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: this model is positioned for glamping/hospitality use rather than domestic garden-room use; its Atlas Garden Rooms classification MAY REQUIRE REVIEW. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -86784,10 +86839,12 @@
      "evidenceScope": "Range-Level"
     },
     "irishAvailability": {
-     "text": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. CATEGORY NOTE: a glamping unit categorised under Garden Rooms; flagged for review. HOMEOWNER IMPLICATION: establish the distributor route before committing.",
+     "text": "REPUBLIC OF IRELAND CONFIRMED — SUPPLIER-CONFIRMED 14 OCT 2026. ÖÖD House serves customers in the Republic of Ireland (Keir Tetsmann, Sales Consultant for UK and Irish clients, email 14 Oct 2026, Gmail 1a13a4b45780ba3b). DELIVERY: ÖÖD helps organise transport from its factory in Estonia to the customer; every transport is quoted individually. No delivery price, free delivery or delivery lead time is stated or implied. INSTALLATION: customer-arranged; ÖÖD has no local team in Ireland (see Installation Model). HOMEOWNER IMPLICATION: ask ÖÖD for a transport quotation to your address, and price foundations, craning/siting and utility connections with local professionals, before committing. RECORD NOTE — superseded pre-14 Oct 2026 research, kept for the record: [previous classification: Irish availability unconfirmed]. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. CATEGORY NOTE: a glamping unit categorised under Garden Rooms; flagged for review. previous implication: establish the distributor route before committing.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     }
    },
    "price": 29700,
@@ -86795,18 +86852,16 @@
    "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
-   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: this model is positioned for glamping/hospitality use rather than domestic garden-room use; its Atlas Garden Rooms classification MAY REQUIRE REVIEW. IRISH AVAILABILITY UNCONFIRMED.",
+   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: this model is positioned for glamping/hospitality use rather than domestic garden-room use; its Atlas Garden Rooms classification MAY REQUIRE REVIEW. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "rec0sS0yMkSWuXgvY"
    ],
@@ -86817,12 +86872,12 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
    "priceEvidenceRef": {
@@ -86836,8 +86891,65 @@
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-08-15",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
+    "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=w1600",
+    "alt": "Glämping House on a timber deck in high desert at sunrise, with a telescope outside",
+    "credit": "ÖÖD House · Photo: Marcario Photo",
+    "supplier": "ÖÖD House",
+    "rightsRecord": "IPO-007",
+    "assetRecord": "recaxWkZap8xgHDQQ",
+    "permittedPrefix": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=",
+    "linkBack": "https://www.oodhouse.com/",
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=w1600",
+     "alt": "Glämping House on a timber deck in high desert at sunrise, with a telescope outside",
+     "credit": "ÖÖD House · Photo: Marcario Photo",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recaxWkZap8xgHDQQ",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ=w1600",
+     "alt": "Glämping House under a starry sky on a timber deck with two chairs",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "rec8gJrdjRE9ZTpTD",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_=w1600",
+     "alt": "Glämping House lit from within at night, the bedroom visible through the glass",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recH8zAktYe1fwOZo",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv=w1600",
+     "alt": "Glämping House seen from a distance across open scrubland, showing its scale",
+     "credit": "ÖÖD House · Photo: Marcario Photo",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recI6MPe9X3d166TN",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    }
+   ]
   },
   {
    "id": "recl9ITOz7WlqPPBn",
@@ -86857,21 +86969,20 @@
    "productUrl": "https://oodhouse.com/en/products/houses/glaazy-house",
    "verificationStatus": "Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: ÖÖD House."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: establish the distributor route befor",
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
@@ -86902,10 +87013,12 @@
    },
    "features": {
     "irishAvailability": {
-     "text": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: establish the distributor route before committing.",
+     "text": "REPUBLIC OF IRELAND CONFIRMED — SUPPLIER-CONFIRMED 14 OCT 2026. ÖÖD House serves customers in the Republic of Ireland (Keir Tetsmann, Sales Consultant for UK and Irish clients, email 14 Oct 2026, Gmail 1a13a4b45780ba3b). DELIVERY: ÖÖD helps organise transport from its factory in Estonia to the customer; every transport is quoted individually. No delivery price, free delivery or delivery lead time is stated or implied. INSTALLATION: customer-arranged; ÖÖD has no local team in Ireland (see Installation Model). HOMEOWNER IMPLICATION: ask ÖÖD for a transport quotation to your address, and price foundations, craning/siting and utility connections with local professionals, before committing. RECORD NOTE — superseded pre-14 Oct 2026 research, kept for the record: [previous classification: Irish availability unconfirmed]. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. previous implication: establish the distributor route before committing.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     },
     "insulationRating": {
      "text": "YEAR-ROUND INSULATED. ÖÖD range construction: full steel frame with industrial mirror-glass facade, capable of year-round use; underfloor heating; 97 per cent UV reflection; 'high-quality insulation' stated without specification. Nothing inferred. Site access limitation: indexed evidence only — Tier B. NOTE: the model name signals an even more heavily glazed variant than the standard range, which would increase the proportion of envelope that is glass rather than insulated panel — the specification does not confirm the glazed area, and none has been assumed. HOMEOWNER IMPLICATION: winter-capable with heating installed; the glazing specification is the question to put to the supplier.",
@@ -86944,7 +87057,7 @@
      "evidenceScope": "Organisation-Wide"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — UNIT ONLY, FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied but designed, built and installed by the client's own local contractor. Nothing inferred. HOMEOWNER IMPLICATION: a heavily glazed steel-framed unit places real demands on the base, which makes the excluded foundation the most important line in the total cost rather than an afterthought.",
+     "text": "INSTALLATION CUSTOMER-ARRANGED IN IRELAND — SUPPLIER-CONFIRMED 14 OCT 2026. Keir Tetsmann (ÖÖD, UK and Irish clients), email 14 Oct 2026, Gmail 1a13a4b45780ba3b: installation, foundations and utility connections are 'organized by clients, as we do not have a local team there'; ÖÖD provides technical drawings from which local professionals determine the foundation and utility connections. No Irish installation partner is named and none is inferred; installation is NOT included for Irish customers on this evidence. The unit itself is factory-built (published). PUBLISHED GENERAL STATEMENT (ÖÖD website, recorded before the Irish confirmation; its 'turnkey' wording does not describe the Irish arrangement): [previous lead: turnkey installation, unit only], FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied but designed, built and installed by the client's own local contractor. Nothing inferred. HOMEOWNER IMPLICATION: a heavily glazed steel-framed unit places real demands on the base, which makes the excluded foundation the most important line in the total cost rather than an afterthought.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -86957,7 +87070,7 @@
      "status": "Verified"
     },
     "insulation": {
-     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY UNCONFIRMED.",
+     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -86968,18 +87081,16 @@
    "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
-   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY UNCONFIRMED.",
+   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "rec322teg8KjlrIuZ"
    ],
@@ -86990,12 +87101,12 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
    "priceEvidenceRef": {
@@ -87009,8 +87120,65 @@
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-08-15",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
+    "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=w1600",
+    "alt": "Glääzy House with its pitched glass end among low trees and heather",
+    "credit": "ÖÖD House",
+    "supplier": "ÖÖD House",
+    "rightsRecord": "IPO-007",
+    "assetRecord": "recdTUXyublD5FGhq",
+    "permittedPrefix": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=",
+    "linkBack": "https://www.oodhouse.com/",
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=w1600",
+     "alt": "Glääzy House with its pitched glass end among low trees and heather",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recdTUXyublD5FGhq",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW=w1600",
+     "alt": "Glääzy House from a lower angle, dark cladding and mirrored glass in scrubland",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recUjhEFw0d4006R1",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F=w1600",
+     "alt": "Glääzy House lit from within at dusk in a snowy landscape",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recYsiePLBpxHsPSz",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20=w1600",
+     "alt": "Looking up from the bed in a Glääzy House through its glass roof and gable",
+     "credit": "ÖÖD House · Photo: Even Tryggstrand",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recdVvdyz2dF94OLP",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    }
+   ]
   },
   {
    "id": "reczasgBzBbqP1lBg",
@@ -87030,21 +87198,20 @@
    "productUrl": "https://oodhouse.com/en/products/houses/mobile-house",
    "verificationStatus": "Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: ÖÖD House."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "REPUBLIC OF IRELAND UNCONFIRMED. Nothing inferred. SUPPLIER STATUS — ÖÖD HOUSE, 7 Garden-Room products, IRISH AVAILABILITY LAYER COMPLETE. All 7 REPUBLIC OF IRELAND UNCONFIRMED, all Tier B, recorded o",
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
@@ -87075,7 +87242,7 @@
    },
    "features": {
     "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. Nothing inferred. All 7 WARRANTY UNKNOWN. EVIDENCE TIER: NONE on every record — no warranty source exists to cite. THE FINDING: no warranty term, scope, condition or claims procedure attributable to ÖÖD could be located. The search returned generic third-party material on residential structural warranties — builder 1-2-10 schemes, US home-warranty products, insurance-backed ten-year structural cover — and none of it is published by or about this manufacturer. It was not carried across. WHY THE ABSENCE IS MATERIAL FOR THIS PARTICULAR SUPPLIER: the Installation layer records ÖÖD as delivering a factory-finished, plug-and-play unit installed in a single day onto a foundation the client procures separately to ÖÖD's drawings. That split creates exactly the interface where warranty questions arise — if the unit moves, is it the building or the base? With no published warranty on the unit and no published relationship with whoever builds the foundation, the buyer holds both ends of that question. THE PRODUCT ALSO RAISES THE STAKES: steel frame and full-height glass mirror walls. Sealed glazing units and their frames are the components most likely to fail on a building of this type and the most expensive to replace. CATEGORY NOTE, already recorded and restated once without re-raising: ÖÖD's published positioning is hospitality and glamping accommodation rather than domestic garden rooms; all 7 products remain categorised as Garden Rooms in Atlas and are flagged for category review at audit. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: before ordering, obtain in writing the warranty term, whether glazing is covered separately, what happens where a defect could be attributed to the foundation, and which entity honours a claim in Ireland for a unit manufactured in Estonia. STATUS FOR CHANGE CONTROL: if ÖÖD publishes warranty terms, these seven records qualify for update under the factual-evidence-update route.",
+     "text": "WARRANTY UNKNOWN. DURATION: none published. Nothing inferred. All 7 WARRANTY UNKNOWN. EVIDENCE TIER: NONE on every record — no warranty source exists to cite. THE FINDING: no warranty term, scope, condition or claims procedure attributable to ÖÖD could be located. The search returned generic third-party material on residential structural warranties — builder 1-2-10 schemes, US home-warranty products, insurance-backed ten-year structural cover — and none of it is published by or about this manufacturer. It was not carried across. WHY THE ABSENCE IS MATERIAL FOR THIS PARTICULAR SUPPLIER: ÖÖD supplies a factory-finished unit, and in Ireland installation, the foundation and utility connections are arranged by the buyer with local professionals to ÖÖD's technical drawings (supplier-confirmed 14 Oct 2026), so a defect could fall between several separately contracted parties. That split creates exactly the interface where warranty questions arise — if the unit moves, is it the building or the base? With no published warranty on the unit and no published relationship with whoever builds the foundation, the buyer holds both ends of that question. THE PRODUCT ALSO RAISES THE STAKES: steel frame and full-height glass mirror walls. Sealed glazing units and their frames are the components most likely to fail on a building of this type and the most expensive to replace. CATEGORY NOTE, already recorded and restated once without re-raising: ÖÖD's published positioning is hospitality and glamping accommodation rather than domestic garden rooms; all 7 products remain categorised as Garden Rooms in Atlas and are flagged for category review at audit. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: before ordering, obtain in writing the warranty term, whether glazing is covered separately, what happens where a defect could be attributed to the foundation, and which entity honours a claim in Ireland for a unit manufactured in Estonia. STATUS FOR CHANGE CONTROL: if ÖÖD publishes warranty terms, these seven records qualify for update under the factual-evidence-update route.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87094,19 +87261,21 @@
      "evidenceScope": "Range-Level"
     },
     "irishAvailability": {
-     "text": "REPUBLIC OF IRELAND UNCONFIRMED. Nothing inferred. All 7 REPUBLIC OF IRELAND UNCONFIRMED, all Tier B, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: an Estonian manufacturer of mirror-clad prefabricated houses selling through an international distributor network. No Irish premises, no named Irish distributor and no Ireland-specific delivery or installation terms were located. WHY UNCONFIRMED RATHER THAN AN INTERNATIONAL-SHIPPING CLASSIFICATION: the distributor model means the answer for Ireland depends on whether a distributor covers this territory, which is a question the supplier's own published material does not settle. Asserting an international shipping service would describe something ÖÖD does not itself offer to end buyers. LOGISTICS MATTER MORE HERE THAN ALMOST ANYWHERE IN THE CATALOGUE: these are complete factory-built units with structural glass, delivered whole and craned into position. Distance, haulage and lifting are the whole cost question. CATEGORY ISSUE, restated once: the Glämping and Mobile entries are hospitality and mobile units categorised under Garden Rooms; flagged for review at audit. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: identify the distributor covering Ireland and get delivery, craning, siting and installation priced before anything else. AUDIT REPAIR, AM-005 Layer Completion Audit: an approved classification previously appeared verbatim in the reasoning above and corrupted mutually-exclusive counting. Reworded; classification, Evidence Tier and Evidence Scope unchanged.",
+     "text": "REPUBLIC OF IRELAND CONFIRMED — SUPPLIER-CONFIRMED 14 OCT 2026. ÖÖD House serves customers in the Republic of Ireland (Keir Tetsmann, Sales Consultant for UK and Irish clients, email 14 Oct 2026, Gmail 1a13a4b45780ba3b). DELIVERY: ÖÖD helps organise transport from its factory in Estonia to the customer; every transport is quoted individually. No delivery price, free delivery or delivery lead time is stated or implied. INSTALLATION: customer-arranged; ÖÖD has no local team in Ireland (see Installation Model). HOMEOWNER IMPLICATION: ask ÖÖD for a transport quotation to your address, and price foundations, craning/siting and utility connections with local professionals, before committing. RECORD NOTE — superseded pre-14 Oct 2026 research, kept for the record: [previous classification: Irish availability unconfirmed]. Nothing inferred. All 7 [previous classification: Irish availability unconfirmed], all Tier B, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: an Estonian manufacturer of mirror-clad prefabricated houses selling through an international distributor network. No Irish premises, no named Irish distributor and no Ireland-specific delivery or installation terms were located. WHY UNCONFIRMED RATHER THAN AN INTERNATIONAL-SHIPPING CLASSIFICATION: the distributor model means the answer for Ireland depends on whether a distributor covers this territory, which is a question the supplier's own published material does not settle. Asserting an international shipping service would describe something ÖÖD does not itself offer to end buyers. LOGISTICS MATTER MORE HERE THAN ALMOST ANYWHERE IN THE CATALOGUE: these are complete factory-built units with structural glass, delivered whole and craned into position. Distance, haulage and lifting are the whole cost question. CATEGORY ISSUE, restated once: the Glämping and Mobile entries are hospitality and mobile units categorised under Garden Rooms; flagged for review at audit. previous implication: AT SUPPLIER LEVEL: identify the distributor covering Ireland and get delivery, craning, siting and installation priced before anything else. AUDIT REPAIR, AM-005 Layer Completion Audit: an approved classification previously appeared verbatim in the reasoning above and corrupted mutually-exclusive counting. Reworded; classification, Evidence Tier and Evidence Scope unchanged.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     },
     "insulation": {
-     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: a mobile/relocatable unit may carry different Irish planning treatment from a fixed structure; not verified. IRISH AVAILABILITY UNCONFIRMED.",
+     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: a mobile/relocatable unit may carry different Irish planning treatment from a fixed structure; not verified. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — UNIT ONLY, FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, built by the client's own contractor to local regulations. Nothing inferred. All 7 TURNKEY INSTALLATION INCLUDED — UNIT ONLY, all Tier B, recorded organisation-wide because one delivery and foundation policy governs the whole range. THE SUPPLIER-LEVEL FINDING: ÖÖD ships a finished building. Units are 'delivered fully assembled and ready to use', described as plug-and-play, delivered as a turnkey product and installed in one day. Nothing is assembled on site and there is no kit at any price. On speed of installation this is the fastest proposition in the catalogue. THE LINE THAT DEFINES THE REAL SCOPE, and the supplier states it without ambiguity: ÖÖD representatives send the necessary drawings for the foundation, BUT THE CLIENT IS RESPONSIBLE for finding the local contractor who will design, construct and install that foundation according to local regulations. So the manufacturer engineers the base on paper and then withdraws. The buyer runs a second procurement, in their own jurisdiction, to a specification they did not write. WHY THIS MATTERS MORE FOR ÖÖD THAN FOR OTHER BASE-EXCLUDED SUPPLIERS: Adman excludes a rebated concrete base but publishes guidance and a partners list; Concept Modular excludes the base but prices it at EUR 3,000 to 4,000 plus VAT; My Garden Room excludes it but offers a base-laying service. ÖÖD neither prices it, nor supplies it, nor names anyone who will. For an Irish buyer that is an open-ended cost on a steel-framed, fully glazed unit whose foundation requirements are not trivial. CATEGORY ISSUE, already recorded in the thermal layer and restated once without re-raising: ÖÖD's published positioning is hospitality and glamping accommodation rather than domestic garden rooms, and all 7 products remain categorised as Garden Rooms in Atlas. Flagged for category review at audit. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: the unit price is genuinely complete and the installation genuinely takes a day, which makes the headline proposition unusually clean. The total is not clean. Request the foundation drawings early, put them out to an Irish groundworks contractor, and treat that quotation as part of the purchase price before comparing against any Irish supplier that carries the base.",
+     "text": "INSTALLATION CUSTOMER-ARRANGED IN IRELAND — SUPPLIER-CONFIRMED 14 OCT 2026. Keir Tetsmann (ÖÖD, UK and Irish clients), email 14 Oct 2026, Gmail 1a13a4b45780ba3b: installation, foundations and utility connections are 'organized by clients, as we do not have a local team there'; ÖÖD provides technical drawings from which local professionals determine the foundation and utility connections. No Irish installation partner is named and none is inferred; installation is NOT included for Irish customers on this evidence. The unit itself is factory-built (published). PUBLISHED GENERAL STATEMENT (ÖÖD website, recorded before the Irish confirmation; its 'turnkey' wording does not describe the Irish arrangement): [previous lead: turnkey installation, unit only], FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, built by the client's own contractor to local regulations. Nothing inferred. All 7 [previous lead: turnkey installation, unit only], all Tier B, recorded organisation-wide because one delivery and foundation policy governs the whole range. THE SUPPLIER-LEVEL FINDING: ÖÖD ships a finished building. Units are 'delivered fully assembled and ready to use', described as plug-and-play, delivered as a turnkey product and installed in one day. Nothing is assembled on site and there is no kit at any price. On speed of installation this is the fastest proposition in the catalogue. THE LINE THAT DEFINES THE REAL SCOPE, and the supplier states it without ambiguity: ÖÖD representatives send the necessary drawings for the foundation, BUT THE CLIENT IS RESPONSIBLE for finding the local contractor who will design, construct and install that foundation according to local regulations. So the manufacturer engineers the base on paper and then withdraws. The buyer runs a second procurement, in their own jurisdiction, to a specification they did not write. WHY THIS MATTERS MORE FOR ÖÖD THAN FOR OTHER BASE-EXCLUDED SUPPLIERS: Adman excludes a rebated concrete base but publishes guidance and a partners list; Concept Modular excludes the base but prices it at EUR 3,000 to 4,000 plus VAT; My Garden Room excludes it but offers a base-laying service. ÖÖD neither prices it, nor supplies it, nor names anyone who will. For an Irish buyer that is an open-ended cost on a steel-framed, fully glazed unit whose foundation requirements are not trivial. CATEGORY ISSUE, already recorded in the thermal layer and restated once without re-raising: ÖÖD's published positioning is hospitality and glamping accommodation rather than domestic garden rooms, and all 7 products remain categorised as Garden Rooms in Atlas. Flagged for category review at audit. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: the unit price is genuinely complete and the installation genuinely takes a day, which makes the headline proposition unusually clean. The total is not clean. Request the foundation drawings early, put them out to an Irish groundworks contractor, and treat that quotation as part of the purchase price before comparing against any Irish supplier that carries the base.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87128,7 +87297,7 @@
        "feature": "Floor Area"
       },
       {
-       "text": "NO AREA PUBLISHED. No floor area or dimensions held and no product URL; nothing estimated. PLANNING: a MOBILE unit may fall outside fixed-structure exempted development altogether, so the Class 3 area test may not be the applicable test at all — that question cannot be resolved from Atlas evidence. All seven — Extended House, The Big Monolith, Möön House, Glääzy House, Signature House, Glämping House and Mobile House — are classified NO AREA PUBLISHED. Not one carries a dimension or a product URL in Atlas, so nothing product-specific could be attributed and every record is Tier B. Not one is rankable on any area basis. STANDING CATEGORY FLAG carried forward: ÖÖD builds mirror-glass modular units marketed for glamping and hospitality; they sit under Garden Rooms only because Atlas has no correct Product Category, and they should not be compared against domestic garden rooms. AVAILABILITY: ÖÖD is an Estonian manufacturer and Atlas holds no evidence of an Irish purchasing route.",
+       "text": "NO AREA PUBLISHED. No floor area or dimensions held and no product URL; nothing estimated. PLANNING: a MOBILE unit may fall outside fixed-structure exempted development altogether, so the Class 3 area test may not be the applicable test at all — that question cannot be resolved from Atlas evidence. All seven — Extended House, The Big Monolith, Möön House, Glääzy House, Signature House, Glämping House and Mobile House — are classified NO AREA PUBLISHED. Not one carries a dimension or a product URL in Atlas, so nothing product-specific could be attributed and every record is Tier B. Not one is rankable on any area basis. STANDING CATEGORY FLAG carried forward: ÖÖD builds mirror-glass modular units marketed for glamping and hospitality; they sit under Garden Rooms only because Atlas has no correct Product Category, and they should not be compared against domestic garden rooms. AVAILABILITY: ÖÖD is an Estonian manufacturer serving the Republic of Ireland (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
        "number": null,
        "unit": null,
        "evidenceScope": "Organisation-Wide",
@@ -87142,18 +87311,16 @@
    "priceBasis": "Verified",
    "floorAreaM2": 21.1,
    "glazing": null,
-   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: a mobile/relocatable unit may carry different Irish planning treatment from a fixed structure; not verified. IRISH AVAILABILITY UNCONFIRMED.",
+   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. NOTE: a mobile/relocatable unit may carry different Irish planning treatment from a fixed structure; not verified. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recBaleGa6CpYuCaf"
    ],
@@ -87164,12 +87331,12 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
    "priceEvidenceRef": {
@@ -87183,8 +87350,54 @@
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-08-15",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
+    "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=w1600",
+    "alt": "Mobile House among pine trees beside a timber deck with red chairs",
+    "credit": "ÖÖD House",
+    "supplier": "ÖÖD House",
+    "rightsRecord": "IPO-007",
+    "assetRecord": "rec7V4hnbaDLGRCl3",
+    "permittedPrefix": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=",
+    "linkBack": "https://www.oodhouse.com/",
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=w1600",
+     "alt": "Mobile House among pine trees beside a timber deck with red chairs",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "rec7V4hnbaDLGRCl3",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM=w1600",
+     "alt": "The mirrored end of a Mobile House beyond its deck, reflecting the woodland",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recfgvR5hYlgNcZib",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh=w1600",
+     "alt": "Inside a Mobile House: a bed and table beside full-height glass onto the trees",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recaMgZPzSbQ5IIx8",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    }
+   ]
   },
   {
    "id": "reciFE98KRWuAhBwP",
@@ -87204,21 +87417,20 @@
    "productUrl": "https://oodhouse.com/en/products/houses/moon-house",
    "verificationStatus": "Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: ÖÖD House."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: establish the distributor route befor",
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
@@ -87262,13 +87474,15 @@
      "status": "Verified"
     },
     "irishAvailability": {
-     "text": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: establish the distributor route before committing.",
+     "text": "REPUBLIC OF IRELAND CONFIRMED — SUPPLIER-CONFIRMED 14 OCT 2026. ÖÖD House serves customers in the Republic of Ireland (Keir Tetsmann, Sales Consultant for UK and Irish clients, email 14 Oct 2026, Gmail 1a13a4b45780ba3b). DELIVERY: ÖÖD helps organise transport from its factory in Estonia to the customer; every transport is quoted individually. No delivery price, free delivery or delivery lead time is stated or implied. INSTALLATION: customer-arranged; ÖÖD has no local team in Ireland (see Installation Model). HOMEOWNER IMPLICATION: ask ÖÖD for a transport quotation to your address, and price foundations, craning/siting and utility connections with local professionals, before committing. RECORD NOTE — superseded pre-14 Oct 2026 research, kept for the record: [previous classification: Irish availability unconfirmed]. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. previous implication: establish the distributor route before committing.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — UNIT ONLY, FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day. Foundation drawings supplied by ÖÖD; the client engages a local contractor to design, construct and install the foundation to local regulations. Nothing inferred. HOMEOWNER IMPLICATION: the unit is a one-day placement; the groundworks are a separate Irish contract priced by someone else. Obtain that figure first.",
+     "text": "INSTALLATION CUSTOMER-ARRANGED IN IRELAND — SUPPLIER-CONFIRMED 14 OCT 2026. Keir Tetsmann (ÖÖD, UK and Irish clients), email 14 Oct 2026, Gmail 1a13a4b45780ba3b: installation, foundations and utility connections are 'organized by clients, as we do not have a local team there'; ÖÖD provides technical drawings from which local professionals determine the foundation and utility connections. No Irish installation partner is named and none is inferred; installation is NOT included for Irish customers on this evidence. The unit itself is factory-built (published). PUBLISHED GENERAL STATEMENT (ÖÖD website, recorded before the Irish confirmation; its 'turnkey' wording does not describe the Irish arrangement): [previous lead: turnkey installation, unit only], FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day. Foundation drawings supplied by ÖÖD; the client engages a local contractor to design, construct and install the foundation to local regulations. Nothing inferred. HOMEOWNER IMPLICATION: the unit is a one-day placement; the groundworks are a separate Irish contract priced by someone else. Obtain that figure first.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87298,7 +87512,7 @@
      ]
     },
     "insulation": {
-     "text": "INSULATED GLASS ENVELOPE. Galvanised steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Glazed envelope not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY UNCONFIRMED.",
+     "text": "INSULATED GLASS ENVELOPE. Galvanised steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Glazed envelope not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87315,18 +87529,16 @@
    "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
-   "insulation": "INSULATED GLASS ENVELOPE. Galvanised steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Glazed envelope not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY UNCONFIRMED.",
+   "insulation": "INSULATED GLASS ENVELOPE. Galvanised steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Glazed envelope not comparable on insulation thickness with opaque insulated garden rooms. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "rec3E3r9Q7sP6IIep"
    ],
@@ -87337,12 +87549,12 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
    "priceEvidenceRef": {
@@ -87356,8 +87568,76 @@
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-08-15",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
+    "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=w1600",
+    "alt": "Möön House with a full-height glass corner, curtains drawn back, on open moorland",
+    "credit": "ÖÖD House",
+    "supplier": "ÖÖD House",
+    "rightsRecord": "IPO-007",
+    "assetRecord": "recltDvzNQhm2F3SP",
+    "permittedPrefix": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=",
+    "linkBack": "https://www.oodhouse.com/",
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=w1600",
+     "alt": "Möön House with a full-height glass corner, curtains drawn back, on open moorland",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recltDvzNQhm2F3SP",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk=w1600",
+     "alt": "Möön House from above on a dark deck in green moorland",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recde6iunyLgEYvzT",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2=w1600",
+     "alt": "Möön House and a small sauna seen from above beside a gravel track",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recvHKzv3ojOozJCG",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/14OqokuAczh_R0finpF-szBWogsOrVd48=w1600",
+     "alt": "Möön House under a cloudy sky, glass on two sides and dark cladding",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recQhN9ar0gKhQVci",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/14OqokuAczh_R0finpF-szBWogsOrVd48=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx=w1600",
+     "alt": "Inside a Möön House: a glass corner looking out across open landscape",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recjIJcgO4dHq7H65",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    }
+   ]
   },
   {
    "id": "recoQZlqmpfv3T5bz",
@@ -87377,21 +87657,20 @@
    "productUrl": "https://oodhouse.com/en/products/houses/signature-house",
    "verificationStatus": "Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: ÖÖD House."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: establish the distributor route befor",
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
@@ -87453,7 +87732,7 @@
      "evidenceScope": "Organisation-Wide"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — UNIT ONLY, FOUNDATION EXCLUDED. Recorded as published: the houses are 'delivered fully assembled and ready to use — you just place them in your chosen location and start enjoying the space', described as a plug-and-play design, delivered as a turnkey product and installable in one day. The Signature Mirror House is published with a steel frame and glass mirror walls, a kitchenette, dining area and bedroom, and heated floors, rated for year-round use. Nothing inferred. THE FOUNDATION IS EXPLICITLY AND ENTIRELY THE BUYER'S, and the supplier states the division of responsibility precisely: ÖÖD representatives send the necessary drawings for the foundation, but the client is responsible for finding the local contractor who will design, construct and install that foundation to local regulations. So the supplier engineers the base and hands over the drawings; it does not build it and does not appoint anyone to. HOMEOWNER IMPLICATION: two separate contracts, and only one of them is with ÖÖD. The unit arrives finished and is placed in a day, which is as fast as anything in this catalogue — but nothing happens until an Irish contractor has designed and built a foundation to ÖÖD's drawings and to Irish requirements, at a cost ÖÖD does not quote and cannot control. Get that groundworks quotation before signing for the unit, not after.",
+     "text": "INSTALLATION CUSTOMER-ARRANGED IN IRELAND — SUPPLIER-CONFIRMED 14 OCT 2026. Keir Tetsmann (ÖÖD, UK and Irish clients), email 14 Oct 2026, Gmail 1a13a4b45780ba3b: installation, foundations and utility connections are 'organized by clients, as we do not have a local team there'; ÖÖD provides technical drawings from which local professionals determine the foundation and utility connections. No Irish installation partner is named and none is inferred; installation is NOT included for Irish customers on this evidence. The unit itself is factory-built (published). PUBLISHED GENERAL STATEMENT (ÖÖD website, recorded before the Irish confirmation; its 'turnkey' wording does not describe the Irish arrangement): [previous lead: turnkey installation, unit only], FOUNDATION EXCLUDED. Recorded as published: the houses are 'delivered fully assembled and ready to use — you just place them in your chosen location and start enjoying the space', described as a plug-and-play design, delivered as a turnkey product and installable in one day. The Signature Mirror House is published with a steel frame and glass mirror walls, a kitchenette, dining area and bedroom, and heated floors, rated for year-round use. Nothing inferred. THE FOUNDATION IS EXPLICITLY AND ENTIRELY THE BUYER'S, and the supplier states the division of responsibility precisely: ÖÖD representatives send the necessary drawings for the foundation, but the client is responsible for finding the local contractor who will design, construct and install that foundation to local regulations. So the supplier engineers the base and hands over the drawings; it does not build it and does not appoint anyone to. HOMEOWNER IMPLICATION: two separate contracts, and only one of them is with ÖÖD. The unit arrives finished and is placed in a day, which is as fast as anything in this catalogue — but nothing happens until an Irish contractor has designed and built a foundation to ÖÖD's drawings and to Irish requirements, at a cost ÖÖD does not quote and cannot control. Get that groundworks quotation before signing for the unit, not after.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87465,10 +87744,12 @@
      "evidenceScope": "Range-Level"
     },
     "irishAvailability": {
-     "text": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: establish the distributor route before committing.",
+     "text": "REPUBLIC OF IRELAND CONFIRMED — SUPPLIER-CONFIRMED 14 OCT 2026. ÖÖD House serves customers in the Republic of Ireland (Keir Tetsmann, Sales Consultant for UK and Irish clients, email 14 Oct 2026, Gmail 1a13a4b45780ba3b). DELIVERY: ÖÖD helps organise transport from its factory in Estonia to the customer; every transport is quoted individually. No delivery price, free delivery or delivery lead time is stated or implied. INSTALLATION: customer-arranged; ÖÖD has no local team in Ireland (see Installation Model). HOMEOWNER IMPLICATION: ask ÖÖD for a transport quotation to your address, and price foundations, craning/siting and utility connections with local professionals, before committing. RECORD NOTE — superseded pre-14 Oct 2026 research, kept for the record: [previous classification: Irish availability unconfirmed]. Estonian manufacturer; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. previous implication: establish the distributor route before committing.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     },
     "construction": {
      "text": "Full steel frame with 200mm insulation; thermo ash cladding; flat SBS roof; fitted kitchenette with quartz worktop and integrated fridge; bathroom with Villeroy & Boch toilet and Grohe shower; recessed LED lighting; plug-and-play power/water/sewage connection points. Approx. 10 tonnes total weight; bathroom 2.20 sqm.",
@@ -87478,7 +87759,7 @@
      "status": "Verified"
     },
     "insulation": {
-     "text": "INSULATED GLASS ENVELOPE — NOT COMPARABLE TO OPAQUE INSULATED GARDEN ROOMS. Galvanised steel frame, insulated glass, thermally treated wood; mirrored glass stated to reflect 97% of UV; underfloor heating. NO WALL, ROOF OR FLOOR INSULATION THICKNESS OR U-VALUE PUBLISHED. A predominantly glazed envelope behaves thermally very differently from the insulated opaque envelopes held for most Atlas Garden Rooms and must not be ranked against them on insulation thickness. IRISH AVAILABILITY UNCONFIRMED by the supplier.",
+     "text": "INSULATED GLASS ENVELOPE — NOT COMPARABLE TO OPAQUE INSULATED GARDEN ROOMS. Galvanised steel frame, insulated glass, thermally treated wood; mirrored glass stated to reflect 97% of UV; underfloor heating. NO WALL, ROOF OR FLOOR INSULATION THICKNESS OR U-VALUE PUBLISHED. A predominantly glazed envelope behaves thermally very differently from the insulated opaque envelopes held for most Atlas Garden Rooms and must not be ranked against them on insulation thickness. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87489,18 +87770,16 @@
    "priceBasis": "Verified",
    "floorAreaM2": 21.1,
    "glazing": null,
-   "insulation": "INSULATED GLASS ENVELOPE — NOT COMPARABLE TO OPAQUE INSULATED GARDEN ROOMS. Galvanised steel frame, insulated glass, thermally treated wood; mirrored glass stated to reflect 97% of UV; underfloor heating. NO WALL, ROOF OR FLOOR INSULATION THICKNESS OR U-VALUE PUBLISHED. A predominantly glazed envelope behaves thermally very differently from the insulated opaque envelopes held for most Atlas Garden Rooms and must not be ranked against them on insulation thickness. IRISH AVAILABILITY UNCONFIRMED by the supplier.",
+   "insulation": "INSULATED GLASS ENVELOPE — NOT COMPARABLE TO OPAQUE INSULATED GARDEN ROOMS. Galvanised steel frame, insulated glass, thermally treated wood; mirrored glass stated to reflect 97% of UV; underfloor heating. NO WALL, ROOF OR FLOOR INSULATION THICKNESS OR U-VALUE PUBLISHED. A predominantly glazed envelope behaves thermally very differently from the insulated opaque envelopes held for most Atlas Garden Rooms and must not be ranked against them on insulation thickness. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "rec5SQ7DISjbYxEeP"
    ],
@@ -87511,12 +87790,12 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
    "priceEvidenceRef": {
@@ -87530,8 +87809,65 @@
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-08-15",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
+    "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=w1600",
+    "alt": "Signature House among lupins and trees, its mirrored walls reflecting the sky",
+    "credit": "ÖÖD House · Photo: Katherine Berke",
+    "supplier": "ÖÖD House",
+    "rightsRecord": "IPO-007",
+    "assetRecord": "recQNpx3vprHXsh0p",
+    "permittedPrefix": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=",
+    "linkBack": "https://www.oodhouse.com/",
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=w1600",
+     "alt": "Signature House among lupins and trees, its mirrored walls reflecting the sky",
+     "credit": "ÖÖD House · Photo: Katherine Berke",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recQNpx3vprHXsh0p",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0=w1600",
+     "alt": "Signature House on a timber deck with loungers, mirrored glass reflecting pine trees",
+     "credit": "ÖÖD House · Photo: Valmarifoto",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "rec8KhBjYMtCRdl49",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i=w1600",
+     "alt": "Signature House at sunset on open grassland beside a small timber sauna",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recrXC0oZzKJCOgXI",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG=w1600",
+     "alt": "Inside a Signature House: bed, kitchenette and floor-to-ceiling glass onto trees",
+     "credit": "ÖÖD House · Photo: Ragnar Hartvig",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recnv5jMRfZR32Sgv",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    }
+   ]
   },
   {
    "id": "recPWKdUbLnAvXxmU",
@@ -87551,21 +87887,20 @@
    "productUrl": "https://oodhouse.com/en/products/houses/the-big-monolith",
    "verificationStatus": "Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: ÖÖD House."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer, international distributor network; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: es",
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
@@ -87602,7 +87937,7 @@
      "evidenceScope": "Organisation-Wide"
     },
     "insulation": {
-     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Largest ÖÖD format; supplier range spans approximately 9-40 m2 at EUR 19,900-84,900. IRISH AVAILABILITY UNCONFIRMED.",
+     "text": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Largest ÖÖD format; supplier range spans approximately 9-40 m2 at EUR 19,900-84,900. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87639,7 +87974,7 @@
      ]
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — UNIT ONLY, FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, construction by the client's own contractor. Nothing inferred. HOMEOWNER IMPLICATION: the largest unit in the range and therefore the one where transport access and foundation engineering matter most — both outside the supplier's scope and both to be priced locally before ordering.",
+     "text": "INSTALLATION CUSTOMER-ARRANGED IN IRELAND — SUPPLIER-CONFIRMED 14 OCT 2026. Keir Tetsmann (ÖÖD, UK and Irish clients), email 14 Oct 2026, Gmail 1a13a4b45780ba3b: installation, foundations and utility connections are 'organized by clients, as we do not have a local team there'; ÖÖD provides technical drawings from which local professionals determine the foundation and utility connections. No Irish installation partner is named and none is inferred; installation is NOT included for Irish customers on this evidence. The unit itself is factory-built (published). PUBLISHED GENERAL STATEMENT (ÖÖD website, recorded before the Irish confirmation; its 'turnkey' wording does not describe the Irish arrangement): [previous lead: turnkey installation, unit only], FOUNDATION EXCLUDED. Delivered fully assembled and ready to use, plug-and-play, installable in one day; foundation drawings supplied, construction by the client's own contractor. Nothing inferred. HOMEOWNER IMPLICATION: the largest unit in the range and therefore the one where transport access and foundation engineering matter most — both outside the supplier's scope and both to be priced locally before ordering.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -87651,10 +87986,12 @@
      "evidenceScope": "Organisation-Wide"
     },
     "irishAvailability": {
-     "text": "REPUBLIC OF IRELAND UNCONFIRMED. Estonian manufacturer, international distributor network; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. HOMEOWNER IMPLICATION: establish the distributor route before committing.",
+     "text": "REPUBLIC OF IRELAND CONFIRMED — SUPPLIER-CONFIRMED 14 OCT 2026. ÖÖD House serves customers in the Republic of Ireland (Keir Tetsmann, Sales Consultant for UK and Irish clients, email 14 Oct 2026, Gmail 1a13a4b45780ba3b). DELIVERY: ÖÖD helps organise transport from its factory in Estonia to the customer; every transport is quoted individually. No delivery price, free delivery or delivery lead time is stated or implied. INSTALLATION: customer-arranged; ÖÖD has no local team in Ireland (see Installation Model). HOMEOWNER IMPLICATION: ask ÖÖD for a transport quotation to your address, and price foundations, craning/siting and utility connections with local professionals, before committing. RECORD NOTE — superseded pre-14 Oct 2026 research, kept for the record: [previous classification: Irish availability unconfirmed]. Estonian manufacturer, international distributor network; no Irish premises, distributor or Ireland-specific terms located. Nothing inferred. previous implication: establish the distributor route before committing.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     }
    },
    "price": 149900,
@@ -87662,18 +87999,16 @@
    "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
-   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Largest ÖÖD format; supplier range spans approximately 9-40 m2 at EUR 19,900-84,900. IRISH AVAILABILITY UNCONFIRMED.",
+   "insulation": "INSULATED GLASS ENVELOPE. Steel frame, insulated glass, thermally treated wood, underfloor heating. NO insulation thickness or U-value published. Largest ÖÖD format; supplier range spans approximately 9-40 m2 at EUR 19,900-84,900. IRISH AVAILABILITY CONFIRMED (supplier-confirmed 14 Oct 2026: ÖÖD serves the Republic of Ireland; transport from Estonia is quoted individually; installation, foundations and utility connections are arranged by the buyer with local professionals, to ÖÖD's technical drawings).",
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recXHtduHOnVoJLFe"
    ],
@@ -87684,12 +88019,12 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
    "priceEvidenceRef": {
@@ -87703,8 +88038,65 @@
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-08-15",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
+    "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=w1600",
+    "alt": "The Big Monolith on mossy ground, its long mirrored side reflecting cloud and hills",
+    "credit": "ÖÖD House",
+    "supplier": "ÖÖD House",
+    "rightsRecord": "IPO-007",
+    "assetRecord": "recV5xOE7fjYvOUMD",
+    "permittedPrefix": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=",
+    "linkBack": "https://www.oodhouse.com/",
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=w1600",
+     "alt": "The Big Monolith on mossy ground, its long mirrored side reflecting cloud and hills",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recV5xOE7fjYvOUMD",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS=w1600",
+     "alt": "The Big Monolith in snow, its glass reflecting a mountain",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recE2XDcjJHVtaL21",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK=w1600",
+     "alt": "The Big Monolith and a smaller unit in a wide snowy landscape, showing its length",
+     "credit": "ÖÖD House",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "reclLDeJPPySyGSZU",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://lh3.googleusercontent.com/d/1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s=w1600",
+     "alt": "Inside The Big Monolith: a bedroom with glass walls onto the landscape",
+     "credit": "ÖÖD House · Photo: Ingibergur Thor",
+     "supplier": "ÖÖD House",
+     "rightsRecord": "IPO-007",
+     "assetRecord": "recIijCYifQXab6Z6",
+     "permittedPrefix": "https://lh3.googleusercontent.com/d/1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s=",
+     "linkBack": "https://www.oodhouse.com/",
+     "presentationTier": "A"
+    }
+   ]
   }
  ]
 }

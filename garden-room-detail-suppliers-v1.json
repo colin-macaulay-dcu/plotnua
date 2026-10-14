@@ -87,12 +87,12 @@
     "rec2URqKyVwlhHSBw": {
       "name": "\u00d6\u00d6D House",
       "locality": {
-        "installationModel": "Not stated for Ireland",
-        "irishPresence": "None published",
-        "deliveryCoverage": "International; Ireland not separately named",
+        "installationModel": "Arranged by the customer through local professionals \u2014 installation, foundations and utility connections; \u00d6\u00d6D has no installation team in Ireland and supplies technical drawings for that work (supplier-confirmed 14 Oct 2026)",
+        "irishPresence": "No Irish premises or local team; Irish customers are served from Estonia (supplier-confirmed 14 Oct 2026)",
+        "deliveryCoverage": "Serves customers in the Republic of Ireland; \u00d6\u00d6D helps organise transport from its factory in Estonia, and every transport is quoted individually (supplier-confirmed by \u00d6\u00d6D's sales consultant for UK and Irish clients, 14 Oct 2026)",
         "manufacturingLocation": "2 or more distinct arrangements, recorded separately and not merged \u2014 (1) Estonia, the primary production base; (2) LOCAL PRODUCTION operated in the EU and the USA per the supplier's own statement, with specific sites not published",
         "jurisdiction": "European Union (Estonia)",
-        "evidenceTier": "Tier B",
+        "evidenceTier": "Tier A for delivery, installation and Irish presence (supplier email 14 Oct 2026, Source recrTNrQMXHiioA5i); Tier B otherwise",
         "evidenceScope": "Organisation-Wide",
         "installationType": "UNKNOWN",
         "installationStatus": "UNKNOWN",
@@ -101,7 +101,7 @@
         "deliveryStatus": "STATED_NOT_CERTIFIED"
       },
       "organisationType": "Manufacturer",
-      "lastReviewed": "2026-08-28"
+      "lastReviewed": "2026-10-14"
     },
     "rec4VIYIbk68JihtK": {
       "name": "Timber Living",

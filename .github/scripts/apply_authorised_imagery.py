@@ -287,6 +287,223 @@ ATLAS_ASSETS = [
         # isolated product shot. No stronger candidate exists.
         "products": ["recLEonLKyhNTUiAt"],
     },
+
+    # ---- ÖÖD HOUSE -------------------------------------------------------
+    # Created in Atlas 14 October 2026 (Assets, Rights Status 'Supplier
+    # Provided', Publication Status 'Approved') for the founder's ÖÖD targeted
+    # publication brief. Grant: image-rights-records.json, ÖÖD House, IPO-007
+    # (Gertrud Ots, 14 Oct 2026), scoped PER DRIVE FILE on lh3.googleusercontent
+    # .com -- each url below sits inside its own /d/<file id>= prefix and no
+    # other. PRODUCT ASSOCIATION IS ÖÖD'S OWN FOLDER: every photograph is linked
+    # to the one model its folder in ÖÖD's library names, and to nothing else.
+    # 28 of the 41 scoped files: the 12 sauna photographs have no Atlas product,
+    # and Extended House file 126bHQPCLpLoZE2C7qddQ-v__3gR85Hmg is held because
+    # it may be a computer rendering and nothing records which (a visualisation
+    # must never be shown as a photograph). Where ÖÖD's filename names the
+    # photographer, they are credited by name after the required credit.
+    {
+        "asset": "recQNpx3vprHXsh0p",  # ÖÖD Signature House — photograph 1
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=w1600",
+        "alt": "Signature House among lupins and trees, its mirrored walls reflecting the sky",
+        "photographer": "Katherine Berke",
+        "products": ["recoQZlqmpfv3T5bz"],
+    },
+    {
+        "asset": "rec8KhBjYMtCRdl49",  # ÖÖD Signature House — photograph 2
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0=w1600",
+        "alt": "Signature House on a timber deck with loungers, mirrored glass reflecting pine trees",
+        "photographer": "Valmarifoto",
+        "products": ["recoQZlqmpfv3T5bz"],
+    },
+    {
+        "asset": "recrXC0oZzKJCOgXI",  # ÖÖD Signature House — photograph 3
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i=w1600",
+        "alt": "Signature House at sunset on open grassland beside a small timber sauna",
+        "products": ["recoQZlqmpfv3T5bz"],
+    },
+    {
+        "asset": "recnv5jMRfZR32Sgv",  # ÖÖD Signature House — photograph 4
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG=w1600",
+        "alt": "Inside a Signature House: bed, kitchenette and floor-to-ceiling glass onto trees",
+        "photographer": "Ragnar Hartvig",
+        "products": ["recoQZlqmpfv3T5bz"],
+    },
+    {
+        "asset": "recaxWkZap8xgHDQQ",  # ÖÖD Glämping House — photograph 1
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=w1600",
+        "alt": "Glämping House on a timber deck in high desert at sunrise, with a telescope outside",
+        "photographer": "Marcario Photo",
+        "products": ["recyc7vNON16NzYFD"],
+    },
+    {
+        "asset": "rec8gJrdjRE9ZTpTD",  # ÖÖD Glämping House — photograph 2
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ=w1600",
+        "alt": "Glämping House under a starry sky on a timber deck with two chairs",
+        "products": ["recyc7vNON16NzYFD"],
+    },
+    {
+        "asset": "recH8zAktYe1fwOZo",  # ÖÖD Glämping House — photograph 3
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_=w1600",
+        "alt": "Glämping House lit from within at night, the bedroom visible through the glass",
+        "products": ["recyc7vNON16NzYFD"],
+    },
+    {
+        "asset": "recI6MPe9X3d166TN",  # ÖÖD Glämping House — photograph 4
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv=w1600",
+        "alt": "Glämping House seen from a distance across open scrubland, showing its scale",
+        "photographer": "Marcario Photo",
+        "products": ["recyc7vNON16NzYFD"],
+    },
+    {
+        "asset": "recyz2arjsX1KE6dq",  # ÖÖD Extended House — photograph 1
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=w1600",
+        "alt": "Extended House with its long mirrored side reflecting dark hills and cloud",
+        "products": ["recGGCVFmV7lY1zkj"],
+    },
+    {
+        "asset": "recreVS6GWDvjQuEi",  # ÖÖD Extended House — photograph 2
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa=w1600",
+        "alt": "A timber-clad Extended House on a boardwalk in an open volcanic landscape",
+        "products": ["recGGCVFmV7lY1zkj"],
+    },
+    {
+        "asset": "recOkzwdhI2ByNfhY",  # ÖÖD Extended House — photograph 3
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI=w1600",
+        "alt": "Extended House on a boardwalk among lava fields, with a mountain behind",
+        "products": ["recGGCVFmV7lY1zkj"],
+    },
+    {
+        "asset": "recSHXVbzqzkbGF00",  # ÖÖD Extended House — photograph 4
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y=w1600",
+        "alt": "Inside an Extended House: a long room with a table, kitchen and glass along one side",
+        "products": ["recGGCVFmV7lY1zkj"],
+    },
+    {
+        "asset": "rec7V4hnbaDLGRCl3",  # ÖÖD Mobile House — photograph 1
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=w1600",
+        "alt": "Mobile House among pine trees beside a timber deck with red chairs",
+        "products": ["reczasgBzBbqP1lBg"],
+    },
+    {
+        "asset": "recfgvR5hYlgNcZib",  # ÖÖD Mobile House — photograph 2
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM=w1600",
+        "alt": "The mirrored end of a Mobile House beyond its deck, reflecting the woodland",
+        "products": ["reczasgBzBbqP1lBg"],
+    },
+    {
+        "asset": "recaMgZPzSbQ5IIx8",  # ÖÖD Mobile House — photograph 3
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh=w1600",
+        "alt": "Inside a Mobile House: a bed and table beside full-height glass onto the trees",
+        "products": ["reczasgBzBbqP1lBg"],
+    },
+    {
+        "asset": "recdTUXyublD5FGhq",  # ÖÖD Glääzy House — photograph 1
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=w1600",
+        "alt": "Glääzy House with its pitched glass end among low trees and heather",
+        "products": ["recl9ITOz7WlqPPBn"],
+    },
+    {
+        "asset": "recUjhEFw0d4006R1",  # ÖÖD Glääzy House — photograph 2
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW=w1600",
+        "alt": "Glääzy House from a lower angle, dark cladding and mirrored glass in scrubland",
+        "products": ["recl9ITOz7WlqPPBn"],
+    },
+    {
+        "asset": "recYsiePLBpxHsPSz",  # ÖÖD Glääzy House — photograph 3
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F=w1600",
+        "alt": "Glääzy House lit from within at dusk in a snowy landscape",
+        "products": ["recl9ITOz7WlqPPBn"],
+    },
+    {
+        "asset": "recdVvdyz2dF94OLP",  # ÖÖD Glääzy House — photograph 4
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20=w1600",
+        "alt": "Looking up from the bed in a Glääzy House through its glass roof and gable",
+        "photographer": "Even Tryggstrand",
+        "products": ["recl9ITOz7WlqPPBn"],
+    },
+    {
+        "asset": "recltDvzNQhm2F3SP",  # ÖÖD Möön House — photograph 1
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=w1600",
+        "alt": "Möön House with a full-height glass corner, curtains drawn back, on open moorland",
+        "products": ["reciFE98KRWuAhBwP"],
+    },
+    {
+        "asset": "recde6iunyLgEYvzT",  # ÖÖD Möön House — photograph 2
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk=w1600",
+        "alt": "Möön House from above on a dark deck in green moorland",
+        "products": ["reciFE98KRWuAhBwP"],
+    },
+    {
+        "asset": "recvHKzv3ojOozJCG",  # ÖÖD Möön House — photograph 3
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2=w1600",
+        "alt": "Möön House and a small sauna seen from above beside a gravel track",
+        "products": ["reciFE98KRWuAhBwP"],
+    },
+    {
+        "asset": "recQhN9ar0gKhQVci",  # ÖÖD Möön House — photograph 4
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/14OqokuAczh_R0finpF-szBWogsOrVd48=w1600",
+        "alt": "Möön House under a cloudy sky, glass on two sides and dark cladding",
+        "products": ["reciFE98KRWuAhBwP"],
+    },
+    {
+        "asset": "recjIJcgO4dHq7H65",  # ÖÖD Möön House — photograph 5
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx=w1600",
+        "alt": "Inside a Möön House: a glass corner looking out across open landscape",
+        "products": ["reciFE98KRWuAhBwP"],
+    },
+    {
+        "asset": "recV5xOE7fjYvOUMD",  # ÖÖD The Big Monolith — photograph 1
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=w1600",
+        "alt": "The Big Monolith on mossy ground, its long mirrored side reflecting cloud and hills",
+        "products": ["recPWKdUbLnAvXxmU"],
+    },
+    {
+        "asset": "recE2XDcjJHVtaL21",  # ÖÖD The Big Monolith — photograph 2
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS=w1600",
+        "alt": "The Big Monolith in snow, its glass reflecting a mountain",
+        "products": ["recPWKdUbLnAvXxmU"],
+    },
+    {
+        "asset": "reclLDeJPPySyGSZU",  # ÖÖD The Big Monolith — photograph 3
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK=w1600",
+        "alt": "The Big Monolith and a smaller unit in a wide snowy landscape, showing its length",
+        "products": ["recPWKdUbLnAvXxmU"],
+    },
+    {
+        "asset": "recIijCYifQXab6Z6",  # ÖÖD The Big Monolith — photograph 4
+        "organisation": "ÖÖD House",
+        "url": "https://lh3.googleusercontent.com/d/1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s=w1600",
+        "alt": "Inside The Big Monolith: a bedroom with glass walls onto the landscape",
+        "photographer": "Ingibergur Thor",
+        "products": ["recPWKdUbLnAvXxmU"],
+    },
 ]
 
 
@@ -307,6 +524,11 @@ def resolve(products, grants):
             trace.append((a["asset"], org, "REFUSED", why))
             continue
         credit = grant.get("required_credit")
+        # A NAMED PHOTOGRAPHER IS CREDITED AFTER THE REQUIRED CREDIT, never
+        # instead of it. The required credit stays the first words of the
+        # string, which G-CREDIT below asserts for every image.
+        if credit and a.get("photographer"):
+            credit = "%s · Photo: %s" % (credit, a["photographer"])
         # THE PERMITTED SCOPE TRAVELS WITH THE IMAGE.
         # The runtime cannot execute the node gate, and shipping the whole
         # rights manifest to every browser would be a second imagery
@@ -360,7 +582,12 @@ def resolve(products, grants):
                 "permittedPrefix": scope,
                 # PLOTNUA'S OWN UNDERTAKING, WHERE ONE EXISTS. Carried so a
                 # public surface can honour it without re-reading the record.
-                "linkBack": (grant.get("publication_requirements")
+                # The undertaking is either recorded as publication
+                # requirements, or as a 'link-back' condition of the
+                # explicit permission (ÖÖD House, 14 Oct 2026).
+                "linkBack": ((grant.get("publication_requirements")
+                              or "link-back" in ((grant.get("permission") or {})
+                                                 .get("conditions") or ()))
                              and grant.get("permitted_domain")
                              and ("https://www." + grant["permitted_domain"] + "/")
                              or None),
@@ -519,6 +746,14 @@ def prove(doc_before, grants):
                if any(not b.get("credit") for b in ims)]
     check("every resolved image carries its grant's required credit",
           not missing, "%d without credit" % len(missing))
+    # ...and the credit BEGINS with the grant's required credit, so a
+    # photographer's name can be added but can never displace it.
+    wrong = [pid for pid, ims in by_product.items()
+             if any(not str(b.get("credit", "")).startswith(
+                 (grants.get(b["supplier"].strip().lower()) or {})
+                 .get("required_credit") or "\x00") for b in ims)]
+    check("every credit begins with the grant's required credit",
+          not wrong, "%d displaced" % len(wrong))
 
     # THE SET IS A SET. Every block in it passed the same gate as the
     # primary, no url appears twice, and the primary is its first member.

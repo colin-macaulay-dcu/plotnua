@@ -8,28 +8,28 @@
       "file": "garden-room-detail-alternatives-v1.json",
       "productCount": 419,
       "recordCount": 419,
-      "rawBytes": 373937
+      "rawBytes": 374195
     },
     {
       "category": "bestFor",
       "file": "garden-room-detail-bestfor-v1.json",
       "productCount": 419,
       "recordCount": 419,
-      "rawBytes": 299962
+      "rawBytes": 300232
     },
     {
       "category": "considerations",
       "file": "garden-room-detail-considerations-v1.json",
       "productCount": 419,
       "recordCount": 419,
-      "rawBytes": 347382
+      "rawBytes": 349240
     },
     {
       "category": "planningConsiderations",
       "file": "garden-room-detail-planningconsiderations-v1.json",
       "productCount": 419,
       "recordCount": 419,
-      "rawBytes": 423726
+      "rawBytes": 424260
     },
     {
       "category": "strengths",
@@ -57,7 +57,7 @@
       "file": "garden-room-detail-suppliers-v1.json",
       "productCount": 61,
       "recordCount": 767,
-      "rawBytes": 60526
+      "rawBytes": 61160
     }
   ]
 }

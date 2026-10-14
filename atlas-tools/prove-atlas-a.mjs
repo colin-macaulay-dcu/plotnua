@@ -9,7 +9,8 @@
    enough. pnScopeNote() is computed separately and attached to the SAME row, so
    a read can be established AND scope-limited -- Atlas verified the supplier's
    range, not this model. Measured over the real universe by lifting the shipped
-   functions verbatim: 1,898 established · 548 model-level · 1,350 scope-limited.
+   functions verbatim: 1,898 established · 548 model-level · 1,350 scope-limited
+   (1,357 since the ÖÖD update of 14 Oct 2026).
    A gate on state alone would make 1,350 false model-level claims.
 
    A1  The three placements exist, at 24 / 20 / 16px, wired the approved way.
@@ -216,9 +217,18 @@ else {
 
        STRICT EQUALITY IS DELIBERATE. A tolerance here would let exactly that
        loss drift through unnoticed, so this stays an exact census that must be
-       re-measured, and its movement explained, on every authorised promotion. */
-    refused === 1350 ? ok('1,350 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,350 scope-limited refusals, measured ' + refused);
+       re-measured, and its movement explained, on every authorised promotion.
+
+       RE-CENSUSED 14 October 2026 for the ÖÖD House targeted update
+       (atlas-tools/apply-ood-house-targeted-update.py): scope-limited
+       1350 -> 1357, model-level unchanged at 548. Decomposed before the
+       number moved: the +7 are exactly the seven ÖÖD products'
+       irishAvailability reads, newly ESTABLISHED by ÖÖD's 14 Oct confirmation
+       and carrying scope "Product-Specific", so each is REFUSED the
+       model-level mark, as it should be. No read was removed, no scope note
+       was lost, and leak stays 0. */
+    refused === 1357 ? ok('1,357 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,357 scope-limited refusals, measured ' + refused);
     allowed === 548 ? ok('548 model-level established reads allowed')
                     : bad('expected 548 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']

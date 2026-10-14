@@ -37,7 +37,12 @@ CHECK = "--check" in sys.argv
 SIZE_GUARD = 180 * 1024
 
 # The universe this contract was frozen against.
-BASE_UNIVERSE_SHA = "db4ecb7ff99ebaa0e2d88b89ce395f0bcb78c5a2750630aefbc3669413ff82db"
+# RE-FROZEN 14 Oct 2026, deliberately, for the ÖÖD House targeted update
+# (atlas-tools/apply-ood-house-targeted-update.py). Was db4ecb7ff99ebaa0...;
+# the only universe change is the seven ÖÖD products (Irish availability
+# confirmed, tier WITH_CAVEAT -> HIGH_CONFIDENCE, installation axis UNKNOWN,
+# authorised imagery). Every other product is byte-identical.
+BASE_UNIVERSE_SHA = "389402d0431b3a8923a3c5e002b96418374edd1c4fedeed5422ab774ac47527f"
 
 ALLOWED_FIELDS = {
     "possibility": {"id", "type", "title", "standfirst", "topics", "route"},

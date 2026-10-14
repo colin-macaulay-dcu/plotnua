@@ -172,8 +172,9 @@ jobs:
       # thing that is validated and the thing that is published are the same
       # file, imagery included.
       #
-      # --require-min 6 is a FLOOR. It is the number of Garden Room products
-      # the canonical rights system currently authorises. More is fine and
+      # --require-min 13 is a FLOOR. It is the number of Garden Room products
+      # the canonical rights system currently authorises (6, plus the seven
+      # ÖÖD House models from 14 Oct 2026). More is fine and
       # passes. Fewer fails the job loudly, because a withdrawal is a decision
       # someone makes deliberately and then lowers this number, not something
       # an unattended refresh absorbs in silence.
@@ -182,7 +183,7 @@ jobs:
           set -euo pipefail
           python .github/scripts/apply_authorised_imagery.py \
             --universe "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" \
-            --require-min 6
+            --require-min 13
 
       - name: Verify the imagery pass wrote nothing into the repository
         run: |

@@ -443,3 +443,25 @@ meaning "no imagery, factual listing from the maker's own public pages" —
 without supplier approval. If yes, the gate needs that state defined, the 101
 products in C would follow at the next regeneration, and MyCabin's decline
 would still bar its images.
+
+## OOD-IMG-001 · One authorised ÖÖD Extended House file held (14 Oct 2026)
+
+The ÖÖD House targeted update publishes 28 of the 41 per-file scoped ÖÖD
+photographs, each on the model its folder in ÖÖD's library names (Atlas Assets
+records created 14 Oct 2026; `apply_authorised_imagery.py` ATLAS_ASSETS). The
+12 sauna photographs have no Atlas product. Extended House file
+`126bHQPCLpLoZE2C7qddQ-v__3gR85Hmg` ("Extended House.jpg") is held: it may be
+a computer rendering and nothing records which, and a visualisation must never
+be shown as a photograph. To use it, establish the medium (ask ÖÖD only when
+other correspondence is needed — not on its own), then add one ATLAS_ASSETS
+entry with an Atlas Asset record. No other change is needed.
+
+## JC2-CREDIT-001 · Option Detail removed every photograph credit (fixed 14 Oct 2026)
+
+`your-plot.html` Option Detail attached the governed credit chip and then, later
+in the same function, cleared "the previous product's" chip — removing the one
+just attached. Every governed photograph on Option Detail (Powersheds, Yard
+Box, and now ÖÖD) showed without its required credit. The clear now runs
+before the paint. Found by browser test of the ÖÖD update. A proof that
+asserts a credit chip is present after Option Detail opens would stop a
+regression; none exists yet.

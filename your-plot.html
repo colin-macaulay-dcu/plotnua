@@ -30859,6 +30859,13 @@
        Compare do, and falls through to the placeholder when the rights are not
        proven. Withdrawal needs no code path: the imagery block disappears and
        this branch stops firing. */
+    /* JC-2 — the credit chip is re-attached on every open, so clear the one
+       the previous product left behind FIRST. pnAttachImageCredit() appends;
+       without this the panel would accumulate one chip per product viewed. */
+    if (els.pdImage && els.pdImage.parentNode) {
+      const oldCredit = els.pdImage.parentNode.querySelector('.pn-image-credit');
+      if (oldCredit) oldCredit.remove();
+    }
     const pdImg = pnAuthorisedImage(product);
     if (pdImg) {
       els.pdImage.src = pdImg.url;
@@ -30978,13 +30985,11 @@
     } catch (e) { console.warn('[Atlas detail] fetch not started', e); }
     if (els.pdMore) els.pdMore.open = false;
 
-    /* JC-2 — the credit chip is re-attached on every open, so clear the one
-       the previous product left behind. pnAttachImageCredit() appends; without
-       this the panel would accumulate one chip per product viewed. */
-    if (els.pdImage && els.pdImage.parentNode) {
-      const oldCredit = els.pdImage.parentNode.querySelector('.pn-image-credit');
-      if (oldCredit) oldCredit.remove();
-    }
+    /* JC-2 — the previous product's credit chip is cleared BEFORE this
+       product's photograph is painted (above), not here. Clearing it here,
+       after the paint, removed the chip just attached, so every governed
+       photograph on Option Detail showed without its required credit
+       (found 14 Oct 2026 testing the ÖÖD House update). */
     els.pdActions.innerHTML = '';
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
