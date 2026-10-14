@@ -116,8 +116,15 @@ def _gr(U):
         if r.get("noPublishedIrishRoute"): return "r"
         return "u"
     eligible = [(r["organisation"], r["id"], r["productName"], r.get("productType") or "", st(r)) for r in rows]
+    # "confirmed" is cross-checked against the qualification signal each
+    # LISTED record carries, not against the header: the header's
+    # confirmedIrishAvailabilityCount counts excluded products too, so an
+    # excluded Irish-confirmed product (a hold, a preview request) made G1
+    # refuse a correct build. Two independent fields still have to agree.
     header = {"products": U["eligibleCount"], "makers": U["organisationCount"],
-              "confirmed": U["confirmedIrishAvailabilityCount"]}
+              "confirmed": sum(1 for r in rows if ((r.get("qualification") or {})
+                                                   .get("evidenceSignals") or {})
+                               .get("irishAvailability") == "confirmed")}
     return eligible, set(), {r["organisation"] for r in rows}, header
 
 def _ah(A):

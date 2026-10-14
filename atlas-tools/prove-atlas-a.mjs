@@ -220,7 +220,8 @@ else {
        re-measured, and its movement explained, on every authorised promotion.
 
        RE-CENSUSED 14 October 2026 for the ÖÖD House targeted update
-       (atlas-tools/apply-ood-house-targeted-update.py): scope-limited
+       (apply-ood-house-targeted-update.py, since retired for
+       atlas-tools/publish-targeted-update.py): scope-limited
        1350 -> 1357, model-level unchanged at 548. Decomposed before the
        number moved: the +7 are exactly the seven ÖÖD products'
        irishAvailability reads, newly ESTABLISHED by ÖÖD's 14 Oct confirmation

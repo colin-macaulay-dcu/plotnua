@@ -1,0 +1,741 @@
+{
+ "schema": "plotnua.approved-image-assets.v1",
+ "what_this_is": "A read of Atlas Assets (tblFMzOKcNQTjXVYS) for organisations whose imagery is published, in the Atlas REST shape. An entry here is NOT permission: apply_authorised_imagery.py publishes an asset only if Rights Status is 'Supplier Provided', Publication Status is 'Approved', the Notes record whether it is a photograph or a visualisation, the organisation holds a LIVE grant in image-rights-manifest.json, the URL sits inside that grant's scoped prefix and the asset is linked to the product. publish-targeted-update.py replaces one organisation's rows from a fresh Atlas read; it never adds rows for anyone else.",
+ "organisations": {
+  "rec2URqKyVwlhHSBw": {
+   "name": "ÖÖD House",
+   "read": "2026-10-14",
+   "filter": "Assets.Organisations contains ÖÖD House"
+  }
+ },
+ "records": [
+  {
+   "id": "rec7V4hnbaDLGRCl3",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Mobile House — photograph 1",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reczasgBzBbqP1lBg",
+      "name": "ÖÖD Mobile House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Mobile House among pine trees beside a timber deck with red chairs",
+    "Source URL": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Mobile House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "rec8KhBjYMtCRdl49",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Signature House — photograph 2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recoQZlqmpfv3T5bz",
+      "name": "ÖÖD Signature House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Signature House on a timber deck with loungers, mirrored glass reflecting pine trees",
+    "Source URL": "https://lh3.googleusercontent.com/d/1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Signature House. Required credit: ÖÖD House; photographer: Valmarifoto. Location: Pilguse, Estonia. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "rec8gJrdjRE9ZTpTD",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glämping House — photograph 2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recyc7vNON16NzYFD",
+      "name": "ÖÖD Glämping House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Glämping House under a starry sky on a timber deck with two chairs",
+    "Source URL": "https://lh3.googleusercontent.com/d/1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glämping House. Required credit: ÖÖD House. Location: Starry Nights Glamping, Arizona, USA. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recE2XDcjJHVtaL21",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD The Big Monolith — photograph 2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recPWKdUbLnAvXxmU",
+      "name": "ÖÖD The Big Monolith"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "The Big Monolith in snow, its glass reflecting a mountain",
+    "Source URL": "https://lh3.googleusercontent.com/d/17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: The Big Monolith. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recH8zAktYe1fwOZo",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glämping House — photograph 3",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recyc7vNON16NzYFD",
+      "name": "ÖÖD Glämping House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Glämping House lit from within at night, the bedroom visible through the glass",
+    "Source URL": "https://lh3.googleusercontent.com/d/1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glämping House. Required credit: ÖÖD House. Location: Starry Nights Glamping, Arizona, USA. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recI6MPe9X3d166TN",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glämping House — photograph 4",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recyc7vNON16NzYFD",
+      "name": "ÖÖD Glämping House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Glämping House seen from a distance across open scrubland, showing its scale",
+    "Source URL": "https://lh3.googleusercontent.com/d/1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glämping House. Required credit: ÖÖD House; photographer: Marcario Photo. Location: Starry Nights Glamping, Arizona, USA. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recIijCYifQXab6Z6",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD The Big Monolith — photograph 4",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recPWKdUbLnAvXxmU",
+      "name": "ÖÖD The Big Monolith"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Inside The Big Monolith: a bedroom with glass walls onto the landscape",
+    "Source URL": "https://lh3.googleusercontent.com/d/1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: The Big Monolith. Required credit: ÖÖD House; photographer: Ingibergur Thor. Location: Hekla Horizon, Iceland. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recOkzwdhI2ByNfhY",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Extended House — photograph 3",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recGGCVFmV7lY1zkj",
+      "name": "ÖÖD Extended House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Extended House on a boardwalk among lava fields, with a mountain behind",
+    "Source URL": "https://lh3.googleusercontent.com/d/1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Extended House. Required credit: ÖÖD House. Location: Hekla Horizon, Iceland. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recQNpx3vprHXsh0p",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Signature House — photograph 1",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recoQZlqmpfv3T5bz",
+      "name": "ÖÖD Signature House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Signature House among lupins and trees, its mirrored walls reflecting the sky",
+    "Source URL": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Signature House. Required credit: ÖÖD House; photographer: Katherine Berke. Location: Vermont Glass House, USA. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recQhN9ar0gKhQVci",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Möön House — photograph 4",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reciFE98KRWuAhBwP",
+      "name": "ÖÖD Möön House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Möön House under a cloudy sky, glass on two sides and dark cladding",
+    "Source URL": "https://lh3.googleusercontent.com/d/14OqokuAczh_R0finpF-szBWogsOrVd48=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 14OqokuAczh_R0finpF-szBWogsOrVd48), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Möön House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recSHXVbzqzkbGF00",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Extended House — photograph 4",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recGGCVFmV7lY1zkj",
+      "name": "ÖÖD Extended House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Inside an Extended House: a long room with a table, kitchen and glass along one side",
+    "Source URL": "https://lh3.googleusercontent.com/d/10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Extended House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recUjhEFw0d4006R1",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glääzy House — photograph 2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recl9ITOz7WlqPPBn",
+      "name": "ÖÖD Glääzy House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Glääzy House from a lower angle, dark cladding and mirrored glass in scrubland",
+    "Source URL": "https://lh3.googleusercontent.com/d/1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glääzy House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recV5xOE7fjYvOUMD",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD The Big Monolith — photograph 1",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recPWKdUbLnAvXxmU",
+      "name": "ÖÖD The Big Monolith"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "The Big Monolith on mossy ground, its long mirrored side reflecting cloud and hills",
+    "Source URL": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: The Big Monolith. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recYsiePLBpxHsPSz",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glääzy House — photograph 3",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recl9ITOz7WlqPPBn",
+      "name": "ÖÖD Glääzy House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Glääzy House lit from within at dusk in a snowy landscape",
+    "Source URL": "https://lh3.googleusercontent.com/d/1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glääzy House. Required credit: ÖÖD House. Location: Norway. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recaMgZPzSbQ5IIx8",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Mobile House — photograph 3",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reczasgBzBbqP1lBg",
+      "name": "ÖÖD Mobile House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Inside a Mobile House: a bed and table beside full-height glass onto the trees",
+    "Source URL": "https://lh3.googleusercontent.com/d/1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Mobile House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recaxWkZap8xgHDQQ",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glämping House — photograph 1",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recyc7vNON16NzYFD",
+      "name": "ÖÖD Glämping House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Glämping House on a timber deck in high desert at sunrise, with a telescope outside",
+    "Source URL": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glämping House. Required credit: ÖÖD House; photographer: Marcario Photo. Location: Starry Nights Glamping, Arizona, USA. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recdTUXyublD5FGhq",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glääzy House — photograph 1",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recl9ITOz7WlqPPBn",
+      "name": "ÖÖD Glääzy House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Glääzy House with its pitched glass end among low trees and heather",
+    "Source URL": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glääzy House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recdVvdyz2dF94OLP",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Glääzy House — photograph 4",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recl9ITOz7WlqPPBn",
+      "name": "ÖÖD Glääzy House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Looking up from the bed in a Glääzy House through its glass roof and gable",
+    "Source URL": "https://lh3.googleusercontent.com/d/1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Glääzy House. Required credit: ÖÖD House; photographer: Even Tryggstrand. Location: WonderInn Arctic, Norway. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recde6iunyLgEYvzT",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Möön House — photograph 2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reciFE98KRWuAhBwP",
+      "name": "ÖÖD Möön House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Möön House from above on a dark deck in green moorland",
+    "Source URL": "https://lh3.googleusercontent.com/d/1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Möön House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recfgvR5hYlgNcZib",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Mobile House — photograph 2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reczasgBzBbqP1lBg",
+      "name": "ÖÖD Mobile House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "The mirrored end of a Mobile House beyond its deck, reflecting the woodland",
+    "Source URL": "https://lh3.googleusercontent.com/d/1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Mobile House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recjIJcgO4dHq7H65",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Möön House — photograph 5",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reciFE98KRWuAhBwP",
+      "name": "ÖÖD Möön House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Inside a Möön House: a glass corner looking out across open landscape",
+    "Source URL": "https://lh3.googleusercontent.com/d/1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Möön House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "reclLDeJPPySyGSZU",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD The Big Monolith — photograph 3",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recPWKdUbLnAvXxmU",
+      "name": "ÖÖD The Big Monolith"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "The Big Monolith and a smaller unit in a wide snowy landscape, showing its length",
+    "Source URL": "https://lh3.googleusercontent.com/d/1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: The Big Monolith. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recltDvzNQhm2F3SP",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Möön House — photograph 1",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reciFE98KRWuAhBwP",
+      "name": "ÖÖD Möön House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Möön House with a full-height glass corner, curtains drawn back, on open moorland",
+    "Source URL": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Möön House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recnv5jMRfZR32Sgv",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Signature House — photograph 4",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recoQZlqmpfv3T5bz",
+      "name": "ÖÖD Signature House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Inside a Signature House: bed, kitchenette and floor-to-ceiling glass onto trees",
+    "Source URL": "https://lh3.googleusercontent.com/d/1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Signature House. Required credit: ÖÖD House; photographer: Ragnar Hartvig. Location: Furu, Norway. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recrXC0oZzKJCOgXI",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Signature House — photograph 3",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recoQZlqmpfv3T5bz",
+      "name": "ÖÖD Signature House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Signature House at sunset on open grassland beside a small timber sauna",
+    "Source URL": "https://lh3.googleusercontent.com/d/1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Signature House. Required credit: ÖÖD House. Location: Roosisaare, Estonia. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recreVS6GWDvjQuEi",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Extended House — photograph 2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recGGCVFmV7lY1zkj",
+      "name": "ÖÖD Extended House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "A timber-clad Extended House on a boardwalk in an open volcanic landscape",
+    "Source URL": "https://lh3.googleusercontent.com/d/1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Extended House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recvHKzv3ojOozJCG",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Möön House — photograph 3",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "reciFE98KRWuAhBwP",
+      "name": "ÖÖD Möön House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Möön House and a small sauna seen from above beside a gravel track",
+    "Source URL": "https://lh3.googleusercontent.com/d/1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Möön House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "recyz2arjsX1KE6dq",
+   "createdTime": "2026-10-14T14:41:18.000Z",
+   "fields": {
+    "Asset Name": "ÖÖD Extended House — photograph 1",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recGGCVFmV7lY1zkj",
+      "name": "ÖÖD Extended House"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "rec2URqKyVwlhHSBw",
+      "name": "ÖÖD House"
+     }
+    ],
+    "Alt Text": "Extended House with its long mirrored side reflecting dark hills and cloud",
+    "Source URL": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=w1600",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Extended House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  }
+ ]
+}

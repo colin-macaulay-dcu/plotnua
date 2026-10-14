@@ -49,6 +49,7 @@ Run:  python3 .github/scripts/apply_authorised_imagery.py           apply
 import copy
 import json
 import pathlib
+import re
 import sys
 from urllib.parse import urlparse
 
@@ -202,11 +203,17 @@ def permitted(grant, url):
 # product's name -- that would misrepresent what the homeowner would receive,
 # which is the whole reason the link is carried rather than assumed.
 #
-# Sourced from Atlas Assets (tblFMzOKcNQTjXVYS) on 29 September 2026, filtered
-# to Rights Status 'Supplier Provided' and Publication Status 'Approved'.
-# Regenerating from Atlas directly is the generator's job; this list exists so
-# the post-pass is reproducible without AIRTABLE_TOKEN.
-ATLAS_ASSETS = [
+# TWO SOURCES, ONE RULE. The hand list below was read from Atlas Assets
+# (tblFMzOKcNQTjXVYS) on 29 September 2026 (Powersheds, Yard Box). Every later
+# organisation is read from Atlas into atlas-tools/approved-image-assets-v1.json
+# -- the Atlas REST shape, refreshed per organisation by
+# atlas-tools/publish-targeted-update.py -- and converted by
+# atlas_asset_rows() below, which applies the Atlas-side eligibility: Rights
+# Status 'Supplier Provided', Publication Status 'Approved', a recorded medium
+# (photograph or visualisation) and a product link. An Asset record existing is
+# never enough; the live grant, scoped prefix and product link are still
+# checked in resolve() exactly as for the hand list.
+HAND_ASSETS = [
     {
         "asset": "rec4Kr7TpqB6j15J1",
         "organisation": "Powersheds",
@@ -287,224 +294,79 @@ ATLAS_ASSETS = [
         # isolated product shot. No stronger candidate exists.
         "products": ["recLEonLKyhNTUiAt"],
     },
-
-    # ---- ÖÖD HOUSE -------------------------------------------------------
-    # Created in Atlas 14 October 2026 (Assets, Rights Status 'Supplier
-    # Provided', Publication Status 'Approved') for the founder's ÖÖD targeted
-    # publication brief. Grant: image-rights-records.json, ÖÖD House, IPO-007
-    # (Gertrud Ots, 14 Oct 2026), scoped PER DRIVE FILE on lh3.googleusercontent
-    # .com -- each url below sits inside its own /d/<file id>= prefix and no
-    # other. PRODUCT ASSOCIATION IS ÖÖD'S OWN FOLDER: every photograph is linked
-    # to the one model its folder in ÖÖD's library names, and to nothing else.
-    # 28 of the 41 scoped files: the 12 sauna photographs have no Atlas product,
-    # and Extended House file 126bHQPCLpLoZE2C7qddQ-v__3gR85Hmg is held because
-    # it may be a computer rendering and nothing records which (a visualisation
-    # must never be shown as a photograph). Where ÖÖD's filename names the
-    # photographer, they are credited by name after the required credit.
-    {
-        "asset": "recQNpx3vprHXsh0p",  # ÖÖD Signature House — photograph 1
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=w1600",
-        "alt": "Signature House among lupins and trees, its mirrored walls reflecting the sky",
-        "photographer": "Katherine Berke",
-        "products": ["recoQZlqmpfv3T5bz"],
-    },
-    {
-        "asset": "rec8KhBjYMtCRdl49",  # ÖÖD Signature House — photograph 2
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0=w1600",
-        "alt": "Signature House on a timber deck with loungers, mirrored glass reflecting pine trees",
-        "photographer": "Valmarifoto",
-        "products": ["recoQZlqmpfv3T5bz"],
-    },
-    {
-        "asset": "recrXC0oZzKJCOgXI",  # ÖÖD Signature House — photograph 3
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i=w1600",
-        "alt": "Signature House at sunset on open grassland beside a small timber sauna",
-        "products": ["recoQZlqmpfv3T5bz"],
-    },
-    {
-        "asset": "recnv5jMRfZR32Sgv",  # ÖÖD Signature House — photograph 4
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG=w1600",
-        "alt": "Inside a Signature House: bed, kitchenette and floor-to-ceiling glass onto trees",
-        "photographer": "Ragnar Hartvig",
-        "products": ["recoQZlqmpfv3T5bz"],
-    },
-    {
-        "asset": "recaxWkZap8xgHDQQ",  # ÖÖD Glämping House — photograph 1
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=w1600",
-        "alt": "Glämping House on a timber deck in high desert at sunrise, with a telescope outside",
-        "photographer": "Marcario Photo",
-        "products": ["recyc7vNON16NzYFD"],
-    },
-    {
-        "asset": "rec8gJrdjRE9ZTpTD",  # ÖÖD Glämping House — photograph 2
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ=w1600",
-        "alt": "Glämping House under a starry sky on a timber deck with two chairs",
-        "products": ["recyc7vNON16NzYFD"],
-    },
-    {
-        "asset": "recH8zAktYe1fwOZo",  # ÖÖD Glämping House — photograph 3
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_=w1600",
-        "alt": "Glämping House lit from within at night, the bedroom visible through the glass",
-        "products": ["recyc7vNON16NzYFD"],
-    },
-    {
-        "asset": "recI6MPe9X3d166TN",  # ÖÖD Glämping House — photograph 4
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv=w1600",
-        "alt": "Glämping House seen from a distance across open scrubland, showing its scale",
-        "photographer": "Marcario Photo",
-        "products": ["recyc7vNON16NzYFD"],
-    },
-    {
-        "asset": "recyz2arjsX1KE6dq",  # ÖÖD Extended House — photograph 1
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=w1600",
-        "alt": "Extended House with its long mirrored side reflecting dark hills and cloud",
-        "products": ["recGGCVFmV7lY1zkj"],
-    },
-    {
-        "asset": "recreVS6GWDvjQuEi",  # ÖÖD Extended House — photograph 2
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa=w1600",
-        "alt": "A timber-clad Extended House on a boardwalk in an open volcanic landscape",
-        "products": ["recGGCVFmV7lY1zkj"],
-    },
-    {
-        "asset": "recOkzwdhI2ByNfhY",  # ÖÖD Extended House — photograph 3
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI=w1600",
-        "alt": "Extended House on a boardwalk among lava fields, with a mountain behind",
-        "products": ["recGGCVFmV7lY1zkj"],
-    },
-    {
-        "asset": "recSHXVbzqzkbGF00",  # ÖÖD Extended House — photograph 4
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y=w1600",
-        "alt": "Inside an Extended House: a long room with a table, kitchen and glass along one side",
-        "products": ["recGGCVFmV7lY1zkj"],
-    },
-    {
-        "asset": "rec7V4hnbaDLGRCl3",  # ÖÖD Mobile House — photograph 1
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=w1600",
-        "alt": "Mobile House among pine trees beside a timber deck with red chairs",
-        "products": ["reczasgBzBbqP1lBg"],
-    },
-    {
-        "asset": "recfgvR5hYlgNcZib",  # ÖÖD Mobile House — photograph 2
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM=w1600",
-        "alt": "The mirrored end of a Mobile House beyond its deck, reflecting the woodland",
-        "products": ["reczasgBzBbqP1lBg"],
-    },
-    {
-        "asset": "recaMgZPzSbQ5IIx8",  # ÖÖD Mobile House — photograph 3
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh=w1600",
-        "alt": "Inside a Mobile House: a bed and table beside full-height glass onto the trees",
-        "products": ["reczasgBzBbqP1lBg"],
-    },
-    {
-        "asset": "recdTUXyublD5FGhq",  # ÖÖD Glääzy House — photograph 1
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=w1600",
-        "alt": "Glääzy House with its pitched glass end among low trees and heather",
-        "products": ["recl9ITOz7WlqPPBn"],
-    },
-    {
-        "asset": "recUjhEFw0d4006R1",  # ÖÖD Glääzy House — photograph 2
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW=w1600",
-        "alt": "Glääzy House from a lower angle, dark cladding and mirrored glass in scrubland",
-        "products": ["recl9ITOz7WlqPPBn"],
-    },
-    {
-        "asset": "recYsiePLBpxHsPSz",  # ÖÖD Glääzy House — photograph 3
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F=w1600",
-        "alt": "Glääzy House lit from within at dusk in a snowy landscape",
-        "products": ["recl9ITOz7WlqPPBn"],
-    },
-    {
-        "asset": "recdVvdyz2dF94OLP",  # ÖÖD Glääzy House — photograph 4
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20=w1600",
-        "alt": "Looking up from the bed in a Glääzy House through its glass roof and gable",
-        "photographer": "Even Tryggstrand",
-        "products": ["recl9ITOz7WlqPPBn"],
-    },
-    {
-        "asset": "recltDvzNQhm2F3SP",  # ÖÖD Möön House — photograph 1
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=w1600",
-        "alt": "Möön House with a full-height glass corner, curtains drawn back, on open moorland",
-        "products": ["reciFE98KRWuAhBwP"],
-    },
-    {
-        "asset": "recde6iunyLgEYvzT",  # ÖÖD Möön House — photograph 2
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk=w1600",
-        "alt": "Möön House from above on a dark deck in green moorland",
-        "products": ["reciFE98KRWuAhBwP"],
-    },
-    {
-        "asset": "recvHKzv3ojOozJCG",  # ÖÖD Möön House — photograph 3
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2=w1600",
-        "alt": "Möön House and a small sauna seen from above beside a gravel track",
-        "products": ["reciFE98KRWuAhBwP"],
-    },
-    {
-        "asset": "recQhN9ar0gKhQVci",  # ÖÖD Möön House — photograph 4
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/14OqokuAczh_R0finpF-szBWogsOrVd48=w1600",
-        "alt": "Möön House under a cloudy sky, glass on two sides and dark cladding",
-        "products": ["reciFE98KRWuAhBwP"],
-    },
-    {
-        "asset": "recjIJcgO4dHq7H65",  # ÖÖD Möön House — photograph 5
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx=w1600",
-        "alt": "Inside a Möön House: a glass corner looking out across open landscape",
-        "products": ["reciFE98KRWuAhBwP"],
-    },
-    {
-        "asset": "recV5xOE7fjYvOUMD",  # ÖÖD The Big Monolith — photograph 1
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=w1600",
-        "alt": "The Big Monolith on mossy ground, its long mirrored side reflecting cloud and hills",
-        "products": ["recPWKdUbLnAvXxmU"],
-    },
-    {
-        "asset": "recE2XDcjJHVtaL21",  # ÖÖD The Big Monolith — photograph 2
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS=w1600",
-        "alt": "The Big Monolith in snow, its glass reflecting a mountain",
-        "products": ["recPWKdUbLnAvXxmU"],
-    },
-    {
-        "asset": "reclLDeJPPySyGSZU",  # ÖÖD The Big Monolith — photograph 3
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK=w1600",
-        "alt": "The Big Monolith and a smaller unit in a wide snowy landscape, showing its length",
-        "products": ["recPWKdUbLnAvXxmU"],
-    },
-    {
-        "asset": "recIijCYifQXab6Z6",  # ÖÖD The Big Monolith — photograph 4
-        "organisation": "ÖÖD House",
-        "url": "https://lh3.googleusercontent.com/d/1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s=w1600",
-        "alt": "Inside The Big Monolith: a bedroom with glass walls onto the landscape",
-        "photographer": "Ingibergur Thor",
-        "products": ["recPWKdUbLnAvXxmU"],
-    },
 ]
+
+
+ASSET_FILE = REPO / "atlas-tools" / "approved-image-assets-v1.json"
+PHOTOGRAPHER_RE = re.compile(r"photographer:\s*([^.;]+?)\s*(?:\.|;|$)", re.I)
+
+
+def asset_medium(notes, alt):
+    """'photograph', 'visualisation', or None when the record does not say.
+
+    A visualisation must never be shown as a photograph, so an asset whose
+    record does not state its medium is refused, and a visualisation is only
+    usable when its alt text says so to the reader."""
+    n = (notes or "").lower()
+    if "visualisation" in n or "visualization" in n or "rendering" in n or "cgi" in n:
+        return "visualisation" if (alt or "").lower().startswith("visualisation") else None
+    if "photograph" in n:
+        return "photograph"
+    return None
+
+
+def atlas_asset_rows(doc, refused=None):
+    """Atlas Asset records -> the hand-list entry shape. Ineligible records
+    are skipped and, when `refused` is a list, recorded there with the reason."""
+    out = []
+    for r in sorted(doc.get("records") or (), key=lambda r: (
+            str((r["fields"].get("Organisations") or [{}])[0].get("name")),
+            [p.get("id") for p in r["fields"].get("Products") or ()],
+            r["fields"].get("Display Order") or 0, r["id"])):
+        f = r.get("fields") or {}
+        why = None
+        if f.get("Rights Status") != "Supplier Provided":
+            why = "Rights Status is %r" % f.get("Rights Status")
+        elif f.get("Publication Status") != "Approved":
+            why = "Publication Status is %r" % f.get("Publication Status")
+        elif not f.get("Products"):
+            why = "not linked to a product"
+        elif len(f.get("Organisations") or ()) != 1:
+            why = "not linked to exactly one organisation"
+        elif not f.get("Source URL") or not f.get("Alt Text"):
+            why = "no source url or alt text"
+        elif not asset_medium(f.get("Notes"), f.get("Alt Text")):
+            why = "medium (photograph or visualisation) not recorded"
+        if why:
+            if refused is not None:
+                refused.append((r["id"], why))
+            continue
+        e = {"asset": r["id"],
+             "organisation": f["Organisations"][0]["name"],
+             "url": f["Source URL"],
+             "alt": f["Alt Text"],
+             "products": [p["id"] for p in f["Products"]]}
+        m = PHOTOGRAPHER_RE.search(f.get("Notes") or "")
+        if m:
+            e["photographer"] = m.group(1)
+        out.append(e)
+    return out
+
+
+def load_atlas_assets(path=None):
+    path = pathlib.Path(path or ASSET_FILE)
+    if not path.exists():
+        return list(HAND_ASSETS)
+    rows = atlas_asset_rows(json.loads(path.read_text(encoding="utf-8")))
+    hand_orgs = {a["organisation"] for a in HAND_ASSETS}
+    clash = hand_orgs & {a["organisation"] for a in rows}
+    if clash:
+        raise SystemExit("ABORT: %s is in both the hand list and %s"
+                         % (", ".join(sorted(clash)), path.name))
+    return list(HAND_ASSETS) + rows
+
+
+ATLAS_ASSETS = load_atlas_assets()
 
 
 def resolve(products, grants):

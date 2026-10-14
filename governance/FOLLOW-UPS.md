@@ -502,3 +502,28 @@ OPEN:
   garden-room records" (frozen Cluster 1 evidence, 7 Oct); the universe is now
   572 after the Cosy Cabins hold. Refresh that evidence at the next Cluster 1
   update.
+
+## 14 Oct 2026 — targeted supplier publication (publish-targeted-update.py)
+
+Supplier updates now go through atlas-tools/publish-targeted-update.py
+(dry run -> report -> --apply -> --commit; never pushes). It reproduces the
+ÖÖD seven-product update (7cf158d) byte-for-byte from 23bad4c, and
+apply-ood-house-targeted-update.py is retired. Regression:
+atlas-tools/test-publish-targeted-update.py (R1 + T1-T12).
+
+* MX-G1-CONFIRMED · FIXED 14 Oct 2026. build-maker-explorer.py's G1 compared
+  the listed Irish-confirmed count with the universe header's
+  confirmedIrishAvailabilityCount, which also counts EXCLUDED products. A
+  held or preview-requested product with confirmed Irish availability would
+  have made G1 refuse a correct build (a full refresh included). G1 now
+  checks against each listed record's own qualification signal. Output today
+  is unchanged (263 = 263).
+* TU-LIMITS · OPEN. Not supported by targeted publication, by design, and
+  refused with a reason: Additional Home (header carries cross-category
+  counts), the Borrowed Garden and Power Station provider universes and the
+  evidence files (their own generators); a garden room that is eligible but
+  unpublished and predates the last refresh (whether the refresh counted it
+  as excluded is unknowable without the exclusions audit, which is not
+  committed); Powersheds and Yard Box imagery until their hand-listed assets
+  move to approved-image-assets-v1.json. Homepage figures are the Atlas
+  census (atlas-stats.yml) and are not publication counts.

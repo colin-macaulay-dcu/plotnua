@@ -37,11 +37,11 @@ CHECK = "--check" in sys.argv
 SIZE_GUARD = 180 * 1024
 
 # The universe this contract was frozen against.
-# RE-FROZEN 14 Oct 2026, deliberately, for the ÖÖD House targeted update
-# (atlas-tools/apply-ood-house-targeted-update.py). Was db4ecb7ff99ebaa0...;
-# the only universe change is the seven ÖÖD products (Irish availability
-# confirmed, tier WITH_CAVEAT -> HIGH_CONFIDENCE, installation axis UNKNOWN,
-# authorised imagery). Every other product is byte-identical.
+# RE-FROZEN deliberately, never silently. Since 14 Oct 2026 a supplier update
+# moves this pin only through atlas-tools/publish-targeted-update.py, after
+# its boundary check has proved every record outside the update byte-
+# identical; each such re-freeze is logged in governance/SEARCH-V1-CONTRACT.md
+# (TARGETED-UPDATE RE-FREEZES) with the update's report.
 BASE_UNIVERSE_SHA = "c64fe26ebb5b5cf35abe0abe3e6effa82845a81f24f627ab974624bfdcc9d3c7"
 
 ALLOWED_FIELDS = {

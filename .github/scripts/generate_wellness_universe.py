@@ -228,6 +228,56 @@ def qualify(p, org, price, kinds):
             "heldReasons": held, "excludedReasons": excluded}
 
 
+SORT_KEY = lambda r: (r["organisation"] or "", r["productName"].lower())
+
+
+def summarise(emitted, snapshot_sha, snapshot_scope, source_count):
+    """Every header field the universe derives from its records, in the order
+    the artefact has always carried them. Shared with the targeted publisher
+    (atlas-tools/publish-targeted-update.py), which re-derives the header of a
+    spliced product list with THIS function rather than its own copy."""
+    public = [r for r in emitted if r["qualification"]["state"] == "ELIGIBLE"
+              and r["publicVisibility"] == "PUBLISHABLE"]
+    count = lambda s: sum(1 for r in emitted if r["qualification"]["state"] == s)
+    return {
+        "publicationGate": {
+            "version": "supplier-publication-gate-v1",
+            "rule": ("public visibility is derived from permission state, "
+                     "listing-review state and asset approval by the Additional "
+                     "Home generator's gate index, without its legacy baseline. "
+                     "An organisation with no rights record holds unless the "
+                     "founder's public-information register (14 Oct 2026) lists it, "
+                     "in which case each product also needs a VERIFIED product page; "
+                     "that basis is factual text only, never permission or imagery. "
+                     "A product is public only when ELIGIBLE and PUBLISHABLE."),
+            "publicInformationRegister": "atlas-tools/public-information-listings.json",
+            "publicInformationOrganisations": sorted({r["organisation"] for r in emitted
+                                                     if r["listingBasis"] == PUBLIC_INFORMATION}),
+            "heldOrganisations": sorted({r["organisation"] for r in emitted
+                                         if r["publicVisibility"] == "HOLD" and r["organisation"]}),
+        },
+        "snapshotSha256": snapshot_sha,
+        "snapshotScope": snapshot_scope,
+        "sourceCategory": CATEGORY,
+        "sourceCategoryCount": source_count,
+        # eligibleCount counts what a homeowner may see: ELIGIBLE AND PUBLISHABLE.
+        "eligibleCount": len(public),
+        "organisationCount": len({r["organisation"] for r in public}),
+        # Public products per kind (a dual-use product counts under each kind
+        # it carries), so a page that shows one kind can be held to a header.
+        "kindCounts": {k: sum(1 for r in public if k in r["kinds"]) for k in KINDS},
+        "kindOrganisationCounts": {k: len({r["organisation"] for r in public if k in r["kinds"]})
+                                   for k in KINDS},
+        "heldCount": count("HELD"),
+        "excludedCount": count("EXCLUDED"),
+        "gateHeldCount": sum(1 for r in emitted if r["qualification"]["state"] == "ELIGIBLE"
+                             and r["publicVisibility"] != "PUBLISHABLE"),
+        "listingBasisCounts": {b: sum(1 for r in public if r["listingBasis"] == b)
+                               for b in (SUPPLIER_PERMISSION, PUBLIC_INFORMATION)},
+        "products": emitted,
+    }
+
+
 def main():
     ap = argparse.ArgumentParser(description="Wellness / Sauna universe (snapshot only).")
     ap.add_argument("--snapshot", required=True)
@@ -293,50 +343,12 @@ def main():
         if r["qualification"]["state"] == "ELIGIBLE" and r["publicVisibility"] == "PUBLISHABLE":
             u = url_of.get(r["id"])
             r["productUrl"] = u if u and u.startswith("https://") else None
-    emitted.sort(key=lambda r: (r["organisation"] or "", r["productName"].lower()))
-    public = [r for r in emitted if r["qualification"]["state"] == "ELIGIBLE"
-              and r["publicVisibility"] == "PUBLISHABLE"]
-    count = lambda s: sum(1 for r in emitted if r["qualification"]["state"] == s)
-    payload = {
-        "schema": SCHEMA, "version": VERSION,
-        "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "qualificationRuleVersion": RULE_VERSION,
-        "publicationGate": {
-            "version": "supplier-publication-gate-v1",
-            "rule": ("public visibility is derived from permission state, "
-                     "listing-review state and asset approval by the Additional "
-                     "Home generator's gate index, without its legacy baseline. "
-                     "An organisation with no rights record holds unless the "
-                     "founder's public-information register (14 Oct 2026) lists it, "
-                     "in which case each product also needs a VERIFIED product page; "
-                     "that basis is factual text only, never permission or imagery. "
-                     "A product is public only when ELIGIBLE and PUBLISHABLE."),
-            "publicInformationRegister": "atlas-tools/public-information-listings.json",
-            "publicInformationOrganisations": sorted({r["organisation"] for r in emitted
-                                                     if r["listingBasis"] == PUBLIC_INFORMATION}),
-            "heldOrganisations": sorted({r["organisation"] for r in emitted
-                                         if r["publicVisibility"] == "HOLD" and r["organisation"]}),
-        },
-        "snapshotSha256": hashlib.sha256(raw_bytes).hexdigest(),
-        "snapshotScope": raw.get("source", ""),
-        "sourceCategory": CATEGORY,
-        "sourceCategoryCount": len(src),
-        # eligibleCount counts what a homeowner may see: ELIGIBLE AND PUBLISHABLE.
-        "eligibleCount": len(public),
-        "organisationCount": len({r["organisation"] for r in public}),
-        # Public products per kind (a dual-use product counts under each kind
-        # it carries), so a page that shows one kind can be held to a header.
-        "kindCounts": {k: sum(1 for r in public if k in r["kinds"]) for k in KINDS},
-        "kindOrganisationCounts": {k: len({r["organisation"] for r in public if k in r["kinds"]})
-                                   for k in KINDS},
-        "heldCount": count("HELD"),
-        "excludedCount": count("EXCLUDED"),
-        "gateHeldCount": sum(1 for r in emitted if r["qualification"]["state"] == "ELIGIBLE"
-                             and r["publicVisibility"] != "PUBLISHABLE"),
-        "listingBasisCounts": {b: sum(1 for r in public if r["listingBasis"] == b)
-                               for b in (SUPPLIER_PERMISSION, PUBLIC_INFORMATION)},
-        "products": emitted,
-    }
+    emitted.sort(key=SORT_KEY)
+    payload = dict({"schema": SCHEMA, "version": VERSION,
+                    "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    "qualificationRuleVersion": RULE_VERSION},
+                   **summarise(emitted, hashlib.sha256(raw_bytes).hexdigest(),
+                               raw.get("source", ""), len(src)))
     out = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     for bad in ("health", "therapeutic", "vat included", "including vat",
                 "free delivery", "installation included", "lead time"):
