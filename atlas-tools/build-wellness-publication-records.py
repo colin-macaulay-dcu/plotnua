@@ -32,6 +32,29 @@ IRISH SAUNA COMPANY (Gmail thread 1a0fd83ddde922b1)
 
 Neither row gains approved_assets. Imagery is not extended by this builder.
 
+ÖÖD HOUSE (Gmail thread 1a088713c8eccf73) — added 14 Oct 2026 on the founder's
+clarification ("ÖÖD correspondence"), a garden-room maker, recorded here so
+every explicit publication state lives in one bounded builder.
+  9 Sep  PlotNua told ÖÖD it had "included published information about ...
+         ÖÖD House" and asked "for permission to use a small selection of your
+         product photographs on PlotNua so homeowners can see the actual
+         buildings alongside the information we hold about them", own products
+         only, ÖÖD identified, unaltered, no implied endorsement,
+         recommendation or residential suitability, displayed on plotnua.ie;
+         "If you already have a ... image library ..., a link to that is
+         perfect" (1a08876b76df3f50).
+  14 Oct Gertrud Ots, Head of Marketing, answered that request (quoted
+         beneath) with ÖÖD's photo library by product (1a139105565814d0).
+  14 Oct Keir Tetsmann answered PlotNua's two Irish questions
+         (1a13a4b45780ba3b). Neither asked to review anything.
+  SCOPE, AND NO WIDER: featuring ÖÖD's products with PlotNua's information,
+  and displaying photographs from that library on plotnua.ie for the model
+  each shows. Not social media, advertising, redistribution or alteration.
+  LISTING REVIEW: NOT_REQUIRED. ÖÖD did not ask for one. PlotNua OFFERED a
+  private preview on 14 Oct (1a13993898984e9b); the offer was not taken up,
+  and the founder ruled on 14 Oct that a private preview existing creates no
+  review requirement. The imagery stays scoped per Drive file (unchanged).
+
   python3 atlas-tools/build-wellness-publication-records.py [--check]
 """
 import json
@@ -43,6 +66,38 @@ RECORDS = ROOT / "image-rights-records.json"
 CHECK = "--check" in sys.argv
 
 ROWS = {
+    "ÖÖD House": {
+        "permission": {
+            "state": "GRANTED", "ref": "IPO-007", "record": "recqvHdcTwNdBRszM",
+            "date": "2026-10-14",
+            "scope": ["feature", "imagery"],
+            "conditions": ["own-products-only", "plotnua-ie-only", "credit", "link-back",
+                           "unmodified-hotlink", "right-model-only",
+                           "no-implied-endorsement-recommendation-or-residential-suitability",
+                           "no-advertising-redistribution-or-resale", "withdrawable-on-request"],
+            "asked": "PlotNua, 9 Sep 2026 (Gmail 1a08876b76df3f50): having \"included published "
+                     "information about ... ÖÖD House\", asked \"for permission to use a small "
+                     "selection of your product photographs on PlotNua so homeowners can see the "
+                     "actual buildings alongside the information we hold about them\"; own "
+                     "products only, ÖÖD identified, unaltered, displayed on plotnua.ie.",
+            "answered": "\"Here you can find our photos by products: "
+                        "https://drive.google.com/drive/folders/1Lm1aTPvVA_WkEEy4rBJsZ8zSa_mYbEPj\" "
+                        "(Gertrud Ots, Head of Marketing, 14 Oct 2026, Gmail 1a139105565814d0, "
+                        "replying to the request quoted beneath it)",
+            "note": "Reconciled 14 Oct 2026 against the correspondence. 'feature' rests on the "
+                    "request's own premise (PlotNua's information about ÖÖD, shown with the "
+                    "photographs), which ÖÖD answered by supplying the library; the 2 Oct YES "
+                    "follow-up was not itself answered. Imagery remains scoped per Drive file in "
+                    "permitted_delivery_hosts; no other image is covered.",
+        },
+        "listing_review": {
+            "state": "NOT_REQUIRED", "requested_by": None, "requested_in": None,
+            "note": "ÖÖD did not ask to review a listing (Gertrud 1a139105565814d0; Keir "
+                    "1a13a4b45780ba3b). PlotNua offered a private preview on 14 Oct "
+                    "(1a13993898984e9b); it was not requested or sent. Founder ruling, 14 Oct "
+                    "2026: a private preview existing creates no supplier-review requirement.",
+        },
+    },
     "Tanktribe": {
         "permission": {
             "state": "GRANTED", "ref": "WELLNESS-FIRST-TANKTRIBE-20261002",
@@ -117,9 +172,9 @@ def main():
     if CHECK:
         if new != cur:
             print("CHECK FAILED: image-rights-records.json is out of date"); sys.exit(1)
-        print("Wellness publication records · CHECK OK — Tanktribe, Irish Sauna Company"); return
+        print("Publication records · CHECK OK — " + ", ".join(ROWS)); return
     RECORDS.write_text(new, encoding="utf-8")
-    print("Wellness publication records · APPLIED — Tanktribe, Irish Sauna Company")
+    print("Publication records · APPLIED — " + ", ".join(ROWS))
 
 
 if __name__ == "__main__":
