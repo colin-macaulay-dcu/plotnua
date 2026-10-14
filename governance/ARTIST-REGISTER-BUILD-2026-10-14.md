@@ -222,3 +222,69 @@ Then follow up with a committed close.
 
 **Variant: soft opening.** Steps 2–4 can be done without the A Home for Art link and sitemap entry, so the page is reachable only from a shared link. The link is added in a later commit. It is safer, but nobody finds the page unprompted.
 
+
+## 10 · Founder approval to open, and the opening commit (14 October 2026, 20:33)
+
+**Approval.** Colin MacAulay, founder, 14 October 2026 (20:33): "I approve proceeding with the public opening of the PlotArt Artist Register and its integration into A Home for Art, subject to the final checks below." Recorded in `ARTIST_OPEN_APPROVAL["founder_approval"]`; the opening approval is now 5 of 5. Publication (push and Worker deploy) awaits the founder's separate confirmation.
+
+### What the opening commit does
+
+- **A Home for Art, "Take part".** One section in the PlotArt part of the page ("Where This Could Go"), directly after "This matching service is not live yet.", using the page's existing pathway cards (`.hfa-path`):
+  - "I have a space for art" → `disc024-open-your-home-to-art.html?start=1` (the existing check; its result offers the existing Art Space Register);
+  - "I'm an artist looking for space" → `artist-register.html`;
+  - the shared line: "Both are expressions of interest only: free, private and non-binding. Nothing is matched or arranged, and PlotNua has not verified any space or artist."
+  - Rendered by `build-a-home-for-art-merge.py` (every word declared for guard M1) only while `ARTIST_PUBLIC` is True; checked by guard A11. Two cards side by side on desktop, stacked on mobile.
+- **Artist Register page open.** `ARTIST_PUBLIC = True`: indexable, no preview label, form visible.
+- **Privacy Section 8.** "When registrations open, artists will be able to join through PlotArt's Artist Register page." → "Artists can join through PlotArt's Artist Register page while registrations are open." Applied with `build-privacy-v5.py --amend-s8`. Version stays `2026-10-PHASE2-V5`; Last updated label unchanged; nothing else in the notice changes (W1–W7 pass).
+- **Sitemap.** `artist-register.html` added once, after A Home for Art (written by the artist builder; guard A10).
+- **Worker configuration.** `ARTIST_WRITES_ENABLED = "true"` in `wrangler.toml`. Takes effect only on deploy.
+- **Unchanged:** the homeowner check, its register form, the `/host` route and the Hosts table (guards R1–R14 and A12).
+
+### Operations from opening day
+
+**Weekly review (both registers).** Once a week, the founder opens both tables:
+1. **Hosts** and **Artists**: read every new row. Screen free text (`host_note`; `statement` and `portfolio`) for third-party personal data, addresses, Eircodes or phone numbers, and remove or ask about anything that should not be held. Fill `human_review_by` and `human_review_at`.
+2. **Spam:** delete obvious junk (then its Consent proofs and Status log rows, as below). The Worker caps each register at 25 registrations a day.
+3. **Withdrawals:** act on every request to hello@plotnua.ie (below).
+4. **Review trigger:** count genuine registrations in each table. The review is due at **10 genuine registrations or 8 weeks after opening, whichever comes first** (each register separately).
+
+**Withdrawal and deletion (on request to hello@plotnua.ie, or for spam).**
+1. Find the person's row in Hosts or Artists.
+2. Delete that row, then its Consent proofs and Status log rows (matched by the shared timestamp; for artists also `register = artist`).
+3. Add one anonymous Deletion log row: the reason (withdrawal, or other) and `register` (host or artist). No name or email.
+4. Reply to confirm. Nothing about the person remains (Airtable's trash keeps a deleted row for 7 days, as the notice says).
+
+**Retention.** Each row's `erase_after` is 12 months after `submitted_at`. The first can fall due in October 2027.
+
+### Airtable views
+
+The Airtable connector available to Claude can list views but cannot create them (checked 14 Oct 2026: Artists and Hosts each have only "Grid view"). **Manual setup, about two minutes:**
+
+*"Statements to screen" (create before or on opening day):*
+1. Open the base "PlotNua Art Space Register" → table **Artists**.
+2. Views sidebar → **Create… → Grid** → name it `Statements to screen`.
+3. **Filter → Add condition:** `statement` *is not empty*. Then **Add condition → Or**: `portfolio` *is not empty*.
+4. **Add condition** group (And): `human_review_at` *is empty*. (A row leaves the view once it has been reviewed.)
+5. **Sort:** `submitted_at`, oldest first.
+6. Repeat in **Hosts** with the same name: filter `host_note` *is not empty* AND `human_review_at` *is empty*; sort by `submitted_at`.
+
+*"Erasure due" (not needed until October 2027; does not delay opening):* in each table, a Grid view filtered `erase_after` *is on or before* *today*, sorted by `erase_after`.
+
+### Publication sequence (founder, after confirming)
+
+Order chosen so the public artist form is **never visible while the route is closed**: the Worker opens first, the page second.
+1. Apply the patch on the Mac (the usual `git am` step) and check the tree hash.
+2. **Deploy the Worker first**, from the committed configuration:
+   `cd worker/art-space-register && npx wrangler@4.151.0 deploy`
+   Check that the bindings show `ARTIST_WRITES_ENABLED ("true")`, `WRITES_ENABLED ("true")` and both privacy versions `2026-10-PHASE2-V5`.
+   - Until the push, the live artist page is still closed (form removed), so nobody can reach the open route from the site.
+3. **Push immediately:** `git push origin HEAD:main`.
+4. When GitHub Pages has rebuilt (one to two minutes), check on plotnua.ie: the two cards on A Home for Art (desktop and phone); the artist form visible on `artist-register.html` with no preview label; the amended Section 8 sentence on `privacy.html`; `sitemap.xml` lists the artist page.
+5. No live test submission.
+
+### Rollback
+
+- **Fast close (seconds, no commit):** `npx wrangler@4.151.0 deploy --var ARTIST_WRITES_ENABLED:false`. The page stays up; the route refuses new artist registrations. The homeowner route is unaffected.
+- **Full rollback:** fast close first, then `git revert --no-edit <opening commit>` and push. The revert restores the closed page, removes the Take part section and the sitemap entry, restores the previous Section 8 sentence and sets the committed switch back to "false". Then a plain `npx wrangler@4.151.0 deploy` so the Worker matches the committed configuration.
+- **Worker only, to the closed version:** `npx wrangler@4.151.0 rollback 33f42f08-0729-4cc3-b666-a69703ef4274 --message "close artist route"`.
+- Registrations already received stay in Airtable under V5 consent; the rollback does not delete them.

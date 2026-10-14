@@ -58,6 +58,7 @@ GUARDS
 
 Usage:
   python3 atlas-tools/build-privacy-v5.py --check
+  python3 atlas-tools/build-privacy-v5.py --amend-s8     (one-sentence Section 8 amendment, 14 Oct 2026)
   python3 atlas-tools/build-privacy-v5.py --preview /tmp/privacy-v5-preview.html
 """
 import html as htmlmod
@@ -96,6 +97,19 @@ APPROVAL = {
 }
 APPROVAL_KEYS = ("founder_approval", "self_assessment", "risks_resolved", "last_updated")
 
+# EDITORIAL AMENDMENT TO PUBLISHED V5 (founder decision, 14 October 2026, 20:33).
+# One sentence in Section 8, so the notice stays true whether the Artist Register
+# is open or paused. The version stays 2026-10-PHASE2-V5 and the Last updated
+# label stays as approved; every other privacy commitment is unchanged. Applied
+# once with --amend-s8, which replaces exactly this sentence and nothing else.
+OLD_S8_SENTENCE = "When registrations open, artists will be able to join through PlotArt's Artist Register page."
+NEW_S8_SENTENCE = "Artists can join through PlotArt's Artist Register page while registrations are open."
+AMENDMENT = {
+    "s8_open_wording": "Colin MacAulay, founder, 14 October 2026 (20:33): approves the Section 8 amendment "
+                       "\"Artists can join through PlotArt's Artist Register page while registrations are open.\" "
+                       "V5 retained; editorial amendment only; all existing privacy commitments preserved.",
+}
+
 
 def _load(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
@@ -125,8 +139,8 @@ SUB_ARTISTS = "The Artist Register (artists)"
 ARTIST = [
     ("p", "The Artist Register is a list, kept privately by PlotNua, of artists who might be interested in "
           "displaying, showing, installing or storing their work in homes and gardens in Ireland, or in reaching "
-          "potential buyers through a home setting. When registrations open, artists will be able to join through "
-          "PlotArt's Artist Register page. Joining is "
+          "potential buyers through a home setting. Artists can join through PlotArt's Artist Register page while "
+          "registrations are open. Joining is "
           "voluntary and free, and it does not commit you to anything."),
     ("p", "PlotArt is in development. There is no matching service at present. PlotNua is not introducing artists "
           "to homeowners, there is no exhibition, booking or sales service, no payment is offered, and registering "
@@ -297,8 +311,9 @@ def guards(v4, v5):
     if v5.count(THIRD_NEW) != 1 or v5.index(THIRD_ANCHOR) > v5.index(THIRD_NEW) \
             or v5.index(THIRD_NEW) > v5.index("<h2>11. "):
         refuse("W6 Section 10 does not carry the Artist Register infrastructure sentence once, after the Art Space Register one")
-    if "When registrations open, artists will be able to join" not in s8t:
-        refuse("W3 Section 8 must say that artist registration opens later")
+    if "Artists can join through PlotArt's Artist Register page while registrations are open." not in s8t \
+            or OLD_S8_SENTENCE in s8t:
+        refuse("W3 Section 8 must say artists can join while registrations are open (founder amendment, 14 Oct 2026)")
     for kind, body in ARTIST:
         pieces += [plain(x) for x in ([body] if kind == "p" else body)]
     for p in pieces:
@@ -364,6 +379,22 @@ def approved():
 
 def main(argv):
     cur = PRIVACY.read_text(encoding="utf-8")
+    if "--amend-s8" in argv:
+        if not AMENDMENT.get("s8_open_wording", "").strip():
+            refuse("the Section 8 amendment is not approved")
+        if not published(cur):
+            refuse("V5 is not published; there is nothing to amend")
+        if cur.count(NEW_S8_SENTENCE) == 1 and OLD_S8_SENTENCE not in cur:
+            print("privacy.html: Section 8 amendment already applied")
+        elif cur.count(OLD_S8_SENTENCE) != 1 or NEW_S8_SENTENCE in cur:
+            refuse("the Section 8 sentence to amend is not found exactly once")
+        else:
+            cur = cur.replace(OLD_S8_SENTENCE, NEW_S8_SENTENCE, 1)
+            if not published_ok(cur):
+                refuse("the amended page does not carry exactly the governed V5 text")
+            PRIVACY.write_text(cur, encoding="utf-8")
+            print("privacy.html: Section 8 amendment APPLIED (V5 retained)")
+        argv = ["--check"]
     if "--apply" in argv:
         if not approved():
             refuse("V5 is NOT APPROVED for publication: APPROVAL must record the founder's approval of the exact "

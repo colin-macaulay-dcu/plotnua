@@ -43,7 +43,7 @@
 
 > The Artist Register (artists)
 
-> The Artist Register is a list, kept privately by PlotNua, of artists who might be interested in displaying, showing, installing or storing their work in homes and gardens in Ireland, or in reaching potential buyers through a home setting. When registrations open, artists will be able to join through PlotArt's Artist Register page. Joining is voluntary and free, and it does not commit you to anything.
+> The Artist Register is a list, kept privately by PlotNua, of artists who might be interested in displaying, showing, installing or storing their work in homes and gardens in Ireland, or in reaching potential buyers through a home setting. Artists can join through PlotArt's Artist Register page while registrations are open. Joining is voluntary and free, and it does not commit you to anything.
 
 > PlotArt is in development. There is no matching service at present. PlotNua is not introducing artists to homeowners, there is no exhibition, booking or sales service, no payment is offered, and registering does not guarantee an opportunity of any kind.
 
@@ -213,3 +213,7 @@ No material risk is left unresolved. Paid advice is not required under the found
 7. **Between steps 5 and 6**, for a few minutes, new homeowner records still say V4 while V5 is live. Their homeowner text is unchanged, word for word, so this is accurate in substance. The reverse order (V5 recorded before V5 is public) never happens.
 
 Opening the Artist Register remains a separate set of approvals (build note §5).
+
+## Amendment, 14 October 2026 (20:33)
+
+Founder decision: in Section 8, "When registrations open, artists will be able to join through PlotArt's Artist Register page." is replaced by "Artists can join through PlotArt's Artist Register page while registrations are open." Privacy version stays 2026-10-PHASE2-V5. Editorial amendment only: every other privacy commitment is unchanged. Applied with `build-privacy-v5.py --amend-s8`.

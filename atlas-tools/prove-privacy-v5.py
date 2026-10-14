@@ -19,6 +19,7 @@ Run: python3 atlas-tools/prove-privacy-v5.py
 """
 import hashlib
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -59,6 +60,9 @@ def case(label, path, old, new, args=None, expect="REFUSED"):
 
 ctl0 = run([PB, "--check"]).returncode == 0
 LIVE = "PLOTNUA-ARTIST-PRIVACY-V5" in PRIVACY.read_text(encoding="utf-8")
+# State-aware (founder approval to open the Artist Register, 14 Oct 2026, 20:33).
+ART_STATE = "OPEN" if re.search(r"^ARTIST_PUBLIC = True\b", (ROOT / "atlas-tools" / "build-artist-register.py")
+                                .read_text(encoding="utf-8"), re.M) else "CLOSED"
 
 # ---- Part A
 case("W1 builder text drifts from the draft", PB, "no payment is offered, and registering",
@@ -70,9 +74,9 @@ case("W1 a governed draft line not on the page", DRAFT, "> We keep your registra
 case("W3 no-automatic-sharing statement removed", PB, "Your details are not shared with homeowners, \"\n          \"automatically or otherwise. ", "\"\n          \"")
 case("W6 the Section 10 infrastructure sentence dropped", PB,
      '(THIRD_ANCHOR, THIRD_NEW, "Section 10 anchor"),\n                             ', '')
-case("W3 Section 8 says artists can already register", PB,
-     '"potential buyers through a home setting. When registrations open, artists will be able to join through "\n'
-     '          "PlotArt\'s Artist Register page. Joining is "',
+case("W3 Section 8 drops 'while registrations are open'", PB,
+     '"potential buyers through a home setting. Artists can join through PlotArt\'s Artist Register page while "\n'
+     '          "registrations are open. Joining is "',
      '"potential buyers through a home setting. You can join it from PlotArt\'s Artist Register page. Joining is "')
 case("W3 retention lengthened", PB, "We keep your registration for no longer than 12 months",
      "We keep your registration for no longer than 24 months")
@@ -144,7 +148,8 @@ try:
         ("V5 builder verifies the published page", [cb, "--check"], "PUBLISHED"),
         ("V4 builder still verifies the V4 text inside V5", [at("atlas-tools", "build-privacy-v4.py"), "--check"], "PUBLISHED"),
         ("homeowner register builder: R1-R14 pass, still OPEN", [at("atlas-tools", "build-art-space-register.py"), "--check"], "OPEN · CHECK OK"),
-        ("artist register builder: A1-A13 pass, still CLOSED", [at("atlas-tools", "build-artist-register.py"), "--check"], "CLOSED · CHECK OK"),
+        ("artist register builder: A1-A13 pass, " + ART_STATE, [at("atlas-tools", "build-artist-register.py"), "--check"],
+         ART_STATE + " · CHECK OK"),
         ("homeowner register proof on V5", [at("atlas-tools", "prove-art-space-register.py")], "PROVEN"),
         ("V4 proof on V5", [at("atlas-tools", "prove-privacy-v4.py")], "PROVEN"),
         ("Garden privacy proof on V5", [at("atlas-tools", "prove-g6-owner-register.py")], "0 failed"),
@@ -164,8 +169,8 @@ try:
     rehearsal.append(("--apply moved ONLY the homeowner PRIVACY_VERSION to V5",
                       LIVE or wr_after == wr_before.replace('\nPRIVACY_VERSION = "2026-10-PHASE2-V4"',
                                                             '\nPRIVACY_VERSION = "2026-10-PHASE2-V5"', 1) != wr_before, ""))
-    rehearsal.append(("artist route still closed after publication",
-                      'ARTIST_WRITES_ENABLED = "false"' in wr_after, ""))
+    rehearsal.append(("artist route switch matches the approved state (%s) after publication" % ART_STATE,
+                      ('ARTIST_WRITES_ENABLED = "%s"' % ("true" if ART_STATE == "OPEN" else "false")) in wr_after, ""))
     rehearsal.append(("homeowner submission handling (Worker code) untouched",
                       (clone / "worker" / "art-space-register" / "src" / "index.js").read_bytes() == worker_before, ""))
     d = subprocess.run(["git", "diff", "--name-only", "HEAD"], cwd=str(clone), capture_output=True, text=True).stdout.split()

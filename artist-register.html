@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Artist Register | PlotArt | PlotNua</title>
 <meta name="description" content="PlotArt is exploring new places for artists&rsquo; work in Irish homes and gardens. Register your interest: free, private and non-binding.">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/artist-register.html">
 
 <!-- Favicons — PlotNua Brand Package v1.0 -->
@@ -318,7 +318,6 @@
       <p class="ar-p"><strong>Registration isn&rsquo;t open yet.</strong> PlotArt&rsquo;s Artist Register is being prepared. When it opens, this is where you&rsquo;ll be able to register.</p>
     </div>
     <div class="ar-card" id="arCard" hidden>
-      <p class="ar-prev" id="arPrev">Private preview &middot; not public</p>
       <form class="ar-form" id="arForm" novalidate>
         <p class="ar-privline">The name you work under, an email address and where you&rsquo;re based. No home address, no phone number, no photographs.</p>
         <div class="ar-grid">
@@ -522,7 +521,7 @@
  * sentence exists once, written with textContent and sent verbatim. */
 (function () {
   'use strict';
-  var ARTIST_PUBLIC = false;
+  var ARTIST_PUBLIC = true;
   var ENDPOINT = "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/artist";
   var CONSENT_TEXT = "I confirm that I am 18 or over and consent to PlotNua storing my Artist Register details and contacting me about the development of PlotArt and potential opportunities to connect with homeowners. I understand that registering does not guarantee an opportunity and that I can withdraw my consent at any time.";
   var OPTS = {"disciplines": [["painting", "Painting"], ["drawing_print", "Drawing and printmaking"], ["photography", "Photography"], ["sculpture", "Sculpture"], ["ceramics_craft", "Ceramics and craft"], ["textiles", "Textiles"], ["installation_mixed", "Installation and mixed media"], ["digital_video", "Digital and video art"], ["other", "Something else"]], "interests": [["display", "Displaying artwork in a home"], ["show_visitors", "Showing work to visitors, by arrangement"], ["installation", "Creating a site-specific installation"], ["store", "Storing finished artwork"], ["reach_buyers", "Reaching potential buyers through a home setting"]], "needs": [["wall", "Wall space"], ["floor_room", "Floor or room space"], ["outdoor", "Outdoor or garden space"], ["dry_storage", "Dry, secure storage"], ["not_sure", "Not sure yet"]], "reach": [["local_area", "My local area"], ["particular_places", "Particular counties or regions"], ["anywhere_ireland", "Anywhere in Ireland"]]};

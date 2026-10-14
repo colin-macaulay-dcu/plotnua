@@ -235,7 +235,11 @@ const artistCode = code.slice(code.indexOf('const T_ARTISTS'), code.indexOf('exp
 check('S4 the artist code never names the Hosts table or the homeowner vocabularies',
   artistCode.length > 1000 && !/T_HOSTS|\bV\.|ALLOWED_KEYS\.includes|CONSENT_TEXT\b(?!_)/.test(artistCode.replace(/ARTIST_ALLOWED_KEYS|ARTIST_CONSENT_TEXT/g, '')));
 const toml = readFileSync(new URL('../wrangler.toml', import.meta.url), 'utf8');
-check('S5 wrangler: the artist register ships CLOSED', /^ARTIST_WRITES_ENABLED\s*=\s*"false"/m.test(toml));
+// S5 is state-aware (founder approval to open, 14 Oct 2026): the committed switch
+// must agree with the artist page builder's ARTIST_PUBLIC (guard A2 enforces the same).
+const artistOpen = /^ARTIST_PUBLIC = True\b/m.test(readFileSync(new URL('../../../atlas-tools/build-artist-register.py', import.meta.url), 'utf8'));
+check('S5 wrangler: the artist switch matches the page (' + (artistOpen ? 'OPEN, approved 14 Oct 2026' : 'CLOSED') + ')',
+  new RegExp('^ARTIST_WRITES_ENABLED\\s*=\\s*"' + (artistOpen ? 'true' : 'false') + '"', 'm').test(toml));
 const v5Live = readFileSync(new URL('../../../privacy.html', import.meta.url), 'utf8').includes('PLOTNUA-ARTIST-PRIVACY-V5');
 check('S6 wrangler: artist privacy version is V5; homeowner records ' + (v5Live ? 'V5 (V5 is live)' : 'V4 until V5 is live'),
   /^ARTIST_PRIVACY_VERSION\s*=\s*"2026-10-PHASE2-V5"/m.test(toml) &&

@@ -51,7 +51,8 @@ GUARDS
       verbatim, once, pinned by SHA-256
   R13 journey exit, save band and Garden Owner Register files are untouched;
       privacy.html may differ from git HEAD only by exactly the governed V4
-      change (build-privacy-v4.py), never otherwise
+      change (build-privacy-v4.py), the V5 change, or the one Section 8
+      amendment to V5 (founder, 14 Oct 2026), never otherwise
   R14 the Airtable schema (worker/art-space-register/airtable-schema.json)
       carries every field the Worker writes, with option lists identical to
       the Worker's vocabularies, and the Worker's three table names
@@ -1201,6 +1202,11 @@ def guards(html):
                     ok = cur_priv == pv5.transform(head_priv, pv5.APPROVAL["last_updated"] if pv5.approved() else None)
                 except SystemExit:
                     ok = False
+            if not ok and "PLOTNUA-ARTIST-PRIVACY-V5" in head_priv:
+                # The one editorial Section 8 amendment to published V5 (founder, 14 Oct 2026, 20:33).
+                pv5 = privacy_builder_v5()
+                ok = (head_priv.count(pv5.OLD_S8_SENTENCE) == 1 and
+                      cur_priv == head_priv.replace(pv5.OLD_S8_SENTENCE, pv5.NEW_S8_SENTENCE, 1))
             if not ok:
                 die("R13 privacy.html changed other than by the governed V4 or V5 builder")
     except (subprocess.CalledProcessError, FileNotFoundError):

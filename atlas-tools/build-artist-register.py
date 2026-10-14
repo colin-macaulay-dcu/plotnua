@@ -41,10 +41,12 @@ GUARDS
   A9  the register script calls only the artist endpoint, once, and reads no
       storage, cookie, analytics or My Plot contract
   A10 while closed, no page links to artist-register.html, the sitemap does
-      not list it, and Search does not index it
-  A11 A Home for Art: the future PlotArt link is PREPARED here (FUTURE_LINK,
-      after FUTURE_ANCHOR) but NOT applied while closed (founder decision of
-      13 Oct 2026 stays in force); the anchor exists exactly once
+      not list it, and Search does not index it. While open, the sitemap lists
+      it exactly once (written by --apply, after A Home for Art) and A Home for
+      Art is the only page that links to it
+  A11 A Home for Art: the two-pathway "Take part" section (founder decision,
+      14 Oct 2026, 20:33; rendered by build-a-home-for-art-merge.py) is present
+      exactly once, after FUTURE_ANCHOR, only while open; absent while closed
   A12 the homeowner register is untouched: the disc024 page and the homeowner
       Worker's vocabulary, allow-list, consent and handler are git HEAD's.
       (Its builder is not pinned here: Privacy V5 legitimately updates its
@@ -77,11 +79,14 @@ SITEMAP = ROOT / "sitemap.xml"
 SEARCH = ROOT / "search-index-v1.json"
 
 # ----------------------------------------------------------------- the gate
-ARTIST_PUBLIC = False            # CLOSED. Founder approval to build only, 14 Oct 2026.
+ARTIST_PUBLIC = True             # OPEN. Founder approval to open, 14 Oct 2026 (20:33).
 ARTIST_OPEN_APPROVAL = {
-    # NOT YET GIVEN. The founder's dated approval to OPEN goes here; until then
-    # ARTIST_PUBLIC stays False and guard A2 refuses any opening.
-    "founder_approval": "",
+    "founder_approval": "Colin MacAulay, founder, 14 October 2026 (20:33): approves the public opening of the "
+                        "PlotArt Artist Register and its integration into A Home for Art as one 'Take part' section "
+                        "with two pathways (homeowners: the existing check and Art Space Register, unchanged; "
+                        "artists: this page), the Privacy Section 8 amendment (V5 retained), the sitemap entry and "
+                        "ARTIST_WRITES_ENABLED = \"true\" in the committed Worker configuration. Publication (push "
+                        "and Worker deploy) awaits the founder's separate confirmation.",
     "privacy_v5": "Privacy Notice V5 approved for publication by the founder, 14 October 2026 (19:45); "
                   "live on plotnua.ie from main 2c4e9dc.",
     "self_assessment": "Artist Register addendum to the Art Space Register GDPR self-assessment, dated and "
@@ -116,13 +121,18 @@ DISCLAIMER = ("Registering doesn&rsquo;t mean you&rsquo;ll be offered a space, a
               "interested.")
 
 # ----------------------------------------------------- A Home for Art (A11)
-# PREPARED, NOT APPLIED. The founder's decision of 13 Oct 2026 (no link in the
-# PlotArt section) stays in force until the register is tested and approved
-# for launch. Opening applies this exact insertion after the anchor.
+# The founder's two-pathway "Take part" section (14 Oct 2026, 20:33) replaces
+# the earlier single-link FUTURE_LINK. Its text and markup are owned by
+# atlas-tools/build-a-home-for-art-merge.py (guard M1 declares every word),
+# which renders it after FUTURE_ANCHOR ONLY while ARTIST_PUBLIC is True. A11
+# checks the result: open -> the section exactly once, after the anchor, and
+# the page's only link to this register; closed -> absent.
 FUTURE_ANCHOR = '    <p class="dq-note">This matching service is not live yet.</p>\n'
-FUTURE_LINK = ('    <p>Are you an artist? PlotArt&rsquo;s Artist Register is open for expressions of '
-               'interest: free, private and non-binding. <a href="artist-register.html">Register your '
-               'interest &rarr;</a></p>\n')
+TAKE_PART_MARK = "<!-- PLOTNUA-TAKE-PART"
+SITEMAP_ANCHOR = ('  <url><loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-10-13</lastmod>'
+                  '<changefreq>monthly</changefreq><priority>0.8</priority></url>\n')
+SITEMAP_LINE = ('  <url><loc>https://plotnua.ie/artist-register.html</loc><lastmod>2026-10-14</lastmod>'
+                '<changefreq>monthly</changefreq><priority>0.5</priority></url>\n')
 
 # ----------------------------------------------------------- vocab labels
 LABELS = {
@@ -655,7 +665,10 @@ def visible(fragment):
 def v5_published(priv):
     if V5_MARK not in priv or not V5_DRAFT.exists():
         return False
-    ws = lambda t: re.sub(r"\s+", " ", t).strip()
+    # Tags become spaces in visible(); a link before a full stop would leave
+    # "hello@plotnua.ie ." on the page side, so spacing before punctuation is
+    # normalised on both sides (found when A2 first ran open, 14 Oct 2026).
+    ws = lambda t: re.sub(r"\s+([.,;:])", r"\1", re.sub(r"\s+", " ", t)).strip()
     gov = re.findall(r"^> (.+)$", V5_DRAFT.read_text(encoding="utf-8"), re.M)
     text = ws(visible(priv))
     return bool(gov) and all(ws(_html.unescape(re.sub(r"<[^>]+>", "", g))) in text for g in gov)
@@ -759,12 +772,25 @@ def guards(page):
             die("A10 the sitemap lists the closed artist register")
         if SEARCH.exists() and "artist-register" in SEARCH.read_text(encoding="utf-8"):
             die("A10 Search indexes the closed artist register")
+    else:
+        sm = SITEMAP.read_text(encoding="utf-8")
+        if sm.count(SITEMAP_LINE) != 1 or sm.count("artist-register") != 1:
+            die("A10 the open register is not listed exactly once in the sitemap")
+        for f in ROOT.glob("*.html"):
+            if f.name not in (PAGE_NAME, DISCOVERY.name) and \
+                    "artist-register.html" in f.read_text(encoding="utf-8", errors="replace"):
+                die("A10 %s links to the artist register; only A Home for Art may" % f.name)
     # A11
     disc = DISCOVERY.read_text(encoding="utf-8")
     if disc.count(FUTURE_ANCHOR) != 1:
-        die("A11 the A Home for Art anchor for the future link is not found exactly once")
-    if not ARTIST_PUBLIC and FUTURE_LINK in disc:
-        die("A11 the A Home for Art link is visible while the register is closed")
+        die("A11 the A Home for Art PlotArt anchor is not found exactly once")
+    if ARTIST_PUBLIC:
+        if disc.count(TAKE_PART_MARK) != 1 or disc.index(TAKE_PART_MARK) < disc.index(FUTURE_ANCHOR) \
+                or disc.count('href="artist-register.html"') != 1:
+            die("A11 A Home for Art must carry the Take part section once, after the PlotArt anchor, "
+                "with exactly one link to this register")
+    elif TAKE_PART_MARK in disc or "artist-register.html" in disc:
+        die("A11 the A Home for Art Take part section is visible while the register is closed")
     # A12
     try:
         d = subprocess.run(["git", "-C", str(ROOT), "diff", "--name-only", "HEAD", "--",
@@ -806,6 +832,14 @@ def main(argv):
         print(__doc__)
         sys.exit(1)
     page = build()
+    if "--apply" in argv:
+        sm = SITEMAP.read_text(encoding="utf-8")
+        if ARTIST_PUBLIC and SITEMAP_LINE not in sm:
+            if sm.count(SITEMAP_ANCHOR) != 1:
+                die("A10 the sitemap anchor (A Home for Art) is not found exactly once")
+            SITEMAP.write_text(sm.replace(SITEMAP_ANCHOR, SITEMAP_ANCHOR + SITEMAP_LINE, 1), encoding="utf-8")
+        elif not ARTIST_PUBLIC and SITEMAP_LINE in sm:
+            SITEMAP.write_text(sm.replace(SITEMAP_LINE, "", 1), encoding="utf-8")
     guards(page)
     state = "OPEN" if ARTIST_PUBLIC else "CLOSED"
     if "--check" in argv:
