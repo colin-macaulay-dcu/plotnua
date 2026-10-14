@@ -23,7 +23,22 @@ FIRST-PARTY EVIDENCE, read 14 October 2026:
     euro site only. UK sterling prices are NOT used anywhere on this page
     (guard G12), because a UK price is not an Irish price.
 
-ATLAS (all seven ELIGIBLE — WITH CAVEAT, Irish availability unconfirmed):
+IRISH ARRANGEMENTS — SUPPLIER-CONFIRMED, 14 OCTOBER 2026.
+    Keir Tetsmann, Sales Consultant for ÖÖD's UK and Irish clients,
+    keir@oodhouse.com, Gmail thread 1a13a4b45780ba3b (introduced by Gertrud
+    Ots in 1a088713c8eccf73): ÖÖD serves customers in the Republic of Ireland;
+    it helps organise transport from its factory in Estonia and every
+    transport is quoted individually; it has no local team in Ireland, so
+    installation, foundations and utility connections are arranged by the
+    customer with local professionals; ÖÖD provides technical drawings for
+    that work. Atlas Source recrTNrQMXHiioA5i; Irish Availability and
+    Installation Model feature values updated for all seven houses.
+    NOT established, and never said here: a delivery price, free delivery, a
+    delivery time, installation included, any Irish installation partner, or
+    any planning position.
+
+ATLAS (all seven ELIGIBLE — WITH CAVEAT; Irish availability CONFIRMED in
+Atlas 14 Oct 2026, reaching the published universe at its next refresh):
     ORG-000149   ÖÖD House             rec2URqKyVwlhHSBw
     PROD-000510  Signature House       recoQZlqmpfv3T5bz   €84,900   21.1 m²
     PROD-000509  Glämping House        recyc7vNON16NzYFD   €29,700    9 m²
@@ -80,13 +95,20 @@ def img(fid, alt, photo=None, place=None):
 # Price basis, identical for every house: what the figure is and, just as
 # important, what it is not. No VAT claim -- ÖÖD do not state it.
 PRICE_BASIS = ("As published on ÖÖD&rsquo;s euro site, for the house itself. "
-               "Transport, foundations and service connections are arranged "
-               "separately, and VAT isn&rsquo;t stated.")
-IRISH_FACT = "Delivery to the Republic of Ireland: still to be confirmed by ÖÖD"
-CHECK_COMMON = ("transport, groundworks and connections are arranged by the "
-                "buyer, so the cost delivered and connected in Ireland will be "
-                "higher than the published price; and the planning position "
-                "depends on its size and how it&rsquo;s used.")
+               "Transport and local works are extra, and VAT isn&rsquo;t "
+               "stated.")
+# Supplier-confirmed 14 Oct 2026 (Keir Tetsmann, ÖÖD). Says exactly what ÖÖD
+# said and nothing more: no price, no time, nothing included.
+IRISH_FACT = ("Serves customers in the Republic of Ireland. Transport from "
+              "ÖÖD&rsquo;s factory in Estonia is quoted individually; "
+              "foundations, installation and utility connections are arranged "
+              "locally, using ÖÖD&rsquo;s technical drawings")
+ARRANGEMENT = ("ask ÖÖD for a transport quote to your address and price the "
+               "foundations, installation and connections locally, so you know "
+               "the cost delivered and connected, which will be higher than "
+               "the published price")
+CHECK_COMMON = (ARRANGEMENT + "; and the planning position depends on its "
+                "size and how it&rsquo;s used.")
 
 HOUSES = [
     {"key": "signature", "name": "Signature House", "price": "&euro;84,900",
@@ -119,9 +141,7 @@ HOUSES = [
      "f4": "A bedroom with floor heating; ÖÖD publish no kitchen or "
            "bathroom for this model",
      "check": "ÖÖD publish it as a glamping cabin, so how it would be used "
-              "matters for planning; transport, groundworks and connections "
-              "are arranged by the buyer, so the cost delivered in Ireland "
-              "will be higher than the published price.",
+              "matters for planning; " + ARRANGEMENT + ".",
      "images": [
         img("1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio", "Glämping House on a timber "
             "deck in high desert at sunrise, with a telescope outside",
@@ -163,9 +183,7 @@ HOUSES = [
      "f4": "Rests on prepared supports such as concrete pads or screw piles "
            "rather than a poured slab",
      "check": "how Irish rules would treat a house on a chassis needs "
-              "checking for the particular site; transport, groundworks and "
-              "connections are arranged by the buyer, so the cost delivered "
-              "in Ireland will be higher than the published price.",
+              "checking for the particular site; " + ARRANGEMENT + ".",
      "images": [
         img("1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar", "Mobile House among pine "
             "trees beside a timber deck with red chairs"),
@@ -270,13 +288,14 @@ FILL = {
     "WHY_3_TEXT": "Your sizes and published prices are already in front of "
                   "them, so the first conversation can be about their site "
                   "and getting the house there.",
-    "CLOSING_PROPOSITION": "Could ÖÖD houses be delivered and installed in "
-                           "the Republic of Ireland?",
-    "CLOSING_SUPPORT": "It&rsquo;s the one thing we can&rsquo;t yet tell "
-                       "Irish homeowners. Once we know how delivery, "
-                       "groundworks and connections would work here, we can "
-                       "set out plainly what to expect beyond the published "
-                       "price.",
+    "CLOSING_PROPOSITION": "Have we described the Irish arrangements as you "
+                           "would?",
+    "CLOSING_SUPPORT": "Thanks to Keir, we now tell Irish homeowners that ÖÖD "
+                       "serves the Republic of Ireland, that transport from "
+                       "Estonia is quoted for each order, and that foundations, "
+                       "installation and utility connections are arranged "
+                       "locally using your technical drawings. If anything "
+                       "here should be put differently, we&rsquo;ll change it.",
     "DATE": DATE,
 }
 
@@ -286,10 +305,20 @@ OTHER_SUPPLIERS = ("Hutsmith", "Yard Box", "Power Sheds", "Powersheds", "TRIQ",
 RELATIONSHIP_WORDS = ("partner", "approved supplier", "recommended", "trusted "
                       "supplier", "preferred supplier", "endorsed",
                       "testimonial", "official stockist")
+# 14 Oct 2026: Irish availability is now supplier-confirmed, so the guard no
+# longer refuses the confirmed fact -- it refuses everything ÖÖD did NOT say.
 IRISH_OVERCLAIMS = ("delivers to ireland", "available in ireland",
                     "installed in ireland", "irish installation",
                     "irish installer", "delivery to ireland confirmed",
-                    "lough neagh", "northern ireland")
+                    "lough neagh", "northern ireland",
+                    "free delivery", "free transport", "delivery included",
+                    "transport included", "delivered free",
+                    "installation included", "installed by ööd",
+                    "ööd installs", "ööd will install", "installation partner",
+                    "local partner", "delivery time", "lead time",
+                    "weeks to deliver", "delivered within",
+                    "no planning permission", "planning permission is not",
+                    "exempt from planning")
 
 
 def die(msg):
@@ -671,13 +700,18 @@ def main():
     if journey.strip("\n") not in src:
         die("the frozen journey band was altered in transit.")
 
-    # G8 · NO IRISH OVERCLAIM. ROI delivery and installation are unconfirmed,
-    # and Northern Ireland is not the Republic.
+    # G8 · NO IRISH OVERCLAIM. Since 14 Oct 2026 ÖÖD have confirmed they
+    # serve the Republic, quote transport individually, and leave
+    # installation, foundations and connections to the customer. Anything
+    # beyond that -- a price, a time, inclusion, a partner, a planning answer
+    # -- is refused, and Northern Ireland is not the Republic.
     for w in IRISH_OVERCLAIMS:
         if w in low:
             die("the page claims more about Ireland than is established: " + w)
-    if low.count("still to be confirmed") < len(HOUSES):
-        die("a house card lost its unconfirmed-Ireland line.")
+    if low.count("quoted individually") < len(HOUSES):
+        die("a house card lost its supplier-confirmed Irish arrangement line.")
+    if low.count("still to be confirmed") or "unconfirmed" in low:
+        die("a stale 'Ireland unconfirmed' line survived the confirmation.")
 
     # G9 · CREDIT ON EVERY IMAGE, AND THE LINK BACK.
     if CREDIT != "ÖÖD House":
@@ -724,7 +758,8 @@ def main():
           "ÖÖD Drive files" % (len(HOUSES), len(SAUNAS), len(seen), n_img))
     print("  ok    credit %r on every image and in the rights line" % CREDIT)
     print("  ok    noindex, nofollow, noarchive, nosnippet, noimageindex")
-    print("  ok    euro prices with basis; no sterling; Ireland unconfirmed")
+    print("  ok    euro prices with basis; no sterling; Irish arrangements as "
+          "ÖÖD confirmed them, nothing more")
     print("-" * 74)
     print("wrote %s (%d bytes)" % (OUT, len(src.encode("utf-8"))))
     return 0

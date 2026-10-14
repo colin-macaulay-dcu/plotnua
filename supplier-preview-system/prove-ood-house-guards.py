@@ -93,6 +93,16 @@ R.append(run(lambda m: m.FILL.update(WHY_1_TEXT="Like Hutsmith, ..."),
              "G6 · another supplier's name in the copy")[0])
 R.append(run(lambda m: setattr(m, "IRISH_FACT", "ÖÖD delivers to Ireland"),
              "G8 · Irish delivery claimed as confirmed")[0])
+R.append(run(lambda m: setattr(m, "IRISH_FACT", m.IRISH_FACT + ", with free delivery"),
+             "G8 · free delivery claimed")[0])
+R.append(run(lambda m: setattr(m, "IRISH_FACT", m.IRISH_FACT + "; lead time six weeks"),
+             "G8 · a delivery lead time asserted")[0])
+R.append(run(lambda m: house(m, "moon").update(check="Installation included by ÖÖD."),
+             "G8 · installation claimed as included")[0])
+R.append(run(lambda m: setattr(m, "IRISH_FACT", "Delivery to Ireland: arranged by ÖÖD"),
+             "G8 · the supplier-confirmed arrangement line dropped")[0])
+R.append(run(lambda m: m.FILL.update(CLOSING_SUPPORT="Irish availability is still to be confirmed."),
+             "G8 · a stale unconfirmed-Ireland line survives")[0])
 R.append(run(lambda m: house(m, "signature").update(
     f4=house(m, "signature")["f4"] + "; as at Lough Neagh"),
     "G8 · Northern Ireland site used as Irish evidence")[0])
