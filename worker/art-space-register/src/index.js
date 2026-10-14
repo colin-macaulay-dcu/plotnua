@@ -19,8 +19,19 @@
  *   It does not match, rank, score, introduce, book or pay. It does not send
  *   email — there is no mail adapter in this file, and EMAIL_ENABLED exists so
  *   the refusal is explicit rather than implied. It has NO GET HANDLER, so
- *   there is no read surface, no listing, no count and no export. There is no
- *   artist route and no artist table: the artist side does not exist here.
+ *   there is no read surface, no listing, no count and no export.
+ *
+ * THE ARTIST REGISTER (PlotArt), ADDED 14 Oct 2026 (founder approval to build,
+ *   CLOSED). A SECOND, SEPARATE POST route, /v1/art-space-register/artist,
+ *   records an artist's expression of interest into its own 'Artists' table
+ *   in the same base. It has its own switch (ARTIST_WRITES_ENABLED, shipped
+ *   "false"), its own privacy version (ARTIST_PRIVACY_VERSION), its own field
+ *   allow-list, consent sentence, duplicate check and 25-a-day cap. It shares
+ *   the origin, fetch-metadata, body-size and burst protections, and the
+ *   Consent proofs and Status log tables (each artist row is marked
+ *   register = 'artist'). The homeowner route below is unchanged: neither
+ *   route reads, writes or counts the other's table. Artist records are
+ *   private; there is no public profile, listing or directory.
  *
  * THE STATUS CEILING
  *   This Worker can write exactly ONE status value: 'interest_submitted'.
@@ -325,6 +336,167 @@ async function handleHost(env, body, now, cors) {
   return RECEIVED(cors);
 }
 
+/* =========================================================================
+ * ARTIST REGISTER (PlotArt) · founder approval to build, 14 October 2026.
+ * SHIPPED CLOSED: ARTIST_WRITES_ENABLED is "false" in wrangler.toml, and the
+ * route also needs ARTIST_PRIVACY_VERSION (the notice that covers artists)
+ * and the shared token and base. Expressions of interest only.
+ * ========================================================================= */
+const T_ARTISTS = 'Artists';
+const ARTIST_ROUTE = '/v1/art-space-register/artist';
+const ARTIST_DAILY_CAP = 25;
+const MAX_ARTIST_NAME_CHARS = 60;
+const MAX_PLACES_CHARS = 120;
+const MAX_PORTFOLIO_CHARS = 200;
+const MAX_STATEMENT_CHARS = 400;
+
+/* Closed artist vocabularies, identical to the artist page and to the
+   Artists table's select options. based_in: the 32 counties of Ireland, or
+   outside Ireland. */
+const VA = {
+  based_in: ['antrim', 'armagh', 'carlow', 'cavan', 'clare', 'cork', 'derry', 'donegal', 'down',
+             'dublin', 'fermanagh', 'galway', 'kerry', 'kildare', 'kilkenny', 'laois', 'leitrim',
+             'limerick', 'longford', 'louth', 'mayo', 'meath', 'monaghan', 'offaly', 'roscommon',
+             'sligo', 'tipperary', 'tyrone', 'waterford', 'westmeath', 'wexford', 'wicklow',
+             'outside_ireland'],
+  reach: ['local_area', 'particular_places', 'anywhere_ireland'],
+  disciplines: ['painting', 'drawing_print', 'photography', 'sculpture', 'ceramics_craft',
+                'textiles', 'installation_mixed', 'digital_video', 'other'],
+  interests: ['display', 'show_visitors', 'installation', 'store', 'reach_buyers'],
+  needs: ['wall', 'floor_room', 'outdoor', 'dry_storage', 'not_sure']
+};
+
+/* The ONLY keys an artist submission may carry. Everything else is refused. */
+const ARTIST_ALLOWED_KEYS = Object.freeze([
+  'artist_name', 'email', 'based_in', 'reach', 'reach_places', 'disciplines', 'interests',
+  'needs', 'portfolio', 'statement', 'over_18', 'consent_text'
+]);
+
+/* Proposed 14 Oct 2026; the founder approves the final wording with Privacy
+   Notice V5, before opening. The page sends the sentence it rendered. */
+const ARTIST_CONSENT_TEXT =
+  "I'm over 18 and agree that PlotNua may keep my registration details and contact me about the A Home for Art pilot and the development of PlotArt. I understand I can withdraw my consent at any time.";
+
+function artistWritesEnabled(env) {
+  return env.ARTIST_WRITES_ENABLED === 'true' && !!env.ARTIST_PRIVACY_VERSION &&
+    !!env.AIRTABLE_TOKEN && !!env.AIRTABLE_BASE;
+}
+
+/* A non-empty array of distinct known values, returned in canonical order. */
+function pickMany(list, v) {
+  if (!Array.isArray(v) || v.length < 1 || v.length > list.length) return null;
+  const seen = new Set();
+  for (const x of v) {
+    if (!list.includes(x) || seen.has(x)) return null;
+    seen.add(x);
+  }
+  return list.filter(x => seen.has(x));
+}
+
+/* https only, a real host, no credentials, no port; stored, never published. */
+function cleanPortfolio(v) {
+  if (typeof v !== 'string') return null;
+  const t = v.trim();
+  if (!t || t.length > MAX_PORTFOLIO_CHARS || /\s/.test(t)) return null;
+  let u;
+  try { u = new URL(t); } catch { return null; }
+  if (u.protocol !== 'https:' || u.username || u.password || u.port || !/\.[a-z]{2,}$/i.test(u.hostname)) return null;
+  return u.href;
+}
+
+async function artistEmailExists(env, emailKey) {
+  const f = encodeURIComponent("{email_key}='" + emailKey.replace(/'/g, "\\'") + "'");
+  const out = await atRequest(env, 'GET',
+    '/' + encodeURIComponent(T_ARTISTS) + '?filterByFormula=' + f + '&maxRecords=1&fields%5B%5D=email_key');
+  return Array.isArray(out.records) && out.records.length > 0;
+}
+
+/* The artist cap counts the Artists table only: homeowners never use it up. */
+async function artistCapReached(env) {
+  const f = encodeURIComponent("IS_AFTER({submitted_at}, DATEADD(NOW(), -1, 'days'))");
+  const out = await atRequest(env, 'GET',
+    '/' + encodeURIComponent(T_ARTISTS) + '?filterByFormula=' + f + '&maxRecords=' + ARTIST_DAILY_CAP +
+    '&fields%5B%5D=submitted_at');
+  return !Array.isArray(out.records) || out.records.length >= ARTIST_DAILY_CAP;
+}
+
+async function handleArtist(env, body, now, cors) {
+  if (!ARTIST_CONSENT_TEXT) return NOT_OPEN(cors);
+
+  for (const k of Object.keys(body)) {
+    if (!ARTIST_ALLOWED_KEYS.includes(k)) return REFUSED(cors, 'unexpected_field');
+  }
+
+  const has = (k) => Object.prototype.hasOwnProperty.call(body, k);
+  const artist_name = cleanText(body.artist_name, MAX_ARTIST_NAME_CHARS);
+  const email = cleanText(body.email, MAX_EMAIL_CHARS);
+  const based_in = pickEnum(VA.based_in, body.based_in);
+  const reach = pickEnum(VA.reach, body.reach);
+  const disciplines = pickMany(VA.disciplines, body.disciplines);
+  const interests = pickMany(VA.interests, body.interests);
+  const needs = has('needs') ? pickMany(VA.needs, body.needs) : undefined;
+  const places = has('reach_places') ? cleanText(body.reach_places, MAX_PLACES_CHARS) : undefined;
+  const portfolio = has('portfolio') ? cleanPortfolio(body.portfolio) : undefined;
+  const statement = has('statement') ? cleanText(body.statement, MAX_STATEMENT_CHARS) : undefined;
+
+  if (!artist_name) return REFUSED(cors, 'artist_name');
+  if (!email || !EMAIL_RE.test(email)) return REFUSED(cors, 'email');
+  if (!based_in) return REFUSED(cors, 'based_in');
+  if (!reach) return REFUSED(cors, 'reach');
+  if (has('reach_places') && typeof body.reach_places !== 'string') return REFUSED(cors, 'reach_places');
+  if (!disciplines) return REFUSED(cors, 'disciplines');
+  if (!interests) return REFUSED(cors, 'interests');
+  if (needs === null) return REFUSED(cors, 'needs');
+  if (portfolio === null) return REFUSED(cors, 'portfolio');
+  if (has('statement') && typeof body.statement !== 'string') return REFUSED(cors, 'statement');
+  if (body.over_18 !== true) return REFUSED(cors, 'over_18');
+
+  const consentHash = await sha256Hex(ARTIST_CONSENT_TEXT);
+  const sentHash = await sha256Hex(cleanText(body.consent_text, 1000) || '');
+  if (!sameString(consentHash, sentHash)) return REFUSED(cors, 'consent_text');
+
+  if (!artistWritesEnabled(env)) return NOT_OPEN(cors);
+
+  const emailKey = email.toLowerCase();
+  const stamp = utcStamp(now);
+  const rec = {
+    artist_name, email, email_key: emailKey, based_in, reach, disciplines, interests,
+    over_18: true,
+    status: SUBMIT_STATUS,
+    submitted_at: stamp,
+    privacy_version: env.ARTIST_PRIVACY_VERSION,
+    consent_text_hash: consentHash
+  };
+  if (places && reach === 'particular_places') rec.reach_places = places;
+  if (needs) rec.needs = needs;
+  if (portfolio) rec.portfolio = portfolio;
+  if (statement) rec.statement = statement;
+
+  try {
+    if (await artistCapReached(env)) return SLOW_DOWN(cors);
+    if (!(await artistEmailExists(env, emailKey))) {
+      const created = await atCreate(env, T_ARTISTS, rec);
+      const recId = created && created.records && created.records[0] && created.records[0].id;
+      if (recId) {
+        await atCreate(env, T_STATUS_LOG, {
+          record_ref: recId, from_status: '', to_status: SUBMIT_STATUS,
+          at: stamp, actor: 'system', reason: 'artist_submission_accepted', register: 'artist'
+        });
+      }
+      await atCreate(env, T_CONSENT, {
+        email_hash: await sha256Hex(emailKey),
+        privacy_version: env.ARTIST_PRIVACY_VERSION,
+        consent_text_hash: consentHash,
+        given_at: stamp,
+        register: 'artist'
+      });
+    }
+  } catch (e) {
+    return UNAVAILABLE(cors, atReason(e));
+  }
+  return RECEIVED(cors);
+}
+
 /* ========================================================================= */
 export default {
   async fetch(request, env) {
@@ -356,6 +528,7 @@ export default {
     if (!body || typeof body !== 'object' || Array.isArray(body)) return REFUSED(cors, 'body');
 
     if (url.pathname === ROUTE) return handleHost(env, body, now, cors);
+    if (url.pathname === ARTIST_ROUTE) return handleArtist(env, body, now, cors);
     return NOT_FOUND(cors);
   }
 };
@@ -365,5 +538,7 @@ export const __test = {
   V, ALLOWED_KEYS, CONSENT_TEXT, SUBMIT_STATUS, ROUTE, writesEnabled,
   allowedOrigin, fetchMetadataOk, sha256Hex, pickWays, cleanText,
   MAX_BODY_BYTES, MAX_NOTE_CHARS, DAILY_CAP,
+  VA, ARTIST_ALLOWED_KEYS, ARTIST_CONSENT_TEXT, ARTIST_ROUTE, ARTIST_DAILY_CAP, artistWritesEnabled,
+  cleanPortfolio, pickMany,
   resetRateLimit: () => hits.clear()
 };

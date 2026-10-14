@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.art-space-register.airtable.v1",
-  "status": "BASE CREATED by the founder, 13 Oct 2026 (appS4gWOxuZqJyWvU). Its tables, fields, types and select options were verified read-only against this file the same evening: all match. Views beyond the default Grid view are still to be configured. 13 Oct 2026 22:18: erase_after changed to 12 months and the 'Deletion log' table added (founder decisions R1, Option A). Guard R14 in atlas-tools/build-art-space-register.py keeps this file identical to what the Worker writes.",
+  "status": "BASE CREATED by the founder, 13 Oct 2026 (appS4gWOxuZqJyWvU). Its tables, fields, types and select options were verified read-only against this file the same evening: all match. Views beyond the default Grid view are still to be configured. 13 Oct 2026 22:18: erase_after changed to 12 months and the 'Deletion log' table added (founder decisions R1, Option A). Guard R14 in atlas-tools/build-art-space-register.py keeps this file identical to what the Worker writes. 14 Oct 2026 (Artist Register, founder approval to BUILD, CLOSED): the 'Artists' table and a 'register' field on Status log, Consent proofs and Deletion log are SPECIFIED HERE AND NOT YET CREATED in the base. The founder creates them (ARTIST-REGISTER-BUILD §Airtable) before the artist route can ever write; guard A14 in atlas-tools/build-artist-register.py keeps this file identical to what the artist route writes.",
   "base": {
     "name": "PlotNua Art Space Register",
     "id": "appS4gWOxuZqJyWvU",
@@ -39,7 +39,7 @@
     ],
     "stored_as": "Cloudflare Worker secret AIRTABLE_TOKEN"
   },
-  "retention_is_manual": "FOUNDER DECISION 13 Oct 2026 22:18 (R1 + Option A). Registrations are kept for at most 12 months and deleted sooner when no longer needed. Hosts.erase_after and the 'Erasure due' view only FLAG records; nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: (1) delete the Hosts record; (2) delete its Consent proofs row and its Status log row, found by the identical timestamp the Worker writes to all three (Hosts.submitted_at = Consent proofs.given_at = Status log.at; the Status log row also carries record_ref = the Hosts record id); (3) add ONE anonymous row to 'Deletion log'. No email, email hash, name or record id survives a deletion. Airtable keeps deleted records in its trash for 7 days and in automatic base snapshots for the plan's snapshot period (Team plan, confirmed 13 Oct 2026: up to 1 year); PlotNua never restores deleted registration records.",
+  "retention_is_manual": "FOUNDER DECISION 13 Oct 2026 22:18 (R1 + Option A). Registrations are kept for at most 12 months and deleted sooner when no longer needed. Hosts.erase_after and the 'Erasure due' view only FLAG records; nothing in Airtable, the Worker or this schema deletes anything automatically, and no automation may be added to do so. Deletion is a human act in the weekly review: (1) delete the Hosts record; (2) delete its Consent proofs row and its Status log row, found by the identical timestamp the Worker writes to all three (Hosts.submitted_at = Consent proofs.given_at = Status log.at; the Status log row also carries record_ref = the Hosts record id); (3) add ONE anonymous row to 'Deletion log'. No email, email hash, name or record id survives a deletion. Airtable keeps deleted records in its trash for 7 days and in automatic base snapshots for the plan's snapshot period (Team plan, confirmed 13 Oct 2026: up to 1 year); PlotNua never restores deleted registration records. ARTISTS (14 Oct 2026): the same rule, the same 12-month maximum and the same human deletion, for the Artists table: delete the Artists record, then its Consent proofs and Status log rows (register = artist, identical timestamp: Artists.submitted_at = Consent proofs.given_at = Status log.at; the Status log row carries record_ref = the Artists record id), then add ONE anonymous Deletion log row with register = artist.",
   "dates": "Every date field: Date (ISO), include time, 24-hour, one fixed time zone for all collaborators. Created with Europe/Dublin, which is accepted: the Worker always sends UTC instants with a trailing Z, Airtable stores every dateTime as a UTC instant and returns UTC through the API, so the time zone setting changes only what a person sees. Formula results (erase_after, remove_after) should display in ISO date format (YYYY-MM-DD); they were created in US format (M/D/YYYY), which is a display-only change.",
   "tables": [
     {
@@ -219,6 +219,209 @@
       ]
     },
     {
+      "name": "Artists",
+      "note": "Artist Register (PlotArt), expressions of interest only. Private: no public profile, listing or directory. Separate from the 'PlotArt — Artist Evidence (E1)' research base, which never receives a registration.",
+      "fields": [
+        {
+          "name": "artist_name",
+          "type": "singleLineText",
+          "primary": true,
+          "writer": "worker",
+          "note": "the name the artist works under, at most 60 characters"
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "writer": "worker"
+        },
+        {
+          "name": "email_key",
+          "type": "singleLineText",
+          "writer": "worker",
+          "note": "lower-case email, for the artist duplicate check (Artists only)"
+        },
+        {
+          "name": "based_in",
+          "type": "singleSelect",
+          "writer": "worker",
+          "options": [
+            "antrim",
+            "armagh",
+            "carlow",
+            "cavan",
+            "clare",
+            "cork",
+            "derry",
+            "donegal",
+            "down",
+            "dublin",
+            "fermanagh",
+            "galway",
+            "kerry",
+            "kildare",
+            "kilkenny",
+            "laois",
+            "leitrim",
+            "limerick",
+            "longford",
+            "louth",
+            "mayo",
+            "meath",
+            "monaghan",
+            "offaly",
+            "roscommon",
+            "sligo",
+            "tipperary",
+            "tyrone",
+            "waterford",
+            "westmeath",
+            "wexford",
+            "wicklow",
+            "outside_ireland"
+          ]
+        },
+        {
+          "name": "reach",
+          "type": "singleSelect",
+          "writer": "worker",
+          "options": [
+            "local_area",
+            "particular_places",
+            "anywhere_ireland"
+          ]
+        },
+        {
+          "name": "reach_places",
+          "type": "singleLineText",
+          "writer": "worker",
+          "optional": true,
+          "note": "counties or regions, only when reach = particular_places; at most 120 characters"
+        },
+        {
+          "name": "disciplines",
+          "type": "multipleSelects",
+          "writer": "worker",
+          "options": [
+            "painting",
+            "drawing_print",
+            "photography",
+            "sculpture",
+            "ceramics_craft",
+            "textiles",
+            "installation_mixed",
+            "digital_video",
+            "other"
+          ]
+        },
+        {
+          "name": "interests",
+          "type": "multipleSelects",
+          "writer": "worker",
+          "options": [
+            "display",
+            "show_visitors",
+            "installation",
+            "store",
+            "reach_buyers"
+          ]
+        },
+        {
+          "name": "needs",
+          "type": "multipleSelects",
+          "writer": "worker",
+          "optional": true,
+          "options": [
+            "wall",
+            "floor_room",
+            "outdoor",
+            "dry_storage",
+            "not_sure"
+          ]
+        },
+        {
+          "name": "portfolio",
+          "type": "url",
+          "writer": "worker",
+          "optional": true,
+          "note": "https only; stored, never published"
+        },
+        {
+          "name": "statement",
+          "type": "multilineText",
+          "writer": "worker",
+          "optional": true,
+          "note": "at most 400 characters"
+        },
+        {
+          "name": "over_18",
+          "type": "checkbox",
+          "writer": "worker"
+        },
+        {
+          "name": "status",
+          "type": "singleSelect",
+          "writer": "worker",
+          "options": [
+            "interest_submitted"
+          ]
+        },
+        {
+          "name": "submitted_at",
+          "type": "dateTime",
+          "writer": "worker"
+        },
+        {
+          "name": "privacy_version",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "consent_text_hash",
+          "type": "singleLineText",
+          "writer": "worker"
+        },
+        {
+          "name": "human_review_by",
+          "type": "singleLineText",
+          "writer": "reserved",
+          "note": "leave blank; introductions are not authorised"
+        },
+        {
+          "name": "human_review_at",
+          "type": "dateTime",
+          "writer": "reserved",
+          "note": "leave blank"
+        },
+        {
+          "name": "erase_after",
+          "type": "formula",
+          "writer": "airtable",
+          "formula": "DATEADD({submitted_at}, 12, 'months')",
+          "note": "FLAG ONLY: 12-month maximum, as for Hosts. A person deletes."
+        }
+      ],
+      "views": [
+        {
+          "name": "New this week",
+          "type": "grid",
+          "filter": "submitted_at is within the past week",
+          "sort": "submitted_at, newest first"
+        },
+        {
+          "name": "Statements to screen",
+          "type": "grid",
+          "filter": "statement is not empty",
+          "purpose": "remove any address, phone number or third party's details from statements"
+        },
+        {
+          "name": "Erasure due",
+          "type": "grid",
+          "filter": "erase_after is on or before today",
+          "purpose": "flags records reaching 12 months; a person deletes them and their consent proof and status-log row"
+        }
+      ]
+    },
+    {
       "name": "Status log",
       "fields": [
         {
@@ -252,6 +455,17 @@
           "name": "reason",
           "type": "singleLineText",
           "writer": "worker"
+        },
+        {
+          "name": "register",
+          "type": "singleSelect",
+          "writer": "worker",
+          "optional": true,
+          "options": [
+            "host",
+            "artist"
+          ],
+          "note": "added 14 Oct 2026. The artist route writes 'artist'. The homeowner route is unchanged and writes nothing here, so a blank value is a homeowner row."
         }
       ],
       "views": [
@@ -305,6 +519,17 @@
           "writer": "airtable",
           "formula": "IF({deletion_honoured_at}, DATEADD({deletion_honoured_at}, 12, 'months'), BLANK())",
           "note": "UNUSED under Option A (13 Oct 2026): the consent proof is deleted with the record, so nothing is left to date or flag. May be removed from the base."
+        },
+        {
+          "name": "register",
+          "type": "singleSelect",
+          "writer": "worker",
+          "optional": true,
+          "options": [
+            "host",
+            "artist"
+          ],
+          "note": "added 14 Oct 2026. The artist route writes 'artist'. The homeowner route is unchanged and writes nothing here, so a blank value is a homeowner row."
         }
       ],
       "views": [],
@@ -335,6 +560,15 @@
             "pilot_ended",
             "other"
           ]
+        },
+        {
+          "name": "register",
+          "type": "singleSelect",
+          "options": [
+            "host",
+            "artist"
+          ],
+          "note": "added 14 Oct 2026: which register the deleted record was on. Entered by a person."
         }
       ],
       "never": [
@@ -355,5 +589,5 @@
       ]
     }
   ],
-  "relationships": "None, by design. Under Option A nothing about a person survives their deletion: the Consent proofs and Status log rows are deleted with the Hosts record, matched by timestamp. The Deletion log holds no link or identifier."
+  "relationships": "None, by design. Under Option A nothing about a person survives their deletion: the Consent proofs and Status log rows are deleted with the Hosts record, matched by timestamp. The Deletion log holds no link or identifier. The Artists table follows the same rule."
 }

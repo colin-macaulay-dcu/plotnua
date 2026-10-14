@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8a5219c1-0f84-4a7e-9c17-d22fab76adc1" data-blockingmode="auto" type="text/javascript"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PKKJ0RK6N8');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artist Register | PlotArt | PlotNua</title>
+<meta name="description" content="PlotArt is exploring new places for artists&rsquo; work in Irish homes and gardens. Register your interest: free, private and non-binding.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://plotnua.ie/artist-register.html">
+
+<!-- Favicons — PlotNua Brand Package v1.0 -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1F3B2E">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PlotNua">
+<meta property="og:title" content="Artist Register | PlotArt | PlotNua">
+<meta property="og:description" content="PlotArt is exploring new places for artists&rsquo; work in Irish homes and gardens. Register your interest: free, private and non-binding.">
+<meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
+<meta property="og:url" content="https://plotnua.ie/artist-register.html">
+<meta property="og:locale" content="en_IE">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     Everything below down to the "PRIVACY PAGE — NEW COMPONENTS"
+     marker is reused verbatim from the PlotNua design system
+     (About / Contact pages) — brand tokens, base type, reveal
+     mechanics, brand mark, article rhythm and footer. Nothing in
+     this block has been altered. */
+  :root{
+    /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
+    --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
+    --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
+    --accent:#4F6B4A; --oak:#8B6F4E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ font-family:'Work Sans',sans-serif; background:var(--paper); color:var(--ink); overflow-x:hidden; }
+  h1,h2,h3{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em; }
+  h1,h2{ font-weight:700; }
+
+  .reveal{ opacity:0; transform:translateY(6px); transition:opacity 1.1s ease, transform 1.1s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---- fixed brand mark (unchanged from Brand Integration v1) ---- */
+  .brand-mark{
+    position:fixed; top:22px; left:22px; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    width:46px; height:46px; padding:0;
+    background:var(--brand-ivory);
+    border-radius:12px;
+    box-shadow:0 1px 3px rgba(31,59,46,.16), 0 0 0 1px rgba(31,59,46,.07);
+    opacity:0; transition:opacity 1.6s ease, transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;
+    text-decoration:none;
+  }
+  .brand-mark.in{ opacity:1; }
+  .brand-mark:hover{ transform:scale(1.06); box-shadow:0 5px 16px rgba(31,59,46,.20), 0 0 0 1px rgba(31,59,46,.09); }
+  .brand-mark img{ display:block; width:34px; height:34px; border-radius:8px; }
+  @media(max-width:720px){
+    .brand-mark{ top:16px; left:16px; width:40px; height:40px; }
+    .brand-mark img{ width:30px; height:30px; }
+  }
+
+  /* ---- article wrapper (identical to About / Contact pages) ---- */
+  .article{ max-width:1040px; margin:0 auto; padding:0 7vw; }
+  .article-section{ padding:13vh 0; border-bottom:1px solid rgba(31,59,46,.08); }
+  .article-section:last-of-type{ border-bottom:none; }
+  .article-section .kicker{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:22px; }
+  .article-section h2{ font-size:clamp(24px,3vw,34px); line-height:1.3; max-width:24ch; margin-bottom:28px; }
+  .article-section p{ color:var(--soft); font-size:17px; line-height:1.8; max-width:62ch; }
+  .article-section p + p{ margin-top:20px; }
+
+  /* ---- footer (identical to About / Contact pages) ---- */
+  footer{ background:linear-gradient(180deg, var(--paper) 0%, var(--ink) 110px, var(--ink) 100%); color:#B7AF9C; padding:72px 7vw 40px; }
+  footer b{ color:var(--brand-ivory); font-family:'Fraunces',serif; font-weight:500; }
+  .footer-inner{ max-width:1040px; margin:0 auto; }
+  .footer-top{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:64px; }
+  .footer-mark{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:0; }
+  .footer-mark img{ display:block; width:40px; height:40px; }
+  .footer-word{ font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--brand-ivory); }
+  .footer-cols{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:40px 32px; text-align:left; }
+  .footer-col h2{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-sage); opacity:.85; margin-bottom:20px; }
+  .footer-col ul{ list-style:none; margin:0; padding:0; }
+  .footer-col li{ margin-bottom:13px; }
+  .footer-col li:last-child{ margin-bottom:0; }
+  .footer-col a{ position:relative; color:#B7AF9C; text-decoration:none; font-size:14px; letter-spacing:.005em; transition:color .25s ease; }
+  .footer-col a::after{ content:''; position:absolute; left:0; bottom:-3px; width:0; height:1px; background:currentColor; transition:width .35s cubic-bezier(.4,0,.2,1); }
+  .footer-col a:hover{ color:var(--brand-ivory); }
+  .footer-col a:hover::after{ width:100%; }
+  .footer-col p{ font-size:14px; color:#B7AF9C; line-height:1.7; }
+  @media(max-width:820px){
+    .footer-cols{ grid-template-columns:repeat(2, minmax(0,1fr)); text-align:center; gap:40px 24px; }
+  }
+  @media(max-width:520px){
+    .footer-cols{ grid-template-columns:1fr; gap:36px; }
+  }
+  .footer-base{ margin-top:64px; text-align:center; font-size:11.5px; letter-spacing:.04em; color:#7C7565; }
+
+  /* ============================================================
+     PRIVACY PAGE — NEW COMPONENTS
+     Everything from here down is new to this page. It reuses the
+     existing type scale, colour tokens, spacing rhythm (13vh
+     section padding, 1040px article measure, quiet section-border
+     dividers) and reveal mechanics throughout — no new colours,
+     fonts or animation curves have been introduced. Three genuinely
+     new pieces were needed: the text-only opening (shared pattern
+     with the Contact page), list styling for policy points (the
+     design system has no existing list treatment), and the
+     "last updated" caption. ---- */
+
+  /* ---- Quiet editorial opening — identical pattern to the Contact
+     page's photograph-free intro: large centred heading, italic
+     subtitle, short lede, all on the plain ivory/paper ground.
+     Fades in once via the existing generic .reveal mechanism. ---- */
+  .privacy-intro{ padding:19vh 7vw 10vh; text-align:center; }
+  .privacy-intro-inner{ max-width:640px; margin:0 auto; }
+  .privacy-intro h1{ font-size:clamp(36px,5.6vw,58px); line-height:1.1; color:var(--ink); }
+  .privacy-intro .subtitle{ margin:22px auto 0; max-width:32ch; font-family:'Fraunces',serif; font-style:italic; font-weight:400; color:var(--accent); font-size:clamp(18px,2.1vw,23px); line-height:1.5; }
+  .privacy-intro p.lede{ margin:26px auto 0; max-width:56ch; color:var(--soft); font-size:17px; line-height:1.8; }
+  .privacy-intro p.lede + p.lede{ margin-top:16px; }
+
+  /* ---- Policy point lists. Kept quiet and unobtrusive — a small
+     accent-coloured marker rather than a default browser bullet or
+     any icon/card treatment, set in the same measure and colour as
+     surrounding body copy so it reads as prose, not a UI list. ---- */
+  .article-section ul{ list-style:none; margin:18px 0 0; padding:0; max-width:62ch; }
+  .article-section ul + p{ margin-top:20px; }
+  .article-section li{ position:relative; padding-left:22px; color:var(--soft); font-size:17px; line-height:1.8; }
+  .article-section li + li{ margin-top:10px; }
+  .article-section li::before{ content:'—'; position:absolute; left:0; color:var(--accent); }
+
+  /* ---- Inline email links within body copy — same colour and
+     underline treatment as the rest of the page's links, just
+     without the larger display-email styling used on Contact. ---- */
+  .article-section a{ color:var(--ink); text-decoration:underline; text-decoration-color:rgba(79,107,74,.4); text-underline-offset:2px; transition:color .25s ease, text-decoration-color .25s ease; }
+  .article-section a:hover{ color:var(--accent); text-decoration-color:var(--accent); }
+
+  /* ---- "Last updated" caption — quiet, small, sits under the final
+     policy note the way .form-privacy sits under the Contact form. ---- */
+  .policy-updated{ margin-top:20px; font-size:13px; letter-spacing:.02em; color:var(--soft); opacity:.85; }
+
+  /* ---- Visible keyboard focus states, using the same accent token
+     already used for the Contact form's own focus ring. ---- */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .brand-mark{ transition-duration:.01ms !important; }
+  }
+
+/* PLOTNUA A11Y VISUAL v1 · BEGIN · generated by atlas-tools/build-a11y-visual.py */
+
+/* D · the shared footer. The column headings needed no new colour at all --
+   they are brand sage already, held at opacity .85, which dropped them to
+   4.10:1. Full opacity restores the brand colour and clears AA at 5.03:1.
+   The (c) line is a warm grey lightened the minimum distance to 4.51:1. */
+.footer-col h2{ opacity:1; }
+.footer-base{ color:#A39D8E; }
+/* PLOTNUA A11Y VISUAL v1 · END */
+
+  /* PLOTNUA-ARTIST-REGISTER-CSS · PlotArt Artist Register, founder approval to
+     build 14 Oct 2026. Generated by atlas-tools/build-artist-register.py.
+     Prefix ar-. The tokens and the form treatment are the Art Space
+     Register's (disc024), so the two registers read as one family. */
+  :root{ --stone:#EFE9DA; --body:#3A453F; --muted:#5A655F;
+    --rule:rgba(31,59,46,.18); --rule-soft:rgba(31,59,46,.10); }
+  .ar-chip{display:inline-block;margin:0 0 22px;font-family:'Work Sans',sans-serif;font-size:11px;
+    font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#6E5639;
+    border:1px solid rgba(139,111,78,.4);border-radius:20px;padding:5px 12px;}
+  .ar-cta{display:inline-flex;align-items:center;gap:11px;background:var(--ink);color:var(--brand-ivory);
+    border:none;font-family:'Work Sans',sans-serif;padding:16px 28px;font-size:13.5px;letter-spacing:.09em;
+    text-transform:uppercase;border-radius:32px;cursor:pointer;text-decoration:none;
+    box-shadow:0 10px 26px rgba(31,59,46,.22);transition:background .22s ease, transform .22s ease;}
+  .ar-cta:hover{background:var(--accent);transform:translateY(-2px);}
+  .ar-cta[disabled]{opacity:.7;cursor:default;transform:none;}
+  .privacy-intro .ar-cta{margin-top:34px;}
+  .ar-card{margin:8px 0 0;padding:28px 24px 26px;border-radius:18px;background:var(--stone);max-width:760px;}
+  .ar-card[hidden],.ar-form[hidden],.ar-done[hidden],.ar-closed[hidden],.ar-prev[hidden],.ar-msg[hidden],
+  .ar-places[hidden]{display:none;}
+  .ar-prev{margin:0 0 16px;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:500;
+    letter-spacing:.2em;text-transform:uppercase;color:#6E5639;border:1px solid rgba(139,111,78,.4);
+    border-radius:20px;padding:5px 12px;display:inline-block;}
+  .ar-privline{margin:0 0 20px;font-size:14px;line-height:1.6;color:var(--muted);}
+  .ar-grid{display:grid;gap:18px;}
+  @media(min-width:760px){ .ar-grid{grid-template-columns:repeat(2,1fr);} }
+  .ar-f{display:grid;gap:6px;align-content:start;}
+  .ar-f.is-wide{grid-column:1/-1;}
+  .ar-f > label,.ar-set legend{font-family:'Work Sans',sans-serif;font-size:14.5px;font-weight:500;color:var(--ink);}
+  .ar-opt{font-weight:400;color:var(--muted);}
+  .ar-hint{font-size:13px;line-height:1.5;color:var(--muted);}
+  .ar-f input[type=text],.ar-f input[type=email],.ar-f input[type=url],.ar-f select,.ar-f textarea{
+    width:100%;min-height:50px;font-family:'Work Sans',sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+    background:#FFFDF7;border:1px solid var(--rule);border-radius:12px;padding:12px 14px;
+    -webkit-appearance:none;appearance:none;}
+  .ar-f textarea{min-height:96px;resize:vertical;}
+  .ar-f input:focus,.ar-f select:focus,.ar-f textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .ar-f [aria-invalid=true],.ar-set[aria-invalid=true] .ar-tick{border-color:#7A3B2E;}
+  .ar-set{margin:0;padding:0;border:0;min-width:0;}
+  .ar-set legend{padding:0;margin:0 0 8px;}
+  .ar-ticks{display:grid;gap:8px;margin:8px 0 0;}
+  @media(min-width:760px){ .ar-ticks.is-two{grid-template-columns:1fr 1fr;} }
+  .ar-tick{display:grid;grid-template-columns:20px 1fr;gap:4px 11px;align-items:center;padding:12px 14px;
+    border-radius:12px;background:#FFFDF7;border:1px solid var(--rule-soft);}
+  .ar-tick:has(input:checked){border-color:var(--ink);}
+  .ar-tick input{width:20px;height:20px;margin:0;accent-color:var(--accent);}
+  .ar-tick label{font-size:15px;line-height:1.5;color:var(--body);cursor:pointer;}
+  .ar-consent{margin:22px 0 0;align-items:start;border-color:var(--rule);}
+  .ar-consent input{margin-top:2px;}
+  .ar-notice{margin:12px 0 0;}
+  .ar-notice summary{cursor:pointer;padding:12px 0;font-size:13.5px;color:var(--soft);}
+  .ar-notice summary:hover,.ar-notice[open] summary{color:var(--ink);}
+  .ar-noticebody{font-size:14px;line-height:1.7;color:var(--body);max-width:68ch;}
+  .ar-noticebody p{margin:0 0 12px;color:var(--body);font-size:14px;line-height:1.7;}
+  .ar-noticebody strong{font-weight:500;color:var(--ink);}
+  .ar-actions{margin:22px 0 0;display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;}
+  .ar-msg{margin:16px 0 0;font-size:14.5px;line-height:1.65;color:#7A3B2E;}
+  .ar-done-h{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(22px,4vw,26px);
+    line-height:1.2;color:var(--ink);margin:0 0 12px;max-width:none;}
+  .ar-done-h:focus{outline:none;}
+  .ar-done[data-state=received]::before{content:"";display:block;width:44px;height:44px;margin:0 0 14px;
+    border-radius:50%;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23F2EFE6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px no-repeat;}
+  .ar-card p.ar-p{margin:0 0 12px;font-size:15px;line-height:1.65;color:var(--body);max-width:68ch;}
+  .ar-hp{position:absolute !important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
+  @media(max-width:560px){ .ar-card{padding:24px 18px;} .ar-actions .ar-cta{width:100%;justify-content:center;} }
+  @media(prefers-reduced-motion:reduce){ .ar-cta{transition:none;} }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="brand-mark" id="brandMark" aria-label="PlotNua — Home">
+  <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
+</a>
+<!-- PLOTNUA SEARCH RAIL v1 · BEGIN · generated by atlas-tools/build-search-rail.py — do not hand-edit -->
+<link rel="stylesheet" href="search.css">
+<a class="pns-pill" id="pnsOpen" href="search.html" aria-label="Search PlotNua">
+  <span class="pns-pill-ico-wrap" aria-hidden="true">
+    <svg class="pns-pill-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="6.8" cy="6.8" r="4.4"></circle><path d="M10.2 10.2 14 14"></path>
+    </svg>
+  </span>
+  <span class="pns-pill-label">Search PlotNua</span>
+  <span class="pns-pill-cue" aria-hidden="true"></span>
+</a>
+<div class="pns-panel" id="pnsPanel" role="dialog" aria-modal="true" aria-label="Search PlotNua" hidden>
+  <button type="button" class="pns-close" id="pnsClose" aria-label="Close search">×</button>
+  <div class="pns-shell">
+    <h2 class="pns-ask">What are you looking for?</h2>
+    <div class="pns-field">
+      <input type="search" class="pns-input" id="pnsInput" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="Search ideas, products and suppliers">
+    </div>
+    <p class="pns-note" id="pnsStatus" role="status" aria-live="polite"></p>
+    <div id="pnsResults"></div>
+  </div>
+</div>
+<script src="search.js" defer></script>
+<!-- PLOTNUA SEARCH RAIL v1 · END -->
+
+<!-- ARTIST REGISTER · PlotArt (founder approval to build, 14 Oct 2026). SHIPPED CLOSED.
+     Generated by atlas-tools/build-artist-register.py -- do not hand-edit. -->
+<section class="privacy-intro reveal">
+  <div class="privacy-intro-inner">
+    <span class="ar-chip">PlotArt &middot; in development</span>
+    <h1>Your art. Somewhere unexpected.</h1>
+    <p class="subtitle">What if the perfect place for your artwork wasn&rsquo;t a gallery?</p>
+    <p class="lede">PlotArt is exploring whether homes and gardens in Ireland could become new places for artists to display, show, install and store their work &mdash; and perhaps help it find a buyer.</p>
+    <p class="lede">If that interests you, tell us. Registering is free, private and doesn&rsquo;t commit you to anything.</p>
+    <a class="ar-cta" href="#register">Register your interest <span aria-hidden="true">&darr;</span></a>
+  </div>
+</section>
+
+<main class="article">
+
+  <section class="article-section reveal">
+    <div class="kicker">The Idea</div>
+    <h2>Homeowners have space. Artists need it.</h2>
+    <p>Through A Home for Art, PlotNua is hearing from Irish homeowners who might be willing to offer a wall, a room, a garden or a dry place to keep finished work. Some would simply like to live with original art. Some would open a space to visitors, by arrangement.</p>
+    <p>Before anything is built, we want to hear from artists: whether this would be useful to you, what kind of opportunity would matter, and what your work needs.</p>
+  </section>
+
+  <section class="article-section reveal">
+    <div class="kicker">Before You Register</div>
+    <h2>What registering means, and what it doesn&rsquo;t.</h2>
+    <ul>
+      <li>It&rsquo;s free, and it doesn&rsquo;t commit you to anything.</li>
+      <li>It&rsquo;s private. Your details are not published, and there are no public artist profiles.</li>
+      <li>It&rsquo;s early. PlotArt is in development, and no matching service is being launched at this stage.</li>
+      <li id="arDisclaimer">Registering doesn&rsquo;t mean you&rsquo;ll be offered a space, an exhibition, a sale, a commission or an introduction. PlotNua is simply finding out whether artists would be interested.</li>
+      <li>If the idea develops, we&rsquo;ll email you first, and nothing will be arranged without your agreement.</li>
+    </ul>
+  </section>
+
+  <section class="article-section reveal" id="register" aria-labelledby="arRegH">
+    <div class="kicker">Register Your Interest</div>
+    <h2 id="arRegH">Tell us about your work.</h2>
+    <div class="ar-card ar-closed" id="arClosed">
+      <p class="ar-p"><strong>Registration isn&rsquo;t open yet.</strong> PlotArt&rsquo;s Artist Register is being prepared. When it opens, this is where you&rsquo;ll be able to register.</p>
+    </div>
+    <div class="ar-card" id="arCard" hidden>
+      <p class="ar-prev" id="arPrev">Private preview &middot; not public</p>
+      <form class="ar-form" id="arForm" novalidate>
+        <p class="ar-privline">The name you work under, an email address and where you&rsquo;re based. No home address, no phone number, no photographs.</p>
+        <div class="ar-grid">
+          <div class="ar-f is-wide"><label for="arName">Artist name, or the name you work under</label>
+            <input type="text" id="arName" name="artist_name" autocomplete="name" maxlength="60" required></div>
+          <div class="ar-f"><label for="arEmail">Email address</label>
+            <input type="email" id="arEmail" name="email" autocomplete="email" maxlength="120" required></div>
+          <div class="ar-f"><label for="arBased">Where are you based?</label>
+            <select id="arBased" name="based_in" required>
+              <option value="">Choose one</option>
+              <option value="antrim">Antrim</option>
+              <option value="armagh">Armagh</option>
+              <option value="carlow">Carlow</option>
+              <option value="cavan">Cavan</option>
+              <option value="clare">Clare</option>
+              <option value="cork">Cork</option>
+              <option value="derry">Derry / Londonderry</option>
+              <option value="donegal">Donegal</option>
+              <option value="down">Down</option>
+              <option value="dublin">Dublin</option>
+              <option value="fermanagh">Fermanagh</option>
+              <option value="galway">Galway</option>
+              <option value="kerry">Kerry</option>
+              <option value="kildare">Kildare</option>
+              <option value="kilkenny">Kilkenny</option>
+              <option value="laois">Laois</option>
+              <option value="leitrim">Leitrim</option>
+              <option value="limerick">Limerick</option>
+              <option value="longford">Longford</option>
+              <option value="louth">Louth</option>
+              <option value="mayo">Mayo</option>
+              <option value="meath">Meath</option>
+              <option value="monaghan">Monaghan</option>
+              <option value="offaly">Offaly</option>
+              <option value="roscommon">Roscommon</option>
+              <option value="sligo">Sligo</option>
+              <option value="tipperary">Tipperary</option>
+              <option value="tyrone">Tyrone</option>
+              <option value="waterford">Waterford</option>
+              <option value="westmeath">Westmeath</option>
+              <option value="wexford">Wexford</option>
+              <option value="wicklow">Wicklow</option>
+              <option value="outside_ireland">Outside Ireland</option>
+            </select></div>
+          <div class="ar-f is-wide">
+            <fieldset class="ar-set" id="arReach"><legend>Where would you consider opportunities?</legend>
+            <div class="ar-ticks">
+              <div class="ar-tick"><input type="radio" id="ar_reach_local_area" name="reach" value="local_area"><label for="ar_reach_local_area">My local area</label></div>
+              <div class="ar-tick"><input type="radio" id="ar_reach_particular_places" name="reach" value="particular_places"><label for="ar_reach_particular_places">Particular counties or regions</label></div>
+              <div class="ar-tick"><input type="radio" id="ar_reach_anywhere_ireland" name="reach" value="anywhere_ireland"><label for="ar_reach_anywhere_ireland">Anywhere in Ireland</label></div>
+            </div>
+            </fieldset>
+            <div class="ar-f ar-places" id="arPlacesWrap" hidden><label for="arPlaces">Which counties or regions? <span class="ar-opt">(optional)</span></label>
+              <input type="text" id="arPlaces" name="reach_places" maxlength="120"></div></div>
+          <div class="ar-f is-wide">
+            <fieldset class="ar-set" id="arDisc"><legend>What do you make?</legend>
+            <span class="ar-hint">Tick any that apply.</span>
+            <div class="ar-ticks is-two">
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_painting" name="disciplines" value="painting"><label for="ar_disciplines_painting">Painting</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_drawing_print" name="disciplines" value="drawing_print"><label for="ar_disciplines_drawing_print">Drawing and printmaking</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_photography" name="disciplines" value="photography"><label for="ar_disciplines_photography">Photography</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_sculpture" name="disciplines" value="sculpture"><label for="ar_disciplines_sculpture">Sculpture</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_ceramics_craft" name="disciplines" value="ceramics_craft"><label for="ar_disciplines_ceramics_craft">Ceramics and craft</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_textiles" name="disciplines" value="textiles"><label for="ar_disciplines_textiles">Textiles</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_installation_mixed" name="disciplines" value="installation_mixed"><label for="ar_disciplines_installation_mixed">Installation and mixed media</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_digital_video" name="disciplines" value="digital_video"><label for="ar_disciplines_digital_video">Digital and video art</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_disciplines_other" name="disciplines" value="other"><label for="ar_disciplines_other">Something else</label></div>
+            </div>
+            </fieldset></div>
+          <div class="ar-f is-wide">
+            <fieldset class="ar-set" id="arInt"><legend>Which opportunities interest you?</legend>
+            <span class="ar-hint">Tick any that apply.</span>
+            <div class="ar-ticks">
+              <div class="ar-tick"><input type="checkbox" id="ar_interests_display" name="interests" value="display"><label for="ar_interests_display">Displaying artwork in a home</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_interests_show_visitors" name="interests" value="show_visitors"><label for="ar_interests_show_visitors">Showing work to visitors, by arrangement</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_interests_installation" name="interests" value="installation"><label for="ar_interests_installation">Creating a site-specific installation</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_interests_store" name="interests" value="store"><label for="ar_interests_store">Storing finished artwork</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_interests_reach_buyers" name="interests" value="reach_buyers"><label for="ar_interests_reach_buyers">Reaching potential buyers through a home setting</label></div>
+            </div>
+            </fieldset></div>
+          <div class="ar-f is-wide">
+            <fieldset class="ar-set" id="arNeeds"><legend>What space would your work need? <span class="ar-opt">(optional)</span></legend>
+            <div class="ar-ticks is-two">
+              <div class="ar-tick"><input type="checkbox" id="ar_needs_wall" name="needs" value="wall"><label for="ar_needs_wall">Wall space</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_needs_floor_room" name="needs" value="floor_room"><label for="ar_needs_floor_room">Floor or room space</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_needs_outdoor" name="needs" value="outdoor"><label for="ar_needs_outdoor">Outdoor or garden space</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_needs_dry_storage" name="needs" value="dry_storage"><label for="ar_needs_dry_storage">Dry, secure storage</label></div>
+              <div class="ar-tick"><input type="checkbox" id="ar_needs_not_sure" name="needs" value="not_sure"><label for="ar_needs_not_sure">Not sure yet</label></div>
+            </div>
+            </fieldset></div>
+          <div class="ar-f is-wide"><label for="arPortfolio">Website or portfolio <span class="ar-opt">(optional)</span></label>
+            <input type="url" id="arPortfolio" name="portfolio" maxlength="200" inputmode="url" placeholder="https://" aria-describedby="arPortfolioHint">
+            <span class="ar-hint" id="arPortfolioHint">A link we can look at, starting https://. It stays private.</span></div>
+          <div class="ar-f is-wide"><label for="arStatement">A short artist statement <span class="ar-opt">(optional)</span></label>
+            <textarea id="arStatement" name="statement" maxlength="400" aria-describedby="arStatementHint"></textarea>
+            <span class="ar-hint" id="arStatementHint">A few sentences about your work. Please don&rsquo;t include your address, phone number or anyone else&rsquo;s details.</span></div>
+        </div>
+        <div class="ar-hp" aria-hidden="true"><label for="arWebsite">Leave this field empty</label>
+          <input type="text" id="arWebsite" name="website" tabindex="-1" autocomplete="off" value=""></div>
+        <div class="ar-tick ar-consent"><input type="checkbox" id="arConsent" required>
+          <label for="arConsent"><span id="arConsentText"></span></label></div>
+        <details class="ar-notice">
+          <summary>Before you register &mdash; what we keep, and what we never ask for</summary>
+          <div class="ar-noticebody">
+            <p><strong>What we keep.</strong> The name you work under, your email address, where you&rsquo;re based, where you would consider opportunities, what you make and which opportunities interest you &mdash; and, if you choose to tell us, the space your work needs, a website or portfolio link, and a short statement. We also keep a record that you gave your consent, which version of our privacy notice applied, and when you registered.</p>
+            <p><strong>What we never ask for.</strong> Your home address, your phone number, your date of birth, photographs, prices or details of your sales.</p>
+            <p><strong>Why we keep it.</strong> So that we can contact you about the A Home for Art pilot and the development of PlotArt &mdash; for example to ask what would be useful to you, or to let you know if the idea develops.</p>
+            <p><strong>Your details stay private.</strong> Registration details are accessible only to authorised people managing the register and to service providers where necessary to operate it. They are not shared with homeowners or made publicly available. There is no public profile, listing or directory, and nothing will be arranged without your agreement. We never sell your information or pass it to anyone for advertising.</p>
+            <p><strong>Leaving.</strong> You can withdraw your consent at any time. Email hello@plotnua.ie and we will delete your record. There is nothing to cancel and no notice period.</p>
+            <p><strong>How long we keep it.</strong> A maximum of 12 months, and less if the pilot no longer needs it. You can ask us to delete it at any time.</p>
+            <p><strong>After deletion.</strong> We delete everything the register holds about you, including the record of your consent. Our database provider keeps deleted records in its trash for 7 days and its own recovery copies for up to 1 year; we never restore deleted records from them. We keep only an anonymous log entry with the dates and the reason, which contains nothing that identifies you.</p>
+            <p>The full details are in our <a href="privacy.html">privacy notice</a>.</p>
+          </div>
+        </details>
+        <p class="ar-msg" id="arMsg" hidden role="status" aria-live="polite"></p>
+        <div class="ar-actions">
+          <button class="ar-cta" type="submit" id="arSend">Submit my registration</button>
+        </div>
+      </form>
+      <div class="ar-done" id="arDone" hidden role="status" aria-live="polite">
+        <h3 class="ar-done-h" id="arDoneH" tabindex="-1"></h3>
+        <div id="arDoneBody"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-mark">
+        <img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="40" height="40">
+        <span class="footer-word">PlotNua</span>
+      </div>
+    </div>
+
+    <nav class="footer-cols" aria-label="Footer">
+      <div class="footer-col">
+        <h2>Navigation</h2>
+        <ul>
+          <li><a href="index.html#discover">Discoveries</a></li>
+          <li><a href="your-plot.html">Your Plot</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Company</h2>
+        <ul>
+          <li><a href="about.html">About PlotNua</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Social</h2>
+        <ul>
+          <li><a href="https://instagram.com/plotnua" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://facebook.com/plotnua" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://linkedin.com/company/plotnua" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://pinterest.com/plotnua" target="_blank" rel="noopener">Pinterest</a></li>
+          <li><a href="https://tiktok.com/@plotnua" target="_blank" rel="noopener">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Contact</h2>
+        <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
+      </div>
+    </nav>
+
+    <div class="footer-base">&copy; PlotNua.</div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const brandMark = document.getElementById('brandMark');
+
+    if (reduceMotion){
+      if (brandMark) brandMark.classList.add('in');
+    } else {
+      setTimeout(()=>{ if (brandMark) brandMark.classList.add('in'); }, 900);
+    }
+
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const io = new IntersectionObserver(es=>{
+        es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, {threshold:.12});
+      io.observe(el);
+    });
+  })();
+</script>
+<script>
+/* PLOTNUA-ARTIST-REGISTER-JS · PlotArt Artist Register (founder approval to build,
+ * 14 Oct 2026). Generated by atlas-tools/build-artist-register.py -- do not hand-edit.
+ * SHIPS CLOSED: unless ARTIST_PUBLIC or ?register=preview, the form is REMOVED from
+ * the DOM and the page says registration isn't open. Expressions of interest only.
+ * Reads no storage, cookie or My Plot contract; calls one endpoint only. The consent
+ * sentence exists once, written with textContent and sent verbatim. */
+(function () {
+  'use strict';
+  var ARTIST_PUBLIC = false;
+  var ENDPOINT = "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/artist";
+  var CONSENT_TEXT = "I'm over 18 and agree that PlotNua may keep my registration details and contact me about the A Home for Art pilot and the development of PlotArt. I understand I can withdraw my consent at any time.";
+  var OPTS = {"disciplines": [["painting", "Painting"], ["drawing_print", "Drawing and printmaking"], ["photography", "Photography"], ["sculpture", "Sculpture"], ["ceramics_craft", "Ceramics and craft"], ["textiles", "Textiles"], ["installation_mixed", "Installation and mixed media"], ["digital_video", "Digital and video art"], ["other", "Something else"]], "interests": [["display", "Displaying artwork in a home"], ["show_visitors", "Showing work to visitors, by arrangement"], ["installation", "Creating a site-specific installation"], ["store", "Storing finished artwork"], ["reach_buyers", "Reaching potential buyers through a home setting"]], "needs": [["wall", "Wall space"], ["floor_room", "Floor or room space"], ["outdoor", "Outdoor or garden space"], ["dry_storage", "Dry, secure storage"], ["not_sure", "Not sure yet"]], "reach": [["local_area", "My local area"], ["particular_places", "Particular counties or regions"], ["anywhere_ireland", "Anywhere in Ireland"]]};
+  var FIELD_NAME = {
+    artist_name: 'the name you work under', email: 'your email address', based_in: 'where you\u2019re based',
+    reach: 'where you would consider opportunities', reach_places: 'the counties or regions',
+    disciplines: 'at least one thing you make', interests: 'at least one opportunity',
+    needs: 'the space your work needs', portfolio: 'a website link starting https://',
+    statement: 'the statement', over_18: 'the confirmation that you are over 18 and agree',
+    consent_text: 'the permission wording'
+  };
+  var FIELD_EL = { artist_name: 'arName', email: 'arEmail', based_in: 'arBased', reach: 'arReach',
+    reach_places: 'arPlaces', disciplines: 'arDisc', interests: 'arInt', needs: 'arNeeds',
+    portfolio: 'arPortfolio', statement: 'arStatement', over_18: 'arConsent' };
+  var STATE = 'form';
+  var FLAGGED = null;
+  function $(id) { return document.getElementById(id); }
+  function preview() {
+    try { return /(?:^|[?&])register=preview(?:&|$)/.test(location.search); } catch (e) { return false; }
+  }
+  function picked(key) {
+    var out = [];
+    OPTS[key].forEach(function (o) { var b = $('ar_' + key + '_' + o[0]); if (b && b.checked) out.push(o[0]); });
+    return out;
+  }
+  function msg(t) { var m = $('arMsg'); m.textContent = t || ''; m.hidden = !t; }
+  function clearInvalid() {
+    Object.keys(FIELD_EL).forEach(function (k) { var el = $(FIELD_EL[k]); if (el) el.removeAttribute('aria-invalid'); });
+  }
+  function flag(field) {
+    msg('We still need ' + (FIELD_NAME[field] || 'one more thing') + '.');
+    var el = $(FIELD_EL[field]);
+    FLAGGED = el;
+    if (!el) return;
+    el.setAttribute('aria-invalid', 'true');
+    var f = el.tagName === 'FIELDSET' ? el.querySelector('input') : el;
+    try { f.focus(); } catch (e) {}
+  }
+  function show(which) {
+    STATE = which;
+    $('arForm').hidden = !(which === 'form' || which === 'sending');
+    $('arDone').hidden = (which === 'form' || which === 'sending');
+    $('arDone').setAttribute('data-state', which);
+    var s = $('arSend');
+    s.disabled = (which === 'sending');
+    s.textContent = which === 'sending' ? 'Sending\u2026' : "Submit my registration";
+  }
+  function end(which, heading, paras) {
+    $('arDoneH').textContent = heading;
+    var b = $('arDoneBody');
+    b.innerHTML = '';
+    paras.forEach(function (t) { var p = document.createElement('p'); p.className = 'ar-p'; p.textContent = t; b.appendChild(p); });
+    show(which);
+    try { $('arDoneH').focus(); } catch (e) {}
+  }
+  function received() {
+    end('received', 'You\u2019re on the register', [
+      'We have what you told us about your work. Nobody else can see it.',
+      'This is a register of interest, not a matching service. No homeowner will contact you, and nothing ' +
+      'will be arranged without your agreement. If PlotArt develops in a way that could involve you, we\u2019ll email you.',
+      'To come off it, email hello@plotnua.ie. There is nothing to cancel and no notice period.'
+    ]);
+  }
+  function notOpen() {
+    end('not_open', 'The register isn\u2019t open yet', [
+      'Your details haven\u2019t been saved.',
+      'Nothing is waiting on you. When the register opens, this is where it will happen.'
+    ]);
+  }
+  function unavailable() {
+    end('unavailable', 'That didn\u2019t go through', [
+      'Something went wrong between this page and PlotNua, and your details haven\u2019t been saved.',
+      'Trying again in a minute is usually the whole fix. If it keeps happening, hello@plotnua.ie reaches a person.'
+    ]);
+  }
+  function reach() { var r = picked('reach'); return r.length ? r[0] : ''; }
+  /* The payload. These keys are the Worker's ARTIST_ALLOWED_KEYS exactly (guard A5);
+     optional fields are sent only when filled in. */
+  function payload() {
+    var body = {
+      artist_name: $('arName').value,
+      email: $('arEmail').value,
+      based_in: $('arBased').value,
+      reach: reach(),
+      disciplines: picked('disciplines'),
+      interests: picked('interests'),
+      over_18: $('arConsent').checked === true,
+      consent_text: CONSENT_TEXT
+    };
+    if (body.reach === 'particular_places' && $('arPlaces').value.trim()) body.reach_places = $('arPlaces').value;
+    if (picked('needs').length) body.needs = picked('needs');
+    if ($('arPortfolio').value.trim()) body.portfolio = $('arPortfolio').value.trim();
+    if ($('arStatement').value.trim()) body.statement = $('arStatement').value;
+    return body;
+  }
+  function localProblem() {
+    if (!$('arName').value.trim()) return 'artist_name';
+    var e = $('arEmail').value.trim();
+    if (!e || e.indexOf('@') < 1 || e.lastIndexOf('.') < e.indexOf('@')) return 'email';
+    if (!$('arBased').value) return 'based_in';
+    if (!reach()) return 'reach';
+    if (!picked('disciplines').length) return 'disciplines';
+    if (!picked('interests').length) return 'interests';
+    var p = $('arPortfolio').value.trim();
+    if (p && !/^https:\/\/[^\s\/:@]+\.[^\s\/:@]{2,}(\/\S*)?$/i.test(p)) return 'portfolio';
+    if (!$('arConsent').checked) return 'over_18';
+    return null;
+  }
+  function submit(ev) {
+    ev.preventDefault();
+    if (STATE === 'sending') return;
+    clearInvalid();
+    var bad = localProblem();
+    if (bad) { flag(bad); return; }
+    msg('');
+    /* Honeypot, after ordinary validation: filled -> nothing is sent. */
+    if ($('arWebsite').value !== '') { unavailable(); return; }
+    show('sending');
+    fetch(ENDPOINT, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload()) })
+      .then(function (r) {
+        return r.json().then(function (j) { return { s: r.status, j: j }; }, function () { return { s: r.status, j: null }; });
+      }).then(function (res) {
+        var st = res.j && res.j.state;
+        if (res.s === 200 && st === 'received') { received(); return; }
+        if (res.s === 503 && st === 'not_open') { notOpen(); return; }
+        if (res.s === 400 && st === 'refused') {
+          show('form');
+          msg('PlotNua could not accept that: ' + (FIELD_NAME[res.j && res.j.field] || 'one of the answers') +
+              '. Nothing has been saved.');
+          return;
+        }
+        unavailable();
+      }).catch(function () { unavailable(); });
+  }
+  function init() {
+    var card = $('arCard'), closed = $('arClosed');
+    if (!card) return;
+    if (!ARTIST_PUBLIC && !preview()) {
+      if (card.parentNode) card.parentNode.removeChild(card);
+      return;
+    }
+    if (closed && closed.parentNode) closed.parentNode.removeChild(closed);
+    card.hidden = false;
+    $('arConsentText').textContent = CONSENT_TEXT;
+    OPTS.reach.forEach(function (o) {
+      $('ar_reach_' + o[0]).addEventListener('change', function () {
+        var on = reach() === 'particular_places';
+        $('arPlacesWrap').hidden = !on;
+        if (!on) $('arPlaces').value = '';
+      });
+    });
+    $('arForm').addEventListener('submit', submit);
+    /* A correction clears the flagged field's marking only. The message stays until
+       the next submit replaces it: removing it here moved the Submit button out from
+       under a click that had already started (the change fires on mousedown). */
+    $('arForm').addEventListener('change', function (ev) {
+      if (STATE !== 'form' || !FLAGGED || !(FLAGGED === ev.target || FLAGGED.contains(ev.target))) return;
+      FLAGGED.removeAttribute('aria-invalid'); FLAGGED = null;
+    });
+    show('form');
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+</body>
+</html>

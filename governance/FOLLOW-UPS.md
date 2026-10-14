@@ -527,3 +527,18 @@ atlas-tools/test-publish-targeted-update.py (R1 + T1-T12).
   committed); Powersheds and Yard Box imagery until their hand-listed assets
   move to approved-image-assets-v1.json. Homepage figures are the Atlas
   census (atlas-stats.yml) and are not publication counts.
+
+## 14 Oct 2026 — PlotArt Artist Register (built, CLOSED)
+
+See governance/ARTIST-REGISTER-BUILD-2026-10-14.md. Opening needs Privacy V5
+approval and publication, the Airtable Artists table, a controlled test and
+the founder's explicit approval.
+
+* ASR-INSTALLATION · OPEN (founder brief, 14 Oct 2026). Artists can register
+  interest in creating a site-specific installation; the homeowner register
+  has no matching option. Adding one is a separate decision and build
+  (Worker `ways`, the DISC-024 page, the Airtable `Hosts.ways` options).
+* ASR-MSG-SHIFT · OPEN, minor. The homeowner form clears its validation
+  message on `change`, which can move Submit away from a click already in
+  progress (found while testing the artist form, which avoids it). Not
+  changed: the brief excluded the homeowner form.

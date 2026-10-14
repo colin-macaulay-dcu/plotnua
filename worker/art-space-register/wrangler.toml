@@ -26,6 +26,19 @@ ORIGIN          = "https://plotnua.ie"
 # approved AND published on plotnua.ie before writes are ever enabled.
 PRIVACY_VERSION = "2026-10-PHASE2-V4"
 
+# ---------------------------------------------------------------------------
+# ARTIST REGISTER (PlotArt) · CLOSED. Founder approval to BUILD: 14 Oct 2026.
+# A separate route (/v1/art-space-register/artist), a separate switch and a
+# separate privacy version. The homeowner switch above does NOT open it.
+# Guard A2 in atlas-tools/build-artist-register.py refuses
+# ARTIST_WRITES_ENABLED = "true" until Privacy Notice V5 is published, the
+# artist page is open and ARTIST_OPEN_APPROVAL is complete.
+# ARTIST_PRIVACY_VERSION names the notice that covers artists (V5, not yet
+# published). The artist route writes nothing while either is missing.
+# ---------------------------------------------------------------------------
+ARTIST_WRITES_ENABLED = "false"
+ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
+
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
 # BOTH ARE PERSISTENT SECRETS (corrected 13 Oct 2026, activation preparation):
 #   AIRTABLE_BASE  -> wrangler secret put AIRTABLE_BASE
