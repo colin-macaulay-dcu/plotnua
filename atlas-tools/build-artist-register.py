@@ -45,8 +45,10 @@ GUARDS
   A11 A Home for Art: the future PlotArt link is PREPARED here (FUTURE_LINK,
       after FUTURE_ANCHOR) but NOT applied while closed (founder decision of
       13 Oct 2026 stays in force); the anchor exists exactly once
-  A12 the homeowner register is untouched: disc024 page, its builder and the
-      homeowner Worker constants are git HEAD's
+  A12 the homeowner register is untouched: the disc024 page and the homeowner
+      Worker's vocabulary, allow-list, consent and handler are git HEAD's.
+      (Its builder is not pinned here: Privacy V5 legitimately updates its
+      publication check, founder approval 14 Oct 2026, 19:29.)
   A13 the Airtable schema's Artists table carries every field the artist route
       writes, with options identical to the Worker's
 
@@ -605,6 +607,9 @@ def build():
         pre = shell[:shell.index('<title>')]
         fav = shell[shell.index("<!-- Favicons"):shell.index("<!-- Open Graph -->")]
         style = shell[shell.index('<link rel="preconnect"'):shell.index("</style>\n</head>")]
+        # Privacy V5 adds one style rule for its own sub-headings; it is not part
+        # of the shared shell, so the artist page is identical before and after V5.
+        style = style.split("/* PLOTNUA PRIVACY V5")[0]
         top = shell[shell.index("<body>"):shell.index("<!-- PRIVACY INTRO")]
         foot = shell[shell.index("<footer>"):shell.index("</body>")]
     except ValueError:
@@ -656,7 +661,10 @@ def guards(page):
     if writes not in ("true", "false"):
         die('A2 ARTIST_WRITES_ENABLED is missing or not "true"/"false"')
     if ARTIST_PUBLIC:
-        if not v5_published(SHELL.read_text(encoding="utf-8")):
+        import importlib.util as _ilu
+        _sp = _ilu.spec_from_file_location("build_privacy_v5", ROOT / "atlas-tools" / "build-privacy-v5.py")
+        _pv5 = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_pv5)
+        if not v5_published(SHELL.read_text(encoding="utf-8")) or not _pv5.published_ok():
             die("A2 the register may not open: privacy.html does not carry the approved V5 artist section")
         if wrangler("ARTIST_PRIVACY_VERSION") != V5_VERSION:
             die("A2 the register may not open: ARTIST_PRIVACY_VERSION is not %s" % V5_VERSION)
@@ -750,7 +758,7 @@ def guards(page):
     # A12
     try:
         d = subprocess.run(["git", "-C", str(ROOT), "diff", "--name-only", "HEAD", "--",
-                            "disc024-open-your-home-to-art.html", "atlas-tools/build-art-space-register.py"],
+                            "disc024-open-your-home-to-art.html"],
                            capture_output=True, text=True, check=True).stdout.strip()
         if d:
             die("A12 homeowner register files changed: " + d)

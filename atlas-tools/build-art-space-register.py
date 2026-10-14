@@ -984,6 +984,14 @@ def privacy_builder():
     return mod
 
 
+def privacy_builder_v5():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_privacy_v5", ROOT / "atlas-tools" / "build-privacy-v5.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def worker_src():
     return WORKER.read_text(encoding="utf-8")
 
@@ -1059,8 +1067,14 @@ def guards(html):
         if not pv4.published_ok():
             die("R2 the register may not open: privacy.html does not carry the governed V4 Art Space Register section")
         m = re.search(r'^PRIVACY_VERSION\s*=\s*"([^"]+)"', ART_WRANGLER.read_text(encoding="utf-8"), re.M)
-        if not m or m.group(1) != pv4.VERSION:
-            die("R2 the register may not open: the Art Worker's PRIVACY_VERSION is not the published %s" % pv4.VERSION)
+        # The notice in force: V4, or V5 once privacy.html carries it exactly
+        # (build-privacy-v5.py published_ok, which also re-checks the V4 text).
+        pv5 = privacy_builder_v5()
+        if pv5.published() and not pv5.published_ok():
+            die("R2 privacy.html carries V5 but not exactly the governed V5 text")
+        in_force = pv5.VERSION if pv5.published() else pv4.VERSION
+        if not m or m.group(1) != in_force:
+            die("R2 the register may not open: the Art Worker's PRIVACY_VERSION is not the published %s" % in_force)
         if not (isinstance(OPEN_APPROVAL, dict) and all(isinstance(OPEN_APPROVAL.get(k), str) and OPEN_APPROVAL[k].strip()
                                                          for k in OPEN_APPROVAL_KEYS)):
             die("R2 the register may not open: OPEN_APPROVAL does not record the founder's approval, the GDPR "
@@ -1181,8 +1195,14 @@ def guards(html):
                     ok = cur_priv == pv4.transform(head_priv, m.group(1) if m else None)
                 except SystemExit:
                     ok = False
+            if not ok and pv4.MARK in head_priv and "PLOTNUA-ARTIST-PRIVACY-V5" not in head_priv:
+                pv5 = privacy_builder_v5()
+                try:
+                    ok = cur_priv == pv5.transform(head_priv, pv5.APPROVAL["last_updated"] if pv5.approved() else None)
+                except SystemExit:
+                    ok = False
             if not ok:
-                die("R13 privacy.html changed other than by the governed V4 builder")
+                die("R13 privacy.html changed other than by the governed V4 or V5 builder")
     except (subprocess.CalledProcessError, FileNotFoundError):
         pass
     # R14

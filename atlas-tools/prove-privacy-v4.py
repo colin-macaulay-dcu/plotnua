@@ -81,7 +81,10 @@ case("V4 on-page notice retention differs", PAGE, "A maximum of 12 months, and l
      "A maximum of 18 months, and less")
 case("V4 on-page notice reintroduces a fingerprint", PAGE, "We keep only an anonymous log entry",
      "We keep a fingerprint and an anonymous log entry")
-case("V4 Art Worker not on V4", ART_WR, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')
+# Once privacy V5 is live the Art Worker records V5, the notice in force.
+V5_LIVE = "PLOTNUA-ARTIST-PRIVACY-V5" in PRIVACY.read_text(encoding="utf-8")
+CUR_VERSION = 'PRIVACY_VERSION = "%s"' % ("2026-10-PHASE2-V5" if V5_LIVE else "2026-10-PHASE2-V4")
+case("V4 Art Worker not on the notice in force", ART_WR, CUR_VERSION, 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')
 case("V4 Garden Worker moved off V3", GARDEN_WR, 'PRIVACY_VERSION = "2026-10-PHASE2-V3"', 'PRIVACY_VERSION = "2026-10-PHASE2-V4"')
 case("V5 an invented legal assurance", PB, "Records are reviewed by a person at PlotNua.",
      "PlotNua is fully compliant with GDPR. Records are reviewed by a person at PlotNua.")
@@ -109,8 +112,12 @@ else:
     action("--apply again on the published page", ["--apply"])
     case("published V4 with APPROVAL removed", PB, "APPROVAL = {", "APPROVAL = None\n_WITHDRAWN = {")
     case("published V4 with an incomplete APPROVAL", PB, '"risks_resolved": "governance/', '"risks_unrecorded": "governance/')
-    case("published Last updated label not the approved one", PRIVACY,
-         "Last updated: October 2026", "Last updated: November 2026")
+    if not V5_LIVE:   # once V5 is live, the label is V5's; prove-privacy-v5.py proves it
+        case("published Last updated label not the approved one", PRIVACY,
+             "Last updated: October 2026", "Last updated: November 2026")
+    else:
+        case("published V5 page altered inside the V4 text", PRIVACY,
+             "Records are reviewed by a person at PlotNua.", "Records are reviewed by PlotNua.")
     case("published page altered outside Section 8", PRIVACY, "<h2>9. Cookies</h2>", "<h2>9. Cookie use</h2>")
 
 # ---- Part B · publication rehearsal in a throwaway clone

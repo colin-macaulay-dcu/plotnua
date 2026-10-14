@@ -35,9 +35,15 @@ _LIVE = PRIVACY.read_text(encoding="utf-8")
 # Privacy V4 was published on 13 Oct 2026 (founder approval, notice only). The
 # proof works on either state: V3_PAGE and V4_PAGE are built in memory and
 # written only inside a case.
-PUBLISHED = PV4.MARK in _LIVE
-V3_PAGE = PV4.untransform(_LIVE) if PUBLISHED else _LIVE
+# Privacy V5 (14 Oct 2026) is built over V4. Once it is live, V4_PAGE is the
+# notice in force (the V5 page) and V3_PAGE is still derived from the V4 page
+# inside it; the Art Worker then records V5 (CUR_VERSION).
+V5_LIVE = PV4.v5_live(_LIVE)
+_L4 = PV4.as_v4(_LIVE)
+PUBLISHED = PV4.MARK in _L4
+V3_PAGE = PV4.untransform(_L4) if PUBLISHED else _L4
 V4_PAGE = _LIVE if PUBLISHED else PV4.transform(_LIVE)
+CUR_VERSION = 'PRIVACY_VERSION = "%s"' % ("2026-10-PHASE2-V5" if V5_LIVE else "2026-10-PHASE2-V4")
 COOKIES_H2 = "<h2>9. Cookies</h2>" if PUBLISHED else "<h2>8. Cookies</h2>"
 APPROVED = ('OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", '
             '"risks_resolved": "proof", "dry_run": "proof"}')
@@ -160,7 +166,7 @@ if OPENED:
           '    "risks_x": "Privacy')], expect="REFUSED: R2")
     multi("R2 open, but privacy back to V3", [V3], expect="REFUSED: R2")
     multi("R2 open, but Art Worker not on the published version",
-          [(ART_WRANGLER, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')], expect="REFUSED: R2")
+          [(ART_WRANGLER, CUR_VERSION, 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')], expect="REFUSED: R2")
     assert V4_PAGE.count("We keep your record for no longer than 12 months") == 1
     multi("R2 open, but published Section 8 differs (36-month retention)",
           [(PRIVACY, None, V4_PAGE.replace("We keep your record for no longer than 12 months",
@@ -176,7 +182,9 @@ if OPENED:
           expect="CHECK FAILED")
     multi("R13 open, but privacy.html alters Garden Section 7",
           [(PRIVACY, "your phone number, your surname, your age, photographs of your garden",
-            "your phone number, your age, photographs of your garden")], expect="REFUSED: R13")
+            "your phone number, your age, photographs of your garden")],
+          # Once V5 is live, R2's exact V5-over-V4 verification refuses this first.
+          expect="REFUSED: R2" if V5_LIVE else "REFUSED: R13")
     multi("R7 send button relabelled back to the CTA", [(RB, 'SEND_LABEL = "Submit my registration"', 'SEND_LABEL = "Register my interest"')],
           expect="REFUSED: R7")
     multi("POSITIVE closing (page and Worker together) is allowed", [CLOSE, WOFF], positive=True)
@@ -190,7 +198,7 @@ if not OPENED:
   multi("R2 OPEN_APPROVAL lacks the risk resolution", [OPEN, V4, (RB, "OPEN_APPROVAL = None",
         'OPEN_APPROVAL = {"founder_approval": "proof", "self_assessment": "proof", "dry_run": "proof"}')])
   multi("R2 Art Worker not on the published version", [OPEN, V4, APPROVE,
-        (ART_WRANGLER, 'PRIVACY_VERSION = "2026-10-PHASE2-V4"', 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')])
+        (ART_WRANGLER, CUR_VERSION, 'PRIVACY_VERSION = "2026-10-PHASE2-V3"')])
   assert V4_PAGE.count("We keep your record for no longer than 12 months") == 1
   multi("R2 published Section 8 differs (36-month retention)", [OPEN, APPROVE,
         (PRIVACY, None, V4_PAGE.replace("We keep your record for no longer than 12 months",

@@ -236,8 +236,10 @@ check('S4 the artist code never names the Hosts table or the homeowner vocabular
   artistCode.length > 1000 && !/T_HOSTS|\bV\.|ALLOWED_KEYS\.includes|CONSENT_TEXT\b(?!_)/.test(artistCode.replace(/ARTIST_ALLOWED_KEYS|ARTIST_CONSENT_TEXT/g, '')));
 const toml = readFileSync(new URL('../wrangler.toml', import.meta.url), 'utf8');
 check('S5 wrangler: the artist register ships CLOSED', /^ARTIST_WRITES_ENABLED\s*=\s*"false"/m.test(toml));
-check('S6 wrangler: artist privacy version is V5; homeowner stays V4',
-  /^ARTIST_PRIVACY_VERSION\s*=\s*"2026-10-PHASE2-V5"/m.test(toml) && /^PRIVACY_VERSION\s*=\s*"2026-10-PHASE2-V4"/m.test(toml));
+const v5Live = readFileSync(new URL('../../../privacy.html', import.meta.url), 'utf8').includes('PLOTNUA-ARTIST-PRIVACY-V5');
+check('S6 wrangler: artist privacy version is V5; homeowner records ' + (v5Live ? 'V5 (V5 is live)' : 'V4 until V5 is live'),
+  /^ARTIST_PRIVACY_VERSION\s*=\s*"2026-10-PHASE2-V5"/m.test(toml) &&
+  new RegExp('^PRIVACY_VERSION\\s*=\\s*"2026-10-PHASE2-' + (v5Live ? 'V5' : 'V4') + '"', 'm').test(toml));
 check('S7 no secret, token or base id in wrangler.toml', !/pat[A-Za-z0-9]{10}|app[A-Za-z0-9]{14}/.test(toml));
 const schema = JSON.parse(readFileSync(new URL('../airtable-schema.json', import.meta.url), 'utf8'));
 const tbl = (n) => schema.tables.find(t => t.name === n);

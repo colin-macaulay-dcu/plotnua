@@ -327,8 +327,8 @@ def guards(v3, v4):
             or "fingerprint" in reg
             or (BACKUP_PERIOD and ("recovery copies for " + BACKUP_PERIOD) not in reg)):
         refuse("V4 the register's on-page notice (as built on the DISC-024 check) does not carry the same retention figures")
-    if toml_version(ART_WRANGLER) != VERSION:
-        refuse("V4 the Art Worker's PRIVACY_VERSION is not %s" % VERSION)
+    if toml_version(ART_WRANGLER) != art_version_expected():
+        refuse("V4 the Art Worker's PRIVACY_VERSION is not %s (the notice in force)" % art_version_expected())
     if toml_version(GARDEN_WRANGLER) != "2026-10-PHASE2-V3":
         refuse("V4 the Garden Worker must stay on 2026-10-PHASE2-V3 (founder decision)")
     # V5
@@ -344,12 +344,77 @@ def guards(v3, v4):
         refuse("V6 something other than the six declared changes differs")
 
 
-def published_ok(text=None):
-    """True when privacy.html carries exactly the governed V4 Section 8 (used by the register's R2)."""
+# ---- PRIVACY V5 AWARENESS (founder approval to implement V5, 14 Oct 2026) ----
+# V5 (atlas-tools/build-privacy-v5.py) is built ON TOP of this V4 page: it
+# renames the Section 8 heading and adds the Artist Register around the V4
+# text, which stays word for word. Once V5 is live, every check here reads the
+# page as the V4 page it was built from: exactly the declared V5 changes are
+# removed and the V4 "Last updated" label restored. A page that is not exactly
+# V5 over V4 does not reduce to the V4 page, so every V4 check still refuses
+# it; the V5 builder checks the V5 additions themselves. Nothing is weakened.
+V5_MARK_TEXT = "PLOTNUA-ARTIST-PRIVACY-V5"
+
+
+def _pv5():
+    import importlib.util as _ilu
+    spec = _ilu.spec_from_file_location("build_privacy_v5", ROOT / "atlas-tools" / "build-privacy-v5.py")
+    mod = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def v5_live(text=None):
     text = PRIVACY.read_text(encoding="utf-8") if text is None else text
+    return V5_MARK_TEXT in text
+
+
+def as_v4(text):
+    if V5_MARK_TEXT not in text:
+        return text
+    v = _pv5().untransform(text)
+    m = UPDATED_RE.search(v)
+    if m and isinstance(APPROVAL, dict) and APPROVAL.get("last_updated"):
+        v = v.replace(m.group(0), '<p class="policy-updated">Last updated: %s</p>' % APPROVAL["last_updated"], 1)
+    return v
+
+
+def art_version_expected():
+    """The homeowner Worker records V4 while V4 is the notice in force, and V5 once V5 is live."""
+    return _pv5().VERSION if v5_live() else VERSION
+
+
+def published_ok(text=None):
+    """True when privacy.html carries exactly the governed V4 Section 8 (used by the register's R2).
+    Once V5 is live, the V4 page inside it must still carry it exactly."""
+    text = PRIVACY.read_text(encoding="utf-8") if text is None else text
+    text = as_v4(text)
     if text.count(MARK) != 1 or (section8_html().rstrip("\n") + "\n") not in text:
         return False
     return [n for n, _ in sections(text)] == list(range(1, 19))
+
+
+def published_exact(text=None):
+    """The full published-state verification of --check, as a predicate: the
+    page (or the V4 page inside a V5 page) is exactly the governed V4
+    transform of the pinned V3 page, with the approved label and the pinned
+    Section 7. Used by the V5 builder, so V5 can only be built over, and only
+    verify against, an exact V4."""
+    text = as_v4(PRIVACY.read_text(encoding="utf-8") if text is None else text)
+    try:
+        if not published_ok(text) or not isinstance(APPROVAL, dict):
+            return False
+        m = UPDATED_RE.search(text)
+        if not m or m.group(1) != APPROVAL.get("last_updated"):
+            return False
+        v3 = untransform(text)
+        if hashlib.sha256(v3.encode("utf-8")).hexdigest() != PUBLISHED_V3_SHA256:
+            return False
+        g7 = garden7(v3)
+        if not g7 or hashlib.sha256(g7.encode("utf-8")).hexdigest() != GARDEN7_SHA256:
+            return False
+        return transform(v3, APPROVAL["last_updated"]) == text
+    except SystemExit:
+        return False
 
 
 def main(argv):
@@ -373,6 +438,7 @@ def main(argv):
         print("privacy.html: V4 APPLIED (Section 8 · Art Space Register) and %d Garden proof co-edits" % len(G6_CO_EDITS))
         return
     if MARK in cur:
+        cur = as_v4(cur)
         if "--preview" in argv:
             refuse("V4 is already published; there is nothing to preview")
         if not (isinstance(APPROVAL, dict) and all(isinstance(APPROVAL.get(k), str) and APPROVAL[k].strip()
