@@ -132,7 +132,9 @@ SUPPORT = ("Registering is a non-binding expression of interest in PlotNua&rsquo
            "It is not an assessment of your space, and you can register even if the space might need "
            "improvements first.")
 EXPLORE_LABEL = "Explore A Home for Art"
-EXPLORE_HREF = "discovery-a-home-for-art.html#open-your-home-to-art"  # sends it (founder, 14 Oct 2026: distinct from the CTA)
+EXPLORE_HREF = "discovery-a-home-for-art.html#open-your-home-to-art"
+EXPLORE_NOTE = ("Discover how Irish homeowners could display, store or help sell original artwork "
+                "&mdash; and what to consider before getting involved.")  # sends it (founder, 14 Oct 2026: distinct from the CTA)
 
 M = {
     "css_b": "/* PLOTNUA-ART-REGISTER-CSS-BEGIN",
@@ -266,6 +268,22 @@ CSS = """/* PLOTNUA-ART-REGISTER-CSS-BEGIN · Art Space Register (DISC-024), fou
     .asr-actions .pc-cta,.asr-choices .pc-cta{width:100%;justify-content:center;}
     .asr-actions{justify-content:center;}
   }
+  /* Two actions, one hierarchy (founder, 14 Oct 2026): the primary is filled,
+     the secondary an outlined button of the same height and type, each in its
+     own column on wider screens and stacked full-width on phones. */
+  .asr-choices{display:grid;grid-template-columns:1fr;gap:12px;align-items:start;margin:22px 0 4px;}
+  .asr-choice{min-width:0;}
+  .asr-choice .pc-cta{width:100%;min-height:52px;justify-content:center;margin:0;}
+  .asr-explore{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    min-height:52px;padding:14px 22px;border:1.5px solid var(--ink);border-radius:999px;
+    background:transparent;color:var(--ink);text-decoration:none;
+    font-family:'Work Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.14em;
+    text-transform:uppercase;transition:background .2s ease, color .2s ease;}
+  .asr-explore:hover{background:rgba(31,59,46,.06);color:var(--ink);}
+  .asr-explore:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .asr-explore-note{margin:10px 2px 0;font-size:13.5px;line-height:1.55;color:var(--muted);}
+  @media(min-width:640px){ .asr-choices{grid-template-columns:1fr 1fr;gap:16px;} }
+  @media(prefers-reduced-motion:reduce){ .asr-explore{transition:none;} }
   .asr-done{padding:6px 0 0;}
   .asr-done[data-state=received]::before{content:"";display:block;width:44px;height:44px;margin:0 0 14px;
     border-radius:50%;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23F2EFE6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px no-repeat;}
@@ -325,9 +343,14 @@ def html_section():
         '      <div id="asrOffer">\n'
         '        <p class="asr-lead" id="asrLead">%s</p>\n' % SUPPORT +
         '        <div class="asr-choices">\n'
-        '          <button class="pc-cta" type="button" id="asrOpen">%s</button>\n' % CTA +
-        '          <a class="asr-explore" id="asrExplore" href="%s">%s <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>\n'
+        '          <div class="asr-choice">\n'
+        '            <button class="pc-cta" type="button" id="asrOpen">%s</button>\n' % CTA +
+        '          </div>\n'
+        '          <div class="asr-choice">\n'
+        '            <a class="asr-explore" id="asrExplore" href="%s">%s <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>\n'
         % (EXPLORE_HREF, EXPLORE_LABEL) +
+        '            <p class="asr-explore-note" id="asrExploreNote">%s</p>\n' % EXPLORE_NOTE +
+        '          </div>\n'
         '        </div>\n'
         '        <p class="asr-assure">%s</p>\n' % INVITATION[-1] +
         '        <p class="asr-p" id="asrCommit">%s</p>\n' % COMMITMENT +
@@ -845,7 +868,8 @@ def guards(html):
     if HEADING not in sec or sec.count('id="asrOpen">%s<' % CTA) != 1:
         die("R7 the approved heading or CTA is missing")
     if sec.count('<p class="asr-lead" id="asrLead">%s</p>' % SUPPORT) != 1 \
-            or sec.count('id="asrExplore" href="%s">%s ' % (EXPLORE_HREF, EXPLORE_LABEL)) != 1:
+            or sec.count('id="asrExplore" href="%s">%s ' % (EXPLORE_HREF, EXPLORE_LABEL)) != 1 \
+            or sec.count('<p class="asr-explore-note" id="asrExploreNote">%s</p>' % EXPLORE_NOTE) != 1:
         die("R7 the two actions (register, explore) or their supporting line are missing")
     if sec.index('id="asrOpen"') > sec.index("asr-assure") or sec.index('id="asrOpen"') > sec.index('class="asr-more"'):
         die("R7 the register action must come before the longer invitation text")

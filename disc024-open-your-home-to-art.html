@@ -867,9 +867,30 @@ window.PlotNuaFunnel = (function () {
   .ho-knowmore{margin:10px 0 0;font-size:14.5px;}
   .ho-knowmore a{color:var(--accent);text-underline-offset:3px;}
   .ho-knowmore a:hover{color:var(--ink);}
-  .ho-save,.pc-saveband{margin:0 0 18px;border-radius:16px;background:var(--card);
-    border:1px solid var(--rule-soft);}
-  .ho-foot{margin:0;font-size:13px;line-height:1.6;color:var(--muted);max-width:60ch;}
+  /* MY PLOT CARD. The original band was a full-bleed row: margin pulled it to
+     the viewport edges and padding:0 calc(50vw - 50%) pushed the content back
+     into the column. V3 reset the margin but not that padding, so inside the
+     720px column the padding still grew with the viewport (about 280px a side
+     at 1280px) and squeezed the content into a sliver; the 132px label column
+     of the old row grid narrowed it further. The card now sizes to the column. */
+  .ho-save,.pc-saveband{margin:0 0 18px;padding:22px 22px 24px;border-radius:16px;
+    background:var(--card);border:1px solid var(--rule-soft);}
+  .ho-saveinner,.pc-saveinner{display:block;border-top:0;padding-top:0;}
+  .pc-savelab{margin:0 0 12px;font-size:13.5px;font-weight:500;letter-spacing:0;
+    text-transform:none;color:var(--accent);}
+  .pc-savehead{align-items:center;gap:14px;margin:0 0 16px;}
+  .pc-savehead .pc-mark{width:44px;height:44px;flex:0 0 44px;box-shadow:0 4px 12px rgba(31,59,46,.14);}
+  .pc-saveh{font-size:clamp(21px,4.6vw,25px);max-width:none;}
+  .pc-savenote{margin:12px 0 0;font-size:14.5px;max-width:52ch;}
+  .pc-savemeta{margin:12px 0 0;}
+  .pc-savelink{margin:16px 0 0;}
+  @media (min-width:640px){
+    .ho-savebody{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px;align-items:center;}
+    .ho-savebody .pc-savehead{grid-column:1;margin:0;}
+    .ho-savebody .pc-cta{grid-column:2;grid-row:1;justify-self:end;margin:0;}
+    .ho-savebody .pc-savemeta,.ho-savebody .pc-savenote,.ho-savebody .pc-savelink{grid-column:1 / -1;justify-self:start;}
+  }
+  .ho-foot{margin:0;padding:0;border:0;font-size:13px;line-height:1.6;color:var(--muted);max-width:60ch;}
 
   @media (min-width:760px){
     .ho-topin{padding:12px 28px;}
@@ -995,6 +1016,22 @@ window.PlotNuaFunnel = (function () {
     .asr-actions .pc-cta,.asr-choices .pc-cta{width:100%;justify-content:center;}
     .asr-actions{justify-content:center;}
   }
+  /* Two actions, one hierarchy (founder, 14 Oct 2026): the primary is filled,
+     the secondary an outlined button of the same height and type, each in its
+     own column on wider screens and stacked full-width on phones. */
+  .asr-choices{display:grid;grid-template-columns:1fr;gap:12px;align-items:start;margin:22px 0 4px;}
+  .asr-choice{min-width:0;}
+  .asr-choice .pc-cta{width:100%;min-height:52px;justify-content:center;margin:0;}
+  .asr-explore{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    min-height:52px;padding:14px 22px;border:1.5px solid var(--ink);border-radius:999px;
+    background:transparent;color:var(--ink);text-decoration:none;
+    font-family:'Work Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.14em;
+    text-transform:uppercase;transition:background .2s ease, color .2s ease;}
+  .asr-explore:hover{background:rgba(31,59,46,.06);color:var(--ink);}
+  .asr-explore:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .asr-explore-note{margin:10px 2px 0;font-size:13.5px;line-height:1.55;color:var(--muted);}
+  @media(min-width:640px){ .asr-choices{grid-template-columns:1fr 1fr;gap:16px;} }
+  @media(prefers-reduced-motion:reduce){ .asr-explore{transition:none;} }
   .asr-done{padding:6px 0 0;}
   .asr-done[data-state=received]::before{content:"";display:block;width:44px;height:44px;margin:0 0 14px;
     border-radius:50%;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23F2EFE6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px no-repeat;}
@@ -1060,8 +1097,13 @@ window.PlotNuaFunnel = (function () {
       <div id="asrOffer">
         <p class="asr-lead" id="asrLead">Registering is a non-binding expression of interest in PlotNua&rsquo;s Art Space Register. It is not an assessment of your space, and you can register even if the space might need improvements first.</p>
         <div class="asr-choices">
-          <button class="pc-cta" type="button" id="asrOpen">Register my interest</button>
-          <a class="asr-explore" id="asrExplore" href="discovery-a-home-for-art.html#open-your-home-to-art">Explore A Home for Art <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+          <div class="asr-choice">
+            <button class="pc-cta" type="button" id="asrOpen">Register my interest</button>
+          </div>
+          <div class="asr-choice">
+            <a class="asr-explore" id="asrExplore" href="discovery-a-home-for-art.html#open-your-home-to-art">Explore A Home for Art <span class="pc-arrow" aria-hidden="true">&rarr;</span></a>
+            <p class="asr-explore-note" id="asrExploreNote">Discover how Irish homeowners could display, store or help sell original artwork &mdash; and what to consider before getting involved.</p>
+          </div>
         </div>
         <p class="asr-assure">There&rsquo;s no commitment, no payment and no matching service operating at this stage. Your details remain private, and nothing will be arranged without your agreement.</p>
         <p class="asr-p" id="asrCommit">Registering your interest doesn&rsquo;t commit you to hosting artwork, inviting visitors into your home or entering into any arrangement. PlotNua is simply exploring whether homeowners might be interested in these possibilities.</p>
