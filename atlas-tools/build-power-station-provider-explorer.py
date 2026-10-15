@@ -33,8 +33,9 @@ GUARDS
   P7  the configuration embedded in the page equals the universe exactly
   P8  placement: inside the article, straight after "The energy anatomy of
       your property" (whose last position is export) and before the S8
-      imagery; the Property Check handoff is unchanged, still follows the
-      explorer, and remains the only route into a check from this page
+      imagery; the Property Check handoff is unchanged and still follows the
+      explorer (since 15 Oct 2026 the approved "Look again" section near the
+      top is a second, founder-approved route into each check)
   P9  the rest of the page is unchanged apart from the explorer, its single
       stylesheet link and the one approved correction (compared with git HEAD)
   P10 the Thermify correction is present once and the superseded label gone;
@@ -253,8 +254,12 @@ def guards(html, u):
     if not m or json.loads(m.group(1).replace("<\\/", "</")) != {"tabs": u["tabs"]}:
         die("P7 the embedded configuration does not equal the universe")
     # P8
+    # The Property Check HANDOFF is the last Property Check link on the page.
+    # Since 15 Oct 2026 the founder-approved "Look again at your house" section
+    # (build-disc026-look-again.py) adds a second route near the top, so the
+    # handoff is found with rfind, not find.
     marks = [html.find(s) for s in ("<h2>The energy anatomy of your property</h2>", 'id="explore-providers"',
-                                     "CONCEPT IMAGERY, position 1 of 2", PC_LINK)]
+                                     "CONCEPT IMAGERY, position 1 of 2")] + [html.rfind(PC_LINK)]
     if -1 in marks or not (marks[0] < marks[1] < marks[2] < marks[3]):
         die("P8 explorer is not between the energy anatomy and the S8 imagery, ahead of the Property Check")
     if not html[b + len(END):].lstrip().startswith("</div>"):

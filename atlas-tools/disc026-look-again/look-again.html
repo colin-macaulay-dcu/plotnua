@@ -1,0 +1,291 @@
+<section class="lag" id="look-again" aria-labelledby="lag-title">
+  <div class="lag-open">
+    <h2 id="lag-title">Look again at your house.</h2>
+    <p>Most homes only take energy in. Look at the same house again, one ordinary thing at a time, and it starts to become something else.</p>
+  </div>
+
+  <div class="lag-key" aria-label="What the markers mean">
+    <span class="lag-mk is-today">Here today</span>
+    <span class="lag-mk is-ie">Being worked on in Ireland</span>
+    <span class="lag-mk is-abroad">Operating elsewhere, not in Ireland</span>
+    <span class="lag-mk is-large">Large sites in Ireland, not homes</span>
+  </div>
+
+  <div class="lag-stage">
+    <!-- THE CENTREPIECE. The article's S7 section drawing, redrawn in ivory on
+         the field, with the town that sits just outside its frame. The camera
+         (the viewBox) moves through it as each revelation is read. -->
+    <figure class="lag-canvas" id="lag-canvas">
+      <svg id="lag-house" viewBox="0 0 900 470" role="img" aria-labelledby="lag-desc">
+        <desc id="lag-desc">A cross-section of an ordinary house and the town beside it. As you read, the view moves to the part each possibility concerns.</desc>
+        <defs>
+          <pattern id="lagHatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+            <path d="M0 0 V9" stroke="#F2EFE6" stroke-width=".6" opacity=".14"/>
+          </pattern>
+          <radialGradient id="lagHeatGlow">
+            <stop offset="0" stop-color="#D8B475" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#D8B475" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="lagSunGlow">
+            <stop offset="0" stop-color="#F2EFE6" stop-opacity=".5"/>
+            <stop offset="1" stop-color="#F2EFE6" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ground, house to town -->
+        <rect x="-480" y="322" width="1380" height="86" fill="url(#lagHatch)"/>
+        <path d="M-480 322 H880" stroke="#F2EFE6" stroke-width="1.4" opacity=".55" fill="none"/>
+
+        <g fill="none" class="lag-line">
+          <!-- THE TOWN (outside the house's frame) -->
+          <g class="lag-part lag-p-town">
+            <!-- data centre: long, low, vented -->
+            <rect x="-450" y="242" width="140" height="80" stroke-width="1.3" class="lag-fill"/>
+            <path d="M-438 258 H-322 M-438 270 H-322 M-438 282 H-322 M-438 294 H-322" stroke-width=".8" opacity=".45"/>
+            <path d="M-424 242 V228 H-404 V242 M-356 242 V226 H-334 V242" stroke-width="1.1" opacity=".7"/>
+            <text class="lag-lbl" x="-450" y="424">DATA CENTRE</text>
+            <!-- public buildings -->
+            <path d="M-270 322 V262 L-230 236 L-190 262 V322" stroke-width="1.3" class="lag-fill"/>
+            <rect x="-250" y="290" width="16" height="32" stroke-width=".9" opacity=".5"/>
+            <rect x="-160" y="256" width="104" height="66" stroke-width="1.3" class="lag-fill"/>
+            <path d="M-146 274 H-130 M-112 274 H-96 M-146 296 H-130 M-112 296 H-96" stroke-width=".9" opacity=".5"/>
+            <text class="lag-lbl" x="-270" y="424">PUBLIC BUILDINGS</text>
+            <!-- a neighbouring house -->
+            <path d="M-74 322 V272 L-40 248 L-6 272 V322" stroke-width="1.3" class="lag-fill"/>
+            <rect x="-50" y="294" width="16" height="28" stroke-width=".9" opacity=".5"/>
+          </g>
+          <!-- district heat main under the street -->
+          <g class="lag-show lag-s-heatmain" stroke-width="2">
+            <path class="lag-flow is-heat" d="M-310 300 C-296 300 -296 352 -282 352 H-118 C-108 352 -108 336 -108 322"/>
+            <path class="lag-flow is-heat" d="M-230 352 C-230 342 -230 334 -230 322"/>
+            <circle class="lag-glow is-lit" cx="-380" cy="282" r="70"/>
+          </g>
+          <!-- distributed compute at larger sites (not homes) -->
+          <g class="lag-show lag-s-sites" stroke-width="1.2">
+            <rect x="-238" y="300" width="14" height="10" fill="#D8B475" fill-opacity=".9" stroke="none"/>
+            <rect x="-118" y="306" width="14" height="10" fill="#D8B475" fill-opacity=".9" stroke="none"/>
+            <path class="lag-flow is-elec" d="M-231 300 C-200 230 -140 230 -111 306" opacity=".7"/>
+            <text class="lag-lbl" x="-270" y="222">COMMERCIAL AND COMMUNITY SITES, NOT HOMES</text>
+          </g>
+          <!-- neighbours sharing (being worked on) -->
+          <g class="lag-show lag-s-share" stroke-width="1.2">
+            <path class="lag-flow is-elec" d="M-6 296 C100 262 220 262 296 296" stroke-dasharray="2 8"/>
+          </g>
+
+          <!-- THE HOUSE -->
+          <g class="lag-part is-keep">
+            <path d="M296 322 V200 L408 124 L520 200 V322 Z" stroke-width="1.5" fill="#F2EFE6" fill-opacity=".04"/>
+            <path d="M286 203 L408 120 L530 203" stroke-width="2"/>
+            <path d="M462 168 V132 H478 V180" stroke-width="1.3"/>
+            <rect x="322" y="236" width="30" height="34" stroke-width="1" opacity=".4"/>
+            <rect x="462" y="236" width="30" height="34" stroke-width="1" opacity=".4"/>
+            <rect x="392" y="266" width="32" height="56" stroke-width="1" opacity=".4"/>
+          </g>
+          <g class="lag-part lag-p-roof">
+            <path class="lag-fill" d="M420 146 L512 208 L500 216 L408 154 Z" stroke-width="1.4"/>
+            <path d="M443 162 L431 170 M466 177 L454 185 M489 192 L477 200" stroke-width=".9" opacity=".6"/>
+          </g>
+          <g class="lag-part lag-p-battery">
+            <path d="M318 196 V322" stroke-width="1" opacity=".3"/>
+            <rect class="lag-fill" x="326" y="212" width="46" height="66" stroke-width="1.4"/>
+            <path d="M334 222 H364 M334 232 H364" stroke-width=".9" opacity=".5"/>
+            <circle cx="349" cy="258" r="6" stroke-width="1" opacity=".55"/>
+          </g>
+          <g class="lag-part lag-p-air">
+            <rect class="lag-fill" x="540" y="268" width="58" height="54" stroke-width="1.4"/>
+            <circle cx="569" cy="295" r="16" stroke-width="1" opacity=".55"/>
+            <path d="M569 295 L569 281 M569 295 L581 302 M569 295 L557 302" stroke-width="1" opacity=".55"/>
+            <path d="M546 276 H592 M546 316 H592" stroke-width=".9" opacity=".4"/>
+          </g>
+          <g class="lag-part lag-p-ground">
+            <path d="M120 356 H250 Q262 356 262 368 Q262 380 250 380 H120 Q108 380 108 392 Q108 404 120 404 H250" stroke-width="1.3" opacity=".6"/>
+          </g>
+          <g class="lag-part lag-p-turbine">
+            <path d="M96 322 V214" stroke-width="1.4"/>
+            <circle cx="96" cy="208" r="5" stroke-width="1.3"/>
+            <path d="M96 203 V168 M100 211 L131 228 M92 211 L61 228" stroke-width="1.3"/>
+          </g>
+          <g class="lag-part lag-p-drive">
+            <path d="M636 322 H842" stroke-width="2.2" opacity=".25"/>
+            <rect class="lag-fill" x="648" y="276" width="24" height="46" stroke-width="1.4"/>
+            <circle cx="660" cy="290" r="5" stroke-width="1" opacity=".55"/>
+            <path d="M672 300 C690 300 694 310 706 310" stroke-width="1" opacity=".5"/>
+          </g>
+          <g class="lag-part lag-p-grid">
+            <path d="M858 322 V196" stroke-width="1.5"/>
+            <path d="M836 200 H880 M842 212 H874" stroke-width="1.2"/>
+            <path d="M858 226 C800 226 760 232 700 232 C640 232 560 212 530 206" stroke-width="1" opacity=".4"/>
+          </g>
+          <g class="lag-part lag-p-meter">
+            <rect class="lag-fill" x="522" y="282" width="11" height="17" stroke-width="1.2"/>
+          </g>
+
+          <!-- revelations that appear in the drawing -->
+          <g class="lag-show lag-s-sun">
+            <circle cx="610" cy="70" r="46" fill="url(#lagSunGlow)" stroke="none"/>
+            <path class="lag-flow is-elec" d="M590 88 L520 140 M602 96 L552 158 M578 80 L498 126" stroke-width="1.2"/>
+          </g>
+          <g class="lag-show lag-s-balcony" stroke-width="1.2">
+            <path d="M262 262 H296 M262 262 V284 M270 262 V284 M278 262 V284 M286 262 V284 M262 284 H296" opacity=".8"/>
+            <rect x="263" y="264" width="28" height="18" fill="#8FAF8A" fill-opacity=".35" stroke-dasharray="3 3"/>
+          </g>
+          <g class="lag-show lag-s-store" stroke-width="1.4">
+            <path class="lag-flow is-elec" d="M470 190 C430 200 390 214 372 230"/>
+          </g>
+          <g class="lag-show lag-s-car" stroke-width="1.4">
+            <path d="M716 318 V300 Q718 292 728 290 L746 276 Q752 272 762 272 H800 Q810 272 816 280 L826 290 Q836 292 838 300 V318 Z" fill="#8FAF8A" fill-opacity=".14"/>
+            <circle cx="740" cy="320" r="8" fill="#13281F"/><circle cx="814" cy="320" r="8" fill="#13281F"/>
+            <path class="lag-flow is-elec" d="M706 310 C709 306 712 306 716 306" stroke-dasharray="2 4"/>
+            <path class="lag-flow is-elec" d="M716 300 C700 296 690 300 672 300" stroke-dasharray="2 4"/>
+          </g>
+          <g class="lag-show lag-s-airheat" stroke-width="1.6">
+            <circle class="lag-glow is-lit" cx="470" cy="280" r="60"/>
+            <path class="lag-flow" d="M650 278 C628 280 614 286 600 290" stroke-width="1.1" opacity=".6"/>
+            <path class="lag-flow" d="M650 300 C628 300 614 300 600 300" stroke-width="1.1" opacity=".6"/>
+            <path class="lag-flow is-heat" d="M540 296 C510 296 490 290 470 280"/>
+          </g>
+          <!-- the hot press: cylinder, and (abroad) a compute unit on it -->
+          <g class="lag-show lag-s-cyl" stroke-width="1.3">
+            <circle class="lag-glow is-lit" cx="446" cy="294" r="34"/>
+            <rect x="434" y="262" width="24" height="56" rx="10" fill="#F2EFE6" fill-opacity=".06"/>
+            <path d="M438 300 H454 M438 307 H454 M438 314 H454" stroke="#D8B475" stroke-width="1" opacity=".9"/>
+            <text class="lag-lbl" x="426" y="326" style="font-size:3.2px;letter-spacing:.06em">HOT WATER CYLINDER</text>
+          </g>
+          <g class="lag-show lag-s-unit" stroke-width="1.2">
+            <rect x="460" y="282" width="18" height="15" fill="#D8B475" fill-opacity=".92" stroke="none"/>
+            <path d="M463 287 H475 M463 291 H475" stroke="#13281F" stroke-width=".8"/>
+            <path class="lag-flow is-heat" d="M460 290 C454 292 454 300 450 304" stroke-width="1.4" stroke-dasharray="2 3"/>
+            <path class="lag-flow is-elec" d="M478 287 C498 284 506 250 526 214" stroke-width=".8" opacity=".7" stroke-dasharray="2 3"/>
+            <text class="lag-lbl" x="481" y="292" style="font-size:3.2px;letter-spacing:.06em">COMPUTE UNIT</text>
+          </g>
+          <g class="lag-show lag-s-meterflow" stroke-width="1.3">
+            <path class="lag-flow is-elec" d="M533 290 C580 280 650 236 700 232 C760 232 800 226 858 226"/>
+            <path class="lag-flow is-elec" d="M858 232 C800 232 760 238 700 238 C650 242 580 286 533 294" opacity=".5"/>
+          </g>
+          <g class="lag-show lag-s-export" stroke-width="1.8">
+            <path class="lag-flow is-elec" d="M500 212 C560 214 640 232 700 232 C760 232 800 226 858 226"/>
+            <path d="M846 220 L858 226 L846 232" stroke="#8FAF8A" stroke-width="1.4"/>
+          </g>
+        </g>
+      </svg>
+      <figcaption class="lag-cap">An ordinary house, in section, and the town beside it. Not your house, and not a design for one.</figcaption>
+      <ol class="lag-index" aria-label="The six possibilities">
+        <li><button type="button" data-go="lag-c1">1 Generate</button></li>
+        <li><button type="button" data-go="lag-c2">2 Store and share</button></li>
+        <li><button type="button" class="is-heat" data-go="lag-c3">3 Harvest heat</button></li>
+        <li><button type="button" class="is-heat" data-go="lag-c4">4 Host computing</button></li>
+        <li><button type="button" data-go="lag-c5">5 Connect</button></li>
+        <li><button type="button" data-go="lag-c6">6 Earn</button></li>
+      </ol>
+    </figure>
+
+    <div class="lag-story">
+      <!-- data-view: the camera (x y w h); data-lit: parts brought forward;
+           data-show: things that appear in the drawing; data-warm: heat in the field -->
+      <section class="lag-ch" id="lag-c1" aria-labelledby="lag-c1t">
+        <div class="lag-ch-head"><span class="lag-ch-num">1</span><span class="lag-ch-name">Generate</span></div>
+        <h3 class="lag-ch-title" id="lag-c1t">Make electricity</h3>
+        <div class="lag-rev" data-view="250 30 470 245" data-lit="lag-p-roof" data-show="lag-s-sun">
+          <div class="lag-turn"><span class="lag-from">Your roof</span><span class="lag-to">a small power station.</span></div>
+          <span class="lag-mk is-today">Here today</span>
+          <p>Panels turn daylight into electricity the house uses as it is made.</p>
+        </div>
+        <div class="lag-rev" data-view="200 150 300 157" data-lit="" data-show="lag-s-balcony">
+          <div class="lag-turn"><span class="lag-from">A balcony railing</span><span class="lag-to">maybe the next one.</span></div>
+          <span class="lag-mk is-ie">Being worked on in Ireland</span>
+          <p>In Germany, small plug-in panels hang from balconies. Ireland is still working out whether to allow them, and nothing has been published.</p>
+        </div>
+        <a class="lag-more" href="#anat-roof">Where the page explains this</a>
+      </section>
+
+      <section class="lag-ch" id="lag-c2" aria-labelledby="lag-c2t">
+        <div class="lag-ch-head"><span class="lag-ch-num">2</span><span class="lag-ch-name">Store and share</span></div>
+        <h3 class="lag-ch-title" id="lag-c2t">Keep it for later</h3>
+        <div class="lag-rev" data-view="270 120 320 167" data-lit="lag-p-battery lag-p-roof" data-show="lag-s-store">
+          <div class="lag-turn"><span class="lag-from">A corner of the utility room</span><span class="lag-to">a store of tomorrow's electricity.</span></div>
+          <span class="lag-mk is-today">Here today</span>
+          <p>A battery doesn't make electricity. It moves it through time.</p>
+        </div>
+        <div class="lag-rev" data-view="600 200 300 157" data-lit="lag-p-drive" data-show="lag-s-car">
+          <div class="lag-turn"><span class="lag-from">The car on the driveway</span><span class="lag-to">a battery that happens to have wheels.</span></div>
+          <span class="lag-mk is-ie">Being worked on in Ireland</span>
+          <p>ESB Networks has published how two-way charging would connect. The architecture, not a date.</p>
+        </div>
+        <a class="lag-more" href="#anat-battery">Where the page explains this</a>
+      </section>
+
+      <section class="lag-ch is-heat" id="lag-c3" aria-labelledby="lag-c3t">
+        <div class="lag-ch-head"><span class="lag-ch-num">3</span><span class="lag-ch-name">Harvest heat</span></div>
+        <h3 class="lag-ch-title" id="lag-c3t">Heat is everywhere. Most of it is wasted.</h3>
+        <div class="lag-rev" data-view="400 190 300 157" data-lit="lag-p-air" data-show="lag-s-airheat" data-warm=".6">
+          <div class="lag-turn"><span class="lag-from">The air beside the house</span><span class="lag-to">heat inside it.</span></div>
+          <span class="lag-mk is-today">Here today</span>
+          <p>There is usable heat in Irish air, even in February.</p>
+        </div>
+        <div class="lag-rev" data-view="-470 170 520 272" data-lit="lag-p-town" data-show="lag-s-heatmain" data-warm="1">
+          <div class="lag-turn"><span class="lag-from">A data centre</span><span class="lag-to">a town's heating.</span></div>
+          <span class="lag-mk is-large">Large sites in Ireland, not homes</span>
+          <p>In Tallaght, waste heat from a data centre has warmed public buildings since 2023.</p>
+        </div>
+        <a class="lag-more" href="#data-centre-heat">Where the page explains this</a>
+      </section>
+
+      <section class="lag-ch is-heat" id="lag-c4" aria-labelledby="lag-c4t">
+        <div class="lag-ch-head"><span class="lag-ch-num">4</span><span class="lag-ch-name">Host computing</span></div>
+        <h3 class="lag-ch-title" id="lag-c4t">A computer that heats your water.</h3>
+        <p class="lag-flag">The surprise on this page.</p>
+        <div class="lag-rev" data-view="392 248 124 65" data-lit="" data-show="lag-s-cyl lag-s-unit" data-warm="1">
+          <div class="lag-turn"><span class="lag-from">Your hot water cylinder</span><span class="lag-to">part of a data centre.</span></div>
+          <span class="lag-mk is-abroad">Operating elsewhere, not in Ireland</span>
+          <p>In Britain there are occupied homes with a computer bolted to the hot water cylinder. A business pays for the electricity; the work it does becomes the household's hot water.</p>
+        </div>
+        <div class="lag-rev" data-view="-400 170 520 272" data-lit="lag-p-town" data-show="lag-s-sites" data-warm=".5">
+          <div class="lag-turn"><span class="lag-from">Your town</span><span class="lag-to">a place where computing is spread out, not stacked up.</span></div>
+          <span class="lag-mk is-large">Large sites in Ireland, not homes</span>
+          <p>In Ireland, Tandem Compute is developing distributed AI infrastructure at larger commercial and community sites, not homes.</p>
+        </div>
+        <div class="lag-truth">
+          <strong>None of this is available to an Irish homeowner today.</strong>
+          <a href="disc026-compute-readiness-check.html">What would a house be asked?</a>
+          <span>The Compute Readiness check: information, not an application.</span>
+        </div>
+        <a class="lag-more" href="#home-compute">Where the page explains this</a>
+      </section>
+
+      <section class="lag-ch" id="lag-c5" aria-labelledby="lag-c5t">
+        <div class="lag-ch-head"><span class="lag-ch-num">5</span><span class="lag-ch-name">Connect</span></div>
+        <h3 class="lag-ch-title" id="lag-c5t">Be seen by the grid</h3>
+        <div class="lag-rev" data-view="460 160 440 230" data-lit="lag-p-meter lag-p-grid" data-show="lag-s-meterflow">
+          <div class="lag-turn"><span class="lag-from">Your meter</span><span class="lag-to">a two-way connection.</span></div>
+          <span class="lag-mk is-today">Here today</span>
+          <p>A smart meter makes the house visible to the grid and opens the choice of a time-of-use tariff with your supplier.</p>
+        </div>
+        <div class="lag-rev" data-view="-80 140 640 334" data-lit="" data-show="lag-s-share">
+          <div class="lag-turn"><span class="lag-from">Your street</span><span class="lag-to">houses that share what they make.</span></div>
+          <span class="lag-mk is-ie">Being worked on in Ireland</span>
+          <p>Sustainable Energy Communities already exist. The framework that would let ordinary neighbouring houses share what they generate does not yet.</p>
+        </div>
+        <a class="lag-more" href="#anat-grid">Where the page explains this</a>
+      </section>
+
+      <section class="lag-ch" id="lag-c6" aria-labelledby="lag-c6t">
+        <div class="lag-ch-head"><span class="lag-ch-num">6</span><span class="lag-ch-name">Earn</span></div>
+        <h3 class="lag-ch-title" id="lag-c6t">Send it back</h3>
+        <div class="lag-rev" data-view="0 0 900 470" data-lit="lag-p-roof lag-p-grid" data-show="lag-s-export">
+          <div class="lag-turn"><span class="lag-from">Your house</span><span class="lag-to">a participant, not just a consumer.</span></div>
+          <span class="lag-mk is-today">Here today</span>
+          <p>Electricity suppliers are required to offer payment for eligible electricity your house sends back.</p>
+        </div>
+        <a class="lag-more" href="#explore-providers">How suppliers pay</a>
+      </section>
+    </div>
+  </div>
+
+  <div class="lag-close">
+    <p>Not every house can do all six, and no house in Ireland can do all six yet. That is what makes it worth looking again.</p>
+    <div>
+      <a class="lag-cta" href="disc026-power-station.html">See what your home could do today</a>
+      <small>A few short questions about this property. No quote at the end.</small>
+    </div>
+  </div>
+</section>

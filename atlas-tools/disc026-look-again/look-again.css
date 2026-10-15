@@ -1,0 +1,126 @@
+  /* ==================================================================
+     LOOK AGAIN AT YOUR HOUSE (founder-approved V2, 15 Oct 2026).
+     Every selector is under .lag so nothing here reaches the rest of the
+     page, and nothing on the page reaches in except the reset and fonts.
+     ================================================================== */
+  .lag{
+    --lag-forest:#13281F; --lag-sage:#8FAF8A; --lag-ivory:#F2EFE6; --lag-brass:#D8B475;
+    --lag-mist:rgba(242,239,230,.68); --lag-faint:rgba(242,239,230,.14);
+    --lag-warm:0;
+    position:relative; color:var(--lag-ivory); overflow:clip;
+    background:
+      radial-gradient(120% 70% at 18% 10%, rgba(143,175,138,.16), transparent 60%),
+      radial-gradient(90% 60% at 30% 55%, rgba(216,180,117, calc(var(--lag-warm) * .20)), transparent 70%),
+      linear-gradient(180deg, #1A3428 0%, var(--lag-forest) 38%, #10221A 100%);
+  }
+  .lag::before{ content:""; position:absolute; inset:auto 0 0 0; height:40%;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,.18)); pointer-events:none; }
+  .lag a{ color:inherit; }
+  .lag :focus-visible{ outline:2px solid var(--lag-brass); outline-offset:3px; border-radius:2px; }
+  .lag h2, .lag h3, .lag .lag-turn{ font-family:'Fraunces',Georgia,serif; font-weight:300; letter-spacing:-.005em; }
+
+  .lag-open{ max-width:1180px; margin:0 auto; padding:clamp(56px,7vw,96px) 16px 16px;
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.9fr); gap:24px 64px; align-items:end; }
+  .lag-open h2{ font-size:clamp(40px,6.4vw,84px); line-height:1.02; letter-spacing:-.015em; max-width:11ch; }
+  .lag-open p{ font-size:clamp(17px,1.5vw,19px); line-height:1.75; color:var(--lag-mist); max-width:44ch; }
+
+  .lag-key{ max-width:1180px; margin:28px auto 0; padding:0 16px; display:flex; flex-wrap:wrap; gap:10px 28px; }
+  .lag-mk{ display:inline-flex; align-items:center; gap:9px; font-size:13.5px; letter-spacing:.01em; color:var(--lag-ivory); white-space:nowrap; }
+  .lag-mk::before{ content:""; width:9px; height:9px; border-radius:50%; flex:none; }
+  .lag-mk.is-today::before{ background:var(--lag-sage); box-shadow:0 0 0 4px rgba(143,175,138,.18); }
+  .lag-mk.is-ie::before{ border:1.5px solid var(--lag-sage); }
+  .lag-mk.is-abroad::before{ border:1.5px dashed var(--lag-brass); }
+  .lag-mk.is-large::before{ border-radius:1px; width:8px; height:8px; border:1.5px solid var(--lag-ivory); opacity:.85; }
+  .lag-key .lag-mk{ color:var(--lag-mist); }
+
+  .lag-stage{ max-width:1180px; margin:0 auto; padding:8px 16px 0; display:grid;
+    grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:56px; }
+  .lag-canvas{ position:sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center; align-self:start; }
+  .lag-canvas svg{ width:100%; height:auto; display:block; overflow:hidden; }
+  .lag-canvas svg path, .lag-canvas svg rect, .lag-canvas svg circle{ vector-effect:non-scaling-stroke; }
+  .lag-cap{ font-size:12.5px; color:rgba(242,239,230,.5); margin-top:6px; }
+
+  .lag-index{ display:flex; gap:4px; margin-top:22px; list-style:none; }
+  .lag-index li{ flex:1; }
+  .lag-index button{ all:unset; cursor:pointer; display:block; width:100%; padding-top:10px; border-top:2px solid var(--lag-faint);
+    font-size:12.5px; color:rgba(242,239,230,.5); transition:color .3s, border-color .3s; }
+  .lag-index button:hover{ color:var(--lag-ivory); }
+  .lag-index button.is-on{ color:var(--lag-ivory); border-top-color:var(--lag-sage); }
+  .lag-index button.is-on.is-heat{ border-top-color:var(--lag-brass); }
+  .lag-index button:focus-visible{ outline:2px solid var(--lag-brass); outline-offset:6px; }
+
+  .lag-line{ stroke:var(--lag-ivory); }
+  .lag-part{ transition:opacity .6s ease; }
+  .lag-canvas[data-active] .lag-part{ opacity:.32; }
+  .lag-canvas[data-active] .lag-part.is-lit, .lag-part.is-keep{ opacity:1; }
+  .lag-show{ opacity:0; transition:opacity .6s ease; }
+  .lag-show.is-lit{ opacity:1; }
+  .lag-fill{ fill:var(--lag-sage); fill-opacity:.18; transition:fill-opacity .6s; }
+  .is-lit .lag-fill{ fill-opacity:.42; }
+  .lag-flow{ stroke-dasharray:5 7; animation:lagflow 1.4s linear infinite; }
+  .lag-flow.is-heat{ stroke:var(--lag-brass); }
+  .lag-flow.is-elec{ stroke:var(--lag-sage); }
+  @keyframes lagflow{ to{ stroke-dashoffset:-24; } }
+  .lag-glow{ fill:url(#lagHeatGlow); stroke:none; opacity:0; transition:opacity .8s; }
+  .lag-glow.is-lit{ opacity:1; }
+  .lag-lbl{ font:500 9.5px 'Work Sans',sans-serif; letter-spacing:.06em; fill:rgba(242,239,230,.72); stroke:none; }
+
+  .lag-story{ padding:8vh 0 8vh; }
+  .lag-ch{ margin-bottom:7vh; }
+  .lag-ch:last-child{ margin-bottom:0; }
+  .lag-ch-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:22px; }
+  .lag-ch-num{ font-family:'Fraunces',Georgia,serif; font-size:15px; color:var(--lag-sage); font-weight:400; }
+  .lag-ch-name{ font-size:14px; color:var(--lag-mist); letter-spacing:.01em; }
+  .lag-ch h3{ font-size:clamp(26px,2.6vw,34px); line-height:1.15; margin:-14px 0 22px; max-width:16ch; }
+
+  .lag-rev{ padding:0 0 4vh; max-width:32rem; }
+  .lag-rev:last-of-type{ padding-bottom:0; }
+  .lag-turn{ font-size:clamp(23px,2.1vw,29px); line-height:1.22; }
+  .lag-from{ color:rgba(242,239,230,.55); }
+  .lag-to{ display:block; color:var(--lag-ivory); }
+  .lag-rev .lag-mk{ margin-top:14px; }
+  .lag-rev p{ margin-top:12px; font-size:16.5px; line-height:1.72; color:var(--lag-mist); }
+  .lag-rev.is-on .lag-to{ text-decoration:underline; text-decoration-color:rgba(143,175,138,.55); text-underline-offset:6px; text-decoration-thickness:1px; }
+  .lag-ch.is-heat .lag-rev.is-on .lag-to{ text-decoration-color:rgba(216,180,117,.7); }
+
+  .lag-ch.is-heat .lag-ch-num{ color:var(--lag-brass); }
+  .lag-ch.is-heat h3{ font-size:clamp(34px,3.6vw,50px); max-width:13ch; line-height:1.06; }
+  .lag-ch.is-heat .lag-turn{ font-size:clamp(26px,2.5vw,34px); }
+  .lag-flag{ font-size:13.5px; color:var(--lag-brass); margin:-18px 0 26px; }
+
+  .lag-truth{ margin-top:34px; padding:22px 0 0; max-width:30rem; position:relative; }
+  .lag-truth::before{ content:""; position:absolute; left:0; top:0; width:56px; height:2px; background:var(--lag-brass); }
+  .lag-truth strong{ display:block; font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2vw,27px); line-height:1.25; }
+  .lag-truth a{ display:inline-block; margin-top:12px; font-size:15.5px; color:var(--lag-brass); text-decoration:none; border-bottom:1px solid rgba(216,180,117,.45); padding-bottom:2px; }
+  .lag-truth span{ display:block; margin-top:6px; font-size:13.5px; color:rgba(242,239,230,.55); }
+
+  .lag-more{ display:inline-block; margin-top:26px; font-size:14.5px; color:var(--lag-sage); text-decoration:none; border-bottom:1px solid rgba(143,175,138,.4); padding-bottom:2px; }
+  .lag-ch.is-heat .lag-more{ color:var(--lag-brass); border-bottom-color:rgba(216,180,117,.45); }
+
+  .lag-close{ max-width:1180px; margin:0 auto; padding:2vh 16px clamp(72px,10vw,120px); display:grid;
+    grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:56px; align-items:end; }
+  .lag-close p{ font-family:'Fraunces',Georgia,serif; font-weight:300; font-size:clamp(26px,3vw,40px); line-height:1.2; max-width:22ch; }
+  .lag-cta{ display:inline-flex; align-items:center; gap:12px; background:var(--lag-ivory); color:var(--lag-forest) !important;
+    text-decoration:none; font-weight:500; font-size:16px; padding:16px 24px; border-radius:999px; transition:background .25s; }
+  .lag-cta:hover{ background:#fff; }
+  .lag-close small{ display:block; margin-top:10px; font-size:13px; color:rgba(242,239,230,.55); }
+
+  @media (max-width: 880px){
+    .lag-open{ grid-template-columns:1fr; padding-top:64px; }
+    .lag-stage{ grid-template-columns:1fr; gap:0; padding-top:16px; }
+    .lag-canvas{ height:auto; top:0; z-index:3; margin:0 -16px; padding:10px 12px 8px;
+      background:linear-gradient(180deg, rgba(24,46,36,.86) 80%, rgba(24,46,36,0));
+      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+    .lag-canvas svg{ max-height:34vh; }
+    .lag-cap{ display:none; }
+    .lag-index{ margin-top:8px; gap:3px; }
+    .lag-index button{ font-size:0; padding-top:0; height:0; }
+    .lag-story{ padding:6vh 0 8vh; }
+    .lag-ch{ margin-bottom:9vh; }
+    .lag-rev{ padding-bottom:6vh; }
+    .lag-close{ grid-template-columns:1fr; gap:24px; padding-top:4vh; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .lag *, .lag{ transition:none !important; animation:none !important; }
+    .lag-flow{ stroke-dasharray:none; }
+  }
