@@ -87,10 +87,11 @@ PAYLOAD_KEYS = ["first_name", "email", "county", "district", "town_area", "trave
                 "growing_note", "over_18", "consent_text", "source"]
 SOURCE = "grower_register"
 
+# Founder-approved wording, 16 Oct 2026 (replaces the earlier "register, not a
+# match" lines at the registration stage). Still required, once, in visible copy.
 HONESTY = [
-    "No garden is available through PlotNua today.",
-    "We may never find a garden near you.",
-    "This is a register, not a match.",
+    "Joining the register is an expression of interest.",
+    "you’ll always decide whether you’d like to take things further.",
     "Nothing is shared with anybody until you say yes to one specific introduction.",
 ]
 PROMISES = [r"\bguarantee(d|s)? (a|an|you)", r"\bwe will (match|introduce) you\b", r"\byour garden is waiting\b",
@@ -363,8 +364,9 @@ def main_html() -> str:
           <input type="text" id="bgIntWebsite" name="website" tabindex="-1" autocomplete="off" value="">
         </div>
 
-        <p class="bg-int-honest">This is a register, not a match. No garden is available through PlotNua today.
-          We may never find a garden near you. Nothing is shared with anybody until you say yes to one specific introduction.</p>
+        <p class="bg-int-honest">Joining the register is an expression of interest. We&rsquo;ll contact you if a suitable
+          opportunity becomes available, and you&rsquo;ll always decide whether you&rsquo;d like to take things further.
+          Nothing is shared with anybody until you say yes to one specific introduction.</p>
 
         <div class="bg-int-tick">
           <input type="checkbox" id="bgIntConsent" required>
