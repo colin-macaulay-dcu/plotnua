@@ -6,6 +6,16 @@
    "name": "ÖÖD House",
    "read": "2026-10-14",
    "filter": "Assets.Organisations contains ÖÖD House"
+  },
+  "recUrpkOqKbynjQP0": {
+   "name": "Garden Room Ireland",
+   "read": "2026-10-16",
+   "filter": "Assets.Organisations contains Garden Room Ireland"
+  },
+  "recOLYgRSUdzU8zwI": {
+   "name": "Don Modular Homes",
+   "read": "2026-10-16",
+   "filter": "Assets.Organisations contains Don Modular Homes"
   }
  },
  "records": [
@@ -735,6 +745,2324 @@
     "Publication Status": "Approved",
     "Display Order": 1,
     "Notes": "ÖÖD-supplied photograph, hot-linked unmodified from ÖÖD's Drive library (Drive file 1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5), scoped per file in image-rights-records.json (ÖÖD House grant, IPO-007, 14 Oct 2026). Model per ÖÖD's own folder: Extended House. Required credit: ÖÖD House. Created 14 Oct 2026 for the ÖÖD targeted publication update."
+   }
+  },
+  {
+   "id": "rec0lLlavC9rlojVy",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Black Pillars — f84b2b754189",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark blue-grey garden room with glazed doors in a planted garden",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_f84b2b754189473689278ae43c3b2138~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/black-pillars . Context: Black Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec170ozmOJur0BhI",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — f1e07c55e37b",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Teal-painted garden room interior with an armchair, sideboard and glazed garden door",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_f1e07c55e37b444fa816725c98cd025c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 9,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec1msLPdYg4fFJMj",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — c38fc8fbd764",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Long oak-framed garden room with a run of glazed windows on a lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_c38fc8fbd7644125acf9f03a1de1f1a9~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec46dSzm6dDcHg6h",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 9cc1e9576d36",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room with light oak fascia and grey panels, lawn and paved path",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_9cc1e9576d364660a5557257980d69cb~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec4KyVd9x6Rq8TUR",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Pillars — 92a6ce8c477e",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room with a run of glazed windows and timber corner pillars over a raised deck",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_92a6ce8c477e4f0797a8e0904659eddc~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-pillars . Context: Grey Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec4TNDooMnYDIphx",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 9853c09fbaa8",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior used as a study and music room, with desk, piano and sofa",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_9853c09fbaa84b0997843b906a51a51e~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 16,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec4mwwPWm7fcgs5i",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 051001423324",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Compact shower room inside a garden room, with WC and basin",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_05100142332442f29330ead347ae6dd1~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 12,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec5FqFEltXCBnsoQ",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — e49986d2ee99",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room with bifold doors open onto decking, gravel path and greenhouse alongside",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_e49986d2ee9947f88e629bb98d48e352~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 11,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec6pwviYvSqN4Xx2",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — home-1",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: dark-clad modular home with skylights and a timber deck on a gravel approach",
+    "Source URL": "https://donmodularhomes.ie/images/home-1.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec7iVf2RkG1W2GL6",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — 902087474706",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room veranda over a paved terrace with water feature",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_9020874747064566834d8a441caee843~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 8,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec84puTikz6n3mQ9",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-10",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: fitted kitchen with a timber worktop, stool and internal door",
+    "Source URL": "https://donmodularhomes.ie/images/interior-10.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 12,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec8qswD2vl3AkIAx",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-6",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: kitchen with a timber worktop, stool and a window beside the units",
+    "Source URL": "https://donmodularhomes.ie/images/interior-6.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 8,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec8uwkm71NDR78gP",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — c611419235ee",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior fitted as a bedroom with bedside lamps and wall art",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_c611419235ee44909de11cdb685a8ad2~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 22,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec9EKUnvHlEQAM1k",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — 5317654365ea",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room with a planted living roof, glazed doors and a slab path",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_5317654365ea4c95a31ae08ace7b43ec~mv2.jpeg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 10,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec9Q9x6uRew5vOxd",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 5256a45678f7",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior with red armchairs and glazed doors onto a lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_5256a45678f74005af9b2fbb004b2b30~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 15,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rec9j8ImKVghaV1Oo",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — 11f12f538ba8",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Light-oak clad garden room with glazed doors beside a painted wall and lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_11f12f538ba84f06827ec8ebe04a0735~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recAy9yEnCVoPoGZu",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-4",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: living space with fitted wardrobes, skylights and gable glazing",
+    "Source URL": "https://donmodularhomes.ie/images/interior-4.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recB4sfgk6bALojvv",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — d866139918e7",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark-clad garden room with glazed doors and seating on decking",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_d866139918e74820a3e6d53f8ecb5e70~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recBA5stNcW5nwsRR",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — don-modular-home-exterior",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: dark-clad modular home at dusk with a glazed gable end, in a woodland clearing",
+    "Source URL": "https://donmodularhomes.ie/images/don-modular-home-exterior.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (hero and Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recBUBxag7zZ3ZD75",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — f48e327763b1",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room with open bifold doors showing a playroom interior",
+    "Source URL": "https://static.wixstatic.com/media/083d1a_f48e327763b14de3b56e5f33188964d1~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recBnyJZIXtJRYJt3",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — dee22529f833",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Oak and grey garden room beside a garden pond with a paved area",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_dee22529f83346c6b32bce3f943100e7~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recCItxrFkDNWQl5I",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-11",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom with an upholstered headboard, armchairs and skylights",
+    "Source URL": "https://donmodularhomes.ie/images/interior-11.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 13,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recDeL9itd1DlBnz5",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 8eba35ec6d62",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with bifold doors open to the interior, brick terraced houses behind",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_8eba35ec6d62425b9020359e7731f28b~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 7,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recDjPAfEeiVGmweF",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-12",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom with gable glazing onto a garden and a seating area",
+    "Source URL": "https://donmodularhomes.ie/images/interior-12.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 14,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recDz6uBLtkCwzfWA",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 9c32ecf93899",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior used as a home office, with desk and glazed door",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_9c32ecf93899490eb9484092c071e62e~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recEXdQuTTv58AHI4",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — d773690d9e72",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Timber-framed garden room with glazed doors on a lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_d773690d9e7241a38d4c1a9c7055193d~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recFHItvtXH2Yy7Aa",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — cf90b258ecc7",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior with an armchair, patterned rug and dresser",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_cf90b258ecc74d5fb7845941297a2b63~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recGSPxLFyX8I1FUq",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — b60e14d3d6cb",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room raised on a timber deck with steps and balustrade",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_b60e14d3d6cb499487abefe2da22b4d4~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recGaONVqJFaSmCeK",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-bedroom",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recjMsY7TFKaadyQV",
+      "name": "Don Modular Garden Room"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom with a fireplace, skylights and a kitchen beyond",
+    "Source URL": "https://donmodularhomes.ie/images/don-modular-home-interior-bedroom.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested.\n\nPRODUCT LINK 16 Oct 2026 (founder-approved imagery integration): linked to Don Modular Garden Room because the supplier's own Garden Rooms page (https://donmodularhomes.ie/garden-rooms/) shows this exact file in its page body. VISUALISATION, not a photograph: label \"Visualisation\" wherever shown."
+   }
+  },
+  {
+   "id": "recGvqQYO6fSC931F",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — 17bdab9e520d",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Oak-framed green garden room with corner glazing on a lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_17bdab9e520d4d3fb4b4626a469e3df5~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 9,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recGzXUU5uIhz2bMr",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Green Walls — 0a28c52b5cc8",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Green-clad garden room set in a mature flower garden",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_0a28c52b5cc847069806fe3d9fa98d85~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/green-wals . Context: Green Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recH3SlcZeW6cgqpT",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Walls — b797b39e52a2",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recs7YJnVX29hkueM",
+      "name": "Garden Room Ireland QC6"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Long grey garden room with glazed doors on a lawn beside a fence",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_b797b39e52a24c2782c27a0f7d4ea2e5~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-walls . Context: Grey Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested.\n\nPRODUCT LINK 16 Oct 2026 (founder-approved imagery integration): linked to Garden Room Ireland QC6 because the supplier's own QC6 product page (https://www.gardenroomireland.ie/copy-of-example) shows this exact file in its model gallery captioned \"QC6\". Evidence: exact file id fef4b6_b797b39e52a2 on that page; caption and aria-label \"QC6\". Photograph."
+   }
+  },
+  {
+   "id": "recHE68gm5yd69VnA",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — fb5a82f0578b",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room with trellis screening in a cottage-style planted garden",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_fb5a82f0578b46e790a21c086906c1f1~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 10,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recHMACmKS40IMBsY",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Green Walls — ebc91d83eb60",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Green-clad garden room with glazed doors and timber decking",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_ebc91d83eb604ffa8eb3ecaf83e7d2a4~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/green-wals . Context: Green Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recIUulnyzZCtq749",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Walls — 9bae7d49ad42",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Close view of grey cladding and full-height glazing under a timber overhang",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_9bae7d49ad42410bb8e84eba86278dbc~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-walls . Context: Grey Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recIvJjFtKTi2xLt9",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — 858b0ead9ccd",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark garden room with a run of glazed windows beside a lily pond",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_858b0ead9ccd4bce8f0b4acd2ae523be~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recJ2fnN6YFCG0cVs",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Walls — 61eda7cb81d5",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room with timber veranda posts and lit interior in a winter garden",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_61eda7cb81d545df8faf647dbe382229~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-walls . Context: Grey Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recJ4yyj1XYvKdfxx",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Walls — ae8a7648f6ff",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey-clad garden room with glazed doors, on a lawn with a gravel path",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_ae8a7648f6ff4f1fa95bf91924d4ac2e~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-walls . Context: Grey Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recJTcsIQ2NvuX7xF",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 3fbec1fa2bcd",
+    "Asset Type": "Floor Plan",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Three-dimensional layout renders showing garden room internal arrangements",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_3fbec1fa2bcd43b8bbc4d476d059fb1c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 23,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recKMeScYDP9esqfV",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — 62724837e1c1",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Timber-clad garden room with glazed doors onto a paved patio",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_62724837e1c146e3a0301bc7acc032b1~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recKSagtn9J6ph3Wn",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 3249a01cca0b",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior with a day bed, cushions and framed wall art",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_3249a01cca0b4055a2f619f8ae95dd3c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 7,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recL3YnEzTMeRuRgk",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 8fcce75c23aa",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with French doors and side window on a paved patio, potted acer",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_8fcce75c23aa4429b90bd51da6798f49~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 13,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recLc434qtB5sTmc9",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — db2c990db23c",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Fitted kitchen worktop and sink inside a garden room",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_db2c990db23c4cd4832e1bdba96ad2fb~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recMTgvNVQf7NslXN",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — side-elevation",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: side elevation with full-height windows and a standing-seam roof",
+    "Source URL": "https://donmodularhomes.ie/images/don-modular-home-side-elevation.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recN7Q6hCC2XbamwU",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — d33f0eeed172",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room on a lawn with a red-brick house behind, single door and window",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_d33f0eeed17246e1a331f936f48bcf47~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recNDj6wb04r51GHQ",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — ef637ea9b4e3",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Close view of grey bifold doors with internal blinds beneath a timber fascia",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_ef637ea9b4e34c60a542af2655c3e0ce~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 9,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recP9KmXnhVxhtHx0",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 24bc60f318f5",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room beside a white rendered house, with outdoor furniture on the lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_24bc60f318f5412e84f48e62dc5cfda5~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recPCQnhMmIxaXHqk",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 7c58c8d3d2fd",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior used for exercise, with mats and open glazed doors",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_7c58c8d3d2fd4343b824fdae9658f661~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 18,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recQ5hWTZ4CBoWywa",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — f25add9f2d9b",
+    "Asset Type": "Floor Plan",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Cutaway three-dimensional layout view of a garden room with bedroom, living area and shower room",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_f25add9f2d9b45ffac121e1e75a7fdf3~mv2.png",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 14,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recQgBQFE2RoluH7o",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 6794d736dafc",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior fitted as a treatment room with a couch and shelving",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_6794d736dafc4a248b062e33d983932e~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 19,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recQsESH648IjS2K7",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — 89897db21cc2",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Oak-framed garden room with glazed doors on a patio with planters",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_89897db21cc24e1b8502ab90a9892ea9~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 8,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recRIglEgThe5ZXyO",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Pillars — a75769a65f97",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room raised on a deck with timber steps and handrail on a sloped lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_a75769a65f9740d8b65103879bcf964c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-pillars . Context: Grey Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recTT36Zk1sfou1JX",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — d3cec36dfff0",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Oak-clad garden room with wrap-around glazing on a lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_d3cec36dfff044888bdd0a91ad16251f~mv2.jpeg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 8,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recU1N50hcdmaV4kt",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — 6cbd10a62007",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Green and oak garden room with a timber balustrade and decked approach",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_6cbd10a620074e90a4bb835f6321e2b2~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recU2qDefbOvKIb6r",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — b23ebc27bce1",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior with a sofa, shelving and wall-mounted air conditioning",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_b23ebc27bce14998aea8f87a6f4da6d8~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recUMnSDpOZYgApx9",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Pillars — 15ab4702eeb4",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room with timber-effect panels, corner glazing and timber steps",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_15ab4702eebb475f9c10a56259ebd513~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-pillars . Context: Grey Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recUwK07TCjYEU1o1",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 0a4218299157",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior with bookshelves, plants and glazed doors onto a garden",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_0a4218299157407e8c2502520dc31add~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 21,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recUwxG6LEmcWJI5C",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 57d3b1d6bf48",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with bifold doors, on a paved patio beside a timber fence",
+    "Source URL": "https://static.wixstatic.com/media/083d1a_57d3b1d6bf484f40b81f9ad964ad542b~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recVKzP9eXIq2dTdk",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 826305030499",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior with seating, looking out through glazed doors to a patio",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_82630503049943dfb2d3b90cd9eb5c27~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 11,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recVRTj4ldY4zux9H",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — home-4",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: composite of exterior views showing the glazed gable and side elevations",
+    "Source URL": "https://donmodularhomes.ie/images/home-4.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 8,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recVfacNRpsneMvXv",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-5",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom with an upholstered headboard, pendant lights and gable glazing",
+    "Source URL": "https://donmodularhomes.ie/images/interior-5.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 7,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recVotDlKWqWWFAyR",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — front-elevation",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: front elevation with a fully glazed gable, timber reveal and deck",
+    "Source URL": "https://donmodularhomes.ie/images/don-modular-home-front-elevation.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recVq4yjfiJCOxBGU",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 388847cd65c8",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with corner glazing, shrub border and timber fence",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_388847cd65c84427abd8c7bf29f18ee5~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 12,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recXJodxQ79vLygrh",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 1bf5312298c8",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior with a dining table beside a blinded window",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_1bf5312298c84e6ba551f839540e3c6f~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 10,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recYtNsOlNmA6Yuu2",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — bfc151de250d",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Close view of a light-oak door with a chrome lever handle",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_bfc151de250d4fceac105663194e4dcb~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recZPpLXUK51pPTKe",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Green Walls — 2dbf72a0ae1d",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Green-clad garden room with oak-framed glazing and two people on the decking",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_2dbf72a0ae1d4c9da58c4e5d24a77725~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/green-wals . Context: Green Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recaXEfH137onxfou",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — home-3",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: modular home on a raised deck in an open natural setting, lit at dusk",
+    "Source URL": "https://donmodularhomes.ie/images/home-3.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 7,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recaa7JviwLvJKtyL",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Black Pillars — ab09026b4230",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Close view of a dark door with chrome handle and black corner pillar",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_ab09026b423044f5abe80fc5312b853c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/black-pillars . Context: Black Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recakkmLmfyenulGp",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — 8ad2a41e0a58",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Timber-fronted garden room beside a pond with a footbridge, in a rural setting",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_8ad2a41e0a584caa8099572d40e8310a~mv2.jpeg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 11,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recbeQlzj8Op233aY",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 00b0501c1d39",
+    "Asset Type": "Floor Plan",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Three-dimensional layout render of a garden room with finish swatches",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_00b0501c1d3942f690a855b8806bb16b~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 17,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recbfX4ND9vfN5Z3X",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Walls — 9abd78482278",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room set in a mature planted garden",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_9abd784822784ef58e4a41d9660b25a8~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-walls . Context: Grey Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recbfe5Vz41GoKfNd",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-9",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bed alcove with a fitted kitchen and breakfast bar beyond",
+    "Source URL": "https://donmodularhomes.ie/images/interior-9.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 11,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. The supplier's own alt text for this file describes a bathroom; the image shows a bed alcove and kitchen, so PlotNua's alt text is based on visual inspection. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reccuz6dN4cbzVUzN",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Pillars — d8c257fd0923",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey garden room with glazed walls and timber-clad decking in a rural garden",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_d8c257fd0923461f8a7bf823d0c0989c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-pillars . Context: Grey Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reccwRC3ENJUMuNpW",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — b6c0c10f334a",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room veranda with timber posts and decked seating area",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_b6c0c10f334a44de854456e3cdff4ce2~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recdufJWtbsJb76ff",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-15",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom with panelled headboard, skylights and armchairs by the window",
+    "Source URL": "https://donmodularhomes.ie/images/interior-15.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 17,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recgLIMlaQUXhnzxs",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-13",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: kitchen with a tiled backsplash, open shelving and a breakfast bar",
+    "Source URL": "https://donmodularhomes.ie/images/interior-13.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 15,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recgyz8cDMDJlb9F3",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — cd442ed2b1a0",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room with glazed doors on a raised deck, in a planted garden",
+    "Source URL": "https://static.wixstatic.com/media/083d1a_cd442ed2b1a04677878cbda8fa86007c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rech63QP07EV2DKyu",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — 6c11ea33095c",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room with veranda seen through mature garden planting",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_6c11ea33095c46328d3e60ee223eab86~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 9,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rech9iJFEtdTjno1H",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — f1486b2ae80e",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Timber-clad garden room under a mature tree, with a stepping-stone path",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_f1486b2ae80e4ed2bfeecde2d7e5ea71~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rechS4lVye293Pxlh",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 92cfca1cf3f1",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior fitted out as a bedroom with a wall-mounted screen",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_92cfca1cf3f143aba8c73041f4905853~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 13,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rechUJ6OW6xNZ0H2R",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — forest-setting",
+    "Asset Type": "Product Image",
+    "Products": [
+     {
+      "id": "recjMsY7TFKaadyQV",
+      "name": "Don Modular Garden Room"
+     }
+    ],
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: modular home in a woodland setting with lit interiors seen through the glazing",
+    "Source URL": "https://donmodularhomes.ie/images/don-modular-home-forest-setting.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested.\n\nPRODUCT LINK 16 Oct 2026 (founder-approved imagery integration): linked to Don Modular Garden Room because the supplier's own Garden Rooms page (https://donmodularhomes.ie/garden-rooms/) uses this exact file as its hero and primaryImageOfPage; that page's Product schema describes the garden room as the Don Modular Home at its smallest sizes. VISUALISATION, not a photograph: label \"Visualisation\" wherever shown."
+   }
+  },
+  {
+   "id": "rechVperSjuIG0WmL",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-7",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: open-plan bedroom and living area with gable glazing and skylights",
+    "Source URL": "https://donmodularhomes.ie/images/interior-7.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 9,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rechbs8UjfHO7cB4I",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — 1844ec2f9dc5",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Long oak and grey garden room with a run of glazed windows and timber decking",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_1844ec2f9dc541a1ae6d2d4dd82ca816~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 7,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rechwFbBXbhM06lxF",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Black Pillars — 1fbbf188ad69",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark garden room with black corner pillar and glazed doors beside a fence",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_1fbbf188ad6941979bff4944b5425624~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/black-pillars . Context: Black Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reciw6riazJ4n9v4R",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Exterior — home-2",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: glazed gable end with sliding doors onto a timber deck, seen from the garden",
+    "Source URL": "https://donmodularhomes.ie/images/home-2.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Exterior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recjGgTgrgsnfwoda",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-living",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: living space with full-height sliding doors to the garden and fitted shelving",
+    "Source URL": "https://donmodularhomes.ie/images/don-modular-home-interior-living.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recjZjd4Y6h7daxOU",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-14",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom and seating area lit by skylights with full-height glazing",
+    "Source URL": "https://donmodularhomes.ie/images/interior-14.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 16,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reckOtabJ26r4vfcJ",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Light Oak — e043d7d1c9cf",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Oak-framed garden room with glazed doors across a paved patio",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_e043d7d1c9cf45ed851a0ff9111561da~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/light-oak . Context: Light Oak gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reckgviSukkwPRanO",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-1",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: open-plan bed and living area with a kitchen and glazed garden doors",
+    "Source URL": "https://donmodularhomes.ie/images/interior-1.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reckm0m65f7sr93L8",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Pillars — 79e8f940f6af",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Close view of grey vertical cladding panels at a building corner",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_79e8f940f6af4451a983c9876c463a2e~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-pillars . Context: Grey Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recl5WfQNEeLjPmQM",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Green Walls — d36fc1874e51",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Green-clad garden room with oak-framed glazing against a brick wall, interior visible",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_d36fc1874e514007a6f3c9fd8dbd0e78~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/green-wals . Context: Green Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reclVQCJFAPgX3jwY",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Walls — 07a621dd39f3",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Grey-clad garden room with glazed doors on a gravelled area",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_07a621dd39f34abfb130410ecfc2cbaa~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-walls . Context: Grey Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recm3S5ebqC6RPlkl",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Green Walls — 11445429b278",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Green-clad garden room with oak-framed glazed doors on a lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_11445429b2784356a6a07c78e6818091~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/green-wals . Context: Green Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recmlJgjiSdQxoyvI",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 2138cb5ddee7",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Long grey garden room with a continuous run of windows, interior visible, lawn in front",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_2138cb5ddee746e4bc91d86c93e3a797~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 14,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recmzHtCXAB3PqBzv",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Pillars — 04878cc0969e",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Timber-effect clad garden room with flat roof beside a mature tree, countryside behind",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_04878cc0969e4673a24543729e38190c~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-pillars . Context: Grey Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recnda1T4x53gLYKd",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Black Pillars — 8df8e8934368",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with a run of glazed windows beside a patio",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_8df8e893436845c397a8efca7da5f6d5~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 3,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/black-pillars . Context: Black Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recpC3iiA9mV7yjlO",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Black Pillars — aa085c0e466c",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark garden room with glazed doors seen across a lawn",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_aa085c0e466c4956ac31f7f1f9395cbf~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/black-pillars . Context: Black Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recpgX6QtEXYOK0yT",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-8",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom and seating area with timber finishes and a bed platform above",
+    "Source URL": "https://donmodularhomes.ie/images/interior-8.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 10,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recprR9YhIU3bX9Wo",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — 2f3ab9722ace",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior seen through glazed doors onto timber decking",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_2f3ab9722ace4f15b6946479a745db7b~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recrH7O7YhiJEvYgj",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 31b13e1cc4ea",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with a wide run of glazing and timber decking, dining table visible inside",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_31b13e1cc4ea45449338bcccdb9705e9~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 2,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recrXsKOOV1KFg6yN",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-3",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: bedroom with a panoramic gable window and a seating area",
+    "Source URL": "https://donmodularhomes.ie/images/interior-3.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recrqsOv2awTvjpmp",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Black Pillars — 08e3c5b91e06",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark-clad garden room with black corner pillars and glazed doors on a paved patio",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_08e3c5b91e0648d6bc62b745adf1e9d9~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 1,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/black-pillars . Context: Black Pillars gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "rect683wItybxOHhv",
+   "createdTime": "2026-10-02T12:53:09.000Z",
+   "fields": {
+    "Asset Name": "Don Modular Homes — Interior — interior-2",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recOLYgRSUdzU8zwI",
+      "name": "Don Modular Homes"
+     }
+    ],
+    "Alt Text": "Visualisation: fitted kitchen with a breakfast bar, open shelving and under-cabinet lighting",
+    "Source URL": "https://donmodularhomes.ie/images/interior-2.webp",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Don Modular Homes on first-party page: https://donmodularhomes.ie/ (Gallery > Interior). PROVENANCE NOTE: computer-generated visualisation published by the supplier, not a photograph of a completed build. RIGHTS: C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20), supplier YES 2 October 2026. Credit required: © Don Modular Homes. Scoped delivery host/path: donmodularhomes.ie/images/ (supplier's own domain). Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recubXF0DZPU0VkDm",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Verandas — c0cc69ca4bba",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Long garden room with veranda beside a garden pond",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_c0cc69ca4bba48c9a9cde27a98ff0c5d~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 7,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/verandas . Context: Verandas gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recwBHcCkxsTGkhGl",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — a81f4c4d2dc3",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Fitted white kitchen inside a garden room, with oven and washing machine",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_a81f4c4d2dc34633b96e977464db8060~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recwqRWdRYIkaV3Jo",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Green Walls — 965e3a81ed58",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Close view of dark green exterior cladding beside timber trim",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_965e3a81ed584a0b86223c49e13456f7~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/green-wals . Context: Green Walls gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recwsAXEbc58puuUs",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — f7181a45e47c",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room worktop detail with a kettle and mugs",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_f7181a45e47c4a1489cb6c1d4d2edb15~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 6,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recxEWk5jDOdKZkww",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — bd76ac2bdb2f",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior doorway with venetian blind, fitted storage and laminate floor",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_bd76ac2bdb2f4223be59879023c10ac9~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 8,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recxI8Age5RZvypLv",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — 82fee697c692",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room with timber fascia and bifold doors, birdbath in the foreground",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_82fee697c6924f58bb586edb06133953~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 8,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recxRzMXNyUwfJmfz",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — 3e98df74fe6d",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Decked terrace with outdoor seating beside a garden room with open doors",
+    "Source URL": "https://static.wixstatic.com/media/083d1a_3e98df74fe6d48ab9ce7547aa1f14b0f~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 5,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recxq2au34Ky5gnRE",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Interiors — 905d43a55983",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Garden room interior used as a music room, with a drum kit and fitted shelving",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_905d43a559834595adb1e962928d482f~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 20,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/interiors . Context: Interiors gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "recyTJtxR8TqannFo",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — c945204f8344",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark-clad garden room with glazed doors on a lawn with a curved path",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_c945204f83444b15b045b80b4532edcc~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 7,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reczT0CNSwcxwSlb9",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — 83cc6270f8a0",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with glazed doors and timber corner, on a paved patio",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_83cc6270f8a04a189085593d362331cf~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reczsUj3H3SNmMQnr",
+   "createdTime": "2026-10-02T12:39:54.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Home page — 2f23b5ae483f",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room with corner glazing and timber fascia on a paved patio",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_2f23b5ae483f43f0b1c9b6f4ed2d5b0f~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 9,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/ . Context: Home page gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
+   }
+  },
+  {
+   "id": "reczuwzQQtANXBN9v",
+   "createdTime": "2026-10-02T12:36:03.000Z",
+   "fields": {
+    "Asset Name": "Garden Room Ireland — Grey Windows — a98d83d77794",
+    "Asset Type": "Product Image",
+    "Organisations": [
+     {
+      "id": "recUrpkOqKbynjQP0",
+      "name": "Garden Room Ireland"
+     }
+    ],
+    "Alt Text": "Dark grey garden room set in a mature planted garden beside a pond",
+    "Source URL": "https://static.wixstatic.com/media/fef4b6_a98d83d777944a3fbcacd4a47fa491ba~mv2.jpg",
+    "Rights Status": "Supplier Provided",
+    "Publication Status": "Approved",
+    "Display Order": 4,
+    "Notes": "ASSOCIATION: Published by Garden Room Ireland on first-party page: https://www.gardenroomireland.ie/grey-windows . Context: Grey Windows gallery. RIGHTS: IPO-049 (recQV5mDeIFBj9CZM), supplier YES 2 October 2026. Credit required: © Garden Room Ireland. Scoped delivery host/path: static.wixstatic.com/media/ limited to supplier account prefixes fef4b6_ and 083d1a_. Supplier retains ownership; change or remove if requested."
    }
   }
  ]

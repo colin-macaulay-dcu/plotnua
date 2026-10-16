@@ -12805,7 +12805,42 @@
     "lastPriceCheck": "2026-10-16",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": null
-   }
+   },
+   "imagery": {
+    "url": "https://donmodularhomes.ie/images/don-modular-home-forest-setting.webp",
+    "alt": "Visualisation: modular home in a woodland setting with lit interiors seen through the glazing",
+    "credit": "© Don Modular Homes",
+    "supplier": "Don Modular Homes",
+    "rightsRecord": "C2-FIRST-DON-MODULAR-20261002",
+    "assetRecord": "rechUJ6OW6xNZ0H2R",
+    "permittedPrefix": "https://donmodularhomes.ie/",
+    "linkBack": null,
+    "presentationTier": "A"
+   },
+   "imagerySet": [
+    {
+     "url": "https://donmodularhomes.ie/images/don-modular-home-forest-setting.webp",
+     "alt": "Visualisation: modular home in a woodland setting with lit interiors seen through the glazing",
+     "credit": "© Don Modular Homes",
+     "supplier": "Don Modular Homes",
+     "rightsRecord": "C2-FIRST-DON-MODULAR-20261002",
+     "assetRecord": "rechUJ6OW6xNZ0H2R",
+     "permittedPrefix": "https://donmodularhomes.ie/",
+     "linkBack": null,
+     "presentationTier": "A"
+    },
+    {
+     "url": "https://donmodularhomes.ie/images/don-modular-home-interior-bedroom.webp",
+     "alt": "Visualisation: bedroom with a fireplace, skylights and a kitchen beyond",
+     "credit": "© Don Modular Homes",
+     "supplier": "Don Modular Homes",
+     "rightsRecord": "C2-FIRST-DON-MODULAR-20261002",
+     "assetRecord": "recGaONVqJFaSmCeK",
+     "permittedPrefix": "https://donmodularhomes.ie/",
+     "linkBack": null,
+     "presentationTier": "A"
+    }
+   ]
   },
   {
    "id": "recvUQBsJHuZkZpKq",
@@ -31974,6 +32009,17 @@
     "lastPriceCheck": "2026-10-16",
     "basisSource": null,
     "basisLeadPhrase": null
+   },
+   "imagery": {
+    "url": "https://static.wixstatic.com/media/fef4b6_b797b39e52a24c2782c27a0f7d4ea2e5~mv2.jpg",
+    "alt": "Long grey garden room with glazed doors on a lawn beside a fence",
+    "credit": "© Garden Room Ireland",
+    "supplier": "Garden Room Ireland",
+    "rightsRecord": "IPO-049",
+    "assetRecord": "recH3SlcZeW6cgqpT",
+    "permittedPrefix": "https://static.wixstatic.com/media/fef4b6_",
+    "linkBack": null,
+    "presentationTier": "A"
    }
   },
   {
