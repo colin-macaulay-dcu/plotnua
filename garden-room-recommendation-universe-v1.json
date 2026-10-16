@@ -6,17 +6,17 @@
  "qualificationRuleVersion": "garden-room-qualification-v1",
  "dryRun": false,
  "sourceGardenRoomCount": 575,
- "eligibleCount": 572,
+ "eligibleCount": 571,
  "highConfidenceCount": 146,
- "withCaveatCount": 426,
+ "withCaveatCount": 425,
  "limitedEvidenceCount": 0,
- "excludedCount": 3,
+ "excludedCount": 4,
  "exclusionSummaryByReason": {
-  "E": 2,
+  "E": 3,
   "F": 1
  },
- "confirmedIrishAvailabilityCount": 263,
- "unknownIrishAvailabilityCount": 312,
+ "confirmedIrishAvailabilityCount": 264,
+ "unknownIrishAvailabilityCount": 311,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
  "noPublishedIrishRouteCount": 43,
@@ -24,13 +24,13 @@
  "priceEvidenceSummary": {
   "verified": 275,
   "present-unverified": 53,
-  "quote-only": 21,
+  "quote-only": 20,
   "missing": 223
  },
- "quoteOnlyPriceCount": 21,
- "organisationCount": 63,
+ "quoteOnlyPriceCount": 20,
+ "organisationCount": 62,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "d3c8a788ab4ba23d6eea9d7eeb2bb16f6a83ca4c47dd96bca356fbd8a01db4dc",
+ "governedDigest": "de6549b21f939eb85865a43388f31cb57b387e7f97219f81c12dc80d213a734d",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -47196,117 +47196,6 @@
     "lastPriceCheck": "2026-08-11",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
-  },
-  {
-   "id": "recZ6coBYE2I1MLCP",
-   "name": "Hutsmith Type III Cabin",
-   "organisation": "Hutsmith",
-   "productId": "recZ6coBYE2I1MLCP",
-   "productCode": "PROD-000578",
-   "productName": "Hutsmith Type III Cabin",
-   "productType": "Artist Studio / Writer's Retreat Cabin",
-   "productCategory": "Garden Rooms",
-   "organisationEvidence": [
-    {
-     "id": "recTq78jSQNOluU8c",
-     "name": "Hutsmith"
-    }
-   ],
-   "productUrl": "https://www.hutsmith.co.uk/design/",
-   "verificationStatus": "Partially Verified",
-   "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "quote-only",
-    "reasons": [
-     "This product is priced by quotation, as the supplier publishes.",
-     "A product-level source is recorded.",
-     "Supplier attribution is confirmed: Hutsmith."
-    ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
-    "hardBlockers": [],
-    "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "no irish-availability evidence recorded",
-     "irishAvailabilityScope": null,
-     "irishAvailabilityClassified": true,
-     "noPublishedIrishRoute": false,
-     "price": "quote-only",
-     "source": "product-level",
-     "supplierAttribution": "confirmed",
-     "manufacturerAttribution": "unknown",
-     "productUrl": "present",
-     "contradiction": "none",
-     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 0,
-     "pricingRecordCount": 1,
-     "availabilityRecordCount": 0
-    }
-   },
-   "priceEvidence": {
-    "base": null,
-    "from": null,
-    "to": null,
-    "currency": null,
-    "priceType": "Custom Quote",
-    "status": "Researching",
-    "includesVat": null,
-    "evidenceScope": "Product-Specific",
-    "adjudication": "missing",
-    "quoteOnly": true,
-    "candidateCount": 1
-   },
-   "features": {},
-   "price": null,
-   "currency": null,
-   "priceBasis": "Researching",
-   "floorAreaM2": null,
-   "glazing": null,
-   "insulation": null,
-   "manufactureCountry": null,
-   "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
-   "availabilityStatus": null,
-   "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "quote-only",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
-   "priceRecordIds": [
-    "rec299p4TTgvVwgXb"
-   ],
-   "priceRecordIdsAvailable": 1,
-   "priceStatus": "Researching",
-   "priceType": "Custom Quote",
-   "priceScope": "Product-Specific",
-   "vatStatus": "Unknown",
-   "vatRate": null,
-   "priceBasisAxes": {
-    "erection": "UNKNOWN",
-    "siteWorks": "UNKNOWN",
-    "delivery": "UNKNOWN"
-   },
-   "priceBasisClass": "UNKNOWN",
-   "priceBasisConfidence": "NO_PRICE",
-   "priceIsRangeFloor": false,
-   "priceSafeForMatching": false,
-   "priceEvidenceRef": {
-    "recordIds": [
-     "rec299p4TTgvVwgXb"
-    ],
-    "adjudication": "missing",
-    "candidateCount": 1,
-    "status": "Researching",
-    "priceType": "Custom Quote",
-    "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-08-27",
-    "basisSource": null,
-    "basisLeadPhrase": null
    }
   },
   {
