@@ -61,6 +61,9 @@ Usage:
   python3 atlas-tools/build-privacy-v5.py --amend-s8     (one-sentence Section 8 amendment, 14 Oct 2026)
   python3 atlas-tools/build-privacy-v5.py --preview /tmp/privacy-v5-preview.html
 """
+import sys as _sys_v6
+_sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
 import html as htmlmod
 import importlib.util
 import pathlib
@@ -276,14 +279,14 @@ def untransform(v5):
 
 
 def published(text=None):
-    text = PRIVACY.read_text(encoding="utf-8") if text is None else text
+    text = _without_v6(PRIVACY.read_text(encoding="utf-8")) if text is None else text
     return "PLOTNUA-ARTIST-PRIVACY-V5" in text
 
 
 def published_ok(text=None):
     """True when the text carries exactly the governed V5 changes over a page
     the V4 builder accepts (used by the register guards once V5 is live)."""
-    text = PRIVACY.read_text(encoding="utf-8") if text is None else text
+    text = _without_v6(PRIVACY.read_text(encoding="utf-8")) if text is None else text
     if text.count(MARK) != 1 or (HEAD_NEW + intro_html()) not in text or artist_html() not in text \
             or SEC2_NEW not in text or THIRD_NEW not in text or RET_NEW not in text:
         return False
@@ -378,7 +381,7 @@ def approved():
 
 
 def main(argv):
-    cur = PRIVACY.read_text(encoding="utf-8")
+    cur = _without_v6(PRIVACY.read_text(encoding="utf-8"))
     if "--amend-s8" in argv:
         if not AMENDMENT.get("s8_open_wording", "").strip():
             refuse("the Section 8 amendment is not approved")

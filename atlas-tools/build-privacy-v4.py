@@ -73,6 +73,9 @@ Usage:
   python3 atlas-tools/build-privacy-v4.py --check
   python3 atlas-tools/build-privacy-v4.py --preview /tmp/privacy-v4-preview.html
 """
+import sys as _sys_v6
+_sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
 import hashlib
 import html as htmlmod
 import pathlib
@@ -364,7 +367,7 @@ def _pv5():
 
 
 def v5_live(text=None):
-    text = PRIVACY.read_text(encoding="utf-8") if text is None else text
+    text = _without_v6(PRIVACY.read_text(encoding="utf-8")) if text is None else text
     return V5_MARK_TEXT in text
 
 
@@ -386,7 +389,7 @@ def art_version_expected():
 def published_ok(text=None):
     """True when privacy.html carries exactly the governed V4 Section 8 (used by the register's R2).
     Once V5 is live, the V4 page inside it must still carry it exactly."""
-    text = PRIVACY.read_text(encoding="utf-8") if text is None else text
+    text = _without_v6(PRIVACY.read_text(encoding="utf-8")) if text is None else text
     text = as_v4(text)
     if text.count(MARK) != 1 or (section8_html().rstrip("\n") + "\n") not in text:
         return False
@@ -399,7 +402,7 @@ def published_exact(text=None):
     transform of the pinned V3 page, with the approved label and the pinned
     Section 7. Used by the V5 builder, so V5 can only be built over, and only
     verify against, an exact V4."""
-    text = as_v4(PRIVACY.read_text(encoding="utf-8") if text is None else text)
+    text = as_v4(_without_v6(PRIVACY.read_text(encoding="utf-8")) if text is None else text)
     try:
         if not published_ok(text) or not isinstance(APPROVAL, dict):
             return False
@@ -418,7 +421,7 @@ def published_exact(text=None):
 
 
 def main(argv):
-    cur = PRIVACY.read_text(encoding="utf-8")
+    cur = _without_v6(PRIVACY.read_text(encoding="utf-8"))
     if "--apply" in argv:
         if not (isinstance(APPROVAL, dict) and all(isinstance(APPROVAL.get(k), str) and APPROVAL[k].strip()
                                                      for k in APPROVAL_KEYS)):

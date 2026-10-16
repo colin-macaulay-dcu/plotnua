@@ -14,6 +14,9 @@ Verdicts: CAPABLE / BLIND / VACUOUS (mutation did not apply) / MISATTRIBUTED.
 
   python3 atlas-tools/prove-g6-owner-register.py
 """
+import sys as _sys_v6
+_sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
 import html as htmlmod, importlib.util, io, pathlib, re, shutil, subprocess, sys, tempfile
 from contextlib import redirect_stdout
 
@@ -88,7 +91,7 @@ def guards(src):
 
 # --------------------------------------------------------------- Part A ---
 print("\n  G6 PREP · PRIVACY GUARDS\n")
-LIVE = (ROOT / "privacy.html").read_text(encoding="utf-8")
+LIVE = _without_v6((ROOT / "privacy.html").read_text(encoding="utf-8"))
 for k, v in guards(LIVE).items():
     say(v, f"{k} holds on privacy.html")
 

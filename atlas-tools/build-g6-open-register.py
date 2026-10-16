@@ -25,6 +25,9 @@ the switch, and the frozen <main> region is byte-identical.
 
   python3 atlas-tools/build-g6-open-register.py --check | --apply
 """
+import sys as _sys_v6
+_sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
 import hashlib, pathlib, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -86,7 +89,7 @@ def build(page, privacy, worker, wrangler):
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "--check"
     page = PAGE.read_text(encoding="utf-8")
-    out = build(page, PRIVACY.read_text(encoding="utf-8"),
+    out = build(page, _without_v6(PRIVACY.read_text(encoding="utf-8")),
                 WORKER.read_text(encoding="utf-8"), WRANGLER.read_text(encoding="utf-8"))
     h = lambda t: hashlib.sha256(t.encode()).hexdigest()[:16]
     print(f"  disc025-borrowed-garden-check.html  {h(page)} -> {h(out)}  (one line)")

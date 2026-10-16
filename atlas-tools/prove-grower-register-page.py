@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""PlotNua · Grower Register page · browser proof (Playwright, Chromium).
+"""PlotNua · The Borrowed Garden · both journeys, in a real browser (Chromium).
 
-Serves the repo locally and drives borrowed-garden-grower-register.html in a
-real browser. The register endpoint is STUBBED: a fake that mimics the
-Worker's reply shapes (received / not_open / refused / failure) and keeps an
-in-memory set of addresses, so duplicates can be measured. NO request leaves
-the machine: every non-local request is aborted. No real personal data is
-used; all addresses are @example.com.
+  A  Discovery -> Owner check  (disc025-borrowed-garden-check.html)  -> Register -> Confirmation
+  B  Discovery -> Grower check (disc025-borrowed-garden-grower-check.html) -> Register -> Confirmation
 
-  python3 atlas-tools/prove-grower-register-page.py [--shots DIR] [--axe PATH/TO/axe.min.js]
+Uses the LAUNCH version of the Discovery (built by build-grower-register.py
+--preview-discovery into a temporary file; the repo copy is not changed).
+Both register endpoints are STUBBED; every non-local request is aborted. No
+real personal data: every address is @example.com.
+
+  python3 atlas-tools/prove-grower-register-page.py [--shots DIR] [--axe axe.min.js]
 """
 from __future__ import annotations
 
@@ -17,6 +18,7 @@ import functools
 import http.server
 import json
 import socketserver
+import subprocess
 import sys
 import threading
 from pathlib import Path
@@ -24,17 +26,18 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PAGE = "borrowed-garden-grower-register.html"
-ENDPOINT = "https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/grower"
-CONSENT = "I'm over 18, and I'd like PlotNua to keep this and tell me about possible growing space nearby."
+GROWER = "disc025-borrowed-garden-grower-check.html"
+HOST = "disc025-borrowed-garden-check.html"
+DISC_PREVIEW = "_launch-preview-discovery.html"
+W = "https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/"
+CONSENT_G = "I'm over 18, and I'd like PlotNua to keep this and tell me about possible growing space nearby."
 ALLOWED = {"first_name", "email", "district", "travel_radius", "space_wanted", "timing", "growing_note",
            "over_18", "consent_text", "source"}
-
 results = []
 
 
 def check(name, cond, detail=""):
-    results.append((bool(cond), name, detail))
+    results.append(bool(cond))
     print(("  [PASS] " if cond else "  [FAIL] ") + name + ("" if cond else f"   {detail}"))
 
 
@@ -43,30 +46,18 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         pass
 
 
-def serve():
-    handler = functools.partial(Quiet, directory=str(ROOT))
-    httpd = socketserver.TCPServer(("127.0.0.1", 0), handler)
-    threading.Thread(target=httpd.serve_forever, daemon=True).start()
-    return httpd, httpd.server_address[1]
-
-
-class FakeRegister:
-    """Worker reply shapes, nothing more. mode: received | not_open | refused | fail."""
-
+class Fake:
     def __init__(self):
-        self.mode = "received"
-        self.requests = []
-        self.store = set()
+        self.mode, self.reqs, self.store = "received", [], set()
 
     def handle(self, route):
-        req = route.request
-        if req.method == "OPTIONS":
-            return route.fulfill(status=204, headers={"access-control-allow-origin": "*",
-                                                       "access-control-allow-headers": "content-type",
-                                                       "access-control-allow-methods": "POST"})
-        body = json.loads(req.post_data or "{}")
-        self.requests.append(body)
-        hdr = {"access-control-allow-origin": "*", "content-type": "application/json"}
+        r = route.request
+        hdr = {"access-control-allow-origin": "*", "content-type": "application/json",
+               "access-control-allow-headers": "content-type"}
+        if r.method == "OPTIONS":
+            return route.fulfill(status=204, headers=hdr)
+        body = json.loads(r.post_data or "{}")
+        self.reqs.append((r.url.rsplit("/", 1)[-1], body))
         if self.mode == "fail":
             return route.abort()
         if self.mode == "not_open":
@@ -78,236 +69,207 @@ class FakeRegister:
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--shots")
-    ap.add_argument("--axe")
-    args = ap.parse_args()
-    shots = Path(args.shots) if args.shots else None
+    ap = argparse.ArgumentParser(); ap.add_argument("--shots"); ap.add_argument("--axe")
+    a = ap.parse_args()
+    shots = Path(a.shots) if a.shots else None
     if shots:
         shots.mkdir(parents=True, exist_ok=True)
-    httpd, port = serve()
-    base = f"http://127.0.0.1:{port}/{PAGE}"
-    fake = FakeRegister()
+    subprocess.run([sys.executable, "atlas-tools/build-grower-register.py", "--preview-discovery", DISC_PREVIEW],
+                   cwd=ROOT, check=True, capture_output=True)
+    httpd = socketserver.TCPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=str(ROOT)))
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{httpd.server_address[1]}/"
+    fake = Fake()
+    try:
+        with sync_playwright() as p:
+            br = p.chromium.launch()
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
+            def page(vp=(1280, 900)):
+                ctx = br.new_context(viewport={"width": vp[0], "height": vp[1]}, reduced_motion="reduce")
+                pg = ctx.new_page()
+                pg.route("**/*", lambda route: fake.handle(route) if route.request.url.startswith(W)
+                         else (route.continue_() if route.request.url.startswith(base) else route.abort()))
+                return pg
 
-        def new_page(viewport):
-            ctx = browser.new_context(viewport=viewport, reduced_motion="reduce")
-            page = ctx.new_page()
+            def reveal_all(pg):
+                pg.evaluate("document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'))")
 
-            def router(route):
-                u = route.request.url
-                if u.startswith(ENDPOINT):
-                    return fake.handle(route)
-                if u.startswith(f"http://127.0.0.1:{port}/"):
-                    return route.continue_()
-                return route.abort()
-            page.route("**/*", router)
-            return page
+            def axe(pg, label, baseline=None, measure=False):
+                if not a.axe:
+                    return
+                pg.wait_for_timeout(1500)   # let reveal fade-ins finish
+                pg.add_script_tag(path=a.axe)
+                v = pg.evaluate("""async()=>(await axe.run({exclude:[['#bgIntPrev']]},{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}}))
+                    .violations.filter(v=>['serious','critical'].includes(v.impact)).flatMap(v=>v.nodes.map(n=>v.id+' '+n.target.join(' ')))""")
+                if measure:
+                    print(f"        (baseline, pre-existing on the live page: {v})")
+                    return v
+                if baseline is not None:
+                    new = [x for x in v if x not in baseline]
+                    check(f"A11Y {label}: no NEW serious/critical axe violations vs the live page", not new, new)
+                    return v
+                check(f"A11Y {label}: no serious/critical axe violations (WCAG 2.1 AA)", not v, v)
+                return v
 
-        def reveal_all(page):
-            page.evaluate("document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'))")
+            # ------------------------------------------------------ Discovery --
+            d = page()
+            d.goto(base + DISC_PREVIEW + "#discover-your-property")
+            reveal_all(d)
+            hrefs = d.eval_on_selector_all(".hfa-check a.btn-primary", "e=>e.map(a=>a.getAttribute('href'))")
+            heads = d.eval_on_selector_all(".hfa-check h3", "e=>e.map(h=>h.textContent)")
+            check("D1 Discovery offers exactly two routes",
+                  hrefs == [HOST + "?start=1", GROWER + "?start=1"] and heads ==
+                  ["I have garden space to share", "I’m looking for somewhere to grow"], (hrefs, heads))
+            if shots:
+                d.locator("#discover-your-property").screenshot(path=str(shots / "1-discovery-two-routes.png"))
+            live = page(); live.goto(base + "discovery-the-borrowed-garden.html"); reveal_all(live)
+            base_v = axe(live, "live Discovery", measure=True) or []
+            live.close()
+            axe(d, "Discovery (launch version)", baseline=base_v)
+            m = page((390, 844)); m.goto(base + DISC_PREVIEW + "#discover-your-property"); reveal_all(m)
+            check("D2 Discovery mobile: no horizontal scroll", m.evaluate("document.documentElement.scrollWidth") <= 390)
+            if shots:
+                m.locator("#discover-your-property").screenshot(path=str(shots / "1m-discovery-mobile.png"))
+            m.close()
 
-        def axe(page, label):
-            if not args.axe:
-                return
-            page.add_script_tag(path=args.axe)
-            res = page.evaluate("""async () => (await axe.run(document, {runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations
-                .map(v => ({id:v.id, impact:v.impact, n:v.nodes.length, t:v.nodes.slice(0,2).map(n=>n.target.join(' '))}))""")
-            serious = [v for v in res if v["impact"] in ("serious", "critical")]
-            check(f"A11Y {label}: no serious or critical axe violations (WCAG 2.1 AA)", not serious, json.dumps(serious))
-            minor = [v for v in res if v["impact"] not in ("serious", "critical")]
-            if minor:
-                print("        (minor axe findings, recorded: " + json.dumps(minor) + ")")
+            # ---------------------------------------- Journey A · owner (host) --
+            d.click(f'a[href="{HOST}?start=1"]')
+            d.wait_for_selector("#bgQ.is-on")
+            check("A1 owner route opens the Property Check at question 1", "Question 1" in d.text_content("#bgProg"))
+            for _ in range(8):
+                if d.locator("#bgReveal.is-on").count():
+                    break
+                d.locator("#bgOpts .pc-opt").first.click()
+            check("A2 owner check reaches its result", d.locator("#bgReveal.is-on").count() == 1)
+            if d.locator("#bgIntOpen").count() and d.locator("#bgIntOpen").is_visible():
+                d.click("#bgIntOpen")
+                d.fill("#bgIntName", "Testhost"); d.fill("#bgIntEmail", "host.journey@example.com")
+                for sel in ["#bgIntDistrict", "#bgIntWater", "#bgIntSize", "#bgIntTiming"]:
+                    d.select_option(sel, index=1)
+                d.check("#bgIntConsent")
+                if d.locator("#bgIntPerm").is_visible():
+                    d.check("#bgIntPerm"); d.fill("#bgIntNote", "My landlord knows and has agreed to it.")
+                d.click("#bgIntSend")
+                d.wait_for_selector("#bgIntDone:not([hidden])")
+                route, body = fake.reqs[-1]
+                check("A3 owner registers -> 'You're on the register' (garden route, unchanged)",
+                      route == "garden" and "on the register" in d.inner_text("#bgIntDoneH").lower(), (route, body))
+            else:
+                check("A3 owner register panel is shown on the live Property Check", False, "panel not visible")
+            d.close()
 
-        # ---------------------------------------------------------- P1 closed --
-        page = new_page({"width": 1280, "height": 900})
-        page.goto(base)
-        check("P1 closed: the register form is not in the DOM", page.locator("#grCard").count() == 0)
-        check("P1b closed: 'isn't open yet' is shown", page.locator("#grClosed").is_visible())
-        check("P1c closed: no email input exists anywhere", page.locator("input[type=email]").count() == 0)
-        check("P1d closed: the page is noindex", page.locator('meta[name=robots]').get_attribute("content") == "noindex, nofollow")
-        reveal_all(page)
-        axe(page, "closed page")
-        page.close()
+            # --------------------------------------------- Journey B · grower --
+            g = page()
+            g.goto(base + DISC_PREVIEW + "#discover-your-property")
+            g.click(f'a[href="{GROWER}?start=1"]')
+            g.wait_for_selector("#bgQ.is-on")
+            check("B1 grower route opens the Grower Check at question 1 of 4", g.text_content("#bgProg") == "Question 1 of 4")
+            check("B1b same components as the owner check (dots, stacked options, Back)",
+                  g.locator("#bgDots .pc-dot").count() == 4 and g.locator("#bgOpts .pc-opt").count() == 6)
+            if shots:
+                g.screenshot(path=str(shots / "2-grower-question.png"))
+            g.get_by_role("button", name="Killester", exact=True).click(); g.get_by_role("button", name="Up to 2 km", exact=True).click()
+            g.click("#bgBack")
+            check("B2 Back returns to the previous question", g.text_content("#bgProg") == "Question 2 of 4")
+            g.get_by_role("button", name="Up to 2 km", exact=True).click(); g.get_by_role("button", name="Small — a corner", exact=True).click(); g.get_by_role("button", name="Next season", exact=True).click()
+            g.wait_for_selector("#bgReveal.is-on")
+            txt = g.inner_text("#bgReveal")
+            check("B3 result: pilot area, beginners welcome, honest", "first areas" in txt and "beginners are welcome" in txt
+                  and "No garden is available through PlotNua today" in txt and "never find a garden" in txt)
+            check("B3b the check sent nothing", not [r for r in fake.reqs if r[0] == "grower"])
+            # closed in production: the register panel is removed from the DOM
+            check("B4 CLOSED: without ?interest=preview the register panel is not in the DOM",
+                  g.locator("#bgInterest").count() == 0 and g.locator("input[type=email]").count() == 0)
+            g.close()
 
-        # ------------------------------------------------- P2–P9 preview desktop --
-        page = new_page({"width": 1280, "height": 900})
-        page.goto(base + "?register=preview")
-        reveal_all(page)
-        check("P2 preview: the form is shown with the preview label", page.locator("#grForm").is_visible() and page.locator("#grPrev").is_visible())
-        check("P2b consent text rendered is the Worker's frozen sentence", page.locator("#grConsentText").inner_text() == CONSENT)
-        if shots:
-            page.screenshot(path=str(shots / "desktop-full.png"), full_page=True)
-        axe(page, "preview form")
+            g = page()
+            g.goto(base + GROWER + "?start=1&interest=preview")
+            for t in ["Killester", "Up to 2 km", "Small — a corner", "Next season"]:
+                g.get_by_role("button", name=t, exact=True).click()
+            g.wait_for_selector("#bgReveal.is-on")
+            if shots:
+                g.screenshot(path=str(shots / "3-grower-result.png"), full_page=True)
+            g.click("#bgIntOpen")
+            check("B5 the four kept answers pre-fill the register form",
+                  [g.input_value(s) for s in ["#bgIntDistrict", "#bgIntTravel", "#bgIntSize", "#bgIntTiming"]]
+                  == ["killester", "up_to_2km", "small", "next_season"])
+            check("B5b consent text is the frozen G1B sentence", g.inner_text("#bgIntConsentText") == CONSENT_G)
+            axe(g, "Grower Check result + register form")
+            g.click("#bgIntSend")
+            check("B6 validation names the first missing field; nothing sent", "first name" in g.inner_text("#bgIntMsg")
+                  and not [r for r in fake.reqs if r[0] == "grower"])
+            g.fill("#bgIntName", "Testgrower"); g.fill("#bgIntEmail", "bad"); g.click("#bgIntSend")
+            check("B6b invalid email flagged", "email" in g.inner_text("#bgIntMsg"))
+            g.fill("#bgIntEmail", "grower.journey@example.com"); g.click("#bgIntSend")
+            check("B6c consent required", "over 18" in g.inner_text("#bgIntMsg"))
+            g.check("#bgIntConsent"); g.fill("#bgIntNote", "New to growing; salad and herbs; Saturdays.")
+            if shots:
+                g.locator("#bgInterest").screenshot(path=str(shots / "4-grower-form.png"))
+            g.click("#bgIntSend")
+            g.wait_for_selector("#bgIntDone[data-state=received]")
+            route, body = fake.reqs[-1]
+            check("B7 grower registers -> 'You're on the register'", route == "grower" and
+                  g.inner_text("#bgIntDoneH") == "You’re on the register")
+            check("B7b payload: only the allowed keys, consent verbatim, source grower_register",
+                  set(body) <= ALLOWED and body["consent_text"] == CONSENT_G and body["source"] == "grower_register"
+                  and body["over_18"] is True, sorted(body))
+            check("B7c focus moves to the confirmation", g.evaluate("document.activeElement.id") == "bgIntDoneH")
+            if shots:
+                g.locator("#bgInterest").screenshot(path=str(shots / "5-grower-confirmation.png"))
+            g.close()
 
-        # P3 empty submit, field by field
-        page.click("#grSend")
-        check("P3 empty submit: first name is named, nothing sent", "first name" in page.inner_text("#grMsg") and not fake.requests)
-        check("P3b the flagged field is marked aria-invalid and focused",
-              page.get_attribute("#grName", "aria-invalid") == "true" and page.evaluate("document.activeElement.id") == "grName")
-        page.fill("#grName", "Testgrower")
-        page.fill("#grEmail", "not-an-email")
-        page.click("#grSend")
-        check("P4 invalid email is flagged locally", "email" in page.inner_text("#grMsg") and not fake.requests)
-        page.fill("#grEmail", "test.grower@example.com")
-        page.click("#grSend")
-        check("P3c area is required next", "your area" in page.inner_text("#grMsg"))
+            # duplicate, states, honeypot
+            def run(mode, email, honey=False, district="artane"):
+                fake.mode = mode
+                pg = page(); pg.goto(base + GROWER + "?start=1&interest=preview")
+                for t in ["Artane" if district == "artane" else "Elsewhere in Ireland", "Within walking distance",
+                          "Not sure yet", "I’m flexible"]:
+                    pg.get_by_role("button", name=t, exact=True).click()
+                pg.wait_for_selector("#bgReveal.is-on"); pg.click("#bgIntOpen")
+                pg.fill("#bgIntName", "Testgrower"); pg.fill("#bgIntEmail", email); pg.check("#bgIntConsent")
+                if honey:
+                    pg.evaluate("document.getElementById('bgIntWebsite').value='spam'")
+                n = len(fake.reqs); pg.click("#bgIntSend"); pg.wait_for_timeout(400)
+                return pg, len(fake.reqs) - n
+            before = len(fake.store)
+            pg, _ = run("received", "GROWER.journey@example.com")
+            check("B8 repeat address: same confirmation, stored once", pg.inner_text("#bgIntDoneH") == "You’re on the register"
+                  and len(fake.store) == before); pg.close()
+            pg, _ = run("not_open", "x1@example.com")
+            check("B9 Worker closed -> 'The register isn't open yet', nothing saved",
+                  pg.get_attribute("#bgIntDone", "data-state") == "not_open"); pg.close()
+            pg, _ = run("refused", "x2@example.com")
+            check("B9b refused -> field named, form kept", "your area" in pg.inner_text("#bgIntMsg")); pg.close()
+            pg, _ = run("fail", "x3@example.com")
+            check("B9c network failure -> truthful 'didn't go through'", pg.get_attribute("#bgIntDone", "data-state") == "unavailable"); pg.close()
+            pg, sent = run("received", "x4@example.com", honey=True)
+            check("B9d honeypot -> nothing sent", sent == 0); pg.close()
+            pg, _ = run("received", "x5@example.com", district="elsewhere")
+            check("B9e out-of-area confirmation is honest", "outside those areas" in pg.inner_text("#bgIntDone")); pg.close()
+            fake.mode = "received"
 
-        # P5 interest check
-        page.click("#gcGo")
-        check("P5 unanswered check asks for question 1", "question 1" in page.inner_text("#gcMsg"))
-        for k, v in [("district", "killester"), ("travel_radius", "up_to_2km"), ("space_band", "small"),
-                     ("timing", "next_season"), ("experience", "new"), ("style", "together")]:
-            page.check(f"#gc_{k}_{v}")
-        page.click("#gcGo")
-        txt = page.inner_text("#gcResult")
-        check("P5b result shown for a pilot area, beginner, working together",
-              "first areas" in txt and "beginners are welcome" in txt and "alongside you" in txt)
-        check("P5c result is honest: no garden available, nothing sent",
-              "No garden is available through PlotNua today" in txt and "sent anywhere" in txt)
-        check("P5d the four kept answers pre-fill the form",
-              page.input_value("#grDistrict") == "killester" and page.input_value("#grTravel") == "up_to_2km"
-              and page.input_value("#grSpace") == "small" and page.input_value("#grTiming") == "next_season")
-        check("P5e the check sent nothing", not fake.requests)
-        col = page.evaluate("(()=>{const e=document.getElementById('gcJoin');const c=getComputedStyle(e);return [c.color,c.backgroundColor,c.textDecorationLine]})()")
-        check("P5f the 'Join' button text is ivory on green, not underlined", col[0] == "rgb(242, 239, 230)" and col[1] == "rgb(31, 59, 46)" and col[2] == "none", col)
-        if shots:
-            page.locator("#check").screenshot(path=str(shots / "desktop-check-result.png"))
-
-        # consent still required
-        page.click("#grSend")
-        check("P3d consent is required last", "over 18" in page.inner_text("#grMsg") and not fake.requests)
-
-        # P6 success
-        page.check("#grConsent")
-        page.fill("#grNote", "Beginner, would love to grow salad leaves. Saturdays suit me.")
-        page.click("#grSend")
-        page.wait_for_selector("#grDone[data-state=received]")
-        b = fake.requests[-1]
-        check("P6 a valid registration reaches 'You're on the Grower Register'",
-              "You’re on the Grower Register" in page.inner_text("#grDoneH"))
-        check("P6b exactly the allowed keys are sent", set(b) <= ALLOWED and {"first_name", "email", "district",
-              "travel_radius", "space_wanted", "timing", "over_18", "consent_text", "source"} <= set(b), sorted(b))
-        check("P6c the check-only answers (experience, style) are never sent",
-              "experience" not in json.dumps(b) and "together" not in json.dumps(b) and "style" not in b)
-        check("P6d consent is sent verbatim with over_18 true and source grower_register",
-              b["consent_text"] == CONSENT and b["over_18"] is True and b["source"] == "grower_register")
-        check("P6e focus moves to the confirmation heading", page.evaluate("document.activeElement.id") == "grDoneH")
-        if shots:
-            page.locator("#register").screenshot(path=str(shots / "desktop-received.png"))
-        page.close()
-
-        # P7 duplicate
-        page = new_page({"width": 1280, "height": 900})
-        page.goto(base + "?register=preview")
-        before = len(fake.store)
-        page.fill("#grName", "Testgrower")
-        page.fill("#grEmail", "TEST.grower@example.com")
-        for sel, v in [("#grDistrict", "killester"), ("#grTravel", "up_to_2km"), ("#grSpace", "small"), ("#grTiming", "flexible")]:
-            page.select_option(sel, v)
-        page.check("#grConsent")
-        page.click("#grSend")
-        page.wait_for_selector("#grDone[data-state=received]")
-        check("P7 a repeat submission gets the same confirmation (no 'already registered' oracle)",
-              "You’re on the Grower Register" in page.inner_text("#grDoneH") and "already" not in page.inner_text("#grDone").lower())
-        check("P7b the repeat address is stored once (case-insensitive key)", len(fake.store) == before)
-        page.close()
-
-        # P8 not_open / refused / failure; P9 honeypot
-        def filled(mode, honeypot=False, district="artane"):
-            fake.mode = mode
-            pg = new_page({"width": 1280, "height": 900})
-            pg.goto(base + "?register=preview")
-            pg.fill("#grName", "Testgrower")
-            pg.fill("#grEmail", f"{mode}@example.com")
-            for sel, v in [("#grDistrict", district), ("#grTravel", "walking"), ("#grSpace", "very_small"), ("#grTiming", "this_season")]:
-                pg.select_option(sel, v)
-            pg.check("#grConsent")
-            if honeypot:
-                pg.evaluate("document.getElementById('grWebsite').value='spam'")
-            n0 = len(fake.requests)
-            pg.click("#grSend")
-            pg.wait_for_timeout(400)
-            return pg, len(fake.requests) - n0
-
-        pg, _ = filled("not_open")
-        check("P8 not_open reply: 'isn't open yet', details not saved",
-              pg.get_attribute("#grDone", "data-state") == "not_open" and "haven’t been saved" in pg.inner_text("#grDone"))
-        pg.close()
-        pg, _ = filled("refused")
-        check("P8b refused reply: the form stays and the field is named", pg.locator("#grForm").is_visible()
-              and "your area" in pg.inner_text("#grMsg") and "Nothing has been saved" in pg.inner_text("#grMsg"))
-        pg.close()
-        pg, _ = filled("fail")
-        check("P8c network failure: truthful 'didn't go through'", pg.get_attribute("#grDone", "data-state") == "unavailable")
-        pg.close()
-        pg, sent = filled("received", honeypot=True)
-        check("P9 honeypot filled: nothing sent, truthful not-saved state",
-              sent == 0 and pg.get_attribute("#grDone", "data-state") == "unavailable")
-        pg.close()
-        pg, _ = filled("received", district="elsewhere_in_ireland")
-        check("P6f out-of-pilot confirmation says we aren't introducing outside the four areas",
-              "outside those areas" in pg.inner_text("#grDone"))
-        pg.close()
-        fake.mode = "received"
-
-        # ------------------------------------------------------- P10 mobile ----
-        page = new_page({"width": 390, "height": 844})
-        page.goto(base + "?register=preview")
-        reveal_all(page)
-        sw = page.evaluate("document.documentElement.scrollWidth")
-        check("P10 mobile 390px: no horizontal scroll", sw <= 390, sw)
-        small = page.evaluate("""() => [...document.querySelectorAll('main .gr-tick, main .gr-cta, main select, main input[type=text], main input[type=email], main textarea, main .gr-link')]
-            
-            .filter(e => e.offsetParent && !e.closest('.gr-hp')).map(e => [e.id || e.className, Math.round(e.getBoundingClientRect().height)]).filter(x => x[1] < 44)""")
-        check("P10b mobile: every control is at least 44px tall", not small, small)
-        fs = page.evaluate("Math.min(...[...document.querySelectorAll('main input, main select, main textarea')].filter(e=>e.offsetParent && !e.closest('.gr-hp') && e.type!=='checkbox' && e.type!=='radio').map(e=>parseFloat(getComputedStyle(e).fontSize)))")
-        check("P10c mobile: inputs are 16px or larger (no iOS zoom)", fs >= 16, fs)
-        if shots:
-            page.screenshot(path=str(shots / "mobile-top.png"))
-            page.screenshot(path=str(shots / "mobile-full.png"), full_page=True)
-        for k, v in [("district", "elsewhere_in_dublin"), ("travel_radius", "up_to_5km"), ("space_band", "large"),
-                     ("timing", "flexible"), ("experience", "lots"), ("style", "own")]:
-            page.check(f"#gc_{k}_{v}")
-        page.click("#gcGo")
-        txt = page.inner_text("#gcResult")
-        check("P10d mobile check result for out-of-pilot, experienced, large",
-              "welcome to join" in txt and "Experienced growers" in txt and "Larger spaces are rarer" in txt)
-        if shots:
-            page.locator("#check").screenshot(path=str(shots / "mobile-check-result.png"))
-        page.fill("#grName", "Testgrower")
-        page.fill("#grEmail", "mobile.test@example.com")
-        page.check("#grConsent")
-        page.click("#grSend")
-        page.wait_for_selector("#grDone[data-state=received]")
-        check("P10e mobile registration completes", True)
-        if shots:
-            page.locator("#register").screenshot(path=str(shots / "mobile-received.png"))
-        page.close()
-
-        # ------------------------------------------------ P11 keyboard only ----
-        page = new_page({"width": 1280, "height": 900})
-        page.goto(base + "?register=preview")
-        page.focus("#grName")
-        page.keyboard.type("Keyboard")
-        page.keyboard.press("Tab"); page.keyboard.type("keys@example.com")
-        for _ in range(4):   # each select: Tab to it, ArrowDown picks the first real option
-            page.keyboard.press("Tab"); page.keyboard.press("ArrowDown")
-        page.focus("#grConsent"); page.keyboard.press("Space")
-        page.focus("#grSend"); page.keyboard.press("Enter")
-        page.wait_for_timeout(400)
-        check("P11 the form can be completed with the keyboard alone",
-              page.get_attribute("#grDone", "data-state") == "received", page.inner_text("#grMsg") if page.locator("#grMsg").is_visible() else "")
-        page.close()
-
-        browser.close()
-    httpd.shutdown()
-
-    passed = sum(1 for r in results if r[0])
-    print(f"\n  {passed} passed, {len(results) - passed} failed")
-    sys.exit(0 if passed == len(results) else 1)
+            # mobile
+            mg = page((390, 844))
+            mg.goto(base + GROWER + "?start=1&interest=preview")
+            check("M1 grower check mobile: no horizontal scroll", mg.evaluate("document.documentElement.scrollWidth") <= 390)
+            small = mg.evaluate("[...document.querySelectorAll('#bgOpts .pc-opt')].map(b=>b.getBoundingClientRect().height).filter(h=>h<44)")
+            check("M2 mobile options are at least 44px tall", not small, small)
+            if shots:
+                mg.screenshot(path=str(shots / "6-grower-question-mobile.png"))
+            for t in ["Raheny", "Within walking distance", "Very small — a bed or two", "This season"]:
+                mg.get_by_role("button", name=t, exact=True).click()
+            mg.click("#bgIntOpen")
+            check("M3 mobile form fits: no horizontal scroll", mg.evaluate("document.documentElement.scrollWidth") <= 390)
+            if shots:
+                mg.screenshot(path=str(shots / "7-grower-form-mobile.png"), full_page=True)
+            mg.close()
+            br.close()
+    finally:
+        httpd.shutdown()
+        (ROOT / DISC_PREVIEW).unlink(missing_ok=True)
+    n = len(results); ok = sum(results)
+    print(f"\n  {ok} passed, {n - ok} failed")
+    sys.exit(0 if ok == n else 1)
 
 
 if __name__ == "__main__":

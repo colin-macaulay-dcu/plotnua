@@ -10,6 +10,9 @@ builder's output is byte-identical to the page on disk.
 
   python3 atlas-tools/prove-g6-open-register.py
 """
+import sys as _sys_v6
+_sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from privacy_v6_layer import without_v6 as _without_v6  # V6 layer
 import importlib.util, io, pathlib, shutil, sys, tempfile
 from contextlib import redirect_stdout
 
@@ -18,7 +21,7 @@ ROOT = HERE.parent
 ON, OFF = "  var INTEREST_PUBLIC = true;", "  var INTEREST_PUBLIC = false;"
 LIVE = {
     "page": (ROOT / "disc025-borrowed-garden-check.html").read_text(encoding="utf-8"),
-    "privacy": (ROOT / "privacy.html").read_text(encoding="utf-8"),
+    "privacy": _without_v6((ROOT / "privacy.html").read_text(encoding="utf-8")),
     "worker": (ROOT / "worker/garden-register/src/index.js").read_text(encoding="utf-8"),
     "wrangler": (ROOT / "worker/garden-register/wrangler.toml").read_text(encoding="utf-8"),
 }

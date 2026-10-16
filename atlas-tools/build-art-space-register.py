@@ -79,6 +79,9 @@ Usage:
   python3 atlas-tools/build-art-space-register.py --apply
   python3 atlas-tools/build-art-space-register.py --check
 """
+import sys as _sys_v6
+_sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
 import json
 import pathlib
 import re
@@ -1184,9 +1187,9 @@ def guards(html):
                            capture_output=True, text=True, check=True).stdout.strip()
         if d:
             die("R13 Garden Owner Register files changed: " + d)
-        head_priv = subprocess.run(["git", "-C", str(ROOT), "show", "HEAD:privacy.html"],
-                                   capture_output=True, text=True, check=True).stdout
-        cur_priv = PRIVACY.read_text(encoding="utf-8")
+        head_priv = _without_v6(subprocess.run(["git", "-C", str(ROOT), "show", "HEAD:privacy.html"],
+                                   capture_output=True, text=True, check=True).stdout)
+        cur_priv = _without_v6(PRIVACY.read_text(encoding="utf-8"))
         if cur_priv != head_priv:
             pv4 = privacy_builder()
             ok = False

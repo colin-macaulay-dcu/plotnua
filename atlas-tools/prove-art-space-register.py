@@ -11,6 +11,9 @@ every touched file is hashed before and after the whole run.
 Exit 0 = every break caught, controls pass, every file byte-identical.
 Run: python3 atlas-tools/prove-art-space-register.py
 """
+import sys as _sys_v6
+_sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from privacy_v6_layer import without_v6 as _without_v6  # V6 layer
 import hashlib
 import pathlib
 import subprocess
@@ -31,7 +34,7 @@ FILES = [RB, PAGE, WORKER, GARDEN, PRIVACY, ART_WRANGLER, SCHEMA, PAGE23, DISCOV
 import importlib.util
 _spec = importlib.util.spec_from_file_location("pv4", ROOT / "atlas-tools" / "build-privacy-v4.py")
 PV4 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(PV4)
-_LIVE = PRIVACY.read_text(encoding="utf-8")
+_LIVE = _without_v6(PRIVACY.read_text(encoding="utf-8"))  # V6 layer: this proof governs V3-V5
 # Privacy V4 was published on 13 Oct 2026 (founder approval, notice only). The
 # proof works on either state: V3_PAGE and V4_PAGE are built in memory and
 # written only inside a case.
