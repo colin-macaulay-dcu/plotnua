@@ -22,6 +22,19 @@ ATLAS:
     ORG-000153   BIOBUILDS                 recjNpnrIr2KT5BWh
     PROD-000523  BIOBUILDS Wanderlust      recIBexeX8au55mVn   €105,000 / €163,000
     PROD-000524  BIOBUILDS Serenity        reczLG8Iw4k7TY2Nq   €191,000 / €306,000
+    PROD-001172  BIOBUILDS Nest 24         rec30WJRNrhVjDtkf   €74,300 / €101,100
+    PROD-001215  BIOBUILDS Sanctuary       recV5stNWzbeL1L7A   €278,000 / €444,000
+    PROD-001216  BIOBUILDS Bloom           recjdCtvV26NtbNA0   €354,000 / €572,000
+
+    ALL FIVE MODELS, 16 October 2026. The preview now carries the whole Irish
+    range so Mateus can confirm all five before anything is published. Every
+    figure in RANGE below was re-read from BIOBUILDS' own Irish pages on
+    16 October 2026 (biobuilds.com/ie/design#<model>, the rendered model
+    panel; biobuilds.com/ie/catalog and /ie/faq for the per-floorplan area
+    ranges and the inclusion wording). Evidence is kept outside the repo in
+    ~/atlas-research/biobuilds-1016/. A value the supplier does not publish
+    is written as None and the page shows "To be confirmed by BIOBUILDS";
+    nothing is inferred.
 
     SUPPLIER CORRECTION, 11 October 2026. BIOBUILDS asked for the prices to be
     replaced before publication. Two finishes per model now, both Irish prices
@@ -75,7 +88,8 @@ OUT = (pathlib.Path("/tmp/plotnua-stage/biobuilds-preview.html") if STAGE
 
 SUPPLIER = "BIOBUILDS"
 EVIDENCE_DATE = "2 October 2026"
-REVISION_DATE = "11 October 2026"
+REVISION_DATE = "16 October 2026"
+RANGE_READ_DATE = "16 October 2026"
 PERMISSION_DATE = "2 October 2026"
 PERMITTED_PREFIX = "https://www.biobuilds.com/"
 CREDIT = "© BIOBUILDS"
@@ -127,6 +141,26 @@ BIOBUILDS_IMAGES = [
             "serenity-95-bathroom.1nmu58m7tl0_u.jpg",
      "alt": "Serenity 95 bathroom with marble-effect walls, a walk-in "
             "shower and an oval backlit mirror"},
+    # SANCTUARY AND BLOOM, 16 October 2026. Exactly the four assets already
+    # enumerated for these products in image-rights-records.json
+    # (approved_assets), with the alt text governed there. Nest 24 has no
+    # approved asset, so it has no image; none is added.
+    {"url": "https://www.biobuilds.com/_next/static/immutable/media/"
+            "sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
+     "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house "
+            "in Yakisugi cladding with extensive glazing."},
+    {"url": "https://www.biobuilds.com/_next/static/immutable/media/"
+            "142-int-semi.0jp8pj_h42n45.jpg",
+     "alt": "Inside the BIOBUILDS Sanctuary, an open living space with "
+            "timber finishes and glazing to the garden."},
+    {"url": "https://www.biobuilds.com/_next/static/immutable/media/"
+            "bloom-yakisugi.0160b2ky8hgph.jpg",
+     "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad "
+            "house in Yakisugi cladding."},
+    {"url": "https://www.biobuilds.com/_next/static/immutable/media/"
+            "190-int-semi.3vnsegejmoyvy.jpg",
+     "alt": "Inside the BIOBUILDS Bloom, an open-plan living space with "
+            "timber finishes."},
     {"url": "https://www.biobuilds.com/_next/static/immutable/media/"
             "wall-section-3.0.26fqr4wmqyq13.jpg",
      "alt": "Cutaway of the BIOBUILDS timber wall build-up, showing the "
@@ -136,6 +170,91 @@ BIOBUILDS_IMAGES = [
      "alt": "A wrapped BIOBUILDS module suspended from crane slings during "
             "installation"},
 ]
+
+# ── THE RANGE ──────────────────────────────────────────────────────────────
+# All five BIOBUILDS models offered on the Irish configurator, in size order.
+# Read from the supplier's own Irish pages on RANGE_READ_DATE. Prices are the
+# Irish prices including 23% VAT exactly as shown on each model panel; area is
+# the interior floor area as published, with the per-floorplan range where
+# BIOBUILDS publish one. None means "not published" and renders as
+# TBC_TEXT -- never a guess.
+TBC_TEXT = "To be confirmed by BIOBUILDS"
+RANGE = [
+    {"name": "Nest 24", "anchor": "nest-24", "area": "16.84 m&sup2;",
+     "ef": "&euro;74,300", "tk": "&euro;101,100"},
+    {"name": "Wanderlust 48", "anchor": "wanderlust-48", "area": "35.54 m&sup2;",
+     "ef": "&euro;105,000", "tk": "&euro;163,000"},
+    {"name": "Serenity 95", "anchor": "serenity-95",
+     "area": "77.06&ndash;78.21 m&sup2;, by floorplan",
+     "ef": "&euro;191,000", "tk": "&euro;306,000"},
+    {"name": "Sanctuary 142", "anchor": "sanctuary-142",
+     "area": "120.41&ndash;121.54 m&sup2;, by floorplan",
+     "ef": "&euro;278,000", "tk": "&euro;444,000"},
+    {"name": "Bloom 190", "anchor": "bloom-190",
+     "area": "162.68&ndash;164.19 m&sup2;, by floorplan",
+     "ef": "&euro;354,000", "tk": "&euro;572,000"},
+]
+
+RANGE_CSS = """<style>
+/* THE RANGE -- added 16 Oct 2026. Tokens only; stacks below 640px. */
+.pn-range{ margin-top:var(--pn-md); border-top:1px solid var(--pn-hair); }
+.pn-range-row{ display:grid; grid-template-columns:1.3fr 1.6fr 1fr 1fr;
+  gap:6px var(--pn-md); padding:14px 0; border-bottom:1px solid var(--pn-hair);
+  align-items:baseline; }
+.pn-range-head{ font-size:var(--pn-w-caption); letter-spacing:.12em;
+  text-transform:uppercase; color:var(--pn-stone); padding:10px 0; }
+.pn-range-row b{ color:var(--pn-voice); font-weight:600; }
+.pn-range-tbc{ color:var(--pn-stone); font-style:italic; }
+.pn-range-note{ font-size:var(--pn-w-body-sm); color:var(--pn-stone);
+  margin-top:var(--pn-md); max-width:70ch; }
+@media (max-width:640px){
+  .pn-range-head{ display:none; }
+  .pn-range-row{ grid-template-columns:1fr 1fr; }
+  .pn-range-row > :first-child{ grid-column:1 / -1; }
+  .pn-range-row [data-k]::before{ content:attr(data-k); display:block;
+    font-size:var(--pn-w-meta); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--pn-stone); }
+  .pn-range-row [data-k="Interior floor area"]{ grid-column:1 / -1; }
+}
+</style>
+"""
+
+
+def cell(v, label):
+    if v is None:
+        return '<span data-k="%s" class="pn-range-tbc">%s</span>' % (label, TBC_TEXT)
+    return '<span data-k="%s">%s</span>' % (label, v)
+
+
+def range_block():
+    rows = ['    <div class="pn-range-row pn-range-head" aria-hidden="true">'
+            '<span>Model</span><span>Interior floor area</span>'
+            '<span>Exterior Finished</span><span>Turnkey</span></div>']
+    for m in RANGE:
+        rows.append('    <div class="pn-range-row" role="listitem"><b>%s</b>%s%s%s</div>'
+                    % (m["name"], cell(m["area"], "Interior floor area"),
+                       cell(m["ef"], "Exterior Finished"),
+                       cell(m["tk"], "Turnkey")))
+    return ("<!-- THE RANGE -- all five BIOBUILDS models for Ireland, for the\n"
+            "     supplier to confirm. Built from RANGE in\n"
+            "     build-biobuilds-preview.py; read %s. -->\n"
+            "<section>\n"
+            "  <h2>The five BIOBUILDS models</h2>\n"
+            "  <p>These are the Irish prices and interior floor areas we have "
+            "taken from <a href=\"https://www.biobuilds.com/ie/design\" "
+            "rel=\"noopener\">biobuilds.com/ie</a>. Please check each line.</p>\n"
+            "  <div class=\"pn-range\" role=\"list\">\n%s\n  </div>\n"
+            "  <p class=\"pn-range-note\">All prices are as published by "
+            "BIOBUILDS for Ireland and include 23%% VAT and transport to "
+            "Ireland. Installation on prepared ground screws is included. "
+            "Foundations, utility connections and site works are quoted per "
+            "project. Turnkey is finished inside and out; kitchen connections "
+            "are prepared, and kitchen furniture and appliances are not "
+            "included. The number in each model name is BIOBUILDS&rsquo; own "
+            "model name, not its floor area.</p>\n"
+            "</section>\n"
+            % (RANGE_READ_DATE, "\n".join(rows)))
+
 
 # ── THE COPY ───────────────────────────────────────────────────────────────
 # Voice: ordinary, direct, the way Colin would say it to Mateus. Nothing
@@ -173,8 +292,10 @@ FILL = {
     "VERIFIED_FACT_1_VALUE": "35.54 m&sup2;",
     "VERIFIED_FACT_2_LABEL": "Bedrooms",
     "VERIFIED_FACT_2_VALUE": "1&ndash;2",
-    "VERIFIED_FACT_3": "Serenity: &euro;191,000 exterior finished, "
-                       "&euro;306,000 turnkey",
+    # 16 Oct 2026: the Serenity line is superseded by the five-model range
+    # section, which carries every model's prices; this slot now points there.
+    "VERIFIED_FACT_3": "Also for Ireland: Nest 24, Serenity 95, Sanctuary 142 "
+                       "and Bloom 190 &mdash; prices below",
     # Aligned to biobuilds.com/ie/turnkey, read 11 October 2026. Only what the
     # supplier publishes. The withdrawn line claimed a kitchen, air
     # conditioning and underfloor heating: the kitchen is expressly excluded,
@@ -217,9 +338,10 @@ FILL = {
                   "thought about it than thirty who have not.",
     "WHY_3_LABEL": "A BETTER STARTING POINT",
     "WHY_3_TEXT": "Your published sizes and prices are already in front of "
-                  "them &mdash; Wanderlust from &euro;105,000, Serenity from "
-                  "&euro;191,000 &mdash; so the first conversation can be "
-                  "about their site rather than your catalogue.",
+                  "them &mdash; five models, from &euro;74,300 for Nest 24 "
+                  "to &euro;354,000 for Bloom 190, exterior finished &mdash; "
+                  "so the first conversation can be about their site rather "
+                  "than your catalogue.",
 
     # THE ENDING IS NOW THE REVIEW ASK, not a commercial question. The grant
     # is conditional on BIOBUILDS seeing the listing first, so the last thing
@@ -230,12 +352,18 @@ FILL = {
     "CLOSING_SUPPORT": "We&rsquo;ve updated this page to reflect your "
                        "feedback, including the revised Irish pricing, "
                        "what&rsquo;s included in each configuration and the "
-                       "image captions."
+                       "image captions. It now covers all five models "
+                       "&mdash; Nest 24, Wanderlust 48, Serenity 95, "
+                       "Sanctuary 142 and Bloom 190 &mdash; with the Irish "
+                       "prices and interior floor areas published on "
+                       "biobuilds.com."
                        "</p>\n  <p>"
-                       "Please take another look and let us know if anything "
-                       "else needs adjusting. Once you&rsquo;re happy that "
-                       "everything is accurate, we can discuss making "
-                       "BIOBUILDS visible to Irish homeowners on PlotNua.",
+                       "Please check the details for each of the five models "
+                       "and confirm they are accurate, or let us know what "
+                       "needs adjusting. Once you&rsquo;re happy that "
+                       "everything is correct for all five, we can discuss "
+                       "making BIOBUILDS visible to Irish homeowners on "
+                       "PlotNua.",
 
     # DATE is gone from FILL because its only use, the footer line, now
     # carries REVISION_DATE written in at G3c. G4 refuses on a token it is
@@ -319,6 +447,16 @@ def main():
     if src.count(why_anchor) != 1:
         die("the 'why' section anchor is not unique. Nothing written.")
     src = src.replace(why_anchor, journey.strip("\n") + "\n\n" + why_anchor)
+
+    # G2b · THE RANGE, between the demonstration and the journey band. The
+    # journey band itself is untouched; the range is inserted before it.
+    if src.count(journey.strip("\n")) != 1:
+        die("the relocated journey band is not unique. Nothing written.")
+    src = src.replace(journey.strip("\n"),
+                      range_block() + "\n" + journey.strip("\n"))
+    if src.count("</head>") != 1:
+        die("the </head> anchor is not unique. Nothing written.")
+    src = src.replace("</head>", RANGE_CSS + "</head>")
 
     # G3 · Imagery.
     imgs, held_line = imagery_block()
@@ -451,11 +589,28 @@ def main():
         if word in low:
             die("the page implies a relationship that does not exist: " + word)
 
+    # G11 · ALL FIVE MODELS, EACH WITH ITS FIGURES OR AN EXPLICIT TBC.
+    if len(RANGE) != 5:
+        die("the range does not carry exactly five models.")
+    for m in RANGE:
+        if m["name"] not in visible:
+            die("model %s is missing from the visible page." % m["name"])
+        for k in ("area", "ef", "tk"):
+            if m[k] is not None and m[k] not in visible:
+                die("%s %s value is missing from the page." % (m["name"], k))
+    n_tbc = sum(1 for m in RANGE for k in ("area", "ef", "tk") if m[k] is None)
+    if visible.count(TBC_TEXT) != n_tbc:
+        die("'%s' appears %d times for %d unpublished values."
+            % (TBC_TEXT, visible.count(TBC_TEXT), n_tbc))
+    for word in (" is live", "now live", "live on plotnua", "published on plotnua"):
+        if word in low:
+            die("the page says something is live: " + word)
+
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(src, encoding="utf-8")
     print("BIOBUILDS PRIVATE PREVIEW")
     print("=" * 74)
-    print("  ok    10 guards passed")
+    print("  ok    11 guards passed")
     print("  ok    %d governed BIOBUILDS images, all under %s"
           % (len(BIOBUILDS_IMAGES), PERMITTED_PREFIX))
     print("  ok    credit %r present %d times" % (CREDIT, src.count(CREDIT)))

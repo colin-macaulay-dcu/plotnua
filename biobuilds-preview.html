@@ -847,6 +847,28 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   .results-gallery-body .match-card-actions{ margin-top:4px; padding-top:0; }
 /* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */
 </style>
+<style>
+/* THE RANGE -- added 16 Oct 2026. Tokens only; stacks below 640px. */
+.pn-range{ margin-top:var(--pn-md); border-top:1px solid var(--pn-hair); }
+.pn-range-row{ display:grid; grid-template-columns:1.3fr 1.6fr 1fr 1fr;
+  gap:6px var(--pn-md); padding:14px 0; border-bottom:1px solid var(--pn-hair);
+  align-items:baseline; }
+.pn-range-head{ font-size:var(--pn-w-caption); letter-spacing:.12em;
+  text-transform:uppercase; color:var(--pn-stone); padding:10px 0; }
+.pn-range-row b{ color:var(--pn-voice); font-weight:600; }
+.pn-range-tbc{ color:var(--pn-stone); font-style:italic; }
+.pn-range-note{ font-size:var(--pn-w-body-sm); color:var(--pn-stone);
+  margin-top:var(--pn-md); max-width:70ch; }
+@media (max-width:640px){
+  .pn-range-head{ display:none; }
+  .pn-range-row{ grid-template-columns:1fr 1fr; }
+  .pn-range-row > :first-child{ grid-column:1 / -1; }
+  .pn-range-row [data-k]::before{ content:attr(data-k); display:block;
+    font-size:var(--pn-w-meta); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--pn-stone); }
+  .pn-range-row [data-k="Interior floor area"]{ grid-column:1 / -1; }
+}
+</style>
 </head>
 <body>
 
@@ -907,14 +929,18 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
           <span class="pn-image-credit">BIOBUILDS model imagery &middot; © BIOBUILDS</span>
         </div>
         <div class="pn-gal-strip">
-          <button type="button" class="pn-gal-thumb is-on" aria-pressed="true" aria-label="View image 1 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg" data-alt="Wanderlust 48 by BIOBUILDS: a dark timber-clad single-storey home on a deck at dusk, with outdoor seating" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg" alt=""></button>
-          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 2 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg" data-alt="Inside Wanderlust 48: kitchen and dining area with a slatted timber ceiling and glazing onto open fields" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg" alt=""></button>
-          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 3 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg" data-alt="Wanderlust 48 bedroom with full-height glazing onto the landscape and a slatted timber ceiling" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg" alt=""></button>
-          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 4 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg" data-alt="Serenity 95 by BIOBUILDS: a dark-clad home with a timber deck and outdoor seating on a lawn" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg" alt=""></button>
-          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 5 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg" data-alt="Inside Serenity 95: a living room with sofa and armchairs and sliding glazing onto a meadow" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg" alt=""></button>
-          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 6 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg" data-alt="Serenity 95 bathroom with marble-effect walls, a walk-in shower and an oval backlit mirror" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg" alt=""></button>
-          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 7 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/wall-section-3.0.26fqr4wmqyq13.jpg" data-alt="Cutaway of the BIOBUILDS timber wall build-up, showing the insulation, board layers and membrane" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wall-section-3.0.26fqr4wmqyq13.jpg" alt=""></button>
-          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 8 of 8" data-full="https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg" data-alt="A wrapped BIOBUILDS module suspended from crane slings during installation" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb is-on" aria-pressed="true" aria-label="View image 1 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg" data-alt="Wanderlust 48 by BIOBUILDS: a dark timber-clad single-storey home on a deck at dusk, with outdoor seating" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 2 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg" data-alt="Inside Wanderlust 48: kitchen and dining area with a slatted timber ceiling and glazing onto open fields" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 3 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg" data-alt="Wanderlust 48 bedroom with full-height glazing onto the landscape and a slatted timber ceiling" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 4 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg" data-alt="Serenity 95 by BIOBUILDS: a dark-clad home with a timber deck and outdoor seating on a lawn" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 5 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg" data-alt="Inside Serenity 95: a living room with sofa and armchairs and sliding glazing onto a meadow" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 6 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg" data-alt="Serenity 95 bathroom with marble-effect walls, a walk-in shower and an oval backlit mirror" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 7 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg" data-alt="The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing." data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 8 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/142-int-semi.0jp8pj_h42n45.jpg" data-alt="Inside the BIOBUILDS Sanctuary, an open living space with timber finishes and glazing to the garden." data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/142-int-semi.0jp8pj_h42n45.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 9 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg" data-alt="The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding." data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 10 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/190-int-semi.3vnsegejmoyvy.jpg" data-alt="Inside the BIOBUILDS Bloom, an open-plan living space with timber finishes." data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/190-int-semi.3vnsegejmoyvy.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 11 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/wall-section-3.0.26fqr4wmqyq13.jpg" data-alt="Cutaway of the BIOBUILDS timber wall build-up, showing the insulation, board layers and membrane" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/wall-section-3.0.26fqr4wmqyq13.jpg" alt=""></button>
+          <button type="button" class="pn-gal-thumb" aria-pressed="false" aria-label="View image 12 of 12" data-full="https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg" data-alt="A wrapped BIOBUILDS module suspended from crane slings during installation" data-credit="BIOBUILDS model imagery &middot; © BIOBUILDS"><img src="https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg" alt=""></button>
         </div>
         </div>
         <div class="results-hero-body">
@@ -938,7 +964,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
           <ul class="pn-facts">
             <li><b>Interior floor area</b><span>35.54 m&sup2;</span></li>
             <li><b>Bedrooms</b><span>1&ndash;2</span></li>
-            <li><b>Serenity: &euro;191,000 exterior finished, &euro;306,000 turnkey</b></li>
+            <li><b>Also for Ireland: Nest 24, Serenity 95, Sanctuary 142 and Bloom 190 &mdash; prices below</b></li>
             <li><b>Turnkey is finished inside and out, including interior finishes and bathroom fixtures. Kitchen furniture and appliances are not included.</b></li>
             <li><b>Delivery to the Republic of Ireland confirmed by BIOBUILDS</b></li>
           </ul>
@@ -960,6 +986,23 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
       </div>
     </div>
   </div>
+</section>
+
+<!-- THE RANGE -- all five BIOBUILDS models for Ireland, for the
+     supplier to confirm. Built from RANGE in
+     build-biobuilds-preview.py; read 16 October 2026. -->
+<section>
+  <h2>The five BIOBUILDS models</h2>
+  <p>These are the Irish prices and interior floor areas we have taken from <a href="https://www.biobuilds.com/ie/design" rel="noopener">biobuilds.com/ie</a>. Please check each line.</p>
+  <div class="pn-range" role="list">
+    <div class="pn-range-row pn-range-head" aria-hidden="true"><span>Model</span><span>Interior floor area</span><span>Exterior Finished</span><span>Turnkey</span></div>
+    <div class="pn-range-row" role="listitem"><b>Nest 24</b><span data-k="Interior floor area">16.84 m&sup2;</span><span data-k="Exterior Finished">&euro;74,300</span><span data-k="Turnkey">&euro;101,100</span></div>
+    <div class="pn-range-row" role="listitem"><b>Wanderlust 48</b><span data-k="Interior floor area">35.54 m&sup2;</span><span data-k="Exterior Finished">&euro;105,000</span><span data-k="Turnkey">&euro;163,000</span></div>
+    <div class="pn-range-row" role="listitem"><b>Serenity 95</b><span data-k="Interior floor area">77.06&ndash;78.21 m&sup2;, by floorplan</span><span data-k="Exterior Finished">&euro;191,000</span><span data-k="Turnkey">&euro;306,000</span></div>
+    <div class="pn-range-row" role="listitem"><b>Sanctuary 142</b><span data-k="Interior floor area">120.41&ndash;121.54 m&sup2;, by floorplan</span><span data-k="Exterior Finished">&euro;278,000</span><span data-k="Turnkey">&euro;444,000</span></div>
+    <div class="pn-range-row" role="listitem"><b>Bloom 190</b><span data-k="Interior floor area">162.68&ndash;164.19 m&sup2;, by floorplan</span><span data-k="Exterior Finished">&euro;354,000</span><span data-k="Turnkey">&euro;572,000</span></div>
+  </div>
+  <p class="pn-range-note">All prices are as published by BIOBUILDS for Ireland and include 23% VAT and transport to Ireland. Installation on prepared ground screws is included. Foundations, utility connections and site works are quoted per project. Turnkey is finished inside and out; kitchen connections are prepared, and kitchen furniture and appliances are not included. The number in each model name is BIOBUILDS&rsquo; own model name, not its floor area.</p>
 </section>
 
 <!-- FROZEN — the real PlotNua homeowner journey. Change only if the
@@ -986,7 +1029,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
   <div class="why">
     <div class="why-c"><b>MORE CONTEXT</b><span>By the time someone reaches you they have already worked out roughly what they want, what size, and what they can spend. You are not starting from nothing.</span></div>
     <div class="why-c"><b>CLEARER INTENT</b><span>A modular home is a long decision. People arrive at it slowly. We would rather send you three people who have thought about it than thirty who have not.</span></div>
-    <div class="why-c"><b>A BETTER STARTING POINT</b><span>Your published sizes and prices are already in front of them &mdash; Wanderlust from &euro;105,000, Serenity from &euro;191,000 &mdash; so the first conversation can be about their site rather than your catalogue.</span></div>
+    <div class="why-c"><b>A BETTER STARTING POINT</b><span>Your published sizes and prices are already in front of them &mdash; five models, from &euro;74,300 for Nest 24 to &euro;354,000 for Bloom 190, exterior finished &mdash; so the first conversation can be about their site rather than your catalogue.</span></div>
   </div>
 </section>
 
@@ -997,13 +1040,13 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
 <section>
   <h2>Updated BIOBUILDS Preview</h2>
   <p class="close-statement">Thank you for reviewing the original preview.</p>
-  <p>We&rsquo;ve updated this page to reflect your feedback, including the revised Irish pricing, what&rsquo;s included in each configuration and the image captions.</p>
-  <p>Please take another look and let us know if anything else needs adjusting. Once you&rsquo;re happy that everything is accurate, we can discuss making BIOBUILDS visible to Irish homeowners on PlotNua.</p>
+  <p>We&rsquo;ve updated this page to reflect your feedback, including the revised Irish pricing, what&rsquo;s included in each configuration and the image captions. It now covers all five models &mdash; Nest 24, Wanderlust 48, Serenity 95, Sanctuary 142 and Bloom 190 &mdash; with the Irish prices and interior floor areas published on biobuilds.com.</p>
+  <p>Please check the details for each of the five models and confirm they are accurate, or let us know what needs adjusting. Once you&rsquo;re happy that everything is correct for all five, we can discuss making BIOBUILDS visible to Irish homeowners on PlotNua.</p>
 </section>
 
           <p class="credit-line">© BIOBUILDS. Images used with permission given 2 October 2026, unmodified and served from <a href="https://www.biobuilds.com/" rel="noopener">biobuilds.com</a>. If BIOBUILDS ask for any of them to be changed or removed, we change or remove them.</p>
 <footer>
-  <p>BIOBUILDS &middot; Updated private preview &middot; 11 October 2026</p>
+  <p>BIOBUILDS &middot; Updated private preview &middot; 16 October 2026</p>
 </footer>
 
 </div>
