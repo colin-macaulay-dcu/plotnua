@@ -74,13 +74,15 @@ def main():
                 shutil.copy(ROOT / rel, tree / rel)
             cmd = [sys.executable, BUILDER]
             if mut == "privacy":
+                shutil.copy(ROOT / "atlas-tools/privacy_v6_layer.py", tree / "atlas-tools/privacy_v6_layer.py")
                 cmd = [sys.executable, "atlas-tools/build-privacy-v6.py"]
                 shutil.copy(ROOT / "atlas-tools/build-privacy-v6.py", tree / "atlas-tools/build-privacy-v6.py")
             elif mut == "privacy-p3":
                 shutil.copy(ROOT / "atlas-tools/build-privacy-v6.py", tree / "atlas-tools/build-privacy-v6.py")
                 edit("atlas-tools/build-privacy-v6.py", 'APPROVAL = None', 'APPROVAL = "test"')(tree)
-                edit("atlas-tools/build-privacy-v6.py", "out = out.replace(S2_OLD, S2_NEW)",
-                     "out = out.replace('Matching is not live, and joining the register does not arrange an introduction.</p>', 'Matching is live.</p>', 1).replace(S2_OLD, S2_NEW)")(tree)
+                shutil.copy(ROOT / "atlas-tools/privacy_v6_layer.py", tree / "atlas-tools/privacy_v6_layer.py")
+                edit("atlas-tools/privacy_v6_layer.py", "return out.replace(S2_OLD, S2_NEW)",
+                     "return out.replace('Matching is not live, and joining the register does not arrange an introduction.</p>', 'Matching is live.</p>', 1).replace(S2_OLD, S2_NEW)")(tree)
                 cmd = [sys.executable, "atlas-tools/build-privacy-v6.py"]
             elif mut:
                 mut(tree)
