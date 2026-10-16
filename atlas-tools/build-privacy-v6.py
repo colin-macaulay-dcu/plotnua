@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from privacy_v6_layer import (MARKER, H7_OLD, H7_NEW, GROWER_SUB, S7_END_OLD, S2_OLD, S2_NEW,  # noqa: E402
                               S10_OLD, S10_NEW, S12_OLD, S12_NEW, apply_v6, without_v6)
 
-APPROVAL = None   # e.g. "Founder approved the V6 wording verbatim, 16 Oct 2026 HH:MM"
+APPROVAL = 'Founder approval, 16 Oct 2026 14:32: Privacy V6 approved as presented. Includes the minimal location clarification for the pre-launch county/town/travel refinement the founder requested in the same message (county and area from a list; optional town or general area and travel distance).'
 
 
 def die(m):
