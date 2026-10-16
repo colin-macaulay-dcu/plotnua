@@ -332,12 +332,14 @@ console.log('-'.repeat(74));
 
 /* ── 7 · THE EXCEPTION STAYS SUPPLIER-SPECIFIC ───────────────────────── */
 {
-  (G.hold_biobuilds === 'None' || G.hold_biobuilds === null)
+  /* RE-AIMED 16 October 2026: FX-BIOBUILDS-PUBLISH-20261011 is revoked, so
+     the generator must now HOLD BIOBUILDS (and so give it no imagery, BI12). */
+  String(G.hold_biobuilds || '').includes('listing-review-awaiting-confirmation')
     ? ((G.hold_shomera === 'None' || G.hold_shomera === null)
-        ? ok('BI11 the generator frees BIOBUILDS and leaves an ungated '
+        ? ok('BI11 the generator holds BIOBUILDS (exception revoked) and leaves an ungated '
              + 'supplier alone', `biobuilds=${G.hold_biobuilds} shomera=${G.hold_shomera}`)
         : bad('BI11 an ungated supplier is unaffected', String(G.hold_shomera)))
-    : bad('BI11 the generator frees BIOBUILDS', String(G.hold_biobuilds));
+    : bad('BI11 the generator holds BIOBUILDS', String(G.hold_biobuilds));
 }
 
 /* ── 8 · A HELD PRODUCT GETS NO IMAGE ────────────────────────────────── */

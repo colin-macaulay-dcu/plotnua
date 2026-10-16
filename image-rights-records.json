@@ -257,27 +257,9 @@
         "note": "Mateus reviewed the original preview and asked for factual corrections on 11 October 2026. The corrections are applied and the revised preview awaits his confirmation. This is a granted permission's condition being exercised, not a permission withheld."
       },
       "asset_approval_state": "REFERENCE_ONLY",
-      "public_visibility": "PUBLISHABLE",
-      "hold_reason": null,
-      "founder_exception": {
-        "authorised_by": "Colin MacAulay",
-        "role": "Founder",
-        "decision_date": "2026-10-11",
-        "decision_ref": "FX-BIOBUILDS-PUBLISH-20261011",
-        "supplier_confirmation_received": false,
-        "waives": [
-          "listing-review-awaiting-confirmation",
-          "assets-not-approved"
-        ],
-        "basis": "BIOBUILDS granted written permission on 2 October 2026 to feature its products and to use selected imagery with credit and a link back (C2-GRANT-BIOBUILDS-20261002). The supplier then asked for factual corrections on 11 October 2026; those corrections are implemented in Atlas and in the private preview. The founder has decided to publish the corrected listing without waiting for the supplier's confirmation of the revised preview, and accepts responsibility for proceeding before that confirmation is received.",
-        "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and Compare, AND publication of the SIX ENUMERATED ASSETS in approved_assets, each with the supplier's caption, the credit and a working link back. WIDENED 11 October 2026 by the same founder decision: the earlier version of this scope excluded imagery entirely, because at that point no imagery had been authorised. It does NOT authorise any asset outside that list -- every other BIOBUILDS asset, including the two exercised on the private preview, remains Reference Only, and prove-biobuilds-containment.mjs enforces the difference per asset rather than per domain. WIDENED AGAIN 11 October 2026 by the same founder decision, after a permission recheck against the original grant wording (\"use selected images from our website, with credit and a link back to us\"): the enumeration now covers TEN assets, adding two Sanctuary (PROD-001215) and two Bloom (PROD-001216) model images, each served from the permitted domain biobuilds.com, each carrying the supplier's credit and a working link back, each described in medium-neutral terms. Still excluded and still Reference Only: every other BIOBUILDS asset, the two withheld process and construction-detail images, all material swatches and finish thumbnails, and the supplier's own AI-labelled lifestyle image couple-configuring-sofa-ai.",
-        "withdrawal": "BIOBUILDS may request change or removal at any time and PlotNua complies, exactly as the original grant provides. If the supplier objects to the published listing, remove this exception and the gate returns the product to HOLD with no other change.",
-        "assets_enumerated": 10
-      },
-      "waived_conditions": [
-        "listing-review-awaiting-confirmation",
-        "assets-not-approved"
-      ],
+      "public_visibility": "HOLD",
+      "hold_reason": "listing-review-awaiting-confirmation",
+      "waived_conditions": [],
       "asset_approval": {
         "state": "SELECTED_ASSETS_APPROVED",
         "default_for_unlisted": "REFERENCE_ONLY",
@@ -385,7 +367,31 @@
           "url": "https://www.biobuilds.com/_next/static/immutable/media/prefab-48-crane-lift.2fhf6txqe9e82.jpg",
           "reason": "a process shot of a module being craned, not a product"
         }
-      ]
+      ],
+      "founder_exception_revoked": {
+        "revokes": "FX-BIOBUILDS-PUBLISH-20261011",
+        "revoked_on": "2026-10-16",
+        "authorised_by": "Colin MacAulay",
+        "role": "Founder",
+        "decision": "Atlas Population Phase 2, 16 October 2026: correct the five BIOBUILDS products marked PUBLISHABLE and preserve the supplier's explicit pre-publication review requirement.",
+        "effect": "public_visibility returns to HOLD with hold_reason listing-review-awaiting-confirmation, exactly as the exception's own withdrawal clause describes. Permission, listing review state, evidence, conditions, asset_approval and approved_assets are unchanged. BIOBUILDS returns to PUBLISHABLE only when the supplier confirms the corrected listing (listing_review.state CONFIRMED), or by a new, separately dated founder decision.",
+        "supplier_confirmation_received": false,
+        "original": {
+          "authorised_by": "Colin MacAulay",
+          "role": "Founder",
+          "decision_date": "2026-10-11",
+          "decision_ref": "FX-BIOBUILDS-PUBLISH-20261011",
+          "supplier_confirmation_received": false,
+          "waives": [
+            "listing-review-awaiting-confirmation",
+            "assets-not-approved"
+          ],
+          "basis": "BIOBUILDS granted written permission on 2 October 2026 to feature its products and to use selected imagery with credit and a link back (C2-GRANT-BIOBUILDS-20261002). The supplier then asked for factual corrections on 11 October 2026; those corrections are implemented in Atlas and in the private preview. The founder has decided to publish the corrected listing without waiting for the supplier's confirmation of the revised preview, and accepts responsibility for proceeding before that confirmation is received.",
+          "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and Compare, AND publication of the SIX ENUMERATED ASSETS in approved_assets, each with the supplier's caption, the credit and a working link back. WIDENED 11 October 2026 by the same founder decision: the earlier version of this scope excluded imagery entirely, because at that point no imagery had been authorised. It does NOT authorise any asset outside that list -- every other BIOBUILDS asset, including the two exercised on the private preview, remains Reference Only, and prove-biobuilds-containment.mjs enforces the difference per asset rather than per domain. WIDENED AGAIN 11 October 2026 by the same founder decision, after a permission recheck against the original grant wording (\"use selected images from our website, with credit and a link back to us\"): the enumeration now covers TEN assets, adding two Sanctuary (PROD-001215) and two Bloom (PROD-001216) model images, each served from the permitted domain biobuilds.com, each carrying the supplier's credit and a working link back, each described in medium-neutral terms. Still excluded and still Reference Only: every other BIOBUILDS asset, the two withheld process and construction-detail images, all material swatches and finish thumbnails, and the supplier's own AI-labelled lifestyle image couple-configuring-sofa-ai.",
+          "withdrawal": "BIOBUILDS may request change or removal at any time and PlotNua complies, exactly as the original grant provides. If the supplier objects to the published listing, remove this exception and the gate returns the product to HOLD with no other change.",
+          "assets_enumerated": 10
+        }
+      }
     },
     {
       "organisation_record": "reclPfKiOQHdGJNGK",

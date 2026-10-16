@@ -251,6 +251,35 @@ ASSET_APPROVAL = {
 }
 
 
+# REVOKED 16 October 2026 -- founder instruction, Atlas Population Phase 2:
+# "BIOBUILDS: correct the five products incorrectly marked PUBLISHABLE and
+# preserve the supplier's explicit pre-publication review requirement."
+# FOUNDER_EXCEPTION above is kept verbatim as the historical record of what was
+# decided on 11 October. It is no longer ACTIVE: the derivation receives no
+# exception, so the outstanding listing review holds BIOBUILDS again, exactly
+# as the exception's own 'withdrawal' clause describes ("remove this exception
+# and the gate returns the product to HOLD with no other change"). Nothing about
+# the grant, the review state, the evidence or the imagery permission changes.
+ACTIVE_FOUNDER_EXCEPTION = None
+FOUNDER_EXCEPTION_REVOCATION = {
+    "revokes": "FX-BIOBUILDS-PUBLISH-20261011",
+    "revoked_on": "2026-10-16",
+    "authorised_by": "Colin MacAulay",
+    "role": "Founder",
+    "decision": ("Atlas Population Phase 2, 16 October 2026: correct the five "
+                 "BIOBUILDS products marked PUBLISHABLE and preserve the "
+                 "supplier's explicit pre-publication review requirement."),
+    "effect": ("public_visibility returns to HOLD with hold_reason "
+               "listing-review-awaiting-confirmation. Permission, listing "
+               "review state, evidence, conditions and asset enumeration are "
+               "unchanged. BIOBUILDS returns to PUBLISHABLE only when the "
+               "supplier confirms the corrected listing (listing_review.state "
+               "CONFIRMED) -- never by re-adding an exception without a new "
+               "founder decision."),
+    "supplier_confirmation_received": False,
+}
+
+
 def die(msg):
     print("REFUSED: " + msg)
     sys.exit(1)
@@ -320,7 +349,7 @@ def main():
     # derivation can see it.
     asset_state = "REFERENCE_ONLY"
     visibility, hold_reason, waived = derive(
-        PERMISSION, LISTING_REVIEW, asset_state, FOUNDER_EXCEPTION)
+        PERMISSION, LISTING_REVIEW, asset_state, ACTIVE_FOUNDER_EXCEPTION)
 
     # G1 · A PUBLISHABLE STATE MUST BE FULLY ACCOUNTED FOR.
     #
@@ -342,7 +371,7 @@ def main():
                 "supplier. Publishing must not be a side effect of running "
                 "this tool. Nothing written.")
         unexplained = [w for w in waived
-                       if w not in (FOUNDER_EXCEPTION.get("waives") or ())]
+                       if w not in ((ACTIVE_FOUNDER_EXCEPTION or {}).get("waives") or ())]
         if unexplained:
             die("these conditions were waived without being named in the "
                 "founder's decision: %s. Nothing written." % unexplained)
@@ -354,7 +383,8 @@ def main():
     # G1b · AND THE DECISION MUST NOT CLAIM A CONFIRMATION.
     # The one thing the founder explicitly forbade: do not record Mateus as
     # having confirmed the corrected preview.
-    if FOUNDER_EXCEPTION.get("supplier_confirmation_received") is not False:
+    if (ACTIVE_FOUNDER_EXCEPTION is not None and
+            ACTIVE_FOUNDER_EXCEPTION.get("supplier_confirmation_received") is not False):
         die("the founder exception does not state that the supplier's "
             "confirmation is OUTSTANDING. An exception records proceeding "
             "WITHOUT confirmation. Nothing written.")
@@ -417,7 +447,13 @@ def main():
         row["asset_approval"] = ASSET_APPROVAL
         row["approved_assets"] = APPROVED_ASSETS
         row["withheld_assets"] = WITHHELD_ASSETS
-        row["founder_exception"] = FOUNDER_EXCEPTION
+        if ACTIVE_FOUNDER_EXCEPTION is not None:
+            row["founder_exception"] = ACTIVE_FOUNDER_EXCEPTION
+            row.pop("founder_exception_revoked", None)
+        else:
+            row.pop("founder_exception", None)
+            row["founder_exception_revoked"] = dict(
+                FOUNDER_EXCEPTION_REVOCATION, original=FOUNDER_EXCEPTION)
         row["public_visibility"] = visibility
         row["hold_reason"] = hold_reason
         # The conditions that were unsatisfied and accepted. Written down so a
@@ -502,9 +538,15 @@ def main():
     print("-" * 74)
     print("Recorded on %d file(s): %s" % (len(changed), ", ".join(changed) or "none"))
     print("No Airtable write.")
-    print("BIOBUILDS is PUBLISHABLE on a founder-authorised exception "
-          "(%s, %s)." % (FOUNDER_EXCEPTION["decision_ref"],
-                         FOUNDER_EXCEPTION["decision_date"]))
+    if ACTIVE_FOUNDER_EXCEPTION is not None:
+        print("BIOBUILDS is PUBLISHABLE on a founder-authorised exception "
+              "(%s, %s)." % (ACTIVE_FOUNDER_EXCEPTION["decision_ref"],
+                             ACTIVE_FOUNDER_EXCEPTION["decision_date"]))
+    else:
+        print("BIOBUILDS is %s (%s): exception %s revoked %s."
+              % (visibility, hold_reason,
+                 FOUNDER_EXCEPTION_REVOCATION["revokes"],
+                 FOUNDER_EXCEPTION_REVOCATION["revoked_on"]))
     print("The supplier's confirmation of the corrected preview remains "
           "OUTSTANDING and the record says so.")
     print("Imagery: %d asset(s) approved for publication, %d withheld on "

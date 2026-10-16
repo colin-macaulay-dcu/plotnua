@@ -142,6 +142,18 @@ def _ah(A):
         gated = {q["id"] for q in el if q.get("publicVisibility") != "PUBLISHABLE"}
         held |= gated
         eligible = [e for e in eligible if e[1] not in gated]
+        # 16 Oct 2026 (BIOBUILDS hold restored): the Additional Home header's
+        # eligibleCount is a QUALIFICATION count and still includes a held
+        # supplier's eligible products, so with any supplier on HOLD it can
+        # never equal the public list. The public figure is therefore read
+        # the way _wl reads it -- ELIGIBLE and PUBLISHABLE, from the records
+        # themselves -- and the qualification count is cross-checked below so
+        # a held product can still never be counted as shown.
+        pub_n = sum(1 for q in el if q.get("publicVisibility") == "PUBLISHABLE")
+        if pub_n + len(gated) != A["eligibleCount"]:
+            die("Additional Home eligibleCount %d != publishable %d + gated %d"
+                % (A["eligibleCount"], pub_n, len(gated)))
+        header = {"products": pub_n}
     return eligible, held, {q["organisation"] for q in rows}, header
 
 def _wl(W):

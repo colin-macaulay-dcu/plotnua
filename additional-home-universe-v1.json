@@ -6,7 +6,9 @@
   "publicationGate": {
     "version": "supplier-publication-gate-v1",
     "rule": "public visibility is derived from permission state, listing-review state and asset approval. It never reads a measurement, and it never alters the Class 3A technical assessment.",
-    "heldOrganisations": []
+    "heldOrganisations": [
+      "BIOBUILDS"
+    ]
   },
   "sourceCategory": "Additional Home",
   "sourceCategoryCount": 140,
@@ -1540,54 +1542,10 @@
         "reason": null,
         "caveats": []
       },
-      "publicVisibility": "PUBLISHABLE",
-      "holdReason": null,
-      "imagery": {
-        "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg",
-        "alt": "The BIOBUILDS Wanderlust 48 seen from outside, a timber-clad single-storey building with full-height glazing.",
-        "credit": "© BIOBUILDS",
-        "supplier": "BIOBUILDS",
-        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-        "linkBack": "https://www.biobuilds.com/",
-        "presentationTier": "A",
-        "caption": "BIOBUILDS model imagery"
-      },
-      "imagerySet": [
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg",
-          "alt": "The BIOBUILDS Wanderlust 48 seen from outside, a timber-clad single-storey building with full-height glazing.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        },
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg",
-          "alt": "Inside the BIOBUILDS Wanderlust 48, an open living space with timber finishes and glazing to the garden.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        },
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg",
-          "alt": "A bedroom in the BIOBUILDS Wanderlust 48, with timber walls and a window to the garden.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        }
-      ]
+      "publicVisibility": "HOLD",
+      "holdReason": "listing-review-awaiting-confirmation",
+      "imagery": null,
+      "imagerySet": null
     },
     {
       "id": "reczLG8Iw4k7TY2Nq",
@@ -1689,54 +1647,10 @@
         "reason": "outside-pathway-band",
         "caveats": []
       },
-      "publicVisibility": "PUBLISHABLE",
-      "holdReason": null,
-      "imagery": {
-        "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg",
-        "alt": "The BIOBUILDS Serenity 95 seen from outside, a larger timber-clad house with extensive glazing.",
-        "credit": "© BIOBUILDS",
-        "supplier": "BIOBUILDS",
-        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-        "linkBack": "https://www.biobuilds.com/",
-        "presentationTier": "A",
-        "caption": "BIOBUILDS model imagery"
-      },
-      "imagerySet": [
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg",
-          "alt": "The BIOBUILDS Serenity 95 seen from outside, a larger timber-clad house with extensive glazing.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        },
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg",
-          "alt": "Inside the BIOBUILDS Serenity 95, an open-plan living and dining space with timber finishes.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        },
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg",
-          "alt": "A bathroom in the BIOBUILDS Serenity 95, with tiled surfaces and fixed sanitaryware.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        }
-      ]
+      "publicVisibility": "HOLD",
+      "holdReason": "listing-review-awaiting-confirmation",
+      "imagery": null,
+      "imagerySet": null
     },
     {
       "id": "recQB8wHENrR3rKK4",
@@ -8351,8 +8265,8 @@
         "reason": "not-recommendation-eligible",
         "caveats": []
       },
-      "publicVisibility": "PUBLISHABLE",
-      "holdReason": null,
+      "publicVisibility": "HOLD",
+      "holdReason": "listing-review-awaiting-confirmation",
       "imagery": null,
       "imagerySet": null
     },
@@ -9787,43 +9701,10 @@
         "reason": "outside-pathway-band",
         "caveats": []
       },
-      "publicVisibility": "PUBLISHABLE",
-      "holdReason": null,
-      "imagery": {
-        "url": "https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
-        "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing.",
-        "credit": "© BIOBUILDS",
-        "supplier": "BIOBUILDS",
-        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-        "linkBack": "https://www.biobuilds.com/",
-        "presentationTier": "A",
-        "caption": "BIOBUILDS model imagery"
-      },
-      "imagerySet": [
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
-          "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        },
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/142-int-semi.0jp8pj_h42n45.jpg",
-          "alt": "Inside the BIOBUILDS Sanctuary, an open living space with timber finishes and glazing to the garden.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        }
-      ]
+      "publicVisibility": "HOLD",
+      "holdReason": "listing-review-awaiting-confirmation",
+      "imagery": null,
+      "imagerySet": null
     },
     {
       "id": "recjdCtvV26NtbNA0",
@@ -9897,43 +9778,10 @@
         "reason": "outside-pathway-band",
         "caveats": []
       },
-      "publicVisibility": "PUBLISHABLE",
-      "holdReason": null,
-      "imagery": {
-        "url": "https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg",
-        "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding.",
-        "credit": "© BIOBUILDS",
-        "supplier": "BIOBUILDS",
-        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-        "linkBack": "https://www.biobuilds.com/",
-        "presentationTier": "A",
-        "caption": "BIOBUILDS model imagery"
-      },
-      "imagerySet": [
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg",
-          "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        },
-        {
-          "url": "https://www.biobuilds.com/_next/static/immutable/media/190-int-semi.3vnsegejmoyvy.jpg",
-          "alt": "Inside the BIOBUILDS Bloom, an open-plan living space with timber finishes.",
-          "credit": "© BIOBUILDS",
-          "supplier": "BIOBUILDS",
-          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
-          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
-          "linkBack": "https://www.biobuilds.com/",
-          "presentationTier": "A",
-          "caption": "BIOBUILDS model imagery"
-        }
-      ]
+      "publicVisibility": "HOLD",
+      "holdReason": "listing-review-awaiting-confirmation",
+      "imagery": null,
+      "imagerySet": null
     }
   ]
 }

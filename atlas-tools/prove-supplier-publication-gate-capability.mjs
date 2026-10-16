@@ -46,8 +46,11 @@ const CASES = [
      The defect PG1 owns is a hand-set value CONTRADICTING the derivation, and
      the contradiction now runs the other way. */
   ['C-PG1', 'PG1', 'a hand-set public_visibility contradicts the derivation',
-    t => t.record(r => { r.public_visibility = 'HOLD';
-                         r.hold_reason = 'listing-review-awaiting-confirmation'; })],
+    /* RE-AIMED 16 October 2026: FX-BIOBUILDS-PUBLISH-20261011 is revoked and
+       the record derives HOLD, so the contradiction worth planting is now a
+       hand-set PUBLISHABLE -- the state a careless re-publish leaves. */
+    t => t.record(r => { r.public_visibility = 'PUBLISHABLE';
+                         r.hold_reason = null; })],
 
   /* RE-AIMED 11 October 2026. This case used to flip class3a to CANDIDATE.
      Under the corrected architecture that is no longer a defect -- a held

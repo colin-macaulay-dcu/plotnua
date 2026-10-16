@@ -387,7 +387,16 @@ print(repr(m.publication_hold("BIOBUILDS")))
      because every guard was pointed at the other two mirrors. This now
      checks the third one, both ways round. */
   const lines = out.split('\n');
-  const freedByDecision = (lines[0] || '').trim() === 'None';
+  /* RE-AIMED AGAIN 16 October 2026: the founder REVOKED
+     FX-BIOBUILDS-PUBLISH-20261011 (Atlas Population Phase 2: "correct the
+     five products incorrectly marked PUBLISHABLE and preserve the supplier's
+     explicit pre-publication review requirement"). The record now carries
+     founder_exception_revoked and no active exception, so the generator must
+     HOLD BIOBUILDS on the real records -- and still hold it with the key
+     stripped. The variable keeps its name so the capability mutations that
+     target this check still bite. */
+  const freedByDecision =
+    (lines[0] || '').includes('listing-review-awaiting-confirmation');
   /* RE-AIMED 14 October 2026 (fail-closed correction). This line used to
      assert that an organisation with NO rights record is free -- the
      fail-open, written down as a requirement. It now asserts the opposite:
@@ -402,7 +411,7 @@ print(repr(m.publication_hold("BIOBUILDS")))
   const heldWithoutIt =
     (lines[3] || '').includes('listing-review-awaiting-confirmation');
   (freedByDecision && ungatedFree && mirrorsAgree && heldWithoutIt)
-    ? ok('PG11 the generator frees BIOBUILDS on the founder decision, holds '
+    ? ok('PG11 the generator holds BIOBUILDS now the founder exception is revoked, holds '
          + 'it again without one, and shares the unwaivable list',
          `biobuilds=${lines[0]} ungated=${lines[1]} without=${(lines[3] || '').slice(0, 42)}`)
     : bad('PG11 the generator agrees with the decision and with the JS gate',
