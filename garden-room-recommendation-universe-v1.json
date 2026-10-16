@@ -5,9 +5,9 @@
  "sourceBase": "appoLZFWesvoPhZGR",
  "qualificationRuleVersion": "garden-room-qualification-v1",
  "dryRun": false,
- "sourceGardenRoomCount": 581,
- "eligibleCount": 577,
- "highConfidenceCount": 152,
+ "sourceGardenRoomCount": 582,
+ "eligibleCount": 578,
+ "highConfidenceCount": 153,
  "withCaveatCount": 425,
  "limitedEvidenceCount": 0,
  "excludedCount": 4,
@@ -15,7 +15,7 @@
   "E": 3,
   "F": 1
  },
- "confirmedIrishAvailabilityCount": 270,
+ "confirmedIrishAvailabilityCount": 271,
  "unknownIrishAvailabilityCount": 311,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
@@ -23,14 +23,14 @@
  "missingPriceCount": 223,
  "priceEvidenceSummary": {
   "verified": 275,
-  "present-unverified": 59,
+  "present-unverified": 60,
   "quote-only": 20,
   "missing": 223
  },
  "quoteOnlyPriceCount": 20,
- "organisationCount": 64,
+ "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "f84965dac3727397fc56dcaaeabdda72433daab3619ea2fe11469f7ef3dbc77b",
+ "governedDigest": "22708a8281fa8d7dfead0d6f0246a43d86f5b6599f84d445010f4d389cf35d22",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -31824,6 +31824,154 @@
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
     "lastPriceCheck": "2026-09-23",
+    "basisSource": null,
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "recs7YJnVX29hkueM",
+   "name": "Garden Room Ireland QC6",
+   "organisation": "Garden Room Ireland",
+   "productId": "recs7YJnVX29hkueM",
+   "productCode": "PROD-001264",
+   "productName": "Garden Room Ireland QC6",
+   "productType": "Insulated steel garden room configuration",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recUrpkOqKbynjQP0",
+     "name": "Garden Room Ireland"
+    }
+   ],
+   "productUrl": "https://www.gardenroomireland.ie/copy-of-example",
+   "verificationStatus": "Partially Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "present-unverified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Garden Room Ireland."
+    ],
+    "caveats": [
+     "A published price is recorded but has not been verified."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "present-unverified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 18000,
+    "from": 18000,
+    "to": 60000,
+    "currency": "EUR",
+    "priceType": "Starting From",
+    "status": "Partially Verified",
+    "includesVat": "Unknown",
+    "evidenceScope": "Range-Level",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {
+    "externalDimensions": {
+     "text": "Sizes from 6×6 ft up to 12×33 ft (pricing page); external width just over 4 m (FAQ).",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "construction": {
+     "text": "Exterior of leatherette-embossed galvanised steel walls, corners and fascias, uPVC and glass windows, EPDM roof — \"no timber anywhere\". Supplier states a 25-year maintenance-free exterior; repainting may be needed after 25 years within 2 km of the coast.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "Supplier states the QC6 complies with building regulations and is insulated well enough to \"live, sleep and eat in\". No U-value or insulation thickness published for the QC6.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "warranty": {
+     "text": "Supplier states a \"unique 25 year exterior guarantee\" (\"5 years on oak\" finishes). Terms of the guarantee not published. Nothing inferred.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "irishAvailability": {
+     "text": "REPUBLIC OF IRELAND — YES: Irish-owned business at Bracken Road, Sandyford, Dublin 18 (first-party footer), Irish mobile line. A delivery/installation coverage area is NOT published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 18000,
+   "currency": "EUR",
+   "priceBasis": "Partially Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": "Supplier states the QC6 complies with building regulations and is insulated well enough to \"live, sleep and eat in\". No U-value or insulation thickness published for the QC6.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "present-unverified",
+   "qualificationCaveats": [
+    "A published price is recorded but has not been verified."
+   ],
+   "priceRecordIds": [
+    "recPNFWrrYS9mZBMR"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Partially Verified",
+   "priceType": "Starting From",
+   "priceScope": "Range-Level",
+   "vatStatus": "Unknown",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NO_BASIS_STATED",
+   "priceIsRangeFloor": true,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recPNFWrrYS9mZBMR"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Partially Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Range-Level",
+    "lastPriceCheck": "2026-10-16",
     "basisSource": null,
     "basisLeadPhrase": null
    }

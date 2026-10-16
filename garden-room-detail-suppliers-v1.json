@@ -5,7 +5,7 @@
   "categories": [
     "suppliers"
   ],
-  "productCount": 62,
+  "productCount": 63,
   "products": {
     "rec0E8ongSL0hZnZR": {
       "name": "Lasita Maja",
@@ -1219,6 +1219,19 @@
         "installationModel": "Nationwide by the supplier's own statement for its landscaping services; not separately stated for garden rooms",
         "irishPresence": "Family-run Irish business established 2008, with two published Irish lines (065 686 6773 and 087 279 8611) and an .ie domain; published project work includes a luxury private garden in Co. Galway",
         "deliveryCoverage": "The supplier states its landscaping, tree surgery, site clearance and arboriculture services are provided NATIONWIDE, and that its timber garden rooms and houses are intended FOR THE IRISH MARKET; no county list published",
+        "manufacturingLocation": "Not published",
+        "jurisdiction": "Republic of Ireland",
+        "evidenceTier": "B",
+        "evidenceScope": "Organisation-Wide"
+      },
+      "organisationType": "Supplier",
+      "lastReviewed": "2026-08-28"
+    },
+    "recUrpkOqKbynjQP0": {
+      "name": "Garden Room Ireland",
+      "locality": {
+        "installationModel": "The supplier states its steel-built rooms are ERECTED IN THREE DAYS; no coverage area is published",
+        "deliveryCoverage": "Not published as a county list",
         "manufacturingLocation": "Not published",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "B",
