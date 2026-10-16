@@ -51,7 +51,8 @@ const CASES = [
   ['C-E1', 'E1', ['<a href="discovery-living-in-the-garden.html">Living in the Garden</a>',
                   '<a href="your-plot.html?discovery=garden-retreat">Check your garden</a>'], null],
   ['C-S1', 'S1', ['    {\n      "@type": "BreadcrumbList",', '    { "@type": "FAQPage", "@id": "https://plotnua.ie/x#faq" },\n    {\n      "@type": "BreadcrumbList",'], null],
-  ['C-S2', 'S2', null, ['discovery-garden-retreat.html</loc>\n    <lastmod>2026-10-14', 'discovery-garden-retreat.html</loc>\n    <lastmod>2026-09-01']],
+  // C-S2 anchor re-dated 16 Oct 2026: SEO Phase 1 set lastmod from git evidence (was 2026-10-14).
+  ['C-S2', 'S2', null, ['discovery-garden-retreat.html</loc>\n    <lastmod>2026-10-16', 'discovery-garden-retreat.html</loc>\n    <lastmod>2026-09-01']],
   ['C-J1', 'J1', ['<h1>Garden Retreat</h1>', '<h1>Garden Wellness</h1>'], null],
   ['C-J2', 'J2', ["Exactly which\n      electrical jobs need a registered contractor&rsquo;s certificate.", ''], null],
   ['C-J3', 'J3', ['<a href="discovery-living-in-the-garden.html">Living in the Garden</a>', 'Living in the Garden'], null],
