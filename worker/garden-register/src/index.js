@@ -288,7 +288,7 @@ async function writeRecord(env, side, fields, emailKey, consentHash, now) {
      address and never the address. */
   await atCreate(env, T_CONSENT, {
     email_hash: await sha256Hex(emailKey),
-    privacy_version: env.PRIVACY_VERSION,
+    privacy_version: fields.privacy_version,
     consent_text_hash: consentHash,
     given_at: utcStamp(now)
   });
@@ -406,8 +406,43 @@ async function handleGarden(env, body, now, cors) {
   return RECEIVED(cors);
 }
 
+/* ------------------------------------------------- grower route switches --
+   GROWER REGISTER · founder instruction, 16 October 2026 ("Community Roots
+   Gardener Register development"). The grower route has existed since G2 but
+   no page has ever sent to it, and the privacy notice in force (V3) describes
+   the Garden Owner Register only. So the grower route now has its OWN two
+   stops, independent of the garden route's WRITES_ENABLED, exactly as the
+   Art Space Worker separates its artist route:
+     GROWER_WRITES_ENABLED !== 'true'  -> nothing is written for a grower
+     GROWER_PRIVACY_VERSION empty      -> nothing is written for a grower
+   GROWER_PRIVACY_VERSION names the published notice that describes the
+   Grower Register, and it is what a grower record and its consent proof
+   carry. Opening the garden route never opens this one. */
+function growerWritesEnabled(env) {
+  return writesEnabled(env) && env.GROWER_WRITES_ENABLED === 'true' &&
+    typeof env.GROWER_PRIVACY_VERSION === 'string' && env.GROWER_PRIVACY_VERSION.trim() !== '';
+}
+
+/* STRICT KEYS for the grower route. Anything else (an address, a phone
+   number, a surname, a newsletter tick the notice does not describe, a
+   honeypot) is refused by PRESENCE, before the switch, so a caller sending
+   more than the register keeps finds out and nothing about it is stored. */
+const GROWER_ALLOWED_KEYS = Object.freeze([
+  'first_name', 'email', 'district', 'travel_radius', 'space_wanted',
+  'timing', 'growing_note', 'over_18', 'consent_text', 'source'
+]);
+function unknownGrowerKey(body) {
+  for (const k of Object.keys(body)) {
+    if (!GROWER_ALLOWED_KEYS.includes(k)) return k;
+  }
+  return null;
+}
+
 /* --------------------------------------------------------- grower handler -- */
 async function handleGrower(env, body, now, cors) {
+  const extra = unknownGrowerKey(body);
+  if (extra) return REFUSED(cors, extra);
+
   const first_name = cleanText(body.first_name, MAX_NAME_CHARS);
   const email = cleanText(body.email, MAX_EMAIL_CHARS);
   const district = pickEnum(V.district, body.district);
@@ -429,7 +464,7 @@ async function handleGrower(env, body, now, cors) {
   const sentHash = await sha256Hex(cleanText(body.consent_text, 1000) || '');
   if (!sameString(consentHash, sentHash)) return REFUSED(cors, 'consent_text');
 
-  if (!writesEnabled(env)) return NOT_OPEN(cors);
+  if (!growerWritesEnabled(env)) return NOT_OPEN(cors);
 
   const emailKey = email.toLowerCase();
   const fields = {
@@ -443,14 +478,13 @@ async function handleGrower(env, body, now, cors) {
     over_18: true,
     status: SUBMIT_STATUS,
     submitted_at: utcStamp(now),
-    privacy_version: env.PRIVACY_VERSION,
+    privacy_version: env.GROWER_PRIVACY_VERSION,
     consent_text_hash: consentHash,
     source
   };
   if (note) fields.growing_note = note;
-  /* newsletter_consent is a SEPARATE decision and defaults to absent. It is
-     written only on an explicit true, never bundled with submitting. */
-  if (body.newsletter_consent === true) fields.newsletter_consent = true;
+  /* newsletter_consent: NOT written. The published notice does not describe a
+     newsletter, so the key is outside GROWER_ALLOWED_KEYS and refused above. */
 
   try {
     await writeRecord(env, 'grower', fields, emailKey, consentHash, now);
@@ -511,7 +545,8 @@ export default {
 
 /* EXPORTED FOR TESTS ONLY. Nothing here reaches the network. */
 export const __test = {
-  V, CONSENT_TEXT, SUBMIT_STATUS, writesEnabled, allowedOrigin, corsHeaders,
+  V, CONSENT_TEXT, SUBMIT_STATUS, writesEnabled, growerWritesEnabled,
+  GROWER_ALLOWED_KEYS, allowedOrigin, corsHeaders,
   fetchMetadataOk, sha256Hex, sameString, pickEnum, cleanText, EMAIL_RE,
   atReason, MAX_BODY_BYTES, MAX_NOTE_CHARS
 };
