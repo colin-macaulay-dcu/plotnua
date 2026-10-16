@@ -453,7 +453,58 @@
         "confirmed_in": "Gmail 1a11bff8584a50b1",
         "note": "\"yes all looks great thanks\" — Tanktribe on the private preview, 8 Oct 2026."
       },
-      "public_visibility": "PUBLISHABLE"
+      "public_visibility": "PUBLISHABLE",
+      "approved_assets": [
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg",
+          "product_code": "PROD-001211",
+          "product_name": "Tanktribe CORE Cold Plunge",
+          "atlas_asset": "recGx6gUsWYyOG8ps",
+          "kind": "photograph",
+          "primary": true,
+          "alt": "Photograph: overhead view of a Tanktribe CORE galvanised stock tank on a timber deck, filled with iced water, with a person lying submerged in it"
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/ab9c9630-7b25-441f-9559-b711ff7f6d5b/IMG_2531.JPG",
+          "product_code": "PROD-001214",
+          "product_name": "Tanktribe WILD TUB",
+          "atlas_asset": "recXkz96aGYYgH3K3",
+          "kind": "photograph",
+          "primary": true,
+          "alt": "Photograph: close view from beside the Tanktribe WILD TUB showing the water surface, timber ledge, tub rim and garden background"
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/33335f39-c5fe-48af-9c3a-f6f6cc4e8c8e/IMG_2518.JPG",
+          "product_code": "PROD-001214",
+          "product_name": "Tanktribe WILD TUB",
+          "atlas_asset": "recG9PYr1tcoZchr5",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Photograph: close-up of the Tanktribe WILD TUB wood-fired heating coil burning on a paving slab"
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/b9e11038-bd53-49c8-984b-65ed12892e43/IMG_2580%2B3.JPG",
+          "product_code": "PROD-001214",
+          "product_name": "Tanktribe WILD TUB",
+          "atlas_asset": "recLx85niT6A1hHFb",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Photograph: close-up of the Tanktribe WILD TUB wood-fired heating coil burning on gravel"
+        }
+      ],
+      "asset_approval_state": "APPROVED",
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "default_for_unlisted": "NOT_AUTHORISED",
+        "approved_count": 4,
+        "authorised_by": "Tanktribe, 2 Oct 2026 (Gmail 1a0fd9de5ac55e40; preview confirmed 8 Oct 2026, Gmail 1a11bff8584a50b1); founder decision 16 Oct 2026 (Authorised Imagery Integration: include Tanktribe's approved photographs in Garden Retreat)",
+        "note": "Approval is by ENUMERATION, per asset. Four of the six Atlas assets (Rights Status Supplier Provided, Publication Status Approved) are listed. IMG_8455 (recof108g0iEgsiaD) and DSC_2111 (recy8wh3Ptb23MdLp) are deliberately NOT listed: each carries an open provenance question (TANKKD manufacturer imagery and third-party branding, recorded in Atlas) that this record does not resolve. Recorded presentation considerations, not rights problems: IMG_8495 shows a person submerged (not identifiable); IMG_2531 shows a third-party drinks can; IMG_2518 and IMG_2580 are near-duplicate close-ups of the WILD TUB heating coil and do not show the whole tub.",
+        "conditions_on_every_use": [
+          "Credit: © Tanktribe",
+          "A working link to https://www.tanktribe.ie/",
+          "Hot-linked unmodified from Tanktribe's own Squarespace namespace; never downloaded, rehosted, cropped or altered"
+        ]
+      }
     },
     {
       "organisation_record": "recGxi1agXCBR1FLt",

@@ -64,7 +64,7 @@ UBUILD = ROOT / "atlas-tools" / "build-power-station-provider-universe.py"
 # The SAME pins the Borrowed Garden builder holds. provider-explorer.js re-pinned
 # 14 Oct 2026 for offLink() (official supplier link); maker-explorer.css unchanged.
 PINS = {
-    "maker-explorer.css": "d571b8ca399ce2653231f9293aeb261eed2eaf909196b446edb473b5a781c2c7",
+    "maker-explorer.css": "105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21",
     "provider-explorer.js": "fa571dabb4d2ea653838aab92ec8961bb13809d0f43d5a4184ac889ad5bdbadf",  # re-pinned 14 Oct 2026: offLink() added (previous 8b0d8c5014df639e66b358efadb884a1209c5f01f56442911fcde9ceb7faaadf)
 }
 

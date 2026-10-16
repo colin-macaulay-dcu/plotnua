@@ -68,14 +68,19 @@ PINS = {
     # credit), and one read of the URL fragment (#p-<product id>) to open a
     # listed product. Living in the Garden carries none of it and is unchanged.
     # Previous pin: 983a253b77d400033d9c45b324adec17e7c0c8f27b6b2f530c392bc13c6ecb39
-    SHARED_JS:  "11335fd6f56cdb9bcc2aca96a36b9b432d4e83eff7d931d03b47a41924ddc984",
+    # Re-pinned 16 Oct 2026 (Authorised imagery integration, founder approval to build):
+    # maker tiles may lead with one of the maker's own product images, product images
+    # show larger and uncropped, and a credit without a link back is plain text.
+    # Rules are scoped to #explore-makers; the Provider Explorers carry no images and
+    # render as before. Previous pins: js 11335fd6…, css d571b8ca…
+    SHARED_JS:  "3dd7433680741444d7865f78724cfa8e83c8a6ef6d8d3e669ae6e7b3a55a9561",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
     # specificity identical; Living in the Garden is pixel-identical (10-state
     # parity capture). Previous pin:
     # 30d1c90403c73cdf71794c916515b70415997b85737dad8b48178acd540443ee
-    SHARED_CSS: "d571b8ca399ce2653231f9293aeb261eed2eaf909196b446edb473b5a781c2c7",
+    SHARED_CSS: "105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21",
 }
 CSS_LINK = '<link rel="stylesheet" href="maker-explorer.css">'
 JS_TAG = '<script src="maker-explorer.js"></script>'
@@ -115,7 +120,8 @@ def _gr(U):
         if r.get("irishAvailabilityConfirmationState") == "Yes": return "c"
         if r.get("noPublishedIrishRoute"): return "r"
         return "u"
-    eligible = [(r["organisation"], r["id"], r["productName"], r.get("productType") or "", st(r)) for r in rows]
+    eligible = [(r["organisation"], r["id"], r["productName"], r.get("productType") or "", st(r),
+                 {"kinds": [], "price": "", "nav": universe_nav(r)}) for r in rows]
     # "confirmed" is cross-checked against the qualification signal each
     # LISTED record carries, not against the header: the header's
     # confirmedIrishAvailabilityCount counts excluded products too, so an
@@ -208,6 +214,54 @@ _RIGHTS = None
 # page reserves their space and nothing jumps when they load.
 IMG_DIMS = {"recdcMBs7onIACLiO": (1024, 1026), "recOfcMW6ZjQh8PHj": (1024, 1031),
             "reczY9wkymWQg9df3": (1024, 1022), "reccvs54yEV48AY7R": (1024, 1024)}
+# AUTHORISED IMAGERY INTEGRATION (founder approval to build, 16 Oct 2026).
+# Natural pixel sizes, fetched 16 Oct 2026, of the four enumerated Tanktribe
+# photographs and of every image the garden-room universe's governed
+# `imagery`/`imagerySet` blocks carry. A size is presentation data only: an
+# image is shown because its governing record allows it, never because it
+# has a size here, and an allowed image with no recorded size refuses the build.
+IMG_DIMS.update({
+    "rec3FDMBST0pgNyyy": (2500, 2392),
+    "rec4Kr7TpqB6j15J1": (3200, 3200),
+    "rec7V4hnbaDLGRCl3": (1600, 1067),
+    "rec8KhBjYMtCRdl49": (1600, 1066),
+    "rec8gJrdjRE9ZTpTD": (1600, 1066),
+    "recE2XDcjJHVtaL21": (1600, 1200),
+    "recG9PYr1tcoZchr5": (2500, 3333),
+    "recGaONVqJFaSmCeK": (1600, 900),
+    "recGx6gUsWYyOG8ps": (2500, 3750),
+    "recH3SlcZeW6cgqpT": (568, 324),
+    "recH8zAktYe1fwOZo": (1600, 1067),
+    "recI6MPe9X3d166TN": (1600, 950),
+    "recIijCYifQXab6Z6": (1600, 1067),
+    "recLx85niT6A1hHFb": (2500, 3333),
+    "recOkzwdhI2ByNfhY": (1600, 1200),
+    "recOwRs3TWWSUyiOr": (2500, 2878),
+    "recQNpx3vprHXsh0p": (1600, 1067),
+    "recQhN9ar0gKhQVci": (1600, 1067),
+    "recSHXVbzqzkbGF00": (1600, 1067),
+    "recUjhEFw0d4006R1": (1600, 1067),
+    "recV5xOE7fjYvOUMD": (1600, 1067),
+    "recXkz96aGYYgH3K3": (2500, 3333),
+    "recYsiePLBpxHsPSz": (1600, 2400),
+    "reca1N71LmZi78HvZ": (1026, 634),
+    "recaMgZPzSbQ5IIx8": (1600, 1067),
+    "recaxWkZap8xgHDQQ": (1600, 1067),
+    "recdTUXyublD5FGhq": (1600, 1067),
+    "recdVvdyz2dF94OLP": (1600, 2133),
+    "recde6iunyLgEYvzT": (1600, 1200),
+    "recfgvR5hYlgNcZib": (1600, 2400),
+    "rechUJ6OW6xNZ0H2R": (1600, 900),
+    "recjIJcgO4dHq7H65": (1600, 1067),
+    "reclLDeJPPySyGSZU": (1600, 1067),
+    "recltDvzNQhm2F3SP": (1600, 1067),
+    "recnv5jMRfZR32Sgv": (1600, 1065),
+    "recp5bQqCAp5GszpJ": (2089, 2089),
+    "recrXC0oZzKJCOgXI": (1600, 1068),
+    "recreVS6GWDvjQuEi": (1600, 1067),
+    "recvHKzv3ojOozJCG": (1600, 1200),
+    "recyz2arjsX1KE6dq": (1600, 2000)
+})
 
 
 def rights_row(org):
@@ -216,6 +270,24 @@ def rights_row(org):
         _RIGHTS = {r["organisation_name"]: r for r in
                    json.loads(RIGHTS.read_text(encoding="utf-8"))["records"]}
     return _RIGHTS.get(org)
+
+
+def in_scope(r, url):
+    """The image-rights gate's own scope rule, read from the rights record:
+    the grant's permitted domain, or a DECLARED delivery host AND path prefix
+    (16 Oct 2026: Tanktribe's images sit in its own Squarespace namespace).
+    A host without a prefix never qualifies."""
+    m = re.match(r"https://([^/?#]+)(/[^?#]*)?", url or "")
+    if not m:
+        return False
+    host, path = m.group(1).lower(), m.group(2) or "/"
+    dom = (r.get("permitted_domain") or "").lower()
+    if dom and host in (dom, "www." + dom):
+        return True
+    for d in r.get("permitted_delivery_hosts") or []:
+        if d.get("host") and d.get("path_prefix") and host == d["host"].lower() and path.startswith(d["path_prefix"]):
+            return True
+    return False
 
 
 def _host(u):
@@ -270,8 +342,8 @@ def product_nav(q):
         for a in r.get("approved_assets") or []:
             if a.get("product_code") != q.get("productCode"):
                 continue
-            if _host(a.get("url")) not in (dom, "www." + dom) or a.get("atlas_asset") not in IMG_DIMS:
-                die("an approved asset is off-domain or has no recorded size: %r" % a.get("atlas_asset"))
+            if not in_scope(r, a.get("url")) or a.get("atlas_asset") not in IMG_DIMS:
+                die("an approved asset is outside its grant's scope or has no recorded size: %r" % a.get("atlas_asset"))
             kind = {"photograph": "Photograph", "visualisation": "Visualisation"}[a["kind"]]
             if not a.get("alt", "").startswith(kind):
                 die("asset %s alt text does not open with its kind (%s)" % (a["atlas_asset"], kind))
@@ -281,6 +353,59 @@ def product_nav(q):
         if imgs:
             nav["img"] = imgs
     return nav
+
+
+# ── GARDEN-ROOM IMAGERY, READ FROM THE UNIVERSE (16 Oct 2026) ──────────────
+# Founder approval to build "Authorised imagery integration", phase 3: the
+# Maker Explorer shows the SAME governed images the results already show. It
+# reads the `imagery` / `imagerySet` blocks that apply_authorised_imagery.py
+# alone writes into the garden-room universe (live grant, scoped prefix,
+# Atlas product link, required credit, medium) and decides nothing itself.
+# Guard G3 re-proves every one below against the universe and the manifest.
+MANIFEST = ROOT / "image-rights-manifest.json"
+_GRANTS = None
+LIVE_GRANTS = {"Granted — Founder Confirmed", "Granted with Conditions — Founder Confirmed",
+               "Granted — Supplier Confirmed (one-click)"}
+
+
+def grants():
+    global _GRANTS
+    if _GRANTS is None:
+        _GRANTS = {r["organisation_name"].lower(): r for r in
+                   json.loads(MANIFEST.read_text(encoding="utf-8"))["rows"]
+                   if r.get("permission_outcome") in LIVE_GRANTS}
+    return _GRANTS
+
+
+def universe_images(r):
+    return list(r.get("imagerySet") or ([r["imagery"]] if r.get("imagery") else []))
+
+
+def image_kind(alt):
+    return "Visualisation" if (alt or "").startswith("Visualisation") else "Photograph"
+
+
+def universe_nav(r):
+    imgs = []
+    for b in universe_images(r):
+        if b.get("assetRecord") not in IMG_DIMS:
+            die("a governed garden-room image has no recorded size: %r" % b.get("assetRecord"))
+        w, h = IMG_DIMS[b["assetRecord"]]
+        im = {"src": b["url"], "alt": b["alt"], "kind": image_kind(b["alt"]), "w": w, "h": h,
+              "credit": b["credit"]}
+        if b.get("linkBack"):
+            im["creditHref"] = b["linkBack"]
+        imgs.append(im)
+    return {"img": imgs} if imgs else {}
+
+
+def lead_image(products):
+    """The maker tile's lead image: one of the images that maker's own
+    products already carry in this tab -- a photograph before a
+    visualisation, then the A-Z product order. Never a new image."""
+    pool = [im for p in products if len(p) > 5 for im in (p[5].get("img") or [])]
+    pool.sort(key=lambda im: im["kind"] != "Photograph")
+    return dict(pool[0]) if pool else None
 
 
 KIND_LABEL = {"sauna": "Outdoor sauna", "hot-tub": "Hot tub", "cold-plunge": "Cold plunge",
@@ -447,8 +572,13 @@ def load(P):
                     row.append("")
                 row.append(e[5]["nav"])
             by.setdefault(org, []).append(row)
-        makers = [{"m": DISPLAY_ALIAS.get(k, k), "p": sorted(v, key=lambda x: x[1].lower())}
-                  for k, v in sorted(by.items(), key=lambda kv: kv[0].lower())]
+        makers = []
+        for k, v in sorted(by.items(), key=lambda kv: kv[0].lower()):
+            mk = {"m": DISPLAY_ALIAS.get(k, k), "p": sorted(v, key=lambda x: x[1].lower())}
+            lead = lead_image(mk["p"])
+            if lead:
+                mk["l"] = lead
+            makers.append(mk)
         figures = {"products": len(eligible), "makers": len(by),
                    "confirmed": sum(1 for e in eligible if e[4] == "c"),
                    "noRoute": sum(1 for e in eligible if e[4] == "r")}
@@ -538,6 +668,17 @@ def section(P, tabs, researched):
 
 '''
 
+_GARDEN = None
+
+
+def garden_index():
+    global _GARDEN
+    if _GARDEN is None:
+        U = json.loads((ROOT / SOURCES["garden-room-universe-v1"]["file"]).read_text(encoding="utf-8"))
+        _GARDEN = {r["id"]: r for r in U["products"]}
+    return _GARDEN
+
+
 def image_credits(tabs):
     """One static credit line per maker whose authorised images the
     directory can show: the credit and the link back are grant conditions,
@@ -547,14 +688,19 @@ def image_credits(tabs):
         for m in t["cfg"]["makers"]:
             for p in m["p"]:
                 for im in (p[5].get("img") or []) if len(p) > 5 else []:
-                    seen[im["creditHref"]] = im["credit"]
-    out = ""
-    for href, credit in sorted(seen.items()):
-        out += ('    <p class="mx-foot mx-credit">Product images: <a href="%s" target="_blank" '
-                'rel="noopener noreferrer">%s</a>, shown as supplied. Images labelled '
-                '&ldquo;Visualisation&rdquo; are computer-generated, not photographs.</p>\n'
-                % (href, html.escape(credit)))
-    return out
+                    # One entry per required credit; a named photographer is
+                    # credited on the image itself, not repeated here.
+                    key = im["credit"].split(" · Photo: ")[0]
+                    seen[key] = im.get("creditHref") or seen.get(key)
+    if not seen:
+        return ""
+    parts = []
+    for credit, href in sorted(seen.items(), key=lambda kv: kv[0].lower()):
+        parts.append('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>' % (href, html.escape(credit))
+                     if href else html.escape(credit))
+    return ('    <p class="mx-foot mx-credit">Product images: %s, shown as supplied by each maker. '
+            'Images labelled &ldquo;Visualisation&rdquo; are computer-generated, not photographs.</p>\n'
+            % ", ".join(parts))
 
 
 def sha(p): return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
@@ -630,19 +776,49 @@ def build(fname, P, src):
     # maker whose images the directory actually shows. Per-product links live
     # in the configuration and are re-proved below against the rights record.
     credit_hrefs = {im["creditHref"] for c in cfgs for m in c["makers"] for p in m["p"]
-                    if len(p) > 5 for im in (p[5].get("img") or [])}
+                    if len(p) > 5 for im in (p[5].get("img") or []) if im.get("creditHref")}
     for h in re.findall(r'href="([^"]+)"', blk):
         if re.match(r"[a-z]+:", h) or h.startswith("//"):
             if h not in credit_hrefs: die("G3 external link: " + h)
             continue
         if not (ROOT / h.split("?")[0]).exists(): die("G3 link target missing: " + h)
-    for c in cfgs:
+    for t in tabs:
+        c, tsrc = t["cfg"], t["T"]["source"]
         for m in c["makers"]:
+            # LEAD IMAGE (16 Oct 2026): exactly one of this maker's own listed
+            # product images, never an image of its own.
+            if m.get("l"):
+                own = [im for p in m["p"] if len(p) > 5 for im in (p[5].get("img") or [])]
+                if m["l"] not in own: die("G3 a maker tile image is not one of that maker's product images: " + m["m"])
             for p in m["p"]:
                 if len(p) <= 5:
                     continue
                 X = p[5]
                 if set(X) - {"href", "site", "img"}: die("G3 unexpected navigation field on " + p[0])
+                if tsrc == "garden-room-universe-v1":
+                    # Re-derived from the universe's governed blocks and the
+                    # manifest, independently of universe_nav().
+                    if X.get("href"): die("G3 a garden-room product carries an external link: " + p[0])
+                    U = garden_index().get(p[0])
+                    if U is None: die("G3 an imaged garden-room product is not in the universe: " + p[0])
+                    blocks = {b["url"]: b for b in universe_images(U)}
+                    for im in X.get("img") or []:
+                        b = blocks.get(im["src"])
+                        if not b: die("G3 an image the universe does not carry for this product: " + im["src"][:80])
+                        G = grants().get((b.get("supplier") or "").lower())
+                        if not G: die("G3 an image whose supplier holds no live grant: " + im["src"][:80])
+                        if not im["src"].startswith(b.get("permittedPrefix") or "\0") or not in_scope(G, im["src"]):
+                            die("G3 an image outside its grant's scope: " + im["src"][:80])
+                        # The grant's required credit leads; apply_authorised_imagery.py may
+                        # append a named photographer after it, never instead of it.
+                        if im["credit"] != b.get("credit") or not im["credit"].startswith(G.get("required_credit") or "\0"):
+                            die("G3 an image without the required credit: " + im["src"][:80])
+                        if im.get("creditHref") != (b.get("linkBack") or None) and not (
+                                im.get("creditHref") is None and not b.get("linkBack")):
+                            die("G3 an image credit link that is not the grant's link back")
+                        if im["kind"] != image_kind(im["alt"]) or im["alt"] != b["alt"]:
+                            die("G3 an image label or alt text differs from the governed record")
+                    continue
                 # Re-derived from the rights record, independently of product_nav().
                 R = rights_row(m["m"]) or {}
                 perm = R.get("permission") or {}

@@ -14686,7 +14686,12 @@
     if (!mediaEl || !im || !im.credit) return;
     const c = document.createElement('span');
     c.className = 'pn-image-credit';
-    c.textContent = im.credit;
+    /* AUTHORISED IMAGERY INTEGRATION (16 Oct 2026): a computer-generated
+       image is never presented as a photograph. The governed alt text opens
+       with "Visualisation" for every such asset (apply_authorised_imagery.py
+       refuses an asset whose medium is unrecorded), so the label rides on
+       the same chip as the credit, on every frame that shows it. */
+    c.textContent = (/^Visualisation\b/.test(im.alt || '') ? 'Visualisation \u00b7 ' : '') + im.credit;
     mediaEl.appendChild(c);
   }
 

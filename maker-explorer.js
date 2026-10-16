@@ -40,6 +40,16 @@
        ids this page lists. A match opens that product's maker and points to
        the product; anything else is ignored. Nothing is stored, sent, or
        written back to the address bar.
+
+   AUTHORISED IMAGERY ON THE DIRECTORY (16 Oct 2026, founder approval to
+   build "Authorised imagery integration")
+     * a maker may carry `l`, a lead image the BUILDER chose from that
+       maker's own listed product images (guard G3 proves it is one of them).
+       The tile shows it above the maker's name with its label and credit as
+       text; the image itself is decorative there (alt="") because the same
+       image is shown with its full description inside the open maker.
+     * a product image's credit is a link only where the grant gives a link
+       back (`creditHref`); otherwise it is plain text. Images show larger.
    ========================================================================== */
 (function () {
   'use strict';
@@ -81,7 +91,8 @@
       var NA = T.availabilityNote;
       var h = '<li class="mx-drawer" id="' + id + '"><h3>' + esc(m.m) + '</h3>' +
         '<p class="mx-meta">' + m.p.length + ' ' + T.nouns[m.p.length === 1 ? 0 : 1] +
-        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p><ul class="mx-plist">';
+        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p><ul class="mx-plist' +
+        (m.p.some(function (p) { return p[5] && p[5].img; }) ? ' mx-plist-img' : '') + '">';
       m.p.forEach(function (p) {
         var X = p[5] || {};
         h += '<li id="mx-p-' + esc(p[0]) + '"' + (p[0] === target ? ' class="mx-target"' : '') + '>' + (T.productLink
@@ -109,10 +120,18 @@
       list.forEach(function (im) {
         h += '<figure class="mx-img"><img src="' + esc(im.src) + '" alt="' + esc(im.alt) + '" width="' + im.w +
           '" height="' + im.h + '" loading="lazy" decoding="async"><figcaption><span class="mx-img-kind">' +
-          esc(im.kind) + '</span> <a href="' + esc(im.creditHref) + '" target="_blank" rel="noopener noreferrer">' +
-          esc(im.credit) + '</a></figcaption></figure>';
+          esc(im.kind) + '</span> ' + credit(im) + '</figcaption></figure>';
       });
       return h + '</span>';
+    }
+    function credit(im) {
+      return im.creditHref ? '<a href="' + esc(im.creditHref) + '" target="_blank" rel="noopener noreferrer">' +
+        esc(im.credit) + '</a>' : '<span class="mx-img-credit">' + esc(im.credit) + '</span>';
+    }
+    function lead(m) {
+      if (!m.l) { return ''; }
+      return '<span class="mx-lead"><img src="' + esc(m.l.src) + '" alt="" width="' + m.l.w + '" height="' + m.l.h +
+        '" loading="lazy" decoding="async"></span><span class="mx-lead-cap">' + esc(m.l.kind) + ' · ' + esc(m.l.credit) + '</span>';
     }
     /* THE ONE URL READ. A fragment naming a product this page lists opens
        that product's maker in the first tab that lists it. */
@@ -168,8 +187,8 @@
       var h = '';
       rows.forEach(function (m, i) {
         var st = mstate(m), id = 'mx-d-' + tab + '-' + i, isOpen = open === m.m;
-        h += '<li><button type="button" class="mx-maker" aria-expanded="' + isOpen + '"' +
-          (isOpen ? ' aria-controls="' + id + '"' : '') + ' data-m="' + esc(m.m) + '">' +
+        h += '<li><button type="button" class="mx-maker' + (m.l ? ' mx-maker-img' : '') + '" aria-expanded="' + isOpen + '"' +
+          (isOpen ? ' aria-controls="' + id + '"' : '') + ' data-m="' + esc(m.m) + '">' + lead(m) +
           (NA ? '' : '<span class="mx-dot mx-' + st + '" aria-hidden="true"></span>') +
           '<span class="mx-nm">' + esc(m.m) + (NA ? '' : '<span class="mx-sr"> — ' +
           (st === 'c' ? 'Irish availability confirmed' : st === 's' ? 'Irish availability confirmed for some products' : 'Irish availability not yet confirmed') +
