@@ -175,12 +175,26 @@ def main():
             g.get_by_role("button", name="Up to 5 km", exact=True).click(); g.get_by_role("button", name="Small — a corner", exact=True).click(); g.get_by_role("button", name="Next season", exact=True).click()
             g.wait_for_selector("#bgReveal.is-on")
             txt = g.inner_text("#bgReveal")
-            check("B3 result: pilot area, beginners welcome, honest", "first areas" in txt and "beginners are welcome" in txt
-                  and "No garden is available through PlotNua today" in txt and "never find a garden" in txt)
+            check("B3 result: positive heading, founder copy, CTA directly under it, no long sections",
+                  "You’re in one of our first areas" in txt
+                  and "connecting people who would love to grow with homeowners who have garden space to share" in txt
+                  and "Interested in growing somewhere nearby?" in txt
+                  and "Free to register. Your details stay private." in txt
+                  and not any(x in txt for x in ["How it would work", "Worth knowing", "What happens next",
+                                                 "How it works from here", "does the homework"]), txt)
             check("B3b the check sent nothing", not [r for r in fake.reqs if r[0] == "grower"])
             # closed in production: the register panel is removed from the DOM
-            check("B4 CLOSED: without ?interest=preview the register panel is not in the DOM",
-                  g.locator("#bgInterest").count() == 0 and g.locator("input[type=email]").count() == 0)
+            if g.evaluate("document.documentElement.innerHTML.indexOf('var GROWER_PUBLIC = true;') !== -1"):
+                check("B4 OPEN (launched): the register invitation is shown on the result",
+                      g.locator("#bgIntOpen").is_visible())
+                check("B4b OPEN: no 'Private preview' badge on the public page", not g.locator("#bgIntPrev").is_visible())
+                vp = g.viewport_size; g.set_viewport_size({"width": 390, "height": 844}); g.evaluate("window.scrollTo(0,0)")
+                bb = g.locator("#bgIntOpen").bounding_box()
+                check("B4c mobile 390x844: the CTA is on screen without scrolling", bb and bb["y"] + bb["height"] <= 844, bb)
+                g.set_viewport_size(vp)
+            else:
+                check("B4 CLOSED: without ?interest=preview the register panel is not in the DOM",
+                      g.locator("#bgInterest").count() == 0 and g.locator("input[type=email]").count() == 0)
             g.close()
 
             g = page()

@@ -46,7 +46,7 @@ CASES = [
     ("G4 another page links to the closed grower check", append("index.html", '\n<a href="disc025-borrowed-garden-grower-check.html">x</a>\n'), "G4"),
     ("G4b sitemap lists the closed grower check", edit("sitemap.xml", "</urlset>", "<url><loc>https://plotnua.ie/disc025-borrowed-garden-grower-check.html</loc></url></urlset>"), "G4"),
     ("G5 a phone field is added", edit(BUILDER, 'autocomplete="email" maxlength="120" required>', 'autocomplete="email" maxlength="120" required><input type="tel" name="phone">'), "G5"),
-    ("G6 an honesty line is removed", edit(BUILDER, "We may never find a garden near you.</li>", "</li>"), "G6"),
+    ("G6 an honesty line is removed", edit(BUILDER, "We may never find a garden near you. Nothing is shared", "Nothing is shared"), "G6"),
     ("G6b a promise is added", edit(BUILDER, "Looking for somewhere to grow?</h1>", "Get matched with a garden this week.</h1>"), "G6"),
     ("G8 host Property Check edited", append("disc025-borrowed-garden-check.html", "\n<!-- edit -->\n"), "G8"),
     ("G8b privacy.html edited while closed", append("privacy.html", "\n<!-- edit -->\n"), "G8"),

@@ -987,6 +987,25 @@ window.PlotNuaFunnel = (function () {
   @media(max-width:560px){ .bg-int{padding:26px 20px;} }
   /* PLOTNUA-G3-CSS-END */
 </style>
+<style>
+  /* PLOTNUA-GROWER-RESULT-CSS · founder direction 16 Oct 2026: a short, welcoming
+     result with the register invitation directly under the heading. Scoped to
+     this page only (the host Property Check is untouched). */
+  #bgReveal .bg-revealband{padding:56px calc(50vw - 50%) 48px;margin-bottom:0;}
+  #bgReveal .bg-reveal-sub{margin:0;}
+  #bgReveal .bg-int{margin:36px 0 40px;}
+  /* the attribute must win: the preview badge is for ?interest=preview only */
+  .bg-int-prev[hidden]{display:none;}
+  .bg-int-reassure{margin:12px 0 0;font-size:13.5px;line-height:1.5;color:var(--soft);}
+  .bg-int-honest{margin:18px 0 0;font-size:14px;line-height:1.6;color:var(--body);max-width:68ch;}
+  @media(max-width:640px){
+    #bgReveal .bg-revealband{padding:30px calc(50vw - 50%) 26px;}
+    #bgReveal .bg-reveal-h{font-size:34px;margin-bottom:14px;}
+    #bgReveal .bg-reveal-sub{font-size:16.5px;line-height:1.55;}
+    #bgReveal .bg-int{padding:24px 20px;margin-top:24px;}
+    #bgIntOffer .pc-cta{width:100%;justify-content:center;}
+  }
+</style>
 </head>
 <body>
 
@@ -1047,31 +1066,15 @@ window.PlotNuaFunnel = (function () {
       <p class="bg-reveal-sub" id="bgRevealSub"></p>
     </div>
 
-    <div class="bg-res" id="bgFinding"></div>
-
     <section class="bg-int" id="bgInterest" aria-labelledby="bgIntH">
       <p class="bg-int-prev" id="bgIntPrev" hidden>Private preview &middot; not public</p>
-      <h2 class="bg-int-h" id="bgIntH">Would you like us to tell you if growing space comes up nearby?</h2>
+      <h2 class="bg-int-h" id="bgIntH">Interested in growing somewhere nearby?</h2>
       <div id="bgIntOffer">
-        <p class="bg-int-p">PlotNua is exploring a small pilot that would introduce people who&rsquo;d
-          like somewhere to grow to homeowners nearby with a spare corner. We&rsquo;re starting in
-          Raheny, Killester, Donnycarney and Artane.</p>
-        <ul class="bg-int-list">
-          <li><strong>No garden is available through PlotNua today.</strong> Matching isn&rsquo;t live
-            yet. Joining the register doesn&rsquo;t arrange anything.</li>
-          <li><strong>There&rsquo;s no obligation.</strong> Registering commits you to nothing, and you can
-            come off the register at any time.</li>
-          <li><strong>We can&rsquo;t promise anything.</strong> We may never find a garden near you.</li>
-          <li><strong>You stay in control.</strong> Nobody else sees your details. There is no public
-            listing, no map and no profile page. Nothing is shared with anybody until you say yes to one specific introduction.</li>
-        </ul>
-        <p class="bg-int-p">If you live somewhere else, you&rsquo;re still welcome to tell us. Your
-          interest goes on the register, but we aren&rsquo;t looking for anyone to introduce outside
-          those four areas.</p>
+        <p class="bg-int-p">Join the Grower Register and we&rsquo;ll be in touch as opportunities develop.</p>
         <p class="bg-int-cta">
-          <button class="pc-cta" type="button" id="bgIntOpen">I&rsquo;m interested in growing space</button>
+          <button class="pc-cta" type="button" id="bgIntOpen">Join the Grower Register</button>
         </p>
-        <p class="bg-int-caveat">This is a register, not a match.</p>
+        <p class="bg-int-reassure">Free to register. Your details stay private.</p>
       </div>
 
       <form class="bg-int-form" id="bgIntForm" hidden novalidate>
@@ -1126,13 +1129,16 @@ window.PlotNuaFunnel = (function () {
           <input type="text" id="bgIntWebsite" name="website" tabindex="-1" autocomplete="off" value="">
         </div>
 
+        <p class="bg-int-honest">This is a register, not a match. No garden is available through PlotNua today.
+          We may never find a garden near you. Nothing is shared with anybody until you say yes to one specific introduction.</p>
+
         <div class="bg-int-tick">
           <input type="checkbox" id="bgIntConsent" required>
           <label for="bgIntConsent"><span id="bgIntConsentText"></span></label>
         </div>
 
         <details class="bg-int-notice" id="bgIntNotice">
-          <summary>Before you join the register &mdash; what we keep, and what we never ask for</summary>
+          <summary>What we keep, and what we never ask for</summary>
           <div class="bg-int-noticebody">
             <p><strong>What we keep.</strong> Your first name, your email address, your county and the area you
               chose, how much space you&rsquo;re looking for, roughly when, and, if you tell us, your town or general
@@ -1178,14 +1184,8 @@ window.PlotNuaFunnel = (function () {
         <div id="bgIntDoneBody"></div>
       </div>
 
-      <p class="bg-int-note">PlotNua does not verify anybody&rsquo;s identity and has not met anyone on this
-        register. Nothing is arranged through this page.</p>
     </section>
 
-    <p class="bg-foot">PlotNua does the homework. You make the decision. Your Grower Check stays
-      private &mdash; answering the questions doesn&rsquo;t send us your details. If you&rsquo;d like to hear
-      from us if somebody nearby has growing space, you can choose to join the register. That simply tells us
-      you&rsquo;re interested. It isn&rsquo;t a match or an introduction.</p>
   </section>
 
 </main>
@@ -1335,30 +1335,13 @@ window.PlotNuaFunnel = (function () {
   }
   function advance() { var n = pending(); if (n) renderQuestion(n); else reveal(); }
 
-  function li(text, tick) {
-    return '<li>' + (tick ? '<span class="bg-tick" aria-hidden="true">\u2713</span>' : '') + text + '</li>';
-  }
   function reveal() {
     try { if (window.PlotNuaFunnel) window.PlotNuaFunnel.complete(); } catch (e) {}
     var inPilot = PILOT.indexOf(answers.district) !== -1;
     $('bgRevealH').textContent = inPilot ? 'You\u2019re in one of our first areas'
                                          : 'We\u2019re not in your area yet';
-    $('bgRevealSub').textContent = inPilot
-      ? 'We\u2019re starting in ' + LABEL.district[answers.district] + ' and three neighbouring areas.'
-      : 'We\u2019re starting in Raheny, Killester, Donnycarney and Artane. You can still tell us you\u2019re interested.';
-    var h = '<div class="bg-res-item is-plain">';
-    h += '<span class="bg-res-lab">How it would work</span><ul class="bg-res-ticks">';
-    h += li('Homeowners with a spare corner tell PlotNua on the Garden Owner Register.', true);
-    h += li('If one nearby could suit you, we\u2019d email you separately and ask first.', true);
-    h += li('Nothing is shared with anybody until you say yes to one specific introduction.', true);
-    h += li('Complete beginners are welcome. A bed or two is a good place to start.', true);
-    h += '</ul><span class="bg-res-lab">Worth knowing</span><ul class="bg-res-why">';
-    h += li('No garden is available through PlotNua today, and matching isn\u2019t live yet.');
-    h += li('We may never find a garden near you.');
-    if (answers.space_band === 'large') h += li('Larger spaces are rarer. Saying you\u2019d also be happy with less can help.');
-    h += li('Hoping to grow sooner? <a href="discovery-the-borrowed-garden.html#explore-providers" style="color:var(--accent);text-underline-offset:3px">Community gardens, garden-sharing services and allotments</a> may have space now.');
-    h += '</ul></div>';
-    $('bgFinding').innerHTML = h;
+    $('bgRevealSub').textContent = 'We\u2019re starting in Raheny and neighbouring areas, connecting people who would love to grow with homeowners who have garden space to share.'
+      + (inPilot ? '' : ' You\u2019re welcome to join the register wherever you are.');
     if ($('bgIntCounty')) {
       $('bgIntCounty').value = answers.county;
       $('bgIntDistrict').value = answers.county === 'dublin' ? answers.district : '';
