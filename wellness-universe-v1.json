@@ -21,9 +21,9 @@
     ]
   },
   "snapshotSha256": "31397887e2de5dc534d100a32c8a6791c3e9c9339b08df718f94dd0b45a66613",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc)",
   "sourceCategory": "Wellness / Sauna",
-  "sourceCategoryCount": 153,
+  "sourceCategoryCount": 154,
   "eligibleCount": 120,
   "organisationCount": 7,
   "kindCounts": {
@@ -38,7 +38,7 @@
     "cold-plunge": 4,
     "combination": 1
   },
-  "heldCount": 21,
+  "heldCount": 22,
   "excludedCount": 0,
   "gateHeldCount": 12,
   "listingBasisCounts": {
@@ -1035,6 +1035,35 @@
       "publicVisibility": "PUBLISHABLE",
       "holdReason": null,
       "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recJlhoNav6YNU1zj",
+      "productCode": "PROD-001266",
+      "productName": "Harvia Legend Wood-Burning Outdoor Sauna (supplied by Irish Sauna Company)",
+      "organisation": "Irish Sauna Company",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": null,
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
     },
     {
       "id": "recWYh1cQPtKDBsvL",
