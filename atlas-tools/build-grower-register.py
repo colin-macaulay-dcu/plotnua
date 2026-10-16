@@ -202,9 +202,16 @@ def guards_before(w: dict) -> None:
             die("G9 cannot launch: privacy.html does not carry the Grower Register notice")
         if f'GROWER_PRIVACY_VERSION = "{GROWER_PRIVACY_VERSION}"' not in WRANGLER.read_text():
             die("G9 cannot launch: wrangler.toml does not name the grower privacy version")
-    else:
-        if priv != base_priv:
-            die("G8 privacy.html changed while the Grower Register is closed")
+    # In BOTH states privacy.html may differ from its base only by the governed
+    # V6 blocks (exact, reversible: privacy_v6_layer.without_v6). While closed,
+    # V6 may already be published (launch step 2); it must be V6 or nothing.
+    sys.path.insert(0, str(ROOT / "atlas-tools"))
+    from privacy_v6_layer import without_v6
+    try:
+        if without_v6(priv) != base_priv:
+            die("G8 privacy.html differs from its base other than by the governed V6 blocks")
+    except ValueError as e:
+        die("G8 " + str(e))
 
 
 def guards_after(html: str, disc: str) -> None:
