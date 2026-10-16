@@ -75,14 +75,15 @@ LABELS = {
     "district": [("raheny", "Raheny"), ("killester", "Killester"), ("donnycarney", "Donnycarney"),
                  ("artane", "Artane"), ("elsewhere_in_dublin", "Elsewhere in Dublin"),
                  ("elsewhere_in_ireland", "Elsewhere in Ireland")],
-    "travel_radius": [("walking", "Within walking distance"), ("up_to_2km", "Up to 2 km"),
-                      ("up_to_5km", "Up to 5 km"), ("up_to_10km", "Up to 10 km")],
+    "county": [("carlow", "Carlow"), ("cavan", "Cavan"), ("clare", "Clare"), ("cork", "Cork"), ("donegal", "Donegal"), ("dublin", "Dublin"), ("galway", "Galway"), ("kerry", "Kerry"), ("kildare", "Kildare"), ("kilkenny", "Kilkenny"), ("laois", "Laois"), ("leitrim", "Leitrim"), ("limerick", "Limerick"), ("longford", "Longford"), ("louth", "Louth"), ("mayo", "Mayo"), ("meath", "Meath"), ("monaghan", "Monaghan"), ("offaly", "Offaly"), ("roscommon", "Roscommon"), ("sligo", "Sligo"), ("tipperary", "Tipperary"), ("waterford", "Waterford"), ("westmeath", "Westmeath"), ("wexford", "Wexford"), ("wicklow", "Wicklow")],
+    "travel_distance": [("up_to_5km", "Up to 5 km"), ("up_to_10km", "Up to 10 km"), ("up_to_20km", "Up to 20 km"),
+                        ("more_than_20km", "More than 20 km"), ("flexible", "Flexible / unsure")],
     "space_band": [("very_small", "Very small — a bed or two"), ("small", "Small — a corner"),
                    ("medium", "Medium — a good patch"), ("large", "Large"), ("not_sure", "Not sure yet")],
     "timing": [("this_season", "This season"), ("within_3_months", "Within three months"),
                ("next_season", "Next season"), ("flexible", "I’m flexible")],
 }
-PAYLOAD_KEYS = ["first_name", "email", "district", "travel_radius", "space_wanted", "timing",
+PAYLOAD_KEYS = ["first_name", "email", "county", "district", "town_area", "travel_distance", "space_wanted", "timing",
                 "growing_note", "over_18", "consent_text", "source"]
 SOURCE = "grower_register"
 
@@ -153,7 +154,7 @@ def worker_facts() -> dict:
     if not m or m.group(1) != FROZEN_CONSENT:
         die("G1 the Worker's grower sentence is not the frozen G1B §3 sentence")
     vocab = {}
-    for key in ("district", "space_band", "timing", "travel_radius", "grower_source"):
+    for key in ("district", "space_band", "timing", "county", "travel_distance", "grower_source"):
         mm = re.search(key + r":\s*\[([^\]]*)\]", src)
         if not mm:
             die(f"G2 cannot read the Worker vocabulary {key}")
@@ -254,6 +255,10 @@ def guards_after(html: str, disc: str) -> None:
         die("G11 Community Roots (an independent organisation) is used as this register's name")
 
 
+def opts_dublin() -> str:
+    return "".join(f'<option value="{v}">{l}</option>' for v, l in LABELS["district"] if v != "elsewhere_in_ireland")
+
+
 def opts(key: str) -> str:
     return "".join(f'<option value="{v}">{l}</option>' for v, l in LABELS[key])
 
@@ -280,7 +285,7 @@ def main_html() -> str:
       </span>
     </div>
     <h1 class="pc-introh">Looking for somewhere to grow?</h1>
-    <p class="pc-introsub">Four quick questions about where you are, how far you&rsquo;d go,
+    <p class="pc-introsub">A few quick questions about where you are, how far you&rsquo;d go,
       how much space would suit you and when. Nothing you answer is sent anywhere.</p>
     <div class="pc-actions">
     <button class="pc-cta" id="bgStart">Start the check
@@ -346,7 +351,20 @@ def main_html() -> str:
             <label for="bgIntEmail">Email address</label>
             <input type="email" id="bgIntEmail" name="email" autocomplete="email" maxlength="120" required>
           </div>
-{sel("bgIntDistrict", "district", "Your area", "district")}{sel("bgIntTravel", "travel_radius", "How far you&rsquo;d go", "travel_radius")}{sel("bgIntSize", "space_wanted", "How much space", "space_band")}{sel("bgIntTiming", "timing", "Roughly when", "timing")}          <div class="bg-int-f is-wide">
+{sel("bgIntCounty", "county", "County", "county")}          <div class="bg-int-f" id="bgIntDistrictWrap">
+            <label for="bgIntDistrict">Which part of Dublin</label>
+            <select id="bgIntDistrict" name="district"><option value="">Choose one</option>{opts_dublin()}</select>
+          </div>
+          <div class="bg-int-f" style="align-content:start">
+            <label for="bgIntTown">Town or general area <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input type="text" id="bgIntTown" name="town_area" maxlength="60" autocomplete="off" aria-describedby="bgIntTownHint">
+            <span class="bg-int-hint" id="bgIntTownHint">For example Raheny, Ennis, or near Kilkenny city. Please don&rsquo;t give a full address or Eircode.</span>
+          </div>
+          <div class="bg-int-f" style="align-content:start">
+            <label for="bgIntTravel">How far you&rsquo;d travel <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <select id="bgIntTravel" name="travel_distance"><option value="">Choose one (optional)</option>{opts("travel_distance")}</select>
+          </div>
+{sel("bgIntSize", "space_wanted", "How much space", "space_band")}{sel("bgIntTiming", "timing", "Roughly when", "timing")}          <div class="bg-int-f is-wide">
             <label for="bgIntNote">Anything you&rsquo;d like us to know?</label>
             <textarea id="bgIntNote" name="growing_note" maxlength="600"></textarea>
             <span class="bg-int-hint" id="bgIntNoteHint">Optional. You could mention what you&rsquo;d like to grow,
@@ -369,9 +387,9 @@ def main_html() -> str:
         <details class="bg-int-notice" id="bgIntNotice">
           <summary>Before you join the register &mdash; what we keep, and what we never ask for</summary>
           <div class="bg-int-noticebody">
-            <p><strong>What we keep.</strong> Your first name, your email address, the area you chose, how far
-              you&rsquo;d travel, how much space you&rsquo;re looking for, roughly when, and anything you choose to
-              tell us in the note. Your answers to the Grower Check are not sent to us; four of them fill in this
+            <p><strong>What we keep.</strong> Your first name, your email address, your county and the area you
+              chose, how much space you&rsquo;re looking for, roughly when, and, if you tell us, your town or general
+              area, how far you&rsquo;d travel and anything you add in the note. Your answers to the Grower Check are not sent to us; they fill in this
               form, where you can see and change them. We also keep the administrative records needed to manage
               your registration, your consent and its status.</p>
             <p><strong>What we never ask for.</strong> Your address, your Eircode, your phone number, your surname,
@@ -430,21 +448,25 @@ def main_html() -> str:
 def script_js() -> str:
     labels = {k: dict(v) for k, v in LABELS.items()}
     qs = [
-        {"var": "district", "eyebrow": "Where you are", "q": "Where do you live?",
-         "note": "We&rsquo;re starting in Raheny, Killester, Donnycarney and Artane.", "key": "district"},
-        {"var": "travel_radius", "eyebrow": "How far", "q": "How far would you go to a garden?",
-         "note": "", "key": "travel_radius"},
+        {"var": "county", "eyebrow": "Where you are", "q": "Which county do you live in?",
+         "note": "We&rsquo;re starting in four areas of north Dublin, but you can join from anywhere in Ireland.", "key": "county"},
+        {"var": "district", "eyebrow": "Where in Dublin", "q": "Which part of Dublin?",
+         "note": "We&rsquo;re starting in Raheny, Killester, Donnycarney and Artane.", "key": "district_dublin", "onlyIf": "dublin"},
+        {"var": "travel_distance", "eyebrow": "How far", "q": "How far would you travel to a garden?",
+         "note": "", "key": "travel_distance"},
         {"var": "space_band", "eyebrow": "How much space", "q": "How much space would suit you?",
          "note": "Most people start with a bed or two. Complete beginners are welcome.", "key": "space_band"},
         {"var": "timing", "eyebrow": "When", "q": "When would you like to start?", "note": "", "key": "timing"},
     ]
     for q in qs:
-        q["opts"] = [{"v": v, "l": l} for v, l in LABELS[q.pop("key")]]
+        k = q.pop("key")
+        pairs = [x for x in LABELS["district"] if x[0] != "elsewhere_in_ireland"] if k == "district_dublin" else LABELS[k]
+        q["opts"] = [{"v": v, "l": l} for v, l in pairs]
     return f"""<script>
 /* PLOTNUA-GROWER-CHECK-JS · The Borrowed Garden Grower Check (founder direction
  * 16 Oct 2026). Generated by atlas-tools/build-grower-register.py.
- * The check is local: answers are never sent. Four of them pre-fill the
- * register form, where the person sees and can change them.
+ * The check is local: answers are never sent. They pre-fill the register
+ * form, where the person sees and can change them.
  * THE REGISTER PANEL SHIPS CLOSED: unless GROWER_PUBLIC or ?interest=preview,
  * it is REMOVED from the DOM. Even when shown, the Worker writes nothing for
  * a grower until its own switches name the published privacy notice. */
@@ -466,19 +488,22 @@ def script_js() -> str:
     ['bgIntro', 'bgQ', 'bgReveal'].forEach(function (s) {{ $(s).classList.toggle('is-on', s === id); }});
     window.scrollTo(0, 0);
   }}
+  function applies(q) {{ return !q.onlyIf || answers.county === q.onlyIf || !('county' in answers); }}
+  function asked() {{ return QUESTIONS.filter(applies); }}
   function pending() {{
-    for (var i = 0; i < QUESTIONS.length; i++) if (!(QUESTIONS[i].var in answers)) return QUESTIONS[i];
+    var list = asked();
+    for (var i = 0; i < list.length; i++) if (!(list[i].var in answers)) return list[i];
     return null;
   }}
   function renderDots(q) {{
     var box = $('bgDots'); box.innerHTML = '';
-    var idx = QUESTIONS.indexOf(q);
-    QUESTIONS.forEach(function (_, i) {{
+    var list = asked(), idx = list.indexOf(q);
+    list.forEach(function (_, i) {{
       var s = document.createElement('span');
       s.className = 'pc-dot' + (i < idx ? ' is-done' : (i === idx ? ' is-on' : ''));
       box.appendChild(s);
     }});
-    $('bgProg').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
+    $('bgProg').textContent = 'Question ' + (idx + 1) + ' of ' + list.length;
   }}
   function renderQuestion(q) {{
     renderDots(q);
@@ -487,7 +512,9 @@ def script_js() -> str:
     var note = $('bgQNote');
     if (q.note) {{ note.innerHTML = q.note; note.style.display = ''; }} else {{ note.textContent = ''; note.style.display = 'none'; }}
     var box = $('bgOpts'); box.innerHTML = '';
-    box.className = 'pc-opts is-stacked';
+    /* Same rule as the Property Check: short labels sit inline, as chips. */
+    var compact = q.opts.length > 6 && q.opts.every(function (o) {{ return o.l.length <= 24; }});
+    box.className = 'pc-opts ' + (compact ? 'is-inline' : 'is-stacked');
     q.opts.forEach(function (o) {{
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'pc-opt'; b.textContent = o.l;
@@ -497,10 +524,15 @@ def script_js() -> str:
     $('bgBack').style.display = trail.length ? '' : 'none';
     show('bgQ');
   }}
-  function choose(q, v) {{ answers[q.var] = v; trail.push(q.var); advance(); }}
+  function choose(q, v) {{
+    answers[q.var] = v; trail.push(q.var);
+    if (q.var === 'county') {{ if (v === 'dublin') delete answers.district; else answers.district = 'elsewhere_in_ireland'; }}
+    advance();
+  }}
   function back() {{
     if (!trail.length) return;
     var last = trail.pop(); delete answers[last];
+    if (last === 'county') delete answers.district;
     var q = QUESTIONS.filter(function (x) {{ return x.var === last; }})[0];
     if (q) renderQuestion(q); else advance();
   }}
@@ -530,22 +562,35 @@ def script_js() -> str:
     h += li('Hoping to grow sooner? <a href="discovery-the-borrowed-garden.html#explore-providers" style="color:var(--accent);text-underline-offset:3px">Community gardens, garden-sharing services and allotments</a> may have space now.');
     h += '</ul></div>';
     $('bgFinding').innerHTML = h;
-    if ($('bgIntDistrict')) {{
-      $('bgIntDistrict').value = answers.district; $('bgIntTravel').value = answers.travel_radius;
+    if ($('bgIntCounty')) {{
+      $('bgIntCounty').value = answers.county;
+      $('bgIntDistrict').value = answers.county === 'dublin' ? answers.district : '';
+      $('bgIntTravel').value = answers.travel_distance;
       $('bgIntSize').value = answers.space_band; $('bgIntTiming').value = answers.timing;
+      paintDistrict();
     }}
     show('bgReveal');
   }}
 
   /* ------------------------------------------------------------ register -- */
-  var FIELD_NAME = {{ first_name: 'your first name', email: 'your email address', district: 'your area',
-    travel_radius: 'how far you\\u2019d go', space_wanted: 'how much space', timing: 'roughly when',
+  var FIELD_NAME = {{ first_name: 'your first name', email: 'your email address', county: 'your county',
+    district: 'which part of Dublin',
+    town_area: 'just a town or general area (not an address or Eircode)',
+    travel_distance: 'how far you\\u2019d travel', space_wanted: 'how much space', timing: 'roughly when',
     growing_note: 'the note', over_18: 'the confirmation that you are over 18 and agree',
     consent_text: 'the permission wording' }};
-  var FIELD_EL = {{ first_name: 'bgIntName', email: 'bgIntEmail', district: 'bgIntDistrict',
-    travel_radius: 'bgIntTravel', space_wanted: 'bgIntSize', timing: 'bgIntTiming', growing_note: 'bgIntNote',
+  var FIELD_EL = {{ first_name: 'bgIntName', email: 'bgIntEmail', county: 'bgIntCounty', district: 'bgIntDistrict',
+    town_area: 'bgIntTown', travel_distance: 'bgIntTravel', space_wanted: 'bgIntSize', timing: 'bgIntTiming', growing_note: 'bgIntNote',
     over_18: 'bgIntConsent' }};
   var STATE = 'offer', FLAGGED = null;
+  /* Same patterns the Worker refuses: an Eircode or a house-number address. */
+  var EIRCODE_RE = /\\b[ACDEFHKNPRTVWXY][0-9]{{2}}[0-9W]?\\s?[0-9ACDEFHKNPRTVWXY]{{4}}\\b/i;
+  var HOUSE_NO_RE = /^\\s*\\d+[a-z]?\\b|\\b\\d+\\s+[a-z]+\\s+(road|street|avenue|park|drive|lane|close|crescent|grove|court|way|rd|st|ave)\\b/i;
+  function paintDistrict() {{
+    var dub = $('bgIntCounty').value === 'dublin';
+    $('bgIntDistrictWrap').style.display = dub ? '' : 'none';
+    if (!dub) $('bgIntDistrict').value = '';
+  }}
   function intShow(which) {{
     STATE = which;
     $('bgIntOffer').hidden = (which !== 'offer');
@@ -588,22 +633,26 @@ def script_js() -> str:
     var body = {{
       first_name: $('bgIntName').value,
       email: $('bgIntEmail').value,
-      district: $('bgIntDistrict').value,
-      travel_radius: $('bgIntTravel').value,
+      county: $('bgIntCounty').value,
+      district: $('bgIntCounty').value === 'dublin' ? $('bgIntDistrict').value : 'elsewhere_in_ireland',
       space_wanted: $('bgIntSize').value,
       timing: $('bgIntTiming').value,
       over_18: $('bgIntConsent').checked === true,
       consent_text: CONSENT_TEXT,
       source: {json.dumps(SOURCE)}
     }};
+    if ($('bgIntTown').value.trim()) body.town_area = $('bgIntTown').value;
+    if ($('bgIntTravel').value) body.travel_distance = $('bgIntTravel').value;
     if ($('bgIntNote').value.trim()) body.growing_note = $('bgIntNote').value;
     return body;
   }}
   function localProblem() {{
     if (!$('bgIntName').value.trim()) return 'first_name';
     if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{{2,}}$/.test($('bgIntEmail').value.trim())) return 'email';
-    if (!$('bgIntDistrict').value) return 'district';
-    if (!$('bgIntTravel').value) return 'travel_radius';
+    if (!$('bgIntCounty').value) return 'county';
+    if ($('bgIntCounty').value === 'dublin' && !$('bgIntDistrict').value) return 'district';
+    var town = $('bgIntTown').value.trim();
+    if (town && (EIRCODE_RE.test(town) || HOUSE_NO_RE.test(town))) return 'town_area';
     if (!$('bgIntSize').value) return 'space_wanted';
     if (!$('bgIntTiming').value) return 'timing';
     if (!$('bgIntConsent').checked) return 'over_18';
@@ -617,7 +666,7 @@ def script_js() -> str:
     if (bad) {{ flag(bad); return; }}
     msg('');
     if ($('bgIntWebsite').value !== '') {{ unavailable(); return; }}
-    var district = $('bgIntDistrict').value;
+    var district = payload().district;
     intShow('sending');
     fetch(ENDPOINT, {{ method: 'POST', headers: {{ 'content-type': 'application/json' }}, body: JSON.stringify(payload()) }})
       .then(function (r) {{ return r.json().then(function (j) {{ return {{ s: r.status, j: j }}; }}, function () {{ return {{ s: r.status, j: null }}; }}); }})
@@ -643,6 +692,8 @@ def script_js() -> str:
       if (!GROWER_PUBLIC) $('bgIntPrev').hidden = false;
       $('bgIntConsentText').textContent = CONSENT_TEXT;
       $('bgIntOpen').addEventListener('click', function () {{ intShow('form'); try {{ $('bgIntName').focus(); }} catch (e) {{}} }});
+      $('bgIntCounty').addEventListener('change', paintDistrict);
+      paintDistrict();
       $('bgIntCancel').addEventListener('click', function () {{ intShow('offer'); }});
       $('bgIntForm').addEventListener('submit', submit);
       $('bgIntForm').addEventListener('change', function (ev) {{

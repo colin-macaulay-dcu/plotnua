@@ -85,6 +85,17 @@ const V = {
   your_own_use: ['yes_regularly', 'now_and_then', 'i_would_leave_them_to_it',
                  'not_sure'],
   garden_source: ['direct', 'garden_interest', 'my_plot', 'discovery', 'other'],
+  /* GROWER LOCATION · founder instruction 16 Oct 2026 (pre-launch refinement).
+     county is required; town_area and travel_distance are optional. All three
+     are written to their own single-line-text fields in Growers, so the
+     Worker's vocabulary is the only gate on the values: kept strict here. */
+  county: ['carlow', 'cavan', 'clare', 'cork', 'donegal', 'dublin', 'galway',
+           'kerry', 'kildare', 'kilkenny', 'laois', 'leitrim', 'limerick',
+           'longford', 'louth', 'mayo', 'meath', 'monaghan', 'offaly',
+           'roscommon', 'sligo', 'tipperary', 'waterford', 'westmeath',
+           'wexford', 'wicklow'],
+  travel_distance: ['up_to_5km', 'up_to_10km', 'up_to_20km', 'more_than_20km',
+                    'flexible'],
   grower_source: ['direct', 'grower_register', 'allotment_association',
                   'council', 'community_channel', 'discovery', 'other']
 };
@@ -428,9 +439,14 @@ function growerWritesEnabled(env) {
    honeypot) is refused by PRESENCE, before the switch, so a caller sending
    more than the register keeps finds out and nothing about it is stored. */
 const GROWER_ALLOWED_KEYS = Object.freeze([
-  'first_name', 'email', 'district', 'travel_radius', 'space_wanted',
-  'timing', 'growing_note', 'over_18', 'consent_text', 'source'
+  'first_name', 'email', 'county', 'district', 'town_area', 'travel_distance',
+  'space_wanted', 'timing', 'growing_note', 'over_18', 'consent_text', 'source'
 ]);
+const MAX_TOWN_CHARS = 60;
+/* A town or general area only (never a postal address). An Eircode-shaped string or a
+   house-number pattern is refused by name, and nothing is stored. */
+const EIRCODE_RE = /\b[ACDEFHKNPRTVWXY][0-9]{2}[0-9W]?\s?[0-9ACDEFHKNPRTVWXY]{4}\b/i;
+const HOUSE_NO_RE = /^\s*\d+[a-z]?\b|\b\d+\s+[a-z]+\s+(road|street|avenue|park|drive|lane|close|crescent|grove|court|way|rd|st|ave)\b/i;
 function unknownGrowerKey(body) {
   for (const k of Object.keys(body)) {
     if (!GROWER_ALLOWED_KEYS.includes(k)) return k;
@@ -445,8 +461,11 @@ async function handleGrower(env, body, now, cors) {
 
   const first_name = cleanText(body.first_name, MAX_NAME_CHARS);
   const email = cleanText(body.email, MAX_EMAIL_CHARS);
+  const county = pickEnum(V.county, body.county);
   const district = pickEnum(V.district, body.district);
-  const travel_radius = pickEnum(V.travel_radius, body.travel_radius);
+  const town_area = cleanText(body.town_area, MAX_TOWN_CHARS);
+  const travelGiven = body.travel_distance !== undefined && body.travel_distance !== '';
+  const travel_distance = pickEnum(V.travel_distance, body.travel_distance);
   const space_wanted = pickEnum(V.space_band, body.space_wanted);
   const timing = pickEnum(V.timing, body.timing);
   const source = pickEnum(V.grower_source, body.source) || 'direct';
@@ -454,8 +473,13 @@ async function handleGrower(env, body, now, cors) {
 
   if (!first_name) return REFUSED(cors, 'first_name');
   if (!email || !EMAIL_RE.test(email)) return REFUSED(cors, 'email');
+  if (!county) return REFUSED(cors, 'county');
   if (!district) return REFUSED(cors, 'district');
-  if (!travel_radius) return REFUSED(cors, 'travel_radius');
+  /* district must agree with county: the four pilot areas and
+     elsewhere_in_dublin only with Dublin; elsewhere_in_ireland only outside it. */
+  if ((county === 'dublin') === (district === 'elsewhere_in_ireland')) return REFUSED(cors, 'district');
+  if (town_area && (EIRCODE_RE.test(town_area) || HOUSE_NO_RE.test(town_area))) return REFUSED(cors, 'town_area');
+  if (travelGiven && !travel_distance) return REFUSED(cors, 'travel_distance');
   if (!space_wanted) return REFUSED(cors, 'space_wanted');
   if (!timing) return REFUSED(cors, 'timing');
   if (body.over_18 !== true) return REFUSED(cors, 'over_18');
@@ -471,8 +495,8 @@ async function handleGrower(env, body, now, cors) {
     first_name,
     email,
     email_key: emailKey,
+    county,
     district,
-    travel_radius,
     space_wanted,
     timing,
     over_18: true,
@@ -483,6 +507,8 @@ async function handleGrower(env, body, now, cors) {
     source
   };
   if (note) fields.growing_note = note;
+  if (town_area) fields.town_area = town_area;
+  if (travel_distance) fields.travel_distance = travel_distance;
   /* newsletter_consent: NOT written. The published notice does not describe a
      newsletter, so the key is outside GROWER_ALLOWED_KEYS and refused above. */
 

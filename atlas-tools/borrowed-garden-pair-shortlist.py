@@ -47,7 +47,9 @@ KM = {
     frozenset(["raheny", "donnycarney"]): 3.5, frozenset(["killester", "donnycarney"]): 1.5,
     frozenset(["killester", "artane"]): 2.0, frozenset(["donnycarney", "artane"]): 1.5,
 }
-RADIUS_KM = {"walking": 1.5, "up_to_2km": 2.0, "up_to_5km": 5.0, "up_to_10km": 10.0}
+# Grower travel (16 Oct 2026 refinement). Blank = not given: same district only, flagged.
+RADIUS_KM = {"up_to_5km": 5.0, "up_to_10km": 10.0, "up_to_20km": 20.0, "more_than_20km": 50.0, "flexible": 50.0,
+             "": 1.0}
 SIZE = ["very_small", "small", "medium", "large"]
 NEAR_TIMING = {frozenset(["this_season", "within_3_months"])}
 NOT_ACTIVE = {"paused", "withdrawn"}
@@ -55,7 +57,7 @@ NOT_ACTIVE = {"paused", "withdrawn"}
 # text) is never copied to the output.
 GARDEN_COLS = ["record_ref", "status", "district", "size_note", "water", "timing", "inherited_tenure",
                "permission_confirmed", "garden_note"]
-GROWER_COLS = ["record_ref", "status", "district", "travel_radius", "space_wanted", "timing", "growing_note"]
+GROWER_COLS = ["record_ref", "status", "county", "district", "travel_distance", "space_wanted", "timing", "growing_note"]
 
 
 def km(a: str, b: str) -> float:
@@ -104,10 +106,13 @@ def grower_gate(p: dict) -> str | None:
 def assess(g: dict, p: dict):
     reasons, flags = [], []
     d = km(g["district"], p["district"])
-    radius = RADIUS_KM.get(p["travel_radius"], 0)
+    radius = RADIUS_KM.get(p["travel_distance"], 0)
     if d > radius:
         return None
-    reasons.append(f"~{d:g} km apart, within the grower's {p['travel_radius'].replace('_', ' ')}")
+    if p["travel_distance"]:
+        reasons.append(f"~{d:g} km apart, within the grower's {p['travel_distance'].replace('_', ' ')}")
+    else:
+        reasons.append("same district (grower did not say how far they'd travel)")
     gs, ps = g["size_note"], p["space_wanted"]
     if "not_sure" in (gs, ps):
         flags.append("size not sure on one side")
@@ -126,6 +131,8 @@ def assess(g: dict, p: dict):
         flags.append("read the garden note")
     if p["growing_note"]:
         flags.append("read the grower note")
+    if not p["travel_distance"]:
+        flags.append("grower travel not given")
     score = (radius - d) + (0 if flags else 1) + (1 if gt == pt else 0)
     return d, score, reasons, flags
 

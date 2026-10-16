@@ -73,8 +73,8 @@ async function send(env, body, path = '/v1/garden-register/grower') {
 }
 let n = 0;
 const grower = (over = {}) => ({
-  first_name: 'Testgrower', email: `grower.${++n}@example.com`, district: 'raheny',
-  travel_radius: 'up_to_2km', space_wanted: 'small', timing: 'flexible',
+  first_name: 'Testgrower', email: `grower.${++n}@example.com`, county: 'dublin', district: 'raheny',
+  town_area: 'Raheny village', travel_distance: 'up_to_5km', space_wanted: 'small', timing: 'flexible',
   over_18: true, consent_text: GROWER_CONSENT, source: 'grower_register', ...over
 });
 const garden = (over = {}) => ({
@@ -132,9 +132,9 @@ for (const k of ['newsletter_consent', 'surname', 'last_name', 'address', 'eirco
   const r = await send(ENV_PROD, grower({ phone: '0870000000' }));
   check('R4b strict keys fire BEFORE the switch (closed route still names the key)',
     r.status === 400 && r.j.field === 'phone');
-  check('R4c allow-list is exactly the ten documented keys',
+  check('R4c allow-list is exactly the twelve documented keys',
     JSON.stringify([...T.GROWER_ALLOWED_KEYS].sort()) === JSON.stringify(
-      ['consent_text','district','email','first_name','growing_note','over_18','source','space_wanted','timing','travel_radius']));
+      ['consent_text','county','district','email','first_name','growing_note','over_18','source','space_wanted','timing','town_area','travel_distance']));
 }
 
 /* ================================================================= R5 ==== */
@@ -161,8 +161,8 @@ for (const k of ['newsletter_consent', 'surname', 'last_name', 'address', 'eirco
         sl.body.records[0].fields.reason === 'submission_accepted' && sl.body.records[0].fields.actor === 'system');
   check('R5k typecast:false on every write', posts.every((c) => c.body.typecast === false));
   check('R5l the field set written is exactly the expected one', f && JSON.stringify(Object.keys(f).sort()) === JSON.stringify(
-      ['consent_text_hash','district','email','email_key','first_name','growing_note','over_18','privacy_version','source',
-       'space_wanted','status','submitted_at','timing','travel_radius']), f && Object.keys(f).sort().join(','));
+      ['consent_text_hash','county','district','email','email_key','first_name','growing_note','over_18','privacy_version','source',
+       'space_wanted','status','submitted_at','timing','town_area','travel_distance']), f && Object.keys(f).sort().join(','));
 
   /* R6 · repeat address, different case: same reply, no second write. */
   const again = await send(ENV_OPEN, { ...body, email: body.email.toUpperCase() });
@@ -176,10 +176,33 @@ for (const k of ['newsletter_consent', 'surname', 'last_name', 'address', 'eirco
   check('R5m source defaults to direct when absent', f && f.body.records[0].fields.source === 'direct');
 }
 
+/* ===================================================== R8 · location ==== */
+{
+  const r = await send(ENV_OPEN, grower({ county: 'clare', district: 'elsewhere_in_ireland', town_area: 'Ennis', travel_distance: 'flexible' }));
+  const f = r.calls.find((c) => /\/Growers$/.test(c.url) && c.method === 'POST');
+  const ff = f && f.body.records[0].fields;
+  check('R8 Clare + Ennis + flexible is received and stored as sent', r.status === 200 && ff && ff.county === 'clare' &&
+        ff.district === 'elsewhere_in_ireland' && ff.town_area === 'Ennis' && ff.travel_distance === 'flexible', JSON.stringify(ff));
+  const r2 = await send(ENV_OPEN, grower({ town_area: undefined, travel_distance: undefined }));
+  const f2 = r2.calls.find((c) => /\/Growers$/.test(c.url) && c.method === 'POST');
+  const g2 = f2 && f2.body.records[0].fields;
+  check('R8b town and travel are optional: absent -> not written', r2.status === 200 && g2 && !('town_area' in g2) && !('travel_distance' in g2));
+  const r3 = await send(ENV_OPEN, grower({ travel_distance: '' }));
+  check('R8c an empty travel choice is treated as not given', r3.status === 200);
+}
+
 /* ================================================================= R7 ==== */
 for (const [label, over, field] of [
   ['district outside the vocabulary', { district: 'cork' }, 'district'],
-  ['travel radius outside the vocabulary', { travel_radius: 'up_to_50km' }, 'travel_radius'],
+  ['travel distance outside the vocabulary', { travel_distance: 'up_to_50km' }, 'travel_distance'],
+  ['county missing', { county: undefined }, 'county'],
+  ['county outside the 26', { county: 'antrim' }, 'county'],
+  ['Dublin county with elsewhere_in_ireland', { district: 'elsewhere_in_ireland' }, 'district'],
+  ['Cork with a Dublin pilot area', { county: 'cork' }, 'district'],
+  ['an Eircode in the town field', { town_area: 'D05 X2Y8' }, 'town_area'],
+  ['an Eircode without a space', { town_area: 'near d05x2y8' }, 'town_area'],
+  ['a house address in the town field', { town_area: '12 Main Street' }, 'town_area'],
+  ['the old travel_radius key', { travel_radius: 'walking' }, 'travel_radius'],
   ['space outside the vocabulary', { space_wanted: 'huge' }, 'space_wanted'],
   ['timing outside the vocabulary', { timing: 'someday' }, 'timing'],
   ['missing first name', { first_name: '  ' }, 'first_name'],

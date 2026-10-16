@@ -20,13 +20,14 @@ H7_NEW = (f"  <!-- {MARKER} · Garden Owner Register and Grower Register, privac
           "    <h3 class=\"pv5-sub\">The Garden Owner Register (homeowners)</h3>\n")
 GROWER_SUB = """    <h3 class="pv5-sub">The Grower Register (growers)</h3>
     <p>The Grower Register is a list, kept privately by PlotNua, of people who would like somewhere to grow and who might be introduced to a homeowner nearby. PlotNua is exploring this as a small pilot. Joining is voluntary and free. Matching is not live, and joining the register does not arrange an introduction or mean that a garden is available.</p>
-    <p>The Borrowed Garden Grower Check is private: answering its questions does not send PlotNua your details. If you choose to join the register, four of your answers fill in the form, where you can see and change them before you submit.</p>
+    <p>The Borrowed Garden Grower Check is private: answering its questions does not send PlotNua your details. If you choose to join the register, your answers fill in the form, where you can see and change them before you submit.</p>
     <p>What we collect when you join:</p>
     <ul>
       <li>your first name;</li>
       <li>your email address;</li>
-      <li>the area you choose from a short list;</li>
-      <li>how far you would travel, how much space you are looking for, and roughly when;</li>
+      <li>your county and the area you choose from a short list;</li>
+      <li>how much space you are looking for and roughly when;</li>
+      <li>if you choose to tell us, your town or general area and how far you would travel;</li>
       <li>anything you choose to add in the note; and</li>
       <li>a record that you gave your consent, which version of this notice applied, and when you joined.</li>
     </ul>

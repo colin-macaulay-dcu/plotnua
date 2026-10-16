@@ -31,7 +31,7 @@ HOST = "disc025-borrowed-garden-check.html"
 DISC_PREVIEW = "_launch-preview-discovery.html"
 W = "https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/"
 CONSENT_G = "I'm over 18, and I'd like PlotNua to keep this and tell me about possible growing space nearby."
-ALLOWED = {"first_name", "email", "district", "travel_radius", "space_wanted", "timing", "growing_note",
+ALLOWED = {"first_name", "email", "county", "district", "town_area", "travel_distance", "space_wanted", "timing", "growing_note",
            "over_18", "consent_text", "source"}
 results = []
 
@@ -163,15 +163,16 @@ def main():
             g.goto(base + DISC_PREVIEW + "#discover-your-property")
             g.click(f'a[href="{GROWER}?start=1"]')
             g.wait_for_selector("#bgQ.is-on")
-            check("B1 grower route opens the Grower Check at question 1 of 4", g.text_content("#bgProg") == "Question 1 of 4")
+            check("B1 grower route opens the Grower Check at question 1 (county)", g.text_content("#bgProg") == "Question 1 of 5" and "county" in g.inner_text("#bgQText"))
             check("B1b same components as the owner check (dots, stacked options, Back)",
-                  g.locator("#bgDots .pc-dot").count() == 4 and g.locator("#bgOpts .pc-opt").count() == 6)
+                  g.locator("#bgDots .pc-dot").count() == 5 and g.locator("#bgOpts .pc-opt").count() == 26)
             if shots:
                 g.screenshot(path=str(shots / "2-grower-question.png"))
-            g.get_by_role("button", name="Killester", exact=True).click(); g.get_by_role("button", name="Up to 2 km", exact=True).click()
+            g.get_by_role("button", name="Dublin", exact=True).click(); g.get_by_role("button", name="Killester", exact=True).click()
+            g.get_by_role("button", name="Up to 5 km", exact=True).click()
             g.click("#bgBack")
-            check("B2 Back returns to the previous question", g.text_content("#bgProg") == "Question 2 of 4")
-            g.get_by_role("button", name="Up to 2 km", exact=True).click(); g.get_by_role("button", name="Small — a corner", exact=True).click(); g.get_by_role("button", name="Next season", exact=True).click()
+            check("B2 Back returns to the previous question", g.text_content("#bgProg") == "Question 3 of 5")
+            g.get_by_role("button", name="Up to 5 km", exact=True).click(); g.get_by_role("button", name="Small — a corner", exact=True).click(); g.get_by_role("button", name="Next season", exact=True).click()
             g.wait_for_selector("#bgReveal.is-on")
             txt = g.inner_text("#bgReveal")
             check("B3 result: pilot area, beginners welcome, honest", "first areas" in txt and "beginners are welcome" in txt
@@ -184,15 +185,15 @@ def main():
 
             g = page()
             g.goto(base + GROWER + "?start=1&interest=preview")
-            for t in ["Killester", "Up to 2 km", "Small — a corner", "Next season"]:
+            for t in ["Dublin", "Killester", "Up to 5 km", "Small — a corner", "Next season"]:
                 g.get_by_role("button", name=t, exact=True).click()
             g.wait_for_selector("#bgReveal.is-on")
             if shots:
                 g.screenshot(path=str(shots / "3-grower-result.png"), full_page=True)
             g.click("#bgIntOpen")
             check("B5 the four kept answers pre-fill the register form",
-                  [g.input_value(s) for s in ["#bgIntDistrict", "#bgIntTravel", "#bgIntSize", "#bgIntTiming"]]
-                  == ["killester", "up_to_2km", "small", "next_season"])
+                  [g.input_value(s) for s in ["#bgIntCounty", "#bgIntDistrict", "#bgIntTravel", "#bgIntSize", "#bgIntTiming"]]
+                  == ["dublin", "killester", "up_to_5km", "small", "next_season"])
             check("B5b consent text is the frozen G1B sentence", g.inner_text("#bgIntConsentText") == CONSENT_G)
             axe(g, "Grower Check result + register form")
             g.click("#bgIntSend")
@@ -222,7 +223,7 @@ def main():
             def run(mode, email, honey=False, district="artane"):
                 fake.mode = mode
                 pg = page(); pg.goto(base + GROWER + "?start=1&interest=preview")
-                for t in ["Artane" if district == "artane" else "Elsewhere in Ireland", "Within walking distance",
+                for t in (["Dublin", "Artane"] if district == "artane" else ["Clare"]) + ["Flexible / unsure",
                           "Not sure yet", "I’m flexible"]:
                     pg.get_by_role("button", name=t, exact=True).click()
                 pg.wait_for_selector("#bgReveal.is-on"); pg.click("#bgIntOpen")
@@ -239,7 +240,7 @@ def main():
             check("B9 Worker closed -> 'The register isn't open yet', nothing saved",
                   pg.get_attribute("#bgIntDone", "data-state") == "not_open"); pg.close()
             pg, _ = run("refused", "x2@example.com")
-            check("B9b refused -> field named, form kept", "your area" in pg.inner_text("#bgIntMsg")); pg.close()
+            check("B9b refused -> field named, form kept", "part of Dublin" in pg.inner_text("#bgIntMsg")); pg.close()
             pg, _ = run("fail", "x3@example.com")
             check("B9c network failure -> truthful 'didn't go through'", pg.get_attribute("#bgIntDone", "data-state") == "unavailable"); pg.close()
             pg, sent = run("received", "x4@example.com", honey=True)
@@ -247,6 +248,46 @@ def main():
             pg, _ = run("received", "x5@example.com", district="elsewhere")
             check("B9e out-of-area confirmation is honest", "outside those areas" in pg.inner_text("#bgIntDone")); pg.close()
             fake.mode = "received"
+
+            # location rules (county required, Dublin area only for Dublin, town optional, no Eircode)
+            fake.mode = "received"
+            lg = page(); lg.goto(base + GROWER + "?start=1&interest=preview")
+            lg.get_by_role("button", name="Clare", exact=True).click()
+            check("L1 outside Dublin the 'which part of Dublin' question is skipped", lg.text_content("#bgProg") == "Question 2 of 4")
+            for t in ["Up to 20 km", "Medium — a good patch", "This season"]:
+                lg.get_by_role("button", name=t, exact=True).click()
+            lg.wait_for_selector("#bgReveal.is-on"); lg.click("#bgIntOpen")
+            check("L2 the Dublin-area field is hidden for Clare", not lg.locator("#bgIntDistrictWrap").is_visible())
+            lg.fill("#bgIntName", "Testgrower"); lg.fill("#bgIntEmail", "clare.test@example.com"); lg.check("#bgIntConsent")
+            lg.fill("#bgIntTown", "V95 X2Y8"); n0 = len(fake.reqs); lg.click("#bgIntSend")
+            check("L3 an Eircode in the town field is refused locally; nothing sent",
+                  "not an address or Eircode" in lg.inner_text("#bgIntMsg") and len(fake.reqs) == n0)
+            lg.fill("#bgIntTown", "12 Main Street"); lg.click("#bgIntSend")
+            check("L3b a house address is refused locally too", len(fake.reqs) == n0)
+            lg.fill("#bgIntTown", "Ennis"); lg.click("#bgIntSend")
+            lg.wait_for_selector("#bgIntDone[data-state=received]")
+            b = fake.reqs[-1][1]
+            check("L4 Clare payload: county clare, district elsewhere_in_ireland, town Ennis, travel up_to_20km",
+                  b.get("county") == "clare" and b.get("district") == "elsewhere_in_ireland" and b.get("town_area") == "Ennis"
+                  and b.get("travel_distance") == "up_to_20km", b)
+            lg.close()
+            lg = page(); lg.goto(base + GROWER + "?start=1&interest=preview")
+            for t in ["Dublin", "Raheny", "Up to 5 km", "Small — a corner", "This season"]:
+                lg.get_by_role("button", name=t, exact=True).click()
+            lg.wait_for_selector("#bgReveal.is-on"); lg.click("#bgIntOpen")
+            check("L5 the Dublin-area field shows for Dublin", lg.locator("#bgIntDistrictWrap").is_visible())
+            lg.select_option("#bgIntTravel", ""); lg.select_option("#bgIntDistrict", "")
+            lg.fill("#bgIntName", "Testgrower"); lg.fill("#bgIntEmail", "dub.test@example.com"); lg.check("#bgIntConsent")
+            lg.click("#bgIntSend")
+            check("L6 Dublin without an area is asked for it", "part of Dublin" in lg.inner_text("#bgIntMsg"))
+            lg.select_option("#bgIntDistrict", "raheny"); lg.click("#bgIntSend")
+            lg.wait_for_selector("#bgIntDone[data-state=received]")
+            b = fake.reqs[-1][1]
+            check("L7 travel and town are optional: not sent when blank", "travel_distance" not in b and "town_area" not in b and
+                  b["county"] == "dublin" and b["district"] == "raheny", b)
+            if shots:
+                lg.locator("#bgInterest").screenshot(path=str(shots / "8-grower-confirmation-dublin.png"))
+            lg.close()
 
             # mobile
             mg = page((390, 844))
@@ -256,7 +297,7 @@ def main():
             check("M2 mobile options are at least 44px tall", not small, small)
             if shots:
                 mg.screenshot(path=str(shots / "6-grower-question-mobile.png"))
-            for t in ["Raheny", "Within walking distance", "Very small — a bed or two", "This season"]:
+            for t in ["Dublin", "Raheny", "More than 20 km", "Very small — a bed or two", "This season"]:
                 mg.get_by_role("button", name=t, exact=True).click()
             mg.click("#bgIntOpen")
             check("M3 mobile form fits: no horizontal scroll", mg.evaluate("document.documentElement.scrollWidth") <= 390)

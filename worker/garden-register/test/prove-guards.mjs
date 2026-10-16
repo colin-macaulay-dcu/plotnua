@@ -47,8 +47,8 @@ const GROWER_CONSENT = T.CONSENT_TEXT.grower;
 
 function growerBody(over = {}) {
   return {
-    first_name: 'Test', email: 'guard.test@example.com', district: 'raheny',
-    travel_radius: 'walking', space_wanted: 'small', timing: 'flexible',
+    first_name: 'Test', email: 'guard.test@example.com', county: 'dublin', district: 'raheny',
+    travel_distance: 'up_to_5km', space_wanted: 'small', timing: 'flexible',
     over_18: true, consent_text: GROWER_CONSENT, ...over
   };
 }
@@ -160,7 +160,7 @@ async function refusedField(body, field, env = BASE_ENV) {
 }
 check('G24 unknown district is refused', await refusedField(growerBody({ district: 'cork_city' }), 'district'));
 check('G25 unknown space band is refused', await refusedField(growerBody({ space_wanted: 'huge' }), 'space_wanted'));
-check('G26 unknown travel radius is refused', await refusedField(growerBody({ travel_radius: 'up_to_50km' }), 'travel_radius'));
+check('G26 unknown travel distance is refused', await refusedField(growerBody({ travel_distance: 'up_to_50km' }), 'travel_distance'));
 check('G27 bad email is refused', await refusedField(growerBody({ email: 'not-an-email' }), 'email'));
 check('G28 missing first name is refused', await refusedField(growerBody({ first_name: '   ' }), 'first_name'));
 check('G29 over_18 false is refused', await refusedField(growerBody({ over_18: false }), 'over_18'));
