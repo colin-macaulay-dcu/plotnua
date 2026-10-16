@@ -10,7 +10,8 @@
    a read can be established AND scope-limited -- Atlas verified the supplier's
    range, not this model. Measured over the real universe by lifting the shipped
    functions verbatim: 1,898 established · 548 model-level · 1,350 scope-limited
-   (1,357 since the ÖÖD update of 14 Oct 2026).
+   (1,357 since the ÖÖD update of 14 Oct 2026; 555 model-level and 1,383
+   scope-limited since the targeted publications of 16 Oct 2026).
    A gate on state alone would make 1,350 false model-level claims.
 
    A1  The three placements exist, at 24 / 20 / 16px, wired the approved way.
@@ -227,11 +228,25 @@ else {
        irishAvailability reads, newly ESTABLISHED by ÖÖD's 14 Oct confirmation
        and carrying scope "Product-Specific", so each is REFUSED the
        model-level mark, as it should be. No read was removed, no scope note
-       was lost, and leak stays 0. */
-    refused === 1357 ? ok('1,357 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,357 scope-limited refusals, measured ' + refused);
-    allowed === 548 ? ok('548 model-level established reads allowed')
-                    : bad('expected 548 model-level marks, measured ' + allowed);
+       was lost, and leak stays 0.
+
+       RE-CENSUSED 16 October 2026 for the founder-approved targeted
+       publications (atlas-tools/publish-targeted-update.py: Hutsmith,
+       Elm Landscaping (Garden Rooms), Don Modular Homes, Garden Room
+       Ireland): scope-limited 1357 -> 1383, model-level 548 -> 555.
+       Decomposed per product before the numbers moved: the +7 model-level
+       marks are exactly one each for the seven newly published garden rooms
+       (Elm Quin, Tulla, Doolin, Ruan, Doughmore; Don Modular Garden Room;
+       Garden Room Ireland QC6), and the +26 scope-limited refusals are those
+       same seven products' scoped reads (Range-Level 289 -> 308,
+       Organisation-Wide 1068 -> 1075), each REFUSED the model-level mark.
+       The removal of Hutsmith Type III Cabin (blocker E) took no counted
+       read. Every other product's reads are unchanged, no scope note was
+       lost, and leak stays 0. */
+    refused === 1383 ? ok('1,383 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,383 scope-limited refusals, measured ' + refused);
+    allowed === 555 ? ok('555 model-level established reads allowed')
+                    : bad('expected 555 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']
       .filter(s => marked({ state: s, scope: null, conflict: null }));
     none.length ? bad('states that must never be marked are: ' + none.join(', '))
