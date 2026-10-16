@@ -5,9 +5,9 @@
  "sourceBase": "appoLZFWesvoPhZGR",
  "qualificationRuleVersion": "garden-room-qualification-v1",
  "dryRun": false,
- "sourceGardenRoomCount": 580,
- "eligibleCount": 576,
- "highConfidenceCount": 151,
+ "sourceGardenRoomCount": 581,
+ "eligibleCount": 577,
+ "highConfidenceCount": 152,
  "withCaveatCount": 425,
  "limitedEvidenceCount": 0,
  "excludedCount": 4,
@@ -15,7 +15,7 @@
   "E": 3,
   "F": 1
  },
- "confirmedIrishAvailabilityCount": 269,
+ "confirmedIrishAvailabilityCount": 270,
  "unknownIrishAvailabilityCount": 311,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
@@ -23,14 +23,14 @@
  "missingPriceCount": 223,
  "priceEvidenceSummary": {
   "verified": 275,
-  "present-unverified": 58,
+  "present-unverified": 59,
   "quote-only": 20,
   "missing": 223
  },
  "quoteOnlyPriceCount": 20,
- "organisationCount": 63,
+ "organisationCount": 64,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "d035cd4a77fbb62958eaa13ca60a1104e2e7f258b3573fb729b821f0a3d9cac1",
+ "governedDigest": "f84965dac3727397fc56dcaaeabdda72433daab3619ea2fe11469f7ef3dbc77b",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -12643,6 +12643,168 @@
     "lastPriceCheck": null,
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY KIT ONLY"
+   }
+  },
+  {
+   "id": "recjMsY7TFKaadyQV",
+   "name": "Don Modular Garden Room",
+   "organisation": "Don Modular Homes",
+   "productId": "recjMsY7TFKaadyQV",
+   "productCode": "PROD-001258",
+   "productName": "Don Modular Garden Room",
+   "productType": "Factory-built modular garden studio",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recOLYgRSUdzU8zwI",
+     "name": "Don Modular Homes"
+    }
+   ],
+   "productUrl": "https://donmodularhomes.ie/garden-rooms/",
+   "verificationStatus": "Partially Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "present-unverified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Don Modular Homes."
+    ],
+    "caveats": [
+     "A published price is recorded but has not been verified."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "present-unverified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 60480,
+    "from": 60480,
+    "to": 88320,
+    "currency": "EUR",
+    "priceType": "Starting From",
+    "status": "Partially Verified",
+    "includesVat": "Unknown",
+    "evidenceScope": "Range-Level",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {
+    "floorArea": {
+     "text": null,
+     "number": 25.2,
+     "unit": "sqm",
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "externalDimensions": {
+     "text": "Module widths 3.3 m, 3.6 m or 4.6 m; length set to suit the site in half-metre steps. Overall HEIGHT NOT PUBLISHED — the supplier itself advises asking for the overall height of the configuration before planning around it.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "construction": {
+     "text": "G550 galvanised steel frame (Z275, C4 coastal-rated), RAL 7016 anthracite steel cladding (Class A1 non-combustible, 10-year UV warranty), 80 mm thermally broken aluminium windows and doors, two double-glazed skylights, fire sprinklers to BS 9251, Irish ET101 electrics, Part H plumbing.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "200 mm insulation; published wall U-value ≈ 0.18 W/m²K and roof ≈ 0.15 W/m²K (supplier states this exceeds Part L). Electric underfloor heating (7-day WiFi thermostat) and a 5 kW A++ inverter air-conditioning unit included at every size.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "installationModel": {
+     "text": "Factory-built single module (1–2 bed and garden rooms) or multiple modules joined on site (3–4 bed). Delivered by lorry and craned into position, then connected to services. Foundations, delivery and installation, service connections and any planning fees are QUOTED SEPARATELY after a site assessment — not in the published price.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "warranty": {
+     "text": "Published: 10-year UV warranty on the cladding and a 20-year cable warranty (homepage). No whole-building or structural warranty term located. Nothing inferred.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "irishAvailability": {
+     "text": "REPUBLIC OF IRELAND — YES (first-party): Dublin showroom at 68/69 Phibsborough Road, D07 YX38; \"we deliver and install in every county in Ireland\". Delivery and installation cost is site-specific and quoted after assessment.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 60480,
+   "currency": "EUR",
+   "priceBasis": "Partially Verified",
+   "floorAreaM2": 25.2,
+   "glazing": null,
+   "insulation": "200 mm insulation; published wall U-value ≈ 0.18 W/m²K and roof ≈ 0.15 W/m²K (supplier states this exceeds Part L). Electric underfloor heating (7-day WiFi thermostat) and a 5 kW A++ inverter air-conditioning unit included at every size.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "present-unverified",
+   "qualificationCaveats": [
+    "A published price is recorded but has not been verified."
+   ],
+   "priceRecordIds": [
+    "rec1LIiAt1ixWIj4Q"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Partially Verified",
+   "priceType": "Starting From",
+   "priceScope": "Range-Level",
+   "vatStatus": "Unknown",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
+   "priceIsRangeFloor": true,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "rec1LIiAt1ixWIj4Q"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Partially Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Range-Level",
+    "lastPriceCheck": "2026-10-16",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": null
    }
   },
   {

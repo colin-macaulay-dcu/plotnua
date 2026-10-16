@@ -318,3 +318,4 @@ links to all 13 public Discoveries. Search then enhances it.
 The universe pin above is moved only by a targeted publication whose boundary check proved every other record byte-identical.
 - 2026-10-16 · re-frozen to `19f846ef2522a3adfe37e1d34516d3290bffc6915da9b7dfaa5206fa26f92e5a` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261016-112927-hutsmith.md); only the targeted records differ.
 - 2026-10-16 · re-frozen to `5d134a4e25f7946d69df1bf63b9306e84d012e50f6c117f7c6ce89b6b25cbc3c` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261016-112952-elm-landscaping-garden-rooms.md); only the targeted records differ.
+- 2026-10-16 · re-frozen to `b7b864535d43c47517b138ad3f97951cb476b5fa93651e7115b5dc89aae7d5f5` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261016-113042-don-modular-homes.md); only the targeted records differ.
