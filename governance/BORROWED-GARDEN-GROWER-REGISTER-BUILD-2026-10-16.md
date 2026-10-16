@@ -192,3 +192,43 @@ Guard G4 refuses any inbound link while the register is closed.
 - `prove-g6-open-register.py`: 14/14.
 - `prove-g6-owner-register.py`: every case run passes, then it stops at `git show c64e63a`. `prove-tenure-invariance.mjs` likewise needs `057bb81`. Both are commits from the Mac line that are not on GitHub: pre-existing, and unrelated to this work.
 - Image-rights manifest is up to date, and the image-rights gate passes.
+
+---
+
+## REVISION · controlled launch (founder direction, 16 Oct 2026, 14:00)
+
+**Superseded:** `borrowed-garden-grower-register.html` (never published) is removed.
+
+**The gardener route now reuses the Garden Owner journey exactly:**
+- `disc025-borrowed-garden-grower-check.html` is built from the host Property Check's own head, stylesheet, header and Journey Exit footer.
+- It has the same screens: intro; one question per screen with progress dots and Back; result band; `bg-int` register panel; confirmation states.
+- Four questions: area, distance, space, when.
+
+**Discovery.** At activation the closing panel becomes "Take part · Two ways to take part", with two cards using the component already live on A Home for Art:
+- "I have garden space to share" goes to the Property Check (unchanged).
+- "I'm looking for somewhere to grow" goes to the Grower Check.
+
+**Privacy V6:**
+- `atlas-tools/build-privacy-v6.py` refuses to write without founder approval.
+- `atlas-tools/privacy_v6_layer.py` is the single definition of the V6 blocks, with an exact inverse. The earlier V4/V5, Garden and Art verifiers read `privacy.html` through it, so they keep verifying their own governed text.
+
+**Launch:**
+- `atlas-tools/make-grower-launch-kit.sh` builds `1-release.patch` (all work plus V6 applied) and `2-activation.patch` (panel public, Discovery routes, grower writes on V6).
+- `04 Deploy/grower-launch.sh` (founder, one command) runs:
+  1. Worker (grower closed; also closes the live gap);
+  2. push the notice and the closed page;
+  3. grower writes on, then Claude's controlled registration and Airtable verification;
+  4. push the activation, then Claude's live check and LAUNCH_OK.
+- Any failure turns grower writes off and reverts the activation only. The Garden Owner route's writes stay on in every deploy.
+- Simulated end to end: success, rollback and stop paths.
+
+**Proofs (16 Oct):**
+
+| Proof | Result |
+|---|---|
+| Builder | 19/19 |
+| Both journeys in Chromium | 30/30 (owner route unchanged; grower route; closed state; mobile; axe: no new findings against the live Discovery) |
+| Privacy V6 | 10/10 |
+| Existing privacy, Garden and Art proofs | Unchanged from baseline in the current state; Art proof 57/57 in a launch rehearsal |
+
+**G7 (introductions) remains BLOCKED** pending the insurance question. Nothing in this build sends email or introduces anyone.
