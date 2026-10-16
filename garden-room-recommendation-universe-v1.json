@@ -5,9 +5,9 @@
  "sourceBase": "appoLZFWesvoPhZGR",
  "qualificationRuleVersion": "garden-room-qualification-v1",
  "dryRun": false,
- "sourceGardenRoomCount": 575,
- "eligibleCount": 571,
- "highConfidenceCount": 146,
+ "sourceGardenRoomCount": 580,
+ "eligibleCount": 576,
+ "highConfidenceCount": 151,
  "withCaveatCount": 425,
  "limitedEvidenceCount": 0,
  "excludedCount": 4,
@@ -15,7 +15,7 @@
   "E": 3,
   "F": 1
  },
- "confirmedIrishAvailabilityCount": 264,
+ "confirmedIrishAvailabilityCount": 269,
  "unknownIrishAvailabilityCount": 311,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
@@ -23,14 +23,14 @@
  "missingPriceCount": 223,
  "priceEvidenceSummary": {
   "verified": 275,
-  "present-unverified": 53,
+  "present-unverified": 58,
   "quote-only": 20,
   "missing": 223
  },
  "quoteOnlyPriceCount": 20,
- "organisationCount": 62,
+ "organisationCount": 63,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "de6549b21f939eb85865a43388f31cb57b387e7f97219f81c12dc80d213a734d",
+ "governedDigest": "d035cd4a77fbb62958eaa13ca60a1104e2e7f258b3573fb729b821f0a3d9cac1",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -15987,6 +15987,746 @@
     "evidenceScope": null,
     "lastPriceCheck": null,
     "basisSource": null,
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "recsmHaT00C5d62O0",
+   "name": "Elm Doolin Contemporary Log Cabin",
+   "organisation": "Elm Landscaping (Garden Rooms)",
+   "productId": "recsmHaT00C5d62O0",
+   "productCode": "PROD-001284",
+   "productName": "Elm Doolin Contemporary Log Cabin",
+   "productType": "Contemporary garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recyCu5OjHlUObM8f",
+     "name": "Elm Landscaping (Garden Rooms)"
+    }
+   ],
+   "productUrl": "https://elmlandscaping.ie/wp-content/uploads/2025/07/Elm-Landscaping-Log-Cabin-Brochure-2025.pdf",
+   "verificationStatus": "Partially Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "present-unverified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Elm Landscaping (Garden Rooms)."
+    ],
+    "caveats": [
+     "A published price is recorded but has not been verified."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "present-unverified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 12756,
+    "from": 12756,
+    "to": 14208,
+    "currency": "EUR",
+    "priceType": "Starting From",
+    "status": "Partially Verified",
+    "includesVat": "Unknown",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {
+    "externalDimensions": {
+     "text": "Published size(s): 4m x 3m or 4m x 4m.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "construction": {
+     "text": "Solid log walls, 200 mm; premium living-type doors and windows; steel roof (upgrade to steel roof tiles listed as Included). Price includes free damp-proof membrane, roof & floor insulation and weathering package.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "Roof and floor insulation included free; wall insulation & T&G cladding listed as Included on the model page.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "installationModel": {
+     "text": "Listed as Delivered & Assembled — cabin assembly Included. Timber frame & block foundation is a priced upgrade; external painting, gutters and thermowood cladding are extra.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "irishAvailability": {
+     "text": "REPUBLIC OF IRELAND — YES: Irish business (Elm Landscaping Services Ltd, showroom in Ennis, Co. Clare); garden rooms and houses \"intended for the Irish Market\". Local services in Clare, Limerick, Galway and parts of Tipperary; larger projects nationwide (first-party). Delivery cost and radius for cabins NOT published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 12756,
+   "currency": "EUR",
+   "priceBasis": "Partially Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": "Roof and floor insulation included free; wall insulation & T&G cladding listed as Included on the model page.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "present-unverified",
+   "qualificationCaveats": [
+    "A published price is recorded but has not been verified."
+   ],
+   "priceRecordIds": [
+    "recTDfky2mYo6otpJ"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Partially Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Unknown",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
+   "priceIsRangeFloor": true,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recTDfky2mYo6otpJ"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Partially Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "recehpri9hsMl3Vyn",
+   "name": "Elm Doughmore Studio Eco Garden Room",
+   "organisation": "Elm Landscaping (Garden Rooms)",
+   "productId": "recehpri9hsMl3Vyn",
+   "productCode": "PROD-001310",
+   "productName": "Elm Doughmore Studio Eco Garden Room",
+   "productType": "Insulated timber garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recyCu5OjHlUObM8f",
+     "name": "Elm Landscaping (Garden Rooms)"
+    }
+   ],
+   "productUrl": "https://elmlandscaping.ie/wp-content/uploads/2025/07/Elm-Landscaping-Log-Cabin-Brochure-2025.pdf",
+   "verificationStatus": "Partially Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "present-unverified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Elm Landscaping (Garden Rooms)."
+    ],
+    "caveats": [
+     "A published price is recorded but has not been verified."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "present-unverified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 29999,
+    "from": 29999,
+    "to": 32999,
+    "currency": "EUR",
+    "priceType": "Starting From",
+    "status": "Partially Verified",
+    "includesVat": "Unknown",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {
+    "externalDimensions": {
+     "text": "Published size(s): 5m x 4m or 6m x 4m.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "construction": {
+     "text": "Eco Garden Room: THERMO WOOD external cladding, grey insulated \"Classic Metal\" roofing, grey uPVC double-glazed windows and doors, 11 mm T&G internal cladding, laminate flooring, gutters and downpipes included.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "EPS-insulated: 100 mm EPS in walls (184 mm total wall thickness), 150 mm EPS in the roof (217 mm total), 100 mm EPS floor insulation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "installationModel": {
+     "text": "Ground-screw foundation listed as the frame & foundation system; external oiling/painting priced as extras.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "irishAvailability": {
+     "text": "REPUBLIC OF IRELAND — YES: Irish business (Elm Landscaping Services Ltd, showroom in Ennis, Co. Clare); garden rooms and houses \"intended for the Irish Market\". Local services in Clare, Limerick, Galway and parts of Tipperary; larger projects nationwide (first-party). Delivery cost and radius for cabins NOT published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 29999,
+   "currency": "EUR",
+   "priceBasis": "Partially Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": "EPS-insulated: 100 mm EPS in walls (184 mm total wall thickness), 150 mm EPS in the roof (217 mm total), 100 mm EPS floor insulation.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "present-unverified",
+   "qualificationCaveats": [
+    "A published price is recorded but has not been verified."
+   ],
+   "priceRecordIds": [
+    "rec4cu1v8IZzIjmq3"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Partially Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Unknown",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
+   "priceIsRangeFloor": true,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "rec4cu1v8IZzIjmq3"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Partially Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "rec6AILkzDIDHZcO8",
+   "name": "Elm Quin Contemporary Log Cabin",
+   "organisation": "Elm Landscaping (Garden Rooms)",
+   "productId": "rec6AILkzDIDHZcO8",
+   "productCode": "PROD-001282",
+   "productName": "Elm Quin Contemporary Log Cabin",
+   "productType": "Contemporary garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recyCu5OjHlUObM8f",
+     "name": "Elm Landscaping (Garden Rooms)"
+    }
+   ],
+   "productUrl": "https://elmlandscaping.ie/wp-content/uploads/2025/07/Elm-Landscaping-Log-Cabin-Brochure-2025.pdf",
+   "verificationStatus": "Partially Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "present-unverified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Elm Landscaping (Garden Rooms)."
+    ],
+    "caveats": [
+     "A published price is recorded but has not been verified."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "present-unverified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 14388,
+    "from": 14388,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Partially Verified",
+    "includesVat": "Unknown",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {
+    "externalDimensions": {
+     "text": "Published size(s): 4m x 3m.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "construction": {
+     "text": "Solid log walls, 200 mm; premium living-type doors and windows; steel roof (upgrade to steel roof tiles listed as Included). Price includes free damp-proof membrane, roof & floor insulation and weathering package.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "Roof and floor insulation included free; wall insulation & T&G cladding listed as Included on the model page.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "installationModel": {
+     "text": "Listed as Delivered & Assembled — cabin assembly Included. Timber frame & block foundation is a priced upgrade; external painting, gutters and thermowood cladding are extra.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "irishAvailability": {
+     "text": "REPUBLIC OF IRELAND — YES: Irish business (Elm Landscaping Services Ltd, showroom in Ennis, Co. Clare); garden rooms and houses \"intended for the Irish Market\". Local services in Clare, Limerick, Galway and parts of Tipperary; larger projects nationwide (first-party). Delivery cost and radius for cabins NOT published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 14388,
+   "currency": "EUR",
+   "priceBasis": "Partially Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": "Roof and floor insulation included free; wall insulation & T&G cladding listed as Included on the model page.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "present-unverified",
+   "qualificationCaveats": [
+    "A published price is recorded but has not been verified."
+   ],
+   "priceRecordIds": [
+    "rec4wN8ACA3QFDjJ1"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Partially Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Unknown",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "rec4wN8ACA3QFDjJ1"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Partially Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "recQxXVefJDxeGWZz",
+   "name": "Elm Ruan Eco Garden Room",
+   "organisation": "Elm Landscaping (Garden Rooms)",
+   "productId": "recQxXVefJDxeGWZz",
+   "productCode": "PROD-001309",
+   "productName": "Elm Ruan Eco Garden Room",
+   "productType": "Insulated timber garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recyCu5OjHlUObM8f",
+     "name": "Elm Landscaping (Garden Rooms)"
+    }
+   ],
+   "productUrl": "https://elmlandscaping.ie/wp-content/uploads/2025/07/Elm-Landscaping-Log-Cabin-Brochure-2025.pdf",
+   "verificationStatus": "Partially Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "present-unverified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Elm Landscaping (Garden Rooms)."
+    ],
+    "caveats": [
+     "A published price is recorded but has not been verified."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "present-unverified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 15839,
+    "from": 15839,
+    "to": 28895,
+    "currency": "EUR",
+    "priceType": "Starting From",
+    "status": "Partially Verified",
+    "includesVat": "Unknown",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {
+    "externalDimensions": {
+     "text": "Published size(s): 3.0m x 3.3m, 4.2m x 3.4m, 4.2m x 4.4m, 5.2m x 3.4m, 5.2m x 4.4m, 6.2m x 3.4m or 6.2m x 4.4m.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "construction": {
+     "text": "Eco Garden Room: THERMO WOOD external cladding, grey insulated \"Classic Metal\" roofing, grey uPVC double-glazed windows and doors, 11 mm T&G internal cladding, laminate flooring, gutters and downpipes included.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "EPS-insulated: 100 mm EPS in walls (184 mm total wall thickness), 150 mm EPS in the roof (217 mm total), 100 mm EPS floor insulation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "installationModel": {
+     "text": "Ground-screw foundation listed as the frame & foundation system; external oiling/painting priced as extras.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "irishAvailability": {
+     "text": "REPUBLIC OF IRELAND — YES: Irish business (Elm Landscaping Services Ltd, showroom in Ennis, Co. Clare); garden rooms and houses \"intended for the Irish Market\". Local services in Clare, Limerick, Galway and parts of Tipperary; larger projects nationwide (first-party). Delivery cost and radius for cabins NOT published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 15839,
+   "currency": "EUR",
+   "priceBasis": "Partially Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": "EPS-insulated: 100 mm EPS in walls (184 mm total wall thickness), 150 mm EPS in the roof (217 mm total), 100 mm EPS floor insulation.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "present-unverified",
+   "qualificationCaveats": [
+    "A published price is recorded but has not been verified."
+   ],
+   "priceRecordIds": [
+    "reccVKfGJ1mFfuo2L"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Partially Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Unknown",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
+   "priceIsRangeFloor": true,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "reccVKfGJ1mFfuo2L"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Partially Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "recN9555CIihkgea4",
+   "name": "Elm Tulla Contemporary Log Cabin",
+   "organisation": "Elm Landscaping (Garden Rooms)",
+   "productId": "recN9555CIihkgea4",
+   "productCode": "PROD-001283",
+   "productName": "Elm Tulla Contemporary Log Cabin",
+   "productType": "Contemporary garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recyCu5OjHlUObM8f",
+     "name": "Elm Landscaping (Garden Rooms)"
+    }
+   ],
+   "productUrl": "https://elmlandscaping.ie/wp-content/uploads/2025/07/Elm-Landscaping-Log-Cabin-Brochure-2025.pdf",
+   "verificationStatus": "Partially Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "present-unverified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Elm Landscaping (Garden Rooms)."
+    ],
+    "caveats": [
+     "A published price is recorded but has not been verified."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "present-unverified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 17148,
+    "from": 17148,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Partially Verified",
+    "includesVat": "Unknown",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {
+    "externalDimensions": {
+     "text": "Published size(s): 5m x 4m.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Partially Verified"
+    },
+    "construction": {
+     "text": "Solid log walls, 200 mm; premium living-type doors and windows; steel roof (upgrade to steel roof tiles listed as Included). Price includes free damp-proof membrane, roof & floor insulation and weathering package.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "Roof and floor insulation included free; wall insulation & T&G cladding listed as Included on the model page.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "installationModel": {
+     "text": "Listed as Delivered & Assembled — cabin assembly Included. Timber frame & block foundation is a priced upgrade; external painting, gutters and thermowood cladding are extra.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Partially Verified"
+    },
+    "irishAvailability": {
+     "text": "REPUBLIC OF IRELAND — YES: Irish business (Elm Landscaping Services Ltd, showroom in Ennis, Co. Clare); garden rooms and houses \"intended for the Irish Market\". Local services in Clare, Limerick, Galway and parts of Tipperary; larger projects nationwide (first-party). Delivery cost and radius for cabins NOT published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 17148,
+   "currency": "EUR",
+   "priceBasis": "Partially Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": "Roof and floor insulation included free; wall insulation & T&G cladding listed as Included on the model page.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "present-unverified",
+   "qualificationCaveats": [
+    "A published price is recorded but has not been verified."
+   ],
+   "priceRecordIds": [
+    "recKgFwXEXabNtkPQ"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Partially Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Unknown",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NOT_CONFIRMED",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recKgFwXEXabNtkPQ"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Partially Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
+    "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": null
    }
   },
