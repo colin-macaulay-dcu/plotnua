@@ -58,13 +58,13 @@ PRIVACY = ROOT / "privacy.html"
 SITEMAP = ROOT / "sitemap.xml"
 SEARCH = ROOT / "search-index-v1.json"
 
-GROWER_PUBLIC = False
+GROWER_PUBLIC = True
 ENDPOINT = "https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/grower"
 GROWER_PRIVACY_MARKER = "PLOTNUA-GROWER-PRIVACY-V6"
 GROWER_PRIVACY_VERSION = "2026-10-PHASE2-V6"
 OPEN_APPROVAL = {
-    "privacy_v6_wording_approved": None,      # founder, date
-    "launch_approved": None,                  # founder, date
+    "privacy_v6_wording_approved": 'Founder approval, 16 Oct 2026 14:32: Privacy V6 approved as presented. Includes the minimal location clarification for the pre-launch county/town/travel refinement the founder requested in the same message (county and area from a list; optional town or general area and travel distance).',      # founder, date
+    "launch_approved": 'Founder approval, 16 Oct 2026 14:32: proceed with the coordinated Grower Register launch (two routes on The Borrowed Garden Discovery). Automatic introductions stay disabled; G7 remains blocked.',                  # founder, date
 }
 BASE_REF = "84453f1"
 

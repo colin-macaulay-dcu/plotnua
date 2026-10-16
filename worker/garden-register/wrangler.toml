@@ -38,8 +38,8 @@ PILOT_DISTRICTS = "raheny,killester,donnycarney,artane"
 #                           Register. Empty = nothing is written for a grower.
 #                           Set to "2026-10-PHASE2-V6" only once V6 is live.
 # ---------------------------------------------------------------------------
-GROWER_WRITES_ENABLED  = "false"
-GROWER_PRIVACY_VERSION = ""
+GROWER_WRITES_ENABLED  = "true"
+GROWER_PRIVACY_VERSION = "2026-10-PHASE2-V6"
 
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here.
 #   AIRTABLE_BASE  -> set as a var at deploy:   appUie3wPmPITfMW7
