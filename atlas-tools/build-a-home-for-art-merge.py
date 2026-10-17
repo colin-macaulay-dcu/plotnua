@@ -574,8 +574,8 @@ CONSOLIDATION = [
      '    <a class="ho-back" id="hoBack" href="%s" aria-label="Explore A Home for Art">' % TARGET),
     ("sitemap.xml", "  <url><loc>https://plotnua.ie/discovery-open-your-home-to-art.html</loc><lastmod>2026-08-27</lastmod>"
      "<changefreq>monthly</changefreq><priority>0.8</priority></url>\n", ""),
-    ("sitemap.xml", "<loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-08-27</lastmod>",
-     "<loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-10-13</lastmod>"),
+    # The merge's lastmod edit for this page (2026-08-27 -> 2026-10-13) is no
+    # longer a byte pair: see SITEMAP_PAGE below (M9 re-baseline, 17 Oct 2026).
     ("atlas-tools/build-search-index.py",
      '    "disc024-open-your-home-to-art.html": "discovery-open-your-home-to-art.html",',
      '    # DISC-024 consolidated into DISC-023 at the Discovery-page level (13 Oct 2026):\n'
@@ -594,10 +594,16 @@ CONSOLIDATION = [
      'ok("L2 all 12 public Discoveries have exactly one main landmark")'),
 ]
 CONSOLIDATION += [
-    ("atlas-tools/build-search-rail.py", "EXPECTED_PAGES = 22\n",
+    # M9 RE-BASELINE (17 Oct 2026). The merge's own contribution here is the
+    # recorded reduction (the redirect left the rail scope). The count itself is
+    # owned by build-search-rail.py and rose to 22 again with the Garden Room
+    # Prices guide (SEO Phase 2), so the pair is anchored on the triq-cube note
+    # that precedes the merge's comment, not on the number.
+    ("atlas-tools/build-search-rail.py",
+     "# stub, so a re-run of this builder reproduces it rather than changing it.\nEXPECTED_PAGES = 22\n",
+     "# stub, so a re-run of this builder reproduces it rather than changing it.\n"
      "# 21 since 13 October 2026: discovery-open-your-home-to-art.html became a\n"
-     "# redirect to A Home for Art and left the sitemap (founder decision).\n"
-     "EXPECTED_PAGES = 21\n"),
+     "# redirect to A Home for Art and left the sitemap (founder decision).\n"),
     ("atlas-tools/prove-discovery-library-capability.py", '("Buy Original Irish Art", "discovery-a-home-for-art.html",',
      '("A Home for Art", "discovery-a-home-for-art.html",'),
 ]
@@ -703,7 +709,30 @@ def strip_register(html):
     return html
 
 
+# M9 RE-BASELINE (founder instruction, 17 Oct 2026). The merge moved this page's
+# sitemap lastmod from the pre-merge 2026-08-27 to 2026-10-13. The date itself
+# is not this builder's to pin: build-artist-register.py later moved it to
+# 2026-10-14 and 808c26f recomputed every lastmod from full git history, which
+# made the old byte pair unfindable and the builder refuse at HEAD. M9 now holds
+# only what the merge owns: the page is listed exactly once and no longer
+# carries its pre-merge date. Whatever owns lastmod may move it forward.
+SITEMAP_PAGE = "<loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>"
+SITEMAP_PRE_MERGE = SITEMAP_PAGE + "2026-08-27</lastmod>"
+
+
+def sitemap_lastmod(write):
+    p = ROOT / "sitemap.xml"
+    t = p.read_text(encoding="utf-8")
+    if t.count(SITEMAP_PAGE) != 1:
+        die("M9 the sitemap does not list A Home for Art exactly once")
+    if SITEMAP_PRE_MERGE in t:
+        if not write:
+            die("M9 consolidation edit not applied in sitemap.xml: the pre-merge lastmod is still present")
+        p.write_text(t.replace(SITEMAP_PRE_MERGE, SITEMAP_PAGE + "2026-10-13</lastmod>"), encoding="utf-8")
+
+
 def apply_edits(write):
+    sitemap_lastmod(write)
     for f, old, new in CONSOLIDATION:
         p = ROOT / f
         t = p.read_text(encoding="utf-8")
