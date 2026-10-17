@@ -34,7 +34,7 @@ const CASES = [
                   'In practice the total area is measured internally. That is why a council and a supplier can give you different answers'], null],
   ['C-L4', 'L4', ['Permanent, too &mdash; the regulations rule out a caravan',
                   'The regulations call it a habitable dwelling. Permanent, too &mdash; the regulations rule out a caravan'], null],
-  ['C-L5', 'L5', ['The window opened on 16&nbsp;July&nbsp;2026', 'The window opened on 17&nbsp;July&nbsp;2026'], null],
+  ['C-L5', 'L5', ['count the period from 16&nbsp;July&nbsp;2026', 'count the period from 17&nbsp;July&nbsp;2026'], null],
   ['C-L6', 'L6', ['Those are\n          not the same thing, and the regulations do not reconcile them.',
                   'The council will treat them as the same thing.'], null],
   ['C-L7', 'L7', ['It does not make the building lawful, it produces no certificate',

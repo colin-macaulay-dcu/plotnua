@@ -22,6 +22,13 @@ REQUIRED COPY CORRECTIONS". The four corrections are applied:
   4.     Price block simplified to the consumer finding plus the three
          questions. No average. No census claim. No Class 3A price.
 
+17 Oct 2026 (founder approval, planning guide work): two factual corrections,
+verified against the regulation texts and gov.ie:
+  E3   S.I. 340/2026 came into operation on 27 July 2026; the regulations
+       count the period from 16 July (signing). The copy now leads with 27 July.
+  E10  An Bord Pleanala was re-established as An Coimisiun Pleanala on
+       18 June 2025; Section 5 referrals go to An Coimisiun Pleanala.
+
 ALL COPY IS DATA. Every homeowner-visible string lives in EDITS below so the
 guards can lift it verbatim from this file and compare it with the page.
 
@@ -138,9 +145,10 @@ edit('E2-structured-data', '\n</head>', LD)
 edit('E3-relevant-period',
  '''    <p>The exemption is temporary. The work has to be both started and finished by
       31&nbsp;December&nbsp;2030.</p>''',
- '''    <p>The exemption is temporary. The window opened on 16&nbsp;July&nbsp;2026, the
-      day the regulations were signed, and closes on 31&nbsp;December&nbsp;2030 &mdash;
-      and the work has to be both started and finished inside it.</p>''')
+ '''    <p>The exemption is temporary. It has applied since 27&nbsp;July&nbsp;2026, when the
+      regulations came into operation, and closes on 31&nbsp;December&nbsp;2030 &mdash;
+      and the work has to be both started and finished inside that window. (The
+      regulations count the period from 16&nbsp;July&nbsp;2026, the day they were signed.)</p>''')
 
 # --- E4 · the 25 m2 / 30 m2 finding, plus the 45 m2 extension line -----------
 C1_COPY = '''
@@ -315,7 +323,7 @@ NEW_DRAWERS = '''      <details class="faq-item">
           There is a prescribed fee. The council must give you the declaration
           <em>and its main reasons</em> within four weeks, or within three weeks of any
           further information it asks for. If you disagree, you have four weeks to refer
-          it to An Bord Pleanála. The declaration goes on the planning
+          it to An Coimisiún Pleanála. The declaration goes on the planning
           register.<br><br>It is the right move if you are near a limit, if your house
           came with planning conditions, if there is already a shed out there and the
           arithmetic is tight, or if you are in a conservation area.</div>
