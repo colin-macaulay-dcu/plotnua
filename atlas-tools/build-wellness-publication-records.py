@@ -31,6 +31,9 @@ IRISH SAUNA COMPANY (Gmail thread 1a0fd83ddde922b1)
          publication: the listing is text only until that is settled.
 
 Neither row gains approved_assets. Imagery is not extended by this builder.
+(16 Oct 2026: Tanktribe's four photographs were enumerated separately in the
+authorised imagery commit 15b145e. This builder preserves that exact set,
+pinned by digest below, and refuses any other imagery on any row.)
 
 ÖÖD HOUSE (Gmail thread 1a088713c8eccf73) — added 14 Oct 2026 on the founder's
 clarification ("ÖÖD correspondence"), a garden-room maker, recorded here so
@@ -57,6 +60,7 @@ every explicit publication state lives in one bounded builder.
 
   python3 atlas-tools/build-wellness-publication-records.py [--check]
 """
+import hashlib
 import json
 import pathlib
 import sys
@@ -64,6 +68,16 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RECORDS = ROOT / "image-rights-records.json"
 CHECK = "--check" in sys.argv
+
+# Imagery already authorised OUTSIDE this builder (15b145e, 16 Oct 2026).
+# Preserved untouched. Any other approved_assets value, on any row, refuses.
+AUTHORISED_ASSETS = {
+    "Tanktribe": "86034976a18addd30b801f4c048801e4b8c462d1f79b45838af7436a0bffe251",
+}
+
+
+def assets_digest(a):
+    return hashlib.sha256(json.dumps(a, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
 
 ROWS = {
     "ÖÖD House": {
@@ -158,19 +172,28 @@ def main():
         r = rows[0]
         if not str(r.get("permission_outcome", "")).startswith("Granted"):
             die("%s has no live grant to record states for" % name)
-        if r.get("approved_assets") or r.get("founder_exception"):
+        if r.get("founder_exception"):
             die("%s: this builder never touches imagery or exceptions" % name)
+        assets = r.get("approved_assets")
+        if assets and assets_digest(assets) != AUTHORISED_ASSETS.get(name):
+            die("%s: approved_assets are not the authorised set; this builder never "
+                "touches imagery or exceptions" % name)
+        assets_before = json.dumps(assets, sort_keys=True)
         r["permission"] = add["permission"]
         r["listing_review"] = add["listing_review"]
         r["public_visibility"] = "PUBLISHABLE"
         r["hold_reason"] = None
+        if json.dumps(r.get("approved_assets"), sort_keys=True) != assets_before:
+            die("%s: approved_assets changed during the build" % name)
     for r in doc["records"]:
         if r["organisation_name"] not in ROWS and json.dumps(r, sort_keys=True) != before[r["organisation_name"]]:
             die("another rights row changed: " + r["organisation_name"])
     new = json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
     cur = RECORDS.read_text(encoding="utf-8")
     if CHECK:
-        if new != cur:
+        # The trailing newline alone is not content (15b145e saved the file
+        # without one); everything else must match byte for byte.
+        if new.rstrip("\n") != cur.rstrip("\n"):
             print("CHECK FAILED: image-rights-records.json is out of date"); sys.exit(1)
         print("Publication records · CHECK OK — " + ", ".join(ROWS)); return
     RECORDS.write_text(new, encoding="utf-8")
