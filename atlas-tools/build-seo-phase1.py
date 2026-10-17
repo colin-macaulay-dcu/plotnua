@@ -43,6 +43,10 @@ import pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CHECK = "--check" in sys.argv
 TODAY = "2026-10-16"
+# Living in the Garden's own dateModified. It follows the page's real content
+# changes, so it agrees with its sitemap lastmod (cluster 1 guard S2).
+# 17 Oct 2026: two factual corrections (commencement date; An Coimisiun Pleanala).
+LITG_MODIFIED = "2026-10-17"
 
 
 def die(msg):
@@ -155,7 +159,7 @@ EDITS = {
          '      "inLanguage": "en-IE",\n'
          '      "dateModified": "%s",\n'
          '      "primaryImageOfPage": { "@type": "ImageObject", "url": "https://plotnua.ie/%s" },\n'
-         % (TODAY, LITG_IMG)),
+         % (LITG_MODIFIED, LITG_IMG)),
         ('<main id="pn-main">\n<div class="article">\n',
          '<main id="pn-main">\n<div class="article">\n' + brief(
              'Since 27 July 2026, two different buildings can go at the end of an Irish back garden '
