@@ -387,7 +387,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-02-Potential-Asset.jpeg",
@@ -412,7 +412,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-05-Art-Finds-a-New-Home.jpeg",
@@ -435,7 +435,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-01-Hero.jpeg",
@@ -458,7 +458,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-04-Home-Gym-Wellness-v1.jpeg",
@@ -506,7 +506,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
@@ -537,7 +537,7 @@
         "subject": "Launch premium Discovery rebuilds and naming consistency"
       },
       "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 — Image 04 — Spanish Destination Home.jpeg",
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 \u2014 Image 04 \u2014 Spanish Destination Home.jpeg",
         "discovery_folder": "DISC-005 Home Exchange",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
@@ -557,7 +557,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-01-Hero.jpeg",
@@ -580,7 +580,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 — The House as a Power Station"
+        "subject": "DISC-026 \u2014 The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 03 - The House as a Power Station - Future Ready.jpeg",
@@ -603,7 +603,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-01-Opportunity.png",
@@ -626,7 +626,7 @@
       "introduced": {
         "commit": "c46c76d",
         "date": "2026-09-02",
-        "subject": "DISC-005 — Home Exchange"
+        "subject": "DISC-005 \u2014 Home Exchange"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Image 02 - Home Exchange - Potential Asset.jpeg",
@@ -651,7 +651,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       }
     },
     {
@@ -692,7 +692,7 @@
       "introduced": {
         "commit": "2d3affb",
         "date": "2026-09-02",
-        "subject": "Consolidate Space Discoveries — DISC-004 into DISC-006"
+        "subject": "Consolidate Space Discoveries \u2014 DISC-004 into DISC-006"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-006 Room to Grow/DISC-006 - Image 02 - Four Ways to Add a Room - Potential Asset.jpeg",
@@ -765,7 +765,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-07-Teen-Den-v1.jpeg",
@@ -791,7 +791,7 @@
       "introduced": {
         "commit": "3cb49ea",
         "date": "2026-09-01",
-        "subject": "DISC-022 — Hidden Cars"
+        "subject": "DISC-022 \u2014 Hidden Cars"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-03-Outcome.png",
@@ -818,7 +818,7 @@
       "introduced": {
         "commit": "3cb49ea",
         "date": "2026-09-01",
-        "subject": "DISC-022 — Hidden Cars"
+        "subject": "DISC-022 \u2014 Hidden Cars"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-02-Problem.png",
@@ -872,7 +872,7 @@
         "subject": "Launch premium Discovery rebuilds and naming consistency"
       },
       "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-014 Driveway Income/DISC-014 — Image 02 — Outcome.jpeg",
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/DISC-014 \u2014 Image 02 \u2014 Outcome.jpeg",
         "discovery_folder": "DISC-014 Driveway Income",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
@@ -922,7 +922,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-05-Living-with-Art.jpeg",
@@ -947,7 +947,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-02-Potential-Asset.jpeg",
@@ -972,7 +972,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-04-Meet-the-Artist.jpeg",
@@ -1023,7 +1023,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-02-Potential-Asset.jpeg",
@@ -1048,7 +1048,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-01-Recognition.png",
@@ -1071,7 +1071,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-01-Hero-Frozen-v1-web.jpeg",
@@ -1094,7 +1094,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-06-Reading-Room-v2.jpeg",
@@ -1144,7 +1144,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-04-Meet-the-Artist.jpeg",
@@ -1167,7 +1167,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-007 Restore Something/DISC-007-01-Scene.png",
@@ -1190,7 +1190,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-020 Stay in the House You Love/Stay-in-the-House-You-Love-02-Reveal.png",
@@ -1213,7 +1213,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
@@ -1240,7 +1240,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-04-Local-Grower.jpeg",
@@ -1332,7 +1332,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Hero.png",
@@ -1381,7 +1381,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-08-Music-Room-v1.jpeg",
@@ -1429,7 +1429,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-05-Teen-Study-v1..jpeg",
@@ -1483,7 +1483,7 @@
       "introduced": {
         "commit": "3483278",
         "date": "2026-09-01",
-        "subject": "DISC-027 — The Neighbourhood Parcel House"
+        "subject": "DISC-027 \u2014 The Neighbourhood Parcel House"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 01 - The Neighbourhood Parcel House.jpeg",
@@ -1519,7 +1519,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
@@ -1542,7 +1542,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-006 Room to Grow/DISC-006-02-Problem.png",
@@ -1565,7 +1565,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-01-Hero.jpeg",
@@ -1590,7 +1590,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       }
     },
     {
@@ -1633,7 +1633,7 @@
       "introduced": {
         "commit": "c46c76d",
         "date": "2026-09-02",
-        "subject": "DISC-005 — Home Exchange"
+        "subject": "DISC-005 \u2014 Home Exchange"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Image 03 - Home Exchange - Outcome.jpeg",
@@ -1663,7 +1663,7 @@
       "introduced": {
         "commit": "3cb49ea",
         "date": "2026-09-01",
-        "subject": "DISC-022 — Hidden Cars"
+        "subject": "DISC-022 \u2014 Hidden Cars"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-01-Hero.png",
@@ -1738,7 +1738,7 @@
       "introduced": {
         "commit": "3483278",
         "date": "2026-09-01",
-        "subject": "DISC-027 — The Neighbourhood Parcel House"
+        "subject": "DISC-027 \u2014 The Neighbourhood Parcel House"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 02 - The Neighbourhood Parcel House - Potential Asset.jpeg",
@@ -1794,7 +1794,7 @@
         "subject": "Launch premium Discovery rebuilds and naming consistency"
       },
       "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-014 Driveway Income/Image 01 — Potential Asset.jpeg",
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/Image 01 \u2014 Potential Asset.jpeg",
         "discovery_folder": "DISC-014 Driveway Income",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
@@ -1814,7 +1814,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-02-Home-Office-Frozen-v1-web.jpeg",
@@ -1839,7 +1839,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-05-The-Result.jpeg",
@@ -1862,7 +1862,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 — The House as a Power Station"
+        "subject": "DISC-026 \u2014 The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 04 - The House as a Power Station - Everyday Benefit.jpeg",
@@ -1885,7 +1885,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-03-Artist-Studio.jpg.jpeg",
@@ -1908,7 +1908,7 @@
       "introduced": {
         "commit": "7b6e32d",
         "date": "2026-09-02",
-        "subject": "DISC-014 — Driveway Income"
+        "subject": "DISC-014 \u2014 Driveway Income"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-02-Opportunity.jpeg",
@@ -1938,7 +1938,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-01-Hero.jpeg",
@@ -1964,7 +1964,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-03-Transformation.jpeg",
@@ -1987,7 +1987,7 @@
       "introduced": {
         "commit": "7b6e32d",
         "date": "2026-09-02",
-        "subject": "DISC-014 — Driveway Income"
+        "subject": "DISC-014 \u2014 Driveway Income"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-03-Opportunity.jpeg",
@@ -2036,7 +2036,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 — The House as a Power Station"
+        "subject": "DISC-026 \u2014 The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 01 - Powering the Future from Home.jpeg",
@@ -2059,7 +2059,7 @@
       "introduced": {
         "commit": "7b6e32d",
         "date": "2026-09-02",
-        "subject": "DISC-014 — Driveway Income"
+        "subject": "DISC-014 \u2014 Driveway Income"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-01-Opportunity.png",
@@ -2082,7 +2082,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
@@ -2105,7 +2105,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
@@ -2128,7 +2128,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-03-Living-at-Home-v2.jpeg",
@@ -2196,7 +2196,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
@@ -2222,7 +2222,7 @@
       "introduced": {
         "commit": "3483278",
         "date": "2026-09-01",
-        "subject": "DISC-027 — The Neighbourhood Parcel House"
+        "subject": "DISC-027 \u2014 The Neighbourhood Parcel House"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 03 - The Neighbourhood Parcel House - The Parcel House.jpeg",
@@ -2254,7 +2254,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-01-Hero.jpeg",
@@ -2331,7 +2331,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 — The House as a Power Station"
+        "subject": "DISC-026 \u2014 The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 05 - The House as a Power Station - The Future.jpeg",
@@ -2356,7 +2356,7 @@
       "introduced": {
         "commit": "c46c76d",
         "date": "2026-09-02",
-        "subject": "DISC-005 — Home Exchange"
+        "subject": "DISC-005 \u2014 Home Exchange"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Hero.png",
@@ -2397,7 +2397,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/artist studio.png",
@@ -2422,7 +2422,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 — the six-stage journey"
+        "subject": "Launch build v1 \u2014 the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-03-Transformation.jpeg",
@@ -2447,7 +2447,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 — The House as a Power Station"
+        "subject": "DISC-026 \u2014 The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 02 -The House as a Power Station - Potential Asset.jpeg",
@@ -2646,6 +2646,286 @@
         "thanks.html",
         "your-plot.html"
       ]
+    }
+  ],
+  "derivatives_note": "HASH-BOUND DERIVATIVES (SEO Phase 1b, 16 Oct 2026). Each entry is a re-encoding of ONE enumerated source file, bound to that source's exact sha256. A derivative inherits its source's provenance state, carries no class, label or rights field, and is not counted in legacy_undeclared, so the ratchet is unchanged. The guard (P12) refuses a derivative whose source changed, that crops or upscales, that is not WebP, or that appears on a page without its source as the fallback.",
+  "derivatives": [
+    {
+      "asset": "assets/img/5e17a24f46cdab9e-960w.webp",
+      "sha256": "d86cf8928f42867baba515f5a3994a0851bae9543339dfac464b7e510e4a9658",
+      "bytes": 135756,
+      "pixels": [
+        960,
+        536
+      ],
+      "derived_from": {
+        "asset": "assets/img/5e17a24f46cdab9e.jpg",
+        "sha256": "5e17a24f46cdab9e3f6786b3235a36f1cb590d8ebce6b624b553d1b1dae8c5f1"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9744,
+        "psnr_db": 35.31,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in master DISC-008-01-Recognition.png (perceptual match 0/256): created by Google Generative AI, no input ingredients; then a visible watermark added.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
+      "asset": "assets/img/5e17a24f46cdab9e.webp",
+      "sha256": "1b90827f947735211fcd441ebb8caa5ba5256497e3036f48b416fae72b01b043",
+      "bytes": 259998,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/5e17a24f46cdab9e.jpg",
+        "sha256": "5e17a24f46cdab9e3f6786b3235a36f1cb590d8ebce6b624b553d1b1dae8c5f1"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9785,
+        "psnr_db": 36.12,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in master DISC-008-01-Recognition.png (perceptual match 0/256): created by Google Generative AI, no input ingredients; then a visible watermark added.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
+      "asset": "assets/img/7d5f5718cf9cd3da-960w.webp",
+      "sha256": "65aa907794de30c0a6958535abb3b2e4fafca698b10e05280e49dbdd2c8e5b0e",
+      "bytes": 131634,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/7d5f5718cf9cd3da.jpg",
+        "sha256": "7d5f5718cf9cd3dae83519ea285e9be608ad98ea72758d4838e6146896a9cbc3"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9622,
+        "psnr_db": 34.37,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Master DISC-001-Hero-MASTER.png (perceptual match 0/256) is the credentialed DISC-001-Hero.png (signed Google C2PA: created by Google Generative AI, no input ingredients) mirror-extended 16 px each side: centre 1376 px pixel-identical, edges reflected, no generative fill. Documented in commit 08237ff (26 Sep 2026) and re-verified 17 Oct 2026.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
+      "asset": "assets/img/7d5f5718cf9cd3da.webp",
+      "sha256": "ad9de021557ab6b4da6a2ac9e7eed70adaf8dfb93c71b6653857638be24bda76",
+      "bytes": 260088,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/7d5f5718cf9cd3da.jpg",
+        "sha256": "7d5f5718cf9cd3dae83519ea285e9be608ad98ea72758d4838e6146896a9cbc3"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9657,
+        "psnr_db": 35.12,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Master DISC-001-Hero-MASTER.png (perceptual match 0/256) is the credentialed DISC-001-Hero.png (signed Google C2PA: created by Google Generative AI, no input ingredients) mirror-extended 16 px each side: centre 1376 px pixel-identical, edges reflected, no generative fill. Documented in commit 08237ff (26 Sep 2026) and re-verified 17 Oct 2026.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
+      "asset": "assets/img/9785fd991d2488e9-960w.webp",
+      "sha256": "e6cdbc15f14ed3df234d908ae43b39999e6d0c41fbd01cc1997c4db0634265a4",
+      "bytes": 126310,
+      "pixels": [
+        960,
+        536
+      ],
+      "derived_from": {
+        "asset": "assets/img/9785fd991d2488e9.jpg",
+        "sha256": "9785fd991d2488e999fa03e53d0d348cb7992c0fa37df7545f9c2fa4590cfcd8"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9681,
+        "psnr_db": 35.04,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (byte-identical to master The-Future.jpeg): created by Google Generative AI, no input ingredients.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/9785fd991d2488e9.webp",
+      "sha256": "48884f579a1eb8a62b0096c93c98ae61d5fe45c325c8fcde8679dc6771c70c90",
+      "bytes": 238710,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/9785fd991d2488e9.jpg",
+        "sha256": "9785fd991d2488e999fa03e53d0d348cb7992c0fa37df7545f9c2fa4590cfcd8"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9662,
+        "psnr_db": 35.57,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (byte-identical to master The-Future.jpeg): created by Google Generative AI, no input ingredients.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/9805382f8164228a-960w.webp",
+      "sha256": "80f07bbbc58fd3e47210182ebf55b53ca432d6f64c0536b70b0b2efeeda0c006",
+      "bytes": 93244,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/9805382f8164228a.jpg",
+        "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9633,
+        "psnr_db": 35.98,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (byte-identical to master DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg): created by Google Generative AI, no input ingredients.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/9805382f8164228a.webp",
+      "sha256": "3efb2d41583b84f68f22a89cf3fb303276c3da502f66073ad44687c0f1d48161",
+      "bytes": 184732,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/9805382f8164228a.jpg",
+        "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9635,
+        "psnr_db": 36.48,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (byte-identical to master DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg): created by Google Generative AI, no input ingredients.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/b5cbac3fff9072d4-960w.webp",
+      "sha256": "b717aafa9a56a9e5c687a8a7a44269415ba909c2095eccf9b4c713807b2d20be",
+      "bytes": 94876,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/b5cbac3fff9072d4.jpg",
+        "sha256": "4a4944ffadfb04b8eac147ebd96fd5b8b6aeb1497c7dbf1ed2f55e6efae2aceb"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9635,
+        "psnr_db": 36.14,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in master 'DISC-014 Image 01 \u2014 Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
+      "asset": "assets/img/b5cbac3fff9072d4.webp",
+      "sha256": "a04a77ea9701b01c023c24e96537145fc67661efd614347cd256cf872f9bb286",
+      "bytes": 204530,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/b5cbac3fff9072d4.jpg",
+        "sha256": "4a4944ffadfb04b8eac147ebd96fd5b8b6aeb1497c7dbf1ed2f55e6efae2aceb"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9702,
+        "psnr_db": 36.68,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-16",
+      "lineage_basis": "Signed Google C2PA credential in master 'DISC-014 Image 01 \u2014 Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    }
+  ],
+  "derivative_holds": [
+    {
+      "source": "assets/img/8c60a8f27eb9c697.jpg",
+      "reason": "Living in the Garden 'Possible' plate. Its signed Google C2PA credential records a second generation input ('Input ingredient 1') with no credential, format, title or hash. It could not be identified from project records (1,101 local images scanned, no match). Held until identified.",
+      "since": "2026-10-17"
     }
   ]
 }

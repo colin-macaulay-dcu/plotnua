@@ -277,6 +277,11 @@ def apply_file(fname, edits):
     out = src
     problems = []
     for old, new in edits:
+        # Phase 1b (hero WebP derivatives) supersedes the JPEG preload with a
+        # WebP imagesrcset preload; that later state satisfies this edit.
+        if new and 'rel="preload" as="image" href=' in new and \
+                'rel="preload" as="image" type="image/webp"' in out:
+            continue
         if new and new in out and (old not in out or old in new):
             # already applied (for insertions old is contained in new)
             if out.count(new) == 1:
@@ -299,7 +304,11 @@ def file_date(fname):
                            capture_output=True, text=True).stdout.strip()
     if dirty:
         return TODAY
-    d = subprocess.run(["git", "log", "-1", "--format=%as", "--", fname], cwd=ROOT,
+    # A commit that changes no page CONTENT (e.g. Phase 1b's WebP <picture>
+    # wrapping) carries the marker "lastmod-neutral" in its message and does
+    # not move lastmod. Everything else does.
+    d = subprocess.run(["git", "log", "-1", "--format=%as", "--invert-grep",
+                        "--grep=lastmod-neutral", "--", fname], cwd=ROOT,
                        capture_output=True, text=True).stdout.strip()
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", d):
         die("no commit date for %s" % fname)

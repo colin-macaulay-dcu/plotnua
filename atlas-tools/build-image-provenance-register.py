@@ -96,6 +96,26 @@ def main():
     if not rows:
         die("the recovery found no deployed images at all. Nothing written.")
 
+    # G7 · HASH-BOUND DERIVATIVES ARE CARRIED, NEVER CENSUSED (SEO Phase 1b,
+    # 16 Oct 2026). A WebP re-encoding recorded in the existing register's
+    # `derivatives` list is the same picture as its source, so it must not
+    # enter legacy_undeclared (the ratchet only goes down). It is removed from
+    # the census ONLY if its bytes still match the recorded hash; a file that
+    # merely looks like a derivative is censused like any other new image.
+    prev_derivs = []
+    if TARGET.exists():
+        try:
+            prev_derivs = json.loads(TARGET.read_text(encoding="utf-8")).get("derivatives") or []
+        except ValueError:
+            prev_derivs = []
+    by_hash = {d["asset"]: d["sha256"] for d in prev_derivs if isinstance(d, dict)}
+    carried = [r for r in rows if by_hash.get(r["asset"]) == r["sha256"]]
+    rows = [r for r in rows if by_hash.get(r["asset"]) != r["sha256"]]
+    if len(carried) != len([d for d in prev_derivs if isinstance(d, dict)]):
+        missing = sorted(set(by_hash) - {r["asset"] for r in carried})
+        die("recorded derivative(s) missing on disk or changed: %s. Nothing written."
+            % missing[:4])
+
     # G1 · NOT ONE ASSET MAY BE CLASSIFIED WITHOUT EVIDENCE.
     classifiable = [r for r in rows
                     if r["embedded_metadata"] or r["master_device_evidence"]]
@@ -265,6 +285,12 @@ def main():
         "records": [],
         "legacy_undeclared": legacy,
     }
+
+    if prev_derivs:
+        prev_doc = json.loads(TARGET.read_text(encoding="utf-8"))
+        doc["derivatives_note"] = prev_doc.get("derivatives_note")
+        doc["derivatives"] = prev_derivs
+        print("  ok    G7  %d hash-bound derivative(s) carried, not censused" % len(prev_derivs))
 
     # G2 · THE REGISTER NEVER GRANTS ANYTHING.
     blob = json.dumps(doc)

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * THE IMAGE PROVENANCE GUARD · P1–P11
+ * THE IMAGE PROVENANCE GUARD · P1–P12
  * ====================================
  * Closes the blind spot at atlas-tools/validate-image-rights.js:395:
  *
@@ -174,13 +174,23 @@ const byAsset = new Map();
 for (const r of records) if (r && r.asset) byAsset.set(r.asset, r);
 const legacySet = new Map();
 for (const e of legacy) if (e && e.asset) legacySet.set(e.asset, e);
+/* HASH-BOUND DERIVATIVES (SEO Phase 1b, 16 Oct 2026). A re-encoding of one
+   enumerated source file. It is accounted for ONLY through its source, is
+   checked by P12, and is never counted in -- or added to -- the backlog. */
+if (reg.derivatives !== undefined && !Array.isArray(reg.derivatives)) {
+  refuse('the register has a derivatives field that is not an array');
+}
+const derivatives = Array.isArray(reg.derivatives) ? reg.derivatives : [];
+const derivSet = new Map();
+for (const d of derivatives) if (d && d.asset) derivSet.set(d.asset, d);
 
-console.log('\nIMAGE PROVENANCE GUARD · P1–P11');
+console.log('\nIMAGE PROVENANCE GUARD · P1–P12');
 console.log('='.repeat(74));
 console.log(`  pages scanned        ${pages}`);
 console.log(`  local images on them ${found.size}`);
 console.log(`  declared records     ${records.length}`);
 console.log(`  legacy undeclared    ${legacy.length}`);
+console.log(`  derivatives          ${derivatives.length}  (not counted in the backlog)`);
 console.log('-'.repeat(74));
 
 /* ── P1 · every local image on a published page is accounted for ──────── */
@@ -189,7 +199,7 @@ console.log('-'.repeat(74));
      records nor the enumerated backlog is a NEW undeclared image, and it is
      refused. */
   const unaccounted = [...found.keys()]
-    .filter(a => !byAsset.has(a) && !legacySet.has(a));
+    .filter(a => !byAsset.has(a) && !legacySet.has(a) && !derivSet.has(a));
   unaccounted.length
     ? bad('P1 every local image on a published page is declared or enumerated',
           `${unaccounted.length} unaccounted: ${unaccounted.slice(0, 5).join(', ')}`)
@@ -481,6 +491,92 @@ console.log('-'.repeat(74));
             `gateReadsRegister=${!gateClean} leakedFields=${leaked.join(',')} `
             + `claimingRecords=${claiming.length}`);
   }
+}
+
+/* ── P12 · a derivative is bound to its source and never outgrows it ──── */
+{
+  /* Added 16 Oct 2026 (SEO Phase 1b, founder-approved). The only way a new
+     local file may avoid the ratchet is as a verified re-encoding of a file
+     the register already holds. Every condition below is what makes that
+     exemption narrow:
+       a. it is not also a record or a backlog entry, and appears once;
+       b. its source is in the register with the SAME sha256 it was made from
+          (a changed source makes the derivative stale);
+       c. its source is not itself a derivative (no chains);
+       d. it is WebP and its method is from a closed vocabulary;
+       e. no crop and no upscale: same aspect ratio, never wider than the
+          source -- read from the file's own header, not trusted from JSON;
+       f. its bytes match its recorded hash;
+       g. every page that shows it also carries its source (the fallback),
+          so a derivative can never reach a surface its source is not on;
+       h. it declares nothing: no class, status, label or permitted surface;
+       i. its source is not on provenance hold (derivative_holds), and it never
+          claims an embedded signed credential (re-encoding removes C2PA). */
+  const METHODS = ['webp-reencode', 'webp-resize'];
+  const problems = [];
+  /* Provenance holds (17 Oct 2026): a held source may not have a derivative. */
+  if (reg.derivative_holds !== undefined && !Array.isArray(reg.derivative_holds)) {
+    problems.push('derivative_holds is not an array');
+  }
+  const held = new Set((Array.isArray(reg.derivative_holds) ? reg.derivative_holds : [])
+    .map(h => h && h.source).filter(Boolean));
+  for (const d of derivatives) {
+    if (d && d.derived_from && held.has(d.derived_from.asset))
+      problems.push(`${d.asset}: its source ${d.derived_from.asset} is on provenance hold`);
+    if (d && d.content_credentials && d.content_credentials.derivative_embeds_c2pa !== false)
+      problems.push(`${d.asset}: claims or carries an embedded credential`);
+  }
+  const seen = new Set();
+  const webpSize = (buf) => {
+    if (buf.length < 30 || buf.toString('ascii', 0, 4) !== 'RIFF'
+        || buf.toString('ascii', 8, 12) !== 'WEBP') return null;
+    const kind = buf.toString('ascii', 12, 16);
+    if (kind === 'VP8 ') return [buf.readUInt16LE(26) & 0x3fff, buf.readUInt16LE(28) & 0x3fff];
+    if (kind === 'VP8L') {
+      const b = buf.readUInt32LE(21);
+      return [(b & 0x3fff) + 1, ((b >> 14) & 0x3fff) + 1];
+    }
+    if (kind === 'VP8X') return [buf.readUIntLE(24, 3) + 1, buf.readUIntLE(27, 3) + 1];
+    return null;
+  };
+  for (const d of derivatives) {
+    const a = d && d.asset;
+    if (!a) { problems.push('an entry has no asset'); continue; }
+    if (seen.has(a)) problems.push(`${a} listed twice`);
+    seen.add(a);
+    if (byAsset.has(a) || legacySet.has(a)) problems.push(`${a} is also a record/backlog entry`);
+    const from = d.derived_from || {};
+    const srcEntry = byAsset.get(from.asset) || legacySet.get(from.asset);
+    if (!srcEntry) problems.push(`${a}: source ${from.asset} is not in the register`);
+    else if (srcEntry.sha256 !== from.sha256) problems.push(`${a}: source ${from.asset} has changed since derivation`);
+    if (derivSet.has(from.asset)) problems.push(`${a}: derived from another derivative`);
+    if (!/\.webp$/i.test(a) || !METHODS.includes(d.method)) problems.push(`${a}: not a WebP re-encoding (${d.method})`);
+    for (const k of ['class', 'status', 'label', 'permitted_surfaces'])
+      if (k in d) problems.push(`${a}: declares "${k}"`);
+    const full = join(ROOT, a);
+    if (!existsSync(full)) {
+      if (found.has(a)) problems.push(`${a}: on a page but missing on disk`);
+    } else {
+      const buf = readFileSync(full);
+      if (createHash('sha256').update(buf).digest('hex') !== d.sha256) problems.push(`${a}: bytes do not match its hash`);
+      const wh = webpSize(buf);
+      const sp = srcEntry && srcEntry.pixels;
+      if (!wh) problems.push(`${a}: not a readable WebP file`);
+      else if (Array.isArray(sp) && sp[0] && sp[1]) {
+        if (wh[0] > sp[0]) problems.push(`${a}: wider than its source (upscaled)`);
+        if (Math.abs(wh[0] / wh[1] - sp[0] / sp[1]) > 0.005) problems.push(`${a}: aspect ratio differs from its source (cropped)`);
+      } else problems.push(`${a}: source pixels unknown, crop/upscale cannot be ruled out`);
+    }
+    for (const page of (found.get(a) || [])) {
+      if (!(found.get(from.asset) || new Set()).has(page))
+        problems.push(`${a} is on ${page} without its source ${from.asset}`);
+    }
+  }
+  problems.length
+    ? bad('P12 every derivative is hash-bound to an unchanged source and never outgrows it',
+          `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
+    : ok('P12 every derivative is hash-bound to an unchanged source and never outgrows it',
+         derivatives.length ? `${derivatives.length} checked` : 'no derivatives yet; the check is live');
 }
 
 /* ── the backlog, visible on every run ────────────────────────────────── */

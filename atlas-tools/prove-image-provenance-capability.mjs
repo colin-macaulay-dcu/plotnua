@@ -114,6 +114,34 @@ ${supplierName ? `<p>Supplied by ${supplierName}.</p>` : ''}
 </body></html>`;
 }
 
+/* ── DERIVATIVE FIXTURES (P12, SEO Phase 1b, 16 Oct 2026) ─────────────
+   One real derivative and its real source, copied into the case tree, on a
+   page that carries the AI figure (so P8/P9 stay satisfied) AND the
+   <picture> with the source <img> as its fallback. */
+const realDeriv = (realReg.derivatives || [])[0] || null;
+function derivPage({ withSource = true, extra = '' } = {}) {
+  const d = realDeriv;
+  return `<!doctype html><html><head><title>t</title></head><body>
+<figure><img src="${anAsset.asset}" width="100" height="100" alt="A garden.">
+<figcaption>${AI_LABEL}</figcaption></figure>
+<picture><source type="image/webp" srcset="${d.asset} ${d.pixels[0]}w">
+${withSource ? `<img src="${d.derived_from.asset}" alt="Hero.">` : ''}</picture>
+${extra}</body></html>`;
+}
+function derivOpts({ regEdit = null, withSource = true, bytes = null } = {}) {
+  const d = realDeriv;
+  return {
+    regEdit, rawPage: derivPage({ withSource }),
+    extraFiles: {
+      [d.asset]: bytes || readFileSync(join(ROOT, d.asset)),
+      [d.derived_from.asset]: readFileSync(join(ROOT, d.derived_from.asset)),
+    },
+  };
+}
+const dEdit = (fn) => (r) => fn(r.derivatives.find(x => x.asset === realDeriv.asset), r);
+const srcEntry = (r) => [...r.records, ...r.legacy_undeclared]
+  .find(e => e.asset === realDeriv.derived_from.asset);
+
 function tree({ regEdit = null, pageOpts = {}, gateEdit = null,
                 omitRights = false, regRaw = null, rawPage = null,
                 extraFiles = null } = {}) {
@@ -361,6 +389,50 @@ const CASES = [
     opts: { rawPage: '<!doctype html><html><head><title>t</title></head><body>'
       + '<img data-src="/undeclared-lazy.png" alt="x"></body></html>' } },
 
+  /* P12 · HASH-BOUND DERIVATIVES. The control must PASS; every narrowing
+     condition must be seen by P12 (or by P1, for the ratchet itself). */
+  { id: 'C-P12-control', mustPassOpts: () => derivOpts(), expect: ['(accepts)'],
+    why: 'a recorded WebP derivative shown with its source as fallback is accepted' },
+  { id: 'C-P12-ratchet', expect: ['P1'],
+    why: 'a WebP that is NOT recorded as a derivative is a new undeclared image',
+    optsFn: () => derivOpts({ regEdit: r => { r.derivatives = []; } }) },
+  { id: 'C-P12-stale', expect: ['P12'],
+    why: 'the source changed after the derivative was made',
+    optsFn: () => derivOpts({ regEdit: dEdit(d => { d.derived_from.sha256 = sha(Buffer.from('old')); }) }) },
+  { id: 'C-P12-crop', expect: ['P12'],
+    why: 'the derivative does not keep the source aspect ratio (a crop)',
+    optsFn: () => derivOpts({ regEdit: r => { srcEntry(r).pixels = [1000, 1000]; } }) },
+  { id: 'C-P12-upscale', expect: ['P12'],
+    why: 'the derivative is wider than its source (an upscale)',
+    optsFn: () => derivOpts({ regEdit: r => {
+      const s = srcEntry(r); s.pixels = [Math.round(s.pixels[0] / 4), Math.round(s.pixels[1] / 4)]; } }) },
+  { id: 'C-P12-nofallback', expect: ['P12'],
+    why: 'the derivative appears on a page without its source',
+    optsFn: () => derivOpts({ withSource: false }) },
+  { id: 'C-P12-bytes', expect: ['P12'],
+    why: 'the derivative bytes no longer match its hash',
+    optsFn: () => derivOpts({ bytes: Buffer.concat([readFileSync(join(ROOT, realDeriv.asset)), Buffer.from('x')]) }) },
+  { id: 'C-P12-declares', expect: ['P12'],
+    why: 'a derivative tries to declare a class of its own',
+    optsFn: () => derivOpts({ regEdit: dEdit(d => { d.class = 'AI_ILLUSTRATION'; }) }) },
+  { id: 'C-P12-method', expect: ['P12'],
+    why: 'a derivative made by a method outside the closed vocabulary',
+    optsFn: () => derivOpts({ regEdit: dEdit(d => { d.method = 'retouch'; }) }) },
+  { id: 'C-P12-hold', expect: ['P12'],
+    why: 'a derivative of a source that is on provenance hold',
+    optsFn: () => derivOpts({ regEdit: r => {
+      r.derivative_holds = [{ source: realDeriv.derived_from.asset, reason: 'test' }]; } }) },
+  { id: 'C-P12-credclaim', expect: ['P12'],
+    why: 'a derivative claims to carry a signed credential',
+    optsFn: () => derivOpts({ regEdit: dEdit(d => {
+      d.content_credentials = { derivative_embeds_c2pa: true }; }) }) },
+  { id: 'C-P12-chain', expect: ['P12'],
+    why: 'a derivative of a derivative',
+    optsFn: () => derivOpts({ regEdit: r => {
+      const other = r.derivatives.find(x => x.asset !== realDeriv.asset);
+      const d = r.derivatives.find(x => x.asset === realDeriv.asset);
+      d.derived_from = { asset: other.asset, sha256: other.sha256 }; } }) },
+
   /* THE CONTROL FOR THE WIDENING. A DECLARED image arriving through one of
      the newly covered mechanisms must still PASS. A guard that refuses
      everything is not a guard either, and this is the case that catches an
@@ -381,8 +453,14 @@ const CASES = [
 
 for (const c of CASES) {
   let dir;
+  if ((c.optsFn || c.mustPassOpts) && !realDeriv) {
+    log(`  BLIND         ${c.id}  ${c.why}`);
+    log('                the register holds no derivative to build the case on');
+    broken++;
+    continue;
+  }
   try {
-    dir = tree(c.opts || {});
+    dir = tree(c.mustPassOpts ? c.mustPassOpts() : c.optsFn ? c.optsFn() : (c.opts || {}));
     if (c.guardEdit) {
       const p = join(dir, 'atlas-tools', 'validate-image-provenance.js');
       const before = readFileSync(p, 'utf8');
@@ -403,6 +481,17 @@ for (const c of CASES) {
     continue;
   }
   const r = run(dir);
+
+  if (c.mustPassOpts) {
+    r.code === 0
+      ? (log(`  PROVED        ${c.id}  ${c.why}`),
+         log('                the guard ACCEPTED it \u2014 the exemption is usable'), proved++)
+      : (log(`  VACUOUS       ${c.id}  ${c.why}`),
+         log('                the guard refused a valid derivative (exit ' + r.code + ')'),
+         log('                ' + r.out.split('\n').filter(l => /FAIL|UNAVAILABLE/.test(l)).join('\n                ')),
+         broken++);
+    continue;
+  }
 
   if (c.mustPass) {
     /* CORRECTED. The first version referenced the DECLARED AI_ILLUSTRATION
