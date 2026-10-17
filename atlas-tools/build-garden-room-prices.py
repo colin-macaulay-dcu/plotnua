@@ -193,6 +193,17 @@ def freeze(ev):
     want = ev["source"]["sha256"]
     revs = subprocess.run(["git", "log", "--format=%H", "--", UNIVERSE], cwd=ROOT,
                           capture_output=True, text=True).stdout.split()
+    # The revision recorded in the existing extract is tried first. Any commit
+    # whose tree holds the snapshot is a valid source, but a newest-first search
+    # finds a different one depending on clone depth: in a shallow clone the
+    # history boundary reports every file as added there (d01758d), while a full
+    # clone finds the commit that introduced the snapshot (a3a1b80). Same bytes,
+    # same rows; only the recorded revision differed, so --freeze --check failed
+    # in CI (fetch-depth 0). The sha256 test below still proves the snapshot.
+    if EXTRACT.exists():
+        prior = json.loads(EXTRACT.read_text(encoding="utf-8")).get("source", {}).get("revision")
+        if prior:
+            revs = [prior] + [r for r in revs if r != prior]
     snap = None
     for r in revs:
         b = subprocess.run(["git", "show", "%s:%s" % (r, UNIVERSE)], cwd=ROOT,
