@@ -171,7 +171,10 @@ pages = sorted(set(pages + ["index.html"]))
 # stub, so a re-run of this builder reproduces it rather than changing it.
 # 21 since 13 October 2026: discovery-open-your-home-to-art.html became a
 # redirect to A Home for Art and left the sitemap (founder decision).
-EXPECTED_PAGES = 21
+# 22 since 17 October 2026: garden-room-prices-ireland.html, the Garden Room
+# Prices in Ireland guide (SEO Phase 2, founder approval to build), entered the
+# sitemap. It carries the standard stub like every other public page.
+EXPECTED_PAGES = 22
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "
