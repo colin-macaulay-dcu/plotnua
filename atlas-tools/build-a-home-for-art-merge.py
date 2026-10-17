@@ -34,7 +34,10 @@ GUARDS
       only other link (to the DISC-024 check); always with ?start=1 (two-option
       entry, 14 Oct 2026); the merged page links nowhere to the old URL.
       Amended 17 Oct 2026 (founder design decisions): previously required the
-      checks to be linked from their branches and the closing panel
+      checks to be linked from their branches and the closing panel.
+      Amended again 17 Oct 2026 (EDITORIAL REDESIGN, founder decision 1): TWO
+      placements of the same assessment section, one after the opening and one
+      at the foot, each with one hosting card then one buying card
   M4  no new service claim: no loan/rental/placement/matching/booking offer
   M5  imagery: only images already published on the two source pages (plus one
       existing related-card thumbnail); no new asset file
@@ -56,7 +59,11 @@ GUARDS
   M9  every consolidation edit applied exactly once
   M10 the founder's hierarchy: hosting story first, Open > Live with > Discover & own,
       then PlotArt, then the assessment section (hosting card first). Amended
-      17 Oct 2026: the artist plate follows the chooser, opening Possibility one
+      17 Oct 2026: the artist plate follows the chooser, opening Possibility one.
+      Amended again (EDITORIAL REDESIGN): opening -> top assessments -> empty wall
+      -> in-page navigation (replacing the chooser) -> 01 + artist -> outcome ->
+      02 + evening room -> 03 + same wall -> practical guide -> PlotArt ->
+      closing assessments
   M11 ORIGINAL HOSTING IMAGERY (founder image correction, 13 Oct 2026): the hero
       is DISC-024's own published hero (dfb125ba9dd7cd87, DISC-024-03-Gallery-
       at-Home) with its own alt text; the hosting sequence follows it in its
@@ -66,7 +73,14 @@ GUARDS
   M12 founder design decisions (17 Oct 2026): no two full-bleed images side by
       side; each check offered once (assessment section) and PlotArt once; the
       retired buttons, descriptions and invitation stay gone; Live with art
-      carries its three routes and not the Display tile; corrections applied once
+      carries its three routes and not the Display tile; corrections applied once.
+      Extended 17 Oct 2026 (EDITORIAL REDESIGN): every photograph is its source
+      <img> tag verbatim (file, alt, dimensions) and never two without a heading
+      between; deep forest is a background only behind the assessments and
+      terracotta never is; no two bands of one colour in a row; the headline
+      cautions stay on view and every moved caution sits in a labelled
+      expander; one labelled in-page navigation, in order, to real anchors.
+      Mutation proof: atlas-tools/prove-a-home-for-art-redesign.py
 
 Usage:
   python3 atlas-tools/build-a-home-for-art-merge.py --apply
@@ -254,6 +268,10 @@ LIVE_ROUTES = (
      "about the minimum term and who insures the work."),
 )
 LIVE_NOT_PLOTNUA = "Whether any of these is on offer is up to the artist or gallery."
+# 5 · EDITORIAL REDESIGN (founder approval to build locally, 17 Oct 2026). Interface
+#     labels only: the in-page navigation, the three numerals, and the one label
+#     over the folded buying detail. Nothing factual is added.
+MORE_LABEL = "More on buying and commissioning"
 # 4 · FACTUAL CORRECTIONS (audit 17 Oct 2026, founder approval 17 Oct 2026).
 #     Each pair is applied exactly once to the assembled page; the new text is
 #     declared below for M1. Official-body links only, verified 17 Oct 2026.
@@ -301,7 +319,10 @@ CORRECTIONS = (
 RETIRED = ("Check how far you&rsquo;d go", "Check your wall", "Be part of the idea", "<!-- PLOTNUA-BE-PART",
            "Check this against your own home", "class=\"hfa-cta\"",
            "Five short questions about the space you have and how far you&rsquo;d want this to go",
-           "Five short questions about the wall itself")
+           "Five short questions about the wall itself",
+           # retired by the editorial redesign (17 Oct 2026): the three chooser
+           # cards, replaced by the in-page navigation
+           'class="hfa-paths"', "Which sounds like you?")
 # Interface wording (labels, signposts) — new, non-factual, declared.
 NEW_TEXT = ["A Home for Art", OVERLOOKED_H2, "The overlooked opportunity", HERO_SUB, HERO_INTRO, LEDE, B1[0], B1[1], B2[0], B2[1], B3[0], B3[1], B2_P1, B2_P2,
             "Possibility one", "Possibility two", "Possibility three", INTRO_KICKER, "Which sounds like you?",
@@ -313,7 +334,8 @@ NEW_TEXT = ["A Home for Art", OVERLOOKED_H2, "The overlooked opportunity", HERO_
             "Your Home on Screen", "Explore another possibility",
             ASSESS_H, ASSESS_INTRO, ASSESS_NOTE, PLOTART_H, PLOTART_P, PLOTART_B1, PLOTART_B2, PLOTART_NOTE,
             PLOTART_HOME_NOTE, LIVE_Q, LIVE_CAT, LIVE_NOT_PLOTNUA] + list(CARD_HOST) + list(CARD_OWN) + \
-           [x for r in LIVE_ROUTES for x in r] + [new for _, new in CORRECTIONS]
+           [x for r in LIVE_ROUTES for x in r] + [new for _, new in CORRECTIONS] + \
+           ["01", "02", "03", "01 Open", "02 Live with", "03 Own", "Practical guide", "Checks", MORE_LABEL]
 
 TITLE = "A Home for Art: Host, Live With or Buy Original Irish Art | PlotNua"
 # META DESCRIPTION (founder design decisions, 17 Oct 2026): was 212 characters
@@ -325,67 +347,209 @@ OG_T = "A Home for Art | PlotNua Discoveries"
 OG_D = "Your home could be more than somewhere to hang art. Three possibilities, one home, and you decide how far to go."
 
 MERGE_CSS = """<style>/* PLOTNUA-HOME-FOR-ART-MERGE · generated by atlas-tools/build-a-home-for-art-merge.py.
-   Branch chooser, branch openings, the Live with art routes, the PlotArt section and the
-   one assessment section (founder design decisions, 17 Oct 2026).
-   Existing tokens only. */
-  .hfa-lede{ font-family:'Fraunces',Georgia,serif; font-size:clamp(20px,2.3vw,25px); line-height:1.55;
-    color:var(--ink); max-width:40ch; margin:0; }
-  .hfa-choose{ margin:44px 0 0; }
-  .hfa-choose-h{ font-family:'Work Sans',sans-serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--accent); margin:0 0 16px; font-weight:500; }
-  .hfa-paths{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-  .hfa-path{ display:block; height:100%; box-sizing:border-box; padding:22px 22px 24px; background:var(--paper);
-    border:1px solid rgba(31,59,46,.12); border-top:2px solid rgba(31,59,46,.45); border-radius:2px;
-    text-decoration:none; color:var(--ink); transition:border-color .3s ease; }
-  .hfa-path:hover{ border-top-color:var(--accent); }
-  .hfa-path:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .hfa-path-n{ display:block; font-family:'Work Sans',sans-serif; font-size:10.5px; letter-spacing:.2em;
-    text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
-  .hfa-path-t{ display:block; font-family:'Fraunces',Georgia,serif; font-size:21px; line-height:1.25; margin-bottom:8px; }
-  .hfa-path-l{ display:block; font-size:14.5px; line-height:1.6; color:var(--soft); }
-  .hfa-branch{ scroll-margin-top:84px; border-top:2px solid rgba(31,59,46,.55); }
-  .hfa-branch-lead{ font-size:18px; line-height:1.6; color:var(--soft); max-width:46ch; }
-  #before-anything-arrives{ scroll-margin-top:84px; }
-  .hfa-jump{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); }
-  .hfa-jump:hover{ border-bottom-color:var(--accent); }
-  .hfa-jump:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+   EDITORIAL REDESIGN (founder approval to build locally, 17 Oct 2026). Existing PlotNua
+   colours only, each with one job:
+     warm ivory  #F8F5EC  reading surfaces (opening, 01, 03, questions, PlotArt)
+     deep forest #1F3B2E  the two assessment bands ONLY (M12 refuses it anywhere else)
+     muted sage  #EEF2E8  02 Live with art
+     warm stone  #EFE9DA  the ladder band and the practical guide
+     terracotta  #BD6A46  numerals, thin rules and the PlotArt top edge; #A4532F for small
+                          text. Never a background (M12).
+   Photographs: full-bleed (wall, outcome), split (artist, same wall) and inset (evening);
+   full frame on desktop, nothing regenerated or replaced. */
+  .article-section p.hfa-lede{ font-family:'Fraunces',Georgia,serif; font-size:clamp(20px,2.3vw,25px);
+    line-height:1.55; color:var(--ink); max-width:40ch; margin:0 0 30px; }
+  .hfa-opening .dq-opp{ margin-top:34px; }
+
+  /* ---- colour bands */
+  .hfa-band.is-sage{ background:#EEF2E8; }
+  .hfa-band.is-stone{ background:#EFE9DA; }
+  .hfa-band.is-forest{ background:#1F3B2E; color:#F8F5EC; }
+  .hfa-band .article-section{ border-bottom:none; padding:84px 0; }
+  .hfa-band .article-section + .article-section{ padding-top:56px; border-top:1px solid rgba(31,59,46,.14); }
+  .hfa-band .dq-adv-cols > li, .hfa-band .dq-qual > li{ background:#F8F5EC; }
+  .hfa-band.is-stone .article{ max-width:1240px; }
+  .hfa-band.is-stone .article-section p{ max-width:66ch; }
+
+  /* ---- numerals, branch openings and the pull-quote */
+  .hfa-num{ display:block; font-family:'Fraunces',Georgia,serif; font-weight:300;
+    font-size:clamp(64px,7.4vw,108px); line-height:.86; letter-spacing:-.035em; color:#BD6A46; margin:0 0 22px; }
+  .article-section p.hfa-branch-lead{ font-size:18.5px; line-height:1.65; color:var(--soft); max-width:42ch; }
+  .article-section p.hfa-pull{ font-family:'Fraunces',Georgia,serif; font-size:clamp(18px,1.7vw,20px);
+    line-height:1.6; color:var(--ink); border-left:2px solid #BD6A46; padding:2px 0 2px 22px; margin-top:34px;
+    max-width:36ch; }
+  .hfa-pull strong{ display:block; font-weight:500; font-size:clamp(22px,2.3vw,28px); line-height:1.3; margin-bottom:8px; }
+
+  /* ---- the sticky in-page navigation: a compact pill in the same family as the
+     brand mark, Search and Back. It sits between them, never over them, and
+     scrolls away with the main column before the closing assessment band. */
+  .hfa-nav-wrap{ position:sticky; top:22px; z-index:45; display:flex; justify-content:center;
+    margin:34px 0; pointer-events:none; }
+  .hfa-nav{ pointer-events:auto; max-width:calc(100% - 444px); background:#F8F5EC;
+    border:1px solid rgba(31,59,46,.16); border-radius:24px; box-shadow:0 2px 10px rgba(31,59,46,.13); overflow:hidden; }
+  .hfa-nav-list{ list-style:none; margin:0; padding:0 5px; display:flex; gap:2px; overflow-x:auto;
+    scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .hfa-nav-list::-webkit-scrollbar{ display:none; }
+  .hfa-nav-list li{ flex:0 0 auto; display:flex; }
+  .hfa-nav a{ display:flex; align-items:center; gap:7px; min-height:44px; padding:0 14px; white-space:nowrap;
+    font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:500; letter-spacing:.01em;
+    color:var(--ink); text-decoration:none; border-radius:20px; transition:background .2s ease, box-shadow .2s ease; }
+  .hfa-nav a:hover{ background:rgba(31,59,46,.06); }
+  .hfa-nav a[aria-current]{ background:rgba(31,59,46,.07); box-shadow:inset 0 -2px 0 #BD6A46; }
+  .hfa-nav a:focus-visible{ outline:2px solid var(--accent); outline-offset:-4px; }
+  .hfa-nav-n{ font-family:'Fraunces',Georgia,serif; font-size:13px; font-weight:600; color:#A4532F; }
+  #open-your-home-to-art, #live-with-art, #discover-and-own, #before-anything-arrives, #discover-your-property,
+  #hfa-checks-top{ scroll-margin-top:84px; }
+
+  /* ---- split photograph and text (01 and, mirrored, 03). Full frame on
+     desktop: the picture takes its height from the image, nothing cropped. */
+  .hfa-split{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); align-items:center; }
+  .hfa-split.is-mirror{ grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); }
+  .hfa-split.is-mirror .hfa-photo{ order:-1; }
+  .hfa-split-text.article-section{ padding:9.5vh 60px 9.5vh 7vw; border-bottom:none; max-width:640px; justify-self:end; }
+  .hfa-split.is-mirror .hfa-split-text.article-section{ padding:9.5vh 7vw 9.5vh 60px; justify-self:start; }
+  .hfa-photo{ position:relative; margin:0; overflow:hidden; background:rgba(31,59,46,.08); }
+  .hfa-photo img{ display:block; width:100%; height:auto; aspect-ratio:1408 / 768; }
+  .hfa-cap{ position:absolute; z-index:2; left:0; right:0; bottom:0; padding:44px 6% 22px;
+    background:linear-gradient(180deg, rgba(15,14,10,0) 0%, rgba(15,14,10,.46) 100%); text-align:center; }
+  .hfa-cap p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400; color:#F8F5EC;
+    font-size:clamp(16px,1.6vw,19px); line-height:1.45; max-width:34ch; margin:0 auto;
+    text-shadow:0 1px 16px rgba(0,0,0,.3); }
+
+  /* ---- inset photograph, framed inside the 02 band */
+  .hfa-inset.hfa-photo{ position:relative; left:50%; translate:-50% 0; width:min(1100px, 86vw);
+    margin:48px 0 54px; border-radius:2px; box-shadow:0 34px 64px -34px rgba(31,59,46,.5); }
+
+  /* ---- full-bleed plates: a little shorter than 84vh, still a full screen's worth */
+  #pn-main .imagine-photo:not(.pa-frame){ height:80vh; height:80svh; }
+
+  /* ---- the ladder band: four compact tiles, then three people in one row */
+  .hfa-ladder .dq-adv{ margin-top:0; }
+  .hfa-band .dq-adv .dq-rows{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 34px; margin-top:6px; }
+  .hfa-band .dq-adv .dq-rows > li, .hfa-band .dq-adv .dq-rows > li:first-child{ margin:0; padding-top:16px;
+    border-top:1px solid rgba(31,59,46,.16); }
+  .hfa-band .dq-rows .dq-fact{ font-size:17px; line-height:1.45; }
+
+  /* ---- 03: the four routes as cards; the buying detail behind labelled expanders */
+  .hfa-own .article-section{ padding:64px 0; }
+  .hfa-own .article-section:first-child{ padding-top:76px; }
+  #pn-main .article-section p a:not(.hfa-jump){ color:var(--ink); text-decoration:underline;
+    text-decoration-color:rgba(31,59,46,.38); text-underline-offset:3px; }
+  #pn-main .article-section p a:not(.hfa-jump):hover{ text-decoration-color:var(--ink); }
+  #pn-main .article-section p a:not(.hfa-jump):focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .hfa-routes .practical-group{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:24px; }
+  .hfa-routes .practical-item, .hfa-routes .practical-item:first-child{ background:#F8F5EC; padding:24px 26px 26px;
+    border:1px solid rgba(31,59,46,.12); border-top:2px solid #BD6A46; border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.05), 0 12px 22px -18px rgba(31,59,46,.3); }
+  .hfa-routes .practical-item p{ font-size:15.5px; line-height:1.7; }
+  .hfa-routes .practical-group + p{ margin-top:30px; }
+  .hfa-cost .planning-sub{ margin-top:0; }
+  .hfa-cost .planning-note{ margin-top:22px; padding-top:18px; }
+  .faq-item.hfa-more{ border:1px solid rgba(31,59,46,.12); border-radius:2px; background:#F8F5EC;
+    padding:0 24px; margin-top:10px; box-shadow:0 1px 2px rgba(31,59,46,.05), 0 10px 18px -16px rgba(31,59,46,.3); }
+  .faq-item.hfa-more:last-child{ border-bottom:1px solid rgba(31,59,46,.12); }
+  .faq-item.hfa-more summary{ padding:20px 0; }
+  .faq-item.hfa-more summary h3{ font-family:'Fraunces',Georgia,serif; font-weight:500;
+    font-size:clamp(18px,1.9vw,21px); line-height:1.35; }
+  .hfa-more-k{ display:block; font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .hfa-more-body{ padding:0 0 28px; }
+  .hfa-more-body > p:first-child{ margin-top:0; }
+  .article-section p.hfa-more-label{ font-family:'Work Sans',sans-serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 14px; }
+
+  /* ---- readable small type inside the main column (no tiny labels) */
+  #pn-main .dq-cat, #pn-main .dq-adv-label{ font-size:10.5px; }
+  #pn-main span.dq-note{ font-size:13.5px; }
+  #pn-main .dq-use .dq-note{ font-size:13px; }
+  #pn-main .dq-earn-caveat{ font-size:13.5px; }
+  #pn-main .faq-item.is-inline summary h3{ font-size:12px; letter-spacing:.18em; }
+  #pn-main .quiet-section .kicker{ opacity:1; }
+
+  /* ---- assessments: the same two checks, top and bottom, on deep forest */
+  .hfa-assess{ padding:88px 0 92px; text-align:center; }
+  .hfa-assess-h{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(28px,3.6vw,42px);
+    line-height:1.22; letter-spacing:-.01em; color:#F8F5EC; margin:0 auto 12px; max-width:20ch; }
+  .hfa-assess-intro{ font-size:17px; line-height:1.6; color:rgba(248,245,236,.86); margin:0 auto 36px; max-width:42ch; }
   .hfa-checks{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; width:100%; max-width:880px;
     margin:6px auto 0; text-align:left; }
-  /* ONE ASSESSMENT SECTION (founder design decisions, 17 Oct 2026): two clearly
-     different cards, the page's only check buttons, the button pinned to the
-     foot of each card so the two line up; full-width buttons on a phone. */
-  .hfa-check{ display:flex; flex-direction:column; background:var(--paper); padding:28px 28px 30px;
-    border:1px solid rgba(31,59,46,.12); border-top:3px solid var(--ink); border-radius:2px;
-    box-shadow:0 1px 2px rgba(31,59,46,.06), 0 16px 30px -18px rgba(31,59,46,.36); }
-  .hfa-check .hfa-check-k{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--accent); margin:0 0 12px; line-height:1.4; }
-  .hfa-check h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.3vw,26px); line-height:1.28;
-    margin:0 0 10px; color:var(--ink); }
-  .hfa-check p{ font-size:15.5px; line-height:1.6; color:var(--soft); margin:0 0 24px; }
-  .hfa-check .btn-primary{ margin-top:auto; align-self:flex-start; text-decoration:none; }
-  .hfa-check .btn-primary:focus-visible,.hfa-plotart .btn-primary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .hfa-assess-note{ margin:22px auto 0; font-size:14.5px; line-height:1.6; color:var(--soft); }
-  /* LIVE WITH ART · the gallery comes to you. */
+  .hfa-check{ display:flex; flex-direction:column; padding:30px 30px 32px; border-radius:2px;
+    background:rgba(248,245,236,.07); border:1px solid rgba(248,245,236,.18); border-top:3px solid #BD6A46; }
+  .hfa-check .hfa-check-k{ font-family:'Work Sans',sans-serif; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:#C9D8C2; margin:0 0 12px; line-height:1.4; }
+  .hfa-check h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(23px,2.4vw,28px); line-height:1.26;
+    margin:0 0 10px; color:#F8F5EC; }
+  .hfa-check p{ font-size:16px; line-height:1.6; color:rgba(248,245,236,.84); margin:0 0 26px; }
+  .hfa-check .btn-primary{ margin-top:auto; align-self:flex-start; text-decoration:none; background:#F8F5EC; color:#1F3B2E;
+    font-weight:600; }
+  .hfa-check .btn-primary:hover{ background:#fff; }
+  .hfa-check .btn-primary:focus-visible{ outline:2px solid #F8F5EC; outline-offset:3px; }
+  .hfa-assess-note{ margin:24px auto 0; font-size:15px; line-height:1.6; color:rgba(248,245,236,.82); }
+  #discover-your-property{ background:#1F3B2E; border-top:none; padding:96px 7vw 88px; }
+  #discover-your-property .pn-wordmark, #discover-your-property .pb-headline{ color:#F8F5EC; }
+  #discover-your-property .pb-subhead{ color:rgba(248,245,236,.86); }
+  #discover-your-property .cs-exits{ margin-top:40px; }
+  #discover-your-property .cs-exit{ color:#F8F5EC; border-bottom-color:rgba(248,245,236,.42); }
+  #discover-your-property .cs-exit:hover{ border-bottom-color:#F8F5EC; }
+  #discover-your-property .cs-exit.is-home{ color:rgba(248,245,236,.8); border-bottom-color:rgba(248,245,236,.3); }
+  #discover-your-property .cs-exit:focus-visible{ outline-color:#F8F5EC; }
+
+  /* ---- LIVE WITH ART · the gallery comes to you */
   .hfa-live-q{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.4vw,28px); line-height:1.3;
-    color:var(--ink); margin:30px 0 14px; max-width:28ch; }
+    color:var(--ink); margin:0 0 14px; max-width:28ch; }
   #live-with-art .dq-adv + p{ margin-top:30px; }
-  .hfa-sub{ margin:34px 0 10px; }
-  /* ONE PLOTART SECTION, after the three possibilities. */
-  .hfa-plotart{ margin:40px 0 0; padding:30px 30px 32px; background:var(--paper); border:1px solid rgba(31,59,46,.12);
-    border-top:3px solid var(--accent); border-radius:2px; }
+
+  /* ---- the one PlotArt section, terracotta-topped */
+  .hfa-plotart{ margin:40px 0 0; padding:32px 32px 34px; background:#F8F5EC; border:1px solid rgba(31,59,46,.12);
+    border-top:3px solid #BD6A46; border-radius:2px; box-shadow:0 1px 2px rgba(31,59,46,.05), 0 16px 30px -22px rgba(31,59,46,.34); }
   .hfa-plotart h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.4vw,27px); line-height:1.3;
     margin:0 0 10px; color:var(--ink); }
   .hfa-plotart-actions{ display:flex; flex-wrap:wrap; gap:12px; margin:22px 0 0; }
   .hfa-plotart .btn-primary{ margin-top:0; text-decoration:none; }
+  .hfa-plotart .btn-primary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
   .hfa-plotart .dq-note{ margin-top:18px; font-size:14.5px; line-height:1.65; }
-  @media(max-width:820px){ .hfa-paths,.hfa-checks{ grid-template-columns:1fr; } }
-  @media(max-width:560px){
-    #discover-your-property{ padding-left:20px; padding-right:20px; }
+  .hfa-future .faq-item.hfa-more{ margin-top:26px; }
+  .hfa-future .faq-item.hfa-more + .dq-note{ margin-top:18px; }
+  .hfa-jump{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); }
+  .hfa-jump:hover{ border-bottom-color:var(--accent); }
+  .hfa-jump:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  @media(min-width:1000px){ .hfa-band .dq-adv-cols.is-four{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+  @media(max-width:900px){
+    .hfa-split, .hfa-split.is-mirror{ grid-template-columns:1fr; }
+    .hfa-split.is-mirror .hfa-photo{ order:0; }
+    .hfa-split-text.article-section, .hfa-split.is-mirror .hfa-split-text.article-section{ padding:7.5vh 7vw 40px;
+      max-width:none; justify-self:stretch; }
+  }
+  @media(max-width:820px){
+    .hfa-checks{ grid-template-columns:1fr; }
+    .hfa-band .dq-adv .dq-rows{ grid-template-columns:1fr; gap:16px; }
+  }
+  @media(max-width:720px){
+    .hfa-nav-wrap{ top:12px; margin:24px 0; }
+    .hfa-nav{ max-width:calc(100% - 112px); }
+    .hfa-nav-list{ padding:0 8px; -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 14px), transparent 100%);
+      mask-image:linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 14px), transparent 100%); }
+    .hfa-nav a{ min-height:40px; padding:0 11px; font-size:13px; gap:5px; }
+    #open-your-home-to-art, #live-with-art, #discover-and-own, #before-anything-arrives, #discover-your-property,
+    #hfa-checks-top{ scroll-margin-top:66px; }
+    /* on a phone the split and inset photographs run edge to edge at 4:3 */
+    .hfa-photo img{ aspect-ratio:4 / 3; object-fit:cover; }
+    .hfa-inset.hfa-photo{ width:100vw; margin:40px 0 44px; border-radius:0; box-shadow:none; }
+    .hfa-band .article-section{ padding:60px 0; }
+    .hfa-band .article-section + .article-section{ padding-top:44px; }
+    .hfa-own .article-section{ padding:48px 0; }
+    .hfa-routes .practical-group{ grid-template-columns:1fr; gap:10px; }
+    .hfa-routes .practical-item, .hfa-routes .practical-item:first-child{ padding:20px 20px 22px; }
+    .faq-item.hfa-more{ padding:0 18px; }
+    .hfa-assess{ padding:64px 0 68px; }
+    #discover-your-property{ padding:72px 20px 72px; }
     .hfa-check{ padding:24px 20px 24px; }
-    .hfa-check .btn-primary,.hfa-plotart-actions .btn-primary{ align-self:stretch; flex:1 1 100%; text-align:center;
+    .hfa-check .btn-primary, .hfa-plotart-actions .btn-primary{ align-self:stretch; flex:1 1 100%; text-align:center;
       box-sizing:border-box; }
     .hfa-plotart{ padding:24px 20px 26px; }
   }
+  @media(prefers-reduced-motion:reduce){ .hfa-nav a{ transition:none; } }
 </style>
 """
 
@@ -415,59 +579,153 @@ def plotart():
                                PLOTART_NOTE, PLOTART_HOME_NOTE))
 
 
-def branch_open(n, bid, name, line):
-    return ('  <section class="article-section reveal hfa-branch" id="%s">\n'
-            '    <div class="kicker">%s</div>\n'
-            '    <h2>%s</h2>\n'
-            '    <p class="hfa-branch-lead">%s</p>\n' % (bid, n, name, line))
+NUMS = ("01", "02", "03")
+NAV_ITEMS = (("open-your-home-to-art", "01", "Open"), ("live-with-art", "02", "Live with"),
+             ("discover-and-own", "03", "Own"), ("before-anything-arrives", "", "Practical guide"),
+             ("discover-your-property", "", "Checks"))
+NAV_LABEL = "On this page"
+# The in-page navigation (founder decision 2, 17 Oct 2026): a compact sticky pill
+# after the empty-wall photograph. It replaces the three chooser cards.
+NAV = ('<div class="hfa-nav-wrap">\n'
+       '  <nav class="hfa-nav" id="hfaNav" aria-label="%s">\n'
+       '    <ul class="hfa-nav-list">\n%s    </ul>\n'
+       '  </nav>\n'
+       '</div>\n' % (NAV_LABEL, "".join(
+           '      <li><a href="#%s">%s%s</a></li>\n' % (a, ('<span class="hfa-nav-n">%s</span> ' % n) if n else "", t)
+           for a, n, t in NAV_ITEMS)))
+NAV_SCRIPT = """<script>
+/* PLOTNUA-HOME-FOR-ART-NAV · marks the section being read in the in-page
+   navigation (aria-current="location") and keeps that link in view inside the
+   pill on a phone. Reading position only; nothing is stored or sent. */
+(function(){
+  var nav = document.getElementById('hfaNav');
+  if (!nav) return;
+  var list = nav.querySelector('.hfa-nav-list');
+  var links = [].slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var targets = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var current = -1, queued = false;
+  function update(){
+    queued = false;
+    var line = window.innerHeight * 0.35, idx = -1;
+    for (var i = 0; i < targets.length; i++){
+      if (targets[i] && targets[i].getBoundingClientRect().top <= line) idx = i;
+    }
+    if (idx === current) return;
+    current = idx;
+    links.forEach(function(a, i){
+      if (i === idx) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+    if (idx > -1 && list.scrollWidth > list.clientWidth){
+      var a = links[idx], l = a.offsetLeft, r = l + a.offsetWidth;
+      if (l < list.scrollLeft + 12 || r > list.scrollLeft + list.clientWidth - 12) list.scrollLeft = Math.max(0, l - 24);
+    }
+  }
+  function queue(){ if (!queued){ queued = true; window.requestAnimationFrame(update); } }
+  window.addEventListener('scroll', queue, {passive:true});
+  window.addEventListener('resize', queue);
+  update();
+})();
+</script>
+"""
+
+
+def _img(plate):
+    return re.search(r"<img\b[^>]*>", plate).group(0)
+
+
+def _cap(plate):
+    return re.search(r'<div class="caption"><p>(.*?)</p></div>', plate).group(1)
+
+
+def photo(plate, cls, note):
+    """A split or inset photograph: the source <img> tag verbatim (file, alt,
+    dimensions) and the source caption verbatim; only its frame changes."""
+    return ('  <figure class="hfa-photo%s">\n'
+            '    <!-- %s -->\n'
+            '    %s\n'
+            '    <figcaption class="hfa-cap"><p>%s</p></figcaption>\n'
+            '  </figure>\n' % (cls, note, _img(plate), _cap(plate)))
+
+
+def expander(sec):
+    """A source section folded into a labelled expandable panel: the section's
+    own kicker and heading become the label; every word of the body stays in the
+    page source (M12 requires moved cautions to sit inside one of these)."""
+    m = re.match(r'  <section class="article-section reveal">\n    <div class="kicker">(.*?)</div>\n'
+                 r'    <h2>(.*?)</h2>\n', sec)
+    if not m:
+        die("M12 an expandable section's source no longer opens with a kicker and heading")
+    body = sec[m.end():sec.rindex("  </section>")].strip("\n")
+    return ('    <details class="faq-item hfa-more">\n'
+            '      <summary><h3><span class="hfa-more-k">%s</span>%s</h3><span class="icon"></span></summary>\n'
+            '      <div class="hfa-more-body">\n%s\n      </div>\n'
+            '    </details>\n' % (m.group(1), m.group(2), body))
+
+
+def checks_band(hid, hh):
+    """The two homeowner checks on deep forest (founder decision 1): the same
+    cards and note as the closing assessment band."""
+    return ('<section class="hfa-band is-forest hfa-assess" id="%s" aria-labelledby="%s">\n'
+            '  <!-- ASSESSMENTS (TOP) · founder decision 1, 17 Oct 2026: straight after the opening and the\n'
+            '       SPACE <-> SPACE board. The same two checks are repeated at the foot of the page. -->\n'
+            '  <div class="article">\n'
+            '    <h2 class="hfa-assess-h" id="%s">%s</h2>\n'
+            '    <p class="hfa-assess-intro">%s</p>\n'
+            '    <div class="hfa-checks">\n%s%s    </div>\n'
+            '    <p class="hfa-assess-note">%s</p>\n'
+            '  </div>\n'
+            '</section>\n' % (hid, hh, hh, ASSESS_H, ASSESS_INTRO, _card(CARD_HOST, START24),
+                              _card(CARD_OWN, START23), ASSESS_NOTE))
 
 
 def main_html():
-    # VISUAL AND NARRATIVE PRIORITY CORRECTION (founder, 13 Oct 2026): the hosting
-    # story leads. Order: the overlooked opportunity (SPACE <-> SPACE) -> before
-    # and after in pictures -> three possibilities -> Open your home (primary) ->
-    # Live with art -> Discover & own -> shared guidance -> the PlotArt section
-    # -> the one assessment section.
-    paths = "".join(
-        '      <li><a class="hfa-path" href="#%s"><span class="hfa-path-n">%s</span>'
-        '<span class="hfa-path-t">%s</span><span class="hfa-path-l">%s</span></a></li>\n' % (a, n, t, l)
-        for a, n, (t, l) in (("open-your-home-to-art", "Possibility one", B3), ("live-with-art", "Possibility two", B2),
-                             ("discover-and-own", "Possibility three", B1)))
-    # The top-of-page "Be part of the idea" invitation is retired (17 Oct 2026):
-    # the PlotArt registers are offered once, after the three possibilities.
-    intro = ('  <section class="article-section reveal">\n'
-             '    <div class="kicker">%s</div>\n'
-             '    <p class="hfa-lede">%s</p>\n'
-             '    <nav class="hfa-choose" aria-labelledby="hfaChooseH">\n'
-             '      <p class="hfa-choose-h" id="hfaChooseH">Which sounds like you?</p>\n'
-             '    <ul class="hfa-paths">\n%s    </ul>\n    </nav>\n'
-             '  </section>\n' % (INTRO_KICKER, LEDE, paths))
+    # EDITORIAL REDESIGN (founder approval to build locally, 17 Oct 2026). The
+    # hosting story still leads. Order: opening (the overlooked opportunity and
+    # SPACE <-> SPACE) -> the two checks on deep forest -> the empty wall
+    # (full-bleed) -> the sticky in-page navigation -> 01 Open (split, artist)
+    # -> the ladder and "three people" (warm stone) -> the outcome (full-bleed)
+    # -> 02 Live with art (sage, inset evening room) -> 03 Discover & own
+    # (mirrored split, same wall; the buying detail behind labelled expanders)
+    # -> the practical guide (warm stone) -> questions and PlotArt (ivory)
+    # -> the closing assessment band (deep forest, outside <main>).
     split_at = O_FIRST.index('    <p class="dq-note"><strong>Nobody has to come to your door.</strong>')
     first_a = O_FIRST[:split_at].rsplit("\n\n", 1)[0] + "\n"     # opening line + SPACE <-> SPACE
     first_b = O_FIRST[split_at:].rsplit("  </section>\n", 1)[0]    # no visitors, the ladder, money
-    overlooked = first_a.replace('  <section class="article-section reveal">\n',
-                                 '  <section class="article-section reveal">\n'
-                                 '    <div class="kicker">The overlooked opportunity</div>\n'
-                                 '    <h2>%s</h2>\n' % OVERLOOKED_H2, 1) + "  </section>\n"
-    before_plate = O_IMG_PA
-    artist_plate = O_IMG_ARTIST.replace(
-        "THE ARTIST'S PROBLEM. Placed after the ladder on purpose: the homeowner\n"
-        "       now knows what they could offer, and this is what it would answer.",
-        "THE ARTIST'S PROBLEM. Opens Possibility one (founder design decisions,\n"
-        "       17 Oct 2026): the homeowner has just chosen a way in; this is what it would answer.", 1)
-    if artist_plate == O_IMG_ARTIST:
-        die("M11 the artist plate's BASE comment moved")
+    nobody, ladder = first_b.split("\n", 1)
+    if not nobody.endswith("</p>"):
+        die("M1 the 'Nobody has to come to your door' sentence moved")
+    opening = first_a.replace('  <section class="article-section reveal">\n',
+                              '  <section class="article-section reveal hfa-opening">\n'
+                              '    <div class="kicker">The overlooked opportunity</div>\n'
+                              '    <h2>%s</h2>\n'
+                              '    <p class="hfa-lede">%s</p>\n' % (OVERLOOKED_H2, LEDE), 1) + "  </section>\n"
     seller = "<strong>The artist is the seller.</strong> They own the work, set the price, deal with the buyer and receive the payment."
     if seller not in O0:
         die("M1 source sentence moved: the artist is the seller")
-    # Branch check buttons are retired (17 Oct 2026): both checks are offered
-    # once, in the assessment section near the end.
-    b_open = (branch_open("Possibility one", "open-your-home-to-art", B3[0], B3[1]) +
-              first_b.rstrip("\n") + "\n  </section>\n")
+    open_split = ('<section class="hfa-split reveal" id="open-your-home-to-art" aria-labelledby="hfaOpenH">\n'
+                  '  <div class="hfa-split-text article-section">\n'
+                  '    <span class="hfa-num" aria-hidden="true">%s</span>\n'
+                  '    <div class="kicker">Possibility one</div>\n'
+                  '    <h2 id="hfaOpenH">%s</h2>\n'
+                  '    <p class="hfa-branch-lead">%s</p>\n'
+                  '%s\n'
+                  '  </div>\n%s'
+                  '</section>\n' % (NUMS[0], B3[0], B3[1],
+                                    nobody.replace('<p class="dq-note">', '<p class="dq-note hfa-pull">', 1),
+                                    photo(O_IMG_ARTIST, "",
+                                          "THE ARTIST'S PROBLEM, beside Possibility one (split, full frame).")))
+    ladder_band = ('<div class="hfa-band is-stone">\n' +
+                   art('  <section class="article-section reveal hfa-ladder">\n' + ladder.strip("\n") +
+                       "\n  </section>\n", O_BETTER) + '</div>\n')
     routes = "".join('        <li>\n          <span class="dq-adv-label">%s</span>\n'
                      '          <span class="dq-fact">%s</span>\n'
                      '          <span class="dq-note">%s</span>\n        </li>\n' % r for r in LIVE_ROUTES)
-    b_live = (branch_open("Possibility two", "live-with-art", B2[0], B2[1]) +
+    b_live = ('  <section class="article-section reveal" id="live-with-art" aria-labelledby="hfaLiveH">\n'
+              '    <span class="hfa-num" aria-hidden="true">%s</span>\n'
+              '    <div class="kicker">Possibility two</div>\n'
+              '    <h2 id="hfaLiveH">%s</h2>\n'
+              '    <p class="hfa-branch-lead">%s</p>\n' % (NUMS[1], B2[0], B2[1]) +
+              photo(A_IMG_EVENING, " hfa-inset", "THE EVENING ROOM, inset inside the Live with art band.") +
               '    <h3 class="hfa-live-q">%s</h3>\n' % LIVE_Q +
               '    <p>%s</p>\n' % B2_P1 +
               '    <!-- THE GALLERY COMES TO YOU (founder design decisions, 17 Oct 2026). Three routes a\n'
@@ -481,36 +739,61 @@ def main_html():
               '    <p class="dq-note"><a class="hfa-jump" href="#before-anything-arrives">Before anything arrives, the custody, insurance '
               'and money questions below apply here too.</a></p>\n' +
               "  </section>\n")
-    b_own = branch_open("Possibility three", "discover-and-own", B1[0], B1[1]) + "  </section>\n"
+    live_band = '<div class="hfa-band is-sage">\n' + art(b_live) + '</div>\n'
+    own_split = ('<section class="hfa-split is-mirror reveal" id="discover-and-own" aria-labelledby="hfaOwnH">\n'
+                 '  <div class="hfa-split-text article-section">\n'
+                 '    <span class="hfa-num" aria-hidden="true">%s</span>\n'
+                 '    <div class="kicker">Possibility three</div>\n'
+                 '    <h2 id="hfaOwnH">%s</h2>\n'
+                 '    <p class="hfa-branch-lead">%s</p>\n'
+                 '  </div>\n%s'
+                 '</section>\n' % (NUMS[2], B1[0], B1[1],
+                                   photo(A_IMG_SAME, "", "THE SAME WALL, beside Possibility three (mirrored split, full frame).")))
+    # "Does it have to be expensive?" and the no-price-guides caution stay on
+    # view; the rest of the buying section folds away.
+    k = A_BUYING.index('    <div class="planning-sub">Does it have to be expensive?</div>')
+    buying = A_BUYING[:k].rstrip() + "\n  </section>\n"
+    cost = ('  <section class="article-section reveal hfa-cost">\n' +
+            A_BUYING[k:A_BUYING.rindex("  </section>")].rstrip() + "\n  </section>\n")
+    look = A_LOOK.replace('<section class="article-section reveal">', '<section class="article-section reveal hfa-routes">', 1)
+    more = ('  <section class="article-section reveal hfa-more-group">\n'
+            '    <p class="hfa-more-label">%s</p>\n' % MORE_LABEL +
+            "".join(expander(s) for s in (buying, A_SIZE, A_COMM, A_BEFORE)) + "  </section>\n")
+    own = '<div class="article hfa-own">\n\n' + "\n".join((A_WHY, cost, look, more)) + '\n</div>\n\n'
     settle = O_SETTLE.replace('<section class="article-section reveal">',
                               '<section class="article-section reveal" id="before-anything-arrives">', 1)
-    future = (A_FUTURE.rsplit("  </section>\n", 1)[0] +
-              '    <h3 class="hfa-sub">Finding each other</h3>\n' +
-              "".join(re.findall(r"    <p[^>]*>.*?</p>\n", O_FUTURE, re.S)))
+    settle_band = '<div class="hfa-band is-stone">\n' + art(settle) + '</div>\n'
+    fut_ps = re.findall(r"    <p[^>]*>.*?</p>\n", O_FUTURE, re.S)
     anchor = '    <p class="dq-note">This matching service is not live yet.</p>\n'
-    if not future.endswith(anchor):
+    if not fut_ps or fut_ps[-1] != anchor:
         die("M6 the PlotArt section no longer ends with the not-live sentence")
+    future = (A_FUTURE.replace('<section class="article-section reveal">', '<section class="article-section reveal hfa-future">', 1)
+              .rsplit("  </section>\n", 1)[0] +
+              '    <details class="faq-item hfa-more">\n'
+              '      <summary><h3>Finding each other</h3><span class="icon"></span></summary>\n'
+              '      <div class="hfa-more-body">\n' + "".join(fut_ps[:-1]) + '      </div>\n'
+              '    </details>\n' + anchor)
     future += (plotart() if artist_public() else "") + "  </section>\n"
-    art = lambda *xs: '<div class="article">\n\n' + "\n".join(xs) + '\n</div>\n\n'
-    # IMAGE SPACING (founder design decisions, 17 Oct 2026). The empty-wall plate
-    # and the artist plate used to sit back to back (zero pixels apart, desktop
-    # and mobile). Now each is its own moment: the empty wall answers "What you
-    # have: Space." directly above it; the three-possibilities chooser follows;
-    # the artist plate ("The work exists already. What it lacks is a room.") then
-    # opens Possibility one, the hosting branch it argues for. No image is added,
-    # removed, cropped or replaced; M12 refuses any two plates side by side.
+    # IMAGE SPACING: no two photographs ever sit side by side (M12); full-bleed,
+    # split and inset alternate. No image is added, removed, regenerated or
+    # replaced; every <img> tag is the source's, verbatim (M12).
     return ('<main id="pn-main">\n' +
-            art(overlooked) +
-            before_plate + "\n" +
-            art(intro) +
-            artist_plate + "\n" +
-            art(b_open) + O_IMG_OUTCOME + "\n" +
-            art(b_live) + A_IMG_EVENING + "\n" +
-            art(b_own, A_WHY, A_BUYING, A_SIZE) + A_IMG_SAME + "\n" +
-            art(A_LOOK, A_COMM, A_BEFORE) +
-            art(settle) +
-            art(O_BETTER) +
+            art(opening) +
+            checks_band("hfa-checks-top", "hfaChecksTopH") +
+            O_IMG_PA + "\n" +
+            NAV +
+            open_split +
+            ladder_band +
+            O_IMG_OUTCOME + "\n" +
+            live_band +
+            own_split +
+            own +
+            settle_band +
             art(A_FAQ, future).rstrip("\n") + "\n</main>\n")
+
+
+def art(*xs):
+    return '<div class="article">\n\n' + "\n".join(xs) + '\n</div>\n\n'
 
 
 def _card(card, href):
@@ -600,6 +883,8 @@ def merged_page():
     i = once(s, '<section class="related reveal">', "A related (merged)")
     j = s.index("</section>\n", i) + len("</section>\n")
     s = s[:i] + rel + s[j:]
+    once(s, "</body>", "A body end")
+    s = s.replace("</body>", NAV_SCRIPT + "</body>", 1)
     # FACTUAL CORRECTIONS (17 Oct 2026): each source sentence exactly once.
     for old, new in CORRECTIONS:
         once(s, old, "correction")
@@ -946,21 +1231,30 @@ def guards(page):
     for a in ("discover-and-own", "live-with-art", "open-your-home-to-art", "before-anything-arrives"):
         if page.count('id="%s"' % a) != 1:
             die("M2 anchor #%s not present exactly once" % a)
-    # M3 (amended 17 Oct 2026, founder design decisions; was "linked from their
-    # branches and the panel", >= 2 / >= 3 links). Each check is offered ONCE, in
-    # the assessment section, hosting first. The only other route to the DISC-024
-    # check is the PlotArt section's homeowner button (it starts the check whose
-    # result offers the Art Space Register). The DISC-023 check has no other link.
-    pi = page.index('<section class="pb-preview reveal" id="discover-your-property">')
-    panel = page[pi:page.index("  </section>\n", pi)]
-    if panel.count('href="%s"' % START24) != 1 or panel.count('href="%s"' % START23) != 1 \
-            or panel.index('href="%s"' % START24) > panel.index('href="%s"' % START23):
-        die("M3 the assessment section must offer each check exactly once, hosting first")
+    # M3 (amended twice on 17 Oct 2026). Founder design decisions: each check
+    # offered in one assessment section. EDITORIAL REDESIGN (founder decision 1):
+    # TWO placements of that same section, one straight after the opening and one
+    # at the foot of the page, each with exactly one hosting card then one buying
+    # card. The only other route to the DISC-024 check is the PlotArt section's
+    # homeowner button (it starts the check whose result offers the Art Space
+    # Register). The DISC-023 check has no other link.
+    def placement(start):
+        pi = page.index(start)
+        return page[pi:page.index("</section>\n", pi)]
+    for name, start in (("top", '<section class="hfa-band is-forest hfa-assess" id="hfa-checks-top"'),
+                        ("closing", '<section class="pb-preview reveal" id="discover-your-property">')):
+        if page.count(start) != 1:
+            die("M3 the %s assessment section is missing or repeated" % name)
+        panel = placement(start)
+        if panel.count('href="%s"' % START24) != 1 or panel.count('href="%s"' % START23) != 1 \
+                or panel.index('href="%s"' % START24) > panel.index('href="%s"' % START23) \
+                or panel.count('<div class="hfa-check">') != 2:
+            die("M3 the %s assessment section must offer each check exactly once, hosting first" % name)
     ti = page.find("<!-- PLOTNUA-TAKE-PART")
     pa = page[ti:page.index("</aside>", ti)] if ti > -1 else ""
-    if page.count('href="%s"' % START23) != 1 or \
-            page.count('href="%s"' % START24) != 1 + pa.count('href="%s"' % START24) or pa.count('href="%s"' % START24) > 1:
-        die("M3 a Property Check is linked outside the assessment section (other than PlotArt's homeowner button)")
+    if page.count('href="%s"' % START23) != 2 or \
+            page.count('href="%s"' % START24) != 2 + pa.count('href="%s"' % START24) or pa.count('href="%s"' % START24) > 1:
+        die("M3 a Property Check is linked outside the two assessment sections (other than PlotArt's homeowner button)")
     if page.count('href="%s"' % C23) or page.count('href="%s"' % C24):
         die("M3 a Property Check is linked without ?start=1")
     if 'href="%s"' % OLD in page:
@@ -1010,16 +1304,18 @@ def guards(page):
         if cur24.count(phrase) != 1:
             die("M8 founder-approved DISC-024 wording missing: " + phrase[:60])
     # M10 · founder hierarchy: hosting story first, then Open > Live with > Discover & own; hosting check first
-    # Amended 17 Oct 2026 (founder design decisions): the artist plate now opens
-    # Possibility one, after the chooser, so it no longer sits on the empty-wall
-    # plate; the PlotArt section follows the possibilities; the assessment
-    # section comes last, hosting card first.
-    order = [page.find(x) for x in (HOST_HERO_TAG, "<h2>%s</h2>" % OVERLOOKED_H2, "assets/img/046ec577a454599b.jpg",
-                                     'class="hfa-paths"', "assets/img/6442d19ec2dd1df0.jpg",
-                                     'id="open-your-home-to-art"', "assets/img/05cab54ac0af83d0.jpg", 'id="live-with-art"', 'id="discover-and-own"',
-                                     'id="before-anything-arrives"') +
+    # Amended 17 Oct 2026 (EDITORIAL REDESIGN, founder decisions 1 and 2): the
+    # opening, then the top assessment band, then the empty wall, then the
+    # in-page navigation (which replaces the three chooser cards); 01 opens on the
+    # artist photograph, 02 carries the evening room, 03 the same wall; the
+    # practical guide and PlotArt follow, and the closing assessment band is last.
+    order = [page.find(x) for x in (HOST_HERO_TAG, "<h2>%s</h2>" % OVERLOOKED_H2, 'id="hfa-checks-top"',
+                                     "assets/img/046ec577a454599b.jpg", 'class="hfa-nav"', 'id="open-your-home-to-art"',
+                                     "assets/img/6442d19ec2dd1df0.jpg", "assets/img/05cab54ac0af83d0.jpg",
+                                     'id="live-with-art"', "assets/img/571594a8d5b2e80a.jpg", 'id="discover-and-own"',
+                                     "assets/img/c1d46445b6a79373.jpg", 'id="before-anything-arrives"') +
              ((("<!-- PLOTNUA-TAKE-PART",) if artist_public() else ()) +
-              ("<h3>%s</h3>" % CARD_HOST[1], "<h3>%s</h3>" % CARD_OWN[1]))]
+              ("</main>", 'id="discover-your-property"'))]
     if -1 in order or order != sorted(order):
         die("M10 the founder's visual and narrative hierarchy is not in order: %r" % order)
     # M11 · original hosting imagery leads, and every card for this Discovery shows it
@@ -1082,6 +1378,80 @@ def m12(page):
     for _, new in CORRECTIONS:
         if page.count(new) != 1:
             die("M12 factual correction not present exactly once: " + new[:60])
+    m12_redesign(page, shown)
+
+
+# Cautions that must stay on view at headline level (founder approval, 17 Oct
+# 2026: "every caution stays visible at headline level"), and the cautions the
+# redesign moved behind a labelled expander.
+VISIBLE_CAUTIONS = ("Do not assume a home policy protects somebody else&rsquo;s artwork.",
+                    "If money changes hands, it is income.", B2_P2, "the artist is the seller.",
+                    "PlotNua does not publish price guides.", "This matching service is not live yet.",
+                    "Nobody has to come to your door.")
+FOLDED_CAUTIONS = ("Household policies often cap individual items.", "Copyright stays with the artist.",
+                   "Allianz lists visitors&rsquo; property", "It is the artist&rsquo;s relief, never the host&rsquo;s.",
+                   "PlotNua does not value or authenticate work.")
+PHOTOS = (HOST_HERO_TAG.strip(), _img(O_IMG_PA), _img(O_IMG_ARTIST), _img(O_IMG_OUTCOME), _img(A_IMG_EVENING),
+          _img(A_IMG_SAME))
+FOREST = re.compile(r"#1f3b2e|var\(--ink\)|31,\s*59,\s*46,\s*1\)", re.I)
+TERRA = re.compile(r"#bd6a46|#a4532f", re.I)
+
+
+def m12_redesign(page, shown):
+    """M12 (extended 17 Oct 2026, EDITORIAL REDESIGN). The redesign keeps its
+    promises: every photograph is the source's own tag, never two in a row;
+    deep forest only behind the assessments; terracotta never a background;
+    no two bands of one colour in a row; headline cautions on view and moved
+    cautions inside a labelled expander; one labelled in-page navigation."""
+    mi, me = shown.index('<main id="pn-main">'), shown.index("</main>")
+    main = shown[mi:me]
+    for tag in PHOTOS:
+        if page.count(tag) != 1:
+            die("M12 a photograph's source tag (file, alt text, dimensions) is not on the page exactly once: " + tag[:70])
+    pics = [m.start() for m in re.finditer(r"<img\b", main)]
+    if len(pics) != 5:
+        die("M12 the main column must carry exactly the five source photographs (found %d)" % len(pics))
+    for a, b in zip(pics, pics[1:]):
+        if "<h2" not in main[a:b]:
+            die("M12 two photographs sit side by side with no heading between them")
+    css = page[page.index("<style>/* PLOTNUA-HOME-FOR-ART-MERGE"):]
+    css = css[:css.index("</style>")]
+    for sel, body in re.findall(r"([^{}]+)\{([^{}]*)\}", re.sub(r"/\*[\s\S]*?\*/", "", css)):
+        for decl in re.findall(r"background(?:-color)?\s*:([^;]*)", body):
+            if FOREST.search(decl) and not all(("is-forest" in x or "#discover-your-property" in x)
+                                               for x in sel.split(",")):
+                die("M12 deep forest is used as a background outside the assessment bands: " + sel.strip()[:70])
+            if TERRA.search(decl):
+                die("M12 terracotta is used as a background: " + sel.strip()[:70])
+    forest = [m.start() for m in re.finditer(r'class="hfa-band is-forest', main)]
+    if len(forest) != 1 or '<section class="hfa-band is-forest hfa-assess" id="hfa-checks-top"' not in main:
+        die("M12 deep forest bands must be the assessment bands only")
+    bands = [(m.start(), m.group(1)) for m in re.finditer(r'class="hfa-band is-(\w+)', main)]
+    for (a, ca), (b, cb) in zip(bands, bands[1:]):
+        if ca == cb and "<img" not in main[a:b]:
+            die("M12 two %s bands sit in a row" % ca)
+    def folded(pos):
+        before = page[:pos]
+        return before.count("<details") > before.count("</details>")
+    for c in VISIBLE_CAUTIONS:
+        hits = [m.start() for m in re.finditer(re.escape(c), page)]
+        if not hits or all(folded(h) for h in hits):
+            die("M12 a headline caution is not on view: " + c[:60])
+    for c in FOLDED_CAUTIONS:
+        i = page.find(c)
+        if i < 0:
+            die("M12 a caution was deleted rather than folded: " + c[:60])
+        if folded(i):
+            d = page.rindex("<details", 0, i)
+            label = norm(page[d:page.index("</summary>", d)])
+            if not label:
+                die("M12 a folded caution sits in an unlabelled expander: " + c[:60])
+    if shown.count('<nav class="hfa-nav" id="hfaNav" aria-label="%s">' % NAV_LABEL) != 1 or \
+            re.findall(r'<li><a href="#([\w-]+)">', main[main.index('class="hfa-nav"'):]) [:5] != [a for a, _, _ in NAV_ITEMS]:
+        die("M12 the in-page navigation is missing, unlabelled or out of order")
+    for a, _, _ in NAV_ITEMS:
+        if shown.count('id="%s"' % a) != 1:
+            die("M12 the in-page navigation points at a missing anchor: #" + a)
 
 
 def main(argv):
