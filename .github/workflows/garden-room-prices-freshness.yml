@@ -1,0 +1,85 @@
+name: Garden room prices freshness
+
+# One question about garden-room-prices-ireland.html: are its published price
+# ranges still the ones the frozen evidence produces, and is every price in
+# them checked within the last 90 days?
+#
+# The builder's --check answers both. It refuses once the oldest published
+# price check is more than 90 days old (first refusal: 7 Nov 2026 for the
+# 7 Oct 2026 snapshot), so stale figures cannot pass unnoticed. The daily
+# schedule exists for exactly that: expiry happens with no commit at all.
+# Within 14 days of expiry it raises a warning annotation, so the refresh can
+# be planned before the run goes red.
+#
+# It cannot interfere with deployment. GitHub Pages publishes from main through
+# its own "pages build and deployment" run; this workflow is not a required
+# check, writes nothing, needs no token or network beyond checkout, and a red
+# run here leaves the live site exactly as it is.
+
+on:
+  pull_request:
+    paths:
+      - 'garden-room-prices-ireland.html'
+      - 'garden-room-recommendation-universe-v1.json'
+      - 'atlas-tools/build-garden-room-prices.py'
+      - 'atlas-tools/garden-room-price-page-evidence.json'
+      - 'atlas-tools/cluster1-cost-evidence.json'
+      - '.github/workflows/garden-room-prices-freshness.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'garden-room-prices-ireland.html'
+      - 'garden-room-recommendation-universe-v1.json'
+      - 'atlas-tools/build-garden-room-prices.py'
+      - 'atlas-tools/garden-room-price-page-evidence.json'
+      - 'atlas-tools/cluster1-cost-evidence.json'
+      - '.github/workflows/garden-room-prices-freshness.yml'
+  schedule:
+    - cron: '17 6 * * *'   # daily, 06:17 UTC
+  workflow_dispatch:
+
+# Least privilege: reads the tree, writes nothing.
+permissions:
+  contents: read
+
+concurrency:
+  group: garden-room-prices-freshness-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+        with:
+          # --freeze --check re-derives the extract from the universe revision
+          # the evidence is pinned to, so it needs history.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+        # Standard library only. Nothing to install, nothing to pin.
+
+      - name: Page figures agree with the evidence and are within 90 days
+        run: |
+          set -o pipefail
+          python atlas-tools/build-garden-room-prices.py --check | tee check.out
+          until=$(sed -n 's/.*fresh until \([0-9-]\{10\}\).*/\1/p' check.out | tail -1)
+          if [ -z "$until" ]; then
+            echo "::error::could not read the freshness date from the builder output"
+            exit 1
+          fi
+          days=$(( ( $(date -u -d "$until" +%s) - $(date -u +%s) ) / 86400 ))
+          if [ "$days" -le 14 ]; then
+            echo "::warning title=Garden room prices expire soon::Figures are fresh until $until ($days days). Refresh the research snapshot and re-run the builder's --freeze before then, or this check will fail."
+          fi
+          echo "Fresh until $until ($days days left)."
+
+      - name: Frozen extract reproduces from the pinned snapshot
+        if: github.event_name != 'schedule'
+        run: python atlas-tools/build-garden-room-prices.py --freeze --check

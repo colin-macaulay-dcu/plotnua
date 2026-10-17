@@ -436,6 +436,33 @@ for fname in sorted(ALLOW):
     })
 print("  possibilities     %d" % len(possibility_route_by_file))
 
+# ---- published PlotNua guide pages ------------------------------------------
+# SEO Phase 2 (founder approval, 17 Oct 2026): an indexable PlotNua guide that is
+# not a Discovery must still be findable through Search. Same rule as the
+# supplier information pages below: SAME RECORD SHAPE (possibility), NO NEW
+# TYPE, title and standfirst from the page's own curated <title> and meta
+# description only, and the page must be in the sitemap and indexable.
+GUIDE_PAGES = {"garden-room-prices-ireland.html": "poss-garden-room-prices-ireland"}
+for fname, rid in sorted(GUIDE_PAGES.items()):
+    if fname not in ALLOW:
+        die("G16 guide page %r is not in sitemap.xml" % fname)
+    src = (ROOT / fname).read_text(encoding="utf-8")
+    if re.search(r'<meta[^>]*name=["\']robots["\'][^>]*noindex', src, re.I):
+        die("G16 guide page %r is noindex, so it is not a published page" % fname)
+    title, _ = page_fields(fname)
+    # Quote-matched read: page_fields' shared pattern stops at an apostrophe
+    # ("PlotNua's"). Kept local so no existing record changes.
+    d = re.search(r'<meta[^>]*name="description"[^>]*content="([^"]*)"', src, re.I)
+    if not d:
+        die("G16 guide page %r has no meta description" % fname)
+    standfirst = decode_entities(norm_space(d.group(1)))
+    records.append({
+        "id": rid, "type": "possibility", "title": title,
+        "standfirst": standfirst, "topics": sorted(topics_for.get(fname, [])),
+        "route": fname,
+    })
+print("  guide pages       %d  (published guides, possibility shape)" % len(GUIDE_PAGES))
+
 # ---- published supplier information pages -----------------------------------
 # FOUNDER DECISION, 13 October 2026: a supplier information page that PlotNua
 # has PUBLISHED (sitemap-listed, indexable) must be findable through Search.
