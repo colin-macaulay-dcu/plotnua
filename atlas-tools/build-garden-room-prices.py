@@ -63,6 +63,28 @@ CHECK = "--check" in sys.argv
 FREEZE = "--freeze" in sys.argv
 MIN_SUPPLIERS = 3
 MAX_AGE_DAYS = 90
+# "Substantially higher" means at least this multiple of the published turnkey
+# maximum. On the 7 Oct snapshot the highest such price is 3.4x.
+SPECIALISED_FACTOR = 1.5
+INSTALL_DIFFERS = {"SUPPLY_ONLY_INSTALL_SEPARATE", "INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED",
+                   "SUPPLIED_AND_ERECTED", "UNKNOWN_DEALER_SOLD"}
+NOAVG_TEXT = (
+    '<h2>Why PlotNua does not publish an average garden room price</h2>\n'
+    '<p>An average only means something when every price covers the same thing. These do not. '
+    'A kit you assemble yourself, a room built and finished on your site, and a price that does '
+    'not say what it includes would all count equally, so the result would describe the mix of '
+    'products in the research rather than what you would pay.</p>\n'
+    '<p>So this guide shows the range for each kind of price, how many products and suppliers '
+    'sit behind it, and how many say VAT is included. The same applies to garden offices: they '
+    'are priced the same way as garden rooms, and what you pay depends on what is included, not '
+    'on what the room is called.</p>')
+# STANDALONE GUIDE PRINCIPLE (governance/STANDALONE-GUIDE-PRINCIPLE.md): the
+# guide must show its parent Discovery near the top and invite visitors into
+# it further down. Footer links and breadcrumbs do not count.
+PARENT_HREF = "discovery-living-in-the-garden.html"
+PARENT_TEXT = "Explore Living in the Garden"
+PARENT_NAME = "Living in the Garden"
+PARENT_MAX_WORDS = 40   # visible words allowed before the parent link
 BUILD_DATE = "2026-10-17"   # the page's dateModified; equals its sitemap lastmod
 DESCRIPTION = ("How much does a garden room cost in Ireland? Published price ranges from "
                "PlotNua's research, what the advertised price covers, and how to compare quotes.")
@@ -307,12 +329,52 @@ def render(ev, ex):
                "has" if len(und_pub) == 1 else "have", "it is" if len(und_pub) == 1 else "they are",
                "it is" if len(und_pub) == 1 else "they are"))
     regions["ASOF"] = date_long(snap)
+    # SEO guide phase 1 (17 Oct 2026): the disclosure research made prominent.
+    # Same three figures, same source, now set as figures rather than a sentence.
     regions["COMPARE"] = (
-        '<p>Of the %d priced garden rooms in the research, <strong>%d</strong> do not establish '
-        'what the price includes, <strong>%d</strong> do not say whether VAT is in the price, and '
-        'only <strong>%d</strong> publish a floor area.</p>'
-        % (tot["relevant"], tot["priceBasisNotEstablished"], tot["vatStatusUnknown"],
-           tot["floorAreaPublished"]))
+        '<div class="pr-stats">\n'
+        '  <p class="pr-stat"><span class="pr-stat-n">%d</span><span class="pr-stat-l">of %d '
+        'published prices do not establish what the price includes</span></p>\n'
+        '  <p class="pr-stat"><span class="pr-stat-n">%d</span><span class="pr-stat-l">of %d '
+        'do not say whether VAT is in the price</span></p>\n'
+        '  <p class="pr-stat"><span class="pr-stat-n">%d</span><span class="pr-stat-l">of %d '
+        'publish a floor area</span></p>\n'
+        '</div>\n'
+        '<p class="pr-stats-src">PlotNua&rsquo;s research snapshot of %s: every priced garden '
+        'room in the research, %d in all.</p>'
+        % (tot["priceBasisNotEstablished"], tot["relevant"], tot["vatStatusUnknown"], tot["relevant"],
+           tot["floorAreaPublished"], tot["relevant"], date_long(snap), tot["relevant"]))
+
+    # SPECIALISED (founder wording, 17 Oct 2026), emitted only while the evidence
+    # makes every clause of it true:
+    #   "substantially higher": at least one relevant price is >= SPECIALISED_FACTOR
+    #     x the published turnkey maximum;
+    #   "not included in the comparison above": every such price sits in a group
+    #     that has NO published range (so it is in neither the opening range nor
+    #     the table);
+    #   "pricing and installation arrangements differ": every such group is one
+    #     whose basis differs on installation (supply only, foundations excluded,
+    #     supplied and erected, dealer-sold).
+    # If any clause stops holding, the build refuses and the wording returns to
+    # the founder. No figure, name or count is published by this sentence.
+    high = [r for r in rows if r["price"] >= SPECIALISED_FACTOR * t["maxEur"]]
+    if not high:
+        die("SPECIALISED: no price is substantially above the turnkey range any more; "
+            "the sentence would be untrue -- re-approve the wording")
+    if any(r["segment"] in published for r in high):
+        die("SPECIALISED: a substantially higher price now sits inside a published range; "
+            "'not included in the comparison above' would be untrue -- re-approve the wording")
+    if any(r["segment"] not in INSTALL_DIFFERS for r in high):
+        die("SPECIALISED: a substantially higher price is in a group whose installation "
+            "basis is not different -- re-approve the wording")
+    regions["SPECIALISED"] = (
+        '<p class="pr-specialised">Some specialised garden buildings in PlotNua&rsquo;s research '
+        'are advertised at substantially higher prices. These are not included in the comparison '
+        'above because their pricing and installation arrangements differ.</p>')
+
+    # NOAVG (founder approval, 17 Oct 2026): why there is no average. Fixed
+    # words, no figures; the only place the word "average" may appear (R3).
+    regions["NOAVG"] = NOAVG_TEXT
     ld = {
         "@context": "https://schema.org",
         "@graph": [
@@ -371,11 +433,47 @@ def fill(page, regions):
     return out
 
 
+def parent_guards(text):
+    """G-PARENT: the standalone guide principle. Refuses a page whose parent
+    Discovery is only reachable through the footer or breadcrumbs."""
+    hero = re.search(r'<header class="pr-hero">(.*?)</header>', text, re.S)
+    if not hero:
+        die("G-PARENT the guide hero is missing")
+    link = re.search(r'<a class="pr-parent" href="%s">([^<]*)</a>' % re.escape(PARENT_HREF), hero.group(1))
+    if not link or PARENT_TEXT not in html.unescape(link.group(1)):
+        die("G-PARENT the hero has no visible '%s' link to %s" % (PARENT_TEXT, PARENT_HREF))
+    before = re.sub(r"<[^>]+>", " ", hero.group(1)[:link.start()])
+    if len(before.split()) > PARENT_MAX_WORDS:
+        die("G-PARENT the parent link is not near the top of the guide")
+    css = " ".join(re.findall(r"\.pr-parent[^{]*\{([^}]*)\}", text))
+    if re.search(r"display\s*:\s*none|visibility\s*:\s*hidden|opacity\s*:\s*0(?![.\d])", css):
+        die("G-PARENT the parent link is hidden by CSS")
+    hero_txt = html.unescape(re.sub(r"<[^>]+>", " ", hero.group(1)))
+    if not re.search(r"Part of\s+%s" % re.escape(PARENT_NAME), hero_txt):
+        die("G-PARENT the hero does not say the guide is part of %s" % PARENT_NAME)
+    inv = re.search(r'<section[^>]*id="explore-the-discovery"[^>]*>(.*?)</section>', text, re.S)
+    if not inv:
+        die("G-PARENT the invitation to explore the Discovery is missing")
+    for need in ('href="%s"' % PARENT_HREF, 'href="%s#explore-makers"' % PARENT_HREF):
+        if need not in inv.group(1):
+            die("G-PARENT the invitation does not link %s" % need)
+
+
 def page_guards(text, ex_rows):
     if ('name="description" content="%s"' % DESCRIPTION) not in text:
         die("the meta description is not the one the structured data carries")
-    vis = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->", " ", text, flags=re.S)
+    # R3 exemption, scoped: the NOAVG region is fixed text that explains why no
+    # average is published. It must carry no figure at all; everything outside
+    # it is still held to the full rule.
+    m = re.search(r"<!-- PN-PRICES:NOAVG -->(.*?)<!-- /PN-PRICES:NOAVG -->", text, re.S)
+    if not m or m.group(1) != NOAVG_TEXT:
+        die("R3 the no-average explanation is missing or not the approved text")
+    if re.search(r"\d|&euro;|€", re.sub(r"<[^>]+>", " ", m.group(1))):
+        die("R3 the no-average explanation contains a figure")
+    text_r3 = text.replace(m.group(0), " ")
+    vis = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->", " ", text_r3, flags=re.S)
     vis = html.unescape(re.sub(r"<[^>]+>", " ", vis))
+    parent_guards(text)
     # R3: no average/median, no per-square-metre figure
     if re.search(r"\b(average|median|mean (?:price|cost))\b", vis, re.I):
         bad = re.findall(r".{30}\b(?:average|median)\b.{30}", vis, re.I)

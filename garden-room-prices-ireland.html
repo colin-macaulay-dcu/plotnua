@@ -109,6 +109,23 @@
   .pr-answer{ font-family:'Fraunces',serif; font-weight:400; color:var(--ink) !important; font-size:clamp(21px,2.4vw,28px) !important; line-height:1.5 !important; max-width:30ch !important; }
   .pr-answer strong{ font-weight:600; }
   .pr-answer-note{ margin-top:22px; }
+  /* Standalone guide principle: the parent Discovery, visible near the top. */
+  .pr-parent{ display:inline-block; margin:0 0 26px; padding:9px 18px; border:1px solid rgba(201,195,179,.55);
+    border-radius:999px; color:var(--brand-ivory); font-size:14px; letter-spacing:.02em; text-decoration:none; }
+  .pr-parent:hover, .pr-parent:focus-visible{ background:rgba(250,247,240,.1); border-color:var(--brand-ivory); }
+  .pr-specialised{ margin-top:20px; }
+  .pr-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin:8px 0 6px; }
+  .pr-stats .pr-stat{ margin:0 !important; max-width:none !important; }
+  .pr-stat-n{ display:block; font-family:'Fraunces',serif; font-weight:600; color:var(--ink); font-size:clamp(40px,5vw,56px); line-height:1; }
+  .pr-stat-l{ display:block; margin-top:10px; font-size:15.5px; line-height:1.6; }
+  .pr-stats-src{ font-size:13.5px !important; margin-top:18px; }
+  @media(max-width:720px){ .pr-stats{ grid-template-columns:1fr; gap:22px; } }
+  .pr-invite{ background:var(--ink); border-radius:18px; padding:9vh 6vw !important; margin:6vh 0; border-bottom:none !important; }
+  .pr-invite .kicker{ color:var(--brand-sage) !important; }
+  .pr-invite h2{ color:var(--brand-ivory); }
+  .pr-invite p{ color:#DCD6C8 !important; }
+  .pr-invite .pr-links a{ color:var(--brand-ivory); }
+  .pr-invite .pr-invite-primary{ background:var(--brand-ivory); color:var(--ink) !important; padding:12px 22px; border-radius:999px; text-decoration:none; }
 
   /* the price table: a real <table>, readable on a phone without scrolling */
   .pr-table-wrap{ margin-top:8px; }
@@ -151,6 +168,10 @@
   .pr-links{ margin-top:10px; display:flex; flex-wrap:wrap; gap:14px 28px; }
   .pr-links a{ font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); padding-bottom:4px; }
   .pr-links a:hover{ color:var(--ink); border-bottom-color:rgba(31,59,46,.55); }
+  .pr-invite .pr-links a{ border-bottom-color:rgba(242,239,230,.45); }
+  .pr-invite .pr-links a:hover{ color:var(--brand-ivory); border-bottom-color:var(--brand-ivory); }
+  .pr-invite .pr-links a.pr-invite-primary{ border-bottom:none; }
+  .pr-invite .pr-links a.pr-invite-primary:hover{ color:var(--ink); background:#FFFFFF; }
 
   .pr-method{ background:var(--cream); border-radius:6px; padding:34px 34px 30px; margin-top:6px; }
   .pr-method p{ font-size:15.5px !important; }
@@ -307,7 +328,8 @@
      atlas-tools/build-garden-room-prices.py from PlotNua's governed price
      evidence. Do not type a figure into this file by hand. -->
 <header class="pr-hero">
-  <div class="eyebrow">A PlotNua Guide</div>
+  <a class="pr-parent" href="discovery-living-in-the-garden.html">&larr; Explore Living in the Garden</a>
+  <div class="eyebrow">A PlotNua Guide &middot; Part of Living in the Garden</div>
   <h1>Garden Room Prices in Ireland</h1>
   <p>What garden rooms are advertised for, what those prices cover, and how to compare two quotes.</p>
   <p class="pr-asof">From PlotNua&rsquo;s research snapshot of <!-- PN-PRICES:ASOF -->7 October 2026<!-- /PN-PRICES:ASOF --></p>
@@ -321,16 +343,18 @@
     <h2>How much does a garden room cost in Ireland?</h2>
     <!-- PN-PRICES:LEAD --><p class="pr-answer">In PlotNua&rsquo;s research, published prices for <strong>installed, finished garden rooms</strong> ran from <strong>&euro;9,799 to &euro;43,650</strong>.</p>
 <p class="pr-answer-note">That range comes from 22 products sold by 7 suppliers, in PlotNua&rsquo;s research snapshot of 7 October 2026. It is the spread of prices those suppliers advertise, not a typical Irish price and not an all-in quotation: foundations, electrical connection and VAT can still sit outside it.</p><!-- /PN-PRICES:LEAD -->
+    <!-- PN-PRICES:SPECIALISED --><p class="pr-specialised">Some specialised garden buildings in PlotNua&rsquo;s research are advertised at substantially higher prices. These are not included in the comparison above because their pricing and installation arrangements differ.</p><!-- /PN-PRICES:SPECIALISED -->
     <p>So treat it as a guide to what is advertised, then use the checklist further down to
       turn any price into one you can actually compare.</p>
   </section>
 
   <section class="article-section reveal">
     <div class="kicker">Published Prices</div>
-    <h2>Garden room prices by what the price covers</h2>
+    <h2>Garden room and garden office prices by what the price covers</h2>
     <p>The same building can be sold three different ways: as a kit you assemble, delivered and
       built for you, or finished turnkey. Each is a different purchase, so prices are grouped
-      by what the supplier says the price includes, and never mixed.</p>
+      by what the supplier says the price includes, and never mixed. Garden offices sit in
+      the same groups: a garden office is a garden room bought for work, and is priced the same way.</p>
     <!-- PN-PRICES:TABLE --><div class="pr-table-wrap">
   <table class="pr-table">
     <caption>Published garden room prices in PlotNua&rsquo;s research, grouped by what the advertised price covers. Research snapshot of 7 October 2026.</caption>
@@ -361,12 +385,24 @@
 <ul class="pr-small-list"><li>Supply only, installation extra: 5 products from two suppliers</li><li>Installed, but foundations excluded: 10 products from two suppliers</li><li>Supplied and erected: 8 products from one supplier</li><li>Sold through a dealer, basis unknown: 1 product from one supplier</li></ul><!-- /PN-PRICES:HELD -->
   </section>
 
+  <section class="article-section reveal" id="no-average">
+    <div class="kicker">One Number</div>
+    <!-- PN-PRICES:NOAVG --><h2>Why PlotNua does not publish an average garden room price</h2>
+<p>An average only means something when every price covers the same thing. These do not. A kit you assemble yourself, a room built and finished on your site, and a price that does not say what it includes would all count equally, so the result would describe the mix of products in the research rather than what you would pay.</p>
+<p>So this guide shows the range for each kind of price, how many products and suppliers sit behind it, and how many say VAT is included. The same applies to garden offices: they are priced the same way as garden rooms, and what you pay depends on what is included, not on what the room is called.</p><!-- /PN-PRICES:NOAVG -->
+  </section>
+
   <section class="article-section reveal">
     <div class="kicker">Why It Is Hard</div>
     <h2>Why advertised garden room prices are hard to compare</h2>
     <p>Before you can tell whether one garden room is dearer than another, you have to know
       what each price covers. Most of the time, that is not published.</p>
-    <!-- PN-PRICES:COMPARE --><p>Of the 247 priced garden rooms in the research, <strong>177</strong> do not establish what the price includes, <strong>94</strong> do not say whether VAT is in the price, and only <strong>45</strong> publish a floor area.</p><!-- /PN-PRICES:COMPARE -->
+    <!-- PN-PRICES:COMPARE --><div class="pr-stats">
+  <p class="pr-stat"><span class="pr-stat-n">177</span><span class="pr-stat-l">of 247 published prices do not establish what the price includes</span></p>
+  <p class="pr-stat"><span class="pr-stat-n">94</span><span class="pr-stat-l">of 247 do not say whether VAT is in the price</span></p>
+  <p class="pr-stat"><span class="pr-stat-n">45</span><span class="pr-stat-l">of 247 publish a floor area</span></p>
+</div>
+<p class="pr-stats-src">PlotNua&rsquo;s research snapshot of 7 October 2026: every priced garden room in the research, 247 in all.</p><!-- /PN-PRICES:COMPARE -->
     <p>Price per square metre does not solve it. Rooms priced on different bases, or with a
       different finish inside, can be several times apart per square metre, so a figure like
       that says more about what was left out than about value.</p>
@@ -429,14 +465,16 @@
       changed in 2026 and how the garden room and garden home rules differ.</p>
   </section>
 
-  <section class="article-section reveal">
-    <div class="kicker">Next Steps</div>
-    <h2>Explore garden rooms and makers</h2>
-    <p>See the garden rooms and makers PlotNua has researched, with their published
-      specifications and availability, or check what your own garden could take.</p>
+  <section class="article-section reveal pr-invite" id="explore-the-discovery">
+    <div class="kicker">Part of Living in the Garden</div>
+    <h2>Explore garden rooms, garden offices and their makers</h2>
+    <p>This guide is part of PlotNua&rsquo;s Living in the Garden Discovery. Go there to see
+      what the 2026 rules now allow at the end of an Irish garden, browse the garden rooms and
+      makers PlotNua has researched, with their published specifications and availability, and
+      check what your own garden could take.</p>
     <div class="pr-links">
+      <a class="pr-invite-primary" href="discovery-living-in-the-garden.html">Explore Living in the Garden &rarr;</a>
       <a href="discovery-living-in-the-garden.html#explore-makers">Explore makers and products &rarr;</a>
-      <a href="discovery-living-in-the-garden.html">Read Living in the Garden &rarr;</a>
     </div>
   </section>
 
