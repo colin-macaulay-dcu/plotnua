@@ -64,3 +64,22 @@ The headline cautions that stay on view are:
 - Internal links.
 - Every caution's wording.
 - No Atlas, Worker, supplier record or image-rights record is touched.
+
+## Final refinement before publication (founder, 17 Oct 2026, 16:58)
+
+- **Section rhythm.** The spacing between the editorial sections is a little tighter, chiefly around the 01 / 02 / 03 transitions:
+
+  | Area | Before | After |
+  |---|---|---|
+  | Ivory sections | 9.5vh (about 85 px) | 72 px |
+  | Bands | 84 px | 68 px |
+  | Split text | 9.5vh | 60 px |
+
+  Nothing is cramped, and the colour, photography, navigation and expanders are unchanged.
+- **Mobile crops checked.** At 390 px and 360 px:
+  - the 4:3 centre crop keeps the artist and her canvas, and the same-wall painting;
+  - the outcome plate is framed at 60% so the buyers and the painting they hold stay in view;
+  - the evening room is framed at 70% so the whole family and the painting stay in view.
+
+  The files are unchanged; only CSS `object-position` differs.
+- **Release.** The branch was rebased on the latest `origin/main` (`1a601ea`) without conflicts, and the sitemap lastmod for this page was set to 2026-10-17 by `build-seo-phase1.py --apply`.
