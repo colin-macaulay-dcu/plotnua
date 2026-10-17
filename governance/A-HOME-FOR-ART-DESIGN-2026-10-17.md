@@ -13,6 +13,7 @@
 | `7ad6cc3` | **The Discovery changes:** spacing, one assessment section, one PlotArt section, Live with art, corrections, guard amendments, search index. |
 | `0f6166a` | **"Check your wall" result copy only:** evergreen Culture Night, RHA/RDS seasons. A separate commit so it can be taken or dropped on its own. |
 | `0464eda`, this record | Single-line M8/M9 refusal messages. This record. |
+| Last commit on the branch | Independent-review wording fixes: the routes read as "may", the meta description keeps "by arrangement" (153 characters), the rental wording matches the FAQ, and a stale comment is updated. |
 
 ## 1. M9 re-baseline (before any content change)
 
@@ -132,7 +133,7 @@ The branch now carries:
 
 - **The lede** now names the possibilities in page order: host, then live with, then own.
 - **The intro kicker** "Three possibilities. One home." repeated the hero, so it is now "Where to start".
-- **The meta description** went from 212 to 155 characters, hosting first.
+- **The meta description** went from 212 to 153 characters, hosting first, and keeps "by arrangement" so it cannot read as a PlotNua service.
 - **The title, OG and Twitter text** are unchanged.
 - **Search:** `search-index-v1.json` was rebuilt through its builder. Only the `poss-a-home-for-art` standfirst changed.
 - **Spacing fixes:** the "Finding each other" sub-heading had no space above it (pre-existing), and the Live with art disclaimer now has space above it.

@@ -243,15 +243,15 @@ PLOTART_HOME_NOTE = ("If you have space, five short questions come first; at the
 LIVE_Q = "What if the gallery came to your home?"
 LIVE_CAT = "Three ways it can happen"
 LIVE_ROUTES = (
-    ("Try it at home", "Live with a chosen work for a few days before you decide.",
+    ("Try it at home", "You may be able to live with a chosen work for a few days before you decide.",
      "Some galleries and artists offer this on approval. It is a courtesy rather than a right, so ask "
      "&mdash; and ask who insures the work while it is with you."),
-    ("A home viewing", "An artist or gallery brings a selection of work to your home.",
+    ("A home viewing", "Some artists and galleries bring a selection of work to your home.",
      "You see it on your own walls, in your own light. Ask whether there is a charge, how much they bring, "
      "and whether you are under any obligation to buy."),
     ("Rental, where available", "A handful of Irish services rent original work by the month.",
-     "Most rent to businesses, film and design clients, though at least one also rents to homes. Ask about "
-     "the minimum term and who insures the work."),
+     "Most are aimed at film, corporate and design clients, though at least one also rents to homes. Ask "
+     "about the minimum term and who insures the work."),
 )
 LIVE_NOT_PLOTNUA = "Whether any of these is on offer is up to the artist or gallery."
 # 4 · FACTUAL CORRECTIONS (audit 17 Oct 2026, founder approval 17 Oct 2026).
@@ -317,8 +317,9 @@ NEW_TEXT = ["A Home for Art", OVERLOOKED_H2, "The overlooked opportunity", HERO_
 
 TITLE = "A Home for Art: Host, Live With or Buy Original Irish Art | PlotNua"
 # META DESCRIPTION (founder design decisions, 17 Oct 2026): was 212 characters
-# and truncated in results; now within ~155, hosting first, same three ideas.
-DESC = ("Open your home to an artist&rsquo;s work, try art at home before you buy, or find and commission "
+# and truncated in results; now 153, hosting first, same three ideas, and "by
+# arrangement" kept so it cannot read as a PlotNua service (independent review).
+DESC = ("Open your home to an artist&rsquo;s work, live with art by arrangement, or find and commission "
         "original Irish art. What to agree, insure and settle in Ireland.")
 OG_T = "A Home for Art | PlotNua Discoveries"
 OG_D = "Your home could be more than somewhere to hang art. Three possibilities, one home, and you decide how far to go."
@@ -449,6 +450,13 @@ def main_html():
                                  '    <div class="kicker">The overlooked opportunity</div>\n'
                                  '    <h2>%s</h2>\n' % OVERLOOKED_H2, 1) + "  </section>\n"
     before_plate = O_IMG_PA
+    artist_plate = O_IMG_ARTIST.replace(
+        "THE ARTIST'S PROBLEM. Placed after the ladder on purpose: the homeowner\n"
+        "       now knows what they could offer, and this is what it would answer.",
+        "THE ARTIST'S PROBLEM. Opens Possibility one (founder design decisions,\n"
+        "       17 Oct 2026): the homeowner has just chosen a way in; this is what it would answer.", 1)
+    if artist_plate == O_IMG_ARTIST:
+        die("M11 the artist plate's BASE comment moved")
     seller = "<strong>The artist is the seller.</strong> They own the work, set the price, deal with the buyer and receive the payment."
     if seller not in O0:
         die("M1 source sentence moved: the artist is the seller")
@@ -495,7 +503,7 @@ def main_html():
             art(overlooked) +
             before_plate + "\n" +
             art(intro) +
-            O_IMG_ARTIST + "\n" +
+            artist_plate + "\n" +
             art(b_open) + O_IMG_OUTCOME + "\n" +
             art(b_live) + A_IMG_EVENING + "\n" +
             art(b_own, A_WHY, A_BUYING, A_SIZE) + A_IMG_SAME + "\n" +
