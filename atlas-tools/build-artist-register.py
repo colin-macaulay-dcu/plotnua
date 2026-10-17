@@ -44,11 +44,13 @@ GUARDS
       not list it, and Search does not index it. While open, the sitemap lists
       it exactly once (written by --apply, after A Home for Art) and A Home for
       Art is the only page that links to it
-  A11 A Home for Art: the two-pathway "Take part" section (founder decision,
-      14 Oct 2026, 20:33; rendered by build-a-home-for-art-merge.py) is present
-      exactly once, after FUTURE_ANCHOR, and the top-of-page "Be part of the
-      idea" invitation (14 Oct 2026, 21:11) exactly once, before it; both only
-      while open, both absent while closed
+  A11 A Home for Art: the ONE PlotArt section ("Help bring art into more
+      homes", founder design decisions 17 Oct 2026; rendered by
+      build-a-home-for-art-merge.py under the TAKE-PART marker) is present
+      exactly once, after FUTURE_ANCHOR, and is the page's only link to this
+      register; the retired top-of-page "Be part of the idea" invitation is
+      absent. Only while open; absent while closed. (Amended 17 Oct 2026: it
+      previously required the invitation AND the Take part section, two links.)
   A12 the homeowner register is untouched: the disc024 page and the homeowner
       Worker's vocabulary, allow-list, consent and handler are git HEAD's.
       (Its builder is not pinned here: Privacy V5 legitimately updates its
@@ -128,7 +130,8 @@ DISCLAIMER = ("Registering doesn&rsquo;t mean you&rsquo;ll be offered a space, a
 # atlas-tools/build-a-home-for-art-merge.py (guard M1 declares every word),
 # which renders it after FUTURE_ANCHOR ONLY while ARTIST_PUBLIC is True. A11
 # checks the result: open -> the section exactly once, after the anchor, and
-# the page's only link to this register; closed -> absent.
+# the page's only link to this register; closed -> absent. Since 17 Oct 2026 it
+# is the ONE PlotArt section (the top-of-page invitation is retired).
 FUTURE_ANCHOR = '    <p class="dq-note">This matching service is not live yet.</p>\n'
 TAKE_PART_MARK = "<!-- PLOTNUA-TAKE-PART"
 BE_PART_MARK = "<!-- PLOTNUA-BE-PART"
@@ -788,13 +791,13 @@ def guards(page):
     if disc.count(FUTURE_ANCHOR) != 1:
         die("A11 the A Home for Art PlotArt anchor is not found exactly once")
     if ARTIST_PUBLIC:
-        # Two links: the top-of-page invitation (BE_PART_MARK, founder 14 Oct 2026, 21:11)
-        # and the Take part section after the PlotArt anchor.
+        # ONE PlotArt section (founder design decisions, 17 Oct 2026): the TAKE-PART
+        # marker after the PlotArt anchor, one link to this register, and the
+        # retired top-of-page invitation (BE_PART_MARK, 14 Oct 2026) gone.
         if disc.count(TAKE_PART_MARK) != 1 or disc.index(TAKE_PART_MARK) < disc.index(FUTURE_ANCHOR) \
-                or disc.count(BE_PART_MARK) != 1 or disc.index(BE_PART_MARK) > disc.index(FUTURE_ANCHOR) \
-                or disc.count('href="artist-register.html"') != 2:
-            die("A11 A Home for Art must carry the top invitation once and the Take part section once, "
-                "after the PlotArt anchor, with exactly two links to this register")
+                or BE_PART_MARK in disc or disc.count('href="artist-register.html"') != 1:
+            die("A11 A Home for Art must carry the one PlotArt section once, after the PlotArt anchor, "
+                "with exactly one link to this register and no top-of-page invitation")
     elif TAKE_PART_MARK in disc or BE_PART_MARK in disc or "artist-register.html" in disc:
         die("A11 the A Home for Art Take part section is visible while the register is closed")
     # A12

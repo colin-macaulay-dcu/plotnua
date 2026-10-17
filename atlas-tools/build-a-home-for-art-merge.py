@@ -29,9 +29,12 @@ WRITES
 GUARDS
   M1  traceability: every visible text block is verbatim from BASE or declared
   M2  the three branch anchors and #before-anything-arrives exist exactly once
-  M3  both Property Checks are linked from their branches and from the closing
-      panel, always with ?start=1 (two-option entry, 14 Oct 2026); the merged
-      page links nowhere to the old URL
+  M3  each Property Check is offered exactly once, in the one assessment
+      section near the end, hosting first; the PlotArt homeowner button is the
+      only other link (to the DISC-024 check); always with ?start=1 (two-option
+      entry, 14 Oct 2026); the merged page links nowhere to the old URL.
+      Amended 17 Oct 2026 (founder design decisions): previously required the
+      checks to be linked from their branches and the closing panel
   M4  no new service claim: no loan/rental/placement/matching/booking offer
   M5  imagery: only images already published on the two source pages (plus one
       existing related-card thumbnail); no new asset file
@@ -49,13 +52,19 @@ GUARDS
       so a whole-page byte comparison no longer applies; what decides a
       result is still pinned to BASE.
   M9  every consolidation edit applied exactly once
-  M10 the founder's hierarchy: hosting story first, Open > Live with > Discover & own
+  M10 the founder's hierarchy: hosting story first, Open > Live with > Discover & own,
+      then PlotArt, then the assessment section (hosting card first). Amended
+      17 Oct 2026: the artist plate follows the chooser, opening Possibility one
   M11 ORIGINAL HOSTING IMAGERY (founder image correction, 13 Oct 2026): the hero
       is DISC-024's own published hero (dfb125ba9dd7cd87, DISC-024-03-Gallery-
       at-Home) with its own alt text; the hosting sequence follows it in its
       original order (046ec -> 6442d -> 05cab54); the buyer hero c0f5bf is not
       on the page; every card that represents this Discovery shows the hosting
       image
+  M12 founder design decisions (17 Oct 2026): no two full-bleed images side by
+      side; each check offered once (assessment section) and PlotArt once; the
+      retired buttons, descriptions and invitation stay gone; Live with art
+      carries its three routes and not the Display tile; corrections applied once
 
 Usage:
   python3 atlas-tools/build-a-home-for-art-merge.py --apply
@@ -159,9 +168,12 @@ PORTED_CSS = O0[ci:cj]
 # ------------------------------------------------------- approved new text --
 HERO_SUB = "Your home could be more than somewhere to hang art."
 HERO_INTRO = "Three possibilities. One home. And you decide how far to go."
-LEDE = ("An original artwork could become part of your everyday life. You might discover a piece to own, "
-        "experience an artist&rsquo;s work in your home before deciding whether to buy it, or offer space "
-        "that helps an artist reach a new audience.")
+# ORDER ALIGNED (founder design decisions, 17 Oct 2026): the lede names the
+# three possibilities in the page's own order, host -> live with -> own.
+LEDE = ("An original artwork could become part of your everyday life. You might offer space that helps an "
+        "artist reach a new audience, experience an artist&rsquo;s work in your home before deciding whether "
+        "to buy it, or discover a piece to own.")
+INTRO_KICKER = "Where to start"
 B1 = ("Discover &amp; own", "Find, buy or commission original Irish art.")
 B2 = ("Live with art", "Explore experiencing an artist&rsquo;s finished work in your home by direct arrangement.")
 B3 = ("Open your home to art", "Offer space to store, display, exhibit or potentially help sell artwork.")
@@ -186,53 +198,132 @@ SUB23 = ("Five short questions about the wall itself, and we&rsquo;ll set out wh
 SUB24 = ("Five short questions about the space you have and how far you&rsquo;d want this to go &mdash; then "
          "what you&rsquo;d need to settle before anything arrived. No address, no contact details, and nothing "
          "sent anywhere.")
-# TAKE PART (founder decision, 14 Oct 2026, 20:33): two complementary pathways
-# in the PlotArt section, after "This matching service is not live yet.".
-# Rendered ONLY while build-artist-register.py has ARTIST_PUBLIC = True (its
-# guard A11 checks the result). Founder wording, verbatim; the two short
-# audience labels are interface wording. The homeowner pathway is the existing
-# check (?start=1), whose result offers the existing Art Space Register.
-TAKE_H = "Take part"
-TAKE_HOME = ("For homeowners", "I have a space for art",
-             "Five short questions about your space. At the end, you can choose to join the Art Space Register.")
-TAKE_ARTIST = ("For artists", "I&rsquo;m an artist looking for space",
-               "Tell PlotArt what you make and the kind of space your work needs.")
-TAKE_NOTE = ("Both are expressions of interest only: free, private and non-binding. Nothing is matched or "
-             "arranged, and PlotNua has not verified any space or artist.")
 ARTIST_PAGE = "artist-register.html"
-# BE PART OF THE IDEA (founder request, 14 Oct 2026, 21:11): a compact top-of-page
-# invitation to the same two pathways, closing the "Three possibilities" intro so
-# it does not interrupt the opening story. Founder wording, verbatim. The lower
-# Take part section is unchanged. Rendered only while the Artist Register is open.
-INVITE_H = "Be part of the idea"
-INVITE_P = ("Have a space that could host art? Or are you an artist looking for somewhere to show your work? "
-            "PlotArt is inviting expressions of interest from both homeowners and artists.")
-INVITE_B1 = "I have a space for art"
-INVITE_B2 = "I&rsquo;m an artist looking for space"
+# FOUNDER DESIGN DECISIONS (17 Oct 2026). Three presentation problems fixed:
+# the two hosting plates were stacked, the two checks were offered seven times
+# in five places, and the PlotArt registers were invited twice. Wording below is
+# the founder's, verbatim, unless marked as interface or correction wording.
+#
+# 1 · ONE ASSESSMENT SECTION near the end (replaces every branch check button
+#     and the old two-check panel). Founder wording; the two eyebrows are
+#     interface labels that make the cards clearly different at a glance.
+ASSESS_H = "What could art mean for your home?"
+ASSESS_INTRO = "Explore the possibilities with two short, private checks."
+CARD_HOST = ("For your space", "Could your home host art?",
+             "Explore whether your space could store, display or host artwork.", "Explore my space")
+CARD_OWN = ("For your walls", "Could original art work in your home?",
+            "Explore choosing, buying or commissioning artwork for your walls.", "Explore art for my home")
+ASSESS_NOTE = "Five short questions. No address or personal details required."
+# 2 · ONE PLOTART SECTION after the three possibilities, at the PlotArt anchor
+#     (replaces the top-of-page "Be part of the idea" invitation and the
+#     two-card "Take part" section). Founder heading, introduction and button
+#     labels; the note keeps the expressions-of-interest wording of 14 Oct and
+#     adds the founder's "not currently matching participants or arranging
+#     exhibitions", plus one line so a homeowner knows the button starts the
+#     existing check, whose result offers the existing Art Space Register.
+PLOTART_H = "Help bring art into more homes"
+PLOTART_P = ("PlotArt is exploring ways to connect Irish artists with homeowners who have space to display, "
+             "exhibit or potentially sell original artwork.")
+PLOTART_B1 = "I have space for art"
+PLOTART_B2 = "I&rsquo;m an artist looking for space"
+PLOTART_NOTE = ("Both are expressions of interest only: free, private and non-binding. PlotNua is not currently "
+                "matching participants or arranging exhibitions, and has not verified any space or artist.")
+PLOTART_HOME_NOTE = ("If you have space, five short questions come first; at the end, you can choose to join "
+                     "the Art Space Register.")
+# 3 · LIVE WITH ART, "What if the gallery came to your home?" (founder idea).
+#     Three routes, each written as something a third party may offer: no
+#     provider is named, nothing is promised, and B2_P1 / B2_P2 stay verbatim
+#     (M6). Evidence, 17 Oct 2026 (governance/A-HOME-FOR-ART-DESIGN-2026-10-17.md):
+#     on approval -- this page's own FAQ, and Irish galleries advertising it;
+#     home viewing -- at least one Irish artist publishes free home viewings
+#     first-party; rental -- Irish rental services exist, at least one offering
+#     rental to a home as well as a business. The duplicated Display tile is gone.
+LIVE_Q = "What if the gallery came to your home?"
+LIVE_CAT = "Three ways it can happen"
+LIVE_ROUTES = (
+    ("Try it at home", "Live with a chosen work for a few days before you decide.",
+     "Some galleries and artists offer this on approval. It is a courtesy rather than a right, so ask "
+     "&mdash; and ask who insures the work while it is with you."),
+    ("A home viewing", "An artist or gallery brings a selection of work to your home.",
+     "You see it on your own walls, in your own light. Ask whether there is a charge, how much they bring, "
+     "and whether you are under any obligation to buy."),
+    ("Rental, where available", "A handful of Irish services rent original work by the month.",
+     "Most rent to businesses, film and design clients, though at least one also rents to homes. Ask about "
+     "the minimum term and who insures the work."),
+)
+LIVE_NOT_PLOTNUA = "Whether any of these is on offer is up to the artist or gallery."
+# 4 · FACTUAL CORRECTIONS (audit 17 Oct 2026, founder approval 17 Oct 2026).
+#     Each pair is applied exactly once to the assembled page; the new text is
+#     declared below for M1. Official-body links only, verified 17 Oct 2026.
+_X = ' target="_blank" rel="noopener"'
+CORRECTIONS = (
+    # Culture Night: the dated 2026 sentence had passed; evergreen, and credited
+    # as culturenight.ie credits it. The 1,800 figure was press-only and
+    # inconsistent between sources, so it is dropped rather than restated.
+    ("Artists open their working spaces and you can buy on the spot. Culture Night runs nationwide on 18 "
+     "September 2026, free, through local authority arts offices &mdash; more than 1,800 events in 2025.",
+     'Artists open their working spaces and you can buy on the spot. <a href="https://culturenight.ie/"%s>'
+     'Culture Night</a> runs nationwide every September, free, coordinated by the Arts Council with local '
+     'authorities.' % _X),
+    ("A gallery represents its artists and handles the sale. Visual Artists Ireland describes a 50/50 split as "
+     "standard, though it varies.",
+     'A gallery represents its artists and handles the sale. <a href="https://visualartists.ie/how-to-manual/'
+     'artists-commercial-galleries-the-international-art-market"%s>Visual Artists Ireland</a> describes a 50/50 '
+     'split as standard, though it varies.' % _X),
+    # RHA: the 196th Annual ran 25 May-9 Aug 2026; all works are for sale except
+    # portraits. RDS: the Visual Art Awards exhibition opens in November (6 Nov
+    # 2026-23 Jan 2027), artists chosen by curators from graduate exhibitions.
+    ("Art Source fills the RDS each November. The RHA Annual Exhibition runs free through the summer, "
+     "everything for sale. The RDS Visual Art Awards show graduate work each winter.",
+     'Art Source fills the RDS each November. The <a href="https://rhagallery.ie/rha-annual/"%s>RHA Annual '
+     'Exhibition</a> runs free from late spring through the summer, with almost everything for sale. The '
+     '<a href="https://www.rds.ie/rds-foundation/arts/vaa"%s>RDS Visual Art Awards</a> exhibition opens each '
+     'November, showing emerging artists chosen from graduate shows.' % (_X, _X)),
+    # Revenue Form 12 (2025): net assessable non-PAYE income of EUR 5,000 or
+    # more, or gross non-PAYE income of EUR 30,000 or more. "Reaches" was right
+    # for the net test; the sentence now says net and carries the gross test.
+    ("If your non-PAYE income for the year reaches &euro;5,000, Revenue treats you as a chargeable person and "
+     "a different return applies.",
+     "If your net non-PAYE income for the year reaches &euro;5,000, or your gross non-PAYE income reaches "
+     "&euro;30,000, Revenue treats you as a chargeable person and a different return applies."),
+    # Rental FAQ: at least one Irish rental service now also rents to homes.
+    ("Yes. A handful of Irish services rent artwork monthly, though these are aimed mainly at film, corporate and "
+     "design clients rather than households. Rotating works you already own between rooms costs nothing.",
+     "Yes. A handful of Irish services rent artwork monthly. Most are aimed at film, corporate and design "
+     "clients, though at least one also rents to homes. Rotating works you already own between rooms costs "
+     "nothing."),
+)
+# Retired 17 Oct 2026 and refused by M12 if they return: the branch check
+# buttons and their descriptions, the top-of-page invitation and the two-card
+# "Take part" section.
+RETIRED = ("Check how far you&rsquo;d go", "Check your wall", "Be part of the idea", "<!-- PLOTNUA-BE-PART",
+           "Check this against your own home", "class=\"hfa-cta\"",
+           "Five short questions about the space you have and how far you&rsquo;d want this to go",
+           "Five short questions about the wall itself")
 # Interface wording (labels, signposts) — new, non-factual, declared.
 NEW_TEXT = ["A Home for Art", OVERLOOKED_H2, "The overlooked opportunity", HERO_SUB, HERO_INTRO, LEDE, B1[0], B1[1], B2[0], B2[1], B3[0], B3[1], B2_P1, B2_P2,
-            CHECK23, CHECK24, "Possibility one", "Possibility two", "Possibility three",
-            "Three possibilities. One home.", "Which sounds like you?",
+            "Possibility one", "Possibility two", "Possibility three", INTRO_KICKER, "Which sounds like you?",
             "Before anything arrives, the custody, insurance and money questions below apply here too.",
-            "If you come to love the work:", "The questions below are the same ones a host would ask.",
-            "Buying or commissioning", "Living with or hosting work",
-            "Two short checks. Nothing about your address.",
-            "Check this against your own home", "Finding each other",
+            "If you come to love the work:", "Finding each other",
             "Explore What Could You Build in Your Garden? &rarr;", "See all Discoveries &rarr;",
             "Back to the homepage", "Continue Exploring", "Related Discoveries", "Underused Ground",
             "The Borrowed Garden", "Room To Build", "What Could You Build in Your Garden?", "On Screen",
             "Your Home on Screen", "Explore another possibility",
-            TAKE_H, TAKE_HOME[0], TAKE_HOME[1], TAKE_HOME[2], TAKE_ARTIST[0], TAKE_ARTIST[1], TAKE_ARTIST[2], TAKE_NOTE,
-            INVITE_H, INVITE_P, INVITE_B1, INVITE_B2]
+            ASSESS_H, ASSESS_INTRO, ASSESS_NOTE, PLOTART_H, PLOTART_P, PLOTART_B1, PLOTART_B2, PLOTART_NOTE,
+            PLOTART_HOME_NOTE, LIVE_Q, LIVE_CAT, LIVE_NOT_PLOTNUA] + list(CARD_HOST) + list(CARD_OWN) + \
+           [x for r in LIVE_ROUTES for x in r] + [new for _, new in CORRECTIONS]
 
 TITLE = "A Home for Art: Host, Live With or Buy Original Irish Art | PlotNua"
-DESC = ("Open your home to art by offering space for an artist&rsquo;s finished work, live with an artist&rsquo;s work "
-        "by direct arrangement, or find, buy or commission original Irish art. What to agree, insure and settle in Ireland.")
+# META DESCRIPTION (founder design decisions, 17 Oct 2026): was 212 characters
+# and truncated in results; now within ~155, hosting first, same three ideas.
+DESC = ("Open your home to an artist&rsquo;s work, try art at home before you buy, or find and commission "
+        "original Irish art. What to agree, insure and settle in Ireland.")
 OG_T = "A Home for Art | PlotNua Discoveries"
 OG_D = "Your home could be more than somewhere to hang art. Three possibilities, one home, and you decide how far to go."
 
 MERGE_CSS = """<style>/* PLOTNUA-HOME-FOR-ART-MERGE · generated by atlas-tools/build-a-home-for-art-merge.py.
-   Branch chooser, branch openings, branch check calls and the two-check panel.
+   Branch chooser, branch openings, the Live with art routes, the PlotArt section and the
+   one assessment section (founder design decisions, 17 Oct 2026).
    Existing tokens only. */
   .hfa-lede{ font-family:'Fraunces',Georgia,serif; font-size:clamp(20px,2.3vw,25px); line-height:1.55;
     color:var(--ink); max-width:40ch; margin:0; }
@@ -255,27 +346,43 @@ MERGE_CSS = """<style>/* PLOTNUA-HOME-FOR-ART-MERGE · generated by atlas-tools/
   .hfa-jump{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); }
   .hfa-jump:hover{ border-bottom-color:var(--accent); }
   .hfa-jump:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .hfa-cta{ margin:34px 0 0; padding:26px 0 0; border-top:1px solid rgba(31,59,46,.12); }
-  .hfa-cta .btn-primary{ margin-top:0; text-decoration:none; }
-  .hfa-cta .btn-primary:focus-visible,.hfa-check .btn-primary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .hfa-cta-note{ margin:14px 0 0; font-size:14.5px; line-height:1.65; color:var(--soft); max-width:56ch; }
-  .hfa-checks{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; width:100%; max-width:860px;
-    margin:8px auto 0; text-align:left; }
-  .hfa-check{ background:var(--paper); padding:26px 26px 28px; border:1px solid rgba(31,59,46,.12); border-radius:2px; }
-  .hfa-check h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:21px; line-height:1.3; margin:0 0 8px; color:var(--ink); }
-  .hfa-check p{ font-size:14.5px; line-height:1.6; color:var(--soft); margin:0; }
-  .hfa-check .btn-primary{ text-decoration:none; }
-  .hfa-take{ margin:30px 0 0; padding:26px 0 0; border-top:1px solid rgba(31,59,46,.12); }
-  .hfa-take .hfa-paths{ grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .hfa-take .hfa-path-t::after{ content:"\\2192" / ""; margin-left:.35em; color:var(--accent); }
-  .hfa-take .dq-note{ margin-top:16px; }
-  @media(max-width:820px){ .hfa-take .hfa-paths{ grid-template-columns:1fr; } }
-  .hfa-invite{ margin:40px 0 0; }
-  .hfa-invite-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:20px; }
-  .hfa-invite .btn-primary{ margin-top:0; text-decoration:none; }
-  .hfa-invite .btn-primary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  @media(max-width:560px){ .hfa-invite-actions .btn-primary{ flex:1 1 100%; text-align:center; box-sizing:border-box; } }
+  .hfa-checks{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; width:100%; max-width:880px;
+    margin:6px auto 0; text-align:left; }
+  /* ONE ASSESSMENT SECTION (founder design decisions, 17 Oct 2026): two clearly
+     different cards, the page's only check buttons, the button pinned to the
+     foot of each card so the two line up; full-width buttons on a phone. */
+  .hfa-check{ display:flex; flex-direction:column; background:var(--paper); padding:28px 28px 30px;
+    border:1px solid rgba(31,59,46,.12); border-top:3px solid var(--ink); border-radius:2px;
+    box-shadow:0 1px 2px rgba(31,59,46,.06), 0 16px 30px -18px rgba(31,59,46,.36); }
+  .hfa-check .hfa-check-k{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 12px; line-height:1.4; }
+  .hfa-check h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.3vw,26px); line-height:1.28;
+    margin:0 0 10px; color:var(--ink); }
+  .hfa-check p{ font-size:15.5px; line-height:1.6; color:var(--soft); margin:0 0 24px; }
+  .hfa-check .btn-primary{ margin-top:auto; align-self:flex-start; text-decoration:none; }
+  .hfa-check .btn-primary:focus-visible,.hfa-plotart .btn-primary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .hfa-assess-note{ margin:22px auto 0; font-size:14.5px; line-height:1.6; color:var(--soft); }
+  /* LIVE WITH ART · the gallery comes to you. */
+  .hfa-live-q{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.4vw,28px); line-height:1.3;
+    color:var(--ink); margin:30px 0 14px; max-width:28ch; }
+  #live-with-art .dq-adv + p{ margin-top:30px; }
+  .hfa-sub{ margin:34px 0 10px; }
+  /* ONE PLOTART SECTION, after the three possibilities. */
+  .hfa-plotart{ margin:40px 0 0; padding:30px 30px 32px; background:var(--paper); border:1px solid rgba(31,59,46,.12);
+    border-top:3px solid var(--accent); border-radius:2px; }
+  .hfa-plotart h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.4vw,27px); line-height:1.3;
+    margin:0 0 10px; color:var(--ink); }
+  .hfa-plotart-actions{ display:flex; flex-wrap:wrap; gap:12px; margin:22px 0 0; }
+  .hfa-plotart .btn-primary{ margin-top:0; text-decoration:none; }
+  .hfa-plotart .dq-note{ margin-top:18px; font-size:14.5px; line-height:1.65; }
   @media(max-width:820px){ .hfa-paths,.hfa-checks{ grid-template-columns:1fr; } }
+  @media(max-width:560px){
+    #discover-your-property{ padding-left:20px; padding-right:20px; }
+    .hfa-check{ padding:24px 20px 24px; }
+    .hfa-check .btn-primary,.hfa-plotart-actions .btn-primary{ align-self:stretch; flex:1 1 100%; text-align:center;
+      box-sizing:border-box; }
+    .hfa-plotart{ padding:24px 20px 26px; }
+  }
 </style>
 """
 
@@ -288,27 +395,21 @@ def artist_public():
     return mod.ARTIST_PUBLIC is True
 
 
-def invite():
-    return ('    <!-- PLOTNUA-BE-PART · top-of-page invitation to the two expressions of interest (founder,\n'
-            '         14 Oct 2026). Shown only while the Artist Register is open. No form here. -->\n'
-            '    <aside class="hfa-check hfa-invite" aria-labelledby="hfaInviteH">\n'
-            '      <h3 id="hfaInviteH">%s</h3>\n'
+def plotart():
+    """The ONE PlotArt section (founder design decisions, 17 Oct 2026). It keeps
+    the TAKE-PART marker build-artist-register.py A11 looks for, and renders only
+    while the Artist Register is open. No form here; nothing is matched or arranged."""
+    return ('    <!-- PLOTNUA-TAKE-PART · the one PlotArt section: two expressions of interest (founder\n'
+            '         decisions 14 and 17 Oct 2026). Shown only while the Artist Register is open. No form\n'
+            '         here; nothing is matched or arranged. -->\n'
+            '    <aside class="hfa-plotart" aria-labelledby="hfaPlotArtH">\n'
+            '      <h3 id="hfaPlotArtH">%s</h3>\n'
             '      <p>%s</p>\n'
-            '      <div class="hfa-invite-actions"><a class="btn-primary" href="%s">%s</a>'
+            '      <div class="hfa-plotart-actions"><a class="btn-primary" href="%s">%s</a>'
             '<a class="btn-primary" href="%s">%s</a></div>\n'
-            '    </aside>\n' % (INVITE_H, INVITE_P, START24, INVITE_B1, ARTIST_PAGE, INVITE_B2))
-
-
-def take_part():
-    card = ('      <li><a class="hfa-path" href="%s"><span class="hfa-path-n">%s</span>'
-            '<span class="hfa-path-t">%s</span><span class="hfa-path-l">%s</span></a></li>\n')
-    return ('    <!-- PLOTNUA-TAKE-PART · two expressions of interest (founder decision, 14 Oct 2026). Shown only\n'
-            '         while the Artist Register is open. No form here; nothing is matched or arranged. -->\n'
-            '    <nav class="hfa-choose hfa-take" aria-labelledby="hfaTakeH">\n'
-            '      <p class="hfa-choose-h" id="hfaTakeH">%s</p>\n'
-            '    <ul class="hfa-paths">\n%s%s    </ul>\n'
-            '    <p class="dq-note">%s</p>\n'
-            '    </nav>\n' % (TAKE_H, card % ((START24,) + TAKE_HOME), card % ((ARTIST_PAGE,) + TAKE_ARTIST), TAKE_NOTE))
+            '      <p class="dq-note">%s %s</p>\n'
+            '    </aside>\n' % (PLOTART_H, PLOTART_P, START24, PLOTART_B1, ARTIST_PAGE, PLOTART_B2,
+                               PLOTART_NOTE, PLOTART_HOME_NOTE))
 
 
 def branch_open(n, bid, name, line):
@@ -318,29 +419,26 @@ def branch_open(n, bid, name, line):
             '    <p class="hfa-branch-lead">%s</p>\n' % (bid, n, name, line))
 
 
-def cta(href, label, note):
-    return ('    <div class="hfa-cta"><a class="btn-primary" href="%s">%s</a>\n'
-            '      <p class="hfa-cta-note">%s</p></div>\n' % (href, label, note))
-
-
 def main_html():
     # VISUAL AND NARRATIVE PRIORITY CORRECTION (founder, 13 Oct 2026): the hosting
     # story leads. Order: the overlooked opportunity (SPACE <-> SPACE) -> before
     # and after in pictures -> three possibilities -> Open your home (primary) ->
-    # Live with art -> Discover & own -> shared guidance -> both checks.
+    # Live with art -> Discover & own -> shared guidance -> the PlotArt section
+    # -> the one assessment section.
     paths = "".join(
         '      <li><a class="hfa-path" href="#%s"><span class="hfa-path-n">%s</span>'
         '<span class="hfa-path-t">%s</span><span class="hfa-path-l">%s</span></a></li>\n' % (a, n, t, l)
         for a, n, (t, l) in (("open-your-home-to-art", "Possibility one", B3), ("live-with-art", "Possibility two", B2),
                              ("discover-and-own", "Possibility three", B1)))
+    # The top-of-page "Be part of the idea" invitation is retired (17 Oct 2026):
+    # the PlotArt registers are offered once, after the three possibilities.
     intro = ('  <section class="article-section reveal">\n'
-             '    <div class="kicker">Three possibilities. One home.</div>\n'
+             '    <div class="kicker">%s</div>\n'
              '    <p class="hfa-lede">%s</p>\n'
              '    <nav class="hfa-choose" aria-labelledby="hfaChooseH">\n'
              '      <p class="hfa-choose-h" id="hfaChooseH">Which sounds like you?</p>\n'
              '    <ul class="hfa-paths">\n%s    </ul>\n    </nav>\n'
-             '%s'
-             '  </section>\n' % (LEDE, paths, invite() if artist_public() else ""))
+             '  </section>\n' % (INTRO_KICKER, LEDE, paths))
     split_at = O_FIRST.index('    <p class="dq-note"><strong>Nobody has to come to your door.</strong>')
     first_a = O_FIRST[:split_at].rsplit("\n\n", 1)[0] + "\n"     # opening line + SPACE <-> SPACE
     first_b = O_FIRST[split_at:].rsplit("  </section>\n", 1)[0]    # no visitors, the ladder, money
@@ -348,70 +446,88 @@ def main_html():
                                  '  <section class="article-section reveal">\n'
                                  '    <div class="kicker">The overlooked opportunity</div>\n'
                                  '    <h2>%s</h2>\n' % OVERLOOKED_H2, 1) + "  </section>\n"
-    # The hosting hero leads again, so the hosting plates keep their original
-    # alt text and order: the same room empty -> the artist -> (after the
-    # ladder) the outcome. (The earlier "after" plate repeated the hero.)
     before_plate = O_IMG_PA
-    display_li = re.search(r'<li>\s*<span class="dq-adv-label">Display</span>\s*(<span class="dq-fact">.*?</span>)\s*'
-                           r'(<span class="dq-note">.*?</span>)\s*</li>', O_FIRST, re.S)
     seller = "<strong>The artist is the seller.</strong> They own the work, set the price, deal with the buyer and receive the payment."
     if seller not in O0:
         die("M1 source sentence moved: the artist is the seller")
+    # Branch check buttons are retired (17 Oct 2026): both checks are offered
+    # once, in the assessment section near the end.
     b_open = (branch_open("Possibility one", "open-your-home-to-art", B3[0], B3[1]) +
-              first_b + cta(START24, CHECK24, SUB24) + "  </section>\n")
+              first_b.rstrip("\n") + "\n  </section>\n")
+    routes = "".join('        <li>\n          <span class="dq-adv-label">%s</span>\n'
+                     '          <span class="dq-fact">%s</span>\n'
+                     '          <span class="dq-note">%s</span>\n        </li>\n' % r for r in LIVE_ROUTES)
     b_live = (branch_open("Possibility two", "live-with-art", B2[0], B2[1]) +
-              '    <p>%s</p>\n    <p><strong>%s</strong></p>\n' % (B2_P1, B2_P2) +
-              '    <div class="dq-adv">\n      <span class="dq-cat dq-adv-cat">Display</span>\n'
-              '      <ul class="dq-rows">\n        <li>%s\n            %s</li>\n      </ul>\n    </div>\n'
-              % (display_li.group(1), display_li.group(2)) +
+              '    <h3 class="hfa-live-q">%s</h3>\n' % LIVE_Q +
+              '    <p>%s</p>\n' % B2_P1 +
+              '    <!-- THE GALLERY COMES TO YOU (founder design decisions, 17 Oct 2026). Three routes a\n'
+              '         third party may offer; none is arranged by PlotNua, none is promised, no provider\n'
+              '         is named. Replaces the Display tile, which repeated the hosting ladder. -->\n'
+              '    <div class="dq-adv">\n      <span class="dq-cat dq-adv-cat">%s</span>\n'
+              '      <ul class="dq-adv-cols">\n%s      </ul>\n    </div>\n' % (LIVE_CAT, routes) +
+              '    <p><strong>%s</strong> %s</p>\n' % (B2_P2, LIVE_NOT_PLOTNUA) +
               '    <p class="dq-note"><strong>If you come to love the work:</strong> %s</p>\n' % seller.replace(
                   "<strong>The artist is the seller.</strong>", "the artist is the seller.") +
               '    <p class="dq-note"><a class="hfa-jump" href="#before-anything-arrives">Before anything arrives, the custody, insurance '
               'and money questions below apply here too.</a></p>\n' +
-              cta(START24, CHECK24, SUB24) + "  </section>\n")
+              "  </section>\n")
     b_own = branch_open("Possibility three", "discover-and-own", B1[0], B1[1]) + "  </section>\n"
     settle = O_SETTLE.replace('<section class="article-section reveal">',
                               '<section class="article-section reveal" id="before-anything-arrives">', 1)
-    before_cta = A_BEFORE.rsplit("  </section>\n", 1)[0] + cta(START23, CHECK23, SUB23) + "  </section>\n"
     future = (A_FUTURE.rsplit("  </section>\n", 1)[0] +
-              '    <h3>Finding each other</h3>\n' +
+              '    <h3 class="hfa-sub">Finding each other</h3>\n' +
               "".join(re.findall(r"    <p[^>]*>.*?</p>\n", O_FUTURE, re.S)))
     anchor = '    <p class="dq-note">This matching service is not live yet.</p>\n'
     if not future.endswith(anchor):
         die("M6 the PlotArt section no longer ends with the not-live sentence")
-    future += (take_part() if artist_public() else "") + "  </section>\n"
+    future += (plotart() if artist_public() else "") + "  </section>\n"
     art = lambda *xs: '<div class="article">\n\n' + "\n".join(xs) + '\n</div>\n\n'
+    # IMAGE SPACING (founder design decisions, 17 Oct 2026). The empty-wall plate
+    # and the artist plate used to sit back to back (zero pixels apart, desktop
+    # and mobile). Now each is its own moment: the empty wall answers "What you
+    # have: Space." directly above it; the three-possibilities chooser follows;
+    # the artist plate ("The work exists already. What it lacks is a room.") then
+    # opens Possibility one, the hosting branch it argues for. No image is added,
+    # removed, cropped or replaced; M12 refuses any two plates side by side.
     return ('<main id="pn-main">\n' +
             art(overlooked) +
-            before_plate + "\n" + O_IMG_ARTIST + "\n" +
+            before_plate + "\n" +
             art(intro) +
+            O_IMG_ARTIST + "\n" +
             art(b_open) + O_IMG_OUTCOME + "\n" +
             art(b_live) + A_IMG_EVENING + "\n" +
             art(b_own, A_WHY, A_BUYING, A_SIZE) + A_IMG_SAME + "\n" +
-            art(A_LOOK, A_COMM, before_cta) +
+            art(A_LOOK, A_COMM, A_BEFORE) +
             art(settle) +
             art(O_BETTER) +
             art(A_FAQ, future).rstrip("\n") + "\n</main>\n")
 
 
+def _card(card, href):
+    k, h, line, button = card
+    return ('      <div class="hfa-check"><p class="hfa-check-k">%s</p><h3>%s</h3><p>%s</p>\n'
+            '        <a class="btn-primary" href="%s">%s</a></div>\n' % (k, h, line, href, button))
+
+
+# THE ONE ASSESSMENT SECTION (founder design decisions, 17 Oct 2026). Replaces
+# the old "Check this against your own home" panel AND every check button that
+# was in the branches. Hosting first (M10). Both URLs, with ?start=1, unchanged.
 PANEL = ('<section class="pb-preview reveal" id="discover-your-property">\n'
-         '    <!-- TWO INDEPENDENT PROPERTY CHECKS (A Home for Art merge, 13 Oct 2026). Engines, questions,\n'
-         '         outcomes and My Plot save keys unchanged. No form and no field here. -->\n'
+         '    <!-- ONE ASSESSMENT SECTION · TWO INDEPENDENT PROPERTY CHECKS (A Home for Art; founder design\n'
+         '         decisions, 17 Oct 2026). Engines, questions, outcomes and My Plot save keys unchanged.\n'
+         '         The page\'s only check buttons. No form and no field here. -->\n'
          '    <div class="pn-wordmark">PlotNua</div>\n'
-         '    <h2 class="pb-headline">Check this against your own home</h2>\n'
-         '    <p class="pb-subhead">Two short checks. Nothing about your address.</p>\n'
-         '    <div class="hfa-checks">\n'
-         '      <div class="hfa-check"><h3>Living with or hosting work</h3><p>%s</p>\n'
-         '        <a class="btn-primary" href="%s">%s</a></div>\n'
-         '      <div class="hfa-check"><h3>Buying or commissioning</h3><p>%s</p>\n'
-         '        <a class="btn-primary" href="%s">%s</a></div>\n'
+         '    <h2 class="pb-headline">%s</h2>\n'
+         '    <p class="pb-subhead">%s</p>\n'
+         '    <div class="hfa-checks">\n%s%s'
          '    </div>\n'
+         '    <p class="hfa-assess-note">%s</p>\n'
          '    <div class="cs-exits">\n'
          '      <a class="cs-exit" href="discovery-living-in-the-garden.html">Explore What Could You Build in Your Garden? &rarr;</a>\n'
          '      <a class="cs-exit" href="discoveries.html">See all Discoveries &rarr;</a>\n'
          '      <a class="cs-exit is-home" href="index.html">Back to the homepage</a>\n'
          '    </div>\n'
-         '  </section>\n' % (SUB24, START24, CHECK24, SUB23, START23, CHECK23))
+         '  </section>\n' % (ASSESS_H, ASSESS_INTRO, _card(CARD_HOST, START24), _card(CARD_OWN, START23), ASSESS_NOTE))
 
 
 def related():
@@ -473,7 +589,12 @@ def merged_page():
     rel, _ = related()
     i = once(s, '<section class="related reveal">', "A related (merged)")
     j = s.index("</section>\n", i) + len("</section>\n")
-    return s[:i] + rel + s[j:]
+    s = s[:i] + rel + s[j:]
+    # FACTUAL CORRECTIONS (17 Oct 2026): each source sentence exactly once.
+    for old, new in CORRECTIONS:
+        once(s, old, "correction")
+        s = s.replace(old, new)
+    return s
 
 
 REDIRECT = """<!DOCTYPE html>
@@ -783,8 +904,21 @@ def guards(page):
     for a in ("discover-and-own", "live-with-art", "open-your-home-to-art", "before-anything-arrives"):
         if page.count('id="%s"' % a) != 1:
             die("M2 anchor #%s not present exactly once" % a)
-    if page.count('href="%s"' % START23) < 2 or page.count('href="%s"' % START24) < 3:
-        die("M3 the Property Checks are not linked from their branches and the panel")
+    # M3 (amended 17 Oct 2026, founder design decisions; was "linked from their
+    # branches and the panel", >= 2 / >= 3 links). Each check is offered ONCE, in
+    # the assessment section, hosting first. The only other route to the DISC-024
+    # check is the PlotArt section's homeowner button (it starts the check whose
+    # result offers the Art Space Register). The DISC-023 check has no other link.
+    pi = page.index('<section class="pb-preview reveal" id="discover-your-property">')
+    panel = page[pi:page.index("  </section>\n", pi)]
+    if panel.count('href="%s"' % START24) != 1 or panel.count('href="%s"' % START23) != 1 \
+            or panel.index('href="%s"' % START24) > panel.index('href="%s"' % START23):
+        die("M3 the assessment section must offer each check exactly once, hosting first")
+    ti = page.find("<!-- PLOTNUA-TAKE-PART")
+    pa = page[ti:page.index("</aside>", ti)] if ti > -1 else ""
+    if page.count('href="%s"' % START23) != 1 or \
+            page.count('href="%s"' % START24) != 1 + pa.count('href="%s"' % START24) or pa.count('href="%s"' % START24) > 1:
+        die("M3 a Property Check is linked outside the assessment section (other than PlotArt's homeowner button)")
     if page.count('href="%s"' % C23) or page.count('href="%s"' % C24):
         die("M3 a Property Check is linked without ?start=1")
     if 'href="%s"' % OLD in page:
@@ -834,11 +968,16 @@ def guards(page):
         if cur24.count(phrase) != 1:
             die("M8 founder-approved DISC-024 wording missing: " + phrase[:60])
     # M10 · founder hierarchy: hosting story first, then Open > Live with > Discover & own; hosting check first
+    # Amended 17 Oct 2026 (founder design decisions): the artist plate now opens
+    # Possibility one, after the chooser, so it no longer sits on the empty-wall
+    # plate; the PlotArt section follows the possibilities; the assessment
+    # section comes last, hosting card first.
     order = [page.find(x) for x in (HOST_HERO_TAG, "<h2>%s</h2>" % OVERLOOKED_H2, "assets/img/046ec577a454599b.jpg",
-                                     "assets/img/6442d19ec2dd1df0.jpg", 'class="hfa-paths"',
+                                     'class="hfa-paths"', "assets/img/6442d19ec2dd1df0.jpg",
                                      'id="open-your-home-to-art"', "assets/img/05cab54ac0af83d0.jpg", 'id="live-with-art"', 'id="discover-and-own"',
-                                     'id="before-anything-arrives"', "<h3>Living with or hosting work</h3>",
-                                     "<h3>Buying or commissioning</h3>")]
+                                     'id="before-anything-arrives"') +
+             ((("<!-- PLOTNUA-TAKE-PART",) if artist_public() else ()) +
+              ("<h3>%s</h3>" % CARD_HOST[1], "<h3>%s</h3>" % CARD_OWN[1]))]
     if -1 in order or order != sorted(order):
         die("M10 the founder's visual and narrative hierarchy is not in order: %r" % order)
     # M11 · original hosting imagery leads, and every card for this Discovery shows it
@@ -869,6 +1008,33 @@ def guards(page):
     head23 = base(C23)
     if art_entry().entry_revert(C23, (ROOT / C23).read_text(encoding="utf-8")) != head23:
         die("M8 the DISC-023 check changed beyond the two-option entry")
+    m12(page)
+
+
+def m12(page):
+    """M12 · FOUNDER DESIGN DECISIONS (17 Oct 2026): the consolidation holds.
+    Two plates never sit side by side; the retired check buttons, descriptions
+    and the top-of-page invitation do not come back; PlotArt is invited once;
+    Live with art carries its three routes and no Display tile."""
+    shown = re.sub(r"<!--[\s\S]*?-->", "", page)
+    plates = [m.start() for m in re.finditer(r'<section class="imagine-photo', shown)]
+    for a, b in zip(plates, plates[1:]):
+        if '<div class="article">' not in shown[a:b]:
+            die("M12 two full-bleed images sit side by side with no content between them")
+    for gone in RETIRED:
+        if gone in page:
+            die("M12 retired element is back: " + gone[:60])
+    if artist_public():
+        if page.count("<!-- PLOTNUA-TAKE-PART") != 1 or page.count('href="%s"' % ARTIST_PAGE) != 1:
+            die("M12 the PlotArt registers must be invited exactly once")
+    li = page.index('id="live-with-art"')
+    live = page[li:page.index("  </section>\n", li)]
+    if 'dq-adv-label">Display<' in live or "<h3 class=\"hfa-live-q\">%s</h3>" % LIVE_Q not in live or \
+            any(r[0] not in live for r in LIVE_ROUTES) or LIVE_NOT_PLOTNUA not in live:
+        die("M12 Live with art does not carry the gallery-comes-to-you routes, or still repeats the Display tile")
+    for _, new in CORRECTIONS:
+        if page.count(new) != 1:
+            die("M12 factual correction not present exactly once: " + new[:60])
 
 
 def main(argv):
@@ -884,7 +1050,7 @@ def main(argv):
             print("CHECK FAILED: %s is out of date; run --apply" % MERGED); sys.exit(1)
         apply_edits(False)
     guards((ROOT / MERGED).read_text(encoding="utf-8"))
-    print("A Home for Art: merged page, redirect and %d consolidation edits · %s — M1-M11 pass"
+    print("A Home for Art: merged page, redirect and %d consolidation edits · %s — M1-M12 pass"
           % (len(CONSOLIDATION), "APPLIED" if "--apply" in argv else "CHECK OK"))
 
 
