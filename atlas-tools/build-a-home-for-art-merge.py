@@ -895,11 +895,11 @@ def apply_edits(write):
         if done:
             continue
         if t.count(old) != 1:
-            die("M9 consolidation edit not found exactly once in %s: %s" % (f, old.strip()[:70]))
+            die("M9 consolidation edit not found exactly once in %s: %s" % (f, " ".join(old.split())[:70]))
         if write:
             p.write_text(t.replace(old, new), encoding="utf-8")
         else:
-            die("M9 consolidation edit not applied in %s: %s" % (f, old.strip()[:70]))
+            die("M9 consolidation edit not applied in %s: %s" % (f, " ".join(old.split())[:70]))
 
 
 def text_blocks(fragment):
@@ -1043,7 +1043,7 @@ def guards(page):
     cur23 = (ROOT / C23).read_text(encoding="utf-8")
     for old, new in CHECK23_WORDING:        # amended 17 Oct 2026: declared result wording
         if cur23.count(new) != 1:
-            die("M8 founder-approved DISC-023 result wording missing: " + new.strip()[:60])
+            die("M8 founder-approved DISC-023 result wording missing: " + " ".join(new.split())[:60])
         cur23 = cur23.replace(new, old)
     if art_entry().entry_revert(C23, cur23) != head23:
         die("M8 the DISC-023 check changed beyond the two-option entry and the declared result wording")
