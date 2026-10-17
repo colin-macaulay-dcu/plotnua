@@ -46,7 +46,9 @@ GUARDS
       scripts, the engine script, the My Plot save script, every question's
       variable and answer values, and the save call (journeyId and payload)
       are byte-identical; the Back control routes to the merged page; the
-      founder-approved question wording (CHECK24_APPROVED) is present.
+      founder-approved question wording (CHECK24_APPROVED) is present. The
+      DISC-023 check equals BASE once the two-option entry and the declared
+      result wording (CHECK23_WORDING, 17 Oct 2026) are reverted.
       Revised 14 Oct 2026 (founder UX direction): the check's PRESENTATION
       (layout, styles, result copy, the floating Back control) was redesigned,
       so a whole-page byte comparison no longer applies; what decides a
@@ -788,6 +790,38 @@ CHECK24_APPROVED = [
 ]
 
 
+# DISC-023 CHECK WORDING (founder design decisions, 17 Oct 2026). Result copy
+# only, two strings in ACTIONS: the dated Culture Night sentence (18 September
+# 2026 had passed) and the RHA / RDS seasons, matched to the Discovery's
+# corrected wording. The engine, questions, answer values, outcome selection,
+# save keys and every other byte stay pinned to BASE: M8 reverts exactly these
+# pairs (and the two-option entry) before comparing the page with BASE.
+# Applied by --apply through CONSOLIDATION (M9). Kept in its own commit so the
+# founder can take or drop it independently of the Discovery changes.
+CHECK23_WORDING = [
+    ("      'Go and stand in front of a lot of real work before you buy any of it. ' +\n"
+     "      'The RHA Annual Exhibition runs free through the summer with everything ' +\n"
+     "      'in it for sale. Art Source fills the RDS each November. The RDS Visual ' +\n"
+     "      'Art Awards show graduate work each winter.',\n",
+     "      'Go and stand in front of a lot of real work before you buy any of it. ' +\n"
+     "      'The RHA Annual Exhibition runs free from late spring through the ' +\n"
+     "      'summer, with almost everything in it for sale. Art Source fills the ' +\n"
+     "      'RDS each November. The RDS Visual Art Awards exhibition opens each ' +\n"
+     "      'November, showing emerging artists chosen from graduate shows.',\n"),
+    ("      'Culture Night is the evening built for exactly this — Friday 18 ' +\n"
+     "      'September 2026, free, nationwide, coordinated through local authority ' +\n"
+     "      'arts offices, with open studios an invited event type. More than 1,800 ' +\n"
+     "      'events ran in 2025. Artists open their working spaces at other times ' +\n"
+     "      'too, and you can usually buy on the spot.',\n",
+     "      'Culture Night is the evening built for exactly this — every ' +\n"
+     "      'September, free, nationwide, coordinated by the Arts Council with ' +\n"
+     "      'local authorities, with open studios an invited event type. Artists ' +\n"
+     "      'open their working spaces at other times too, and you can usually ' +\n"
+     "      'buy on the spot.',\n"),
+]
+CONSOLIDATION += [(C23, old, new) for old, new in CHECK23_WORDING]
+
+
 def check24_head(t):
     return t[:t.index("<style>")]
 
@@ -1006,8 +1040,13 @@ def guards(page):
     # The two-option entry (14 Oct 2026) is the only permitted change to the
     # DISC-023 check; it is reverted with the art builder's own pairs first.
     head23 = base(C23)
-    if art_entry().entry_revert(C23, (ROOT / C23).read_text(encoding="utf-8")) != head23:
-        die("M8 the DISC-023 check changed beyond the two-option entry")
+    cur23 = (ROOT / C23).read_text(encoding="utf-8")
+    for old, new in CHECK23_WORDING:        # amended 17 Oct 2026: declared result wording
+        if cur23.count(new) != 1:
+            die("M8 founder-approved DISC-023 result wording missing: " + new.strip()[:60])
+        cur23 = cur23.replace(new, old)
+    if art_entry().entry_revert(C23, cur23) != head23:
+        die("M8 the DISC-023 check changed beyond the two-option entry and the declared result wording")
     m12(page)
 
 
