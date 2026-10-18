@@ -396,26 +396,16 @@ def render(ev, ex):
              "dateModified": BUILD_DATE,
              "isPartOf": {"@id": "https://plotnua.ie/#website"},
              "publisher": {"@id": "https://plotnua.ie/#organisation"},
-             "breadcrumb": {"@id": "https://plotnua.ie/garden-room-prices-ireland.html#breadcrumb"},
-             "mainEntity": {"@id": "https://plotnua.ie/garden-room-prices-ireland.html#dataset"}},
+             "breadcrumb": {"@id": "https://plotnua.ie/garden-room-prices-ireland.html#breadcrumb"}},
             {"@type": "BreadcrumbList", "@id": "https://plotnua.ie/garden-room-prices-ireland.html#breadcrumb",
              "itemListElement": [
                  {"@type": "ListItem", "position": 1, "name": "PlotNua", "item": "https://plotnua.ie/"},
                  {"@type": "ListItem", "position": 2, "name": "Living in the Garden",
                   "item": "https://plotnua.ie/discovery-living-in-the-garden.html"},
                  {"@type": "ListItem", "position": 3, "name": "Garden Room Prices in Ireland"}]},
-            {"@type": "Dataset", "@id": "https://plotnua.ie/garden-room-prices-ireland.html#dataset",
-             "name": "Published garden room prices in Ireland, by what the price covers",
-             "description": ("Ranges of advertised garden room prices from PlotNua's research "
-                             "snapshot of %s, grouped by what each advertised price covers. "
-                             "Ranges are shown only where at least %d suppliers price on the "
-                             "same basis. Not a census of the Irish market and not a quotation."
-                             % (date_long(snap), MIN_SUPPLIERS)),
-             "creator": {"@id": "https://plotnua.ie/#organisation"},
-             "temporalCoverage": "%s/%s" % (oldest.isoformat(), newest.isoformat()),
-             "spatialCoverage": {"@type": "Place", "name": "Ireland"},
-             "variableMeasured": "Advertised garden room price in euro, by price basis",
-             "isAccessibleForFree": True},
+            # No Dataset node (Search Console, 18 Oct 2026): the visible table is a summary
+            # of PlotNua's proprietary research, not a distributed dataset, and its terms
+            # do not permit reuse. WebPage and BreadcrumbList describe the page.
             {"@type": "WebSite", "@id": "https://plotnua.ie/#website", "url": "https://plotnua.ie/",
              "name": "PlotNua", "inLanguage": "en-IE",
              "publisher": {"@id": "https://plotnua.ie/#organisation"}},
