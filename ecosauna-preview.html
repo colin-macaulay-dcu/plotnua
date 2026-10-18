@@ -848,52 +848,292 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
 /* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */
 </style>
 <style>
-/* THE RANGE -- EcoSauna, 18 Oct 2026. Tokens only; stacks below 640px.
-   Same range pattern as the other provider-led previews. */
-.pn-range{ margin-top:var(--pn-md); border-top:1px solid var(--pn-hair); }
-.pn-range-row{ display:grid; grid-template-columns:1.1fr 2.6fr .8fr 1.1fr;
-  gap:6px var(--pn-md); padding:14px 0; border-bottom:1px solid var(--pn-hair);
-  align-items:baseline; }
-.pn-range-head{ font-size:var(--pn-w-caption); letter-spacing:.12em;
-  text-transform:uppercase; color:var(--pn-body); padding:10px 0; }
-.pn-range-row b{ color:var(--pn-voice); font-weight:600; }
-.pn-range-tbc{ color:var(--pn-body); font-style:italic; }
-.wrap section > p a, .pn-range-note a{ color:var(--pn-voice);
-  text-underline-offset:2px; }
-.pn-range-note{ font-size:var(--pn-w-body-sm); color:var(--pn-body);
-  margin-top:var(--pn-md); max-width:70ch; }
+/* ══ ECOSAUNA v2 SHELL — PlotNua premium supplier-preview language ═════════
+   Scoped under body.ev. Tokens follow the approved editorial homepage and
+   A Home for Art: forest, ivory, paper, terracotta; Fraunces + Work Sans. */
+body.ev{
+  --ev-forest:#1F3B2E; --ev-forest-2:#2B4A3C; --ev-ivory:#F2EFE6;
+  --ev-paper:#F8F5EC; --ev-sheet:#FCFBF7; --ev-terra:#BD6A46; --ev-terra-t:#A4532F;
+  --ev-sage:#8FAF8A; --ev-soft:#55605A; --ev-ink:#1F3B2E;
+  --ev-hair:rgba(31,59,46,.14); --ev-on-dark:rgba(242,239,230,.82);
+  --ev-wrap:1200px; --ev-gut:clamp(20px,4vw,40px);
+  background:var(--ev-paper); color:var(--ev-soft);
+  font-family:'Work Sans',system-ui,sans-serif; font-size:16px; line-height:1.6;
+}
+body.ev .ev-wrap{ max-width:var(--ev-wrap); margin:0 auto; padding:0 var(--ev-gut); }
+body.ev h1, body.ev h2, body.ev h3{ font-family:'Fraunces',Georgia,serif; color:var(--ev-ink);
+  letter-spacing:-.015em; margin:0; max-width:none; }
+body.ev a{ color:inherit; }
+body.ev p{ max-width:62ch; }
+.ev-skip{ position:absolute; left:-9999px; }
+.ev-skip:focus{ left:16px; top:12px; z-index:50; background:#fff; padding:10px 14px; }
+
+.ev-eyebrow{ font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ev-soft); margin:0 0 18px; display:flex; align-items:center; gap:12px; }
+.ev-eyebrow.ev-on-dark{ color:var(--ev-on-dark); }
+.ev-num{ font-family:'Fraunces',serif; font-weight:300; font-size:20px; letter-spacing:0;
+  color:var(--ev-terra-t); }
+.ev-on-dark .ev-num{ color:#E3A383; }
+.ev-lede{ font-size:clamp(16px,1.3vw,18px); line-height:1.6; color:var(--ev-soft); margin:18px 0 0; }
+.ev-lede a{ text-underline-offset:3px; text-decoration-color:var(--ev-terra); }
+
+/* private bar */
+.ev-bar-top{ background:#16291F; color:var(--ev-ivory); font-size:13px; padding:10px 0; }
+.ev-bar-top .ev-wrap{ display:flex; justify-content:space-between; gap:8px 24px; flex-wrap:wrap; }
+.ev-bar-top strong{ font-weight:600; letter-spacing:.18em; text-transform:uppercase; font-size:11px; }
+.ev-bar-meta{ color:rgba(242,239,230,.75); }
+
+/* hero */
+.ev-hero{ background:var(--ev-forest); color:var(--ev-ivory); padding:28px 0 clamp(56px,7vw,96px); overflow:hidden; }
+.ev-wordmark{ font-family:'Fraunces',serif; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+  font-size:15px; text-decoration:none; color:var(--ev-ivory)!important; display:inline-block;
+  padding:10px 0; min-height:44px; }
+.ev-hero-grid{ display:grid; grid-template-columns:1.05fr 1fr; gap:clamp(32px,5vw,72px);
+  align-items:center; margin-top:clamp(28px,5vw,64px); }
+body.ev .ev-hero h1{ color:var(--ev-ivory); font-weight:600; font-size:clamp(44px,6.2vw,86px);
+  line-height:.98; letter-spacing:-.02em; }
+.ev-sub{ font-family:'Fraunces',serif; font-style:italic; font-size:clamp(20px,2vw,26px);
+  line-height:1.35; color:var(--ev-ivory); margin:26px 0 0; }
+.ev-intro{ color:var(--ev-on-dark); font-size:16px; margin:18px 0 0; max-width:46ch; }
+.ev-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
+.ev-btn{ display:inline-flex; align-items:center; gap:8px; min-height:48px; padding:0 22px;
+  font-size:12.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  text-decoration:none; border-radius:2px; transition:transform .2s ease, background .2s ease; }
+.ev-btn:hover{ transform:translateY(-1px); }
+.ev-btn:focus-visible{ outline:2px solid var(--ev-terra); outline-offset:3px; }
+.ev-btn-light{ background:var(--ev-ivory); color:var(--ev-forest)!important; box-shadow:inset 0 -2px 0 var(--ev-terra); }
+.ev-btn-line{ border:1px solid rgba(242,239,230,.55); color:var(--ev-ivory)!important; }
+.ev-btn-line:hover{ background:rgba(242,239,230,.08); }
+.ev-btn-dark{ background:var(--ev-forest); color:var(--ev-ivory)!important; }
+.ev-hero-art{ margin:0; position:relative; border:1px solid rgba(242,239,230,.18);
+  background:rgba(242,239,230,.03); padding:clamp(18px,2.4vw,32px) clamp(18px,2.4vw,32px) 16px; }
+.ev-scene{ display:block; width:100%; height:auto; color:rgba(242,239,230,.9); }
+.ev-scene *, .ev-ico *{ vector-effect:non-scaling-stroke; stroke-width:1.5px; }
+.ev-scene .ev-acc, .ev-ico .ev-acc{ color:var(--ev-terra); stroke:var(--ev-terra); }
+.ev-hero-art figcaption{ font-size:10.5px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(242,239,230,.72); margin-top:10px; }
+
+/* sections */
+.ev-sec{ padding:clamp(72px,9vw,128px) 0 0; }
+body.ev .ev-sec h2{ font-size:clamp(32px,4vw,52px); line-height:1.04; font-weight:500; max-width:20ch; }
+
+/* journey */
+.ev-journey{ list-style:none; margin:48px 0 0; padding:0; display:grid;
+  grid-template-columns:repeat(6,1fr); position:relative; counter-reset:none; }
+.ev-journey::before{ content:""; position:absolute; left:0; right:0; top:22px; height:1px; background:var(--ev-hair); }
+.ev-step{ position:relative; padding:0 18px 0 0; }
+.ev-step-n{ position:relative; z-index:1; display:inline-flex; align-items:center; justify-content:center;
+  width:44px; height:44px; border-radius:50%; background:var(--ev-paper); border:1px solid var(--ev-hair);
+  font-family:'Fraunces',serif; font-size:15px; color:var(--ev-ink); }
+.ev-step.is-supplier .ev-step-n{ background:var(--ev-forest); border-color:var(--ev-forest); color:var(--ev-ivory); }
+.ev-step.is-supplier::after{ content:""; position:absolute; left:0; right:0; top:22px; height:2px; background:var(--ev-terra); z-index:0; }
+.ev-step:last-child.is-supplier::after{ right:auto; width:22px; }
+.ev-step b{ display:block; font-family:'Fraunces',serif; font-weight:500; font-size:21px; color:var(--ev-ink); margin:18px 0 6px; }
+.ev-step-t{ display:block; font-size:14px; line-height:1.45; color:var(--ev-soft); }
+.ev-journey-key{ display:flex; align-items:center; gap:10px; font-size:12px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ev-soft); margin:28px 0 0; }
+.ev-journey-key span{ width:28px; height:2px; background:var(--ev-terra); display:inline-block; }
+
+/* demonstration */
+.ev-demo-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+body.ev .illus-tag{ color:var(--ev-soft); border-color:var(--ev-hair); }
+body.ev .screen{ margin-top:32px; border-radius:10px; border-color:var(--ev-hair);
+  box-shadow:0 30px 80px -40px rgba(31,59,46,.45), 0 2px 6px rgba(31,59,46,.05); }
+body.ev .screen-chrome{ background:var(--ev-ivory); }
+body.ev .screen-url{ color:#585D55; }
+body.ev .pn-photo-slot{ background:linear-gradient(160deg,#21402F 0%,#1B3527 100%);
+  box-shadow:none; color:rgba(242,239,230,.88); gap:16px; padding:28px; }
+body.ev .pn-photo-slot .ev-ico{ width:min(78%,420px); height:auto; color:rgba(242,239,230,.88); }
+body.ev .pn-photo-slot b{ color:rgba(242,239,230,.8); font-size:10.5px; }
+body.ev .hero-secondary .is-illustrative{ color:var(--ev-soft); cursor:default; text-decoration:none; }
+body.ev .hero-secondary .is-illustrative small{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; margin-left:6px; }
+
+/* range */
+.ev-range-head{ display:grid; grid-template-columns:1fr 1fr; gap:24px 48px; align-items:end; }
+.ev-range-head .ev-lede{ margin:0; }
+.ev-glance{ margin:48px 0 0; padding:28px 32px; background:var(--ev-sheet); border:1px solid var(--ev-hair); }
+.ev-glance ul{ list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+.ev-glance li{ display:grid; grid-template-columns:150px 1fr 84px; align-items:center; gap:18px; }
+.ev-glance li a{ font-family:'Fraunces',serif; font-size:17px; color:var(--ev-ink); text-decoration:none;
+  min-height:32px; display:flex; align-items:center; }
+.ev-glance li a:hover{ color:var(--ev-terra-t); }
+.ev-glance .ev-bar{ height:6px; background:rgba(31,59,46,.08); border-radius:3px; overflow:hidden; }
+.ev-glance .ev-bar span{ display:block; height:100%; background:var(--ev-forest); border-radius:3px; }
+.ev-glance li b{ font-family:'Fraunces',serif; font-weight:500; font-size:17px; color:var(--ev-ink); text-align:right; }
+.ev-glance-note{ font-size:13.5px; margin:16px 0 0; color:var(--ev-soft); }
+.ev-cards{ display:grid; grid-template-columns:repeat(6,1fr); gap:20px; margin-top:20px; align-items:start; }
+.ev-card{ grid-column:span 2; background:var(--ev-sheet); border:1px solid var(--ev-hair);
+  display:flex; flex-direction:column; transition:box-shadow .25s ease, transform .25s ease; }
+.ev-card:nth-child(4), .ev-card:nth-child(5){ grid-column:span 3; }
+.ev-card:nth-child(4) .ev-card-art, .ev-card:nth-child(5) .ev-card-art{ aspect-ratio:2.4/1; }
+.ev-card:hover{ box-shadow:0 24px 50px -34px rgba(31,59,46,.5); }
+.ev-card-art{ position:relative; background:var(--ev-forest); color:rgba(242,239,230,.9);
+  aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; padding:18px; }
+.ev-card-art .ev-ico{ width:62%; max-width:230px; height:auto; }
+.ev-kind{ position:absolute; left:16px; top:14px; font-size:10.5px; font-weight:600; letter-spacing:.2em;
+  text-transform:uppercase; color:rgba(242,239,230,.75); }
+.ev-card-body{ padding:24px 24px 8px; display:flex; flex-direction:column; flex:1; }
+body.ev .ev-card h3{ font-size:26px; font-weight:500; }
+.ev-line{ font-size:15px; margin:8px 0 0; color:var(--ev-soft); }
+.ev-price{ font-family:'Fraunces',serif; font-size:34px; color:var(--ev-ink); margin:20px 0 0; line-height:1; }
+.ev-from{ font-family:'Work Sans',sans-serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ev-soft); margin-right:4px; vertical-align:middle; }
+.ev-basis{ font-size:12.5px; color:var(--ev-soft); margin:8px 0 0; }
+.ev-chips{ list-style:none; margin:18px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.ev-chips li{ font-size:12.5px; line-height:1; padding:8px 11px; border:1px solid var(--ev-hair); border-radius:999px; color:var(--ev-ink); }
+.ev-install{ margin:18px 0 0; padding:14px 0 0; border-top:1px solid var(--ev-hair); display:flex;
+  justify-content:space-between; gap:12px; font-size:14px; }
+.ev-install dt{ color:var(--ev-soft); }
+.ev-install dd{ margin:0; color:var(--ev-ink); font-weight:500; text-align:right; }
+.ev-tbc{ font-style:italic; font-weight:400; color:var(--ev-terra-t); }
+.ev-more{ margin-top:auto; border-top:1px solid var(--ev-hair); }
+.ev-card .ev-install + .ev-more{ margin-top:14px; }
+.ev-more summary{ list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+  min-height:52px; gap:16px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--ev-ink); }
+.ev-more summary::-webkit-details-marker{ display:none; }
+.ev-more summary:focus-visible{ outline:2px solid var(--ev-terra); outline-offset:2px; }
+.ev-more summary i{ position:relative; width:14px; height:14px; }
+.ev-more summary i::before, .ev-more summary i::after{ content:""; position:absolute; left:0; right:0; top:6px;
+  height:1.5px; background:var(--ev-terra); transition:transform .25s ease; }
+.ev-more summary i::after{ transform:rotate(90deg); }
+.ev-more[open] summary i::after{ transform:rotate(0deg); }
+.ev-more-in{ padding:0 0 18px; }
+.ev-more h4{ font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--ev-soft); margin:14px 0 8px; }
+.ev-more ul{ margin:0; padding:0 0 0 16px; font-size:14px; line-height:1.5; color:var(--ev-ink); }
+.ev-more li{ margin:0 0 4px; }
+.ev-range-note{ font-size:14px; margin:28px 0 0; }
+.ev-swipe{ display:none; align-items:center; gap:10px; margin:22px 0 0; font-size:11px; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--ev-soft); }
+.ev-swipe::after{ content:"\2192"; color:var(--ev-terra); font-size:14px; }
+
+/* dark questions */
+.ev-dark{ background:var(--ev-forest); color:var(--ev-ivory); margin-top:clamp(72px,9vw,128px);
+  padding-bottom:clamp(72px,9vw,120px); }
+body.ev .ev-dark h2{ color:var(--ev-ivory); }
+.ev-qs{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:44px; }
+.ev-q{ background:var(--ev-forest-2); border-top:3px solid var(--ev-terra); padding:28px 26px 30px; }
+.ev-q-n{ font-family:'Fraunces',serif; font-weight:300; font-size:30px; color:#E3A383; }
+body.ev .ev-q h3{ color:var(--ev-ivory); font-size:23px; font-weight:500; margin:10px 0 12px; }
+.ev-q p{ color:var(--ev-on-dark); font-size:15px; margin:0; }
+
+/* why */
+.ev-why{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px,3vw,48px); margin-top:44px; }
+.ev-why-c{ border-top:1px solid var(--ev-ink); padding-top:20px; }
+.ev-why-n{ font-family:'Fraunces',serif; font-weight:300; font-size:44px; color:var(--ev-terra-t); line-height:1; }
+body.ev .ev-why-c h3{ font-size:22px; font-weight:500; margin:14px 0 10px; }
+.ev-why-c p{ font-size:15px; margin:0; }
+
+/* close */
+.ev-close-in{ text-align:center; display:flex; flex-direction:column; align-items:center; }
+body.ev .ev-close h2{ max-width:22ch; font-size:clamp(30px,3.6vw,46px); }
+.ev-close p{ margin:20px 0 28px; font-size:17px; }
+
+/* footer */
+.ev-foot{ margin-top:clamp(72px,9vw,120px); border-top:1px solid var(--ev-hair); padding:28px 0 48px; }
+body.ev .credit-line{ background:none; border:0; padding:0; font-size:13px; color:var(--ev-soft); max-width:80ch; }
+.ev-foot-line{ font-size:13px; margin:18px 0 0; color:var(--ev-soft); display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+.ev-foot-mark{ font-family:'Fraunces',serif; letter-spacing:.24em; text-transform:uppercase; color:var(--ev-ink); }
+
+@media (max-width:1100px){
+  .ev-cards{ grid-template-columns:repeat(2,1fr); }
+  .ev-card, .ev-card:nth-child(4), .ev-card:nth-child(5){ grid-column:auto; }
+  .ev-card:nth-child(5){ grid-column:1 / -1; }
+}
+@media (max-width:900px){
+  .ev-hero-grid{ grid-template-columns:1fr; }
+  .ev-journey{ grid-template-columns:1fr; gap:0; margin-top:36px; }
+  .ev-journey::before{ left:22px; right:auto; top:0; bottom:0; width:1px; height:auto; }
+  .ev-step{ display:grid; grid-template-columns:44px 1fr; column-gap:18px; padding:0 0 22px; }
+  .ev-step-n{ grid-row:1 / span 2; }
+  .ev-step b{ margin:2px 0 2px; font-size:20px; }
+  .ev-step.is-supplier::after{ left:21px; right:auto; top:0; bottom:0; width:2px; height:auto; }
+  .ev-step:last-child.is-supplier::after{ width:2px; height:22px; bottom:auto; }
+  .ev-range-head{ grid-template-columns:1fr; }
+  .ev-qs, .ev-why{ grid-template-columns:1fr; }
+}
 @media (max-width:640px){
-  .pn-range-head{ display:none; }
-  .pn-range-row{ grid-template-columns:1fr 1fr; }
-  .pn-range-row > :first-child{ grid-column:1 / -1; }
-  .pn-range-row [data-k]::before{ content:attr(data-k); display:block;
-    font-size:var(--pn-w-meta); letter-spacing:.12em; text-transform:uppercase;
-    color:var(--pn-body); }
-  .pn-range-row [data-k="Published specification"]{ grid-column:1 / -1; }
+  body.ev{ font-size:16px; }
+  .ev-bar-top{ font-size:12px; }
+  body.ev .ev-hero h1{ font-size:clamp(40px,11.5vw,54px); }
+  .ev-actions .ev-btn{ flex:1 1 100%; justify-content:center; }
+  .ev-hero-art{ padding:14px 14px 10px; }
+  .ev-glance{ padding:20px 18px; }
+  .ev-glance li{ grid-template-columns:1fr auto; gap:6px 12px; }
+  .ev-glance .ev-bar{ grid-column:1 / -1; grid-row:2; }
+  .ev-cards{ display:flex; align-items:flex-start; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory;
+    margin:20px calc(-1 * var(--ev-gut)) 0; padding:0 var(--ev-gut) 8px;
+    scroll-padding:0 var(--ev-gut); -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .ev-cards::-webkit-scrollbar{ display:none; }
+  .ev-card, .ev-card:nth-child(4), .ev-card:nth-child(5){ flex:0 0 86%; scroll-snap-align:start; }
+  .ev-card:nth-child(4) .ev-card-art, .ev-card:nth-child(5) .ev-card-art{ aspect-ratio:2.2/1; }
+  .ev-swipe{ display:flex!important; }
+  .ev-card-art{ aspect-ratio:2.2/1; }
+  .ev-card-body{ padding:20px 20px 6px; }
+  .ev-price{ font-size:30px; }
+}
+@media (prefers-reduced-motion:reduce){
+  body.ev *{ transition:none!important; }
 }
 </style>
 </head>
-<body>
+<body class="ev">
+<a class="ev-skip" href="#main">Skip to the preview</a>
+<aside class="ev-bar-top" aria-label="Preview status"><div class="ev-wrap">
+  <span><strong>Private supplier preview</strong> &middot; Prepared for EcoSauna</span>
+  <span class="ev-bar-meta">Unlisted &middot; not published &middot; 18 October 2026</span>
+</div></aside>
 
-<div class="pv-bar"><div class="wrap">
-  <strong>Private preview</strong>
-  <span>Prepared for EcoSauna</span>
-</div></div>
-
-
-
-<div class="wrap">
-
-<!-- ═══ THE DEMONSTRATION — MANDATORY ══════════════════════════════
-     Never ship a supplier preview that is mainly explanatory prose.
-     Everything inside .pn-stage is genuine production PlotNua markup
-     and CSS. Do not invent a mock interface. ═══════════════════════ -->
-<section>
-  <div class="demo-intro">
-    <h2 style="margin:0">How an Irish homeowner could reach EcoSauna</h2>
-    <span class="illus-tag">Illustrative preview</span>
+<header class="ev-hero">
+  <div class="ev-wrap">
+    <a class="ev-wordmark" href="https://plotnua.ie/" rel="noopener">PlotNua</a>
+    <div class="ev-hero-grid">
+      <div class="ev-hero-copy">
+        <p class="ev-eyebrow ev-on-dark">A PlotNua Discovery &middot; Garden Retreat</p>
+        <h1>Your garden.<br>A different kind of escape.</h1>
+        <p class="ev-sub">From an ordinary outdoor space to a private wellness retreat.</p>
+        <p class="ev-intro">This is how EcoSauna could appear to Irish homeowners exploring garden saunas, hot tubs and cold plunges on PlotNua.</p>
+        <div class="ev-actions">
+          <a class="ev-btn ev-btn-light" href="#products">See the five products</a>
+          <a class="ev-btn ev-btn-line" href="https://www.ecosauna.ie/" rel="noopener">Visit ecosauna.ie <span aria-hidden="true">&#8599;</span></a>
+        </div>
+      </div>
+      <figure class="ev-hero-art">
+        <svg class="ev-scene" viewBox="0 0 600 352" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 336h568"/><path d="M16 336V120l70-46 70 46v216" opacity=".5"/><path d="M40 336v-62h36v62M100 200h34v40h-34z" opacity=".5"/><path d="M156 300h428" opacity=".22"/><path d="M156 264h428" opacity=".22"/><path d="M196 264v72M256 264v72M316 264v72M376 264v72M436 264v72M496 264v72M556 264v72" opacity=".16"/><path d="M556 300V214" opacity=".7"/><path d="M556 230c-40-4-56-42-32-68 4-32 50-38 60-9 18 4 16 60-6 70-8 4-14 7-22 7z" opacity=".7"/><path d="M170 336V230h92v106"/><path d="M164 230h104"/><path d="M182 336v-76h26v76"/><rect x="220" y="252" width="32" height="24" class="ev-acc"/><path d="M248 230v-18h8v18" opacity=".6"/><ellipse cx="300" cy="294" rx="18" ry="34"/><path d="M300 260h86M300 328h86"/><path d="M386 260a18 34 0 0 1 0 68"/><path d="M328 261v66M356 261v66" opacity=".4"/><path d="M292 306v-18a8 8 0 0 1 16 0v18" class="ev-acc"/><path d="M370 260v-20h7v20" opacity=".6"/><path d="M410 306h80v30h-80z"/><ellipse cx="450" cy="306" rx="40" ry="7"/><path d="M430 296c3-8-3-13 0-21M450 296c3-8-3-13 0-21M470 296c3-8-3-13 0-21" class="ev-acc"/><path d="M498 336v-44h9v44M502 292v-14" opacity=".6"/><path d="M520 314h40v22h-40z"/><ellipse cx="540" cy="314" rx="20" ry="4"/><path d="M528 324h24" class="ev-acc"/></svg>
+        <figcaption>Illustration &middot; generic forms, not EcoSauna products</figcaption>
+      </figure>
+    </div>
   </div>
-  <p style="margin-bottom:var(--pn-lg)">A shortened example of what a homeowner would see, built only from what your own website publishes. They arrive through <a href="https://plotnua.ie/discovery-garden-retreat.html" rel="noopener"><i>Garden Retreat</i></a> &mdash; our Discovery on garden saunas, hot tubs and cold plunges in Ireland &mdash; work through what their garden could take and what to check, and only then reach suppliers. By the time this screen appears the thinking has already happened.</p>
+</header>
+
+<main id="main">
+
+<section class="ev-sec ev-journey-sec" aria-labelledby="j-h">
+  <div class="ev-wrap">
+    <p class="ev-eyebrow"><span class="ev-num">01</span> The homeowner journey</p>
+    <h2 id="j-h">They arrive with the thinking already done.</h2>
+    <p class="ev-lede">Homeowners start in <a href="https://plotnua.ie/discovery-garden-retreat.html" rel="noopener"><i>Garden Retreat</i></a>, our Discovery on garden saunas, hot tubs and cold plunges in Ireland. EcoSauna appears once they are looking at real products.</p>
+    <ol class="ev-journey">
+<li class="ev-step"><span class="ev-step-n">01</span><b>Discover</b><span class="ev-step-t">What a garden like theirs could become.</span></li>
+<li class="ev-step"><span class="ev-step-n">02</span><b>Check</b><span class="ev-step-t">What it needs: space, a level base, power.</span></li>
+<li class="ev-step is-supplier"><span class="ev-step-n">03</span><b>Explore</b><span class="ev-step-t">Real products, in detail.</span></li>
+<li class="ev-step is-supplier"><span class="ev-step-n">04</span><b>Compare</b><span class="ev-step-t">Options side by side, prices in context.</span></li>
+<li class="ev-step is-supplier"><span class="ev-step-n">05</span><b>Decide</b><span class="ev-step-t">An informed choice, made in their own time.</span></li>
+<li class="ev-step is-supplier" data-connect-mode="none"><span class="ev-step-n">06</span><b>Connect</b><span class="ev-step-t">When ready, the right supplier.</span></li>
+    </ol>
+    <p class="ev-journey-key"><span aria-hidden="true"></span>Where EcoSauna appears</p>
+  </div>
+</section>
+
+<section class="ev-sec ev-demo-sec" aria-labelledby="d-h">
+  <div class="ev-wrap">
+    <div class="ev-demo-head">
+      <div>
+        <p class="ev-eyebrow"><span class="ev-num">02</span> On PlotNua</p>
+        <h2 id="d-h">This is where EcoSauna would appear.</h2>
+      </div>
+      <span class="illus-tag">Illustrative preview</span>
+    </div>
+    <p class="ev-lede">The real PlotNua results screen, filled only with what your own website publishes.</p>
 
   <div class="screen">
     <div class="screen-chrome">
@@ -903,7 +1143,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
 
     <div class="pn-stage">
       <div class="pn-stage-top">
-        <button type="button" class="my-plot-access"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipPill"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipPill)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span><span class="my-plot-access-label"><span class="my-plot-access-title">My Plot</span><span class="my-plot-access-count">1 option saved</span></span><span class="my-plot-access-chevron" aria-hidden="true">&rarr;</span></button>
+        <button type="button" class="my-plot-access" inert tabindex="-1"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipPill"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipPill)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span><span class="my-plot-access-label"><span class="my-plot-access-title">My Plot</span><span class="my-plot-access-count">1 option saved</span></span><span class="my-plot-access-chevron" aria-hidden="true">&rarr;</span></button>
       </div>
 
       <div class="results-hero-inner">
@@ -928,7 +1168,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
              unchanged and still fails closed. -->
         <div class="pn-media-col">
         <div class="results-hero-media">
-          <div class="pn-photo-slot"><b>Your image here</b></div>
+          <div class="pn-photo-slot" role="img" aria-label="Generic illustration of a garden sauna"><svg class="ev-ico" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 66h100"/><ellipse cx="28" cy="40" rx="12" ry="22"/><path d="M28 18h62M28 62h62"/><path d="M90 18a12 22 0 0 1 0 44"/><path d="M46 19v42M64 19v42" opacity=".45"/><path d="M22 46v-12a6 6 0 0 1 12 0v12" class="ev-acc"/></svg><b>Illustration &middot; a generic form, not an EcoSauna product</b></div>
         </div>
         </div>
         <div class="results-hero-body">
@@ -936,7 +1176,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
                What stays here is the price BASIS, which explains the figure
                rather than stating it, and therefore belongs to the decision. -->
           <div class="results-hero-price-row">
-            <span class="results-hero-area">From &euro;3,300 is the starting figure EcoSauna&rsquo;s online configurator shows for the Barrel Sauna, in the 2m &times; 1.6m size and spruce. Larger sizes, Thermowood, extras and installation are priced on top, and EcoSauna say the configured total is an estimate, with the final price and delivery confirmed on contact. EcoSauna say they deliver to all 32 counties.</span>
+            <span class="results-hero-area">The starting figure EcoSauna&rsquo;s online configurator shows for the 2m &times; 1.6m spruce Barrel Sauna. Larger sizes, Thermowood, extras and installation are priced on top; EcoSauna say the configured total is an estimate, with the final price and delivery confirmed on contact. EcoSauna say they deliver to all 32 counties.</span>
           </div>
 
           <!-- PERSONALISATION GUARDRAIL. Anything shown here must trace to a
@@ -947,7 +1187,7 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
             <p class="prop-confirm-place">Your property &middot; Co. Meath</p>
           </section>
 
-          <p class="results-hero-editorial">Shown for a homeowner in Co. Meath, from the location they gave us. We don&rsquo;t ask them about the base, the access or where the power runs, so we wouldn&rsquo;t pretend to know. Those stay as things to check with you.</p>
+          <p class="results-hero-editorial">Shown for a homeowner in Co. Meath, from the location they gave us. We don&rsquo;t ask about the base, the access or where the power runs, so we wouldn&rsquo;t pretend to know.</p>
 
           <ul class="pn-facts">
             <li><b>Capacity</b><span>4 people in the 2m &times; 1.6m; 8+ in the 2m &times; 3.5m</span></li>
@@ -960,158 +1200,188 @@ footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
           <div class="results-hero-budget-note">Things to check: the figure is the starting configuration, not a quote, and delivery is priced by location. EcoSauna&rsquo;s own guidance is that the base is ready before they arrive: a level concrete pad of at least 100mm, a heavy-duty timber deck, or compacted gravel with paving flags. An electric stove needs a certified electrician to run the supply. And a point of ours rather than yours: the local authority is the only body that can confirm what a particular site requires.</div>
 
           <div class="match-card-actions">
-            <button type="button" class="match-card-save-primary is-saved" aria-pressed="true"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipSave"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipSave)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span> Saved to My Plot &#10003;</button>
+            <button type="button" class="match-card-save-primary is-saved" inert tabindex="-1" aria-pressed="true"><span class="pn-mark-heart is-plot-active" aria-hidden="true"><svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true"><defs><clipPath id="pnMarkClipSave"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs><rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/><g clip-path="url(#pnMarkClipSave)"><g transform="translate(0,3000) scale(0.1,-0.1)"><path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/><path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/></g></g><path class="pmh-heart-path" fill="#C57A5A" d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z"/></svg></span> Saved to My Plot &#10003;</button>
           </div>
-          <button type="button" class="match-card-open-myplot-link">Open My Plot &rarr;</button>
+          <button type="button" class="match-card-open-myplot-link" inert tabindex="-1">Open My Plot &rarr;</button>
 
           <div class="hero-secondary">
-            <a class="hero-secondary-link" href="#">Ask PlotNua</a>
+            <span class="hero-secondary-link is-illustrative">Ask PlotNua<small>Illustrative</small></span>
             <span class="hero-secondary-dot">&middot;</span>
-            <a class="hero-secondary-link" href="#">Explore with EcoSauna &rarr;</a>
+            <a class="hero-secondary-link" href="https://www.ecosauna.ie/" rel="noopener">Explore with EcoSauna &rarr;</a>
           </div>
         </div>
         </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- THE RANGE -- the five EcoSauna product types, for the
-     supplier to confirm. Built from RANGE in
-     build-ecosauna-preview.py; read 18 October 2026. -->
-<section>
-  <h2>The five EcoSauna products</h2>
-  <p>This is how we&rsquo;d set out your range, using the sizes and starting prices in <a href="https://www.ecosauna.ie/?view=WIZARD" rel="noopener">your online configurator</a>. Please check each line.</p>
-  <div class="pn-range" role="list">
-    <div class="pn-range-row pn-range-head" aria-hidden="true"><span>Product</span><span>Published specification</span><span>Starts at</span><span>Installation option</span></div>
-    <div class="pn-range-row" role="listitem"><b>Barrel Sauna</b><span data-k="Published specification">Six sizes, from 2m &times; 1.6m (4 people) to 2m &times; 3.5m (8+ people). Spruce or Thermowood; firewood or electric stove.</span><span data-k="Starts at">&euro;3,300</span><span data-k="Installation option">&euro;600&ndash;&euro;800 by size</span></div>
-    <div class="pn-range-row" role="listitem"><b>Cube Sauna</b><span data-k="Published specification">Seven sizes, from 1.4m &times; 1.6m &times; 2m high (electric stove) to 2m &times; 3.5m. Spruce or Thermowood; glass wall, porch and changing room among the extras.</span><span data-k="Starts at">&euro;3,200</span><span data-k="Installation option">&euro;650&ndash;&euro;850 by size</span></div>
-    <div class="pn-range-row" role="listitem"><b>Hot Tub</b><span data-k="Published specification">Five sizes, from 1m &times; 2m for two people to 2.25m diameter for 8+, with an inside or outside stove. Insulated cover and air jets among the extras.</span><span data-k="Starts at">&euro;2,300</span><span data-k="Installation option" class="pn-range-tbc">To be confirmed by EcoSauna</span></div>
-    <div class="pn-range-row" role="listitem"><b>Plunge Pool</b><span data-k="Published specification">1.05m diameter &times; 1.10m high. Listed with a lid, stair, drainage system, timber outside and fibreglass inside.</span><span data-k="Starts at">&euro;1,100</span><span data-k="Installation option" class="pn-range-tbc">To be confirmed by EcoSauna</span></div>
-    <div class="pn-range-row" role="listitem"><b>Phytosauna</b><span data-k="Published specification">Herbal steam cabin, 130cm &times; 78cm &times; 78cm, 65kg, in knot-free Thermo Aspen. Listed with a 3-level seat, armrest, footrest, steam supply and drain.</span><span data-k="Starts at">&euro;2,100</span><span data-k="Installation option" class="pn-range-tbc">To be confirmed by EcoSauna</span></div>
-  </div>
-  <p class="pn-range-note">Starting prices are the figures your configurator shows for each product&rsquo;s standard configuration. Sizes, timber, extras and installation are priced on top. Your configurator says the total is an estimate, and that the final price and the delivery charge, which depends on location, are confirmed when you&rsquo;re contacted.</p>
-</section>
-
-<!-- THE OPEN QUESTIONS — the three things the supplier's own site leaves
-     open, asked as questions and not resolved. Each one names what the site
-     does say first. -->
-<section>
-  <h2>Three things we would ask before publishing</h2>
-  <p>These are the three things we&rsquo;d like to check with you before the
-     page goes live.</p>
-  <div class="pn-open">
-    <ul>
-      <li><b>Which starting prices.</b> Your configurator starts the Barrel
-          Sauna at &euro;3,300, the Hot Tub at &euro;2,300 and the Plunge Pool
-          at &euro;1,100. Some of your Ireland pages give different starting
-          figures: &euro;2,800 for a barrel sauna, &euro;3,100 for a hot tub
-          and &euro;1,950 for a plunge pool. Which should a homeowner see, and
-          do your prices include VAT?</li>
-      <li><b>Delivery and timing.</b> Your configurator prices delivery by
-          location and confirms it on contact, and your county pages say a
-          custom order usually arrives within 4 to 6 weeks. Is there a
-          typical delivery range we could show, and does that timescale hold
-          across the whole range?</li>
-      <li><b>Installation and cover.</b> Installation is a priced option on
-          the Barrel and Cube Saunas. Is it also offered for the Hot Tub,
-          Plunge Pool and Phytosauna? And what would you like a homeowner to
-          know about the warranty on each?</li>
-    </ul>
   </div>
 </section>
 
-<!-- FROZEN — the real PlotNua homeowner journey. Change only if the
-     platform architecture itself changes. -->
-<div class="journey">
-  <div class="wrap">
-    <div class="eyebrow">How a homeowner moves through it</div>
-    <div class="jrow">
-      <div class="jstep"><b>Discover</b><span>See what a property like theirs could do.</span></div>
-      <div class="jstep"><b>Check</b><span>What would actually work in their garden.</span></div>
-      <div class="jstep"><b>Explore</b><span>Look at real options in detail.</span></div>
-      <div class="jstep"><b>Compare</b><span>Weigh them up side by side.</span></div>
-      <div class="jstep"><b>Decide</b><span>Settle on what to pursue.</span></div>
-      <div class="jstep last"><b>Connect</b><span>When ready, connect with a provider.</span></div>
+<section class="ev-sec ev-range-sec" id="products" aria-labelledby="r-h">
+  <div class="ev-wrap">
+    <p class="ev-eyebrow"><span class="ev-num">03</span> The range</p>
+    <div class="ev-range-head">
+      <h2 id="r-h">Five ways to bring it home.</h2>
+      <p class="ev-lede">Sizes and starting prices from <a href="https://www.ecosauna.ie/?view=WIZARD" rel="noopener">your online configurator</a>. Please check each one.</p>
+    </div>
+    <div class="ev-glance" aria-label="Starting prices at a glance"><p class="ev-eyebrow">Starting prices at a glance</p><ul><li><a href="#p-plunge">Plunge Pool</a><span class="ev-bar"><span style="width:33.3%"></span></span><b>&euro;1,100</b></li><li><a href="#p-phyto">Phytosauna</a><span class="ev-bar"><span style="width:63.6%"></span></span><b>&euro;2,100</b></li><li><a href="#p-tub">Hot Tub</a><span class="ev-bar"><span style="width:69.7%"></span></span><b>&euro;2,300</b></li><li><a href="#p-cube">Cube Sauna</a><span class="ev-bar"><span style="width:97.0%"></span></span><b>&euro;3,200</b></li><li><a href="#p-barrel">Barrel Sauna</a><span class="ev-bar"><span style="width:100.0%"></span></span><b>&euro;3,300</b></li></ul><p class="ev-glance-note">Configurator starting figures. Size, timber, extras, installation and delivery are on top; VAT is not stated.</p></div>
+    <p class="ev-swipe" aria-hidden="true">Swipe through all five</p>
+    <div class="ev-cards">
+      <article class="ev-card" id="p-barrel" aria-labelledby="p-barrel-h">
+        <div class="ev-card-art"><svg class="ev-ico" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 66h100"/><ellipse cx="28" cy="40" rx="12" ry="22"/><path d="M28 18h62M28 62h62"/><path d="M90 18a12 22 0 0 1 0 44"/><path d="M46 19v42M64 19v42" opacity=".45"/><path d="M22 46v-12a6 6 0 0 1 12 0v12" class="ev-acc"/></svg><span class="ev-kind">Heat</span></div>
+        <div class="ev-card-body">
+          <h3 id="p-barrel-h">Barrel Sauna</h3>
+          <p class="ev-line">The classic cylindrical garden sauna, in six sizes.</p>
+          <p class="ev-price"><span class="ev-from">From</span> &euro;3,300</p>
+          <p class="ev-basis">Configurator starting price &middot; not a quote</p>
+          <ul class="ev-chips"><li>4 to 8+ people</li><li>Firewood or electric stove</li><li>Spruce or Thermowood</li></ul>
+          <dl class="ev-install"><dt>Installation option</dt><dd>&euro;600&ndash;&euro;800 by size</dd></dl>
+          <details class="ev-more">
+            <summary><span>Specification &amp; costs on top</span><i aria-hidden="true"></i></summary>
+            <div class="ev-more-in">
+              <h4>Published specification</h4>
+              <ul><li>Six sizes, from 2m &times; 1.6m (4 people) to 2m &times; 3.5m (8+ people)</li><li>Spruce as standard; Thermowood by length</li><li>Firewood or electric stove; a custom stove is discussed on a call</li><li>Four roof colours and a range of exterior finishes</li></ul>
+              <h4>Priced on top</h4>
+              <ul><li>Larger sizes +&euro;150 to +&euro;1,850</li><li>Thermowood +&euro;450 to +&euro;650</li><li>Half or full panoramic window +&euro;450 / +&euro;850</li><li>Lighting +&euro;400 &middot; porch +&euro;400 &middot; changing room +&euro;500</li><li>Trailer &euro;3,800 or &euro;4,000</li></ul>
+              <h4>Still to confirm</h4>
+              <ul><li>Whether the price includes VAT</li><li>The delivery charge for the homeowner&rsquo;s area</li><li>What a homeowner should know about the warranty</li></ul>
+            </div>
+          </details>
+        </div>
+      </article>
+      <article class="ev-card" id="p-cube" aria-labelledby="p-cube-h">
+        <div class="ev-card-art"><svg class="ev-ico" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 66h100"/><path d="M26 64V22h68v42"/><path d="M22 22h76" /><path d="M34 64V34h16v30"/><rect x="60" y="32" width="24" height="16" rx="1" class="ev-acc"/><path d="M84 22V12h6v10" opacity=".55"/></svg><span class="ev-kind">Heat</span></div>
+        <div class="ev-card-body">
+          <h3 id="p-cube-h">Cube Sauna</h3>
+          <p class="ev-line">A square sauna with more headroom, in seven sizes.</p>
+          <p class="ev-price"><span class="ev-from">From</span> &euro;3,200</p>
+          <p class="ev-basis">Configurator starting price &middot; not a quote</p>
+          <ul class="ev-chips"><li>Seven sizes</li><li>Firewood or electric stove</li><li>Spruce or Thermowood</li></ul>
+          <dl class="ev-install"><dt>Installation option</dt><dd>&euro;650&ndash;&euro;850 by size</dd></dl>
+          <details class="ev-more">
+            <summary><span>Specification &amp; costs on top</span><i aria-hidden="true"></i></summary>
+            <div class="ev-more-in">
+              <h4>Published specification</h4>
+              <ul><li>Seven sizes, from 1.4m &times; 1.6m &times; 2m high to 2m &times; 3.5m</li><li>The two smallest sizes are listed with an electric stove</li><li>Spruce as standard; Thermowood by size</li><li>Glass wall, porch and changing room among the extras</li></ul>
+              <h4>Priced on top</h4>
+              <ul><li>Larger sizes +&euro;200 to +&euro;2,550</li><li>Thermowood +&euro;350 to +&euro;650</li><li>Glass wall +&euro;800 &middot; full panoramic window +&euro;850</li><li>Porch +&euro;400 &middot; changing room +&euro;600</li></ul>
+              <h4>Still to confirm</h4>
+              <ul><li>Whether the price includes VAT</li><li>The delivery charge for the homeowner&rsquo;s area</li><li>What a homeowner should know about the warranty</li></ul>
+            </div>
+          </details>
+        </div>
+      </article>
+      <article class="ev-card" id="p-tub" aria-labelledby="p-tub-h">
+        <div class="ev-card-art"><svg class="ev-ico" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 66h100"/><path d="M22 40h66v24H22z"/><ellipse cx="55" cy="40" rx="33" ry="6"/><path d="M40 34c2-6-2-10 0-16M55 34c2-6-2-10 0-16M70 34c2-6-2-10 0-16" class="ev-acc"/><path d="M94 64V30h8v34M98 30V18" opacity=".55"/></svg><span class="ev-kind">Soak</span></div>
+        <div class="ev-card-body">
+          <h3 id="p-tub-h">Hot Tub</h3>
+          <p class="ev-line">A wood-fired or electric hot tub, from two people to eight or more.</p>
+          <p class="ev-price"><span class="ev-from">From</span> &euro;2,300</p>
+          <p class="ev-basis">Configurator starting price &middot; not a quote</p>
+          <ul class="ev-chips"><li>Five sizes</li><li>Inside or outside stove</li><li>2 to 8+ people</li></ul>
+          <dl class="ev-install"><dt>Installation option</dt><dd><span class="ev-tbc">To be confirmed by EcoSauna</span></dd></dl>
+          <details class="ev-more">
+            <summary><span>Specification &amp; costs on top</span><i aria-hidden="true"></i></summary>
+            <div class="ev-more-in">
+              <h4>Published specification</h4>
+              <ul><li>Five sizes, from 1m &times; 2m for two people to 2.25m diameter for 8+</li><li>Inside or outside stove, by size</li><li>Seven inside colours and a range of exterior finishes</li></ul>
+              <h4>Priced on top</h4>
+              <ul><li>Larger sizes +&euro;600 to +&euro;1,050</li><li>Insulated cover +&euro;300 &middot; air jets +&euro;300</li><li>Extra spa jets +&euro;50 &middot; stove for salt water +&euro;250</li></ul>
+              <h4>Still to confirm</h4>
+              <ul><li>Whether the price includes VAT</li><li>The delivery charge for the homeowner&rsquo;s area</li><li>What a homeowner should know about the warranty</li></ul>
+            </div>
+          </details>
+        </div>
+      </article>
+      <article class="ev-card" id="p-plunge" aria-labelledby="p-plunge-h">
+        <div class="ev-card-art"><svg class="ev-ico" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 66h100"/><path d="M44 30h34v34H44z"/><ellipse cx="61" cy="30" rx="17" ry="4"/><path d="M50 40h22" class="ev-acc"/><path d="M30 64V46M30 52h14M30 58h14M38 64V46" opacity=".55"/></svg><span class="ev-kind">Cold</span></div>
+        <div class="ev-card-body">
+          <h3 id="p-plunge-h">Plunge Pool</h3>
+          <p class="ev-line">A compact cold plunge for the garden, 1.05m across.</p>
+          <p class="ev-price"><span class="ev-from">From</span> &euro;1,100</p>
+          <p class="ev-basis">Configurator starting price &middot; not a quote</p>
+          <ul class="ev-chips"><li>1.05m &times; 1.10m high</li><li>Fibreglass inside</li><li>Lid and stair listed</li></ul>
+          <dl class="ev-install"><dt>Installation option</dt><dd><span class="ev-tbc">To be confirmed by EcoSauna</span></dd></dl>
+          <details class="ev-more">
+            <summary><span>Specification &amp; costs on top</span><i aria-hidden="true"></i></summary>
+            <div class="ev-more-in">
+              <h4>Published specification</h4>
+              <ul><li>1.05m diameter &times; 1.10m high</li><li>Listed with a lid, stair, drainage system, timber outside and fibreglass inside</li><li>Three fibreglass colours and a range of exterior finishes</li></ul>
+              <h4>Priced on top</h4>
+              <ul><li>No priced extras are listed in the configurator</li></ul>
+              <h4>Still to confirm</h4>
+              <ul><li>Whether the price includes VAT</li><li>The delivery charge for the homeowner&rsquo;s area</li><li>What a homeowner should know about the warranty</li></ul>
+            </div>
+          </details>
+        </div>
+      </article>
+      <article class="ev-card" id="p-phyto" aria-labelledby="p-phyto-h">
+        <div class="ev-card-art"><svg class="ev-ico" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 66h100"/><path d="M44 64V24h32v40"/><path d="M40 24c4-8 36-8 40 0"/><circle cx="60" cy="14" r="5" class="ev-acc"/><path d="M50 40h20M50 50h20" opacity=".5"/></svg><span class="ev-kind">Steam</span></div>
+        <div class="ev-card-body">
+          <h3 id="p-phyto-h">Phytosauna</h3>
+          <p class="ev-line">A herbal steam cabin you sit in, 130cm tall.</p>
+          <p class="ev-price"><span class="ev-from">From</span> &euro;2,100</p>
+          <p class="ev-basis">Configurator starting price &middot; not a quote</p>
+          <ul class="ev-chips"><li>130 &times; 78 &times; 78cm</li><li>65kg</li><li>Thermo Aspen</li></ul>
+          <dl class="ev-install"><dt>Installation option</dt><dd><span class="ev-tbc">To be confirmed by EcoSauna</span></dd></dl>
+          <details class="ev-more">
+            <summary><span>Specification &amp; costs on top</span><i aria-hidden="true"></i></summary>
+            <div class="ev-more-in">
+              <h4>Published specification</h4>
+              <ul><li>130cm &times; 78cm &times; 78cm, 65kg</li><li>Knot-free Thermo Aspen</li><li>Listed with a 3-level seat, armrest, footrest, steam supply, drain and wooden cup</li></ul>
+              <h4>Priced on top</h4>
+              <ul><li>No priced extras are listed in the configurator</li></ul>
+              <h4>Still to confirm</h4>
+              <ul><li>Whether the price includes VAT</li><li>The delivery charge for the homeowner&rsquo;s area</li><li>What a homeowner should know about the warranty</li></ul>
+            </div>
+          </details>
+        </div>
+      </article>
+    </div>
+    <p class="ev-range-note">Your configurator says its total is an estimate: the final price and the delivery charge, which depends on location, are confirmed when you&rsquo;re contacted.</p>
+  </div>
+</section>
+
+<section class="ev-sec ev-dark" aria-labelledby="q-h">
+  <div class="ev-wrap">
+    <p class="ev-eyebrow ev-on-dark"><span class="ev-num">04</span> Before anything goes live</p>
+    <h2 id="q-h">Three things we&rsquo;d like to check with you.</h2>
+    <div class="ev-qs">
+<div class="ev-q"><span class="ev-q-n">01</span><h3>Prices and VAT</h3><p>Your configurator starts the Barrel Sauna at &euro;3,300, the Hot Tub at &euro;2,300 and the Plunge Pool at &euro;1,100. Some of your Ireland pages give &euro;2,800, &euro;3,100 and &euro;1,950. Which should a homeowner see, and do your prices include VAT?</p></div>
+<div class="ev-q"><span class="ev-q-n">02</span><h3>Delivery and timing</h3><p>Your configurator prices delivery by location and confirms it on contact, and your county pages say a custom order usually arrives within 4 to 6 weeks. Is there a typical delivery range we could show, and does that timescale hold across the range?</p></div>
+<div class="ev-q"><span class="ev-q-n">03</span><h3>Installation and cover</h3><p>Installation is a priced option on the Barrel and Cube Saunas. Is it also offered for the Hot Tub, Plunge Pool and Phytosauna? And what would you like a homeowner to know about the warranty on each?</p></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- WHY THIS COULD BE USEFUL — what PlotNua adds BEFORE the homeowner
-     arrives. Keep three points. Rewrite them in the supplier's own terms
-     if the defaults do not fit; do not expand the section. -->
-<section>
-  <h2>Why this could be useful</h2>
-  <div class="why">
-    <div class="why-c"><b>YOUR CONFIGURATOR, UNDERSTOOD FIRST</b><span>A homeowner sees what the starting price is and what adds to it &mdash; size, Thermowood, extras, installation &mdash; before they open your configurator, so the estimate they build is one they expected.</span></div>
-    <div class="why-c"><b>THE BASE BEFORE DELIVERY DAY</b><span>Your own base guidance sits next to the price, so the pad or deck is something they&rsquo;ve planned for rather than something they find out about when the trailer is booked.</span></div>
-    <div class="why-c"><b>REACHED THROUGH GARDEN WELLNESS</b><span>A homeowner arrives here having decided they want a sauna, a hot tub or a cold plunge in their garden, not having typed your name into a search box. That is the kind of enquiry we are trying to send you.</span></div>
+<section class="ev-sec" aria-labelledby="w-h">
+  <div class="ev-wrap">
+    <p class="ev-eyebrow"><span class="ev-num">05</span> Why this could be useful</p>
+    <h2 id="w-h">What PlotNua adds before they reach you.</h2>
+    <div class="ev-why">
+<div class="ev-why-c"><span class="ev-why-n">01</span><h3>Your configurator, understood first</h3><p>A homeowner sees the starting price and what adds to it &mdash; size, Thermowood, extras, installation &mdash; before they open your configurator.</p></div>
+<div class="ev-why-c"><span class="ev-why-n">02</span><h3>The base before delivery day</h3><p>Your own base guidance sits next to the price, so the pad or deck is planned for, not discovered when the trailer is booked.</p></div>
+<div class="ev-why-c"><span class="ev-why-n">03</span><h3>Reached through garden wellness</h3><p>They arrive having decided they want a sauna, a hot tub or a cold plunge in their garden, not having typed your name into a search box.</p></div>
+    </div>
   </div>
 </section>
 
-<!-- THE ENDING — ONE commercially interesting proposition or question.
-     Do not summarise the page again. Do not define PlotNua as ending at
-     referral, and do not claim any connection, attribution or commercial
-     mechanism is operational. -->
-<section>
-  <h2>Before anything goes live</h2>
-  <p class="close-statement">Does this represent EcoSauna accurately for an Irish homeowner?</p>
-  <p>If anything on this page is wrong, out of date or missing &mdash; a price, a size, what installation covers &mdash; tell us and we&rsquo;ll correct it before anything is published.</p>
+<section class="ev-sec ev-close" aria-labelledby="c-h">
+  <div class="ev-wrap ev-close-in">
+    <h2 id="c-h">Does this represent EcoSauna accurately for an Irish homeowner?</h2>
+    <p>If anything here is wrong, out of date or missing &mdash; a price, a size, what installation covers &mdash; tell us and we&rsquo;ll correct it before anything is published.</p>
+    <a class="ev-btn ev-btn-dark" href="https://www.ecosauna.ie/" rel="noopener">EcoSauna&rsquo;s website <span aria-hidden="true">&#8599;</span></a>
+  </div>
 </section>
 
-          <p class="credit-line">Every figure on this page is published by EcoSauna and was read from <a href="https://www.ecosauna.ie/?view=PRODUCTS" rel="noopener">your products</a>, <a href="https://www.ecosauna.ie/?view=WIZARD" rel="noopener">your online configurator</a> and <a href="https://www.ecosauna.ie/" rel="noopener">ecosauna.ie</a> on 18 October 2026. No EcoSauna photography is used anywhere on this page. © EcoSauna</p>
-<footer>
-  <p>Private preview prepared for EcoSauna &middot; 18 October 2026</p>
+</main>
+
+<footer class="ev-foot">
+  <div class="ev-wrap">
+    <p class="credit-line">Every figure on this page is published by EcoSauna and was read from <a href="https://www.ecosauna.ie/?view=PRODUCTS" rel="noopener">your products</a>, <a href="https://www.ecosauna.ie/?view=WIZARD" rel="noopener">your online configurator</a> and <a href="https://www.ecosauna.ie/" rel="noopener">ecosauna.ie</a> on 18 October 2026. No EcoSauna photography is used anywhere on this page; the drawings are generic illustrations. © EcoSauna</p>
+    <p class="ev-foot-line"><span class="ev-foot-mark">PlotNua</span> Private preview prepared for EcoSauna &middot; 18 October 2026</p>
+  </div>
 </footer>
-
-</div>
-
-<!-- PREVIEW-IDENTITY-001 — THE GALLERY ACTUALLY WORKS NOW.
-     Both templates previously carried no script at all, so the thumbnail
-     strip was decorative: clicking it did nothing. This is the whole
-     behaviour, in one place, for every preview built from these templates.
-
-     It is deliberately NOT a copy of pnGovernedGallery(). On Results that
-     function re-checks the rights gate before every paint, because Results
-     paints from live Atlas data. A preview is a STATIC artefact whose
-     images already passed the gate at build time -- the builder refuses to
-     emit an unauthorised image at all -- so there is nothing left to
-     re-check at click time and pretending otherwise would be theatre. What
-     must still hold is that the credit never parts company with the
-     picture, so the credit is swapped in the same statement as the src. -->
-<script>
-(function(){
-  var strip = document.querySelector('.pn-gal-strip');
-  if (!strip) return;
-  var media  = document.querySelector('.results-hero-media');
-  var main   = media && media.querySelector('img');
-  var credit = media && media.querySelector('.pn-image-credit');
-  if (!main) return;
-  var thumbs = strip.querySelectorAll('.pn-gal-thumb');
-
-  function show(btn, i){
-    var full = btn.getAttribute('data-full');
-    if (!full) return;                       /* nothing to show, do nothing */
-    main.src = full;
-    main.alt = btn.getAttribute('data-alt') || '';
-    /* THE CREDIT TRAVELS WITH THE PICTURE. Same statement, no gap. */
-    if (credit) credit.textContent = btn.getAttribute('data-credit') || '';
-    for (var k = 0; k < thumbs.length; k++){
-      var on = (k === i);
-      thumbs[k].classList.toggle('is-on', on);
-      thumbs[k].setAttribute('aria-pressed', on ? 'true' : 'false');
-    }
-  }
-
-  for (var i = 0; i < thumbs.length; i++){
-    (function(btn, idx){
-      btn.addEventListener('click', function(e){
-        e.preventDefault();                  /* never reload the page */
-        show(btn, idx);
-      });
-    })(thumbs[i], i);
-  }
-})();
-</script>
 </body>
 </html>
