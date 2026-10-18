@@ -95,6 +95,52 @@
       "forbidden_claims_note": "BORROWED SUPERLATIVES FIRST. Their own site calls them \"Ireland's Number One Sauna Shop\", \"the highest rated sauna supplier in Ireland\", \"Ireland's Top Sauna Manufacturer\" and \"the most professional\". Those are their marketing and nobody's verified fact; PlotNua repeating one would convert an unchecked claim into an apparent ranking on a page whose whole purpose is to show editorial independence. THE EXPERIENCE FIGURES ARE BANNED BECAUSE THEY CONTRADICT EACH OTHER: the homepage says \"over 20 years of experience\" of the custom saunas and, four paragraphs later, \"over 16 years\" of the founders. Both are first-party and they disagree, so neither is used. NOTE WHAT IS NOT BANNED: installation and nationwide delivery. Unlike the Irish Sauna Company case, this supplier publishes both on the product page itself -- \"nationwide delivery, sauna installation, and comprehensive support with building advisory\" -- so they are evidenced and may be reported, with the open question of what sits inside the price left open rather than answered.",
       "evidence": "Sauna Experts replied \"PREVIEW\" on 5 October 2026 to outreach sent to saunaexpertsltd@gmail.com, when the outreach offered both YES and PREVIEW. A request to see the page is not a grant.",
       "atlas_permission_ref": "NOT IN ATLAS — Sauna Experts Limited has no organisation record, no product record and no permission record. A full-tree search on 5 October 2026 returned nothing. There is no relationship to reflect and none is implied."
+    },
+    {
+      "name": "EcoSauna",
+      "imagery_mode": "none",
+      "legal_name": "NOT ESTABLISHED — the site www.ecosauna.ie trades as \"EcoSauna\" / \"EcoSauna Ireland\" and publishes no company name, number or address.",
+      "page": "ecosauna-preview.html",
+      "site_host": "ecosauna.ie",
+      "credit": "© EcoSauna",
+      "image_hosts": [
+        {
+          "host": "mapleapplehost.com",
+          "path_prefix": "/wp-content/uploads/",
+          "why": "where www.ecosauna.ie serves its product images and favicon from on 18 October 2026; the host is not their own domain, so the prefix is the narrowest first-party identifier seen"
+        },
+        {
+          "host": "ecosauna.ie",
+          "path_prefix": "/wp-content/uploads/",
+          "why": "older product images referenced by the site's catalogue, on their own domain"
+        }
+      ],
+      "forbidden_claims": [
+        "premier",
+        "the leading",
+        "luxury",
+        "manufactured in ireland",
+        "made in ireland",
+        "irish made",
+        "irish-built",
+        "warranty of",
+        "year warranty",
+        "comprehensive warranty",
+        "lead time of",
+        "free delivery",
+        "delivery included",
+        "planning exempt",
+        "exempted development",
+        "no planning permission",
+        "inflammation",
+        "immune",
+        "highly recommended",
+        "harvia",
+        "nationwide"
+      ],
+      "forbidden_claims_note": "TWO SETS OF PRICES, TESTIMONIALS AND A PLANNING STATEMENT. The configurator's starting prices (Barrel €3,300, Cube €3,200, Hot Tub €2,300, Plunge €1,100, Phytosauna €2,100) disagree with the same site's SEO pages (from €2,800 / €3,100 / €1,950), so the page shows the configurator's figures labelled as such and asks which is right. The site carries customer quotes, a templated '15 installations in <county>' line, health claims and a statement that garden saunas are generally exempt from planning; none is verified and none may appear. Origin is not established (a separate Estonian Ecosauna Project OÜ exists), so no origin claim. NOTE WHAT IS NOT BANNED: the 32-county delivery coverage, which is published by EcoSauna and appears only attributed in their name; 'nationwide' unattributed is banned.",
+      "evidence": "A reply from ecosauna2022hottub@gmail.com (\"EcoSauna Team\") on 18 October 2026, Gmail thread 1a14e93ff0d46b6b: \"we'd be happy to take a look at a private preview to see how EcoSauna would be featured.\" A request to see the page is not a grant. That this address speaks for www.ecosauna.ie is AWAITING SUPPLIER CONFIRMATION: it does not appear on the site, whose published email info@ecosauna.ie bounced on 2 October 2026.",
+      "atlas_permission_ref": "WELLNESS-FIRST-ECOSAUNA-20261002 (recVP1FubxZeLC1MN), Permission Outcome 'Unknown — Awaiting Reply'; organisation ORG-000218 rec7or5nAX2Z57tiN"
     }
   ]
 }
