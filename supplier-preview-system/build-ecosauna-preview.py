@@ -74,10 +74,12 @@ guard refuses every other value: no such mechanism is authorised.
 Run: python3 build-ecosauna-preview.py [--stage]
 """
 
-import json
 import pathlib
 import re
 import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import preview_image_treatment as pit  # noqa: E402  shared v1.1 safeguards
 
 HERE = pathlib.Path(__file__).resolve().parent
 SITE = HERE.parent
@@ -199,7 +201,8 @@ def eur(n):
 def _svg(body, vb="0 0 120 80", cls="ev-ico"):
     return ('<svg class="%s" viewBox="%s" fill="none" stroke="currentColor" '
             'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" '
-            'aria-hidden="true" focusable="false">%s</svg>' % (cls, vb, body))
+            'aria-hidden="true" focusable="false" %s>%s</svg>'
+            % (cls, vb, pit.ILLUSTRATION_ATTR, body))
 
 
 ICONS = {
@@ -367,27 +370,18 @@ def die(msg):
 
 
 def live_grant_or_die():
-    """G0 READS THE REGISTER, NOT A COMMENT. Same rule as the Irish Sauna
-    Company builder: imagery needs a LIVE grant for ecosauna.ie carrying the
-    exact credit this page prints."""
-    man = SITE / "image-rights-manifest.json"
-    if not man.exists():
-        die("image-rights-manifest.json is missing; no grant can be verified.")
-    rows = json.loads(man.read_text(encoding="utf-8")).get("rows") or []
-    live = {"Granted — Founder Confirmed",
-            "Granted with Conditions — Founder Confirmed",
-            "Granted — Supplier Confirmed (one-click)"}
-    for r in rows:
-        if (str(r.get("permitted_domain", "")).endswith("ecosauna.ie")
-                and r.get("permission_outcome") in live
-                and not r.get("withdrawal_effective_at")):
-            if r.get("required_credit") != CREDIT:
-                die("the rights manifest requires the credit %r but this "
-                    "builder prints %r." % (r.get("required_credit"), CREDIT))
-            return r
-    die("EcoSauna imagery was added, but there is no LIVE grant for "
-        "ecosauna.ie in image-rights-manifest.json. The reply asked to see a "
-        "private preview, which is not a grant. UNKNOWN is not GRANTED.")
+    """G0 READS THE REGISTER, NOT A COMMENT. Delegates to the shared v1.1 T1
+    gate (preview_image_treatment.live_grant): imagery needs a LIVE grant for
+    ecosauna.ie carrying the exact credit this page prints."""
+    try:
+        row = pit.live_grant(SITE, "ecosauna.ie", CREDIT)
+    except ValueError as e:
+        die(str(e))
+    if row is None:
+        die("EcoSauna imagery was added, but there is no LIVE grant for "
+            "ecosauna.ie in image-rights-manifest.json. The reply asked to see "
+            "a private preview, which is not a grant. UNKNOWN is not GRANTED.")
+    return row
 
 
 # ── PAGE PARTS ──────────────────────────────────────────────────────────────
@@ -925,11 +919,16 @@ def main():
     if not slot or slot.group(1) != expected_slot_inner:
         die("the image position must carry exactly the generic illustration "
             "and its one caption, and nothing else.")
-    # G3b · Every illustration is inline vector line work: no raster, no
-    # external reference, nothing that could be a supplier asset.
-    for svg in re.findall(r"<svg\b.*?</svg>", src, re.S):
-        if re.search(r"<image\b|href=|url\((?!#)|<foreignObject", svg, re.I):
-            die("an illustration carries an embedded or external reference.")
+    # G3b · THE SHARED v1.1 T2 RULES (preview_image_treatment.t2_problems):
+    # every illustration pure inline vector, visibly labelled generic and not
+    # an EcoSauna product, never named as the product, no rights narration.
+    if pit.slot_treatment(src) != "T2":
+        die("the image position is not a T2 generic illustration.")
+    if len(pit.illustrations(src)) != len(ICONS) + 2:  # five cards, the slot, the hero
+        die("every drawing must be marked as a generic illustration.")
+    problems = pit.t2_problems(src, SUPPLIER)
+    if problems:
+        die("T2 illustration rules: " + "; ".join(problems))
     if "generic forms, not ecosauna products" not in low:
         die("the hero illustration is not labelled as generic.")
 

@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 CAPABILITY PROOF — THE ECOSAUNA BUILDER'S GUARDS CATCH WHAT THEY ARE FOR.
-v2, 18 October 2026: rewritten for the premium redesign of the builder.
+v2, 18 October 2026: rewritten for the premium redesign of the builder;
+v1.1 standard: also copies and exercises the shared image-treatment module.
 
 Each case copies build-ecosauna-preview.py and the provider-led template into
 a throwaway directory, makes ONE deliberate break, runs the copy with
@@ -21,6 +22,7 @@ import tempfile
 HERE = pathlib.Path(__file__).resolve().parent
 BUILDER = HERE / "build-ecosauna-preview.py"
 TEMPLATE = HERE / "template-provider-led.html"
+SHARED = HERE / "preview_image_treatment.py"
 
 CASES = [
     ("G0  supplier imagery added with no live grant",
@@ -81,6 +83,12 @@ CASES = [
      '"from_eur": 3300,', '"from_eur": 2800,'),
     ("G6  another supplier's content",
      '"OFFER_NAME": "Barrel Sauna"', '"OFFER_NAME": "Barrel Sauna (as Sauna Experts)"'),
+    ("G3b an illustration presented as the supplier's product",
+     "'aria-label=\"Generic illustration of a garden sauna\">'",
+     "'aria-label=\"The EcoSauna Barrel Sauna\">'"),
+    ("G3b a drawing left unmarked as a generic illustration",
+     "'aria-hidden=\"true\" focusable=\"false\" %s>%s</svg>'\n            % (cls, vb, pit.ILLUSTRATION_ATTR, body))",
+     "'aria-hidden=\"true\" focusable=\"false\"%s>%s</svg>'\n            % (cls, vb, '', body))"),
     ("G7  a journey step dropped",
      '    ("Decide", "An informed choice, made in their own time."),\n', ''),
 ]
@@ -95,12 +103,13 @@ def run(src_text, workdir):
 
 def main():
     original = BUILDER.read_text(encoding="utf-8")
-    before = {p: p.read_bytes() for p in (BUILDER, TEMPLATE)}
+    before = {p: p.read_bytes() for p in (BUILDER, TEMPLATE, SHARED)}
     failures = 0
     with tempfile.TemporaryDirectory() as d:
         wd = pathlib.Path(d) / "supplier-preview-system"
         wd.mkdir()
         shutil.copy(TEMPLATE, wd / TEMPLATE.name)
+        shutil.copy(SHARED, wd / SHARED.name)
         print("ECOSAUNA BUILDER v2 — GUARD CAPABILITY PROOF")
         print("=" * 74)
         for label, old, new in CASES:
@@ -123,7 +132,7 @@ def main():
     same = all(p.read_bytes() == b for p, b in before.items())
     print("-" * 74)
     print("%d of %d checks passed" % (len(CASES) + 1 - failures, len(CASES) + 1))
-    print("builder and template byte-identical after the proof: %s"
+    print("builder, template and shared module byte-identical after the proof: %s"
           % ("YES" if same else "NO"))
     return 0 if failures == 0 and same else 1
 

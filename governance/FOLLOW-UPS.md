@@ -542,3 +542,29 @@ the founder's explicit approval.
   message on `change`, which can move Submit away from a click already in
   progress (found while testing the artist form, which avoids it). Not
   changed: the brief excluded the homeowner form.
+
+## RES-A11Y-001 · Results supplier-name contrast, 3.25:1 (opened 18 October 2026)
+
+Production Results draws the supplier name in the product identity band in
+`--pn-stone` (`#8B8971`) on paper:
+
+    your-plot.html   #screen-match-results .rh-identity-meta .results-hero-org
+                     font-size 13px, uppercase, color var(--pn-stone)
+
+axe reports 3.25:1, below the 4.5:1 WCAG AA minimum for text of that size.
+Found during the EcoSauna private-preview accessibility check, where the
+real Results card is embedded verbatim.
+
+Deliberately NOT fixed in the preview: darkening it there alone would show
+the supplier a band that production does not render. Founder decision,
+18 October 2026: record as a separate production Results improvement; do not
+modify the live Results interface in the EcoSauna release.
+
+The neighbouring issue, the "Things to check" note (4.29:1), was preview
+drift, not production: Results draws it in `--pn-body`, the preview kit had
+`--oak`. It was corrected in ecosauna-preview.html to match production.
+
+Needs: a Results change (likely `--pn-body` or `--pn-voice` for
+`.rh-identity-meta .results-hero-org`, keeping the uppercase tracking), its
+own visual check on live Results, then a UI-kit refresh so previews inherit
+it. Open.

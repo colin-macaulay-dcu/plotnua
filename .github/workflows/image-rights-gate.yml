@@ -206,6 +206,21 @@ jobs:
           set -euo pipefail
           node atlas-tools/prove-preview-only-containment.mjs
 
+      # SUPPLIER PREVIEW IMAGE TREATMENTS -- standard v1.1, approved 18 Oct
+      # 2026. A preview may present its image position as authorised
+      # photography (T1), an original generic illustration (T2) or an
+      # image-free typographic panel (T3). T1 is already held to its grant by
+      # the gate above. This holds every T2 drawing to the shared rules --
+      # pure inline vector, visibly labelled generic and not the supplier's
+      # product, never named as the product, no rights narration -- and proves
+      # each rule refuses its break. The EcoSauna builder's own capability
+      # proof runs beside it.
+      - name: Supplier preview illustrations must be generic, labelled and vector-only
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/prove-preview-image-treatments.py
+          python3 supplier-preview-system/prove-ecosauna-guards.py
+
       # DISCOVERY LIBRARY IMAGES. Founder rule of 3 October 2026: each card
       # shows the discovery REALISED, chosen editorially and recorded in
       # atlas-tools/discovery-library-images.json. The guard's main job is to

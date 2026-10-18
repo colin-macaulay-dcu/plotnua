@@ -1,4 +1,7 @@
-# PLOTNUA SUPPLIER PREVIEW SYSTEM v1.0
+# PLOTNUA SUPPLIER PREVIEW SYSTEM v1.1
+
+*v1.1, 18 October 2026, founder-approved: image treatments (§3, §9, §10.2
+point 1, §12). Everything else is unchanged from v1.0.*
 
 A private supplier preview shows a supplier how they would appear inside the
 real PlotNua homeowner experience, so they can decide whether a relationship
@@ -48,22 +51,46 @@ Third-party listings, directories and aggregators are not evidence.
 
 ---
 
-## 3 · IMAGERY RIGHTS — THREE STATES, NO FOURTH
+## 3 · IMAGERY — PERMISSION STATES AND PRESENTATION TREATMENTS
 
-**A · AUTHORISED.** Written permission exists. Use their image, unmodified,
-served from their own domain, with the credit they require and a line naming
-who gave permission and when.
+*v1.1, approved 18 October 2026. Replaces v1.0 §3 "Imagery rights — three
+states, no fourth". The three permission states are unchanged.*
 
-**B · PLOTNUA-OWNED / CLEARED.** Use PlotNua's own or properly licensed
-imagery where it genuinely fits.
+Two separate questions, answered in this order.
 
-**C · NOT YET AUTHORISED.** Use the premium held panel in the provider-led
-template. It should read as a purposeful invitation — *this is where your
-photography would sit* — never as an apology.
+**First — what may be shown? (permission state, unchanged)**
+
+**A · AUTHORISED.** Written permission exists, recorded in
+`image-rights-records.json` and the generated manifest. Use their image,
+unmodified, served from their own domain, with the credit they require.
+
+**B · PLOTNUA-OWNED / CLEARED.** PlotNua's own or properly licensed imagery,
+where it genuinely fits.
+
+**C · NOT YET AUTHORISED.** Anything else — UNKNOWN, UNCLEAR, PREVIEW
+requested, DECLINED, WITHDRAWN. **No supplier image may appear.**
+
+**Second — how is the image position presented? (treatment)**
+
+| Treatment | Allowed in | Rules |
+|---|---|---|
+| **T1 · Authorised supplier photography** | State A only | The builder reads the LIVE grant from the manifest, never from a constant (`preview_image_treatment.live_grant`). Credit printed; images from the permitted domain; no og:image. |
+| **T2 · Original, labelled generic illustration** | State C (or as a supplement in A/B) | Original inline vector line work drawn for PlotNua, marked `data-pn-illustration="generic"`. No raster, no embedded or external reference. Schematic only — no proportions, details or features taken from any supplier's product. Every page carrying one says so in visible text: *"Illustration · a generic form, not a [Supplier] product"* (or *"…generic forms, not [Supplier] products"* for a scene). |
+| **T3 · Deliberate image-free typographic presentation** | State C | A designed typographic panel, or the neutral label "YOUR IMAGE HERE" (§10.2). It must read as intentional, never as missing content. |
 
 A photograph being publicly visible is **not** permission to reproduce it.
 Never use supplier imagery because the page is private. Never download,
-re-host, crop or alter a supplier image.
+re-host, crop or alter a supplier image. An illustration is never presented
+or captioned as the supplier's actual product, and never claims dimensions,
+materials or capacity.
+
+**Enforced in code.** `supplier-preview-system/preview_image_treatment.py` is
+the shared check every builder calls; `atlas-tools/prove-preview-image-treatments.py`
+holds every `*-preview.html` in the tree to the T2 rules and proves each rule
+refuses its break, in the image-rights CI gate. The templates emitted by
+`refresh-ui-kit.py` remain T3 (the neutral label) and its assertions are
+unchanged; a T2 or T1 treatment is applied by a builder, which is where the
+shared check runs. First applied: `ecosauna-preview.html` (T2).
 
 ---
 
@@ -190,6 +217,9 @@ Render at **1440 / 768 / 390** and confirm:
 - [ ] zero console/runtime errors
 - [ ] every `{{TOKEN}}` replaced; no other supplier's content anywhere
 - [ ] no external imagery unless state A, with credit present
+- [ ] treatment is T1, T2 or T3 (§3) and matches the permission state
+- [ ] T2: every drawing inline vector, marked `data-pn-illustration="generic"`, no `<image>`, external `href` or `url()`; labelled generic in visible text
+- [ ] no illustration caption or accessible label names a supplier product as what is depicted
 - [ ] every supplier claim checked against the evidence pack
 - [ ] every personalised element checked against real PlotNua code (§6)
 - [ ] `noindex, nofollow, noarchive, nosnippet, noimageindex` present
@@ -283,7 +313,14 @@ A private supplier preview is **the actual PlotNua experience the supplier is
 being invited into**. It is not a document explaining how PlotNua constructed
 the preview. Governance stays rigorous and stays behind the scenes.
 
-**1 · The image position carries ONE neutral label and nothing else.** When
+**1 · The image position carries no rights-process copy.** *(v1.1, 18 October
+2026: the position may now carry any §3 treatment — T1 the authorised image
+and its credit; T2 a generic illustration and exactly one factual caption
+saying it is a generic illustration; T3 a typographic treatment or the
+neutral label below. In every case it must never carry rights-process copy.
+The v1.0 text that follows still governs T3.)*
+
+*v1.0 rule, retained for T3:* **the image position carries ONE neutral label and nothing else.** When
 supplier imagery is not authorised, the slot shows exactly:
 
 > YOUR IMAGE HERE
@@ -399,7 +436,9 @@ implement a handoff, an attribution mechanism or any commercial arrangement.
 | `template-product-led.html` | Variant A — generated, do not hand-edit |
 | `template-provider-led.html` | Variant B — generated, do not hand-edit |
 | `refresh-ui-kit.py` | regenerates both from live `your-plot.html` |
-| `SUPPLIER-PREVIEW-SYSTEM-V1.md` | this standard |
+| `SUPPLIER-PREVIEW-SYSTEM-V1.md` | this standard (v1.1) |
+| `preview_image_treatment.py` | shared v1.1 image-treatment safeguards (T1 live-grant gate, T2 rules) |
+| `../atlas-tools/prove-preview-image-treatments.py` | tree-wide T2 proof with its own capability cases; runs in CI |
 
 **Frozen supplier-facing baselines — do not modify:**
 
@@ -409,4 +448,4 @@ implement a handoff, an attribution mechanism or any commercial arrangement.
 
 ---
 
-*PlotNua Supplier Preview System v1.0 · 23 September 2026*
+*PlotNua Supplier Preview System v1.0 · 23 September 2026 · v1.1 · 18 October 2026*
