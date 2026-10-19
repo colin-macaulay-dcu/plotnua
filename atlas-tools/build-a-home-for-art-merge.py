@@ -108,6 +108,9 @@ START24 = C24 + "?start=1"
 START23 = C23 + "?start=1"
 
 
+from search_rail_layer import with_ask_label  # noqa: E402  (19 Oct 2026 rail label layer)
+
+
 def die(msg):
     print("REFUSED: " + msg + " -- nothing written")
     sys.exit(2)
@@ -1468,7 +1471,10 @@ def m12_redesign(page, shown):
 def main(argv):
     if "--apply" not in argv and "--check" not in argv:
         print(__doc__); sys.exit(1)
-    page = merged_page()
+    # The merged page is built from BASE, whose search rail predates the 19 Oct
+    # 2026 label change; the rail is owned by build-search-rail.py, so the page
+    # carries the current label (search_rail_layer.py, exact and reversible).
+    page = with_ask_label(merged_page())
     if "--apply" in argv:
         (ROOT / MERGED).write_text(page, encoding="utf-8")
         (ROOT / OLD).write_text(REDIRECT, encoding="utf-8")

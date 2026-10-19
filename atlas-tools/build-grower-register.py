@@ -67,6 +67,9 @@ OPEN_APPROVAL = {
     "launch_approved": 'Founder approval, 16 Oct 2026 14:32: proceed with the coordinated Grower Register launch (two routes on The Borrowed Garden Discovery). Automatic introductions stay disabled; G7 remains blocked.',                  # founder, date
 }
 BASE_REF = "84453f1"
+# Pages read for the pinned BASE_REF comparisons go through the search rail
+# label layer (19 Oct 2026): see search_rail_layer.py.
+from search_rail_layer import with_ask_label, without_ask_label  # noqa: E402
 
 # G1B §3, FROZEN 7 Oct 2026.
 FROZEN_CONSENT = "I'm over 18, and I'd like PlotNua to keep this and tell me about possible growing space nearby."
@@ -195,7 +198,7 @@ def guards_before(w: dict) -> None:
     if a != b:
         die("G8 the host (garden) Worker handler changed")
     base_priv = git_show(f"{BASE_REF}:privacy.html").decode()
-    priv = PRIVACY.read_text()
+    priv = without_ask_label(PRIVACY.read_text())
     if GROWER_PUBLIC:
         missing = [k for k, v in OPEN_APPROVAL.items() if not v]
         if missing:
@@ -717,7 +720,8 @@ def build() -> tuple[str, str]:
     head = head + GROWER_CSS
     html = (head + host[head_end:main_at] + main_html() + "\n" + host[exit_at:exit_end] + "\n\n"
             + script_js() + "\n</body>\n</html>\n")
-    disc = DISCOVERY.read_text()
+    disc_now = DISCOVERY.read_text()
+    disc = without_ask_label(disc_now)
     base_disc = git_show(f"{BASE_REF}:{DISCOVERY.name}").decode()
     launch_disc = discovery_launch(base_disc)
     if GROWER_PUBLIC:
@@ -726,6 +730,8 @@ def build() -> tuple[str, str]:
         disc = launch_disc
     elif disc != base_disc:
         die("G8 the Discovery changed while the Grower Register is closed")
+    if disc_now != disc:  # the page carries the 19 Oct rail label: keep it
+        disc, launch_disc = with_ask_label(disc), with_ask_label(launch_disc)
     guards_after(html, disc)
     return html, disc if GROWER_PUBLIC else launch_disc
 

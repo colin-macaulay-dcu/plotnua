@@ -81,7 +81,14 @@ Usage:
 """
 import sys as _sys_v6
 _sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
-from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
+from privacy_v6_layer import without_v6 as _v6_layer  # V6 layer: verify V3-V5 text unchanged beneath it
+from search_rail_layer import without_ask_label as _without_rail_label  # 19 Oct 2026 rail label layer
+
+
+def _without_v6(text):
+    """privacy.html beneath the V6 layer and the search rail label layer
+    (search_rail_layer.py), so the governed V3-V5 text is verified byte for byte."""
+    return _v6_layer(_without_rail_label(text))
 import json
 import pathlib
 import re

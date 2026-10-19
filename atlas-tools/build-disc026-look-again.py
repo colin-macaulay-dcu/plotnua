@@ -20,6 +20,7 @@ Modes:
   --prove   breaks each guard in memory and shows it fires (no file written)
 """
 import hashlib, html, pathlib, re, sys
+from search_rail_layer import without_ask_label  # 19 Oct 2026 rail label layer
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ART = ROOT / 'discovery-house-as-power-station.html'
@@ -118,7 +119,9 @@ def guards(text, base):
     need('L1', text.count(css) == 1 and text.count(secb) == 1 and text.count(js) == 1 and text.count(BEGIN) == 1,
          'section, style or script missing, duplicated or edited in place')
     # L2 everything else is the V3 baseline
-    need('L2', sha(unbuild(text)) == BASELINE_SHA, 'outside the section, the article differs from the V3 baseline')
+    # (read through the search rail label layer, 19 Oct 2026: search_rail_layer.py)
+    need('L2', sha(without_ask_label(unbuild(text))) == BASELINE_SHA,
+         'outside the section, the article differs from the V3 baseline')
     # L3 placement: directly after <main>
     need('L3', MAIN_OPEN + BEGIN in text, 'section is not directly after <main id="pn-main">')
     # L4 labels: only the four, one per revelation
