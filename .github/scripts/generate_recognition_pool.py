@@ -62,7 +62,27 @@ KEYS = ("id", "name", "organisation", "url", "status", "verification")
 MIN_RECORDS = 400
 
 
+SAFETY_HOLD_REGISTER = pathlib.Path(__file__).resolve().parent.parent.parent / "atlas-tools" / "safety-hold-products.json"
+
+
+def safety_held():
+    """Product ids whose outbound link is withheld (atlas-tools/safety-hold-products.json).
+
+    THE ONE PLACE THIS EXPORT DEPARTS FROM 'NO EXCLUSION LIST', AND HOW LITTLE.
+    Identity is kept: the product is still known by id, name and organisation,
+    so a homeowner who types it is still recognised. Only its URL is withheld,
+    because following that link is not currently safe (founder direction,
+    19 Oct 2026). Many records already carry url null, so the runtime handles
+    it. An unreadable register refuses the run."""
+    try:
+        doc = json.loads(SAFETY_HOLD_REGISTER.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        fail("the safety-hold register could not be read (%s)" % e)
+    return {r["productId"] for r in doc.get("holds") or []}
+
+
 def build(raw, org_names):
+    held = safety_held()
     out = []
     for rec in raw:
         name = txt(cell(rec, "Product Name")) or ""
@@ -74,7 +94,7 @@ def build(raw, org_names):
             "id": rec.get("id"),
             "name": name,
             "organisation": org,
-            "url": txt(cell(rec, "Product URL")) or None,
+            "url": None if rec.get("id") in held else (txt(cell(rec, "Product URL")) or None),
             "status": txt(cell(rec, "Status")) or None,
             "verification": txt(cell(rec, "Verification Status")) or None,
         })

@@ -878,6 +878,24 @@ def preview_requested():
     return _PREVIEW
 
 
+SAFETY_HOLD_REGISTER = Path(_ac.__file__).resolve().parent.parent.parent / "atlas-tools" / "safety-hold-products.json"
+_SAFETY_HOLD = None
+
+
+def safety_held():
+    """Atlas product ids held because following PlotNua's link to them is not
+    currently safe (atlas-tools/safety-hold-products.json). An unreadable
+    register refuses the run, for the same reason as the preview register."""
+    global _SAFETY_HOLD
+    if _SAFETY_HOLD is None:
+        try:
+            doc = json.loads(SAFETY_HOLD_REGISTER.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as e:
+            fail("the safety-hold register could not be read (%s)" % e)
+        _SAFETY_HOLD = {r["productId"] for r in doc.get("holds") or []}
+    return _SAFETY_HOLD
+
+
 def qualify(product, orgs, price_rows, avail_rows, feat_rows,
             all_feat_rows=None) -> dict:
     """Deterministic. Same inputs, same output, every run.
@@ -943,6 +961,19 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows,
                      "reason": "The supplier asked to see a preview before anything is published",
                      "sourceFields": ["atlas-tools/preview-only-suppliers.json"],
                      "evidence": ", ".join(held_for_preview)})
+
+    # ---- BLOCKER G (19 Oct 2026) — THE LINK IS NOT CURRENTLY SAFE ------------
+    # Founder direction, 19 Oct 2026: "APPROVE a temporary public-data hold on
+    # the five Premium Log House products because of the reported unsafe
+    # redirects." Opening the supplier's product page in a real browser
+    # redirected to an advertising network and then an unrelated games site.
+    # That is evidence of a reason, so it excludes, by product id, until the
+    # founder lifts it (atlas-tools/safety-hold-products.json, 'lift_when').
+    if product.get("id") in safety_held():
+        hard.append({"code": "G",
+                     "reason": "Temporarily held: the supplier's product link is not currently safe to follow",
+                     "sourceFields": ["atlas-tools/safety-hold-products.json"],
+                     "evidence": "Founder-approved safety hold, 19 October 2026"})
 
     # ---- evidence signals ----
     scopes = [cell(r, "Evidence Scope") for r in feat_rows if cell(r, "Evidence Scope")]

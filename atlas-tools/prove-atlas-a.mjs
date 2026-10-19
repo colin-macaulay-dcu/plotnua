@@ -11,7 +11,8 @@
    range, not this model. Measured over the real universe by lifting the shipped
    functions verbatim: 1,898 established · 548 model-level · 1,350 scope-limited
    (1,357 since the ÖÖD update of 14 Oct 2026; 555 model-level and 1,383
-   scope-limited since the targeted publications of 16 Oct 2026).
+   scope-limited since the targeted publications of 16 Oct 2026; 550 and
+   1,373 since the safety hold of 19 Oct 2026).
    A gate on state alone would make 1,350 false model-level claims.
 
    A1  The three placements exist, at 24 / 20 / 16px, wired the approved way.
@@ -242,11 +243,20 @@ else {
        Organisation-Wide 1068 -> 1075), each REFUSED the model-level mark.
        The removal of Hutsmith Type III Cabin (blocker E) took no counted
        read. Every other product's reads are unchanged, no scope note was
-       lost, and leak stays 0. */
-    refused === 1383 ? ok('1,383 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,383 scope-limited refusals, measured ' + refused);
-    allowed === 555 ? ok('555 model-level established reads allowed')
-                    : bad('expected 555 model-level marks, measured ' + allowed);
+       lost, and leak stays 0.
+
+       RE-CENSUSED 19 October 2026 for the founder-approved SAFETY HOLD of the
+       five Premium Log House products (atlas-tools/safety-hold-products.json,
+       Blocker G, applied by atlas-tools/apply-safety-hold.py): model-level
+       555 -> 550, scope-limited 1383 -> 1373. Decomposed per product before
+       the numbers moved: each held product carried exactly 1 model-level mark
+       and 2 scope-limited reads (5 x 1 = 5, 5 x 2 = 10), and every one of the
+       other 573 products' reads is unchanged. No read was added, no scope note
+       was lost, and leak stays 0. */
+    refused === 1373 ? ok('1,373 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,373 scope-limited refusals, measured ' + refused);
+    allowed === 550 ? ok('550 model-level established reads allowed')
+                    : bad('expected 550 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']
       .filter(s => marked({ state: s, scope: null, conflict: null }));
     none.length ? bad('states that must never be marked are: ' + none.join(', '))

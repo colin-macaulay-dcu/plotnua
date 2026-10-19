@@ -46,7 +46,8 @@ TODAY = "2026-10-16"
 # Living in the Garden's own dateModified. It follows the page's real content
 # changes, so it agrees with its sitemap lastmod (cluster 1 guard S2).
 # 17 Oct 2026: two factual corrections (commencement date; An Coimisiun Pleanala).
-LITG_MODIFIED = "2026-10-17"
+# 19 Oct 2026: the safety hold removed the five Premium Log House products from the Maker Explorer
+LITG_MODIFIED = "2026-10-19"
 
 
 def die(msg):

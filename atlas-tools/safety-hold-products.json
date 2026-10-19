@@ -1,0 +1,37 @@
+{
+  "schema": "plotnua.safety-hold-products.v1",
+  "what_this_is": "Products held out of PlotNua's public product data because following PlotNua's link to them is not currently safe for a homeowner. One row per Atlas product id, enumerated by hand. Read by .github/scripts/generate_garden_room_universe.py (Blocker G: the product is excluded from the garden-room universe) and by .github/scripts/generate_recognition_pool.py (the product keeps its identity, but its outbound link is withheld). atlas-tools/apply-safety-hold.py applies the same rule to the committed files.",
+  "what_this_is_not": "Not a quality filter, not a judgement of the supplier or its products, and not a way to change a published figure. A hold is about the safety of the LINK, on evidence, and is lifted when that evidence no longer holds.",
+  "adding_or_removing": "Founder decision only. Adding a row lowers the garden-room universe count; removing one raises it. Say which and why in the commit.",
+  "holds": [
+    {
+      "productId": "rec27bZcSQCIdgbuL",
+      "name": "Premium Log House — Log Cabin Model 1, 4x3m 44mm, 12m²",
+      "organisation": "Premium Log House"
+    },
+    {
+      "productId": "reccUcBew2v9mJ6nu",
+      "name": "Premium Log House — Log Cabin Model 1, 4x4m 44mm, 16m²",
+      "organisation": "Premium Log House"
+    },
+    {
+      "productId": "recnAsdDSAUSN1Md4",
+      "name": "Premium Log House — Log Cabin Model 1, 5x3m 44mm, 15m²",
+      "organisation": "Premium Log House"
+    },
+    {
+      "productId": "rec1aGbKEhmwHzvOm",
+      "name": "Premium Log House — Log Cabin Model 1, 5x4m 44mm, 20m²",
+      "organisation": "Premium Log House"
+    },
+    {
+      "productId": "reclu4szcHAz7T9at",
+      "name": "Premium Log House — Log Cabin Model 1, 6x3m 44mm, 18m²",
+      "organisation": "Premium Log House"
+    }
+  ],
+  "evidence": "19 October 2026, evidence refresh: opening https://premiumloghouse.ie/product/log-cabin-model-1-4x3m-44mm-12m2/ in a real browser redirected to an advertising-network domain and then to an unrelated games site. Automated reads of the same site were refused or reset the connection. Recorded in 'GRP Evidence Refresh 2026-10-19' (Flags for decision, item 1).",
+  "approved": "Founder direction, 19 October 2026 (23:01): 'APPROVE a temporary public-data hold on the five Premium Log House products because of the reported unsafe redirects.'",
+  "since": "2026-10-19",
+  "lift_when": "The supplier's product pages are confirmed, in a real browser, to open normally on its own domain with no redirect, and the founder agrees to lift the hold."
+}
