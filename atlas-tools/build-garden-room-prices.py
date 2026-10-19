@@ -28,6 +28,8 @@ THE RULES (founder, 17 Oct 2026) -- each is a refusal, not a warning
   R1  a range is published only where >= 3 suppliers contribute.
   R2  bases are never combined: one range per segment, no cross-segment figure.
   R3  no average or median is published, and no price per square metre.
+      Two fixed, figure-free texts may use the word "average" to explain why
+      none is published: the NOAVG section and the FAQ_AVG question.
   R4  no supplier or product name anywhere on the page.
   R5  freshness: every price inside a published range was checked no more than
       90 days before the build date. A price with NO recorded check date cannot
@@ -78,6 +80,21 @@ NOAVG_TEXT = (
     'sit behind it, and how many say VAT is included. The same applies to garden offices: they '
     'are priced the same way as garden rooms, and what you pay depends on what is included, not '
     'on what the room is called.</p>')
+# FAQ_AVG (founder approval, 19 Oct 2026): the searchers' question "What is the
+# average cost of a garden room?" answered by explaining why one average would
+# mislead. Like NOAVG it is fixed wording with NO figure, and it is the only other
+# place the word "average" may appear (R3). It points to the published ranges and
+# to the NOAVG section rather than restating any number next to the word.
+FAQ_AVG = (
+    "What is the average cost of a garden room?",
+    "A single average would mislead you. Advertised garden room prices cover very different "
+    "things: a kit you put up yourself, a room built and finished on your site, and a price that "
+    "does not say what it includes. Averaging them would describe the mix of products in the "
+    "research, not what you would pay. Compare instead within one kind of price: "
+    '<a href="#price-ranges">the published ranges</a> show each kind separately, with how many '
+    'products and suppliers sit behind it. <a href="#no-average">Why PlotNua does not publish an '
+    "average</a> explains this in full.")
+FAQ_AVG_HTML = '<div class="pr-faq"><h3>%s</h3>\n<p>%s</p></div>' % FAQ_AVG
 # STANDALONE GUIDE PRINCIPLE (governance/STANDALONE-GUIDE-PRINCIPLE.md): the
 # guide must show its parent Discovery near the top and invite visitors into
 # it further down. Footer links and breadcrumbs do not count.
@@ -374,6 +391,7 @@ def render(ev, ex):
     if not kit:
         die("FAQ: the kit-or-unclear range is no longer published -- re-approve the wording")
     faq = [
+        FAQ_AVG,
         ("How much does a 3 &times; 3&nbsp;m garden room cost?",
          a3 + ' <a href="#quote-checklist">The quote checklist</a> covers both.'),
         ("Is it cheaper to buy a kit than an installed garden room?",
@@ -439,6 +457,11 @@ def render(ev, ex):
              "name": "Garden Room Prices in Ireland",
              "description": DESCRIPTION, "inLanguage": "en-IE",
              "dateModified": BUILD_DATE,
+             # about (19 Oct 2026): what the page is about, as plain named things. No
+             # FAQPage, Dataset or Product markup: see the notes below and the
+             # Search Console decision of 18 Oct 2026.
+             "about": [{"@type": "Thing", "name": "Garden room prices in Ireland"},
+                       {"@type": "Thing", "name": "Garden offices"}],
              "isPartOf": {"@id": "https://plotnua.ie/#website"},
              "publisher": {"@id": "https://plotnua.ie/#organisation"},
              "breadcrumb": {"@id": "https://plotnua.ie/garden-room-prices-ireland.html#breadcrumb"}},
@@ -517,6 +540,14 @@ def page_guards(text, ex_rows):
     if re.search(r"\d|&euro;|€", re.sub(r"<[^>]+>", " ", m.group(1))):
         die("R3 the no-average explanation contains a figure")
     text_r3 = text.replace(m.group(0), " ")
+    # The FAQ_AVG question: present exactly once, inside the FAQ region, exactly the
+    # approved words, with no figure. Then it too is set aside for the R3 scan.
+    faq_m = re.search(r"<!-- PN-PRICES:FAQ -->(.*?)<!-- /PN-PRICES:FAQ -->", text, re.S)
+    if not faq_m or faq_m.group(1).count(FAQ_AVG_HTML) != 1 or text.count(FAQ_AVG_HTML) != 1:
+        die("R3 the average-cost question is missing or not the approved text")
+    if re.search(r"\d|&euro;|€", re.sub(r"<[^>]+>", " ", FAQ_AVG_HTML)):
+        die("R3 the average-cost question contains a figure")
+    text_r3 = text_r3.replace(FAQ_AVG_HTML, " ")
     vis = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->", " ", text_r3, flags=re.S)
     vis = html.unescape(re.sub(r"<[^>]+>", " ", vis))
     parent_guards(text)
