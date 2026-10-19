@@ -74,7 +74,7 @@ r(run("G0 . an image from a neighbouring Squarespace namespace is added",
         '"https://images.squarespace-cdn.com/content/v1/'
         '0000000000000000000000/x/IMG_2580.JPG"')]))
 
-r(run("G0 . the governed six becomes five",
+r(run("G0 . the enumerated four becomes three",
       [('    {"url": PERMITTED_PREFIX + "33335f39-c5fe-48af-9c3a-f6f6cc4e8c8e/"\n'
         '            "IMG_2518.JPG",\n'
         '     "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "\n'
@@ -86,15 +86,21 @@ r(run("G0 . the governed six becomes five",
 # wood-fired coil. A reorder that leaves a cold-plunge tank at index 4 would
 # make the page say one thing and show another.
 r(run("the WILD TUB section's supporting image is no longer the coil",
-      [("WILD_TUB_COIL = TANKTRIBE_IMAGES[4]",
+      [("WILD_TUB_COIL = TANKTRIBE_IMAGES[2]",
         "WILD_TUB_COIL = TANKTRIBE_IMAGES[0]")]))
 
 # ---- G0b . the AI-asset exclusion ----------------------------------------
 # The condition that constrains PlotNua rather than the supplier, and so the
 # one most likely to be quietly dropped.
 r(run("G0b . a ChatGPT-named asset reaches the image list",
-      [('"alt": "Four galvanised stock tanks lined up on grass beside water, "',
-        '"alt": "ChatGPT Image of four stock tanks beside water, "')]))
+      [('"alt": "Close view from beside the Tanktribe WILD TUB showing the "',
+        '"alt": "ChatGPT Image of the Tanktribe WILD TUB showing the "')]))
+
+# ---- G0h . the two held assets (founder directive, 19 Oct 2026) -----------
+# Swapped in for an enumerated one, so the count guard cannot be what fires.
+r(run("G0h . a held asset (IMG_8455) replaces an enumerated one",
+      [('PERMITTED_PREFIX + "33335f39-c5fe-48af-9c3a-f6f6cc4e8c8e/"\n            "IMG_2518.JPG"',
+        'PERMITTED_PREFIX + "1760048787936-G7C8NEDHMKBFMZPTGO00/"\n            "IMG_8455.jpg"')]))
 
 # ---- template anchors ----------------------------------------------------
 r(run("G1 . the instruction-comment anchor no longer matches",

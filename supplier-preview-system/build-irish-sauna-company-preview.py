@@ -96,13 +96,24 @@ CREDIT = "© Irish Sauna Company"
 
 PERMISSION_DATE = "9 October 2026"
 
+# *** HELD, 19 OCTOBER 2026 (founder directive, wellbeing image inventory F1).
+# The grant of 9 October is Irish Sauna Company's permission to use THEIR
+# imagery. These three images show the Harvia Legend Electric, a Harvia
+# product, and whether Irish Sauna Company can authorise Harvia-owned
+# marketing imagery has been asked twice (12 and 16 Oct) and not answered.
+# Until it is, they are not rendered anywhere. They are kept below, verbatim,
+# so that restoring them is a deliberate one-line decision and never a fresh
+# scrape -- and G0h refuses the build if any Harvia image returns to
+# ISC_IMAGES before the founder records the confirmation.
+#
+# The record of what WAS selected on 10 October:
 # IMAGERY STATE A. Three images, read live from the Legend Electric product
 # page on 10 October 2026 and served from Irish Sauna Company's OWN domain.
 # The first is the page's own og:image, so the hero is their canonical choice
 # for this product rather than mine. The alt text describes the SUBJECT, never
 # the medium: see the module docstring on why these are images, not
 # photographs.
-ISC_IMAGES = [
+HELD_HARVIA_IMAGES = [
     {"url": "https://irishsaunacompany.com/cdn/shop/files/"
             "Harvia_Legend_Electric_Outdoor_Sauna_3.png?v=1788468346&width=1200",
      "alt": "The Harvia Legend Electric outdoor sauna: a dark-stained timber "
@@ -116,6 +127,14 @@ ISC_IMAGES = [
      "alt": "Inside the Harvia Legend Electric: a timber-lined cabin with "
             "bench seating and the heater in the corner"},
 ]
+
+# What renders. Empty: the template's restrained image-free panel stands
+# (Supplier Preview Standard v1.1, deliberate image-free treatment).
+ISC_IMAGES = []
+
+# Flip ONLY after Irish Sauna Company confirm in writing that they can
+# authorise the Harvia photography, and the founder records it.
+HARVIA_RIGHTS_CONFIRMED = False
 
 # ── CLAIMS THE EVIDENCE DOES NOT SUPPORT ───────────────────────────────────
 # Phrases, not bare words, and the omissions are as deliberate as the
@@ -349,6 +368,15 @@ def imagery_block():
 def main():
     src = TEMPLATE.read_text(encoding="utf-8")
 
+    # G0h · HARVIA-OWNED IMAGERY IS HELD (founder directive, 19 Oct 2026).
+    # The supplier's grant covers their own imagery; Harvia's is unconfirmed.
+    if not HARVIA_RIGHTS_CONFIRMED:
+        for i in ISC_IMAGES:
+            if "harvia" in (i["url"] + " " + i.get("alt", "")).lower():
+                die("a Harvia image reached ISC_IMAGES (%s). Harvia-owned "
+                    "imagery is held until Irish Sauna Company confirm they "
+                    "can authorise it and the founder records that." % i["url"])
+
     # G0 · IMAGERY REQUIRES A LIVE GRANT IN THE REGISTER.
     if ISC_IMAGES:
         grant = live_grant_or_die()
@@ -417,19 +445,27 @@ def main():
     # page says where it came from and links back. The same line carries the
     # origin fact, because a reader who sees "Harvia" in the product name
     # deserves to know who makes it and who supplies it.
+    if ISC_IMAGES:
+        IMAGES_SENTENCE = (
+            'The images are %s\u2019s own, used with their written permission '
+            'of %s, unmodified and served from their website. If %s ask for '
+            'any of them to be changed or removed, we change or remove them. '
+            % (SUPPLIER, PERMISSION_DATE, SUPPLIER))
+    else:
+        IMAGES_SENTENCE = (
+            'No images are shown yet. The Harvia images on your website will '
+            'appear here only once you have confirmed they can be used. ')
     attribution = (
         '          <p class="credit-line">Every figure on this page is '
         'published by %s and was read from '
         '<a href="%s" rel="noopener">their Harvia Legend Electric page</a> '
         'and <a href="%s" rel="noopener">their garden sauna range</a> on %s. '
         'The Legend is manufactured by Harvia and supplied in Ireland by %s. '
-        'The images are %s\u2019s own, used with their written permission of '
-        '%s, unmodified and served from their website. If %s ask for any of '
-        'them to be changed or removed, we change or remove them. '
+        '%s'
         '%s &middot; <a href="%s" rel="noopener">irishsaunacompany.com</a>'
         '</p>\n'
         % (SUPPLIER, PRODUCT_URL, RANGE_URL, EVIDENCE_DATE, SUPPLIER,
-           SUPPLIER, PERMISSION_DATE, SUPPLIER, CREDIT, SUPPLIER_SITE))
+           IMAGES_SENTENCE, CREDIT, SUPPLIER_SITE))
     foot = "<footer>\n"
     if src.count(foot) != 1:
         die("the footer anchor is not unique. Nothing written.")
@@ -521,6 +557,10 @@ def main():
     if re.search(r'property="og:image"', src, re.I):
         die("the page declares an og:image. A private preview must not hand "
             "the supplier's imagery to link unfurlers.")
+    if not HARVIA_RIGHTS_CONFIRMED:
+        harvia = [u for u in found if "harvia" in u.lower()]
+        if harvia:
+            die("the built page renders a held Harvia image: " + harvia[0])
     for i in ISC_IMAGES:
         if i["url"] not in src:
             die("a listed image did not reach the page: " + i["url"])
@@ -562,8 +602,12 @@ def main():
     print("IRISH SAUNA COMPANY PRIVATE PREVIEW")
     print("=" * 74)
     print("  ok    15 guards passed")
-    print("  ok    %d image(s) — imagery state A, live grant of %s, all on "
-          "irishsaunacompany.com" % (len(ISC_IMAGES), PERMISSION_DATE))
+    if ISC_IMAGES:
+        print("  ok    %d image(s) — imagery state A, live grant of %s, all on "
+              "irishsaunacompany.com" % (len(ISC_IMAGES), PERMISSION_DATE))
+    else:
+        print("  ok    0 images — Harvia imagery held (19 Oct 2026); "
+              "image-free panel")
     print("  ok    credited %s, linked back, no og:image" % CREDIT)
     print("  ok    medium not claimed: the page never says photograph")
     print("  ok    noindex, nofollow, noarchive, nosnippet, noimageindex")

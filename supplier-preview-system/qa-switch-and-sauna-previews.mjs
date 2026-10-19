@@ -35,10 +35,11 @@ const BASE = 'http://127.0.0.1:8017/';
 const PAGES = [
   { file: 'switch-electrical-preview.html', host: 'switchelectrical.ie' },
   { file: 'sauna-experts-preview.html', host: 'saunaexperts.ie' },
-  // IMAGERY STATE A, so this one also exercises R5. The other two carry no
-  // supplier imagery and R5 skips them rather than inventing a pass.
-  { file: 'irish-sauna-company-preview.html', host: 'irishsaunacompany.com',
-    credit: '\u00a9 Irish Sauna Company' },
+  // IMAGE-FREE SINCE 19 OCT 2026: the Harvia images are held until Irish
+  // Sauna Company confirm they can authorise them (founder directive F1), so
+  // like the other two this page carries no supplier imagery and R5 skips it.
+  // The off-host rule below still applies to it.
+  { file: 'irish-sauna-company-preview.html', host: 'irishsaunacompany.com' },
 ];
 const ROBOTS = ['noindex', 'nofollow', 'noarchive', 'nosnippet', 'noimageindex'];
 const WIDTHS = [1440, 768, 390];

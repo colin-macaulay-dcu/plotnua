@@ -60,6 +60,17 @@ def run(label, subs=(), expect="REFUSED"):
     return hit
 
 
+# SINCE 19 OCTOBER 2026 THE PAGE RENDERS NO IMAGES (Harvia imagery held,
+# founder directive F1). The image guards only run when ISC_IMAGES is
+# non-empty, so the image breaks below first give the builder ONE legitimate,
+# non-Harvia, first-party test image -- otherwise a guard that never ran
+# would be recorded as having caught something.
+EMPTY = "ISC_IMAGES = []\n"
+def with_image(url="https://irishsaunacompany.com/cdn/shop/files/mobile-sauna.png",
+               alt="A mobile sauna on a trailer chassis"):
+    return (EMPTY, 'ISC_IMAGES = [{"url": %r, "alt": %r}]\n' % (url, alt))
+
+
 print("GUARD-CAPABILITY PROOF — IRISH SAUNA COMPANY PRIVATE PREVIEW")
 print("=" * 78)
 r = results.append
@@ -70,26 +81,28 @@ r = results.append
 # that is NOT covered by a live grant in the generated manifest. The three
 # breaks are the three ways that cover can be lost.
 r(run("G0 . the register is consulted at a path that does not exist",
-      [('man = SITE / "image-rights-manifest.json"',
+      [with_image(), ('man = SITE / "image-rights-manifest.json"',
         'man = SITE / "image-rights-manifest-GONE.json"')]))
 
 r(run("G0 . no live grant matches the supplier's domain",
-      [('if (r.get("permitted_domain") == "irishsaunacompany.com"',
+      [with_image(), ('if (r.get("permitted_domain") == "irishsaunacompany.com"',
         'if (r.get("permitted_domain") == "irishsaunacompany.invalid"')]))
 
 r(run("G0 . the printed credit drifts from the credit the grant requires",
-      [('CREDIT = "\u00a9 Irish Sauna Company"',
+      [with_image(), ('CREDIT = "\u00a9 Irish Sauna Company"',
         'CREDIT = "\u00a9 Irish Sauna Co."')]))
 
 r(run("G0 . an image is taken from outside the permitted domain",
-      [('{"url": "https://irishsaunacompany.com/cdn/shop/files/"\n'
-        '            "HarviaLegendElectricOutdoorSauna1.png?v=1788467600&width=1200",',
-        '{"url": "https://cdn.shopify.com/s/files/1/9999/9999/'
-        'HarviaLegendElectricOutdoorSauna1.png",')]))
+      [with_image(url="https://cdn.shopify.com/s/files/1/9999/9999/mobile-sauna.png")]))
 
 r(run("G0 . an image is listed with no alt text",
-      [('"alt": "The Harvia Legend Electric outdoor sauna seen in a garden setting"',
-        '"alt": "   "')]))
+      [with_image(alt="   ")]))
+
+# ---- G0h . the Harvia hold (founder directive, 19 Oct 2026) ---------------
+r(run("G0h . a held Harvia image is put back into ISC_IMAGES",
+      [with_image(url="https://irishsaunacompany.com/cdn/shop/files/"
+                      "HarviaLegendElectricOutdoorSauna1.png",
+                  alt="The sauna seen in a garden setting")]))
 
 # ---- G1 / G1b / G2 . the template anchors ---------------------------------
 r(run("G1 . the instruction-comment anchor no longer matches",
@@ -105,7 +118,7 @@ r(run("G2 . the frozen journey band anchor no longer matches",
 
 # ---- G3 . state A must actually replace the held media wrapper ------------
 r(run("G3 . the held media wrapper anchor no longer matches the template",
-      [('r\'          <div class="pn-photo-slot"[^>]*>.*?</div>\\n\'',
+      [with_image(), ('r\'          <div class="pn-photo-slot"[^>]*>.*?</div>\\n\'',
         'r\'          <div class="pn-photo-SLOTT"[^>]*>.*?</div>\\n\'')]))
 
 # ---- G3c . attribution ----------------------------------------------------
@@ -187,9 +200,9 @@ r(run("G8b . the page keeps Harvia but drops who supplies it in Ireland",
         '"VERIFIED_PRICE_BASIS": "inc. VAT, exactly as published. '
         'Manufactured by Harvia.",'),
        ('% (SUPPLIER, PRODUCT_URL, RANGE_URL, EVIDENCE_DATE, SUPPLIER,\n'
-        '           SUPPLIER, PERMISSION_DATE, SUPPLIER, CREDIT, SUPPLIER_SITE))',
+        '           IMAGES_SENTENCE, CREDIT, SUPPLIER_SITE))',
         '% (SUPPLIER, PRODUCT_URL, RANGE_URL, EVIDENCE_DATE,\n'
-        '           SUPPLIER, PERMISSION_DATE, SUPPLIER, CREDIT, SUPPLIER_SITE))')]))
+        '           IMAGES_SENTENCE, CREDIT, SUPPLIER_SITE))')]))
 
 # ---- G9 . the imagery on the OUTPUT, and a real link back ----------------
 # Aimed past G0: the image list stays legitimate, so only the output check can
@@ -198,6 +211,11 @@ r(run("G9 . an off-grant image arrives through the markup, not the image list",
       [('  <h2>Three things we would ask before publishing</h2>',
         '  <h2>Three things we would ask before publishing</h2>\\n'
         '  <img src="https://images.example.net/sauna.jpg" alt="">')]))
+
+r(run("G9h . a held Harvia image arrives through the markup, on the permitted domain",
+      [('  <h2>Three things we would ask before publishing</h2>',
+        '  <h2>Three things we would ask before publishing</h2>\\n'
+        '  <img src="https://irishsaunacompany.com/cdn/shop/files/Harvia_x.png" alt="">')]))
 
 r(run("G9 . an og:image hands the supplier's image to link unfurlers",
       [('    # G5 \u00b7 PRIVACY.',
@@ -237,8 +255,7 @@ r(run("G12 . the page calls the supplier's imagery a photograph",
         '"WHY_1_LABEL": "YOUR PHOTOGRAPHY, SHOWN AS PUBLISHED",')]))
 
 r(run("G12 . the alt text describes the medium instead of the subject",
-      [('"alt": "The Harvia Legend Electric outdoor sauna seen in a garden setting"',
-        '"alt": "A photograph of the Harvia Legend Electric outdoor sauna"')]))
+      [with_image(alt="A photograph of a mobile sauna on a trailer")]))
 
 # ---- and the unmutated builder must still pass ----------------------------
 print("-" * 78)

@@ -81,16 +81,6 @@ TANKTRIBE_IMAGES = [
      "alt": "Overhead view of a Tanktribe CORE galvanised stock tank on a "
             "timber deck, filled with iced water, with a person lying "
             "submerged in it"},
-    {"url": PERMITTED_PREFIX + "1760048787936-G7C8NEDHMKBFMZPTGO00/"
-            "IMG_8455.jpg",
-     "alt": "A man sitting in a Tanktribe CORE galvanised stock tank "
-            "filled with iced water on a timber deck, with TANKKD "
-            "branding on the side of the tank"},
-    {"url": PERMITTED_PREFIX + "bc66569f-f2d9-431e-bf62-7f0bb6e1a3b9/"
-            "DSC_2111.jpg",
-     "alt": "Four galvanised stock tanks lined up on grass beside water, "
-            "each with a person sitting in iced water, with TANKKD "
-            "branding on two of the tanks"},
     {"url": PERMITTED_PREFIX + "ab9c9630-7b25-441f-9559-b711ff7f6d5b/"
             "IMG_2531.JPG",
      "alt": "Close view from beside the Tanktribe WILD TUB showing the "
@@ -104,6 +94,27 @@ TANKTRIBE_IMAGES = [
      "alt": "Close-up of the Tanktribe WILD TUB wood-fired heating coil "
             "burning on a paving slab"},
 ]
+
+# *** HELD, 19 OCTOBER 2026 (founder directive, wellbeing image inventory F2).
+# The live rights manifest enumerates FOUR Tanktribe assets. These two are
+# Approved in Atlas but carry an open provenance question (TANKKD-branded
+# tanks: possibly the manufacturer's imagery, and third-party branding), so
+# the manifest deliberately does not list them. They are kept here, verbatim,
+# as the record of what was removed, and G0h refuses the build if either
+# returns to TANKTRIBE_IMAGES before the founder enumerates it in the grant.
+HELD_TANKTRIBE_IMAGES = [
+    {"url": PERMITTED_PREFIX + "1760048787936-G7C8NEDHMKBFMZPTGO00/"
+            "IMG_8455.jpg",
+     "alt": "A man sitting in a Tanktribe CORE galvanised stock tank "
+            "filled with iced water on a timber deck, with TANKKD "
+            "branding on the side of the tank"},
+    {"url": PERMITTED_PREFIX + "bc66569f-f2d9-431e-bf62-7f0bb6e1a3b9/"
+            "DSC_2111.jpg",
+     "alt": "Four galvanised stock tanks lined up on grass beside water, "
+            "each with a person sitting in iced water, with TANKKD "
+            "branding on two of the tanks"},
+]
+HELD_FILENAMES = ("IMG_8455", "DSC_2111")
 
 # Tokens that would mean an AI-generated asset had reached the list.
 AI_ASSET_TOKENS = ["chatgpt", "ai-generated", "ai_image", "midjourney",
@@ -146,7 +157,7 @@ def die(msg):
 # list rather than written out again, so it cannot drift from Atlas, and
 # asserted by filename so a reorder cannot silently change which image
 # illustrates the wood-fired claim.
-WILD_TUB_COIL = TANKTRIBE_IMAGES[4]
+WILD_TUB_COIL = TANKTRIBE_IMAGES[2]
 if "IMG_2580" not in WILD_TUB_COIL["url"]:
     die("the WILD TUB section's supporting image is no longer the heating-coil "
         "photograph (%s). The section claims the picture shows the coil." % WILD_TUB_COIL["url"])
@@ -327,10 +338,17 @@ def main():
     src = TEMPLATE.read_text(encoding="utf-8")
 
     # G0 · EVERY IMAGE MUST BE INSIDE THE GRANTED SCOPE, UNMODIFIED.
-    if len(TANKTRIBE_IMAGES) != 6:
-        die("expected the 6 governed Approved assets, found %d. Atlas holds "
-            "six; a different number means the list and Atlas disagree."
+    if len(TANKTRIBE_IMAGES) != 4:
+        die("expected the 4 assets the live rights manifest enumerates, found "
+            "%d. A different number means the list and the grant disagree."
             % len(TANKTRIBE_IMAGES))
+    # G0h · THE TWO HELD ASSETS STAY OUT (founder directive, 19 Oct 2026).
+    for i in TANKTRIBE_IMAGES:
+        for held in HELD_FILENAMES:
+            if held in i["url"]:
+                die("held asset %s reached the image list. It is not "
+                    "enumerated in the live grant; its provenance question "
+                    "is open." % held)
     for i in TANKTRIBE_IMAGES:
         if not i["url"].startswith(PERMITTED_PREFIX):
             die("image outside Tanktribe's granted Squarespace namespace: "
@@ -487,8 +505,8 @@ def main():
         die("the page does not LINK back to %s, which is half of what "
             "Tanktribe asked for. A mention in prose is not a link."
             % SUPPLIER_SITE)
-    # Six in the strip, the hero repeated as its own first thumbnail, and one
-    # coil image in the WILD TUB section below: 6 + 1 + 1.
+    # Four in the strip, the hero repeated as its own first thumbnail, and one
+    # coil image in the WILD TUB section below: 4 + 1 + 1.
     EXPECTED_IMGS = len(TANKTRIBE_IMAGES) + 2
     if len(re.findall(r'<img[^>]+src="' + re.escape(PERMITTED_PREFIX), src)) \
             != EXPECTED_IMGS:
