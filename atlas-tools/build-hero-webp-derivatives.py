@@ -53,6 +53,24 @@ HEROES = {
     "assets/img/b5cbac3fff9072d4.jpg": {"discovery-driveway-income.html": "max(100vw, 161vh)"},
 }
 
+# HOMEPAGE CARD IMAGES (founder SEO directive, 19 Oct 2026: "optimise oversized
+# homepage images where image rights permit derivative files"). These two are
+# Discovery Library cards on the homepage, lazy-loaded, about 1 MB each -- the
+# two heaviest files on the page. Same rule as the heroes: a derivative only
+# where the source's lineage is established (BASIS below). The card <img> is
+# matched by its lazy loading inside .d-card-media, on the listed page only.
+# `sizes` follows the card CSS: the card is 78% / 56% / 34% of the viewport
+# wide and 50vh (min 320px) tall with object-fit:cover, so on a portrait screen
+# the image is drawn at its height x 1.83 -- often wider than the card.
+CARDS = {
+    "assets/img/ce9da2e51c945693.jpg": {"index.html":
+        "(min-width:1000px) max(34vw, 92vh, 587px), (min-width:640px) max(56vw, 92vh, 587px), max(78vw, 92vh, 587px)"},
+    "assets/img/8b20a0968b1fc5a1.jpg": {"index.html":
+        "(min-width:1000px) max(34vw, 92vh, 587px), (min-width:640px) max(56vw, 92vh, 587px), max(78vw, 92vh, 587px)"},
+}
+MADE = {"assets/img/ce9da2e51c945693.jpg": "2026-10-19",
+        "assets/img/8b20a0968b1fc5a1.jpg": "2026-10-19"}
+
 # PROVENANCE HOLD (founder instruction, 17 Oct 2026). A source whose lineage is
 # not adequately established gets NO derivative: the page keeps serving the
 # original JPEG. --check refuses if a held source has a derivative anywhere.
@@ -72,6 +90,8 @@ BASIS = {
     "assets/img/7d5f5718cf9cd3da.jpg": "Master DISC-001-Hero-MASTER.png (perceptual match 0/256) is the credentialed DISC-001-Hero.png (signed Google C2PA: created by Google Generative AI, no input ingredients) mirror-extended 16 px each side: centre 1376 px pixel-identical, edges reflected, no generative fill. Documented in commit 08237ff (26 Sep 2026) and re-verified 17 Oct 2026.",
     "assets/img/9805382f8164228a.jpg": "Signed Google C2PA credential in the deployed file itself (byte-identical to master DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg): created by Google Generative AI, no input ingredients.",
     "assets/img/b5cbac3fff9072d4.jpg": "Signed Google C2PA credential in master 'DISC-014 Image 01 \u2014 Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
+    "assets/img/ce9da2e51c945693.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI, no input ingredients. Evidence: governance/c2pa-source-credentials/deployed-ce9da2e51c945693.jpg.c2pa.json (read 19 Oct 2026).",
+    "assets/img/8b20a0968b1fc5a1.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-8b20a0968b1fc5a1.jpg.c2pa.json (read 19 Oct 2026).",
 }
 CREDENTIAL_NOTE = ("WebP re-encoding removes the embedded C2PA credential. The derivative "
                    "carries NO signed credential and must never be described as having one. "
@@ -124,7 +144,7 @@ def main():
     legacy_before = len(reg["legacy_undeclared"])
 
     derivs, pages, files = [], {}, {}
-    for src, page_sizes in HEROES.items():
+    for src, page_sizes in list(HEROES.items()) + list(CARDS.items()):
         if src not in entries:
             die("%s is not an enumerated asset in the provenance register" % src)
         p = ROOT / src
@@ -160,7 +180,7 @@ def main():
                               else ", Lanczos resize to %dpx wide" % size[0]),
                 "fidelity": {"ssim": ssim, "psnr_db": psnr,
                              "measured_against": "source at the same pixel size"},
-                "made": DATE,
+                "made": MADE.get(src, DATE),
                 "lineage_basis": BASIS[src],
                 "content_credentials": {
                     "source_file_embeds_c2pa": has_c2pa(raw),
@@ -177,9 +197,9 @@ def main():
                     "invalid for these bytes" % out)
         for page, sizes in page_sizes.items():
             pages.setdefault(page, []).append((src, sizes, "%s-%dw.webp" % (stem, SMALL_W),
-                                               "%s.webp" % stem, im.width))
+                                               "%s.webp" % stem, im.width, src in CARDS))
 
-    if set(HELD) & set(HEROES):
+    if set(HELD) & (set(HEROES) | set(CARDS)):
         die("a held source is also listed for derivation")
     for src in HELD:
         stem = src[:-4]
@@ -189,7 +209,7 @@ def main():
             if pathlib.Path(stem).name + ".webp" in page.read_text(encoding="utf-8") or \
                pathlib.Path(stem).name + "-%dw.webp" % SMALL_W in page.read_text(encoding="utf-8"):
                 die("held source %s has a derivative referenced on %s" % (src, page.name))
-    missing = [s for s in HEROES if s not in BASIS]
+    missing = [s for s in list(HEROES) + list(CARDS) if s not in BASIS]
     if missing:
         die("no recorded lineage basis for %s" % missing)
 
@@ -203,7 +223,7 @@ def main():
     for page, items in pages.items():
         t = (ROOT / page).read_text(encoding="utf-8")
         orig = t
-        for src, sizes, small, full, full_w in items:
+        for src, sizes, small, full, full_w, is_card in items:
             srcset = "%s %dw, %s %dw" % (small, SMALL_W, full, full_w)
             source = '<source type="image/webp" srcset="%s" sizes="%s">' % (srcset, sizes)
             if source in t:
@@ -211,9 +231,15 @@ def main():
             m = list(re.finditer(r'<img\b[^>]*\bsrc="%s"[^>]*>' % re.escape(src), t))
             # only the hero occurrence: the first <img> with that src carrying
             # fetchpriority or the cmp class (the comparison plates)
-            hero = [x for x in m if 'fetchpriority="high"' in x.group(0) or "cmp-" in x.group(0)]
+            if is_card:
+                # the card occurrence: lazy-loaded, directly inside .d-card-media
+                hero = [x for x in m if 'loading="lazy"' in x.group(0)
+                        and t[max(0, x.start() - 40):x.start()].rstrip().endswith('<div class="d-card-media">')]
+            else:
+                hero = [x for x in m if 'fetchpriority="high"' in x.group(0) or "cmp-" in x.group(0)]
             if len(hero) != 1:
-                die("%s: expected exactly one hero <img> for %s, found %d" % (page, src, len(hero)))
+                die("%s: expected exactly one %s <img> for %s, found %d"
+                    % (page, "card" if is_card else "hero", src, len(hero)))
             tag = hero[0].group(0)
             # display:contents keeps the existing CSS (.d-hero img, .cmp img,
             # .hero-photo) applying to the <img> exactly as before.
@@ -255,7 +281,7 @@ def main():
         if pending:
             die("CHECK: not in the Phase 1b state: %s" % ", ".join(pending))
         print("HERO WEBP DERIVATIVES · CHECK OK — %d derivatives of %d sources, "
-              "backlog %d (unchanged), nothing written" % (len(derivs), len(HEROES), legacy_before))
+              "backlog %d (unchanged), nothing written" % (len(derivs), len(HEROES) + len(CARDS), legacy_before))
         return
 
     for f, data in files.items():
@@ -269,7 +295,7 @@ def main():
         REGISTER.write_text(reg_out, encoding="utf-8")
         print("  wrote %s" % REGISTER.name)
     # sources untouched
-    for src in HEROES:
+    for src in list(HEROES) + list(CARDS):
         if sha((ROOT / src).read_bytes()) != entries[src]["sha256"]:
             die("a source file changed during the build (%s)" % src)
     print("HERO WEBP DERIVATIVES · built — %d derivatives, backlog %d (unchanged)"

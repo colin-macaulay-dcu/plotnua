@@ -2759,6 +2759,60 @@
       }
     },
     {
+      "asset": "assets/img/8b20a0968b1fc5a1-960w.webp",
+      "sha256": "a5c9008c3c7f3ba3f749e1eb94bb876392ac98ede0bc741c0fc497a00ce8b31e",
+      "bytes": 118006,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/8b20a0968b1fc5a1.jpg",
+        "sha256": "8353c062eb3aac9ee649c5f1760408094d81a40b6648ca6f0dd6d5984122cd8a"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9682,
+        "psnr_db": 34.96,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-19",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-8b20a0968b1fc5a1.jpg.c2pa.json (read 19 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/8b20a0968b1fc5a1.webp",
+      "sha256": "6feedbf02e7491fbcd883bf5211631a886145a44e2f23fe7d3f06756facc33df",
+      "bytes": 231652,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/8b20a0968b1fc5a1.jpg",
+        "sha256": "8353c062eb3aac9ee649c5f1760408094d81a40b6648ca6f0dd6d5984122cd8a"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9645,
+        "psnr_db": 35.69,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-19",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-8b20a0968b1fc5a1.jpg.c2pa.json (read 19 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
       "asset": "assets/img/9785fd991d2488e9-960w.webp",
       "sha256": "e6cdbc15f14ed3df234d908ae43b39999e6d0c41fbd01cc1997c4db0634265a4",
       "bytes": 126310,
@@ -2918,6 +2972,60 @@
         "source_file_embeds_c2pa": false,
         "derivative_embeds_c2pa": false,
         "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
+      "asset": "assets/img/ce9da2e51c945693-960w.webp",
+      "sha256": "0abdb335e7c0537fb46460ded35ffa1a9c9801fb52ae1abebd17625d8eb3600a",
+      "bytes": 107430,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/ce9da2e51c945693.jpg",
+        "sha256": "9e2f4b6844c55271427d161c35c29bc8cc708ea44d3164e64aa85546cad9e5dc"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9609,
+        "psnr_db": 35.14,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-19",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI, no input ingredients. Evidence: governance/c2pa-source-credentials/deployed-ce9da2e51c945693.jpg.c2pa.json (read 19 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/ce9da2e51c945693.webp",
+      "sha256": "9b607f8d718847493c6c8c22c2dc619b806e9b2f4b939a62dec325a07c2bf950",
+      "bytes": 211088,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/ce9da2e51c945693.jpg",
+        "sha256": "9e2f4b6844c55271427d161c35c29bc8cc708ea44d3164e64aa85546cad9e5dc"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9594,
+        "psnr_db": 35.81,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-19",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI, no input ingredients. Evidence: governance/c2pa-source-credentials/deployed-ce9da2e51c945693.jpg.c2pa.json (read 19 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
       }
     }
   ],
