@@ -85,7 +85,14 @@ PARENT_HREF = "discovery-living-in-the-garden.html"
 PARENT_TEXT = "Explore Living in the Garden"
 PARENT_NAME = "Living in the Garden"
 PARENT_MAX_WORDS = 40   # visible words allowed before the parent link
-BUILD_DATE = "2026-10-17"   # the page's dateModified; equals its sitemap lastmod
+BUILD_DATE = "2026-10-19"   # the page's dateModified; equals its sitemap lastmod
+# PRICE BY SIZE: NOT PUBLISHED (founder SEO directive, 19 Oct 2026, "price by
+# size where evidence supports it"). Tested against the frozen snapshot: only a
+# minority of priced rooms publish a floor area, and the Atlas records it on mixed
+# bases ("Internal Floor Area" and plain "Floor Area", with incomplete verification
+# and scope). A size band would combine measurement bases, which R2 forbids in
+# spirit, and only one product passes a strict internal-area test. So the page
+# says plainly why there is no price by size (FAQ) instead of publishing one.
 DESCRIPTION = ("How much does a garden room cost in Ireland? Published price ranges from "
                "PlotNua's research, what the advertised price covers, and how to compare quotes.")
 TODAY = dt.date.fromisoformat(
@@ -355,6 +362,44 @@ def render(ev, ex):
         'room in the research, %d in all.</p>'
         % (tot["priceBasisNotEstablished"], tot["relevant"], tot["vatStatusUnknown"], tot["relevant"],
            tot["floorAreaPublished"], tot["relevant"], date_long(snap), tot["relevant"]))
+
+    # FAQ (19 Oct 2026): short answers to the questions searchers ask, built
+    # only from the figures above and the page's own approved wording.
+    a3 = ('PlotNua cannot give an honest price for one size. Only %d of the %d priced garden '
+          'rooms in its research publish a floor area at all, and suppliers measure it in '
+          'different ways, inside or out, so a price for a 3 &times; 3&nbsp;m room would rest on '
+          'too few figures that do not compare. Ask each supplier for the internal floor area and '
+          'the price for the same finish.' % (tot["floorAreaPublished"], tot["relevant"]))
+    kit = pub_seg.get("UNKNOWN_DIY_OR_INSTALLED")
+    if not kit:
+        die("FAQ: the kit-or-unclear range is no longer published -- re-approve the wording")
+    faq = [
+        ("How much does a 3 &times; 3&nbsp;m garden room cost?",
+         a3 + ' <a href="#quote-checklist">The quote checklist</a> covers both.'),
+        ("Is it cheaper to buy a kit than an installed garden room?",
+         'Kit prices start lower, but a kit buys less. In PlotNua&rsquo;s research, prices for '
+         'a kit, or where installation is unclear, ran from %s to %s, and installed, finished '
+         'rooms from %s to %s. A kit price leaves putting the building up to you or a builder you '
+         'hire, and may leave out the base and the electrical connection, so price those before '
+         'comparing. '
+         '<a href="#quote-checklist">The quote checklist</a> shows what to ask.'
+         % (eur(kit["minEur"]), eur(kit["maxEur"]), eur(t["minEur"]), eur(t["maxEur"]))),
+        ("Do garden room prices include VAT?",
+         'Often the price does not say. Of the %d installed, finished prices in the range above, '
+         '%d say VAT is included, and across all %d priced garden rooms in PlotNua&rsquo;s research, '
+         '%d do not say either way. Ask for the VAT position in writing.'
+         % (t["n"], t["vatIncluded"], tot["relevant"], tot["vatStatusUnknown"])),
+        ("What else should I budget for besides the room itself?",
+         'Foundations and groundwork, delivery, installation, the electrical connection and VAT can '
+         'all sit outside an advertised price. <a href="#outside-the-price">See what can sit outside '
+         'the advertised price</a>.'),
+        ("Do I need planning permission for a garden room?",
+         'It depends on the room&rsquo;s size, height, position and use, and on your garden. '
+         '<a href="discovery-living-in-the-garden.html">Living in the Garden</a> explains the 2026 '
+         'exemption conditions and when the Building Regulations apply.'),
+    ]
+    regions["FAQ"] = "\n".join('<div class="pr-faq"><h3>%s</h3>\n<p>%s</p></div>' % qa for qa in faq)
+    regions["UPDATED"] = date_long(dt.date.fromisoformat(BUILD_DATE))
 
     # SPECIALISED (founder wording, 17 Oct 2026), emitted only while the evidence
     # makes every clause of it true:
