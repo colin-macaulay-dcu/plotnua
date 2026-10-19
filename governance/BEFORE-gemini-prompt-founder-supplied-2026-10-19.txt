@@ -1,0 +1,184 @@
+TASK: Transform this reference image into an exceptionally
+photorealistic architectural photograph.
+
+This image is intended to become the flagship BEFORE image
+for PlotNua, an Irish property discovery platform.
+
+The objective is to make the image indistinguishable from
+a genuine photograph of a suburban Irish property.
+
+CRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.
+
+Do not redesign the property.
+Do not reinterpret the composition.
+Do not create a different house.
+Do not change the camera angle.
+
+Use the supplied image as the precise visual reference.
+
+THE SCENE
+
+A typical detached two-storey Irish suburban house,
+photographed from a slightly elevated position overlooking
+its rear garden.
+
+The house has:
+- Cream rendered exterior walls.
+- Traditional brown roof tiles.
+- Chimney and roof window.
+- Existing white-framed windows.
+- Single-storey rear extension.
+- Patio with ordinary garden furniture.
+- A large, slightly imperfect lawn.
+- Timber garden boundaries.
+- A narrow side garden with a mature tree.
+- A believable residential street behind the property.
+- Neighbouring suburban houses.
+
+PRESERVE ALL OF THESE FEATURES.
+
+PHOTOGRAPHIC REALISM
+
+The final result should look like an actual photograph
+taken with a professional full-frame camera and a
+high-quality architectural lens.
+
+Natural daylight.
+Realistic shadows.
+Accurate perspective.
+Physically believable materials.
+Natural atmospheric depth.
+Subtle photographic imperfections.
+
+Avoid the excessively sharp, overly saturated,
+artificially perfect appearance associated with
+AI-generated architectural images.
+
+SPECIFIC IMPROVEMENTS
+
+1. CARS
+
+The cars currently look slightly AI-generated.
+
+Replace or refine them so that they resemble
+completely believable, ordinary cars parked along
+an Irish residential street.
+
+Correct proportions, wheels, windows, reflections,
+shadows and perspective.
+
+Avoid distorted bodywork or unusual vehicle shapes.
+
+Do not add more cars than necessary.
+
+2. NEIGHBOURING HOUSES
+
+Make the neighbouring houses look like genuine,
+individually built suburban Irish homes.
+
+Avoid repetitive architecture, duplicated windows,
+impossible rooflines and artificial-looking details.
+
+Maintain the existing residential street layout.
+
+3. STREET
+
+Ensure the road behind the property is geographically
+and architecturally coherent.
+
+The road should connect naturally through the
+neighbourhood.
+
+Include believable footpaths, kerbs and driveways.
+
+Do not create disconnected roads or impossible junctions.
+
+4. VEGETATION
+
+Make the trees, hedges, shrubs and lawn appear
+photographically authentic.
+
+Avoid duplicated foliage patterns, unnaturally
+perfect plants and excessively vivid green colours.
+
+The grass should retain natural variations,
+slightly patchy areas and ordinary wear.
+
+5. HOUSE DETAILS
+
+Improve the realism of the roof tiles, windows,
+gutters, doors, render and patio.
+
+Keep the house deliberately ordinary.
+
+DO NOT modernise or renovate it.
+
+The dramatic renovation will happen in a separate
+AFTER image.
+
+6. LIGHTING AND COLOUR
+
+Natural Irish late-spring or summer daylight.
+
+Soft, believable sunlight.
+Natural shadows.
+Realistic sky.
+Balanced exposure.
+Authentic photographic colour grading.
+
+Avoid HDR effects, exaggerated contrast,
+cinematic orange-and-teal grading and
+artificial architectural-render lighting.
+
+STRICT COMPOSITION RULES
+
+Keep exactly the same:
+
+- Camera viewpoint and framing.
+- House position and proportions.
+- Roof geometry.
+- Garden dimensions.
+- Left-side garden.
+- Mature tree location.
+- Main lawn.
+- Patio location.
+- Garden boundaries.
+- Residential street position.
+- Neighbouring property positions.
+
+Do not crop or zoom.
+
+Do not add any new garden structures.
+
+No solar panels.
+No garden room.
+No treehouse.
+No sauna.
+No greenhouse.
+No raised vegetable beds.
+No house renovation.
+
+These will be introduced later as part of
+PlotNua's interactive transformation experience.
+
+OUTPUT
+
+A single ultra-high-resolution, landscape-format,
+photorealistic architectural photograph.
+
+Maintain the original image's aspect ratio.
+
+No text.
+No logos.
+No watermarks.
+No annotations.
+
+SUCCESS CRITERION
+
+A viewer should believe this is an authentic
+photograph of a real Irish suburban property,
+not an AI-generated image.
+
+The property must remain identical to the reference
+so that it can subsequently be used as the master
+BEFORE image for an interactive BEFORE/AFTER slider.

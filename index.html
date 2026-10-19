@@ -18,7 +18,7 @@
 <meta name="description" content="PlotNua researches products, suppliers and opportunities across Ireland and Europe, then shows what could realistically work for a home here. Explore the Discoveries.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/">
-<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/9785fd991d2488e9-960w.webp 960w, assets/img/9785fd991d2488e9.webp 1376w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" imagesrcset="assets/possibility-reveal/img/house-L1-L2A-1376.avif 1376w, assets/possibility-reveal/img/house-L1-L2A-2064.avif 2064w, assets/possibility-reveal/img/house-L1-L2A-2752.avif 2752w" imagesizes="(max-width: 760px) 920px, 100vw" fetchpriority="high">
 
 <!-- Favicons — PlotNua Brand Package v1.0 -->
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -27,7 +27,7 @@
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#1F3B2E">
+<meta name="theme-color" content="#2A2622">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -49,6 +49,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Possibility Reveal component (D2): scoped styles and behaviour, loaded from its own files -->
+<link rel="stylesheet" href="assets/possibility-reveal/reveal.css">
+<script src="assets/possibility-reveal/reveal-data.js" defer></script>
+<script src="assets/possibility-reveal/reveal.js" defer></script>
 <style>
   :root{
     /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
@@ -1120,9 +1125,453 @@ button.d-dot[aria-current="true"]::after{
   html{ scroll-behavior:auto !important; }
 }
 /* PLOTNUA A11Y VISUAL v1 · END */
+/* ══════════════════════════════════════════════════════════════════════
+   PLOTNUA PHASE 4 · DARK ARCHITECTURAL v1 · BEGIN
+   Founder-approved Warm Architectural palette (19 Oct 2026). Every rule is
+   scoped to body.pn-p4, so removing the class restores the previous design.
+   Muted Terracotta (#AE6245) is decorative only (numerals, rules,
+   underlines); Terracotta Text (#CF8566) is the accessible accent and the
+   primary button fill, with an anthracite label (5.7:1).
+   ══════════════════════════════════════════════════════════════════════ */
+body.pn-p4{
+  --p4-anth:#1D1E1C; --p4-earth:#2A2622; --p4-deep:#342C27;
+  --p4-terra:#AE6245; --p4-terra-text:#CF8566; --p4-terra-hover:#D99476;
+  --p4-bronze:#97785A; --p4-bronze-text:#B39272;
+  --p4-ivory:#F2EBE0; --p4-lime:#E7DED0; --p4-stone:#C7B8A4;
+  --p4-line:#3A3631; --p4-line2:#4A443D; --p4-well:#322C28;
+  --p4-serif:'Instrument Serif',Georgia,serif;
+  --p4-sans:'Hanken Grotesk',system-ui,sans-serif;
+  --p4-gutter:max(56px, calc((100vw - 1360px) / 2 + 56px));
+  background:var(--p4-anth); color:var(--p4-ivory); font-family:var(--p4-sans);
+}
+body.pn-p4 :focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:3px; }
+
+/* ---- header ---- */
+body.pn-p4 .p4-header{ background:var(--p4-earth); border-bottom:1px solid var(--p4-line); }
+body.pn-p4 .p4-header-inner{
+  height:90px; display:flex; align-items:center; gap:48px;
+  padding:0 230px 0 92px;
+}
+body.pn-p4 .p4-wordmark{
+  font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-ivory);
+  text-decoration:none; padding:8px 0;
+}
+body.pn-p4 .p4-nav{ display:flex; gap:36px; margin-left:auto; margin-right:auto; }
+body.pn-p4 .p4-nav a{
+  display:inline-block; padding:10px 0 8px; font-size:16px; font-weight:500;
+  color:var(--p4-ivory); text-decoration:none; border-bottom:2px solid transparent;
+}
+body.pn-p4 .p4-nav a:hover{ border-bottom-color:var(--p4-bronze); }
+
+/* ---- hero: split, photograph uncropped ---- */
+body.pn-p4 .hero{ background:var(--p4-anth); padding:0; display:block; }
+body.pn-p4 .hero-inner{
+  max-width:none; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+  align-items:center;
+}
+body.pn-p4 .hero-wordmark{ display:none; }
+body.pn-p4 .p4-hero-copy{
+  margin:0; text-align:left; align-items:flex-start; gap:0;
+  padding:80px 56px 72px var(--p4-gutter);
+}
+body.pn-p4 .p4-kicker{
+  font-family:var(--p4-sans); font-weight:700; font-size:14px; line-height:1.4;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text);
+  max-width:none; margin:0 0 26px; display:flex; align-items:center; gap:16px; width:100%;
+}
+body.pn-p4 .p4-kicker::after{ content:''; flex:1; height:1px; background:var(--p4-line2); }
+body.pn-p4 .p4-display{
+  font-family:var(--p4-serif); font-weight:400; font-size:clamp(52px,5.6vw,96px);
+  line-height:.9; letter-spacing:-.025em; color:var(--p4-ivory); margin:0;
+}
+body.pn-p4 .p4-display em{ font-style:italic; color:var(--p4-terra-text); }
+body.pn-p4 .p4-hero-copy .hero-answer{
+  margin:28px 0 0; padding:0; max-width:31em; font-family:var(--p4-sans);
+  font-size:19px; line-height:1.6; color:var(--p4-lime);
+}
+body.pn-p4 .p4-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
+body.pn-p4 .p4-btn{
+  min-height:54px; display:inline-flex; align-items:center; gap:12px; padding:0 26px;
+  font-family:var(--p4-sans); font-size:17px; text-decoration:none;
+  transition:background-color .18s ease, color .18s ease, border-color .18s ease;
+}
+body.pn-p4 .p4-btn-primary{ background:var(--p4-terra-text); color:var(--p4-anth); font-weight:700; }
+body.pn-p4 .p4-btn-primary:hover{ background:var(--p4-terra-hover); }
+body.pn-p4 .p4-btn-secondary{ border:1px solid var(--p4-stone); color:var(--p4-ivory); font-weight:600; }
+body.pn-p4 .p4-btn-secondary:hover{ background:var(--p4-ivory); color:var(--p4-anth); border-color:var(--p4-ivory); }
+body.pn-p4 .hero-stage{ align-self:center; }
+body.pn-p4 .hero-frame.p4-frame{
+  width:100%; min-width:0; aspect-ratio:auto; height:auto; margin:0;
+  background:transparent; overflow:hidden;
+}
+body.pn-p4 .p4-frame .hero-photo{
+  width:100%; height:auto; aspect-ratio:1376 / 768; object-fit:cover; background:var(--p4-well);
+}
+body.pn-p4 .p4-caption{
+  display:flex; align-items:center; gap:14px; padding:14px 24px 0;
+  font-family:var(--p4-serif); font-style:italic; font-size:18px; color:var(--p4-stone);
+}
+body.pn-p4 .p4-caption::before{ content:''; width:28px; height:1px; background:var(--p4-terra); flex:none; }
+body.pn-p4 .hero-cards-dock{ display:none; }
+
+/* ---- continuation panel ---- */
+body.pn-p4 .continue{ background:var(--p4-anth); padding:0 var(--p4-gutter); }
+body.pn-p4 .continue-inner{ max-width:none; border-color:var(--p4-line2); }
+body.pn-p4 .continue-title{ font-family:var(--p4-serif); font-size:26px; color:var(--p4-ivory); }
+body.pn-p4 .continue-sub{ font-family:var(--p4-sans); font-size:16px; color:var(--p4-stone); }
+body.pn-p4 .continue-link{ font-family:var(--p4-sans); font-size:15px; color:var(--p4-terra-text); border-bottom-color:var(--p4-terra); }
+body.pn-p4 .continue-link:hover{ color:var(--p4-ivory); border-bottom-color:var(--p4-ivory); }
+
+/* ---- Discovery Library (legacy carousel rules; the carousel is replaced by the showcase) ---- */
+body.pn-p4 .discover{ background:var(--p4-earth); color:var(--p4-ivory); padding:120px 0 120px; text-align:left; }
+body.pn-p4 .discover-intro{ padding:0 var(--p4-gutter); }
+body.pn-p4 .discover .lede{
+  font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--p4-bronze-text);
+}
+body.pn-p4 .discover h2{
+  font-family:var(--p4-serif); font-weight:400; font-size:clamp(42px,4.8vw,72px);
+  line-height:.98; letter-spacing:-.015em; color:var(--p4-ivory); margin:14px 0 56px; max-width:16ch;
+}
+body.pn-p4 .lib-info{ border-color:var(--p4-stone); color:var(--p4-ivory); }
+body.pn-p4 .lib-info-pop{ margin:-30px 0 40px; background:var(--p4-deep); border-color:var(--p4-line2); max-width:52ch; }
+body.pn-p4 .lib-info-pop p{ font-family:var(--p4-sans); font-size:16px; color:var(--p4-lime); }
+body.pn-p4 .d-carousel-wrap{ max-width:none; }
+body.pn-p4 .d-carousel{ gap:40px; padding:0 12vw 4px var(--p4-gutter); scroll-padding-left:var(--p4-gutter); }
+body.pn-p4 .d-card-media{ background:var(--p4-well); }
+body.pn-p4 .d-card-media img{ filter:brightness(.95); transition:transform .7s ease, filter .4s ease; }
+body.pn-p4 .d-card:hover .d-card-media img{ transform:scale(1.03); filter:brightness(1.03); }
+body.pn-p4 .d-card-copy{ padding-top:22px; border-top:0; }
+body.pn-p4 .d-card-copy h3{
+  font-family:var(--p4-serif); font-weight:400; font-size:clamp(28px,2.6vw,38px);
+  line-height:1.04; color:var(--p4-ivory); max-width:18ch;
+}
+body.pn-p4 .d-card:hover .d-card-copy h3{ text-decoration:underline; text-decoration-color:var(--p4-terra); text-decoration-thickness:1px; text-underline-offset:6px; }
+body.pn-p4 .d-card-copy p{ font-family:var(--p4-sans); color:var(--p4-stone); font-size:17px; line-height:1.6; }
+body.pn-p4 .d-fade{ background:linear-gradient(90deg, rgba(42,38,34,0) 0%, var(--p4-earth) 92%); }
+body.pn-p4 .d-edge{ background:var(--p4-ivory); color:var(--p4-anth); }
+body.pn-p4 .d-arrow{ width:44px; height:44px; border-color:var(--p4-stone); color:var(--p4-ivory); }
+body.pn-p4 .d-dot{ background:rgba(242,235,224,.35); }
+body.pn-p4 .d-dot[aria-current="true"]{ background:var(--p4-terra-text); }
+body.pn-p4 .d-all{ padding:0 var(--p4-gutter); text-align:left; }
+body.pn-p4 .d-all a{
+  display:inline-block; padding:6px 0; font-family:var(--p4-sans); font-size:17px; font-weight:600;
+  letter-spacing:0; text-transform:none; color:var(--p4-terra-text);
+  border-bottom:1px solid var(--p4-terra);
+}
+body.pn-p4 .d-all a:hover{ color:var(--p4-ivory); border-bottom-color:var(--p4-ivory); }
+
+/* ---- the Atlas ---- */
+body.pn-p4 .atlas{ background:var(--p4-deep); }
+body.pn-p4 .atlas::before, body.pn-p4 .atlas::after{ display:none; }
+body.pn-p4 .article-section{ padding:120px 0; }
+body.pn-p4 .atlas .article{ max-width:none; padding:0 var(--p4-gutter); }
+body.pn-p4 .article-section .kicker{
+  font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; color:var(--p4-stone);
+}
+body.pn-p4 .article-section h2{
+  font-family:var(--p4-serif); font-weight:400; font-size:clamp(42px,4.8vw,72px);
+  line-height:.98; letter-spacing:-.015em; color:var(--p4-ivory); max-width:12ch;
+}
+body.pn-p4 .atlas-name{ font-family:var(--p4-serif); font-weight:400; font-style:italic; font-size:30px; color:var(--p4-terra-text); }
+body.pn-p4 .atlas-info{ border-color:var(--p4-stone); color:var(--p4-ivory); font-family:var(--p4-sans); font-style:normal; }
+body.pn-p4 .atlas-info:hover{ border-color:var(--p4-ivory); }
+body.pn-p4 .atlas-figures{ gap:28px 56px; }
+/* The split-flap counter: dark tiles, ivory numerals (it was paper on paper). */
+body.pn-p4 .flap, body.pn-p4 .fl-top, body.pn-p4 .fl-bottom{ background:var(--p4-earth); }
+body.pn-p4 .flap{ box-shadow:inset 0 0 0 1px var(--p4-line2); color:var(--p4-ivory); }
+body.pn-p4 .flap::after{ background:rgba(29,30,28,.85); }
+body.pn-p4 .atlas-figures dt{
+  font-family:var(--p4-serif); font-weight:400; font-size:clamp(56px,6vw,104px);
+  line-height:.85; letter-spacing:-.02em; color:var(--p4-ivory);
+}
+body.pn-p4 .atlas-figures dd{ margin-top:12px; font-family:var(--p4-sans); font-size:17px; font-weight:600; color:var(--p4-lime); }
+body.pn-p4 .atlas .ah-body .atlas-note{ font-family:var(--p4-serif); font-style:italic; font-size:30px; letter-spacing:0; color:var(--p4-terra-text); }
+body.pn-p4 .atlas .ah-body .atlas-guide{ font-family:var(--p4-sans); font-style:normal; font-size:17px; }
+body.pn-p4 .atlas .ah-body .atlas-guide a{
+  display:inline-block; padding:6px 0; color:var(--p4-terra-text); font-weight:600;
+  text-decoration-color:var(--p4-terra); text-underline-offset:5px;
+}
+body.pn-p4 .atlas .ah-body .atlas-guide a:hover{ color:var(--p4-ivory); text-decoration-color:var(--p4-ivory); }
+body.pn-p4 .atlas-info-pop{ background:var(--p4-earth); border-color:var(--p4-line2); color:var(--p4-lime); box-shadow:none; font-family:var(--p4-sans); font-size:16px; }
+body.pn-p4 .atlas-info-pop p{ font-size:16px; }
+body.pn-p4 .atlas-info-pop h3{ font-family:var(--p4-sans); font-size:14px; font-weight:700; color:var(--p4-bronze-text); }
+body.pn-p4 .atlas .d-all{ padding:0; }
+body.pn-p4 .atlas .d-all a{ color:var(--p4-terra-text); border-bottom-color:var(--p4-terra); }
+body.pn-p4 .atlas .d-all a:hover{ color:var(--p4-ivory); border-bottom-color:var(--p4-ivory); }
+
+/* ---- footer ---- */
+body.pn-p4 footer{ background:var(--p4-anth); border-top:1px solid var(--p4-bronze); color:var(--p4-stone); padding:80px var(--p4-gutter) 40px; }
+body.pn-p4 .footer-inner{ max-width:none; }
+body.pn-p4 .footer-word{ font-family:var(--p4-serif); font-size:40px; color:var(--p4-ivory); }
+body.pn-p4 .footer-col h2{ font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); }
+body.pn-p4 .footer-col a{ display:inline-block; padding:4px 0; font-family:var(--p4-sans); font-size:16px; color:var(--p4-ivory); }
+body.pn-p4 .footer-col a:hover{ color:var(--p4-terra-text); }
+body.pn-p4 .footer-col p{ font-family:var(--p4-sans); }
+body.pn-p4 .footer-base{ font-family:var(--p4-sans); font-size:15px; color:var(--p4-stone); text-align:left; border-top:1px solid var(--p4-line); padding-top:22px; }
+
+/* ---- tablet and phone ---- */
+@media (max-width:900px){
+  body.pn-p4 .p4-header-inner{ height:auto; flex-wrap:wrap; gap:0; padding:14px 64px 6px 72px; }
+  body.pn-p4 .p4-wordmark{ font-size:26px; }
+  /* The nav row starts below the fixed (i) control, so nothing overlaps it. */
+  body.pn-p4 .p4-nav{ width:calc(100% + 116px); margin:34px -64px 0 -52px; padding:0 20px; gap:22px; overflow-x:auto; border-top:1px solid var(--p4-line); }
+  body.pn-p4 .p4-nav a{ font-size:15px; white-space:nowrap; }
+  body.pn-p4 .hero-inner{ grid-template-columns:minmax(0,1fr); }
+  body.pn-p4 .p4-hero-copy{ padding:40px 20px 32px; }
+  body.pn-p4 .p4-kicker{ font-size:14px; letter-spacing:.12em; margin-bottom:20px; }
+  body.pn-p4 .p4-display{ font-size:clamp(46px,13vw,64px); }
+  body.pn-p4 .p4-hero-copy .hero-answer{ font-size:17px; margin-top:22px; }
+  body.pn-p4 .p4-actions{ flex-direction:column; width:100%; margin-top:26px; }
+  body.pn-p4 .p4-btn{ width:100%; justify-content:center; }
+  body.pn-p4 .p4-caption{ padding:12px 20px 40px; font-size:16px; }
+  body.pn-p4 .discover{ padding:72px 0; }
+  body.pn-p4 .discover-intro, body.pn-p4 .d-all{ padding:0 20px; }
+  body.pn-p4 .discover h2, body.pn-p4 .article-section h2{ font-size:44px; }
+  body.pn-p4 .discover h2{ margin-bottom:40px; }
+  body.pn-p4 .article-section{ padding:72px 0; }
+  body.pn-p4 .atlas .article{ padding:0 20px; }
+  body.pn-p4 .atlas .ah-body .atlas-note{ font-size:26px; }
+  body.pn-p4 .atlas .ah-body .atlas-guide{ font-size:17px; }
+  body.pn-p4 footer{ padding:64px 20px 40px; }
+}
+/* Phones: every Discovery visible as a two-column grid, no swipe needed.
+   The carousel markup, script and links are unchanged; only its layout is. */
+@media (max-width:720px){
+  body.pn-p4 .d-carousel{
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 12px;
+    overflow:visible; scroll-snap-type:none; padding:0 20px;
+  }
+  body.pn-p4 .d-card{ flex:none; scroll-snap-align:none; }
+  body.pn-p4 .d-card-media img{ height:150px; min-height:0; }
+  body.pn-p4 .d-card-copy{ padding-top:12px; }
+  body.pn-p4 .d-card-copy h3{ font-size:22px; line-height:1.08; margin:0; }
+  body.pn-p4 .d-card-copy p{ display:none; }
+  body.pn-p4 .d-fade, body.pn-p4 .d-edge, body.pn-p4 .d-controls{ display:none; }
+  body.pn-p4 .atlas-figures dt{ font-size:64px; }
+}
+/* ==== PHASE 4 · CONCEPT 2 (19 Oct 2026): immersive stage + Discovery showcase ==== */
+/* Nav: the Discovery Library is the lead destination */
+body.pn-p4 .p4-nav a.p4-nav-lead{ font-weight:700; border-bottom-color:var(--p4-terra); }
+body.pn-p4 .p4-nav a.p4-nav-lead:hover{ border-bottom-color:var(--p4-terra-text); color:var(--p4-terra-text); }
+
+/* Hero: a copy band above a full-bleed immersive stage (no text on the image) */
+body.pn-p4 .hero-inner{ display:block; }
+body.pn-p4 .p4-hero-copy{
+  display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:72px; align-items:end;
+  padding:44px var(--p4-gutter) 40px; width:auto;
+}
+body.pn-p4 .p4-band-a, body.pn-p4 .p4-band-b{ min-width:0; }
+body.pn-p4 .p4-display{ font-size:clamp(48px,4.8vw,80px); line-height:.92; }
+body.pn-p4 .p4-hero-copy .p4-kicker{ margin-bottom:20px; }
+body.pn-p4 .p4-hero-copy .hero-answer{ margin:0; font-size:18px; }
+body.pn-p4 .p4-actions{ margin-top:26px; }
+body.pn-p4 .p4-stage{ position:relative; width:100%; background:var(--p4-anth); border-top:1px solid var(--p4-line); }
+body.pn-p4 .p4-stage .hero-frame.p4-frame{ width:100%; }
+body.pn-p4 .p4-stage .hero-photo{
+  display:block; width:100%; height:auto; aspect-ratio:1376 / 768; max-height:calc(100svh - 90px);
+  object-fit:contain; background:var(--p4-anth);
+}
+body.pn-p4 .p4-stage .p4-caption{ padding:14px var(--p4-gutter) 22px; font-size:17px; }
+
+/* Discovery showcase */
+body.pn-p4 .p4-showcase{ background:var(--p4-earth); padding:120px 0 128px; }
+body.pn-p4 .p4s-head{
+  display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:72px; align-items:end;
+  padding:0 var(--p4-gutter); margin:0 0 64px;
+}
+body.pn-p4 .p4-showcase h2{ margin:14px 0 0; max-width:15ch; font-size:clamp(46px,5.2vw,84px); }
+body.pn-p4 .p4s-lede{
+  margin:26px 0 0; max-width:30ch; font-family:var(--p4-serif); font-style:italic;
+  font-size:clamp(24px,2.1vw,32px); line-height:1.22; color:var(--p4-lime);
+}
+body.pn-p4 .p4-showcase .lib-info-pop{ margin:24px 0 0; }
+body.pn-p4 .p4s-cats-lab{
+  margin:0 0 12px; font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--p4-bronze-text);
+}
+body.pn-p4 .p4s-cats{
+  list-style:none; margin:0 0 30px; padding:16px 0 0; border-top:1px solid var(--p4-line2);
+  display:flex; flex-wrap:wrap; gap:10px 0;
+}
+body.pn-p4 .p4s-cats li{
+  font-family:var(--p4-serif); font-size:24px; line-height:1.15; color:var(--p4-ivory);
+}
+body.pn-p4 .p4s-cats li:not(:last-child)::after{ content:'\00B7'; color:var(--p4-terra); padding:0 12px; }
+body.pn-p4 .p4s-cta{ min-height:58px; font-size:18px; }
+
+body.pn-p4 .p4s-lead{
+  display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:28px; padding:0 var(--p4-gutter);
+}
+body.pn-p4 .p4s-support{ display:grid; grid-template-columns:1fr 1fr; gap:28px; align-content:start; }
+body.pn-p4 .p4s-card{ position:relative; display:flex; flex-direction:column; min-width:0; gap:0 !important; }
+body.pn-p4 .p4s-media{ overflow:hidden; background:var(--p4-well); aspect-ratio:3 / 2; }
+body.pn-p4 .p4s-feature .p4s-media{ aspect-ratio:16 / 10; }
+body.pn-p4 .p4s-media img{
+  width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.94);
+  transition:transform .6s cubic-bezier(.2,.7,.2,1), filter .3s ease;
+}
+body.pn-p4 .p4s-card:hover .p4s-media img{ transform:scale(1.03); filter:brightness(1); }
+body.pn-p4 .p4s-body{ padding:18px 0 0; }
+body.pn-p4 .p4s-meta{ margin:0 0 8px; display:flex; flex-wrap:wrap; gap:6px 16px; align-items:center; }
+body.pn-p4 .p4s-cat{
+  font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--p4-bronze-text);
+}
+body.pn-p4 .p4s-flag{
+  display:inline-flex; align-items:center; gap:8px; font-family:var(--p4-sans); font-size:14px; color:var(--p4-stone);
+}
+body.pn-p4 .p4s-flag::before{ content:''; width:8px; height:8px; border-radius:50%; border:1px solid var(--p4-stone); }
+body.pn-p4 .p4s-flag-live::before{ background:var(--p4-terra-text); border-color:var(--p4-terra-text); }
+body.pn-p4 .p4s-title{ margin:0; font-family:var(--p4-serif); font-weight:400; color:var(--p4-ivory); letter-spacing:-.01em; }
+body.pn-p4 .p4s-feature .p4s-title{ font-size:clamp(36px,3.3vw,52px); line-height:1; max-width:18ch; }
+body.pn-p4 .p4s-support .p4s-title{ font-size:26px; line-height:1.08; }
+body.pn-p4 .p4s-compact .p4s-title{ font-size:24px; line-height:1.1; }
+body.pn-p4 .p4s-go{ color:inherit; text-decoration:none; }
+body.pn-p4 .p4s-go::after{ content:''; position:absolute; inset:0; z-index:1; }
+body.pn-p4 .p4s-card:hover .p4s-go{ text-decoration:underline; text-decoration-color:var(--p4-terra); text-underline-offset:5px; text-decoration-thickness:1px; }
+body.pn-p4 .p4s-go:focus-visible{ outline:none; }
+body.pn-p4 .p4s-go:focus-visible::after{ outline:2px solid var(--p4-terra-text); outline-offset:6px; }
+body.pn-p4 .p4s-line{ margin:12px 0 0; font-family:var(--p4-sans); font-size:16px; line-height:1.55; color:var(--p4-lime); max-width:46ch; }
+body.pn-p4 .p4s-feature .p4s-line{ font-size:19px; }
+body.pn-p4 .p4s-line-c{ font-size:15px; color:var(--p4-stone); }
+body.pn-p4 .p4s-next{ margin:14px 0 0; }
+body.pn-p4 .p4s-next a{
+  position:relative; z-index:2; display:inline; padding:6px 0;
+  font-family:var(--p4-sans); font-size:16px; font-weight:600; color:var(--p4-terra-text);
+  text-decoration:underline; text-decoration-color:var(--p4-terra); text-underline-offset:5px;
+}
+body.pn-p4 .p4s-next a:hover{ color:var(--p4-ivory); text-decoration-color:var(--p4-ivory); }
+body.pn-p4 .p4s-feature .p4s-next a{ font-size:17px; }
+body.pn-p4 .p4s-more-h{
+  margin:88px var(--p4-gutter) 30px; display:flex; align-items:center; gap:18px;
+  font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--p4-bronze-text);
+}
+body.pn-p4 .p4s-more-h::after{ content:''; flex:1; height:1px; background:var(--p4-line2); }
+body.pn-p4 .p4s-more{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:44px 28px; padding:0 var(--p4-gutter); }
+body.pn-p4 .p4s-all{
+  display:flex; flex-direction:column; justify-content:flex-end; gap:10px; min-height:280px; padding:28px;
+  background:var(--p4-deep); border:1px solid var(--p4-line2); text-decoration:none; color:var(--p4-ivory);
+  transition:background-color .2s ease, border-color .2s ease;
+}
+body.pn-p4 .p4s-all:hover{ background:var(--p4-terra-text); border-color:var(--p4-terra-text); color:var(--p4-anth); }
+body.pn-p4 .p4s-all:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:4px; }
+body.pn-p4 .p4s-all-k{ font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); }
+body.pn-p4 .p4s-all:hover .p4s-all-k{ color:var(--p4-anth); }
+body.pn-p4 .p4s-all-t{ font-family:var(--p4-serif); font-size:36px; line-height:1; }
+body.pn-p4 .p4s-all-a{ font-size:30px; color:var(--p4-terra-text); }
+body.pn-p4 .p4s-all:hover .p4s-all-a{ color:var(--p4-anth); }
+
+@media (max-width:1100px){
+  body.pn-p4 .p4s-lead{ grid-template-columns:minmax(0,1fr); }
+  body.pn-p4 .p4s-more{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  body.pn-p4 .p4s-head{ grid-template-columns:minmax(0,1fr); row-gap:36px; }
+}
+@media (max-width:900px){
+  body.pn-p4 .p4-hero-copy{ grid-template-columns:minmax(0,1fr); row-gap:26px; padding:40px 20px 32px; }
+  body.pn-p4 .p4-display{ font-size:clamp(44px,12vw,64px); }
+  body.pn-p4 .p4-stage .p4-caption{ padding:12px 20px 18px; font-size:16px; }
+  body.pn-p4 .p4-showcase{ padding:76px 0 84px; }
+  body.pn-p4 .p4s-head, body.pn-p4 .p4s-lead, body.pn-p4 .p4s-more{ padding:0 20px; }
+  body.pn-p4 .p4s-more-h{ margin:64px 20px 24px; }
+}
+@media (max-width:720px){
+  body.pn-p4 .p4-showcase h2{ font-size:44px; }
+  body.pn-p4 .p4s-lede{ font-size:24px; }
+  body.pn-p4 .p4s-cats li{ font-size:20px; }
+  body.pn-p4 .p4s-cta{ width:100%; justify-content:center; }
+  body.pn-p4 .p4s-head{ margin-bottom:40px; }
+  body.pn-p4 .p4s-lead{ gap:36px; }
+  body.pn-p4 .p4s-support, body.pn-p4 .p4s-more{ grid-template-columns:1fr 1fr; gap:32px 12px; }
+  body.pn-p4 .p4s-support .p4s-title, body.pn-p4 .p4s-compact .p4s-title{ font-size:21px; }
+  body.pn-p4 .p4s-support .p4s-line, body.pn-p4 .p4s-line-c{ display:none; }
+  body.pn-p4 .p4s-feature .p4s-title{ font-size:34px; }
+  body.pn-p4 .p4s-feature .p4s-line{ font-size:17px; }
+  body.pn-p4 .p4s-media, body.pn-p4 .p4s-feature .p4s-media{ aspect-ratio:4 / 3; }
+  body.pn-p4 .p4s-body{ padding-top:12px; }
+  body.pn-p4 .p4s-meta{ margin-bottom:4px; }
+  body.pn-p4 .p4s-flag{ display:none; }
+  body.pn-p4 .p4s-feature .p4s-flag{ display:inline-flex; }
+  body.pn-p4 .p4s-next{ margin-top:6px; }
+  body.pn-p4 .p4s-next a{ font-size:15px; display:inline-block; padding:12px 0; }
+  body.pn-p4 .p4s-all{ grid-column:1 / -1; min-height:150px; padding:22px; }
+  body.pn-p4 .p4s-all-t{ font-size:30px; }
+}
+/* ==== PHASE 4 · REFINED CONCEPT 2 (founder decisions, 19 Oct 2026) ====
+   Earth-tinted Charcoal #2A2622 is the primary ground; Deep Earth Charcoal
+   #342C27 the secondary (Atlas); Warm Anthracite only for the footer and
+   small structural details. No dark top borders: sections are separated by
+   ground, space and photography. */
+body.pn-p4{ background:var(--p4-earth); }
+body.pn-p4 .p4-header, body.pn-p4 .hero, body.pn-p4 .continue{ background:var(--p4-earth); }
+body.pn-p4 footer{ border-top:0; }
+body.pn-p4 .footer-base{ border-top:0; }
+
+/* Header (founder-approved A): larger left-aligned wordmark beside the fixed mark */
+body.pn-p4 .p4-header-inner{ height:84px; gap:40px; padding:0 232px 0 84px; }
+body.pn-p4 .p4-wordmark{ font-size:36px; letter-spacing:-.005em; padding:6px 0; }
+body.pn-p4 .p4-nav{ margin-left:auto; margin-right:0; gap:34px; }
+body.pn-p4 .p4-nav a{ font-size:16px; }
+body.pn-p4 .p4-nav a.p4-nav-lead{ font-size:17px; color:var(--p4-ivory); }
+
+/* Hero introduction: one compact band, then the Reveal */
+body.pn-p4 .p4-hero-copy{
+  display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"a b" "c c";
+  column-gap:56px; row-gap:8px; align-items:center; padding:24px var(--p4-gutter) 22px;
+}
+body.pn-p4 .p4-band-a{ grid-area:a; }
+body.pn-p4 .p4-hero-copy .p4-kicker{ font-size:13px; margin:0 0 8px; }
+body.pn-p4 .p4-display{ font-size:clamp(40px,3.4vw,60px); line-height:1; white-space:nowrap; }
+body.pn-p4 .p4-hero-copy .hero-answer{ grid-area:c; font-size:16px; line-height:1.5; max-width:none; color:var(--p4-lime); }
+body.pn-p4 .p4-actions{ grid-area:b; margin:0; flex-wrap:nowrap; }
+body.pn-p4 .p4-actions .p4-btn{ min-height:50px; font-size:16px; padding:0 22px; }
+
+/* The immersive stage: full browser width, no side margins */
+body.pn-p4 .p4-stage{ background:var(--p4-earth); border-top:0; }
+body.pn-p4 #heroStage .pr{
+  --pr-stage-h:min(calc(100vw * 1536 / 2752), calc(100svh - 84px));
+  --pr-stage-min:480px; --pr-stage-max:none;
+  --pr-stage-bg:var(--p4-earth); --pr-legend-bg:var(--p4-earth);
+}
+body.pn-p4 .p4-stage-caption{ margin:0; padding:2px var(--p4-gutter) 20px; font-size:15px; }
+body.pn-p4 #heroStage .pr .legend{ padding-left:var(--p4-gutter); padding-right:var(--p4-gutter); }
+
+@media (max-width:900px){
+  body.pn-p4 .p4-header-inner{ height:auto; flex-wrap:wrap; gap:0; padding:12px 64px 0 80px; }
+  body.pn-p4 .p4-wordmark{ font-size:32px; padding:8px 0 12px; }
+  body.pn-p4 .p4-nav{ width:calc(100% + 144px); margin:0 -64px 0 -80px; padding:0 20px 0 62px; gap:22px; border-top:0; }
+  body.pn-p4 .p4-nav a, body.pn-p4 .p4-nav a.p4-nav-lead{ font-size:15px; }
+  body.pn-p4 .p4-hero-copy{ grid-template-columns:minmax(0,1fr); grid-template-areas:"a" "c" "b"; row-gap:12px; padding:22px 20px 22px; }
+  body.pn-p4 .p4-display{ font-size:clamp(38px,10.5vw,52px); white-space:normal; line-height:.98; }
+  body.pn-p4 .p4-hero-copy .hero-answer{ font-size:15px; }
+  body.pn-p4 .p4-actions{ flex-direction:column; gap:10px; margin-top:4px; }
+  body.pn-p4 .p4-actions .p4-btn{ min-height:48px; }
+  body.pn-p4 .p4-stage-caption{ padding:2px 20px 18px; font-size:14px; }
+  body.pn-p4 #heroStage .pr .legend{ padding-left:20px; padding-right:20px; }
+}
+@media (max-width:760px){
+  body.pn-p4 #heroStage .pr{ --pr-stage-h:calc(100svh - 112px); --pr-stage-min-m:560px; }
+}
+/* The Reveal's own skip link stays available to keyboard users but is hidden until focused */
+body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+@media (max-width:900px){
+  body.pn-p4 .p4-display em{ display:block; }
+  body.pn-p4 .p4-nav{ gap:16px; padding-left:58px; }
+  body.pn-p4 .p4-nav a, body.pn-p4 .p4-nav a.p4-nav-lead{ font-size:14.5px; }
+}
+@media (max-width:900px){
+  body.pn-p4 .p4-hero-copy{ padding:18px 20px 18px; row-gap:10px; }
+  body.pn-p4 .p4-hero-copy .hero-answer{ line-height:1.45; }
+}
+@media (max-width:380px){
+  body.pn-p4 .p4-nav{ gap:12px; padding-left:54px; }
+  body.pn-p4 .p4-nav a, body.pn-p4 .p4-nav a.p4-nav-lead{ font-size:14px; }
+}
+/* PLOTNUA PHASE 4 · DARK ARCHITECTURAL v1 · END */
 </style>
 </head>
-<body>
+<body class="pn-p4">
 <a class="pn-skip" href="#pn-main">Skip to main content</a>
 <div id="top"></div>
 
@@ -1164,199 +1613,235 @@ button.d-dot[aria-current="true"]::after{
   <p>We research the possibilities so you can make a more confident decision.</p>
 </div>
 
+<!-- PHASE 4 DARK ARCHITECTURAL — homepage navigation. Every link is an
+     existing route. The fixed brand mark (left) and the generated search
+     rail (right) are unchanged and sit over this bar's reserved edges. -->
+<header class="p4-header">
+  <div class="p4-header-inner">
+    <a class="p4-wordmark" href="#top">PlotNua</a>
+    <nav class="p4-nav" aria-label="Main">
+      <a class="p4-nav-lead" href="discoveries.html">Discovery Library</a>
+      <a href="your-plot.html">Your Plot</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
 <main id="pn-main">
 <section class="hero" id="hero">
   <div class="hero-inner">
 
     <p class="hero-wordmark" id="heroWordmark">PlotNua</p>
 
-    <figure class="hero-frame" id="heroFrame">
-      <picture style="display:contents"><source type="image/webp" srcset="assets/img/9785fd991d2488e9-960w.webp 960w, assets/img/9785fd991d2488e9.webp 1376w" sizes="100vw"><img class="hero-photo" id="heroPhoto"
-           src="assets/img/9785fd991d2488e9.jpg" width="1376" height="768"
-           fetchpriority="high" decoding="async"
-           alt="An aerial view of an ordinary Irish suburban road on a summer afternoon: brick houses either side, mature trees, parked cars, a timber garden room at the end of one back garden and raised vegetable beds in the next."></picture>
-
-      <!-- ============================================================
-           RESULTS-003 PART C — THE PINS ARE FROZEN FOR LAUNCH.
-           Placement was accepted on 2026-08-24 and is not to be adjusted
-           again before Launch. The exact --x/--y of all five are asserted
-           in validate-product-acceptance.js (TRUE_PINS), so moving one
-           fails the suite rather than slipping through unnoticed.
-           The rule below is kept because it explains WHY the numbers are
-           what they are — needed by whoever eventually unfreezes them.
-           ============================================================ -->
-      <!-- PIN PLACEMENT RULE — read this before moving any --y.
-           The pin is anchored translate(-50%,-100%): --y is where the TIP
-           lands, and the 34px face stacks directly ABOVE it. So --y must be
-           the top edge of the subject, NOT its centre. Set to the centre, the
-           face sits on top of the thing the pin is pointing at and hides it —
-           which is exactly what four of these five did until this pass.
-
-           THE RULE: tip just above the subject's top edge; face clear of the
-           subject entirely. The pointer identifies; the badge stays out of the
-           photograph. pin-3 was already built this way and is the reference.
-
-           ROUND 6 — EIGHT PINS, ALL OF THEM LIVE.
-           The hero shows what a street like this could hold. Seven of these
-           lead to a written Discovery. DISC-021 completed the set on 2026-09-25:
-           the filming pin now routes to Your Home On Screen. A pin that
-           promises a page that does not exist is worse than no pin.
-
-           Round 4 shipped three Coming Soon pins. Two of them, the solar
-           roof and the driveway, were still saying "still in development"
-           after their Discoveries had gone live, which told a homeowner a
-           page did not exist when it did. Corrected here. -->
-      <div class="pins" id="pins">
-        <button class="pin" type="button" id="pin-1" data-card="card-1"
-                style="--x:19.3%; --y:64.5%;"
-                data-subject="the timber garden room, sliding doors open, one person at a desk"
-                aria-expanded="false" aria-controls="card-1">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">What Could You Build in Your Garden? &mdash; over the garden room at the end of the near garden</span>
-        </button>
-        <button class="pin" type="button" id="pin-2" data-card="card-2"
-                style="--x:22.0%; --y:29.5%;"
-                data-subject="the detached house with a film crew and their van in front of it"
-                aria-expanded="false" aria-controls="card-2">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">Your Home On Screen &mdash; over the detached house being filmed</span>
-        </button>
-        <button class="pin" type="button" id="pin-3" data-card="card-3"
-                style="--x:43.5%; --y:70.0%;"
-                data-subject="raised vegetable beds with a grower tending them"
-                aria-expanded="false" aria-controls="card-3">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">The Borrowed Garden &mdash; over the raised vegetable beds</span>
-        </button>
-        <button class="pin" type="button" id="pin-4" data-card="card-4"
-                style="--x:81.0%; --y:30.0%;"
-                data-subject="the solar panels on the roof of the house across the road"
-                aria-expanded="false" aria-controls="card-4">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">The House as a Power Station &mdash; over the solar panels on the roof across the road</span>
-        </button>
-        <button class="pin" type="button" id="pin-5" data-card="card-5"
-                style="--x:78.0%; --y:63.5%;"
-                data-subject="the car parked on the paved driveway"
-                aria-expanded="false" aria-controls="card-5">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">Driveway Income &mdash; over the car on the paved driveway</span>
-        </button>
-        <button class="pin" type="button" id="pin-6" data-card="card-6"
-                style="--x:62.0%; --y:40.0%;"
-                data-subject="the arched front porch of the house across the road"
-                aria-expanded="false" aria-controls="card-6">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">The Neighbourhood Parcel House &mdash; over the front porch of the house across the road</span>
-        </button>
-        <button class="pin" type="button" id="pin-7" data-card="card-7"
-                style="--x:56.0%; --y:25.0%;"
-                data-subject="a complete house, roof and gable, further up the street"
-                aria-expanded="false" aria-controls="card-7">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">Home Exchange &mdash; over the whole house further up the street</span>
-        </button>
-        <button class="pin" type="button" id="pin-8" data-card="card-8"
-                style="--x:48.0%; --y:40.5%;"
-                data-subject="the car parked at the kerb in the middle of the street"
-                aria-expanded="false" aria-controls="card-8">
-          <span class="pin-face"><img src="assets/brand/plotnua-mark-master.svg" alt="" width="26" height="26" loading="eager" decoding="async"></span>
-          <span class="pin-tip" aria-hidden="true"></span>
-          <span class="sr">Hidden Cars &mdash; over the car parked at the kerb</span>
-        </button>
+    <div class="hero-copy2 p4-hero-copy" id="heroCopy">
+      <!-- The H1 is unchanged ("What could your property do?"), so the
+           page's SEO heading is preserved. It is set as the kicker; the
+           approved Phase 4 line below is display type, not a heading. -->
+      <div class="p4-band-a">
+      <h1 class="hero-title p4-kicker">What could your property do?</h1>
+      <p class="p4-display" aria-hidden="true">Your property. <em>More possibilities.</em></p>
       </div>
-
-      <article class="pn-card" id="card-1" data-pin="pin-1" aria-labelledby="ct-1">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-1">What Could You Build in Your Garden?</h3>
-        <p class="card-body">An office, a studio, space for the kids &mdash; or, since 2026, even a home.</p>
-        <a class="card-link" href="discovery-living-in-the-garden.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-      <article class="pn-card" id="card-2" data-pin="pin-2" aria-labelledby="ct-2">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-2">Your Home On Screen</h3>
-        <p class="card-body">Film, television, advertising and photography shoots all need ordinary houses. Sometimes a production picks a street and knocks on every door.</p>
-        <a class="card-link" href="discovery-your-home-on-screen.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-      <article class="pn-card" id="card-3" data-pin="pin-3" aria-labelledby="ct-3">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-3">The Borrowed Garden</h3>
-        <p class="card-body">Let someone nearby grow food on a small part of your garden.</p>
-        <a class="card-link" href="discovery-the-borrowed-garden.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-      <article class="pn-card" id="card-4" data-pin="pin-4" aria-labelledby="ct-4">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-4">The House as a Power Station</h3>
-        <p class="card-body">Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
-        <a class="card-link" href="discovery-house-as-power-station.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-      <article class="pn-card" id="card-5" data-pin="pin-5" aria-labelledby="ct-5">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-5">Driveway Income</h3>
-        <p class="card-body">Your driveway is empty for most of the day. Someone nearby may already need it.</p>
-        <a class="card-link" href="discovery-driveway-income.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-      <article class="pn-card" id="card-6" data-pin="pin-6" aria-labelledby="ct-6">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-6">The Neighbourhood Parcel House</h3>
-        <p class="card-body">A few homes on every road are better placed than the rest to take in a parcel.</p>
-        <a class="card-link" href="discovery-neighbourhood-parcel-house.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-      <article class="pn-card" id="card-7" data-pin="pin-7" aria-labelledby="ct-7">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-7">Home Exchange</h3>
-        <p class="card-body">Your house costs the same whether you are in it or not.</p>
-        <a class="card-link" href="discovery-home-exchange.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-      <article class="pn-card" id="card-8" data-pin="pin-8" aria-labelledby="ct-8">
-        <button class="card-close" type="button" aria-label="Close">&times;</button>
-        <p class="card-ref">Discovery</p>
-        <h3 id="ct-8">Hidden Cars</h3>
-        <p class="card-body">Stacked, lowered and concealed parking, and the front garden it gives back.</p>
-        <a class="card-link" href="discovery-hidden-cars.html">Explore <span aria-hidden="true">&rarr;</span></a>
-      </article>
-    </figure>
-
-    <!-- Sits directly under the photograph, not at the end of the hero: when a
-         card docks it must appear next to the pin that opened it, not below the
-         headline and the buttons. display:none on desktop. -->
-    <div class="hero-cards-dock" id="heroCardsDock"></div>
-
-    <div class="hero-copy2" id="heroCopy">
-      <!-- LAUNCH COMPLETION — the headline was "Every home has a different
-           story waiting to be discovered." A homeowner landing here cannot
-           tell from it what this site does; "a story waiting to be
-           discovered" is a feeling, not a fact, and it is the last piece of
-           marketing register left above the fold.
-
-           THE WORDING IS NOT NEW. "what your property could do" is already
-           the approved phrase in the page <title> ("PlotNua | Discover what
-           your property could do") and in the sentence directly below this
-           one. Asking it as a question also matches the Discovery pages,
-           where the section headings are questions a homeowner would
-           actually ask: "Where does an extra room go?", "What are the
-           rules?", "Who is this for?" The line below now reads as the
-           answer to it, which is what it was always written to be. -->
-      <h1 class="hero-title">What could your property do?</h1>
-      <!-- FOUNDER CORRECTION — question 1, answered in one sentence. The
-           headline is the brand line; nothing on the page previously said
-           plainly what PlotNua is or who it is for. -->
       <p class="hero-answer">PlotNua helps Irish homeowners see what their property could make possible
         &mdash; and understand what each option would really take, before committing to anything.</p>
+      <div class="p4-actions">
+        <a class="p4-btn p4-btn-primary" href="discoveries.html">Explore the Discovery Library <span aria-hidden="true">&rarr;</span></a>
+        <a class="p4-btn p4-btn-secondary" href="your-plot.html">Start with Your Plot</a>
+      </div>
+    </div>
+
+    <!-- ================================================================
+         HERO STAGE · POSSIBILITY REVEAL (Phase 4 refined concept 2)
+         The immersive experience mounts here, full-bleed. The markup
+         between the POSSIBILITY REVEAL comments is generated from the
+         approved L2B Prototype v2 by build_reveal_component.py: do not
+         hand-edit it. Its styles and script load from
+         assets/possibility-reveal/. The homepage only sets the stage
+         height, two grounds and a top safe inset (see PLOTNUA HERO STAGE).
+         Locked L1-L5 imagery is untouched; unfinished L6 is not used.
+         ================================================================ -->
+    <div class="hero-stage p4-stage" id="heroStage" data-hero="possibility-reveal">
+<!-- POSSIBILITY REVEAL · L2B v2 component (generated by build_reveal_component.py; do not hand-edit) -->
+<div class="pr pn" id="pr-pn" data-mode="entry" data-pr-root>
+  <a class="skip" href="#pr-paths">Skip to the discovery paths</a>
+  <div class="stage" id="pr-stage">
+    <div class="cam" id="pr-cam">
+      <picture>
+        <source type="image/avif" srcset="assets/possibility-reveal/img/house-L1-L2A-1376.avif 1376w, assets/possibility-reveal/img/house-L1-L2A-2064.avif 2064w, assets/possibility-reveal/img/house-L1-L2A-2752.avif 2752w" sizes="(max-width: 760px) 920px, 100vw">
+        <source type="image/webp" srcset="assets/possibility-reveal/img/house-L1-L2A-1376.webp 1376w, assets/possibility-reveal/img/house-L1-L2A-2064.webp 2064w, assets/possibility-reveal/img/house-L1-L2A-2752.webp 2752w" sizes="(max-width: 760px) 920px, 100vw">
+        <img id="pr-photo" src="assets/possibility-reveal/img/house-L1-L2A-2064.jpg" srcset="assets/possibility-reveal/img/house-L1-L2A-1376.jpg 1376w, assets/possibility-reveal/img/house-L1-L2A-2064.jpg 2064w, assets/possibility-reveal/img/house-L1-L2A-2752.jpg 2752w" sizes="(max-width: 760px) 920px, 100vw"
+             width="2752" height="1536" fetchpriority="high" decoding="async"
+             alt="A two-storey house seen from the back garden, with five black solar panels on the rear roof, a slim battery on the side wall and a heat pump beyond the single-storey extension.">
+      </picture>
+
+      <!-- ENTRY · what the lens reveals (decorative; each has a real button below) -->
+      <svg class="hidden-layer" id="pr-hidden" viewBox="0 0 2752 1536" aria-hidden="true" focusable="false">
+        <rect width="2752" height="1536" fill="rgba(8,18,13,.2)"/>
+        <g class="g-ground">
+          <polygon points="1140,990 2700,990 2660,1180 1100,1180" fill="rgba(70,48,30,.78)"/>
+          <polygon points="1140,990 2700,990 2694,1010 1134,1010" fill="#4f7a43"/>
+          <path class="heatflow" d="M1180 1060 C 1380 1060, 1380 1095, 1580 1095 C 1780 1095, 1780 1060, 1980 1060 C 2180 1060, 2180 1095, 2380 1095 C 2500 1095, 2560 1078, 2640 1060"/>
+          <path class="heatflow" d="M1160 1135 C 1360 1135, 1360 1165, 1560 1165 C 1760 1165, 1760 1135, 1960 1135 C 2160 1135, 2160 1165, 2360 1165 C 2480 1165, 2540 1150, 2620 1135"/>
+        </g>
+        <g class="g-wind">
+          <path d="M735 297 L 735 186" stroke="rgba(248,245,236,.9)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M741 175 L 792 175 L 800 156 L 808 156 L 808 200 L 800 200 L 792 183 L 741 183 Z" fill="rgba(248,245,236,.22)" stroke="#F8F5EC" stroke-width="2.5"/>
+          <g class="rotor-h">
+            <path d="M735 179 C 729 146, 728 124, 735 104 C 742 124, 741 146, 735 179 Z" fill="rgba(248,245,236,.32)" stroke="#F8F5EC" stroke-width="2.5"/>
+            <path d="M735 179 C 729 146, 728 124, 735 104 C 742 124, 741 146, 735 179 Z" transform="rotate(120 735 179)" fill="rgba(248,245,236,.32)" stroke="#F8F5EC" stroke-width="2.5"/>
+            <path d="M735 179 C 729 146, 728 124, 735 104 C 742 124, 741 146, 735 179 Z" transform="rotate(240 735 179)" fill="rgba(248,245,236,.32)" stroke="#F8F5EC" stroke-width="2.5"/>
+          </g>
+          <circle cx="735" cy="179" r="9" fill="rgba(248,245,236,.5)" stroke="#F8F5EC" stroke-width="2.5"/>
+          <path class="windflow" d="M430 150 C 520 140, 600 160, 690 168 M440 205 C 540 200, 610 200, 690 192"/>
+        </g>
+        <g class="g-compute">
+          <circle cx="1190" cy="690" r="210" fill="rgba(12,24,18,.62)" stroke="#F8F5EC" stroke-width="3" stroke-dasharray="18 12"/>
+          <rect x="1040" y="630" width="80" height="128" rx="7" fill="#26323c" stroke="#C9D8C2" stroke-width="3"/>
+          <g fill="#7fb3c9" class="blink"><rect x="1056" y="650" width="48" height="6"/><rect x="1056" y="670" width="48" height="6"/><rect x="1056" y="690" width="48" height="6"/></g>
+          <path class="heatflow" d="M1122 712 C 1150 712, 1160 690, 1188 690"/>
+          <rect x="1190" y="610" width="90" height="170" rx="42" fill="#b8673f" stroke="#C9D8C2" stroke-width="3"/>
+        </g>
+      </svg>
+
+      <!-- SCENE · ground-source heat -->
+      <svg class="scene" id="pr-sc-ground" viewBox="0 0 2752 1536" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="pr-soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d412c"/><stop offset=".55" stop-color="#3f2d1f"/><stop offset="1" stop-color="#241a12"/></linearGradient>
+          <linearGradient id="pr-soilEdge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".08" stop-color="#000" stop-opacity="0"/><stop offset=".92" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient>
+        </defs>
+        <g class="s-open s1">
+          <polygon points="1120,1150 2700,1150 2600,1440 1020,1440" fill="url(#pr-soil)"/>
+          <polygon points="1120,1150 2700,1150 2600,1440 1020,1440" fill="url(#pr-soilEdge)"/>
+          <polygon points="1120,1150 2700,1150 2690,1180 1110,1180" fill="#52803f"/>
+          <g fill="#e9dcc4" opacity=".18"><circle cx="1300" cy="1400" r="6"/><circle cx="1700" cy="1418" r="4"/><circle cx="2100" cy="1388" r="7"/><circle cx="2440" cy="1408" r="5"/><circle cx="1520" cy="1225" r="4"/><circle cx="2280" cy="1230" r="3"/></g>
+          <path d="M1060 1300 H 2660" stroke="#e9dcc4" stroke-opacity=".12" stroke-width="2" stroke-dasharray="10 14"/>
+        </g>
+        <text class="stamp s-fade s1" x="1130" y="1132">ILLUSTRATION</text>
+        <path class="loop s-draw s2" pathLength="1" d="M1180 1240 C 1380 1240, 1380 1280, 1580 1280 C 1780 1280, 1780 1240, 1980 1240 C 2180 1240, 2180 1280, 2380 1280 C 2500 1280, 2540 1260, 2580 1240"/>
+        <path class="loop s-draw s2 d2" pathLength="1" d="M1150 1330 C 1350 1330, 1350 1365, 1550 1365 C 1750 1365, 1750 1330, 1950 1330 C 2150 1330, 2150 1365, 2350 1365 C 2470 1365, 2510 1350, 2550 1330"/>
+        <path class="heatflow s-fade s3" d="M1180 1240 C 1380 1240, 1380 1280, 1580 1280 C 1780 1280, 1780 1240, 1980 1240 C 2180 1240, 2180 1280, 2380 1280 C 2500 1280, 2540 1260, 2580 1240"/>
+        <path class="heatflow s-fade s3" d="M1150 1330 C 1350 1330, 1350 1365, 1550 1365 C 1750 1365, 1750 1330, 1950 1330 C 2150 1330, 2150 1365, 2350 1365 C 2470 1365, 2510 1350, 2550 1330"/>
+        <path class="heatflow rise s-fade s3" d="M1200 1236 C 1150 1100, 1300 900, 1460 760"/>
+        <text class="label s-fade s3 only-d" x="1140" y="1500">a few metres down: about the same temperature all year</text>
+        <text class="label s-fade s3 only-m" x="1760" y="1500" text-anchor="middle">the same temperature all year</text>
+        <g class="s-pop s4"><circle cx="1705" cy="745" r="66" fill="none" stroke="#F8F5EC" stroke-width="6"/><circle cx="1792" cy="676" r="36" fill="#BD6A46"/><text x="1792" y="689" text-anchor="middle" class="or">or</text></g>
+        <text class="label s-fade s4 only-d" x="1846" y="760">one or the other — not both</text>
+        <text class="label s-fade s4 only-m" x="1705" y="870" text-anchor="middle">one or the other</text>
+      </svg>
+
+      <!-- SCENE · wind (v2: roof-mounted micro-turbine, illustration only; nothing is drawn onto the photograph) -->
+      <svg class="scene" id="pr-sc-wind" viewBox="0 0 2752 1536" aria-hidden="true" focusable="false">
+        <g class="s-rise s1"><path d="M735 297 L 735 186" stroke="rgba(248,245,236,.9)" stroke-width="5" stroke-linecap="round"/></g>
+        <g class="s-fade s1">
+          <path d="M741 175 L 792 175 L 800 156 L 808 156 L 808 200 L 800 200 L 792 183 L 741 183 Z" fill="rgba(248,245,236,.22)" stroke="#F8F5EC" stroke-width="2.5"/>
+          <g class="rotor-r s-spin s2">
+            <path d="M735 179 C 729 146, 728 124, 735 104 C 742 124, 741 146, 735 179 Z" fill="rgba(248,245,236,.32)" stroke="#F8F5EC" stroke-width="2.5"/>
+            <path d="M735 179 C 729 146, 728 124, 735 104 C 742 124, 741 146, 735 179 Z" transform="rotate(120 735 179)" fill="rgba(248,245,236,.32)" stroke="#F8F5EC" stroke-width="2.5"/>
+            <path d="M735 179 C 729 146, 728 124, 735 104 C 742 124, 741 146, 735 179 Z" transform="rotate(240 735 179)" fill="rgba(248,245,236,.32)" stroke="#F8F5EC" stroke-width="2.5"/>
+          </g>
+          <circle cx="735" cy="179" r="9" fill="rgba(248,245,236,.5)" stroke="#F8F5EC" stroke-width="2.5"/>
+        </g>
+        <g class="s-fade s3">
+          <path class="windflow" d="M330 130 C 450 120, 560 150, 690 166"/>
+          <path class="windflow" d="M300 190 C 440 185, 560 190, 690 184" style="animation-delay:-.6s"/>
+          <path class="windflow" d="M340 250 C 460 240, 570 225, 690 204" style="animation-delay:-1.1s"/>
+          <text class="label small" x="300" y="105">wind</text>
+        </g>
+        <path class="elecline s-draw s4" pathLength="1" d="M735 300 C 748 350, 770 400, 800 470"/>
+        <circle class="s-pop s4" cx="800" cy="474" r="8" fill="#E9C46A"/>
+        <text class="label small s-fade s4" x="822" y="482">electricity into the house</text>
+        <text class="stamp s-fade s5 only-d" x="560" y="80">ILLUSTRATION · NOT AN ASSESSMENT OF THIS ROOF</text>
+        <text class="stamp s-fade s5 only-m" x="860" y="60" text-anchor="middle">ILLUSTRATION</text>
+        <text class="stamp s-fade s5 only-m" x="860" y="94" text-anchor="middle">NOT AN ASSESSMENT OF THIS ROOF</text>
+      </svg>
+
+      <!-- SCENE · computing heat recovery -->
+      <svg class="scene" id="pr-sc-compute" viewBox="0 0 2752 1536" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="pr-irisClip"><circle class="iris" cx="1190" cy="690" r="330"/></clipPath>
+          <clipPath id="pr-cylClip"><rect x="1164" y="597" width="101" height="196" rx="48"/></clipPath>
+          <linearGradient id="pr-warm" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#d9784a"/><stop offset="1" stop-color="#f4c08c"/></linearGradient>
+        </defs>
+        <g clip-path="url(#pr-irisClip)" class="c-inside">
+          <circle cx="1190" cy="690" r="330" fill="rgba(11,22,16,.9)"/>
+          <g stroke="#3a5244" stroke-width="2" opacity=".55"><path d="M860 600 H1520 M860 680 H1520 M860 760 H1520"/></g>
+          <rect x="960" y="630" width="95" height="150" rx="8" fill="#26323c" stroke="#C9D8C2" stroke-width="3"/>
+          <g fill="#7fb3c9" class="blink"><rect x="978" y="650" width="58" height="6"/><rect x="978" y="672" width="58" height="6"/><rect x="978" y="694" width="58" height="6"/></g>
+          <path class="heatline s-draw s2" pathLength="1" d="M1058 720 C 1100 720, 1110 690, 1160 690"/>
+          <rect x="1162" y="595" width="105" height="200" rx="50" fill="#3d2a22" stroke="#C9D8C2" stroke-width="3"/>
+          <rect class="s-fill s3" clip-path="url(#pr-cylClip)" x="1164" y="597" width="101" height="196" fill="url(#pr-warm)"/>
+          <path class="heatline s-draw s3 d2" pathLength="1" d="M1268 640 L 1380 640 L 1380 700"/>
+          <circle class="s-pop s4" cx="1380" cy="722" r="14" fill="#d9784a"/>
+        </g>
+        <circle class="iris-ring" cx="1190" cy="690" r="330"/>
+        <text class="stamp s-fade s1 only-d" x="1190" y="338" text-anchor="middle">ILLUSTRATION · NOT IN IRISH HOMES</text>
+        <text class="stamp s-fade s1 only-m" x="1190" y="300" text-anchor="middle">ILLUSTRATION</text>
+        <text class="stamp s-fade s1 only-m" x="1190" y="338" text-anchor="middle">NOT IN IRISH HOMES</text>
+        <text class="label s-fade s4 only-d" x="1190" y="1062" text-anchor="middle">abroad: a computer · its heat · the household’s hot water</text>
+        <text class="label s-fade s4 only-m" x="1190" y="1070" text-anchor="middle">abroad: computer → heat → hot water</text>
+        <g class="s-fade s5">
+          <g class="only-d">
+          <circle class="pulse" cx="1880" cy="262" r="46" fill="rgba(207,224,230,.16)" stroke="#CFE0E6" stroke-width="6"/>
+          <path d="M1880 216 L 1880 160" stroke="#CFE0E6" stroke-width="4" stroke-dasharray="8 8"/>
+          <text class="label only-d" x="1880" y="105" text-anchor="middle">Ireland: at town scale, far from here</text>
+          <text class="label small only-d" x="1880" y="142" text-anchor="middle">Tallaght — data-centre heat for public buildings</text>
+          </g>
+          <g class="only-m">
+            <circle class="pulse" cx="1700" cy="285" r="40" fill="rgba(207,224,230,.16)" stroke="#CFE0E6" stroke-width="6"/>
+            <path d="M1700 245 L 1700 215" stroke="#CFE0E6" stroke-width="4" stroke-dasharray="8 8"/>
+            <text class="label" x="1500" y="160" text-anchor="middle">Ireland: town scale only</text>
+            <text class="label small" x="1500" y="200" text-anchor="middle">Tallaght, not homes</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="veil" aria-hidden="true"></div>
+    <div class="lens" id="pr-lens" aria-hidden="true"><span class="lens-grip" id="pr-lensGrip"></span></div>
+    <div class="beacons" id="pr-beacons" role="group" aria-label="Hidden possibilities on this property"></div>
+    <button type="button" class="lens-label" id="pr-lensLabel" tabindex="-1" aria-hidden="true"></button>
+
+    <nav class="layers" id="pr-layers" tabindex="0" aria-label="Other possibilities for this property (other layers are not part of this prototype)">
+      <span class="layers-lab">This property could…</span>
+      <span class="lay is-on">Be renewed</span>
+      <span class="lay is-on">Make its own energy</span>
+      <span class="lay">Grow a garden room</span>
+      <span class="lay">Borrow a garden</span>
+      <span class="lay">Hold a treehouse</span>
+      <span class="lay">Become a retreat</span>
+    </nav>
+
+    <section class="intro" aria-labelledby="pr-introTitle">
+      <h2 class="pr-title" id="pr-introTitle">This house could be a power station.</h2>
+      <p class="lede">Some of it you can see. Some of it is under the lawn, or down the street. <span class="lede-hint">Move the lens to look closer.</span></p>
+      <div class="paths" id="pr-paths" role="group" aria-label="Choose where to start"></div>
+    </section>
+
+    <div class="bar" id="pr-bar">
+      <span class="pill pill-static" id="pr-pathName"></span>
+      <ol class="dots" id="pr-dots" aria-label="Discoveries in this path"></ol>
+      <button class="pill" id="pr-btnReplay" type="button">Replay</button>
+      <button class="pill pill-close" id="pr-btnHome" type="button" aria-label="Close discovery and return to the whole property"><span aria-hidden="true">✕</span> Close<span class="cl-long"> discovery</span></button>
+    </div>
+
+    <section class="caption" id="pr-caption" aria-live="polite" aria-atomic="true"></section>
+
+    <aside class="more" id="pr-more" role="dialog" aria-modal="false" aria-labelledby="pr-moreTitle" hidden></aside>
+  </div>
+
+  <p class="legend" aria-label="How possibilities are marked">
+    <span class="mk mk-full" aria-hidden="true"></span>Available today
+    <span class="mk mk-half" aria-hidden="true"></span>Depends on the site or the house
+    <span class="mk mk-ring" aria-hidden="true"></span>Emerging · not available to Irish homes
+    <span class="mk mk-dash" aria-hidden="true"></span>Illustrative possibility · not assessed
+    <span class="legend-note">Drawings are illustrations, not part of the picture.</span>
+  </p>
+  <noscript>
+  <p class="noscript">This interactive view needs JavaScript. <a href="https://plotnua.ie/discovery-house-as-power-station.html">Read The House as a Power Station</a>.</p>
+</noscript>
+</div>
+<!-- /POSSIBILITY REVEAL -->
+      <p class="p4-caption p4-stage-caption">AI-generated illustration.</p>
     </div>
 
   </div>
@@ -1377,6 +1862,152 @@ button.d-dot[aria-current="true"]::after{
       <p class="continue-sub" id="continueSub"></p>
     </div>
     <a class="continue-link" id="continueLink" href="your-plot.html?myplot=1">Continue &rarr;</a>
+  </div>
+</section>
+
+<section class="discover p4-showcase" id="discover" aria-labelledby="discoverTitle">
+  <!-- PHASE 4 · DISCOVERY SHOWCASE (concept, 19 Oct 2026). Replaces the carousel.
+       Every card, image, category, line and status label is the Discovery
+       Library's own (discoveries.html). Every "next step" is a link that the
+       Discovery's own page already carries, in that page's wording. No new
+       claims, categories, products or suppliers. All twelve Discoveries are
+       visible; nothing is hidden in a scroller. If the Library changes, this
+       section must be updated with it (as the carousel had to be). -->
+  <div class="p4s-head reveal discover-intro">
+    <div class="p4s-headcopy">
+      <div class="lede">The Discovery Library<button type="button" class="atlas-info lib-info"
+          id="libInfoBtn" aria-expanded="false" aria-controls="libInfo"
+          aria-label="What is a Discovery?"><span aria-hidden="true">i</span></button></div>
+      <h2 id="discoverTitle">Different properties. Different opportunities.</h2>
+      <p class="p4s-lede">PlotNua helps you discover possibilities you may never have considered for your property.</p>
+      <div class="lib-info-pop" id="libInfo" role="region" aria-labelledby="libInfoBtn" hidden>
+        <p>A Discovery is one researched opportunity for your property.</p>
+        <p>Some Discoveries include a Property Check &mdash; a few simple
+           questions that help you see what the possibility could mean for your
+           own home.</p>
+      </div>
+    </div>
+    <div class="p4s-headside">
+      <p class="p4s-cats-lab" id="p4sCatsLab">Across the library</p>
+      <ul class="p4s-cats" aria-labelledby="p4sCatsLab"><li>Space</li><li>Garden</li><li>Art</li><li>Energy</li><li>Frontage</li><li>Neighbourhood</li><li>Income</li></ul>
+      <a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">Explore all Discoveries <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+
+  <div class="p4s-lead">
+    <article class="p4s-card p4s-feature">
+      <div class="p4s-media"><img src="assets/img/3cac96685bcd03a5.jpg" alt="A woman with a mug in her kitchen doorway, looking down the garden to a lit timber garden room where three teenagers are playing pool." width="1376" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Space</span><span class="p4s-flag p4s-flag-live">Garden room journey live</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-living-in-the-garden.html">What Could You Build in Your Garden?</a></h3>
+      <p class="p4s-line">An office, a studio, a room for the kids — or, since 2026, a home.</p>
+      <p class="p4s-next"><a href="garden-room-prices-ireland.html">Garden room prices in Ireland <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <div class="p4s-support">
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(min-width:1100px) 20vw, (min-width:721px) 46vw, 50vw"><img src="assets/img/ce9da2e51c945693.jpg" alt="An Irish family outside their home at dusk, with solar panels across the roof, a battery unit in the open garage and an electric car charging in the driveway." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Energy</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-house-as-power-station.html">The House as a Power Station</a></h3>
+      <p class="p4s-line">Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
+      <p class="p4s-next"><a href="disc026-power-station.html">See what your home could do <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><img src="assets/img/75f721f0513e4f37.jpg" alt="A grower crouching beside raised vegetable beds picking tomatoes into a basket, with the homeowner reading on the patio behind." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Garden</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></h3>
+      <p class="p4s-line">Let someone nearby grow food on a small part of your garden.</p>
+      <p class="p4s-next"><a href="disc025-borrowed-garden-check.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><img src="assets/img/dfb125ba9dd7cd87.jpg" alt="A living room with exposed timber beams, hung with large contemporary canvases, with half a dozen visitors talking and looking at the work." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Art</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-a-home-for-art.html">A Home for Art</a></h3>
+      <p class="p4s-line">Your home could be more than somewhere to hang art.</p>
+      <p class="p4s-next"><a href="disc024-open-your-home-to-art.html">Could your home host art? <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><img src="assets/img/4a4a1e4b08edaada.jpg" alt="An Irish semi-detached house with two cars parked in its two driveway spaces." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Income</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-driveway-income.html">Driveway Income</a></h3>
+      <p class="p4s-line">Your driveway is empty for most of the day. Someone nearby may already need it.</p>
+      <p class="p4s-next"><a href="disc014-driveway-income.html">Check your driveway <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    </div>
+  </div>
+
+  <h3 class="p4s-more-h">More from the Library</h3>
+  <div class="p4s-more">
+    <article class="p4s-card p4s-compact">
+      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/7d5f5718cf9cd3da-960w.webp 960w, assets/img/7d5f5718cf9cd3da.webp 1408w" sizes="(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"><img src="assets/img/7d5f5718cf9cd3da.jpg" alt="An Irish back garden at dusk with a lit timber garden room, a steaming barrel sauna, a hot tub in use and a plunge pool set among decking and planting." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Garden</span><span class="p4s-flag">Journey coming soon</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-garden-retreat.html">Garden Retreat</a></h3>
+      <p class="p4s-line p4s-line-c">The smallest way to make your garden somewhere you go takes about a square metre — and the biggest is the whole garden.</p>
+      <p class="p4s-next"><a href="garden-room-prices-ireland.html">Compare garden room prices in Ireland <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-compact">
+      <div class="p4s-media"><img src="assets/img/55f2bd4248ec234f.jpg" alt="A sculptural timber pod raised clear of the lawn on splayed legs in an Irish back garden, with a timber stair and deck leading up to it." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Garden</span><span class="p4s-flag">Journey coming soon</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-above-and-beyond.html">Above and Beyond</a></h3>
+      <p class="p4s-line p4s-line-c">The space above your garden rarely gets counted — and you do not even need a tree to use it.</p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-compact">
+      <div class="p4s-media"><img src="assets/img/3bbcedb3f00a3852.jpg" alt="A compact underground chamber open in the frontage of an Irish home, with three ordinary wheelie bins standing below ground level." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Frontage</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-hidden-bins.html">The Hidden Bins</a></h3>
+      <p class="p4s-line p4s-line-c">Ordinary wheelie bins can be stored below ground and raised when they are needed.</p>
+      <p class="p4s-next"><a href="disc029-hidden-bins-check.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-compact">
+      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/e0d578046cd29bda-960w.webp 960w, assets/img/e0d578046cd29bda.webp 1408w" sizes="(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"><img src="assets/img/e0d578046cd29bda.jpg" alt="An open front door with a shelved unit of parcels inside the porch and a neighbour calling to collect one." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Neighbourhood</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-neighbourhood-parcel-house.html">The Neighbourhood Parcel House</a></h3>
+      <p class="p4s-line p4s-line-c">A few homes on every road are better placed than the rest to take in a parcel.</p>
+      <p class="p4s-next"><a href="disc027-neighbourhood-parcel-house.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-compact">
+      <div class="p4s-media"><img src="assets/img/9aa6c362d5486001.jpg" alt="A car raised on a platform lift above an open chamber in the driveway of an Irish period house, with a second car parked in the lit space below." width="1448" height="1086" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Space</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-hidden-cars.html">Hidden Cars</a></h3>
+      <p class="p4s-line p4s-line-c">Stacked, lowered and concealed parking, and the front garden it gives back.</p>
+      <p class="p4s-next"><a href="disc022-hidden-cars-check.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-compact">
+      <div class="p4s-media"><img src="assets/img/7f49094747879fe4.jpg" alt="An ordinary Irish sitting room during filming, with a camera on a tripod, a boom microphone overhead and two crew at the monitor." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Income</span><span class="p4s-flag">Journey coming soon</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-your-home-on-screen.html">Your Home On Screen</a></h3>
+      <p class="p4s-line p4s-line-c">Some productions go looking for an ordinary house on an ordinary street. Yours might be one.</p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-compact">
+      <div class="p4s-media"><img src="assets/img/1ce6a296e2cd1b22.jpg" alt="A terrace outside a Mediterranean house with wooden shutters and bougainvillea, a table and chairs looking out over a bay towards a coastal village." width="1376" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Space</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-home-exchange.html">Home Exchange</a></h3>
+      <p class="p4s-line p4s-line-c">Your house costs the same whether you are in it or not.</p>
+      <p class="p4s-next"><a href="disc005-home-exchange.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <a class="p4s-all" href="discoveries.html"><span class="p4s-all-k">The Discovery Library</span><span class="p4s-all-t">Explore all Discoveries</span><span class="p4s-all-a" aria-hidden="true">&rarr;</span></a>
   </div>
 </section>
 
@@ -1457,164 +2088,7 @@ button.d-dot[aria-current="true"]::after{
   </div>
 </section>
 
-<section class="discover" id="discover">
-  <div class="reveal discover-intro">
-  <!-- ROUND 3 — the paragraph that used to be here explained what a Discovery
-       is and warned the visitor they would have to answer questions. It
-       answered a question nobody had yet asked, and it spent the curiosity the
-       cards were building. The one useful sentence in it is now behind the
-       information control, for anyone who wants it. -->
-  <div class="lede">The Discovery Library<button type="button" class="atlas-info lib-info"
-      id="libInfoBtn" aria-expanded="false" aria-controls="libInfo"
-      aria-label="What is a Discovery?"><span aria-hidden="true">i</span></button></div>
-  <h2>Different properties. Different opportunities.</h2>
-  <div class="lib-info-pop" id="libInfo" role="region" aria-labelledby="libInfoBtn" hidden>
-    <p>A Discovery is one researched opportunity for your property.</p>
-    <!-- LAUNCH READINESS — the homepage named no capability at all: three
-         Discoveries carry a Property Check and this page mentioned it
-         nowhere. One sentence, in the panel that already explains what a
-         Discovery is. "Some" is load-bearing: three of ten have one, and
-         the library says which. It promises questions and a reading of
-         them, and nothing else. -->
-    <p>Some Discoveries include a Property Check &mdash; a few simple
-       questions that help you see what the possibility could mean for your
-       own home.</p>
-  </div>
-  </div>
 
-  <div class="d-carousel-wrap">
-    <div class="d-carousel" id="dCarousel" role="region" aria-label="Discovery Library examples" tabindex="0">
-      <a class="d-card" href="discovery-living-in-the-garden.html">
-        <div class="d-card-media"><img src="assets/img/8c60a8f27eb9c697.jpg" loading="lazy" decoding="async" alt="An ordinary Irish back garden behind a suburban house, with a small single-storey home standing at the far end, its door open."></div>
-        <div class="d-card-copy">
-          <h3>What Could You Build in Your Garden?</h3>
-          <p>An office, a studio, a room for the kids &mdash; or, since 2026, a home.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-house-as-power-station.html">
-        <div class="d-card-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(min-width:1000px) max(34vw, 92vh, 587px), (min-width:640px) max(56vw, 92vh, 587px), max(78vw, 92vh, 587px)"><img src="assets/img/ce9da2e51c945693.jpg" loading="lazy" decoding="async" alt="An Irish family outside their home at dusk, with solar panels on the roof and a car charging in the driveway."></picture></div>
-        <div class="d-card-copy">
-          <h3>The House as a Power Station</h3>
-          <p>Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-the-borrowed-garden.html">
-        <div class="d-card-media"><img src="assets/img/e5ecf61c22bb13db.jpg" loading="lazy" decoding="async" alt="An Irish back garden with raised vegetable beds along one side and a grower tending them."></div>
-        <div class="d-card-copy">
-          <h3>The Borrowed Garden</h3>
-          <p>Let someone nearby grow food on a small part of your garden.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-home-exchange.html">
-        <div class="d-card-media"><img src="assets/img/1ce6a296e2cd1b22.jpg" loading="lazy" decoding="async" alt="A terrace outside a Mediterranean house with wooden shutters and bougainvillea, looking out over a bay to a coastal village."></div>
-        <div class="d-card-copy">
-          <h3>Home Exchange</h3>
-          <p>Your house costs the same whether you are in it or not.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-neighbourhood-parcel-house.html">
-        <div class="d-card-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/8b20a0968b1fc5a1-960w.webp 960w, assets/img/8b20a0968b1fc5a1.webp 1408w" sizes="(min-width:1000px) max(34vw, 92vh, 587px), (min-width:640px) max(56vw, 92vh, 587px), max(78vw, 92vh, 587px)"><img src="assets/img/8b20a0968b1fc5a1.jpg" loading="lazy" decoding="async" alt="An Irish house on a summer afternoon with a timber porch over the front door and a car in the gravel driveway."></picture></div>
-        <div class="d-card-copy">
-          <h3>The Neighbourhood Parcel House</h3>
-          <p>A few homes on every road are better placed than the rest to take in a parcel.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-a-home-for-art.html">
-        <div class="d-card-media"><img src="assets/img/dfb125ba9dd7cd87.jpg" loading="lazy" decoding="async" alt="A generous Irish living room hung with large, bold contemporary canvases, with visitors talking and looking at the work."></div>
-        <div class="d-card-copy">
-          <h3>A Home for Art</h3>
-          <p>Your home could be more than somewhere to hang art.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-hidden-cars.html">
-        <div class="d-card-media"><img src="assets/img/9aa6c362d5486001.jpg" loading="lazy" decoding="async" alt="A car raised on a platform lift above an open chamber in the driveway of an Irish period house, a second car parked in the lit space below."></div>
-        <div class="d-card-copy">
-          <h3>Hidden Cars</h3>
-          <p>Stacked, lowered and concealed parking, and the front garden it gives back.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-driveway-income.html">
-        <div class="d-card-media"><img src="assets/img/b5cbac3fff9072d4.jpg" loading="lazy" decoding="async" alt="An Irish semi-detached house on a suburban street, its two-space driveway standing completely empty, while cars line the kerb opposite and one is parked up on the grass verge, with an office and apartment development a short walk away."></div>
-        <div class="d-card-copy">
-          <h3>Driveway Income</h3>
-          <p>Your driveway is empty for most of the day. Someone nearby may already need it.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-hidden-bins.html">
-        <div class="d-card-media"><img src="assets/img/3bbcedb3f00a3852.jpg" loading="lazy" decoding="async" alt="A compact underground chamber open in the frontage of an Irish home, with three ordinary wheelie bins standing below ground level."></div>
-        <div class="d-card-copy">
-          <h3>The Hidden Bins</h3>
-          <p>Ordinary wheelie bins can be stored below ground and raised when they are needed.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-your-home-on-screen.html">
-        <div class="d-card-media"><img src="assets/img/ea3f24eedab76294.jpg" loading="lazy" decoding="async" alt="An ordinary Irish semi-detached house seen from the road: pebbledash above, red brick below, three wheelie bins at the hedge, a car on a concrete-strip driveway and the street running away to the left."></div>
-        <div class="d-card-copy">
-          <h3>Your Home On Screen</h3>
-          <p>Some productions go looking for an ordinary house on an ordinary street. Yours might be one.</p>
-        </div>
-      </a>
-            <a class="d-card" href="discovery-above-and-beyond.html">
-        <div class="d-card-media"><img src="assets/img/55f2bd4248ec234f.jpg" loading="lazy" decoding="async" alt="A freestanding elevated timber pod in an ordinary garden."></div>
-        <div class="d-card-copy">
-          <h3>Above and Beyond</h3>
-          <p>The space above your garden rarely gets counted &mdash; and you do not even need a tree to use it.</p>
-        </div>
-      </a>
-      <a class="d-card" href="discovery-garden-retreat.html">
-        <div class="d-card-media"><img src="assets/img/5d6a5fd0aab3d9ce.jpg" loading="lazy" decoding="async" alt="A small round timber cold-plunge tub in the corner of an ordinary Irish garden."></div>
-        <div class="d-card-copy">
-          <h3>Garden Retreat</h3>
-          <p>The smallest way to make your garden somewhere you go takes about a square metre &mdash; and the biggest is the whole garden.</p>
-        </div>
-      </a>
-    </div>
-
-    <!-- ISSUE 003 — the affordance and the controls, now genuinely INSIDE
-         THE WRAP rather than inside the scrolling track.
-
-         .d-fade and .d-edge are position:absolute and .d-carousel is
-         static, so they always resolved against .d-carousel-wrap and they
-         render exactly as before. .d-controls is position:static, so
-         inside the track it was laid out as one more column of the
-         scrolling row: measured at x=2132 while the visible right edge of
-         the track was 1310. The previous arrow, the dots and the next
-         arrow have therefore never been on screen. Nothing here is
-         restyled; the element is in the place its own comment claimed. -->
-    <div class="d-fade" aria-hidden="true"></div>
-    <button class="d-edge" type="button" id="dEdge" aria-label="Show more Discoveries">
-      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" width="16" height="16"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="d-controls">
-        <button class="d-arrow d-prev" aria-label="Previous example" type="button">
-          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      <!-- One dot per card. The investigation proved a mismatch is not
-           cosmetic: with ten cards and five dots the next arrow disables
-           itself at card five and the last five Discoveries cannot be
-           reached from the controls at all. -->
-      <div class="d-dots" role="group" aria-label="Discovery Library position">
-        <button class="d-dot" type="button" data-index="0" aria-label="What Could You Build in Your Garden?" aria-current="true"></button>
-        <button class="d-dot" type="button" data-index="1" aria-label="The House as a Power Station" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="2" aria-label="The Borrowed Garden" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="3" aria-label="Open Your Home to Art" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="4" aria-label="Home Exchange" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="5" aria-label="The Neighbourhood Parcel House" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="6" aria-label="Buy Original Irish Art" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="7" aria-label="Hidden Cars" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="8" aria-label="Driveway Income" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="9" aria-label="The Hidden Bins" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="10" aria-label="Your Home On Screen" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="11" aria-label="Above and Beyond" aria-current="false"></button>
-        <button class="d-dot" type="button" data-index="12" aria-label="Garden Retreat" aria-current="false"></button>
-      </div>
-        <button class="d-arrow d-next" aria-label="Next example" type="button">
-          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-    </div>
-  </div>
-  <div class="d-all"><a href="discoveries.html">Browse the Discovery Library &rarr;</a></div>
-</section>
 
 <!-- CLOSING STATEMENT — the visitor has reached the end of the
      story; nothing left to sell, just one quiet line before the footer. -->
@@ -1682,230 +2156,57 @@ button.d-dot[aria-current="true"]::after{
 </footer>
 
 <script>
-  /* ================= HOMEPAGE V2 — THE FUTURE =================
-     Three small things and no per-frame loop:
-
-     1) A load timeline. The photograph fades in, and only once it has
-        actually decoded do the pins begin — 800ms after the image is ready,
-        not 800ms after script execution. Starting the reveal against a blank
-        plate is the one thing that would make this feel cheap, and on a slow
-        connection a fixed setTimeout does exactly that.
-     2) One disclosure controller for every pin. Hover opens on devices that
-        genuinely hover; tap/click opens everywhere; Escape and outside-click
-        close; only one card is ever open.
-     3) A card placer that keeps the card inside the frame, flipping above or
-        below the pin and clamping horizontally. Below 720px the cards are
-        moved out of the frame entirely and docked under it.
-
-     No bouncing, no pulsing, no autoplay, nothing that animates a layout
-     property. */
+  /* ================= PLOTNUA HERO STAGE · DECOUPLED (D1) =================
+     The aerial hero (photograph, eight pins, their cards and the card
+     placer) is retired, and its script with it. That script was also the
+     only thing that revealed the fixed brand mark, the wordmark and the
+     hero copy, and only once its photograph had loaded; without
+     #heroFrame it returned early and left them invisible, and with the
+     frame removed later it threw on resize. Now they no longer depend on
+     any hero media: they are revealed as soon as the document is ready.
+     All eight pin routes remain in the Discovery showcase. */
   (function(){
-    var frame = document.getElementById('heroFrame');
-    if (!frame) return;
-    var photo   = document.getElementById('heroPhoto');
-    var wordmark= document.getElementById('heroWordmark');
-    var copy    = document.getElementById('heroCopy');
-    var dock    = document.getElementById('heroCardsDock');
-    var pins    = Array.prototype.slice.call(frame.querySelectorAll('.pin'));
-    var cards   = Array.prototype.slice.call(frame.parentNode.querySelectorAll('.pn-card'));
-    var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var canHover= window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    var mobileQ = window.matchMedia('(max-width: 720px)');
-    var hero    = document.getElementById('hero');
-    /* A card is ~200px tall. A frame shorter than this cannot hold one without
-       burying a neighbouring pin, so it docks instead. Measured, not guessed:
-       1366x768 lands at 376 and docks; 1440x900 lands at 430 and floats. */
-    var DOCK_BELOW = 380;
-    function docked(){
-      return mobileQ.matches ||
-             document.getElementById('heroFrame').getBoundingClientRect().height < DOCK_BELOW;
-    }
-
-    var REVEAL_DELAY = 800;   // brief: pins appear ~800ms after the page settles
-    var REVEAL_STAGGER = 260; // one at a time, calmly
-
-    /* ---- 1 · load timeline ---- */
-    function revealPins(){
-      pins.forEach(function(p, i){
-        if (reduce){ p.classList.add('on'); return; }
-        setTimeout(function(){ p.classList.add('on'); }, REVEAL_DELAY + i * REVEAL_STAGGER);
-      });
-    }
-    function photoReady(){
-      photo.classList.add('on');
-      if (wordmark) wordmark.classList.add('on');
-      if (copy) copy.classList.add('on');
-      /* v4 fix. .brand-mark is opacity:0 until .in is added; every Discovery
-         page adds it and the homepage never did, so the fixed mark has been
-         invisible here since v2. Same trigger as the Discovery pages: it
-         appears with the photograph. */
+    function show(){
       var bm = document.getElementById('brandMark');
       if (bm) bm.classList.add('in');
-      revealPins();
-    }
-    if (photo.complete && photo.naturalWidth) {
-      requestAnimationFrame(photoReady);
-    } else {
-      photo.addEventListener('load', photoReady, { once:true });
-      // If the master ever fails to load, the copy must not stay invisible.
-      photo.addEventListener('error', function(){
-        if (wordmark) wordmark.classList.add('on');
-        if (copy) copy.classList.add('on');
-      }, { once:true });
-    }
-
-    /* ---- 2 · card placement ----
-       A four-candidate solver rather than a fixed offset, and it exists
-       because of a real defect found in testing: with the card always placed
-       above its pin, opening the card for one pin laid it straight over a
-       neighbouring pin and swallowed that pin's clicks. With six pins on one
-       photograph, some pair will always be close enough for that to happen on
-       some screen.
-
-       So each placement is scored: it must fit inside the frame, and it is
-       penalised for every OTHER pin it would cover. First clean fit wins;
-       if nothing is clean, the least-obstructive option is used. */
-    function place(card, pin){
-      if (docked()) return;                     // docked; CSS handles it
-      var fr = frame.getBoundingClientRect();
-      var pr = pin.getBoundingClientRect();
-      card.style.visibility = 'hidden';
-      card.style.display = 'block';
-      var cw = card.offsetWidth, ch = card.offsetHeight;
-      card.style.display = '';
-      card.style.visibility = '';
-
-      var GAP = 12, EDGE = 8;
-      var cx = (pr.left - fr.left) + pr.width / 2;
-      var top = pr.top - fr.top, bot = top + pr.height;
-
-      var others = pins.filter(function(p){ return p !== pin; }).map(function(p){
-        var r = p.getBoundingClientRect();
-        return { l: r.left - fr.left, t: r.top - fr.top, r: r.right - fr.left, b: r.bottom - fr.top };
-      });
-
-      var candidates = [
-        { x: cx - cw / 2,            y: top - ch - GAP },   // above
-        { x: cx - cw / 2,            y: bot + GAP      },   // below
-        { x: pr.right - fr.left + GAP, y: top - ch / 3 },   // right
-        { x: pr.left - fr.left - cw - GAP, y: top - ch / 3 } // left
-      ];
-
-      var best = null;
-      candidates.forEach(function(c, i){
-        var x = Math.max(EDGE, Math.min(c.x, fr.width  - cw - EDGE));
-        var y = Math.max(EDGE, Math.min(c.y, fr.height - ch - EDGE));
-        var fits = (c.y >= EDGE - 0.5) && (c.y + ch <= fr.height - EDGE + 0.5);
-        var hits = others.filter(function(o){
-          return !(x + cw < o.l || o.r < x || y + ch < o.t || o.b < y);
-        }).length;
-        var score = hits * 100 + (fits ? 0 : 40) + i;   // prefer earlier candidates
-        if (!best || score < best.score) best = { x: x, y: y, score: score, hits: hits };
-      });
-
-      card.style.left = best.x + 'px';
-      card.style.top  = best.y + 'px';
-      card.setAttribute('data-obstructs', String(best.hits));
-    }
-
-    /* ---- 3 · disclosure ---- */
-    var openCard = null;
-    function close(){
-      if (!openCard) return;
-      openCard.classList.remove('open');
-      var p = document.getElementById(openCard.getAttribute('data-pin'));
-      if (p) p.setAttribute('aria-expanded', 'false');
-      openCard = null;
-    }
-    function open(pin){
-      var card = document.getElementById(pin.getAttribute('data-card'));
-      if (!card) return;
-      if (openCard === card) return;
-      close();
-      place(card, pin);
-      card.classList.add('open');
-      pin.setAttribute('aria-expanded', 'true');
-      openCard = card;
-    }
-
-    pins.forEach(function(pin){
-      pin.addEventListener('click', function(e){
-        e.stopPropagation();
-        var card = document.getElementById(pin.getAttribute('data-card'));
-        if (openCard === card) { close(); } else { open(pin); }
-      });
-      if (canHover){
-        var t;
-        pin.addEventListener('mouseenter', function(){
-          clearTimeout(t); t = setTimeout(function(){ open(pin); }, 90);
-        });
-        pin.addEventListener('mouseleave', function(){ clearTimeout(t); });
-      }
-      pin.addEventListener('focus', function(){ if (canHover) open(pin); });
-    });
-
-    cards.forEach(function(card){
-      card.addEventListener('click', function(e){ e.stopPropagation(); });
-      var x = card.querySelector('.card-close');
-      if (x) x.addEventListener('click', function(){
-        var p = document.getElementById(card.getAttribute('data-pin'));
-        close();
-        if (p) p.focus();
-      });
-      if (canHover){
-        card.addEventListener('mouseleave', function(){ close(); });
-      }
-    });
-
-    document.addEventListener('click', close);
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && openCard){
-        var p = document.getElementById(openCard.getAttribute('data-pin'));
-        close();
-        if (p) p.focus();
-      }
-    });
-
-    /* ---- 4 · move the cards between frame and dock at the breakpoint ---- */
-    function relocate(){
-      var isDocked = docked();
-      hero.classList.toggle('cards-docked', isDocked);
-      var target = isDocked ? dock : frame;
-      cards.forEach(function(c){
-        if (c.parentNode !== target){
-          close();
-          c.style.left = ''; c.style.top = '';
-          target.appendChild(c);
-        }
+      ['heroWordmark','heroCopy'].forEach(function(id){
+        var el = document.getElementById(id); if (el) el.classList.add('on');
       });
     }
-    relocate();
-    if (mobileQ.addEventListener) mobileQ.addEventListener('change', relocate);
-    window.addEventListener('resize', function(){
-      relocate();
-      if (openCard){
-        var p = document.getElementById(openCard.getAttribute('data-pin'));
-        if (p) place(openCard, p);
-      }
-    }, { passive:true });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', show);
+    else show();
+  })();
 
-    /* Review surface — mirrors the Plot Twist convention so a reviewer can
-       assert on the built state rather than eyeball it. */
-    if (new URLSearchParams(window.location.search).get('review') === 'pn'){
-      window.__pnHero = {
-        heroImages: 1,
-        carousels: 0,
-        scenes: document.querySelectorAll('.scene').length,
-        pins: pins.length,
-        cards: cards.length,
-        revealDelayMs: REVEAL_DELAY,
-        revealStaggerMs: REVEAL_STAGGER,
-        pinIds: pins.map(function(p){ return p.id; }),
-        hoverCapable: canHover,
-        cardsDocked: docked(),
-        naturalImage: [photo.naturalWidth, photo.naturalHeight]
-      };
+  /* PLOTNUA HERO STAGE · SAFE INSET. The brand mark, its (i) and the Search
+     pill are fixed to the viewport. When the Reveal's stage scrolls up
+     beneath them, its own top controls (layer chips, Close, Replay) are
+     moved down by exactly the overlap, so the fixed furniture never covers
+     a Reveal control. The Reveal reads this as --pr-safe-top; nothing else
+     in it changes. */
+  (function(){
+    var root = document.querySelector('#heroStage [data-pr-root]');
+    if (!root) return;
+    var FURN = '.brand-mark, .brand-info, .pns-pill';
+    var bottom = 0, raf = 0;
+    function measure(){
+      bottom = 0;
+      document.querySelectorAll(FURN).forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if (r.width && getComputedStyle(el).position === 'fixed') bottom = Math.max(bottom, r.bottom);
+      });
+      bottom = Math.ceil(bottom + 8);
     }
+    function apply(){
+      raf = 0;
+      var top = root.getBoundingClientRect().top;
+      var inset = Math.max(0, Math.min(bottom, bottom - top));
+      root.style.setProperty('--pr-safe-top', inset + 'px');
+    }
+    function queue(){ if (!raf) raf = requestAnimationFrame(apply); }
+    measure(); apply();
+    window.addEventListener('scroll', queue, { passive:true });
+    window.addEventListener('resize', function(){ measure(); queue(); });
+    window.addEventListener('load', function(){ measure(); queue(); });
   })();
 
   /* Fade-up for ordinary (non-scene) sections further down the page —

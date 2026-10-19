@@ -1,0 +1,131 @@
+{
+ "schema": "plotnua.possibility-reveal.encodings.v1",
+ "what_this_is": "How the nine homepage Reveal images were made. Not a provenance declaration and not a permission: see image-provenance-records.json.",
+ "source": {
+  "name": "L1-plus-L2A.png (Possibility Reveal L2A LOCKED, 18 Oct 2026)",
+  "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+  "pixels": [
+   2752,
+   1536
+  ],
+  "note": "Founder-locked composite: BEFORE master + L1 (Gemini edit, deterministic repair) + L2A (deterministic renderers). Held outside the repository; identified by pixel sha256 because Mac copies add a metadata block."
+ },
+ "method": "Pillow 12.3.0: RGB, Lanczos resize to the target width (no crop, no upscale), then encode.",
+ "encoders": {
+  "avif": {
+   "format": "AVIF",
+   "params": {
+    "quality": 62,
+    "speed": 4
+   }
+  },
+  "webp": {
+   "format": "WEBP",
+   "params": {
+    "quality": 80,
+    "method": 6
+   }
+  },
+  "jpg": {
+   "format": "JPEG",
+   "params": {
+    "quality": 84,
+    "optimize": true,
+    "progressive": true,
+    "subsampling": 2
+   }
+  }
+ },
+ "files": {
+  "house-L1-L2A-1376.avif": {
+   "sha256": "838cd36d7b8cf9ddabdbed3c11972b774b0bf6f2341b872e0ba453a8c167ec8a",
+   "bytes": 166367,
+   "pixels": [
+    1376,
+    768
+   ],
+   "ssim_vs_source_at_same_size": 0.9639,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-1376.jpg": {
+   "sha256": "57f81970ac62d90612dbbd0d3d61b03cc6b2762f544493aa9b89e9dfe68c8dbf",
+   "bytes": 298813,
+   "pixels": [
+    1376,
+    768
+   ],
+   "ssim_vs_source_at_same_size": 0.9697,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-1376.webp": {
+   "sha256": "92851c7bc30dd6b40c8087b2d513acd5db884f74dff326f39abe262aecffe373",
+   "bytes": 237748,
+   "pixels": [
+    1376,
+    768
+   ],
+   "ssim_vs_source_at_same_size": 0.9681,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-2064.avif": {
+   "sha256": "fc88d0dcada77ef3c117821c28a3efb74a18c58c6ff54d38a8ef5eee478aaa9a",
+   "bytes": 276901,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "ssim_vs_source_at_same_size": 0.9745,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-2064.jpg": {
+   "sha256": "b031d081a4de09a8679ab5763b31ec87fc62e41557bafbfc8eadfd110391dfd3",
+   "bytes": 548570,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "ssim_vs_source_at_same_size": 0.981,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-2064.webp": {
+   "sha256": "2d26769c492755cb11309bcc6442af37b1d1a9c6cb77503eb405fcb2c13fdc59",
+   "bytes": 384932,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "ssim_vs_source_at_same_size": 0.9706,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-2752.avif": {
+   "sha256": "51563ff42a18ac9c3cdaf8d4d4ab206ed2c1014959367b853d3dc0306f63b66d",
+   "bytes": 374309,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "ssim_vs_source_at_same_size": 0.9808,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-2752.jpg": {
+   "sha256": "dec3433ce0f34c0acc148bbac1d406672c5eeb989f592377e2b2439af7bcaefb",
+   "bytes": 814933,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "ssim_vs_source_at_same_size": 0.9866,
+   "embeds_c2pa": false
+  },
+  "house-L1-L2A-2752.webp": {
+   "sha256": "f5a2c67f99180d0fa95b61193e7386b4afe1ab0499e953a2ef1b396d5a83f177",
+   "bytes": 512980,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "ssim_vs_source_at_same_size": 0.9744,
+   "embeds_c2pa": false
+  }
+ }
+}

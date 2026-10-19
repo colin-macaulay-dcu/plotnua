@@ -56,7 +56,647 @@
   },
   "label_note": "An undeclared asset gets NO label. Inventing a classification to fill a caption is the error this register exists to prevent, and no published caption changes until the matching record exists.",
   "legacy_undeclared_note": "THE RATCHET. Every asset below is enumerated by path and sha256. The guard refuses any local image on a published page that is in neither records nor this list, so no NEW undeclared image can be added. The count is printed on every CI run and only ever goes down. A legacy entry is NOT a declaration, is NOT verified, is NOT authorised supplier imagery, and may not reach a product card or a supplier context.",
-  "records": [],
+  "records": [
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.avif",
+      "sha256": "838cd36d7b8cf9ddabdbed3c11972b774b0bf6f2341b872e0ba453a8c167ec8a",
+      "bytes": 166367,
+      "pixels": [
+        1376,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.jpg",
+      "sha256": "57f81970ac62d90612dbbd0d3d61b03cc6b2762f544493aa9b89e9dfe68c8dbf",
+      "bytes": 298813,
+      "pixels": [
+        1376,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.webp",
+      "sha256": "92851c7bc30dd6b40c8087b2d513acd5db884f74dff326f39abe262aecffe373",
+      "bytes": 237748,
+      "pixels": [
+        1376,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.avif",
+      "sha256": "fc88d0dcada77ef3c117821c28a3efb74a18c58c6ff54d38a8ef5eee478aaa9a",
+      "bytes": 276901,
+      "pixels": [
+        2064,
+        1152
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.jpg",
+      "sha256": "b031d081a4de09a8679ab5763b31ec87fc62e41557bafbfc8eadfd110391dfd3",
+      "bytes": 548570,
+      "pixels": [
+        2064,
+        1152
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.webp",
+      "sha256": "2d26769c492755cb11309bcc6442af37b1d1a9c6cb77503eb405fcb2c13fdc59",
+      "bytes": 384932,
+      "pixels": [
+        2064,
+        1152
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.avif",
+      "sha256": "51563ff42a18ac9c3cdaf8d4d4ab206ed2c1014959367b853d3dc0306f63b66d",
+      "bytes": 374309,
+      "pixels": [
+        2752,
+        1536
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.jpg",
+      "sha256": "dec3433ce0f34c0acc148bbac1d406672c5eeb989f592377e2b2439af7bcaefb",
+      "bytes": 814933,
+      "pixels": [
+        2752,
+        1536
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    },
+    {
+      "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.webp",
+      "sha256": "f5a2c67f99180d0fa95b61193e7386b4afe1ab0499e953a2ef1b396d5a83f177",
+      "bytes": 512980,
+      "pixels": [
+        2752,
+        1536
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation, then Google Gemini image editing, then PlotNua deterministic build tools (L1 repair and composite, L2A renderers, web encodings)",
+        "date": "2026-10-17"
+      },
+      "prompt": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider.",
+      "prompt_chain": [
+        {
+          "step": "ChatGPT composition, conversation 'PlotNua business development'",
+          "final_instruction_verbatim": "Yes, and remember, we don't need to see the front driveway and the cars parked there. We just need to have the illusion of that there. You have to see what you would normally see from the back. But it has to be there for it to work. - Now go ahead and try and make your perfect image.",
+          "confidence": "documented conversation evidence, recovered by the founder"
+        },
+        {
+          "step": "Gemini refinement (chat e51573a34ab3e560), sent with the reference image",
+          "prompt": "= prompt above (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt, SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1)",
+          "confidence": "recovered and founder-confirmed"
+        },
+        {
+          "step": "Gemini second edit, 2026-10-17T20:39:14Z",
+          "prompt": null,
+          "confidence": "not known whether a separate instruction was given; none assumed"
+        },
+        {
+          "step": "L1 house makeover, Gemini candidate 2, 2026-10-17T21:52:42Z",
+          "prompt_documented_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 \u00d7 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+          "confidence": "text documented at 21:48 UTC, four minutes before generation; its use is a strong inference, not confirmed. Upload: a credential-less copy of BEFORE (inference)."
+        },
+        {
+          "step": "L2A solar, battery and heat pump",
+          "prompt": null,
+          "confidence": "no generation step: deterministic renderers (lock record, 18 Oct 2026)"
+        }
+      ],
+      "reference_inputs": [
+        "ChatGPT-generated composition (conversation 'PlotNua business development', 17 Oct 2026); original not recovered; one-third copy SHA-256 5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+        "Seven Daft.ie property-listing photographs, third-party, unlicensed, kept privately as provenance evidence; used as creative references in the ChatGPT development; not established whether supplied to the image generator; comparison found no apparent reproduction (PN-FDR-2026-10-19-01)",
+        "BEFORE generation 1 (Gemini, 2026-10-17T20:37:03Z), SHA-256 6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+        "BEFORE 1x original (Gemini, 2026-10-17T20:39:14Z), SHA-256 7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+        "A credential-less copy of BEFORE, uploaded for L1 candidate 2 (Gemini, 2026-10-17T21:52:42Z), SHA-256 of output cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-19",
+        "attests": "I reviewed this image. It is an AI-generated illustration of a fictional Irish suburban house and garden, not a photograph of a real property. It was produced with ChatGPT and then refined with Google Gemini. During the ChatGPT development I supplied seven Daft.ie property-listing photographs as creative references. I cannot establish whether they were passed to the image generator as visual input. A documented technical and visual comparison found no apparent reproduction of any of those photographs, of the houses they show, or of their garden layouts or compositions. The image is not intended to depict any named product, organisation, supplier or real address, and to my knowledge no supplier's photograph or product design was used. The reference photographs are kept privately and are not published by PlotNua. The Gemini refinement prompt is recorded word for word. Whether a separate instruction was given for the second Gemini edit is not known. Declared under founder decision PN-FDR-2026-10-19-01."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "decision_ref": "PN-FDR-2026-10-19-01 (revision 4, approved in principle 19 Oct 2026)",
+      "lineage": "governance/POSSIBILITY-REVEAL-PROVENANCE-DRAFT-v4-2026-10-19.json (chain); source pixel SHA-256 5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Google credentials are on the 1x original and generation 1 (governance/c2pa-source-credentials/); upscaling and re-encoding remove them."
+      },
+      "service_terms": {
+        "checked": "2026-10-19",
+        "google": "Gemini used with the founder's PERSONAL Google account, not a DCU/institutional account (founder confirmation, 19 Oct 2026). Google Terms of Service (effective 30 Jul 2026): 'Google will not claim ownership over that content.'",
+        "openai": "OpenAI Europe Terms of Use (updated 16 Jan 2026): the user owns Output and OpenAI assigns its rights in Output; no restriction on commercial use of Output beyond not developing competing models.",
+        "recorded_issue": "OpenAI input warranty: 'You represent and warrant that you have all rights, licences, and permissions needed to provide Input to our Services.' Seven Daft.ie listing photographs were supplied to the ChatGPT conversation. Evidence: whether they reached the image generator is not established; the comparison found no apparent reproduction. Recorded under standard 5; founder decision 19 Oct 2026: not automatically escalated to legal review."
+      }
+    }
+  ],
   "legacy_undeclared": [
     {
       "asset": "404-hidden-discovery.png",
@@ -3022,6 +3662,60 @@
       },
       "made": "2026-10-19",
       "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI, no input ingredients. Evidence: governance/c2pa-source-credentials/deployed-ce9da2e51c945693.jpg.c2pa.json (read 19 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/e0d578046cd29bda-960w.webp",
+      "sha256": "d8aa658128b5df695cd7cf321f5246647405ec583810f2ec62bc280840b28b53",
+      "bytes": 122310,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/e0d578046cd29bda.jpg",
+        "sha256": "c00d060923bb832097e8e767b40601bf574391c2dd32b0562ae414d2029a7828"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9683,
+        "psnr_db": 34.89,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-19",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from input ingredients that each carry a signed Google credential; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-e0d578046cd29bda.jpg.c2pa.json (read 19 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/e0d578046cd29bda.webp",
+      "sha256": "2962036eb6d77779c05f75f0f0f9096f363a7b46bf96c1fd6eabc033704da118",
+      "bytes": 240566,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/e0d578046cd29bda.jpg",
+        "sha256": "c00d060923bb832097e8e767b40601bf574391c2dd32b0562ae414d2029a7828"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9649,
+        "psnr_db": 35.73,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-19",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from input ingredients that each carry a signed Google credential; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-e0d578046cd29bda.jpg.c2pa.json (read 19 Oct 2026).",
       "content_credentials": {
         "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,

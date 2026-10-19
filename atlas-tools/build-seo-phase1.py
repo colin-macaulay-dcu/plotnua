@@ -127,6 +127,8 @@ GR_IMG = "assets/img/7d5f5718cf9cd3da.jpg"
 HB_IMG = "assets/img/9805382f8164228a.jpg"
 DI_IMG = "assets/img/b5cbac3fff9072d4.jpg"
 HOME_IMG = "assets/img/9785fd991d2488e9.jpg"
+PHASE4_REVEAL_PRELOAD = ('<link rel="preload" as="image" type="image/avif" '
+                         'imagesrcset="assets/possibility-reveal/img/house-L1-L2A-1376.avif 1376w, ')
 
 LITG_DESC = ("Since July 2026 an Irish garden room can be up to 30 m&sup2; and a garden "
              "home 32&ndash;45 m&sup2; without a planning application. The conditions, explained.")
@@ -285,6 +287,13 @@ def apply_file(fname, edits):
         # WebP imagesrcset preload; that later state satisfies this edit.
         if new and 'rel="preload" as="image" href=' in new and \
                 'rel="preload" as="image" type="image/webp"' in out:
+            continue
+        # Phase 4 (19 Oct 2026) retires the aerial hero on the homepage: its
+        # LCP is the Possibility Reveal scene, preloaded as AVIF from the
+        # component's own encodings. That later state satisfies this edit on
+        # index.html ONLY, and only when exactly one such preload is present.
+        if fname == "index.html" and new == old + preload(HOME_IMG) and \
+                out.count(PHASE4_REVEAL_PRELOAD) == 1:
             continue
         if new and new in out and (old not in out or old in new):
             # already applied (for insertions old is contained in new)

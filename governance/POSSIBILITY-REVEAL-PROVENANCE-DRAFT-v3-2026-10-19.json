@@ -1,0 +1,501 @@
+{
+ "schema": "plotnua.image-provenance.records.v1 (DRAFT v3)",
+ "status": "DRAFT v3, 19 Oct 2026, 21:00 Irish time. NOT IN THE REGISTER. Adds the founder-supplied reference image and Gemini prompt. The 20:37 input is now matched (strong inference); the 20:39 prompt, the ChatGPT original and the photographs given to ChatGPT are still not on record. prompt and reference_inputs stay null in every record.",
+ "evidence_classes": {
+  "VERIFIED": "established from files, hashes, signed credentials or measurement",
+  "FOUNDER-PROVIDED EVIDENCE": "a file or text the founder supplied from a named source; its content is recorded exactly, its origin rests on the founder's statement",
+  "FOUNDER RECOLLECTION": "the founder's memory, not yet supported by records",
+  "REASONABLE INFERENCE": "follows from verified evidence but is not proven",
+  "STILL MISSING": "not on record anywhere"
+ },
+ "chain": {
+  "BEFORE_gen1": {
+   "step": "BEFORE, generation 1",
+   "when_utc": "2026-10-17T20:37:03Z",
+   "output": {
+    "file": "~/Downloads/Gemini_Generated_Image_3uj29y3uj29y3uj2.jpeg",
+    "sha256": "6235a91d5a94d1b1376ecd53b8c57267297599008163b6864ea6508bd9d58a0e",
+    "pixels": [
+     1361,
+     768
+    ],
+    "evidence_class": "VERIFIED",
+    "evidence": "its active C2PA manifest is urn:c2pa:a141a240-7752-6fd5-7278-46feb6020395, signed by Google LLC at 2026-10-17T20:37:03Z (validation: Valid; certificate untrusted only because no trust list is installed). Recovered 19 Oct 2026; governance/c2pa-source-credentials/possibility-reveal-BEFORE-generation1-6235a91d.c2pa.json"
+   },
+   "input": {
+    "evidence_class": "STRONG REASONABLE INFERENCE (see upstream_reference.match_to_gen1)",
+    "value": "the founder-supplied reference image (or a larger original of it); upstream origin unverified"
+   },
+   "tool": {
+    "evidence_class": "VERIFIED + FOUNDER ATTESTATION",
+    "value": "Google generative AI (C2PA: Google C2PA Core Generator Library; founder: Google Gemini)"
+   },
+   "prompt": {
+    "evidence_class": "FOUNDER-PROVIDED EVIDENCE (copied from the founder's Gemini history); correspondence to 20:37 is a REASONABLE INFERENCE",
+    "source": "founder message 19 Oct 2026 21:02 Irish time; stored verbatim as governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt (SHA-256 91eca6f0067315cc2a3602d62290fb48da39a7463997eaecf50548b473274cc1, 4,407 bytes)",
+    "why_20_37": "it is written for a first step from an uploaded reference ('Transform this reference image', 'IMAGE-TO-IMAGE REFINEMENT'); gen 1 obeys its 'Maintain the original image's aspect ratio' and 'Do not crop or zoom' (0.03% aspect difference); the visible changes match its instructions (car removed, neighbouring houses individualised, vegetation and lawn made more photographic, house left unrenovated). Gen 2 stretches the aspect by 1.1%, which this prompt forbids.",
+    "to_confirm": "the founder confirms from the Gemini history that this message is the one sent with the reference image (the 20:37 turn), not the 20:39 one",
+    "verbatim": "TASK: Transform this reference image into an exceptionally\nphotorealistic architectural photograph.\n\nThis image is intended to become the flagship BEFORE image\nfor PlotNua, an Irish property discovery platform.\n\nThe objective is to make the image indistinguishable from\na genuine photograph of a suburban Irish property.\n\nCRITICAL: THIS IS AN IMAGE-TO-IMAGE REFINEMENT TASK.\n\nDo not redesign the property.\nDo not reinterpret the composition.\nDo not create a different house.\nDo not change the camera angle.\n\nUse the supplied image as the precise visual reference.\n\nTHE SCENE\n\nA typical detached two-storey Irish suburban house,\nphotographed from a slightly elevated position overlooking\nits rear garden.\n\nThe house has:\n- Cream rendered exterior walls.\n- Traditional brown roof tiles.\n- Chimney and roof window.\n- Existing white-framed windows.\n- Single-storey rear extension.\n- Patio with ordinary garden furniture.\n- A large, slightly imperfect lawn.\n- Timber garden boundaries.\n- A narrow side garden with a mature tree.\n- A believable residential street behind the property.\n- Neighbouring suburban houses.\n\nPRESERVE ALL OF THESE FEATURES.\n\nPHOTOGRAPHIC REALISM\n\nThe final result should look like an actual photograph\ntaken with a professional full-frame camera and a\nhigh-quality architectural lens.\n\nNatural daylight.\nRealistic shadows.\nAccurate perspective.\nPhysically believable materials.\nNatural atmospheric depth.\nSubtle photographic imperfections.\n\nAvoid the excessively sharp, overly saturated,\nartificially perfect appearance associated with\nAI-generated architectural images.\n\nSPECIFIC IMPROVEMENTS\n\n1. CARS\n\nThe cars currently look slightly AI-generated.\n\nReplace or refine them so that they resemble\ncompletely believable, ordinary cars parked along\nan Irish residential street.\n\nCorrect proportions, wheels, windows, reflections,\nshadows and perspective.\n\nAvoid distorted bodywork or unusual vehicle shapes.\n\nDo not add more cars than necessary.\n\n2. NEIGHBOURING HOUSES\n\nMake the neighbouring houses look like genuine,\nindividually built suburban Irish homes.\n\nAvoid repetitive architecture, duplicated windows,\nimpossible rooflines and artificial-looking details.\n\nMaintain the existing residential street layout.\n\n3. STREET\n\nEnsure the road behind the property is geographically\nand architecturally coherent.\n\nThe road should connect naturally through the\nneighbourhood.\n\nInclude believable footpaths, kerbs and driveways.\n\nDo not create disconnected roads or impossible junctions.\n\n4. VEGETATION\n\nMake the trees, hedges, shrubs and lawn appear\nphotographically authentic.\n\nAvoid duplicated foliage patterns, unnaturally\nperfect plants and excessively vivid green colours.\n\nThe grass should retain natural variations,\nslightly patchy areas and ordinary wear.\n\n5. HOUSE DETAILS\n\nImprove the realism of the roof tiles, windows,\ngutters, doors, render and patio.\n\nKeep the house deliberately ordinary.\n\nDO NOT modernise or renovate it.\n\nThe dramatic renovation will happen in a separate\nAFTER image.\n\n6. LIGHTING AND COLOUR\n\nNatural Irish late-spring or summer daylight.\n\nSoft, believable sunlight.\nNatural shadows.\nRealistic sky.\nBalanced exposure.\nAuthentic photographic colour grading.\n\nAvoid HDR effects, exaggerated contrast,\ncinematic orange-and-teal grading and\nartificial architectural-render lighting.\n\nSTRICT COMPOSITION RULES\n\nKeep exactly the same:\n\n- Camera viewpoint and framing.\n- House position and proportions.\n- Roof geometry.\n- Garden dimensions.\n- Left-side garden.\n- Mature tree location.\n- Main lawn.\n- Patio location.\n- Garden boundaries.\n- Residential street position.\n- Neighbouring property positions.\n\nDo not crop or zoom.\n\nDo not add any new garden structures.\n\nNo solar panels.\nNo garden room.\nNo treehouse.\nNo sauna.\nNo greenhouse.\nNo raised vegetable beds.\nNo house renovation.\n\nThese will be introduced later as part of\nPlotNua's interactive transformation experience.\n\nOUTPUT\n\nA single ultra-high-resolution, landscape-format,\nphotorealistic architectural photograph.\n\nMaintain the original image's aspect ratio.\n\nNo text.\nNo logos.\nNo watermarks.\nNo annotations.\n\nSUCCESS CRITERION\n\nA viewer should believe this is an authentic\nphotograph of a real Irish suburban property,\nnot an AI-generated image.\n\nThe property must remain identical to the reference\nso that it can subsequently be used as the master\nBEFORE image for an interactive BEFORE/AFTER slider."
+   }
+  },
+  "BEFORE_gen2": {
+   "step": "BEFORE, generation 2",
+   "when_utc": "2026-10-17T20:39:14Z",
+   "output": {
+    "file": "Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg, now on disk as '04 Deploy/NEW homepage flagship image/Master + Candidate 4.jpeg' (same bytes)",
+    "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+    "pixels": [
+     1376,
+     768
+    ],
+    "evidence_class": "VERIFIED"
+   },
+   "input": {
+    "evidence_class": "VERIFIED",
+    "value": "BEFORE generation 1: the ingredient carries the 20:37 manifest urn:c2pa:a141a240-..."
+   },
+   "prompt": {
+    "evidence_class": "STILL MISSING",
+    "value": null,
+    "how_to_close": "the next message in the same Gemini chat (17 Oct, about 21:39 Irish time)"
+   },
+   "what_changed": {
+    "evidence_class": "VERIFIED (measurement)",
+    "value": "same camera and framing (1,011 of 1,037 feature matches; transform = 1.1% horizontal stretch from 1361 to 1376 px wide, 4 px vertical shift); about 28% of pixels re-rendered. CORRECTION: the 19 Oct evening report said gen 2 'widens the framing'. It does not."
+   }
+  },
+  "BEFORE_master": {
+   "step": "BEFORE master 2x",
+   "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8",
+   "evidence_class": "VERIFIED",
+   "value": "Pillow LANCZOS upscale of generation 2, pixel-identical (17 Oct validation)"
+  },
+  "L1_cand2": {
+   "step": "L1 source, Gemini candidate 2",
+   "when_utc": "2026-10-17T21:52:42Z",
+   "output": {
+    "file": "04 Deploy/NEW homepage flagship image/Gemini_Generated_Image_257z6b257z6b257z.jpeg",
+    "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+    "evidence_class": "VERIFIED"
+   },
+   "input": {
+    "evidence_class": "REASONABLE INFERENCE (content VERIFIED, exact file not identified)",
+    "value": "The input depicted the BEFORE scene: candidate 2 aligns with BEFORE at scale 1.000 and 0.0 px corner displacement, 2,492 of 2,500 feature matches, with 6% noise outside the L1 zone (VERIFIED, 17 Oct measurements). It was NOT the credentialed 1x file as-is: when that exact file was uploaded on 18 Oct, Gemini carried its credential forward (Master + Candidate 3.jpeg, VERIFIED); this ingredient has none. So the upload was a credential-less copy of BEFORE, most plausibly the 2x master PNG (which carries no credential) or a re-saved or screenshot copy of the 1x. Founder to confirm which."
+   },
+   "prompt": {
+    "evidence_class": "DOCUMENTED TEXT + REASONABLE INFERENCE; FOUNDER CONFIRMATION NEEDED",
+    "source": "~/Documents/PlotNua/PlotNua Possibility Reveal L1 Candidate 1 Review 2026-10-17/00-READ-ME-FIRST-L1-candidate-1-review.md, section 4 (SHA-256 831dd6f3…ac91; written 21:48:45 UTC; also in project doc claude/possibility-reveal-l1-candidate1-review-2026-10-17.md)",
+    "timeline": "review written 21:48:45 UTC; its comparison image was downloaded to ~/Downloads at 21:49:20 UTC; candidate 2 was signed 21:52:42 UTC; the founder's next message approved exactly the prompt's features (warm-white render, dark windows, charcoal vertical timber-clad extension)",
+    "recommended_prompt_verbatim": "Edit this exact photograph. Do not crop, zoom, rotate, reframe or change the aspect ratio: the output must line up pixel for pixel with the input, at 1376 × 768, with the camera unchanged.\n\nChange only the house walls, windows, doors, fascia, soffits and gutters, including the single-storey extension. Make it a dramatic, high-end contemporary renovation:\n- smooth external-insulation render in warm chalk white, with a crisp dark-grey plinth band at ground level;\n- slim anthracite aluminium windows set in deep, clean reveals, in exactly the same openings;\n- the rear sliding doors become minimal, floor-to-ceiling, slim-framed anthracite glazing in exactly the same opening;\n- the single-storey extension clad in vertical charred-timber boards, with its door and window kept in exactly the same positions;\n- slim anthracite fascia, soffits and gutters, with the eaves line in exactly the same place.\n\nNo quoins, no stone, no decorative mouldings.\n\nKeep everything else exactly as it is: the house shape, roof tiles, chimney, roof window, patio, table, chairs, umbrella, pots, plants, barbecue, lawn, garden, fences, hedges, neighbouring houses, street, sky, evening light and shadows. No people, no text, no logos.",
+    "gap": "Whether this text was pasted exactly (including how the list bullets were copied) is not recorded. Needs the founder's confirmation, ideally from Gemini history."
+   }
+  },
+  "L1_build": {
+   "step": "L1 composite (locked 18 Oct)",
+   "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0",
+   "evidence_class": "VERIFIED",
+   "value": "deterministic build, reproduced bit for bit 18 Oct; no generation step"
+  },
+  "L2A": {
+   "step": "L1 + L2A (locked 18 Oct)",
+   "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+   "evidence_class": "VERIFIED",
+   "value": "deterministic renderers; no generation step"
+  },
+  "encodings": {
+   "step": "9 web encodings (19 Oct)",
+   "evidence_class": "VERIFIED",
+   "value": "build-possibility-reveal-images.py; re-encodes bit-identically from the locked master"
+  },
+  "upstream_reference": {
+   "step": "Reference image given to Gemini at 20:37",
+   "file": {
+    "path": "~/Documents/PlotNua/04 Deploy/NEW homepage flagship image/PlotNua-Original-ChatGPT-House-Reference-17-Oct-2026.png",
+    "sha256": "5f4f05668b271a3018c19eeab5e9d3ffd9ee235d5bc0b92301379028800d100d",
+    "pixels": [
+     512,
+     289
+    ],
+    "bytes": 349459,
+    "saved_on_mac": "2026-10-19T20:00:59Z",
+    "content_credential": "none (no C2PA)",
+    "embedded_metadata": "EXIF Software = 'Picasa' only",
+    "evidence_class": "FOUNDER-PROVIDED EVIDENCE",
+    "founder_statement": "a copy recovered through ChatGPT, not yet verified as the original ChatGPT download"
+   },
+   "match_to_gen1": {
+    "evidence_class": "VERIFIED (measurements); that it was THE input is a STRONG REASONABLE INFERENCE",
+    "aspect": "reference 1.7716; gen 1 1.7721 (0.03% apart); gen 2 1.7917",
+    "geometry": "SIFT + RANSAC: 270 of 286 matches are inliers (94%); the fitted transform is a pure uniform scale of 2.666 x 2.663 with 0.25 px and 0.08 px offset, i.e. the same frame and camera",
+    "perceptual": "pHash distance 2 and dHash distance 1 (of 64) to gen 1",
+    "not_a_thumbnail_of_gen1": "a downscale of gen 1 to 512x289 differs from the reference by 13.9 levels on average (SSIM 0.78), with content differences a downscale cannot create: the reference has a parked silver car beside the side-garden hedge that gen 1 does not; foliage, roof tiles, neighbouring houses and lawn shading are re-rendered in gen 1",
+    "ordering": "gen 1 is closer to the reference than gen 2 is (mean difference 13.9 vs 19.6 levels), as the chain reference -> gen 1 -> gen 2 predicts",
+    "consistent_with_credential": "the 20:37 manifest records one input with no credential; this copy has none",
+    "limit": "the C2PA ingredient carries no fingerprint of the input, so no file can be PROVEN to be the input; and this copy is 512x289, so it is a reduced copy of whatever was uploaded, not necessarily the uploaded file itself"
+   },
+   "origin": {
+    "evidence_class": "FOUNDER RECOLLECTION (not verified)",
+    "value": "created with ChatGPT image generation from several reference photographs the founder uploaded to ChatGPT",
+    "open_questions": [
+     "the original ChatGPT download, and its OpenAI content credential if it has one",
+     "the ChatGPT conversation and prompt (ChatGPT data export)",
+     "WHICH photographs were uploaded to ChatGPT, who took them, and whether any was a third party's (estate agent, supplier, web image). Under the 17 Oct rule these are reference inputs of the final images too.",
+     "note: the reference's 16:9 shape is not ChatGPT's usual 3:2 landscape output as far as I know, so it may have been cropped or resized before Gemini, or made at a size option I'm not aware of. Only the original file can settle this."
+    ]
+   }
+  }
+ },
+ "founder_attestation_19_oct": {
+  "date": "2026-10-19",
+  "source": "founder instruction 'PHASE 4 PROVENANCE RECOVERY + THEME COLOUR APPROVAL', 19 Oct 2026",
+  "attests": [
+   "The Possibility Reveal artwork was created through an AI-assisted workflow involving Google Gemini, Claude and ChatGPT.",
+   "The original prompts were developed during the PlotNua Possibility Reveal work.",
+   "Google Gemini was the image-generation service.",
+   "The artwork does not reproduce unauthorised third-party photographs or distinctive supplier designs.",
+   "The founder has personally reviewed and approved the artwork."
+  ],
+  "caption_approved": "AI-generated illustration",
+  "not_yet_attested": [
+   "the 20:39 prompt, word for word (next turn in the same Gemini chat)",
+   "that the supplied prompt is the 20:37 turn",
+   "the original ChatGPT image file, and the ChatGPT conversation that made it",
+   "which photographs were uploaded to ChatGPT, their source, and that none was a third party's photograph used without permission",
+   "that the L1 candidate 2 prompt is the recorded text, and which BEFORE copy was uploaded",
+   "the Google and OpenAI services/accounts used, and that their terms allow commercial use on a website",
+   "approval of AI-ILLUSTRATION-POLICY-PROPOSAL-2026-10-11.md for these images",
+   "the named human review statement"
+  ]
+ },
+ "on_declaration": [
+  "Move these nine entries into image-provenance-records.json records[] with prompt, reference_inputs and human_review completed (remove the *_status and proposed_* fields).",
+  "Change the homepage caption under the Reveal to carry the register's approved label exactly: 'AI-generated illustration' (P8).",
+  "Run node atlas-tools/validate-image-provenance.js and the full gate."
+ ],
+ "records": [
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.avif",
+   "sha256": "838cd36d7b8cf9ddabdbed3c11972b774b0bf6f2341b872e0ba453a8c167ec8a",
+   "bytes": 166367,
+   "pixels": [
+    1376,
+    768
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.jpg",
+   "sha256": "57f81970ac62d90612dbbd0d3d61b03cc6b2762f544493aa9b89e9dfe68c8dbf",
+   "bytes": 298813,
+   "pixels": [
+    1376,
+    768
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.webp",
+   "sha256": "92851c7bc30dd6b40c8087b2d513acd5db884f74dff326f39abe262aecffe373",
+   "bytes": 237748,
+   "pixels": [
+    1376,
+    768
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.avif",
+   "sha256": "fc88d0dcada77ef3c117821c28a3efb74a18c58c6ff54d38a8ef5eee478aaa9a",
+   "bytes": 276901,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.jpg",
+   "sha256": "b031d081a4de09a8679ab5763b31ec87fc62e41557bafbfc8eadfd110391dfd3",
+   "bytes": 548570,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.webp",
+   "sha256": "2d26769c492755cb11309bcc6442af37b1d1a9c6cb77503eb405fcb2c13fdc59",
+   "bytes": 384932,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.avif",
+   "sha256": "51563ff42a18ac9c3cdaf8d4d4ab206ed2c1014959367b853d3dc0306f63b66d",
+   "bytes": 374309,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.jpg",
+   "sha256": "dec3433ce0f34c0acc148bbac1d406672c5eeb989f592377e2b2439af7bcaefb",
+   "bytes": 814933,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.webp",
+   "sha256": "f5a2c67f99180d0fa95b61193e7386b4afe1ab0499e953a2ef1b396d5a83f177",
+   "bytes": 512980,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Gemini (image generation and editing; Google LLC C2PA), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "BEFORE gen 1 prompt supplied by the founder (governance/BEFORE-gemini-prompt-founder-supplied-2026-10-19.txt), awaiting confirmation it is the 20:37 turn; BEFORE gen 2 prompt STILL MISSING; L1 candidate 2 prompt documented, awaiting confirmation. See chain.",
+   "reference_inputs": null,
+   "reference_inputs_status": "BEFORE gen 1 input = founder-supplied reference image (strong inference; its own origin is founder recollection: ChatGPT from several photographs, unidentified); BEFORE gen 2 input VERIFIED (gen 1); L1 candidate 2 input = a credential-less copy of BEFORE (inference, founder to confirm).",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   },
+   "human_review_status": "Founder review and a general attestation received 19 Oct (see founder_attestation_19_oct). Left null here until the remaining items are answered, so P5 cannot pass on a partial declaration.",
+   "lineage_ref": "chain"
+  }
+ ]
+}

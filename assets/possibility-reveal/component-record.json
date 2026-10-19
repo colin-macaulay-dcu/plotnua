@@ -1,0 +1,16 @@
+{
+ "schema": "plotnua.possibility-reveal.component.v1",
+ "source": "PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01)",
+ "source_sha256": {
+  "index.html": "ea54fd5c0b21d664114048d022f5b1d6fb879d6fba5d7f9737df3599a28ec451",
+  "assets/reveal.css": "e812ccf4a09607717c8310f16381d9aefff2a9db705c511bacfb0e098c74055a",
+  "assets/reveal.js": "d4ac5cfd7f84c2174535de03c069cfe1deffac031bcf06a0ab73f3d28cc0c4be",
+  "assets/reveal-data.js": "71e43a2ce4f2ea7d2d6d3bc75f7cf69b6330f2086209c202248f5b0e500ebc18"
+ },
+ "outputs": {
+  "assets/possibility-reveal/reveal.css": "f4b826c2dbd8ec0a9adfcc14a6283cef96c78783408d8ccfb848a8f5446a16a5",
+  "assets/possibility-reveal/reveal.js": "364b7e493b18121aa963ed7a26e7246149f7cbd8ee73563e394d7e8fdc9b2040",
+  "assets/possibility-reveal/reveal-data.js": "71e43a2ce4f2ea7d2d6d3bc75f7cf69b6330f2086209c202248f5b0e500ebc18",
+  "assets/possibility-reveal/stage-snippet.part": "deabacd8cda78a371eeb8a1051917d17c9d2705b09aff31b8f722242eed59576"
+ }
+}

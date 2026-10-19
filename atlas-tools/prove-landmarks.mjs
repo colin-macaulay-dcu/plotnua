@@ -40,7 +40,11 @@ const WRAPPED = ["index.html", "your-plot.html", "404.html"];
 const SKIPPED = [...DISCOVERIES, ...WRAPPED];                 // get a skip link
 const FOOTER  = ["index.html", "404.html", "about.html", "contact.html",
                  "privacy.html", "terms.html", "cookie-policy.html", ...DISCOVERIES];
-const CAROUSEL = ["index.html", "404.html"];
+// 19 Oct 2026 (Phase 4, founder-approved): the homepage carousel is replaced
+// by the Discovery showcase, so index.html leaves CAROUSEL and is held to the
+// stronger SHOWCASE contract in L4 below. 404.html keeps its carousel.
+const CAROUSEL = ["404.html"];
+const SHOWCASE = "index.html";
 
 const DISC025 = "disc025-borrowed-garden-check.html";
 // Re-stamped 12 October 2026 for the founder-authorised G6 preparation
@@ -147,6 +151,28 @@ for (const f of CAROUSEL) {
   if (!falseTab && grouped && realTabs === 0)
     ok("L4 " + f + " dots are a labelled group, not a false tablist");
   else bad("L4 " + f, `tablist=${falseTab} group=${grouped} role=tab x${realTabs}`);
+}
+
+// ---- L4 · the homepage showcase: no tab interface, every Discovery reachable
+{
+  /* What the carousel rule protected (no false ARIA tab pattern, and every
+     Discovery reachable from the homepage control) is asserted for the
+     showcase that replaced it -- more strictly: no tablist, tab or tabpanel
+     ANYWHERE on the page, and each public Discovery (the independent list at
+     the top of this file) linked exactly once as a showcase card, plus the
+     "Explore all Discoveries" route to the Library. */
+  const t = code(read(SHOWCASE));
+  const tabRoles = (t.match(/role="(tablist|tab|tabpanel)"/g) || []).length;
+  const ariaSel = (t.match(/aria-selected=/g) || []).length;
+  const a = t.indexOf('<section class="discover p4-showcase" id="discover"');
+  const sect = a > -1 ? t.slice(a, t.indexOf("</section>", a)) : "";
+  const cards = [...sect.matchAll(/<a class="p4s-go" href="([^"]+)">/g)].map(m => m[1]);
+  const missing = DISCOVERIES.filter(d => cards.filter(c => c === d).length !== 1);
+  const extra = cards.filter(c => !DISCOVERIES.includes(c));
+  const all = /<a class="p4-btn p4-btn-primary p4s-cta" href="discoveries\.html">/.test(sect);
+  if (sect && !tabRoles && !ariaSel && !missing.length && !extra.length && all)
+    ok("L4 " + SHOWCASE + " showcase: no tab interface, all " + DISCOVERIES.length + " Discoveries linked once, Library route present");
+  else bad("L4 " + SHOWCASE, `section=${!!sect} tabRoles=${tabRoles} aria-selected=${ariaSel} missing=[${missing.join(",")}] extra=[${extra.join(",")}] exploreAll=${all}`);
 }
 
 // ---- L5 · footer heading hierarchy ----------------------------------------

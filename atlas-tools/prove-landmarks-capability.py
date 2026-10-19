@@ -69,7 +69,19 @@ MUTATIONS = [
     ("role=\"main\" used as a second landmark", "L1", "about.html",
      lambda t: t.replace("<footer>", '<div role="main">stray</div>\n<footer>', 1)),
 
-    ("pre-fix carousel: the false role=\"tablist\" returns", "L4", "index.html",
+    # 19 Oct 2026 (Phase 4): the homepage carousel is retired; L4 now holds the
+    # Discovery showcase. Each mutation below must be refused.
+    ("a false role=\"tablist\" appears on the homepage showcase", "L4", "index.html",
+     lambda t: t.replace('<ul class="p4s-cats" aria-labelledby="p4sCatsLab">',
+                         '<ul class="p4s-cats" role="tablist" aria-labelledby="p4sCatsLab">', 1)),
+
+    ("a Discovery card is dropped from the homepage showcase", "L4", "index.html",
+     lambda t: re.sub(r'<article class="p4s-card p4s-compact">.*?discovery-hidden-bins\.html.*?</article>', "", t, count=1, flags=re.S)),
+
+    ("the showcase's Explore all Discoveries route is removed", "L4", "index.html",
+     lambda t: t.replace('<a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">', '<a class="p4-btn p4-btn-primary p4s-cta" href="about.html">', 1)),
+
+    ("pre-fix carousel: the false role=\"tablist\" returns on the 404 page", "L4", "404.html",
      lambda t: t.replace('<div class="d-dots" role="group"',
                          '<div class="d-dots" role="tablist"', 1)),
 

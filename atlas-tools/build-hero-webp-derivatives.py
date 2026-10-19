@@ -45,8 +45,14 @@ DATE = "2026-10-16"   # derivatives first made; holds and credential notes added
 # Source image -> (pages that paint it as the hero, `sizes` for that page).
 # `sizes` describes the rendered width: object-fit:cover heroes at 88svh are
 # wider than the viewport on a phone (height x 1.83), plate heroes are 100vw.
+# PHASE 4 (founder-approved, 19 Oct 2026): the homepage hero is now the
+# Possibility Reveal component, which serves its own recorded encodings
+# (assets/possibility-reveal/img/, see build-possibility-reveal-images.py) and
+# is NOT a derivative of any register source. The retired aerial hero keeps its
+# two hash-bound derivatives on disk and in the register, but no page paints it,
+# so it lists no pages. REVEAL_GUARD below makes sure nothing here reaches it.
 HEROES = {
-    "assets/img/9785fd991d2488e9.jpg": {"index.html": "100vw"},
+    "assets/img/9785fd991d2488e9.jpg": {},
     "assets/img/5e17a24f46cdab9e.jpg": {"discovery-living-in-the-garden.html": "max(100vw, 161vh)"},
     "assets/img/7d5f5718cf9cd3da.jpg": {"discovery-garden-retreat.html": "max(100vw, 161vh)"},
     "assets/img/9805382f8164228a.jpg": {"discovery-hidden-bins.html": "100vw"},
@@ -62,13 +68,31 @@ HEROES = {
 # `sizes` follows the card CSS: the card is 78% / 56% / 34% of the viewport
 # wide and 50vh (min 320px) tall with object-fit:cover, so on a portrait screen
 # the image is drawn at its height x 1.83 -- often wider than the card.
+# PHASE 4 (19 Oct 2026): the carousel is replaced by the Discovery showcase.
+# The Power Station card image is still on the homepage, now inside
+# .p4s-media (a supporting card: about 20% of the viewport wide on desktop,
+# 46% on tablets, 50% on phones, object-fit:cover at 3:2 / 4:3), so it keeps its
+# WebP derivative. 8b20a096 is no longer on the homepage: its derivatives stay
+# hash-bound in the register, painted by no page.
 CARDS = {
     "assets/img/ce9da2e51c945693.jpg": {"index.html":
-        "(min-width:1000px) max(34vw, 92vh, 587px), (min-width:640px) max(56vw, 92vh, 587px), max(78vw, 92vh, 587px)"},
-    "assets/img/8b20a0968b1fc5a1.jpg": {"index.html":
-        "(min-width:1000px) max(34vw, 92vh, 587px), (min-width:640px) max(56vw, 92vh, 587px), max(78vw, 92vh, 587px)"},
+        "(min-width:1100px) 20vw, (min-width:721px) 46vw, 50vw"},
+    "assets/img/8b20a0968b1fc5a1.jpg": {},
+    # Showcase cards whose lineage is established by the same rule (19 Oct 2026):
+    # Parcel House (1.1 MB, the heaviest homepage image) carries a valid signed
+    # Google credential in the deployed file, every ingredient credentialed;
+    # Garden Retreat already has established lineage and derivatives (HEROES).
+    "assets/img/e0d578046cd29bda.jpg": {"index.html":
+        "(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"},
+    "assets/img/7d5f5718cf9cd3da.jpg": {"index.html":
+        "(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"},
 }
-MADE = {"assets/img/ce9da2e51c945693.jpg": "2026-10-19",
+CARD_CONTAINER = '<div class="p4s-media">'
+# The Reveal's own encodings: never a derivative, never wrapped by this builder.
+REVEAL_DIR = "assets/possibility-reveal/img/"
+REVEAL_SLOT = '<div class="hero-stage p4-stage" id="heroStage" data-hero="possibility-reveal">'
+MADE = {"assets/img/e0d578046cd29bda.jpg": "2026-10-19",
+        "assets/img/ce9da2e51c945693.jpg": "2026-10-19",
         "assets/img/8b20a0968b1fc5a1.jpg": "2026-10-19"}
 
 # PROVENANCE HOLD (founder instruction, 17 Oct 2026). A source whose lineage is
@@ -91,6 +115,7 @@ BASIS = {
     "assets/img/9805382f8164228a.jpg": "Signed Google C2PA credential in the deployed file itself (byte-identical to master DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg): created by Google Generative AI, no input ingredients.",
     "assets/img/b5cbac3fff9072d4.jpg": "Signed Google C2PA credential in master 'DISC-014 Image 01 \u2014 Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
     "assets/img/ce9da2e51c945693.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI, no input ingredients. Evidence: governance/c2pa-source-credentials/deployed-ce9da2e51c945693.jpg.c2pa.json (read 19 Oct 2026).",
+    "assets/img/e0d578046cd29bda.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from input ingredients that each carry a signed Google credential; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-e0d578046cd29bda.jpg.c2pa.json (read 19 Oct 2026).",
     "assets/img/8b20a0968b1fc5a1.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-8b20a0968b1fc5a1.jpg.c2pa.json (read 19 Oct 2026).",
 }
 CREDENTIAL_NOTE = ("WebP re-encoding removes the embedded C2PA credential. The derivative "
@@ -144,7 +169,16 @@ def main():
     legacy_before = len(reg["legacy_undeclared"])
 
     derivs, pages, files = [], {}, {}
+    done = set()
     for src, page_sizes in list(HEROES.items()) + list(CARDS.items()):
+        if src in done:
+            # also a homepage card: its derivatives are made once, only the page is added
+            stem = src[:-4]
+            for page, sizes in page_sizes.items():
+                pages.setdefault(page, []).append((src, sizes, "%s-%dw.webp" % (stem, SMALL_W),
+                                                   "%s.webp" % stem, entries[src]["pixels"][0], True))
+            continue
+        done.add(src)
         if src not in entries:
             die("%s is not an enumerated asset in the provenance register" % src)
         p = ROOT / src
@@ -197,7 +231,7 @@ def main():
                     "invalid for these bytes" % out)
         for page, sizes in page_sizes.items():
             pages.setdefault(page, []).append((src, sizes, "%s-%dw.webp" % (stem, SMALL_W),
-                                               "%s.webp" % stem, im.width, src in CARDS))
+                                               "%s.webp" % stem, im.width, src in CARDS and src not in HEROES))
 
     if set(HELD) & (set(HEROES) | set(CARDS)):
         die("a held source is also listed for derivation")
@@ -209,6 +243,25 @@ def main():
             if pathlib.Path(stem).name + ".webp" in page.read_text(encoding="utf-8") or \
                pathlib.Path(stem).name + "-%dw.webp" % SMALL_W in page.read_text(encoding="utf-8"):
                 die("held source %s has a derivative referenced on %s" % (src, page.name))
+    # REVEAL GUARD: the homepage hero is the Reveal slot; none of this builder's
+    # derivatives (or sources) may appear inside it, and none of the Reveal's
+    # encodings may be recorded as a derivative.
+    home = (ROOT / "index.html").read_text(encoding="utf-8")
+    if home.count(REVEAL_SLOT) != 1:
+        die("index.html: the hero is not the Possibility Reveal slot")
+    a = home.index(REVEAL_SLOT); b = home.find("<!-- /POSSIBILITY REVEAL -->", a)
+    if b < 0:
+        die("index.html: the Reveal slot has no end marker")
+    slot = home[a:b]
+    for src in list(HEROES) + list(CARDS):
+        stem = pathlib.Path(src).stem
+        if stem in slot:
+            die("a hero/card source or derivative (%s) appears inside the Reveal slot" % stem)
+    if any(d["asset"].startswith(REVEAL_DIR) for d in derivs):
+        die("a Reveal encoding is recorded as a derivative")
+    for e in reg.get("derivatives", []):
+        if e.get("asset", "").startswith(REVEAL_DIR):
+            die("the register lists a Reveal encoding as a derivative")
     missing = [s for s in list(HEROES) + list(CARDS) if s not in BASIS]
     if missing:
         die("no recorded lineage basis for %s" % missing)
@@ -234,7 +287,7 @@ def main():
             if is_card:
                 # the card occurrence: lazy-loaded, directly inside .d-card-media
                 hero = [x for x in m if 'loading="lazy"' in x.group(0)
-                        and t[max(0, x.start() - 40):x.start()].rstrip().endswith('<div class="d-card-media">')]
+                        and t[max(0, x.start() - 40):x.start()].rstrip().endswith(CARD_CONTAINER)]
             else:
                 hero = [x for x in m if 'fetchpriority="high"' in x.group(0) or "cmp-" in x.group(0)]
             if len(hero) != 1:
@@ -281,7 +334,7 @@ def main():
         if pending:
             die("CHECK: not in the Phase 1b state: %s" % ", ".join(pending))
         print("HERO WEBP DERIVATIVES · CHECK OK — %d derivatives of %d sources, "
-              "backlog %d (unchanged), nothing written" % (len(derivs), len(HEROES) + len(CARDS), legacy_before))
+              "backlog %d (unchanged), nothing written" % (len(derivs), len(set(HEROES) | set(CARDS)), legacy_before))
         return
 
     for f, data in files.items():

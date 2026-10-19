@@ -299,6 +299,17 @@ jobs:
           python3 .github/scripts/test_wellness_universe.py
           node atlas-tools/prove-cluster2-garden-retreat.mjs
 
+      # POSSIBILITY REVEAL (Phase 4, 19 Oct 2026). The homepage hero component
+      # is generated from the approved L2B prototype and its nine images from
+      # the locked L1+L2A master. These refuse a hand-edited or unscoped
+      # component, a second H1, enabled commerce, or an image that differs from
+      # its recorded encoding. Provenance itself stays with the guard above.
+      - name: The Possibility Reveal component and its images match their records
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/build-possibility-reveal-component.py --check
+          python3 atlas-tools/build-possibility-reveal-images.py --check
+
       - name: Summary
         if: always()
         run: |

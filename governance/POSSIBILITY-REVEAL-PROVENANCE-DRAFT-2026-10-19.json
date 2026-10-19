@@ -1,0 +1,713 @@
+{
+ "schema": "plotnua.image-provenance.records.v1 (DRAFT)",
+ "status": "DRAFT — NOT IN THE REGISTER. Prepared 19 Oct 2026 for the nine homepage Possibility Reveal images. Every field below is taken from the lock records, the signed C2PA manifest and the encoding record. Fields marked FOUNDER TO SUPPLY are not on record anywhere and must not be filled in by anyone but the founder. Until they are, the images stay undeclared and validate-image-provenance.js refuses the homepage (P1), which is correct.",
+ "on_declaration": [
+  "Move these nine entries into image-provenance-records.json records[] with prompt, reference_inputs and human_review completed (remove the *_status and proposed_* fields).",
+  "Change the homepage caption under the Reveal to carry the register's approved label exactly: 'AI-generated illustration' (P8).",
+  "Run node atlas-tools/validate-image-provenance.js and the full gate."
+ ],
+ "records": [
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.avif",
+   "sha256": "838cd36d7b8cf9ddabdbed3c11972b774b0bf6f2341b872e0ba453a8c167ec8a",
+   "bytes": 166367,
+   "pixels": [
+    1376,
+    768
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.jpg",
+   "sha256": "57f81970ac62d90612dbbd0d3d61b03cc6b2762f544493aa9b89e9dfe68c8dbf",
+   "bytes": 298813,
+   "pixels": [
+    1376,
+    768
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-1376.webp",
+   "sha256": "92851c7bc30dd6b40c8087b2d513acd5db884f74dff326f39abe262aecffe373",
+   "bytes": 237748,
+   "pixels": [
+    1376,
+    768
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.avif",
+   "sha256": "fc88d0dcada77ef3c117821c28a3efb74a18c58c6ff54d38a8ef5eee478aaa9a",
+   "bytes": 276901,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.jpg",
+   "sha256": "b031d081a4de09a8679ab5763b31ec87fc62e41557bafbfc8eadfd110391dfd3",
+   "bytes": 548570,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2064.webp",
+   "sha256": "2d26769c492755cb11309bcc6442af37b1d1a9c6cb77503eb405fcb2c13fdc59",
+   "bytes": 384932,
+   "pixels": [
+    2064,
+    1152
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.avif",
+   "sha256": "51563ff42a18ac9c3cdaf8d4d4ab206ed2c1014959367b853d3dc0306f63b66d",
+   "bytes": 374309,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.jpg",
+   "sha256": "dec3433ce0f34c0acc148bbac1d406672c5eeb989f592377e2b2439af7bcaefb",
+   "bytes": 814933,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  },
+  {
+   "asset": "assets/possibility-reveal/img/house-L1-L2A-2752.webp",
+   "sha256": "f5a2c67f99180d0fa95b61193e7386b4afe1ab0499e953a2ef1b396d5a83f177",
+   "bytes": 512980,
+   "pixels": [
+    2752,
+    1536
+   ],
+   "class": "AI_ILLUSTRATION",
+   "generated": {
+    "tool": "Google Generative AI (Gemini image generation and editing), composited with PlotNua's deterministic build tools",
+    "date": "2026-10-18"
+   },
+   "prompt": null,
+   "prompt_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): three prompts, word for word (BEFORE generation 1 and 2; L1 candidate 2)",
+   "reference_inputs": null,
+   "reference_inputs_status": "FOUNDER TO SUPPLY (see governance/POSSIBILITY-REVEAL-PROVENANCE-RECORDING-SHEET-2026-10-19.md): the image uploaded at the 20:37 step, and the inputs to L1 candidate 2",
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "depicts_status": "proposed; confirmed only by the founder's attestation below",
+   "human_review": {
+    "reviewer": null,
+    "date": null,
+    "attests": null
+   },
+   "proposed_attestation": "I reviewed this image. It is an AI-generated illustration of a generic house and garden. It reproduces no supplier's photograph and no distinctive product design, depicts no named product or organisation, and no third party's photograph was given to the tool as an input.",
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": [
+    {
+     "step": "BEFORE, generation 1",
+     "what": "Google Generative AI created an image from ONE input image (C2PA: 'Input ingredient 0', no credential of its own) and applied a SynthID watermark",
+     "when_utc": "2026-10-17T20:37:03Z",
+     "evidence": "signed Google LLC C2PA manifest in the 1x original (urn:c2pa:a141a240-…) (governance/c2pa-source-credentials/possibility-reveal-BEFORE-1x-original-7d8d6296.c2pa.json)",
+     "input_identified": false
+    },
+    {
+     "step": "BEFORE, generation 2",
+     "what": "Google Generative AI edited generation 1 into the 1x original Gemini_Generated_Image_hyi8pohyi8pohyi8.jpeg (1376x768)",
+     "when_utc": "2026-10-17T20:39:14Z",
+     "sha256": "7d8d62969096c56748820132507369abf25f78cc8fac337b3a162b511a69b9d0",
+     "evidence": "signed Google LLC C2PA manifest (urn:c2pa:35bdb991-…)"
+    },
+    {
+     "step": "BEFORE master",
+     "what": "Pillow LANCZOS upscale of the 1x original to 2752x1536 (verified pixel-identical, 17 Oct)",
+     "sha256": "fbe5a15bd0e58b5d4b2015a34bdf51cd58a0591dc33fb1b09e1a7117fc2876a8"
+    },
+    {
+     "step": "L1 source",
+     "what": "Google Generative AI created Gemini candidate 2 (Gemini_Generated_Image_257z6b257z6b257z.jpeg) from ONE input image, which carries no credential of its own, and applied a SynthID watermark",
+     "sha256": "cfedffba14c14a851d7638a7ad2630670dc8de3bd66c9c3601456ab8f74d80dd",
+     "input_identified": false,
+     "note": "The input is not identified by the credential. It was intended to be the 1x original, but the 1x original carries its own Google credential, and this ingredient has none, so the credential cannot confirm it. Prompt not recorded.",
+     "when_utc": "2026-10-17T21:52:42Z",
+     "evidence": "signed Google LLC C2PA manifest urn:c2pa:921095c8-… (read 19 Oct 2026: governance/c2pa-source-credentials/possibility-reveal-L1-candidate2-cfedffba.c2pa.json)"
+    },
+    {
+     "step": "L1 composite (locked 18 Oct)",
+     "what": "deterministic build: upscale, repairs, polish, composite inside mask-L1 only; no generation step",
+     "sha256": "af70f183e42a2e64b9653adf54550494741f1f9f175c8cd3b25a03a677279cd0"
+    },
+    {
+     "step": "L1 + L2A (locked 18 Oct)",
+     "what": "deterministic renderers draw generic solar panels, battery and heat pump inside three masks; no generation step, no reference images recorded",
+     "pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
+    },
+    {
+     "step": "web encodings (19 Oct)",
+     "what": "atlas-tools/build-possibility-reveal-images.py: Lanczos resize + AVIF/WebP/JPEG encode; record assets/possibility-reveal/img/encodings.json"
+    }
+   ],
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The signed Google credential is on the 1x original only; upscaling and re-encoding remove it."
+   }
+  }
+ ]
+}
