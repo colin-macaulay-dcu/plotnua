@@ -9480,6 +9480,12 @@
   .rsv-panel-enquiry .rsv-panel-title{ font-size:22px; }
   .rsv-panel-enquiry .rsv-panel-lede{ color:rgba(31,59,46,.62); }
   .rsv-qlist{ list-style:none; margin:0; padding:0; counter-reset:pnq; }
+  /* GRP-LINK (19 Oct 2026): one quiet line under the enquiry questions on a
+     garden-room result, pointing to the published price guide. */
+  .rsv-price-guide{ margin:12px 0 0; padding-left:38px; font-family:'Work Sans',sans-serif;
+    font-size:13.5px; line-height:1.55; color:rgba(31,59,46,.62); }
+  .rsv-price-guide a{ color:var(--brand-green, #1F3B2E); text-decoration:underline;
+    text-decoration-color:rgba(143,175,138,.9); text-underline-offset:3px; }
   .rsv-qitem{
     counter-increment:pnq; position:relative;
     margin:0; padding:10px 0 10px 38px;
@@ -33173,6 +33179,20 @@
       ol.appendChild(li);
     });
     sec.appendChild(ol);
+    /* GRP-LINK (founder approval, 19 Oct 2026). Garden-room journey only: one
+       line pointing to the published Garden Room Prices guide, so a homeowner
+       about to enquire can see what prices cover across the market. It opens
+       in a new tab so the result in front of them is not lost. No figure, no
+       claim about this product, and nothing in the question list changes. */
+    if (window.__PN_INTENDED_USE__ === 'garden-room') {
+      const guide = rsvEl('p', 'rsv-price-guide', 'Comparing quotes? ');
+      const a = rsvEl('a', null, 'See what garden rooms cost in Ireland');
+      a.href = 'garden-room-prices-ireland.html';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      guide.appendChild(a);
+      sec.appendChild(guide);
+    }
     return sec;
   }
 
