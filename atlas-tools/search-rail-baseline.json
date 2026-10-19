@@ -1,88 +1,94 @@
 {
   "pages": {
     "about.html": {
-      "after": "3fe3db76164691c6667761a1d1778fd2fc30d723fea45be09b8567f01dbc89e0",
-      "before": "582192a087569dcfd62eb7449054fa7272f494ec71d5ac26488471fdf1e90ec3",
+      "after": "168dd49ba20a46cd20c302a0b4b0e34833fd9ef2de1c6221a3f6816e72620f7a",
+      "before": "2e727995ac04fd9e35d8346b3960ffc77e0b1b0a4fca8bb805bd9a9c9f998b47",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
+    },
+    "artist-register.html": {
+      "after": "56d6efc82d748701522d4e93c692bdf925d2d9fcbbb7cf876e797441a647f7d6",
+      "before": "44328855565cf99e91233cd278fee021773eacc75ad969d930bcb371a2211b7b",
+      "nofade": false,
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "contact.html": {
-      "after": "7f73354635c30863636c897095fb5f5f9410f451229df7a2472d76db5391ec94",
-      "before": "6fce2601b08e36c381f72cbeb47ebc1c0e871c017a3ac1053aa524564353a60a",
+      "after": "94265c2449b7115df44f61fda4471e5b67d1ac7db633f74fad2b4a1f09c6a1eb",
+      "before": "c14300a378ae7f2d1e9418f55edc71099d608f9e5747956ac0ac02fb558de3f9",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "cookie-policy.html": {
-      "after": "7b093655b05c538968922751bdbaa15b5f0406715dffb7c15d14c5f50a3e5d7a",
-      "before": "00469c8f024f2737118bbe5764c776f2e966ba22d48b66ab6448879d5b837c24",
+      "after": "71d8821723b6c8b8d70a2cdc80067e4727371ff1c069ba96a8cba89f9a2d316f",
+      "before": "6c4c017ad9879671e8e1c1303e32c69c069cce6391e9b1296dd2043f18e10e49",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discoveries.html": {
-      "after": "d88f623647f4ddb24012b84311647d63770eaff809bcf3c8263e981030728c45",
-      "before": "46dc63d0eb5b6c81bf047b4f0ef69ed0b346df6019a3350f7e27f18428e47e4d",
+      "after": "b505ec7034228f323262e4fad36533ca9f95811e2bab76cff0c4dba4893c1868",
+      "before": "6ca8a7eb9f56c6d38582241a4cef6ad2e27fba441d7b19dc08d4cf0533059b6a",
       "nofade": true,
-      "region": "eda060fe0836edf6383e543862cbf3e0bab4968bccc007c95506fa51b3060f4c"
+      "region": "cbd0a415c363f15973222804ead1b04500c72486f05b468b31156b9692c1c413"
     },
     "discovery-a-home-for-art.html": {
-      "after": "b74ef2741f15ee6f009b60b0d5ffe74bb7032e34f9008403a51f7ed9a57dba02",
-      "before": "1f3ef648b1b9b5710acf47d9921586e8f54313550faa8e7dd77cbef619d090fa",
+      "after": "e320e7990b43a9beac488a3ac63b424ab0f5ce06780dc2d29ba0e6f9849c4bd1",
+      "before": "db5f4180237cbf3a46ec6d917c7e46034baec62db2c7b86a534ca918e74fc6a8",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-above-and-beyond.html": {
-      "after": "d049315906699822cc54b3572af7a6541499dbac2d18cb2228adba755e773e08",
-      "before": "5c83be5aa82eb13513b79a7e772473b50ce52b529c5d5f3a04aa14fc27b41fcb",
+      "after": "688442230d5496ec73c5471a04136823d6aa0451fcb7f48c97981b1b6b98a8a2",
+      "before": "4a98ca713fd68396f121e97ed0ea9548872872e0ccb0c163d2afe06abb744a80",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-driveway-income.html": {
-      "after": "b190e8b25cb6ad1aa07ea07ec226aaef52352a7740ebfaa3556b042e89dcd74f",
-      "before": "5e1396f7c0edd4a8c201077d127f524e1b24ff643a2480fb681417d60194edec",
+      "after": "c9e17d766d5173daa670b28e1a9fca975cf288aa7ce955dcfc9ec12787f443c6",
+      "before": "7dc05f0d1cf9706cacd10ee98726ce8ab2e4d28825e2922b7144818d4cd8d94f",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-garden-retreat.html": {
-      "after": "84944409bf2ad137a64a81872daab4c81bf337c5de8b1735effd45fbaa34a23e",
-      "before": "c626687d1b4b2c2a1822430e471ccde3cbd49b187f25fc63b2a16dcc74367b70",
+      "after": "d41a668206850231fe050a7ca78452aaa5d11d0d8f74eec2905e753b7ff2e12f",
+      "before": "938a5177c73fa17c90968a8c7e419c106e9740ce290d5f01f21f87708a9d030c",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-hidden-bins.html": {
-      "after": "8474799e121422c5a44ae471dad01be3d86ae1f0d8ccc33c0920885eca7c2744",
-      "before": "1232c2737ceddf45b8a14c6157f1da5683779b09df45d5b553128e544706b6fc",
+      "after": "74493a8614784837ba4726621801c766a96fb4f5d15a23431f63fdf7baa1fbf1",
+      "before": "0fc3a55914d6727efd3f150559299ba37742ed58433297fc95dd57e7e2cd4011",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-hidden-cars.html": {
-      "after": "c7b2fc3b0c3a8ce18325085f81914d38f9ff61e8bcc3eb07ec72d521a8baeb9b",
-      "before": "3dc80a25fed0f94bc0b685977c839c28ebe8efc7ae288892170069c5d6234d41",
+      "after": "d1c5f089d7c036007ea5c60cf0f81a0441ccbe651212ad7499152e898254edfe",
+      "before": "4a7cdb766e3cace1dffbb201e9b0c929df05697dfde48e3a5bee4227118167cc",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-home-exchange.html": {
-      "after": "dccad75b2812b198f3fa5ee8908408493bc8acab8053daf297f783435e949cfa",
-      "before": "0c593a220a03a6bd1b622902b897977b570f55b5a1214759a079fd9b32ba80b1",
+      "after": "5ebe4927c97b2bcfa00c298c9ebc015cdd13ef9dd35f44153850719c54ef7f46",
+      "before": "0c02322ec773dca64d378c200cfaa839dee643efbbdf11d70f3c51cc1b5503f1",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-house-as-power-station.html": {
-      "after": "fccd7bdb90e836997ae93e40166529c6803d9850e37094dbd4065ec7e9380605",
-      "before": "bfb807b617751b51d387c5e91583642fb928134792a261e788e6947b5dbbb1dd",
+      "after": "71f4e7df2084d96739437fa049c607daeea4ca3291c8e6f1c88b4c43ffd9a68c",
+      "before": "ff8a88fda2112090761de88c990e40fb56bc081b237146cd18a45c33bc096744",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-living-in-the-garden.html": {
-      "after": "6ef89a22f758aa94dd92a42ea0f5e83a5a5003cf6b0ec41db36f95c90fad13c3",
-      "before": "26354fd458c8b2ec3a908c62e90851d474bb9f860180421e0dadcd143dd90d0c",
+      "after": "e40f8ccdef2273e2a569b9a0c13f9b0582da6710c9dcee1d42d5e45690054c32",
+      "before": "b5876d9ba99a2801409f63150b87359d735e4b972d77162293e8e65abe73f070",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-neighbourhood-parcel-house.html": {
-      "after": "cf3397dfecfc26f8f636773f4d6c645216995a09fecc47896dec860b17a11758",
-      "before": "2371c8f7da112eef8d0db5180dea9bf424f00e8bb4aec0584180260b26a0d01f",
+      "after": "ca9292bfe99c6ce71f8d8570989da7c33667195d807178c60db2bb153b9cb90f",
+      "before": "bb07b756511d842bb4942804f50fed325d4ec0ab2d75698a8edb95046b133132",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-open-your-home-to-art.html": {
       "after": "c3a96e4b3151e7b6985cd20b01e9546bd74fa7451c051c704bb5c5921b7cf349",
@@ -91,28 +97,34 @@
       "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
     },
     "discovery-the-borrowed-garden.html": {
-      "after": "727823fda1a52372a8c325a860e7cdcff05e772c89975197726865efa06a1eef",
-      "before": "aeafad9cf4241478d498af93162859dfe011720e3333902ff10a779364f70669",
+      "after": "5ff5fff52b8c73a09a99dfb6713de28e0fe9d5e2fe8f4beb9dac08d821354d54",
+      "before": "6674c11b2ab168b399664060618dad20e312ad18d22c20124b19431d26a7caea",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "discovery-your-home-on-screen.html": {
-      "after": "3dfd7059876bdfbe5141a72609cc7c2eacfb7f6f158d054edcdbc20db7a47bcd",
-      "before": "318b04a0b0720dd1aedf3ca343566d69354ef54c02865118aadaa7a97a718bec",
+      "after": "27d65a353678ea113607dfc479dbe82044cdfd5f4e651d63aebb82e0782ccaa9",
+      "before": "f6c129bb38922586c1692eca3b63c5bdfbc0fa57cba3331ce54d9e78f073a0c9",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
+    },
+    "garden-room-prices-ireland.html": {
+      "after": "2ac287820ae69957e4900209d27f5ec3402a5d47d05c892eddbda1044e34694c",
+      "before": "0a87d6961dd613f2e85d59c56c29da2cb8df622ef7afe6c94ea62c8d035839e0",
+      "nofade": true,
+      "region": "cbd0a415c363f15973222804ead1b04500c72486f05b468b31156b9692c1c413"
     },
     "index.html": {
-      "after": "72b5cbb522305ed6855ccf4d74d24d89f20b97074fb971438fc13e8f75cd60df",
-      "before": "723754780c2f6538199342e3bbdae138c9e0a0b199f3d9a01aa7091ee0ab6051",
+      "after": "60307557cef64a4fde6e7a0e336775af98645d309807ffea12e747c9a6f2962e",
+      "before": "ebf0e78c4207a057bbe4975409b8bda56cfb126ac9e432e878b98fe3c0a18c09",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "privacy.html": {
-      "after": "014900db129cc3370fe584ab89211fc73a2d3d6dbe07b8442d7b08d9b4fad685",
-      "before": "10ba9f01a1510f1bf068724113e9fb197638acc9dac87d97c69f58a1b463d52f",
+      "after": "0c8debdd007c51a264e0b474481a4aa6749e013b1705ffcd561aa83890419f25",
+      "before": "fc50169898a1fd44675c5805f31cc730c46fd54c01ce12615f5cec321f347c9e",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
     },
     "search.html": {
       "after": "a781dd80ec9696b78cbe9f5c9d5e722211a61604d36d25e85f12828108c2b0ef",
@@ -121,10 +133,16 @@
       "region": "55aebfd8f5faab2bf5295311c68f4767f80c59f84c994186634e6e2f1dab9b64"
     },
     "terms.html": {
-      "after": "165f8a685deb1a87af15dced4dde838a81b3972a9fdb4e35a71feb14b51443ab",
-      "before": "bd3faa3e5950f29227925e5a13e9e464df622dd1a63b8d6b3920625100873701",
+      "after": "8a3b10f53ed00dc7e1f70ad76d6f862a1cc1255c9eaa5157e3b5203f4264d3f0",
+      "before": "4ccfa3905817b820ce1ec0fba4b274e922b0e1ac73d2e0952a362050758b2185",
       "nofade": false,
-      "region": "0b7f22d2486985507140e8f7b896abfe4391db094eee45b8b9eeab3043f592ac"
+      "region": "640ed84bf2cf83502e4ed37a021c5b3bffc8b6d9b72918bd57afb5d6a12a7f1e"
+    },
+    "triq-cube.html": {
+      "after": "89a344dac752a48681698ea092d15b89b524c3dd4b02d05090e16af9ca5859a5",
+      "before": "c8691b0e59c5dd7c7cf9d74b7ed00e99994a4a106968faf471883a4c2fa8a058",
+      "nofade": true,
+      "region": "cbd0a415c363f15973222804ead1b04500c72486f05b468b31156b9692c1c413"
     }
   }
 }

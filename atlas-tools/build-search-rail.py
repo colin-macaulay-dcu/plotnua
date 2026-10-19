@@ -136,7 +136,14 @@ PANEL = (
         '  <button type="button" class="pns-close" id="pnsClose"'
         ' aria-label="Close search">\u00d7</button>\n'
         '  <div class="pns-shell">\n'
-        '    <h2 class="pns-ask">What are you looking for?</h2>\n'
+        # SEO HEADING CORRECTION, 19 October 2026 (founder directive: site-wide
+        # heading structure). The overlay's question was an <h2>, and the rail
+        # sits straight after the brand mark, so on every public page the
+        # first heading in the document was this hidden dialog's H2, ahead of
+        # the page's own H1. It is a label for a search field, not a section
+        # heading: it is now a paragraph with the SAME class, so search.css
+        # renders it identically and the dialog keeps its aria-label.
+        '    <p class="pns-ask">What are you looking for?</p>\n'
         '    <div class="pns-field">\n'
         '      <input type="search" class="pns-input" id="pnsInput"'
         ' autocomplete="off" autocorrect="off" spellcheck="false"'
