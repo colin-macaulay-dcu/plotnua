@@ -13,7 +13,8 @@
  * L6 shares pixels with L3 (the approved smoke drifts over the pavilion), so
  * its tile is a two-state sprite: "with L3" (exactly the locked L6) and
  * "without L3" (the same smoke over the garden). Which half shows follows L3.
- * The TimberIN credit and the accessible disclosure show whenever L6 is on.
+ * The TimberIN credit and the accessible disclosure show whenever L6 is on, with a
+ * beacon (the Reveal's own pattern) leading to the existing Garden Retreat Discovery.
  *
  * Camera: switching a layer on frames it through the Reveal's own camera
  * (PN_REVEAL_API.frame), so beacons, lens and resize keep working. Where the
@@ -35,8 +36,17 @@
     L3: { d: [2100, 820, 1], m: [2100, 820, 1] },
     L4: { d: [946, 1180, 1], m: [946, 1160, 1] },
     L5: { d: [220, 560, 1], m: [260, 600, 1] },
-    L6: { d: [2452, 1110, 1], m: [2452, 1080, 1] }
+    /* phones: a modest 1.35x zoom, held to the bottom-right corner, frames the sauna, the
+       chimney and smoke and the hot tub's wooden body together (H3 review, 20 Oct 2026).
+       Camera framing alone cannot lift the tub clear of the full-height paths, so while L6 is
+       on, phones also show the paths as one compact row (garden.css). */
+    L6: { d: [2452, 1110, 1], m: [2460, 1150, 1.35] }
   };
+  /* L6's route to the existing Garden Retreat Discovery, in the Reveal's beacon pattern: a dot,
+     its label on hover or focus. It sits on the generic sauna (never on the supplier's tub) and
+     makes no product or commercial claim. */
+  var RETREAT = { at: [2655, 960], href: "discovery-garden-retreat.html",
+                  q: "Explore the Garden Retreat", label: "Explore the Garden Retreat Discovery: saunas, hot tubs and cold plunges at home" };
   var SAY = {
     L3: "A mirrored garden pavilion appears along the right-hand fence. Illustration.",
     L4: "A kitchen garden appears on the lawn. Illustration.",
@@ -71,6 +81,25 @@
   /* the credit sits clear of the headline, lede, paths and chips: under the chips where there is
      room (desktop, tablet), otherwise just above the paths (phones) */
   var stage = $("#pr-stage");
+
+  /* ---------- the Garden Retreat beacon ---------- */
+  var beacon = document.createElement("a");
+  beacon.className = "beacon g-beacon"; beacon.href = RETREAT.href; beacon.hidden = true;
+  beacon.setAttribute("aria-label", RETREAT.label);
+  beacon.innerHTML = '<span class="b-dot" aria-hidden="true"></span><span class="b-q" aria-hidden="true">' + RETREAT.q + ' →</span>';
+  var beaconsEl = $("#pr-beacons");
+  beaconsEl.parentNode.insertBefore(beacon, beaconsEl.nextSibling);
+  function placeBeacon() {
+    if (beacon.hidden) return;
+    var s = stage.getBoundingClientRect(), c = cam.getBoundingClientRect(), k = c.width / 2752;
+    var x = c.left - s.left + RETREAT.at[0] * k, y = c.top - s.top + RETREAT.at[1] * k;
+    var dot = beacon.querySelector(".b-dot"), pad = 10, r = dot.offsetWidth / 2;
+    /* the dot sits exactly on the sauna; as with the Reveal's other beacons, its label shows on
+       hover and keyboard focus only, so at rest nothing covers the chimney or the smoke */
+    beacon.style.left = Math.round(x - pad - r) + "px";
+    beacon.style.top = Math.round(y) + "px";
+  }
+  cam.addEventListener("transitionend", function (e) { if (e.target === cam) { placeBeacon(); placeCredit(); } });
   function rect(sel) {
     var e = $(sel); if (!e || e.offsetParent === null) return null;
     var a = e.getBoundingClientRect(), s = stage.getBoundingClientRect();
@@ -78,9 +107,12 @@
   }
   function placeCredit() {
     if (credit.hidden) return;
-    var avoid = ["#pr-introTitle", ".lede", "#pr-paths", "#pr-layers"].map(rect).filter(Boolean);
+    var avoid = ["#pr-introTitle", ".lede", "#pr-paths", "#pr-layers", ".g-beacon"].map(rect).filter(Boolean);
+    var bk = rect(".g-beacon");
     var H = stage.clientHeight, h = credit.offsetHeight, nav = rect("#pr-layers"), paths = rect("#pr-paths"), lede = rect(".lede");
-    var cands = [];
+    var cands = [], phone = window.matchMedia("(max-width: 760px)").matches;
+    if (phone && lede) cands.push(lede.b + 10);   /* phones: above the lawn, clear of the tub and the compact paths */
+    if (phone && bk) cands.push(bk.b + 8);
     if (nav) cands.push(nav.b + 8);
     if (paths) cands.push(paths.t - 8 - h);
     if (lede) cands.push(lede.b + 10);
@@ -100,7 +132,8 @@
     ROOT.classList.toggle("g-noL3", on.indexOf("L3") < 0);
     var l6 = on.indexOf("L6") >= 0;
     credit.hidden = !l6;
-    placeCredit();
+    beacon.hidden = !l6;
+    placeCredit(); placeBeacon();
     ROOT.querySelectorAll(".lay-btn").forEach(function (b) {
       b.setAttribute("aria-pressed", on.indexOf(b.dataset.layer) >= 0 ? "true" : "false");
     });
@@ -112,7 +145,7 @@
     ROOT.classList.add("g-panning");
     API.frame(last ? VIEW[last] : null, instant || mqReduce.matches);
     clearTimeout(frameFor.t);
-    frameFor.t = setTimeout(function () { ROOT.classList.remove("g-panning"); }, instant || mqReduce.matches ? 0 : 1500);
+    frameFor.t = setTimeout(function () { ROOT.classList.remove("g-panning"); placeBeacon(); placeCredit(); }, instant || mqReduce.matches ? 0 : 1500);
   }
 
   function set(id, want, instant) {
@@ -139,6 +172,7 @@
 
   window.addEventListener("resize", function () {
     queuePlace();
+    setTimeout(placeBeacon, 200);
     Object.keys(mounted).forEach(function (id) {
       var img = mounted[id].querySelector("img");
       img.setAttribute("sizes", Math.ceil(parseFloat(mounted[id].style.width) * scaleNow()) + "px");
@@ -148,5 +182,5 @@
   var h = new URLSearchParams(location.hash.slice(1)).get("layers");   // review hook
   if (h) h.split(",").forEach(function (id) { if (VIEW[id]) set(id, true, true); });
 
-  window.PN_REVEAL_GARDEN = { set: set, on: function () { return on.slice(); } };   // for automated checks only
+  window.PN_REVEAL_GARDEN = { set: set, on: function () { return on.slice(); }, place: function () { placeBeacon(); placeCredit(); } };   // for automated checks only
 })();

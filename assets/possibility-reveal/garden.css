@@ -22,15 +22,36 @@
 .pr .lay-btn[aria-pressed="true"]::before{content:"✓";content:"✓" / ""}
 
 /* while the camera pans to a layer, the beacons and lens step back so they never drift off their targets */
-.pr.g-panning .beacons,.pr.g-panning .lens,.pr.g-panning .lens-label{opacity:0!important;transition:opacity .15s!important}
+.pr.g-panning .beacons,.pr.g-panning .g-beacon,.pr.g-panning .lens,.pr.g-panning .lens-label{opacity:0!important;transition:opacity .15s!important}
 
 /* the TimberIN credit and its accessible disclosure, whenever L6 is on */
 .pr .garden-credit{position:absolute;z-index:8;right:clamp(16px,4.5vw,64px);top:calc(64px + var(--pr-safe-top,0px));margin:0;max-width:calc(100% - 32px);font-size:12.5px;line-height:1.35;padding:6px 12px;border-radius:999px;background:rgba(15,32,24,.72);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border:1px solid rgba(248,245,236,.28);color:var(--ivory)}
 .pr .garden-credit[hidden]{display:none}
 .pr .garden-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .pr .garden-credit a:focus-visible{outline:2px solid var(--ivory);outline-offset:2px;border-radius:2px}
+
+/* the Garden Retreat beacon: the Reveal's own beacon (dot, pulse), as a link; as with the other
+   beacons its label appears on hover and keyboard focus, to the left of the dot */
+.pr .g-beacon{z-index:4;text-decoration:none;color:var(--ivory);transform:translateY(-50%)}
+.pr .g-beacon[hidden]{display:none}
+.pr .g-beacon .b-q{position:absolute;right:calc(100% - 6px);top:50%;opacity:0;transform:translate(6px,-50%);pointer-events:none;white-space:nowrap;max-width:none;font-size:16px}
+.pr .g-beacon:hover .b-q,.pr .g-beacon:focus-visible .b-q{opacity:1;transform:translate(0,-50%)}
+.pr .g-beacon:focus-visible{outline:none}
+.pr .g-beacon:focus-visible .b-dot{outline:2px solid var(--ivory);outline-offset:6px}
+.pr .g-beacon:hover .b-dot,.pr .g-beacon:focus-visible .b-dot{background:var(--elec)}
+.pr[data-mode="scene"] .g-beacon{display:none}
+
 @media (max-width: 760px){
-  .pr .garden-credit{right:16px;font-size:11.5px;padding:5px 10px}
+  .pr .garden-credit{left:16px;right:auto;max-width:62%;font-size:11.5px;padding:5px 10px;border-radius:12px}
+  .pr .g-beacon .b-q{font-size:13.5px;white-space:nowrap;max-width:none;width:auto}
+  /* while L6 is on, phones show the paths as one compact row, so the hot tub is not hidden
+     behind them; nothing about the paths changes otherwise (names, order, behaviour) */
+  .pr[data-mode="entry"][data-garden~="L6"] .paths{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;gap:6px;scrollbar-width:none}
+  .pr[data-mode="entry"][data-garden~="L6"] .paths::-webkit-scrollbar{display:none}
+  .pr[data-mode="entry"][data-garden~="L6"] .path{flex:none;padding:6px 11px;gap:7px;border-radius:999px}
+  .pr[data-mode="entry"][data-garden~="L6"] .path b{font-size:14px;flex:none;white-space:nowrap}
+  .pr[data-mode="entry"][data-garden~="L6"] .path small{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .pr[data-mode="entry"][data-garden~="L6"] .path .p-dot{width:9px;height:9px;box-shadow:0 0 0 3px rgba(248,245,236,.16)}
 }
 @media (prefers-reduced-motion: reduce){
   .pr .g-layer,.pr .lay-btn{transition:none}
