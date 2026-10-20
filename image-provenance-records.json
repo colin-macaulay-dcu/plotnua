@@ -3729,5 +3729,137 @@
       "reason": "Living in the Garden 'Possible' plate. Its signed Google C2PA credential records a second generation input ('Input ingredient 1') with no credential, format, title or hash. It could not be identified from project records (1,101 local images scanned, no match). Held until identified.",
       "since": "2026-10-17"
     }
+  ],
+  "possibility_reveal_lock_chain": {
+    "what_this_is": "THE AUTHORITATIVE POSSIBILITY REVEAL LOCK CHAIN, mirrored here from ACTIVE-LOCKS.json in the lock repository (commit 6b8741f; L3 v2.1c re-lock b2ca5da). It names which locked version of each layer is ACTIVE. Builds of any Reveal image must start from active_master; superseded versions are kept for provenance and rollback only. P13 refuses a staged or published composite that is not on this chain, a chain that does not name L3 v2.1c by hash, and a chain that applies the superseded L3 v2. atlas-tools/verify-possibility-reveal-locks.py checks this block against the lock repository and rebuilds the master pixel-identically.",
+    "lock_repository": "possibility-reveal-locks (offline; bundles in the LOCKED folders on the founder's Mac). HEAD 6b8741f.",
+    "lock_commits": {
+      "baseline": "33fc310",
+      "L5": "ff49753",
+      "L3_v2.1c": "b2ca5da",
+      "L6": "6b8741f"
+    },
+    "active_master": {
+      "file": "l6lock/output/L1-plus-L2A-plus-L3v2.1c-plus-L4-plus-L5-plus-L6.png",
+      "sha256": "f3da8d638699d44ceddbd1d00d2584d36ebef1273f9547d03bf771d092f8f760",
+      "pixel_sha256": "26fb650761fbc8259928c32a7885af9b307e131334e5dff8da59a26d845a0f01"
+    },
+    "chain": [
+      {
+        "step": "L1 + L2A + L3 v2 + L4 + L5 (as locked 18 Oct)",
+        "file": "l5lock/output/L1-plus-L2A-plus-L3v2-plus-L4-plus-L5.png",
+        "sha256": "882a825e5c51dc80efcdcf816e597064b46eb611ea3259a31ec9bfb9cfda6a68"
+      },
+      {
+        "step": "+ L3 v2.1c (replaces L3 v2)",
+        "layer": "l3v21clock/layer/L3v2.1c-layer-RGBA.png",
+        "layer_sha256": "e19711e9646175025999450cb190802d79dae74a24c2575b89863aacc41a7d5f",
+        "output": "l3v21clock/output/L1-plus-L2A-plus-L3v2.1c-plus-L4-plus-L5.png",
+        "output_sha256": "f60a931dd97e6c89952a8abcf46df0d78db24276fd0d4de01ae5323db6203520"
+      },
+      {
+        "step": "+ L6",
+        "layer": "l6lock/layer/L6-layer-RGBA.png",
+        "layer_sha256": "113f1c476038551cfbfc80cc3c282769cf9d3eb718a5eced48b8d97c711eab43",
+        "output": "l6lock/output/L1-plus-L2A-plus-L3v2.1c-plus-L4-plus-L5-plus-L6.png",
+        "output_sha256": "f3da8d638699d44ceddbd1d00d2584d36ebef1273f9547d03bf771d092f8f760"
+      }
+    ],
+    "active_layers": {
+      "L3": {
+        "version": "v2.1c",
+        "sha256": "e19711e9646175025999450cb190802d79dae74a24c2575b89863aacc41a7d5f"
+      },
+      "L5": {
+        "version": "Option B",
+        "sha256": "bd008da32f978495dd8516797b19adfb33b1d24becedeb8e008326523054fe79"
+      },
+      "L6": {
+        "version": "TimberIN",
+        "sha256": "113f1c476038551cfbfc80cc3c282769cf9d3eb718a5eced48b8d97c711eab43"
+      }
+    },
+    "superseded": {
+      "L3_v2": {
+        "sha256": "a4454ef87fb219d13808eca27b1d229838ac4bce763e20c5d37421d8c33f8f18",
+        "pixel_sha256": "308acc465855c1fd9c92507eb3f1da96201d66f23f3c7931fb6185742e8a223e",
+        "replaced_by": "v2.1c",
+        "on": "2026-10-20",
+        "use": "rollback only"
+      },
+      "L3_v2_master": {
+        "note": "l5lock/output (L3 v2) is the base of the chain, not an end product; it must never be published as the active master",
+        "sha256": "882a825e5c51dc80efcdcf816e597064b46eb611ea3259a31ec9bfb9cfda6a68"
+      }
+    }
+  },
+  "staged_composites_note": "STAGED COMPOSITES (H2, 20 Oct 2026). A locked composite whose provenance is recorded before publication. It names no asset, so nothing on a page can be accounted for by it. Checked by P6 and P13. It grants nothing: the permission lives in image-adaptation-licences.json, reached only through rights_ref (organisation_code + atlas_permission_ref), exactly as P4 reaches the rights manifest.",
+  "staged_composites": [
+    {
+      "composite_id": "possibility-reveal-L6",
+      "status": "LOCKED_NOT_PUBLISHED",
+      "class": "AI_ILLUSTRATION",
+      "composition": "MIXED: AI-assisted illustration (house, garden, pavilion, pod, sauna) with photographic elements (the hot tub and its chimney smoke are TimberIN photographs, adapted under written permission). Not a photograph of a real garden; the hot tub is a real TimberIN product as photographed by TimberIN.",
+      "master": {
+        "description": "L1 + L2A + L3 v2.1c + L4 + L5 + L6, 2752 x 1536",
+        "lock_file": "l6lock/output/L1-plus-L2A-plus-L3v2.1c-plus-L4-plus-L5-plus-L6.png",
+        "sha256": "f3da8d638699d44ceddbd1d00d2584d36ebef1273f9547d03bf771d092f8f760",
+        "pixel_sha256": "26fb650761fbc8259928c32a7885af9b307e131334e5dff8da59a26d845a0f01",
+        "pixels": [
+          2752,
+          1536
+        ]
+      },
+      "generated": {
+        "tool": "AI-assisted layers: OpenAI ChatGPT image generation and Google Gemini image editing, as declared per layer in the nine Possibility Reveal records and in the L1-L6 lock records. Photographic elements: no generative model; PlotNua deterministic build tools (camera recovery and re-projection of Photograph A, smoke matte transfer from Photograph B, compositing) recorded in l6lock/tools.",
+        "date": "2026-10-20"
+      },
+      "prompt": "Composite record. The generative prompts are recorded per layer: L1 and L2A in the nine Possibility Reveal records (prompt_chain), L3-L6 in their lock records. No generative model was used for the licensed photographic elements, and no prompt for any layer names a supplier, organisation or product.",
+      "reference_inputs": [
+        "https://www.woodenhottubsale.co.uk/wp-content/uploads/2005/01/Outdoor-jacuzzi-hot-tub-wood-fired-4-6-persons-with-snorkel-burner-4-2.jpg",
+        "https://www.woodenhottubsale.co.uk/wp-content/uploads/2005/01/Wood-burning-hot-tub-Wellness-Royal-1-6.jpeg",
+        "The locked L1-L5 master and the L3 v2.1c layer (possibility_reveal_lock_chain), PlotNua's own"
+      ],
+      "reference_inputs_note": "The two photographs are PIXEL SOURCES, not prompts: they were never given to an image model. They are listed so that P6's licensed-photography exception is exercised on the real record rather than hidden.",
+      "licensed_photographic_elements": [
+        {
+          "element": "the hot tub, with its flue pipe, collar and hooded cap",
+          "source_id": "TIMBERIN-PHOTO-A",
+          "source_sha256": "f6d930604775dbdce06239b83225cf690abf41afb68a00aa06ec9130a3c978ab",
+          "rights_ref": {
+            "organisation_code": "ORG-000179",
+            "atlas_permission_ref": "L6-TIMBERIN-TWO-PHOTOS-20261019"
+          },
+          "generative": false,
+          "treatment": "every tub pixel is a photographed pixel, re-projected from Photograph A's recovered camera into the garden camera; graded to the evening light; contact and cast shadow; not mirrored; design unchanged. Excluded: the hillside background and its watermark, the wooden prop and base plate."
+        },
+        {
+          "element": "the chimney smoke",
+          "source_id": "TIMBERIN-PHOTO-B",
+          "source_sha256": "3929ec716f1f8b4bc8ece609c7b1574139627e810f61106b2d860e7c57672ebf",
+          "rights_ref": {
+            "organisation_code": "ORG-000179",
+            "atlas_permission_ref": "L6-TIMBERIN-TWO-PHOTOS-20261019"
+          },
+          "generative": false,
+          "treatment": "smoke matte separated from the foliage behind it; mirrored, scale 0.42, 6 degree lean, opacity 0.88, desaturated and lit to the scene; placed above the cap of the Photograph A chimney. Nothing drawn. Excluded: everything else in Photograph B."
+        }
+      ],
+      "depicts_named_product": true,
+      "depicts_named_product_note": "TRUE, and permitted only through the licensed-photography exception: the hot tub is a real TimberIN product as TimberIN photographed it. It is not an AI rendering of a supplier's product.",
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-20",
+        "attests": "Founder visual approvals recorded on 20 October 2026: at 19:43, the L6 TimberIN hot tub as presented, its position and scale, the full chimney height, the smoke exactly as presented, the smoke's overlap with the pavilion and the sauna, the sauna and its window glow (2.2), and the overall L6 composition; at 20:06, the corrected full-garden composite with the L3 v2.1c pavilion reflection; then the L3 v2.1c re-lock and the L6 lock (active master pixels 26fb6507...a0f01). The hot tub and its smoke are photographs adapted under the supplier's written permission of 20 October 2026; the tub is not mirrored and its design is unchanged. The AI-assisted layers are declared in their own records and lock records. Statement confirmed by the founder at the H2 review, 20 October 2026."
+      },
+      "intended_surfaces": [
+        "homepage"
+      ],
+      "caption_status": "APPROVED FOR H3, NOT YET IMPLEMENTED (founder, H2 review, 20 Oct 2026). Visible caption: 'Garden possibilities illustrated. Hot tub: TimberIN.' The exact credit 'Hot tub: TimberIN' is linked to https://www.timberin.com/. Accessible disclosure: 'This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.' P8's AI_ILLUSTRATION label rule must be extended for composites in H3 before publication.",
+      "decision_ref": "H2 founder review, 20 Oct 2026: P6/P10 licensed-photography exception approved (in principle at the L6 TimberIN audit; implementation approved at the H2 review)",
+      "lock_records": "l6lock/L6-LOCK-MANIFEST.json, l6lock/00-L6-LOCK-RECORD.md, l3v21clock/L3v2.1c-LOCK-MANIFEST.json (lock repository 6b8741f)",
+      "on_publication": "Move this entry to records with the published asset path(s), sha256 and permitted_surfaces, keeping composite_id; it then falls under P1-P12, and P10 requires the credit beside it."
+    }
   ]
 }

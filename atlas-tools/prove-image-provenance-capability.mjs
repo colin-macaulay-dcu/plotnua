@@ -39,6 +39,7 @@ const GUARD = join(HERE, 'validate-image-provenance.js');
 const REGISTER = join(ROOT, 'image-provenance-records.json');
 const RIGHTS = join(ROOT, 'image-rights-manifest.json');
 const GATE = join(HERE, 'validate-image-rights.js');
+const LICENCES = join(ROOT, 'image-adaptation-licences.json');
 
 for (const f of [GUARD, REGISTER, RIGHTS, GATE]) {
   if (!existsSync(f)) {
@@ -172,6 +173,10 @@ function tree({ regEdit = null, pageOpts = {}, gateEdit = null,
   }
 
   if (!omitRights) copyFileSync(RIGHTS, join(dir, 'image-rights-manifest.json'));
+  /* H2, 20 Oct 2026: the real register now carries a staged composite bound
+     to an adaptation licence. The licence travels with the register, or the
+     control would (correctly) fail for a missing binding. */
+  if (existsSync(LICENCES)) copyFileSync(LICENCES, join(dir, 'image-adaptation-licences.json'));
   let gate = readFileSync(GATE, 'utf8');
   if (gateEdit) gate = gateEdit(gate);
   writeFileSync(join(dir, 'atlas-tools', 'validate-image-rights.js'), gate);
