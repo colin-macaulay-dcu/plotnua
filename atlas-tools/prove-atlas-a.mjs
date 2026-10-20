@@ -12,7 +12,8 @@
    functions verbatim: 1,898 established · 548 model-level · 1,350 scope-limited
    (1,357 since the ÖÖD update of 14 Oct 2026; 555 model-level and 1,383
    scope-limited since the targeted publications of 16 Oct 2026; 550 and
-   1,373 since the safety hold of 19 Oct 2026).
+   1,373 since the safety hold of 19 Oct 2026; 552 and 1,356 since the
+   Outdoor Living installation correction of 20 Oct 2026).
    A gate on state alone would make 1,350 false model-level claims.
 
    A1  The three placements exist, at 24 / 20 / 16px, wired the approved way.
@@ -252,11 +253,25 @@ else {
        the numbers moved: each held product carried exactly 1 model-level mark
        and 2 scope-limited reads (5 x 1 = 5, 5 x 2 = 10), and every one of the
        other 573 products' reads is unchanged. No read was added, no scope note
-       was lost, and leak stays 0. */
-    refused === 1373 ? ok('1,373 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,373 scope-limited refusals, measured ' + refused);
-    allowed === 550 ? ok('550 model-level established reads allowed')
-                    : bad('expected 550 model-level marks, measured ' + allowed);
+       was lost, and leak stays 0.
+
+       RE-CENSUSED 20 October 2026 for the founder-approved Outdoor Living
+       installation correction (atlas-tools/publish-targeted-update.py, five
+       Outdoor Living products): model-level 550 -> 552, scope-limited
+       1373 -> 1356. Decomposed per product before the numbers moved: the two
+       Nova Pavilion Sun Rooms' installationModel read changed from
+       Range-Level (refused) to Product-Specific evidence (allowed) -- +2
+       model-level, -2 scope-limited -- because Atlas now holds each product's
+       own page; ModPod Nova, Vaya and Lira left the universe (Blocker C, the
+       recorded installation contradiction), each taking exactly 5
+       scope-limited reads (insulation, insulationRating, construction,
+       installationModel: Range-Level; irishAvailability: Organisation-Wide)
+       and no model-level mark: -15. Every other product's reads are
+       unchanged, no scope note was lost, and leak stays 0. */
+    refused === 1356 ? ok('1,356 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,356 scope-limited refusals, measured ' + refused);
+    allowed === 552 ? ok('552 model-level established reads allowed')
+                    : bad('expected 552 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']
       .filter(s => marked({ state: s, scope: null, conflict: null }));
     none.length ? bad('states that must never be marked are: ' + none.join(', '))
