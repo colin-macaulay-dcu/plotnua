@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.cluster1.cost-evidence",
   "version": 1,
-  "generated": "2026-10-11",
+  "generated": "2026-10-20",
   "source": {
     "file": "garden-room-recommendation-universe-v1.json",
     "generated": "2026-10-07T11:26:27Z",
@@ -16,14 +16,14 @@
     "excludes": "availabilityStatus == Out of Stock"
   },
   "totals": {
-    "gardenRoomRecords": 573,
+    "gardenRoomRecords": 570,
     "organisationsAll": 64,
-    "relevant": 247,
+    "relevant": 245,
     "relevantOrganisations": 24,
     "priceBasisNotEstablished": 177,
-    "vatStatusUnknown": 94,
-    "floorAreaPublished": 45,
-    "floorAreaPublishedOrganisations": 11,
+    "vatStatusUnknown": 92,
+    "floorAreaPublished": 43,
+    "floorAreaPublishedOrganisations": 10,
     "rangeFloorPrices": 77,
     "quoteOnly": 0
   },
@@ -51,25 +51,25 @@
       "floorAreaKnown": 24
     },
     "INSTALLED_FINISHED_TURNKEY": {
-      "n": 47,
-      "organisations": 8,
-      "minEur": 9799,
-      "medianEur": 20400,
+      "n": 44,
+      "organisations": 7,
+      "minEur": 9995,
+      "medianEur": 20400.0,
       "maxEur": 43650,
       "vatIncluded": 2,
       "vatExcluded": 1,
-      "vatUnknown": 44,
-      "floorAreaKnown": 10
+      "vatUnknown": 41,
+      "floorAreaKnown": 8
     },
     "SUPPLY_ONLY_INSTALL_SEPARATE": {
-      "n": 5,
-      "organisations": 2,
-      "minEur": 17800,
-      "medianEur": 34500,
+      "n": 6,
+      "organisations": 3,
+      "minEur": 9799,
+      "medianEur": 27200.0,
       "maxEur": 48000,
       "vatIncluded": 0,
       "vatExcluded": 5,
-      "vatUnknown": 0,
+      "vatUnknown": 1,
       "floorAreaKnown": 1
     },
     "INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED": {
@@ -108,11 +108,11 @@
   },
   "classEnvelopes": {
     "lte30_class3": {
-      "n": 43,
-      "organisations": 11,
+      "n": 41,
+      "organisations": 10,
       "minEur": 4870,
       "maxEur": 94900,
-      "medianEur": 9844
+      "medianEur": 9425
     },
     "between32and45_class3A": {
       "n": 1,
@@ -130,14 +130,29 @@
     }
   },
   "homeownerVisibleFigures": {
-    "relevantProducts": 247,
+    "relevantProducts": 245,
     "priceBasisNotEstablished": 177,
-    "vatStatusUnknown": 94,
-    "floorAreaPublished": 45,
+    "vatStatusUnknown": 92,
+    "floorAreaPublished": 43,
     "class3AProductsInAtlas": 1
   },
   "notes": [
     "The supply-only / DIY-kit segment is thinly represented in the euro set because the large DIY-kit sellers held in Atlas are GBP-priced or carry noPublishedIrishRoute: true. That is a coverage fact about Atlas, not a fact about the Irish market.",
     "No homeowner-visible copy may state a price for the 32-45 m2 Class 3A envelope: Atlas holds one product in it."
+  ],
+  "corrections": [
+    {
+      "id": "outdoor-living-2026-10-20",
+      "date": "2026-10-20",
+      "deployedCommit": "583c9bc93ff3197fb91ea877ebda39e5d971f6e5",
+      "products": [
+        "recBVDyal8VGGVEZM",
+        "recyMjzPUzBOvXD7Q",
+        "recspYM9bd9APNCOO",
+        "recSYgE1Y3I11JIsr",
+        "recOu5xXheu2POoIa"
+      ],
+      "pageNote": "corrected on 20 October 2026 for five supplier records"
+    }
   ]
 }

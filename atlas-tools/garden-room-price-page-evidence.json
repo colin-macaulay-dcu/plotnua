@@ -7,7 +7,20 @@
   "revision": "d01758d04d4bb72d6213fdf6844ecfeb7cdb0568",
   "sha256": "db4ecb7ff99ebaa0e2d88b89ce395f0bcb78c5a2750630aefbc3669413ff82db",
   "generated": "2026-10-07T11:26:27Z",
-  "evidence": "cluster1-cost-evidence.json"
+  "evidence": "cluster1-cost-evidence.json",
+  "corrections": [
+   {
+    "id": "outdoor-living-2026-10-20",
+    "deployedCommit": "583c9bc93ff3197fb91ea877ebda39e5d971f6e5",
+    "products": [
+     "recBVDyal8VGGVEZM",
+     "recyMjzPUzBOvXD7Q",
+     "recspYM9bd9APNCOO",
+     "recSYgE1Y3I11JIsr",
+     "recOu5xXheu2POoIa"
+    ]
+   }
+  ]
  },
  "rows": [
   {
@@ -418,7 +431,7 @@
   {
    "productId": "recBVDyal8VGGVEZM",
    "supplierKey": "249888bef7db",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
+   "segment": "SUPPLY_ONLY_INSTALL_SEPARATE",
    "price": 9799,
    "vat": "Unknown",
    "lastPriceCheck": "2026-08-19",
@@ -971,15 +984,6 @@
    "price": 8052,
    "vat": "Yes",
    "lastPriceCheck": "2026-09-23",
-   "priceStatus": "Verified"
-  },
-  {
-   "productId": "recSYgE1Y3I11JIsr",
-   "supplierKey": "249888bef7db",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 16999,
-   "vat": "Unknown",
-   "lastPriceCheck": "2026-08-19",
    "priceStatus": "Verified"
   },
   {
@@ -1988,15 +1992,6 @@
    "price": 11460,
    "vat": "Yes",
    "lastPriceCheck": "2026-09-28",
-   "priceStatus": "Verified"
-  },
-  {
-   "productId": "recspYM9bd9APNCOO",
-   "supplierKey": "249888bef7db",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 21999,
-   "vat": "Unknown",
-   "lastPriceCheck": "2026-08-19",
    "priceStatus": "Verified"
   },
   {

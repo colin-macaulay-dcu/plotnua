@@ -124,6 +124,12 @@ console.log('\nCLUSTER 1 CLAIM GUARDS\n');
     const d = new Date(EV.source.generated.slice(0, 10) + 'T00:00:00Z');
     ALLOWED.add(`${d.getUTCDate()} ${d.toLocaleString('en-GB', { month: 'long', timeZone: 'UTC' })} ${d.getUTCFullYear()}`);
   }
+  // 20 Oct 2026 (SEO-C1): a correction the evidence records names its own
+  // date in the price section. Traced to EV.corrections[].date, never typed.
+  for (const c of (EV && EV.corrections) || []) {
+    const d = new Date(c.date + 'T00:00:00Z');
+    ALLOWED.add(`${d.getUTCDate()} ${d.toLocaleString('en-GB', { month: 'long', timeZone: 'UTC' })} ${d.getUTCFullYear()}`);
+  }
   const found = [...VIS.matchAll(/\b\d{1,2} (?:January|February|March|April|May|June|July|August|September|October|November|December) \d{4}\b/g)].map(m => m[0]);
   if (!found.length) bad('L5', 'UNREACHABLE: no full dates on the page — the signing date should be here');
   else {
@@ -237,7 +243,9 @@ if (PRICE) {
   // and no untraced integer >= 10 other than the allowed set
   const allowed = new Set([...Object.values(want).map(String), '25', '30', '32', '45',
     // the snapshot date's day and year, traced to the evidence stamp (14 Oct 2026)
-    ...EV.source.generated.slice(0, 10).split('-').map(x => String(Number(x)))]);
+    ...EV.source.generated.slice(0, 10).split('-').map(x => String(Number(x))),
+    // and each recorded correction's date (SEO-C1, 20 Oct 2026)
+    ...((EV.corrections || []).flatMap(c => c.date.split('-').map(x => String(Number(x)))))]);
   const rogue = [...new Set([...v.matchAll(/\b(\d{2,})\b/g)].map(m => m[1]))].filter(n => !allowed.has(n));
   if (missing.length) bad('P2', `artefact figure(s) absent from the page: ${missing.join(', ')}`);
   else if (rogue.length) bad('P2', `untraced figure(s) in the price section: ${rogue.join(', ')}`);

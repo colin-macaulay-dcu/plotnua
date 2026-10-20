@@ -45,7 +45,8 @@ const CASES = [
   ['C-P1a', 'P1', ['That can make a substantial difference to the price',
                    'Expect about &euro;20,400. That can make a substantial difference to the price'], null],
   ['C-P1b', 'P1', ['A kit you assemble, a building delivered and erected', 'On average, a kit you assemble, a building delivered and erected'], null],
-  ['C-P2', 'P2', ['247 garden-room products with a euro price', '250 garden-room products with a euro price'], null],
+  // C-P2 anchor re-dated 20 Oct 2026 (SEO-C1): the corrected evidence publishes 245 (was 247).
+  ['C-P2', 'P2', ['245 garden-room products with a euro price', '250 garden-room products with a euro price'], null],
   ['C-P3', 'P3', ['and we are\n      certainly not going to tell you what a garden home costs: the market has not\n      published enough for anyone to say honestly.', 'The market has not published enough for anyone to say honestly.'], null],
   ['C-P4', 'P4', ['Is VAT included?', 'Is delivery included?'], null],
   ['C-S1', 'S1', ['    {\n      "@type": "BreadcrumbList",', '    { "@type": "FAQPage", "@id": "https://plotnua.ie/x#faq" },\n    {\n      "@type": "BreadcrumbList",'], null],

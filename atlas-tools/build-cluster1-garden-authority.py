@@ -208,7 +208,7 @@ edit('E6-two-notices-scope',
       not mean nothing to file.</p>''')
 
 # --- E7 · the price-comparison section, before the evidence drawers ----------
-PRICE_SECTION = '''
+PRICE_TEMPLATE = '''
   <!-- 6b · THE PRICE QUESTION. Not a dataset report. The homeowner-visible
        claim is that published prices are often not comparable, with the
        counts that establish it and the three questions that fix it. Every
@@ -225,7 +225,7 @@ PRICE_SECTION = '''
       <li><span class="dq-fact">%(rel)d garden-room products with a euro price we can
             stand behind.</span>
           <span class="dq-note">From %(orgs)d suppliers, out of %(records)d garden-room
-            products in PlotNua&rsquo;s %(asof)s research snapshot.</span></li>
+            products in PlotNua&rsquo;s %(asof)s research snapshot%(note)s.</span></li>
       <li><span class="dq-fact">%(nobasis)d of them do not establish what the price
             includes.</span>
           <span class="dq-note">A kit you assemble, a building delivered and erected,
@@ -250,9 +250,34 @@ PRICE_SECTION = '''
       differ, the prices were never comparable in the first place.</p>
   </section>
 
-  <!-- 7 · THE EVIDENCE LAYER.''' % {
-    'rel': N_REL, 'orgs': N_ORGS, 'records': N_RECORDS, 'asof': AS_OF,
-    'nobasis': N_NOBASIS, 'novat': N_NOVAT, 'area': N_AREA}
+  <!-- 7 · THE EVIDENCE LAYER.'''
+
+def price_figures(ev):
+    """Every figure the price section shows, read from one evidence document.
+    SEO-C1 (20 Oct 2026): a corrected evidence document also carries the
+    approved note for each applied correction (decision D2)."""
+    fig = ev['homeownerVisibleFigures']
+    d = _dt.date.fromisoformat(ev['source']['generated'][:10])
+    return {'rel': fig['relevantProducts'], 'orgs': ev['totals']['relevantOrganisations'],
+            'records': ev['totals']['gardenRoomRecords'],
+            'asof': '%d %s %d' % (d.day, d.strftime('%B'), d.year),
+            'note': ''.join(', ' + c['pageNote'] for c in ev.get('corrections') or []),
+            'nobasis': fig['priceBasisNotEstablished'], 'novat': fig['vatStatusUnknown'],
+            'area': fig['floorAreaPublished']}
+
+def price_section(ev):
+    return PRICE_TEMPLATE % price_figures(ev)
+
+def figure_rows(ev):
+    """The one part of the price section that carries figures: the
+    <ul class="dq-rows"> list. The text around it has since been extended by
+    other approved edits (the link to the prices guide, the Maker Explorer),
+    so --refresh-figures swaps exactly this list and nothing else."""
+    sec = price_section(ev)
+    i = sec.index('<ul class="dq-rows">')
+    return sec[i:sec.index('</ul>', i) + len('</ul>')]
+
+PRICE_SECTION = price_section(EV)
 if '%(' in PRICE_SECTION:
     sys.exit('REFUSE: PRICE_SECTION still carries an unsubstituted placeholder')
 # Founder correction, 11 October 2026: the pricing heading is
@@ -410,8 +435,31 @@ def main():
             print('reverted', os.path.basename(p))
         return
 
+    if mode == '--refresh-figures':
+        # SEO-C1 (20 Oct 2026). The page is already AFTER; only the evidence
+        # moved. Re-render the price section from the evidence committed at
+        # HEAD and from the evidence in the working tree, and swap exactly that
+        # block. No figure is typed: both renders come from PRICE_TEMPLATE.
+        import subprocess
+        r = subprocess.run(['git', 'show', 'HEAD:atlas-tools/cluster1-cost-evidence.json'],
+                           cwd=ROOT, capture_output=True, text=True)
+        if r.returncode:
+            raise SystemExit('REFUSE: cannot read the committed evidence at HEAD')
+        old, new = figure_rows(json.loads(r.stdout)), figure_rows(EV)
+        if old == new or (src.count(new) == 1 and src.count(old) == 0):
+            print('price figures already current; nothing to do'); return
+        if src.count(old) != 1:
+            raise SystemExit('REFUSE: the page does not carry the HEAD-evidence figure list exactly once (%d)' % src.count(old))
+        if src.count(new) != 0:
+            raise SystemExit('REFUSE: the page already carries the new figure list')
+        out = src.replace(old, new, 1)
+        open(PAGE, 'w', encoding='utf-8').write(out)
+        print('REFRESHED price figures  %s -> %s' % (sha(src), sha(out)))
+        print('figures %(rel)d/%(records)d  no-basis/%(nobasis)d  no-VAT/%(novat)d  area/%(area)d  note=%(note)r' % price_figures(EV))
+        return
+
     if mode != '--stage':
-        raise SystemExit('usage: --check | --stage | --revert')
+        raise SystemExit('usage: --check | --stage | --revert | --refresh-figures')
 
     if state(src) != 'BEFORE':
         raise SystemExit('REFUSE: page is %s, not BEFORE. Nothing written.' % state(src))

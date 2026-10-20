@@ -1,0 +1,34 @@
+{
+  "schema": "plotnua.cost-evidence-corrections",
+  "version": 1,
+  "what_this_is": "Founder-approved, record-level corrections applied to the frozen research snapshot behind atlas-tools/cluster1-cost-evidence.json (and so behind garden-room-prices-ireland.html and the price section of Living in the Garden). Read by atlas-tools/build-cluster1-cost-evidence.py and by the --freeze step of atlas-tools/build-garden-room-prices.py. A correction never types a figure: each listed product takes its record from the universe at a deployed commit, or leaves the snapshot when that universe no longer carries it. Every figure is then recomputed by the same functions that built the original evidence.",
+  "what_this_is_not": "Not a refresh, and not a way to change any product the founder has not approved. A full evidence refresh replaces the snapshot and empties this register.",
+  "baseSnapshot": {
+    "universe": "garden-room-recommendation-universe-v1.json",
+    "sha256": "db4ecb7ff99ebaa0e2d88b89ce395f0bcb78c5a2750630aefbc3669413ff82db",
+    "generated": "2026-10-07T11:26:27Z"
+  },
+  "baseEvidence": {
+    "file": "atlas-tools/cluster1-cost-evidence.json",
+    "revision": "86f5f79896f6537dc3a79ad66aa01760ced2736c",
+    "note": "The evidence as first committed (11 Oct 2026). The generator must reproduce it byte for byte from the base snapshot, with no correction applied, before it may apply any correction."
+  },
+  "corrections": [
+    {
+      "id": "outdoor-living-2026-10-20",
+      "date": "2026-10-20",
+      "approved": "Founder direction, 20 Oct 2026 (Outdoor Living): seven Atlas edits approved; Nova Pavilions corrected to INSTALLATION AVAILABLE (OPTIONAL); ModPod Nova, Vaya and Lira held out of Your Plot recommendations under the UNRESOLVED CONTRADICTION marker. SEO-C1 Release 1 (20 Oct 2026), decision D1: 'Apply the deployed Outdoor Living corrections only. Do not apply the separate Premium Log House safety hold to anonymous price aggregates.'",
+      "deployedCommit": "583c9bc93ff3197fb91ea877ebda39e5d971f6e5",
+      "deployedUniverseSha256": "3da2c97699ba18cf38ca6eb1285c8157cd264c19bca6c4db294cd16d6f25ca83",
+      "rule": "Each product below takes its record from the universe at deployedCommit; a product that universe does not carry leaves the snapshot.",
+      "products": [
+        {"id": "recBVDyal8VGGVEZM", "name": "The Nova 21.5m Pavillion Sun Room", "expect": "replaced"},
+        {"id": "recyMjzPUzBOvXD7Q", "name": "The Nova 17.8m Pavillion Sun Room", "expect": "replaced"},
+        {"id": "recspYM9bd9APNCOO", "name": "ModPod Nova", "expect": "removed"},
+        {"id": "recSYgE1Y3I11JIsr", "name": "ModPod Vaya", "expect": "removed"},
+        {"id": "recOu5xXheu2POoIa", "name": "ModPod Lira", "expect": "removed"}
+      ],
+      "pageNote": "corrected on 20 October 2026 for five supplier records"
+    }
+  ]
+}

@@ -51,6 +51,7 @@ REFRESH (when a new research snapshot is approved)
 """
 import datetime as dt
 import hashlib
+import importlib.util
 import html
 import json
 import pathlib
@@ -105,7 +106,9 @@ PARENT_HREF = "discovery-living-in-the-garden.html"
 PARENT_TEXT = "Explore Living in the Garden"
 PARENT_NAME = "Living in the Garden"
 PARENT_MAX_WORDS = 40   # visible words allowed before the parent link
-BUILD_DATE = "2026-10-19"   # the page's dateModified; equals its sitemap lastmod
+BUILD_DATE = "2026-10-20"   # the page's dateModified; equals its sitemap lastmod
+# 20 Oct 2026 (SEO-C1 Release 1): the figures were corrected for five Outdoor Living
+# records through atlas-tools/build-cluster1-cost-evidence.py and its register.
 # PRICE BY SIZE: NOT PUBLISHED (founder SEO directive, 19 Oct 2026, "price by
 # size where evidence supports it"). Tested against the frozen snapshot: only a
 # minority of priced rooms publish a floor area, and the Atlas records it on mixed
@@ -252,8 +255,15 @@ def freeze(ev):
         die("no revision of %s hashes to the evidence source %s" % (UNIVERSE, want[:12]))
     if snap.get("generated") != ev["source"]["generated"]:
         die("snapshot stamp %s != evidence %s" % (snap.get("generated"), ev["source"]["generated"]))
+    # SEO-C1 (20 Oct 2026): the founder-approved record corrections in
+    # atlas-tools/cost-evidence-corrections.json, applied by the evidence
+    # generator's own function, so the extract and the evidence see the same
+    # products. The evidence must name exactly the corrections applied here.
+    products, applied = corrections()(snap["products"])
+    if [c["id"] for c in applied] != [c["id"] for c in ev.get("corrections") or []]:
+        die("the evidence and the corrections register disagree on which corrections apply")
     rows = []
-    for p in snap["products"]:
+    for p in products:
         if not relevant(p):
             continue
         seg = segment(p)
@@ -278,10 +288,31 @@ def freeze(ev):
                          "segment by segment. Supplier keys are opaque hashes; no "
                          "supplier or product name is stored."),
         "source": {"universe": UNIVERSE, "revision": rev, "sha256": want,
-                   "generated": snap["generated"], "evidence": EVIDENCE.name},
+                   "generated": snap["generated"], "evidence": EVIDENCE.name,
+                   **({"corrections": [{"id": c["id"], "deployedCommit": c["deployedCommit"],
+                                        "products": [x["id"] for x in c["products"]]} for c in applied]}
+                      if applied else {})},
         "rows": sorted(rows, key=lambda x: x["productId"]),
     }
     return doc
+
+
+def corrections():
+    """apply(products) -> (products, applied), from the evidence generator."""
+    spec = importlib.util.spec_from_file_location(
+        "cluster1_cost_evidence", ROOT / "atlas-tools" / "build-cluster1-cost-evidence.py")
+    g = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(g)
+    reg = g.register()
+    return lambda products: g.apply_corrections(products, reg)
+
+
+def as_of(ev, snap):
+    """The snapshot date, with the approved note for any applied correction
+    (SEO-C1 decision D2): '7 October 2026, corrected on 20 October 2026 for
+    five supplier records'."""
+    notes = [c["pageNote"] for c in ev.get("corrections") or []]
+    return date_long(snap) + "".join(", " + n for n in notes)
 
 
 # --------------------------------------------------------------------- render
@@ -291,6 +322,9 @@ def render(ev, ex):
     agree(seg, ev, "build")
     if ex["source"]["sha256"] != ev["source"]["sha256"]:
         die("the extract was frozen from a different snapshot than the evidence")
+    if [c["id"] for c in ex["source"].get("corrections") or []] != \
+            [c["id"] for c in ev.get("corrections") or []]:
+        die("the extract and the evidence carry different corrections")
     snap = dt.date.fromisoformat(ev["source"]["generated"][:10])
     # R5, first half: only prices with a recorded check date can enter a range.
     dated = [r for r in rows if r["lastPriceCheck"]]
@@ -393,7 +427,7 @@ def render(ev, ex):
             % (len(und_pub), "" if len(und_pub) == 1 else "s",
                "has" if len(und_pub) == 1 else "have", "it is" if len(und_pub) == 1 else "they are",
                "it is" if len(und_pub) == 1 else "they are"))
-    regions["ASOF"] = date_long(snap)
+    regions["ASOF"] = as_of(ev, snap)
     # SEO guide phase 1 (17 Oct 2026): the disclosure research made prominent.
     # Same three figures, same source, now set as figures rather than a sentence.
     regions["COMPARE"] = (
