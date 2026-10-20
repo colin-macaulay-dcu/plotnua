@@ -18,6 +18,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 B = ROOT / "atlas-tools" / "build-identity-stage1.py"
 spec = importlib.util.spec_from_file_location("bid", B); bid = importlib.util.module_from_spec(spec); spec.loader.exec_module(bid)
+_t = re.findall(r'<meta name="theme-color" content="(#[0-9A-Fa-f]{6})">', (ROOT / "index.html").read_text(encoding="utf-8"))
+bid.HOME_THEME = _t[0] if len(_t) == 1 else None   # strip() reverses change T using the homepage's value
 fails = 0
 def ok(m): print("  [PASS] " + m)
 def bad(m):
@@ -33,7 +35,8 @@ if "--base" in sys.argv:
     diff = subprocess.run(["git", "diff", "--name-only", base, "--"], cwd=ROOT, capture_output=True, text=True).stdout.split()
     diff += subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True).stdout.split()
     allowed = set(bid.PAGES) | {"assets/identity/pn-identity.css", "atlas-tools/build-identity-stage1.py",
-                                "atlas-tools/prove-identity-stage1.py", ".github/workflows/image-rights-gate.yml"}
+                                "atlas-tools/prove-identity-stage1.py", ".github/workflows/image-rights-gate.yml",
+                                "atlas-tools/build-triq-cube-public.py"}
     extra = sorted(set(diff) - allowed)
     (ok if not extra else bad)("only Stage 1 files differ from %s%s" % (base, "" if not extra else ": " + ", ".join(extra)))
     print("  changed files: " + ", ".join(sorted(set(diff))))
@@ -67,6 +70,9 @@ MUT = [
  ("I5 unscoped rule added", lambda d: sub(d, "assets/identity/pn-identity.css", "/* ---- 2 · base type", "h1{ color:red; }\n/* ---- 2 · base type")),
  ("I6 identity layer added to the homepage", lambda d: sub(d, "index.html", "</head>", '<link rel="stylesheet" href="assets/identity/pn-identity.css">\n</head>')),
  ("I7 markers on a page outside Stage 1", lambda d: sub(d, "discoveries.html", "</head>", "<!-- PLOTNUA IDENTITY v1 · HEAD · BEGIN -->\n</head>")),
+ ("I9 theme colour edited by hand on one page", lambda d: sub(d, "privacy.html", 'content="#2A2622"', 'content="#2A2623"')),
+ ("I9 homepage theme colour changes, pages not rebuilt", lambda d: sub(d, "index.html", '<meta name="theme-color" content="#2A2622">', '<meta name="theme-color" content="#2B2622">')),
+ ("I9 a second theme-color meta added to a page", lambda d: sub(d, "contact.html", '<meta name="theme-color" content="#2A2622">', '<meta name="theme-color" content="#2A2622">\n<meta name="theme-color" content="#1F3B2E">')),
  ("I8 skip link target removed", lambda d: sub(d, "about.html", '<span id="pn-id-content" tabindex="-1"></span>\n', "")),
 ]
 for name, f in MUT:

@@ -18,6 +18,10 @@ content. Per page it makes exactly four insertions, each fenced by
   N  the shared header (wordmark + Main navigation, the homepage's header A)
      straight after the search rail, as on the homepage (thanks.html has no
      rail: after the PlotNua mark)
+  T  the browser theme colour: the page's one <meta name="theme-color"> goes
+     from the legacy #1F3B2E to the homepage's own value (founder decision 3,
+     20 Oct 2026). Only its content attribute changes; every other meta tag is
+     guarded byte-identical (I9).
 
 WHAT IT NEVER TOUCHES. index.html (the source of truth), sitemap.xml,
 <title>, meta, canonical, Open Graph, JSON-LD, <main>, every <img>, the
@@ -38,6 +42,8 @@ GUARDS (any failure stops the build and nothing is written):
   I7  exactly the eight Stage 1 pages carry the markers; no other page does
   I8  one Main navigation, one skip link with a real target, one banner
       landmark at most, correct aria-current
+  I9  theme colour: exactly one theme-color meta, equal to index.html's; all
+      other meta tags unchanged
 """
 import hashlib, os, re, sys
 from pathlib import Path
@@ -109,9 +115,14 @@ RX = [re.compile(r"<!-- PLOTNUA IDENTITY v1 · HEAD · BEGIN.*?<!-- PLOTNUA IDEN
       re.compile(r"\n<!-- PLOTNUA IDENTITY v1 · SKIP · BEGIN -->.*?<!-- PLOTNUA IDENTITY v1 · SKIP · END -->", re.S),
       re.compile(r"\n<!-- PLOTNUA IDENTITY v1 · HEADER · BEGIN.*?<!-- PLOTNUA IDENTITY v1 · HEADER · END -->", re.S)]
 BODY_RX = re.compile(r'<body class="pn-id pn-id--(?:dark|paper)">')
+THEME_LEGACY = '<meta name="theme-color" content="#1F3B2E">'
+def theme_tag(value): return '<meta name="theme-color" content="%s">' % value
+HOME_THEME = None   # read from index.html in main(); I9
 
 def strip(t):
     for rx in RX: t = rx.sub("", t)
+    if BODY_RX.search(t) and HOME_THEME:
+        t = t.replace(theme_tag(HOME_THEME), THEME_LEGACY, 1)
     return BODY_RX.sub("<body>", t, count=1)
 
 RAIL_END = "<!-- PLOTNUA SEARCH RAIL v1 · END -->"
@@ -122,7 +133,10 @@ def build(page, src):
     body = src[src.index("<body>"):]
     element = "div" if re.search(r"<header[\s>]", body) else "header"   # I8: one banner at most
     if 'class="pn-skip"' in src: HAS_SKIP.add(page)
-    out = src.replace("</head>", head_block(page) + "</head>", 1)
+    if src.count(THEME_LEGACY) != 1 or src.count('name="theme-color"') != 1:
+        die("I9 %s: expected exactly one legacy theme-color meta" % page)
+    out = src.replace(THEME_LEGACY, theme_tag(HOME_THEME), 1)
+    out = out.replace("</head>", head_block(page) + "</head>", 1)
     out = out.replace("<body>", "<body" + body_attr(page) + ">" + ("" if page in HAS_SKIP else SKIP), 1)
     hb = header_block(page, element)
     if RAIL_END in out:
@@ -137,7 +151,7 @@ def build(page, src):
 def fingerprints(t):
     body = t[t.find("<body"):]
     f = {"title": re.findall(r"<title>.*?</title>", t, re.S),
-         "meta": re.findall(r"<meta\b[^>]*>", t),
+         "meta (all except theme-color)": [m for m in re.findall(r"<meta\b[^>]*>", t) if 'name="theme-color"' not in m],
          "canonical": re.findall(r'<link[^>]+rel="canonical"[^>]*>', t),
          "jsonld": re.findall(r'<script[^>]+application/ld\+json[^>]*>.*?</script>', t, re.S),
          "main": re.findall(r"<main\b.*?</main>", t, re.S),
@@ -154,7 +168,12 @@ def tokens(css_text, scope):
     return dict(re.findall(r"(--p4-[a-z0-9-]+)\s*:\s*([^;]+);", m.group(1)))
 
 def main():
+    global HOME_THEME
     if not CSS.exists(): die("assets/identity/pn-identity.css is missing")
+    m = re.findall(r'<meta name="theme-color" content="(#[0-9A-Fa-f]{6})">', (ROOT / "index.html").read_text(encoding="utf-8"))
+    if len(m) != 1: die("I9 index.html must carry exactly one theme-color meta")
+    HOME_THEME = m[0]
+    if HOME_THEME.upper() == "#1F3B2E": die("I9 the homepage theme colour is the legacy value; nothing to align to")
     css = CSS.read_text(encoding="utf-8")
     # I4 token parity, read independently from the homepage's own CSS
     home = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -193,6 +212,9 @@ def main():
         a, b = fingerprints(src), fingerprints(out)
         for k in a:
             if a[k] != b[k]: die("I3 %s: protected %s changed" % (page, k))
+        # I9 theme colour equals the homepage's; it is the only meta that moved
+        if out.count(theme_tag(HOME_THEME)) != 1 or out.count('name="theme-color"') != 1:
+            die("I9 %s: theme colour is not exactly the homepage's %s" % (page, HOME_THEME))
         # I8 navigation / landmarks
         if out.count('aria-label="Main"') != 1: die("I8 %s: expected one Main navigation" % page)
         skips = out.count('class="pn-id-skip"') + out.count('class="pn-skip"')
@@ -210,8 +232,8 @@ def main():
             if not CHECK: path.write_text(out, encoding="utf-8")
     if CHECK and changed:
         die("CHECK: %d page(s) not in the Stage 1 identity state: %s -- nothing written" % (len(changed), ", ".join(changed)))
-    print("IDENTITY STAGE 1 · %s — %d pages, tokens equal the homepage (%d), scoped, reversible, protected content unchanged%s"
-          % ("CHECK OK" if CHECK else "BUILT", len(PAGES), len(want),
+    print("IDENTITY STAGE 1 · %s — %d pages, tokens equal the homepage (%d), theme colour %s, scoped, reversible, protected content unchanged%s"
+          % ("CHECK OK" if CHECK else "BUILT", len(PAGES), len(want), HOME_THEME,
              "" if CHECK else (" · written: " + (", ".join(changed) or "none"))))
 
 if __name__ == "__main__":

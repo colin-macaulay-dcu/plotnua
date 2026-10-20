@@ -124,7 +124,11 @@ RAIL = one((ROOT / "discoveries.html").read_text(encoding="utf-8"),
            r'(<!-- PLOTNUA SEARCH RAIL v1 · BEGIN.*?<!-- PLOTNUA SEARCH RAIL v1 · END -->)', "rail")
 if 'data-pns-nofade="true"' not in RAIL: die("rail: expected the nofade variant")
 FOOTER = one(ab, r'(<footer>\n  <div class="footer-inner">.*?</footer>)', "footer")
-FAVICONS = one(ab, r'(<!-- Favicons — PlotNua Brand Package v1\.0 -->.*?<meta name="theme-color" content="#1F3B2E">)', "favicons")
+FAVICONS = one(ab, r'(<!-- Favicons — PlotNua Brand Package v1\.0 -->.*?<meta name="theme-color" content="#(?:1F3B2E|2A2622)">)', "favicons")
+# Phase 5 Stage 1 (founder decision, 20 Oct 2026) moved about.html's theme colour
+# to the Phase 4 #2A2622. This page is not part of that stage, so the favicon
+# block it copies keeps the colour it was published with: output unchanged.
+FAVICONS = FAVICONS.replace('<meta name="theme-color" content="#2A2622">', '<meta name="theme-color" content="#1F3B2E">')
 
 IMG, PRICE_SPEC_PUB, EQUIP_PUB, OPEN_PUB = (name_fix(IMG), name_fix(PRICE_SPEC_PUB),
                                            name_fix(EQUIP_PUB), name_fix(OPEN_PUB))
