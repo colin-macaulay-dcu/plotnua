@@ -42,6 +42,10 @@ GUARDS (G1-G11), unchanged in strictness from v1, now per tab
   changes; placement · G10 no research note in a displayed name · G11 shared
   files pinned, host tokens present, exactly one link and one script.
 
+  G12 (SEO-C2.1, 20 Oct 2026) the opt-in A-Z maker index lists exactly the
+  configuration's makers, A to Z, with their counts; each link is the one
+  permitted fragment and opens its own maker; no image, price or link out.
+
   python3 atlas-tools/build-maker-explorer.py --check | --apply   (all PAGES)
 """
 import ast, hashlib, html, json, pathlib, re, sys
@@ -80,7 +84,10 @@ PINS = {
     # specificity identical; Living in the Garden is pixel-identical (10-state
     # parity capture). Previous pin:
     # 30d1c90403c73cdf71794c916515b70415997b85737dad8b48178acd540443ee
-    SHARED_CSS: "105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21",
+    # Re-pinned 20 Oct 2026 (SEO-C2.1): rules for the A-Z maker index appended,
+    # scoped to #explore-makers .mx-az, plus one rule that turns off smooth scrolling
+    # only while #maker-index is the URL target (arrival fix); every existing rule is unchanged. Previous pin: 105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21
+    SHARED_CSS: "8db1e7bb4ce86c2273df153658eafad11d3dc4df7502e9d94aa7d552df8d7527",
 }
 CSS_LINK = '<link rel="stylesheet" href="maker-explorer.css">'
 JS_TAG = '<script src="maker-explorer.js"></script>'
@@ -462,9 +469,13 @@ PAGES = {
     "discovery-living-in-the-garden.html": {
         "kicker": "Makers and Products",
         "heading": "Explore makers and products",
-        "intro": ("Discover real garden rooms and garden homes researched by PlotNua. Explore\n"
-                  "      product details, published specifications and availability information before\n"
-                  "      deciding what might work for your property."),
+        "intro": ("Discover real garden rooms, garden offices and garden homes researched by\n"
+                  "      PlotNua. Explore product details, published specifications and availability\n"
+                  "      information before deciding what might work for your property."),
+        # SEO-C2.1 (20 Oct 2026): a compact A-Z index of every maker, in plain
+        # HTML, so homeowners (and search engines) can find any maker without
+        # JavaScript. Generated from the same configuration (guard G12).
+        "azIndex": True,
         "tabs": [
             {"key": "gardenRooms", "id": "rooms", "label": "Garden rooms",
              "nouns": ["garden room", "garden rooms"], "source": "garden-room-universe-v1"},
@@ -599,6 +610,42 @@ def load(P):
     SEEN_OVERRIDES.update(seen_override)
     return tabs, len(all_orgs), held_all
 
+# ── SEO-C2.1 · the A-Z maker index (20 Oct 2026) ────────────────────────────
+# One line per maker, from the SAME configuration the interactive directory
+# reads: name, product count, Irish-availability wording. Alphabetical because
+# that is the directory order the fairness rules already require (G5); the
+# interactive first view stays a shuffle. Each name links to the explorer's one
+# permitted fragment, #p-<the maker's first product, A to Z>, which opens that
+# maker. No image, price, badge or external link. Guard G12 proves all of it.
+AZ_STATE = {"c": "Irish availability confirmed",
+            "s": "Irish availability confirmed for some products",
+            "u": "Irish availability not yet confirmed"}
+
+def maker_state(m):
+    c = sum(1 for p in m["p"] if p[3] == "c")
+    return "c" if c == len(m["p"]) else ("s" if c else "u")
+
+def az_index(tabs):
+    counts = " and ".join("%d %s makers" % (len(t["cfg"]["makers"]), t["cfg"]["nouns"][0])
+                          for t in tabs)
+    h = ['    <details class="mx-az" id="maker-index">',
+         f'      <summary>All {counts}, A to Z</summary>',
+         '      <p class="mx-az-note">An index, not a ranking: makers are listed alphabetically so each one '
+         'can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it '
+         'in the directory above.</p>']
+    for t in tabs:
+        c = t["cfg"]
+        h.append(f'      <h3 class="mx-az-h">{html.escape(t["T"]["label"])}</h3>')
+        h.append(f'      <ul class="mx-az-list" aria-label="{html.escape(c["nouns"][0].capitalize())} makers, A to Z">')
+        for m in c["makers"]:
+            n = len(m["p"])
+            h.append(f'        <li><a href="#p-{html.escape(m["p"][0][0])}">{html.escape(m["m"])}</a> '
+                     f'<span>{n} {html.escape(c["nouns"][0 if n == 1 else 1])} &middot; '
+                     f'{AZ_STATE[maker_state(m)]}</span></li>')
+        h.append('      </ul>')
+    h.append('    </details>')
+    return "\n".join(h) + "\n"
+
 # ── markup ───────────────────────────────────────────────────────────────────
 def section(P, tabs, researched):
     figs = {"researchedMakers": researched}
@@ -619,6 +666,11 @@ def section(P, tabs, researched):
         pages += (" Listings come from each maker&rsquo;s own published product pages;"
                   " &ldquo;See it on&rdquo; opens that page in a new tab.")
     credits = image_credits(tabs)
+    noscript = ('        <noscript><p class="mx-line">The full A&ndash;Z index of makers is below.</p></noscript>'
+                if P.get("azIndex") else
+                '        <noscript><p class="mx-line">The maker list needs JavaScript. You can still\n'
+                f'          <a href="search.html">{P["noscript"]}</a>.</p></noscript>')
+    az = az_index(tabs) if P.get("azIndex") else ""
     payload = json.dumps(config, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     return f'''  <!-- 6c · {MARK} · Founder decisions 13 Oct 2026. Shared component
        (maker-explorer.js / maker-explorer.css) configured for this page by
@@ -652,8 +704,7 @@ def section(P, tabs, researched):
         <p class="mx-order" id="mx-order"></p>
         <ul class="mx-grid" id="mx-grid"></ul>
         <div class="mx-more"><button type="button" class="mx-btn" id="mx-all"></button><span class="mx-order" id="mx-shown"></span></div>
-        <noscript><p class="mx-line">The maker list needs JavaScript. You can still
-          <a href="search.html">{P["noscript"]}</a>.</p></noscript>
+{noscript}
       </div>
     </div>
 
@@ -661,7 +712,7 @@ def section(P, tabs, researched):
     <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
       products still being checked are not shown. Makers are not ranked, and PlotNua has no
       commercial arrangement with any maker listed.{pages}</p>
-{credits}
+{credits}{az}
     <script type="application/json" class="pn-mx-config" id="mx-data">{payload}</script>
     {JS_TAG}
   </section>
@@ -778,6 +829,8 @@ def build(fname, P, src):
     credit_hrefs = {im["creditHref"] for c in cfgs for m in c["makers"] for p in m["p"]
                     if len(p) > 5 for im in (p[5].get("img") or []) if im.get("creditHref")}
     for h in re.findall(r'href="([^"]+)"', blk):
+        if P.get("azIndex") and re.fullmatch(r"#p-rec[A-Za-z0-9]{14}", h):
+            continue    # the A-Z index's fragment links, proved by G12 below
         if re.match(r"[a-z]+:", h) or h.startswith("//"):
             if h not in credit_hrefs: die("G3 external link: " + h)
             continue
@@ -893,6 +946,28 @@ def build(fname, P, src):
     if "triq-cube.html" not in ip: die("G7 TRIQ QUBE (triq-cube.html) must stay in Search (SUPPLIER_INFO_PAGES)")
     # G8 no area figure in the page's own prose (Cluster 1 L1)
     if re.search(r"\d\s*(m²|m&sup2;|square metres)", visible): die("G8 an area figure would reach the page")
+    # G12 (SEO-C2.1) the A-Z index is exactly the configuration, A to Z, and on the page
+    if P.get("azIndex"):
+        az = az_index(tabs)
+        if blk.count(az) != 1 or blk.count('id="maker-index"') != 1: die("G12 the A-Z index is missing or repeated")
+        for t in tabs:
+            c = t["cfg"]
+            lab = html.escape(c["nouns"][0].capitalize())
+            seg = az.split(f'aria-label="{lab} makers, A to Z">', 1)[1].split("</ul>", 1)[0]
+            names = [html.unescape(x) for x in re.findall(r'<a href="#p-rec[A-Za-z0-9]{14}">([^<]*)</a>', seg)]
+            if names != [m["m"] for m in c["makers"]]: die("G12 %s index is not exactly the directory's makers" % c["key"])
+            if [n.lower() for n in names] != sorted(n.lower() for n in names): die("G12 index is not A to Z")
+            ids = re.findall(r'href="#p-(rec[A-Za-z0-9]{14})"', seg)
+            listed = {p[0] for m in c["makers"] for p in m["p"]}
+            if any(i not in listed for i in ids): die("G12 an index link names a product this tab does not list")
+            if ids != [m["p"][0][0] for m in c["makers"]]: die("G12 an index link does not open its own maker")
+            nums = [int(x) for x in re.findall(r'</a> <span>(\d+) ', seg)]
+            if nums != [len(m["p"]) for m in c["makers"]]: die("G12 an index count differs from the directory")
+        if re.search(r"<img|https?://|price|€|&euro;", az, re.I): die("G12 the index carries an image, link out or price")
+        if mode_check() and page_text(fname).count(az) != 1:
+            die("G12 the page on disk does not carry the generated A-Z index (run --apply)")
+    elif 'id="maker-index"' in blk:
+        die("G12 an A-Z index on a page that has not opted in")
     # G9 nothing outside the block and the stylesheet link changes; placement
     rest_before = src[:start] + src[end:]
     rest_after = out.replace(new_block, "", 1).replace(P["css_anchor"] + "\n" + CSS_LINK, P["css_anchor"], 1)
@@ -908,6 +983,12 @@ def build(fname, P, src):
     print(f"  {fname}: " + ", ".join(f'{c["key"]} {c["figures"]}' for c in cfgs) + f", researched makers {researched}")
     return out
 
+def mode_check():
+    return (sys.argv[1] if len(sys.argv) > 1 else "--check") == "--check"
+
+def page_text(fname):
+    return (ROOT / fname).read_text(encoding="utf-8")
+
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "--check"
     for fname, P in PAGES.items():
@@ -918,7 +999,7 @@ def main():
     if not set(DISPLAY_NAME_BY_ID) <= SEEN_OVERRIDES:
         die("display-name override for a product that is not publicly listed: %s"
             % sorted(set(DISPLAY_NAME_BY_ID) - SEEN_OVERRIDES))
-    print(("APPLIED" if mode == "--apply" else "CHECK OK") + f" — G1-G11 pass for {len(PAGES)} page(s)")
+    print(("APPLIED" if mode == "--apply" else "CHECK OK") + f" — G1-G12 pass for {len(PAGES)} page(s)")
 
 if __name__ == "__main__":
     main()

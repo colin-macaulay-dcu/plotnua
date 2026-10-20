@@ -132,8 +132,16 @@ HOME_IMG = "assets/img/9785fd991d2488e9.jpg"
 PHASE4_REVEAL_PRELOAD = ('<link rel="preload" as="image" type="image/avif" '
                          'imagesrcset="assets/possibility-reveal/img/house-L1-L2A-1376.avif 1376w, ')
 
-LITG_DESC = ("Since July 2026 an Irish garden room can be up to 30 m&sup2; and a garden "
-             "home 32&ndash;45 m&sup2; without a planning application. The conditions, explained.")
+# SEO-C1.3 (20 Oct 2026): the description serves the page's commercial role as
+# well as planning (founder-approved wording). LITG_DESC_V1 is the 16 Oct text
+# it replaces; the transition edits below move a page that still carries it.
+LITG_DESC_V1 = ("Since July 2026 an Irish garden room can be up to 30 m&sup2; and a garden "
+                "home 32&ndash;45 m&sup2; without a planning application. The conditions, explained.")
+LITG_DESC = ("Garden rooms, garden offices and garden homes in Ireland: the makers PlotNua has "
+             "researched, what advertised prices cover, and the 2026 planning rules.")
+# The same words in the WebPage structured data (plain ASCII, so no JSON escaping).
+LITG_DESC_LD = LITG_DESC
+assert "&" not in LITG_DESC_LD and '"' not in LITG_DESC_LD
 GR_DESC = ("Garden saunas, hot tubs and cold plunges in Ireland: real published prices, "
            "the space each needs, and how the 30 m&sup2; and 25 m&sup2; limits apply.")
 HB_DESC = ("Three ways to hide wheelie bins at an Irish home, from bin stores to underground "
@@ -143,6 +151,14 @@ DI_DESC = ("Could your driveway earn money from parking? What Irish homeowners r
 
 EDITS = {
     "discovery-living-in-the-garden.html": [
+        # SEO-C1.3 transition (20 Oct 2026): the 16 Oct description -> the current one,
+        # in the meta tag and in the WebPage structured data. Applied first, so the
+        # edits below then find their replacements already in place.
+        ('<meta name="description" content="%s">' % LITG_DESC_V1,
+         '<meta name="description" content="%s">' % LITG_DESC),
+        ('      "description": "Since July 2026 an Irish garden room can be up to 30 m\\u00b2 and a garden '
+         'home 32\\u201345 m\\u00b2 without a planning application. The conditions, explained.",\n',
+         '      "description": "%s",\n' % LITG_DESC_LD),
         ("<title>Garden Rooms &amp; Garden Homes in Ireland: 2026 Planning Rules | PlotNua</title>",
          "<title>Garden Rooms &amp; Garden Homes in Ireland | PlotNua</title>"),
         ('<meta name="description" content="What the July 2026 regulations changed: the 30 m² garden room, '
@@ -158,12 +174,11 @@ EDITS = {
          '      "inLanguage": "en-IE",\n'
          '      "dateModified": "2026-10-11",\n',
          '"name": "Garden Rooms & Garden Homes in Ireland",\n'
-         '      "description": "Since July 2026 an Irish garden room can be up to 30 m\\u00b2 and a garden '
-         'home 32\\u201345 m\\u00b2 without a planning application. The conditions, explained.",\n'
+         '      "description": "%s",\n'
          '      "inLanguage": "en-IE",\n'
          '      "dateModified": "%s",\n'
          '      "primaryImageOfPage": { "@type": "ImageObject", "url": "https://plotnua.ie/%s" },\n'
-         % (LITG_MODIFIED, LITG_IMG)),
+         % (LITG_DESC_LD, LITG_MODIFIED, LITG_IMG)),
         ('<main id="pn-main">\n<div class="article">\n',
          '<main id="pn-main">\n<div class="article">\n' + brief(
              'Since 27 July 2026, two different buildings can go at the end of an Irish back garden '

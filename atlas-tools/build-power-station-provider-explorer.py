@@ -64,7 +64,10 @@ UBUILD = ROOT / "atlas-tools" / "build-power-station-provider-universe.py"
 # The SAME pins the Borrowed Garden builder holds. provider-explorer.js re-pinned
 # 14 Oct 2026 for offLink() (official supplier link); maker-explorer.css unchanged.
 PINS = {
-    "maker-explorer.css": "105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21",
+    # Re-pinned 20 Oct 2026 (SEO-C2.1): rules for the A-Z maker index appended,
+    # scoped to #explore-makers .mx-az, plus one rule that turns off smooth scrolling
+    # only while #maker-index is the URL target (arrival fix); every existing rule is unchanged. Previous pin: 105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21
+    "maker-explorer.css": "8db1e7bb4ce86c2273df153658eafad11d3dc4df7502e9d94aa7d552df8d7527",
     "provider-explorer.js": "fa571dabb4d2ea653838aab92ec8961bb13809d0f43d5a4184ac889ad5bdbadf",  # re-pinned 14 Oct 2026: offLink() added (previous 8b0d8c5014df639e66b358efadb884a1209c5f01f56442911fcde9ceb7faaadf)
 }
 

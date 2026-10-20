@@ -387,8 +387,14 @@ def render(ev, ex):
         'what the advertised price covers. Research snapshot of %s.</caption>\n'
         '    <thead><tr><th scope="col">What the price covers</th><th scope="col">Published range</th>'
         '<th scope="col">Based on</th><th scope="col">Price says VAT is included</th></tr></thead>\n'
-        '    <tbody>\n%s\n    </tbody>\n  </table>\n</div>'
-        % (date_long(snap), "\n".join(trs)))
+        '    <tbody>\n%s\n    </tbody>\n  </table>\n</div>\n'
+        # SEO-C2.2 (20 Oct 2026): from the prices to the makers behind them, with
+        # no name on this page (R4). No count, so it cannot disagree with R6.
+        # Not "every maker behind these prices": two suppliers in the 7 Oct
+        # snapshot are held from publication today (Cosy Cabins, Premium Log House).
+        '<p class="pr-small pr-makers-link">Living in the Garden lists every garden room maker '
+        'PlotNua currently publishes. <a href="%s#maker-index">Browse the makers, A to Z&nbsp;&rarr;</a></p>'
+        % (date_long(snap), "\n".join(trs), PARENT_HREF))
 
     held_items = "".join('<li>%s: %d product%s from %s supplier%s</li>'
                          % (LABEL[k][0], seg[k]["n"], "" if seg[k]["n"] == 1 else "s",
@@ -636,6 +642,16 @@ def page_guards(text, ex_rows):
     hit = sorted(n for n in names if len(n) > 3 and n in vis)
     if hit:
         die("R4 supplier name(s) on the page: %s" % hit[:5])
+    # R4, extended (SEO-C2.2): no supplier or product name in any link text or
+    # title attribute either, including links that lead to the makers.
+    pnames = {p["productName"] for p in u["products"] if p.get("productName")}
+    labels = [html.unescape(re.sub(r"<[^>]+>", " ", t)) for t in re.findall(r"<a\b[^>]*>(.*?)</a>", text, re.S)]
+    labels += [html.unescape(t) for t in re.findall(r'\btitle="([^"]*)"', text)]
+    lab_hit = sorted({n for n in (names | pnames) if len(n) > 3 for l in labels if n in l})
+    if lab_hit:
+        die("R4 supplier or product name in a link or title: %s" % lab_hit[:5])
+    if 'href="%s#maker-index"' % PARENT_HREF not in text:
+        die("C2.2 the link from the prices to the maker index is missing")
     # no product imagery
     imgs = re.findall(r"<img\b[^>]*\bsrc=\"([^\"]+)\"", text)
     allowed = {"assets/brand/plotnua-mark-master.svg", "assets/brand/plotnua-icon-transparent.svg"}

@@ -147,3 +147,26 @@
   #explore-makers .mx-maker-img .mx-lead{ width:76px; }
 }
 /* PLOTNUA MAKER EXPLORER · SHARED COMPONENT v1 · END */
+/* SEO-C2.1 (20 Oct 2026) · the A-Z maker index. Compact, collapsed by default,
+   text only. Scoped to #explore-makers; the Provider Explorer has no index. */
+#explore-makers .mx-az{ margin-top:18px; border-top:1px solid rgba(31,59,46,.13); padding-top:12px; scroll-margin-top:96px; }
+#explore-makers .mx-az > summary{ cursor:pointer; font:500 14.5px 'Work Sans',sans-serif; color:var(--ink);
+  padding:8px 0; list-style-position:inside; text-decoration:underline; text-decoration-color:rgba(31,59,46,.3); text-underline-offset:3px; }
+#explore-makers .mx-az > summary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+#explore-makers .mx-az-note{ margin:6px 0 4px; font-size:12.5px; line-height:1.6; color:var(--soft); max-width:62ch; }
+#explore-makers .mx-az-h{ margin:18px 0 8px; font:600 12px 'Work Sans',sans-serif; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--soft); }
+#explore-makers .mx-az-list{ list-style:none; margin:0; padding:0; columns:3 15em; column-gap:28px; }
+#explore-makers .mx-az-list li{ break-inside:avoid; margin:0 0 7px; font-size:13.5px; line-height:1.45; color:var(--soft); }
+#explore-makers .mx-az-list a{ color:var(--ink); font-weight:500; text-decoration:underline;
+  text-decoration-color:rgba(31,59,46,.3); text-underline-offset:2px; }
+#explore-makers .mx-az-list a:hover{ text-decoration-color:currentColor; }
+#explore-makers .mx-az-list span{ display:block; font-size:12px; }
+@media (max-width:600px){ #explore-makers .mx-az-list{ columns:1; } }
+/* Arrival at the A-Z index from another page (e.g. Garden Room Prices ->
+   #maker-index). The page's html{scroll-behavior:smooth} animates the load-time
+   jump to a fixed end point while the explorer and images above are still
+   growing the page, so the index lands far down or off screen. When the index
+   is the target, jump instantly instead: the browser's scroll anchoring then
+   keeps it in place as the content above settles. CSS only; no effect elsewhere. */
+html:has(#maker-index:target){ scroll-behavior:auto; }
