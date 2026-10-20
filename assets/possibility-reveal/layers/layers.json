@@ -1,0 +1,200 @@
+{
+ "schema": "plotnua.possibility-reveal.layers.v1",
+ "what_this_is": "How the Reveal's lazily loaded garden-layer tiles were made from the authoritative lock chain. Not a provenance declaration and not a permission: see image-provenance-records.json and image-adaptation-licences.json.",
+ "lock_chain": {
+  "active_master_pixel_sha256": "26fb650761fbc8259928c32a7885af9b307e131334e5dff8da59a26d845a0f01",
+  "L3": {
+   "version": "v2.1c",
+   "sha256": "e19711e9646175025999450cb190802d79dae74a24c2575b89863aacc41a7d5f"
+  },
+  "L4": {
+   "sha256": "e421c1c3c8c2741c5a2a0c806d4f39f806bcd729b6cb17ac60daf4fe14c50d28"
+  },
+  "L5": {
+   "sha256": "bd008da32f978495dd8516797b19adfb33b1d24becedeb8e008326523054fe79"
+  },
+  "L6": {
+   "sha256": "113f1c476038551cfbfc80cc3c282769cf9d3eb718a5eced48b8d97c711eab43"
+  },
+  "base_pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
+  "rebuilds_active_master": true
+ },
+ "l6_solo_variant": {
+  "sha256": "e58d53167917d554b4cc375d9e7ab60f9c71fdc12742f15289738133326bf7d6",
+  "method": "atlas-tools/../l6lock/tools/smoke_l6t.py re-run with the approved settings (ROT=6, SCALE=0.42, OPA=0.88, mirrored) over the approved pre-smoke L6 image with the pavilion pixels returned to the L1 + L2A garden; smoke matte identical; identical to the locked L6 layer outside the pavilion"
+ },
+ "encoder": {
+  "pillow": "12.3.0",
+  "libwebp": "1.6.0",
+  "webp": {
+   "quality": 90,
+   "method": 6,
+   "alpha_quality": 100,
+   "exact": false
+  },
+  "half": "premultiplied (RGBa) Lanczos to half size"
+ },
+ "layers": {
+  "L3": {
+   "what": "L3 v2.1c \u00b7 a generic mirrored garden pavilion (Grow a garden room)",
+   "files": {
+    "garden-L3-pavilion.webp": {
+     "sha256": "311593b974225a09e18036e17394dde97ba320bd7eb11188b40513afc72318db",
+     "bytes": 76478,
+     "pixels": [
+      1060,
+      592
+     ]
+    },
+    "garden-L3-pavilion-half.webp": {
+     "sha256": "65ad0fec40d5ec58dd81fc655471955013dd1063947fd18a77e7e8d83aebc55c",
+     "bytes": 38952,
+     "pixels": [
+      530,
+      296
+     ]
+    }
+   },
+   "bbox_2752": [
+    1570,
+    526,
+    1060,
+    592
+   ],
+   "states": {
+    "on": {
+     "y_offset": 0
+    }
+   },
+   "layer_px": 428766,
+   "fidelity": {
+    "alpha_lossless": true,
+    "mean_abs_error": 1.996,
+    "p99_abs_error": 10,
+    "max_abs_error": 64
+   }
+  },
+  "L4": {
+   "what": "L4 \u00b7 a generic kitchen garden (Borrow a garden)",
+   "files": {
+    "garden-L4-kitchen-garden.webp": {
+     "sha256": "6f7404f2dac110f97e628ac96ee6e77553654fa1cd52c5ecf63114882e3a50aa",
+     "bytes": 100218,
+     "pixels": [
+      1270,
+      704
+     ]
+    },
+    "garden-L4-kitchen-garden-half.webp": {
+     "sha256": "21a9a14f60fdcdd9d4ef7a1ddc98853d0eee4bfed336fcad1e32d12ff4f39c49",
+     "bytes": 60506,
+     "pixels": [
+      635,
+      352
+     ]
+    }
+   },
+   "bbox_2752": [
+    312,
+    832,
+    1270,
+    704
+   ],
+   "states": {
+    "on": {
+     "y_offset": 0
+    }
+   },
+   "layer_px": 394834,
+   "fidelity": {
+    "alpha_lossless": true,
+    "mean_abs_error": 2.095,
+    "p99_abs_error": 8,
+    "max_abs_error": 52
+   }
+  },
+  "L5": {
+   "what": "L5 \u00b7 a generic elevated timber pod (Hold a treehouse)",
+   "files": {
+    "garden-L5-pod.webp": {
+     "sha256": "ca6e2358a598e64028f6c28249fe3c357083f5800ceb2e744277e06c9b1c45d5",
+     "bytes": 18088,
+     "pixels": [
+      318,
+      330
+     ]
+    },
+    "garden-L5-pod-half.webp": {
+     "sha256": "78bdd95ffaef90bc5d61b68ee2599c1f17aea18020cb1b9b9190c508bcf1d944",
+     "bytes": 11600,
+     "pixels": [
+      159,
+      165
+     ]
+    }
+   },
+   "bbox_2752": [
+    60,
+    394,
+    318,
+    330
+   ],
+   "states": {
+    "on": {
+     "y_offset": 0
+    }
+   },
+   "layer_px": 66123,
+   "fidelity": {
+    "alpha_lossless": true,
+    "mean_abs_error": 2.067,
+    "p99_abs_error": 8,
+    "max_abs_error": 48
+   }
+  },
+  "L6": {
+   "what": "L6 \u00b7 sauna, and the TimberIN hot tub with its smoke (Become a retreat); two-state sprite",
+   "files": {
+    "garden-L6-retreat.webp": {
+     "sha256": "c64e866cc902b22ecf4b630e16eadd2e6fff266667e54eb0dfafc4a44e53ec7f",
+     "bytes": 98066,
+     "pixels": [
+      600,
+      1612
+     ]
+    },
+    "garden-L6-retreat-half.webp": {
+     "sha256": "022d7e41d5c01660d52d6ff013d5b451a272e9e40a1eb041d17f4a6859fe1994",
+     "bytes": 53638,
+     "pixels": [
+      300,
+      806
+     ]
+    }
+   },
+   "bbox_2752": [
+    2152,
+    714,
+    600,
+    806
+   ],
+   "states": {
+    "with_L3": {
+     "y_offset": 0
+    },
+    "without_L3": {
+     "y_offset": 806
+    }
+   },
+   "layer_px": 168209,
+   "fidelity": {
+    "alpha_lossless": true,
+    "mean_abs_error": 2.337,
+    "p99_abs_error": 10,
+    "max_abs_error": 61
+   },
+   "overlap_with_L3_px": 13383,
+   "solo_variant_extra_px": 89
+  }
+ }
+}

@@ -17,6 +17,8 @@
   /* ---------- presentation config (camera framing, beacon placement, step timing) ---------- */
   var ORDER = ["ground", "wind", "compute"];
   var ENTRY_VIEW = { d: [1376, 820, 1], m: [1000, 800, 1] };
+  var FRAME = null;   /* H3: a garden layer may re-frame the entry view (PN_REVEAL_API.frame) */
+  var entryView = function () { return FRAME || ENTRY_VIEW; };
   var BEACON = { ground: { d: [2250, 1060], m: [1250, 1110] }, wind: { d: [735, 190], m: [745, 225] }, compute: { d: [1190, 690], m: [1190, 690] } };
   var SCENE = {
     ground:  { view: { d: [1700, 1080, 1.12], m: [1760, 1060, 1.0] }, steps: [1400, 2800, 4100, 5300], capPos: { d: "pos-tr", m: "m-top" } },
@@ -273,7 +275,7 @@
     setMode("entry");
     cap.classList.remove("show");
     ROOT.querySelectorAll(".scene").forEach(function (s) { s.classList.remove("on"); });
-    camera(pick(ENTRY_VIEW)); placeBeacons(); setActive(null); restLens(); showPaths();
+    camera(pick(entryView())); placeBeacons(); setActive(null); restLens(); showPaths();
     var t = state.trigger && document.contains(state.trigger) ? state.trigger : pathsEl.querySelector(".path:not([aria-disabled])");
     if (t) t.focus({ preventScroll: true });
   }
@@ -339,7 +341,7 @@
   window.addEventListener("resize", function () {
     clearTimeout(rt);
     rt = setTimeout(function () {
-      if (state.mode === "entry") { camera(pick(ENTRY_VIEW), true); placeBeacons(); setLens(lensPos.x, lensPos.y); }
+      if (state.mode === "entry") { camera(pick(entryView()), true); placeBeacons(); setLens(lensPos.x, lensPos.y); }
       else { var sc = SCENE[state.id]; camera(pick(state.id === "compute" && cap.classList.contains("show") ? sc.pull : sc.view), true); cap.className = "caption show " + pick(sc.capPos); }
     }, 120);
   });
@@ -373,5 +375,12 @@
   } else {
     timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));
   }
-  window.PN_REVEAL_API = { play: play, home: home, state: state };   // for automated checks only
+  /* H3: frame a garden layer through this camera; null returns to the whole property */
+  function frame(v, instant) {
+    FRAME = v || null;
+    if (state.mode !== "entry") return;
+    stopGlide(); showPaths();
+    camera(pick(entryView()), instant); placeBeacons(); setLens(lensPos.x, lensPos.y);
+  }
+  window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame };   // play/home/state: automated checks; frame: garden.js
 })();

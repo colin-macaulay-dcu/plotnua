@@ -1,5 +1,5 @@
 /**
- * PROVE THE LICENSED-PHOTOGRAPHY EXCEPTION IS NARROW · X1–X33 (+X12b, X12c, X12d)
+ * PROVE THE LICENSED-PHOTOGRAPHY EXCEPTION IS NARROW · X1–X43 (+X12b, X12c, X12d)
  * ===========================================================
  * H2, 20 Oct 2026. The founder approved ONE exception to the provenance
  * guard's anti-laundering checks:
@@ -54,7 +54,16 @@ const before = [GUARD, GATE, REGISTER, RIGHTS, LICENCES].map(f => sha(readFileSy
 const realReg = JSON.parse(readFileSync(REGISTER, 'utf8'));
 const realRights = JSON.parse(readFileSync(RIGHTS, 'utf8'));
 const realLicences = JSON.parse(readFileSync(LICENCES, 'utf8'));
-const L6 = (realReg.staged_composites || []).find(s => s.composite_id === 'possibility-reveal-L6');
+/* H3: the L6 composite is now PUBLISHED (a record); before H3 it was staged.
+   Either way the proof works from the real entry, in both forms. */
+const L6REC = (realReg.records || []).find(r => r.composite_id === 'possibility-reveal-L6')
+  || (realReg.staged_composites || []).find(s => s.composite_id === 'possibility-reveal-L6');
+const L6 = L6REC && (() => {
+  const st = JSON.parse(JSON.stringify(L6REC));
+  for (const k of ['asset', 'sha256', 'bytes', 'pixels', 'permitted_surfaces', 'reveal_layer']) delete st[k];
+  st.status = 'LOCKED_NOT_PUBLISHED';
+  return st;
+})();
 const TIMBERIN = realLicences.licences.find(r => r.atlas_permission_ref === 'L6-TIMBERIN-TWO-PHOTOS-20261019');
 const OTHER = realRights.rows.find(r => r.organisation_code && r.atlas_permission_ref
                                          && r !== TIMBERIN && r.permitted_domain);
@@ -66,15 +75,21 @@ if (!L6 || !TIMBERIN || !OTHER || !anAsset) {
   process.exit(2);
 }
 const CREDIT = TIMBERIN.required_credit;
+const CAPTION = L6 && L6.visible_caption, DISCLOSURE = L6 && L6.accessible_disclosure;
+if (!CAPTION || !DISCLOSURE) {
+  console.log('\nINSTRUMENT UNAVAILABLE: the L6 record carries no visible caption / accessible disclosure.');
+  process.exit(2);
+}
+const CHAIN = realReg.possibility_reveal_lock_chain;
 const AI_LABEL = realReg.labels.AI_ILLUSTRATION;
 const clone = o => JSON.parse(JSON.stringify(o));
 
 /* A page carrying the published composite. The credit sits in the caption,
    as H3 would place it. */
-function page({ credit = CREDIT, extra = '', asset = anAsset.asset } = {}) {
+function page({ credit = CREDIT, extra = '', asset = anAsset.asset, caption = true, disclosure = true } = {}) {
   return `<!doctype html><html><head><title>t</title></head><body>
 <figure><img src="${asset}" width="100" height="100" alt="A garden.">
-<figcaption>${AI_LABEL}. ${credit ? `<a href="https://www.timberin.com/">${credit}</a>` : ''}</figcaption></figure>
+<figcaption>${AI_LABEL}. ${caption ? 'Garden possibilities illustrated. ' : ''}${credit ? `<a href="https://www.timberin.com/">${credit}</a>.` : ''}${disclosure ? `<span class="sr-only"> ${DISCLOSURE}</span>` : ''}</figcaption></figure>
 ${extra}</body></html>`;
 }
 
@@ -83,7 +98,7 @@ function publish(reg) {
   const s = reg.staged_composites.find(x => x.composite_id === L6.composite_id);
   reg.staged_composites = reg.staged_composites.filter(x => x !== s);
   const rec = clone(s);
-  delete rec.status; delete rec.master;
+  delete rec.status;
   Object.assign(rec, { asset: anAsset.asset, sha256: anAsset.sha256,
                        permitted_surfaces: ['homepage'] });
   reg.legacy_undeclared = reg.legacy_undeclared.filter(e => e.asset !== anAsset.asset);
@@ -100,6 +115,7 @@ function tree({ regEdit = null, rightsEdit = null, published = false,
   /* Only the one asset exists in this tree; the nine Reveal records and the
      rest of the backlog describe files that are not here, so they go. */
   reg.records = []; reg.derivatives = []; reg.derivative_holds = [];
+  reg.staged_composites = [clone(L6)];
   reg.legacy_undeclared = reg.legacy_undeclared.filter(e => e.asset === anAsset.asset);
   if (published) publish(reg);
   if (regEdit) regEdit(reg);
@@ -131,7 +147,7 @@ const failedIds = o => [...o.matchAll(/^ {2}FAIL {2}(P\d+)/gm)].map(m => m[1]);
 const staged = r => r.staged_composites.find(x => x.composite_id === L6.composite_id);
 const pub = r => r.records.find(x => x.composite_id === L6.composite_id);
 
-console.log('\nPROOF · THE LICENSED-PHOTOGRAPHY EXCEPTION (P6 / P10 / P13)');
+console.log('\nPROOF · THE LICENSED-PHOTOGRAPHY EXCEPTION (P6 / P8 / P10 / P13)');
 console.log('='.repeat(74));
 
 let proved = 0, broken = 0;
@@ -243,6 +259,27 @@ const CASES = [
     opts: { published: true, regEdit: r => {
       const p = pub(r); delete p.licensed_photographic_elements; delete p.composite_id;
       p.depicts_named_product = false; p.reference_inputs = []; } } },
+  /* ── H3 · P8 for a published licensed composite: its own two labels ── */
+  { id: 'X34', expect: ['P8'], why: 'published without the accessible disclosure',
+    opts: { published: true, pageOpts: { disclosure: false } } },
+  { id: 'X35', expect: ['P8'], why: 'published with the credit link but without the visible caption',
+    opts: { published: true, pageOpts: { caption: false } } },
+  { id: 'X36', expect: ['P8'], why: 'the record’s disclosure no longer says AI-generated',
+    opts: { published: true, regEdit: r => { pub(r).accessible_disclosure = DISCLOSURE.replace('AI-generated', 'digital'); } } },
+  { id: 'X37', expect: ['P8'], why: 'the record’s caption drops the exact credit',
+    opts: { published: true, regEdit: r => { pub(r).visible_caption = 'Garden possibilities illustrated.'; } } },
+  { id: 'X38', expect: ['P8'], why: 'the disclosure is stretched into a long text naming the supplier',
+    opts: { published: true, regEdit: r => { pub(r).accessible_disclosure = DISCLOSURE + ' ' + TIMBERIN.organisation_name + ' make the finest hot tubs in Europe, with free delivery to Ireland and a lifetime guarantee on every model.'; } } },
+  { id: 'X39', expect: ['P8'], why: 'the record carries no composite labels at all',
+    opts: { published: true, regEdit: r => { delete pub(r).visible_caption; delete pub(r).accessible_disclosure; } } },
+  { id: 'X40', expect: ['P13'], why: 'the published composite is not the active master',
+    opts: { published: true, regEdit: r => { pub(r).master.pixel_sha256 = '0515825db8c968891923b6986c709f10da8fdf990ec32eef110287259a63e25e'; } } },
+  { id: 'X41', expect: ['P13'], why: 'a published Reveal layer is the superseded L3 v2',
+    opts: { published: true, regEdit: r => { pub(r).reveal_layer = { id: 'L3', layer_sha256: CHAIN.superseded.L3_v2.sha256 }; } } },
+  { id: 'X42', expect: ['P13'], why: 'a published Reveal layer is not the locked file',
+    opts: { published: true, regEdit: r => { pub(r).reveal_layer = { id: 'L6', layer_sha256: sha('another L6') }; } } },
+  { id: 'X43', expect: ['P13'], why: 'a published Reveal layer names a layer the chain does not have',
+    opts: { published: true, regEdit: r => { pub(r).reveal_layer = { id: 'L9', layer_sha256: CHAIN.active_layers.L6.sha256 }; } } },
   { id: 'X33', expect: ['P11'], why: 'the staged record copies a rights field into the register',
     opts: { regEdit: r => { staged(r).required_credit = CREDIT; } } },
 ];

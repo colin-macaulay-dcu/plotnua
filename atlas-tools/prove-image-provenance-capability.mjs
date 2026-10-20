@@ -79,6 +79,11 @@ const AI_LABEL = realReg.labels.AI_ILLUSTRATION;
 function syntheticRegister() {
   const reg = JSON.parse(JSON.stringify(realReg));
   reg.legacy_undeclared = reg.legacy_undeclared.filter(e => e.asset !== anAsset.asset);
+  /* H3, 20 Oct 2026: the real records are replaced below, so a real derivative
+     whose source is a real RECORD (the half-size Reveal layer tiles) has no
+     source in this synthetic register. Only backlog-sourced derivatives stay. */
+  reg.derivatives = (reg.derivatives || []).filter(d => reg.legacy_undeclared
+    .some(e => d && d.derived_from && e.asset === d.derived_from.asset));
   reg.records = [
     {
       asset: anAsset.asset,

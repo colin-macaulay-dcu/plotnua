@@ -1,0 +1,37 @@
+/* PlotNua Possibility Reveal · H3 garden layers (L3–L6). Every rule is scoped under .pr. */
+/* stacking inside the camera: picture < garden layers < drawings (lens X-ray, scenes) */
+.pr .cam>picture{z-index:0}
+.pr .cam>svg{z-index:2}
+.pr .g-layer{position:absolute;z-index:1;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .55s var(--ease)}
+.pr .g-layer.is-on{opacity:1}
+.pr .g-layer.no-fade{transition:none}
+.pr .g-layer img{position:absolute;left:0;top:0;width:100%;height:100%;display:block;max-width:none}
+/* L6 is a two-state sprite: the top half sits on the pavilion, the bottom half on the open garden */
+.pr .g-sprite img{height:200%}
+.pr.g-noL3 .g-sprite img{transform:translateY(-50%)}
+/* a Discovery scene is drawn on the L1 + L2A picture: the garden steps back, and returns afterwards */
+.pr[data-mode="scene"] .g-layer.is-on{opacity:0}
+.pr[data-mode="scene"] .garden-credit{visibility:hidden}
+
+/* the layer chips become switches; the first two (L1, L2) stay as they were */
+.pr .lay-btn{font:inherit;font-size:12.5px;line-height:inherit;margin:0;cursor:pointer;-webkit-appearance:none;appearance:none;transition:background .2s,color .2s,border-color .2s}
+.pr .lay-btn:hover{border-color:var(--ivory);color:var(--ivory)}
+.pr .lay-btn[aria-pressed="true"]{background:var(--ivory);color:var(--ink);border-color:var(--ivory)}
+.pr .lay-btn:focus-visible{outline:2px solid var(--ivory);outline-offset:2px}
+.pr .lay-btn::before{content:"+";content:"+" / "";display:inline-block;width:.9em;margin-right:4px;font-weight:600;opacity:.8}
+.pr .lay-btn[aria-pressed="true"]::before{content:"✓";content:"✓" / ""}
+
+/* while the camera pans to a layer, the beacons and lens step back so they never drift off their targets */
+.pr.g-panning .beacons,.pr.g-panning .lens,.pr.g-panning .lens-label{opacity:0!important;transition:opacity .15s!important}
+
+/* the TimberIN credit and its accessible disclosure, whenever L6 is on */
+.pr .garden-credit{position:absolute;z-index:8;right:clamp(16px,4.5vw,64px);top:calc(64px + var(--pr-safe-top,0px));margin:0;max-width:calc(100% - 32px);font-size:12.5px;line-height:1.35;padding:6px 12px;border-radius:999px;background:rgba(15,32,24,.72);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border:1px solid rgba(248,245,236,.28);color:var(--ivory)}
+.pr .garden-credit[hidden]{display:none}
+.pr .garden-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.pr .garden-credit a:focus-visible{outline:2px solid var(--ivory);outline-offset:2px;border-radius:2px}
+@media (max-width: 760px){
+  .pr .garden-credit{right:16px;font-size:11.5px;padding:5px 10px}
+}
+@media (prefers-reduced-motion: reduce){
+  .pr .g-layer,.pr .lay-btn{transition:none}
+}

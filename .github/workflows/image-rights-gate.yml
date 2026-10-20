@@ -165,7 +165,9 @@ jobs:
       # P6 and P10 admit a supplier's name beside a composite ONLY as the
       # required credit of a live, modification-permitting grant that
       # enumerates the source photographs by SHA-256 and binds them to that
-      # one composite. Thirty-six ways of breaking that must each refuse.
+      # one composite; since H3 also its own visible caption and accessible
+      # disclosure (P8) and the lock chain (P13). Forty-six ways of breaking
+      # that must each refuse.
       - name: Prove the licensed-photography exception stays narrow
         run: node atlas-tools/prove-licensed-composite-exception.mjs
 
@@ -326,6 +328,9 @@ jobs:
           set -euo pipefail
           python3 atlas-tools/build-possibility-reveal-component.py --check
           python3 atlas-tools/build-possibility-reveal-images.py --check
+          # H3: the lazily loaded garden-layer tiles (L3 v2.1c, L4, L5, L6) match
+          # their record and were built from the authoritative lock chain.
+          python3 atlas-tools/build-possibility-reveal-layers.py --check
 
       - name: The shared identity layer stays reversible, scoped and equal to the homepage
         run: |

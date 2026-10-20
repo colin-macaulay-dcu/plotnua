@@ -502,6 +502,28 @@ console.log('-'.repeat(74));
           `cardAvailable=${cardIsAvailable} problems=${problems.length}`);
 }
 
+/* H3 (20 Oct 2026): the labels of a LICENSED PHOTOGRAPHIC COMPOSITE. Such an
+   image is not only AI-generated, so the generic AI label would understate it.
+   Its record carries a visible caption and an accessible disclosure, and they
+   qualify only if, against the licence the record is bound to:
+     - the caption contains the licence's required credit exactly and says
+       it is an illustration;
+     - the disclosure says "AI-generated", says photography, names the
+       licensed organisation, and is no longer than 200 characters.
+   Returns { ok, caption, disclosure } or { ok:false, why }. */
+function compositeLabels(r, b) {
+  const cap = String(r.visible_caption || ''), dis = String(r.accessible_disclosure || '');
+  if (!cap || !dis) return { ok: false, why: 'no visible_caption and accessible_disclosure' };
+  if (!cap.includes(String(b.row.required_credit))) return { ok: false, why: 'the caption does not carry the exact credit' };
+  if (!/illustrat/i.test(cap)) return { ok: false, why: 'the caption does not say it is an illustration' };
+  if (!dis.includes('AI-generated') || !/photograph/i.test(dis) || !dis.includes(String(b.row.organisation_name))) {
+    return { ok: false, why: 'the disclosure does not say AI-generated, photography and whose' };
+  }
+  if (dis.length > 200) return { ok: false, why: 'the disclosure is longer than 200 characters' };
+  return { ok: true, caption: cap, disclosure: dis };
+}
+const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ');
+
 /* ── P8 · a declared AI illustration carries its visible label ────────── */
 {
   /* The founder held the page captions back until records exist. So this
@@ -520,6 +542,20 @@ console.log('-'.repeat(74));
     for (const r of ai) {
       const onPages = found.get(r.asset);
       if (!onPages) continue;              // declared but not published: fine
+      /* H3: a licensed photographic composite carries its own two labels
+         instead; the generic AI label alone is not enough for it. */
+      const b = licensedBinding(r);
+      if (!b.none) {
+        if (!b.ok) { missing.push(`${r.asset}: licensed binding fails (${b.why})`); continue; }
+        const lab = compositeLabels(r, b);
+        if (!lab.ok) { missing.push(`${r.asset}: ${lab.why}`); continue; }
+        for (const page of onPages) {
+          const text = pageText(readFileSync(join(ROOT, page), 'utf8'));
+          if (!text.includes(lab.caption)) missing.push(`${r.asset} on ${page}: visible caption missing`);
+          if (!text.includes(lab.disclosure)) missing.push(`${r.asset} on ${page}: accessible disclosure missing`);
+        }
+        continue;
+      }
       for (const page of onPages) {
         const html = readFileSync(join(ROOT, page), 'utf8');
         if (!html.includes(expected)) missing.push(`${r.asset} on ${page}`);
@@ -584,10 +620,16 @@ console.log('-'.repeat(74));
         if (credit && !win.includes(credit)) {
           problems.push(`${r.asset} on ${page} lacks its required credit "${credit}"`);
         }
+        /* ...and inside its approved accessible disclosure, which P8 holds to
+           its own rules (H3). */
+        const lab = b.ok ? compositeLabels(r, b) : { ok: false };
         for (const o of orgNames) {
           if (o.length <= 3) continue;
-          const seen = (credit && o === b.row.organisation_name)
-            ? win.split(credit).join(' ') : win;
+          let seen = win;
+          if (credit && o === b.row.organisation_name) {
+            seen = seen.split(credit).join(' ');
+            if (lab.ok) seen = seen.split(lab.disclosure).join(' ');
+          }
           if (seen.includes(o)) {
             problems.push(`${r.asset} on ${page} sits beside ${o}`);
           }
@@ -771,11 +813,35 @@ console.log('-'.repeat(74));
     const last = steps[steps.length - 1] || {};
     if (last.output_sha256 !== am.sha256) problems.push('the chain does not end at the active master');
   }
+  /* H3 (20 Oct 2026): PUBLISHED Reveal layers stay on the lock chain too.
+       f. a record with reveal_layer names the layer's LOCKED file by hash: the
+          chain's active layer for L3 / L5 / L6 (L3 must be v2.1c, never the
+          superseded v2), or the locked layer carried in the base for L4;
+       g. a published composite (composite_id) names the ACTIVE master. */
+  if (chain && typeof chain === 'object') {
+    const act = chain.active_layers || {}, inBase = chain.locked_layers_in_base || {};
+    const supL3 = ((chain.superseded || {}).L3_v2 || {}).sha256;
+    for (const r of records) {
+      const rl = r.reveal_layer;
+      if (rl) {
+        const want = (act[rl.id] || {}).sha256 || (inBase[rl.id] || {}).sha256;
+        if (!want) problems.push(`${r.asset}: ${rl.id} is not a layer of the lock chain`);
+        else if (rl.layer_sha256 !== want) problems.push(`${r.asset}: ${rl.id} is not the locked layer`);
+        if (rl.id === 'L3' && ((act.L3 || {}).version !== 'v2.1c' || rl.layer_sha256 === supL3)) problems.push(`${r.asset}: L3 is not v2.1c`);
+      }
+      if (r.composite_id) {
+        const m = r.master || {};
+        if (m.pixel_sha256 !== (chain.active_master || {}).pixel_sha256) problems.push(`${r.asset}: composite master is not the active master`);
+      }
+    }
+  } else if (records.some(r => r.reveal_layer || r.composite_id)) {
+    problems.push('published Reveal layers but no possibility_reveal_lock_chain');
+  }
   problems.length
-    ? bad('P13 every staged composite is declared, bound, unpublished and on the active lock chain',
+    ? bad('P13 every Reveal layer and composite, staged or published, is on the active lock chain',
           `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
-    : ok('P13 every staged composite is declared, bound, unpublished and on the active lock chain',
-         staged.length ? `${staged.length} checked` : 'no staged composites; the check is live');
+    : ok('P13 every Reveal layer and composite, staged or published, is on the active lock chain',
+         `${staged.length} staged, ${records.filter(r => r.reveal_layer).length} published Reveal layer(s) on the chain`);
 }
 
 /* ── the backlog, visible on every run ────────────────────────────────── */

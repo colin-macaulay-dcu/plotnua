@@ -11,6 +11,11 @@
              alt="A two-storey house seen from the back garden, with five black solar panels on the rear roof, a slim battery on the side wall and a heat pump beyond the single-storey extension.">
       </picture>
 
+      <!-- H3 · GARDEN LAYERS: locked L3–L5, nothing is fetched until switched on -->
+      <template data-layer="L3"><div class="g-layer" data-layer="L3" style="left:1570px;top:526px;width:1060px;height:592px"><img src="assets/possibility-reveal/layers/garden-L3-pavilion.webp" srcset="assets/possibility-reveal/layers/garden-L3-pavilion-half.webp 530w, assets/possibility-reveal/layers/garden-L3-pavilion.webp 1060w" sizes="1060px" width="1060" height="592" alt="" decoding="async"></div></template>
+      <template data-layer="L4"><div class="g-layer" data-layer="L4" style="left:312px;top:832px;width:1270px;height:704px"><img src="assets/possibility-reveal/layers/garden-L4-kitchen-garden.webp" srcset="assets/possibility-reveal/layers/garden-L4-kitchen-garden-half.webp 635w, assets/possibility-reveal/layers/garden-L4-kitchen-garden.webp 1270w" sizes="1270px" width="1270" height="704" alt="" decoding="async"></div></template>
+      <template data-layer="L5"><div class="g-layer" data-layer="L5" style="left:60px;top:394px;width:318px;height:330px"><img src="assets/possibility-reveal/layers/garden-L5-pod.webp" srcset="assets/possibility-reveal/layers/garden-L5-pod-half.webp 159w, assets/possibility-reveal/layers/garden-L5-pod.webp 318w" sizes="318px" width="318" height="330" alt="" decoding="async"></div></template>
+
       <!-- ENTRY · what the lens reveals (decorative; each has a real button below) -->
       <svg class="hidden-layer" id="pr-hidden" viewBox="0 0 2752 1536" aria-hidden="true" focusable="false">
         <rect width="2752" height="1536" fill="rgba(8,18,13,.2)"/>
@@ -131,21 +136,25 @@
           </g>
         </g>
       </svg>
+      <!-- H3 · GARDEN LAYER L6: locked L6 (sauna, hot tub and smoke; licensed photography), fetched only when switched on -->
+      <template data-layer="L6"><div class="g-layer g-sprite" data-layer="L6" style="left:2152px;top:714px;width:600px;height:806px"><img src="assets/possibility-reveal/layers/garden-L6-retreat.webp" srcset="assets/possibility-reveal/layers/garden-L6-retreat-half.webp 300w, assets/possibility-reveal/layers/garden-L6-retreat.webp 600w" sizes="600px" width="600" height="1612" alt="" decoding="async"></div></template>
     </div>
+    <p class="garden-credit" id="pr-gardenCredit" hidden>Garden possibilities illustrated. <a href="https://www.timberin.com/">Hot tub: TimberIN</a>.<span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.</span></p>
+    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>
 
     <div class="veil" aria-hidden="true"></div>
     <div class="lens" id="pr-lens" aria-hidden="true"><span class="lens-grip" id="pr-lensGrip"></span></div>
     <div class="beacons" id="pr-beacons" role="group" aria-label="Hidden possibilities on this property"></div>
     <button type="button" class="lens-label" id="pr-lensLabel" tabindex="-1" aria-hidden="true"></button>
 
-    <nav class="layers" id="pr-layers" tabindex="0" aria-label="Other possibilities for this property (other layers are not part of this prototype)">
+    <nav class="layers" id="pr-layers" aria-label="Possibilities for this property: switch a garden layer on or off">
       <span class="layers-lab">This property could…</span>
       <span class="lay is-on">Be renewed</span>
       <span class="lay is-on">Make its own energy</span>
-      <span class="lay">Grow a garden room</span>
-      <span class="lay">Borrow a garden</span>
-      <span class="lay">Hold a treehouse</span>
-      <span class="lay">Become a retreat</span>
+      <button type="button" class="lay lay-btn" data-layer="L3" aria-pressed="false">Grow a garden room</button>
+      <button type="button" class="lay lay-btn" data-layer="L4" aria-pressed="false">Borrow a garden</button>
+      <button type="button" class="lay lay-btn" data-layer="L5" aria-pressed="false">Hold a treehouse</button>
+      <button type="button" class="lay lay-btn" data-layer="L6" aria-pressed="false" aria-describedby="pr-gardenNote">Become a retreat</button>
     </nav>
 
     <section class="intro" aria-labelledby="pr-introTitle">
