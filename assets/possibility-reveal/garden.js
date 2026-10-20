@@ -39,7 +39,8 @@
     /* phones: a modest 1.35x zoom, held to the bottom-right corner, frames the sauna, the
        chimney and smoke and the hot tub's wooden body together (H3 review, 20 Oct 2026).
        Camera framing alone cannot lift the tub clear of the full-height paths, so while L6 is
-       on, phones also show the paths as one compact row (garden.css). */
+       on, phones and portrait tablets (below 1024px) also show the paths as one compact row
+       (garden.css; tablets added in the H3 final review, 20 Oct 2026). */
     L6: { d: [2452, 1110, 1], m: [2460, 1150, 1.35] }
   };
   /* L6's route to the existing Garden Retreat Discovery, in the Reveal's beacon pattern: a dot,
@@ -105,12 +106,26 @@
     var a = e.getBoundingClientRect(), s = stage.getBoundingClientRect();
     return { l: a.left - s.left, t: a.top - s.top, r: a.right - s.left, b: a.bottom - s.top };
   }
+  function pillsRect() {
+    var u = null;
+    ROOT.querySelectorAll("#pr-paths .path").forEach(function (e) {
+      if (e.offsetParent === null) return;
+      var a = e.getBoundingClientRect(), s = stage.getBoundingClientRect();
+      var q = { l: a.left - s.left, t: a.top - s.top, r: a.right - s.left, b: a.bottom - s.top };
+      u = u ? { l: Math.min(u.l, q.l), t: Math.min(u.t, q.t), r: Math.max(u.r, q.r), b: Math.max(u.b, q.b) } : q;
+    });
+    return u;
+  }
   function placeCredit() {
     if (credit.hidden) return;
-    var avoid = ["#pr-introTitle", ".lede", "#pr-paths", "#pr-layers", ".g-beacon"].map(rect).filter(Boolean);
+    /* portrait tablets with L6 on: the paths box keeps its usual height, but only its compact row
+       of pills is drawn, so the credit avoids the pills themselves and sits as on phones */
+    var tab = mqTab && mqTab.matches && on.indexOf("L6") >= 0;
+    var paths = tab ? pillsRect() : rect("#pr-paths");
+    var avoid = ["#pr-introTitle", ".lede", "#pr-layers", ".g-beacon"].map(rect).concat([paths]).filter(Boolean);
     var bk = rect(".g-beacon");
-    var H = stage.clientHeight, h = credit.offsetHeight, nav = rect("#pr-layers"), paths = rect("#pr-paths"), lede = rect(".lede");
-    var cands = [], phone = window.matchMedia("(max-width: 760px)").matches;
+    var H = stage.clientHeight, h = credit.offsetHeight, nav = rect("#pr-layers"), lede = rect(".lede");
+    var cands = [], phone = tab || window.matchMedia("(max-width: 760px)").matches;
     if (phone && lede) cands.push(lede.b + 10);   /* phones: above the lawn, clear of the tub and the compact paths */
     if (phone && bk) cands.push(bk.b + 8);
     if (nav) cands.push(nav.b + 8);
@@ -128,6 +143,21 @@
   function queuePlace() { if (!raf) raf = requestAnimationFrame(function () { raf = 0; placeCredit(); }); }
   window.addEventListener("scroll", queuePlace, { passive: true });
 
+  /* portrait tablets: while L6 compacts the paths, the headline and lede stay exactly where they
+     were. The paths keep their usual height (measured with the compact rule off) and the compact
+     row sits at its foot (garden.css), so only the pills move. Phones keep the approved layout. */
+  var mqTab = window.matchMedia("(min-width: 761px) and (max-width: 1023px)");
+  var pathsEl = $("#pr-paths");
+  function holdIntro() {
+    if (!mqTab.matches || on.indexOf("L6") < 0) { pathsEl.style.removeProperty("--g-paths-h"); return; }
+    var g = ROOT.getAttribute("data-garden");
+    ROOT.setAttribute("data-garden", "");
+    var hgt = pathsEl.offsetHeight;
+    ROOT.setAttribute("data-garden", g);
+    if (hgt) pathsEl.style.setProperty("--g-paths-h", hgt + "px");
+  }
+  new MutationObserver(function () { holdIntro(); queuePlace(); }).observe(ROOT, { attributes: true, attributeFilter: ["data-mode"] });
+
   function sync() {
     ROOT.classList.toggle("g-noL3", on.indexOf("L3") < 0);
     var l6 = on.indexOf("L6") >= 0;
@@ -138,6 +168,7 @@
       b.setAttribute("aria-pressed", on.indexOf(b.dataset.layer) >= 0 ? "true" : "false");
     });
     ROOT.setAttribute("data-garden", on.slice().sort().join(" "));
+    holdIntro(); placeCredit();
   }
 
   function frameFor(instant) {
@@ -171,7 +202,7 @@
   });
 
   window.addEventListener("resize", function () {
-    queuePlace();
+    holdIntro(); queuePlace();
     setTimeout(placeBeacon, 200);
     Object.keys(mounted).forEach(function (id) {
       var img = mounted[id].querySelector("img");
