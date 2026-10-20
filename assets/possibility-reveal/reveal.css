@@ -99,7 +99,7 @@
 /* intro never blocks the lens */
 .pr .intro{pointer-events:none}.pr .intro .paths{pointer-events:auto}
 .pr .intro .pr-title,.pr .lede{transition:opacity .35s}
-.pr .lens-over-intro .intro .pr-title,.pr .lens-over-intro .lede{opacity:.1!important}
+.pr.lens-over-intro .intro .pr-title,.pr.lens-over-intro .lede{opacity:.1!important}
 .pr[data-mode="scene"] .intro{opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden}
 .pr .intro .pr-title{font:500 clamp(36px,4.4vw,64px)/1.02 var(--serif);margin:0 0 10px;letter-spacing:-.01em;text-shadow:0 2px 26px rgba(0,0,0,.35);opacity:0;animation:pr-rise .9s .1s var(--ease) forwards}
 .pr .lede{margin:0 0 18px;font-size:clamp(15px,1.3vw,18px);max-width:640px;text-shadow:0 1px 12px rgba(0,0,0,.6);opacity:0;animation:pr-rise .9s .35s var(--ease) forwards}

@@ -49,7 +49,7 @@ def transform():
         sel = sel.replace('.intro h1', '.intro .pr-title')
         if sel in (':root', 'html', 'body'): return '.pr'
         if sel == '*': return '.pr, .pr *'
-        if sel.startswith('[data-mode'): return '.pr' + sel
+        if sel.startswith('[data-mode') or sel.startswith('.lens-over-intro'): return '.pr' + sel   # root-state selectors: the class/attribute sits ON the root
         return '.pr ' + sel
     def scope_block(css):
         out = []; i = 0
@@ -178,6 +178,7 @@ def guard():
     if index.count('<div class="hero-stage p4-stage" id="heroStage" data-hero="possibility-reveal">') != 1: bad.append('#heroStage is not the possibility-reveal slot')
     if len(re.findall(r'<h1\b', index)) != 1: bad.append('index.html must carry exactly one <h1>')
     if re.search(r'<h1\b', snip): bad.append('the component carries an <h1>')
+    if '.pr .lens-over-intro' in css_t or '.pr.lens-over-intro' not in css_t: bad.append('the mobile headline fade-back rule is mis-scoped (the class is set on the component root itself)')
     if re.search(r'part of the photograph', snip): bad.append('the component calls the AI illustration a photograph (PN-FDR-2026-10-19-01, standard 3)')
     for i in re.findall(r'\bid="([^"]+)"', snip):
         if not i.startswith('pr-'): bad.append('un-prefixed id in the component: ' + i)
