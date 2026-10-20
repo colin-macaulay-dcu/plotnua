@@ -6,9 +6,9 @@
   "categories": [
     "typicalHomeowner"
   ],
-  "productCount": 419,
+  "productCount": 416,
   "recordCounts": {
-    "typicalHomeowner": 419
+    "typicalHomeowner": 416
   },
   "products": {
     "recD12mXzhW3zEo1K": {
@@ -1430,24 +1430,6 @@
     "recqlTeGlYmQPLEPc": {
       "typicalHomeowner": {
         "text": "A CITY HOUSEHOLD WITH A COURTYARD OR SMALL GARDEN AND NOWHERE TO PUT THINGS. Eight square metres under a flat roof takes bikes, tools and garden furniture and looks deliberate rather than temporary, which is the whole argument for a timber store over a metal one. THEY ARE COMPARING IT AGAINST OTHER SHEDS, correctly. NOT FOR: a workspace of any kind; nor for a buyer who has been shown both this and the Sacramento and believes they are choosing between two designs.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recOu5xXheu2POoIa": {
-      "typicalHomeowner": {
-        "text": "SOMEONE WITH A LARGE, EMPTY GARDEN AND A REQUIREMENT THAT GENUINELY NEEDS 26 m2. A studio, a workshop, or a room serving several members of the household at once \u2014 and no shed, no bike store and no intention of adding one, because this building takes almost the entire allowance. THEY ARE ALSO A BUYER WHO BENEFITS DIRECTLY FROM THE 2026 CHANGE, which is worth knowing when comparing older online advice. NOT FOR: any plot with an existing structure over 3.82 m2; nor for a buyer who wants margin for error \u2014 the Nova at 22.5 m2 is the sensible retreat.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recspYM9bd9APNCOO": {
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD WHOSE GARDEN ROOM HAS TO DO TWO JOBS. Two people working on alternating days, or an office that becomes a gym or family room in the evening \u2014 the requirement that justifies 22.5 m2 rather than 18.7 m2. They have a reasonably large garden with at most a small shed in it, and they want a published area rather than a promise. NOT FOR: a plot already carrying a garage or a large shed, where 7.5 m2 of remaining allowance will not absorb it; nor for overnight accommodation.",
-        "evidenceScope": "Product-Specific"
-      }
-    },
-    "recSYgE1Y3I11JIsr": {
-      "typicalHomeowner": {
-        "text": "A HOUSEHOLD THAT WANTS A REAL ROOM WITHOUT A PLANNING CONVERSATION. Home office, gym or hobby space, in a garden that may already hold a shed \u2014 and 11.3 m2 of remaining allowance means that shed is unlikely to matter. They value a published area they can check themselves and an Irish supplier they can contact. THEIR REMAINING QUESTIONS ARE HEIGHT AND INSULATION, neither of which the catalogue answers. NOT FOR: overnight or guest use, which is a different consent route; nor for a household wanting to add a further structure later as well, where the arithmetic gets tighter.",
         "evidenceScope": "Product-Specific"
       }
     },

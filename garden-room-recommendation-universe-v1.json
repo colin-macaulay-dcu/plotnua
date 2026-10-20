@@ -6,32 +6,33 @@
  "qualificationRuleVersion": "garden-room-qualification-v1",
  "dryRun": false,
  "sourceGardenRoomCount": 582,
- "eligibleCount": 573,
- "highConfidenceCount": 153,
- "withCaveatCount": 420,
+ "eligibleCount": 570,
+ "highConfidenceCount": 151,
+ "withCaveatCount": 419,
  "limitedEvidenceCount": 0,
- "excludedCount": 9,
+ "excludedCount": 12,
  "exclusionSummaryByReason": {
   "E": 3,
   "F": 1,
-  "G": 5
+  "G": 5,
+  "C": 3
  },
  "confirmedIrishAvailabilityCount": 271,
  "unknownIrishAvailabilityCount": 311,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
  "noPublishedIrishRouteCount": 43,
- "missingPriceCount": 223,
+ "missingPriceCount": 222,
  "priceEvidenceSummary": {
-  "verified": 270,
+  "verified": 268,
   "present-unverified": 60,
   "quote-only": 20,
-  "missing": 223
+  "missing": 222
  },
  "quoteOnlyPriceCount": 20,
  "organisationCount": 64,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "22e3cdbb9ed1197851bf959f99b173dfbb55c537f2c90b57f106e7386a3a27c8",
+ "governedDigest": "1c612c2ca3153eb4a4938345853e120743cd62cff9308c04cb2633a7162e4755",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -54918,516 +54919,6 @@
    }
   },
   {
-   "id": "recOu5xXheu2POoIa",
-   "name": "ModPod Lira",
-   "organisation": "Outdoor Living (ModPod)",
-   "productId": "recOu5xXheu2POoIa",
-   "productCode": "PROD-000478",
-   "productName": "ModPod Lira",
-   "productType": "Garden Room",
-   "productCategory": "Garden Rooms",
-   "organisationEvidence": [
-    {
-     "id": "recn9B3Qn43VUXxAg",
-     "name": "Outdoor Living (ModPod)"
-    }
-   ],
-   "productUrl": "https://outdoorliving.ie/mod-pod-modular-pavilion-garden-rooms",
-   "verificationStatus": "Researching",
-   "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "missing",
-    "reasons": [
-     "Irish availability is confirmed by recorded evidence.",
-     "A product-level source is recorded.",
-     "Supplier attribution is confirmed: Outdoor Living (ModPod)."
-    ],
-    "caveats": [
-     "No usable price is recorded."
-    ],
-    "hardBlockers": [],
-    "evidenceSignals": {
-     "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Irish retailer, Glen of the Downs, Co. Wicklow; ModPod range manufactured in Ireland by Modeco Ltd. Nothing inferred. LIMITATION: coverage not published. HOMEOWNER IM",
-     "irishAvailabilityScope": "Organisation-Wide",
-     "irishAvailabilityClassified": true,
-     "noPublishedIrishRoute": false,
-     "price": "missing",
-     "source": "product-level",
-     "supplierAttribution": "confirmed",
-     "manufacturerAttribution": "unknown",
-     "productUrl": "present",
-     "contradiction": "none",
-     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 1,
-     "pricingRecordCount": 0,
-     "availabilityRecordCount": 1
-    }
-   },
-   "priceEvidence": null,
-   "features": {
-    "floorArea": {
-     "text": null,
-     "number": 26.18,
-     "unit": "sqm",
-     "evidenceScope": "Product-Specific",
-     "confirmationState": "Yes",
-     "feature": "Floor Area",
-     "records": [
-      {
-       "text": null,
-       "number": 26.18,
-       "unit": "sqm",
-       "evidenceScope": "Product-Specific",
-       "confirmationState": "Yes",
-       "feature": "Floor Area"
-      },
-      {
-       "text": "NO AREA PUBLISHED. No floor area, dimensions or derivable footprint held; nothing estimated, no wall thickness subtracted. PLANNING: the area test cannot be run; the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026) and all other Class 3 conditions still require checking against a supplier-confirmed footprint. NOTE: Outdoor Living is based at Glen of the Downs, Co. Wicklow, so this is an Irish-purchasable product whose planning position Atlas cannot currently resolve. All fourteen now carry this decision layer: the three ModPod models (Lira, Vaya, Nova), the two Nova Pavillion Sun Rooms (17.8m and 21.5m) and the nine GardenDreams and Tarasola editions (Essential, Superior, Legend, Wave, Helios, Tarasola Cubic, Tarasola Flat, Tarasola Technic New, Tarasola Technic Pro). Not one carries a published floor area or dimension, and not one is rankable on any area basis. TWO STANDING CAUTIONS: the Tarasola products are louvred pergola systems rather than enclosed rooms, so an area figure would not mean the same thing as it does for a garden room and they carry the standing category-misclassification flag; and this is an Irish-trading supplier in Co. Wicklow, which makes the absence of any published dimension the single thing preventing fourteen Irish-purchasable products from entering the ranking.",
-       "number": null,
-       "unit": null,
-       "evidenceScope": "Product-Specific",
-       "feature": "Internal Floor Area"
-      }
-     ]
-    },
-    "insulation": {
-     "text": "70mm rock wool insulation to floor and ceiling",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "confirmationState": "Yes"
-    },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish retailer, Glen of the Downs, Co. Wicklow; ModPod range manufactured in Ireland by Modeco Ltd. Nothing inferred. HOMEOWNER IMPLICATION: confirm delivery and installation to your county.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty terms located for the ModPod range; the site's 20-year decking warranty relates to a separate product line and was not transferred. Nothing inferred. HOMEOWNER IMPLICATION: ask what the panelised structure and the supplied hardcore base are guaranteed for.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
-    },
-    "construction": {
-     "text": "C24 spruce structural timber",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "confirmationState": "Yes"
-    },
-    "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED. Repaired at audit: previously held a free-text classification outside the approved vocabulary with no Evidence Tier or Source URL. Evidence retained: panelised system installable in as little as one day; no crane truck required; a bed of hardcore sufficient in place of a poured concrete base; feet fully adjustable. Supplier-level evidence: the ModPod range includes a free hardcore base and full assembly, with no extra groundwork required. Nothing inferred. HOMEOWNER IMPLICATION: base and assembly inside the quoted figure; the adjustable feet also remove the levelling work that a sloping garden would otherwise require.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "status": "Verified"
-    },
-    "insulationRating": {
-     "text": "YEAR-ROUND INSULATED. Published specification for the ModPod range: built with C24 structural spruce and insulated with 70 mm of rock wool in the floor and ceiling; the pavilions are stated as fully insulated including roof, walls and floor; walls are described as made to the same specification as timber-frame house walls, using a stronger timber than the majority of garden-room suppliers; laminated wood windows and doors fitted with 5 mm laminated glass. Nothing inferred. SITE ACCESS LIMITATION recorded per the standing rule: outdoorliving.ie returned only navigation content on both paths attempted this session, so this classification rests on indexed evidence attributed to outdoorliving.ie and to the manufacturer Modeco Ltd — Tier B. TWO POINTS A BUYER SHOULD CHECK, both arising from what IS published. First, the 70 mm rock-wool figure is stated for the FLOOR AND CEILING; the walls are described as timber-frame specification but no wall insulation thickness is given, so the wall figure is unknown. Second, the glazing is described as '5 mm laminated glass' — laminated glass is a safety and security specification, and no double or triple glazing is stated anywhere. On an otherwise well-insulated envelope, single-pane glazing would be the dominant heat-loss path. Both should be confirmed in writing. HOMEOWNER IMPLICATION: an insulated, timber-frame-specification building, and the strongest structural specification recorded from an Irish retailer in this layer — but the glazing specification needs checking before it is treated as a winter workspace.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
-    }
-   },
-   "price": null,
-   "currency": null,
-   "priceBasis": null,
-   "floorAreaM2": 26.18,
-   "glazing": null,
-   "insulation": "70mm rock wool insulation to floor and ceiling",
-   "manufactureCountry": null,
-   "designLanguage": null,
-   "irishAvailabilityConfirmationState": "Yes",
-   "irishAvailability": true,
-   "availabilityStatus": "Available to Order",
-   "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "missing",
-   "qualificationCaveats": [
-    "No usable price is recorded."
-   ],
-   "priceRecordIds": [],
-   "priceRecordIdsAvailable": 0,
-   "priceStatus": null,
-   "priceType": null,
-   "priceScope": null,
-   "vatStatus": "Unknown",
-   "vatRate": null,
-   "priceBasisAxes": {
-    "erection": "INCLUDED",
-    "siteWorks": "UNKNOWN",
-    "delivery": "UNKNOWN"
-   },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "NO_PRICE",
-   "priceIsRangeFloor": false,
-   "priceSafeForMatching": false,
-   "priceEvidenceRef": {
-    "recordIds": [],
-    "adjudication": "missing",
-    "candidateCount": 0,
-    "status": null,
-    "priceType": null,
-    "evidenceScope": null,
-    "lastPriceCheck": null,
-    "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
-  },
-  {
-   "id": "recspYM9bd9APNCOO",
-   "name": "ModPod Nova",
-   "organisation": "Outdoor Living (ModPod)",
-   "productId": "recspYM9bd9APNCOO",
-   "productCode": "PROD-000480",
-   "productName": "ModPod Nova",
-   "productType": "Garden Room",
-   "productCategory": "Garden Rooms",
-   "organisationEvidence": [
-    {
-     "id": "recn9B3Qn43VUXxAg",
-     "name": "Outdoor Living (ModPod)"
-    }
-   ],
-   "productUrl": "https://outdoorliving.ie/modpod-nova-22-5sqm-garden-house-woodgrain-and-anthracite",
-   "verificationStatus": "Unverified",
-   "qualification": {
-    "status": "ELIGIBLE — HIGH CONFIDENCE",
-    "confidenceTier": "HIGH_CONFIDENCE",
-    "priceEvidence": "verified",
-    "reasons": [
-     "Irish availability is confirmed by recorded evidence.",
-     "A verified price is recorded.",
-     "A product-level source is recorded.",
-     "Supplier attribution is confirmed: Outdoor Living (ModPod)."
-    ],
-    "caveats": [],
-    "hardBlockers": [],
-    "evidenceSignals": {
-     "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Irish retailer, Glen of the Downs, Co. Wicklow; ModPod range manufactured in Ireland by Modeco Ltd. Nothing inferred. LIMITATION: coverage not published. HOMEOWNER IM",
-     "irishAvailabilityScope": "Organisation-Wide",
-     "irishAvailabilityClassified": true,
-     "noPublishedIrishRoute": false,
-     "price": "verified",
-     "source": "product-level",
-     "supplierAttribution": "confirmed",
-     "manufacturerAttribution": "unknown",
-     "productUrl": "present",
-     "contradiction": "none",
-     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 1,
-     "pricingRecordCount": 2,
-     "availabilityRecordCount": 2
-    }
-   },
-   "priceEvidence": {
-    "base": 21999,
-    "from": null,
-    "to": null,
-    "currency": "EUR",
-    "priceType": "Standard Price",
-    "status": "Verified",
-    "includesVat": "Unknown",
-    "evidenceScope": null,
-    "adjudication": "adjudicated",
-    "quoteOnly": false,
-    "candidateCount": 2
-   },
-   "features": {
-    "floorArea": {
-     "text": null,
-     "number": 22.5,
-     "unit": "sqm",
-     "evidenceScope": "Product-Specific",
-     "status": "Researching",
-     "feature": "Floor Area",
-     "records": [
-      {
-       "text": null,
-       "number": 22.5,
-       "unit": "sqm",
-       "evidenceScope": "Product-Specific",
-       "status": "Researching",
-       "feature": "Floor Area"
-      },
-      {
-       "text": "NO AREA PUBLISHED. No floor area, dimensions or derivable footprint held; nothing estimated. Atlas also carries 'The Nova 17.8m' and 'The Nova 21.5m Pavillion Sun Room' under the same supplier. Whether ModPod Nova is the same product family as those two, or a distinct model, is NOT established — recorded as an observation, not resolved, and no figure carried across. PLANNING: area test cannot be run.",
-       "number": null,
-       "unit": null,
-       "evidenceScope": "Product-Specific",
-       "feature": "Internal Floor Area"
-      }
-     ]
-    },
-    "insulationRating": {
-     "text": "YEAR-ROUND INSULATED. Same ModPod specification: C24 spruce, 70 mm rock wool to floor and ceiling, fully insulated roof, walls and floor, walls to timber-frame house specification, 5 mm laminated glass in laminated wood frames. Nothing inferred. Site access limitation: indexed evidence only — Tier B. LIMITATIONS: wall insulation thickness not published; no double or triple glazing stated. HOMEOWNER IMPLICATION: an insulated timber-frame building; confirm glazing before treating it as a winter workspace. ATLAS NOTE: two further Atlas records — 'The Nova 17.8m Pavillion Sun Room' and 'The Nova 21.5m Pavillion Sun Room' — appear to be size variants of this same model held as separate products.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
-    },
-    "insulation": {
-     "text": "70mm rock wool insulation to floor and ceiling",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "confirmationState": "Yes"
-    },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish retailer, Glen of the Downs, Co. Wicklow; ModPod range manufactured in Ireland by Modeco Ltd. Nothing inferred. HOMEOWNER IMPLICATION: confirm delivery and installation to your county.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty period, scope or claims procedure located on the supplier's ModPod pages or the manufacturer's site; construction specification only. Nothing inferred. HISTORICAL RECORD SUPERSEDED AND RETAINED AS INFORMATION ONLY: an earlier unsourced Atlas entry stated a 'manufacturer's standard 1-year warranty' with no Evidence Tier and no source URL; it is not carried into the certified layer. BLOCKED-SITE LIMITATION: outdoorliving.ie is on the Atlas permanently-unreadable list. HOMEOWNER IMPLICATION: request the written warranty and establish whether the retailer or the manufacturer stands behind it.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide",
-     "status": "Verified"
-    },
-    "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED. Repaired at audit: this record previously held a free-text classification outside the approved vocabulary and carried no Evidence Tier or Source URL. Evidence retained from the original record: panelised system installable in as little as one day; no crane truck required; a bed of hardcore is sufficient in place of a poured concrete base; feet fully adjustable to accommodate uneven ground. Supplier-level evidence: the ModPod range is published as including a free hardcore base and full assembly, engineered to sit securely on almost any surface with no extra groundwork required. Nothing inferred. HOMEOWNER IMPLICATION: base and assembly are both inside the quoted figure, no crane is needed and no site preparation must be commissioned first — one of only two positions in this catalogue where the groundworks problem is removed rather than priced.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "status": "Verified"
-    },
-    "construction": {
-     "text": "C24 spruce structural timber",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "confirmationState": "Yes"
-    }
-   },
-   "price": 21999,
-   "currency": "EUR",
-   "priceBasis": "Verified",
-   "floorAreaM2": 22.5,
-   "glazing": null,
-   "insulation": "70mm rock wool insulation to floor and ceiling",
-   "manufactureCountry": null,
-   "designLanguage": null,
-   "irishAvailabilityConfirmationState": "Yes",
-   "irishAvailability": true,
-   "availabilityStatus": "Available to Order",
-   "noPublishedIrishRoute": false,
-   "qualificationTier": "HIGH_CONFIDENCE",
-   "priceEvidenceState": "verified",
-   "qualificationCaveats": [],
-   "priceRecordIds": [
-    "recZWXsEbfamITRPE",
-    "reclMRLLUwnlqlfXf"
-   ],
-   "priceRecordIdsAvailable": 2,
-   "priceStatus": "Verified",
-   "priceType": "Standard Price",
-   "priceScope": null,
-   "vatStatus": "Unknown",
-   "vatRate": null,
-   "priceBasisAxes": {
-    "erection": "INCLUDED",
-    "siteWorks": "UNKNOWN",
-    "delivery": "UNKNOWN"
-   },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
-   "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceEvidenceRef": {
-    "recordIds": [
-     "recZWXsEbfamITRPE",
-     "reclMRLLUwnlqlfXf"
-    ],
-    "adjudication": "adjudicated",
-    "candidateCount": 2,
-    "status": "Verified",
-    "priceType": "Standard Price",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-19",
-    "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
-  },
-  {
-   "id": "recSYgE1Y3I11JIsr",
-   "name": "ModPod Vaya",
-   "organisation": "Outdoor Living (ModPod)",
-   "productId": "recSYgE1Y3I11JIsr",
-   "productCode": "PROD-000479",
-   "productName": "ModPod Vaya",
-   "productType": "Garden Room",
-   "productCategory": "Garden Rooms",
-   "organisationEvidence": [
-    {
-     "id": "recn9B3Qn43VUXxAg",
-     "name": "Outdoor Living (ModPod)"
-    }
-   ],
-   "productUrl": "https://outdoorliving.ie/mod-pod-modular-pavilion-garden-rooms",
-   "verificationStatus": "Unverified",
-   "qualification": {
-    "status": "ELIGIBLE — HIGH CONFIDENCE",
-    "confidenceTier": "HIGH_CONFIDENCE",
-    "priceEvidence": "verified",
-    "reasons": [
-     "Irish availability is confirmed by recorded evidence.",
-     "A verified price is recorded.",
-     "A product-level source is recorded.",
-     "Supplier attribution is confirmed: Outdoor Living (ModPod)."
-    ],
-    "caveats": [],
-    "hardBlockers": [],
-    "evidenceSignals": {
-     "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Irish retailer, Co. Wicklow; Irish-manufactured ModPod range. Nothing inferred. LIMITATION: coverage not published. HOMEOWNER IMPLICATION: confirm delivery and instal",
-     "irishAvailabilityScope": "Organisation-Wide",
-     "irishAvailabilityClassified": true,
-     "noPublishedIrishRoute": false,
-     "price": "verified",
-     "source": "product-level",
-     "supplierAttribution": "confirmed",
-     "manufacturerAttribution": "unknown",
-     "productUrl": "present",
-     "contradiction": "none",
-     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 1,
-     "pricingRecordCount": 1,
-     "availabilityRecordCount": 2
-    }
-   },
-   "priceEvidence": {
-    "base": 16999,
-    "from": null,
-    "to": null,
-    "currency": "EUR",
-    "priceType": "Standard Price",
-    "status": "Verified",
-    "includesVat": "Unknown",
-    "evidenceScope": null,
-    "adjudication": "adjudicated",
-    "quoteOnly": false,
-    "candidateCount": 1
-   },
-   "features": {
-    "insulationRating": {
-     "text": "YEAR-ROUND INSULATED. Same ModPod specification: C24 spruce structure, 70 mm rock wool in floor and ceiling, pavilions stated as fully insulated including roof, walls and floor, walls to timber-frame house specification, laminated wood windows and doors with 5 mm laminated glass. Nothing inferred. Site access limitation: outdoorliving.ie returned navigation content only this session; classification rests on indexed evidence — Tier B. LIMITATIONS: no wall insulation thickness published, and no double or triple glazing stated — the published glazing is 5 mm laminated, a safety specification. HOMEOWNER IMPLICATION: an insulated timber-frame building; confirm the glazing specification before relying on it for winter working.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
-    },
-    "construction": {
-     "text": "C24 spruce structural timber",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "confirmationState": "Yes"
-    },
-    "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. A search of the supplier's ModPod pages and the manufacturer's own site located NO warranty period, NO scope of cover and NO claims procedure. What is published is specification — C24 spruce, 70 mm rock wool insulation to floor and ceiling, manufactured in accordance with building regulations for housing. Nothing inferred. HISTORICAL RECORD SUPERSEDED AND RETAINED AS INFORMATION ONLY: an earlier unsourced Atlas entry stated a 'manufacturer's standard 1-year warranty'. It carried no Evidence Tier and no source URL, and no such term could be attributed to the supplier or the manufacturer on re-examination. Under the Atlas rule against inference it is not carried into the certified layer. BLOCKED-SITE LIMITATION, carried forward: outdoorliving.ie is on the Atlas permanently-unreadable list. HOMEOWNER IMPLICATION: specification is published in detail and cover is not. Ask for the written warranty, and establish whether it comes from the retailer or the manufacturer.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide",
-     "status": "Verified"
-    },
-    "floorArea": {
-     "text": null,
-     "number": 18.7,
-     "unit": "sqm",
-     "evidenceScope": "Product-Specific",
-     "confirmationState": "Yes",
-     "feature": "Floor Area",
-     "records": [
-      {
-       "text": null,
-       "number": 18.7,
-       "unit": "sqm",
-       "evidenceScope": "Product-Specific",
-       "confirmationState": "Yes",
-       "feature": "Floor Area"
-      },
-      {
-       "text": "NO AREA PUBLISHED. No floor area, dimensions or derivable footprint held; nothing estimated. PLANNING: area test cannot be run; all Class 3 conditions still require checking. Irish-purchasable (Glen of the Downs, Co. Wicklow) but the planning position cannot be resolved on held data.",
-       "number": null,
-       "unit": null,
-       "evidenceScope": "Product-Specific",
-       "feature": "Internal Floor Area"
-      }
-     ]
-    },
-    "insulation": {
-     "text": "70mm rock wool insulation to floor and ceiling",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "confirmationState": "Yes"
-    },
-    "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED. Repaired at audit: previously held a free-text classification outside the approved vocabulary with no Evidence Tier or Source URL. Evidence retained: panelised system installable in as little as one day; no crane truck required; a bed of hardcore sufficient in place of a poured concrete base; feet fully adjustable. Supplier-level evidence: the ModPod range includes a free hardcore base and full assembly, with no extra groundwork required. Nothing inferred. HOMEOWNER IMPLICATION: base and assembly inside the quoted figure, no crane access constraint, no separate groundworks contract.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "status": "Verified"
-    },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish retailer, Co. Wicklow; Irish-manufactured ModPod range. Nothing inferred. HOMEOWNER IMPLICATION: confirm delivery and installation to your county.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    }
-   },
-   "price": 16999,
-   "currency": "EUR",
-   "priceBasis": "Verified",
-   "floorAreaM2": 18.7,
-   "glazing": null,
-   "insulation": "70mm rock wool insulation to floor and ceiling",
-   "manufactureCountry": null,
-   "designLanguage": null,
-   "irishAvailabilityConfirmationState": "Yes",
-   "irishAvailability": true,
-   "availabilityStatus": "In Stock",
-   "noPublishedIrishRoute": false,
-   "qualificationTier": "HIGH_CONFIDENCE",
-   "priceEvidenceState": "verified",
-   "qualificationCaveats": [],
-   "priceRecordIds": [
-    "recx19RFO08ubuntW"
-   ],
-   "priceRecordIdsAvailable": 1,
-   "priceStatus": "Verified",
-   "priceType": "Standard Price",
-   "priceScope": null,
-   "vatStatus": "Unknown",
-   "vatRate": null,
-   "priceBasisAxes": {
-    "erection": "INCLUDED",
-    "siteWorks": "UNKNOWN",
-    "delivery": "UNKNOWN"
-   },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
-   "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceEvidenceRef": {
-    "recordIds": [
-     "recx19RFO08ubuntW"
-    ],
-    "adjudication": "adjudicated",
-    "candidateCount": 1,
-    "status": "Verified",
-    "priceType": "Standard Price",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-19",
-    "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
-   }
-  },
-  {
    "id": "recBW2vBPcT0kOT1o",
    "name": "Modern Garden Guest Room",
    "organisation": "Modern Garden Rooms",
@@ -81950,10 +81441,10 @@
      "evidenceScope": "Range-Level"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED. Recorded as published for the ModPod modular pavilion garden room range: the rooms 'include a free hardcore base and full assembly for quick, hassle-free installation, saving you time, effort, and extra costs', and are 'engineered to sit securely on almost any surface, providing a strong, stable, and long-lasting structure with no extra groundwork required'. Nothing inferred. THE FREE BASE IS THE POINT AND IT IS UNUSUAL: not merely 'base included' but a free hardcore base supplied as standard, with the structure engineered so that no additional groundwork is needed. Across this catalogue the base is the item most often excluded and most often underestimated — Adman excludes it, Concept Modular puts it at EUR 3,000 to 4,000 plus VAT with craneage and haulage, My Garden Room quotes it separately. Here it is inside the price at no charge, and Sprout Pod is the only other supplier that neutralises the base line entirely. ATTRIBUTION BASIS, recorded for transparency: this product is matched to the ModPod modular pavilion range on the published product family; the supplier's ModPod page carries the installation terms for that range as a whole rather than per size. HOMEOWNER IMPLICATION: base and assembly are both inside the quoted figure, and because the unit sits on almost any surface there is no site preparation to commission first. Confirm at order that electrics are included — the published ModPod scope names base, assembly, insulation and glazing, not wiring.",
+     "text": "INSTALLATION AVAILABLE (OPTIONAL). Read from the product's own page (Assembly Information) on 19 and 20 Oct 2026: \"Assembly is available for this product on request. Cost for assembly is €1600 within 100km of our Glen of the Downs Showroom and €1.50 per km thereafter. Please note assembly must be arranged with our logistics team ... and can not be ordered online. Ground must be levelled and prepared by customer before assembly. The wood on this structure is untreated and must be treated by customer after assembly.\" The price covers supply and delivery; assembly is an optional paid extra and the customer prepares the ground. Listed by the supplier under Gazebos and Canopies, 18 mm walls. This product is not a ModPod, so the ModPod range terms previously recorded here do not apply to it. Corrected 20 Oct 2026 (founder-approved).",
      "number": null,
      "unit": null,
-     "evidenceScope": "Range-Level"
+     "evidenceScope": "Product-Specific"
     },
     "floorArea": {
      "text": "CONFLICTING MEASUREMENTS. Supplier's original string preserved verbatim: '17.8m'. The unit published is METRES, but 17.8 linear metres is implausible for a garden sun room while 17.8 m2 would be a plausible area. The published unit and the plausible reading conflict, and resolving it by assuming m2 would be an inference — not made. This is the same unresolved unit ambiguity already recorded against The Nova 21.5m, so it is a RANGE-WIDE naming defect rather than a one-off typo. PLANNING: if 17.8 m2 is correct the product sits inside the 30 m2 back-garden allowance, but that cannot be relied on until the unit is confirmed.",
@@ -82017,11 +81508,11 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "EXCLUDED",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisClass": "KIT_SELF_ASSEMBLY",
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": false,
    "priceSafeForMatching": true,
@@ -82036,7 +81527,7 @@
     "evidenceScope": null,
     "lastPriceCheck": "2026-08-19",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+    "basisLeadPhrase": "INSTALLATION AVAILABLE (OPTIONAL)"
    }
   },
   {
@@ -82125,10 +81616,10 @@
      ]
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED. Published ModPod range terms: free hardcore base and full assembly included; engineered to sit securely on almost any surface with no extra groundwork required; four sizes published. Nothing inferred. HOMEOWNER IMPLICATION: at 21.5 m2 the base would be the largest single excluded cost with almost any competitor. Here it is supplied free and the assembly is included, so the quoted figure is close to the finished cost. Confirm the electrical position at order, since the published ModPod scope does not name wiring.",
+     "text": "INSTALLATION AVAILABLE (OPTIONAL). Read from the product's own page (Assembly Information) on 19 and 20 Oct 2026: \"Assembly is available for this product on request. Cost for assembly is €2000 within 100km of our Glen of the Downs Showroom and €1.50 per km thereafter. Please note assembly must be arranged with our logistics team ... and can not be ordered online. Ground must be levelled and prepared by customer before assembly. The wood on this structure is untreated and must be treated by customer after assembly.\" The price covers supply and delivery; assembly is an optional paid extra and the customer prepares the ground. Listed by the supplier under Gazebos and Canopies, 18 mm walls. This product is not a ModPod, so the ModPod range terms previously recorded here do not apply to it. Corrected 20 Oct 2026 (founder-approved).",
      "number": null,
      "unit": null,
-     "evidenceScope": "Range-Level"
+     "evidenceScope": "Product-Specific"
     },
     "irishAvailability": {
      "text": "AVAILABLE IN REPUBLIC OF IRELAND. Outdoor Living is an Irish retailer based at Glen of the Downs, Co. Wicklow, selling the ModPod range manufactured by Modeco Ltd, a separate Irish timber engineering company. Nothing inferred. HOMEOWNER IMPLICATION: Irish retailer selling an Irish-made range — confirm delivery and installation to your county before ordering.",
@@ -82174,11 +81665,11 @@
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "EXCLUDED",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisClass": "KIT_SELF_ASSEMBLY",
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": false,
    "priceSafeForMatching": true,
@@ -82193,7 +81684,7 @@
     "evidenceScope": null,
     "lastPriceCheck": "2026-08-19",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+    "basisLeadPhrase": "INSTALLATION AVAILABLE (OPTIONAL)"
    }
   },
   {

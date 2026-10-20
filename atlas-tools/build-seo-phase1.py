@@ -47,7 +47,8 @@ TODAY = "2026-10-16"
 # changes, so it agrees with its sitemap lastmod (cluster 1 guard S2).
 # 17 Oct 2026: two factual corrections (commencement date; An Coimisiun Pleanala).
 # 19 Oct 2026: the safety hold removed the five Premium Log House products from the Maker Explorer
-LITG_MODIFIED = "2026-10-19"
+# 20 Oct 2026: the Outdoor Living correction moved the Maker Explorer counts
+LITG_MODIFIED = "2026-10-20"
 
 
 def die(msg):
