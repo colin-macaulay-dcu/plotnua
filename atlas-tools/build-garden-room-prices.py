@@ -39,6 +39,9 @@ THE RULES (founder, 17 Oct 2026) -- each is a refusal, not a warning
   R6  the page's dataset counts equal the frozen evidence that Living in the
       Garden's own price section is built from, so the two pages can never
       disagree.
+  R7  a segment the founder has held is never published as a range, whatever
+      its supplier count (FOUNDER_HELD, below). Releasing one is a founder
+      decision, made by removing it from FOUNDER_HELD.
 
 REFRESH (when a new research snapshot is approved)
   1. regenerate the universe through the governed refresh;
@@ -131,6 +134,16 @@ SEGMENTS = [
     ("UNKNOWN_DEALER_SOLD", "Sold through a dealer, basis unknown", ""),
 ]
 LABEL = {k: (lab, note) for k, lab, note in SEGMENTS}
+
+# R7 -- segments held unpublished by founder decision, even at >= MIN_SUPPLIERS.
+# Correcting the Outdoor Living installation records moves products into
+# "supply only, installation extra"; with the evidence refresh that segment
+# could reach 3 suppliers and publish automatically under R1. The founder
+# decided it stays unpublished until reviewed.
+FOUNDER_HELD = {
+    "SUPPLY_ONLY_INSTALL_SEPARATE":
+        "Founder direction, 20 Oct 2026: 'Keep the new supply-only price range unpublished.'",
+}
 
 
 def die(msg):
@@ -284,8 +297,16 @@ def render(ev, ex):
     undated = [r for r in rows if not r["lastPriceCheck"]]
     pub_seg = summarise(dated)
     published = [k for k, _, _ in SEGMENTS
-                 if k in pub_seg and pub_seg[k]["organisations"] >= MIN_SUPPLIERS]
+                 if k in pub_seg and pub_seg[k]["organisations"] >= MIN_SUPPLIERS
+                 and k not in FOUNDER_HELD]
+    if set(published) & set(FOUNDER_HELD):
+        die("R7 a founder-held segment would be published: %s" % sorted(set(published) & set(FOUNDER_HELD)))
     held = [k for k, _, _ in SEGMENTS if k in seg and k not in published]
+    # A founder-held segment that has reached MIN_SUPPLIERS is held by decision,
+    # not by the supplier count, so it must not be listed under the R1 sentence.
+    by_decision = [k for k in held if k in FOUNDER_HELD and k in pub_seg
+                   and pub_seg[k]["organisations"] >= MIN_SUPPLIERS]
+    held = [k for k in held if k not in by_decision]
     if published[:1] != ["INSTALLED_FINISHED_TURNKEY"]:
         die("the turnkey segment no longer has %d suppliers; the page's opening answer "
             "is written around it -- re-approve the wording" % MIN_SUPPLIERS)
@@ -343,6 +364,15 @@ def render(ev, ex):
         '<p class="pr-small">No range is shown where fewer than %d suppliers publish prices '
         'on the same basis, because a range from one or two companies is really their price '
         'list. That applies to:</p>\n<ul class="pr-small-list">%s</ul>' % (MIN_SUPPLIERS, held_items))
+    if by_decision:
+        # WORDING NOT YET APPROVED: this branch is first reached at an evidence
+        # refresh, and the founder reviews the page before that refresh ships.
+        regions["HELD"] += (
+            '\n<p class="pr-small">PlotNua is also not yet showing a range for these, while it '
+            'confirms with suppliers what the advertised prices include:</p>\n'
+            '<ul class="pr-small-list">%s</ul>'
+            % "".join('<li>%s: %d products from %d suppliers</li>'
+                      % (LABEL[k][0], seg[k]["n"], seg[k]["organisations"]) for k in by_decision))
 
     tot = ev["totals"]
     regions["METHOD"] = (
@@ -484,6 +514,7 @@ def render(ev, ex):
                          % json.dumps(ld, indent=2, ensure_ascii=True))
 
     facts = {"published": {k: pub_seg[k] for k in published}, "held": {k: seg[k] for k in held},
+             "heldByFounderDecision": {k: seg[k] for k in by_decision},
              "excludedNoCheckDate": {k: sum(1 for r in undated if r["segment"] == k)
                                      for k in {r["segment"] for r in undated}},
              "snapshot": snap.isoformat(), "oldestCheck": oldest.isoformat(),
@@ -551,6 +582,13 @@ def page_guards(text, ex_rows):
     vis = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->", " ", text_r3, flags=re.S)
     vis = html.unescape(re.sub(r"<[^>]+>", " ", vis))
     parent_guards(text)
+    # R7: no founder-held segment appears in the published table
+    tbl = re.search(r"<!-- PN-PRICES:TABLE -->(.*?)<!-- /PN-PRICES:TABLE -->", text, re.S)
+    if not tbl:
+        die("the price table region is missing")
+    for k in FOUNDER_HELD:
+        if LABEL[k][0] in html.unescape(tbl.group(1)):
+            die("R7 the founder-held segment '%s' appears in the price table" % LABEL[k][0])
     # R3: no average/median, no per-square-metre figure
     if re.search(r"\b(average|median|mean (?:price|cost))\b", vis, re.I):
         bad = re.findall(r".{30}\b(?:average|median)\b.{30}", vis, re.I)

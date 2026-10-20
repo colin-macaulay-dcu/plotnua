@@ -897,7 +897,7 @@ def safety_held():
 
 
 def qualify(product, orgs, price_rows, avail_rows, feat_rows,
-            all_feat_rows=None) -> dict:
+            all_feat_rows=None, install_rows=None) -> dict:
     """Deterministic. Same inputs, same output, every run.
 
     ISSUE 005 PIECE E3a — A NAMING TRAP, RECORDED SO IT CANNOT BITE AGAIN.
@@ -913,7 +913,23 @@ def qualify(product, orgs, price_rows, avail_rows, feat_rows,
     sources_text = txt(cell(product, "    Sources"))
     ie_state, ie_basis, ie_scope, ie_classified, ie_no_route = classify_irish_availability(feat_rows)
     price_state, price_rec = usable_price(price_rows)
-    contradiction = has_contradiction(product, feat_rows, price_rows)
+    # ---- BLOCKER C ALSO READS THE INSTALLATION MODEL (20 Oct 2026) ---------
+    # Founder direction, 20 Oct 2026, on the Outdoor Living ModPods: "Use the
+    # existing UNRESOLVED CONTRADICTION marker for the three ModPods.
+    # Temporarily exclude those three ModPods from Your Plot recommendations
+    # until the supplier clarifies the installation and base terms." The
+    # conflict is recorded where it lives, in the Installation Model feature
+    # value, which Blocker C never read: it read the product's Notes and
+    # Description, the Irish Availability rows and the price Notes only. So
+    # the Installation Model rows join `feat_rows` here, for the contradiction
+    # test alone; Irish availability still reads exactly what it always read.
+    # Deliberately NOT every Feature Value: measured across all 8,744 Feature
+    # Values on 20 Oct 2026, that would also have excluded Garden Room OAK
+    # (a "DATA CONFLICT" about floor area in Planning Considerations), which
+    # nobody decided. Reading the Installation Model only, the markers occur
+    # on exactly three garden-room products: ModPod Nova, Vaya and Lira.
+    contradiction = has_contradiction(product, list(feat_rows) + list(install_rows or []),
+                                      price_rows)
 
     # ---- hard blockers: evidence of a reason, never absence of evidence ----
     hard = []
@@ -1199,6 +1215,7 @@ def main():
     orgs = {r["id"]: {"name": txt(cell(r, "Organisation Name"))} for r in raw["organisations"]}
     features = {r["id"]: txt(cell(r, "Feature Name")) for r in raw["features"]}
     ie_feature_ids = {fid for fid, n in features.items() if n.lower() == "irish availability"}
+    install_feature_ids = {fid for fid, n in features.items() if n.lower() == "installation model"}
 
     garden = [p for p in raw["products"]
               if txt(cell(p, "Product Category")) == GARDEN_ROOMS]
@@ -1222,9 +1239,11 @@ def main():
         fv = by_product["featureValues"].get(pid, [])
         ie_rows = [r for r in fv if set(links(r, "Feature")) & ie_feature_ids] or [
             r for r in fv if "irish availability" in txt(cell(r, "Product Feature Value Name")).lower()]
+        install_rows = [r for r in fv if set(links(r, "Feature")) & install_feature_ids]
         q = qualify(p, orgs, by_product["pricing"].get(pid, []),
                     by_product["availability"].get(pid, []), ie_rows,
-                    all_feat_rows=fv)   # E3a: fv is EVERY Feature Value for pid
+                    all_feat_rows=fv,   # E3a: fv is EVERY Feature Value for pid
+                    install_rows=install_rows)   # Blocker C, 20 Oct 2026
         if not q["evidenceSignals"]["irishAvailabilityClassified"]:
             unclassified_ie += 1
         if q["evidenceSignals"].get("noPublishedIrishRoute"):
