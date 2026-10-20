@@ -97,6 +97,21 @@ body.pn-id.pn-id--disc .pb-cta:hover{ background:var(--p4-terra-hover); color:va
 
 /* ---- 9 · fixed "Back" pill ------------------------------------------- */
 body.pn-id.pn-id--disc .pn-return{ background:var(--p4-ivory); color:var(--p4-anth); border-color:var(--p4-ivory); font-family:var(--p4-sans); font-weight:600; }
+/* Mobile and touch: the pill sits in its own quiet Earth dock, so it never
+   lies on top of article text or controls (founder refinement, 20 Oct 2026).
+   The dock is drawn by body::after, NOT by the link, so tapping the band
+   never fires Back; the body gains the same height of padding at its foot so
+   the last line of every page can always be scrolled clear of it. The link,
+   its href, its script and its keyboard order are unchanged. */
+@media (max-width:720px), (hover:none) and (pointer:coarse){
+  body.pn-id.pn-id--disc:has(> .pn-return){ --pn-dock: calc(64px + env(safe-area-inset-bottom, 0px)); padding-bottom:var(--pn-dock); }
+  body.pn-id.pn-id--disc:has(> .pn-return)::after{
+    content:""; position:fixed; left:0; right:0; bottom:0; z-index:59; height:var(--pn-dock);
+    background:var(--p4-earth); border-top:1px solid var(--p4-line);
+    box-shadow:0 -10px 24px -14px rgba(10,8,6,.55);
+  }
+  body.pn-id.pn-id--disc .pn-return{ left:16px; bottom:calc(10px + env(safe-area-inset-bottom, 0px)); box-shadow:none; }
+}
 
 /* ---- 10 · Maker / Provider Explorer, including the SEO-C2 A–Z index ----
    Skinned from outside only; maker-explorer.css / .js untouched (I11).
