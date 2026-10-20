@@ -1,0 +1,249 @@
+/* =====================================================================
+   PLOTNUA SHARED IDENTITY LAYER · v1 (Phase 5, Stage 1)
+   ---------------------------------------------------------------------
+   The approved Phase 4 homepage (index.html, body.pn-p4) is the source of
+   truth. This file carries the same tokens and shell components to other
+   pages WITHOUT touching their content: atlas-tools/build-identity-stage1.py
+   links it, adds body.pn-id, and inserts the shared header. Removing those
+   insertions restores every page byte-for-byte (builder guard I1).
+
+   Rules:
+   - Everything is scoped to body.pn-id. A page without the class is
+     unaffected, so this file is inert anywhere it is not deliberately applied.
+   - Tokens (--p4-*) must equal the homepage's own values. Guard I4 reads
+     both and fails on any drift. Never edit a token here alone.
+   - index.html does not load this file and is not changed by it.
+   - The search pill and panel (search.css, hash-frozen) and the PlotNua
+     mark keep their homepage appearance: legacy variables are reset on them.
+   - No imagery, credits, copy, metadata or structured data are styled away.
+   ===================================================================== */
+
+/* ---- 1 · tokens (identical to index.html body.pn-p4) ----------------- */
+body.pn-id{
+  --p4-anth:#1D1E1C; --p4-earth:#2A2622; --p4-deep:#342C27; --p4-terra:#AE6245;
+  --p4-terra-text:#CF8566; --p4-terra-hover:#D99476; --p4-bronze:#97785A;
+  --p4-bronze-text:#B39272; --p4-ivory:#F2EBE0; --p4-lime:#E7DED0;
+  --p4-stone:#C7B8A4; --p4-line:#3A3631; --p4-line2:#4A443D; --p4-well:#322C28;
+  --p4-serif:'Instrument Serif',Georgia,serif;
+  --p4-sans:'Hanken Grotesk',system-ui,sans-serif;
+  --p4-gutter:max(56px, calc((100vw - 1360px) / 2 + 56px));
+
+  /* Reading surface (founder decision 20 Oct 2026: dark-first, not dark-only).
+     Warm Ivory sheet with derived darker accents so text stays at AA:
+     ink 12.7:1, body 8.5:1, link #8E4A30 5.6:1, eyebrow #7E6347 4.7:1. */
+  --pn-paper-bg:#F2EBE0; --pn-paper-ink:#2A2622; --pn-paper-body:#4A4038;
+  --pn-paper-link:#8E4A30; --pn-paper-eyebrow:#7E6347; --pn-paper-rule:#D9CDBC;
+
+  /* Legacy page variables re-pointed to the dark identity. Places where a
+     page used one of these as a BACKGROUND are overridden explicitly below. */
+  --paper:var(--p4-earth); --cream:var(--p4-deep); --ink:var(--p4-ivory);
+  --soft:var(--p4-lime); --accent:var(--p4-terra-text); --oak:var(--p4-bronze-text);
+  --brand-sage:var(--p4-bronze-text); --brand-ivory:var(--p4-ivory);
+  --brand-green:var(--p4-earth);
+  /* artist-register's own variables */
+  --stone:var(--p4-deep); --body:var(--p4-lime); --muted:var(--p4-stone);
+  --rule:var(--p4-line2); --rule-soft:var(--p4-line);
+
+  background:var(--p4-earth); color:var(--p4-lime); font-family:var(--p4-sans);
+}
+/* The mark, pill and search panel keep exactly their homepage appearance. */
+body.pn-id .brand-mark, body.pn-id .pns-pill, body.pn-id .pns-panel{
+  --paper:#F8F5EC; --cream:#F2EFE6; --ink:#1F3B2E; --soft:#55605A; --accent:#4F6B4A;
+  --oak:#8B6F4E; --brand-sage:#8FAF8A; --brand-ivory:#F2EFE6; --brand-green:#1F3B2E;
+  font-family:'Work Sans',sans-serif;
+}
+body.pn-id .pns-panel h2, body.pn-id .pns-panel h3{ font-family:'Fraunces',serif; }
+
+/* ---- 2 · base type ---------------------------------------------------- */
+body.pn-id h1, body.pn-id h2, body.pn-id h3{ font-family:var(--p4-serif); font-weight:400; letter-spacing:-.01em; color:var(--p4-ivory); }
+body.pn-id :focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:3px; }
+body.pn-id ::selection{ background:var(--p4-terra-text); color:var(--p4-anth); }
+
+/* ---- 3 · skip link ---------------------------------------------------- */
+body.pn-id .pn-id-skip, body.pn-id .pn-skip{ position:absolute; left:-9999px; top:0; width:1px; height:1px; overflow:hidden; z-index:9999; }
+body.pn-id .pn-id-skip:focus, body.pn-id .pn-skip:focus{ left:12px; top:12px; width:auto; height:auto; padding:12px 16px;
+  background:var(--p4-ivory); color:var(--p4-anth); font:600 15px/1.2 var(--p4-sans); text-decoration:none; border-radius:0;
+  outline:2px solid var(--p4-terra-text); outline-offset:2px; }
+body.pn-id #pn-id-content{ display:block; height:0; outline:none; }
+
+/* ---- 4 · header (homepage header A, founder-approved) ----------------- */
+body.pn-id .pn-id-header{ background:var(--p4-earth); border-bottom:1px solid var(--p4-line); position:relative; z-index:40; }
+body.pn-id .pn-id-header-inner{ height:84px; display:flex; align-items:center; gap:40px; padding:0 232px 0 84px; }
+body.pn-id .pn-id-wordmark{ font-family:var(--p4-serif); font-size:36px; line-height:1; letter-spacing:-.005em; color:var(--p4-ivory); text-decoration:none; padding:6px 0; }
+body.pn-id .pn-id-nav{ display:flex; gap:34px; margin-left:auto; }
+body.pn-id .pn-id-nav a{ display:inline-flex; align-items:center; min-height:44px; padding:0; font-family:var(--p4-sans); font-size:16px; font-weight:500;
+  color:var(--p4-ivory); text-decoration:none; border-bottom:2px solid transparent; }
+body.pn-id .pn-id-nav a:hover{ border-bottom-color:var(--p4-bronze); }
+body.pn-id .pn-id-nav a.pn-id-nav-lead{ font-size:17px; font-weight:700; border-bottom-color:var(--p4-terra); }
+body.pn-id .pn-id-nav a.pn-id-nav-lead:hover{ border-bottom-color:var(--p4-terra-text); color:var(--p4-terra-text); }
+/* Current page: stated in words to assistive tech (aria-current) and shown
+   with a bronze rule, never by colour alone. */
+body.pn-id .pn-id-nav a[aria-current="page"]{ border-bottom-color:var(--p4-bronze-text); }
+
+/* Phones and small tablets. NOT the homepage's sideways-scrolling row: on
+   inner pages all four links stay visible and wrap onto a second line when
+   space runs out (320 px), so nothing is hidden off-screen, no script is
+   needed, and keyboard order equals visual order. Each link is a 44 px
+   target. */
+@media (max-width:900px){
+  body.pn-id .pn-id-header-inner{ height:auto; flex-wrap:wrap; gap:0; padding:12px 64px 4px 80px; }
+  body.pn-id .pn-id-wordmark{ font-size:32px; padding:8px 0 10px; }
+  body.pn-id .pn-id-nav{ flex-wrap:wrap; width:calc(100% + 144px); margin:0 -64px 0 -80px; padding:2px 20px 4px; gap:0 22px; border-top:1px solid var(--p4-line); }
+  body.pn-id .pn-id-nav a, body.pn-id .pn-id-nav a.pn-id-nav-lead{ font-size:15px; white-space:nowrap; }
+}
+@media (max-width:720px){
+  body.pn-id .pn-id-header-inner{ padding:10px 60px 4px 70px; }
+  body.pn-id .pn-id-wordmark{ font-size:30px; }
+  body.pn-id .pn-id-nav{ width:calc(100% + 130px); margin:0 -60px 0 -70px; padding:2px 16px 4px; gap:0 18px; }
+}
+@media (max-width:374px){
+  /* two even rows rather than one lone link on a second line */
+  body.pn-id .pn-id-nav{ display:grid; grid-template-columns:auto auto; justify-content:start; gap:0 22px; }
+  body.pn-id .pn-id-nav a, body.pn-id .pn-id-nav a.pn-id-nav-lead{ font-size:14.5px; }
+}
+
+/* ---- 5 · footer (homepage footer) ------------------------------------- */
+body.pn-id footer{ background:var(--p4-anth); border-top:0; color:var(--p4-stone); padding:80px var(--p4-gutter) 40px; }
+body.pn-id .footer-inner{ max-width:none; }
+body.pn-id .footer-word{ font-family:var(--p4-serif); font-weight:400; font-size:40px; color:var(--p4-ivory); }
+body.pn-id .footer-col h2, body.pn-id .footer-col h4{ font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); opacity:1; }
+body.pn-id .footer-col a{ display:inline-block; padding:4px 0; font-family:var(--p4-sans); font-size:16px; color:var(--p4-ivory); }
+body.pn-id .footer-col a:hover{ color:var(--p4-terra-text); }
+body.pn-id .footer-col p{ font-family:var(--p4-sans); color:var(--p4-stone); }
+body.pn-id footer b{ color:var(--p4-ivory); font-family:var(--p4-serif); font-weight:400; }
+body.pn-id .footer-base{ font-family:var(--p4-sans); font-size:15px; color:var(--p4-stone); text-align:left; border-top:0; padding-top:22px; }
+@media (max-width:900px){ body.pn-id footer{ padding:64px 20px 40px; } }
+
+/* ---- 6 · buttons and links (homepage .p4-btn / text links) ----------- */
+body.pn-id .btn-primary, body.pn-id .ar-cta{ min-height:54px; padding:0 26px; border:0; border-radius:0; box-shadow:none;
+  background:var(--p4-terra-text); color:var(--p4-anth); font-family:var(--p4-sans); font-size:17px; font-weight:700; letter-spacing:0; text-transform:none; }
+body.pn-id .btn-primary:hover, body.pn-id .ar-cta:hover{ background:var(--p4-terra-hover); color:var(--p4-anth); box-shadow:none; transform:none; }
+body.pn-id .ar-cta[disabled]{ background:var(--p4-line2); color:var(--p4-stone); }
+
+/* ---- 7 · shared page anatomy (intros, articles, closing line) -------- */
+body.pn-id .privacy-intro, body.pn-id .terms-intro, body.pn-id .cookie-intro, body.pn-id .contact-intro, body.pn-id .thanks-section{
+  background:var(--p4-earth); text-align:left; padding:112px var(--p4-gutter) 88px; }
+body.pn-id .privacy-intro-inner, body.pn-id .terms-intro-inner, body.pn-id .cookie-intro-inner, body.pn-id .contact-intro-inner, body.pn-id .thanks-inner{ max-width:62rem; margin:0; }
+body.pn-id .privacy-intro h1, body.pn-id .terms-intro h1, body.pn-id .cookie-intro h1, body.pn-id .contact-intro h1, body.pn-id .thanks-section h1{
+  font-family:var(--p4-serif); font-weight:400; font-size:clamp(52px,5.6vw,96px); line-height:.95; letter-spacing:-.025em; color:var(--p4-ivory); max-width:14ch; }
+body.pn-id .privacy-intro .subtitle, body.pn-id .terms-intro .subtitle, body.pn-id .cookie-intro .subtitle, body.pn-id .contact-intro .subtitle{
+  margin:24px 0 0; max-width:30ch; font-family:var(--p4-serif); font-style:italic; font-size:clamp(24px,2.1vw,32px); line-height:1.22; color:var(--p4-terra-text); }
+body.pn-id .privacy-intro p.lede, body.pn-id .terms-intro p.lede, body.pn-id .cookie-intro p.lede, body.pn-id .contact-intro p.lede, body.pn-id .thanks-section p{
+  margin:26px 0 0; max-width:56ch; font-size:19px; line-height:1.6; color:var(--p4-lime); }
+body.pn-id .thanks-section .btn-primary{ margin-top:36px; }
+
+body.pn-id .article{ max-width:none; margin:0; padding:0 var(--p4-gutter); }
+body.pn-id .article-section{ border-bottom:1px solid var(--p4-line); }
+body.pn-id .article-section .kicker, body.pn-id .eyebrow{ font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); }
+body.pn-id .article-section h2{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(34px,3.6vw,52px); line-height:1.02; letter-spacing:-.015em; color:var(--p4-ivory); max-width:20ch; }
+body.pn-id .article-section h3{ font-family:var(--p4-serif); font-weight:400; color:var(--p4-ivory); font-size:clamp(24px,2.2vw,30px); line-height:1.15; }
+body.pn-id .article-section p, body.pn-id .article-section li{ color:var(--p4-lime); font-size:18px; line-height:1.7; }
+body.pn-id .article-section li::before{ color:var(--p4-terra-text); }
+body.pn-id .article-section a{ color:var(--p4-terra-text); text-decoration:underline; text-decoration-color:var(--p4-terra); text-decoration-thickness:1px; text-underline-offset:5px; }
+body.pn-id .article-section a:hover{ color:var(--p4-ivory); text-decoration-color:var(--p4-ivory); }
+body.pn-id .article-section strong, body.pn-id .article-section b{ color:var(--p4-ivory); font-weight:600; }
+body.pn-id .policy-updated{ color:var(--p4-stone); opacity:1; font-size:15px; }
+body.pn-id .closing-line{ background:var(--p4-earth); }
+body.pn-id .closing-line p{ font-family:var(--p4-serif); font-style:italic; color:var(--p4-lime); font-size:clamp(24px,2.4vw,34px); line-height:1.3; }
+body.pn-id .closing-line .d-all a{ font-family:var(--p4-sans); font-size:17px; font-weight:600; letter-spacing:0; text-transform:none; color:var(--p4-terra-text); border-bottom:1px solid var(--p4-terra); }
+body.pn-id .closing-line .d-all a:hover{ color:var(--p4-ivory); border-bottom-color:var(--p4-ivory); }
+
+/* ---- 8 · READING SURFACE (body.pn-id--paper) --------------------------
+   Long-form legal text sits on a Warm Ivory sheet inside the dark shell:
+   header, intro and footer stay dark; only the reading column lightens. */
+body.pn-id.pn-id--paper .article{ --ink:var(--pn-paper-ink); --soft:var(--pn-paper-body); --accent:var(--pn-paper-link);
+  background:var(--pn-paper-bg); color:var(--pn-paper-body); margin:0 var(--p4-gutter) 96px; padding:24px clamp(24px,6vw,96px) 40px; }
+body.pn-id.pn-id--paper .article-section{ border-bottom-color:var(--pn-paper-rule); }
+body.pn-id.pn-id--paper .article-section .kicker{ color:var(--pn-paper-eyebrow); }
+body.pn-id.pn-id--paper .article-section h2, body.pn-id.pn-id--paper .article-section h3{ color:var(--pn-paper-ink); }
+body.pn-id.pn-id--paper .article-section p, body.pn-id.pn-id--paper .article-section li{ color:var(--pn-paper-body); }
+body.pn-id.pn-id--paper .article-section li::before{ color:var(--pn-paper-link); }
+body.pn-id.pn-id--paper .article-section a{ color:var(--pn-paper-link); text-decoration-color:var(--pn-paper-link); }
+body.pn-id.pn-id--paper .article-section a:hover{ color:var(--pn-paper-ink); text-decoration-color:var(--pn-paper-ink); }
+body.pn-id.pn-id--paper .article-section strong, body.pn-id.pn-id--paper .article-section b{ color:var(--pn-paper-ink); }
+body.pn-id.pn-id--paper .article :focus-visible{ outline-color:var(--pn-paper-link); }
+body.pn-id.pn-id--paper .cookie-card{ background:#E9E0D2; border-color:var(--pn-paper-rule); }
+body.pn-id.pn-id--paper .cookie-card h3{ color:var(--pn-paper-ink); }
+body.pn-id.pn-id--paper .cookie-card p{ color:var(--pn-paper-body); }
+body.pn-id.pn-id--paper .cookie-declaration{ background:var(--pn-paper-bg); border-color:#BFB09C; }
+body.pn-id.pn-id--paper .cookie-declaration p{ color:var(--pn-paper-body); }
+@media (max-width:720px){ body.pn-id.pn-id--paper .article{ margin:0 0 64px; padding:8px 20px 24px; } }
+
+/* ---- 9 · cookie policy cards (dark default) --------------------------- */
+body.pn-id .cookie-card{ background:var(--p4-deep); border:1px solid var(--p4-line2); border-radius:0; }
+body.pn-id .cookie-card h3{ color:var(--p4-ivory); }
+body.pn-id .cookie-card p{ color:var(--p4-lime); }
+body.pn-id .cookie-declaration{ background:var(--p4-well); border:1px dashed var(--p4-line2); border-radius:0; }
+body.pn-id .cookie-declaration p{ color:var(--p4-lime); }
+
+/* ---- 10 · about ------------------------------------------------------- */
+body.pn-id .about-hero{ background:var(--p4-anth); }
+body.pn-id .about-hero-copy .eyebrow{ color:var(--p4-ivory); }
+body.pn-id .about-hero-copy h1{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(52px,6vw,96px); line-height:.95; letter-spacing:-.02em; color:var(--p4-ivory); }
+body.pn-id .about-hero-copy p{ font-family:var(--p4-serif); color:var(--p4-ivory); font-size:clamp(22px,2.1vw,30px); line-height:1.25; }
+body.pn-id .fragment-lines p, body.pn-id .philosophy-lines p, body.pn-id .article-emphasis{ font-family:var(--p4-serif); font-style:italic; color:var(--p4-ivory); font-size:clamp(24px,2.2vw,32px); line-height:1.35; }
+body.pn-id .philosophy-lines p.believe{ color:var(--p4-terra-text); font-weight:400; }
+body.pn-id .step{ border-top:1px solid var(--p4-line); }
+body.pn-id .step h3{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(26px,2.4vw,34px); color:var(--p4-ivory); }
+body.pn-id .step-num{ font-family:var(--p4-serif); color:var(--p4-terra-text); font-size:20px; }
+body.pn-id .step p{ color:var(--p4-lime); font-size:18px; }
+
+/* ---- 11 · contact form ------------------------------------------------ */
+body.pn-id .contact-left h2{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(34px,3.6vw,52px); color:var(--p4-ivory); }
+body.pn-id .contact-left p{ color:var(--p4-lime); font-size:18px; }
+body.pn-id .contact-email{ font-family:var(--p4-serif); color:var(--p4-ivory); border-bottom-color:var(--p4-terra); }
+body.pn-id .contact-email:hover{ color:var(--p4-terra-text); border-bottom-color:var(--p4-terra-text); }
+body.pn-id .contact-email-note{ color:var(--p4-stone); }
+body.pn-id .form-row label{ font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.12em; color:var(--p4-bronze-text); }
+body.pn-id .contact-form input[type="text"], body.pn-id .contact-form input[type="email"], body.pn-id .contact-form select, body.pn-id .contact-form textarea,
+body.pn-id .ar-f input[type=text], body.pn-id .ar-f input[type=email], body.pn-id .ar-f input[type=url], body.pn-id .ar-f select, body.pn-id .ar-f textarea{
+  background:var(--p4-well); color:var(--p4-ivory); border:1px solid var(--p4-stone); border-radius:0; font-family:var(--p4-sans); font-size:17px; color-scheme:dark; }
+body.pn-id .contact-form input::placeholder, body.pn-id .contact-form textarea::placeholder, body.pn-id .ar-f input::placeholder, body.pn-id .ar-f textarea::placeholder{ color:#A79A88; opacity:1; }
+body.pn-id .contact-form input:focus, body.pn-id .contact-form select:focus, body.pn-id .contact-form textarea:focus,
+body.pn-id .ar-f input:focus, body.pn-id .ar-f select:focus, body.pn-id .ar-f textarea:focus{ background:var(--p4-deep); border-color:var(--p4-terra-text); box-shadow:none; outline:2px solid var(--p4-terra-text); outline-offset:1px; }
+body.pn-id .form-consent label, body.pn-id .form-privacy{ color:var(--p4-lime); opacity:1; font-size:15px; }
+body.pn-id .form-privacy a{ color:var(--p4-terra-text); text-decoration-color:var(--p4-terra); }
+body.pn-id .form-consent input[type="checkbox"], body.pn-id .ar-tick input{ accent-color:var(--p4-terra-text); }
+
+/* ---- 12 · artist register --------------------------------------------- */
+body.pn-id .ar-chip, body.pn-id .ar-prev{ color:var(--p4-bronze-text); border-color:var(--p4-bronze); font-family:var(--p4-sans); font-weight:700; }
+body.pn-id .ar-card{ background:var(--p4-deep); border:1px solid var(--p4-line2); border-radius:0; }
+body.pn-id .ar-card p.ar-p, body.pn-id .ar-noticebody, body.pn-id .ar-noticebody p{ color:var(--p4-lime); }
+body.pn-id .ar-privline, body.pn-id .ar-hint, body.pn-id .ar-opt{ color:var(--p4-stone); }
+body.pn-id .ar-f > label, body.pn-id .ar-set legend{ font-family:var(--p4-sans); color:var(--p4-ivory); font-weight:600; }
+body.pn-id .ar-tick{ background:var(--p4-well); border:1px solid var(--p4-line2); border-radius:0; }
+body.pn-id .ar-tick:has(input:checked){ border-color:var(--p4-terra-text); }
+body.pn-id .ar-tick label{ color:var(--p4-lime); }
+body.pn-id .ar-notice summary{ color:var(--p4-stone); }
+body.pn-id .ar-notice summary:hover, body.pn-id .ar-notice[open] summary{ color:var(--p4-ivory); }
+body.pn-id .ar-noticebody strong{ color:var(--p4-ivory); }
+body.pn-id .ar-msg{ color:#F0A58A; }
+body.pn-id .ar-f [aria-invalid=true], body.pn-id .ar-set[aria-invalid=true] .ar-tick{ border-color:#F0A58A; }
+body.pn-id .ar-done-h{ font-family:var(--p4-serif); font-weight:400; color:var(--p4-ivory); }
+body.pn-id .ar-done[data-state=received]::before{ background-color:var(--p4-terra-text); }
+
+/* ---- 13 · 404 ----------------------------------------------------------- */
+body.pn-id .scene{ background:var(--p4-anth); }
+body.pn-id .hero-copy .hero-word{ font-family:var(--p4-serif); font-weight:400; letter-spacing:-.02em; line-height:.95; font-size:clamp(52px,6.4vw,96px); color:var(--p4-ivory); }
+body.pn-id .hero-copy .hero-tagline{ font-family:var(--p4-serif); color:var(--p4-ivory); font-size:clamp(22px,2vw,28px); text-shadow:0 1px 3px rgba(0,0,0,.55), 0 2px 18px rgba(0,0,0,.55); }
+body.pn-id .hero-copy .hero-sub, body.pn-id .hero-copy .hero-word{ text-shadow:0 1px 3px rgba(0,0,0,.5), 0 2px 22px rgba(0,0,0,.45); }
+body.pn-id .hero-copy .hero-sub{ font-family:var(--p4-sans); color:var(--p4-ivory); font-size:17px; }
+body.pn-id .hero-copy .hero-eyebrow{ color:var(--p4-ivory); font-family:var(--p4-sans); font-weight:700; }
+body.pn-id .hero-link-secondary{ font-family:var(--p4-sans); font-size:17px; font-weight:600; color:var(--p4-ivory); text-decoration-color:var(--p4-terra-text); text-underline-offset:5px; }
+body.pn-id .discover{ background:var(--p4-earth); color:var(--p4-lime); }
+body.pn-id .discover .lede{ font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; color:var(--p4-bronze-text); }
+body.pn-id .discover h2{ font-family:var(--p4-serif); font-weight:400; color:var(--p4-ivory); font-size:clamp(42px,4.8vw,72px); line-height:.98; }
+body.pn-id .discover .sub{ color:var(--p4-lime); font-size:17px; }
+body.pn-id .d-card-media{ background:var(--p4-well); }
+body.pn-id .d-card-copy{ padding-top:20px; }
+body.pn-id .d-tag{ font-family:var(--p4-sans); font-weight:700; font-size:14px; letter-spacing:.14em; color:var(--p4-bronze-text); }
+body.pn-id .d-card-copy h3{ font-family:var(--p4-serif); font-weight:400; color:var(--p4-ivory); font-size:clamp(28px,2.6vw,36px); line-height:1.04; }
+body.pn-id .d-card-copy p{ color:var(--p4-stone); font-size:16px; }
+body.pn-id .d-arrow{ width:44px; height:44px; border-color:var(--p4-stone); color:var(--p4-ivory); }
+body.pn-id .d-arrow:hover{ background:var(--p4-ivory); color:var(--p4-anth); border-color:var(--p4-ivory); }
+body.pn-id .d-dot{ background:var(--p4-line2); }
+body.pn-id .d-dot[aria-current="true"]{ background:var(--p4-terra-text); }
+
+@media (prefers-reduced-motion:reduce){
+  body.pn-id .pn-id-nav a, body.pn-id .btn-primary, body.pn-id .ar-cta{ transition:none !important; }
+}

@@ -310,6 +310,12 @@ jobs:
           python3 atlas-tools/build-possibility-reveal-component.py --check
           python3 atlas-tools/build-possibility-reveal-images.py --check
 
+      - name: The shared identity layer stays reversible, scoped and equal to the homepage
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/build-identity-stage1.py --check
+          python3 atlas-tools/prove-identity-stage1.py
+
       - name: Summary
         if: always()
         run: |
