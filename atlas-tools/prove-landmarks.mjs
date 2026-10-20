@@ -132,7 +132,11 @@ for (const f of [...SKIPPED, "about.html", "contact.html", "privacy.html",
     // three must still be on the page, inside a card, or this fails.
     if (bleed === 0 && f === "discovery-garden-retreat.html") {
       const cardImgs = ["45a270b7716e4a94", "83da38d51a03414d", "5d6a5fd0aab3d9ce"]
-        .filter(h => new RegExp('<figure class="gr-card-img"><img src="assets/img/' + h + '\\.jpg"').test(t));
+        .filter(h => new RegExp('<figure class="gr-card-img">'
+          // a hash-bound WebP derivative wrap (build-hero-webp-derivatives.py, 20 Oct 2026)
+          // may sit between the figure and its JPEG <img>; the <img> itself must still be there
+          + '(?:<picture style="display:contents"><source type="image/webp" srcset="assets/img/' + h + '-960w\\.webp[^"]*" sizes="[^"]*">)?'
+          + '<img src="assets/img/' + h + '\\.jpg"').test(t));
       if (cardImgs.length !== 3) broken.push(f + " lost its full-bleed photographs without the declared card substitution");
       continue;
     }

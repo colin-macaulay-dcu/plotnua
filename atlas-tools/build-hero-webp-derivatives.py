@@ -57,6 +57,10 @@ HEROES = {
     "assets/img/7d5f5718cf9cd3da.jpg": {"discovery-garden-retreat.html": "max(100vw, 161vh)"},
     "assets/img/9805382f8164228a.jpg": {"discovery-hidden-bins.html": "100vw"},
     "assets/img/b5cbac3fff9072d4.jpg": {"discovery-driveway-income.html": "max(100vw, 161vh)"},
+    # POST-CRAWL MAINTENANCE (20 Oct 2026, SiteOne triage D1): the House as a
+    # Power Station hero, a 931 KB JPEG and the page's LCP. Same .d-hero CSS as
+    # Garden Retreat (88svh, object-fit:cover), so the same `sizes`.
+    "assets/img/fec77c3f0bae107a.jpg": {"discovery-house-as-power-station.html": "max(100vw, 161vh)"},
 }
 
 # HOMEPAGE CARD IMAGES (founder SEO directive, 19 Oct 2026: "optimise oversized
@@ -86,12 +90,21 @@ CARDS = {
         "(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"},
     "assets/img/7d5f5718cf9cd3da.jpg": {"index.html":
         "(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"},
+    # POST-CRAWL MAINTENANCE (20 Oct 2026, SiteOne triage D5): the Garden Retreat
+    # sauna card, 546 KB, lazy-loaded but fetched on a phone's first view.
+    # `sizes` measured in the browser: 86vw below 600 px, 42vw in the two-column
+    # grid, at most ~280 px in the three-column grid from 900 px.
+    "assets/img/45a270b7716e4a94.jpg": {"discovery-garden-retreat.html":
+        "(min-width:900px) 290px, (min-width:600px) 42vw, 86vw"},
 }
-CARD_CONTAINER = '<div class="p4s-media">'
+# A card <img> is matched only directly inside one of these containers.
+CARD_CONTAINERS = ('<div class="p4s-media">', '<figure class="gr-card-img">')
 # The Reveal's own encodings: never a derivative, never wrapped by this builder.
 REVEAL_DIR = "assets/possibility-reveal/img/"
 REVEAL_SLOT = '<div class="hero-stage p4-stage" id="heroStage" data-hero="possibility-reveal">'
-MADE = {"assets/img/e0d578046cd29bda.jpg": "2026-10-19",
+MADE = {"assets/img/fec77c3f0bae107a.jpg": "2026-10-20",
+        "assets/img/45a270b7716e4a94.jpg": "2026-10-20",
+        "assets/img/e0d578046cd29bda.jpg": "2026-10-19",
         "assets/img/ce9da2e51c945693.jpg": "2026-10-19",
         "assets/img/8b20a0968b1fc5a1.jpg": "2026-10-19"}
 
@@ -117,6 +130,8 @@ BASIS = {
     "assets/img/ce9da2e51c945693.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI, no input ingredients. Evidence: governance/c2pa-source-credentials/deployed-ce9da2e51c945693.jpg.c2pa.json (read 19 Oct 2026).",
     "assets/img/e0d578046cd29bda.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from input ingredients that each carry a signed Google credential; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-e0d578046cd29bda.jpg.c2pa.json (read 19 Oct 2026).",
     "assets/img/8b20a0968b1fc5a1.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-8b20a0968b1fc5a1.jpg.c2pa.json (read 19 Oct 2026).",
+    "assets/img/fec77c3f0bae107a.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-fec77c3f0bae107a.jpg.c2pa.json (read 20 Oct 2026).",
+    "assets/img/45a270b7716e4a94.jpg": "Master DISC-001-IMAGE-SAUNA-MASTER.png (perceptual match 0/256) is the credentialed DISC-001-IMAGE-SAUNA.jpeg (signed Google C2PA, validation state Valid, 26 Sep 2026: created by Google Generative AI from one input ingredient whose own chain is Google-signed to a creation with no ingredients; every ingredient credentialed) mirror-extended 16 px each side: centre 1376 px pixel-identical, edges reflected, no generative fill. Evidence: governance/c2pa-source-credentials/master-DISC-001-IMAGE-SAUNA.jpeg.c2pa.json and linkage-45a270b7716e4a94-sauna-master.json (read 20 Oct 2026).",
 }
 CREDENTIAL_NOTE = ("WebP re-encoding removes the embedded C2PA credential. The derivative "
                    "carries NO signed credential and must never be described as having one. "
@@ -287,7 +302,8 @@ def main():
             if is_card:
                 # the card occurrence: lazy-loaded, directly inside .d-card-media
                 hero = [x for x in m if 'loading="lazy"' in x.group(0)
-                        and t[max(0, x.start() - 40):x.start()].rstrip().endswith(CARD_CONTAINER)]
+                        and any(t[max(0, x.start() - 40):x.start()].rstrip().endswith(c)
+                                for c in CARD_CONTAINERS)]
             else:
                 hero = [x for x in m if 'fetchpriority="high"' in x.group(0) or "cmp-" in x.group(0)]
             if len(hero) != 1:

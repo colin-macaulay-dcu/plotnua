@@ -51,8 +51,9 @@ case("GR2 a 'Check your garden' action appears in the hero",
 case("GR2 a hero action points off the page",
      sub('href="#compare">Compare', 'href="your-plot.html">Compare'))
 case("GR3 an OGNYX image is put back in the editorial",
-     sub('<figure class="gr-card-img"><img src="assets/img/45a270b7716e4a94.jpg"',
-         '<figure class="gr-card-img"><img src="https://www.ognyx.com/cdn/shop/files/x.png"'))
+     # the card's <img> keeps its src; since 20 Oct 2026 it may sit inside a WebP <picture>
+     sub('<img src="assets/img/45a270b7716e4a94.jpg"',
+         '<img src="https://www.ognyx.com/cdn/shop/files/x.png"'))
 case("GR4 the planning short answer is folded into an accordion",
      lambda s: s.replace('    <div class="rule-group">\n      <h3>The short answer</h3>',
                          '    <details class="faq-item"><summary><h3>Short</h3></summary><div class="rule-group">\n      <h3>The short answer</h3>', 1)
