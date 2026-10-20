@@ -31,18 +31,25 @@ if "--base" in sys.argv:
     for page in bid.PAGES:
         old = subprocess.run(["git", "show", "%s:%s" % (base, page)], cwd=ROOT, capture_output=True, text=True).stdout
         new = (ROOT / page).read_text(encoding="utf-8")
-        (ok if bid.strip(new) == old and new != old else bad)("%s: insertions removed = %s byte-for-byte" % (page, base))
+        if "PLOTNUA IDENTITY v1" in old:      # already carried the layer at the base: must be untouched
+            (ok if new == old else bad)("%s: unchanged from %s (layer already present there)" % (page, base))
+        else:
+            (ok if bid.strip(new) == old and new != old else bad)("%s: insertions removed = %s byte-for-byte" % (page, base))
+    for f in bid.PROTECTED:                 # I11 against the base commit
+        old = subprocess.run(["git", "show", "%s:%s" % (base, f)], cwd=ROOT, capture_output=True).stdout
+        (ok if (ROOT / f).read_bytes() == old else bad)("I11 %s byte-identical to %s" % (f, base))
     diff = subprocess.run(["git", "diff", "--name-only", base, "--"], cwd=ROOT, capture_output=True, text=True).stdout.split()
     diff += subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True).stdout.split()
     allowed = set(bid.PAGES) | {"assets/identity/pn-identity.css", "atlas-tools/build-identity-stage1.py",
                                 "atlas-tools/prove-identity-stage1.py", ".github/workflows/image-rights-gate.yml",
-                                "atlas-tools/build-triq-cube-public.py"}
+                                "atlas-tools/build-triq-cube-public.py",
+                                "assets/identity/pn-identity-discovery.css"}
     extra = sorted(set(diff) - allowed)
     (ok if not extra else bad)("only Stage 1 files differ from %s%s" % (base, "" if not extra else ": " + ", ".join(extra)))
     print("  changed files: " + ", ".join(sorted(set(diff))))
 
 print("\n  B · each guard refuses a planted fault\n")
-NEEDED = list(bid.PAGES) + ["index.html", "assets/identity/pn-identity.css"]
+NEEDED = list(bid.PAGES) + ["index.html", "assets/identity/pn-identity.css", "assets/identity/pn-identity-discovery.css"] + [f for f in bid.PROTECTED if (ROOT / f).exists()]
 def scratch():
     d = Path(tempfile.mkdtemp(prefix="pnid-"))
     for f in NEEDED:
@@ -73,6 +80,13 @@ MUT = [
  ("I9 theme colour edited by hand on one page", lambda d: sub(d, "privacy.html", 'content="#2A2622"', 'content="#2A2623"')),
  ("I9 homepage theme colour changes, pages not rebuilt", lambda d: sub(d, "index.html", '<meta name="theme-color" content="#2A2622">', '<meta name="theme-color" content="#2B2622">')),
  ("I9 a second theme-color meta added to a page", lambda d: sub(d, "contact.html", '<meta name="theme-color" content="#2A2622">', '<meta name="theme-color" content="#2A2622">\n<meta name="theme-color" content="#1F3B2E">')),
+ ("I10 Discovery stylesheet linked from a page outside the pilot", lambda d: sub(d, "discovery-hidden-cars.html", "</head>", '<link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">\n</head>')),
+ ("I10 Discovery class removed from a pilot page", lambda d: sub(d, "discovery-hidden-bins.html", 'class="pn-id pn-id--dark pn-id--disc"', 'class="pn-id pn-id--dark"')),
+ ("I10 Discovery stylesheet removed from a pilot page", lambda d: sub(d, "discoveries.html", '<link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">\n', "")),
+ ("I12 unscoped rule added to the Discovery layer", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", ".lib-card{ border-radius:40px; }\n/* ---- 2 · hero")),
+ ("I12 rule scoped to Stage 1 only (body.pn-id) in the Discovery layer", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", "body.pn-id .footer-word{ color:red; }\n/* ---- 2 · hero")),
+ ("I12 Discovery layer redefines a homepage token", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", "body.pn-id.pn-id--disc{ --p4-earth:#000000; }\n/* ---- 2 · hero")),
+ ("I2 Discovery header edited by hand", lambda d: sub(d, "discovery-living-in-the-garden.html", '<div class="pn-id-header" role="region" aria-label="PlotNua site">', '<div class="pn-id-header">')),
  ("I8 skip link target removed", lambda d: sub(d, "about.html", '<span id="pn-id-content" tabindex="-1"></span>\n', "")),
 ]
 for name, f in MUT:

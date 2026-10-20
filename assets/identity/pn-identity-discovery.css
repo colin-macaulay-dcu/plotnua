@@ -1,0 +1,222 @@
+/* =====================================================================
+   PLOTNUA SHARED IDENTITY · DISCOVERY LAYER · v1 (Phase 5, Stage 2a)
+   ---------------------------------------------------------------------
+   Loaded only on the Discovery family, after pn-identity.css (Stage 1).
+   Every rule is scoped to body.pn-id.pn-id--disc (builder guard I12), so
+   this file is inert on any page without that class (guard I10 keeps the
+   class to the approved Discovery pages).
+
+   Founder decisions, 20 Oct 2026: "one frame, many pictures"; Discovery
+   Library refinements 1A–1E; card Treatment C (rounded, mounted, floating;
+   resting shadow approved as shown, not to be increased); Deep Earth
+   evidence panels; signature deep-green panels retained; hero photography,
+   WebP markup, credits and AI labels untouched; Maker Explorer skinned from
+   here only (maker-explorer.css / .js are never edited, guard I11).
+
+   Changes presentation only. No markup, copy, link, image or data is
+   altered by this file.
+   ===================================================================== */
+
+/* ---- 1 · type: retire the legacy faces inside Discovery content -------- */
+body.pn-id.pn-id--disc :where(main, aside, .related, .pb-preview, .pb-early, .partners, .lib-head, .lib-grid, .lib-guides, .lib-foot) :where(p, li, span, dd, dt, small, label, button, td, th, figcaption, summary, a, div, strong, em){ font-family:var(--p4-sans); }
+body.pn-id.pn-id--disc :where(main, aside, .related, .pb-preview, .partners) :where(h2, h3, h4){ font-family:var(--p4-serif); font-weight:400; letter-spacing:-.01em; }
+
+/* ---- 2 · hero: photography and scrims untouched; homepage typography ---- */
+body.pn-id.pn-id--disc .d-hero{ background:var(--p4-anth); }
+body.pn-id.pn-id--disc .d-hero.is-plate{ background:var(--p4-anth); }
+body.pn-id.pn-id--disc .d-hero-copy .eyebrow{ font-family:var(--p4-sans); font-weight:700; font-size:14px; letter-spacing:.16em; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .d-hero-copy h1{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(48px,6vw,96px); line-height:.95; letter-spacing:-.02em; color:var(--p4-ivory); }
+/* SEO-C2 subtitle inside the H1: styled only, its text is untouched */
+body.pn-id.pn-id--disc .d-hero-copy h1 .d-h1-sub{ font-family:var(--p4-sans); font-weight:700; letter-spacing:.14em; line-height:1.4; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .d-hero-copy .subtitle{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(22px,2.1vw,30px); line-height:1.25; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .d-hero-copy .intro{ font-family:var(--p4-sans); font-size:17px; line-height:1.6; color:var(--p4-ivory); }
+
+/* ---- 3 · full-bleed photographs: cream edge-fades become earth fades ---- */
+body.pn-id.pn-id--disc .imagine-photo{ background:var(--p4-anth); }
+body.pn-id.pn-id--disc .imagine-photo::before{ background:linear-gradient(180deg, rgba(42,38,34,.55) 0%, rgba(42,38,34,0) 100%); }
+body.pn-id.pn-id--disc .imagine-photo::after{ background:linear-gradient(0deg, rgba(42,38,34,.55) 0%, rgba(42,38,34,0) 100%); }
+body.pn-id.pn-id--disc .imagine-photo .caption p{ font-family:var(--p4-serif); font-style:italic; color:var(--p4-ivory); font-size:clamp(20px,1.9vw,26px); }
+
+/* ---- 4 · reading rhythm ------------------------------------------------- */
+body.pn-id.pn-id--disc :is(.article-section p a, .faq-a a, .planning-conditions a){ color:var(--p4-terra-text); border-bottom:1px solid var(--p4-terra); }
+body.pn-id.pn-id--disc :is(.article-section p a, .faq-a a, .planning-conditions a):hover{ color:var(--p4-ivory); border-bottom-color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .article-section h4{ font-family:var(--p4-serif); font-weight:400; font-size:24px; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(.fragment-lines p, .article-emphasis){ font-family:var(--p4-serif); font-style:italic; color:var(--p4-ivory); }
+
+/* ---- 5 · compare slider: mechanics untouched, handle and labels refined -- */
+body.pn-id.pn-id--disc .cmp.is-live .cmp-divider{ background:rgba(242,235,224,.85); }
+body.pn-id.pn-id--disc .cmp.is-live .cmp-handle::before{ width:40px; height:40px; border:1px solid var(--p4-ivory); background:rgba(29,30,28,.38); }
+body.pn-id.pn-id--disc .cmp.is-live .cmp-chev{ border-color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .cmp.is-live .cmp-range:focus-visible ~ .cmp-divider .cmp-handle::before{ border-color:var(--p4-terra-text); box-shadow:0 0 0 3px var(--p4-terra-text); }
+body.pn-id.pn-id--disc .cmp.is-live .cmp-tag{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.16em; color:var(--p4-ivory); }
+
+/* ---- 6 · FAQ: native <details>, readable sentence-case questions -------- */
+body.pn-id.pn-id--disc .faq-item{ border-top:1px solid var(--p4-line2); background:none; }
+body.pn-id.pn-id--disc .faq-item:last-child{ border-bottom:1px solid var(--p4-line2); }
+body.pn-id.pn-id--disc .faq-item summary h3{ font-family:var(--p4-sans); font-weight:600; font-size:18px; letter-spacing:0; text-transform:none; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .faq-item summary:hover h3{ color:var(--p4-terra-text); }
+body.pn-id.pn-id--disc .faq-item summary:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:4px; }
+body.pn-id.pn-id--disc .faq-item .icon::before, body.pn-id.pn-id--disc .faq-item .icon::after{ background:var(--p4-terra-text); opacity:1; }
+body.pn-id.pn-id--disc .faq-item .faq-a{ color:var(--p4-lime); font-size:17px; }
+body.pn-id.pn-id--disc .faq-item.is-inline{ background:var(--p4-deep); border:1px solid var(--p4-line2); border-left:2px solid var(--p4-terra); border-radius:0; box-shadow:none; }
+body.pn-id.pn-id--disc .faq-item.is-inline:hover{ transform:none; box-shadow:none; border-color:var(--p4-stone); border-left-color:var(--p4-terra-text); }
+body.pn-id.pn-id--disc .faq-item.is-inline summary h3{ font-size:16px; letter-spacing:.02em; color:var(--p4-lime); }
+body.pn-id.pn-id--disc .faq-item.is-inline[open] summary h3{ color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .faq-item.is-inline .faq-a{ background:var(--p4-well); border-top:1px solid var(--p4-line2); color:var(--p4-lime); }
+body.pn-id.pn-id--disc .faq-item.is-inline .faq-a strong{ color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .faq-item.is-inline .icon{ border-color:var(--p4-stone); }
+
+/* ---- 7 · evidence panels: Deep Earth default (founder decision) -------- */
+body.pn-id.pn-id--disc .dq-qual{ border-top:2px solid var(--p4-terra); }
+body.pn-id.pn-id--disc :is(.dq-qual > li, .dq-adv-cols > li){ background:var(--p4-deep); border:1px solid var(--p4-line2); border-radius:0; box-shadow:none; }
+body.pn-id.pn-id--disc :is(.dq-qual > li, .dq-opp, .dq-adv-cols > li):hover{ transform:none; box-shadow:none; }
+body.pn-id.pn-id--disc .dq-opp{ background:var(--p4-line2); border:1px solid var(--p4-line2); border-top:2px solid var(--p4-terra); border-radius:0; box-shadow:none; }
+body.pn-id.pn-id--disc .dq-earn{ background:var(--p4-deep); }
+body.pn-id.pn-id--disc .dq-use{ background:var(--p4-well); box-shadow:none; }
+body.pn-id.pn-id--disc .dq-adv{ border-top:2px solid var(--p4-terra); }
+body.pn-id.pn-id--disc :is(.dq-cat, .dq-adv-label, .dq-adv-cat){ font-family:var(--p4-sans); font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--p4-bronze-text); }
+body.pn-id.pn-id--disc :is(.dq-fact, .dq-earn-lead){ font-family:var(--p4-serif); font-weight:400; font-size:22px; line-height:1.15; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .dq-fig{ font-family:var(--p4-serif); color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(.dq-note, .dq-src, .dq-earn-caveat){ font-size:14px; color:var(--p4-stone); }
+body.pn-id.pn-id--disc :is(.dq-figs > li, .dq-rows > li){ border-color:var(--p4-line2); }
+
+/* ---- 8 · partner strip, early-stage card and property-check prompt ----- */
+body.pn-id.pn-id--disc .partners{ background:var(--p4-deep); }
+body.pn-id.pn-id--disc .partners::before, body.pn-id.pn-id--disc .partners::after{ background:none; }
+body.pn-id.pn-id--disc .partners .partner-frame{ border-color:var(--p4-line2); }
+body.pn-id.pn-id--disc .partners .partner-frame p{ font-family:var(--p4-serif); color:var(--p4-terra-text); font-size:20px; }
+body.pn-id.pn-id--disc :is(.pb-preview, .pb-early, .pn-bridge + .pb-early){ background:var(--p4-deep); border-color:var(--p4-line2); }
+body.pn-id.pn-id--disc .pn-wordmark{ font-family:var(--p4-serif); font-weight:400; font-size:30px; letter-spacing:0; text-transform:none; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .pb-headline{ font-family:var(--p4-serif); font-size:clamp(42px,4.8vw,72px); line-height:.98; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(.pb-subhead, .pb-independence, .pb-note, .pb-step p, .pb-early p, .pb-early-more){ color:var(--p4-lime); font-size:17px; opacity:1; }
+body.pn-id.pn-id--disc .pb-independence strong{ color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(.pb-step .n, .pb-early-status){ color:var(--p4-bronze-text); border-color:var(--p4-bronze); font-weight:700; }
+/* homepage primary button; destination and logic unchanged */
+body.pn-id.pn-id--disc .pb-cta{ display:inline-flex; align-items:center; min-height:54px; padding:0 26px; background:var(--p4-terra-text); color:var(--p4-anth); font-size:17px; font-weight:700; letter-spacing:0; border:0; }
+body.pn-id.pn-id--disc .pb-cta:hover{ background:var(--p4-terra-hover); color:var(--p4-anth); }
+
+/* ---- 9 · fixed "Back" pill ------------------------------------------- */
+body.pn-id.pn-id--disc .pn-return{ background:var(--p4-ivory); color:var(--p4-anth); border-color:var(--p4-ivory); font-family:var(--p4-sans); font-weight:600; }
+
+/* ---- 10 · Maker / Provider Explorer, including the SEO-C2 A–Z index ----
+   Skinned from outside only; maker-explorer.css / .js untouched (I11).
+   Supplier images keep object-fit:contain on an ivory well (never cropped);
+   order, data and links are the explorer's own. */
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx{ background:var(--p4-deep); border:1px solid var(--p4-line2); border-radius:0; box-shadow:none; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-figs{ border-top:2px solid var(--p4-terra); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-figs > div + div{ border-left-color:var(--p4-line2); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-fig{ font-family:var(--p4-serif); color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) :is(.mx-fig-l, p.mx-line, .mx-legend, .mx-order, .mx-ct, .mx-meta, .mx-pt, .mx-st, p.mx-foot, .mx-empty, .px-kind, .px-status, .px-rel){ color:var(--p4-stone); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-tabs{ border-bottom-color:var(--p4-line2); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-tab{ color:var(--p4-stone); font-family:var(--p4-sans); font-weight:600; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-tab[aria-selected="true"]{ color:var(--p4-ivory); border-bottom-color:var(--p4-terra-text); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-find{ background:var(--p4-well); color:var(--p4-ivory); border:1px solid var(--p4-stone); border-radius:0; color-scheme:dark; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-find::placeholder{ color:#A79A88; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-chip{ background:transparent; color:var(--p4-ivory); border-color:var(--p4-stone); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-chip[aria-pressed="true"]{ background:var(--p4-ivory); color:var(--p4-anth); border-color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-maker{ background:var(--p4-well); border-color:var(--p4-line2); border-radius:0; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-maker:hover{ border-color:var(--p4-stone); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-maker[aria-expanded="true"]{ border-color:var(--p4-terra-text); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-drawer{ background:var(--p4-well); border-color:var(--p4-line2); border-left-color:var(--p4-terra-text); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) :is(.mx-plist, .mx-plist li){ border-color:var(--p4-line); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) :is(.mx-pn, .mx-route, .mx-btn){ color:var(--p4-terra-text); border-bottom-color:var(--p4-terra); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) :is(.mx-pn-text, .mx-line strong, .px-facts dd){ color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) :is(.px-facts dt, .mx-img-kind){ color:var(--p4-bronze-text); }
+body.pn-id.pn-id--disc #explore-makers :is(.mx-maker-img .mx-lead, .mx-plist .mx-img img){ background:var(--p4-ivory); }
+body.pn-id.pn-id--disc #explore-makers :is(.mx-maker-img .mx-lead-cap, .mx-plist .mx-img figcaption){ color:var(--p4-stone); }
+body.pn-id.pn-id--disc #explore-makers .mx-plist .mx-img figcaption a{ color:var(--p4-ivory); }
+/* A–Z maker index (SEO-C2) */
+body.pn-id.pn-id--disc .mx-az{ border-top-color:var(--p4-line2); }
+body.pn-id.pn-id--disc .mx-az > summary{ color:var(--p4-ivory); font-family:var(--p4-sans); font-weight:600; }
+body.pn-id.pn-id--disc .mx-az > summary:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:3px; }
+body.pn-id.pn-id--disc :is(.mx-az-note, .mx-az-list li, .mx-az-list span){ color:var(--p4-stone); }
+body.pn-id.pn-id--disc .mx-az-list a{ color:var(--p4-ivory); text-decoration-color:var(--p4-terra); }
+body.pn-id.pn-id--disc .mx-az-list a:hover{ color:var(--p4-terra-text); text-decoration-color:currentColor; }
+
+/* ---- 11 · Discovery Library (discoveries.html) ------------------------ */
+/* The PlotNua mark sits above the shared header on this page (it was level). */
+body.pn-id.pn-id--disc .brand-mark{ z-index:50; }
+body.pn-id.pn-id--disc .lib-kicker{ font-family:var(--p4-sans); font-weight:700; font-size:14px; letter-spacing:.16em; color:var(--p4-bronze-text); }
+body.pn-id.pn-id--disc .lib-head h1{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(56px,6vw,104px); line-height:.9; letter-spacing:-.02em; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .lib-count{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(24px,2.1vw,32px); line-height:1.22; color:var(--p4-lime); }
+body.pn-id.pn-id--disc .lib-filter{ font-family:var(--p4-sans); font-size:15px; font-weight:600; letter-spacing:0; min-height:44px; background:transparent; color:var(--p4-ivory); border:1px solid var(--p4-stone); border-radius:0; }
+body.pn-id.pn-id--disc .lib-filter:hover{ border-color:var(--p4-ivory); color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .lib-filter.is-on{ background:var(--p4-ivory); color:var(--p4-anth); border-color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .lib-filter:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:3px; }
+body.pn-id.pn-id--disc .lib-cat{ font-family:var(--p4-sans); font-weight:700; font-size:13px; letter-spacing:.14em; color:var(--p4-bronze-text); }
+body.pn-id.pn-id--disc :is(.lib-soon, .lib-live, .lib-atlas){ font-family:var(--p4-sans); font-size:13px; color:var(--p4-stone); border-color:var(--p4-line2); border-radius:0; }
+body.pn-id.pn-id--disc .lib-live{ color:var(--p4-terra-text); border-color:var(--p4-terra); }
+body.pn-id.pn-id--disc .lib-title{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(28px,2.4vw,36px); line-height:1.02; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .lib-next-shot{ background:var(--p4-deep); border-color:var(--p4-line2); border-radius:14px; }
+body.pn-id.pn-id--disc .lib-next-kicker{ color:var(--p4-bronze-text); font-weight:700; }
+body.pn-id.pn-id--disc .lib-next-lede{ font-family:var(--p4-serif); font-weight:400; font-size:28px; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc :is(.lib-next-line, .lib-next-soon, .lib-empty){ font-family:var(--p4-sans); font-size:16px; color:var(--p4-stone); }
+body.pn-id.pn-id--disc .lib-foot{ border-top-color:var(--p4-line2); }
+body.pn-id.pn-id--disc .lib-foot a{ color:var(--p4-terra-text); border-bottom-color:var(--p4-terra); font-size:16px; }
+/* Founder refinements 1A–1E */
+body.pn-id.pn-id--disc .lib-line{ color:var(--p4-lime); font-size:16px; line-height:1.6; }                       /* 1A: 11.3:1 */
+body.pn-id.pn-id--disc .lib-card .lib-meta{ margin-top:22px; }                                                    /* 1B */
+body.pn-id.pn-id--disc .lib-title{ margin:12px 0 10px; }
+body.pn-id.pn-id--disc .lib-grid{ row-gap:72px; }
+
+/* ---- 12 · related Discoveries ----------------------------------------- */
+body.pn-id.pn-id--disc .related{ background:var(--p4-earth); }
+body.pn-id.pn-id--disc :is(.related-card .r-kicker, .related-card .related-kicker, .related-head .kicker){ font-family:var(--p4-sans); font-weight:700; font-size:13px; letter-spacing:.14em; color:var(--p4-bronze-text); opacity:1; }
+body.pn-id.pn-id--disc .related-card .related-kicker{ margin-top:24px; }
+body.pn-id.pn-id--disc :is(.related-card h3, .related-card .related-title){ margin-top:10px; font-family:var(--p4-serif); font-weight:400; font-size:clamp(26px,2.4vw,34px); line-height:1.04; color:var(--p4-ivory); }
+body.pn-id.pn-id--disc .related-card .related-line{ color:var(--p4-lime); font-size:16px; line-height:1.6; }
+body.pn-id.pn-id--disc .related-grid{ row-gap:72px; }
+
+/* "Explore another possibility" aside: its colours are inline styles in the
+   page markup (dark greens, 1.4–2.8:1 on charcoal). The markup is not edited,
+   so these overrides are the only !important rules in this layer, scoped to
+   this one aside. */
+body.pn-id.pn-id--disc aside.pn-related-discoveries{ border-top-color:var(--p4-line2) !important; border-bottom-color:var(--p4-line2) !important; }
+body.pn-id.pn-id--disc aside.pn-related-discoveries > h2{ font-family:var(--p4-sans) !important; font-size:14px !important; font-weight:700 !important; color:var(--p4-bronze-text) !important; }
+body.pn-id.pn-id--disc aside.pn-related-discoveries a{ min-height:44px; box-sizing:border-box; align-items:center; font-family:var(--p4-sans) !important; font-weight:600; color:var(--p4-ivory) !important; background:transparent !important; border:1px solid var(--p4-stone) !important; border-radius:0 !important; text-decoration:none !important; }
+body.pn-id.pn-id--disc aside.pn-related-discoveries a:hover{ background:var(--p4-ivory) !important; color:var(--p4-anth) !important; border-color:var(--p4-ivory) !important; }
+body.pn-id.pn-id--disc :is(.quiet-section .kicker, .related-head .kicker){ opacity:1; color:var(--p4-bronze-text); }
+
+/* ---- 13 · CARD TREATMENT C (founder-approved, 20 Oct 2026) -------------
+   Library cards and related Discovery cards only. The photograph, not the
+   text, is mounted a few millimetres off the wall: three-layer warm
+   near-black shadow (contact, near, ambient) plus a 1px tonal lip at 5 %
+   Warm Ivory. No boxed background, no visible border. Resting depth is
+   approved as shown and must not be increased. */
+body.pn-id.pn-id--disc :is(.lib-shot, .related-card .thumb){
+  --pn-lift-rest: 0 1px 1px rgba(10,8,6,.40), 0 6px 14px -4px rgba(10,8,6,.55), 0 22px 44px -18px rgba(10,8,6,.70);
+  --pn-lift-hover: 0 2px 3px rgba(10,8,6,.40), 0 14px 26px -8px rgba(10,8,6,.62), 0 38px 70px -26px rgba(10,8,6,.80);
+  position:relative; display:block; border-radius:14px; overflow:hidden; isolation:isolate;
+  background:var(--p4-well); box-shadow:var(--pn-lift-rest); transform:translateY(0);
+  transition:transform 300ms cubic-bezier(.2,.6,.2,1), box-shadow 300ms cubic-bezier(.2,.6,.2,1); }
+body.pn-id.pn-id--disc :is(.lib-shot, .related-card .thumb)::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(242,235,224,.05), inset 0 1px 0 rgba(242,235,224,.06); }
+body.pn-id.pn-id--disc :is(.lib-shot img, .related-card .thumb img){ border-radius:inherit; transform:scale(1); transition:transform 300ms cubic-bezier(.2,.6,.2,1); }
+/* hover and keyboard focus give the same feedback, so nothing is hover-only */
+body.pn-id.pn-id--disc .lib-card:is(:hover, :focus-visible) .lib-shot,
+body.pn-id.pn-id--disc .related-card:is(:hover, :focus-visible) .thumb{ transform:translateY(-4px); box-shadow:var(--pn-lift-hover); }
+body.pn-id.pn-id--disc .lib-card:is(:hover, :focus-visible) .lib-shot img,
+body.pn-id.pn-id--disc .related-card:is(:hover, :focus-visible) .thumb img{ transform:scale(1.02); }
+/* title: terracotta, underline under the words only (inline text decoration) */
+body.pn-id.pn-id--disc .lib-card:is(:hover, :focus-visible) .lib-title,
+body.pn-id.pn-id--disc .related-card:is(:hover, :focus-visible) :is(h3, .related-title){
+  color:var(--p4-terra-text); text-decoration:underline; text-decoration-color:var(--p4-terra); text-decoration-thickness:1px; text-underline-offset:6px; }
+/* keyboard focus ring follows the rounded photograph */
+body.pn-id.pn-id--disc :is(.lib-card, .related-card):focus-visible{ outline:none; }
+body.pn-id.pn-id--disc .lib-card:focus-visible .lib-shot,
+body.pn-id.pn-id--disc .related-card:focus-visible .thumb{ outline:2px solid var(--p4-terra-text); outline-offset:6px; }
+/* touch screens: resting depth only, no movement while scrolling */
+@media (hover:none){
+  body.pn-id.pn-id--disc .lib-card:hover .lib-shot, body.pn-id.pn-id--disc .related-card:hover .thumb{ transform:none; box-shadow:var(--pn-lift-rest); }
+  body.pn-id.pn-id--disc .lib-card:hover .lib-shot img, body.pn-id.pn-id--disc .related-card:hover .thumb img{ transform:none; }
+}
+/* reduced motion: depth stays, movement goes */
+@media (prefers-reduced-motion:reduce){
+  body.pn-id.pn-id--disc :is(.lib-shot, .related-card .thumb, .lib-shot img, .related-card .thumb img){ transition:none !important; transform:none !important; }
+}
+
+@media (max-width:720px){
+  body.pn-id.pn-id--disc .d-hero-copy h1{ font-size:clamp(40px,11vw,56px); }
+  body.pn-id.pn-id--disc :is(.lib-grid, .related-grid){ row-gap:56px; }
+}

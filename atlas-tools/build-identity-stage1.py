@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BOUNDED BUILDER · PlotNua shared identity layer, Phase 5 Stage 1
+BOUNDED BUILDER · PlotNua shared identity layer, Phase 5 Stage 1 + Stage 2a
 
     python3 atlas-tools/build-identity-stage1.py            apply (idempotent)
     python3 atlas-tools/build-identity-stage1.py --check    verify, write nothing
@@ -18,6 +18,12 @@ content. Per page it makes exactly four insertions, each fenced by
   N  the shared header (wordmark + Main navigation, the homepage's header A)
      straight after the search rail, as on the homepage (thanks.html has no
      rail: after the PlotNua mark)
+  D  (Discovery family only, Stage 2a) a second stylesheet link in H to
+     assets/identity/pn-identity-discovery.css, and the body class
+     pn-id--disc. On these pages H sits straight after the theme-color meta,
+     not before </head>, because other builders (SEO Phase 1) recognise their
+     own head edits by what immediately precedes </head>. Founder approval, 20 Oct 2026: Discovery Library, Hidden
+     Bins and Living in the Garden, after SEO-C2 Release 2 (bc40412).
   T  the browser theme colour: the page's one <meta name="theme-color"> goes
      from the legacy #1F3B2E to the homepage's own value (founder decision 3,
      20 Oct 2026). Only its content attribute changes; every other meta tag is
@@ -44,6 +50,14 @@ GUARDS (any failure stops the build and nothing is written):
       landmark at most, correct aria-current
   I9  theme colour: exactly one theme-color meta, equal to index.html's; all
       other meta tags unchanged
+  I10 the Discovery layer (its stylesheet link and the pn-id--disc class)
+      appears on the approved Discovery pages only, exactly once each
+  I11 protected sources are never written: maker-explorer.css/.js,
+      provider-explorer.js, search.css/.js and index.html are byte-identical
+      before and after every run (the capability proof also compares them
+      with the base commit)
+  I12 SCOPE: every rule in pn-identity-discovery.css is under
+      body.pn-id.pn-id--disc, so it is inert on every other page
 """
 import hashlib, os, re, sys
 from pathlib import Path
@@ -51,6 +65,8 @@ from pathlib import Path
 # PN_ROOT lets the capability proof run this exact builder against a scratch copy.
 ROOT = Path(os.environ.get("PN_ROOT") or Path(__file__).resolve().parent.parent)
 CSS = ROOT / "assets" / "identity" / "pn-identity.css"
+CSS_DISC = ROOT / "assets" / "identity" / "pn-identity-discovery.css"
+PROTECTED = ["maker-explorer.css", "maker-explorer.js", "provider-explorer.js", "search.css", "search.js", "index.html"]
 CHECK = "--check" in sys.argv
 
 # page -> reading surface. Founder decision 3 (20 Oct 2026): dark-first, not
@@ -59,7 +75,11 @@ PAGES = {
     "about.html": "dark", "contact.html": "dark", "privacy.html": "paper",
     "terms.html": "paper", "cookie-policy.html": "paper",
     "artist-register.html": "dark", "404.html": "dark", "thanks.html": "dark",
+    # Stage 2a, Discovery family pilot (founder approval 20 Oct 2026)
+    "discoveries.html": "dark", "discovery-hidden-bins.html": "dark",
+    "discovery-living-in-the-garden.html": "dark",
 }
+DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html"}
 # 404.html is served for ANY missing address, including nested ones, so its
 # additions use root-absolute paths. The site is served at the domain root.
 ROOTABS = {"404.html"}
@@ -81,9 +101,11 @@ def head_block(page):
             '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
-            "<!-- PLOTNUA IDENTITY v1 · HEAD · END -->\n") % (GEN, FONTS, p(page, "assets/identity/pn-identity.css"))
+            "%s"
+            "<!-- PLOTNUA IDENTITY v1 · HEAD · END -->\n") % (GEN, FONTS, p(page, "assets/identity/pn-identity.css"),
+                ('<link rel="stylesheet" href="%s">\n' % p(page, "assets/identity/pn-identity-discovery.css")) if page in DISC else "")
 
-def body_attr(page): return ' class="pn-id pn-id--%s"' % PAGES[page]
+def body_attr(page): return ' class="pn-id pn-id--%s%s"' % (PAGES[page], " pn-id--disc" if page in DISC else "")
 
 SKIP = ("\n<!-- PLOTNUA IDENTITY v1 · SKIP · BEGIN -->"
         '<a class="pn-id-skip" href="#pn-id-content">Skip to main content</a>'
@@ -114,7 +136,7 @@ ROLE = ' role="region" aria-label="PlotNua site"'
 RX = [re.compile(r"<!-- PLOTNUA IDENTITY v1 · HEAD · BEGIN.*?<!-- PLOTNUA IDENTITY v1 · HEAD · END -->\n", re.S),
       re.compile(r"\n<!-- PLOTNUA IDENTITY v1 · SKIP · BEGIN -->.*?<!-- PLOTNUA IDENTITY v1 · SKIP · END -->", re.S),
       re.compile(r"\n<!-- PLOTNUA IDENTITY v1 · HEADER · BEGIN.*?<!-- PLOTNUA IDENTITY v1 · HEADER · END -->", re.S)]
-BODY_RX = re.compile(r'<body class="pn-id pn-id--(?:dark|paper)">')
+BODY_RX = re.compile(r'<body class="pn-id pn-id--(?:dark|paper)(?: pn-id--disc)?">')
 THEME_LEGACY = '<meta name="theme-color" content="#1F3B2E">'
 def theme_tag(value): return '<meta name="theme-color" content="%s">' % value
 HOME_THEME = None   # read from index.html in main(); I9
@@ -136,7 +158,15 @@ def build(page, src):
     if src.count(THEME_LEGACY) != 1 or src.count('name="theme-color"') != 1:
         die("I9 %s: expected exactly one legacy theme-color meta" % page)
     out = src.replace(THEME_LEGACY, theme_tag(HOME_THEME), 1)
-    out = out.replace("</head>", head_block(page) + "</head>", 1)
+    if page in DISC:
+        # Discovery pages: the head block follows the theme-color meta. Other
+        # builders verify their own head edits by adjacency to </head> (SEO
+        # Phase 1 checks "JSON-LD + </head>"), so nothing is placed there.
+        anchor = theme_tag(HOME_THEME) + "\n"
+        if out.count(anchor) != 1: die("%s: theme-color anchor for the head block not found exactly once" % page)
+        out = out.replace(anchor, anchor + head_block(page), 1)
+    else:
+        out = out.replace("</head>", head_block(page) + "</head>", 1)
     out = out.replace("<body>", "<body" + body_attr(page) + ">" + ("" if page in HAS_SKIP else SKIP), 1)
     hb = header_block(page, element)
     if RAIL_END in out:
@@ -159,8 +189,22 @@ def fingerprints(t):
          "rail": re.findall(r"<!-- PLOTNUA SEARCH RAIL v1 · BEGIN.*?SEARCH RAIL v1 · END -->", t, re.S),
          "footer": re.findall(r"<footer\b.*?</footer>", t, re.S),
          "form": re.findall(r"<form\b.*?</form>", t, re.S),
-         "h1": re.findall(r"<h1\b.*?</h1>", t, re.S)}
+         "h1": re.findall(r"<h1\b.*?</h1>", t, re.S),
+         "picture": re.findall(r"<picture\b.*?</picture>", t, re.S),
+         "svg": re.findall(r"<svg\b.*?</svg>", body, re.S),
+         "hero": re.findall(r'<header class="d-hero[^"]*">.*?</header>', t, re.S)}
     return {k: sha("\x00".join(v)) + "/%d" % len(v) for k, v in f.items()}
+
+def top_level(selector_list):
+    """Split a selector list at top-level commas only (not inside :is()/:where())."""
+    out, depth, cur = [], 0, ""
+    for ch in selector_list:
+        if ch == "(": depth += 1
+        elif ch == ")": depth -= 1
+        if ch == "," and depth == 0: out.append(cur); cur = ""
+        else: cur += ch
+    out.append(cur)
+    return [x.strip() for x in out]
 
 def tokens(css_text, scope):
     m = re.search(re.escape(scope) + r"\s*\{([^}]*)\}", css_text)
@@ -188,15 +232,28 @@ def main():
     flat = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
     flat = re.sub(r"@media[^{]*\{", "", flat)
     for sel in re.findall(r"([^{}]+)\{[^{}]*\}", flat):
-        for s in sel.split(","):
+        for s in top_level(sel):
             s = s.strip()
             if s and not s.startswith("body.pn-id"): die("I5 selector outside body.pn-id: %r" % s)
+    # I12 Discovery layer scope
+    if not CSS_DISC.exists(): die("assets/identity/pn-identity-discovery.css is missing")
+    dflat = re.sub(r"@media[^{]*\{", "", re.sub(r"/\*.*?\*/", "", CSS_DISC.read_text(encoding="utf-8"), flags=re.S))
+    for sel in re.findall(r"([^{}]+)\{[^{}]*\}", dflat):
+        for s in top_level(sel):
+            s = s.strip()
+            if s and not s.startswith("body.pn-id.pn-id--disc"): die("I12 Discovery selector outside body.pn-id.pn-id--disc: %r" % s)
+    if re.search(r"--p4-[a-z0-9-]+\s*:", dflat): die("I12 the Discovery layer must not redefine --p4 tokens (they belong to the homepage, I4)")
+    # I11 protected sources: fingerprint now, re-check after the run
+    prot_before = {f: hashlib.sha256((ROOT / f).read_bytes()).hexdigest() for f in PROTECTED if (ROOT / f).exists()}
     # I6 homepage untouched by this layer
     if "PLOTNUA IDENTITY" in home or "pn-identity.css" in home: die("I6 index.html must not carry the identity layer")
     # I7 coverage
     for f in sorted(ROOT.glob("*.html")):
         if f.name not in PAGES and "PLOTNUA IDENTITY v1" in f.read_text(encoding="utf-8", errors="replace"):
             die("I7 %s carries the identity markers but is not a Stage 1 page" % f.name)
+        txt = f.read_text(encoding="utf-8", errors="replace")
+        if f.name not in DISC and ("pn-identity-discovery.css" in txt or "pn-id--disc" in txt):
+            die("I10 %s carries the Discovery layer but is not an approved Discovery page" % f.name)
 
     changed = []
     for page in PAGES:
@@ -212,6 +269,10 @@ def main():
         a, b = fingerprints(src), fingerprints(out)
         for k in a:
             if a[k] != b[k]: die("I3 %s: protected %s changed" % (page, k))
+        # I10 Discovery layer exactly once on each approved Discovery page, never elsewhere
+        nd = out.count("pn-identity-discovery.css"); nc = out.count("pn-id--disc")
+        if page in DISC and (nd != 1 or nc != 1): die("I10 %s: Discovery layer expected once (link %d, class %d)" % (page, nd, nc))
+        if page not in DISC and (nd or nc): die("I10 %s: Discovery layer on a non-Discovery page" % page)
         # I9 theme colour equals the homepage's; it is the only meta that moved
         if out.count(theme_tag(HOME_THEME)) != 1 or out.count('name="theme-color"') != 1:
             die("I9 %s: theme colour is not exactly the homepage's %s" % (page, HOME_THEME))
@@ -230,10 +291,13 @@ def main():
         if cur != out:
             changed.append(page)
             if not CHECK: path.write_text(out, encoding="utf-8")
+    # I11 protected sources unchanged by this run
+    for f, h in prot_before.items():
+        if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != h: die("I11 protected source %s changed during the run" % f)
     if CHECK and changed:
         die("CHECK: %d page(s) not in the Stage 1 identity state: %s -- nothing written" % (len(changed), ", ".join(changed)))
-    print("IDENTITY STAGE 1 · %s — %d pages, tokens equal the homepage (%d), theme colour %s, scoped, reversible, protected content unchanged%s"
-          % ("CHECK OK" if CHECK else "BUILT", len(PAGES), len(want), HOME_THEME,
+    print("IDENTITY STAGE 1+2a · %s — %d pages (%d Discovery), tokens equal the homepage (%d), theme colour %s, scoped, reversible, protected content unchanged%s"
+          % ("CHECK OK" if CHECK else "BUILT", len(PAGES), len(DISC), len(want), HOME_THEME,
              "" if CHECK else (" · written: " + (", ".join(changed) or "none"))))
 
 if __name__ == "__main__":
