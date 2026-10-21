@@ -22,6 +22,7 @@ Modes:
 import hashlib, html, pathlib, re, sys
 from search_rail_layer import without_ask_label  # 19 Oct 2026 rail label layer
 from derivative_picture_layer import without_derivative_picture  # 20 Oct 2026 WebP hero wrap
+from disc026_seo_a_layer import without_seo_a  # 20 Oct 2026 SEO Approach A, revised 1b (title, description, anchors)
 HERO_SRC = 'assets/img/fec77c3f0bae107a.jpg'
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -123,7 +124,8 @@ def guards(text, base):
     # L2 everything else is the V3 baseline
     # (read through the search rail label layer, 19 Oct 2026: search_rail_layer.py)
     # and through the WebP derivative layer, 20 Oct 2026: derivative_picture_layer.py
-    need('L2', sha(without_derivative_picture(without_ask_label(unbuild(text)), HERO_SRC)) == BASELINE_SHA,
+    # and through the SEO Approach A layer, 20 Oct 2026: disc026_seo_a_layer.py (exact, reversible)
+    need('L2', sha(without_derivative_picture(without_ask_label(without_seo_a(unbuild(text))), HERO_SRC)) == BASELINE_SHA,
          'outside the section, the article differs from the V3 baseline')
     # L3 placement: directly after <main>
     need('L3', MAIN_OPEN + BEGIN in text, 'section is not directly after <main id="pn-main">')

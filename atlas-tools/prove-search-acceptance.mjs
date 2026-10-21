@@ -78,7 +78,7 @@ const names = (rs) => rs.map((r) => r.name || r.title);
    the next time copy is edited. The founder's decision was to preserve the
    published titles; this is how the tests stop fighting them.
    The display titles for reference, read from the regenerated index:
-     poss-house-as-power-station  "Can Data Centre Waste Heat Warm a Home in Ireland?"
+     poss-house-as-power-station  "Data Centre Waste Heat & Home Energy in Ireland" (21 Oct 2026, SEO Stage 1)
      poss-the-borrowed-garden     "Sharing Garden Space for Growing Food in Ireland"
      poss-open-your-home-to-art   "Hosting Art in Your Home in Ireland"
      poss-hidden-cars             "Home Car Lifts & Hidden Parking in Ireland"
