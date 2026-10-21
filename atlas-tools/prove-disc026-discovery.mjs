@@ -308,7 +308,11 @@ console.log('  ' + '-'.repeat(72));
    amount enters PlotNua from a secondary source. Each amount below traces to a
    first-party record. A new amount must fail here until it is added
    deliberately, with its source. */
-const ALLOWED = new Set(['700', '200', '1,800', '600', '14,500', '400', '80']);
+/* 20 Oct 2026, factual correction F3 (founder review, Decision 2): 2,400 added.
+   First-party source: seai.ie, Solar Electricity Grant page, read 20 Oct 2026:
+   "This brings you maximum grant value for solar pv panels and battery to
+   EUR 2,400." Every other amount remains as governed. */
+const ALLOWED = new Set(['700', '200', '1,800', '600', '14,500', '400', '80', '2,400']);
 /* Thousands-grouped only, so a trailing sentence comma is not read as part of
    the figure. "about &euro;80, and warns" is 80, not "80,". */
 const amounts = [...html.matchAll(/&euro;(\d{1,3}(?:,\d{3})*)/g)].map(m => m[1]);
