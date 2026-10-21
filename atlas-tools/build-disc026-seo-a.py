@@ -47,6 +47,11 @@ except ImportError:  # fail-closed: any un-layered edit still breaks the S5 hash
 
     def without_section_fact(t):
         return t
+try:  # the Stage 2 bridge layer (21 Oct 2026); absent before it exists
+    from disc026_bridge_oct2026_layer import without_bridge  # noqa: E402
+except ImportError:  # fail-closed: any un-layered edit still breaks the S5 hash
+    def without_bridge(t):
+        return t
 
 ROOT = HERE.parent
 # The page at production 18a9afd, before this change (sha256 of its bytes).
@@ -84,7 +89,7 @@ def px(t):
 
 def pinned(base):
     """Read the reversed page back through the later governed layers."""
-    return without_section_fact(without_facts(base))
+    return without_section_fact(without_facts(without_bridge(base)))
 
 
 def guards(page):

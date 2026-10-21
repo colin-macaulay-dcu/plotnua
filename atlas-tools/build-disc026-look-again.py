@@ -24,6 +24,7 @@ from search_rail_layer import without_ask_label  # 19 Oct 2026 rail label layer
 from derivative_picture_layer import without_derivative_picture  # 20 Oct 2026 WebP hero wrap
 from disc026_seo_a_layer import without_seo_a  # 20 Oct 2026 SEO Approach A, revised 1b (title, description, anchors)
 from disc026_facts_oct2026_layer import without_facts  # 20 Oct 2026 factual corrections F1-F5 (article passages)
+from disc026_bridge_oct2026_layer import without_bridge  # 21 Oct 2026 Stage 2 bridge section (exact, reversible)
 HERO_SRC = 'assets/img/fec77c3f0bae107a.jpg'
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -128,7 +129,8 @@ def guards(text, base):
     # and through the SEO Approach A layer and the October 2026 factual corrections,
     # 20 Oct 2026: disc026_seo_a_layer.py, disc026_facts_oct2026_layer.py (exact, reversible).
     # F5a, the balcony line, is part of this section's own fragment and is held by L1.
-    need('L2', sha(without_derivative_picture(without_ask_label(without_facts(without_seo_a(unbuild(text)))), HERO_SRC)) == BASELINE_SHA,
+    # and through the Stage 2 bridge layer, 21 Oct 2026: disc026_bridge_oct2026_layer.py.
+    need('L2', sha(without_derivative_picture(without_ask_label(without_bridge(without_facts(without_seo_a(unbuild(text))))), HERO_SRC)) == BASELINE_SHA,
          'outside the section, the article differs from the V3 baseline')
     # L3 placement: directly after <main>
     need('L3', MAIN_OPEN + BEGIN in text, 'section is not directly after <main id="pn-main">')

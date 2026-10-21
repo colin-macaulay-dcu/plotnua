@@ -40,6 +40,11 @@ sys.path.insert(0, str(HERE))
 from disc026_facts_oct2026_layer import (ARTICLE_EDITS, SECTION_OLD, SECTION_NEW,  # noqa: E402
                                          with_facts, without_facts, without_section_fact)
 from disc026_seo_a_layer import without_seo_a, HEADINGS, KICKERS  # noqa: E402
+try:  # the Stage 2 bridge layer (21 Oct 2026); absent before it exists
+    from disc026_bridge_oct2026_layer import without_bridge  # noqa: E402
+except ImportError:  # fail-closed: any un-layered edit still breaks the T2 hash
+    def without_bridge(t):
+        return t
 
 ROOT = HERE.parent
 BASE_SHA = "68774dc8a6ad1a9bd49a2457f68add87927eaff263b2249da5898c5e975b6d54"  # page at 18a9afd
@@ -102,7 +107,7 @@ def guards(page, frag, edits_def=None):
         fails.append("T1 F5a not present exactly once in the look-again fragment")
     if base is not None:
         try:
-            full_base = without_section_fact(without_seo_a(base))
+            full_base = without_section_fact(without_seo_a(without_bridge(base)))
             if hashlib.sha256(full_base.encode("utf-8")).hexdigest() != BASE_SHA:
                 fails.append("T2 outside the corrected passages the page is not the approved base (18a9afd)")
             if with_facts(base) != page:
