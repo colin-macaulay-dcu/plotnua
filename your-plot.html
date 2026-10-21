@@ -12882,43 +12882,55 @@
        idea — and Sun & Light keeps its viewport, undisturbed. */
     const pnEx = pnVerdictExampleImage(results);
     if (pnEx) {
-      const mediaCol = document.createElement('div');
-      mediaCol.className = 'pn-media-col';
       const frame = document.createElement('div');
       frame.className = 'results-hero-media';
       const img = document.createElement('img');
-      img.src = pnEx.im.url;
-      img.alt = pnEx.im.alt || '';
+      img.alt = '';
       img.loading = 'lazy';
       img.decoding = 'async';
       frame.appendChild(img);
-      pnAttachImageCredit(frame, pnEx.im);
-      mediaCol.appendChild(frame);
-      /* THE CAPTION. Names the building and the courtesy, claims no medium,
-         and says in terms that it is not a recommendation. */
-      const cap = document.createElement('p');
-      cap.className = 'pn-hero-example-note';
-      const capName = document.createElement('span');
-      capName.className = 'pn-hero-example-name';
-      capName.textContent = pnEx.label + ' \u00b7 Image courtesy of ' + pnEx.im.supplier;
-      cap.appendChild(capName);
-      const capRole = document.createElement('span');
-      capRole.className = 'pn-hero-example-role';
-      capRole.textContent = 'An example of an additional home in this range. '
-        + 'Atlas has not placed it ahead of the other options.';
-      cap.appendChild(capRole);
-      if (pnEx.site) {
-        const capLink = document.createElement('a');
-        capLink.className = 'pn-hero-example-link';
-        capLink.href = pnEx.site;
-        capLink.target = '_blank';
-        capLink.rel = 'noopener noreferrer';
-        capLink.textContent = pnEx.im.supplier + ' \u2192';
-        cap.appendChild(capLink);
+      /* J11 REPAIR (21 Oct 2026). This frame used to paint `pnEx.im.url`
+         and attach the credit itself, in two separate statements. The
+         journey contract cannot verify that shape (the painted url is not a
+         variable assigned from pnAuthorisedImage(product)), so it counted
+         the credit but not the paint: 5 governed paints, 6 credits, J11
+         failing on main since at least 16 Oct. The paint now goes through
+         pnPaintGoverned(), the one painter the contract verifies by shape:
+         rights check first, one src assignment, credit attached to the same
+         frame. Same image, same alt, same credit chip, same position; one
+         more rights check than before, not one fewer. If the painter
+         refuses, nothing is appended and the hero keeps is-fieldonly, as
+         the comment above requires. */
+      if (pnPaintGoverned(img, pnEx.im, frame)) {
+        const mediaCol = document.createElement('div');
+        mediaCol.className = 'pn-media-col';
+        mediaCol.appendChild(frame);
+        /* THE CAPTION. Names the building and the courtesy, claims no medium,
+           and says in terms that it is not a recommendation. */
+        const cap = document.createElement('p');
+        cap.className = 'pn-hero-example-note';
+        const capName = document.createElement('span');
+        capName.className = 'pn-hero-example-name';
+        capName.textContent = pnEx.label + ' \u00b7 Image courtesy of ' + pnEx.im.supplier;
+        cap.appendChild(capName);
+        const capRole = document.createElement('span');
+        capRole.className = 'pn-hero-example-role';
+        capRole.textContent = 'An example of an additional home in this range. '
+          + 'Atlas has not placed it ahead of the other options.';
+        cap.appendChild(capRole);
+        if (pnEx.site) {
+          const capLink = document.createElement('a');
+          capLink.className = 'pn-hero-example-link';
+          capLink.href = pnEx.site;
+          capLink.target = '_blank';
+          capLink.rel = 'noopener noreferrer';
+          capLink.textContent = pnEx.im.supplier + ' \u2192';
+          cap.appendChild(capLink);
+        }
+        mediaCol.appendChild(cap);
+        split.appendChild(mediaCol);
+        wrap.classList.remove('is-fieldonly');
       }
-      mediaCol.appendChild(cap);
-      split.appendChild(mediaCol);
-      wrap.classList.remove('is-fieldonly');
     }
 
     /* THE BODY IS ONE SENTENCE, AS GARDEN ROOM'S IS.
