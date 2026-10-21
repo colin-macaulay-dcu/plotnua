@@ -143,9 +143,15 @@ PANEL = (
         # the page's own H1. It is a label for a search field, not a section
         # heading: it is now a paragraph with the SAME class, so search.css
         # renders it identically and the dialog keeps its aria-label.
-        '    <p class="pns-ask">What are you looking for?</p>\n'
+        # POST-CRAWL MAINTENANCE, 20 October 2026 (SiteOne triage D4): the
+        # visible question now names the field. Before, the input's only
+        # accessible name was its placeholder, which disappears as soon as
+        # the homeowner types. aria-labelledby points at the text already on
+        # screen; no extra, invisible aria-label is added.
+        '    <p class="pns-ask" id="pnsAsk">What are you looking for?</p>\n'
         '    <div class="pns-field">\n'
         '      <input type="search" class="pns-input" id="pnsInput"'
+        ' aria-labelledby="pnsAsk"'
         ' autocomplete="off" autocorrect="off" spellcheck="false"'
         ' enterkeyhint="search"'
         ' placeholder="Search ideas, products and suppliers">\n'
@@ -331,7 +337,7 @@ print("  R8  the stub carries no storage, analytics or query-string path  OK")
 # R9 accessibility essentials present
 for need in ('aria-label="Search PlotNua"', 'role="dialog"',
              'aria-modal="true"', 'aria-live="polite"',
-             'href="search.html"'):
+             'href="search.html"', 'id="pnsAsk"', 'aria-labelledby="pnsAsk"'):
     if need not in s_all:
         die("R9 the stub is missing %r" % need)
 print("  R9  pill and panel carry the required ARIA, and the pill is a real\n"
@@ -356,7 +362,7 @@ print("  R10 exactly one stub per page, and re-injection is idempotent  OK")
 #     Duplicate IDs are invalid HTML and here they are a silent functional
 #     break, so the builder refuses rather than shipping one.
 GOVERNED_IDS = ("pnsInput", "pnsStatus", "pnsResults", "pnsPanel",
-                "pnsOpen", "pnsClose")
+                "pnsOpen", "pnsClose", "pnsAsk")
 for r in results:
     for gid in GOVERNED_IDS:
         n = r["text"].count('id="%s"' % gid)
@@ -364,7 +370,15 @@ for r in results:
             die('R11 %s carries %d elements with id="%s"; exactly one is '
                 "allowed, and a second silently steals the binding"
                 % (r["file"], n, gid))
-print("  R11 no governed Search id appears twice on any page  OK")
+for r in results:
+    if not r["panel"]:
+        continue
+    fld = re.search(r'<input type="search" class="pns-input" id="pnsInput"[^>]*>', r["text"])
+    if not fld or 'aria-labelledby="pnsAsk"' not in fld.group(0) or "aria-label=" in fld.group(0):
+        die('R11 %s: the search field must be named by the visible question '
+            '(aria-labelledby="pnsAsk") and carry no aria-label of its own' % r["file"])
+print("  R11 no governed Search id appears twice on any page, and the field is\n"
+      "      named by the visible question (aria-labelledby, no aria-label)  OK")
 
 # R12 THE SEARCH PAGE KEEPS ITS PILL AND LOSES ONLY THE PANEL. The pill must
 #     survive: search.js marks it current so it focuses the field already

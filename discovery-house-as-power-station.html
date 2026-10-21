@@ -1300,9 +1300,9 @@
 <div class="pns-panel" id="pnsPanel" role="dialog" aria-modal="true" aria-label="Search PlotNua" hidden>
   <button type="button" class="pns-close" id="pnsClose" aria-label="Close search">×</button>
   <div class="pns-shell">
-    <p class="pns-ask">What are you looking for?</p>
+    <p class="pns-ask" id="pnsAsk">What are you looking for?</p>
     <div class="pns-field">
-      <input type="search" class="pns-input" id="pnsInput" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="Search ideas, products and suppliers">
+      <input type="search" class="pns-input" id="pnsInput" aria-labelledby="pnsAsk" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="Search ideas, products and suppliers">
     </div>
     <p class="pns-note" id="pnsStatus" role="status" aria-live="polite"></p>
     <div id="pnsResults"></div>
@@ -1318,7 +1318,7 @@
        the Discovery and the equipped house pays it off at IMAGE 03, so the
        homeowner sees the potential before the outcome instead of twice over.
        Asset unchanged and unedited; only its position moved. -->
-  <img id="dHeroImg" class="on" src="assets/img/fec77c3f0bae107a.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="The same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset.">
+  <picture style="display:contents"><source type="image/webp" srcset="assets/img/fec77c3f0bae107a-960w.webp 960w, assets/img/fec77c3f0bae107a.webp 1408w" sizes="max(100vw, 161vh)"><img id="dHeroImg" class="on" src="assets/img/fec77c3f0bae107a.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="The same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset."></picture>
 
   <!-- POTENTIAL ASSET ANNOTATION, ON THE HERO. The separate plate is retired,
        so this is the page's single Potential Asset moment -- the same

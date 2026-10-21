@@ -3502,6 +3502,60 @@
   "derivatives_note": "HASH-BOUND DERIVATIVES (SEO Phase 1b, 16 Oct 2026). Each entry is a re-encoding of ONE enumerated source file, bound to that source's exact sha256. A derivative inherits its source's provenance state, carries no class, label or rights field, and is not counted in legacy_undeclared, so the ratchet is unchanged. The guard (P12) refuses a derivative whose source changed, that crops or upscales, that is not WebP, or that appears on a page without its source as the fallback.",
   "derivatives": [
     {
+      "asset": "assets/img/45a270b7716e4a94-960w.webp",
+      "sha256": "6079a69d5559bc70b4b668ce17b78a432d5bbc3dc54d1785b30f811ae99d220f",
+      "bytes": 153022,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/45a270b7716e4a94.jpg",
+        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9718,
+        "psnr_db": 34.44,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-20",
+      "lineage_basis": "Master DISC-001-IMAGE-SAUNA-MASTER.png (perceptual match 0/256) is the credentialed DISC-001-IMAGE-SAUNA.jpeg (signed Google C2PA, validation state Valid, 26 Sep 2026: created by Google Generative AI from one input ingredient whose own chain is Google-signed to a creation with no ingredients; every ingredient credentialed) mirror-extended 16 px each side: centre 1376 px pixel-identical, edges reflected, no generative fill. Evidence: governance/c2pa-source-credentials/master-DISC-001-IMAGE-SAUNA.jpeg.c2pa.json and linkage-45a270b7716e4a94-sauna-master.json (read 20 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
+      "asset": "assets/img/45a270b7716e4a94.webp",
+      "sha256": "333a05b9a3680f917de8f47fc12588700ad255b1a822f17f65a820a6d97c878e",
+      "bytes": 308370,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/45a270b7716e4a94.jpg",
+        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9737,
+        "psnr_db": 35.15,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-20",
+      "lineage_basis": "Master DISC-001-IMAGE-SAUNA-MASTER.png (perceptual match 0/256) is the credentialed DISC-001-IMAGE-SAUNA.jpeg (signed Google C2PA, validation state Valid, 26 Sep 2026: created by Google Generative AI from one input ingredient whose own chain is Google-signed to a creation with no ingredients; every ingredient credentialed) mirror-extended 16 px each side: centre 1376 px pixel-identical, edges reflected, no generative fill. Evidence: governance/c2pa-source-credentials/master-DISC-001-IMAGE-SAUNA.jpeg.c2pa.json and linkage-45a270b7716e4a94-sauna-master.json (read 20 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The deployed source JPEG already carries no embedded credential (the signed credential is on the master, recorded in the evidence file). The derivative carries NO signed credential and must never be described as having one."
+      }
+    },
+    {
       "asset": "assets/img/5e17a24f46cdab9e-960w.webp",
       "sha256": "d86cf8928f42867baba515f5a3994a0851bae9543339dfac464b7e510e4a9658",
       "bytes": 135756,
@@ -3927,6 +3981,60 @@
       },
       "made": "2026-10-19",
       "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from input ingredients that each carry a signed Google credential; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-e0d578046cd29bda.jpg.c2pa.json (read 19 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/fec77c3f0bae107a-960w.webp",
+      "sha256": "8fac2c47b94765a0ceb38127afdc45292f3c36cbfee5c6d4d3e54374cd62af32",
+      "bytes": 108644,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/fec77c3f0bae107a.jpg",
+        "sha256": "72b854817881f367c7737789feb98215c540ce9a4730fbbb6254510e0286daa3"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9632,
+        "psnr_db": 35.41,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-20",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-fec77c3f0bae107a.jpg.c2pa.json (read 20 Oct 2026).",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
+      }
+    },
+    {
+      "asset": "assets/img/fec77c3f0bae107a.webp",
+      "sha256": "b1d4a858d71604e6e1ed7a4f0b2330edfd212deb4467b12bc3e5ee3a804cef17",
+      "bytes": 205924,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/fec77c3f0bae107a.jpg",
+        "sha256": "72b854817881f367c7737789feb98215c540ce9a4730fbbb6254510e0286daa3"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9604,
+        "psnr_db": 35.95,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-20",
+      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI from one input ingredient that itself carries a signed Google credential with no further ingredients; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-fec77c3f0bae107a.jpg.c2pa.json (read 20 Oct 2026).",
       "content_credentials": {
         "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,

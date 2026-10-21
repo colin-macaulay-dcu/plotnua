@@ -1,0 +1,36 @@
+{
+ "what_this_is": "EVIDENCE ONLY (20 Oct 2026): how the deployed Garden Retreat sauna card image is linked to its credentialed source. It declares, classifies and grants nothing.",
+ "deployed": {
+  "asset": "assets/img/45a270b7716e4a94.jpg",
+  "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9",
+  "pixels": [
+   1408,
+   768
+  ]
+ },
+ "master": {
+  "file": "Images/Discoveries/DISC-001 Garden Retreat/DISC-001-IMAGE-SAUNA-MASTER.png",
+  "sha256": "5c7971f0a27e1c1ebf93a033878b6cfb95a9318e852e2535f8259914c2adfa58",
+  "pixels": [
+   1408,
+   768
+  ],
+  "embeds_c2pa": false,
+  "deployed_match": "perceptual, 16x16 average hash, Hamming 0 of 256"
+ },
+ "credentialed_source": {
+  "file": "Images/Discoveries/DISC-001 Garden Retreat/DISC-001-IMAGE-SAUNA.jpeg",
+  "sha256": "963e2d52192b942fe4dd35e6c770b764a1e9a0ef355a2104ffe1bf8cf4abd180",
+  "pixels": [
+   1376,
+   768
+  ],
+  "credentials": "master-DISC-001-IMAGE-SAUNA.jpeg.c2pa.json"
+ },
+ "master_from_source": {
+  "centre_1376px_max_abs_difference": 0,
+  "left_16px_is_mirror_of_source": true,
+  "right_16px_is_mirror_of_source": true,
+  "summary": "The master is the credentialed source mirror-extended 16 px each side: centre pixel-identical to the decoded source, edges reflected, no generative fill (the same construction as the Garden Retreat hero master)."
+ }
+}
