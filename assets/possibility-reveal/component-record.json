@@ -1,6 +1,6 @@
 {
  "schema": "plotnua.possibility-reveal.component.v1",
- "source": "PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01)",
+ "source": "PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01) and the H3 garden-layer stage (founder-approved H3, 20 Oct 2026; see h3_extend)",
  "source_sha256": {
   "index.html": "ea54fd5c0b21d664114048d022f5b1d6fb879d6fba5d7f9737df3599a28ec451",
   "assets/reveal.css": "e812ccf4a09607717c8310f16381d9aefff2a9db705c511bacfb0e098c74055a",
@@ -9,8 +9,13 @@
  },
  "outputs": {
   "assets/possibility-reveal/reveal.css": "528ecf1355f71bd21c48ae2063ee7b0f3f5193393ea532ba3ac42ae4d0206c76",
-  "assets/possibility-reveal/reveal.js": "364b7e493b18121aa963ed7a26e7246149f7cbd8ee73563e394d7e8fdc9b2040",
+  "assets/possibility-reveal/reveal.js": "2d90082c7134d9cdf28456a5b4fc2c712113dead7679e012af7c69de8f79b348",
   "assets/possibility-reveal/reveal-data.js": "71e43a2ce4f2ea7d2d6d3bc75f7cf69b6330f2086209c202248f5b0e500ebc18",
-  "assets/possibility-reveal/stage-snippet.part": "deabacd8cda78a371eeb8a1051917d17c9d2705b09aff31b8f722242eed59576"
- }
+  "assets/possibility-reveal/stage-snippet.part": "c76f90c11d8db4bf644291f6a15781dc0e4e8dc8734d98608177639c58b8c351"
+ },
+ "h3_extension": {
+  "assets/possibility-reveal/garden.css": "2853707343bf17057e937df554f9b97ca6b250ad6e89440a27d5ea863bf8109a",
+  "assets/possibility-reveal/garden.js": "11245a7b1f47c0c1b52b264157b34e47cd0ded6f64568678301a6975deb19954"
+ },
+ "h3_layers_record_sha256": "399a5f475f86c0786d790645c39ce78954416ccf517252ea1e88e2924a87196b"
 }

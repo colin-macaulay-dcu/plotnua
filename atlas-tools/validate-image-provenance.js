@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * THE IMAGE PROVENANCE GUARD · P1–P12
+ * THE IMAGE PROVENANCE GUARD · P1–P13
  * ====================================
  * Closes the blind spot at atlas-tools/validate-image-rights.js:395:
  *
@@ -40,6 +40,10 @@ const arg = (n, d) => {
 const ROOT = arg('root', dirname(HERE));
 const REGISTER = join(ROOT, 'image-provenance-records.json');
 const RIGHTS = join(ROOT, 'image-rights-manifest.json');
+/* H2, 20 Oct 2026: permission to ADAPT a supplier photograph into a composite.
+   Read only for the licensed-photography exception (P6, P10, P13) and to add
+   the licensed organisations to the names P6 and P10 protect. */
+const LICENCES = join(ROOT, 'image-adaptation-licences.json');
 
 let pass = 0, fail = 0;
 const ok  = (n, d) => { pass++; console.log(`  PASS  ${n}${d ? '  [' + d + ']' : ''}`); };
@@ -184,13 +188,123 @@ const derivatives = Array.isArray(reg.derivatives) ? reg.derivatives : [];
 const derivSet = new Map();
 for (const d of derivatives) if (d && d.asset) derivSet.set(d.asset, d);
 
-console.log('\nIMAGE PROVENANCE GUARD · P1–P12');
+/* STAGED COMPOSITES (H2, 20 Oct 2026). A locked composite whose provenance is
+   recorded BEFORE it is published. It names no asset path, so it can never
+   satisfy P1 for a file on a page: publishing it means moving it to records
+   with an asset, where every P-check applies. Checked by P6 and P13. */
+if (reg.staged_composites !== undefined && !Array.isArray(reg.staged_composites)) {
+  refuse('the register has a staged_composites field that is not an array');
+}
+const staged = Array.isArray(reg.staged_composites) ? reg.staged_composites : [];
+
+/* ── THE LICENSED-PHOTOGRAPHY EXCEPTION TO P6 AND P10 ──────────────────────
+   Founder decision, H2, 20 Oct 2026 (approved in principle at the L6 audit):
+   "a supplier name may sit beside the illustration ONLY as the required credit
+   of a granted, modification-permitting photo record bound to that asset."
+
+   P6 and P10 exist to stop an AI image passing as a real supplier's product.
+   A composite that really does contain a supplier's photographed product,
+   used with written permission to adapt it, is the one case where naming the
+   supplier is the honest thing to do -- as a credit, and as nothing else.
+
+   The exception is DERIVED, never claimed. A record qualifies only if every
+   licensed_photographic_elements entry resolves to the SAME licence in
+   image-adaptation-licences.json (NOT the rights manifest: a record there is
+   a hot-link host grant and a supplier listing record, and this is neither),
+   and that licence:
+     a. is a live grant in the gate's own vocabulary, not withdrawn;
+     b. says modification_permitted === true and carries a required credit;
+     c. points back at Atlas by its outreach ref and a PN-EVID evidence_ref;
+     d. enumerates the element's source photograph BY SHA-256, with
+        use 'adapted-into-composite' and bound_composite equal to this
+        record's composite_id;
+   and the composite_id is claimed by exactly one record or staged composite.
+   The provenance register holds only the POINTER (organisation_code +
+   atlas_permission_ref, as P4 does). It grants nothing: P11 still holds.
+
+   What it relaxes, and only for the bound organisation:
+     P6  a reference input that IS one of the bound source photographs (its
+         url, or a string carrying its sha256); depicts_named_product may be
+         true, because it truthfully is.
+     P10 the organisation's name beside the asset, but only inside its exact
+         required credit -- and that credit must then be present.
+   What it never relaxes: a prompt naming any supplier; any other
+   organisation; any other reference input; depicts_named_organisation. */
+const LIVE_GRANTS = ['Granted — Founder Confirmed',
+                     'Granted with Conditions — Founder Confirmed',
+                     'Granted — Supplier Confirmed (one-click)'];
+let licenceRows = [];
+if (existsSync(LICENCES)) {
+  try {
+    const d = JSON.parse(readFileSync(LICENCES, 'utf8'));
+    if (!Array.isArray(d.licences)) refuse('image-adaptation-licences.json has no licences array');
+    licenceRows = d.licences;
+  } catch (e) { refuse('image-adaptation-licences.json is not valid JSON: ' + e.message); }
+}
+let rightsRows = null;
+function readRightsRows() {
+  if (rightsRows !== null) return rightsRows;
+  rightsRows = [];
+  if (existsSync(RIGHTS)) {
+    try {
+      const d = JSON.parse(readFileSync(RIGHTS, 'utf8'));
+      rightsRows = Array.isArray(d) ? d
+        : (Object.values(d).find(v => Array.isArray(v) && v[0]
+                                      && typeof v[0] === 'object') || []);
+    } catch { rightsRows = []; }
+  }
+  return rightsRows;
+}
+const compositeClaims = new Map();
+for (const r of [...records, ...staged]) {
+  if (r && r.composite_id) compositeClaims.set(r.composite_id,
+    (compositeClaims.get(r.composite_id) || 0) + 1);
+}
+/* -> { ok:true, row, sources:[{url, sha256}] } or { ok:false, why } */
+function licensedBinding(r) {
+  const els = r && r.licensed_photographic_elements;
+  if (els === undefined) return { ok: false, none: true, why: 'no licensed elements' };
+  if (!Array.isArray(els) || !els.length) return { ok: false, why: 'licensed_photographic_elements is not a non-empty list' };
+  if (!r.composite_id) return { ok: false, why: 'no composite_id to bind to' };
+  if (compositeClaims.get(r.composite_id) !== 1) return { ok: false, why: `composite_id ${r.composite_id} is claimed ${compositeClaims.get(r.composite_id)} times` };
+  const rows = licenceRows;
+  let row = null;
+  const sources = [];
+  for (const e of els) {
+    const x = (e && e.rights_ref) || {};
+    const hits = rows.filter(w => w.organisation_code && w.organisation_code === x.organisation_code
+                                  && w.atlas_permission_ref === x.atlas_permission_ref);
+    if (hits.length !== 1) return { ok: false, why: `rights_ref ${x.organisation_code}/${x.atlas_permission_ref} resolves to ${hits.length} licences` };
+    if (row && hits[0] !== row) return { ok: false, why: 'elements bind to more than one licence' };
+    row = hits[0];
+    const a = (row.approved_assets || []).filter(s => s && s.sha256 && s.sha256 === e.source_sha256);
+    if (a.length !== 1) return { ok: false, why: `source ${String(e.source_sha256).slice(0, 12)} is not enumerated once in the grant` };
+    if (a[0].use !== 'adapted-into-composite') return { ok: false, why: `source ${a[0].id} is not granted for adaptation` };
+    if (a[0].bound_composite !== r.composite_id) return { ok: false, why: `source ${a[0].id} is bound to ${a[0].bound_composite}, not ${r.composite_id}` };
+    sources.push({ url: a[0].url, sha256: a[0].sha256 });
+  }
+  if (!LIVE_GRANTS.includes(row.permission_outcome) || row.withdrawal_effective_at) {
+    return { ok: false, why: `the grant is not live (${row.permission_outcome}${row.withdrawal_effective_at ? ', withdrawn' : ''})` };
+  }
+  if (row.modification_permitted !== true) return { ok: false, why: 'the grant does not permit modification' };
+  if (!row.required_credit || !row.organisation_name) return { ok: false, why: 'the grant carries no required credit' };
+  /* The licence file is PUBLIC (H2 founder review, 20 Oct 2026): it points
+     back at Atlas by its outreach ref and a non-sensitive evidence_ref, never
+     by correspondence identifiers. Both are still required. */
+  if (!row.atlas_permission_ref || !/^PN-EVID-[A-Z0-9-]+$/.test(String(row.evidence_ref || ''))) {
+    return { ok: false, why: 'the grant does not point back at Atlas and its evidence reference' };
+  }
+  return { ok: true, row, sources };
+}
+
+console.log('\nIMAGE PROVENANCE GUARD · P1–P13');
 console.log('='.repeat(74));
 console.log(`  pages scanned        ${pages}`);
 console.log(`  local images on them ${found.size}`);
 console.log(`  declared records     ${records.length}`);
 console.log(`  legacy undeclared    ${legacy.length}`);
 console.log(`  derivatives          ${derivatives.length}  (not counted in the backlog)`);
+console.log(`  staged composites    ${staged.length}  (locked, not published)`);
 console.log('-'.repeat(74));
 
 /* ── P1 · every local image on a published page is accounted for ──────── */
@@ -305,38 +419,54 @@ console.log('-'.repeat(74));
      from an unanswerable question into a recorded assertion a named person
      signed. The resemblance judgement stays human, and P5 requires that the
      human attestation exists. It cannot require that it is true. */
-  const ai = records.filter(r => r.class === 'AI_ILLUSTRATION');
+  /* Staged composites are held to the same rule as published records. */
+  const ai = [...records, ...staged].filter(r => r.class === 'AI_ILLUSTRATION');
   const orgs = new Set();
-  if (existsSync(RIGHTS)) {
-    try {
-      const d = JSON.parse(readFileSync(RIGHTS, 'utf8'));
-      const rows = Array.isArray(d) ? d
-        : (Object.values(d).find(v => Array.isArray(v) && v[0]
-                                      && typeof v[0] === 'object') || []);
-      for (const r of rows) {
-        if (r.organisation_name) orgs.add(String(r.organisation_name).toLowerCase());
-        if (r.permitted_domain) orgs.add(String(r.permitted_domain).toLowerCase());
-      }
-    } catch { /* orgs stays empty; reported below */ }
+  /* An enumerated supplier photograph, by url or sha256, is a supplier
+     reference input wherever it is hosted (H2: TimberIN's photographs live on
+     woodenhottubsale.co.uk, which is not its permitted_domain). */
+  const supplierPhotos = [];
+  for (const r of [...readRightsRows(), ...licenceRows]) {
+    if (r.organisation_name) orgs.add(String(r.organisation_name).toLowerCase());
+    if (r.permitted_domain) orgs.add(String(r.permitted_domain).toLowerCase());
+    if (r.organisation_domain) orgs.add(String(r.organisation_domain).toLowerCase());
+    for (const a of (Array.isArray(r.approved_assets) ? r.approved_assets : [])) {
+      if (a && a.url) supplierPhotos.push(String(a.url).toLowerCase());
+      if (a && a.sha256) supplierPhotos.push(String(a.sha256).toLowerCase());
+    }
   }
   const problems = [];
   for (const r of ai) {
+    const id = r.asset || r.composite_id;
+    const b = licensedBinding(r);
+    if (!b.ok && !b.none) problems.push(`${id}: licensed-photography binding fails: ${b.why}`);
+    const boundOrg = b.ok ? new Set([String(b.row.organisation_name).toLowerCase(),
+                                     String(b.row.organisation_domain || '').toLowerCase()]) : new Set();
+    const boundSrc = b.ok ? b.sources.flatMap(s => [String(s.url || '').toLowerCase(),
+                                                    String(s.sha256).toLowerCase()]).filter(Boolean) : [];
     const prompt = String(r.prompt || '').toLowerCase();
     for (const o of orgs) {
       if (o.length > 3 && prompt.includes(o)) {
-        problems.push(`${r.asset}: prompt names ${o}`);
+        problems.push(`${id}: prompt names ${o}`);          // never excepted
       }
     }
     for (const src of (r.reference_inputs || [])) {
       const s = String(src).toLowerCase();
+      /* Excepted ONLY if the input is itself one of the bound photographs. */
+      const isBound = boundSrc.some(x => s === x || (x.length === 64 && s.includes(x)));
       for (const o of orgs) {
-        if (o.includes('.') && s.includes(o)) {
-          problems.push(`${r.asset}: reference input from ${o}`);
+        if (o.includes('.') && s.includes(o) && !(isBound && boundOrg.has(o))) {
+          problems.push(`${id}: reference input from ${o}`);
         }
       }
+      if (!isBound && supplierPhotos.some(x => s.includes(x))) {
+        problems.push(`${id}: reference input is an enumerated supplier photograph`);
+      }
     }
-    if (r.depicts_named_product !== false) problems.push(`${r.asset}: depicts_named_product not false`);
-    if (r.depicts_named_organisation !== false) problems.push(`${r.asset}: depicts_named_organisation not false`);
+    if (r.depicts_named_product !== false && !(b.ok && r.depicts_named_product === true)) {
+      problems.push(`${id}: depicts_named_product not false`);
+    }
+    if (r.depicts_named_organisation !== false) problems.push(`${id}: depicts_named_organisation not false`);
   }
   const note = orgs.size
     ? `${orgs.size} organisation names and domains checked`
@@ -372,6 +502,28 @@ console.log('-'.repeat(74));
           `cardAvailable=${cardIsAvailable} problems=${problems.length}`);
 }
 
+/* H3 (20 Oct 2026): the labels of a LICENSED PHOTOGRAPHIC COMPOSITE. Such an
+   image is not only AI-generated, so the generic AI label would understate it.
+   Its record carries a visible caption and an accessible disclosure, and they
+   qualify only if, against the licence the record is bound to:
+     - the caption contains the licence's required credit exactly and says
+       it is an illustration;
+     - the disclosure says "AI-generated", says photography, names the
+       licensed organisation, and is no longer than 200 characters.
+   Returns { ok, caption, disclosure } or { ok:false, why }. */
+function compositeLabels(r, b) {
+  const cap = String(r.visible_caption || ''), dis = String(r.accessible_disclosure || '');
+  if (!cap || !dis) return { ok: false, why: 'no visible_caption and accessible_disclosure' };
+  if (!cap.includes(String(b.row.required_credit))) return { ok: false, why: 'the caption does not carry the exact credit' };
+  if (!/illustrat/i.test(cap)) return { ok: false, why: 'the caption does not say it is an illustration' };
+  if (!dis.includes('AI-generated') || !/photograph/i.test(dis) || !dis.includes(String(b.row.organisation_name))) {
+    return { ok: false, why: 'the disclosure does not say AI-generated, photography and whose' };
+  }
+  if (dis.length > 200) return { ok: false, why: 'the disclosure is longer than 200 characters' };
+  return { ok: true, caption: cap, disclosure: dis };
+}
+const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ');
+
 /* ── P8 · a declared AI illustration carries its visible label ────────── */
 {
   /* The founder held the page captions back until records exist. So this
@@ -390,6 +542,20 @@ console.log('-'.repeat(74));
     for (const r of ai) {
       const onPages = found.get(r.asset);
       if (!onPages) continue;              // declared but not published: fine
+      /* H3: a licensed photographic composite carries its own two labels
+         instead; the generic AI label alone is not enough for it. */
+      const b = licensedBinding(r);
+      if (!b.none) {
+        if (!b.ok) { missing.push(`${r.asset}: licensed binding fails (${b.why})`); continue; }
+        const lab = compositeLabels(r, b);
+        if (!lab.ok) { missing.push(`${r.asset}: ${lab.why}`); continue; }
+        for (const page of onPages) {
+          const text = pageText(readFileSync(join(ROOT, page), 'utf8'));
+          if (!text.includes(lab.caption)) missing.push(`${r.asset} on ${page}: visible caption missing`);
+          if (!text.includes(lab.disclosure)) missing.push(`${r.asset} on ${page}: accessible disclosure missing`);
+        }
+        continue;
+      }
       for (const page of onPages) {
         const html = readFileSync(join(ROOT, page), 'utf8');
         if (!html.includes(expected)) missing.push(`${r.asset} on ${page}`);
@@ -435,6 +601,7 @@ console.log('-'.repeat(74));
         orgNames = rows.map(r => r.organisation_name).filter(Boolean);
       } catch { /* empty */ }
     }
+    for (const l of licenceRows) if (l.organisation_name) orgNames.push(l.organisation_name);
     for (const r of ai) {
       for (const page of (found.get(r.asset) || [])) {
         const html = readFileSync(join(ROOT, page), 'utf8');
@@ -444,8 +611,26 @@ console.log('-'.repeat(74));
         const i = html.indexOf(r.asset);
         if (i === -1) continue;
         const win = html.slice(Math.max(0, i - 1200), i + 1200);
+        /* The licensed-photography exception: the bound organisation's name
+           may appear ONLY inside its exact required credit, and that credit
+           must then be there. Every other organisation is refused as before. */
+        const b = licensedBinding(r);
+        if (!b.ok && !b.none) problems.push(`${r.asset}: licensed-photography binding fails: ${b.why}`);
+        const credit = b.ok ? String(b.row.required_credit) : null;
+        if (credit && !win.includes(credit)) {
+          problems.push(`${r.asset} on ${page} lacks its required credit "${credit}"`);
+        }
+        /* ...and inside its approved accessible disclosure, which P8 holds to
+           its own rules (H3). */
+        const lab = b.ok ? compositeLabels(r, b) : { ok: false };
         for (const o of orgNames) {
-          if (o.length > 3 && win.includes(o)) {
+          if (o.length <= 3) continue;
+          let seen = win;
+          if (credit && o === b.row.organisation_name) {
+            seen = seen.split(credit).join(' ');
+            if (lab.ok) seen = seen.split(lab.disclosure).join(' ');
+          }
+          if (seen.includes(o)) {
             problems.push(`${r.asset} on ${page} sits beside ${o}`);
           }
         }
@@ -577,6 +762,86 @@ console.log('-'.repeat(74));
           `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
     : ok('P12 every derivative is hash-bound to an unchanged source and never outgrows it',
          derivatives.length ? `${derivatives.length} checked` : 'no derivatives yet; the check is live');
+}
+
+/* ── P13 · a staged composite is declared, bound, unpublished, and on the
+         authoritative lock chain ─────────────────────────────────────── */
+{
+  /* Added H2, 20 Oct 2026. A staged composite is a locked image recorded
+     before publication. Conditions:
+       a. fully declared as P5 requires of a published AI_ILLUSTRATION;
+       b. names no asset path, so nothing on a page can be accounted for by
+          it (publishing it means moving it to records, under every check);
+       c. its composite_id is unique and not also a published record's;
+       d. any licensed photographic elements bind (licensedBinding);
+       e. its master is the ACTIVE master of possibility_reveal_lock_chain,
+          the chain names L3 v2.1c by hash, and no superseded L3 version is
+          the active one. The pixels themselves are verified offline by
+          atlas-tools/verify-possibility-reveal-locks.py against the lock
+          repository, which holds the images this tree must not carry. */
+  const problems = [];
+  const chain = reg.possibility_reveal_lock_chain;
+  const ids = new Set();
+  for (const s of staged) {
+    const id = (s && s.composite_id) || '(no composite_id)';
+    if (!s || !s.composite_id) problems.push('a staged composite has no composite_id');
+    if (ids.has(id)) problems.push(`${id} staged twice`);
+    ids.add(id);
+    if (s && 'asset' in s) problems.push(`${id}: names an asset; a published image belongs in records`);
+    if (records.some(r => r.composite_id === id)) problems.push(`${id}: is also a published record`);
+    if (!ASSET_CLASSES.includes(s && s.class)) problems.push(`${id}: unrecognised class`);
+    const g = (s && s.generated) || {};
+    if (!g.tool || !/^\d{4}-\d{2}-\d{2}$/.test(String(g.date || ''))) problems.push(`${id}: generation not declared`);
+    if (!s || !String(s.prompt || '').trim()) problems.push(`${id}: no prompt`);
+    if (!s || !Array.isArray(s.reference_inputs)) problems.push(`${id}: reference_inputs absent, not []`);
+    const hr = (s && s.human_review) || {};
+    if (!hr.reviewer || !hr.date || !hr.attests) problems.push(`${id}: no named human review`);
+    const b = licensedBinding(s);
+    if (!b.ok && !b.none) problems.push(`${id}: ${b.why}`);
+    const m = (s && s.master) || {};
+    if (!chain || typeof chain !== 'object') { problems.push(`${id}: no possibility_reveal_lock_chain to check against`); continue; }
+    const am = chain.active_master || {};
+    if (!/^[0-9a-f]{64}$/.test(String(am.pixel_sha256 || ''))) problems.push('the lock chain has no active master pixel hash');
+    if (m.pixel_sha256 !== am.pixel_sha256) problems.push(`${id}: master ${String(m.pixel_sha256).slice(0, 12)} is not the active master ${String(am.pixel_sha256).slice(0, 12)}`);
+    const L3 = (chain.active_layers || {}).L3 || {};
+    const sup = ((chain.superseded || {}).L3_v2 || {});
+    if (L3.version !== 'v2.1c' || !/^[0-9a-f]{64}$/.test(String(L3.sha256 || ''))) problems.push('the lock chain does not name L3 v2.1c by hash');
+    if (!sup.sha256 || L3.sha256 === sup.sha256) problems.push('the superseded L3 v2 is the active L3, or is not recorded');
+    const steps = Array.isArray(chain.chain) ? chain.chain : [];
+    if (!steps.some(c => c.layer_sha256 === L3.sha256)) problems.push('the chain does not apply the active L3 layer');
+    if (steps.some(c => c.layer_sha256 === sup.sha256)) problems.push('the chain applies the superseded L3 v2 layer');
+    const last = steps[steps.length - 1] || {};
+    if (last.output_sha256 !== am.sha256) problems.push('the chain does not end at the active master');
+  }
+  /* H3 (20 Oct 2026): PUBLISHED Reveal layers stay on the lock chain too.
+       f. a record with reveal_layer names the layer's LOCKED file by hash: the
+          chain's active layer for L3 / L5 / L6 (L3 must be v2.1c, never the
+          superseded v2), or the locked layer carried in the base for L4;
+       g. a published composite (composite_id) names the ACTIVE master. */
+  if (chain && typeof chain === 'object') {
+    const act = chain.active_layers || {}, inBase = chain.locked_layers_in_base || {};
+    const supL3 = ((chain.superseded || {}).L3_v2 || {}).sha256;
+    for (const r of records) {
+      const rl = r.reveal_layer;
+      if (rl) {
+        const want = (act[rl.id] || {}).sha256 || (inBase[rl.id] || {}).sha256;
+        if (!want) problems.push(`${r.asset}: ${rl.id} is not a layer of the lock chain`);
+        else if (rl.layer_sha256 !== want) problems.push(`${r.asset}: ${rl.id} is not the locked layer`);
+        if (rl.id === 'L3' && ((act.L3 || {}).version !== 'v2.1c' || rl.layer_sha256 === supL3)) problems.push(`${r.asset}: L3 is not v2.1c`);
+      }
+      if (r.composite_id) {
+        const m = r.master || {};
+        if (m.pixel_sha256 !== (chain.active_master || {}).pixel_sha256) problems.push(`${r.asset}: composite master is not the active master`);
+      }
+    }
+  } else if (records.some(r => r.reveal_layer || r.composite_id)) {
+    problems.push('published Reveal layers but no possibility_reveal_lock_chain');
+  }
+  problems.length
+    ? bad('P13 every Reveal layer and composite, staged or published, is on the active lock chain',
+          `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
+    : ok('P13 every Reveal layer and composite, staged or published, is on the active lock chain',
+         `${staged.length} staged, ${records.filter(r => r.reveal_layer).length} published Reveal layer(s) on the chain`);
 }
 
 /* ── the backlog, visible on every run ────────────────────────────────── */

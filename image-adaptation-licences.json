@@ -1,0 +1,75 @@
+{
+  "schema": "plotnua.image-adaptation-licences.v1",
+  "source_of_record": "Atlas Core · Image Permission Outreach",
+  "what_this_is": "WRITTEN PERMISSION TO ADAPT A SUPPLIER'S PHOTOGRAPH INTO A PLOTNUA COMPOSITE (H2, 20 Oct 2026). A different thing from image-rights-records.json, which records HOST grants for hot-linked, unmodified supplier imagery and doubles as the supplier listing record. A licence here: (1) enumerates each source photograph by SHA-256; (2) binds each to exactly one composite (bound_composite); (3) says whether modification is permitted; (4) names the credit that must sit beside the composite. It authorises no hot-linking, no re-hosting of the photograph itself, and no listing.",
+  "governance": "Atlas is the source of record: record the permission in Image Permission Outreach first, then here with its outreach ref and a non-sensitive evidence_ref. THIS FILE IS PUBLIC: it carries only what is needed to establish and validate the permission. Correspondence identifiers, contact addresses and quoted correspondence stay private in Atlas, where the evidence_ref resolves to them (Image Permission Outreach notes). permission_outcome uses the rights gate's own vocabulary; a withdrawal (a changed outcome or a withdrawal_effective_at) breaks the binding in the provenance guard at once (P6, P10, P13). atlas-tools/prove-timberin-containment.mjs (T5) refuses this file if it carries a contact address, a correspondence identifier, an Atlas internal id or quoted correspondence.",
+  "read_by": [
+    "atlas-tools/validate-image-provenance.js (the licensed-photography exception to P6 and P10; P13)",
+    "atlas-tools/prove-timberin-containment.mjs"
+  ],
+  "not_read_by": [
+    "atlas-tools/validate-image-rights.js (the rights gate)",
+    "atlas-tools/publication-gate.mjs and the Results / wellness / Additional Home generators"
+  ],
+  "licences": [
+    {
+      "organisation_code": "ORG-000179",
+      "organisation_name": "TimberIN",
+      "organisation_domain": "timberin.com",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permission_date": "2026-10-20",
+      "permission_form": "written, by the supplier",
+      "atlas_permission_ref": "L6-TIMBERIN-TWO-PHOTOS-20261019",
+      "evidence_ref": "PN-EVID-L6-TIMBERIN-20261020",
+      "modification_permitted": true,
+      "hotlinking_permitted": false,
+      "required_credit": "Hot tub: TimberIN",
+      "credit_link": "https://www.timberin.com/",
+      "scope": "Two photographs, adapted (size, angle, colour, lighting) into one PlotNua garden illustration, published on plotnua.ie and PlotNua's social channels. Nothing else.",
+      "conditions": [
+        "Only the two photographs enumerated below, each only as an element of the composite named in bound_composite.",
+        "Neither photograph is published on its own, hot-linked or re-hosted unmodified.",
+        "The hot tub's design is not changed.",
+        "Credit 'Hot tub: TimberIN' with a working link to https://www.timberin.com/ wherever the composite appears.",
+        "Labelled as an illustration; no wording implies endorsement by TimberIN.",
+        "TimberIN is sent the link once the image is published."
+      ],
+      "approved_assets": [
+        {
+          "id": "TIMBERIN-PHOTO-A",
+          "kind": "photograph",
+          "element": "the hot tub: staves, water, cup crate, steel lid, perforated stove guard, flue pipe, collar and hooded cap",
+          "url": "https://www.woodenhottubsale.co.uk/wp-content/uploads/2005/01/Outdoor-jacuzzi-hot-tub-wood-fired-4-6-persons-with-snorkel-burner-4-2.jpg",
+          "sha256": "f6d930604775dbdce06239b83225cf690abf41afb68a00aa06ec9130a3c978ab",
+          "bytes": 517897,
+          "pixels": [
+            1320,
+            880
+          ],
+          "use": "adapted-into-composite",
+          "bound_composite": "possibility-reveal-L6"
+        },
+        {
+          "id": "TIMBERIN-PHOTO-B",
+          "kind": "photograph",
+          "element": "the chimney smoke only",
+          "url": "https://www.woodenhottubsale.co.uk/wp-content/uploads/2005/01/Wood-burning-hot-tub-Wellness-Royal-1-6.jpeg",
+          "sha256": "3929ec716f1f8b4bc8ece609c7b1574139627e810f61106b2d860e7c57672ebf",
+          "bytes": 620672,
+          "pixels": [
+            1134,
+            2016
+          ],
+          "use": "adapted-into-composite",
+          "bound_composite": "possibility-reveal-L6"
+        }
+      ],
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "approved_count": 2,
+        "default_for_unlisted": "NOT_AUTHORISED"
+      },
+      "listing_effect": "NONE. Not a listing permission and never read as one."
+    }
+  ]
+}

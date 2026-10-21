@@ -39,6 +39,7 @@ const GUARD = join(HERE, 'validate-image-provenance.js');
 const REGISTER = join(ROOT, 'image-provenance-records.json');
 const RIGHTS = join(ROOT, 'image-rights-manifest.json');
 const GATE = join(HERE, 'validate-image-rights.js');
+const LICENCES = join(ROOT, 'image-adaptation-licences.json');
 
 for (const f of [GUARD, REGISTER, RIGHTS, GATE]) {
   if (!existsSync(f)) {
@@ -78,6 +79,11 @@ const AI_LABEL = realReg.labels.AI_ILLUSTRATION;
 function syntheticRegister() {
   const reg = JSON.parse(JSON.stringify(realReg));
   reg.legacy_undeclared = reg.legacy_undeclared.filter(e => e.asset !== anAsset.asset);
+  /* H3, 20 Oct 2026: the real records are replaced below, so a real derivative
+     whose source is a real RECORD (the half-size Reveal layer tiles) has no
+     source in this synthetic register. Only backlog-sourced derivatives stay. */
+  reg.derivatives = (reg.derivatives || []).filter(d => reg.legacy_undeclared
+    .some(e => d && d.derived_from && e.asset === d.derived_from.asset));
   reg.records = [
     {
       asset: anAsset.asset,
@@ -172,6 +178,10 @@ function tree({ regEdit = null, pageOpts = {}, gateEdit = null,
   }
 
   if (!omitRights) copyFileSync(RIGHTS, join(dir, 'image-rights-manifest.json'));
+  /* H2, 20 Oct 2026: the real register now carries a staged composite bound
+     to an adaptation licence. The licence travels with the register, or the
+     control would (correctly) fail for a missing binding. */
+  if (existsSync(LICENCES)) copyFileSync(LICENCES, join(dir, 'image-adaptation-licences.json'));
   let gate = readFileSync(GATE, 'utf8');
   if (gateEdit) gate = gateEdit(gate);
   writeFileSync(join(dir, 'atlas-tools', 'validate-image-rights.js'), gate);

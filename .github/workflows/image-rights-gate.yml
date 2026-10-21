@@ -161,6 +161,25 @@ jobs:
       - name: Prove the provenance guard can actually refuse
         run: node atlas-tools/prove-image-provenance-capability.mjs
 
+      # THE LICENSED-PHOTOGRAPHY EXCEPTION (H2, 20 Oct 2026, founder decision).
+      # P6 and P10 admit a supplier's name beside a composite ONLY as the
+      # required credit of a live, modification-permitting grant that
+      # enumerates the source photographs by SHA-256 and binds them to that
+      # one composite; since H3 also its own visible caption and accessible
+      # disclosure (P8) and the lock chain (P13). Forty-six ways of breaking
+      # that must each refuse.
+      - name: Prove the licensed-photography exception stays narrow
+        run: node atlas-tools/prove-licensed-composite-exception.mjs
+
+      # TIMBERIN CONTAINMENT. TimberIN granted two photographs, adapted into one
+      # composite, recorded in image-adaptation-licences.json and deliberately
+      # NOT in the rights records (where it would be a hot-link host grant and
+      # would change TimberIN's Results listing basis). This keeps it that way
+      # and refuses any hot-linked or re-hosted TimberIN image, with its own
+      # capability proof.
+      - name: TimberIN imagery stays two photographs inside one composite
+        run: node atlas-tools/prove-timberin-containment.mjs
+
       # THE SUPPLIER PUBLICATION GATE. Separate concern, separate name: this
       # one decides whether a supplier may appear in public Results at all,
       # and holds BIOBUILDS while its corrected listing is under review.
@@ -309,6 +328,9 @@ jobs:
           set -euo pipefail
           python3 atlas-tools/build-possibility-reveal-component.py --check
           python3 atlas-tools/build-possibility-reveal-images.py --check
+          # H3: the lazily loaded garden-layer tiles (L3 v2.1c, L4, L5, L6) match
+          # their record and were built from the authoritative lock chain.
+          python3 atlas-tools/build-possibility-reveal-layers.py --check
 
       - name: The shared identity layer stays reversible, scoped and equal to the homepage
         run: |

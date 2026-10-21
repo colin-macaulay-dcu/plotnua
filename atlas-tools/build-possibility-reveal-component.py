@@ -21,6 +21,17 @@ copy, drawings and data are copied byte-for-byte except for these isolation chan
   8. ONE founder-approved wording change (19 Oct 2026, PN-FDR-2026-10-19-01, standard 3):
      the legend note "...not part of the photograph." reads "...not part of the picture."
      The scene is an AI-generated illustration, so it is not called a photograph.
+  10. H3 GARDEN LAYERS (founder-approved H3, 20 Oct 2026), applied by h3_extend() below as
+     anchored, counted edits after the mechanical transform:
+       - the "Grow a garden room / Borrow a garden / Hold a treehouse / Become a retreat" chips
+         become switches (aria-pressed); "Be renewed" and "Make its own energy" are unchanged;
+       - the four locked garden layers (L3 v2.1c, L4, L5, L6) are mounted as <template>s, so
+         nothing is downloaded until a layer is switched on (first paint and LCP unchanged);
+       - the TimberIN credit and the founder-approved accessible disclosure sit beside L6;
+       - reveal.js gains ONE hook, PN_REVEAL_API.frame(view), so a layer can be framed through
+         the Reveal's own camera (beacons, lens, resize and Close keep working);
+       - behaviour for the layers lives in garden.js / garden.css, hash-bound in the record.
+     The tile files are made by build-possibility-reveal-layers.py from the lock chain.
 Images are NOT made here: see build-possibility-reveal-images.py.
 
   python3 atlas-tools/build-possibility-reveal-component.py --source PROTOTYPE_DIR   build + mount
@@ -38,6 +49,85 @@ IDS = ['pn','stage','cam','photo','hidden','sc-ground','sc-wind','sc-compute','l
 KF = ['flow','spin','blink','ping','rise']
 P = 'pr-'
 def rd(p): return open(os.path.join(SRC, p), encoding='utf-8').read()
+
+# ---------------- H3 · garden layers (L3–L6) ----------------
+GARDEN = [('L3', 'Grow a garden room'), ('L4', 'Borrow a garden'), ('L5', 'Hold a treehouse'), ('L6', 'Become a retreat')]
+CREDIT = 'Hot tub: TimberIN'
+CREDIT_LINK = 'https://www.timberin.com/'
+VISIBLE_CAPTION = 'Garden possibilities illustrated. Hot tub: TimberIN.'
+DISCLOSURE = 'This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.'
+def layers_record():
+    return json.load(open(os.path.join(ROOTDIR, 'assets/possibility-reveal/layers/layers.json'), encoding='utf-8'))
+def h3_tpl(rec, lid):
+    L = rec['layers'][lid]; x, y, w, h = L['bbox_2752']
+    names = list(L['files']); full = [n for n in names if not n.endswith('-half.webp')][0]; half = [n for n in names if n.endswith('-half.webp')][0]
+    fw = L['files'][full]['pixels']; hw = L['files'][half]['pixels']
+    d = 'assets/possibility-reveal/layers/'
+    sprite = ' g-sprite' if lid == 'L6' else ''
+    return ('<template data-layer="%s"><div class="g-layer%s" data-layer="%s" style="left:%dpx;top:%dpx;width:%dpx;height:%dpx">'
+            '<img src="%s%s" srcset="%s%s %dw, %s%s %dw" sizes="%dpx" width="%d" height="%d" alt="" decoding="async"></div></template>'
+            % (lid, sprite, lid, x, y, w, h, d, full, d, half, hw[0], d, full, fw[0], w, fw[0], fw[1]))
+def h3_extend(js, body):
+    rec = layers_record()
+    def one(t, a, b):
+        assert t.count(a) == 1, ('h3 anchor', t.count(a), a[:80]); return t.replace(a, b)
+    # JS: one camera hook, and the entry view may be re-framed by a garden layer
+    js = one(js, '  var ENTRY_VIEW = { d: [1376, 820, 1], m: [1000, 800, 1] };\n',
+             '  var ENTRY_VIEW = { d: [1376, 820, 1], m: [1000, 800, 1] };\n'
+             '  var FRAME = null;   /* H3: a garden layer may re-frame the entry view (PN_REVEAL_API.frame) */\n'
+             '  var entryView = function () { return FRAME || ENTRY_VIEW; };\n')
+    js = one(js, '    camera(pick(ENTRY_VIEW)); placeBeacons(); setActive(null); restLens(); showPaths();',
+             '    camera(pick(entryView())); placeBeacons(); setActive(null); restLens(); showPaths();')
+    js = one(js, '      if (state.mode === "entry") { camera(pick(ENTRY_VIEW), true); placeBeacons(); setLens(lensPos.x, lensPos.y); }',
+             '      if (state.mode === "entry") { camera(pick(entryView()), true); placeBeacons(); setLens(lensPos.x, lensPos.y); }')
+    # H3 final review (21 Oct 2026): a frame may name where the lens rests while it is active
+    # (`lens`, picture px); without it the lens rests on the ground beacon exactly as before
+    js = one(js, '  var entryView = function () { return FRAME || ENTRY_VIEW; };\n',
+             '  var entryView = function () { return FRAME || ENTRY_VIEW; };\n'
+             '  var restAt = function () { return (FRAME && FRAME.lens) || BEACON.ground; };   /* H3: where the lens rests */\n')
+    js = one(js, '  function restLens() { setLens.apply(null, toScreen(pick(BEACON.ground))); }',
+             '  function restLens() { setLens.apply(null, toScreen(pick(restAt()))); }')
+    js = one(js, '    var p = toScreen(pick(BEACON.ground)); easeLensTo(p[0], p[1], 600);',
+             '    var p = toScreen(pick(restAt())); easeLensTo(p[0], p[1], 600);')
+    js = one(js, '  window.PN_REVEAL_API = { play: play, home: home, state: state };   // for automated checks only',
+             '  /* H3: frame a garden layer through this camera; null returns to the whole property.\n'
+             '     If the frame names its own lens resting place, the lens goes there, and when that\n'
+             '     ends it returns exactly to where it was before; otherwise it stays where it is. */\n'
+             '  var lensHome = null;\n'
+             '  function frame(v, instant) {\n'
+             '    var own0 = !!(FRAME && FRAME.lens);\n'
+             '    FRAME = v || null;\n'
+             '    if (state.mode !== "entry") return;\n'
+             '    stopGlide(); showPaths();\n'
+             '    camera(pick(entryView()), instant); placeBeacons();\n'
+             '    var own1 = !!(FRAME && FRAME.lens);\n'
+             '    if (own1 && !dragging) { if (!own0) lensHome = [lensPos.x, lensPos.y]; restLens(); }\n'
+             '    else if (own0 && !own1 && lensHome && !dragging) { setLens(lensHome[0], lensHome[1]); lensHome = null; }\n'
+             '    else setLens(lensPos.x, lensPos.y);\n'
+             '  }\n'
+             '  window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame };   // play/home/state: automated checks; frame: garden.js')
+    # markup: the four garden chips become switches
+    nav_old = body[body.index('<nav class="layers" id="pr-layers"'):body.index('</nav>') + len('</nav>')]
+    for lid, label in GARDEN: assert nav_old.count('<span class="lay">%s</span>' % label) == 1, ('chip', label)
+    nav = nav_old.replace(' tabindex="0" aria-label="Other possibilities for this property (other layers are not part of this prototype)"',
+                          ' aria-label="Possibilities for this property: switch a garden layer on or off"')
+    assert nav != nav_old
+    for lid, label in GARDEN:
+        extra = ' aria-describedby="pr-gardenNote"' if lid == 'L6' else ''
+        nav = nav.replace('<span class="lay">%s</span>' % label,
+                          '<button type="button" class="lay lay-btn" data-layer="%s" aria-pressed="false"%s>%s</button>' % (lid, extra, label))
+    body = one(body, nav_old, nav)
+    # L3, L4, L5 sit directly on the picture; L6 last in the camera, beside its credit
+    pic_end = '      </picture>\n'
+    body = one(body, pic_end, pic_end + '\n      <!-- H3 · GARDEN LAYERS: locked L3–L5, nothing is fetched until switched on -->\n'
+               + ''.join('      %s\n' % h3_tpl(rec, lid) for lid in ('L3', 'L4', 'L5')))
+    cam_end = '    </div>\n\n    <div class="veil" aria-hidden="true"></div>'
+    credit = ('    <p class="garden-credit" id="pr-gardenCredit" hidden>Garden possibilities illustrated. '
+              '<a href="%s">%s</a>.<span class="sr-only" id="pr-gardenNote"> %s</span></p>\n'
+              '    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>\n' % (CREDIT_LINK, CREDIT, DISCLOSURE))
+    body = one(body, cam_end, '      <!-- H3 · GARDEN LAYER L6: locked L6 (sauna, hot tub and smoke; licensed photography), fetched only when switched on -->\n'
+               '      %s\n' % h3_tpl(rec, 'L6') + '    </div>\n' + credit + '\n    <div class="veil" aria-hidden="true"></div>')
+    return js, body
 def transform():
     global css, js, data, snippet
 
@@ -150,6 +240,7 @@ def transform():
     # the noscript sits inside the component root
     nos = body[body.index('<noscript>'):]; body = body[:body.index('<noscript>')].rstrip()
     assert body.endswith('</div>'); body = body[:-len('</div>')] + '  ' + nos + '\n</div>'
+    js, body = h3_extend(js, body)
     snippet = '<!-- POSSIBILITY REVEAL · L2B v2 component (generated by build_reveal_component.py; do not hand-edit) -->\n' + body + '\n<!-- /POSSIBILITY REVEAL -->'
 
     return {'assets/possibility-reveal/reveal.css': css, 'assets/possibility-reveal/reveal.js': js,
@@ -157,6 +248,7 @@ def transform():
 
 ROOTDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORD = os.path.join(ROOTDIR, 'assets/possibility-reveal/component-record.json')
+H3_FILES = ['assets/possibility-reveal/garden.css', 'assets/possibility-reveal/garden.js']
 RESERVED = ['heroFrame','heroPhoto','heroCardsDock','heroCopy','heroWordmark','brandMark','atlasFigures','dCarousel',
             'pn-main','top','discover','research','libInfoBtn','libInfo','continuePanel','pnsOpen']
 def sha(t): return hashlib.sha256(t.encode('utf-8') if isinstance(t, str) else t).hexdigest()
@@ -204,6 +296,65 @@ def guard():
     if re.search(r'document\.(getElementById|querySelectorAll?)\((?!"\[data-pr-root\]")', js_t): bad.append('the script looks up elements outside its root')
     if 'commerceEnabled: false' not in data_t: bad.append('commerce is not hard-disabled')
     if re.search(r'status:\s*"active"', data_t): bad.append('an offer is active')
+    bad += h3_guard(rec, snip, js_t, index)
+    return bad
+
+def h3_guard(rec, snip, js_t, index):
+    """H3 · the garden layers stay lazy, credited, scoped and on the lock chain."""
+    bad = []
+    ext = rec.get('h3_extension') or {}
+    for p in H3_FILES:
+        t = open(os.path.join(ROOTDIR, p), encoding='utf-8').read()
+        if sha(t) != ext.get(p): bad.append(p + ' differs from its record (hand-edited?)')
+    lj = open(os.path.join(ROOTDIR, 'assets/possibility-reveal/layers/layers.json'), encoding='utf-8').read()
+    if sha(lj) != rec.get('h3_layers_record_sha256'): bad.append('the layer record changed without a component rebuild')
+    lrec = json.loads(lj)
+    for lid, label in GARDEN:
+        if snip.count('<template data-layer="%s">' % lid) != 1: bad.append('garden layer %s is not mounted exactly once as a template' % lid)
+        if snip.count('data-layer="%s" aria-pressed="false"' % lid) != 1: bad.append('the %s chip is not a switch' % label)
+        for f in lrec['layers'][lid]['files']:
+            if snip.count('assets/possibility-reveal/layers/' + f) < 1: bad.append(f + ' is not referenced')
+    # every tile reference sits inside a <template>: nothing loads before a layer is switched on
+    outside = re.sub(r'<template\b.*?</template>', '', snip, flags=re.S)
+    if 'assets/possibility-reveal/layers/' in outside: bad.append('a garden tile is referenced outside a <template> (it would load with the page)')
+    if 'href="assets/possibility-reveal/layers/' in index or 'rel="preload"' in snip: bad.append('a garden tile is preloaded')
+    if re.search(r'<link[^>]+layers/garden-', index): bad.append('a garden tile is linked from the page head')
+    # credit and disclosure, exact, beside L6 only
+    if snip.count('<a href="%s">%s</a>' % (CREDIT_LINK, CREDIT)) != 1: bad.append('the TimberIN credit is not present exactly once, linked to timberin.com')
+    plain = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', snip))
+    if VISIBLE_CAPTION not in plain: bad.append('the approved visible caption is missing')
+    if DISCLOSURE not in plain: bad.append('the approved accessible disclosure is missing')
+    i6 = snip.index('<template data-layer="L6">'); ic = snip.index(CREDIT)
+    if not (0 < ic - i6 < 1200): bad.append('the credit does not sit directly beside the L6 layer')
+    for lid in ('L3', 'L4', 'L5'):
+        if abs(ic - snip.index('<template data-layer="%s">' % lid)) < 1500: bad.append('the TimberIN credit sits beside %s, which is not TimberIN imagery' % lid)
+    if snip.count('TimberIN') != 2: bad.append('TimberIN is named outside the credit and the disclosure')
+    # the one camera hook, and nothing else changed in its place
+    if js_t.count('window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame };') != 1: bad.append('the camera hook is missing')
+    css_g = open(os.path.join(ROOTDIR, 'assets/possibility-reveal/garden.css'), encoding='utf-8').read()
+    plain_g = re.sub(r'/\*.*?\*/', '', css_g, flags=re.S)
+    def walk_g(t):
+        i = 0
+        while True:
+            j = t.find('{', i)
+            if j < 0: return
+            head = t[i:j].strip()
+            if head.startswith('@media') or head.startswith('@supports'):
+                d = 1; k = j + 1
+                while d:
+                    d += t[k] == '{'; d -= t[k] == '}'; k += 1
+                walk_g(t[j+1:k-1]); i = k; continue
+            for sel in head.split(','):
+                if not sel.strip().startswith('.pr'): bad.append('unscoped garden CSS selector: ' + sel.strip()[:60])
+            i = t.find('}', j) + 1
+    walk_g(plain_g)
+    js_g = open(os.path.join(ROOTDIR, 'assets/possibility-reveal/garden.js'), encoding='utf-8').read()
+    if re.search(r'document\.(getElementById|querySelectorAll?)\((?!"\[data-pr-root\]")', js_g): bad.append('garden.js looks up elements outside the component root')
+    for p in H3_FILES:
+        tag = ('<link rel="stylesheet" href="%s">' % p) if p.endswith('.css') else ('<script src="%s" defer></script>' % p)
+        if index.count(tag) != 1: bad.append(p + ' is not loaded exactly once by index.html')
+    if index.find('<script src="assets/possibility-reveal/garden.js" defer></script>') < index.find('<script src="assets/possibility-reveal/reveal.js" defer></script>'):
+        bad.append('garden.js must load after reveal.js')
     return bad
 
 if __name__ == '__main__':
@@ -223,8 +374,10 @@ if __name__ == '__main__':
     outs = transform()
     for p, t in outs.items(): open(os.path.join(ROOTDIR, p), 'w', encoding='utf-8').write(t)
     proto = {f: hashlib.sha256(open(os.path.join(SRC, f), 'rb').read()).hexdigest() for f in ('index.html', 'assets/reveal.css', 'assets/reveal.js', 'assets/reveal-data.js')}
-    json.dump({'schema': 'plotnua.possibility-reveal.component.v1', 'source': 'PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01)',
-               'source_sha256': proto, 'outputs': {p: sha(t) for p, t in outs.items()}}, open(RECORD, 'w'), indent=1)
+    json.dump({'schema': 'plotnua.possibility-reveal.component.v1', 'source': 'PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01) and the H3 garden-layer stage (founder-approved H3, 20 Oct 2026; see h3_extend)',
+               'source_sha256': proto, 'outputs': {p: sha(t) for p, t in outs.items()},
+               'h3_extension': {p: sha(open(os.path.join(ROOTDIR, p), encoding='utf-8').read()) for p in H3_FILES},
+               'h3_layers_record_sha256': sha(open(os.path.join(ROOTDIR, 'assets/possibility-reveal/layers/layers.json'), encoding='utf-8').read())}, open(RECORD, 'w'), indent=1)
     p = os.path.join(ROOTDIR, 'index.html'); idx = open(p, encoding='utf-8').read(); new = mount(idx, outs['assets/possibility-reveal/stage-snippet.part'])
     if new != idx: open(p, 'w', encoding='utf-8').write(new)
     print('POSSIBILITY REVEAL COMPONENT · built and mounted')
