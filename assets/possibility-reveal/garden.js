@@ -6,7 +6,7 @@
  * layer on: the hero's first paint and its LCP image are untouched.
  *
  *   L3  Grow a garden room   · mirrored garden pavilion (L3 v2.1c)
- *   L4  Borrow a garden      · kitchen garden
+ *   L4  Borrow a Garden      · a productive growing space (garden sharing; illustration)
  *   L5  Hold a treehouse     · elevated timber pod
  *   L6  Become a retreat     · sauna, and the TimberIN hot tub with its smoke
  *
@@ -50,7 +50,7 @@
                   q: "Explore the Garden Retreat", label: "Explore the Garden Retreat Discovery: saunas, hot tubs and cold plunges at home" };
   var SAY = {
     L3: "A mirrored garden pavilion appears along the right-hand fence. Illustration.",
-    L4: "A kitchen garden appears on the lawn. Illustration.",
+    L4: "Part of the lawn becomes a productive growing space: one way an underused garden could be shared with a grower nearby, if such an arrangement suits you. Illustration.",
     L5: "A timber pod appears in the tree at the left of the garden. Illustration.",
     L6: "A sauna and a wood-fired hot tub, with smoke from its chimney, appear in the far right corner of the garden. Illustration with adapted photography."
   };

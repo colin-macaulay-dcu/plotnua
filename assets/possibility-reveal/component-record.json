@@ -1,6 +1,6 @@
 {
  "schema": "plotnua.possibility-reveal.component.v1",
- "source": "PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01) and the H3 garden-layer stage (founder-approved H3, 20 Oct 2026; see h3_extend)",
+ "source": "PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01) the H3 garden-layer stage (founder-approved H3, 20 Oct 2026; see h3_extend) and the H5 stage (H5 Phase C preview, 21 Oct 2026; see h5_extend)",
  "source_sha256": {
   "index.html": "ea54fd5c0b21d664114048d022f5b1d6fb879d6fba5d7f9737df3599a28ec451",
   "assets/reveal.css": "e812ccf4a09607717c8310f16381d9aefff2a9db705c511bacfb0e098c74055a",
@@ -9,13 +9,18 @@
  },
  "outputs": {
   "assets/possibility-reveal/reveal.css": "528ecf1355f71bd21c48ae2063ee7b0f3f5193393ea532ba3ac42ae4d0206c76",
-  "assets/possibility-reveal/reveal.js": "2d90082c7134d9cdf28456a5b4fc2c712113dead7679e012af7c69de8f79b348",
+  "assets/possibility-reveal/reveal.js": "044c407f9504edb1315cacf07b3e8bc69bdaced13351fb6f8c859a09d02efb09",
   "assets/possibility-reveal/reveal-data.js": "71e43a2ce4f2ea7d2d6d3bc75f7cf69b6330f2086209c202248f5b0e500ebc18",
-  "assets/possibility-reveal/stage-snippet.part": "c76f90c11d8db4bf644291f6a15781dc0e4e8dc8734d98608177639c58b8c351"
+  "assets/possibility-reveal/stage-snippet.part": "669f973817960b2988c27ebdc61ad38c38035d8b5621767bc3d0879fbf5db708"
  },
  "h3_extension": {
   "assets/possibility-reveal/garden.css": "2853707343bf17057e937df554f9b97ca6b250ad6e89440a27d5ea863bf8109a",
-  "assets/possibility-reveal/garden.js": "11245a7b1f47c0c1b52b264157b34e47cd0ded6f64568678301a6975deb19954"
+  "assets/possibility-reveal/garden.js": "6e9a1177d064dc4c5128f9f6e81853401309b3ab832f734d83c0b807bb008c69"
+ },
+ "h5_extension": {
+  "assets/possibility-reveal/h5.css": "359d292678dc5519c73bbf4d7a1e6e3815f49d2a7f3889fbfcf47d16d4472754",
+  "assets/possibility-reveal/h5c-smoke.js": "198c0910a95b2564eb5969537f755d7fd618a6eab3b20426a2501ff117bf6c0e",
+  "atlas-tools/possibility-reveal-h5-ps.js.part": "042133aa3b65ae41d5912d6ceb17570e770dd3bcaa7c3f121e8115f96b12cc51"
  },
  "h3_layers_record_sha256": "399a5f475f86c0786d790645c39ce78954416ccf517252ea1e88e2924a87196b"
 }

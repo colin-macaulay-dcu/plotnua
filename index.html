@@ -53,9 +53,11 @@
 <!-- Possibility Reveal component (D2): scoped styles and behaviour, loaded from its own files -->
 <link rel="stylesheet" href="assets/possibility-reveal/reveal.css">
 <link rel="stylesheet" href="assets/possibility-reveal/garden.css">
+<link rel="stylesheet" href="assets/possibility-reveal/h5.css">
 <script src="assets/possibility-reveal/reveal-data.js" defer></script>
 <script src="assets/possibility-reveal/reveal.js" defer></script>
 <script src="assets/possibility-reveal/garden.js" defer></script>
+<script src="assets/possibility-reveal/h5c-smoke.js" defer></script>
 <style>
   :root{
     /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
@@ -1571,6 +1573,122 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
   body.pn-p4 .p4-nav a, body.pn-p4 .p4-nav a.p4-nav-lead{ font-size:14px; }
 }
 /* PLOTNUA PHASE 4 · DARK ARCHITECTURAL v1 · END */
+
+/* ================= PLOTNUA H5 · HOMEPAGE (H5 Phase C preview, 21 Oct 2026) =================
+   A slim header, then the garden photograph at once: the introductory band is gone, the
+   transformations sit directly beneath the photograph (inside the Reveal), and the photograph is
+   sized so the invitation and the four switches show at first paint on common laptops and phones. */
+@media (min-width:901px){
+  body.pn-p4 .p4-header-inner{ height:64px; padding:0 216px 0 78px; }
+  body.pn-p4 .p4-wordmark{ font-size:28px; padding:4px 0; }
+  body.pn-p4 .p4-nav{ gap:30px; }
+  body.pn-p4 .p4-nav a{ font-size:15px; padding:8px 0 6px; }
+  body.pn-p4 .p4-nav a.p4-nav-lead{ font-size:15.5px; }
+  body.pn-p4 .brand-mark{ top:9px; }
+  body.pn-p4 .pns-pill{ top:12px; }
+}
+body.pn-p4 #heroStage .pr{
+  --pr-stage-h:clamp(400px, min(calc(100vw * 1536 / 2752), calc(100svh - 210px)), 1100px);
+  --pr-stage-min:400px;
+}
+@media (min-width:761px) and (max-width:1279px){
+  body.pn-p4 #heroStage .pr{ --pr-stage-h:clamp(380px, min(calc(100vw * 1536 / 2752), calc(100svh - 250px)), 1100px); --pr-stage-min:380px; }
+}
+@media (max-width:760px){
+  body.pn-p4 #heroStage .pr{ --pr-stage-h:clamp(320px,52svh,560px); --pr-stage-min-m:320px; }
+}
+body.pn-p4 .footer-about{ max-width:620px; margin:0 auto 8px; text-align:center; font-size:15px; line-height:1.6; color:var(--p4-lime,#cfd6c4); }
+/* H5 Phase C · compact header on tablets and phones: logo | Search | Menu, in one row */
+body.pn-p4 .p4-menu{ display:none; }
+@media (max-width:900px){
+  body.pn-p4 .p4-header{ position:relative; z-index:40; }
+  body.pn-p4 .p4-header-inner{ height:60px; flex-wrap:nowrap; gap:0; padding:0 58px 0 62px; }
+  body.pn-p4 .p4-wordmark{ font-size:26px; padding:4px 0; }
+  body.pn-p4 .p4-menu{ display:inline-flex; align-items:center; gap:8px; margin-left:auto; min-height:44px; padding:0 12px;
+    background:none; border:1px solid var(--p4-line2,rgba(248,245,236,.25)); border-radius:999px; color:var(--p4-ivory);
+    font:600 14px/1 inherit; letter-spacing:.02em; cursor:pointer; }
+  body.pn-p4 .p4-menu:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:3px; }
+  body.pn-p4 .p4-menu-ico, body.pn-p4 .p4-menu-ico::before, body.pn-p4 .p4-menu-ico::after{ display:block; width:16px; height:1.5px; background:currentColor; border-radius:1px; position:relative; transition:transform .2s; }
+  body.pn-p4 .p4-menu-ico::before, body.pn-p4 .p4-menu-ico::after{ content:''; position:absolute; left:0; }
+  body.pn-p4 .p4-menu-ico::before{ top:-5px; } body.pn-p4 .p4-menu-ico::after{ top:5px; }
+  body.pn-p4 .p4-header.is-open .p4-menu-ico{ background:transparent; }
+  body.pn-p4 .p4-header.is-open .p4-menu-ico::before{ transform:translateY(5px) rotate(45deg); }
+  body.pn-p4 .p4-header.is-open .p4-menu-ico::after{ transform:translateY(-5px) rotate(-45deg); }
+  body.pn-p4 .p4-nav{ display:none; position:absolute; left:0; right:0; top:100%; width:auto; margin:0; padding:6px 0 10px; gap:0; overflow:visible;
+    flex-direction:column; background:var(--p4-earth); border-top:1px solid var(--p4-line); border-bottom:1px solid var(--p4-line); box-shadow:0 14px 28px rgba(0,0,0,.35); }
+  body.pn-p4 .p4-header.is-open .p4-nav{ display:flex; }
+  body.pn-p4 .p4-nav a, body.pn-p4 .p4-nav a.p4-nav-lead{ display:block; padding:14px 22px; font-size:17px; border-bottom:0; }
+  body.pn-p4 .p4-nav a:hover, body.pn-p4 .p4-nav a:focus-visible{ background:rgba(248,245,236,.06); }
+  body.pn-p4 .p4-nav a.p4-nav-lead{ color:var(--p4-ivory); box-shadow:inset 3px 0 0 var(--p4-terra); }
+  html body.pn-p4 .brand-info{ top:19px; left:178px; right:auto; }
+}
+@media (min-width:721px) and (max-width:900px){
+  body.pn-p4 .p4-header-inner{ padding-right:214px; }   /* the full search pill sits at the right on tablets */
+  body.pn-p4 .p4-header-inner{ padding-left:80px; }   /* H5C3: logo, wordmark and search sit inside the 60px bar */
+  body.pn-p4 .brand-mark{ top:7px; }
+  body.pn-p4 .pns-pill{ top:10px; }
+}
+@media (max-width:720px){
+  body.pn-p4 .p4-header-inner{ height:60px; padding:0 52px 0 56px; }
+  html body.pn-p4 .brand-info{ top:20px; left:170px; }
+}
+/* H5 · WhatsApp in the header: a direct wa.me link (no widget, script, tracking or prefilled text).
+   The approved PlotNua speech bubble with the P/house mark (the existing enumerated brand file). It sits in the
+   header bar beside Search, never over the photograph. Desktop: a compact labelled pill. Tablets and phones: an icon. */
+body.pn-p4 .p4-wa{ display:inline-flex; align-items:center; gap:8px; flex:none; order:3; height:40px; padding:0 14px 0 5px; margin-left:22px;
+  border:1px solid var(--p4-bronze); border-radius:20px; color:var(--p4-ivory); text-decoration:none; white-space:nowrap;
+  font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:14.5px; line-height:1; letter-spacing:-.005em; transition:border-color .2s, background .2s; }
+body.pn-p4 .p4-wa:hover{ border-color:var(--p4-ivory); background:rgba(248,245,236,.06); }
+body.pn-p4 .p4-wa:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:3px; }
+body.pn-p4 .p4-wa-ico{ position:relative; display:block; width:31px; height:31px; flex:none; }
+body.pn-p4 .p4-wa-ico svg{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+body.pn-p4 .p4-wa-ico img{ position:absolute; left:10.625%; top:6.25%; width:75%; height:75%; display:block; }
+@media (min-width:901px){ body.pn-p4 .p4-nav{ order:2; } }
+/* narrower laptops: the icon alone, so the navigation keeps its spacing */
+@media (min-width:901px) and (max-width:1199px){
+  body.pn-p4 .p4-wa{ width:40px; padding:0; justify-content:center; margin-left:18px; }
+  body.pn-p4 .p4-nav{ gap:26px; }
+}
+@media (max-width:900px){
+  body.pn-p4 .p4-wa{ order:0; margin-left:auto; margin-right:8px; }
+  body.pn-p4 .p4-menu{ margin-left:0; }
+}
+@media (max-width:1199px){
+  body.pn-p4 .p4-wa-lb{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
+  body.pn-p4 .p4-wa{ position:relative; width:40px; padding:0; justify-content:center; }
+  body.pn-p4 .p4-wa::after{ content:''; position:absolute; left:50%; top:50%; width:44px; height:44px; transform:translate(-50%,-50%); }
+}
+@media (max-width:720px){
+  body.pn-p4 .p4-wa{ width:38px; height:38px; margin-right:6px; }
+  body.pn-p4 .p4-wa-ico{ width:30px; height:30px; }
+}
+/* the narrowest phones: Menu shows its icon only (its name stays in the accessibility tree) and the wordmark steps down */
+@media (max-width:374px){
+  body.pn-p4 .p4-wordmark{ font-size:22px; }
+  html body.pn-p4 .brand-info{ left:146px; }
+  body.pn-p4 .p4-menu{ padding:0 12px; }
+  body.pn-p4 .p4-menu-lb{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
+}
+/* PLOTNUA H5 · END */
+/* Direct contact with PlotNua; no third-party widget or background requests. */
+body.pn-p4 .footer-col a.pn-whatsapp{
+  display:inline-flex; align-items:center; gap:12px;
+  min-height:64px; padding:8px 12px 8px 6px; margin:0 0 12px;
+  border:1px solid var(--p4-bronze); border-radius:10px;
+  background:var(--p4-earth); font-size:15px; line-height:1.4;
+  text-align:left; max-width:100%;
+}
+body.pn-p4 .pn-whatsapp-icon{ position:relative; display:block; width:52px; height:52px; flex-shrink:0; }
+/* The bubble is plain geometry; the P/house is the existing enumerated brand
+   file, placed where the mark sits inside the bubble (no new image asset). */
+body.pn-p4 .pn-whatsapp-icon svg{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+body.pn-p4 .pn-whatsapp-icon img{ position:absolute; left:10.625%; top:6.25%; width:75%; height:75%; display:block; }
+body.pn-p4 .pn-whatsapp-copy{ display:block; }
+body.pn-p4 .pn-whatsapp-copy small{ display:block; margin-top:2px; font-size:13px; color:var(--p4-bronze-text); }
+body.pn-p4 .footer-col a.pn-whatsapp:hover{ border-color:var(--p4-ivory); color:var(--p4-ivory); }
+body.pn-p4 .footer-col a.pn-whatsapp:focus-visible{
+  outline:2px solid currentColor; outline-offset:4px;
+}
 </style>
 </head>
 <body class="pn-p4">
@@ -1621,7 +1739,9 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
 <header class="p4-header">
   <div class="p4-header-inner">
     <a class="p4-wordmark" href="#top">PlotNua</a>
-    <nav class="p4-nav" aria-label="Main">
+    <a class="p4-wa" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="p4-wa-ico" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="22" height="22"></span><span class="p4-wa-lb">Chat on WhatsApp</span></a>
+    <button type="button" class="p4-menu" id="p4MenuBtn" aria-expanded="false" aria-controls="p4Nav"><span class="p4-menu-ico" aria-hidden="true"></span><span class="p4-menu-lb">Menu</span></button>
+    <nav class="p4-nav" id="p4Nav" aria-label="Main">
       <a class="p4-nav-lead" href="discoveries.html">Discovery Library</a>
       <a href="your-plot.html">Your Plot</a>
       <a href="about.html">About</a>
@@ -1636,21 +1756,10 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
 
     <p class="hero-wordmark" id="heroWordmark">PlotNua</p>
 
-    <div class="hero-copy2 p4-hero-copy" id="heroCopy">
-      <!-- The H1 is unchanged ("What could your property do?"), so the
-           page's SEO heading is preserved. It is set as the kicker; the
-           approved Phase 4 line below is display type, not a heading. -->
-      <div class="p4-band-a">
-      <h1 class="hero-title p4-kicker">What could your property do?</h1>
-      <p class="p4-display" aria-hidden="true">Your property. <em>More possibilities.</em></p>
-      </div>
-      <p class="hero-answer">PlotNua helps Irish homeowners see what their property could make possible
-        &mdash; and understand what each option would really take, before committing to anything.</p>
-      <div class="p4-actions">
-        <a class="p4-btn p4-btn-primary" href="discoveries.html">Explore the Discovery Library <span aria-hidden="true">&rarr;</span></a>
-        <a class="p4-btn p4-btn-secondary" href="your-plot.html">Start with Your Plot</a>
-      </div>
-    </div>
+    <!-- H5 Phase C: the introductory band (kicker, display line, paragraph, Discovery Library button)
+         is removed. The page H1 is now the invitation beneath the photograph ("What could your
+         property become?", inside the Reveal component); the brand explanation is in the footer
+         and the (i) "What is PlotNua?" panel. Discovery Library stays in the main navigation. -->
 
     <!-- ================================================================
          HERO STAGE · POSSIBILITY REVEAL (Phase 4 refined concept 2)
@@ -1667,9 +1776,26 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
          ================================================================ -->
     <div class="hero-stage p4-stage" id="heroStage" data-hero="possibility-reveal">
 <!-- POSSIBILITY REVEAL · L2B v2 component (generated by build_reveal_component.py; do not hand-edit) -->
-<div class="pr pn" id="pr-pn" data-mode="entry" data-pr-root>
-  <a class="skip" href="#pr-paths">Skip to the discovery paths</a>
+<div class="pr pn h5 h5c" id="pr-pn" data-mode="entry" data-pr-root>
+  <a class="skip" href="#pr-layers">Skip to the garden transformations</a>
   <div class="stage" id="pr-stage">
+    <div class="veil" aria-hidden="true"></div>
+    <div class="lens" id="pr-lens" aria-hidden="true"><span class="lens-grip" id="pr-lensGrip"></span></div>
+    <div class="beacons" id="pr-beacons" role="group" aria-label="Hidden possibilities on this property"></div>
+    <button type="button" class="lens-label" id="pr-lensLabel" tabindex="-1" aria-hidden="true"></button>
+
+
+
+    <div class="bar" id="pr-bar">
+      <span class="pill pill-static" id="pr-pathName"></span>
+      <ol class="dots" id="pr-dots" aria-label="Discoveries in this path"></ol>
+      <button class="pill" id="pr-btnReplay" type="button">Replay</button>
+      <button class="pill pill-close" id="pr-btnHome" type="button" aria-label="Close discovery and return to the whole property"><span aria-hidden="true">✕</span> Close<span class="cl-long"> discovery</span></button>
+    </div>
+
+    <section class="caption" id="pr-caption" aria-live="polite" aria-atomic="true"></section>
+
+    <aside class="more" id="pr-more" role="dialog" aria-modal="false" aria-labelledby="pr-moreTitle" hidden></aside>
     <div class="cam" id="pr-cam">
       <picture>
         <source type="image/avif" srcset="assets/possibility-reveal/img/house-L1-L2A-1376.avif 1376w, assets/possibility-reveal/img/house-L1-L2A-2064.avif 2064w, assets/possibility-reveal/img/house-L1-L2A-2752.avif 2752w" sizes="(max-width: 760px) 920px, 100vw">
@@ -1807,55 +1933,47 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
       <!-- H3 · GARDEN LAYER L6: locked L6 (sauna, hot tub and smoke; licensed photography), fetched only when switched on -->
       <template data-layer="L6"><div class="g-layer g-sprite" data-layer="L6" style="left:2152px;top:714px;width:600px;height:806px"><img src="assets/possibility-reveal/layers/garden-L6-retreat.webp" srcset="assets/possibility-reveal/layers/garden-L6-retreat-half.webp 300w, assets/possibility-reveal/layers/garden-L6-retreat.webp 600w" sizes="600px" width="600" height="1612" alt="" decoding="async"></div></template>
     </div>
+
+  </div>
+
+  <!-- H5 Phase C · directly beneath the photograph: the disclosure strip, then the invitation and the five switches -->
+  <div class="h5c-strip" id="pr-strip">
+    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="h5c-ai-x"> · not a photograph of a real home.</span></p>
     <p class="garden-credit" id="pr-gardenCredit" hidden>Garden possibilities illustrated. <a href="https://www.timberin.com/">Hot tub: TimberIN</a>.<span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.</span></p>
     <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>
-
-    <div class="veil" aria-hidden="true"></div>
-    <div class="lens" id="pr-lens" aria-hidden="true"><span class="lens-grip" id="pr-lensGrip"></span></div>
-    <div class="beacons" id="pr-beacons" role="group" aria-label="Hidden possibilities on this property"></div>
-    <button type="button" class="lens-label" id="pr-lensLabel" tabindex="-1" aria-hidden="true"></button>
-
-    <nav class="layers" id="pr-layers" aria-label="Possibilities for this property: switch a garden layer on or off">
-      <span class="layers-lab">This property could…</span>
-      <span class="lay is-on">Be renewed</span>
-      <span class="lay is-on">Make its own energy</span>
-      <button type="button" class="lay lay-btn" data-layer="L3" aria-pressed="false">Grow a garden room</button>
-      <button type="button" class="lay lay-btn" data-layer="L4" aria-pressed="false">Borrow a garden</button>
-      <button type="button" class="lay lay-btn" data-layer="L5" aria-pressed="false">Hold a treehouse</button>
-      <button type="button" class="lay lay-btn" data-layer="L6" aria-pressed="false" aria-describedby="pr-gardenNote">Become a retreat</button>
-    </nav>
-
-    <section class="intro" aria-labelledby="pr-introTitle">
+    <p class="h5c-note" id="pr-borrowNote"><b>Borrow a Garden</b> · an underused garden could become productive through garden sharing, if an arrangement suits you. Not guaranteed. <a href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></p>
+  </div>
+  <div class="h5c-deck" id="pr-deck">
+    <div class="layers h5c-switches" id="pr-layers" role="group" aria-labelledby="pr-invite">
+     <div class="h5c-group h5c-group-g" role="group" aria-labelledby="pr-gLab"><h1 class="h5c-invite" id="pr-invite">What could your property become?</h1><p class="h5c-glab" id="pr-gLab">Garden transformations</p><div class="h5c-row">
+      <button type="button" class="lay lay-btn h5c-sw" data-layer="L3" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Garden Room</span><span class="h5c-st" aria-hidden="true"></span></button>
+      <button type="button" class="lay lay-btn h5c-sw" data-layer="L4" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Borrow a Garden</span><span class="h5c-st" aria-hidden="true"></span></button>
+      <button type="button" class="lay lay-btn h5c-sw" data-layer="L5" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Treehouse</span><span class="h5c-st" aria-hidden="true"></span></button>
+      <button type="button" class="lay lay-btn h5c-sw" data-layer="L6" aria-pressed="false" aria-describedby="pr-gardenNote"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Garden Retreat</span><span class="h5c-st" aria-hidden="true"></span></button>
+     </div></div>
+     <div class="h5c-group h5c-group-ps" role="group" aria-labelledby="pr-hLab"><p class="h5c-glab" id="pr-hLab">Hidden possibilities</p><div class="h5c-row">
+      <button type="button" class="h5c-sw h5c-sw-ps" id="pr-psSwitch" aria-pressed="false" aria-controls="pr-psPanel"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Power Station</span><span class="h5c-st" aria-hidden="true"></span></button>
+     </div></div>
+    </div>
+    <!-- Power Station panel: the original headline, lede, paths and legend, shown only while Power Station is on -->
+    <div class="h5c-ps" id="pr-psPanel" hidden>
       <h2 class="pr-title" id="pr-introTitle">This house could be a power station.</h2>
       <p class="lede">Some of it you can see. Some of it is under the lawn, or down the street. <span class="lede-hint">Move the lens to look closer.</span></p>
       <div class="paths" id="pr-paths" role="group" aria-label="Choose where to start"></div>
-    </section>
-
-    <div class="bar" id="pr-bar">
-      <span class="pill pill-static" id="pr-pathName"></span>
-      <ol class="dots" id="pr-dots" aria-label="Discoveries in this path"></ol>
-      <button class="pill" id="pr-btnReplay" type="button">Replay</button>
-      <button class="pill pill-close" id="pr-btnHome" type="button" aria-label="Close discovery and return to the whole property"><span aria-hidden="true">✕</span> Close<span class="cl-long"> discovery</span></button>
+    <p class="legend" aria-label="How possibilities are marked">
+      <span class="mk mk-full" aria-hidden="true"></span>Available today
+      <span class="mk mk-half" aria-hidden="true"></span>Depends on the site or the house
+      <span class="mk mk-ring" aria-hidden="true"></span>Emerging · not available to Irish homes
+      <span class="mk mk-dash" aria-hidden="true"></span>Illustrative possibility · not assessed
+      <span class="legend-note">Drawings are illustrations, not part of the picture.</span>
+    </p>
     </div>
-
-    <section class="caption" id="pr-caption" aria-live="polite" aria-atomic="true"></section>
-
-    <aside class="more" id="pr-more" role="dialog" aria-modal="false" aria-labelledby="pr-moreTitle" hidden></aside>
   </div>
-
-  <p class="legend" aria-label="How possibilities are marked">
-    <span class="mk mk-full" aria-hidden="true"></span>Available today
-    <span class="mk mk-half" aria-hidden="true"></span>Depends on the site or the house
-    <span class="mk mk-ring" aria-hidden="true"></span>Emerging · not available to Irish homes
-    <span class="mk mk-dash" aria-hidden="true"></span>Illustrative possibility · not assessed
-    <span class="legend-note">Drawings are illustrations, not part of the picture.</span>
-  </p>
   <noscript>
-  <p class="noscript">This interactive view needs JavaScript. <a href="https://plotnua.ie/discovery-house-as-power-station.html">Read The House as a Power Station</a>.</p>
+  <p class="noscript">Switching the garden transformations on and off needs JavaScript. <a href="https://plotnua.ie/discoveries.html">Explore the Discovery Library</a>.</p>
 </noscript>
 </div>
 <!-- /POSSIBILITY REVEAL -->
-      <p class="p4-caption p4-stage-caption">AI-generated illustration.</p>
     </div>
 
   </div>
@@ -1920,15 +2038,6 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
     </article>
     <div class="p4s-support">
     <article class="p4s-card p4s-support">
-      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(min-width:1100px) 20vw, (min-width:721px) 46vw, 50vw"><img src="assets/img/ce9da2e51c945693.jpg" alt="An Irish family outside their home at dusk, with solar panels across the roof, a battery unit in the open garage and an electric car charging in the driveway." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Energy</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-house-as-power-station.html">The House as a Power Station</a></h3>
-      <p class="p4s-line">Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
-      <p class="p4s-next"><a href="disc026-power-station.html">See what your home could do <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-support">
       <div class="p4s-media"><img src="assets/img/75f721f0513e4f37.jpg" alt="A grower crouching beside raised vegetable beds picking tomatoes into a basket, with the homeowner reading on the patio behind." width="1408" height="768" loading="lazy" decoding="async"></div>
       <div class="p4s-body">
         <p class="p4s-meta"><span class="p4s-cat">Garden</span></p>
@@ -1953,6 +2062,15 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
         <h3 class="p4s-title"><a class="p4s-go" href="discovery-driveway-income.html">Driveway Income</a></h3>
       <p class="p4s-line">Your driveway is empty for most of the day. Someone nearby may already need it.</p>
       <p class="p4s-next"><a href="disc014-driveway-income.html">Check your driveway <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(min-width:1100px) 20vw, (min-width:721px) 46vw, 50vw"><img src="assets/img/ce9da2e51c945693.jpg" alt="An Irish family outside their home at dusk, with solar panels across the roof, a battery unit in the open garage and an electric car charging in the driveway." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Energy</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-house-as-power-station.html">The House as a Power Station</a></h3>
+      <p class="p4s-line">Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
+      <p class="p4s-next"><a href="disc026-power-station.html">See what your home could do <span aria-hidden="true">&rarr;</span></a></p>
       </div>
     </article>
     </div>
@@ -2126,6 +2244,7 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
         <img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="40" height="40">
         <span class="footer-word">PlotNua</span>
       </div>
+      <p class="footer-about">PlotNua helps Irish homeowners see what their property could make possible &mdash; and understand what each option would really take, before committing to anything.</p>
     </div>
 
     <nav class="footer-cols" aria-label="Footer">
@@ -2161,6 +2280,8 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
       </div>
       <div class="footer-col">
         <h2>Contact</h2>
+        <p><a class="pn-whatsapp" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="pn-whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="1.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="39" height="39"></span><span class="pn-whatsapp-copy">Chat with PlotNua<small>on WhatsApp</small></span></a></p>
+        <p><a href="tel:+353834036695">083 403 6695</a></p>
         <p><a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></p>
       </div>
     </nav>
@@ -2663,6 +2784,22 @@ body.pn-p4 #heroStage .pr .skip:not(:focus){ position:absolute; width:1px; heigh
   });
   var pinLayer = document.getElementById('pins');
   if (pinLayer) pinLayer.addEventListener('click', function(){ set(false); }, true);
+})();
+</script>
+<script>
+/* H5 Phase C · the compact header's Menu: one button, the four existing destinations, keyboard and screen-reader friendly */
+(function(){
+  var head = document.querySelector('.p4-header'), btn = document.getElementById('p4MenuBtn'), nav = document.getElementById('p4Nav');
+  if (!head || !btn || !nav) return;
+  function set(open, focusBtn){
+    head.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var a = nav.querySelector('a'); if (a) a.focus(); } else if (focusBtn) btn.focus();
+  }
+  btn.addEventListener('click', function(){ set(btn.getAttribute('aria-expanded') !== 'true'); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && head.classList.contains('is-open')) set(false, true); });
+  document.addEventListener('click', function(e){ if (head.classList.contains('is-open') && !head.contains(e.target)) set(false); });
+  nav.addEventListener('click', function(e){ if (e.target.closest('a')) set(false); });
+  window.matchMedia('(min-width: 901px)').addEventListener('change', function(m){ if (m.matches) set(false); });
 })();
 </script>
 </body>

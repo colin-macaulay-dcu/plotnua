@@ -128,6 +128,123 @@ def h3_extend(js, body):
     body = one(body, cam_end, '      <!-- H3 · GARDEN LAYER L6: locked L6 (sauna, hot tub and smoke; licensed photography), fetched only when switched on -->\n'
                '      %s\n' % h3_tpl(rec, 'L6') + '    </div>\n' + credit + '\n    <div class="veil" aria-hidden="true"></div>')
     return js, body
+
+# ---------------- H5 · homepage simplification (H5 Phase C preview, 21 Oct 2026) ----------------
+# The homepage hero becomes the garden photograph and its four transformations, nothing else:
+# no lens, no tour, no Discovery markers, no Power Station headline or paths on the hero (the
+# Discovery scenes, data and the Power Station Discovery itself are untouched and stay in the
+# component, dormant); one invitation (the page's H1) and four prominent ON/OFF switches below the
+# photograph; the AI disclosure and the TimberIN credit in a strip directly beneath the photograph,
+# so nothing covers the retreat; a private smoke-animation prototype (h5c-smoke.js, procedural, no
+# image pixels, founder-approved for publication 21 Oct 2026). The picture is the approved, LOCKED L1 + L2A
+# (production encodings in img/, unchanged): Path A, founder decision 21 Oct 2026. The L2A-H5 heat-pump
+# candidate is not part of this release.
+H5_FILES = ['assets/possibility-reveal/h5.css', 'assets/possibility-reveal/h5c-smoke.js']
+H5_PS_JS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'possibility-reveal-h5-ps.js.part'), encoding='utf-8').read()
+H5_SWITCHES = [('L3', 'Garden Room'), ('L4', 'Borrow a Garden'), ('L5', 'Treehouse'), ('L6', 'Garden Retreat')]
+H5_INVITE = 'What could your property become?'
+def h5_extend(js, body):
+    def one(t, a, b):
+        assert t.count(a) == 1, ('h5 anchor', t.count(a), a[:90]); return t.replace(a, b)
+    # ---- JS: the lens never appears; nothing chases the pointer; the tour never starts
+    js = one(js, '  var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");\n',
+             '  var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");\n'
+             '  var H5 = true, PS = false;   /* H5 Phase C: the Power Station experience (lens, tour, markers, scenes) runs only while its switch is on */\n')
+    js = one(js, '  var entryView = function () { return FRAME || ENTRY_VIEW; };\n',
+             '  var PS_VIEW = { d: [1376, 640, 1], m: [1000, 800, 1] };   /* H5: with Power Station on, phones frame the original view (wind, house, lawn) */\n'
+             '  /* H5 Phase C (framing fix, 21 Oct 2026): on wider screens the photograph is shown full width, so it\n'
+             '     shows only part of the picture\'s height. The camera now keeps EVERYTHING that is switched on in view\n'
+             '     (each garden layer\'s own area, and with Power Station the roof marker and the whole lens over the lawn),\n'
+             '     centred when it fits and, when it cannot all fit, favouring the lower garden (hot tub, beds, lawn).\n'
+             '     Phones keep their approved close framing of the last layer switched on. */\n'
+             '  var ZONES = { L3: [526, 1118], L4: [832, 1420], L5: [394, 724], L6: [640, 1465] };\n'
+             '  var entryView = function () {\n'
+             '    var base = FRAME || (PS ? PS_VIEW : ENTRY_VIEW);\n'
+             '    if (mob()) return base;\n'
+             '    var on = (pn.getAttribute("data-garden") || "").split(" ").filter(function (x) { return ZONES[x]; });\n'
+             '    if (!on.length && !PS) return base;\n'
+             '    var W = stage.clientWidth, H = stage.clientHeight, k = Math.max(W / 2752, H / 1536), R = H / k, a = 1e9, b = -1e9, low = false;\n'
+             '    on.forEach(function (id) { a = Math.min(a, ZONES[id][0]); b = Math.max(b, ZONES[id][1]); if (id === "L6" || id === "L4") low = true; });\n'
+             '    if (PS) { a = Math.min(a, 140); b = Math.max(b, BEACON.ground.d[1] + lensRadius() / k + 14); low = true; }\n'
+             '    var top = (b - a <= R) ? a - (R - (b - a)) / 2 : (low ? b - R : a);\n'
+             '    top = Math.max(0, Math.min(1536 - R, top));\n'
+             '    return { d: [base.d[0], top + 0.46 * R, 1], m: base.m, lens: base.lens };\n'
+             '  };\n')
+    js = one(js, '  var ENTRY_VIEW = { d: [1376, 820, 1], m: [1000, 800, 1] };\n',
+             '  var ENTRY_VIEW = { d: [1376, 640, 1], m: [1250, 800, 1] };   /* H5: the sky kept in view; phones see house, extension and the screened heat pump */\n')
+    js = one(js, '    var R = r == null ? lensRadius() : r, c = clampLens(x, y, Math.max(R, 1));',
+             '    var R = (H5 && !PS) ? 0 : (r == null ? lensRadius() : r), c = clampLens(x, y, Math.max(R, 1));')
+    js = one(js, '    if (mob()) {   /* on phones', '    if (mob() && $(".lede")) {   /* on phones')
+    js = one(js, '    if (dragging || e.pointerType === "mouse") {\n',
+             '    if (H5 && !PS) return;\n    if (dragging || e.pointerType === "mouse") {\n')
+    js = one(js, '    if (state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;\n',
+             '    if ((H5 && !PS) || state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;\n')
+    js = one(js, '  grip.addEventListener("pointerdown", function (e) { dragging = true;',
+             '  grip.addEventListener("pointerdown", function (e) { if (H5 && !PS) return; dragging = true;')
+    js = one(js, '  /* ---------- start ---------- */\n', H5_PS_JS + '\n  /* ---------- start ---------- */\n')
+    js = one(js, 'state: state, frame: frame };', 'state: state, frame: frame, ps: setPS, psOn: function () { return PS; } };')
+    js = one(js, '    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { $(s).inert = scene; });',
+             '    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { var e = $(s); if (e) e.inert = scene; });')
+    js = one(js, '    timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));',
+             '    if (!H5) timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));')
+    # ---- markup
+    body = one(body, '<div class="pr pn" id="pr-pn" data-mode="entry" data-pr-root>', '<div class="pr pn h5 h5c" id="pr-pn" data-mode="entry" data-pr-root>')
+    body = one(body, '<a class="skip" href="#pr-paths">Skip to the discovery paths</a>', '<a class="skip" href="#pr-layers">Skip to the garden transformations</a>')
+    # the Power Station headline, lede and paths leave the hero (paths kept, empty and hidden: the script builds into it)
+    a = body.index('    <section class="intro" aria-labelledby="pr-introTitle">'); b = body.index('    </section>\n', a) + len('    </section>\n')
+    intro = body[a:b]; body = body[:a] + body[b:]
+    ps_title = re.search(r'      <h2 class="pr-title" id="pr-introTitle">.*?</h2>\n', intro).group(0)
+    ps_lede = re.search(r'      <p class="lede">.*?</p>\n', intro).group(0)
+    # the old chip row leaves the photograph
+    a = body.index('    <nav class="layers" id="pr-layers"'); b = body.index('</nav>', a) + len('</nav>\n')
+    body = body[:a] + body[b:]
+    # the TimberIN credit and status line move out of the photograph into the strip beneath it
+    credit_a = body.index('    <p class="garden-credit" id="pr-gardenCredit" hidden>')
+    credit_b = body.index('    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>\n') + len('    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>\n')
+    credit = body[credit_a:credit_b]; body = body[:credit_a] + body[credit_b:]
+    # the stage's own overlays (all positioned with explicit z-index, so their stacking does not
+    # depend on order) move ahead of the camera, so the strip with the TimberIN credit follows the
+    # L6 layer directly in the markup, as the provenance guard's licensed-credit window requires
+    va = body.index('    <div class="veil" aria-hidden="true"></div>\n')
+    vb = body.index('</aside>\n', va) + len('</aside>\n')
+    over = body[va:vb]; body = body[:va] + body[vb:]
+    body = one(body, '  <div class="stage" id="pr-stage">\n', '  <div class="stage" id="pr-stage">\n' + over)
+    sw = []
+    for lid, label in H5_SWITCHES:
+        extra = ' aria-describedby="pr-gardenNote"' if lid == 'L6' else ''
+        sw.append('      <button type="button" class="lay lay-btn h5c-sw" data-layer="%s" aria-pressed="false"%s>'
+                  '<span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">%s</span>'
+                  '<span class="h5c-st" aria-hidden="true"></span></button>\n' % (lid, extra, label))
+    ps_sw = ('      <button type="button" class="h5c-sw h5c-sw-ps" id="pr-psSwitch" aria-pressed="false" aria-controls="pr-psPanel">'
+             '<span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Power Station</span><span class="h5c-st" aria-hidden="true"></span></button>\n')
+    la = body.index('  <p class="legend" aria-label="How possibilities are marked">'); lb = body.index('  </p>\n', la) + len('  </p>\n')
+    legend = body[la:lb]; body = body[:la] + '<!--H5LEGEND-->' + body[lb:]
+    deck = ('  <!-- H5 Phase C · directly beneath the photograph: the disclosure strip, then the invitation and the five switches -->\n'
+            '  <div class="h5c-strip" id="pr-strip">\n'
+            '    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="h5c-ai-x"> \u00b7 not a photograph of a real home.</span></p>\n'
+            + credit +
+            '    <p class="h5c-note" id="pr-borrowNote"><b>Borrow a Garden</b> \u00b7 an underused garden could become productive through garden sharing, if an arrangement suits you. Not guaranteed. <a href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></p>\n'
+            '  </div>\n'
+            '  <div class="h5c-deck" id="pr-deck">\n'
+            '    <div class="layers h5c-switches" id="pr-layers" role="group" aria-labelledby="pr-invite">\n'
+            '     <div class="h5c-group h5c-group-g" role="group" aria-labelledby="pr-gLab"><h1 class="h5c-invite" id="pr-invite">' + H5_INVITE + '</h1><p class="h5c-glab" id="pr-gLab">Garden transformations</p><div class="h5c-row">\n'
+            + ''.join(sw) +
+            '     </div></div>\n'
+            '     <div class="h5c-group h5c-group-ps" role="group" aria-labelledby="pr-hLab"><p class="h5c-glab" id="pr-hLab">Hidden possibilities</p><div class="h5c-row">\n'
+            + ps_sw +
+            '     </div></div>\n'
+            '    </div>\n'
+            '    <!-- Power Station panel: the original headline, lede, paths and legend, shown only while Power Station is on -->\n'
+            '    <div class="h5c-ps" id="pr-psPanel" hidden>\n' + ps_title + ps_lede +
+            '      <div class="paths" id="pr-paths" role="group" aria-label="Choose where to start"></div>\n'
+            + '  ' + legend.replace('\n  ', '\n    ') +
+            '    </div>\n'
+            '  </div>\n')
+    body = one(body, '<!--H5LEGEND-->', deck)
+    body = one(body, '<p class="noscript">This interactive view needs JavaScript. <a href="https://plotnua.ie/discovery-house-as-power-station.html">Read The House as a Power Station</a>.</p>',
+               '<p class="noscript">Switching the garden transformations on and off needs JavaScript. <a href="https://plotnua.ie/discoveries.html">Explore the Discovery Library</a>.</p>')
+    return js, body
+
 def transform():
     global css, js, data, snippet
 
@@ -241,6 +358,7 @@ def transform():
     nos = body[body.index('<noscript>'):]; body = body[:body.index('<noscript>')].rstrip()
     assert body.endswith('</div>'); body = body[:-len('</div>')] + '  ' + nos + '\n</div>'
     js, body = h3_extend(js, body)
+    js, body = h5_extend(js, body)
     snippet = '<!-- POSSIBILITY REVEAL · L2B v2 component (generated by build_reveal_component.py; do not hand-edit) -->\n' + body + '\n<!-- /POSSIBILITY REVEAL -->'
 
     return {'assets/possibility-reveal/reveal.css': css, 'assets/possibility-reveal/reveal.js': js,
@@ -269,7 +387,7 @@ def guard():
     if snip not in index: bad.append('the snippet is not mounted verbatim in index.html')
     if index.count('<div class="hero-stage p4-stage" id="heroStage" data-hero="possibility-reveal">') != 1: bad.append('#heroStage is not the possibility-reveal slot')
     if len(re.findall(r'<h1\b', index)) != 1: bad.append('index.html must carry exactly one <h1>')
-    if re.search(r'<h1\b', snip): bad.append('the component carries an <h1>')
+    if len(re.findall(r'<h1\b', snip)) > 1 or (re.search(r'<h1\b', snip) and '<h1 class="h5c-invite" id="pr-invite">' not in snip): bad.append('the component carries an <h1> other than the H5 invitation')   # H5 Phase C: the invitation is the page H1
     if '.pr .lens-over-intro' in css_t or '.pr.lens-over-intro' not in css_t: bad.append('the mobile headline fade-back rule is mis-scoped (the class is set on the component root itself)')
     if re.search(r'part of the photograph', snip): bad.append('the component calls the AI illustration a photograph (PN-FDR-2026-10-19-01, standard 3)')
     for i in re.findall(r'\bid="([^"]+)"', snip):
@@ -297,6 +415,11 @@ def guard():
     if 'commerceEnabled: false' not in data_t: bad.append('commerce is not hard-disabled')
     if re.search(r'status:\s*"active"', data_t): bad.append('an offer is active')
     bad += h3_guard(rec, snip, js_t, index)
+    for p in H5_FILES + ['atlas-tools/possibility-reveal-h5-ps.js.part']:
+        if sha(open(os.path.join(ROOTDIR, p), encoding='utf-8').read()) != (rec.get('h5_extension') or {}).get(p): bad.append(p + ' differs from its record')
+    for p in H5_FILES:
+        tag = ('<link rel="stylesheet" href="%s">' % p) if p.endswith('.css') else ('<script src="%s" defer></script>' % p)
+        if index.count(tag) != 1: bad.append(p + ' is not loaded exactly once')
     return bad
 
 def h3_guard(rec, snip, js_t, index):
@@ -325,12 +448,13 @@ def h3_guard(rec, snip, js_t, index):
     if VISIBLE_CAPTION not in plain: bad.append('the approved visible caption is missing')
     if DISCLOSURE not in plain: bad.append('the approved accessible disclosure is missing')
     i6 = snip.index('<template data-layer="L6">'); ic = snip.index(CREDIT)
-    if not (0 < ic - i6 < 1200): bad.append('the credit does not sit directly beside the L6 layer')
+    strip = snip.find('<div class="h5c-strip" id="pr-strip">')
+    if not (0 < ic - i6 < 1200 or (strip > i6 and 0 < ic - strip < 400)): bad.append('the credit does not sit beside the L6 layer or in the strip directly beneath the photograph')
     for lid in ('L3', 'L4', 'L5'):
         if abs(ic - snip.index('<template data-layer="%s">' % lid)) < 1500: bad.append('the TimberIN credit sits beside %s, which is not TimberIN imagery' % lid)
     if snip.count('TimberIN') != 2: bad.append('TimberIN is named outside the credit and the disclosure')
     # the one camera hook, and nothing else changed in its place
-    if js_t.count('window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame };') != 1: bad.append('the camera hook is missing')
+    if js_t.count('window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame') != 1: bad.append('the camera hook is missing')   # H5 appends intro hooks
     css_g = open(os.path.join(ROOTDIR, 'assets/possibility-reveal/garden.css'), encoding='utf-8').read()
     plain_g = re.sub(r'/\*.*?\*/', '', css_g, flags=re.S)
     def walk_g(t):
@@ -374,9 +498,10 @@ if __name__ == '__main__':
     outs = transform()
     for p, t in outs.items(): open(os.path.join(ROOTDIR, p), 'w', encoding='utf-8').write(t)
     proto = {f: hashlib.sha256(open(os.path.join(SRC, f), 'rb').read()).hexdigest() for f in ('index.html', 'assets/reveal.css', 'assets/reveal.js', 'assets/reveal-data.js')}
-    json.dump({'schema': 'plotnua.possibility-reveal.component.v1', 'source': 'PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01) and the H3 garden-layer stage (founder-approved H3, 20 Oct 2026; see h3_extend)',
+    json.dump({'schema': 'plotnua.possibility-reveal.component.v1', 'source': 'PlotNua Possibility Reveal L2B Prototype v2 (2026-10-18), unmodified except one founder-approved wording change (PN-FDR-2026-10-19-01) the H3 garden-layer stage (founder-approved H3, 20 Oct 2026; see h3_extend) and the H5 stage (H5 Phase C preview, 21 Oct 2026; see h5_extend)',
                'source_sha256': proto, 'outputs': {p: sha(t) for p, t in outs.items()},
                'h3_extension': {p: sha(open(os.path.join(ROOTDIR, p), encoding='utf-8').read()) for p in H3_FILES},
+               'h5_extension': {p: sha(open(os.path.join(ROOTDIR, p), encoding='utf-8').read()) for p in H5_FILES + ['atlas-tools/possibility-reveal-h5-ps.js.part']},
                'h3_layers_record_sha256': sha(open(os.path.join(ROOTDIR, 'assets/possibility-reveal/layers/layers.json'), encoding='utf-8').read())}, open(RECORD, 'w'), indent=1)
     p = os.path.join(ROOTDIR, 'index.html'); idx = open(p, encoding='utf-8').read(); new = mount(idx, outs['assets/possibility-reveal/stage-snippet.part'])
     if new != idx: open(p, 'w', encoding='utf-8').write(new)

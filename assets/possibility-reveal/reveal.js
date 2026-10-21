@@ -12,13 +12,32 @@
   var beaconsEl = $("#pr-beacons"), pathsEl = $("#pr-paths"), cap = $("#pr-caption"), more = $("#pr-more");
   var mqMobile = window.matchMedia("(max-width: 760px)");
   var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var H5 = true, PS = false;   /* H5 Phase C: the Power Station experience (lens, tour, markers, scenes) runs only while its switch is on */
   var REVIEW = /[?&]review=1/.test(location.search);
 
   /* ---------- presentation config (camera framing, beacon placement, step timing) ---------- */
   var ORDER = ["ground", "wind", "compute"];
-  var ENTRY_VIEW = { d: [1376, 820, 1], m: [1000, 800, 1] };
+  var ENTRY_VIEW = { d: [1376, 640, 1], m: [1250, 800, 1] };   /* H5: the sky kept in view; phones see house, extension and the screened heat pump */
   var FRAME = null;   /* H3: a garden layer may re-frame the entry view (PN_REVEAL_API.frame) */
-  var entryView = function () { return FRAME || ENTRY_VIEW; };
+  var PS_VIEW = { d: [1376, 640, 1], m: [1000, 800, 1] };   /* H5: with Power Station on, phones frame the original view (wind, house, lawn) */
+  /* H5 Phase C (framing fix, 21 Oct 2026): on wider screens the photograph is shown full width, so it
+     shows only part of the picture's height. The camera now keeps EVERYTHING that is switched on in view
+     (each garden layer's own area, and with Power Station the roof marker and the whole lens over the lawn),
+     centred when it fits and, when it cannot all fit, favouring the lower garden (hot tub, beds, lawn).
+     Phones keep their approved close framing of the last layer switched on. */
+  var ZONES = { L3: [526, 1118], L4: [832, 1420], L5: [394, 724], L6: [640, 1465] };
+  var entryView = function () {
+    var base = FRAME || (PS ? PS_VIEW : ENTRY_VIEW);
+    if (mob()) return base;
+    var on = (pn.getAttribute("data-garden") || "").split(" ").filter(function (x) { return ZONES[x]; });
+    if (!on.length && !PS) return base;
+    var W = stage.clientWidth, H = stage.clientHeight, k = Math.max(W / 2752, H / 1536), R = H / k, a = 1e9, b = -1e9, low = false;
+    on.forEach(function (id) { a = Math.min(a, ZONES[id][0]); b = Math.max(b, ZONES[id][1]); if (id === "L6" || id === "L4") low = true; });
+    if (PS) { a = Math.min(a, 140); b = Math.max(b, BEACON.ground.d[1] + lensRadius() / k + 14); low = true; }
+    var top = (b - a <= R) ? a - (R - (b - a)) / 2 : (low ? b - R : a);
+    top = Math.max(0, Math.min(1536 - R, top));
+    return { d: [base.d[0], top + 0.46 * R, 1], m: base.m, lens: base.lens };
+  };
   var restAt = function () { return (FRAME && FRAME.lens) || BEACON.ground; };   /* H3: where the lens rests */
   var BEACON = { ground: { d: [2250, 1060], m: [1250, 1110] }, wind: { d: [735, 190], m: [745, 225] }, compute: { d: [1190, 690], m: [1190, 690] } };
   var SCENE = {
@@ -74,14 +93,14 @@
     return [x, y];
   }
   function setLens(x, y, r) {
-    var R = r == null ? lensRadius() : r, c = clampLens(x, y, Math.max(R, 1));
+    var R = (H5 && !PS) ? 0 : (r == null ? lensRadius() : r), c = clampLens(x, y, Math.max(R, 1));
     lensPos.x = c[0]; lensPos.y = c[1]; lensPos.r = R;
     hidden.style.setProperty("--lx", ((c[0] - cur.tx) / cur.k) + "px");
     hidden.style.setProperty("--ly", ((c[1] - cur.ty) / cur.k) + "px");
     hidden.style.setProperty("--lr", (R / cur.k) + "px");
     lens.style.transform = "translate(" + c[0] + "px," + c[1] + "px)";
     lens.style.setProperty("--rr", R + "px");
-    if (mob()) {   /* on phones the roof sits behind the headline: let the headline step back while the lens is there */
+    if (mob() && $(".lede")) {   /* on phones the roof sits behind the headline: let the headline step back while the lens is there */
       var q = rel($(".lede")), over = c[1] - R < q.b && R > 20;
       pn.classList.toggle("lens-over-intro", over);
     }
@@ -165,16 +184,17 @@
   function localXY(e) { var r = stage.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
   stage.addEventListener("pointermove", function (e) {
     if (state.mode !== "entry") return;
+    if (H5 && !PS) return;
     if (dragging || e.pointerType === "mouse") {
       if (e.pointerType === "mouse" && e.target.closest && e.target.closest("button, a, .intro h1, .lede, .layers")) return;   /* don't chase the cursor onto controls */
       stopGlide(); showPaths(); setLens.apply(null, localXY(e));
     }
   });
   stage.addEventListener("pointerleave", function (e) {
-    if (state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;
+    if ((H5 && !PS) || state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;
     var p = toScreen(pick(restAt())); easeLensTo(p[0], p[1], 600);
   });
-  grip.addEventListener("pointerdown", function (e) { dragging = true; stopGlide(); grip.setPointerCapture(e.pointerId); e.preventDefault(); });
+  grip.addEventListener("pointerdown", function (e) { if (H5 && !PS) return; dragging = true; stopGlide(); grip.setPointerCapture(e.pointerId); e.preventDefault(); });
   grip.addEventListener("pointerup", function () { dragging = false; });
   grip.addEventListener("pointercancel", function () { dragging = false; });
   labelEl.addEventListener("click", function () { if (activeId) play(activeId, beaconsEl.querySelector('.beacon[data-id="' + activeId + '"]')); });
@@ -358,9 +378,37 @@
   function syncInert() {
     var scene = state.mode === "scene";
     ["#pr-bar"].forEach(function (s) { $(s).inert = !scene; });
-    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { $(s).inert = scene; });
+    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { var e = $(s); if (e) e.inert = scene; });
   }
   function setMode(m) { state.mode = m; pn.setAttribute("data-mode", m); syncInert(); }
+
+  /* ---------- H5 · Power Station on demand ----------
+     The original, approved Power Station experience (the lens and its opening glide, the three
+     hidden-energy drawings, the markers, labels, scenes, paths and their links) runs only while
+     the Power Station switch is on. It never changes the garden layers; switching it off returns
+     the clean illustration with nothing on it. */
+  var psBtn = $("#pr-psSwitch"), psPanel = $("#pr-psPanel");
+  function setPS(on) {
+    on = !!on; if (on === PS) return;
+    PS = on;
+    pn.classList.toggle("ps-on", on);
+    if (psBtn) psBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    if (psPanel) psPanel.hidden = !on;
+    if (on) {
+      if (state.mode !== "entry") home();
+      camera(pick(entryView())); placeBeacons();
+      beaconsEl.classList.add("ready");
+      setLens.apply(null, toScreen(pick(restAt())).concat([0]));
+      if (reduce()) { restLens(); showPaths(); } else glide();
+    } else {
+      stopGlide(); clearTimers(); dragging = false;
+      if (state.mode !== "entry") home();
+      setActive(null); setLens(lensPos.x, lensPos.y, 0);
+      pn.classList.remove("lens-over-intro");
+      camera(pick(entryView())); placeBeacons();
+    }
+  }
+  if (psBtn) psBtn.addEventListener("click", function () { setPS(!PS); });
 
   /* ---------- start ---------- */
   buildPaths(); syncInert();
@@ -374,7 +422,7 @@
   } else if (hash.get("lens")) {
     var p = hash.get("lens").split(",").map(Number); showPaths(); setLens.apply(null, toScreen(p));
   } else {
-    timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));
+    if (!H5) timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));
   }
   /* H3: frame a garden layer through this camera; null returns to the whole property.
      If the frame names its own lens resting place, the lens goes there, and when that
@@ -391,5 +439,5 @@
     else if (own0 && !own1 && lensHome && !dragging) { setLens(lensHome[0], lensHome[1]); lensHome = null; }
     else setLens(lensPos.x, lensPos.y);
   }
-  window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame };   // play/home/state: automated checks; frame: garden.js
+  window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame, ps: setPS, psOn: function () { return PS; } };   // play/home/state: automated checks; frame: garden.js
 })();

@@ -1,0 +1,27 @@
+  /* ---------- H5 · Power Station on demand ----------
+     The original, approved Power Station experience (the lens and its opening glide, the three
+     hidden-energy drawings, the markers, labels, scenes, paths and their links) runs only while
+     the Power Station switch is on. It never changes the garden layers; switching it off returns
+     the clean illustration with nothing on it. */
+  var psBtn = $("#pr-psSwitch"), psPanel = $("#pr-psPanel");
+  function setPS(on) {
+    on = !!on; if (on === PS) return;
+    PS = on;
+    pn.classList.toggle("ps-on", on);
+    if (psBtn) psBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    if (psPanel) psPanel.hidden = !on;
+    if (on) {
+      if (state.mode !== "entry") home();
+      camera(pick(entryView())); placeBeacons();
+      beaconsEl.classList.add("ready");
+      setLens.apply(null, toScreen(pick(restAt())).concat([0]));
+      if (reduce()) { restLens(); showPaths(); } else glide();
+    } else {
+      stopGlide(); clearTimers(); dragging = false;
+      if (state.mode !== "entry") home();
+      setActive(null); setLens(lensPos.x, lensPos.y, 0);
+      pn.classList.remove("lens-over-intro");
+      camera(pick(entryView())); placeBeacons();
+    }
+  }
+  if (psBtn) psBtn.addEventListener("click", function () { setPS(!PS); });

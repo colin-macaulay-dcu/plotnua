@@ -1,0 +1,125 @@
+/* PlotNua Possibility Reveal · H5 Phase C homepage (preview, 21 Oct 2026).
+   Every rule is scoped under .pr. Loaded after reveal.css and garden.css.
+   The hero is the photograph and its four garden transformations; nothing else sits on the picture. */
+
+/* ---------- nothing on the photograph: no lens, X-ray, markers, labels or shading veil ---------- */
+/* ...unless Power Station is switched on, when the original lens, drawings and markers return */
+.pr.h5c:not(.ps-on) .lens,.pr.h5c:not(.ps-on) .lens-label,.pr.h5c:not(.ps-on) .hidden-layer,.pr.h5c:not(.ps-on) .beacons,.pr.h5c .g-beacon{display:none!important}
+.pr.h5c[data-mode="entry"] .veil{opacity:0}
+
+/* ---------- the strip directly beneath the photograph: AI disclosure, and the TimberIN credit with L6 ---------- */
+.pr .h5c-strip{background:var(--pr-legend-bg,#0f1c15);padding:8px clamp(16px,4.5vw,64px) 0;display:flex;flex-wrap:wrap;gap:3px 22px;align-items:baseline;
+  font-size:12.5px;line-height:1.45;color:var(--soft)}
+.pr .h5c-ai{margin:0}
+.pr .h5c-ai b{font-weight:600;color:var(--ivory)}
+.pr.h5c .garden-credit{position:static!important;top:auto!important;right:auto;left:auto;z-index:auto;max-width:none;margin:0;padding:0;border:0;border-radius:0;
+  background:none;-webkit-backdrop-filter:none;backdrop-filter:none;font-size:12.5px;line-height:1.45;color:var(--soft)}
+.pr.h5c .garden-credit a{color:var(--ivory);text-decoration:underline;text-underline-offset:2px}
+.pr.h5c #pr-gardenNote{position:static!important;display:inline;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal}
+.pr.h5c[data-mode="scene"] .garden-credit{visibility:visible}
+
+/* Borrow a Garden note: only while L4 is on. With Garden Retreat on, the AI line shortens so the strip stays one line */
+.pr .h5c-note{display:none;margin:0}
+.pr .h5c-note b{font-weight:600;color:var(--ivory)}
+.pr .h5c-note a{color:var(--ivory);text-decoration:underline;text-underline-offset:2px}
+.pr.h5c[data-garden~="L4"] .h5c-note{display:block}
+.pr.h5c[data-garden~="L6"] .h5c-ai-x{display:none}
+
+/* ---------- the invitation and the four transformations ---------- */
+.pr .h5c-deck{background:var(--pr-legend-bg,#0f1c15);padding:12px clamp(16px,4.5vw,64px) 30px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 30px}
+.pr .h5c-invite{margin:0;font:500 clamp(22px,0.8vw + 14px,28px)/1.15 var(--serif);letter-spacing:-.01em;color:var(--ivory)}
+.pr.h5c .h5c-switches{position:static;inset:auto;top:auto;left:auto;right:auto;display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 26px;padding:0;overflow:visible;opacity:1}
+.pr .h5c-group{display:flex;flex-direction:column;gap:7px;min-width:0}
+.pr .h5c-group-ps{padding-left:26px;border-left:1px solid rgba(248,245,236,.2)}
+.pr .h5c-glab{margin:0;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.pr .h5c-row{display:flex;flex-wrap:wrap;gap:10px}
+.pr .h5c-sw{display:inline-flex;align-items:center;gap:11px;min-height:50px;padding:0 18px 0 12px;margin:0;border-radius:999px;cursor:pointer;
+  border:1.5px solid rgba(248,245,236,.6);background:rgba(248,245,236,.07);color:var(--ivory);
+  font:500 16.5px/1 var(--sans,inherit);letter-spacing:.005em;white-space:nowrap;
+  -webkit-backdrop-filter:none;backdrop-filter:none;transition:background .2s,border-color .2s,color .2s}
+.pr .h5c-sw::before{content:none!important;display:none!important}
+.pr .h5c-sw:hover{border-color:var(--ivory);background:rgba(248,245,236,.14)}
+.pr .h5c-sw:focus-visible{outline:2px solid var(--ivory);outline-offset:3px}
+.pr .h5c-knob{position:relative;flex:none;width:36px;height:22px;border-radius:999px;background:rgba(248,245,236,.2);box-shadow:inset 0 0 0 1px rgba(248,245,236,.35);transition:background .2s}
+.pr .h5c-knob::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--ivory);transition:transform .2s}
+.pr .h5c-st{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.62;min-width:2.2em}
+.pr .h5c-st::before{content:"Off"}
+.pr .h5c-sw[aria-pressed="true"]{background:var(--terra,#BD6A46);border-color:var(--terra,#BD6A46);color:#fff}
+.pr .h5c-sw[aria-pressed="true"] .h5c-knob{background:rgba(255,255,255,.38);box-shadow:none}
+.pr .h5c-sw[aria-pressed="true"] .h5c-knob::after{transform:translateX(14px)}
+.pr .h5c-sw[aria-pressed="true"] .h5c-st{opacity:1}
+.pr .h5c-sw[aria-pressed="true"] .h5c-st::before{content:"On"}
+.pr.h5c[data-mode="scene"] .h5c-switches{opacity:.5}
+
+/* ---------- the Power Station panel (only while Power Station is on): the original headline, lede, paths, legend ---------- */
+.pr .h5c-ps{flex-basis:100%;display:grid;gap:10px;margin-top:4px;padding-top:16px;border-top:1px solid rgba(248,245,236,.14)}
+.pr .h5c-ps[hidden]{display:none}
+.pr .h5c-ps .pr-title{margin:0;font:500 clamp(21px,0.8vw + 14px,27px)/1.15 var(--serif);color:var(--ivory);letter-spacing:-.01em}
+.pr .h5c-ps .lede{margin:0;max-width:none;font-size:15px;opacity:1;animation:none;text-shadow:none}
+.pr.h5c.lens-over-intro .h5c-ps .pr-title,.pr.h5c.lens-over-intro .h5c-ps .lede{opacity:1!important}
+.pr.h5c .h5c-ps .paths{opacity:1;transform:none;flex-direction:row;flex-wrap:wrap;gap:8px;margin:2px 0 0}
+.pr.h5c .h5c-ps .path{padding:9px 16px 9px 12px;gap:10px;border-radius:999px;background:rgba(248,245,236,.06)}
+.pr.h5c .h5c-ps .path b{font-size:16.5px;flex:none}
+.pr.h5c .h5c-ps .legend{padding:0;background:none;font-size:12px}
+
+/* ---------- the smoke prototype (h5c-smoke.js): a separate animation layer over the locked picture ---------- */
+.pr .h5c-smoke{position:absolute;z-index:1;pointer-events:none;opacity:0;transition:opacity 1s}
+.pr[data-garden~="L6"] .h5c-smoke.run{opacity:1}
+.pr[data-mode="scene"] .h5c-smoke{opacity:0}
+
+/* ---------- desktop and tablet: the invitation heads the garden group; its small label is kept for screen readers ---------- */
+@media (min-width: 761px){
+  .pr .h5c-group-g .h5c-glab{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .pr .h5c-group-g .h5c-invite{margin-bottom:1px}
+  .pr .h5c-deck{padding-top:7px;padding-bottom:22px}
+  .pr .h5c-strip{padding-top:6px}
+}
+/* compact switches on smaller desktops so Power Station stays on the same row */
+@media (min-width: 761px) and (max-width: 1366px){
+  .pr .h5c-sw{min-height:46px;padding:0 14px 0 10px;gap:9px;font-size:15.5px}
+  .pr .h5c-row{gap:8px}
+  .pr.h5c .h5c-switches{gap:10px 18px}
+  .pr .h5c-group-ps{padding-left:18px}
+}
+
+/* landscape tablets and small laptops: the knob and terracotta fill show the state (as on phones), so all five fit one row */
+@media (min-width: 901px) and (max-width: 1279px){
+  .pr .h5c-st{display:none}
+  .pr .h5c-sw{padding:0 16px 0 10px}
+  .pr .h5c-strip,.pr.h5c .garden-credit{font-size:11.5px}
+}
+/* ---------- portrait tablets ---------- */
+@media (min-width: 761px) and (max-width: 900px){
+  .pr .h5c-deck{flex-direction:column;align-items:flex-start;gap:12px}
+}
+/* ---------- phones ---------- */
+@media (max-width: 760px){
+  .pr .h5c-strip{padding:8px 16px 0;font-size:11.5px}
+  .pr.h5c .garden-credit{font-size:11.5px}
+  .pr .h5c-deck{flex-direction:column;align-items:stretch;gap:12px;padding:14px 16px 26px}
+  .pr .h5c-invite{font-size:22px}
+  .pr.h5c .h5c-switches{display:grid;grid-template-columns:1fr;gap:14px}
+  .pr .h5c-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pr .h5c-group-ps{padding-left:0;border-left:0;padding-top:12px;border-top:1px solid rgba(248,245,236,.16)}
+  .pr .h5c-group-ps .h5c-row{grid-template-columns:1fr}
+  .pr.h5c .h5c-ps .paths{flex-direction:column}
+  .pr.h5c .h5c-ps .path{border-radius:12px;width:100%}
+  .pr.h5c .h5c-ps .path b{flex:1;text-align:left;font-size:16px}
+  .pr .h5c-sw{min-height:46px;padding:0 10px 0 9px;gap:8px;font-size:14.5px;white-space:nowrap;text-align:left;line-height:1.15;letter-spacing:0}
+  .pr .h5c-lb{flex:1}
+  .pr .h5c-knob{width:32px;height:20px}
+  .pr .h5c-knob::after{width:14px;height:14px}
+  .pr .h5c-sw[aria-pressed="true"] .h5c-knob::after{transform:translateX(12px)}
+  .pr .h5c-st{display:none}
+  .pr .h5c-sw{font-size:15px}
+}
+/* the narrowest phones (under 375px): two labels per row may wrap, so the grid never widens the page */
+@media (max-width: 374px){
+  .pr .h5c-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pr .h5c-sw{white-space:normal;font-size:14px;padding:4px 8px 4px 8px}
+  .pr .h5c-sw .h5c-lb{min-width:0}
+}
+@media (prefers-reduced-motion: reduce){
+  .pr .h5c-sw,.pr .h5c-knob,.pr .h5c-knob::after{transition:none}
+  .pr .h5c-smoke{display:none}
+}
