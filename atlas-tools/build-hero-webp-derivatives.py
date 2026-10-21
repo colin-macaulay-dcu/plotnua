@@ -101,6 +101,11 @@ CARDS = {
 CARD_CONTAINERS = ('<div class="p4s-media">', '<figure class="gr-card-img">')
 # The Reveal's own encodings: never a derivative, never wrapped by this builder.
 REVEAL_DIR = "assets/possibility-reveal/img/"
+# The Reveal's garden-layer tiles (H3, 20 Oct 2026): build-possibility-reveal-layers.py
+# records each half-size tile in this same `derivatives` list. They are not this
+# builder's, so it carries them through UNCHANGED (never re-encodes, edits or
+# drops them), and only while each is exactly the tile layers.json records.
+LAYERS_DIR = "assets/possibility-reveal/layers/"
 REVEAL_SLOT = '<div class="hero-stage p4-stage" id="heroStage" data-hero="possibility-reveal">'
 MADE = {"assets/img/fec77c3f0bae107a.jpg": "2026-10-20",
         "assets/img/45a270b7716e4a94.jpg": "2026-10-20",
@@ -331,7 +336,21 @@ def main():
         "the ratchet is unchanged. The guard (P12) refuses a derivative whose "
         "source changed, that crops or upscales, that is not WebP, or that appears "
         "on a page without its source as the fallback.")
-    reg_new["derivatives"] = sorted(derivs, key=lambda d: d["asset"])
+    carried = [e for e in reg.get("derivatives", []) if e.get("asset", "").startswith(LAYERS_DIR)]
+    if carried:
+        tiles = {}
+        for lay in json.loads((ROOT / LAYERS_DIR / "layers.json").read_text(encoding="utf-8"))["layers"].values():
+            for name, f in lay["files"].items():
+                tiles[LAYERS_DIR + name] = f["sha256"]
+        for e in carried:
+            src = e.get("derived_from", {})
+            if tiles.get(e["asset"]) != e.get("sha256") or tiles.get(src.get("asset")) != src.get("sha256"):
+                die("a garden-layer derivative does not match layers.json: %s" % e["asset"])
+            if sha((ROOT / e["asset"]).read_bytes()) != e["sha256"]:
+                die("a garden-layer derivative's bytes do not match its record: %s" % e["asset"])
+    if any(d["asset"].startswith(LAYERS_DIR) for d in derivs):
+        die("this builder must not make a garden-layer derivative")
+    reg_new["derivatives"] = sorted(derivs + carried, key=lambda d: d["asset"])
     reg_new["derivative_holds"] = [{"source": s, "reason": r, "since": "2026-10-17"}
                                    for s, r in sorted(HELD.items())]
     if len(reg_new["legacy_undeclared"]) != legacy_before:
@@ -350,7 +369,8 @@ def main():
         if pending:
             die("CHECK: not in the Phase 1b state: %s" % ", ".join(pending))
         print("HERO WEBP DERIVATIVES · CHECK OK — %d derivatives of %d sources, "
-              "backlog %d (unchanged), nothing written" % (len(derivs), len(set(HEROES) | set(CARDS)), legacy_before))
+              "%d garden-layer derivatives carried through unchanged, "
+              "backlog %d (unchanged), nothing written" % (len(derivs), len(set(HEROES) | set(CARDS)), len(carried), legacy_before))
         return
 
     for f, data in files.items():
