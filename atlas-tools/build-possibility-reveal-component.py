@@ -80,13 +80,30 @@ def h3_extend(js, body):
              '    camera(pick(entryView())); placeBeacons(); setActive(null); restLens(); showPaths();')
     js = one(js, '      if (state.mode === "entry") { camera(pick(ENTRY_VIEW), true); placeBeacons(); setLens(lensPos.x, lensPos.y); }',
              '      if (state.mode === "entry") { camera(pick(entryView()), true); placeBeacons(); setLens(lensPos.x, lensPos.y); }')
+    # H3 final review (21 Oct 2026): a frame may name where the lens rests while it is active
+    # (`lens`, picture px); without it the lens rests on the ground beacon exactly as before
+    js = one(js, '  var entryView = function () { return FRAME || ENTRY_VIEW; };\n',
+             '  var entryView = function () { return FRAME || ENTRY_VIEW; };\n'
+             '  var restAt = function () { return (FRAME && FRAME.lens) || BEACON.ground; };   /* H3: where the lens rests */\n')
+    js = one(js, '  function restLens() { setLens.apply(null, toScreen(pick(BEACON.ground))); }',
+             '  function restLens() { setLens.apply(null, toScreen(pick(restAt()))); }')
+    js = one(js, '    var p = toScreen(pick(BEACON.ground)); easeLensTo(p[0], p[1], 600);',
+             '    var p = toScreen(pick(restAt())); easeLensTo(p[0], p[1], 600);')
     js = one(js, '  window.PN_REVEAL_API = { play: play, home: home, state: state };   // for automated checks only',
-             '  /* H3: frame a garden layer through this camera; null returns to the whole property */\n'
+             '  /* H3: frame a garden layer through this camera; null returns to the whole property.\n'
+             '     If the frame names its own lens resting place, the lens goes there, and when that\n'
+             '     ends it returns exactly to where it was before; otherwise it stays where it is. */\n'
+             '  var lensHome = null;\n'
              '  function frame(v, instant) {\n'
+             '    var own0 = !!(FRAME && FRAME.lens);\n'
              '    FRAME = v || null;\n'
              '    if (state.mode !== "entry") return;\n'
              '    stopGlide(); showPaths();\n'
-             '    camera(pick(entryView()), instant); placeBeacons(); setLens(lensPos.x, lensPos.y);\n'
+             '    camera(pick(entryView()), instant); placeBeacons();\n'
+             '    var own1 = !!(FRAME && FRAME.lens);\n'
+             '    if (own1 && !dragging) { if (!own0) lensHome = [lensPos.x, lensPos.y]; restLens(); }\n'
+             '    else if (own0 && !own1 && lensHome && !dragging) { setLens(lensHome[0], lensHome[1]); lensHome = null; }\n'
+             '    else setLens(lensPos.x, lensPos.y);\n'
              '  }\n'
              '  window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame };   // play/home/state: automated checks; frame: garden.js')
     # markup: the four garden chips become switches

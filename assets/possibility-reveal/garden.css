@@ -56,16 +56,19 @@
   .pr[data-mode="entry"][data-garden~="L6"] .path small{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .pr[data-mode="entry"][data-garden~="L6"] .path .p-dot{width:9px;height:9px;box-shadow:0 0 0 3px rgba(248,245,236,.16)}
 }
-/* portrait tablets: the compact row is a touch tighter, so at 768px it ends before the tub, and it
-   sits at the foot of the paths' usual height (--g-paths-h, measured by garden.js), so the headline
-   and lede do not move; the empty part of that box lets the picture, lens and beacons take pointers */
+/* portrait tablets: the compact row is a touch tighter, so at 768px it ends before the tub. The
+   headline and lede do not move: the space the full paths used is kept as margin under the lede
+   (--g-hold, measured by garden.js), so nothing but the row of pills is drawn or blocks the lens */
 @media (min-width: 761px) and (max-width: 1023px){
-  .pr[data-mode="entry"][data-garden~="L6"] .paths{gap:5px;min-height:var(--g-paths-h,0px);align-items:flex-end;pointer-events:none}
-  .pr[data-mode="entry"][data-garden~="L6"] .path{pointer-events:auto}
+  .pr[data-mode="entry"][data-garden~="L6"] .lede{margin-bottom:calc(18px + var(--g-hold,0px))}
   .pr .garden-credit{left:clamp(16px,4.5vw,64px);right:auto}
+  .pr[data-mode="entry"][data-garden~="L6"] .paths{gap:5px}
   .pr[data-mode="entry"][data-garden~="L6"] .path{padding:6px 10px}
   .pr[data-mode="entry"][data-garden~="L6"] .path b{font-size:13.5px}
 }
+/* desktops where the one-row paths would cover the hot tub (garden.js decides, by measurement):
+   while L6 is on, only the small secondary counts are hidden, and stay readable to screen readers */
+.pr.g-counts-off[data-mode="entry"][data-garden~="L6"] .path small{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion: reduce){
   .pr .g-layer,.pr .lay-btn{transition:none}
 }

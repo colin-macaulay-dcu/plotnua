@@ -100,7 +100,7 @@
     beacon.style.left = Math.round(x - pad - r) + "px";
     beacon.style.top = Math.round(y) + "px";
   }
-  cam.addEventListener("transitionend", function (e) { if (e.target === cam) { placeBeacon(); placeCredit(); } });
+  cam.addEventListener("transitionend", function (e) { if (e.target === cam) { fitCounts(); placeBeacon(); placeCredit(); } });
   function rect(sel) {
     var e = $(sel); if (!e || e.offsetParent === null) return null;
     var a = e.getBoundingClientRect(), s = stage.getBoundingClientRect();
@@ -144,19 +144,41 @@
   window.addEventListener("scroll", queuePlace, { passive: true });
 
   /* portrait tablets: while L6 compacts the paths, the headline and lede stay exactly where they
-     were. The paths keep their usual height (measured with the compact rule off) and the compact
-     row sits at its foot (garden.css), so only the pills move. Phones keep the approved layout. */
+     were. The height the full paths took is kept as margin under the lede (--g-hold, measured with
+     the compact rule off and on), so only the pills move. Phones keep the approved layout. */
   var mqTab = window.matchMedia("(min-width: 761px) and (max-width: 1023px)");
   var pathsEl = $("#pr-paths");
   function holdIntro() {
-    if (!mqTab.matches || on.indexOf("L6") < 0) { pathsEl.style.removeProperty("--g-paths-h"); return; }
+    ROOT.style.removeProperty("--g-hold");
+    if (!mqTab.matches || on.indexOf("L6") < 0) return;
     var g = ROOT.getAttribute("data-garden");
     ROOT.setAttribute("data-garden", "");
-    var hgt = pathsEl.offsetHeight;
+    var full = pathsEl.offsetHeight;
     ROOT.setAttribute("data-garden", g);
-    if (hgt) pathsEl.style.setProperty("--g-paths-h", hgt + "px");
+    var compact = pathsEl.offsetHeight;
+    if (full && compact && full > compact) ROOT.style.setProperty("--g-hold", (full - compact) + "px");
   }
-  new MutationObserver(function () { holdIntro(); queuePlace(); }).observe(ROOT, { attributes: true, attributeFilter: ["data-mode"] });
+  new MutationObserver(function () { holdIntro(); fitCounts(); queuePlace(); }).observe(ROOT, { attributes: true, attributeFilter: ["data-mode"] });
+
+  /* desktops and landscape tablets (1024px and wider): where the one-row paths cover more than a
+     tenth of the hot tub's wooden body (measured with their counts showing: about 1243-1439px), the
+     small secondary counts ("4 discoveries", "Next build stage") are hidden while L6 is on. The path
+     names stay; screen readers still hear the counts. Nothing changes where the tub is already clear. */
+  var mqWide = window.matchMedia("(min-width: 1024px)");
+  function tubCovered() {
+    var c = cam.getBoundingClientRect(), k = c.width / 2752, n = 0, hit = 0;
+    var pills = [].slice.call(ROOT.querySelectorAll("#pr-paths .path")).map(function (e) { return e.getBoundingClientRect(); });
+    for (var i = 0; i < 24; i++) for (var j = 0; j < 8; j++) {
+      var X = c.left + (2260 + 380 * (i + .5) / 24) * k, Y = c.top + (1330 + 120 * (j + .5) / 8) * k; n++;
+      if (pills.some(function (r) { return X >= r.left && X <= r.right && Y >= r.top && Y <= r.bottom; })) hit++;
+    }
+    return hit / n;
+  }
+  function fitCounts() {
+    ROOT.classList.remove("g-counts-off");
+    if (on.indexOf("L6") < 0 || !mqWide.matches || ROOT.getAttribute("data-mode") !== "entry") return;
+    if (tubCovered() > 0.1) ROOT.classList.add("g-counts-off");
+  }
 
   function sync() {
     ROOT.classList.toggle("g-noL3", on.indexOf("L3") < 0);
@@ -168,15 +190,24 @@
       b.setAttribute("aria-pressed", on.indexOf(b.dataset.layer) >= 0 ? "true" : "false");
     });
     ROOT.setAttribute("data-garden", on.slice().sort().join(" "));
-    holdIntro(); placeCredit();
+    holdIntro(); fitCounts(); placeCredit();
   }
 
+  /* the sizes where, with L6 on, the resting lens or its label can sit on the Garden Retreat beacon
+     (measured: portrait tablets up to about 928px, depending on height, so the whole portrait-tablet
+     band below 1024px for a margin; and phones narrower than 360px, where it also faded the headline
+     under Option A): while L6 is on, the lens rests on the open lawn instead, far enough from the
+     ground-source beacon that its label lets go. Switching L6 off returns the lens exactly to where it
+     was; dragging and hovering work as before. */
+  var mqLens = window.matchMedia("(max-width: 359px), (min-width: 761px) and (max-width: 1023px)");
+  var L6_LENS = { d: [1800, 1100], m: [1800, 1100] };
   function frameFor(instant) {
-    var last = on.length ? on[on.length - 1] : null;
+    var last = on.length ? on[on.length - 1] : null, v = last ? VIEW[last] : null;
+    if (v && on.indexOf("L6") >= 0 && mqLens.matches) v = { d: v.d, m: v.m, lens: L6_LENS };
     ROOT.classList.add("g-panning");
-    API.frame(last ? VIEW[last] : null, instant || mqReduce.matches);
+    API.frame(v, instant || mqReduce.matches);
     clearTimeout(frameFor.t);
-    frameFor.t = setTimeout(function () { ROOT.classList.remove("g-panning"); placeBeacon(); placeCredit(); }, instant || mqReduce.matches ? 0 : 1500);
+    frameFor.t = setTimeout(function () { ROOT.classList.remove("g-panning"); fitCounts(); placeBeacon(); placeCredit(); }, instant || mqReduce.matches ? 0 : 1500);
   }
 
   function set(id, want, instant) {
@@ -201,8 +232,11 @@
     });
   });
 
+  var onLensBand = function () { if (on.indexOf("L6") >= 0) frameFor(true); };
+  if (mqLens.addEventListener) mqLens.addEventListener("change", onLensBand); else if (mqLens.addListener) mqLens.addListener(onLensBand);
+
   window.addEventListener("resize", function () {
-    holdIntro(); queuePlace();
+    holdIntro(); fitCounts(); queuePlace();
     setTimeout(placeBeacon, 200);
     Object.keys(mounted).forEach(function (id) {
       var img = mounted[id].querySelector("img");

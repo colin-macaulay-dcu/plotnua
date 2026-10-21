@@ -19,6 +19,7 @@
   var ENTRY_VIEW = { d: [1376, 820, 1], m: [1000, 800, 1] };
   var FRAME = null;   /* H3: a garden layer may re-frame the entry view (PN_REVEAL_API.frame) */
   var entryView = function () { return FRAME || ENTRY_VIEW; };
+  var restAt = function () { return (FRAME && FRAME.lens) || BEACON.ground; };   /* H3: where the lens rests */
   var BEACON = { ground: { d: [2250, 1060], m: [1250, 1110] }, wind: { d: [735, 190], m: [745, 225] }, compute: { d: [1190, 690], m: [1190, 690] } };
   var SCENE = {
     ground:  { view: { d: [1700, 1080, 1.12], m: [1760, 1060, 1.0] }, steps: [1400, 2800, 4100, 5300], capPos: { d: "pos-tr", m: "m-top" } },
@@ -130,7 +131,7 @@
     if (!pick1) { pick1 = [Math.min(W - w - 8, Math.max(8, c[0][0])), Math.min(H - h - 8, Math.max(8, c[0][1]))]; }
     labelEl.style.transform = "translate(" + Math.round(pick1[0]) + "px," + Math.round(pick1[1]) + "px)";
   }
-  function restLens() { setLens.apply(null, toScreen(pick(BEACON.ground))); }
+  function restLens() { setLens.apply(null, toScreen(pick(restAt()))); }
   function easeLensTo(x, y, ms) {          /* smooth return to rest when the pointer leaves */
     if (reduce()) { setLens(x, y); return; }
     var x0 = lensPos.x, y0 = lensPos.y, t0 = null, my = ++gliding;
@@ -171,7 +172,7 @@
   });
   stage.addEventListener("pointerleave", function (e) {
     if (state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;
-    var p = toScreen(pick(BEACON.ground)); easeLensTo(p[0], p[1], 600);
+    var p = toScreen(pick(restAt())); easeLensTo(p[0], p[1], 600);
   });
   grip.addEventListener("pointerdown", function (e) { dragging = true; stopGlide(); grip.setPointerCapture(e.pointerId); e.preventDefault(); });
   grip.addEventListener("pointerup", function () { dragging = false; });
@@ -375,12 +376,20 @@
   } else {
     timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));
   }
-  /* H3: frame a garden layer through this camera; null returns to the whole property */
+  /* H3: frame a garden layer through this camera; null returns to the whole property.
+     If the frame names its own lens resting place, the lens goes there, and when that
+     ends it returns exactly to where it was before; otherwise it stays where it is. */
+  var lensHome = null;
   function frame(v, instant) {
+    var own0 = !!(FRAME && FRAME.lens);
     FRAME = v || null;
     if (state.mode !== "entry") return;
     stopGlide(); showPaths();
-    camera(pick(entryView()), instant); placeBeacons(); setLens(lensPos.x, lensPos.y);
+    camera(pick(entryView()), instant); placeBeacons();
+    var own1 = !!(FRAME && FRAME.lens);
+    if (own1 && !dragging) { if (!own0) lensHome = [lensPos.x, lensPos.y]; restLens(); }
+    else if (own0 && !own1 && lensHome && !dragging) { setLens(lensHome[0], lensHome[1]); lensHome = null; }
+    else setLens(lensPos.x, lensPos.y);
   }
   window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame };   // play/home/state: automated checks; frame: garden.js
 })();
