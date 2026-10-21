@@ -185,9 +185,11 @@ def h5_extend(js, body):
     js = one(js, '  grip.addEventListener("pointerdown", function (e) { dragging = true;',
              '  grip.addEventListener("pointerdown", function (e) { if (H5) return; dragging = true;')
     js = one(js, '  /* ---------- start ---------- */\n', H5_PS_JS + '\n  /* ---------- start ---------- */\n')
+    # H5C4: on phones the wind scene is framed a little further left, so the whole turbine and its wind lines are in view
+    js = one(js, 'wind:    { view: { d: [900, 330, 1.7],    m: [860, 330, 1.35] }', 'wind:    { view: { d: [900, 330, 1.7],    m: [720, 330, 1.35] }')
     js = one(js, 'state: state, frame: frame };', 'state: state, frame: frame, ps: setPS, psOn: function () { return PS; } };')
     js = one(js, '    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { $(s).inert = scene; });',
-             '    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { var e = $(s); if (e) e.inert = scene; });')
+             '    [".intro", "#pr-beacons"].forEach(function (s) { var e = $(s); if (e) e.inert = scene; });   /* H5C4: the switches beneath the photograph stay usable during a scene */')
     js = one(js, '    timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));',
              '    if (!H5) timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));')
     # ---- markup

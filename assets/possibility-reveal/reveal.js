@@ -45,7 +45,7 @@
   var BEACON = { ground: { d: [2250, 1060], m: [1250, 1110] }, wind: { d: [735, 190], m: [745, 225] }, compute: { d: [1190, 690], m: [1190, 690] } };
   var SCENE = {
     ground:  { view: { d: [1700, 1080, 1.12], m: [1760, 1060, 1.0] }, steps: [1400, 2800, 4100, 5300], capPos: { d: "pos-tr", m: "m-top" } },
-    wind:    { view: { d: [900, 330, 1.7],    m: [860, 330, 1.35] }, steps: [1400, 2500, 3500, 4600, 5900], capPos: { d: "", m: "" } },
+    wind:    { view: { d: [900, 330, 1.7],    m: [720, 330, 1.35] }, steps: [1400, 2500, 3500, 4600, 5900], capPos: { d: "", m: "" } },
     compute: { view: { d: [1190, 690, 1.4],   m: [1190, 690, 1.3] },  steps: [1200, 2300, 3500, 4600, 6400],
                pull: { d: [1440, 600, 1.0], m: [1450, 560, 1.0] }, capPos: { d: "", m: "" } }
   };
@@ -381,7 +381,7 @@
   function syncInert() {
     var scene = state.mode === "scene";
     ["#pr-bar"].forEach(function (s) { $(s).inert = !scene; });
-    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { var e = $(s); if (e) e.inert = scene; });
+    [".intro", "#pr-beacons"].forEach(function (s) { var e = $(s); if (e) e.inert = scene; });   /* H5C4: the switches beneath the photograph stay usable during a scene */
   }
   function setMode(m) { state.mode = m; pn.setAttribute("data-mode", m); syncInert(); }
 

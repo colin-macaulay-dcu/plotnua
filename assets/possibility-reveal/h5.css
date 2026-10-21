@@ -47,7 +47,8 @@
 .pr .h5c-sw[aria-pressed="true"] .h5c-knob::after{transform:translateX(14px)}
 .pr .h5c-sw[aria-pressed="true"] .h5c-st{opacity:1}
 .pr .h5c-sw[aria-pressed="true"] .h5c-st::before{content:"On"}
-.pr.h5c[data-mode="scene"] .h5c-switches{opacity:1}   /* H5C4: the switches stay usable during a Power Station scene (pressing one ends the scene) */
+.pr.h5c[data-mode="scene"] .h5c-switches{opacity:1;pointer-events:auto}   /* H5C4: the switches stay usable during a Power Station scene (pressing one ends the scene) */
+.pr.h5c .h5c-switches{z-index:auto}   /* H5C4: the old over-the-photo stacking is not needed beneath it (it would sit above the scene buttons) */
 
 /* ---------- the Power Station panel (only while Power Station is on): the original headline, lede, paths, legend ---------- */
 .pr .h5c-ps{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:2px;padding-top:14px;border-top:1px solid rgba(248,245,236,.14)}
@@ -63,7 +64,8 @@
 /* desktop: with Power Station on, its scene question, the three scene buttons and the Discovery link sit on the
    heading's row, so they are in view with the photograph and nothing moves */
 @media (min-width: 1101px){
-  .pr .h5c-ps{position:absolute;top:4px;right:clamp(16px,4.5vw,64px);flex-wrap:nowrap;align-items:center;margin:0;padding:0;border:0;gap:14px;min-height:34px}
+  .pr .h5c-ps{position:absolute;z-index:2;top:4px;right:clamp(16px,4.5vw,64px);flex-wrap:nowrap;align-items:center;margin:0;padding:0;border:0;gap:14px;min-height:34px}
+  .pr.h5c .h5c-group-g .h5c-invite{width:fit-content;max-width:100%}
   .pr .h5c-step{min-height:34px;padding:0 14px;font-size:14px}
   .pr.h5c .h5c-group-g .h5c-invite{margin-bottom:7px}
   .pr .h5c-ps-line{max-width:300px;text-align:right}
