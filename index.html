@@ -1632,42 +1632,105 @@ body.pn-p4 .p4-menu{ display:none; }
   body.pn-p4 .p4-header-inner{ height:60px; padding:0 52px 0 56px; }
   html body.pn-p4 .brand-info{ top:20px; left:170px; }
 }
-/* H5 · WhatsApp in the header: a direct wa.me link (no widget, script, tracking or prefilled text).
-   The approved PlotNua speech bubble with the P/house mark (the existing enumerated brand file). It sits in the
-   header bar beside Search, never over the photograph. Desktop: a compact labelled pill. Tablets and phones: an icon. */
-body.pn-p4 .p4-wa{ display:inline-flex; align-items:center; gap:8px; flex:none; order:3; height:40px; padding:0 14px 0 5px; margin-left:22px;
-  border:1px solid var(--p4-bronze); border-radius:20px; color:var(--p4-ivory); text-decoration:none; white-space:nowrap;
+/* H5C4 · THE HEADER: PlotNua logo | Chat on WhatsApp | Search PlotNua (founder-approved, 21 Oct 2026).
+   The four navigation links have left the header (they remain in the footer, and in the Discovery Library and
+   Atlas sections). The bar is slim and sticky; the fixed brand mark, its (i) and the Search pill sit on it.
+   WhatsApp is a direct wa.me link (no widget, script, tracking or prefilled text) with the approved PlotNua
+   speech bubble and P/house mark (the existing enumerated brand file). Search keeps its function and panel
+   unchanged; only its look changes, on this page only, to match WhatsApp: dark, bronze outline, same height,
+   same type. On phones WhatsApp is the approved icon and Search keeps its label. */
+body.pn-p4 .p4-header{ position:sticky; top:0; z-index:45; }
+body.pn-p4 .p4-header-inner{ height:64px; padding:0 216px 0 78px; gap:0; flex-wrap:nowrap; }
+body.pn-p4 .p4-wa{ display:inline-flex; align-items:center; gap:8px; flex:none; height:40px; padding:0 15px 0 5px; margin-left:auto;
+  border:1px solid var(--p4-bronze); border-radius:20px; background:transparent; color:var(--p4-ivory); text-decoration:none; white-space:nowrap;
   font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:14.5px; line-height:1; letter-spacing:-.005em; transition:border-color .2s, background .2s; }
 body.pn-p4 .p4-wa:hover{ border-color:var(--p4-ivory); background:rgba(248,245,236,.06); }
 body.pn-p4 .p4-wa:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:3px; }
 body.pn-p4 .p4-wa-ico{ position:relative; display:block; width:31px; height:31px; flex:none; }
 body.pn-p4 .p4-wa-ico svg{ position:absolute; inset:0; width:100%; height:100%; display:block; }
 body.pn-p4 .p4-wa-ico img{ position:absolute; left:10.625%; top:6.25%; width:75%; height:75%; display:block; }
-@media (min-width:901px){ body.pn-p4 .p4-nav{ order:2; } }
-/* narrower laptops: the icon alone, so the navigation keeps its spacing */
-@media (min-width:901px) and (max-width:1199px){
-  body.pn-p4 .p4-wa{ width:40px; padding:0; justify-content:center; margin-left:18px; }
-  body.pn-p4 .p4-nav{ gap:26px; }
-}
+body.pn-p4 .pns-pill{ top:12px; right:22px; height:40px; padding:0 15px 0 5px; gap:9px; background:var(--p4-earth); color:var(--p4-ivory);
+  border:1px solid var(--p4-bronze); box-shadow:none; }
+body.pn-p4 .pns-pill:hover{ border-color:var(--p4-ivory); box-shadow:none; background:rgba(248,245,236,.06); }
+body.pn-p4 .pns-pill:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:3px; }
+body.pn-p4 .pns-pill-ico-wrap{ width:31px; height:31px; background:rgba(248,245,236,.09); }
+body.pn-p4 .pns-pill:hover .pns-pill-ico-wrap{ background:rgba(248,245,236,.16); }
+body.pn-p4 .pns-pill-ico{ color:var(--p4-ivory); }
+body.pn-p4 .pns-pill-label{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:14.5px; letter-spacing:-.005em; }
+body.pn-p4 .brand-mark{ top:9px; }
+html body.pn-p4 .brand-info{ top:21px; left:166px; right:auto; }
 @media (max-width:900px){
-  body.pn-p4 .p4-wa{ order:0; margin-left:auto; margin-right:8px; }
-  body.pn-p4 .p4-menu{ margin-left:0; }
-}
-@media (max-width:1199px){
-  body.pn-p4 .p4-wa-lb{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
-  body.pn-p4 .p4-wa{ position:relative; width:40px; padding:0; justify-content:center; }
-  body.pn-p4 .p4-wa::after{ content:''; position:absolute; left:50%; top:50%; width:44px; height:44px; transform:translate(-50%,-50%); }
+  body.pn-p4 .p4-header-inner{ height:60px; padding:0 214px 0 80px; }
+  body.pn-p4 .brand-mark{ top:7px; }
+  body.pn-p4 .pns-pill{ top:10px; }
+  html body.pn-p4 .brand-info{ top:19px; left:162px; }
 }
 @media (max-width:720px){
-  body.pn-p4 .p4-wa{ width:38px; height:38px; margin-right:6px; }
+  body.pn-p4 .p4-header-inner{ padding:0 178px 0 56px; }
+  html body.pn-p4 .brand-info{ top:20px; left:136px; }
+  body.pn-p4 .p4-wordmark{ font-size:24px; }
+  body.pn-p4 .p4-wa{ position:relative; width:38px; height:38px; padding:0; justify-content:center; }
+  body.pn-p4 .p4-wa::after{ content:''; position:absolute; left:50%; top:50%; width:44px; height:44px; transform:translate(-50%,-50%); }
   body.pn-p4 .p4-wa-ico{ width:30px; height:30px; }
+  body.pn-p4 .p4-wa-lb{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
+  /* Search keeps its words on phones: the generated rail's icon-only circle is undone here, on this page */
+  body.pn-p4 .pns-pill{ top:10px; right:12px; width:auto; height:40px; padding:0 12px 0 5px; gap:7px; border-radius:20px; justify-content:flex-start; }
+  body.pn-p4 .pns-pill-ico-wrap{ width:29px; height:29px; }
+  body.pn-p4 .pns-pill-label{ position:static; width:auto; height:auto; margin:0; overflow:visible; clip:auto; clip-path:none; font-size:13.5px; }
 }
-/* the narrowest phones: Menu shows its icon only (its name stays in the accessibility tree) and the wordmark steps down */
+/* the narrowest phones: the wordmark steps back (the logo tile carries the brand) and the (i) moves beside the tile */
 @media (max-width:374px){
-  body.pn-p4 .p4-wordmark{ font-size:22px; }
-  html body.pn-p4 .brand-info{ left:146px; }
-  body.pn-p4 .p4-menu{ padding:0 12px; }
-  body.pn-p4 .p4-menu-lb{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
+  body.pn-p4 .p4-wordmark{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
+  html body.pn-p4 .brand-info{ left:64px; }
+  body.pn-p4 .p4-header-inner{ padding:0 178px 0 56px; }
+}
+/* H5C4 · MY PLOT: a card with its own quiet identity (only for visitors with saved ideas) */
+body.pn-p4 .continue{ background:var(--p4-earth); padding:34px var(--p4-gutter) 6px; }
+body.pn-p4 .continue-inner{ display:flex; align-items:center; gap:30px; max-width:1180px; margin:0 auto; padding:28px 34px;
+  border-radius:18px; background:linear-gradient(180deg,#3B332D 0%,#352E29 100%); border:1px solid rgba(199,184,164,.22); border-top:1px solid rgba(199,184,164,.22); }
+body.pn-p4 .continue-badge{ flex:none; width:112px; height:112px; border-radius:25px; box-shadow:0 10px 26px rgba(0,0,0,.32); }
+body.pn-p4 .continue-heart{ transform:scale(2.2); transform-origin:1595px 1573px; }
+body.pn-p4 .continue-title{ margin:0 0 6px; font-family:var(--p4-serif); font-weight:400; font-size:clamp(28px,2.4vw,38px); line-height:1.1; color:var(--p4-ivory); }
+body.pn-p4 .continue-sub{ margin:0; font-size:17px; color:var(--p4-stone); }
+body.pn-p4 .continue-link{ margin-left:auto; display:inline-flex; align-items:center; gap:10px; min-height:50px; padding:0 24px; border:0; border-radius:999px;
+  background:var(--p4-terra); color:#fff; font-family:var(--p4-sans); font-size:16px; font-weight:600; letter-spacing:0; text-transform:none; text-decoration:none; white-space:nowrap; }
+body.pn-p4 .continue-link:hover{ background:#99553A; color:#fff; border:0; }
+body.pn-p4 .continue-link:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:3px; }
+@media (max-width:720px){
+  body.pn-p4 .continue{ padding:22px 16px 0; }
+  body.pn-p4 .continue-inner{ flex-direction:column; align-items:center; text-align:center; gap:14px; padding:24px 20px; }
+  body.pn-p4 .continue-badge{ width:96px; height:96px; border-radius:21px; }
+  body.pn-p4 .continue-link{ margin:4px 0 0; width:100%; justify-content:center; }
+}
+/* H5C4 · ATLAS: the approved static mark sits directly on the section (no disc, no recolouring), on a faint warm
+   glow so its dark green still reads against the dark ground; the figures are large quiet numerals with fine
+   bronze rules, no split-flap tiles */
+body.pn-p4 .atlas .article-head{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:48px 64px; align-items:center; }
+body.pn-p4 .atlas-id{ display:flex; align-items:center; gap:34px; }
+body.pn-p4 .atlas-mark-still{ flex:none; width:clamp(170px,14vw,214px); height:auto; aspect-ratio:1; padding:6px;
+  background:radial-gradient(closest-side, rgba(231,222,208,.13), rgba(231,222,208,.05) 62%, rgba(231,222,208,0) 100%); border-radius:50%; }
+body.pn-p4 .atlas-words .atlas-name{ margin:0 0 12px; font-family:var(--p4-sans); font-style:normal; font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); display:flex; align-items:center; gap:10px; }
+body.pn-p4 .atlas-words h2{ margin:0 0 12px; font-size:clamp(40px,4vw,62px); }
+body.pn-p4 .atlas-sub{ margin:0; font-family:var(--p4-serif); font-style:italic; font-weight:300; font-size:clamp(19px,1.6vw,23px); color:var(--p4-stone); }
+body.pn-p4 .atlas-figures{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; margin:0; }
+body.pn-p4 .atlas-figure{ padding:4px 26px; border-left:1px solid rgba(179,146,114,.45); }
+body.pn-p4 .atlas-figure:first-child{ padding-left:0; border-left:0; }
+body.pn-p4 .atlas-figures dt{ font-family:var(--p4-serif); font-weight:300; font-size:clamp(54px,5.6vw,84px); line-height:1; letter-spacing:-.02em; color:var(--p4-ivory); font-variant-numeric:tabular-nums lining-nums; }
+body.pn-p4 .atlas-figures dd{ margin:12px 0 0; font-family:var(--p4-sans); font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--p4-bronze-text); }
+body.pn-p4 .atlas .ah-body .atlas-note{ margin-top:26px; font-size:24px; }
+body.pn-p4 .atlas .ah-body .atlas-guide{ margin-top:10px; font-size:16px; }
+body.pn-p4 .atlas .d-all{ margin-top:40px; }
+@media (max-width:900px){
+  body.pn-p4 .atlas .article-head{ grid-template-columns:1fr; }
+}
+@media (max-width:720px){
+  body.pn-p4 .atlas-id{ flex-direction:column; align-items:flex-start; gap:18px; }
+  body.pn-p4 .atlas-mark-still{ width:132px; }
+  body.pn-p4 .atlas-figures{ grid-template-columns:1fr; }
+  body.pn-p4 .atlas-figure{ display:flex; align-items:baseline; justify-content:space-between; gap:14px; padding:14px 0; border-left:0; border-top:1px solid rgba(179,146,114,.45); }
+  body.pn-p4 .atlas-figure:first-child{ border-top:1px solid rgba(179,146,114,.45); }
+  body.pn-p4 .atlas-figures dt{ font-size:52px; min-width:0; }
+  body.pn-p4 .atlas-figures dd{ margin:0; text-align:right; }
 }
 /* PLOTNUA H5 · END */
 /* Direct contact with PlotNua; no third-party widget or background requests. */
@@ -1740,13 +1803,6 @@ body.pn-p4 .footer-col a.pn-whatsapp:focus-visible{
   <div class="p4-header-inner">
     <a class="p4-wordmark" href="#top">PlotNua</a>
     <a class="p4-wa" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="p4-wa-ico" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="22" height="22"></span><span class="p4-wa-lb">Chat on WhatsApp</span></a>
-    <button type="button" class="p4-menu" id="p4MenuBtn" aria-expanded="false" aria-controls="p4Nav"><span class="p4-menu-ico" aria-hidden="true"></span><span class="p4-menu-lb">Menu</span></button>
-    <nav class="p4-nav" id="p4Nav" aria-label="Main">
-      <a class="p4-nav-lead" href="discoveries.html">Discovery Library</a>
-      <a href="your-plot.html">Your Plot</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
   </div>
 </header>
 
@@ -1938,16 +1994,14 @@ body.pn-p4 .footer-col a.pn-whatsapp:focus-visible{
 
   <!-- H5 Phase C · directly beneath the photograph: the disclosure strip, then the invitation and the five switches -->
   <div class="h5c-strip" id="pr-strip">
-    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="h5c-ai-x"> · not a photograph of a real home.</span></p>
-    <p class="garden-credit" id="pr-gardenCredit" hidden>Garden possibilities illustrated. <a href="https://www.timberin.com/">Hot tub: TimberIN</a>.<span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.</span></p>
+    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="garden-credit" id="pr-gardenCredit" hidden> · <a href="https://www.timberin.com/">Hot tub: TimberIN</a><span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.</span></span></p>
     <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>
-    <p class="h5c-note" id="pr-borrowNote"><b>Borrow a Garden</b> · an underused garden could become productive through garden sharing, if an arrangement suits you. Not guaranteed. <a href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></p>
   </div>
   <div class="h5c-deck" id="pr-deck">
     <div class="layers h5c-switches" id="pr-layers" role="group" aria-labelledby="pr-invite">
-     <div class="h5c-group h5c-group-g" role="group" aria-labelledby="pr-gLab"><h1 class="h5c-invite" id="pr-invite">What could your property become?</h1><p class="h5c-glab" id="pr-gLab">Garden transformations</p><div class="h5c-row">
+     <div class="h5c-group h5c-group-g" role="group" aria-labelledby="pr-gLab"><h1 class="h5c-invite" id="pr-invite">Discover What’s Possible.</h1><p class="h5c-glab" id="pr-gLab">Garden transformations</p><div class="h5c-row">
       <button type="button" class="lay lay-btn h5c-sw" data-layer="L3" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Garden Room</span><span class="h5c-st" aria-hidden="true"></span></button>
-      <button type="button" class="lay lay-btn h5c-sw" data-layer="L4" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Borrow a Garden</span><span class="h5c-st" aria-hidden="true"></span></button>
+      <button type="button" class="lay lay-btn h5c-sw" data-layer="L4" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Borrowed Garden</span><span class="h5c-st" aria-hidden="true"></span></button>
       <button type="button" class="lay lay-btn h5c-sw" data-layer="L5" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Treehouse</span><span class="h5c-st" aria-hidden="true"></span></button>
       <button type="button" class="lay lay-btn h5c-sw" data-layer="L6" aria-pressed="false" aria-describedby="pr-gardenNote"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Garden Retreat</span><span class="h5c-st" aria-hidden="true"></span></button>
      </div></div>
@@ -1955,18 +2009,13 @@ body.pn-p4 .footer-col a.pn-whatsapp:focus-visible{
       <button type="button" class="h5c-sw h5c-sw-ps" id="pr-psSwitch" aria-pressed="false" aria-controls="pr-psPanel"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Power Station</span><span class="h5c-st" aria-hidden="true"></span></button>
      </div></div>
     </div>
-    <!-- Power Station panel: the original headline, lede, paths and legend, shown only while Power Station is on -->
+    <!-- H5C4 Power Station panel, shown only while Power Station is on: the three approved scenes play in the
+         photograph (no lens); these buttons replay any one; the scene question (approved wording); a link to the Discovery -->
     <div class="h5c-ps" id="pr-psPanel" hidden>
-      <h2 class="pr-title" id="pr-introTitle">This house could be a power station.</h2>
-      <p class="lede">Some of it you can see. Some of it is under the lawn, or down the street. <span class="lede-hint">Move the lens to look closer.</span></p>
-      <div class="paths" id="pr-paths" role="group" aria-label="Choose where to start"></div>
-    <p class="legend" aria-label="How possibilities are marked">
-      <span class="mk mk-full" aria-hidden="true"></span>Available today
-      <span class="mk mk-half" aria-hidden="true"></span>Depends on the site or the house
-      <span class="mk mk-ring" aria-hidden="true"></span>Emerging · not available to Irish homes
-      <span class="mk mk-dash" aria-hidden="true"></span>Illustrative possibility · not assessed
-      <span class="legend-note">Drawings are illustrations, not part of the picture.</span>
-    </p>
+      <p class="h5c-ps-line" id="pr-psLine" aria-live="polite"></p>
+      <div class="h5c-steps" role="group" aria-label="Power Station scenes"><button type="button" class="h5c-step" data-ps="wind" aria-pressed="false">Wind</button><button type="button" class="h5c-step" data-ps="compute" aria-pressed="false">Computer Heat</button><button type="button" class="h5c-step" data-ps="ground" aria-pressed="false">Ground Heat</button></div>
+      <a class="h5c-ps-link" href="discovery-house-as-power-station.html">The House as a Power Station <span aria-hidden="true">→</span></a>
+      <div class="paths" id="pr-paths" hidden></div>
     </div>
   </div>
   <noscript>
@@ -1989,11 +2038,26 @@ body.pn-p4 .footer-col a.pn-whatsapp:focus-visible{
      ================================================================== -->
 <section class="continue" id="continuePanel" hidden aria-labelledby="continueTitle">
   <div class="continue-inner">
+    <!-- H5C4: the approved My Plot heart badge (assets/brand/plotnua-mark-myplot-saved.svg, inlined unchanged
+         so its heart can be shown a little larger around its own centre, as Your Plot already does) -->
+    <svg class="continue-badge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000" aria-hidden="true" focusable="false">
+  <defs><clipPath id="mpBadgeClip"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs>
+  <rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/>
+  <g clip-path="url(#mpBadgeClip)">
+    <g transform="scale(1.0)">
+      <g transform="translate(0,3000) scale(0.1,-0.1)">
+      <path d="M 7955.0,24809.0 C 7465.0,24802.0 7348.0,24793.0 7263.0,24755.0 C 7207.0,24730.0 7183.0,24701.0 7179.0,24655.0 C 7169.0,24521.0 7213.0,24487.0 7499.0,24405.0 C 7589.0,24379.0 7694.0,24345.0 7734.0,24329.0 C 8046.0,24200.0 8276.0,23979.0 8440.0,23651.0 C 8489.0,23553.0 8532.0,23434.0 8595.0,23220.0 L 8653.0,23025.0 L 8646.0,15580.0 C 8640.0,8559.0 8634.0,7175.0 8610.0,6975.0 C 8586.0,6768.0 8458.0,6475.0 8302.0,6270.0 C 8219.0,6161.0 8069.0,6015.0 7960.0,5938.0 C 7846.0,5857.0 7657.0,5762.0 7539.0,5726.0 C 7491.0,5712.0 7445.0,5700.0 7437.0,5700.0 C 7428.0,5700.0 7384.0,5688.0 7338.0,5674.0 C 7227.0,5639.0 7185.0,5599.0 7175.0,5517.0 C 7161.0,5409.0 7181.0,5387.0 7312.0,5364.0 C 7458.0,5338.0 8142.0,5331.0 10475.0,5330.0 L 12716.0,5330.0 L 12766.0,5382.0 C 12832.0,5451.0 12850.0,5478.0 12850.0,5513.0 C 12850.0,5597.0 12748.0,5655.0 12538.0,5690.0 C 12097.0,5765.0 11786.0,5913.0 11529.0,6169.0 C 11407.0,6292.0 11375.0,6335.0 11276.0,6514.0 C 11203.0,6643.0 11195.0,6663.0 11176.0,6750.0 C 11106.0,7062.0 11101.0,7754.0 11100.0,16714.0 L 11100.0,23752.0 L 13258.0,23747.0 C 14664.0,23744.0 15479.0,23738.0 15600.0,23731.0 C 15948.0,23710.0 16299.0,23658.0 16728.0,23564.0 C 18349.0,23208.0 19654.0,22382.0 20551.0,21145.0 C 21057.0,20448.0 21448.0,19550.0 21645.0,18632.0 C 21758.0,18108.0 21809.0,17658.0 21817.0,17100.0 C 21830.0,16273.0 21748.0,15652.0 21525.0,14890.0 C 21423.0,14539.0 21359.0,14377.0 21185.0,14025.0 C 20926.0,13500.0 20737.0,13213.0 20452.0,12910.0 C 20151.0,12589.0 19849.0,12352.0 19542.0,12196.0 C 19287.0,12067.0 19149.0,12026.0 18917.0,12010.0 C 18602.0,11990.0 17160.0,11961.0 16418.0,11960.0 L 16120.0,11960.0 L 16120.0,11680.0 L 16120.0,11400.0 L 17353.0,11400.0 C 19073.0,11400.0 19176.0,11406.0 19688.0,11530.0 C 20306.0,11680.0 20860.0,11914.0 21396.0,12249.0 C 21752.0,12473.0 21914.0,12601.0 22264.0,12934.0 C 22562.0,13218.0 22773.0,13453.0 22953.0,13701.0 C 23460.0,14403.0 23851.0,15255.0 24069.0,16130.0 C 24140.0,16415.0 24180.0,16628.0 24214.0,16900.0 C 24260.0,17262.0 24265.0,17356.0 24265.0,17805.0 C 24265.0,18239.0 24261.0,18313.0 24219.0,18660.0 C 24040.0,20157.0 23377.0,21548.0 22360.0,22559.0 C 21865.0,23051.0 21327.0,23436.0 20670.0,23769.0 C 19606.0,24309.0 18361.0,24628.0 16806.0,24760.0 C 16450.0,24790.0 15586.0,24799.0 11915.0,24808.0 C 8157.0,24817.0 8525.0,24816.0 7955.0,24809.0" fill="#F2EFE6"/>
+      <path d="M 15945.0,19879.0 C 15887.0,19842.0 15824.0,19789.0 15650.0,19631.0 C 15506.0,19499.0 14627.0,18665.0 14375.0,18420.0 C 14282.0,18329.0 14014.0,18070.0 13780.0,17844.0 C 13247.0,17327.0 12964.0,17041.0 12914.0,16966.0 L 12875.0,16907.0 L 12870.0,16476.0 C 12867.0,16239.0 12867.0,14995.0 12869.0,13711.0 L 12873.0,11377.0 L 14454.0,11383.0 C 15324.0,11386.0 16045.0,11392.0 16057.0,11395.0 C 16069.0,11399.0 16082.0,11409.0 16086.0,11418.0 C 16090.0,11428.0 16096.0,11555.0 16098.0,11701.0 L 16102.0,11967.0 L 16523.0,11975.0 C 16754.0,11979.0 17088.0,11982.0 17264.0,11982.0 C 18110.0,11983.0 19052.0,12009.0 19066.0,12031.0 C 19069.0,12036.0 19079.0,12040.0 19089.0,12040.0 C 19107.0,12040.0 19108.0,12057.0 19114.0,12303.0 C 19118.0,12447.0 19120.0,13544.0 19118.0,14741.0 L 19115.0,16917.0 L 19070.0,16976.0 C 19005.0,17062.0 18175.0,17890.0 17630.0,18415.0 C 17545.0,18497.0 17297.0,18735.0 17080.0,18945.0 C 16278.0,19720.0 16094.0,19886.0 16019.0,19905.0 C 16002.0,19909.0 15980.0,19902.0 15945.0,19879.0" fill="#8FAF8A"/>
+    </g>
+    </g>
+  </g>
+  <path d="M 1595 1518 C 1570 1486, 1514 1501, 1514 1544 C 1514 1591, 1560 1625, 1595 1660 C 1630 1625, 1676 1591, 1676 1544 C 1676 1501, 1620 1486, 1595 1518 Z" fill="#C57A5A" class="continue-heart"/>
+</svg>
     <div class="continue-text">
-      <h2 class="continue-title" id="continueTitle">Continue your project</h2>
+      <h2 class="continue-title" id="continueTitle">Your ideas are taking shape.</h2>
       <p class="continue-sub" id="continueSub"></p>
     </div>
-    <a class="continue-link" id="continueLink" href="your-plot.html?myplot=1">Continue &rarr;</a>
+    <a class="continue-link" id="continueLink" href="your-plot.html?myplot=1">Continue your project <span aria-hidden="true">&rarr;</span></a>
   </div>
 </section>
 
@@ -2157,12 +2221,17 @@ body.pn-p4 .footer-col a.pn-whatsapp:focus-visible{
 <section class="atlas article-section reveal" id="research">
   <div class="article">
     <div class="article-head">
-      <div class="ah-head">
-        <div class="kicker">Behind every result</div>
-        <h2>We do the research.</h2>
-        <p class="atlas-name">The PlotNua Atlas<button type="button" class="atlas-info"
-            id="atlasInfoBtn" aria-expanded="false" aria-controls="atlasInfo"
-            aria-label="What is Atlas?"><span aria-hidden="true">i</span></button></p>
+      <div class="ah-head atlas-id">
+        <!-- H5C4: the original approved static Atlas mark (assets/brand/atlas-final-static-approved, its
+             transparent presentation copy), unchanged and uncoloured, directly on the section -->
+        <img class="atlas-mark-still" src="assets/brand/atlas-final-static-approved-transparent.png" alt="" width="1254" height="1254" decoding="async" aria-hidden="true">
+        <div class="atlas-words">
+          <p class="kicker atlas-name">The PlotNua Atlas<button type="button" class="atlas-info"
+              id="atlasInfoBtn" aria-expanded="false" aria-controls="atlasInfo"
+              aria-label="What is Atlas?"><span aria-hidden="true">i</span></button></p>
+          <h2>We do the research.</h2>
+          <p class="atlas-sub">So you can explore what&rsquo;s possible.</p>
+        </div>
       </div>
 
       <div class="ah-body atlas-body">
@@ -2490,316 +2559,38 @@ body.pn-p4 .footer-col a.pn-whatsapp:focus-visible{
 })();
 </script>
 <script>
-/* ONE SOURCE FOR THE ATLAS FIGURES, AND THE ODOMETER THAT SHOWS THEM.
+/* ONE SOURCE FOR THE ATLAS FIGURES (H5C4: the split-flap odometer is retired; a quiet count-up instead).
    ---------------------------------------------------------------------------
-   The three numbers live once, as data- attributes on #atlasFigures, and are
-   also correct in the served HTML. If this script never runs the section is
-   still right — it is a static, readable, correct set of numbers. Everything
-   below is presentation.
-
-   TO UPDATE AFTER AN ATLAS EXPORT: change the three data- values on
-   #atlasFigures. Nothing else. If the page is already open when they change,
-   the observer at the bottom rolls only the digits that actually differ.
-
-   WHY IT MOVES THE WAY IT DOES
-   The figures do not count up from zero. A counter climbing from 0 to 239
-   would be describing something that never happened. What it does instead is
-   what a mechanical counter does when it lands: every digit arrives from the
-   numeral one below it, staggered a few milliseconds apart across the row, and
-   settles. The motion says the record is being kept. It does not claim a
-   number is rising while you watch.
-
-   It runs once, when the section is first scrolled into view — animating at
-   load would spend the whole thing above the fold where nobody sees it. */
+   The three numbers live once, as data- attributes on #atlasFigures, and are also correct in the served
+   HTML (the daily Atlas workflow rewrites both; check_atlas_figures.py holds them to atlas-stats.json).
+   If this script never runs, or the visitor prefers reduced motion, the served numbers simply stand.
+   Otherwise, when the figures first come into view, each counts up to its data- value over about a
+   second and then shows exactly that value. Nothing here writes anything but presentation. */
 (function(){
   var host = document.getElementById('atlasFigures');
   if (!host) return;
-
-  var FIGURES = [['atlasProducts','products'], ['atlasSuppliers','suppliers'],
-                 ['atlasPrices','prices']];
-  var FLIP_MS = 110;   // one flap, top falling and bottom rising
-  var STAGGER = 90;    // between neighbouring digits, units first
-  var REVEAL_FLIPS = 4;
-  var calm = window.matchMedia &&
-             window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function half(cls, digit){
-    var h = document.createElement('span');
-    h.className = 'flap-half ' + cls;
-    var b = document.createElement('b');
-    b.setAttribute('data-n', String(digit));
-    h.appendChild(b);
-    return h;
-  }
-
-  function makeFlap(digit){
-    var f = document.createElement('span');
-    f.className = 'flap';
-    f._top    = half('is-top', digit);
-    f._bottom = half('is-bottom', digit);
-    f._leafT  = half('is-top fl-top', digit);
-    f._leafB  = half('is-bottom fl-bottom', digit);
-    f.appendChild(f._top); f.appendChild(f._bottom);
-    f.appendChild(f._leafT); f.appendChild(f._leafB);
-    f._value = digit;
-    return f;
-  }
-
-  function setText(h, v){ h.firstChild.setAttribute('data-n', String(v)); }
-
-  /* One flap, from whatever is showing to `to`. Resolves when it has landed. */
-  function flipOnce(f, to){
-    return new Promise(function(done){
-      var from = f._value;
-      f._value = to;
-      if (calm) {
-        setText(f._top, to); setText(f._bottom, to); return done();
-      }
-      // The leaves start as the old numeral (top, about to fall) and the new
-      // numeral (bottom, waiting below). The static top is switched to the new
-      // numeral immediately, because the falling leaf is covering it.
-      setText(f._leafT, from);
-      setText(f._leafB, to);
-      setText(f._top, to);
-      setText(f._bottom, from);
-      f.classList.remove('is-flipping', 'is-landing');
-      f._leafT.style.transform = '';
-      f._leafB.style.transform = '';
-      void f.offsetHeight;
-      f.classList.add('is-flipping');
-      setTimeout(function(){
-        f.classList.add('is-landing');
-        setTimeout(function(){
-          setText(f._bottom, to);
-          f.classList.remove('is-flipping', 'is-landing');
-          /* Both leaves are set to the numeral that is now showing before they
-             are returned to rest. The top leaf comes back to rotateX(0), where
-             it sits ON TOP of the static top half — so if it still carried the
-             old numeral, every tile would display the digit it had just left.
-             That is exactly what happened: the board came to rest reading 139. */
-          setText(f._leafT, to);
-          setText(f._leafB, to);
-          f._leafT.style.transform = '';
-          f._leafB.style.transform = 'rotateX(90deg)';
-          done();
-        }, FLIP_MS / 2);
-      }, FLIP_MS / 2);
-    });
-  }
-
-  /* Flip forward, one numeral at a time, until it reaches the target. */
-  function flipTo(f, target, steps, delay){
-    setTimeout(function run(){
-      var next = (f._value + 1) % 10;
-      var left = steps - 1;
-      flipOnce(f, next).then(function(){
-        if (left > 0 || f._value !== target) {
-          if (left > 0) { steps = left; run(); }
-        }
-      });
-    }, delay);
-  }
-
-  var built = [];
-  FIGURES.forEach(function(pair){
-    var node = document.getElementById(pair[0]);
-    var raw  = host.getAttribute('data-' + pair[1]);
-    if (!node || !raw) return;
-    var digits = String(Number(raw)).split('');
-    node.textContent = '';
-    /* The number itself, as text, exactly once. Visually hidden because the
-       board is what you look at — but this is what is read out, selected,
-       copied and tested. */
-    var value = document.createElement('span');
-    value.className = 'atlas-value';
-    value.textContent = String(Number(raw));
-    node.appendChild(value);
-    var wrap = document.createElement('span');
-    wrap.className = 'od';
-    wrap.setAttribute('aria-hidden', 'true');
-    /* Built AT the true value. It is stepped back only inside the frame that
-       releases it, so no wrong number is ever painted. */
-    var flaps = digits.map(function(ch){
-      var f = makeFlap(Number(ch));
-      wrap.appendChild(f);
-      return { flap: f, target: Number(ch) };
-    });
-    node.appendChild(wrap);
-    built.push({ node: node, key: pair[1], value: value, flaps: flaps });
-  });
-  if (!built.length) return;
-
-  function board(){
-    if (calm) return;
-    built.forEach(function(fig){
-      var n = fig.flaps.length;
-      fig.flaps.forEach(function(c, i){
-        var f = c.flap, target = c.target;
-        var delay = (n - 1 - i) * STAGGER;
-        setTimeout(function(){
-          // Step back REVEAL_FLIPS places with no transition, then flip up to
-          // the true value. The step back and the first flip are in the same
-          // frame, so the wrong numeral is never drawn.
-          var start = ((target - REVEAL_FLIPS) % 10 + 10) % 10;
-          f._value = start;
-          setText(f._top, start); setText(f._bottom, start);
-          void f.offsetHeight;
-          var i2 = 0;
-          (function step(){
-            if (i2++ >= REVEAL_FLIPS) return;
-            flipOnce(f, (f._value + 1) % 10).then(step);
-          })();
-        }, delay);
-      });
-    });
-  }
-
+  var map = { atlasProducts: 'products', atlasSuppliers: 'suppliers', atlasPrices: 'prices' };
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window) || !window.requestAnimationFrame) return;
+  var els = Object.keys(map).map(function(id){
+    var el = document.getElementById(id), n = parseInt(host.getAttribute('data-' + map[id]), 10);
+    return el && isFinite(n) ? { el: el, n: n } : null;
+  }).filter(Boolean);
   var done = false;
-  function once(){ if (done) return; done = true; board(); }
-  if (!('IntersectionObserver' in window)) { once(); }
-  else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if (e.isIntersecting) { once(); io.disconnect(); } });
-    }, { threshold: 0.35 });
-    io.observe(host);
-  }
-
-  /* A genuine change to the exported figures: only the digits that differ
-     flip, and they flip forward the short way. A changed digit count rebuilds
-     that figure outright, because no amount of flipping expresses 239 to 1004. */
-  new MutationObserver(function(muts){
-    muts.forEach(function(m){
-      var key = (m.attributeName || '').replace(/^data-/, '');
-      var fig = built.filter(function(x){ return x.key === key; })[0];
-      if (!fig) return;
-      var raw = host.getAttribute(m.attributeName);
-      if (!raw) return;
-      var digits = String(Number(raw)).split('');
-      fig.value.textContent = String(Number(raw));
-      if (digits.length !== fig.flaps.length) {
-        fig.node.textContent = '';
-        fig.node.appendChild(fig.value);
-        var wrap = document.createElement('span');
-        wrap.className = 'od';
-        wrap.setAttribute('aria-hidden', 'true');
-        fig.flaps = digits.map(function(ch){
-          var f = makeFlap(Number(ch));
-          wrap.appendChild(f);
-          return { flap: f, target: Number(ch) };
-        });
-        fig.node.appendChild(wrap);
-        return;
-      }
-      var n = digits.length;
-      digits.forEach(function(ch, i){
-        var target = Number(ch);
-        var f = fig.flaps[i].flap;
-        fig.flaps[i].target = target;
-        if (f._value === target) return;          // only what changed moves
-        var steps = ((target - f._value) % 10 + 10) % 10;
-        setTimeout(function(){
-          var k = 0;
-          (function step(){
-            if (k++ >= steps) return;
-            flipOnce(f, (f._value + 1) % 10).then(step);
-          })();
-        }, (n - 1 - i) * STAGGER);
-      });
-    });
-  }).observe(host, { attributes: true,
-                     attributeFilter: ['data-products','data-suppliers','data-prices'] });
-})();
-
-/* ROUND 3 — the Discovery Library information control. Same behaviour as the
-   Atlas one, deliberately: two controls that look identical should behave
-   identically. */
-(function(){
-  var btn = document.getElementById('libInfoBtn');
-  var pop = document.getElementById('libInfo');
-  if (!btn || !pop) return;
-  function set(open){
-    pop.hidden = !open;
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  btn.addEventListener('click', function(e){
-    e.stopPropagation();
-    set(btn.getAttribute('aria-expanded') !== 'true');
-  });
-  document.addEventListener('click', function(e){
-    if (!pop.hidden && !pop.contains(e.target) && e.target !== btn) set(false);
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); }
-  });
-})();
-
-/* ATLAS REFINEMENT — the information popover. Deliberately not a modal: it is
-   a paragraph of context, not a decision, so it does not trap focus and it
-   does not dim the page. It closes on Escape, on a click outside it, and on a
-   second press of the button. */
-(function(){
-  var btn = document.getElementById('atlasInfoBtn');
-  var pop = document.getElementById('atlasInfo');
-  if (!btn || !pop) return;
-  function set(open){
-    pop.hidden = !open;
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  btn.addEventListener('click', function(e){
-    e.stopPropagation();
-    set(btn.getAttribute('aria-expanded') !== 'true');
-  });
-  document.addEventListener('click', function(e){
-    if (!pop.hidden && !pop.contains(e.target) && e.target !== btn) set(false);
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); }
-  });
-})();
-
-/* ISSUE 002A — the PlotNua information control. The Atlas controller above,
-   unchanged in behaviour, with one addition. A pin's own click handler calls
-   stopPropagation, so the document-level outside-click below never sees a pin
-   press and the panel would stay open underneath an opening card. A
-   capture-phase listener on the pin layer runs before that handler and closes
-   the panel first, so the two disclosures are never open at once over the
-   same photograph. */
-(function(){
-  var btn = document.getElementById('brandInfoBtn');
-  var pop = document.getElementById('brandInfo');
-  if (!btn || !pop) return;
-  function set(open){
-    pop.hidden = !open;
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  btn.addEventListener('click', function(e){
-    e.stopPropagation();
-    set(btn.getAttribute('aria-expanded') !== 'true');
-  });
-  document.addEventListener('click', function(e){
-    if (!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) set(false);
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); }
-  });
-  var pinLayer = document.getElementById('pins');
-  if (pinLayer) pinLayer.addEventListener('click', function(){ set(false); }, true);
-})();
-</script>
-<script>
-/* H5 Phase C · the compact header's Menu: one button, the four existing destinations, keyboard and screen-reader friendly */
-(function(){
-  var head = document.querySelector('.p4-header'), btn = document.getElementById('p4MenuBtn'), nav = document.getElementById('p4Nav');
-  if (!head || !btn || !nav) return;
-  function set(open, focusBtn){
-    head.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if (open) { var a = nav.querySelector('a'); if (a) a.focus(); } else if (focusBtn) btn.focus();
-  }
-  btn.addEventListener('click', function(){ set(btn.getAttribute('aria-expanded') !== 'true'); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && head.classList.contains('is-open')) set(false, true); });
-  document.addEventListener('click', function(e){ if (head.classList.contains('is-open') && !head.contains(e.target)) set(false); });
-  nav.addEventListener('click', function(e){ if (e.target.closest('a')) set(false); });
-  window.matchMedia('(min-width: 901px)').addEventListener('change', function(m){ if (m.matches) set(false); });
+  var io = new IntersectionObserver(function(es){
+    if (done || !es.some(function(e){ return e.isIntersecting; })) return;
+    done = true; io.disconnect();
+    var t0 = null, D = 1100;
+    function tick(ts){
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / D), e = 1 - Math.pow(1 - k, 3);
+      els.forEach(function(x){ x.el.textContent = String(k < 1 ? Math.round(x.n * e) : x.n); });
+      if (k < 1) requestAnimationFrame(tick);
+    }
+    els.forEach(function(x){ x.el.textContent = '0'; });
+    requestAnimationFrame(tick);
+  }, { threshold: .4 });
+  io.observe(host);
 })();
 </script>
 </body>

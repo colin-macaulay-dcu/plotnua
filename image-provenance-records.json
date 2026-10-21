@@ -904,7 +904,7 @@
         "tile_record": "assets/possibility-reveal/layers/layers.json",
         "sprite": "two states, stacked: top = the locked L6 layer exactly (with L3 on); bottom = the same L6 with the approved smoke step re-run, identical settings, over the L1 + L2A garden where the pavilion would be (with L3 off)"
       },
-      "visible_caption": "Garden possibilities illustrated. Hot tub: TimberIN.",
+      "visible_caption": "AI-generated illustration \u00b7 Hot tub: TimberIN",
       "accessible_disclosure": "This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub."
     }
   ],

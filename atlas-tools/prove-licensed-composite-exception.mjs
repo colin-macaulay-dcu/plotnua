@@ -76,6 +76,9 @@ if (!L6 || !TIMBERIN || !OTHER || !anAsset) {
 }
 const CREDIT = TIMBERIN.required_credit;
 const CAPTION = L6 && L6.visible_caption, DISCLOSURE = L6 && L6.accessible_disclosure;
+/* The test page renders the record's own caption: the text before the credit, then the linked credit
+   (H5C4, 21 Oct 2026: the caption wording moved to the record; the checks below are unchanged). */
+const CAPTION_LEAD = CAPTION && CAPTION.includes(CREDIT) ? CAPTION.slice(0, CAPTION.indexOf(CREDIT)) : 'Garden possibilities illustrated. ';
 if (!CAPTION || !DISCLOSURE) {
   console.log('\nINSTRUMENT UNAVAILABLE: the L6 record carries no visible caption / accessible disclosure.');
   process.exit(2);
@@ -89,7 +92,7 @@ const clone = o => JSON.parse(JSON.stringify(o));
 function page({ credit = CREDIT, extra = '', asset = anAsset.asset, caption = true, disclosure = true } = {}) {
   return `<!doctype html><html><head><title>t</title></head><body>
 <figure><img src="${asset}" width="100" height="100" alt="A garden.">
-<figcaption>${AI_LABEL}. ${caption ? 'Garden possibilities illustrated. ' : ''}${credit ? `<a href="https://www.timberin.com/">${credit}</a>.` : ''}${disclosure ? `<span class="sr-only"> ${DISCLOSURE}</span>` : ''}</figcaption></figure>
+<figcaption>${AI_LABEL}. ${caption ? CAPTION_LEAD : ''}${credit ? `<a href="https://www.timberin.com/">${credit}</a>.` : ''}${disclosure ? `<span class="sr-only"> ${DISCLOSURE}</span>` : ''}</figcaption></figure>
 ${extra}</body></html>`;
 }
 

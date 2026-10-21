@@ -54,7 +54,7 @@ def rd(p): return open(os.path.join(SRC, p), encoding='utf-8').read()
 GARDEN = [('L3', 'Grow a garden room'), ('L4', 'Borrow a garden'), ('L5', 'Hold a treehouse'), ('L6', 'Become a retreat')]
 CREDIT = 'Hot tub: TimberIN'
 CREDIT_LINK = 'https://www.timberin.com/'
-VISIBLE_CAPTION = 'Garden possibilities illustrated. Hot tub: TimberIN.'
+VISIBLE_CAPTION = 'AI-generated illustration \u00b7 Hot tub: TimberIN'   # H5C4 (founder-approved one-line attribution, 21 Oct 2026)
 DISCLOSURE = 'This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.'
 def layers_record():
     return json.load(open(os.path.join(ROOTDIR, 'assets/possibility-reveal/layers/layers.json'), encoding='utf-8'))
@@ -141,8 +141,8 @@ def h3_extend(js, body):
 # candidate is not part of this release.
 H5_FILES = ['assets/possibility-reveal/h5.css', 'assets/possibility-reveal/h5c-smoke.js']
 H5_PS_JS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'possibility-reveal-h5-ps.js.part'), encoding='utf-8').read()
-H5_SWITCHES = [('L3', 'Garden Room'), ('L4', 'Borrow a Garden'), ('L5', 'Treehouse'), ('L6', 'Garden Retreat')]
-H5_INVITE = 'What could your property become?'
+H5_SWITCHES = [('L3', 'Garden Room'), ('L4', 'Borrowed Garden'), ('L5', 'Treehouse'), ('L6', 'Garden Retreat')]
+H5_INVITE = 'Discover What\u2019s Possible.'   # H5C4 founder-approved heading
 def h5_extend(js, body):
     def one(t, a, b):
         assert t.count(a) == 1, ('h5 anchor', t.count(a), a[:90]); return t.replace(a, b)
@@ -156,31 +156,34 @@ def h5_extend(js, body):
              '     shows only part of the picture\'s height. The camera now keeps EVERYTHING that is switched on in view\n'
              '     (each garden layer\'s own area, and with Power Station the roof marker and the whole lens over the lawn),\n'
              '     centred when it fits and, when it cannot all fit, favouring the lower garden (hot tub, beds, lawn).\n'
-             '     Phones keep their approved close framing of the last layer switched on. */\n'
+             '     Phones keep their approved close framing of the last layer switched on.\n'
+             '     H5C4: Power Station no longer has a lens to keep in view; and on wider screens the house and its\n'
+             '     roofline stay in the frame too whenever everything switched on still fits with them. */\n'
+             '  var HOUSE = [150, 640];   /* picture rows: the chimney top to the patio */\n'
              '  var ZONES = { L3: [526, 1118], L4: [832, 1420], L5: [394, 724], L6: [640, 1465] };\n'
              '  var entryView = function () {\n'
-             '    var base = FRAME || (PS ? PS_VIEW : ENTRY_VIEW);\n'
+             '    var base = FRAME || ENTRY_VIEW;\n'
              '    if (mob()) return base;\n'
              '    var on = (pn.getAttribute("data-garden") || "").split(" ").filter(function (x) { return ZONES[x]; });\n'
-             '    if (!on.length && !PS) return base;\n'
+             '    if (!on.length) return base;\n'
              '    var W = stage.clientWidth, H = stage.clientHeight, k = Math.max(W / 2752, H / 1536), R = H / k, a = 1e9, b = -1e9, low = false;\n'
              '    on.forEach(function (id) { a = Math.min(a, ZONES[id][0]); b = Math.max(b, ZONES[id][1]); if (id === "L6" || id === "L4") low = true; });\n'
-             '    if (PS) { a = Math.min(a, 140); b = Math.max(b, BEACON.ground.d[1] + lensRadius() / k + 14); low = true; }\n'
+             '    if (b - Math.min(a, HOUSE[0]) <= R) a = Math.min(a, HOUSE[0]);   /* keep the whole house when it fits */\n'
              '    var top = (b - a <= R) ? a - (R - (b - a)) / 2 : (low ? b - R : a);\n'
              '    top = Math.max(0, Math.min(1536 - R, top));\n'
              '    return { d: [base.d[0], top + 0.46 * R, 1], m: base.m, lens: base.lens };\n'
              '  };\n')
     js = one(js, '  var ENTRY_VIEW = { d: [1376, 820, 1], m: [1000, 800, 1] };\n',
-             '  var ENTRY_VIEW = { d: [1376, 640, 1], m: [1250, 800, 1] };   /* H5: the sky kept in view; phones see house, extension and the screened heat pump */\n')
+             '  var ENTRY_VIEW = { d: [1376, 640, 1], m: [1250, 800, 1] };   /* H5: the sky kept in view; phones see the house and the extension */\n')
     js = one(js, '    var R = r == null ? lensRadius() : r, c = clampLens(x, y, Math.max(R, 1));',
-             '    var R = (H5 && !PS) ? 0 : (r == null ? lensRadius() : r), c = clampLens(x, y, Math.max(R, 1));')
+             '    var R = H5 ? 0 : (r == null ? lensRadius() : r), c = clampLens(x, y, Math.max(R, 1));')
     js = one(js, '    if (mob()) {   /* on phones', '    if (mob() && $(".lede")) {   /* on phones')
     js = one(js, '    if (dragging || e.pointerType === "mouse") {\n',
-             '    if (H5 && !PS) return;\n    if (dragging || e.pointerType === "mouse") {\n')
+             '    if (H5) return;\n    if (dragging || e.pointerType === "mouse") {\n')
     js = one(js, '    if (state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;\n',
-             '    if ((H5 && !PS) || state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;\n')
+             '    if (H5 || state.mode !== "entry" || dragging || e.pointerType !== "mouse") return;\n')
     js = one(js, '  grip.addEventListener("pointerdown", function (e) { dragging = true;',
-             '  grip.addEventListener("pointerdown", function (e) { if (H5 && !PS) return; dragging = true;')
+             '  grip.addEventListener("pointerdown", function (e) { if (H5) return; dragging = true;')
     js = one(js, '  /* ---------- start ---------- */\n', H5_PS_JS + '\n  /* ---------- start ---------- */\n')
     js = one(js, 'state: state, frame: frame };', 'state: state, frame: frame, ps: setPS, psOn: function () { return PS; } };')
     js = one(js, '    [".intro", "#pr-beacons", "#pr-layers"].forEach(function (s) { $(s).inert = scene; });',
@@ -202,6 +205,10 @@ def h5_extend(js, body):
     credit_a = body.index('    <p class="garden-credit" id="pr-gardenCredit" hidden>')
     credit_b = body.index('    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>\n') + len('    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>\n')
     credit = body[credit_a:credit_b]; body = body[:credit_a] + body[credit_b:]
+    # H5C4: one visible line, "AI-generated illustration · Hot tub: TimberIN" (the credit joins the label while
+    # Garden Retreat is on); the full disclosure stays in the page for screen readers
+    credit = ('<span class="garden-credit" id="pr-gardenCredit" hidden> \u00b7 <a href="%s">%s</a>'
+              '<span class="sr-only" id="pr-gardenNote"> %s</span></span>' % (CREDIT_LINK, CREDIT, DISCLOSURE))
     # the stage's own overlays (all positioned with explicit z-index, so their stacking does not
     # depend on order) move ahead of the camera, so the strip with the TimberIN credit follows the
     # L6 layer directly in the markup, as the provenance guard's licensed-credit window requires
@@ -221,9 +228,8 @@ def h5_extend(js, body):
     legend = body[la:lb]; body = body[:la] + '<!--H5LEGEND-->' + body[lb:]
     deck = ('  <!-- H5 Phase C · directly beneath the photograph: the disclosure strip, then the invitation and the five switches -->\n'
             '  <div class="h5c-strip" id="pr-strip">\n'
-            '    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="h5c-ai-x"> \u00b7 not a photograph of a real home.</span></p>\n'
-            + credit +
-            '    <p class="h5c-note" id="pr-borrowNote"><b>Borrow a Garden</b> \u00b7 an underused garden could become productive through garden sharing, if an arrangement suits you. Not guaranteed. <a href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></p>\n'
+            '    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b>' + credit + '</p>\n'
+            '    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>\n'
             '  </div>\n'
             '  <div class="h5c-deck" id="pr-deck">\n'
             '    <div class="layers h5c-switches" id="pr-layers" role="group" aria-labelledby="pr-invite">\n'
@@ -234,10 +240,16 @@ def h5_extend(js, body):
             + ps_sw +
             '     </div></div>\n'
             '    </div>\n'
-            '    <!-- Power Station panel: the original headline, lede, paths and legend, shown only while Power Station is on -->\n'
-            '    <div class="h5c-ps" id="pr-psPanel" hidden>\n' + ps_title + ps_lede +
-            '      <div class="paths" id="pr-paths" role="group" aria-label="Choose where to start"></div>\n'
-            + '  ' + legend.replace('\n  ', '\n    ') +
+            '    <!-- H5C4 Power Station panel, shown only while Power Station is on: the three approved scenes play in the\n'
+            '         photograph (no lens); these buttons replay any one; the scene question (approved wording); a link to the Discovery -->\n'
+            '    <div class="h5c-ps" id="pr-psPanel" hidden>\n'
+            '      <p class="h5c-ps-line" id="pr-psLine" aria-live="polite"></p>\n'
+            '      <div class="h5c-steps" role="group" aria-label="Power Station scenes">'
+            '<button type="button" class="h5c-step" data-ps="wind" aria-pressed="false">Wind</button>'
+            '<button type="button" class="h5c-step" data-ps="compute" aria-pressed="false">Computer Heat</button>'
+            '<button type="button" class="h5c-step" data-ps="ground" aria-pressed="false">Ground Heat</button></div>\n'
+            '      <a class="h5c-ps-link" href="discovery-house-as-power-station.html">The House as a Power Station <span aria-hidden="true">\u2192</span></a>\n'
+            '      <div class="paths" id="pr-paths" hidden></div>\n'
             '    </div>\n'
             '  </div>\n')
     body = one(body, '<!--H5LEGEND-->', deck)

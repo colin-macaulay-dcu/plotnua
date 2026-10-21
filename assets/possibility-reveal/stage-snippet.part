@@ -161,16 +161,14 @@
 
   <!-- H5 Phase C · directly beneath the photograph: the disclosure strip, then the invitation and the five switches -->
   <div class="h5c-strip" id="pr-strip">
-    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="h5c-ai-x"> · not a photograph of a real home.</span></p>
-    <p class="garden-credit" id="pr-gardenCredit" hidden>Garden possibilities illustrated. <a href="https://www.timberin.com/">Hot tub: TimberIN</a>.<span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.</span></p>
+    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="garden-credit" id="pr-gardenCredit" hidden> · <a href="https://www.timberin.com/">Hot tub: TimberIN</a><span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.</span></span></p>
     <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>
-    <p class="h5c-note" id="pr-borrowNote"><b>Borrow a Garden</b> · an underused garden could become productive through garden sharing, if an arrangement suits you. Not guaranteed. <a href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></p>
   </div>
   <div class="h5c-deck" id="pr-deck">
     <div class="layers h5c-switches" id="pr-layers" role="group" aria-labelledby="pr-invite">
-     <div class="h5c-group h5c-group-g" role="group" aria-labelledby="pr-gLab"><h1 class="h5c-invite" id="pr-invite">What could your property become?</h1><p class="h5c-glab" id="pr-gLab">Garden transformations</p><div class="h5c-row">
+     <div class="h5c-group h5c-group-g" role="group" aria-labelledby="pr-gLab"><h1 class="h5c-invite" id="pr-invite">Discover What’s Possible.</h1><p class="h5c-glab" id="pr-gLab">Garden transformations</p><div class="h5c-row">
       <button type="button" class="lay lay-btn h5c-sw" data-layer="L3" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Garden Room</span><span class="h5c-st" aria-hidden="true"></span></button>
-      <button type="button" class="lay lay-btn h5c-sw" data-layer="L4" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Borrow a Garden</span><span class="h5c-st" aria-hidden="true"></span></button>
+      <button type="button" class="lay lay-btn h5c-sw" data-layer="L4" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Borrowed Garden</span><span class="h5c-st" aria-hidden="true"></span></button>
       <button type="button" class="lay lay-btn h5c-sw" data-layer="L5" aria-pressed="false"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Treehouse</span><span class="h5c-st" aria-hidden="true"></span></button>
       <button type="button" class="lay lay-btn h5c-sw" data-layer="L6" aria-pressed="false" aria-describedby="pr-gardenNote"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Garden Retreat</span><span class="h5c-st" aria-hidden="true"></span></button>
      </div></div>
@@ -178,18 +176,13 @@
       <button type="button" class="h5c-sw h5c-sw-ps" id="pr-psSwitch" aria-pressed="false" aria-controls="pr-psPanel"><span class="h5c-knob" aria-hidden="true"></span><span class="h5c-lb">Power Station</span><span class="h5c-st" aria-hidden="true"></span></button>
      </div></div>
     </div>
-    <!-- Power Station panel: the original headline, lede, paths and legend, shown only while Power Station is on -->
+    <!-- H5C4 Power Station panel, shown only while Power Station is on: the three approved scenes play in the
+         photograph (no lens); these buttons replay any one; the scene question (approved wording); a link to the Discovery -->
     <div class="h5c-ps" id="pr-psPanel" hidden>
-      <h2 class="pr-title" id="pr-introTitle">This house could be a power station.</h2>
-      <p class="lede">Some of it you can see. Some of it is under the lawn, or down the street. <span class="lede-hint">Move the lens to look closer.</span></p>
-      <div class="paths" id="pr-paths" role="group" aria-label="Choose where to start"></div>
-    <p class="legend" aria-label="How possibilities are marked">
-      <span class="mk mk-full" aria-hidden="true"></span>Available today
-      <span class="mk mk-half" aria-hidden="true"></span>Depends on the site or the house
-      <span class="mk mk-ring" aria-hidden="true"></span>Emerging · not available to Irish homes
-      <span class="mk mk-dash" aria-hidden="true"></span>Illustrative possibility · not assessed
-      <span class="legend-note">Drawings are illustrations, not part of the picture.</span>
-    </p>
+      <p class="h5c-ps-line" id="pr-psLine" aria-live="polite"></p>
+      <div class="h5c-steps" role="group" aria-label="Power Station scenes"><button type="button" class="h5c-step" data-ps="wind" aria-pressed="false">Wind</button><button type="button" class="h5c-step" data-ps="compute" aria-pressed="false">Computer Heat</button><button type="button" class="h5c-step" data-ps="ground" aria-pressed="false">Ground Heat</button></div>
+      <a class="h5c-ps-link" href="discovery-house-as-power-station.html">The House as a Power Station <span aria-hidden="true">→</span></a>
+      <div class="paths" id="pr-paths" hidden></div>
     </div>
   </div>
   <noscript>

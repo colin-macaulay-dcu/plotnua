@@ -1,10 +1,15 @@
-/* PlotNua Possibility Reveal · H5 Phase C homepage (preview, 21 Oct 2026).
+/* PlotNua Possibility Reveal · H5 homepage (H5C4 preview, 21 Oct 2026).
    Every rule is scoped under .pr. Loaded after reveal.css and garden.css.
    The hero is the photograph and its four garden transformations; nothing else sits on the picture. */
 
 /* ---------- nothing on the photograph: no lens, X-ray, markers, labels or shading veil ---------- */
-/* ...unless Power Station is switched on, when the original lens, drawings and markers return */
-.pr.h5c:not(.ps-on) .lens,.pr.h5c:not(.ps-on) .lens-label,.pr.h5c:not(.ps-on) .hidden-layer,.pr.h5c:not(.ps-on) .beacons,.pr.h5c .g-beacon{display:none!important}
+/* H5C4: the lens, its drawings, the markers and their REVEAL prompts are not used on the homepage at all.
+   With Power Station on, the approved scenes play in the photograph; their bar, caption card and
+   "more" panel stay off the picture (one line and the scene buttons sit beneath the switches instead),
+   and the wind scene's large "Illustration · not an assessment of this roof" stamp is not shown here. */
+.pr.h5c .lens,.pr.h5c .lens-label,.pr.h5c .hidden-layer,.pr.h5c .beacons,.pr.h5c .g-beacon{display:none!important}
+.pr.h5c .bar,.pr.h5c .caption,.pr.h5c .more{display:none!important}
+.pr.h5c #pr-sc-wind .stamp{display:none}
 .pr.h5c[data-mode="entry"] .veil{opacity:0}
 
 /* ---------- the strip directly beneath the photograph: AI disclosure, and the TimberIN credit with L6 ---------- */
@@ -15,15 +20,8 @@
 .pr.h5c .garden-credit{position:static!important;top:auto!important;right:auto;left:auto;z-index:auto;max-width:none;margin:0;padding:0;border:0;border-radius:0;
   background:none;-webkit-backdrop-filter:none;backdrop-filter:none;font-size:12.5px;line-height:1.45;color:var(--soft)}
 .pr.h5c .garden-credit a{color:var(--ivory);text-decoration:underline;text-underline-offset:2px}
-.pr.h5c #pr-gardenNote{position:static!important;display:inline;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal}
 .pr.h5c[data-mode="scene"] .garden-credit{visibility:visible}
 
-/* Borrow a Garden note: only while L4 is on. With Garden Retreat on, the AI line shortens so the strip stays one line */
-.pr .h5c-note{display:none;margin:0}
-.pr .h5c-note b{font-weight:600;color:var(--ivory)}
-.pr .h5c-note a{color:var(--ivory);text-decoration:underline;text-underline-offset:2px}
-.pr.h5c[data-garden~="L4"] .h5c-note{display:block}
-.pr.h5c[data-garden~="L6"] .h5c-ai-x{display:none}
 
 /* ---------- the invitation and the four transformations ---------- */
 .pr .h5c-deck{background:var(--pr-legend-bg,#0f1c15);padding:12px clamp(16px,4.5vw,64px) 30px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 30px}
@@ -49,18 +47,29 @@
 .pr .h5c-sw[aria-pressed="true"] .h5c-knob::after{transform:translateX(14px)}
 .pr .h5c-sw[aria-pressed="true"] .h5c-st{opacity:1}
 .pr .h5c-sw[aria-pressed="true"] .h5c-st::before{content:"On"}
-.pr.h5c[data-mode="scene"] .h5c-switches{opacity:.5}
+.pr.h5c[data-mode="scene"] .h5c-switches{opacity:1}   /* H5C4: the switches stay usable during a Power Station scene (pressing one ends the scene) */
 
 /* ---------- the Power Station panel (only while Power Station is on): the original headline, lede, paths, legend ---------- */
-.pr .h5c-ps{flex-basis:100%;display:grid;gap:10px;margin-top:4px;padding-top:16px;border-top:1px solid rgba(248,245,236,.14)}
+.pr .h5c-ps{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:2px;padding-top:14px;border-top:1px solid rgba(248,245,236,.14)}
 .pr .h5c-ps[hidden]{display:none}
-.pr .h5c-ps .pr-title{margin:0;font:500 clamp(21px,0.8vw + 14px,27px)/1.15 var(--serif);color:var(--ivory);letter-spacing:-.01em}
-.pr .h5c-ps .lede{margin:0;max-width:none;font-size:15px;opacity:1;animation:none;text-shadow:none}
-.pr.h5c.lens-over-intro .h5c-ps .pr-title,.pr.h5c.lens-over-intro .h5c-ps .lede{opacity:1!important}
-.pr.h5c .h5c-ps .paths{opacity:1;transform:none;flex-direction:row;flex-wrap:wrap;gap:8px;margin:2px 0 0}
-.pr.h5c .h5c-ps .path{padding:9px 16px 9px 12px;gap:10px;border-radius:999px;background:rgba(248,245,236,.06)}
-.pr.h5c .h5c-ps .path b{font-size:16.5px;flex:none}
-.pr.h5c .h5c-ps .legend{padding:0;background:none;font-size:12px}
+.pr .h5c-steps{display:flex;flex-wrap:wrap;gap:8px}
+.pr .h5c-step{min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(248,245,236,.38);background:transparent;color:var(--ivory);
+  font:500 14.5px/1 var(--sans,inherit);cursor:pointer;transition:background .2s,border-color .2s}
+.pr .h5c-step:hover{border-color:var(--ivory)}
+.pr .h5c-step:focus-visible{outline:2px solid var(--ivory);outline-offset:3px}
+.pr .h5c-step[aria-pressed="true"]{background:rgba(248,245,236,.14);border-color:var(--ivory)}
+.pr .h5c-ps-line{margin:0;font:italic 400 17px/1.3 var(--serif);color:var(--soft);min-height:1.3em}
+.pr .h5c-deck{position:relative}
+/* desktop: with Power Station on, its scene question, the three scene buttons and the Discovery link sit on the
+   heading's row, so they are in view with the photograph and nothing moves */
+@media (min-width: 1101px){
+  .pr .h5c-ps{position:absolute;top:4px;right:clamp(16px,4.5vw,64px);flex-wrap:nowrap;align-items:center;margin:0;padding:0;border:0;gap:14px;min-height:34px}
+  .pr .h5c-step{min-height:34px;padding:0 14px;font-size:14px}
+  .pr.h5c .h5c-group-g .h5c-invite{margin-bottom:7px}
+  .pr .h5c-ps-line{max-width:300px;text-align:right}
+  .pr.h5c.ps-on .h5c-group-ps .h5c-glab{opacity:0}   /* its row is taken by the scene buttons while Power Station is on; still read by screen readers */
+}
+.pr .h5c-ps-link{color:#CF8566;font-size:14.5px;font-weight:500;text-decoration:none;white-space:nowrap;border-bottom:1px solid currentColor}
 
 /* ---------- the smoke prototype (h5c-smoke.js): a separate animation layer over the locked picture ---------- */
 .pr .h5c-smoke{position:absolute;z-index:1;pointer-events:none;opacity:0;transition:opacity 1s}
@@ -102,9 +111,6 @@
   .pr .h5c-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .pr .h5c-group-ps{padding-left:0;border-left:0;padding-top:12px;border-top:1px solid rgba(248,245,236,.16)}
   .pr .h5c-group-ps .h5c-row{grid-template-columns:1fr}
-  .pr.h5c .h5c-ps .paths{flex-direction:column}
-  .pr.h5c .h5c-ps .path{border-radius:12px;width:100%}
-  .pr.h5c .h5c-ps .path b{flex:1;text-align:left;font-size:16px}
   .pr .h5c-sw{min-height:46px;padding:0 10px 0 9px;gap:8px;font-size:14.5px;white-space:nowrap;text-align:left;line-height:1.15;letter-spacing:0}
   .pr .h5c-lb{flex:1}
   .pr .h5c-knob{width:32px;height:20px}

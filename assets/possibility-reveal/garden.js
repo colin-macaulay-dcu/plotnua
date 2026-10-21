@@ -6,7 +6,7 @@
  * layer on: the hero's first paint and its LCP image are untouched.
  *
  *   L3  Grow a garden room   · mirrored garden pavilion (L3 v2.1c)
- *   L4  Borrow a Garden      · a productive growing space (garden sharing; illustration)
+ *   L4  Borrowed Garden      · a productive growing space (garden sharing; illustration)
  *   L5  Hold a treehouse     · elevated timber pod
  *   L6  Become a retreat     · sauna, and the TimberIN hot tub with its smoke
  *
@@ -50,7 +50,7 @@
                   q: "Explore the Garden Retreat", label: "Explore the Garden Retreat Discovery: saunas, hot tubs and cold plunges at home" };
   var SAY = {
     L3: "A mirrored garden pavilion appears along the right-hand fence. Illustration.",
-    L4: "Part of the lawn becomes a productive growing space: one way an underused garden could be shared with a grower nearby, if such an arrangement suits you. Illustration.",
+    L4: "Part of the lawn becomes a productive growing space that could be shared with someone nearby who wants to grow. Illustration.",
     L5: "A timber pod appears in the tree at the left of the garden. Illustration.",
     L6: "A sauna and a wood-fired hot tub, with smoke from its chimney, appear in the far right corner of the garden. Illustration with adapted photography."
   };
@@ -205,9 +205,18 @@
     var last = on.length ? on[on.length - 1] : null, v = last ? VIEW[last] : null;
     if (v && on.indexOf("L6") >= 0 && mqLens.matches) v = { d: v.d, m: v.m, lens: L6_LENS };
     ROOT.classList.add("g-panning");
-    API.frame(v, instant || mqReduce.matches);
+    /* H5C4 · phones: moving from one close-up to another passes briefly through the whole house
+       first (a short establishing pan), so each transformation reads as part of the same property.
+       Never under reduced motion, and never on wider screens, where everything switched on is framed. */
+    var phone = window.matchMedia("(max-width: 760px)").matches, quick = instant || mqReduce.matches;
+    clearTimeout(frameFor.p);
+    if (phone && !quick && v && frameFor.last && frameFor.last !== last) {
+      API.frame(null, false);
+      frameFor.p = setTimeout(function () { API.frame(v, false); }, 800);
+    } else API.frame(v, quick);
+    frameFor.last = last;
     clearTimeout(frameFor.t);
-    frameFor.t = setTimeout(function () { ROOT.classList.remove("g-panning"); fitCounts(); placeBeacon(); placeCredit(); }, instant || mqReduce.matches ? 0 : 1500);
+    frameFor.t = setTimeout(function () { ROOT.classList.remove("g-panning"); fitCounts(); placeBeacon(); placeCredit(); }, instant || mqReduce.matches ? 0 : 2300);
   }
 
   function set(id, want, instant) {
