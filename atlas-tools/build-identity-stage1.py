@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BOUNDED BUILDER · PlotNua shared identity layer, Phase 5 Stage 1 + Stage 2a
+BOUNDED BUILDER · PlotNua shared identity layer, Phase 5 Stage 1 + Stage 2a + Stage 2b
 
     python3 atlas-tools/build-identity-stage1.py            apply (idempotent)
     python3 atlas-tools/build-identity-stage1.py --check    verify, write nothing
@@ -78,8 +78,15 @@ PAGES = {
     # Stage 2a, Discovery family pilot (founder approval 20 Oct 2026)
     "discoveries.html": "dark", "discovery-hidden-bins.html": "dark",
     "discovery-living-in-the-garden.html": "dark",
+    # Stage 2b, the six standard Discoveries (founder approval 22 Oct 2026,
+    # Architectural Anthracite Batch 2 + Stage 2b)
+    "discovery-the-borrowed-garden.html": "dark", "discovery-driveway-income.html": "dark",
+    "discovery-hidden-cars.html": "dark", "discovery-home-exchange.html": "dark",
+    "discovery-neighbourhood-parcel-house.html": "dark", "discovery-your-home-on-screen.html": "dark",
 }
-DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html"}
+DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",
+        "discovery-the-borrowed-garden.html", "discovery-driveway-income.html", "discovery-hidden-cars.html",
+        "discovery-home-exchange.html", "discovery-neighbourhood-parcel-house.html", "discovery-your-home-on-screen.html"}
 # 404.html is served for ANY missing address, including nested ones, so its
 # additions use root-absolute paths. The site is served at the domain root.
 ROOTABS = {"404.html"}
@@ -304,7 +311,7 @@ def main():
         if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != h: die("I11 protected source %s changed during the run" % f)
     if CHECK and changed:
         die("CHECK: %d page(s) not in the Stage 1 identity state: %s -- nothing written" % (len(changed), ", ".join(changed)))
-    print("IDENTITY STAGE 1+2a · %s — %d pages (%d Discovery), tokens equal the homepage (%d), theme colour %s, scoped, reversible, protected content unchanged%s"
+    print("IDENTITY STAGE 1+2a+2b · %s — %d pages (%d Discovery), tokens equal the homepage (%d), theme colour %s, scoped, reversible, protected content unchanged%s"
           % ("CHECK OK" if CHECK else "BUILT", len(PAGES), len(DISC), len(want), HOME_THEME,
              "" if CHECK else (" · written: " + (", ".join(changed) or "none"))))
 

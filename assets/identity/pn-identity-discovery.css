@@ -231,6 +231,58 @@ body.pn-id.pn-id--disc .related-card:focus-visible .thumb{ outline:2px solid var
   body.pn-id.pn-id--disc :is(.lib-shot, .related-card .thumb, .lib-shot img, .related-card .thumb img){ transition:none !important; transform:none !important; }
 }
 
+/* ---- 14 · ARCHITECTURAL ANTHRACITE · Batch 2 (founder approval, 22 Oct 2026)
+   The homepage's approved Treatment C (22 Oct) carried to the shared
+   Discovery components on identity pages: the maker/provider directory and
+   the related-Discovery cards. Rounded graphite surfaces, a quiet stone
+   border, one diffused shadow; the photograph sits inside the card on a 12px
+   radius. Colours, type, borders and shadows only: the directories' data,
+   order, shuffle, links, offers and behaviour are their own, and pages
+   outside this layer (Garden Retreat and the other special Discoveries) are
+   untouched. */
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx{
+  border-radius:18px; border-color:rgba(194,189,181,.08); overflow:hidden;
+  box-shadow:0 1px 2px rgba(0,0,0,.16), 0 22px 44px -28px rgba(0,0,0,.55); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-maker{
+  border-radius:12px; border-color:rgba(194,189,181,.10); transition:border-color .2s ease, background-color .2s ease; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-maker:hover{ border-color:rgba(194,189,181,.32); background:#313236; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-drawer{ border-radius:12px; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-find{ border-radius:12px; border-color:var(--p4-line2); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-find:focus{ border-color:var(--p4-stone); }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-chip{ border-radius:999px; }
+body.pn-id.pn-id--disc #explore-makers .mx-maker-img .mx-lead{ border-radius:8px; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) :is(.mx-nm, .mx-drawer h3){ font-family:var(--p4-serif); font-weight:400; font-size:19px; letter-spacing:-.005em; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-drawer h3{ font-size:24px; }
+
+body.pn-id.pn-id--disc .d-hero-copy p{ text-wrap:balance; }
+
+body.pn-id.pn-id--disc .related-card{
+  display:flex; flex-direction:column; box-sizing:border-box; padding:10px 10px 24px;
+  background:var(--p4-deep); border-radius:18px; border:1px solid rgba(194,189,181,.045);
+  box-shadow:0 1px 2px rgba(0,0,0,.16), 0 22px 44px -28px rgba(0,0,0,.55);
+  transition:transform .24s ease, box-shadow .24s ease, border-color .24s ease; }
+body.pn-id.pn-id--disc .related-card .thumb{ border-radius:12px; box-shadow:none; }
+body.pn-id.pn-id--disc .related-card:is(:hover, :focus-visible) .thumb{ transform:none; box-shadow:none; }
+body.pn-id.pn-id--disc .related-card :is(.r-kicker, .related-kicker, h3, .related-title, .related-line){ padding:0 12px; }
+body.pn-id.pn-id--disc .related-card :is(.r-kicker, .related-kicker){ margin-top:20px; padding-bottom:12px; border-bottom:1px solid var(--p4-line); margin-left:12px; margin-right:12px; padding-left:0; padding-right:0; }
+body.pn-id.pn-id--disc .related-card :is(h3, .related-title){ margin-top:14px; }
+body.pn-id.pn-id--disc .related-card .related-line{ display:block; margin-top:10px; }
+body.pn-id.pn-id--disc .related-card:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:4px; }
+body.pn-id.pn-id--disc .related-card:focus-visible .thumb{ outline:none; }
+@media (hover:hover) and (pointer:fine){
+  body.pn-id.pn-id--disc .related-card:hover{ transform:translateY(-3px); border-color:rgba(194,189,181,.09);
+    box-shadow:0 2px 4px rgba(0,0,0,.18), 0 28px 52px -28px rgba(0,0,0,.6); }
+}
+@media (prefers-reduced-motion:reduce){
+  body.pn-id.pn-id--disc .related-card{ transition:none; }
+  body.pn-id.pn-id--disc .related-card:hover{ transform:none; }
+}
+@media (max-width:720px){
+  body.pn-id.pn-id--disc .related-card{ padding:6px 6px 18px; border-radius:16px; }
+  body.pn-id.pn-id--disc .related-card .thumb{ border-radius:11px; }
+  body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx{ border-radius:16px; }
+}
+
 @media (max-width:720px){
   body.pn-id.pn-id--disc .d-hero-copy h1{ font-size:clamp(40px,11vw,56px); }
   body.pn-id.pn-id--disc :is(.lib-grid, .related-grid){ row-gap:56px; }
