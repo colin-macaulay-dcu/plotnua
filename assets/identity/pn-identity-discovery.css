@@ -33,8 +33,8 @@ body.pn-id.pn-id--disc .d-hero-copy .intro{ font-family:var(--p4-sans); font-siz
 
 /* ---- 3 · full-bleed photographs: cream edge-fades become earth fades ---- */
 body.pn-id.pn-id--disc .imagine-photo{ background:var(--p4-anth); }
-body.pn-id.pn-id--disc .imagine-photo::before{ background:linear-gradient(180deg, rgba(42,38,34,.55) 0%, rgba(42,38,34,0) 100%); }
-body.pn-id.pn-id--disc .imagine-photo::after{ background:linear-gradient(0deg, rgba(42,38,34,.55) 0%, rgba(42,38,34,0) 100%); }
+body.pn-id.pn-id--disc .imagine-photo::before{ background:linear-gradient(180deg, rgba(39,40,42,.55) 0%, rgba(39,40,42,0) 100%); }
+body.pn-id.pn-id--disc .imagine-photo::after{ background:linear-gradient(0deg, rgba(39,40,42,.55) 0%, rgba(39,40,42,0) 100%); }
 body.pn-id.pn-id--disc .imagine-photo .caption p{ font-family:var(--p4-serif); font-style:italic; color:var(--p4-ivory); font-size:clamp(20px,1.9vw,26px); }
 
 /* ---- 4 · reading rhythm ------------------------------------------------- */
@@ -126,7 +126,7 @@ body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-tabs{ border
 body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-tab{ color:var(--p4-stone); font-family:var(--p4-sans); font-weight:600; }
 body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-tab[aria-selected="true"]{ color:var(--p4-ivory); border-bottom-color:var(--p4-terra-text); }
 body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-find{ background:var(--p4-well); color:var(--p4-ivory); border:1px solid var(--p4-stone); border-radius:0; color-scheme:dark; }
-body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-find::placeholder{ color:#A79A88; }
+body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-find::placeholder{ color:#A3A09A; }
 body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-chip{ background:transparent; color:var(--p4-ivory); border-color:var(--p4-stone); }
 body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-chip[aria-pressed="true"]{ background:var(--p4-ivory); color:var(--p4-anth); border-color:var(--p4-ivory); }
 body.pn-id.pn-id--disc :is(#explore-makers, #explore-providers) .mx-maker{ background:var(--p4-well); border-color:var(--p4-line2); border-radius:0; color:var(--p4-ivory); }

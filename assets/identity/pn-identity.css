@@ -20,18 +20,21 @@
 
 /* ---- 1 · tokens (identical to index.html body.pn-p4) ----------------- */
 body.pn-id{
-  --p4-anth:#1D1E1C; --p4-earth:#2A2622; --p4-deep:#342C27; --p4-terra:#AE6245;
+  --p4-anth:#1B1C1E; --p4-earth:#27282A; --p4-deep:#2C2E30; --p4-terra:#AE6245;
   --p4-terra-text:#CF8566; --p4-terra-hover:#D99476; --p4-bronze:#97785A;
   --p4-bronze-text:#B39272; --p4-ivory:#F2EBE0; --p4-lime:#E7DED0;
-  --p4-stone:#C7B8A4; --p4-line:#3A3631; --p4-line2:#4A443D; --p4-well:#322C28;
+  --p4-stone:#C2BDB5; --p4-line:#3A3B3E; --p4-line2:#4A4B4F; --p4-well:#2D2E31;
   --p4-serif:'Instrument Serif',Georgia,serif;
   --p4-sans:'Hanken Grotesk',system-ui,sans-serif;
   --p4-gutter:max(56px, calc((100vw - 1360px) / 2 + 56px));
 
   /* Reading surface (founder decision 20 Oct 2026: dark-first, not dark-only).
      Warm Ivory sheet with derived darker accents so text stays at AA:
-     ink 12.7:1, body 8.5:1, link #8E4A30 5.6:1, eyebrow #7E6347 4.7:1. */
-  --pn-paper-bg:#F2EBE0; --pn-paper-ink:#2A2622; --pn-paper-body:#4A4038;
+     ink 12.5:1, body 8.0:1, link #8E4A30 5.6:1, eyebrow #7E6347 4.7:1.
+     22 Oct 2026 (Architectural Anthracite): the ink and body text are
+     neutral graphite, no longer brown; the Warm Ivory sheet, terracotta
+     link and bronze eyebrow are kept (light editorial reading surfaces). */
+  --pn-paper-bg:#F2EBE0; --pn-paper-ink:#27282A; --pn-paper-body:#45464A;
   --pn-paper-link:#8E4A30; --pn-paper-eyebrow:#7E6347; --pn-paper-rule:#D9CDBC;
 
   /* Legacy page variables re-pointed to the dark identity. Places where a
@@ -198,7 +201,7 @@ body.pn-id .form-row label{ font-family:var(--p4-sans); font-size:14px; font-wei
 body.pn-id .contact-form input[type="text"], body.pn-id .contact-form input[type="email"], body.pn-id .contact-form select, body.pn-id .contact-form textarea,
 body.pn-id .ar-f input[type=text], body.pn-id .ar-f input[type=email], body.pn-id .ar-f input[type=url], body.pn-id .ar-f select, body.pn-id .ar-f textarea{
   background:var(--p4-well); color:var(--p4-ivory); border:1px solid var(--p4-stone); border-radius:0; font-family:var(--p4-sans); font-size:17px; color-scheme:dark; }
-body.pn-id .contact-form input::placeholder, body.pn-id .contact-form textarea::placeholder, body.pn-id .ar-f input::placeholder, body.pn-id .ar-f textarea::placeholder{ color:#A79A88; opacity:1; }
+body.pn-id .contact-form input::placeholder, body.pn-id .contact-form textarea::placeholder, body.pn-id .ar-f input::placeholder, body.pn-id .ar-f textarea::placeholder{ color:#A3A09A; opacity:1; }
 body.pn-id .contact-form input:focus, body.pn-id .contact-form select:focus, body.pn-id .contact-form textarea:focus,
 body.pn-id .ar-f input:focus, body.pn-id .ar-f select:focus, body.pn-id .ar-f textarea:focus{ background:var(--p4-deep); border-color:var(--p4-terra-text); box-shadow:none; outline:2px solid var(--p4-terra-text); outline-offset:1px; }
 body.pn-id .form-consent label, body.pn-id .form-privacy{ color:var(--p4-lime); opacity:1; font-size:15px; }

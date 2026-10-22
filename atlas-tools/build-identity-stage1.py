@@ -140,11 +140,19 @@ BODY_RX = re.compile(r'<body class="pn-id pn-id--(?:dark|paper)(?: pn-id--disc)?
 THEME_LEGACY = '<meta name="theme-color" content="#1F3B2E">'
 def theme_tag(value): return '<meta name="theme-color" content="%s">' % value
 HOME_THEME = None   # read from index.html in main(); I9
+# Earlier homepage theme colours that this layer wrote and may find on a page
+# it is re-applying to: Earth Charcoal (20 Oct 2026), before the
+# Architectural Anthracite palette (22 Oct 2026). strip() returns any of them
+# to the legacy value so the build is a clean re-application.
+PREVIOUS_HOME_THEMES = ("#2A2622",)
 
 def strip(t):
     for rx in RX: t = rx.sub("", t)
     if BODY_RX.search(t) and HOME_THEME:
-        t = t.replace(theme_tag(HOME_THEME), THEME_LEGACY, 1)
+        for v in (HOME_THEME,) + PREVIOUS_HOME_THEMES:
+            if theme_tag(v) in t:
+                t = t.replace(theme_tag(v), THEME_LEGACY, 1)
+                break
     return BODY_RX.sub("<body>", t, count=1)
 
 RAIL_END = "<!-- PLOTNUA SEARCH RAIL v1 · END -->"
