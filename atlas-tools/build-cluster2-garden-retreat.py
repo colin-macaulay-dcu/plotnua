@@ -319,7 +319,7 @@ PRESERVE = [
   ('<title>Garden Saunas, Hot Tubs &amp; Cold Plunges in Ireland | PlotNua</title>', 1),
   ('<link rel="canonical" href="https://plotnua.ie/discovery-garden-retreat.html">', 1),
   ('mycabin.ie', None), ('gardenhouse24.ie', None), ('timbertrove.com', None),
-  ('PlotNua has no commercial relationship with any supplier named on this page', 1),
+  ('PlotNua has no commercial relationship with the three suppliers compared here', 1),
 ]
 FORBIDDEN_AFTER = [
   ('?discovery=', 'a recommendation-engine route was introduced; Cluster 2 forbids it'),

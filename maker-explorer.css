@@ -170,3 +170,16 @@
    is the target, jump instantly instead: the browser's scroll anchoring then
    keeps it in place as the content above settles. CSS only; no effect elsewhere. */
 html:has(#maker-index:target){ scroll-behavior:auto; }
+/* Referral code panel (G13, 22 Oct 2026): only inside a maker's own drawer;
+   quiet, factual, the same weight as the product list, never a badge on a tile. */
+#explore-makers .mx-offer{ margin:2px 0 12px; padding:10px 12px; background:var(--paper);
+  border:1px dashed rgba(79,107,74,.45); border-radius:2px; }
+#explore-makers .mx-offer p{ margin:0 0 4px; font-size:13px; line-height:1.45; color:var(--ink); }
+#explore-makers .mx-offer-k{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+#explore-makers .mx-code{ font:600 14px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.06em;
+  padding:1px 6px; border:1px solid rgba(31,59,46,.25); border-radius:2px; background:var(--cream); }
+#explore-makers .mx-offer-pct{ font-size:13px; color:var(--ink); }
+#explore-makers .mx-offer-disc{ color:var(--soft); font-size:12px; }
+#explore-makers .mx-offer-go{ display:inline-block; margin-top:2px; font:500 13.5px 'Work Sans',sans-serif;
+  color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); }
+#explore-makers .mx-offer-go:hover{ border-bottom-color:var(--accent); }

@@ -295,7 +295,7 @@ console.log('\nCLUSTER 2 CLAIM GUARDS\n');
     'H1': '<h1>Garden Retreat</h1>',
     'title': '<title>Garden Saunas, Hot Tubs &amp; Cold Plunges in Ireland | PlotNua</title>',
     'canonical': '<link rel="canonical" href="https://plotnua.ie/discovery-garden-retreat.html">',
-    'no-commercial-relationship note': 'PlotNua has no commercial relationship with any supplier named on this page',
+    'no-commercial-relationship note': 'PlotNua has no commercial relationship with the three suppliers compared here',
     // 14 Oct 2026 (final publication consistency corrections): MyCabin, held
     // from the directory, left the comparison; the sauna example is now
     // Hansa24's Lisette on summerhouse24.ie. GR10 refuses a held maker's name.

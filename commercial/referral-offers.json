@@ -1,0 +1,21 @@
+{
+  "schema": "plotnua.referral-offers.v1",
+  "purpose": "Public display facts for supplier referral codes shown to homeowners. Read ONLY by atlas-tools/build-maker-explorer.py to render a maker's own drawer. Never read by the Atlas snapshot, Search, matching, scoring, ranking or the maker order. Commission rates, statements, private partner links and correspondence stay in Airtable (Partners) and are never published here.",
+  "displayStates": {
+    "PREVIEW": "Renders only in a local preview build (environment PN_PREVIEW_OFFERS=1). A normal build ignores it, so a merge cannot publish it.",
+    "LIVE": "Renders in every build. Set only after the founder approves the visual result and the disclosure wording."
+  },
+  "offers": [
+    {
+      "maker": "TimberIN",
+      "state": "PREVIEW",
+      "code": "PLOTNUA4",
+      "discountPercent": 4,
+      "shopSite": "woodenhottubsale.co.uk",
+      "shopHref": "https://www.woodenhottubsale.co.uk/",
+      "how": "Enter the code at checkout on woodenhottubsale.co.uk, or quote it if you order by phone or email.",
+      "termsAgreed": "2026-10-22",
+      "termsEvidence": "Partners recvAYDiCRilMTeGw (private)"
+    }
+  ]
+}

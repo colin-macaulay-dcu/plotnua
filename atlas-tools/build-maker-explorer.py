@@ -46,9 +46,17 @@ GUARDS (G1-G11), unchanged in strictness from v1, now per tab
   configuration's makers, A to Z, with their counts; each link is the one
   permitted fragment and opens its own maker; no image, price or link out.
 
+  G13 (22 Oct 2026, commercial disclosure) a referral offer comes only from
+  commercial/referral-offers.json, renders only inside its own maker's drawer
+  (never on a tile, never in the A-Z index, never affecting order), carries the
+  fixed commission disclosure, links only to the maker's verified domain with
+  no query, and a PREVIEW offer renders only when PN_PREVIEW_OFFERS=1. A page
+  that lists any maker with an offer must say so in its footer; a page that
+  lists none keeps the original "no commercial arrangement" wording.
+
   python3 atlas-tools/build-maker-explorer.py --check | --apply   (all PAGES)
 """
-import ast, hashlib, html, json, pathlib, re, sys
+import ast, hashlib, html, json, os, pathlib, re, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SEARCH_BUILDER = ROOT / "atlas-tools" / "build-search-index.py"
@@ -77,7 +85,9 @@ PINS = {
     # show larger and uncropped, and a credit without a link back is plain text.
     # Rules are scoped to #explore-makers; the Provider Explorers carry no images and
     # render as before. Previous pins: js 11335fd6…, css d571b8ca…
-    SHARED_JS:  "3dd7433680741444d7865f78724cfa8e83c8a6ef6d8d3e669ae6e7b3a55a9561",
+    # Re-pinned 22 Oct 2026 (G13 referral-code panel inside a maker's own drawer; PREVIEW,
+    # founder visual approval pending). Previous pin: 3dd74336…
+    SHARED_JS:  "9fae1df03690f0a610fcf67de57c7a1031ce097155b5eda82c8249f6271aec82",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -87,7 +97,9 @@ PINS = {
     # Re-pinned 20 Oct 2026 (SEO-C2.1): rules for the A-Z maker index appended,
     # scoped to #explore-makers .mx-az, plus one rule that turns off smooth scrolling
     # only while #maker-index is the URL target (arrival fix); every existing rule is unchanged. Previous pin: 105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21
-    SHARED_CSS: "8db1e7bb4ce86c2273df153658eafad11d3dc4df7502e9d94aa7d552df8d7527",
+    # Re-pinned 22 Oct 2026 (G13 referral-code panel rules appended, scoped to #explore-makers;
+    # every existing rule unchanged). Previous pin: 8db1e7bb…
+    SHARED_CSS: "904272047c58a1f85025b309aae4ff0570f270865b792d23505a2becc7478d73",
 }
 CSS_LINK = '<link rel="stylesheet" href="maker-explorer.css">'
 JS_TAG = '<script src="maker-explorer.js"></script>'
@@ -303,6 +315,36 @@ def _host(u):
 
 
 LINKS = ROOT / "atlas-tools" / "maker-product-links-v1.json"
+
+# ── referral offers (G13, 22 Oct 2026) ─────────────────────────────────────
+OFFERS = ROOT / "commercial" / "referral-offers.json"
+OFFER_PREVIEW = os.environ.get("PN_PREVIEW_OFFERS") == "1"
+CODE_RE = re.compile(r"[A-Z0-9]{4,20}")
+_OFFERS = None
+
+def offers():
+    """maker display name -> the public offer facts the drawer may show."""
+    global _OFFERS
+    if _OFFERS is not None: return _OFFERS
+    D = json.loads(OFFERS.read_text(encoding="utf-8"))
+    if D.get("schema") != "plotnua.referral-offers.v1": die("G13 referral offers: unknown schema")
+    out = {}
+    for o in D["offers"]:
+        if o["state"] not in ("PREVIEW", "LIVE"): die("G13 offer state must be PREVIEW or LIVE: " + o["maker"])
+        if o["state"] == "PREVIEW" and not OFFER_PREVIEW: continue
+        if not CODE_RE.fullmatch(o["code"]): die("G13 offer code is not plain capitals and digits: " + o["maker"])
+        if not (isinstance(o["discountPercent"], int) and 1 <= o["discountPercent"] <= 20):
+            die("G13 offer discount out of range: " + o["maker"])
+        doms = (links_doc()["makerDomains"].get(o["maker"]) or {}).get("domains") or []
+        if _host(o["shopHref"]) not in doms or not re.fullmatch(r"https://[A-Za-z0-9.-]+/", o["shopHref"]):
+            die("G13 offer link is not the maker's verified home page: " + o["maker"])
+        if _host(o["shopHref"]).replace("www.", "", 1) != o["shopSite"]:
+            die("G13 offer link label does not match its destination: " + o["maker"])
+        if o["maker"] in out: die("G13 two offers for one maker: " + o["maker"])
+        out[o["maker"]] = {"code": o["code"], "pct": o["discountPercent"], "site": o["shopSite"],
+                           "href": o["shopHref"], "how": o["how"]}
+    _OFFERS = out
+    return out
 _LINKS = None
 SAFE_URL = re.compile(r"https://[A-Za-z0-9.-]+/[A-Za-z0-9._~/%+-]*")
 
@@ -589,6 +631,8 @@ def load(P):
             lead = lead_image(mk["p"])
             if lead:
                 mk["l"] = lead
+            if mk["m"] in offers():
+                mk["o"] = offers()[mk["m"]]
             makers.append(mk)
         figures = {"products": len(eligible), "makers": len(by),
                    "confirmed": sum(1 for e in eligible if e[4] == "c"),
@@ -647,6 +691,23 @@ def az_index(tabs):
     return "\n".join(h) + "\n"
 
 # ── markup ───────────────────────────────────────────────────────────────────
+NO_ARRANGEMENT = ("Makers are not ranked, and PlotNua has no\n"
+                  "      commercial arrangement with any maker listed.")
+
+def offer_makers(tabs):
+    return sorted({m["m"] for t in tabs for m in t["cfg"]["makers"] if m.get("o")}, key=str.lower)
+
+def commercial_line(tabs):
+    """The footer's commercial sentence. Unchanged wording where no listed maker
+    has an offer; otherwise it names every such maker and says what PlotNua earns."""
+    names = offer_makers(tabs)
+    if not names: return NO_ARRANGEMENT
+    who = names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+    return ("Makers are not ranked, and their order is shuffled on every visit. PlotNua earns a\n"
+            f"      commission when a homeowner buys from {html.escape(who)} using a PlotNua code; this never\n"
+            "      affects which makers are listed or their order. PlotNua has no commercial arrangement\n"
+            "      with any other maker listed.")
+
 def section(P, tabs, researched):
     figs = {"researchedMakers": researched}
     for t in tabs: figs["tab:" + t["T"]["key"]] = t["cfg"]["figures"]["products"]
@@ -672,6 +733,7 @@ def section(P, tabs, researched):
                 f'          <a href="search.html">{P["noscript"]}</a>.</p></noscript>')
     az = az_index(tabs) if P.get("azIndex") else ""
     payload = json.dumps(config, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    commercial = commercial_line(tabs)
     return f'''  <!-- 6c · {MARK} · Founder decisions 13 Oct 2026. Shared component
        (maker-explorer.js / maker-explorer.css) configured for this page by
        atlas-tools/build-maker-explorer.py from published eligibility files;
@@ -710,8 +772,7 @@ def section(P, tabs, researched):
 
 
     <p class="mx-foot">Only products PlotNua&rsquo;s research currently makes public are listed;
-      products still being checked are not shown. Makers are not ranked, and PlotNua has no
-      commercial arrangement with any maker listed.{pages}</p>
+      products still being checked are not shown. {commercial}{pages}</p>
 {credits}{az}
     <script type="application/json" class="pn-mx-config" id="mx-data">{payload}</script>
     {JS_TAG}
@@ -933,9 +994,32 @@ def build(fname, P, src):
     cfg_text = " ".join([" ".join(c["nouns"]) + " " + " ".join((c.get("route") or {}).values()) + " " +
                          c.get("availabilityNote", "") + " " +
                          " ".join(p[4] for m in c["makers"] for p in m["p"] if len(p) > 4) for c in cfgs])
+    cfg_text += " " + " ".join(" ".join(str(v) for v in m["o"].values()) for c in cfgs for m in c["makers"] if m.get("o"))
     texts = (vtext + " " + cfg_text + " " + " ".join(re.findall(r"'([^']*)'", js))).lower()
     for w in BANNED:
         if w in texts: die("G6 banned word: " + w.strip())
+    # G13 referral offers: governed source, own drawer only, disclosed, verified link
+    OFF = offers()
+    for c in cfgs:
+        for m in c["makers"]:
+            if m.get("o") and m["o"] != OFF.get(m["m"]): die("G13 an offer not from the governed offers file: " + m["m"])
+            if not m.get("o") and m["m"] in OFF: die("G13 a governed offer missing from its maker: " + m["m"])
+    def fn(name):
+        return js.split("function " + name + "(", 1)[1].split("\n    function ", 1)[0] if ("function " + name + "(") in js else ""
+    dfn, ofn = fn("drawer"), fn("offer")
+    if js.count("m.o") != ofn.count("m.o"): die("G13 the script may read an offer only in offer()")
+    if js.count("mx-offer") != ofn.count("mx-offer"): die("G13 offer markup outside offer()")
+    if js.count("offer(m)") != 2 or dfn.count("offer(m)") != 1:
+        die("G13 offer() must be called exactly once, from the maker's drawer")
+    if offer_makers(tabs):
+        if "PlotNua earns a\n      commission when a homeowner buys from" not in blk or NO_ARRANGEMENT in blk:
+            die("G13 a page listing a maker with an offer must disclose it in the footer")
+        if "PlotNua earns a commission on sales made with this code" not in js:
+            die("G13 the drawer must carry the commission disclosure")
+    elif NO_ARRANGEMENT not in blk:
+        die("G13 the no-arrangement wording changed on a page with no offers")
+    if P.get("azIndex") and any(o["code"] in az_index(tabs) for o in OFF.values()):
+        die("G13 an offer code reached the A-Z index")
     # G7 no special supplier placement; TRIQ stays published and in Search
     if "mx-info" in blk or "Manufacturer information" in blk: die("G7 a manufacturer box is back")
     sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -999,7 +1083,7 @@ def main():
     if not set(DISPLAY_NAME_BY_ID) <= SEEN_OVERRIDES:
         die("display-name override for a product that is not publicly listed: %s"
             % sorted(set(DISPLAY_NAME_BY_ID) - SEEN_OVERRIDES))
-    print(("APPLIED" if mode == "--apply" else "CHECK OK") + f" — G1-G12 pass for {len(PAGES)} page(s)")
+    print(("APPLIED" if mode == "--apply" else "CHECK OK") + f" — G1-G13 pass for {len(PAGES)} page(s)")
 
 if __name__ == "__main__":
     main()

@@ -91,7 +91,7 @@
       var NA = T.availabilityNote;
       var h = '<li class="mx-drawer" id="' + id + '"><h3>' + esc(m.m) + '</h3>' +
         '<p class="mx-meta">' + m.p.length + ' ' + T.nouns[m.p.length === 1 ? 0 : 1] +
-        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p><ul class="mx-plist' +
+        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p>' + offer(m) + '<ul class="mx-plist' +
         (m.p.some(function (p) { return p[5] && p[5].img; }) ? ' mx-plist-img' : '') + '">';
       m.p.forEach(function (p) {
         var X = p[5] || {};
@@ -114,6 +114,17 @@
              '<a class="mx-route" href="' + T.route.href + '">' + esc(T.route.label) + '&nbsp;&rarr;</a>';
       }
       return h + '</li>';
+    }
+    /* A referral code agreed with this maker (G13): shown only here, inside the
+       maker's own drawer, never on a tile or in the order; always disclosed. */
+    function offer(m) {
+      if (!m.o) { return ''; }
+      return '<div class="mx-offer" role="note"><p class="mx-offer-h"><span class="mx-offer-k">PlotNua code</span> ' +
+        '<strong class="mx-code">' + esc(m.o.code) + '</strong> <span class="mx-offer-pct">' + m.o.pct + '% off</span></p>' +
+        '<p class="mx-offer-how">' + esc(m.o.how) + '</p>' +
+        '<p class="mx-offer-disc">PlotNua earns a commission on sales made with this code. It never affects which makers are listed or their order.</p>' +
+        '<a class="mx-offer-go" href="' + esc(m.o.href) + '" target="_blank" rel="noopener noreferrer">Visit ' + esc(m.m) +
+        ' on ' + esc(m.o.site) + '<span class="mx-sr"> (opens in a new tab)</span>&nbsp;&rarr;</a></div>';
     }
     function images(list) {
       var h = '<span class="mx-imgs">';
