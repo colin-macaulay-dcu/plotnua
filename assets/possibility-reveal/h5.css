@@ -135,3 +135,6 @@
    so the garden transformations switched on (the retreat among them) stay visible while it plays */
 .pr.h5c[data-mode="scene"][data-ps-scene="ground"] .g-layer.is-on{opacity:1}
 .pr.h5c[data-mode="scene"][data-ps-scene="ground"] .h5c-smoke{opacity:1}
+/* FINAL HOMEPAGE RELEASE (22 Oct 2026): with the Garden Room on, it hides the heat pump, so the ground-heat
+   "one or the other" marker is not drawn (it would otherwise point at the Garden Room) */
+.pr.pn[data-garden~="L3"] #pr-sc-ground .hp-mark{display:none}

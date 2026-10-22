@@ -199,6 +199,16 @@ def h5_extend(js, body):
     # H5C4 (22 Oct 2026): the ground-heat scene redrawn as a near-square cut-away of the central lawn
     _ga = body.index('      <svg class="scene" id="pr-sc-ground"'); _gb = body.index('</svg>', _ga) + len('</svg>')
     body = body[:_ga] + open(os.path.join(ROOTDIR, 'atlas-tools/possibility-reveal-h5c4-ground.svg.part'), encoding='utf-8').read() + body[_gb:]
+    # FINAL HOMEPAGE RELEASE (22 Oct 2026, founder): the computer-heat scene is marked "Emerging possibility",
+    # with one plain line saying it is not available to Irish homeowners (no commercial availability implied)
+    body = one(body, '<text class="stamp s-fade s1 only-d" x="1190" y="338" text-anchor="middle">ILLUSTRATION \u00b7 NOT IN IRISH HOMES</text>',
+               '<text class="stamp s-fade s1 only-d" x="1190" y="338" text-anchor="middle">ILLUSTRATION \u00b7 EMERGING POSSIBILITY</text>')
+    body = one(body, '<text class="stamp s-fade s1 only-m" x="1190" y="338" text-anchor="middle">NOT IN IRISH HOMES</text>',
+               '<text class="stamp s-fade s1 only-m" x="1190" y="338" text-anchor="middle">EMERGING POSSIBILITY</text>')
+    body = one(body, '<text class="label s-fade s4 only-m" x="1190" y="1070" text-anchor="middle">abroad: computer \u2192 heat \u2192 hot water</text>',
+               '<text class="label s-fade s4 only-m" x="1190" y="1070" text-anchor="middle">abroad: computer \u2192 heat \u2192 hot water</text>\n'
+               '        <text class="label s-fade s4 only-d" x="1190" y="1118" text-anchor="middle">tried in homes abroad \u00b7 not available to Irish homeowners today</text>\n'
+               '        <text class="label s-fade s4 only-m" x="1190" y="1130" text-anchor="middle">not available to Irish homeowners</text>')
     body = one(body, '<a class="skip" href="#pr-paths">Skip to the discovery paths</a>', '<a class="skip" href="#pr-layers">Skip to the garden transformations</a>')
     # the Power Station headline, lede and paths leave the hero (paths kept, empty and hidden: the script builds into it)
     a = body.index('    <section class="intro" aria-labelledby="pr-introTitle">'); b = body.index('    </section>\n', a) + len('    </section>\n')

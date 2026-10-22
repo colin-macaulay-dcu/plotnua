@@ -16,7 +16,10 @@
         <path class="heatflow rise s-fade s3" d="M1060 1112 C 1010 990, 1250 860, 1460 760"/>
         <text class="label s-fade s3 only-d" x="1356" y="1410" text-anchor="middle">a few metres down: about the same temperature all year</text>
         <text class="label s-fade s3 only-m" x="1356" y="1410" text-anchor="middle">the same temperature all year</text>
+        <!-- the heat-pump marker; hidden while the Garden Room is on, because the Garden Room then stands in front of the heat pump -->
+        <g class="hp-mark">
         <g class="s-pop s4"><circle cx="1705" cy="745" r="66" fill="none" stroke="#F8F5EC" stroke-width="6"/><circle cx="1792" cy="676" r="36" fill="#BD6A46"/><text x="1792" y="689" text-anchor="middle" class="or">or</text></g>
         <text class="label s-fade s4 only-d" x="1846" y="760">one or the other — not both</text>
         <text class="label s-fade s4 only-m" x="1705" y="870" text-anchor="middle">one or the other</text>
+        </g>
       </svg>
