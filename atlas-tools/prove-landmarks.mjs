@@ -181,7 +181,11 @@ for (const f of CAROUSEL) {
   const cards = [...sect.matchAll(/<a class="p4s-go" href="([^"]+)">/g)].map(m => m[1]);
   const missing = FEATURED.filter(d => cards.filter(c => c === d).length !== 1);
   const extra = cards.filter(c => !FEATURED.includes(c));
-  const all = /<a class="p4-btn p4-btn-primary p4s-cta" href="discoveries\.html">/.test(sect);
+  /* 22 Oct 2026 (founder, final visual refinement): the Library route is the
+     text link beneath the featured cards, exactly once; the large CTA button
+     beside the heading is retired. */
+  const all = (sect.match(/<div class="d-all p4s-all-link"><a href="discoveries\.html">Explore all Discoveries &rarr;<\/a><\/div>/g) || []).length === 1
+    && (sect.match(/href="discoveries\.html"/g) || []).length === 1;
   const lib = code(read("discoveries.html"));
   const unlisted = DISCOVERIES.filter(d => !lib.includes(`href="${d}"`));
   if (sect && !tabRoles && !ariaSel && !missing.length && !extra.length && all && !unlisted.length)

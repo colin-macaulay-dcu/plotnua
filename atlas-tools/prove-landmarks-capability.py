@@ -87,7 +87,10 @@ MUTATIONS = [
      lambda t: t.replace('href="discovery-hidden-bins.html"', 'href="about.html"')),
 
     ("the showcase's Explore all Discoveries route is removed", "L4", "index.html",
-     lambda t: t.replace('<a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">', '<a class="p4-btn p4-btn-primary p4s-cta" href="about.html">', 1)),
+     lambda t: t.replace('<div class="d-all p4s-all-link"><a href="discoveries.html">', '<div class="d-all p4s-all-link"><a href="about.html">', 1)),
+
+    ("the Library route is duplicated (the big button returns beside the heading)", "L4", "index.html",
+     lambda t: t.replace('<div class="p4s-lead">', '<a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">Explore all Discoveries</a>\n  <div class="p4s-lead">', 1)),
 
     ("pre-fix carousel: the false role=\"tablist\" returns on the 404 page", "L4", "404.html",
      lambda t: t.replace('<div class="d-dots" role="group"',

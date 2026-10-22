@@ -1386,9 +1386,6 @@ body.pn-p4 .p4s-head{
 }
 body.pn-p4 .p4-showcase h2{ margin:14px 0 0; max-width:15ch; font-size:clamp(46px,5.2vw,84px); }
 body.pn-p4 .p4-showcase .lib-info-pop{ margin:24px 0 0; }
-  font-family:var(--p4-serif); font-size:24px; line-height:1.15; color:var(--p4-ivory);
-}
-body.pn-p4 .p4s-cta{ min-height:58px; font-size:18px; }
 
 body.pn-p4 .p4s-lead{
   display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:28px; padding:0 var(--p4-gutter);
@@ -1445,7 +1442,6 @@ body.pn-p4 .p4s-feature .p4s-next a{ font-size:17px; }
 }
 @media (max-width:720px){
   body.pn-p4 .p4-showcase h2{ font-size:44px; }
-  body.pn-p4 .p4s-cta{ width:100%; justify-content:center; }
   body.pn-p4 .p4s-head{ margin-bottom:40px; }
   body.pn-p4 .p4s-lead{ gap:36px; }
   body.pn-p4 .p4s-support{ grid-template-columns:1fr 1fr; gap:32px 12px; }
@@ -1762,6 +1758,41 @@ body.pn-p4 #research.article-section{ padding:96px 0; }
 @media (max-width:900px){
   body.pn-p4 #discover.p4-showcase{ padding-top:64px; }
   body.pn-p4 #research.article-section{ padding:60px 0; }
+}
+/* Final visual refinement (founder, 22 Oct 2026).
+   Atlas: a compact credibility strip under the hero (about 40% less height):
+   less padding, a smaller symbol directly on the section (no glow disc behind
+   it), smaller numerals, no pricing link. Library: the heading runs on one line
+   where the desktop width allows; the large CTA is replaced by the existing
+   text-link style beneath the featured cards. */
+body.pn-p4 #research.article-section{ padding:52px 0; }
+body.pn-p4 #research .article-head{ gap:28px 64px; }
+body.pn-p4 #research .atlas-id{ gap:26px; }
+body.pn-p4 #research .atlas-mark-still{ width:clamp(104px,8.5vw,128px); padding:0; background:none; border-radius:0; }
+body.pn-p4 #research .atlas-words .atlas-name{ margin-bottom:8px; }
+body.pn-p4 #research .atlas-words h2{ margin:0 0 6px; font-size:clamp(36px,3.3vw,48px); max-width:none; }
+body.pn-p4 #research .atlas-figures dt{ font-size:clamp(46px,4.2vw,62px); }
+body.pn-p4 #research .atlas-figures dd{ margin-top:8px; }
+body.pn-p4 #research .ah-body .atlas-note{ margin-top:12px; font-size:22px; }
+body.pn-p4 #discover .p4s-head{ grid-template-columns:minmax(0,1fr); }
+body.pn-p4 #discover.p4-showcase h2{ max-width:none; text-wrap:balance; }
+body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
+@media (max-width:900px){
+  body.pn-p4 #research.article-section{ padding:40px 0; }
+  body.pn-p4 #discover .p4s-all-link{ margin-top:32px; }
+}
+@media (max-width:720px){
+  body.pn-p4 #research .atlas-id{ flex-direction:row; align-items:center; gap:18px; }
+  body.pn-p4 #research .atlas-mark-still{ width:96px; }
+  body.pn-p4 #research .atlas-words h2{ font-size:32px; margin-bottom:4px; }
+  body.pn-p4 #research .atlas-sub{ font-size:18px; }
+  body.pn-p4 #research .atlas-figures{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  body.pn-p4 #research .atlas-figure{ display:block; padding:12px 0 0 14px; border-top:0; border-left:1px solid rgba(179,146,114,.45); }
+  body.pn-p4 #research .atlas-figure:first-child{ padding-left:0; border-left:0; border-top:0; }
+  body.pn-p4 #research .atlas-figures{ border-top:1px solid rgba(179,146,114,.45); }
+  body.pn-p4 #research .atlas-figures dt{ font-size:40px; }
+  body.pn-p4 #research .atlas-figures dd{ margin-top:6px; text-align:left; font-size:11px; letter-spacing:.1em; }
+  body.pn-p4 #research .ah-body .atlas-note{ margin-top:12px; font-size:21px; }
 }
 @media (prefers-reduced-motion:reduce){
   body.pn-p4 #discover .p4s-card, body.pn-p4 #discover .p4s-media img{ transition:none; }
@@ -2121,11 +2152,9 @@ body.pn-p4 #research.article-section{ padding:96px 0; }
           </div>
         </dl>
         <p class="atlas-note">&hellip;and counting.</p>
-        <!-- SEO, 19 October 2026 (founder directive: a prominent, natural homepage
-             link to Garden Room Prices). Placed beside the figures it explains:
-             the garden-room and verified-price counts are the evidence the guide
-             is built from. -->
-        <p class="atlas-note atlas-guide"><a href="garden-room-prices-ireland.html">See what garden rooms cost in Ireland &rarr;</a></p>
+        <!-- 22 Oct 2026 (founder, final visual refinement): the garden-room pricing
+             link is removed from the Atlas, which states research capability only.
+             Garden Room Prices stays linked from the featured garden Discovery card. -->
       </div>
     </div>
 
@@ -2187,9 +2216,6 @@ body.pn-p4 #research.article-section{ padding:96px 0; }
            own home.</p>
       </div>
     </div>
-    <div class="p4s-headside">
-      <a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">Explore all Discoveries <span aria-hidden="true">&rarr;</span></a>
-    </div>
   </div>
 
   <div class="p4s-lead">
@@ -2241,6 +2267,8 @@ body.pn-p4 #research.article-section{ padding:96px 0; }
     </article>
     </div>
   </div>
+
+  <div class="d-all p4s-all-link"><a href="discoveries.html">Explore all Discoveries &rarr;</a></div>
 
 </section>
 
