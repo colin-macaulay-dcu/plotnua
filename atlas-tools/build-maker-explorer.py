@@ -697,16 +697,25 @@ NO_ARRANGEMENT = ("Makers are not ranked, and PlotNua has no\n"
 def offer_makers(tabs):
     return sorted({m["m"] for t in tabs for m in t["cfg"]["makers"] if m.get("o")}, key=str.lower)
 
+# Founder-approved directory disclosure (22 Oct 2026, coordinated TimberIN release). Future-proof: it
+# makes no claim about makers without an arrangement; the makers with a CURRENT (live, agreed) arrangement
+# are named from the governed offers file, so a proposed partnership is never implied to be agreed.
+APPROVED_DISCLOSURE = ("Some makers have commercial arrangements with PlotNua, including referral commissions. "
+                       "These arrangements never influence which makers are listed, their order or PlotNua&rsquo;s "
+                       "independent assessments. Commercial relationships are identified where relevant.")
+
+def current_relationships(names):
+    who = names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+    return ("Current commercial relationship%s: %s (referral commission on qualifying purchases made with a PlotNua code)."
+            % ("" if len(names) == 1 else "s", html.escape(who)))
+
 def commercial_line(tabs):
-    """The footer's commercial sentence. Unchanged wording where no listed maker
-    has an offer; otherwise it names every such maker and says what PlotNua earns."""
+    """The footer's commercial sentences. Unchanged wording where no listed maker
+    has an offer; otherwise the approved disclosure, naming every maker with a current arrangement."""
     names = offer_makers(tabs)
     if not names: return NO_ARRANGEMENT
-    who = names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
-    return ("Makers are not ranked, and their order is shuffled on every visit. PlotNua earns a\n"
-            f"      commission on qualifying purchases made with a PlotNua code, currently offered by {html.escape(who)};\n"
-            "      this never affects which makers are listed, their order, or what PlotNua&rsquo;s research says\n"
-            "      about them.")
+    return ("Makers are not ranked, and their order is shuffled on every visit.\n      "
+            + APPROVED_DISCLOSURE + "\n      " + current_relationships(names))
 
 def section(P, tabs, researched):
     figs = {"researchedMakers": researched}
@@ -1016,7 +1025,9 @@ def build(fname, P, src):
         die("G13 clipboard access outside copyCode()")
     if "readText" in js or "clipboard.read" in js: die("G13 the script may write the clipboard, never read it")
     if offer_makers(tabs):
-        if "PlotNua earns a\n      commission on qualifying purchases made with a PlotNua code, currently offered by" not in blk or NO_ARRANGEMENT in blk:
+        flat = re.sub(r"\s+", " ", blk)
+        if APPROVED_DISCLOSURE not in flat or current_relationships(offer_makers(tabs)) not in flat or NO_ARRANGEMENT in blk \
+           or "no commercial arrangement with any other maker" in flat:
             die("G13 a page listing a maker with an offer must disclose it in the footer")
         if "PlotNua earns a commission on qualifying purchases. This does not affect recommendations." not in js:
             die("G13 the drawer must carry the commission disclosure")
@@ -1056,6 +1067,11 @@ def build(fname, P, src):
             die("G12 the page on disk does not carry the generated A-Z index (run --apply)")
     elif 'id="maker-index"' in blk:
         die("G12 an A-Z index on a page that has not opted in")
+    # G13b (22 Oct 2026, coordinated release): the page on disk carries exactly the directory this build
+    # generates -- so a page built with PN_PREVIEW_OFFERS=1 (a PREVIEW offer, its code and its footer
+    # wording) can never be committed and published by a normal build or check.
+    if mode_check() and not (OFFER_PREVIEW) and page_text(fname).count(new_block) != 1:
+        die("G13 the page on disk does not carry the generated directory (offers and commercial wording); run --apply without PN_PREVIEW_OFFERS")
     # G9 nothing outside the block and the stylesheet link changes; placement
     rest_before = src[:start] + src[end:]
     rest_after = out.replace(new_block, "", 1).replace(P["css_anchor"] + "\n" + CSS_LINK, P["css_anchor"], 1)
