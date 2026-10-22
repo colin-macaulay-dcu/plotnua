@@ -1,0 +1,155 @@
+{
+  "schema": "plotnua.price-currency-corrections",
+  "version": 1,
+  "what_this_is": "Founder-approved, record-level corrections of the CURRENCY in which a supplier publishes a price that Atlas recorded under the wrong currency. Read by .github/scripts/generate_wellness_universe.py (so every regeneration applies them), applied to the published wellness-universe-v1.json by atlas-tools/build-price-currency-corrections.py, and read by atlas-tools/build-maker-explorer.py for the maker note.",
+  "what_this_is_not": "Never a conversion, never a new figure, never a VAT position. The amount and the VAT basis stay exactly as Atlas records them; only the currency label follows the supplier's own published page. A correction applies only while the Atlas amount equals the evidenced amount; if Atlas changes, the generator refuses until this register is reviewed. Atlas itself (Airtable) is not modified by this register: the Atlas Currency field still reads EUR for these records and should be corrected there by the founder.",
+  "authority": "Founder review, 22 October 2026, 16:26 Dublin: 'TimberIN publishes certain prices in GBP, while PlotNua displays the same numbers as EUR. Correct this before deployment.' Preserve verified GBP prices; do not invent EUR conversions; do not assume VAT treatment.",
+  "makerNotes": {
+    "TimberIN": "TimberIN publishes these prices in pounds sterling (£). For Irish orders, TimberIN confirms the euro total at checkout or on quote."
+  },
+  "corrections": [
+    {
+      "id": "recbqK8aatwfEhbh2",
+      "organisation": "TimberIN",
+      "productName": "TimberIN Nordic Barrel Duo (Barrel Sauna & Hot Tub Combination Building)",
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/nordic-barrel-duo/",
+      "priceType": "Standard Price",
+      "amount": 14990,
+      "atlasCurrency": "EUR",
+      "publishedCurrency": "GBP",
+      "evidence": {
+        "checked": "2026-10-22",
+        "httpStatus": 200,
+        "finalUrl": "https://www.woodenhottubsale.co.uk/product/nordic-barrel-duo/",
+        "redirects": 0,
+        "pageLanguage": "en-GB",
+        "structuredData": {
+          "offerPrice": "14990",
+          "offerPriceCurrency": "GBP"
+        },
+        "visiblePrice": "£ 14,990",
+        "capturedPageSha256": "b1c776a4d783bc71e0322b88cc16f9903f643380f4c94347e1290b0ec6755666"
+      }
+    },
+    {
+      "id": "recsgRXeV6TNzxCYa",
+      "organisation": "TimberIN",
+      "productName": "TimberIN Nordic Hobbiton (Sauna & Hot Tub Combo)",
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/imberin-nordic-sauna-hot-tub-combo-hobbiton/",
+      "priceType": "Standard Price",
+      "amount": 14990,
+      "atlasCurrency": "EUR",
+      "publishedCurrency": "GBP",
+      "evidence": {
+        "checked": "2026-10-22",
+        "httpStatus": 200,
+        "finalUrl": "https://www.woodenhottubsale.co.uk/product/imberin-nordic-sauna-hot-tub-combo-hobbiton/",
+        "redirects": 0,
+        "pageLanguage": "en-GB",
+        "structuredData": {
+          "offerPrice": "14990",
+          "offerPriceCurrency": "GBP"
+        },
+        "visiblePrice": "£ 14,990",
+        "capturedPageSha256": "c37ecd7dfa3fb4db9d32885db33bc52558c0f4564fa17260b1ad523762325f59"
+      }
+    },
+    {
+      "id": "recyPCyF2mmxolq2t",
+      "organisation": "TimberIN",
+      "productName": "TimberIN Nordic Pod Duo (Pod Sauna & Hot Tub Combination Building)",
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/nordic-pod-duo/",
+      "priceType": "Standard Price",
+      "amount": 14990,
+      "atlasCurrency": "EUR",
+      "publishedCurrency": "GBP",
+      "evidence": {
+        "checked": "2026-10-22",
+        "httpStatus": 200,
+        "finalUrl": "https://www.woodenhottubsale.co.uk/product/nordic-pod-duo/",
+        "redirects": 0,
+        "pageLanguage": "en-GB",
+        "structuredData": {
+          "offerPrice": "14990",
+          "offerPriceCurrency": "GBP"
+        },
+        "visiblePrice": "£ 14,990",
+        "capturedPageSha256": "2d4c8ed9f9f16bac37145f2d40106ecc9aa89612877226797d499ff52f910753"
+      }
+    },
+    {
+      "id": "rec8uGWg6iRGi34BB",
+      "organisation": "TimberIN",
+      "productName": "TimberIN Nordic Modular Spa (Modular Sauna / Dressing Room / Hot Tub Building)",
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/nordic-modular-spa/",
+      "priceType": "Starting From",
+      "amount": 5292,
+      "atlasCurrency": "EUR",
+      "publishedCurrency": "GBP",
+      "evidence": {
+        "checked": "2026-10-22",
+        "httpStatus": 200,
+        "finalUrl": "https://www.woodenhottubsale.co.uk/product/nordic-modular-spa/",
+        "redirects": 0,
+        "pageLanguage": "en-GB",
+        "structuredData": {
+          "offerPrice": "5292",
+          "offerPriceCurrency": "GBP"
+        },
+        "visiblePrice": "£ 5,292",
+        "capturedPageSha256": "528d7f953a22d1d7e1bc853ddbeb6a5442a07ca9454c75732d0311c87168f732",
+        "note": "Configurable model; four published module prices (£5,292 to £15,517). The lowest, £5,292, is the 'from' price Atlas records."
+      }
+    },
+    {
+      "id": "rechyMNmPvPrIhZKx",
+      "organisation": "TimberIN",
+      "productName": "TimberIN Nordic Ice (Cold Plunge Tub)",
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/timberin-nordic-ice-cold-plunge/",
+      "priceType": "Standard Price",
+      "amount": 3350,
+      "atlasCurrency": "EUR",
+      "publishedCurrency": "GBP",
+      "evidence": {
+        "checked": "2026-10-22",
+        "httpStatus": 200,
+        "finalUrl": "https://www.woodenhottubsale.co.uk/product/timberin-nordic-ice-cold-plunge/",
+        "redirects": 0,
+        "pageLanguage": "en-GB",
+        "structuredData": {
+          "offerPrice": "3350",
+          "offerPriceCurrency": "GBP"
+        },
+        "visiblePrice": "£ 3,350",
+        "capturedPageSha256": "0506c79f0190e4696f08852bf73c8d53958684567a18e15c3d93f1dfa40ac45b"
+      }
+    },
+    {
+      "id": "recQSbuYJxaeKaNAu",
+      "organisation": "TimberIN",
+      "productName": "TimberIN Thermowood Cold Plunge Ø90 cm (AISI 316 Stainless-Steel Tub)",
+      "productUrl": "https://www.woodenhottubsale.co.uk/product/cold-plunge-tub-thermowood-90cm/",
+      "priceType": "Standard Price",
+      "amount": 4990,
+      "atlasCurrency": "EUR",
+      "publishedCurrency": "GBP",
+      "evidence": {
+        "checked": "2026-10-22",
+        "httpStatus": 200,
+        "finalUrl": "https://www.woodenhottubsale.co.uk/product/cold-plunge-tub-thermowood-90cm/",
+        "redirects": 0,
+        "pageLanguage": "en-GB",
+        "structuredData": {
+          "offerPrice": "4990",
+          "offerPriceCurrency": "GBP"
+        },
+        "visiblePrice": "£ 4,990",
+        "capturedPageSha256": "95a54bc965e0f84bc2026f1b110727e20c573dd3020b27403a7af104edc41573",
+        "metaProductPrice": {
+          "amount": "4990",
+          "currency": "GBP"
+        }
+      }
+    }
+  ]
+}

@@ -63,6 +63,15 @@ text-only publication expansion"): a SECOND, NARROWER listing basis.
     carries the kinds combination, sauna AND hot-tub: one record, shown under
     both tabs, never duplicated.
 
+REVISION 4, 22 Oct 2026 (founder review "TimberIN final coordinated release —
+final correction"): SUPPLIER-PUBLISHED CURRENCY. A verified price is still
+recorded in EUR in Atlas; the one exception is a record listed in
+atlas-tools/price-currency-corrections.json, whose supplier publishes the
+SAME amount in another currency (TimberIN: GBP). Such a price keeps its Atlas
+amount, type and VAT basis exactly and carries the supplier's currency; it is
+never converted. The register applies only while the Atlas amount equals the
+evidenced amount: if Atlas moves, generation refuses until it is reviewed.
+
 PUBLIC-DISCLOSURE FIREWALL. Description, Notes, Standards prose and Habitation
 basis are read and NEVER exported. What reaches the artefact is identity,
 the Atlas product type, a verified 'from' price with its basis, and closed
@@ -108,8 +117,45 @@ SUPPLIER_PERMISSION, PUBLIC_INFORMATION = "SUPPLIER_PERMISSION", "PUBLIC_INFORMA
 PAGE_NOT_VERIFIED = "product-page-not-verified"
 
 
-def price_of(rows):
-    """VERIFIED_NUMERIC_PRICE only from exactly one verified EUR row."""
+CURRENCY_REGISTER = REPO / "atlas-tools" / "price-currency-corrections.json"
+CURRENCY_LEAD = {"GBP": ", in pounds sterling as the supplier publishes it"}
+
+
+def currency_corrections():
+    """id -> correction, from the founder-approved register (empty if absent)."""
+    if not CURRENCY_REGISTER.exists():
+        return {}
+    reg = json.loads(CURRENCY_REGISTER.read_text(encoding="utf-8"))
+    out = {}
+    for c in reg.get("corrections", []):
+        if c.get("publishedCurrency") not in CURRENCY_LEAD or c.get("atlasCurrency") != "EUR":
+            fail("price-currency-corrections: unsupported correction for %s" % c.get("id"))
+        out[c["id"]] = c
+    return out
+
+
+def corrected_price(pid, price, corr=None):
+    """The supplier's published currency for a register-listed record.
+    Amount, type and VAT position are kept exactly; nothing is converted."""
+    c = (corr if corr is not None else currency_corrections()).get(pid)
+    if not c or price.get("state") != "VERIFIED_NUMERIC_PRICE":
+        return price
+    if price.get("amount") != c["amount"] or price.get("type") != c["priceType"]:
+        fail("price-currency-corrections: %s Atlas price %r %s no longer matches the evidenced %r %s; "
+             "review the register" % (pid, price.get("amount"), price.get("type"), c["amount"], c["priceType"]))
+    if price.get("currency") == c["publishedCurrency"]:
+        return price
+    if price.get("currency") != c["atlasCurrency"]:
+        fail("price-currency-corrections: %s carries %r" % (pid, price.get("currency")))
+    lead, tail = PRICE_LEAD[price["type"]], price["basis"][len(PRICE_LEAD[price["type"]]):]
+    return dict(price, currency=c["publishedCurrency"],
+                basis=lead + CURRENCY_LEAD[c["publishedCurrency"]] + tail)
+
+
+def price_of(rows, pid=None, corr=None):
+    """VERIFIED_NUMERIC_PRICE only from exactly one verified EUR row (or, for a
+    record in the currency register, the same row under the supplier's own
+    published currency)."""
     live = [r for r in rows if txt(cell(r, "Status")) == "Verified"]
     if len(live) != 1:
         return {"state": "PRICE_NOT_ESTABLISHED"}
@@ -117,7 +163,10 @@ def price_of(rows):
     amt = cell(r, "Base Price")
     if amt in (None, ""):
         amt = cell(r, "Price From")
-    if not isinstance(amt, (int, float)) or amt <= 0 or txt(cell(r, "Currency")) != "EUR":
+    corr = corr if corr is not None else currency_corrections()
+    cur = txt(cell(r, "Currency"))
+    allowed = {"EUR"} | ({corr[pid]["publishedCurrency"]} if pid in corr else set())
+    if not isinstance(amt, (int, float)) or amt <= 0 or cur not in allowed:
         return {"state": "PRICE_NOT_ESTABLISHED"}
     ptype = txt(cell(r, "Price Type"))
     if ptype not in PRICE_LEAD:
@@ -126,8 +175,13 @@ def price_of(rows):
     lead = PRICE_LEAD[ptype]
     if txt(cell(r, "Evidence Scope")) == "Range-Level":
         lead += " for the range, read from the supplier's range page"
-    return {"state": "VERIFIED_NUMERIC_PRICE", "amount": amt, "currency": "EUR",
-            "type": ptype, "basis": lead + VAT_TAIL.get(vat, VAT_TAIL["Unknown"])}
+    price = {"state": "VERIFIED_NUMERIC_PRICE", "amount": amt, "currency": "EUR",
+             "type": ptype, "basis": lead + VAT_TAIL.get(vat, VAT_TAIL["Unknown"])}
+    if pid in corr:
+        if cur == corr[pid]["publishedCurrency"]:
+            price["currency"] = corr[pid]["atlasCurrency"]  # normalise, then correct once
+        return corrected_price(pid, price, corr)
+    return price
 
 
 def kinds_of(p):
@@ -291,6 +345,7 @@ def main():
                             for pid in {x for r in rows for x in links(r, "Product")}}
     pricing = by_prod(raw.get("pricing", []))
 
+    corr = currency_corrections()
     src = [p for p in raw["products"] if txt(cell(p, "Product Category")) == CATEGORY]
     if not src:
         fail("No product carries Product Category %r; refusing to write an empty universe." % CATEGORY)
@@ -299,7 +354,7 @@ def main():
     for p in src:
         oid = (links(p, "Organisation") or [None])[0]
         org = orgs.get(oid) if oid else None
-        price = price_of(pricing.get(p["id"], []))
+        price = price_of(pricing.get(p["id"], []), p["id"], corr)
         kinds = kinds_of(p)
         q = qualify(p, org, price, kinds)
         hold, basis = wellness_hold(org) if org else (NO_RECORD_HOLD, None)

@@ -91,7 +91,8 @@
       var NA = T.availabilityNote;
       var h = '<li class="mx-drawer" id="' + id + '"><h3>' + esc(m.m) + '</h3>' +
         '<p class="mx-meta">' + m.p.length + ' ' + T.nouns[m.p.length === 1 ? 0 : 1] +
-        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p>' + offer(m) + '<ul class="mx-plist' +
+        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p>' + offer(m) +
+        (m.cn ? '<p class="mx-meta mx-cur">' + esc(m.cn) + '</p>' : '') + '<ul class="mx-plist' +
         (m.p.some(function (p) { return p[5] && p[5].img; }) ? ' mx-plist-img' : '') + '">';
       m.p.forEach(function (p) {
         var X = p[5] || {};

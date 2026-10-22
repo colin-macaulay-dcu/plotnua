@@ -87,7 +87,10 @@ PINS = {
     # render as before. Previous pins: js 11335fd6…, css d571b8ca…
     # Re-pinned 22 Oct 2026 (G13 referral-code panel inside a maker's own drawer, benefit-first
     # with one-click copy after founder review; PREVIEW, approval pending). Previous pin: 3dd74336…
-    SHARED_JS:  "dd0bae9e7d96303c5048575f6fcedf86bb3c78118bcd45b635cde695f09c8be2",
+    # Re-pinned 22 Oct 2026 (G14 supplier-currency note: one optional line, existing .mx-meta
+    # style, rendered after the offer panel only when the maker carries m.cn; the offer panel
+    # and every other output are unchanged). Previous pin: dd0bae9e…
+    SHARED_JS:  "3de07e182d0bf40bf5e7e6800f92315af06278244f452de631c4d1815a0fd5c2",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -461,12 +464,29 @@ KIND_LABEL = {"sauna": "Outdoor sauna", "hot-tub": "Hot tub", "cold-plunge": "Co
               "combination": "Sauna and hot tub building"}
 
 
+# A price is shown in the currency its record carries: EUR, or GBP where the
+# founder's currency register (atlas-tools/price-currency-corrections.json,
+# 22 Oct 2026) records that the supplier publishes the amount in pounds. Never
+# converted; any other currency is not shown at all (G14).
+CURRENCY_SYMBOL = {"EUR": "€", "GBP": "£"}
+CURRENCY_REG = ROOT / "atlas-tools" / "price-currency-corrections.json"
+
+
+def currency_register():
+    if not CURRENCY_REG.exists():
+        return {}, {}
+    R = json.loads(CURRENCY_REG.read_text(encoding="utf-8"))
+    if R.get("schema") != "plotnua.price-currency-corrections": die("G14 currency register: unknown schema")
+    return {c["id"]: c for c in R.get("corrections", [])}, dict(R.get("makerNotes") or {})
+
+
 def price_line(pr):
     """A short, homeowner-readable price line from a VERIFIED_NUMERIC_PRICE
     record. Its VAT position is carried over exactly; nothing is inferred."""
-    if pr.get("state") != "VERIFIED_NUMERIC_PRICE" or pr.get("currency") != "EUR":
+    sym = CURRENCY_SYMBOL.get(pr.get("currency"))
+    if pr.get("state") != "VERIFIED_NUMERIC_PRICE" or not sym:
         return ""
-    amt = "€{:,.0f}".format(pr["amount"]) if float(pr["amount"]).is_integer() else "€{:,.2f}".format(pr["amount"])
+    amt = (sym + "{:,.0f}").format(pr["amount"]) if float(pr["amount"]).is_integer() else (sym + "{:,.2f}").format(pr["amount"])
     basis = pr.get("basis") or ""
     lead = "From " + amt if pr.get("type") == "Starting From" else amt
     if "for the range" in basis:
@@ -633,6 +653,12 @@ def load(P):
                 mk["l"] = lead
             if mk["m"] in offers():
                 mk["o"] = offers()[mk["m"]]
+            # The supplier-currency note (G14): only for a maker whose shown
+            # prices include a register-listed one, worded by the register.
+            CORR, NOTES = currency_register()
+            if any(r[0] in CORR and len(r) > 4 and r[4] for r in mk["p"]):
+                if mk["m"] not in NOTES: die("G14 %s shows a register-listed price but has no currency note" % mk["m"])
+                mk["cn"] = NOTES[mk["m"]]
             makers.append(mk)
         figures = {"products": len(eligible), "makers": len(by),
                    "confirmed": sum(1 for e in eligible if e[4] == "c"),
@@ -1004,6 +1030,26 @@ def build(fname, P, src):
                          c.get("availabilityNote", "") + " " +
                          " ".join(p[4] for m in c["makers"] for p in m["p"] if len(p) > 4) for c in cfgs])
     cfg_text += " " + " ".join(" ".join(str(v) for v in m["o"].values()) for c in cfgs for m in c["makers"] if m.get("o"))
+    cfg_text += " " + " ".join(m["cn"] for c in cfgs for m in c["makers"] if m.get("cn"))
+    # G14 supplier-published currency: a non-euro figure only for a record the
+    # founder's currency register lists, in exactly its published currency,
+    # never converted; the maker that shows one carries the register's note,
+    # and no other maker carries a note.
+    CORR, NOTES = currency_register()
+    for c in cfgs:
+        for m in c["makers"]:
+            shown = [p for p in m["p"] if len(p) > 4 and p[4]]
+            for p in shown:
+                cur = "GBP" if "£" in p[4] else "EUR" if "€" in p[4] else None
+                if cur is None: die("G14 a price with no recognised currency: %s" % p[0])
+                want = CORR[p[0]]["publishedCurrency"] if p[0] in CORR else "EUR"
+                if cur != want: die("G14 %s is shown in %s, its published currency is %s" % (p[0], cur, want))
+                if p[0] in CORR and "{:,.0f}".format(CORR[p[0]]["amount"]) not in p[4]:
+                    die("G14 %s does not show the evidenced amount" % p[0])
+            has = any(p[0] in CORR for p in shown)
+            if has and m.get("cn") != NOTES.get(m["m"]): die("G14 %s lacks the register's currency note" % m["m"])
+            if not has and m.get("cn"): die("G14 %s carries a currency note but shows no register-listed price" % m["m"])
+    if CORR and "m.cn" not in js: die("G14 the script does not render the currency note")
     texts = (vtext + " " + cfg_text + " " + " ".join(re.findall(r"'([^']*)'", js))).lower()
     for w in BANNED:
         if w in texts: die("G6 banned word: " + w.strip())
@@ -1103,7 +1149,7 @@ def main():
     if not set(DISPLAY_NAME_BY_ID) <= SEEN_OVERRIDES:
         die("display-name override for a product that is not publicly listed: %s"
             % sorted(set(DISPLAY_NAME_BY_ID) - SEEN_OVERRIDES))
-    print(("APPLIED" if mode == "--apply" else "CHECK OK") + f" — G1-G13 pass for {len(PAGES)} page(s)")
+    print(("APPLIED" if mode == "--apply" else "CHECK OK") + f" — G1-G14 pass for {len(PAGES)} page(s)")
 
 if __name__ == "__main__":
     main()

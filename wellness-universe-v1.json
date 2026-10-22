@@ -4615,9 +4615,9 @@
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
-        "currency": "EUR",
+        "currency": "GBP",
         "type": "Standard Price",
-        "basis": "Published price. The supplier does not state whether it includes VAT."
+        "basis": "Published price, in pounds sterling as the supplier publishes it. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -4648,9 +4648,9 @@
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
-        "currency": "EUR",
+        "currency": "GBP",
         "type": "Standard Price",
-        "basis": "Published price. The supplier does not state whether it includes VAT."
+        "basis": "Published price, in pounds sterling as the supplier publishes it. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -4679,9 +4679,9 @@
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 3350,
-        "currency": "EUR",
+        "currency": "GBP",
         "type": "Standard Price",
-        "basis": "Published price. The supplier does not state whether it includes VAT."
+        "basis": "Published price, in pounds sterling as the supplier publishes it. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -4712,9 +4712,9 @@
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 5292,
-        "currency": "EUR",
+        "currency": "GBP",
         "type": "Starting From",
-        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+        "basis": "Published 'from' price, in pounds sterling as the supplier publishes it. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -4774,9 +4774,9 @@
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 14990,
-        "currency": "EUR",
+        "currency": "GBP",
         "type": "Standard Price",
-        "basis": "Published price. The supplier does not state whether it includes VAT."
+        "basis": "Published price, in pounds sterling as the supplier publishes it. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -4834,9 +4834,9 @@
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 4990,
-        "currency": "EUR",
+        "currency": "GBP",
         "type": "Standard Price",
-        "basis": "Published price. The supplier does not state whether it includes VAT."
+        "basis": "Published price, in pounds sterling as the supplier publishes it. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"

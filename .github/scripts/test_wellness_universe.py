@@ -209,8 +209,46 @@ check("W6 every price states its VAT position, saying so when the supplier does 
 check("W6 Tanktribe's unknown-VAT prices say so",
       all("does not state whether it includes VAT" in r["price"]["basis"]
           for r in pub if r["organisation"] == "Tanktribe"))
-check("W6 every public record has a verified EUR price",
-      all(r["price"]["state"] == "VERIFIED_NUMERIC_PRICE" and r["price"]["currency"] == "EUR" for r in pub))
+REG = json.loads((ROOT / "atlas-tools" / "price-currency-corrections.json").read_text(encoding="utf-8"))
+CORR = {c["id"]: c for c in REG["corrections"]}
+check("W6 every public record has a verified EUR price, or the supplier's own published currency where the "
+      "founder's currency register lists it (22 Oct 2026)",
+      all(r["price"]["state"] == "VERIFIED_NUMERIC_PRICE" and r["price"]["currency"] ==
+          (CORR[r["id"]]["publishedCurrency"] if r["id"] in CORR else "EUR") for r in pub))
+check("W10 the currency register names exactly the six TimberIN records, and only GBP",
+      len(CORR) == 6 and all(c["organisation"] == "TimberIN" and c["publishedCurrency"] == "GBP"
+                             and c["atlasCurrency"] == "EUR" for c in CORR.values()))
+check("W10 a register-listed price keeps the evidenced amount and type: nothing converted",
+      all(r["price"]["amount"] == CORR[r["id"]]["amount"] and r["price"]["type"] == CORR[r["id"]]["priceType"]
+          for r in A["products"] if r["id"] in CORR))
+check("W10 a register-listed price keeps Atlas's VAT position (not stated): no VAT treatment assumed",
+      all(r["price"]["basis"].endswith(", in pounds sterling as the supplier publishes it. "
+                                       "The supplier does not state whether it includes VAT.")
+          for r in A["products"] if r["id"] in CORR))
+check("W10 no other record carries a non-EUR price",
+      all(r["price"].get("currency") in (None, "EUR") for r in A["products"] if r["id"] not in CORR))
+sys.path.insert(0, str(HERE))
+import generate_wellness_universe as GW  # noqa: E402
+FAKE = {"recFAKE000000001": {"id": "recFAKE000000001", "amount": 1000, "priceType": "Standard Price",
+                              "atlasCurrency": "EUR", "publishedCurrency": "GBP"}}
+row = lambda cur, amt=1000: [{"fields": {"Status": "Verified", "Base Price": amt, "Currency": cur,
+                                         "Price Type": "Standard Price", "Price Includes VAT": "Unknown"}}]
+pg = GW.price_of(row("EUR"), "recFAKE000000001", FAKE)
+check("W10 generator: a listed EUR-recorded price comes out in the published currency, same amount, same VAT sentence",
+      pg["currency"] == "GBP" and pg["amount"] == 1000 and pg["basis"] ==
+      "Published price, in pounds sterling as the supplier publishes it. The supplier does not state whether it includes VAT.")
+check("W10 generator: a GBP-recorded Atlas row for a listed record gives the same result (Atlas later corrected)",
+      GW.price_of(row("GBP"), "recFAKE000000001", FAKE) == pg)
+check("W10 generator: an unlisted GBP row is still refused",
+      GW.price_of(row("GBP"), "recOTHER00000001", FAKE) == {"state": "PRICE_NOT_ESTABLISHED"})
+check("W10 generator: an unlisted EUR row is unchanged",
+      GW.price_of(row("EUR"), "recOTHER00000001", FAKE)["currency"] == "EUR")
+try:
+    GW.price_of(row("EUR", 1200), "recFAKE000000001", FAKE)
+    moved = False
+except SystemExit:
+    moved = True
+check("W10 generator: refuses when the Atlas amount no longer matches the evidenced amount", moved)
 check("W9 a product URL is published only for public records, and only as https",
       all((r["productUrl"] is None) or (r in pub and r["productUrl"].startswith("https://"))
           for r in A["products"]) and all(r["productUrl"] for r in pub))

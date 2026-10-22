@@ -332,7 +332,13 @@ if WL_UNIVERSE.exists():
         if ((q.get("qualification") or {}).get("state")) != "ELIGIBLE":
             continue
         qp = q.get("price") or {}
-        safe = qp.get("state") == "VERIFIED_NUMERIC_PRICE" and is_price(qp.get("amount"))
+        # Search shows and filters prices in euro only (search.js formats every
+        # figure as EUR). A price its supplier publishes in another currency
+        # (the founder's currency register, 22 Oct 2026: TimberIN, GBP) is
+        # therefore not a matching price here: no figure, no euro filter. It is
+        # never converted; the Garden Retreat directory shows it in GBP.
+        safe = (qp.get("state") == "VERIFIED_NUMERIC_PRICE" and is_price(qp.get("amount"))
+                and qp.get("currency") == "EUR")
         wl_rows.append({
             "id": q.get("id"),
             "productName": q.get("productName"),
