@@ -1,5 +1,5 @@
 /**
- * PROVE THE LICENSED-PHOTOGRAPHY EXCEPTION IS NARROW · X1–X43 (+X12b, X12c, X12d)
+ * PROVE THE LICENSED-PHOTOGRAPHY EXCEPTION IS NARROW · X1–X51 (+X12b, X12c, X12d)
  * ===========================================================
  * H2, 20 Oct 2026. The founder approved ONE exception to the provenance
  * guard's anti-laundering checks:
@@ -22,6 +22,10 @@
  * MUTATED; the real register, manifest and guard are hashed before and after.
  *
  *   node atlas-tools/prove-licensed-composite-exception.mjs
+ *
+ * 22 Oct 2026: the composite also carries TimberIN's SECOND written grant (the
+ * Nordic Cube sauna). X44–X51 break that grant, its binding and its credit
+ * the same way, and prove a composite still cannot mix organisations.
  *
  * Exit 0 = every case proved. Exit 1 = a case not proved. Exit 2 = the
  * instrument could not run.
@@ -65,11 +69,12 @@ const L6 = L6REC && (() => {
   return st;
 })();
 const TIMBERIN = realLicences.licences.find(r => r.atlas_permission_ref === 'L6-TIMBERIN-TWO-PHOTOS-20261019');
+const SAUNA = realLicences.licences.find(r => r.atlas_permission_ref === 'TIMBERIN-NORDIC-CUBE-SAUNA-20261022');
 const OTHER = realRights.rows.find(r => r.organisation_code && r.atlas_permission_ref
                                          && r !== TIMBERIN && r.permitted_domain);
 const anAsset = realReg.legacy_undeclared.find(e => /assets\/img\/.*\.jpg$/.test(e.asset)
                                                    && existsSync(join(ROOT, e.asset)));
-if (!L6 || !TIMBERIN || !OTHER || !anAsset) {
+if (!L6 || !TIMBERIN || !SAUNA || !OTHER || !anAsset) {
   console.log('\nINSTRUMENT UNAVAILABLE: the staged L6 composite, the TimberIN grant, a '
               + 'second supplier row or a jpg asset is missing. Nothing was measured.');
   process.exit(2);
@@ -79,6 +84,8 @@ const CAPTION = L6 && L6.visible_caption, DISCLOSURE = L6 && L6.accessible_discl
 /* The test page renders the record's own caption: the text before the credit, then the linked credit
    (H5C4, 21 Oct 2026: the caption wording moved to the record; the checks below are unchanged). */
 const CAPTION_LEAD = CAPTION && CAPTION.includes(CREDIT) ? CAPTION.slice(0, CAPTION.indexOf(CREDIT)) : 'Garden possibilities illustrated. ';
+/* 22 Oct 2026: the linked credit is everything after the lead -- both TimberIN grants' exact credits. */
+const FULL_CREDIT = CAPTION && CAPTION.includes(CREDIT) ? CAPTION.slice(CAPTION.indexOf(CREDIT)) : CREDIT;
 if (!CAPTION || !DISCLOSURE) {
   console.log('\nINSTRUMENT UNAVAILABLE: the L6 record carries no visible caption / accessible disclosure.');
   process.exit(2);
@@ -89,7 +96,7 @@ const clone = o => JSON.parse(JSON.stringify(o));
 
 /* A page carrying the published composite. The credit sits in the caption,
    as H3 would place it. */
-function page({ credit = CREDIT, extra = '', asset = anAsset.asset, caption = true, disclosure = true } = {}) {
+function page({ credit = FULL_CREDIT, extra = '', asset = anAsset.asset, caption = true, disclosure = true } = {}) {
   return `<!doctype html><html><head><title>t</title></head><body>
 <figure><img src="${asset}" width="100" height="100" alt="A garden.">
 <figcaption>${AI_LABEL}. ${caption ? CAPTION_LEAD : ''}${credit ? `<a href="https://www.timberin.com/">${credit}</a>.` : ''}${disclosure ? `<span class="sr-only"> ${DISCLOSURE}</span>` : ''}</figcaption></figure>
@@ -109,7 +116,7 @@ function publish(reg) {
   return rec;
 }
 
-function tree({ regEdit = null, rightsEdit = null, published = false,
+function tree({ regEdit = null, rightsEdit = null, saunaEdit = null, published = false,
                 pageOpts = {}, rawPage = null } = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'pn-lpx-'));
   mkdirSync(join(dir, 'atlas-tools'), { recursive: true });
@@ -126,6 +133,7 @@ function tree({ regEdit = null, rightsEdit = null, published = false,
   writeFileSync(join(dir, 'image-rights-manifest.json'), JSON.stringify(realRights, null, 2));
   const lic = clone(realLicences);
   if (rightsEdit) rightsEdit(lic.licences.find(r => r.atlas_permission_ref === TIMBERIN.atlas_permission_ref), lic);
+  if (saunaEdit) saunaEdit(lic.licences.find(r => r.atlas_permission_ref === SAUNA.atlas_permission_ref), lic);
   writeFileSync(join(dir, 'image-adaptation-licences.json'), JSON.stringify(lic, null, 2));
   copyFileSync(join(ROOT, anAsset.asset), join(dir, anAsset.asset));
   writeFileSync(join(dir, 'page.html'), rawPage !== null ? rawPage
@@ -283,6 +291,26 @@ const CASES = [
     opts: { published: true, regEdit: r => { pub(r).reveal_layer = { id: 'L6', layer_sha256: sha('another L6') }; } } },
   { id: 'X43', expect: ['P13'], why: 'a published Reveal layer names a layer the chain does not have',
     opts: { published: true, regEdit: r => { pub(r).reveal_layer = { id: 'L9', layer_sha256: CHAIN.active_layers.L6.sha256 }; } } },
+  /* ── 22 Oct 2026 · the second TimberIN grant (Nordic Cube sauna) is held to every rule ── */
+  { id: 'X44', expect: ['P6', 'P13'], why: 'the sauna grant is withdrawn (the hot-tub grant still live)',
+    opts: { saunaEdit: r => { r.permission_outcome = W; } } },
+  { id: 'X45', expect: ['P6', 'P13'], why: 'the sauna grant does not permit modification',
+    opts: { saunaEdit: r => { r.modification_permitted = false; } } },
+  { id: 'X46', expect: ['P6', 'P13'], why: 'the sauna grant has no PN-EVID evidence reference',
+    opts: { saunaEdit: r => { r.evidence_ref = 'TimberIN email, 22 October'; } } },
+  { id: 'X47', expect: ['P6', 'P13'], why: 'the sauna element binds to another organisation’s licence (a composite may not mix suppliers)',
+    opts: { saunaEdit: (r, lic) => { const o = clone(r); o.organisation_code = 'ORG-999999'; o.organisation_name = 'Another Sauna Maker';
+                                       o.organisation_domain = 'another-sauna.example'; o.atlas_permission_ref = 'OTHER-SAUNA-1'; lic.licences.push(o); },
+            regEdit: r => { const e = staged(r).licensed_photographic_elements.find(x => x.source_id === 'TIMBERIN-PHOTO-C');
+                            e.rights_ref = { organisation_code: 'ORG-999999', atlas_permission_ref: 'OTHER-SAUNA-1' }; } } },
+  { id: 'X48', expect: ['P6', 'P13'], why: 'the sauna photograph is not enumerated in its grant',
+    opts: { saunaEdit: r => { r.approved_assets[0].sha256 = sha('another sauna photo'); } } },
+  { id: 'X49', expect: ['P6', 'P13'], why: 'the sauna photograph is bound to a different composite',
+    opts: { saunaEdit: r => { r.approved_assets[0].bound_composite = 'some-other-image'; } } },
+  { id: 'X50', expect: ['P10'], why: 'published with only the hot-tub credit (the sauna credit dropped)',
+    opts: { published: true, pageOpts: { credit: CREDIT } } },
+  { id: 'X51', expect: ['P8'], why: 'the record’s caption drops the sauna credit',
+    opts: { published: true, regEdit: r => { pub(r).visible_caption = CAPTION.replace(' \u00b7 ' + SAUNA.required_credit, ''); } } },
   { id: 'X33', expect: ['P11'], why: 'the staged record copies a rights field into the register',
     opts: { regEdit: r => { staged(r).required_credit = CREDIT; } } },
 ];

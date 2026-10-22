@@ -52,10 +52,10 @@ def rd(p): return open(os.path.join(SRC, p), encoding='utf-8').read()
 
 # ---------------- H3 · garden layers (L3–L6) ----------------
 GARDEN = [('L3', 'Grow a garden room'), ('L4', 'Borrow a garden'), ('L5', 'Hold a treehouse'), ('L6', 'Become a retreat')]
-CREDIT = 'Hot tub: TimberIN'
+CREDIT = 'Hot tub: TimberIN \u00b7 Sauna: TimberIN'   # 22 Oct 2026: the two TimberIN grants' exact credits (hot tub 20 Oct; Nordic Cube sauna 22 Oct), one link
 CREDIT_LINK = 'https://www.timberin.com/'
-VISIBLE_CAPTION = 'AI-generated illustration \u00b7 Hot tub: TimberIN'   # H5C4 (founder-approved one-line attribution, 21 Oct 2026)
-DISCLOSURE = 'This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.'
+VISIBLE_CAPTION = 'AI-generated illustration \u00b7 Hot tub: TimberIN \u00b7 Sauna: TimberIN'   # H5C4 (founder-approved one-line attribution, 21 Oct 2026)
+DISCLOSURE = 'This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub and sauna.'
 def layers_record():
     return json.load(open(os.path.join(ROOTDIR, 'assets/possibility-reveal/layers/layers.json'), encoding='utf-8'))
 def h3_tpl(rec, lid):
@@ -481,7 +481,7 @@ def h3_guard(rec, snip, js_t, index):
     if not (0 < ic - i6 < 1200 or (strip > i6 and 0 < ic - strip < 400)): bad.append('the credit does not sit beside the L6 layer or in the strip directly beneath the photograph')
     for lid in ('L3', 'L4', 'L5'):
         if abs(ic - snip.index('<template data-layer="%s">' % lid)) < 1500: bad.append('the TimberIN credit sits beside %s, which is not TimberIN imagery' % lid)
-    if snip.count('TimberIN') != 2: bad.append('TimberIN is named outside the credit and the disclosure')
+    if snip.replace(CREDIT, ' ').replace(DISCLOSURE, ' ').count('TimberIN') != 0: bad.append('TimberIN is named outside the credit and the disclosure')
     # the one camera hook, and nothing else changed in its place
     if js_t.count('window.PN_REVEAL_API = { play: play, home: home, state: state, frame: frame') != 1: bad.append('the camera hook is missing')   # H5 appends intro hooks
     css_g = open(os.path.join(ROOTDIR, 'assets/possibility-reveal/garden.css'), encoding='utf-8').read()

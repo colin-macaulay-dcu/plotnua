@@ -818,37 +818,38 @@
     },
     {
       "asset": "assets/possibility-reveal/layers/garden-L6-retreat.webp",
-      "sha256": "93506c8e4ee94a82a67f8f9ac0b40dcc6ba51697622df25c0a7eebc73cf7d419",
-      "bytes": 213174,
+      "sha256": "d7148dbb0cefdf56e47ecf705927f363fcef7554adcb69b49cc8f6d7f1e39d5a",
+      "bytes": 272914,
       "pixels": [
         1346,
         1712
       ],
       "composite_id": "possibility-reveal-L6",
       "class": "AI_ILLUSTRATION",
-      "composition": "MIXED: AI-assisted illustration (house, garden, pavilion, pod) with photographic elements (the hot tub and its chimney smoke are TimberIN photographs, adapted under written permission) and PlotNua drawings (terrace, cold plunge, stepping stones, lights, maple stems; planting and stone cut from this illustration itself; Japanese-maple foliage from an Unsplash-licensed photograph). Not a photograph of a real garden; the hot tub is a real TimberIN product as photographed by TimberIN. No sauna is shown.",
+      "composition": "MIXED: AI-assisted illustration (house, garden, pavilion, pod) with photographic elements (the hot tub, its chimney smoke and the Nordic Cube sauna are TimberIN photographs, adapted under written permission) and PlotNua drawings (terrace, cold plunge, stepping stones, lights, maple stems; planting and stone cut from this illustration itself; Japanese-maple foliage from an Unsplash-licensed photograph). Not a photograph of a real garden; the hot tub and the sauna are real TimberIN products as photographed by TimberIN.",
       "master": {
-        "description": "L1 + L2A + L3 H5C4 + L4 + L5 + L6 H5C4, 2752 x 1536",
-        "lock_file": "h5c4lock/output/L1-plus-L2A-plus-L3H5C4-plus-L4-plus-L5-plus-L6H5C4.png",
-        "sha256": "fb5395ce3e054b2140154d452e217242af6ffe7e32945108abfcad4c019b74ce",
-        "pixel_sha256": "dbd392deb77b3bd33e053ff086e6d90969c81b9bc2c75ecc7eef8f9355967282",
+        "description": "L1 + L2A + L3 H5C4 + L4 + L5 + L6 H5C4-S, 2752 x 1536",
+        "lock_file": "h5c4slock/output/L1-plus-L2A-plus-L3H5C4-plus-L4-plus-L5-plus-L6H5C4S.png",
+        "sha256": "2180eaf8765f5b829033d1b8eb9cc5642eef0bef4c32a5fcd6fc153fdd6e307b",
+        "pixel_sha256": "55110ce963aa8621669d10d7275e463b28e64589b043b88bac2e6ec4f4a5e9cb",
         "pixels": [
           2752,
           1536
         ]
       },
       "generated": {
-        "tool": "AI-assisted layers: OpenAI ChatGPT image generation and Google Gemini image editing, as declared per layer in the nine Possibility Reveal records and in the L1-L5 lock records. Photographic elements (TimberIN hot tub and smoke): no generative model; carried unchanged from the L6 TimberIN lock (l6lock/tools). H5C4 retreat: no generative model; PlotNua deterministic drawing and compositing, h5c4lock/tools/build_h5c4.py.",
+        "tool": "AI-assisted layers: OpenAI ChatGPT image generation and Google Gemini image editing, as declared per layer in the nine Possibility Reveal records and in the L1-L5 lock records. Photographic elements (TimberIN hot tub and smoke): no generative model; carried unchanged from the L6 TimberIN lock (l6lock/tools). H5C4 retreat and the Nordic Cube sauna: no generative model; PlotNua deterministic drawing, re-projection and compositing, h5c4lock/tools/build_h5c4.py (sauna variant promoted unchanged as h5c4slock).",
         "date": "2026-10-22"
       },
       "prompt": "Composite record. The generative prompts are recorded per layer: L1 and L2A in the nine Possibility Reveal records (prompt_chain), L3-L6 in their lock records. No generative model was used for the licensed photographic elements, and no prompt for any layer names a supplier, organisation or product.",
       "reference_inputs": [
         "https://www.woodenhottubsale.co.uk/wp-content/uploads/2005/01/Outdoor-jacuzzi-hot-tub-wood-fired-4-6-persons-with-snorkel-burner-4-2.jpg",
         "https://www.woodenhottubsale.co.uk/wp-content/uploads/2005/01/Wood-burning-hot-tub-Wellness-Royal-1-6.jpeg",
+        "TimberIN Nordic Cube sauna photograph (front glass lit), Nordic Cube page on woodenhottubsale.co.uk, sha256 9ffc1a1719a44ccf8f52a631c03493e58a2f9b5bb8493e977ed8cc53b8ebf5c6",
         "The locked L1-L5 master, the L3 H5C4 layer and the L6 TimberIN layer (possibility_reveal_lock_chain), PlotNua's own",
         "Unsplash photo-1615827158210-8d7870ded893 by benjamin lehman (https://unsplash.com/photos/red-leaf-tree-during-daytime-x19O2rubTZU), Unsplash License: pixel source for the Japanese-maple foliage only; never given to an image model"
       ],
-      "reference_inputs_note": "The two TimberIN photographs and the Unsplash maple photograph are PIXEL SOURCES, not prompts: they were never given to an image model. They are listed so that P6's licensed-photography exception is exercised on the real record rather than hidden. The Unsplash License permits commercial use and modification without permission; attribution is recorded here.",
+      "reference_inputs_note": "The three TimberIN photographs and the Unsplash maple photograph are PIXEL SOURCES, not prompts: they were never given to an image model. They are listed so that P6's licensed-photography exception is exercised on the real record rather than hidden. The Unsplash License permits commercial use and modification without permission; attribution is recorded here.",
       "licensed_photographic_elements": [
         {
           "element": "the hot tub, with its flue pipe, collar and hooded cap",
@@ -871,31 +872,42 @@
           },
           "generative": false,
           "treatment": "smoke matte separated from the foliage behind it; mirrored, scale 0.42, 6 degree lean, opacity 0.88, desaturated and lit to the scene; placed above the cap of the Photograph A chimney. Nothing drawn. Excluded: everything else in Photograph B."
+        },
+        {
+          "element": "the Nordic Cube sauna",
+          "source_id": "TIMBERIN-PHOTO-C",
+          "source_sha256": "9ffc1a1719a44ccf8f52a631c03493e58a2f9b5bb8493e977ed8cc53b8ebf5c6",
+          "rights_ref": {
+            "organisation_code": "ORG-000179",
+            "atlas_permission_ref": "TIMBERIN-NORDIC-CUBE-SAUNA-20261022"
+          },
+          "generative": false,
+          "treatment": "the sauna's photographed faces re-projected from the photograph into the garden camera (perspective and size, at its published dimensions) and lit to the scene, standing on the charcoal terrace beside the Garden Room in the founder-approved Option C position; contact and cast shadow; design unchanged. Excluded: the photograph's background."
         }
       ],
       "depicts_named_product": true,
-      "depicts_named_product_note": "TRUE, and permitted only through the licensed-photography exception: the hot tub is a real TimberIN product as TimberIN photographed it. It is not an AI rendering of a supplier's product.",
+      "depicts_named_product_note": "TRUE, and permitted only through the licensed-photography exception: the hot tub and the Nordic Cube sauna are real TimberIN products as TimberIN photographed them. They are not AI renderings of a supplier's products.",
       "depicts_named_organisation": false,
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
         "date": "2026-10-22",
-        "attests": "Founder approval, 22 Oct 2026, of the final H5C4 Garden Retreat artwork (terrace, recessed cold plunge, stepping stones, planting, Japanese maple, lights; the TimberIN hot tub, chimney and smoke unchanged from the 20 Oct approval, which stands: tub position, scale, chimney height and smoke as presented, not mirrored, design unchanged). The public version omits the TimberIN Nordic Cube sauna, whose photograph is not yet permitted. Earlier approvals: 20 Oct 2026, L6 TimberIN and the L3 v2.1c re-lock."
+        "attests": "Founder approval, 22 Oct 2026, of the final H5C4 Garden Retreat artwork, including the TimberIN Nordic Cube sauna in the Option C position (published first without the sauna while its photograph was unlicensed); TimberIN granted written permission for the sauna photograph on 22 Oct 2026 and the sauna version was promoted unchanged. The hot tub, chimney and smoke stand as approved on 20 Oct 2026."
       },
       "intended_surfaces": [
         "homepage"
       ],
       "caption_status": "IMPLEMENTED IN H3 (founder-approved wording, H2 review, 20 Oct 2026): the visible caption with the credit linked to https://www.timberin.com/, and the accessible disclosure, beside the L6 layer; shown whenever L6 is switched on.",
-      "decision_ref": "H5C4 founder decision, 22 Oct 2026 (final Garden Retreat artwork approved; implement; publish only authorised imagery); H2 founder review, 20 Oct 2026 (P6/P10 licensed-photography exception)",
-      "lock_records": "h5c4lock/H5C4-LOCK-MANIFEST.json, h5c4lock/00-H5C4-LOCK-RECORD.md (lock repository, H5C4 lock); superseded and retained: l6lock/L6-LOCK-MANIFEST.json, l3v21clock/L3v2.1c-LOCK-MANIFEST.json",
+      "decision_ref": "TimberIN sauna permission, 22 Oct 2026 (Atlas TIMBERIN-NORDIC-CUBE-SAUNA-20261022; founder confirmed); H5C4 founder decision, 22 Oct 2026 (final Garden Retreat artwork approved); H2 founder review, 20 Oct 2026 (P6/P10 licensed-photography exception)",
+      "lock_records": "h5c4slock/H5C4S-LOCK-MANIFEST.json, h5c4slock/00-H5C4S-LOCK-RECORD.md (lock repository, H5C4-S lock 139d530); superseded and retained: h5c4lock (L6 H5C4 public), l6lock/L6-LOCK-MANIFEST.json, l3v21clock/L3v2.1c-LOCK-MANIFEST.json",
       "status": "PUBLISHED_H3_LOCAL",
       "permitted_surfaces": [
         "homepage"
       ],
       "reveal_layer": {
         "id": "L6",
-        "what": "the garden retreat: the TimberIN hot tub with its chimney smoke, a charcoal terrace with a recessed cold plunge, stepping stones, two planting beds, an illustrative Japanese maple and three garden lights (no sauna in the public version)",
-        "lock": "L6 H5C4 (lock repository ba62bc0, h5c4lock; supersedes L6 TimberIN 6b8741f)",
-        "layer_sha256": "44b082caf57670d38a91ec15075c777ebbcdbbabf582504d06160d198166b90d",
+        "what": "the garden retreat: the TimberIN hot tub with its chimney smoke, the TimberIN Nordic Cube sauna, a charcoal terrace with a recessed cold plunge, stepping stones, two planting beds, an illustrative Japanese maple and three garden lights",
+        "lock": "L6 H5C4-S (lock repository 139d530, h5c4slock; supersedes L6 H5C4 public ba62bc0)",
+        "layer_sha256": "0ecaf8d9c84eef5ff12cf011358d4b81a80de2b82b71e14f16a2dee03a71cbe0",
         "bbox_2752": [
           1406,
           606,
@@ -903,10 +915,10 @@
           856
         ],
         "tile_record": "assets/possibility-reveal/layers/layers.json",
-        "sprite": "two states, stacked: top = the locked L6 H5C4 layer exactly (with L3 on); bottom = the same deterministic render with the pavilion switched off (with L3 off), identical outside the pavilion"
+        "sprite": "two states, stacked: top = the locked L6 H5C4-S layer exactly (with L3 on); bottom = the same deterministic render with the pavilion switched off (with L3 off), identical outside the pavilion"
       },
-      "visible_caption": "AI-generated illustration \u00b7 Hot tub: TimberIN",
-      "accessible_disclosure": "This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub."
+      "visible_caption": "AI-generated illustration \u00b7 Hot tub: TimberIN \u00b7 Sauna: TimberIN",
+      "accessible_disclosure": "This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub and sauna."
     }
   ],
   "legacy_undeclared": [
@@ -4092,14 +4104,14 @@
     },
     {
       "asset": "assets/possibility-reveal/layers/garden-L6-retreat-half.webp",
-      "sha256": "bbec931b0ea65730fb870a0f3dac942c168a89d5f27b6d57920d7c53a4f9cc47",
+      "sha256": "fb8af12ce29ddbe8fc435cbefebbbbd328543e19a470b8ab13536c85e491912d",
       "pixels": [
         673,
         856
       ],
       "derived_from": {
         "asset": "assets/possibility-reveal/layers/garden-L6-retreat.webp",
-        "sha256": "93506c8e4ee94a82a67f8f9ac0b40dcc6ba51697622df25c0a7eebc73cf7d419"
+        "sha256": "d7148dbb0cefdf56e47ecf705927f363fcef7554adcb69b49cc8f6d7f1e39d5a"
       },
       "method": "webp-resize",
       "content_credentials": {
@@ -4115,19 +4127,20 @@
     }
   ],
   "possibility_reveal_lock_chain": {
-    "what_this_is": "THE AUTHORITATIVE POSSIBILITY REVEAL LOCK CHAIN, mirrored here from ACTIVE-LOCKS.json in the lock repository (commit ba62bc0, H5C4 Garden Retreat lock, 22 Oct 2026; earlier: L6 6b8741f, L3 v2.1c b2ca5da). It names which locked version of each layer is ACTIVE. Builds of any Reveal image must start from active_master; superseded versions are kept for provenance and rollback only. P13 refuses a staged or published composite that is not on this chain, a chain that does not name the active L3 (H5C4) by hash, and a chain that applies or activates a superseded L3 (v2, v2.1c). atlas-tools/verify-possibility-reveal-locks.py checks this block against the lock repository and rebuilds the master pixel-identically.",
-    "lock_repository": "possibility-reveal-locks (offline; bundles in the LOCKED folders on the founder's Mac). HEAD ba62bc0 (H5C4 Garden Retreat lock, 22 Oct 2026).",
+    "what_this_is": "THE AUTHORITATIVE POSSIBILITY REVEAL LOCK CHAIN, mirrored here from ACTIVE-LOCKS.json in the lock repository (commit 139d530, H5C4-S lock: the Garden Retreat with the licensed TimberIN Nordic Cube sauna, 22 Oct 2026; earlier: H5C4 ba62bc0, L6 6b8741f, L3 v2.1c b2ca5da). It names which locked version of each layer is ACTIVE. Builds of any Reveal image must start from active_master; superseded versions are kept for provenance and rollback only. P13 refuses a staged or published composite that is not on this chain, a chain that does not name the active L3 (H5C4) by hash, and a chain that applies or activates a superseded L3 (v2, v2.1c). atlas-tools/verify-possibility-reveal-locks.py checks this block against the lock repository and rebuilds the master pixel-identically.",
+    "lock_repository": "possibility-reveal-locks (offline; bundles in the LOCKED folders on the founder's Mac). HEAD 139d530 (H5C4-S lock, 22 Oct 2026).",
     "lock_commits": {
       "baseline": "33fc310",
       "L5": "ff49753",
       "L3_v2.1c": "b2ca5da",
-      "L6": "ba62bc0",
-      "H5C4": "ba62bc0"
+      "L6": "139d530",
+      "H5C4": "ba62bc0",
+      "H5C4-S": "139d530"
     },
     "active_master": {
-      "file": "h5c4lock/output/L1-plus-L2A-plus-L3H5C4-plus-L4-plus-L5-plus-L6H5C4.png",
-      "sha256": "fb5395ce3e054b2140154d452e217242af6ffe7e32945108abfcad4c019b74ce",
-      "pixel_sha256": "dbd392deb77b3bd33e053ff086e6d90969c81b9bc2c75ecc7eef8f9355967282"
+      "file": "h5c4slock/output/L1-plus-L2A-plus-L3H5C4-plus-L4-plus-L5-plus-L6H5C4S.png",
+      "sha256": "2180eaf8765f5b829033d1b8eb9cc5642eef0bef4c32a5fcd6fc153fdd6e307b",
+      "pixel_sha256": "55110ce963aa8621669d10d7275e463b28e64589b043b88bac2e6ec4f4a5e9cb"
     },
     "chain": [
       {
@@ -4143,11 +4156,11 @@
         "output_sha256": "7e75c36ce7b8c24e0b583dcad7db71c216dd1873c018fd86a0e6623467c25af1"
       },
       {
-        "step": "+ L6 H5C4 (public; replaces L6 TimberIN)",
-        "layer": "h5c4lock/layer/L6-H5C4-layer-RGBA.png",
-        "layer_sha256": "44b082caf57670d38a91ec15075c777ebbcdbbabf582504d06160d198166b90d",
-        "output": "h5c4lock/output/L1-plus-L2A-plus-L3H5C4-plus-L4-plus-L5-plus-L6H5C4.png",
-        "output_sha256": "fb5395ce3e054b2140154d452e217242af6ffe7e32945108abfcad4c019b74ce"
+        "step": "+ L6 H5C4-S (the H5C4 retreat with the licensed TimberIN Nordic Cube sauna; replaces L6 H5C4 public)",
+        "layer": "h5c4slock/layer/L6-H5C4S-layer-RGBA.png",
+        "layer_sha256": "0ecaf8d9c84eef5ff12cf011358d4b81a80de2b82b71e14f16a2dee03a71cbe0",
+        "output": "h5c4slock/output/L1-plus-L2A-plus-L3H5C4-plus-L4-plus-L5-plus-L6H5C4S.png",
+        "output_sha256": "2180eaf8765f5b829033d1b8eb9cc5642eef0bef4c32a5fcd6fc153fdd6e307b"
       }
     ],
     "active_layers": {
@@ -4160,8 +4173,8 @@
         "sha256": "bd008da32f978495dd8516797b19adfb33b1d24becedeb8e008326523054fe79"
       },
       "L6": {
-        "version": "H5C4",
-        "sha256": "44b082caf57670d38a91ec15075c777ebbcdbbabf582504d06160d198166b90d"
+        "version": "H5C4-S",
+        "sha256": "0ecaf8d9c84eef5ff12cf011358d4b81a80de2b82b71e14f16a2dee03a71cbe0"
       }
     },
     "superseded": {
@@ -4187,6 +4200,13 @@
         "replaced_by": "H5C4",
         "on": "2026-10-22",
         "use": "rollback only; its hot tub, chimney and smoke pixels are carried into L6 H5C4 unchanged"
+      },
+      "L6_H5C4": {
+        "sha256": "44b082caf57670d38a91ec15075c777ebbcdbbabf582504d06160d198166b90d",
+        "pixel_sha256_master": "dbd392deb77b3bd33e053ff086e6d90969c81b9bc2c75ecc7eef8f9355967282",
+        "replaced_by": "H5C4-S",
+        "on": "2026-10-22",
+        "use": "rollback only; identical to H5C4-S except that it has no sauna"
       }
     },
     "locked_layers_in_base": {
@@ -4197,10 +4217,10 @@
       }
     },
     "l6_solo_without_L3": {
-      "note": "Not part of the ACTIVE-LOCKS.json mirror. The L6 H5C4 render without the pavilion (shown with L3 off); built by h5c4lock/tools/build_h5c4.py in the same run as the L6 layer; identical to the L6 layer outside the pavilion.",
-      "file": "h5c4lock/layer/L6-H5C4-solo-without-L3-RGBA.png",
-      "sha256": "7f6191a4a3977839b4ce65489968e2241437f4041ba01e6e8f16914dd9c5917a",
-      "method": "h5c4lock/tools/build_h5c4.py: the same deterministic render as the L6 H5C4 layer, with the L3 H5C4 pavilion switched off; identical to the locked L6 H5C4 layer outside the pavilion"
+      "note": "Not part of the ACTIVE-LOCKS.json mirror. The L6 H5C4-S render without the pavilion (shown with L3 off); built by h5c4lock/tools/build_h5c4.py (private variant) in the same run as the L6 H5C4-S layer and promoted with it; identical to the L6 layer outside the pavilion.",
+      "file": "h5c4slock/layer/L6-H5C4S-solo-without-L3-RGBA.png",
+      "sha256": "3f3c2b672a41bde45e1a7f837cc80659a448ab8187fbbaabfc573d3e6c919eb4",
+      "method": "h5c4lock/tools/build_h5c4.py: the same deterministic render as the L6 H5C4-S layer, with the L3 H5C4 pavilion switched off; identical to the locked L6 H5C4-S layer outside the pavilion"
     }
   },
   "staged_composites_note": "STAGED COMPOSITES (H2, 20 Oct 2026). A locked composite whose provenance is recorded before publication. It names no asset, so nothing on a page can be accounted for by it. Checked by P6 and P13. It grants nothing: the permission lives in image-adaptation-licences.json, reached only through rights_ref (organisation_code + atlas_permission_ref), exactly as P4 reaches the rights manifest.",

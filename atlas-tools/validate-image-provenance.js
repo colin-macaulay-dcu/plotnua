@@ -208,10 +208,14 @@ const staged = Array.isArray(reg.staged_composites) ? reg.staged_composites : []
    supplier is the honest thing to do -- as a credit, and as nothing else.
 
    The exception is DERIVED, never claimed. A record qualifies only if every
-   licensed_photographic_elements entry resolves to the SAME licence in
-   image-adaptation-licences.json (NOT the rights manifest: a record there is
+   licensed_photographic_elements entry resolves to exactly one licence in
+   image-adaptation-licences.json, ALL of them granted by the SAME organisation
+   (22 Oct 2026: one composite may carry more than one written grant from one
+   supplier -- TimberIN's hot-tub grant of 20 Oct and its sauna grant of 22 Oct --
+   and every one of those licences is held to every rule below; a composite
+   can never mix organisations) (NOT the rights manifest: a record there is
    a hot-link host grant and a supplier listing record, and this is neither),
-   and that licence:
+   and each such licence:
      a. is a live grant in the gate's own vocabulary, not withdrawn;
      b. says modification_permitted === true and carries a required credit;
      c. points back at Atlas by its outreach ref and a PN-EVID evidence_ref;
@@ -226,8 +230,9 @@ const staged = Array.isArray(reg.staged_composites) ? reg.staged_composites : []
      P6  a reference input that IS one of the bound source photographs (its
          url, or a string carrying its sha256); depicts_named_product may be
          true, because it truthfully is.
-     P10 the organisation's name beside the asset, but only inside its exact
-         required credit -- and that credit must then be present.
+     P10 the organisation's name beside the asset, but only inside the exact
+         required credit of EVERY bound licence -- and each of those credits
+         must then be present.
    What it never relaxes: a prompt naming any supplier; any other
    organisation; any other reference input; depicts_named_organisation. */
 const LIVE_GRANTS = ['Granted — Founder Confirmed',
@@ -260,7 +265,8 @@ for (const r of [...records, ...staged]) {
   if (r && r.composite_id) compositeClaims.set(r.composite_id,
     (compositeClaims.get(r.composite_id) || 0) + 1);
 }
-/* -> { ok:true, row, sources:[{url, sha256}] } or { ok:false, why } */
+/* -> { ok:true, row, rows, credits, sources:[{url, sha256}] } or { ok:false, why }
+   row = the first bound licence; rows = every bound licence (same organisation). */
 function licensedBinding(r) {
   const els = r && r.licensed_photographic_elements;
   if (els === undefined) return { ok: false, none: true, why: 'no licensed elements' };
@@ -269,32 +275,39 @@ function licensedBinding(r) {
   if (compositeClaims.get(r.composite_id) !== 1) return { ok: false, why: `composite_id ${r.composite_id} is claimed ${compositeClaims.get(r.composite_id)} times` };
   const rows = licenceRows;
   let row = null;
+  const rowsBound = [];
   const sources = [];
   for (const e of els) {
     const x = (e && e.rights_ref) || {};
     const hits = rows.filter(w => w.organisation_code && w.organisation_code === x.organisation_code
                                   && w.atlas_permission_ref === x.atlas_permission_ref);
     if (hits.length !== 1) return { ok: false, why: `rights_ref ${x.organisation_code}/${x.atlas_permission_ref} resolves to ${hits.length} licences` };
-    if (row && hits[0] !== row) return { ok: false, why: 'elements bind to more than one licence' };
-    row = hits[0];
-    const a = (row.approved_assets || []).filter(s => s && s.sha256 && s.sha256 === e.source_sha256);
+    if (row && hits[0].organisation_code !== row.organisation_code) return { ok: false, why: 'elements bind to licences of more than one organisation' };
+    row = row || hits[0];
+    const lic = hits[0];
+    if (!rowsBound.includes(lic)) rowsBound.push(lic);
+    const a = (lic.approved_assets || []).filter(s => s && s.sha256 && s.sha256 === e.source_sha256);
     if (a.length !== 1) return { ok: false, why: `source ${String(e.source_sha256).slice(0, 12)} is not enumerated once in the grant` };
     if (a[0].use !== 'adapted-into-composite') return { ok: false, why: `source ${a[0].id} is not granted for adaptation` };
     if (a[0].bound_composite !== r.composite_id) return { ok: false, why: `source ${a[0].id} is bound to ${a[0].bound_composite}, not ${r.composite_id}` };
     sources.push({ url: a[0].url, sha256: a[0].sha256 });
   }
-  if (!LIVE_GRANTS.includes(row.permission_outcome) || row.withdrawal_effective_at) {
-    return { ok: false, why: `the grant is not live (${row.permission_outcome}${row.withdrawal_effective_at ? ', withdrawn' : ''})` };
+  for (const lic of rowsBound) {
+    const ref = lic.atlas_permission_ref;
+    if (!LIVE_GRANTS.includes(lic.permission_outcome) || lic.withdrawal_effective_at) {
+      return { ok: false, why: `the grant ${ref} is not live (${lic.permission_outcome}${lic.withdrawal_effective_at ? ', withdrawn' : ''})` };
+    }
+    if (lic.modification_permitted !== true) return { ok: false, why: `the grant ${ref} does not permit modification` };
+    if (!lic.required_credit || !lic.organisation_name) return { ok: false, why: `the grant ${ref} carries no required credit` };
+    if (lic.organisation_name !== row.organisation_name) return { ok: false, why: 'the bound licences name different organisations' };
+    /* The licence file is PUBLIC (H2 founder review, 20 Oct 2026): it points
+       back at Atlas by its outreach ref and a non-sensitive evidence_ref, never
+       by correspondence identifiers. Both are still required. */
+    if (!lic.atlas_permission_ref || !/^PN-EVID-[A-Z0-9-]+$/.test(String(lic.evidence_ref || ''))) {
+      return { ok: false, why: `the grant ${ref} does not point back at Atlas and its evidence reference` };
+    }
   }
-  if (row.modification_permitted !== true) return { ok: false, why: 'the grant does not permit modification' };
-  if (!row.required_credit || !row.organisation_name) return { ok: false, why: 'the grant carries no required credit' };
-  /* The licence file is PUBLIC (H2 founder review, 20 Oct 2026): it points
-     back at Atlas by its outreach ref and a non-sensitive evidence_ref, never
-     by correspondence identifiers. Both are still required. */
-  if (!row.atlas_permission_ref || !/^PN-EVID-[A-Z0-9-]+$/.test(String(row.evidence_ref || ''))) {
-    return { ok: false, why: 'the grant does not point back at Atlas and its evidence reference' };
-  }
-  return { ok: true, row, sources };
+  return { ok: true, row, rows: rowsBound, credits: rowsBound.map(l => String(l.required_credit)), sources };
 }
 
 console.log('\nIMAGE PROVENANCE GUARD · P1–P13');
@@ -506,15 +519,15 @@ console.log('-'.repeat(74));
    image is not only AI-generated, so the generic AI label would understate it.
    Its record carries a visible caption and an accessible disclosure, and they
    qualify only if, against the licence the record is bound to:
-     - the caption contains the licence's required credit exactly and says
-       it is an illustration;
+     - the caption contains the required credit of EVERY bound licence exactly
+       and says it is an illustration;
      - the disclosure says "AI-generated", says photography, names the
        licensed organisation, and is no longer than 200 characters.
    Returns { ok, caption, disclosure } or { ok:false, why }. */
 function compositeLabels(r, b) {
   const cap = String(r.visible_caption || ''), dis = String(r.accessible_disclosure || '');
   if (!cap || !dis) return { ok: false, why: 'no visible_caption and accessible_disclosure' };
-  if (!cap.includes(String(b.row.required_credit))) return { ok: false, why: 'the caption does not carry the exact credit' };
+  for (const c of b.credits) if (!cap.includes(c)) return { ok: false, why: `the caption does not carry the exact credit "${c}"` };
   if (!/illustrat/i.test(cap)) return { ok: false, why: 'the caption does not say it is an illustration' };
   if (!dis.includes('AI-generated') || !/photograph/i.test(dis) || !dis.includes(String(b.row.organisation_name))) {
     return { ok: false, why: 'the disclosure does not say AI-generated, photography and whose' };
@@ -616,8 +629,8 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
            must then be there. Every other organisation is refused as before. */
         const b = licensedBinding(r);
         if (!b.ok && !b.none) problems.push(`${r.asset}: licensed-photography binding fails: ${b.why}`);
-        const credit = b.ok ? String(b.row.required_credit) : null;
-        if (credit && !win.includes(credit)) {
+        const credits = b.ok ? b.credits : [];
+        for (const credit of credits) if (!win.includes(credit)) {
           problems.push(`${r.asset} on ${page} lacks its required credit "${credit}"`);
         }
         /* ...and inside its approved accessible disclosure, which P8 holds to
@@ -626,8 +639,8 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
         for (const o of orgNames) {
           if (o.length <= 3) continue;
           let seen = win;
-          if (credit && o === b.row.organisation_name) {
-            seen = seen.split(credit).join(' ');
+          if (credits.length && o === b.row.organisation_name) {
+            for (const credit of credits) seen = seen.split(credit).join(' ');
             if (lab.ok) seen = seen.split(lab.disclosure).join(' ');
           }
           if (seen.includes(o)) {

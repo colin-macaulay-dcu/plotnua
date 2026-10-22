@@ -164,7 +164,7 @@
 
   <!-- H5 Phase C · directly beneath the photograph: the disclosure strip, then the invitation and the five switches -->
   <div class="h5c-strip" id="pr-strip">
-    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="garden-credit" id="pr-gardenCredit" hidden> · <a href="https://www.timberin.com/">Hot tub: TimberIN</a><span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub.</span></span></p>
+    <p class="h5c-ai" id="pr-aiNote"><b>AI-generated illustration</b><span class="garden-credit" id="pr-gardenCredit" hidden> · <a href="https://www.timberin.com/">Hot tub: TimberIN · Sauna: TimberIN</a><span class="sr-only" id="pr-gardenNote"> This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub and sauna.</span></span></p>
     <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>
   </div>
   <div class="h5c-deck" id="pr-deck">

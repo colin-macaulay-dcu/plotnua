@@ -61,7 +61,7 @@ LAYERS = [   # id, file stem, what it is
     ("L3", "garden-L3-pavilion", "L3 H5C4 · a generic mirrored garden pavilion at 85 %, moved towards the house (Grow a garden room)"),
     ("L4", "garden-L4-kitchen-garden", "L4 · a generic kitchen garden (Borrow a garden)"),
     ("L5", "garden-L5-pod", "L5 · a generic elevated timber pod (Hold a treehouse)"),
-    ("L6", "garden-L6-retreat", "L6 H5C4 · garden retreat: the TimberIN hot tub with its smoke, charcoal terrace with a cold plunge, stepping stones, planting, Japanese maple and garden lights (Become a retreat); two-state sprite"),
+    ("L6", "garden-L6-retreat", "L6 H5C4-S · garden retreat: the TimberIN hot tub with its smoke and the TimberIN Nordic Cube sauna, charcoal terrace with a cold plunge, stepping stones, planting, Japanese maple and garden lights (Become a retreat); two-state sprite"),
 ]
 
 def die(m):

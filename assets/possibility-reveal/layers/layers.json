@@ -2,7 +2,7 @@
  "schema": "plotnua.possibility-reveal.layers.v1",
  "what_this_is": "How the Reveal's lazily loaded garden-layer tiles were made from the authoritative lock chain. Not a provenance declaration and not a permission: see image-provenance-records.json and image-adaptation-licences.json.",
  "lock_chain": {
-  "active_master_pixel_sha256": "dbd392deb77b3bd33e053ff086e6d90969c81b9bc2c75ecc7eef8f9355967282",
+  "active_master_pixel_sha256": "55110ce963aa8621669d10d7275e463b28e64589b043b88bac2e6ec4f4a5e9cb",
   "L3": {
    "version": "H5C4",
    "sha256": "686a9f1b4cbd745820479004324a8b5f9f3a53ff2f9e7ccce465f400bb6898d5"
@@ -14,14 +14,14 @@
    "sha256": "bd008da32f978495dd8516797b19adfb33b1d24becedeb8e008326523054fe79"
   },
   "L6": {
-   "sha256": "44b082caf57670d38a91ec15075c777ebbcdbbabf582504d06160d198166b90d"
+   "sha256": "0ecaf8d9c84eef5ff12cf011358d4b81a80de2b82b71e14f16a2dee03a71cbe0"
   },
   "base_pixel_sha256": "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0",
   "rebuilds_active_master": true
  },
  "l6_solo_variant": {
-  "sha256": "7f6191a4a3977839b4ce65489968e2241437f4041ba01e6e8f16914dd9c5917a",
-  "method": "h5c4lock/tools/build_h5c4.py: the same deterministic render as the L6 H5C4 layer, with the L3 H5C4 pavilion switched off; identical to the locked L6 H5C4 layer outside the pavilion"
+  "sha256": "3f3c2b672a41bde45e1a7f837cc80659a448ab8187fbbaabfc573d3e6c919eb4",
+  "method": "h5c4lock/tools/build_h5c4.py: the same deterministic render as the L6 H5C4-S layer, with the L3 H5C4 pavilion switched off; identical to the locked L6 H5C4-S layer outside the pavilion"
  },
  "encoder": {
   "pillow": "12.3.0",
@@ -153,19 +153,19 @@
    }
   },
   "L6": {
-   "what": "L6 H5C4 \u00b7 garden retreat: the TimberIN hot tub with its smoke, charcoal terrace with a cold plunge, stepping stones, planting, Japanese maple and garden lights (Become a retreat); two-state sprite",
+   "what": "L6 H5C4-S \u00b7 garden retreat: the TimberIN hot tub with its smoke and the TimberIN Nordic Cube sauna, charcoal terrace with a cold plunge, stepping stones, planting, Japanese maple and garden lights (Become a retreat); two-state sprite",
    "files": {
     "garden-L6-retreat.webp": {
-     "sha256": "93506c8e4ee94a82a67f8f9ac0b40dcc6ba51697622df25c0a7eebc73cf7d419",
-     "bytes": 213174,
+     "sha256": "d7148dbb0cefdf56e47ecf705927f363fcef7554adcb69b49cc8f6d7f1e39d5a",
+     "bytes": 272914,
      "pixels": [
       1346,
       1712
      ]
     },
     "garden-L6-retreat-half.webp": {
-     "sha256": "bbec931b0ea65730fb870a0f3dac942c168a89d5f27b6d57920d7c53a4f9cc47",
-     "bytes": 104354,
+     "sha256": "fb8af12ce29ddbe8fc435cbefebbbbd328543e19a470b8ab13536c85e491912d",
+     "bytes": 114992,
      "pixels": [
       673,
       856
@@ -186,15 +186,15 @@
      "y_offset": 856
     }
    },
-   "layer_px": 372916,
+   "layer_px": 536740,
    "fidelity": {
     "alpha_lossless": true,
-    "mean_abs_error": 2.588,
-    "p99_abs_error": 15,
+    "mean_abs_error": 2.441,
+    "p99_abs_error": 14,
     "max_abs_error": 85
    },
-   "overlap_with_L3_px": 188570,
-   "solo_variant_extra_px": 8480
+   "overlap_with_L3_px": 304041,
+   "solo_variant_extra_px": 811
   }
  }
 }

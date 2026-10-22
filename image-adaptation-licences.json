@@ -70,6 +70,52 @@
         "default_for_unlisted": "NOT_AUTHORISED"
       },
       "listing_effect": "NONE. Not a listing permission and never read as one."
+    },
+    {
+      "organisation_code": "ORG-000179",
+      "organisation_name": "TimberIN",
+      "organisation_domain": "timberin.com",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permission_date": "2026-10-22",
+      "permission_form": "written, by the supplier (TimberIN's CEO)",
+      "atlas_permission_ref": "TIMBERIN-NORDIC-CUBE-SAUNA-20261022",
+      "evidence_ref": "PN-EVID-L6-TIMBERIN-SAUNA-20261022",
+      "modification_permitted": true,
+      "hotlinking_permitted": false,
+      "required_credit": "Sauna: TimberIN",
+      "credit_link": "https://www.timberin.com/",
+      "scope": "One photograph (the Nordic Cube sauna), adapted (perspective, size, lighting) into PlotNua's AI-generated Garden Retreat illustration, used commercially on PlotNua's website and social media. Nothing else.",
+      "conditions": [
+        "Only the one photograph enumerated below, only as an element of the composite named in bound_composite.",
+        "The photograph is not published on its own, hot-linked or re-hosted unmodified.",
+        "The sauna's design is not changed.",
+        "Credit TimberIN ('Sauna: TimberIN') with a working link to https://www.timberin.com/ wherever the composite appears.",
+        "Labelled as an illustration; no wording implies endorsement by TimberIN.",
+        "TimberIN is sent the link once the sauna version is published.",
+        "TimberIN confirmed that it owns the photograph and may authorise this use."
+      ],
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "approved_count": 1,
+        "default_for_unlisted": "NOT_AUTHORISED"
+      },
+      "approved_assets": [
+        {
+          "id": "TIMBERIN-PHOTO-C",
+          "kind": "photograph",
+          "element": "the Nordic Cube sauna: dark vertical-board cladding, flat roof, full-height front glazing with the lit interior and benches, glazed door",
+          "origin": "TimberIN product photograph of the Nordic Cube (front glass lit), Nordic Cube page on woodenhottubsale.co.uk",
+          "sha256": "9ffc1a1719a44ccf8f52a631c03493e58a2f9b5bb8493e977ed8cc53b8ebf5c6",
+          "bytes": 293878,
+          "pixels": [
+            1600,
+            1066
+          ],
+          "use": "adapted-into-composite",
+          "bound_composite": "possibility-reveal-L6"
+        }
+      ],
+      "listing_effect": "NONE. Not a listing permission and never read as one."
     }
   ]
 }

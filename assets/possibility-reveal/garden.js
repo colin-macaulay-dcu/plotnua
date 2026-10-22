@@ -8,7 +8,7 @@
  *   L3  Grow a garden room   · mirrored garden pavilion (L3 v2.1c)
  *   L4  Borrowed Garden      · a productive growing space (garden sharing; illustration)
  *   L5  Hold a treehouse     · elevated timber pod
- *   L6  Become a retreat     · H5C4 garden retreat: the TimberIN hot tub with its smoke, terrace and cold plunge, planting
+ *   L6  Become a retreat     · H5C4-S garden retreat: the TimberIN hot tub with its smoke and the TimberIN Nordic Cube sauna, terrace and cold plunge, planting
  *
  * L6 shares pixels with L3 (the approved smoke drifts over the pavilion), so
  * its tile is a two-state sprite: "with L3" (exactly the locked L6) and
@@ -52,7 +52,7 @@
     L3: "A mirrored garden pavilion appears along the right-hand fence. Illustration.",
     L4: "Part of the lawn becomes a productive growing space that could be shared with someone nearby who wants to grow. Illustration.",
     L5: "A timber pod appears in the tree at the left of the garden. Illustration.",
-    L6: "A garden retreat appears in the far right corner: a wood-fired hot tub with smoke from its chimney, a cold plunge set into a charcoal terrace, stepping stones, planting and a Japanese maple. Illustration with adapted photography."
+    L6: "A garden retreat appears in the far right corner: a wood-fired hot tub with smoke from its chimney, a dark timber sauna with a glass front, a cold plunge set into a charcoal terrace, stepping stones, planting and a Japanese maple. Illustration with adapted photography."
   };
   var on = [], mounted = {};
 
