@@ -157,26 +157,36 @@ for (const f of CAROUSEL) {
   else bad("L4 " + f, `tablist=${falseTab} group=${grouped} role=tab x${realTabs}`);
 }
 
-// ---- L4 · the homepage showcase: no tab interface, every Discovery reachable
+// ---- L4 · the homepage showcase: no tab interface, featured five + Library
 {
   /* What the carousel rule protected (no false ARIA tab pattern, and every
-     Discovery reachable from the homepage control) is asserted for the
-     showcase that replaced it -- more strictly: no tablist, tab or tabpanel
-     ANYWHERE on the page, and each public Discovery (the independent list at
-     the top of this file) linked exactly once as a showcase card, plus the
-     "Explore all Discoveries" route to the Library. */
+     Discovery reachable from the homepage) is asserted for the showcase that
+     replaced it -- more strictly: no tablist, tab or tabpanel ANYWHERE on the
+     page. 22 Oct 2026 (founder: homepage consolidation): the homepage shows
+     exactly the five featured Discoveries (FEATURED), each linked once as a
+     showcase card and nothing else, plus the "Explore all Discoveries" route;
+     and every public Discovery (the independent list at the top of this file)
+     must be linked from that route's destination, the Discovery Library, so
+     none becomes unreachable from the homepage. */
+  const FEATURED = [
+    "discovery-living-in-the-garden.html", "discovery-the-borrowed-garden.html",
+    "discovery-a-home-for-art.html", "discovery-driveway-income.html",
+    "discovery-house-as-power-station.html",
+  ];
   const t = code(read(SHOWCASE));
   const tabRoles = (t.match(/role="(tablist|tab|tabpanel)"/g) || []).length;
   const ariaSel = (t.match(/aria-selected=/g) || []).length;
   const a = t.indexOf('<section class="discover p4-showcase" id="discover"');
   const sect = a > -1 ? t.slice(a, t.indexOf("</section>", a)) : "";
   const cards = [...sect.matchAll(/<a class="p4s-go" href="([^"]+)">/g)].map(m => m[1]);
-  const missing = DISCOVERIES.filter(d => cards.filter(c => c === d).length !== 1);
-  const extra = cards.filter(c => !DISCOVERIES.includes(c));
+  const missing = FEATURED.filter(d => cards.filter(c => c === d).length !== 1);
+  const extra = cards.filter(c => !FEATURED.includes(c));
   const all = /<a class="p4-btn p4-btn-primary p4s-cta" href="discoveries\.html">/.test(sect);
-  if (sect && !tabRoles && !ariaSel && !missing.length && !extra.length && all)
-    ok("L4 " + SHOWCASE + " showcase: no tab interface, all " + DISCOVERIES.length + " Discoveries linked once, Library route present");
-  else bad("L4 " + SHOWCASE, `section=${!!sect} tabRoles=${tabRoles} aria-selected=${ariaSel} missing=[${missing.join(",")}] extra=[${extra.join(",")}] exploreAll=${all}`);
+  const lib = code(read("discoveries.html"));
+  const unlisted = DISCOVERIES.filter(d => !lib.includes(`href="${d}"`));
+  if (sect && !tabRoles && !ariaSel && !missing.length && !extra.length && all && !unlisted.length)
+    ok("L4 " + SHOWCASE + " showcase: no tab interface, the " + FEATURED.length + " featured Discoveries linked once, Library route present, all " + DISCOVERIES.length + " Discoveries in the Library");
+  else bad("L4 " + SHOWCASE, `section=${!!sect} tabRoles=${tabRoles} aria-selected=${ariaSel} missing=[${missing.join(",")}] extra=[${extra.join(",")}] exploreAll=${all} unlisted=[${unlisted.join(",")}]`);
 }
 
 // ---- L5 · footer heading hierarchy ----------------------------------------

@@ -71,12 +71,20 @@ MUTATIONS = [
 
     # 19 Oct 2026 (Phase 4): the homepage carousel is retired; L4 now holds the
     # Discovery showcase. Each mutation below must be refused.
+    # 22 Oct 2026 (homepage consolidation): the category list and "More from
+    # the Library" are gone, so the first two mutations target what remains;
+    # two more prove the featured-five and Library-reachability rules.
     ("a false role=\"tablist\" appears on the homepage showcase", "L4", "index.html",
-     lambda t: t.replace('<ul class="p4s-cats" aria-labelledby="p4sCatsLab">',
-                         '<ul class="p4s-cats" role="tablist" aria-labelledby="p4sCatsLab">', 1)),
+     lambda t: t.replace('<div class="p4s-lead">', '<div class="p4s-lead" role="tablist">', 1)),
 
-    ("a Discovery card is dropped from the homepage showcase", "L4", "index.html",
-     lambda t: re.sub(r'<article class="p4s-card p4s-compact">.*?discovery-hidden-bins\.html.*?</article>', "", t, count=1, flags=re.S)),
+    ("a featured Discovery card is dropped from the homepage showcase", "L4", "index.html",
+     lambda t: re.sub(r'<article class="p4s-card p4s-support">(?:(?!</article>).)*?discovery-driveway-income\.html.*?</article>', "", t, count=1, flags=re.S)),
+
+    ("a non-featured Discovery card returns to the homepage showcase", "L4", "index.html",
+     lambda t: t.replace('<div class="p4s-lead">', '<div class="p4s-lead"><a class="p4s-go" href="discovery-hidden-bins.html">x</a>', 1)),
+
+    ("a Discovery is dropped from the Discovery Library", "L4", "discoveries.html",
+     lambda t: t.replace('href="discovery-hidden-bins.html"', 'href="about.html"')),
 
     ("the showcase's Explore all Discoveries route is removed", "L4", "index.html",
      lambda t: t.replace('<a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">', '<a class="p4-btn p4-btn-primary p4s-cta" href="about.html">', 1)),

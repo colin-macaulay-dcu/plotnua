@@ -1385,23 +1385,9 @@ body.pn-p4 .p4s-head{
   padding:0 var(--p4-gutter); margin:0 0 64px;
 }
 body.pn-p4 .p4-showcase h2{ margin:14px 0 0; max-width:15ch; font-size:clamp(46px,5.2vw,84px); }
-body.pn-p4 .p4s-lede{
-  margin:26px 0 0; max-width:30ch; font-family:var(--p4-serif); font-style:italic;
-  font-size:clamp(24px,2.1vw,32px); line-height:1.22; color:var(--p4-lime);
-}
 body.pn-p4 .p4-showcase .lib-info-pop{ margin:24px 0 0; }
-body.pn-p4 .p4s-cats-lab{
-  margin:0 0 12px; font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--p4-bronze-text);
-}
-body.pn-p4 .p4s-cats{
-  list-style:none; margin:0 0 30px; padding:16px 0 0; border-top:1px solid var(--p4-line2);
-  display:flex; flex-wrap:wrap; gap:10px 0;
-}
-body.pn-p4 .p4s-cats li{
   font-family:var(--p4-serif); font-size:24px; line-height:1.15; color:var(--p4-ivory);
 }
-body.pn-p4 .p4s-cats li:not(:last-child)::after{ content:'\00B7'; color:var(--p4-terra); padding:0 12px; }
 body.pn-p4 .p4s-cta{ min-height:58px; font-size:18px; }
 
 body.pn-p4 .p4s-lead{
@@ -1430,7 +1416,6 @@ body.pn-p4 .p4s-flag-live::before{ background:var(--p4-terra-text); border-color
 body.pn-p4 .p4s-title{ margin:0; font-family:var(--p4-serif); font-weight:400; color:var(--p4-ivory); letter-spacing:-.01em; }
 body.pn-p4 .p4s-feature .p4s-title{ font-size:clamp(36px,3.3vw,52px); line-height:1; max-width:18ch; }
 body.pn-p4 .p4s-support .p4s-title{ font-size:26px; line-height:1.08; }
-body.pn-p4 .p4s-compact .p4s-title{ font-size:24px; line-height:1.1; }
 body.pn-p4 .p4s-go{ color:inherit; text-decoration:none; }
 body.pn-p4 .p4s-go::after{ content:''; position:absolute; inset:0; z-index:1; }
 body.pn-p4 .p4s-card:hover .p4s-go{ text-decoration:underline; text-decoration-color:var(--p4-terra); text-underline-offset:5px; text-decoration-thickness:1px; }
@@ -1438,7 +1423,6 @@ body.pn-p4 .p4s-go:focus-visible{ outline:none; }
 body.pn-p4 .p4s-go:focus-visible::after{ outline:2px solid var(--p4-terra-text); outline-offset:6px; }
 body.pn-p4 .p4s-line{ margin:12px 0 0; font-family:var(--p4-sans); font-size:16px; line-height:1.55; color:var(--p4-lime); max-width:46ch; }
 body.pn-p4 .p4s-feature .p4s-line{ font-size:19px; }
-body.pn-p4 .p4s-line-c{ font-size:15px; color:var(--p4-stone); }
 body.pn-p4 .p4s-next{ margin:14px 0 0; }
 body.pn-p4 .p4s-next a{
   position:relative; z-index:2; display:inline; padding:6px 0;
@@ -1447,29 +1431,9 @@ body.pn-p4 .p4s-next a{
 }
 body.pn-p4 .p4s-next a:hover{ color:var(--p4-ivory); text-decoration-color:var(--p4-ivory); }
 body.pn-p4 .p4s-feature .p4s-next a{ font-size:17px; }
-body.pn-p4 .p4s-more-h{
-  margin:88px var(--p4-gutter) 30px; display:flex; align-items:center; gap:18px;
-  font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--p4-bronze-text);
-}
-body.pn-p4 .p4s-more-h::after{ content:''; flex:1; height:1px; background:var(--p4-line2); }
-body.pn-p4 .p4s-more{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:44px 28px; padding:0 var(--p4-gutter); }
-body.pn-p4 .p4s-all{
-  display:flex; flex-direction:column; justify-content:flex-end; gap:10px; min-height:280px; padding:28px;
-  background:var(--p4-deep); border:1px solid var(--p4-line2); text-decoration:none; color:var(--p4-ivory);
-  transition:background-color .2s ease, border-color .2s ease;
-}
-body.pn-p4 .p4s-all:hover{ background:var(--p4-terra-text); border-color:var(--p4-terra-text); color:var(--p4-anth); }
-body.pn-p4 .p4s-all:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:4px; }
-body.pn-p4 .p4s-all-k{ font-family:var(--p4-sans); font-size:14px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); }
-body.pn-p4 .p4s-all:hover .p4s-all-k{ color:var(--p4-anth); }
-body.pn-p4 .p4s-all-t{ font-family:var(--p4-serif); font-size:36px; line-height:1; }
-body.pn-p4 .p4s-all-a{ font-size:30px; color:var(--p4-terra-text); }
-body.pn-p4 .p4s-all:hover .p4s-all-a{ color:var(--p4-anth); }
 
 @media (max-width:1100px){
   body.pn-p4 .p4s-lead{ grid-template-columns:minmax(0,1fr); }
-  body.pn-p4 .p4s-more{ grid-template-columns:repeat(3,minmax(0,1fr)); }
   body.pn-p4 .p4s-head{ grid-template-columns:minmax(0,1fr); row-gap:36px; }
 }
 @media (max-width:900px){
@@ -1477,19 +1441,16 @@ body.pn-p4 .p4s-all:hover .p4s-all-a{ color:var(--p4-anth); }
   body.pn-p4 .p4-display{ font-size:clamp(44px,12vw,64px); }
   body.pn-p4 .p4-stage .p4-caption{ padding:12px 20px 18px; font-size:16px; }
   body.pn-p4 .p4-showcase{ padding:76px 0 84px; }
-  body.pn-p4 .p4s-head, body.pn-p4 .p4s-lead, body.pn-p4 .p4s-more{ padding:0 20px; }
-  body.pn-p4 .p4s-more-h{ margin:64px 20px 24px; }
+  body.pn-p4 .p4s-head, body.pn-p4 .p4s-lead{ padding:0 20px; }
 }
 @media (max-width:720px){
   body.pn-p4 .p4-showcase h2{ font-size:44px; }
-  body.pn-p4 .p4s-lede{ font-size:24px; }
-  body.pn-p4 .p4s-cats li{ font-size:20px; }
   body.pn-p4 .p4s-cta{ width:100%; justify-content:center; }
   body.pn-p4 .p4s-head{ margin-bottom:40px; }
   body.pn-p4 .p4s-lead{ gap:36px; }
-  body.pn-p4 .p4s-support, body.pn-p4 .p4s-more{ grid-template-columns:1fr 1fr; gap:32px 12px; }
-  body.pn-p4 .p4s-support .p4s-title, body.pn-p4 .p4s-compact .p4s-title{ font-size:21px; }
-  body.pn-p4 .p4s-support .p4s-line, body.pn-p4 .p4s-line-c{ display:none; }
+  body.pn-p4 .p4s-support{ grid-template-columns:1fr 1fr; gap:32px 12px; }
+  body.pn-p4 .p4s-support .p4s-title{ font-size:21px; }
+  body.pn-p4 .p4s-support .p4s-line{ display:none; }
   body.pn-p4 .p4s-feature .p4s-title{ font-size:34px; }
   body.pn-p4 .p4s-feature .p4s-line{ font-size:17px; }
   body.pn-p4 .p4s-media, body.pn-p4 .p4s-feature .p4s-media{ aspect-ratio:4 / 3; }
@@ -1499,8 +1460,6 @@ body.pn-p4 .p4s-all:hover .p4s-all-a{ color:var(--p4-anth); }
   body.pn-p4 .p4s-feature .p4s-flag{ display:inline-flex; }
   body.pn-p4 .p4s-next{ margin-top:6px; }
   body.pn-p4 .p4s-next a{ font-size:15px; display:inline-block; padding:12px 0; }
-  body.pn-p4 .p4s-all{ grid-column:1 / -1; min-height:150px; padding:22px; }
-  body.pn-p4 .p4s-all-t{ font-size:30px; }
 }
 /* ==== PHASE 4 · REFINED CONCEPT 2 (founder decisions, 19 Oct 2026) ====
    22 Oct 2026: palette moved to ARCHITECTURAL ANTHRACITE (founder decision):
@@ -1772,15 +1731,10 @@ body.pn-p4 #discover .p4s-feature .p4s-body{ padding:26px 20px 12px; }
 body.pn-p4 #discover .p4s-meta{ padding-bottom:12px; margin-bottom:14px; border-bottom:1px solid var(--p4-line); }
 body.pn-p4 #discover .p4s-next{ margin-top:auto; padding-top:16px; }
 body.pn-p4 #discover .p4s-body > .p4s-line{ margin-bottom:6px; }
-body.pn-p4 #discover .p4s-all{ border-radius:18px; background:var(--p4-deep); border:1px solid rgba(194,189,181,.045);
-  box-shadow:0 1px 2px rgba(0,0,0,.16), 0 22px 44px -28px rgba(0,0,0,.55);
-  transition:transform .24s ease, background-color .24s ease, border-color .24s ease, color .24s ease; }
-body.pn-p4 #discover .p4s-all:focus-visible{ outline-offset:4px; }
 @media (hover:hover) and (pointer:fine){
   body.pn-p4 #discover .p4s-card:hover{ transform:translateY(-3px); border-color:rgba(194,189,181,.09);
     box-shadow:0 2px 4px rgba(0,0,0,.18), 0 28px 52px -28px rgba(0,0,0,.6); }
   body.pn-p4 #discover .p4s-card:hover .p4s-media img{ transform:scale(1.02); }
-  body.pn-p4 #discover .p4s-all:hover{ transform:translateY(-3px); }
 }
 body.pn-p4 #discover .p4s-card:focus-within{ border-color:rgba(194,189,181,.09); }
 @media (max-width:720px){
@@ -1790,9 +1744,21 @@ body.pn-p4 #discover .p4s-card:focus-within{ border-color:rgba(194,189,181,.09);
   body.pn-p4 #discover .p4s-meta{ padding-bottom:8px; margin-bottom:8px; }
   body.pn-p4 #discover .p4s-next{ padding-top:4px; }
 }
+/* Homepage consolidation (founder, 22 Oct 2026): the Library follows the
+   Atlas band directly, so its top padding is reduced to keep the hand-over
+   tight; in the two-column layout the featured photograph uses the 4:3 frame
+   it already has on phones, which takes up most of the open space below the
+   featured description. Copy, photograph and supporting cards unchanged. */
+body.pn-p4 #discover.p4-showcase{ padding-top:96px; }
+@media (min-width:1101px){
+  body.pn-p4 #discover .p4s-feature .p4s-media{ aspect-ratio:4 / 3; }
+}
+@media (max-width:900px){
+  body.pn-p4 #discover.p4-showcase{ padding-top:64px; }
+}
 @media (prefers-reduced-motion:reduce){
-  body.pn-p4 #discover .p4s-card, body.pn-p4 #discover .p4s-all, body.pn-p4 #discover .p4s-media img{ transition:none; }
-  body.pn-p4 #discover .p4s-card:hover, body.pn-p4 #discover .p4s-all:hover{ transform:none; }
+  body.pn-p4 #discover .p4s-card, body.pn-p4 #discover .p4s-media img{ transition:none; }
+  body.pn-p4 #discover .p4s-card:hover{ transform:none; }
   body.pn-p4 #discover .p4s-card:hover .p4s-media img{ transform:none; }
 }
 </style>
@@ -2107,152 +2073,6 @@ body.pn-p4 #discover .p4s-card:focus-within{ border-color:rgba(194,189,181,.09);
   </div>
 </section>
 
-<section class="discover p4-showcase" id="discover" aria-labelledby="discoverTitle">
-  <!-- PHASE 4 · DISCOVERY SHOWCASE (concept, 19 Oct 2026). Replaces the carousel.
-       Every card, image, category, line and status label is the Discovery
-       Library's own (discoveries.html). Every "next step" is a link that the
-       Discovery's own page already carries, in that page's wording. No new
-       claims, categories, products or suppliers. All twelve Discoveries are
-       visible; nothing is hidden in a scroller. If the Library changes, this
-       section must be updated with it (as the carousel had to be). -->
-  <div class="p4s-head reveal discover-intro">
-    <div class="p4s-headcopy">
-      <div class="lede">The Discovery Library<button type="button" class="atlas-info lib-info"
-          id="libInfoBtn" aria-expanded="false" aria-controls="libInfo"
-          aria-label="What is a Discovery?"><span aria-hidden="true">i</span></button></div>
-      <h2 id="discoverTitle">Different properties. Different opportunities.</h2>
-      <p class="p4s-lede">PlotNua helps you discover possibilities you may never have considered for your property.</p>
-      <div class="lib-info-pop" id="libInfo" role="region" aria-labelledby="libInfoBtn" hidden>
-        <p>A Discovery is one researched opportunity for your property.</p>
-        <p>Some Discoveries include a Property Check &mdash; a few simple
-           questions that help you see what the possibility could mean for your
-           own home.</p>
-      </div>
-    </div>
-    <div class="p4s-headside">
-      <p class="p4s-cats-lab" id="p4sCatsLab">Across the library</p>
-      <ul class="p4s-cats" aria-labelledby="p4sCatsLab"><li>Space</li><li>Garden</li><li>Art</li><li>Energy</li><li>Frontage</li><li>Neighbourhood</li><li>Income</li></ul>
-      <a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">Explore all Discoveries <span aria-hidden="true">&rarr;</span></a>
-    </div>
-  </div>
-
-  <div class="p4s-lead">
-    <article class="p4s-card p4s-feature">
-      <div class="p4s-media"><img src="assets/img/3cac96685bcd03a5.jpg" alt="A woman with a mug in her kitchen doorway, looking down the garden to a lit timber garden room where three teenagers are playing pool." width="1376" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Space</span><span class="p4s-flag p4s-flag-live">Garden room journey live</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-living-in-the-garden.html">What Could You Build in Your Garden?</a></h3>
-      <p class="p4s-line">An office, a studio, a room for the kids — or, since 2026, a home.</p>
-      <p class="p4s-next"><a href="garden-room-prices-ireland.html">Garden room prices in Ireland <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <div class="p4s-support">
-    <article class="p4s-card p4s-support">
-      <div class="p4s-media"><img src="assets/img/75f721f0513e4f37.jpg" alt="A grower crouching beside raised vegetable beds picking tomatoes into a basket, with the homeowner reading on the patio behind." width="1408" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Garden</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></h3>
-      <p class="p4s-line">Let someone nearby grow food on a small part of your garden.</p>
-      <p class="p4s-next"><a href="disc025-borrowed-garden-check.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-support">
-      <div class="p4s-media"><img src="assets/img/dfb125ba9dd7cd87.jpg" alt="A living room with exposed timber beams, hung with large contemporary canvases, with half a dozen visitors talking and looking at the work." width="1408" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Art</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-a-home-for-art.html">A Home for Art</a></h3>
-      <p class="p4s-line">Your home could be more than somewhere to hang art.</p>
-      <p class="p4s-next"><a href="disc024-open-your-home-to-art.html">Could your home host art? <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-support">
-      <div class="p4s-media"><img src="assets/img/4a4a1e4b08edaada.jpg" alt="An Irish semi-detached house with two cars parked in its two driveway spaces." width="1408" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Income</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-driveway-income.html">Driveway Income</a></h3>
-      <p class="p4s-line">Your driveway is empty for most of the day. Someone nearby may already need it.</p>
-      <p class="p4s-next"><a href="disc014-driveway-income.html">Check your driveway <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-support">
-      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(min-width:1100px) 20vw, (min-width:721px) 46vw, 50vw"><img src="assets/img/ce9da2e51c945693.jpg" alt="An Irish family outside their home at dusk, with solar panels across the roof, a battery unit in the open garage and an electric car charging in the driveway." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Energy</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-house-as-power-station.html">The House as a Power Station</a></h3>
-      <p class="p4s-line">Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
-      <p class="p4s-next"><a href="disc026-power-station.html">See what your home could do <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    </div>
-  </div>
-
-  <h3 class="p4s-more-h">More from the Library</h3>
-  <div class="p4s-more">
-    <article class="p4s-card p4s-compact">
-      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/7d5f5718cf9cd3da-960w.webp 960w, assets/img/7d5f5718cf9cd3da.webp 1408w" sizes="(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"><img src="assets/img/7d5f5718cf9cd3da.jpg" alt="An Irish back garden at dusk with a lit timber garden room, a steaming barrel sauna, a hot tub in use and a plunge pool set among decking and planting." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Garden</span><span class="p4s-flag">Journey coming soon</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-garden-retreat.html">Garden Retreat</a></h3>
-      <p class="p4s-line p4s-line-c">The smallest way to make your garden somewhere you go takes about a square metre — and the biggest is the whole garden.</p>
-      <p class="p4s-next"><a href="garden-room-prices-ireland.html">Compare garden room prices in Ireland <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-compact">
-      <div class="p4s-media"><img src="assets/img/55f2bd4248ec234f.jpg" alt="A sculptural timber pod raised clear of the lawn on splayed legs in an Irish back garden, with a timber stair and deck leading up to it." width="1408" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Garden</span><span class="p4s-flag">Journey coming soon</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-above-and-beyond.html">Above and Beyond</a></h3>
-      <p class="p4s-line p4s-line-c">The space above your garden rarely gets counted — and you do not even need a tree to use it.</p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-compact">
-      <div class="p4s-media"><img src="assets/img/3bbcedb3f00a3852.jpg" alt="A compact underground chamber open in the frontage of an Irish home, with three ordinary wheelie bins standing below ground level." width="1408" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Frontage</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-hidden-bins.html">The Hidden Bins</a></h3>
-      <p class="p4s-line p4s-line-c">Ordinary wheelie bins can be stored below ground and raised when they are needed.</p>
-      <p class="p4s-next"><a href="disc029-hidden-bins-check.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-compact">
-      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/e0d578046cd29bda-960w.webp 960w, assets/img/e0d578046cd29bda.webp 1408w" sizes="(min-width:1100px) 22vw, (min-width:721px) 30vw, 50vw"><img src="assets/img/e0d578046cd29bda.jpg" alt="An open front door with a shelved unit of parcels inside the porch and a neighbour calling to collect one." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Neighbourhood</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-neighbourhood-parcel-house.html">The Neighbourhood Parcel House</a></h3>
-      <p class="p4s-line p4s-line-c">A few homes on every road are better placed than the rest to take in a parcel.</p>
-      <p class="p4s-next"><a href="disc027-neighbourhood-parcel-house.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-compact">
-      <div class="p4s-media"><img src="assets/img/9aa6c362d5486001.jpg" alt="A car raised on a platform lift above an open chamber in the driveway of an Irish period house, with a second car parked in the lit space below." width="1448" height="1086" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Space</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-hidden-cars.html">Hidden Cars</a></h3>
-      <p class="p4s-line p4s-line-c">Stacked, lowered and concealed parking, and the front garden it gives back.</p>
-      <p class="p4s-next"><a href="disc022-hidden-cars-check.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-compact">
-      <div class="p4s-media"><img src="assets/img/7f49094747879fe4.jpg" alt="An ordinary Irish sitting room during filming, with a camera on a tripod, a boom microphone overhead and two crew at the monitor." width="1408" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Income</span><span class="p4s-flag">Journey coming soon</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-your-home-on-screen.html">Your Home On Screen</a></h3>
-      <p class="p4s-line p4s-line-c">Some productions go looking for an ordinary house on an ordinary street. Yours might be one.</p>
-      </div>
-    </article>
-    <article class="p4s-card p4s-compact">
-      <div class="p4s-media"><img src="assets/img/1ce6a296e2cd1b22.jpg" alt="A terrace outside a Mediterranean house with wooden shutters and bougainvillea, a table and chairs looking out over a bay towards a coastal village." width="1376" height="768" loading="lazy" decoding="async"></div>
-      <div class="p4s-body">
-        <p class="p4s-meta"><span class="p4s-cat">Space</span></p>
-        <h3 class="p4s-title"><a class="p4s-go" href="discovery-home-exchange.html">Home Exchange</a></h3>
-      <p class="p4s-line p4s-line-c">Your house costs the same whether you are in it or not.</p>
-      <p class="p4s-next"><a href="disc005-home-exchange.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
-      </div>
-    </article>
-    <a class="p4s-all" href="discoveries.html"><span class="p4s-all-k">The Discovery Library</span><span class="p4s-all-t">Explore all Discoveries</span><span class="p4s-all-a" aria-hidden="true">&rarr;</span></a>
-  </div>
-</section>
-
 <!-- TRUST — stage 3 of the journey. Not "what PlotNua is", which describes
      the company, but where a Discovery comes from and the fact that the
      looking has already been done. The section hands off to the Atlas in its
@@ -2334,6 +2154,90 @@ body.pn-p4 #discover .p4s-card:focus-within{ border-color:rgba(194,189,181,.09);
     <div class="d-all"><a href="discoveries.html">Explore the Discovery Library &rarr;</a></div>
   </div>
 </section>
+
+<section class="discover p4-showcase" id="discover" aria-labelledby="discoverTitle">
+  <!-- PHASE 4 · DISCOVERY SHOWCASE (concept, 19 Oct 2026). Replaces the carousel.
+       Every card, image, category, line and status label is the Discovery
+       Library's own (discoveries.html). Every "next step" is a link that the
+       Discovery's own page already carries, in that page's wording. No new
+       claims, categories, products or suppliers. If the Library changes, this
+       section must be updated with it (as the carousel had to be).
+       22 Oct 2026 (founder: homepage consolidation): the homepage shows the
+       five featured Discoveries only, after the Atlas; the intro line, the
+       "Across the library" list and "More from the Library" (seven cards and
+       the terminal tile) are removed from the homepage. Every Discovery stays
+       in discoveries.html, search and the sitemap, reached by "Explore all
+       Discoveries". -->
+  <div class="p4s-head reveal discover-intro">
+    <div class="p4s-headcopy">
+      <div class="lede">The Discovery Library<button type="button" class="atlas-info lib-info"
+          id="libInfoBtn" aria-expanded="false" aria-controls="libInfo"
+          aria-label="What is a Discovery?"><span aria-hidden="true">i</span></button></div>
+      <h2 id="discoverTitle">Different properties. Different opportunities.</h2>
+      <div class="lib-info-pop" id="libInfo" role="region" aria-labelledby="libInfoBtn" hidden>
+        <p>A Discovery is one researched opportunity for your property.</p>
+        <p>Some Discoveries include a Property Check &mdash; a few simple
+           questions that help you see what the possibility could mean for your
+           own home.</p>
+      </div>
+    </div>
+    <div class="p4s-headside">
+      <a class="p4-btn p4-btn-primary p4s-cta" href="discoveries.html">Explore all Discoveries <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+
+  <div class="p4s-lead">
+    <article class="p4s-card p4s-feature">
+      <div class="p4s-media"><img src="assets/img/3cac96685bcd03a5.jpg" alt="A woman with a mug in her kitchen doorway, looking down the garden to a lit timber garden room where three teenagers are playing pool." width="1376" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Space</span><span class="p4s-flag p4s-flag-live">Garden room journey live</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-living-in-the-garden.html">What Could You Build in Your Garden?</a></h3>
+      <p class="p4s-line">An office, a studio, a room for the kids — or, since 2026, a home.</p>
+      <p class="p4s-next"><a href="garden-room-prices-ireland.html">Garden room prices in Ireland <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <div class="p4s-support">
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><img src="assets/img/75f721f0513e4f37.jpg" alt="A grower crouching beside raised vegetable beds picking tomatoes into a basket, with the homeowner reading on the patio behind." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Garden</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-the-borrowed-garden.html">The Borrowed Garden</a></h3>
+      <p class="p4s-line">Let someone nearby grow food on a small part of your garden.</p>
+      <p class="p4s-next"><a href="disc025-borrowed-garden-check.html">Start the property check <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><img src="assets/img/dfb125ba9dd7cd87.jpg" alt="A living room with exposed timber beams, hung with large contemporary canvases, with half a dozen visitors talking and looking at the work." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Art</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-a-home-for-art.html">A Home for Art</a></h3>
+      <p class="p4s-line">Your home could be more than somewhere to hang art.</p>
+      <p class="p4s-next"><a href="disc024-open-your-home-to-art.html">Could your home host art? <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><img src="assets/img/4a4a1e4b08edaada.jpg" alt="An Irish semi-detached house with two cars parked in its two driveway spaces." width="1408" height="768" loading="lazy" decoding="async"></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Income</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-driveway-income.html">Driveway Income</a></h3>
+      <p class="p4s-line">Your driveway is empty for most of the day. Someone nearby may already need it.</p>
+      <p class="p4s-next"><a href="disc014-driveway-income.html">Check your driveway <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    <article class="p4s-card p4s-support">
+      <div class="p4s-media"><picture style="display:contents"><source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(min-width:1100px) 20vw, (min-width:721px) 46vw, 50vw"><img src="assets/img/ce9da2e51c945693.jpg" alt="An Irish family outside their home at dusk, with solar panels across the roof, a battery unit in the open garage and an electric car charging in the driveway." width="1408" height="768" loading="lazy" decoding="async"></picture></div>
+      <div class="p4s-body">
+        <p class="p4s-meta"><span class="p4s-cat">Energy</span></p>
+        <h3 class="p4s-title"><a class="p4s-go" href="discovery-house-as-power-station.html">The House as a Power Station</a></h3>
+      <p class="p4s-line">Some Irish homes now make their own electricity, and are paid for what they do not use.</p>
+      <p class="p4s-next"><a href="disc026-power-station.html">See what your home could do <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </article>
+    </div>
+  </div>
+
+</section>
+
 
 
 
