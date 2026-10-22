@@ -116,15 +116,39 @@
       return h + '</li>';
     }
     /* A referral code agreed with this maker (G13): shown only here, inside the
-       maker's own drawer, never on a tile or in the order; always disclosed. */
+       maker's own drawer, never on a tile or in the order; always disclosed.
+       Benefit first; the code is copied with one click (Copy code -> Copied!). */
     function offer(m) {
       if (!m.o) { return ''; }
-      return '<div class="mx-offer" role="note"><p class="mx-offer-h"><span class="mx-offer-k">PlotNua code</span> ' +
-        '<strong class="mx-code">' + esc(m.o.code) + '</strong> <span class="mx-offer-pct">' + m.o.pct + '% off</span></p>' +
+      var sid = 'mx-cs-' + esc(m.o.code);
+      return '<div class="mx-offer" role="group" aria-label="Your PlotNua benefit with ' + esc(m.m) + '">' +
+        '<p class="mx-offer-k">Your PlotNua benefit</p>' +
+        '<p class="mx-offer-h">Save ' + m.o.pct + '% with ' + esc(m.m) + '</p>' +
+        '<p class="mx-offer-row"><code class="mx-code">' + esc(m.o.code) + '</code>' +
+        '<button type="button" class="mx-copy" data-code="' + esc(m.o.code) + '" aria-describedby="' + sid + '">Copy code</button>' +
+        '<span class="mx-sr" id="' + sid + '" aria-live="polite"></span></p>' +
         '<p class="mx-offer-how">' + esc(m.o.how) + '</p>' +
-        '<p class="mx-offer-disc">PlotNua earns a commission on sales made with this code. It never affects which makers are listed or their order.</p>' +
-        '<a class="mx-offer-go" href="' + esc(m.o.href) + '" target="_blank" rel="noopener noreferrer">Visit ' + esc(m.m) +
-        ' on ' + esc(m.o.site) + '<span class="mx-sr"> (opens in a new tab)</span>&nbsp;&rarr;</a></div>';
+        '<a class="mx-offer-go" href="' + esc(m.o.href) + '" target="_blank" rel="noopener noreferrer">Shop ' + esc(m.m) +
+        '<span class="mx-sr"> on ' + esc(m.o.site) + ', opens in a new tab. The code is not applied automatically; enter it at checkout.</span>&nbsp;&rarr;</a>' +
+        '<p class="mx-offer-disc">PlotNua earns a commission on qualifying purchases. This does not affect recommendations.</p></div>';
+    }
+    /* One click copies the code. Uses the browser's standard copy call where the page
+       is secure; otherwise a temporary selection. No permission prompt, no storage. */
+    function copyCode(btn) {
+      var code = btn.getAttribute('data-code'), st = root.querySelector('#' + btn.getAttribute('aria-describedby'));
+      function done() {
+        btn.textContent = 'Copied!'; btn.classList.add('mx-copied'); if (st) { st.textContent = 'Code ' + code + ' copied'; }
+        setTimeout(function () { btn.textContent = 'Copy code'; btn.classList.remove('mx-copied'); if (st) { st.textContent = ''; } }, 2200);
+      }
+      function fallback() {
+        var ta = document.createElement('textarea'); ta.value = code; ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.opacity = '0'; document.body.appendChild(ta);
+        ta.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta); btn.focus();
+        if (ok) { done(); } else if (st) { st.textContent = 'Copy failed. The code is ' + code; btn.textContent = code; }
+      }
+      if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(code).then(done, fallback); }
+      else { fallback(); }
     }
     function images(list) {
       var h = '<span class="mx-imgs">';
@@ -250,6 +274,9 @@
       var name = b.getAttribute('data-m'); open = open === name ? null : name; render();
       var again = root.querySelector('.mx-maker[data-m="' + name.replace(/"/g, '\\"') + '"]');
       if (again) { again.focus(); }
+    });
+    $('mx-grid').addEventListener('click', function (ev) {
+      var c = ev.target.closest ? ev.target.closest('.mx-copy') : null; if (c) { copyCode(c); }
     });
     $('mx-all').addEventListener('click', function () {
       if (expanded) { collapse(); return; }

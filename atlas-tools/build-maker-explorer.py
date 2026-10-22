@@ -85,9 +85,9 @@ PINS = {
     # show larger and uncropped, and a credit without a link back is plain text.
     # Rules are scoped to #explore-makers; the Provider Explorers carry no images and
     # render as before. Previous pins: js 11335fd6…, css d571b8ca…
-    # Re-pinned 22 Oct 2026 (G13 referral-code panel inside a maker's own drawer; PREVIEW,
-    # founder visual approval pending). Previous pin: 3dd74336…
-    SHARED_JS:  "9fae1df03690f0a610fcf67de57c7a1031ce097155b5eda82c8249f6271aec82",
+    # Re-pinned 22 Oct 2026 (G13 referral-code panel inside a maker's own drawer, benefit-first
+    # with one-click copy after founder review; PREVIEW, approval pending). Previous pin: 3dd74336…
+    SHARED_JS:  "dd0bae9e7d96303c5048575f6fcedf86bb3c78118bcd45b635cde695f09c8be2",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -99,7 +99,7 @@ PINS = {
     # only while #maker-index is the URL target (arrival fix); every existing rule is unchanged. Previous pin: 105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21
     # Re-pinned 22 Oct 2026 (G13 referral-code panel rules appended, scoped to #explore-makers;
     # every existing rule unchanged). Previous pin: 8db1e7bb…
-    SHARED_CSS: "904272047c58a1f85025b309aae4ff0570f270865b792d23505a2becc7478d73",
+    SHARED_CSS: "ce7df9af32959025e16fa51fa3d9691c0c478439310a83766f0dbb0611a0dbf7",
 }
 CSS_LINK = '<link rel="stylesheet" href="maker-explorer.css">'
 JS_TAG = '<script src="maker-explorer.js"></script>'
@@ -704,9 +704,9 @@ def commercial_line(tabs):
     if not names: return NO_ARRANGEMENT
     who = names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
     return ("Makers are not ranked, and their order is shuffled on every visit. PlotNua earns a\n"
-            f"      commission when a homeowner buys from {html.escape(who)} using a PlotNua code; this never\n"
-            "      affects which makers are listed or their order. PlotNua has no commercial arrangement\n"
-            "      with any other maker listed.")
+            f"      commission on qualifying purchases made with a PlotNua code, currently offered by {html.escape(who)};\n"
+            "      this never affects which makers are listed, their order, or what PlotNua&rsquo;s research says\n"
+            "      about them.")
 
 def section(P, tabs, researched):
     figs = {"researchedMakers": researched}
@@ -1011,10 +1011,14 @@ def build(fname, P, src):
     if js.count("mx-offer") != ofn.count("mx-offer"): die("G13 offer markup outside offer()")
     if js.count("offer(m)") != 2 or dfn.count("offer(m)") != 1:
         die("G13 offer() must be called exactly once, from the maker's drawer")
+    cfn = fn("copyCode")
+    if "clipboard" in js.replace(cfn, "") or "execCommand" in js.replace(cfn, ""):
+        die("G13 clipboard access outside copyCode()")
+    if "readText" in js or "clipboard.read" in js: die("G13 the script may write the clipboard, never read it")
     if offer_makers(tabs):
-        if "PlotNua earns a\n      commission when a homeowner buys from" not in blk or NO_ARRANGEMENT in blk:
+        if "PlotNua earns a\n      commission on qualifying purchases made with a PlotNua code, currently offered by" not in blk or NO_ARRANGEMENT in blk:
             die("G13 a page listing a maker with an offer must disclose it in the footer")
-        if "PlotNua earns a commission on sales made with this code" not in js:
+        if "PlotNua earns a commission on qualifying purchases. This does not affect recommendations." not in js:
             die("G13 the drawer must carry the commission disclosure")
     elif NO_ARRANGEMENT not in blk:
         die("G13 the no-arrangement wording changed on a page with no offers")
