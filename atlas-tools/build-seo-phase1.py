@@ -43,6 +43,9 @@ import pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CHECK = "--check" in sys.argv
 TODAY = "2026-10-16"
+# Garden Retreat's own dateModified, following its real content changes so it agrees with its sitemap
+# lastmod (cluster 2 guard S2). 22 Oct 2026: the commercial disclosure (TimberIN referral code) changed.
+GR_MODIFIED = "2026-10-22"
 # Living in the Garden's own dateModified. It follows the page's real content
 # changes, so it agrees with its sitemap lastmod (cluster 1 guard S2).
 # 17 Oct 2026: two factual corrections (commencement date; An Coimisiun Pleanala).
@@ -214,7 +217,7 @@ EDITS = {
          '      "inLanguage": "en-IE",\n'
          '      "dateModified": "%s",\n'
          '      "primaryImageOfPage": { "@type": "ImageObject", "url": "https://plotnua.ie/%s" },\n'
-         % (TODAY, GR_IMG)),
+         % (GR_MODIFIED, GR_IMG)),
         ('owned by atlas-tools/build-maker-explorer.py. Do not hand-edit. -->\n<div class="article">\n',
          'owned by atlas-tools/build-maker-explorer.py. Do not hand-edit. -->\n<div class="article">\n'
          + brief(
