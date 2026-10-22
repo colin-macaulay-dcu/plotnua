@@ -1750,11 +1750,18 @@ body.pn-p4 #discover .p4s-card:focus-within{ border-color:rgba(194,189,181,.09);
    it already has on phones, which takes up most of the open space below the
    featured description. Copy, photograph and supporting cards unchanged. */
 body.pn-p4 #discover.p4-showcase{ padding-top:96px; }
+/* Final integration (founder, 22 Oct 2026): the Atlas's own "Explore the
+   Discovery Library" link is removed (the Library follows directly with
+   "Explore all Discoveries"), and the Atlas band's padding is reduced
+   modestly (120 to 96px; 72 to 60px on phones). The approved Atlas symbol C
+   (assets/brand/atlas-symbol-p.svg) replaces the glossy PNG here only. */
+body.pn-p4 #research.article-section{ padding:96px 0; }
 @media (min-width:1101px){
   body.pn-p4 #discover .p4s-feature .p4s-media{ aspect-ratio:4 / 3; }
 }
 @media (max-width:900px){
   body.pn-p4 #discover.p4-showcase{ padding-top:64px; }
+  body.pn-p4 #research.article-section{ padding:60px 0; }
 }
 @media (prefers-reduced-motion:reduce){
   body.pn-p4 #discover .p4s-card, body.pn-p4 #discover .p4s-media img{ transition:none; }
@@ -2090,7 +2097,7 @@ body.pn-p4 #discover.p4-showcase{ padding-top:96px; }
       <div class="ah-head atlas-id">
         <!-- H5C4: the original approved static Atlas mark (assets/brand/atlas-final-static-approved, its
              transparent presentation copy), unchanged and uncoloured, directly on the section -->
-        <img class="atlas-mark-still" src="assets/brand/atlas-final-static-approved-transparent.png" alt="" width="1254" height="1254" decoding="async" aria-hidden="true">
+        <img class="atlas-mark-still" src="assets/brand/atlas-symbol-p.svg" alt="" width="1254" height="1254" decoding="async" aria-hidden="true">
         <div class="atlas-words">
           <p class="kicker atlas-name">The PlotNua Atlas<button type="button" class="atlas-info"
               id="atlasInfoBtn" aria-expanded="false" aria-controls="atlasInfo"
@@ -2151,7 +2158,6 @@ body.pn-p4 #discover.p4-showcase{ padding-top:96px; }
           Atlas expands.</p>
       </div>
     </div>
-    <div class="d-all"><a href="discoveries.html">Explore the Discovery Library &rarr;</a></div>
   </div>
 </section>
 

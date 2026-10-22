@@ -125,6 +125,7 @@ function tree({ regEdit = null, rightsEdit = null, saunaEdit = null, published =
   /* Only the one asset exists in this tree; the nine Reveal records and the
      rest of the backlog describe files that are not here, so they go. */
   reg.records = []; reg.derivatives = []; reg.derivative_holds = [];
+  reg.brand_vector_derivatives = [];   // 22 Oct 2026: like derivatives, bound to files not in this tree
   reg.staged_composites = [clone(L6)];
   reg.legacy_undeclared = reg.legacy_undeclared.filter(e => e.asset === anAsset.asset);
   if (published) publish(reg);

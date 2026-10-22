@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * THE IMAGE PROVENANCE GUARD · P1–P13
+ * THE IMAGE PROVENANCE GUARD · P1–P14
  * ====================================
  * Closes the blind spot at atlas-tools/validate-image-rights.js:395:
  *
@@ -197,6 +197,18 @@ if (reg.staged_composites !== undefined && !Array.isArray(reg.staged_composites)
 }
 const staged = Array.isArray(reg.staged_composites) ? reg.staged_composites : [];
 
+/* BRAND VECTOR DERIVATIVES (22 Oct 2026, founder-approved Atlas symbol C).
+   A pure vector redrawn from brand artwork the register already holds, bound
+   to each source's exact sha256. Like a derivative it inherits its sources'
+   provenance state, declares nothing and is not counted in the backlog.
+   Checked by P14. */
+if (reg.brand_vector_derivatives !== undefined && !Array.isArray(reg.brand_vector_derivatives)) {
+  refuse('the register has a brand_vector_derivatives field that is not an array');
+}
+const brandVectors = Array.isArray(reg.brand_vector_derivatives) ? reg.brand_vector_derivatives : [];
+const brandSet = new Map();
+for (const v of brandVectors) if (v && v.asset) brandSet.set(v.asset, v);
+
 /* ── THE LICENSED-PHOTOGRAPHY EXCEPTION TO P6 AND P10 ──────────────────────
    Founder decision, H2, 20 Oct 2026 (approved in principle at the L6 audit):
    "a supplier name may sit beside the illustration ONLY as the required credit
@@ -310,7 +322,7 @@ function licensedBinding(r) {
   return { ok: true, row, rows: rowsBound, credits: rowsBound.map(l => String(l.required_credit)), sources };
 }
 
-console.log('\nIMAGE PROVENANCE GUARD · P1–P13');
+console.log('\nIMAGE PROVENANCE GUARD · P1–P14');
 console.log('='.repeat(74));
 console.log(`  pages scanned        ${pages}`);
 console.log(`  local images on them ${found.size}`);
@@ -318,6 +330,7 @@ console.log(`  declared records     ${records.length}`);
 console.log(`  legacy undeclared    ${legacy.length}`);
 console.log(`  derivatives          ${derivatives.length}  (not counted in the backlog)`);
 console.log(`  staged composites    ${staged.length}  (locked, not published)`);
+console.log(`  brand vectors        ${brandVectors.length}  (not counted in the backlog)`);
 console.log('-'.repeat(74));
 
 /* ── P1 · every local image on a published page is accounted for ──────── */
@@ -326,7 +339,7 @@ console.log('-'.repeat(74));
      records nor the enumerated backlog is a NEW undeclared image, and it is
      refused. */
   const unaccounted = [...found.keys()]
-    .filter(a => !byAsset.has(a) && !legacySet.has(a) && !derivSet.has(a));
+    .filter(a => !byAsset.has(a) && !legacySet.has(a) && !derivSet.has(a) && !brandSet.has(a));
   unaccounted.length
     ? bad('P1 every local image on a published page is declared or enumerated',
           `${unaccounted.length} unaccounted: ${unaccounted.slice(0, 5).join(', ')}`)
@@ -799,6 +812,67 @@ function l3ChainProblems(chain) {
   if (!steps.some(c => c.layer_sha256 === L3.sha256)) out.push('the chain does not apply the active L3 layer');
   if (steps.some(c => sup.some(x => x.sha256 === c.layer_sha256))) out.push('the chain applies a superseded L3 layer');
   return out;
+}
+
+/* ── P14 · a brand vector is bound to brand sources and is pure vector ── */
+{
+  /* Added 22 Oct 2026 (founder-approved Atlas symbol C: the approved ribbon
+     artwork redrawn as a clean vector with the official P). The risk this
+     exemption must not open: a new image escaping the ratchet, or a raster
+     or photograph laundered into the brand folder. So:
+       a. it is not also a record, backlog entry or derivative, and appears once;
+       b. it lives in assets/brand/ and is an SVG;
+       c. it names one or more sources, each in the register (record or
+          backlog) with the SAME sha256, each in assets/brand/, none a
+          derivative or brand vector itself (no chains);
+       d. its bytes match its recorded hash;
+       e. it is pure vector: no embedded or linked image, no script, no
+          foreignObject, no external reference of any kind;
+       f. it declares nothing: no class, status, label or permitted surface;
+       g. its method is from a closed vocabulary and it records the founder
+          approval it was made under;
+       h. if it is on disk, a published page shows it (no orphan exemption). */
+  const METHODS = ['vector-trace-and-compose'];
+  const problems = [];
+  const seen = new Set();
+  for (const v of brandVectors) {
+    const a = v && v.asset;
+    if (!a) { problems.push('an entry has no asset'); continue; }
+    if (seen.has(a)) problems.push(`${a} listed twice`);
+    seen.add(a);
+    if (byAsset.has(a) || legacySet.has(a) || derivSet.has(a)) problems.push(`${a} is also a record/backlog/derivative entry`);
+    if (!/^assets\/brand\/[^/]+\.svg$/i.test(a)) problems.push(`${a}: not an SVG in assets/brand/`);
+    const srcs = Array.isArray(v.derived_from) ? v.derived_from : [];
+    if (!srcs.length) problems.push(`${a}: names no source`);
+    for (const f of srcs) {
+      const e = f && (byAsset.get(f.asset) || legacySet.get(f.asset));
+      if (!e) problems.push(`${a}: source ${f && f.asset} is not in the register`);
+      else if (e.sha256 !== f.sha256) problems.push(`${a}: source ${f.asset} has changed since derivation`);
+      if (f && !/^assets\/brand\//.test(f.asset || '')) problems.push(`${a}: source ${f && f.asset} is not brand artwork`);
+      if (f && (derivSet.has(f.asset) || brandSet.has(f.asset))) problems.push(`${a}: derived from another derivative`);
+    }
+    if (!METHODS.includes(v.method)) problems.push(`${a}: method outside the closed vocabulary (${v.method})`);
+    if (!v.founder_approval || !v.founder_approval.date || !v.founder_approval.decision)
+      problems.push(`${a}: records no founder approval`);
+    for (const k of ['class', 'status', 'label', 'permitted_surfaces'])
+      if (k in v) problems.push(`${a}: declares "${k}"`);
+    const full = join(ROOT, a);
+    if (!existsSync(full)) {
+      if (found.has(a)) problems.push(`${a}: on a page but missing on disk`);
+    } else {
+      const buf = readFileSync(full);
+      if (createHash('sha256').update(buf).digest('hex') !== v.sha256) problems.push(`${a}: bytes do not match its hash`);
+      const t = buf.toString('utf8');
+      if (/<image\b|<script\b|<foreignObject\b|<use\b[^>]*href|url\(|@import|(?:xlink:)?href\s*=/i.test(t))
+        problems.push(`${a}: is not pure vector (embeds or links something)`);
+      if (!found.has(a)) problems.push(`${a}: no published page shows it`);
+    }
+  }
+  problems.length
+    ? bad('P14 every brand vector is bound to unchanged brand sources and is pure vector',
+          problems.slice(0, 4).join('; '))
+    : ok('P14 every brand vector is bound to unchanged brand sources and is pure vector',
+         brandVectors.length ? `${brandVectors.length} checked` : 'none recorded; the check is live');
 }
 
 /* ── P13 · a staged composite is declared, bound, unpublished, and on the

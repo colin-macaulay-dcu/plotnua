@@ -4224,5 +4224,37 @@
     }
   },
   "staged_composites_note": "STAGED COMPOSITES (H2, 20 Oct 2026). A locked composite whose provenance is recorded before publication. It names no asset, so nothing on a page can be accounted for by it. Checked by P6 and P13. It grants nothing: the permission lives in image-adaptation-licences.json, reached only through rights_ref (organisation_code + atlas_permission_ref), exactly as P4 reaches the rights manifest.",
-  "staged_composites": []
+  "staged_composites": [],
+  "brand_vector_derivatives_note": "BRAND VECTOR DERIVATIVES (22 Oct 2026, founder-approved Atlas symbol C). Each entry is a pure vector redrawn from brand artwork this register already holds, bound to each source's exact sha256. It inherits its sources' provenance state (both sources are LEGACY_UNDECLARED, so this is NOT a declaration and NOT verified), carries no class, label or rights field, and is not counted in legacy_undeclared, so the ratchet is unchanged. The guard (P14) refuses one whose source changed, whose source is not brand artwork, that embeds or links any image or external resource, that records no founder approval, or that no page shows.",
+  "brand_vector_derivatives": [
+    {
+      "asset": "assets/brand/atlas-symbol-p.svg",
+      "sha256": "7cd037a602635b2f9889d0a9a78bfe205d4327bf8f910a9dcf61960f7a08de8c",
+      "bytes": 22058,
+      "derived_from": [
+        {
+          "asset": "assets/brand/atlas-final-static-approved-transparent.png",
+          "sha256": "4714ba1342502286674ee8cb44f3707466de412f91d6fe1cf6b5296002f77fc5",
+          "role": "ribbon geometry: traced, white highlights and fringe removed, two flat fills"
+        },
+        {
+          "asset": "assets/brand/plotnua-icon-transparent.svg",
+          "sha256": "5b1707e594cc9e116ea16384a3c4d5e91d42f2c2c6482a113ecdf23aace44204",
+          "role": "the official P monogram: its two paths copied unchanged; position and scale only"
+        }
+      ],
+      "method": "vector-trace-and-compose",
+      "made": "2026-10-22",
+      "made_by": "Claude (potrace tracing of cleaned masks; no generative model involved)",
+      "fills": {
+        "ribbons_dark": "#2A5A40",
+        "ribbon_sage": "#8FAF8A",
+        "monogram": "#F2EFE6 with #8FAF8A house (as in the source)"
+      },
+      "founder_approval": {
+        "date": "2026-10-22",
+        "decision": "Atlas icon C approved: cleaned vector ribbons, official PlotNua P centred, forest #2A5A40 and sage #8FAF8A; integrate into the homepage Atlas section."
+      }
+    }
+  ]
 }

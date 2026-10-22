@@ -148,6 +148,24 @@ const dEdit = (fn) => (r) => fn(r.derivatives.find(x => x.asset === realDeriv.as
 const srcEntry = (r) => [...r.records, ...r.legacy_undeclared]
   .find(e => e.asset === realDeriv.derived_from.asset);
 
+/* ── BRAND VECTOR FIXTURES (P14, 22 Oct 2026) ─────────────────────────
+   The real brand vector (Atlas symbol C) on a page that also carries the AI
+   figure, so P8/P9 stay satisfied. Its brand sources stay in the synthetic
+   backlog, exactly as in the real register. */
+const realBV = (realReg.brand_vector_derivatives || [])[0] || null;
+function bvOpts({ regEdit = null, bytes = null, onPage = true, path = null } = {}) {
+  const v = realBV; const at = path || v.asset;
+  return {
+    regEdit,
+    rawPage: `<!doctype html><html><head><title>t</title></head><body>
+<figure><img src="${anAsset.asset}" width="100" height="100" alt="A garden.">
+<figcaption>${AI_LABEL}</figcaption></figure>
+${onPage ? `<img src="${at}" alt="">` : ''}</body></html>`,
+    extraFiles: { [at]: bytes || readFileSync(join(ROOT, v.asset)) },
+  };
+}
+const bvEdit = (fn) => (r) => fn(r.brand_vector_derivatives.find(x => x.asset === realBV.asset), r);
+
 function tree({ regEdit = null, pageOpts = {}, gateEdit = null,
                 omitRights = false, regRaw = null, rawPage = null,
                 extraFiles = null } = {}) {
@@ -436,6 +454,45 @@ const CASES = [
     why: 'a derivative claims to carry a signed credential',
     optsFn: () => derivOpts({ regEdit: dEdit(d => {
       d.content_credentials = { derivative_embeds_c2pa: true }; }) }) },
+  /* P14 · BRAND VECTOR DERIVATIVES (22 Oct 2026). The control must PASS;
+     every narrowing condition must be seen by P14 (or P1, for the ratchet). */
+  { id: 'C-P14-control', mustPassOpts: () => bvOpts(), expect: ['(accepts)'],
+    why: 'the recorded brand vector, bound to its brand sources, is accepted' },
+  { id: 'C-P14-ratchet', expect: ['P1'],
+    why: 'a brand SVG that is NOT recorded is a new undeclared image',
+    optsFn: () => bvOpts({ regEdit: r => { r.brand_vector_derivatives = []; } }) },
+  { id: 'C-P14-stale', expect: ['P14'],
+    why: 'a brand source changed after the vector was made',
+    optsFn: () => bvOpts({ regEdit: bvEdit(v => { v.derived_from[0].sha256 = sha(Buffer.from('old')); }) }) },
+  { id: 'C-P14-notbrand', expect: ['P14'],
+    why: 'a source that is not brand artwork (a page image) is laundered into a vector',
+    optsFn: () => bvOpts({ regEdit: r => {
+      const e = r.legacy_undeclared.find(x => /^assets\/img\//.test(x.asset));
+      bvEdit(v => { v.derived_from[0] = { asset: e.asset, sha256: e.sha256 }; })(r); } }) },
+  { id: 'C-P14-bytes', expect: ['P14'],
+    why: 'the vector bytes no longer match its hash',
+    optsFn: () => bvOpts({ bytes: Buffer.concat([readFileSync(join(ROOT, realBV.asset)), Buffer.from('<!-- x -->')]) }) },
+  { id: 'C-P14-raster', expect: ['P14'],
+    why: 'a raster is embedded in the SVG (hash updated to match)',
+    optsFn: () => { const b = Buffer.from(readFileSync(join(ROOT, realBV.asset), 'utf8')
+        .replace('</svg>', '<image href="data:image/png;base64,AAAA" width="1" height="1"/></svg>'));
+      return bvOpts({ bytes: b, regEdit: bvEdit(v => { v.sha256 = sha(b); }) }); } },
+  { id: 'C-P14-declares', expect: ['P14'],
+    why: 'a brand vector tries to declare a class of its own',
+    optsFn: () => bvOpts({ regEdit: bvEdit(v => { v.class = 'AI_ILLUSTRATION'; }) }) },
+  { id: 'C-P14-noapproval', expect: ['P14'],
+    why: 'a brand vector records no founder approval',
+    optsFn: () => bvOpts({ regEdit: bvEdit(v => { delete v.founder_approval; }) }) },
+  { id: 'C-P14-method', expect: ['P14'],
+    why: 'a brand vector made by a method outside the closed vocabulary',
+    optsFn: () => bvOpts({ regEdit: bvEdit(v => { v.method = 'generative-redraw'; }) }) },
+  { id: 'C-P14-outside', expect: ['P14'],
+    why: 'a "brand vector" placed outside assets/brand/',
+    optsFn: () => bvOpts({ path: 'assets/img/atlas-symbol-p.svg',
+      regEdit: bvEdit(v => { v.asset = 'assets/img/atlas-symbol-p.svg'; }) }) },
+  { id: 'C-P14-orphan', expect: ['P14'],
+    why: 'a brand vector on disk that no page shows',
+    optsFn: () => bvOpts({ onPage: false }) },
   { id: 'C-P12-chain', expect: ['P12'],
     why: 'a derivative of a derivative',
     optsFn: () => derivOpts({ regEdit: r => {
