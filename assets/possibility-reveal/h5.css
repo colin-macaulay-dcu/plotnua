@@ -131,3 +131,7 @@
   .pr .h5c-sw,.pr .h5c-knob,.pr .h5c-knob::after{transition:none}
   .pr .h5c-smoke{display:none}
 }
+/* H5C4 Garden Retreat (22 Oct 2026): the ground-heat scene is an illustrative overlay on the garden as it is,
+   so the garden transformations switched on (the retreat among them) stay visible while it plays */
+.pr.h5c[data-mode="scene"][data-ps-scene="ground"] .g-layer.is-on{opacity:1}
+.pr.h5c[data-mode="scene"][data-ps-scene="ground"] .h5c-smoke{opacity:1}

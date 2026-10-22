@@ -125,7 +125,7 @@ def h3_extend(js, body):
     credit = ('    <p class="garden-credit" id="pr-gardenCredit" hidden>Garden possibilities illustrated. '
               '<a href="%s">%s</a>.<span class="sr-only" id="pr-gardenNote"> %s</span></p>\n'
               '    <p class="sr-only" id="pr-gardenStatus" aria-live="polite"></p>\n' % (CREDIT_LINK, CREDIT, DISCLOSURE))
-    body = one(body, cam_end, '      <!-- H3 · GARDEN LAYER L6: locked L6 (sauna, hot tub and smoke; licensed photography), fetched only when switched on -->\n'
+    body = one(body, cam_end, '      <!-- H5C4 · GARDEN LAYER L6: locked L6 H5C4 (garden retreat: hot tub and smoke from licensed photography; terrace, cold plunge, planting), fetched only when switched on -->\n'
                '      %s\n' % h3_tpl(rec, 'L6') + '    </div>\n' + credit + '\n    <div class="veil" aria-hidden="true"></div>')
     return js, body
 
@@ -147,6 +147,8 @@ def h5_extend(js, body):
     def one(t, a, b):
         assert t.count(a) == 1, ('h5 anchor', t.count(a), a[:90]); return t.replace(a, b)
     # ---- JS: the lens never appears; nothing chases the pointer; the tour never starts
+    js = one(js, '    ground:  { view: { d: [1700, 1080, 1.12], m: [1760, 1060, 1.0] },',
+             '    ground:  { view: { d: [1520, 1080, 1.12], m: [1356, 1170, 1.0] },')   # H5C4: framed on the square ground-heat cut-away
     js = one(js, '  var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");\n',
              '  var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");\n'
              '  var H5 = true, PS = false;   /* H5 Phase C: the Power Station experience (lens, tour, markers, scenes) runs only while its switch is on */\n')
@@ -160,7 +162,7 @@ def h5_extend(js, body):
              '     H5C4: Power Station no longer has a lens to keep in view; and on wider screens the house and its\n'
              '     roofline stay in the frame too whenever everything switched on still fits with them. */\n'
              '  var HOUSE = [150, 640];   /* picture rows: the chimney top to the patio */\n'
-             '  var ZONES = { L3: [526, 1118], L4: [832, 1420], L5: [394, 724], L6: [640, 1465] };\n'
+             '  var ZONES = { L3: [526, 1118], L4: [832, 1420], L5: [394, 724], L6: [606, 1462] };\n'
              '  var entryView = function () {\n'
              '    var base = FRAME || ENTRY_VIEW;\n'
              '    if (mob()) return base;\n'
@@ -194,6 +196,9 @@ def h5_extend(js, body):
              '    if (!H5) timers.push(setTimeout(function () { beaconsEl.classList.add("ready"); glide(); }, 650));')
     # ---- markup
     body = one(body, '<div class="pr pn" id="pr-pn" data-mode="entry" data-pr-root>', '<div class="pr pn h5 h5c" id="pr-pn" data-mode="entry" data-pr-root>')
+    # H5C4 (22 Oct 2026): the ground-heat scene redrawn as a near-square cut-away of the central lawn
+    _ga = body.index('      <svg class="scene" id="pr-sc-ground"'); _gb = body.index('</svg>', _ga) + len('</svg>')
+    body = body[:_ga] + open(os.path.join(ROOTDIR, 'atlas-tools/possibility-reveal-h5c4-ground.svg.part'), encoding='utf-8').read() + body[_gb:]
     body = one(body, '<a class="skip" href="#pr-paths">Skip to the discovery paths</a>', '<a class="skip" href="#pr-layers">Skip to the garden transformations</a>')
     # the Power Station headline, lede and paths leave the hero (paths kept, empty and hidden: the script builds into it)
     a = body.index('    <section class="intro" aria-labelledby="pr-introTitle">'); b = body.index('    </section>\n', a) + len('    </section>\n')

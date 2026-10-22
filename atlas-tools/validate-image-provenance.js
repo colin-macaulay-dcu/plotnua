@@ -764,6 +764,30 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
          derivatives.length ? `${derivatives.length} checked` : 'no derivatives yet; the check is live');
 }
 
+/* The active L3 (H5C4, 22 Oct 2026; was "must be v2.1c"). Every superseded L3
+   layer (L3_v2, L3_v2.1c, ...) is refused as the active L3 and as a chain step;
+   the active L3 must be named by hash, and the version it replaced must record
+   replaced_by === the active version, so a supersession is always explicit.
+   L3_v2 must stay recorded (the original pavilion is never forgotten). */
+function supersededL3(chain) {
+  return Object.entries((chain && chain.superseded) || {})
+    .filter(([k, v]) => /^L3_v[0-9.]+[a-z]?$/.test(k) && v && /^[0-9a-f]{64}$/.test(String(v.sha256 || '')))
+    .map(([k, v]) => ({ key: k, sha256: v.sha256, replaced_by: v.replaced_by }));
+}
+function l3ChainProblems(chain) {
+  const out = [];
+  const L3 = ((chain && chain.active_layers) || {}).L3 || {};
+  const sup = supersededL3(chain);
+  if (!L3.version || !/^[0-9a-f]{64}$/.test(String(L3.sha256 || ''))) out.push('the lock chain does not name the active L3 by version and hash');
+  if (!sup.some(x => x.key === 'L3_v2')) out.push('the superseded L3 v2 is not recorded');
+  if (sup.some(x => x.sha256 === L3.sha256)) out.push('a superseded L3 is the active L3');
+  if (!sup.some(x => x.replaced_by === L3.version)) out.push(`no superseded L3 records replaced_by ${L3.version}`);
+  const steps = Array.isArray(chain && chain.chain) ? chain.chain : [];
+  if (!steps.some(c => c.layer_sha256 === L3.sha256)) out.push('the chain does not apply the active L3 layer');
+  if (steps.some(c => sup.some(x => x.sha256 === c.layer_sha256))) out.push('the chain applies a superseded L3 layer');
+  return out;
+}
+
 /* ── P13 · a staged composite is declared, bound, unpublished, and on the
          authoritative lock chain ─────────────────────────────────────── */
 {
@@ -775,8 +799,9 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
        c. its composite_id is unique and not also a published record's;
        d. any licensed photographic elements bind (licensedBinding);
        e. its master is the ACTIVE master of possibility_reveal_lock_chain,
-          the chain names L3 v2.1c by hash, and no superseded L3 version is
-          the active one. The pixels themselves are verified offline by
+          the chain names the active L3 by hash (H5C4 since 22 Oct 2026), no
+          superseded L3 version is the active one or a chain step, and the
+          supersession is recorded (l3ChainProblems). The pixels themselves are verified offline by
           atlas-tools/verify-possibility-reveal-locks.py against the lock
           repository, which holds the images this tree must not carry. */
   const problems = [];
@@ -803,31 +828,26 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
     const am = chain.active_master || {};
     if (!/^[0-9a-f]{64}$/.test(String(am.pixel_sha256 || ''))) problems.push('the lock chain has no active master pixel hash');
     if (m.pixel_sha256 !== am.pixel_sha256) problems.push(`${id}: master ${String(m.pixel_sha256).slice(0, 12)} is not the active master ${String(am.pixel_sha256).slice(0, 12)}`);
-    const L3 = (chain.active_layers || {}).L3 || {};
-    const sup = ((chain.superseded || {}).L3_v2 || {});
-    if (L3.version !== 'v2.1c' || !/^[0-9a-f]{64}$/.test(String(L3.sha256 || ''))) problems.push('the lock chain does not name L3 v2.1c by hash');
-    if (!sup.sha256 || L3.sha256 === sup.sha256) problems.push('the superseded L3 v2 is the active L3, or is not recorded');
+    for (const p of l3ChainProblems(chain)) problems.push(p);
     const steps = Array.isArray(chain.chain) ? chain.chain : [];
-    if (!steps.some(c => c.layer_sha256 === L3.sha256)) problems.push('the chain does not apply the active L3 layer');
-    if (steps.some(c => c.layer_sha256 === sup.sha256)) problems.push('the chain applies the superseded L3 v2 layer');
     const last = steps[steps.length - 1] || {};
     if (last.output_sha256 !== am.sha256) problems.push('the chain does not end at the active master');
   }
   /* H3 (20 Oct 2026): PUBLISHED Reveal layers stay on the lock chain too.
        f. a record with reveal_layer names the layer's LOCKED file by hash: the
-          chain's active layer for L3 / L5 / L6 (L3 must be v2.1c, never the
+          chain's active layer for L3 / L5 / L6 (L3 must be the active, explicitly superseding L3, never a
           superseded v2), or the locked layer carried in the base for L4;
        g. a published composite (composite_id) names the ACTIVE master. */
   if (chain && typeof chain === 'object') {
     const act = chain.active_layers || {}, inBase = chain.locked_layers_in_base || {};
-    const supL3 = ((chain.superseded || {}).L3_v2 || {}).sha256;
+    const supL3 = supersededL3(chain).map(x => x.sha256);
     for (const r of records) {
       const rl = r.reveal_layer;
       if (rl) {
         const want = (act[rl.id] || {}).sha256 || (inBase[rl.id] || {}).sha256;
         if (!want) problems.push(`${r.asset}: ${rl.id} is not a layer of the lock chain`);
         else if (rl.layer_sha256 !== want) problems.push(`${r.asset}: ${rl.id} is not the locked layer`);
-        if (rl.id === 'L3' && ((act.L3 || {}).version !== 'v2.1c' || rl.layer_sha256 === supL3)) problems.push(`${r.asset}: L3 is not v2.1c`);
+        if (rl.id === 'L3' && (l3ChainProblems(chain).length || supL3.includes(rl.layer_sha256))) problems.push(`${r.asset}: L3 is not the active, explicitly superseding L3`);
       }
       if (r.composite_id) {
         const m = r.master || {};

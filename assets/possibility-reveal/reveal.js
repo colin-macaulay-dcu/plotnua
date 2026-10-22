@@ -28,7 +28,7 @@
      H5C4: Power Station no longer has a lens to keep in view; and on wider screens the house and its
      roofline stay in the frame too whenever everything switched on still fits with them. */
   var HOUSE = [150, 640];   /* picture rows: the chimney top to the patio */
-  var ZONES = { L3: [526, 1118], L4: [832, 1420], L5: [394, 724], L6: [640, 1465] };
+  var ZONES = { L3: [526, 1118], L4: [832, 1420], L5: [394, 724], L6: [606, 1462] };
   var entryView = function () {
     var base = FRAME || ENTRY_VIEW;
     if (mob()) return base;
@@ -44,7 +44,7 @@
   var restAt = function () { return (FRAME && FRAME.lens) || BEACON.ground; };   /* H3: where the lens rests */
   var BEACON = { ground: { d: [2250, 1060], m: [1250, 1110] }, wind: { d: [735, 190], m: [745, 225] }, compute: { d: [1190, 690], m: [1190, 690] } };
   var SCENE = {
-    ground:  { view: { d: [1700, 1080, 1.12], m: [1760, 1060, 1.0] }, steps: [1400, 2800, 4100, 5300], capPos: { d: "pos-tr", m: "m-top" } },
+    ground:  { view: { d: [1520, 1080, 1.12], m: [1356, 1170, 1.0] }, steps: [1400, 2800, 4100, 5300], capPos: { d: "pos-tr", m: "m-top" } },
     wind:    { view: { d: [900, 330, 1.7],    m: [720, 330, 1.35] }, steps: [1400, 2500, 3500, 4600, 5900], capPos: { d: "", m: "" } },
     compute: { view: { d: [1190, 690, 1.4],   m: [1190, 690, 1.3] },  steps: [1200, 2300, 3500, 4600, 6400],
                pull: { d: [1440, 600, 1.0], m: [1450, 560, 1.0] }, capPos: { d: "", m: "" } }
@@ -399,11 +399,12 @@
     ROOT.querySelectorAll(".h5c-step").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.ps === id ? "true" : "false"); });
     if (psLine) psLine.textContent = id ? D.discoveries[id].hook : "";   /* the scene's own question; detail and suitability live in the Discovery */
   }
-  function psStop() { clearTimeout(psTimer); psSeq = null; }
+  function psStop() { clearTimeout(psTimer); psSeq = null; pn.removeAttribute("data-ps-scene"); }
   function psDwell(id) { return reduce() ? 4200 : SCENE[id].steps[SCENE[id].steps.length - 1] + 2600; }
   function psPlay(id, auto) {
     clearTimeout(psTimer);
     state.trigger = psBtn;
+    pn.setAttribute("data-ps-scene", id);   /* H5C4: the ground-heat scene plays over the garden as it is (the retreat stays on) */
     play(id); psMark(id);
     psTimer = setTimeout(function () {
       if (!PS || state.mode !== "scene" || state.id !== id) return;
@@ -429,7 +430,7 @@
   /* a garden switch pressed during a scene ends it, so the visitor sees what they switched */
   new MutationObserver(function () { if (PS && state.mode === "scene") psHome(); }).observe(pn, { attributes: true, attributeFilter: ["data-garden"] });
   /* Escape (or any other way a scene ends) also ends the sequence */
-  new MutationObserver(function () { if (state.mode === "entry" && psSeq) { psStop(); psMark(null); } }).observe(pn, { attributes: true, attributeFilter: ["data-mode"] });
+  new MutationObserver(function () { if (state.mode === "entry") { pn.removeAttribute("data-ps-scene"); if (psSeq) { psStop(); psMark(null); } } }).observe(pn, { attributes: true, attributeFilter: ["data-mode"] });
 
   /* ---------- start ---------- */
   buildPaths(); syncInert();

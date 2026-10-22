@@ -16,7 +16,8 @@ locked garden layers on and off, one by one, over the unchanged live picture
 THE LOCK CHAIN IS THE SOURCE. Every input is identified by hash and refused if
 it differs:
   base     L1 + L2A (pixels 5dd29abe...), the picture the live site already paints
-  L3       L3 v2.1c layer  (ACTIVE-LOCKS active_layers.L3; v2 is refused by hash)
+  L3       the active L3 layer (ACTIVE-LOCKS active_layers.L3; H5C4 since 22 Oct 2026;
+           every superseded L3 -- v2, v2.1c -- is refused by hash)
   L4       L4 layer        (L4 lock manifest)
   L5       L5 layer        (ACTIVE-LOCKS active_layers.L5)
   L6       L6 layer        (ACTIVE-LOCKS active_layers.L6)
@@ -55,13 +56,12 @@ WEBP = {"quality": 90, "method": 6, "alpha_quality": 100, "exact": False}
 
 BASE_PIXEL_SHA = "5dd29abea1a7cd9aba4f0b1db05a562a46d555f888a922f721a44e03ec0988a0"
 L4_SHA = "e421c1c3c8c2741c5a2a0c806d4f39f806bcd729b6cb17ac60daf4fe14c50d28"
-L6_SOLO_SHA = "e58d53167917d554b4cc375d9e7ab60f9c71fdc12742f15289738133326bf7d6"
 
 LAYERS = [   # id, file stem, what it is
-    ("L3", "garden-L3-pavilion", "L3 v2.1c · a generic mirrored garden pavilion (Grow a garden room)"),
+    ("L3", "garden-L3-pavilion", "L3 H5C4 · a generic mirrored garden pavilion at 85 %, moved towards the house (Grow a garden room)"),
     ("L4", "garden-L4-kitchen-garden", "L4 · a generic kitchen garden (Borrow a garden)"),
     ("L5", "garden-L5-pod", "L5 · a generic elevated timber pod (Hold a treehouse)"),
-    ("L6", "garden-L6-retreat", "L6 · sauna, and the TimberIN hot tub with its smoke (Become a retreat); two-state sprite"),
+    ("L6", "garden-L6-retreat", "L6 H5C4 · garden retreat: the TimberIN hot tub with its smoke, charcoal terrace with a cold plunge, stepping stones, planting, Japanese maple and garden lights (Become a retreat); two-state sprite"),
 ]
 
 def die(m):
@@ -78,6 +78,24 @@ def chain():
     if not c: die("the provenance register carries no possibility_reveal_lock_chain")
     return c
 
+def superseded_l3(c):
+    return {k: v["sha256"] for k, v in (c.get("superseded") or {}).items()
+            if k.startswith("L3_v") and isinstance(v, dict) and len(str(v.get("sha256", ""))) == 64}
+def l3_problems(c):
+    act = c["active_layers"]["L3"]; sup = superseded_l3(c); out = []
+    if not act.get("version") or len(str(act.get("sha256", ""))) != 64: out.append("the chain does not name the active L3 by version and hash")
+    if "L3_v2" not in sup: out.append("the superseded L3 v2 is not recorded")
+    if act.get("sha256") in sup.values(): out.append("a superseded L3 is the active L3")
+    if not any(v.get("replaced_by") == act.get("version") for k, v in c["superseded"].items() if k in sup): out.append("no superseded L3 records replaced_by " + str(act.get("version")))
+    steps = c.get("chain") or []
+    if not any(s.get("layer_sha256") == act.get("sha256") for s in steps): out.append("the chain does not apply the active L3")
+    if any(s.get("layer_sha256") in sup.values() for s in steps): out.append("the chain applies a superseded L3")
+    return out
+def step_path(c, sha_):
+    for s in c.get("chain") or []:
+        if s.get("layer_sha256") == sha_: return s["layer"]
+    die("the chain has no step applying layer " + sha_[:12])
+
 def build():
     """Returns {filename: bytes} and the record, built from the lock chain."""
     if np is None: die("Pillow and NumPy are needed to build")
@@ -85,14 +103,15 @@ def build():
     locks = pathlib.Path(arg("--locks") or die("--locks LOCKREPO is required"))
     act = c["active_layers"]
     src = {
-        "L3": locks / "l3v21clock/layer/L3v2.1c-layer-RGBA.png",
+        "L3": locks / step_path(c, act["L3"]["sha256"]),
         "L5": locks / "l5lock/layer/L5-layer-RGBA.png",
-        "L6": locks / "l6lock/layer/L6-layer-RGBA.png",
+        "L6": locks / step_path(c, act["L6"]["sha256"]),
         "L4": pathlib.Path(arg("--l4") or die("--l4 L4-layer-RGBA.png is required")),
     }
     want = {"L3": act["L3"]["sha256"], "L5": act["L5"]["sha256"], "L6": act["L6"]["sha256"], "L4": L4_SHA}
-    if act["L3"]["version"] != "v2.1c" or act["L3"]["sha256"] == c["superseded"]["L3_v2"]["sha256"]:
-        die("the lock chain does not name L3 v2.1c as the active L3")
+    bad3 = l3_problems(c)
+    if bad3: die("; ".join(bad3))
+    L6_SOLO_SHA = (c.get("l6_solo_without_L3") or {}).get("sha256") or die("the chain records no L6 solo (without L3) variant")
     for k, p in src.items():
         if not p.exists(): die("missing input " + str(p))
         if fsha(p) != want[k]: die(k + " layer " + str(p) + " is not the locked file (hash differs)")
@@ -170,11 +189,10 @@ def build():
         "schema": "plotnua.possibility-reveal.layers.v1",
         "what_this_is": "How the Reveal's lazily loaded garden-layer tiles were made from the authoritative lock chain. Not a provenance declaration and not a permission: see image-provenance-records.json and image-adaptation-licences.json.",
         "lock_chain": {"active_master_pixel_sha256": c["active_master"]["pixel_sha256"],
-                       "L3": {"version": "v2.1c", "sha256": want["L3"]}, "L4": {"sha256": L4_SHA},
+                       "L3": {"version": act["L3"]["version"], "sha256": want["L3"]}, "L4": {"sha256": L4_SHA},
                        "L5": {"sha256": want["L5"]}, "L6": {"sha256": want["L6"]},
                        "base_pixel_sha256": BASE_PIXEL_SHA, "rebuilds_active_master": True},
-        "l6_solo_variant": {"sha256": L6_SOLO_SHA,
-                            "method": "atlas-tools/../l6lock/tools/smoke_l6t.py re-run with the approved settings (ROT=6, SCALE=0.42, OPA=0.88, mirrored) over the approved pre-smoke L6 image with the pavilion pixels returned to the L1 + L2A garden; smoke matte identical; identical to the locked L6 layer outside the pavilion"},
+        "l6_solo_variant": {"sha256": L6_SOLO_SHA, "method": c["l6_solo_without_L3"]["method"]},
         "encoder": {"pillow": PIL_VERSION, "libwebp": features.version("webp"), "webp": WEBP,
                     "half": "premultiplied (RGBa) Lanczos to half size"},
         "layers": rec,
@@ -197,12 +215,13 @@ def main():
         c = chain()
         lc = rec["lock_chain"]
         if lc["active_master_pixel_sha256"] != c["active_master"]["pixel_sha256"]: bad.append("tiles were not built from the active master")
-        if lc["L3"]["sha256"] != c["active_layers"]["L3"]["sha256"] or c["active_layers"]["L3"]["version"] != "v2.1c": bad.append("tiles were not built from L3 v2.1c")
-        if lc["L3"]["sha256"] == c["superseded"]["L3_v2"]["sha256"]: bad.append("tiles were built from the superseded L3 v2")
+        bad += l3_problems(c)
+        if lc["L3"]["sha256"] != c["active_layers"]["L3"]["sha256"] or lc["L3"].get("version") != c["active_layers"]["L3"]["version"]: bad.append("tiles were not built from the active L3")
+        if lc["L3"]["sha256"] in superseded_l3(c).values(): bad.append("tiles were built from a superseded L3")
         for k in ("L5", "L6"):
             if lc[k]["sha256"] != c["active_layers"][k]["sha256"]: bad.append(k + " tiles are not from the active " + k)
         if bad: die("CHECK: " + "; ".join(bad[:8]))
-        print("POSSIBILITY REVEAL LAYERS · CHECK OK — %d tiles match their record, built from the active lock chain (L3 v2.1c)" % len(names))
+        print("POSSIBILITY REVEAL LAYERS · CHECK OK — %d tiles match their record, built from the active lock chain (L3 %s)" % (len(names), c["active_layers"]["L3"]["version"]))
         return
     files, record = build()
     if "--check" in sys.argv:

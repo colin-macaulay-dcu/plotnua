@@ -8,7 +8,7 @@
  *   L3  Grow a garden room   · mirrored garden pavilion (L3 v2.1c)
  *   L4  Borrowed Garden      · a productive growing space (garden sharing; illustration)
  *   L5  Hold a treehouse     · elevated timber pod
- *   L6  Become a retreat     · sauna, and the TimberIN hot tub with its smoke
+ *   L6  Become a retreat     · H5C4 garden retreat: the TimberIN hot tub with its smoke, terrace and cold plunge, planting
  *
  * L6 shares pixels with L3 (the approved smoke drifts over the pavilion), so
  * its tile is a two-state sprite: "with L3" (exactly the locked L6) and
@@ -33,7 +33,7 @@
 
   /* where each layer is framed: [x, y, zoom] in picture pixels (2752 x 1536). */
   var VIEW = {
-    L3: { d: [2100, 820, 1], m: [2100, 820, 1] },
+    L3: { d: [1900, 800, 1], m: [1890, 790, 1] },   /* H5C4: the pavilion at 85 %, moved towards the house */
     L4: { d: [946, 1180, 1], m: [946, 1160, 1] },
     L5: { d: [220, 560, 1], m: [260, 600, 1] },
     /* phones: a modest 1.35x zoom, held to the bottom-right corner, frames the sauna, the
@@ -41,18 +41,18 @@
        Camera framing alone cannot lift the tub clear of the full-height paths, so while L6 is
        on, phones and portrait tablets (below 1024px) also show the paths as one compact row
        (garden.css; tablets added in the H3 final review, 20 Oct 2026). */
-    L6: { d: [2452, 1110, 1], m: [2460, 1150, 1.35] }
+    L6: { d: [2150, 1060, 1], m: [2240, 1130, 1.2] }   /* H5C4: the whole retreat, maple to hot tub */
   };
   /* L6's route to the existing Garden Retreat Discovery, in the Reveal's beacon pattern: a dot,
-     its label on hover or focus. It sits on the generic sauna (never on the supplier's tub) and
-     makes no product or commercial claim. */
-  var RETREAT = { at: [2655, 960], href: "discovery-garden-retreat.html",
+     its label on hover or focus. It sits on the terrace beside the cold plunge (never on the supplier's
+     tub) and makes no product or commercial claim. H5C4, 22 Oct 2026. */
+  var RETREAT = { at: [2075, 1005], href: "discovery-garden-retreat.html",
                   q: "Explore the Garden Retreat", label: "Explore the Garden Retreat Discovery: saunas, hot tubs and cold plunges at home" };
   var SAY = {
     L3: "A mirrored garden pavilion appears along the right-hand fence. Illustration.",
     L4: "Part of the lawn becomes a productive growing space that could be shared with someone nearby who wants to grow. Illustration.",
     L5: "A timber pod appears in the tree at the left of the garden. Illustration.",
-    L6: "A sauna and a wood-fired hot tub, with smoke from its chimney, appear in the far right corner of the garden. Illustration with adapted photography."
+    L6: "A garden retreat appears in the far right corner: a wood-fired hot tub with smoke from its chimney, a cold plunge set into a charcoal terrace, stepping stones, planting and a Japanese maple. Illustration with adapted photography."
   };
   var on = [], mounted = {};
 

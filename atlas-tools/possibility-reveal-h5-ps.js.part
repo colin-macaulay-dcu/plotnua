@@ -12,11 +12,12 @@
     ROOT.querySelectorAll(".h5c-step").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.ps === id ? "true" : "false"); });
     if (psLine) psLine.textContent = id ? D.discoveries[id].hook : "";   /* the scene's own question; detail and suitability live in the Discovery */
   }
-  function psStop() { clearTimeout(psTimer); psSeq = null; }
+  function psStop() { clearTimeout(psTimer); psSeq = null; pn.removeAttribute("data-ps-scene"); }
   function psDwell(id) { return reduce() ? 4200 : SCENE[id].steps[SCENE[id].steps.length - 1] + 2600; }
   function psPlay(id, auto) {
     clearTimeout(psTimer);
     state.trigger = psBtn;
+    pn.setAttribute("data-ps-scene", id);   /* H5C4: the ground-heat scene plays over the garden as it is (the retreat stays on) */
     play(id); psMark(id);
     psTimer = setTimeout(function () {
       if (!PS || state.mode !== "scene" || state.id !== id) return;
@@ -42,4 +43,4 @@
   /* a garden switch pressed during a scene ends it, so the visitor sees what they switched */
   new MutationObserver(function () { if (PS && state.mode === "scene") psHome(); }).observe(pn, { attributes: true, attributeFilter: ["data-garden"] });
   /* Escape (or any other way a scene ends) also ends the sequence */
-  new MutationObserver(function () { if (state.mode === "entry" && psSeq) { psStop(); psMark(null); } }).observe(pn, { attributes: true, attributeFilter: ["data-mode"] });
+  new MutationObserver(function () { if (state.mode === "entry") { pn.removeAttribute("data-ps-scene"); if (psSeq) { psStop(); psMark(null); } } }).observe(pn, { attributes: true, attributeFilter: ["data-mode"] });

@@ -1,0 +1,22 @@
+      <svg class="scene" id="pr-sc-ground" viewBox="0 0 2752 1536" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="pr-soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d412c"/><stop offset=".55" stop-color="#3f2d1f"/><stop offset="1" stop-color="#241a12"/></linearGradient>
+          <clipPath id="pr-cut"><polygon points="1012,988 1712,988 1865,1357 846,1357"/></clipPath>
+        </defs>
+        <!-- H5C4 (22 Oct 2026): the same ground-heat illustration, drawn as a near-square cut-away of the central
+             lawn in the lawn's own perspective (about 5 x 5 m), with a grass border. Illustration only. -->
+        <g class="s-open s1">
+          <polygon points="1012,988 1712,988 1865,1357 846,1357" fill="#241a12"/>
+          <g clip-path="url(#pr-cut)"><polygon points="1014,1059 1710,1059 1860,1457 851,1457" fill="url(#pr-soil)"/></g>
+          <polygon points="1012,988 1712,988 1865,1357 846,1357" fill="none" stroke="#52803f" stroke-width="12" stroke-linejoin="round"/>
+        </g>
+        <text class="stamp s-fade s1" x="1018" y="972">ILLUSTRATION</text>
+        <path class="loop s-draw s2" clip-path="url(#pr-cut)" pathLength="1" d="M1060 1124 L1097 1124 Q1135 1125 1173 1119 Q1212 1114 1249 1109 Q1287 1104 1324 1105 Q1361 1106 1398 1111 Q1436 1117 1474 1121 Q1512 1126 1549 1124 Q1587 1123 1622 1117 Q1658 1111 1669 1146 Q1680 1182 1640 1184 Q1601 1186 1560 1181 Q1519 1177 1479 1170 Q1439 1164 1399 1162 Q1360 1161 1320 1166 Q1281 1172 1240 1178 Q1200 1184 1160 1184 Q1120 1185 1081 1179 Q1043 1173 1034 1200 Q1025 1227 1065 1234 Q1105 1241 1146 1247 Q1188 1254 1230 1253 Q1273 1252 1316 1244 Q1359 1237 1401 1231 Q1443 1226 1485 1228 Q1527 1230 1570 1237 Q1614 1245 1658 1250 Q1702 1255 1712 1289 Q1722 1324 1674 1315 Q1627 1306 1582 1303 Q1537 1300 1492 1305 Q1448 1311 1403 1319 Q1358 1328 1312 1330 Q1266 1333 1221 1326 Q1176 1319 1133 1311 Q1090 1303 1045 1302 L1001 1301"/>
+        <path class="heatflow s-fade s3" clip-path="url(#pr-cut)" d="M1060 1124 L1097 1124 Q1135 1125 1173 1119 Q1212 1114 1249 1109 Q1287 1104 1324 1105 Q1361 1106 1398 1111 Q1436 1117 1474 1121 Q1512 1126 1549 1124 Q1587 1123 1622 1117 Q1658 1111 1669 1146 Q1680 1182 1640 1184 Q1601 1186 1560 1181 Q1519 1177 1479 1170 Q1439 1164 1399 1162 Q1360 1161 1320 1166 Q1281 1172 1240 1178 Q1200 1184 1160 1184 Q1120 1185 1081 1179 Q1043 1173 1034 1200 Q1025 1227 1065 1234 Q1105 1241 1146 1247 Q1188 1254 1230 1253 Q1273 1252 1316 1244 Q1359 1237 1401 1231 Q1443 1226 1485 1228 Q1527 1230 1570 1237 Q1614 1245 1658 1250 Q1702 1255 1712 1289 Q1722 1324 1674 1315 Q1627 1306 1582 1303 Q1537 1300 1492 1305 Q1448 1311 1403 1319 Q1358 1328 1312 1330 Q1266 1333 1221 1326 Q1176 1319 1133 1311 Q1090 1303 1045 1302 L1001 1301"/>
+        <path class="heatflow rise s-fade s3" d="M1060 1112 C 1010 990, 1250 860, 1460 760"/>
+        <text class="label s-fade s3 only-d" x="1356" y="1410" text-anchor="middle">a few metres down: about the same temperature all year</text>
+        <text class="label s-fade s3 only-m" x="1356" y="1410" text-anchor="middle">the same temperature all year</text>
+        <g class="s-pop s4"><circle cx="1705" cy="745" r="66" fill="none" stroke="#F8F5EC" stroke-width="6"/><circle cx="1792" cy="676" r="36" fill="#BD6A46"/><text x="1792" y="689" text-anchor="middle" class="or">or</text></g>
+        <text class="label s-fade s4 only-d" x="1846" y="760">one or the other — not both</text>
+        <text class="label s-fade s4 only-m" x="1705" y="870" text-anchor="middle">one or the other</text>
+      </svg>

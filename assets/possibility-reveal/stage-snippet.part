@@ -29,7 +29,7 @@
       </picture>
 
       <!-- H3 · GARDEN LAYERS: locked L3–L5, nothing is fetched until switched on -->
-      <template data-layer="L3"><div class="g-layer" data-layer="L3" style="left:1570px;top:526px;width:1060px;height:592px"><img src="assets/possibility-reveal/layers/garden-L3-pavilion.webp" srcset="assets/possibility-reveal/layers/garden-L3-pavilion-half.webp 530w, assets/possibility-reveal/layers/garden-L3-pavilion.webp 1060w" sizes="1060px" width="1060" height="592" alt="" decoding="async"></div></template>
+      <template data-layer="L3"><div class="g-layer" data-layer="L3" style="left:1388px;top:526px;width:1242px;height:592px"><img src="assets/possibility-reveal/layers/garden-L3-pavilion.webp" srcset="assets/possibility-reveal/layers/garden-L3-pavilion-half.webp 621w, assets/possibility-reveal/layers/garden-L3-pavilion.webp 1242w" sizes="1242px" width="1242" height="592" alt="" decoding="async"></div></template>
       <template data-layer="L4"><div class="g-layer" data-layer="L4" style="left:312px;top:832px;width:1270px;height:704px"><img src="assets/possibility-reveal/layers/garden-L4-kitchen-garden.webp" srcset="assets/possibility-reveal/layers/garden-L4-kitchen-garden-half.webp 635w, assets/possibility-reveal/layers/garden-L4-kitchen-garden.webp 1270w" sizes="1270px" width="1270" height="704" alt="" decoding="async"></div></template>
       <template data-layer="L5"><div class="g-layer" data-layer="L5" style="left:60px;top:394px;width:318px;height:330px"><img src="assets/possibility-reveal/layers/garden-L5-pod.webp" srcset="assets/possibility-reveal/layers/garden-L5-pod-half.webp 159w, assets/possibility-reveal/layers/garden-L5-pod.webp 318w" sizes="318px" width="318" height="330" alt="" decoding="async"></div></template>
 
@@ -66,23 +66,21 @@
       <svg class="scene" id="pr-sc-ground" viewBox="0 0 2752 1536" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="pr-soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d412c"/><stop offset=".55" stop-color="#3f2d1f"/><stop offset="1" stop-color="#241a12"/></linearGradient>
-          <linearGradient id="pr-soilEdge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".08" stop-color="#000" stop-opacity="0"/><stop offset=".92" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient>
+          <clipPath id="pr-cut"><polygon points="1012,988 1712,988 1865,1357 846,1357"/></clipPath>
         </defs>
+        <!-- H5C4 (22 Oct 2026): the same ground-heat illustration, drawn as a near-square cut-away of the central
+             lawn in the lawn's own perspective (about 5 x 5 m), with a grass border. Illustration only. -->
         <g class="s-open s1">
-          <polygon points="1120,1150 2700,1150 2600,1440 1020,1440" fill="url(#pr-soil)"/>
-          <polygon points="1120,1150 2700,1150 2600,1440 1020,1440" fill="url(#pr-soilEdge)"/>
-          <polygon points="1120,1150 2700,1150 2690,1180 1110,1180" fill="#52803f"/>
-          <g fill="#e9dcc4" opacity=".18"><circle cx="1300" cy="1400" r="6"/><circle cx="1700" cy="1418" r="4"/><circle cx="2100" cy="1388" r="7"/><circle cx="2440" cy="1408" r="5"/><circle cx="1520" cy="1225" r="4"/><circle cx="2280" cy="1230" r="3"/></g>
-          <path d="M1060 1300 H 2660" stroke="#e9dcc4" stroke-opacity=".12" stroke-width="2" stroke-dasharray="10 14"/>
+          <polygon points="1012,988 1712,988 1865,1357 846,1357" fill="#241a12"/>
+          <g clip-path="url(#pr-cut)"><polygon points="1014,1059 1710,1059 1860,1457 851,1457" fill="url(#pr-soil)"/></g>
+          <polygon points="1012,988 1712,988 1865,1357 846,1357" fill="none" stroke="#52803f" stroke-width="12" stroke-linejoin="round"/>
         </g>
-        <text class="stamp s-fade s1" x="1130" y="1132">ILLUSTRATION</text>
-        <path class="loop s-draw s2" pathLength="1" d="M1180 1240 C 1380 1240, 1380 1280, 1580 1280 C 1780 1280, 1780 1240, 1980 1240 C 2180 1240, 2180 1280, 2380 1280 C 2500 1280, 2540 1260, 2580 1240"/>
-        <path class="loop s-draw s2 d2" pathLength="1" d="M1150 1330 C 1350 1330, 1350 1365, 1550 1365 C 1750 1365, 1750 1330, 1950 1330 C 2150 1330, 2150 1365, 2350 1365 C 2470 1365, 2510 1350, 2550 1330"/>
-        <path class="heatflow s-fade s3" d="M1180 1240 C 1380 1240, 1380 1280, 1580 1280 C 1780 1280, 1780 1240, 1980 1240 C 2180 1240, 2180 1280, 2380 1280 C 2500 1280, 2540 1260, 2580 1240"/>
-        <path class="heatflow s-fade s3" d="M1150 1330 C 1350 1330, 1350 1365, 1550 1365 C 1750 1365, 1750 1330, 1950 1330 C 2150 1330, 2150 1365, 2350 1365 C 2470 1365, 2510 1350, 2550 1330"/>
-        <path class="heatflow rise s-fade s3" d="M1200 1236 C 1150 1100, 1300 900, 1460 760"/>
-        <text class="label s-fade s3 only-d" x="1140" y="1500">a few metres down: about the same temperature all year</text>
-        <text class="label s-fade s3 only-m" x="1760" y="1500" text-anchor="middle">the same temperature all year</text>
+        <text class="stamp s-fade s1" x="1018" y="972">ILLUSTRATION</text>
+        <path class="loop s-draw s2" clip-path="url(#pr-cut)" pathLength="1" d="M1060 1124 L1097 1124 Q1135 1125 1173 1119 Q1212 1114 1249 1109 Q1287 1104 1324 1105 Q1361 1106 1398 1111 Q1436 1117 1474 1121 Q1512 1126 1549 1124 Q1587 1123 1622 1117 Q1658 1111 1669 1146 Q1680 1182 1640 1184 Q1601 1186 1560 1181 Q1519 1177 1479 1170 Q1439 1164 1399 1162 Q1360 1161 1320 1166 Q1281 1172 1240 1178 Q1200 1184 1160 1184 Q1120 1185 1081 1179 Q1043 1173 1034 1200 Q1025 1227 1065 1234 Q1105 1241 1146 1247 Q1188 1254 1230 1253 Q1273 1252 1316 1244 Q1359 1237 1401 1231 Q1443 1226 1485 1228 Q1527 1230 1570 1237 Q1614 1245 1658 1250 Q1702 1255 1712 1289 Q1722 1324 1674 1315 Q1627 1306 1582 1303 Q1537 1300 1492 1305 Q1448 1311 1403 1319 Q1358 1328 1312 1330 Q1266 1333 1221 1326 Q1176 1319 1133 1311 Q1090 1303 1045 1302 L1001 1301"/>
+        <path class="heatflow s-fade s3" clip-path="url(#pr-cut)" d="M1060 1124 L1097 1124 Q1135 1125 1173 1119 Q1212 1114 1249 1109 Q1287 1104 1324 1105 Q1361 1106 1398 1111 Q1436 1117 1474 1121 Q1512 1126 1549 1124 Q1587 1123 1622 1117 Q1658 1111 1669 1146 Q1680 1182 1640 1184 Q1601 1186 1560 1181 Q1519 1177 1479 1170 Q1439 1164 1399 1162 Q1360 1161 1320 1166 Q1281 1172 1240 1178 Q1200 1184 1160 1184 Q1120 1185 1081 1179 Q1043 1173 1034 1200 Q1025 1227 1065 1234 Q1105 1241 1146 1247 Q1188 1254 1230 1253 Q1273 1252 1316 1244 Q1359 1237 1401 1231 Q1443 1226 1485 1228 Q1527 1230 1570 1237 Q1614 1245 1658 1250 Q1702 1255 1712 1289 Q1722 1324 1674 1315 Q1627 1306 1582 1303 Q1537 1300 1492 1305 Q1448 1311 1403 1319 Q1358 1328 1312 1330 Q1266 1333 1221 1326 Q1176 1319 1133 1311 Q1090 1303 1045 1302 L1001 1301"/>
+        <path class="heatflow rise s-fade s3" d="M1060 1112 C 1010 990, 1250 860, 1460 760"/>
+        <text class="label s-fade s3 only-d" x="1356" y="1410" text-anchor="middle">a few metres down: about the same temperature all year</text>
+        <text class="label s-fade s3 only-m" x="1356" y="1410" text-anchor="middle">the same temperature all year</text>
         <g class="s-pop s4"><circle cx="1705" cy="745" r="66" fill="none" stroke="#F8F5EC" stroke-width="6"/><circle cx="1792" cy="676" r="36" fill="#BD6A46"/><text x="1792" y="689" text-anchor="middle" class="or">or</text></g>
         <text class="label s-fade s4 only-d" x="1846" y="760">one or the other — not both</text>
         <text class="label s-fade s4 only-m" x="1705" y="870" text-anchor="middle">one or the other</text>
@@ -153,8 +151,8 @@
           </g>
         </g>
       </svg>
-      <!-- H3 · GARDEN LAYER L6: locked L6 (sauna, hot tub and smoke; licensed photography), fetched only when switched on -->
-      <template data-layer="L6"><div class="g-layer g-sprite" data-layer="L6" style="left:2152px;top:714px;width:600px;height:806px"><img src="assets/possibility-reveal/layers/garden-L6-retreat.webp" srcset="assets/possibility-reveal/layers/garden-L6-retreat-half.webp 300w, assets/possibility-reveal/layers/garden-L6-retreat.webp 600w" sizes="600px" width="600" height="1612" alt="" decoding="async"></div></template>
+      <!-- H5C4 · GARDEN LAYER L6: locked L6 H5C4 (garden retreat: hot tub and smoke from licensed photography; terrace, cold plunge, planting), fetched only when switched on -->
+      <template data-layer="L6"><div class="g-layer g-sprite" data-layer="L6" style="left:1406px;top:606px;width:1346px;height:856px"><img src="assets/possibility-reveal/layers/garden-L6-retreat.webp" srcset="assets/possibility-reveal/layers/garden-L6-retreat-half.webp 673w, assets/possibility-reveal/layers/garden-L6-retreat.webp 1346w" sizes="1346px" width="1346" height="1712" alt="" decoding="async"></div></template>
     </div>
 
   </div>
