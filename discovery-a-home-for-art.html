@@ -58,8 +58,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+/* Legacy Discovery template CSS, pruned 23 Oct 2026 (Premium Discovery Stage 2c): only rules that still
+   match this page are kept; computed styles verified identical before/after at 1440/1024/768/390/320. */
   :root{
-    /* Canonical brand tokens — PlotNua Brand Package v1.0. Do not alter. */
     --brand-green:#1F3B2E; --brand-ivory:#F2EFE6; --brand-sage:#8FAF8A;
     --cream:#F2EFE6; --paper:#F8F5EC; --ink:#1F3B2E; --soft:#55605A;
     --accent:#4F6B4A; --oak:#8B6F4E;
@@ -69,11 +70,8 @@
   body{ font-family:'Work Sans',sans-serif; background:var(--paper); color:var(--ink); overflow-x:hidden; }
   h1,h2,h3{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em; }
   h1,h2{ font-weight:700; }
-
   .reveal{ opacity:0; transform:translateY(6px); transition:opacity 1.1s ease, transform 1.1s ease; }
   .reveal.in{ opacity:1; transform:none; }
-
-  /* ---- fixed brand mark (unchanged from Brand Integration v1) ---- */
   .brand-mark{
     position:fixed; top:22px; left:22px; z-index:50;
     display:flex; align-items:center; justify-content:center;
@@ -85,19 +83,6 @@
     text-decoration:none;
   }
   .brand-mark:hover{ transform:scale(1.06); box-shadow:0 5px 16px rgba(31,59,46,.20), 0 0 0 1px rgba(31,59,46,.09); }
-
-  /* RESULTS-003 PART D — THE FLOATING BACK.
-     Identical to the control on Results and My Plot: same corner, same 44px
-     minimum height, same radius, paper ground, hairline border and shadow,
-     same type. Only the label and destination differ, because they must.
-
-     It does not fight the brand mark. Measured: .brand-mark is fixed at
-     TOP:22px left:22px, this is fixed at BOTTOM:22px left:22px. Opposite
-     ends of the screen at every viewport. (I twice deferred this work on the
-     stated grounds that they shared a corner. They never did.)
-
-     z-index 60 sits above the page and below .am-modal-overlay (200), so an
-     open modal covers it rather than having it float over a dialog. */
   .pn-return{
     position:fixed; left:22px; bottom:22px; z-index:60;
     display:inline-flex; align-items:center; gap:8px;
@@ -120,14 +105,6 @@
     .brand-mark{ top:16px; left:16px; width:40px; height:40px; }
     .brand-mark img{ width:30px; height:30px; }
   }
-
-  /* ================= DISCOVERY — HERO =================
-     Same visual grammar as the About page hero: a single still image,
-     bottom-anchored copy, warm ivory serif type. This is the master
-     template every future Discovery reuses, so the hero deliberately
-     stays close to the About page's pattern rather than inventing a
-     new one — consistency here is what makes the site feel like one
-     continuous place, not a stitched-together set of templates. */
   .d-hero{ position:relative; width:100%; height:88vh; height:88svh; min-height:540px; overflow:hidden; background:var(--ink); }
   .d-hero img{
     width:100%; height:100%; object-fit:cover; display:block;
@@ -138,14 +115,6 @@
   .d-hero-scrim{ position:absolute; inset:0;
     background:linear-gradient(180deg, rgba(15,14,10,.14) 0%, rgba(15,14,10,0) 32%, rgba(15,14,10,.10) 60%, rgba(15,14,10,.60) 100%); }
   .d-hero-copy{ position:absolute; z-index:2; inset:auto 0 0 0; padding:0 8vw 10vh; text-align:center; }
-  /* HERO EYEBROW — ADAPTIVE COLOUR (Master Standard).
-     The eyebrow is an orientation label, not a brand element. On this hero
-     --brand-sage (luminance 0.36) sat inside the luminance range of the
-     plaster wall behind it (0.32-0.49) and washed out; no shadow can
-     separate a colour from a background it matches in lightness.
-     It therefore uses the same --brand-ivory as h1 / .subtitle / .intro,
-     with the same shadow family as .intro. Font, size, weight, tracking
-     and position are unchanged. */
   .d-hero-copy .eyebrow{ opacity:0; transform:translateY(10px); transition:opacity 1s ease, transform 1s ease;
     font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--brand-ivory); margin-bottom:20px;
     text-shadow:0 1px 14px rgba(0,0,0,.28); }
@@ -159,113 +128,11 @@
     color:var(--brand-ivory); font-size:clamp(14px,1.4vw,16px); line-height:1.75; text-shadow:0 1px 14px rgba(0,0,0,.28); }
   .d-hero-copy.in .eyebrow, .d-hero-copy.in h1, .d-hero-copy.in .subtitle{ opacity:1; transform:none; }
   .d-hero-copy.in .intro{ opacity:.86; transform:none; }
-
-  /* ================= ARTICLE RHYTHM (shared with About) ================= */
-  .article{ max-width:1040px; margin:0 auto; padding:0 7vw; }
-  .article-section{ padding:9.5vh 0; border-bottom:1px solid rgba(31,59,46,.06); }
-  .article-section:last-of-type{ border-bottom:none; }
-  .article-section .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:19px; }
-  .article-section h2{ font-size:clamp(26px,3.4vw,40px); line-height:1.32; max-width:19ch; margin-bottom:26px; }
-  .article-section p{ color:var(--soft); font-size:17px; line-height:1.85; max-width:60ch; }
-  .article-section p + p{ margin-top:20px; }
-
-  /* ---- The Spark — the emotional opening line of every Discovery.
-     Deliberately the quietest, largest moment on the page: one
-     sentence, generous whitespace, nothing else competing with it. ---- */
   .spark{ position:relative; padding:12vh 7vw; text-align:center; background:var(--paper); overflow:hidden; }
   .spark::before{ content:''; position:absolute; top:0; left:0; right:0; height:16vh;
     background:linear-gradient(180deg, rgba(20,26,20,.05) 0%, rgba(20,26,20,0) 100%); pointer-events:none; }
   .spark p{ position:relative; font-family:'Fraunces',serif; font-style:italic; font-weight:400; color:var(--ink);
     font-size:clamp(25px,3.6vw,40px); line-height:1.5; max-width:21ch; margin:0 auto; letter-spacing:-.005em; }
-
-  /* ---- Imagine Your Property — a second full-width photograph with
-     minimal text; this is a mood beat, not an information beat. ---- */
-  .imagine-photo{ position:relative; width:100%; height:84vh; height:84svh; min-height:460px; overflow:hidden; background:var(--ink); }
-  .imagine-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .imagine-photo::before, .imagine-photo::after{ content:''; position:absolute; left:0; right:0; height:5vh; z-index:2; pointer-events:none; }
-  .imagine-photo::before{ top:0; background:linear-gradient(180deg, rgba(248,245,236,.5) 0%, rgba(248,245,236,0) 100%); }
-  .imagine-photo::after{ bottom:0; background:linear-gradient(0deg, rgba(242,239,230,.5) 0%, rgba(242,239,230,0) 100%); }
-  .imagine-photo .caption{ position:absolute; z-index:3; left:0; right:0; bottom:0; padding:7vh 8vw;
-    background:linear-gradient(180deg, rgba(15,14,10,0) 0%, rgba(15,14,10,.42) 100%); text-align:center; }
-  .imagine-photo .caption p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400;
-    color:var(--brand-ivory); font-size:clamp(16px,1.85vw,20px); max-width:32ch; margin:0 auto; text-shadow:0 1px 16px rgba(0,0,0,.3); letter-spacing:.01em; }
-   /* must outrank .imagine-photo img{display:block} */
-
-
-  /* hairline: ivory, with the faintest dark edge so it survives both images */
-
-  /* handle: 44px hit box, 26px visible ring, no disc, no shadow */
-
-  /* labels: lower corners, out of the caption's way */
-
-  /* caption sits clear of both labels */  /* above the hairline: no strikethrough at mid positions */
-
-  /* keyboard control: focusable, never captures pointer or touch */
-
-  @media (max-width:720px){
-  }
-  @media (prefers-reduced-motion: reduce){
-  }
-
-  /* ---- Could This Work For You — reflective questions, same
-     fragment-line treatment used across the site for short phrases,
-     given here as questions rather than statements. ---- */
-
-  /* ---- Understanding the Opportunity — practical detail, still
-     presented as prose rather than a spec sheet. Sub-headings stay
-     small and quiet so the page never tips into "brochure." ---- */
-  .practical-group{ margin-top:12px; }
-  .practical-item{ padding:19px 0; border-top:1px solid rgba(31,59,46,.06); }
-  .practical-item:first-child{ border-top:none; padding-top:0; }
-  .practical-item h3{ font-size:clamp(18px,1.9vw,21px); margin-bottom:11px; }
-  .practical-item p{ color:var(--soft); font-size:16px; line-height:1.8; max-width:56ch; }
-
-  /* ---- Things To Consider — balanced points, same quiet list
-     treatment, no warning icons or red text. ---- */
-  .considerations{ margin-top:10px; }
-  .considerations p{ color:var(--soft); font-size:16px; line-height:1.85; max-width:58ch; margin-bottom:16px; }
-  .considerations p:last-child{ margin-bottom:0; }
-
-  /* ---- Trusted Partners — premium placeholder. Reads as a promise,
-     not an empty state; no logos, no "coming soon" badge. ---- */
-  .partners{ position:relative; background:var(--cream); }
-  .partners::before{ content:''; position:absolute; top:0; left:0; right:0; height:10vh;
-    background:linear-gradient(180deg, var(--paper) 0%, rgba(248,245,236,0) 100%); pointer-events:none; }
-  .partners::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:10vh;
-    background:linear-gradient(0deg, var(--paper) 0%, rgba(248,245,236,0) 100%); pointer-events:none; }
-  .partners .article{ position:relative; z-index:1; padding-top:12vh; padding-bottom:12vh; text-align:center; }
-  .partners .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:24px; }
-  .partners h2{ max-width:none; margin:0 auto 20px; font-size:clamp(22px,2.6vw,30px); line-height:1.35; }
-  .partners p{ margin:0 auto; max-width:52ch; }
-  .partners .partner-frame{ margin:48px auto 0; max-width:420px; padding:38px 32px; border:1px solid rgba(31,59,46,.10); border-radius:2px; }
-  .partners .partner-frame p{ font-family:'Fraunces',serif; font-style:italic; color:var(--accent); font-size:16px; line-height:1.75; max-width:none; }
-
-  /* ---- FAQ — elegant native accordion. No JS required for the
-     interaction itself, keeping this section resilient and fast; the
-     .reveal fade-in still applies on scroll like everything else. ---- */
-  .faq-list{ margin-top:8px; }
-  .faq-item{ border-top:1px solid rgba(31,59,46,.06); }
-  .faq-item:last-child{ border-bottom:1px solid rgba(31,59,46,.06); }
-  .faq-item summary{ list-style:none; cursor:pointer; padding:21px 0; display:flex; align-items:center; justify-content:space-between; gap:24px; }
-  .faq-item summary::-webkit-details-marker{ display:none; }
-  .faq-item summary h3{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(17px,1.8vw,19px); font-style:normal; transition:color .3s ease; }
-  .faq-item summary:hover h3{ color:var(--accent); }
-  .faq-item .icon{ flex-shrink:0; width:20px; height:20px; position:relative; }
-  .faq-item .icon::before, .faq-item .icon::after{ content:''; position:absolute; background:var(--accent); opacity:.75; border-radius:2px; transition:transform .35s cubic-bezier(.4,0,.2,1), opacity .35s ease; }
-  .faq-item .icon::before{ left:0; top:9px; width:20px; height:1.5px; }
-  .faq-item .icon::after{ left:9px; top:0; width:1.5px; height:20px; }
-  .faq-item summary:hover .icon::before, .faq-item summary:hover .icon::after{ opacity:1; }
-  .faq-item[open] .icon::after{ transform:rotate(90deg); opacity:0; }
-  .faq-item .faq-a{ padding:0 0 24px; color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch; }
-
-  /* ---- quiet tier — used on FAQ (and shares its language with Partners
-     and Related): muted kicker, smaller heading, so these sections recede
-     rather than compete with the emotional/editorial moments above them. ---- */
-  .quiet-section .kicker{ color:var(--soft); opacity:.8; }
-  .quiet-section h2{ font-size:clamp(22px,2.6vw,30px); line-height:1.35; max-width:22ch; }
-
-  /* ---- Related Discoveries — three cards; kept quiet (photo + tiny
-     kicker + title) so it invites exploration rather than selling. ---- */
   .related{ background:var(--paper); padding:10vh 7vw; }
   .related-head{ max-width:1040px; margin:0 auto 48px; text-align:center; }
   .related-head .kicker{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); opacity:.8; margin-bottom:20px; }
@@ -285,17 +152,7 @@
     .related-card .thumb{ aspect-ratio:3/2; }
     .related-head{ margin-bottom:40px; }
   }
-
-  /* ---- closing statement (identical component to Homepage / About) ---- */
-  .closing-line{ padding:21vh 7vw 19vh; text-align:center; background:var(--paper); }
-  .closing-line p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400; font-size:clamp(19px,2.15vw,25px); color:var(--soft); max-width:36ch; margin:0 auto; line-height:1.7; letter-spacing:-.003em; }
-  .closing-line .continue{ margin-top:22px; font-size:13px; font-style:normal; letter-spacing:.03em; }
-  .closing-line .continue a{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); padding-bottom:1px; transition:border-color .35s ease; }
-  .closing-line .continue a:hover{ border-color:var(--accent); }
-
-  /* ---- footer (identical to Homepage / About) ---- */
   footer{ background:linear-gradient(180deg, var(--paper) 0%, var(--ink) 110px, var(--ink) 100%); color:#B7AF9C; padding:72px 7vw 40px; }
-  footer b{ color:var(--brand-ivory); font-family:'Fraunces',serif; font-weight:500; }
   .footer-inner{ max-width:1040px; margin:0 auto; }
   .footer-top{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:64px; }
   .footer-mark{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:0; }
@@ -318,107 +175,23 @@
     .footer-cols{ grid-template-columns:1fr; gap:36px; }
   }
   .footer-base{ margin-top:64px; text-align:center; font-size:11.5px; letter-spacing:.04em; color:#7C7565; }
-
   @media(max-width:720px){
     .d-hero-copy{ padding:0 8vw 8vh; }
-    .article-section{ padding:7.5vh 0; }
     .spark{ padding:8.5vh 8vw; }
     .spark::before{ height:10vh; }
-    .imagine-photo{ height:62vh; height:62svh; }
-    .imagine-photo::before, .imagine-photo::after{ height:6vh; }
-    .partners .article{ padding-top:9vh; padding-bottom:9vh; }
     .related{ padding:8vh 7vw; }
   }
-
   @media (prefers-reduced-motion: reduce){
     .d-hero img, .d-hero-copy .eyebrow, .d-hero-copy h1, .d-hero-copy .subtitle, .d-hero-copy .intro{ transition-duration:.01ms !important; }
     .d-hero img{ transform:none !important; }
   }
-  /* ---- EDITOR-001B "What Changed in July 2026".
-     Built from the page's own editorial vocabulary: the .article-section
-     rhythm, the .kicker/h2/p treatment and the quiet rule used elsewhere.
-     Deliberately NOT an alert box, panel or legal notice. ---- */
-  .planning-change .planning-lede{
-    font-family:'Fraunces',serif; font-size:clamp(19px,2.1vw,23px); line-height:1.6;
-    color:var(--ink); max-width:34ch; margin:0 0 24px;
-  }
-  .planning-conditions{ margin:6px 0 0; padding:0; list-style:none; }
-  .planning-conditions li{
-    position:relative; padding-left:26px; margin-bottom:12px;
-    color:var(--soft); font-size:16px; line-height:1.8; max-width:58ch;
-  }
-  .planning-conditions li::before{
-    content:''; position:absolute; left:2px; top:.72em;
-    width:7px; height:7px; border-radius:50%; background:var(--brand-sage);
-  }
-  .planning-conditions strong{ color:var(--ink); font-weight:600; }
-  .planning-sub{
-    font-family:'Fraunces',serif; font-weight:500; font-size:clamp(17px,1.9vw,20px);
-    color:var(--ink); margin:36px 0 12px;
-  }
-  .planning-note{
-    margin-top:44px; padding-top:26px; border-top:1px solid rgba(31,59,46,.10);
-    font-size:15.5px; line-height:1.8; color:var(--soft); max-width:58ch;
-  }
-  @media(max-width:720px){
-    .planning-change .planning-lede{ max-width:none; }
-  }
-
-  /* ============================================================
-     PROPERTY BRAIN PREVIEW — the standard Discovery destination.
-     NOT a new design. Every value below is lifted unchanged from
-     your-plot.html Screen 1 (.pn-wordmark, #screen-entry h1,
-     .entry-subhead, .pn-eircode-field, .btn-primary) so the homeowner
-     meets the same component here that they will meet when the journey
-     opens. Adapt content only — do not restyle.
-     ============================================================ */
   .pb-preview{ background:var(--cream); padding:12vh 7vw;
     border-top:1px solid rgba(31,59,46,.08);
     display:flex; flex-direction:column; align-items:center; text-align:center; }
   .pn-wordmark{ font-family:'Fraunces',serif; font-weight:600; font-size:15px;
     letter-spacing:.22em; text-transform:uppercase; color:var(--ink); margin-bottom:36px; }
-  .pb-headline{ font-family:'Fraunces',serif; font-size:clamp(26px,5vw,40px); line-height:1.25;
-    color:var(--ink); max-width:16ch; margin:0 0 12px; font-weight:400; letter-spacing:-.01em; }
-  .pb-subhead{ font-size:16px; color:var(--soft); line-height:1.5; max-width:32ch; margin:0 0 26px; }
-  .pn-eircode-field{ width:100%; max-width:360px; text-align:left; }
-  .pn-eircode-field label{ font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-    color:var(--soft); display:block; margin-bottom:8px; }
-  .pn-eircode-field input{
-    width:100%; padding:15px 16px; font-size:16px; font-family:'Work Sans',sans-serif;
-    letter-spacing:.03em; border:1px solid rgba(31,59,46,.25); border-radius:2px;
-    background:#fff; color:var(--ink);
-  }
-  .pn-eircode-field input:disabled{ opacity:.55; cursor:not-allowed; }
-  .btn-primary{
-    display:inline-block; background:var(--ink); color:var(--brand-ivory); border:none;
-    font-family:'Work Sans',sans-serif; padding:16px 30px; font-size:14px;
-    letter-spacing:.08em; text-transform:uppercase; border-radius:2px; margin-top:24px;
-  }
-  .btn-primary:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
-  .pb-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px;
-    max-width:940px; margin:62px auto 0; text-align:left; }
-  .pb-step .n{ font-family:'Work Sans',sans-serif; font-size:11px; letter-spacing:.15em;
-    text-transform:uppercase; color:var(--brand-sage); margin-bottom:11px; }
-  .pb-step p{ color:var(--soft); font-size:15.5px; line-height:1.8; margin:0; }
-  .pb-independence{ margin:52px auto 0; max-width:50ch; color:var(--soft);
-    font-size:15px; line-height:1.75; }
-  .pb-independence strong{ color:var(--ink); font-weight:600; }
-  .pb-note{ margin:22px auto 0; max-width:46ch; font-size:14.5px; line-height:1.75;
-    color:var(--soft); opacity:.85; }
   @media(max-width:820px){
-    .pb-steps{ grid-template-columns:1fr; gap:26px; margin-top:46px; text-align:center; }
     .pb-preview{ padding:10vh 7vw; }
-    .pn-eircode-field{ max-width:100%; }
-  }
-
-  /* FOUNDER CORRECTION — the Coming Soon endpoint.
-     Calm text links rather than buttons: the page is telling the homeowner
-     this is not ready, so the way onward should read as a suggestion, not a
-     consolation prize. Generous targets, because on a phone these are the
-     only things on the section a homeowner can actually use. */
-  .cs-exits{
-    display:flex; flex-wrap:wrap; gap:14px 26px; justify-content:center;
-    margin-top:26px;
   }
   .cs-exit{
     font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600;
@@ -429,433 +202,25 @@
   .cs-exit:hover{ border-bottom-color:var(--ink); }
   .cs-exit:focus-visible{ outline:2px solid var(--brand-sage); outline-offset:3px; }
   .cs-exit.is-home{ color:var(--soft); border-bottom-color:rgba(85,96,90,.28); font-weight:500; }
-  @media (max-width:640px){
-    .cs-exits{ flex-direction:column; gap:2px; align-items:flex-start; text-align:left; }
-  }
-
-  /* ==================================================================
-     PORTED FROM THE FROZEN DISCOVERIES, lifted verbatim by the builder so it
-     cannot drift from the donors by transcription. The decision board, the
-     evidence layer and the early-journey panel come from DISC-014; the
-     no-crop Potential Asset frame is DISC-014's RULE 6; the .is-four
-     mechanism modifier comes from DISC-022, because this Discovery also has
-     four mechanism tiles rather than three. Still copied rather than shared:
-     the shared-stylesheet decision comes after the rollout, not during it.
-     ================================================================== */
-/* ---- THE DECISION BOARD (DISC-014). Composition, materiality, hierarchy.
-     Existing tokens only: --paper, --cream, --ink, --soft, --accent,
-     Fraunces, Work Sans, tints of the brand green.
-
-     HIERARCHY BY SURFACE COUNT, not by shadow weight. Qualification and
-     advisory are SETS OF TILES -- discrete objects you could pick up. The
-     earnings feature is the one UNBROKEN surface, and the only one that
-     dominates. Elevation supports that reading rather than carrying it:
-       earnings 64px  >  advisory tiles 26px  >  qualification tiles 20px
-       >  evidence drawers 16px
-
-     Type roles are shared across every zone so the board stays one object:
-       .dq-cat  Work Sans 9.5px/.24em/--accent   .dq-fact Fraunces/--ink
-       .dq-note Work Sans/--soft ---- */
-
-  /* 1 · QUALIFICATION — three tactile tiles under one editorial rule. The
-     rule spans the whole stage, so they still read as one qualification step
-     rather than three unrelated cards. */
-  .dq-qual{ list-style:none; margin:32px 0 0; padding:14px 0 0;
-    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
-    border-top:2px solid rgba(31,59,46,.55); background:none;
-    border-left:none; border-right:none; border-bottom:none;
-    box-shadow:none; border-radius:0; }
-  .dq-qual > li{ margin:0; padding:20px 22px 22px;
-    background:var(--paper); border:1px solid rgba(31,59,46,.09);
-    border-top:1px solid rgba(31,59,46,.22); border-radius:2px;
-    box-shadow:0 1px 2px rgba(31,59,46,.05),
-               0 10px 20px -14px rgba(31,59,46,.32); }
-  .dq-qual > li:first-child{ padding-left:22px; }
-  .dq-qual > li:not(:first-child){ padding-left:22px; }
-
-  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
-    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:12px; }
-  .dq-fact{ display:block; font-family:'Fraunces',Georgia,serif;
-    font-weight:500; font-size:16px; line-height:1.34; color:var(--ink); }
-  .dq-note{ display:block; font-family:'Work Sans',sans-serif; margin-top:8px;
-    font-size:12.5px; line-height:1.7; color:var(--soft); }
-
-  /* 2 · OPPORTUNITY — the one unbroken surface, and the highest. */
-  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
-    gap:1px; background:rgba(31,59,46,.15);
-    border:1px solid rgba(31,59,46,.15);
-    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
-    box-shadow:0 2px 4px rgba(31,59,46,.07),
-               0 30px 64px -30px rgba(31,59,46,.42); }
-  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
-  .dq-use{ background:var(--cream); padding:36px 30px 40px;
-    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
-
-  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
-    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
-  .dq-earn-caveat{ font-family:'Work Sans',sans-serif; font-size:12.5px;
-    line-height:1.7; color:var(--soft); margin:10px 0 0; max-width:46ch; }
-
-  /* the two reported examples: separated by a rule, with real air around
-     them. Never boxed -- boxing them would make them price cards. */
-  .dq-figs{ list-style:none; margin:40px 0 4px; padding:0;
-    display:grid; grid-template-columns:repeat(2,1fr); gap:0; }
-  .dq-figs > li{ margin:0; padding:26px 30px 4px 0;
-    border-top:1px solid rgba(31,59,46,.22); }
-  .dq-figs > li:last-child{ padding:26px 0 4px 30px;
-    border-left:1px solid rgba(31,59,46,.13); }
-  .dq-fig{ display:block; font-family:'Fraunces',Georgia,serif;
-    font-weight:400; font-size:clamp(30px,3.3vw,46px); line-height:1.03;
-    letter-spacing:-.022em; color:var(--ink); }
-  .dq-src{ display:block; font-family:'Work Sans',sans-serif; margin-top:14px;
-    font-size:12px; line-height:1.6; color:var(--soft); max-width:30ch; }
-
-  /* the mechanism steps down in type as well as width */
-  .dq-rows{ list-style:none; margin:16px 0 0; padding:0; }
-  .dq-rows > li{ margin:16px 0 0; padding-top:16px;
-    border-top:1px solid rgba(31,59,46,.12); }
-  .dq-rows > li:first-child{ margin-top:0; padding-top:0; border-top:none; }
-  .dq-use .dq-fact{ font-size:15px; }
-  .dq-use .dq-note{ font-size:12px; }
-
-  /* 3 · ADVISORY — three floating tiles, calm and clearly subordinate. */
-  .dq-adv{ margin-top:40px; background:none; border:none; border-radius:0;
-    padding:14px 0 0; border-top:2px solid rgba(31,59,46,.42);
-    box-shadow:none; }
-  .dq-adv-cat{ margin-bottom:16px; color:var(--soft); }
-  .dq-adv-cols{ list-style:none; margin:0; padding:0;
-    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .dq-adv-cols > li{ margin:0; padding:22px 24px 24px;
-    background:var(--cream); border:1px solid rgba(31,59,46,.11);
-    border-top:1px solid rgba(31,59,46,.26); border-radius:2px;
-    box-shadow:0 1px 2px rgba(31,59,46,.06),
-               0 14px 26px -16px rgba(31,59,46,.34); }
-  .dq-adv-cols > li:first-child{ padding-left:24px; }
-  .dq-adv-label{ display:block; font-family:'Work Sans',sans-serif;
-    font-size:9.5px; font-weight:500; letter-spacing:.22em;
-    text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
-  .dq-adv .dq-fact{ font-size:15px; }
-
-  /* MOTION — pointer devices only; tiles lift individually, the feature
-     lifts as one object. */
-  @media (hover:hover) and (pointer:fine){
-    .dq-qual > li, .dq-opp, .dq-adv-cols > li{
-      transition:transform .22s ease-out, box-shadow .22s ease-out,
-                 border-color .22s ease-out; }
-    .dq-qual > li:hover{ transform:translateY(-2px);
-      border-color:rgba(31,59,46,.14);
-      box-shadow:0 2px 4px rgba(31,59,46,.06),
-                 0 16px 26px -16px rgba(31,59,46,.38); }
-    .dq-opp:hover{ transform:translateY(-3px);
-      border-color:rgba(31,59,46,.20);
-      box-shadow:0 3px 6px rgba(31,59,46,.08),
-                 0 40px 76px -30px rgba(31,59,46,.48); }
-    .dq-adv-cols > li:hover{ transform:translateY(-2px);
-      border-color:rgba(31,59,46,.16);
-      box-shadow:0 2px 4px rgba(31,59,46,.06),
-                 0 20px 32px -18px rgba(31,59,46,.40); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .dq-qual > li, .dq-opp, .dq-adv-cols > li{ transition:none; }
-    .dq-qual > li:hover, .dq-opp:hover, .dq-adv-cols > li:hover{ transform:none; }
-  }
-
-  @media (max-width:900px){
-    .dq-opp{ grid-template-columns:1fr; }
-    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
-    .dq-earn{ padding:32px 30px 34px; }
-  }
-  @media (max-width:720px){
-    .dq-qual{ grid-template-columns:1fr; gap:8px; }
-    .dq-qual > li{ padding:18px 20px 20px; }
-    .dq-earn{ padding:26px 22px 28px; }
-    .dq-use{ padding:26px 22px 28px; }
-    .dq-figs{ grid-template-columns:1fr; margin-top:30px; }
-    .dq-figs > li{ padding:22px 0 4px; }
-    .dq-figs > li:last-child{ padding:22px 0 4px; border-left:none;
-      border-top:1px solid rgba(31,59,46,.13); }
-    .dq-adv-cols{ grid-template-columns:1fr; gap:8px; }
-    .dq-adv-cols > li{ padding:18px 20px 20px; }
-  }
-
-  /* ---- RESPONSIVE COLLAPSE. The donor's own 720px rule, lifted, plus the
-     two lines it could not have known about: .is-three is a HIGHER-SPECIFICITY
-     selector (0,2,0) than the donor's .rule-cards (0,1,0), so it must be named
-     explicitly or it would win and stay three-up on a phone. The 900px step
-     drops the three routes to two columns before they get too narrow to
-     read. ---- */
-  @media (max-width:900px){
-    .rule-cards.is-three{ grid-template-columns:repeat(2,1fr); }
-  }
-  @media (max-width:720px){
-    .rule-cards, .check-rows{ grid-template-columns:1fr; }
-    .rule-card{ padding:20px 20px 18px; }
-  }
-  @media (max-width:720px){
-    .rule-cards.is-three{ grid-template-columns:1fr; }
-  }
-
-  
-/* ---- HIDDEN CARS MODIFIER (DISC-022). One, and only one: there are FOUR
-     approaches here, not three, and they are genuinely different answers to
-     different constraints -- collapsing them to three would be a technical
-     inaccuracy, not a design simplification. .is-four is (0,2,0) against the
-     base (0,1,0), so it is named again in the stack queries or it would
-     outrank the collapse and stay 2-up on a phone. ---- */
-  .dq-adv-cols.is-four{ grid-template-columns:repeat(2,1fr); gap:10px; }
-  @media (max-width:720px){
-    .dq-adv-cols.is-four{ grid-template-columns:1fr; gap:8px; }
-  }
-
-/* ---- THE EVIDENCE LAYER (DISC-014). Native details/summary, unchanged
-     markup, unchanged behaviour.
-
-     These now sit slightly off the page too, but at the LOWEST elevation on
-     the board -- a 16px ambient against the opportunity's 64px. They read as
-     physical, tappable strips without ever competing with the centrepiece.
-     Opening one raises it a step and gives the evidence a contained reading
-     surface at a controlled measure.
-
-     PARAGRAPH RHYTHM comes from styling the existing <br> elements as blocks,
-     so Planning, Tax and Insurance separate with no markup change. ---- */
-  .faq-item.is-inline{ border:1px solid rgba(31,59,46,.10);
-    border-left:2px solid rgba(31,59,46,.20); border-radius:2px;
-    background:var(--paper); margin-top:8px; padding:0 22px 0 20px;
-    box-shadow:0 1px 1px rgba(31,59,46,.04),
-               0 10px 16px -14px rgba(31,59,46,.30); }
-  .faq-item.is-inline:first-of-type{ margin-top:48px; position:relative; }
-  .faq-item.is-inline:first-of-type::before{ content:""; position:absolute;
-    top:-30px; left:0; width:46px; height:1px; background:rgba(31,59,46,.38); }
-  .faq-item.is-inline + .faq-item.is-inline{ margin-top:8px; }
-  .faq-item.is-inline[open]{ background:var(--paper);
-    border-color:rgba(31,59,46,.16);
-    border-left-color:rgba(31,59,46,.42);
-    box-shadow:0 2px 4px rgba(31,59,46,.06),
-               0 18px 30px -20px rgba(31,59,46,.36); }
-
-  .faq-item.is-inline summary{ padding:17px 0; gap:20px; }
-  .faq-item.is-inline summary h3{ font-family:'Work Sans',sans-serif;
-    font-size:10px; font-weight:500; letter-spacing:.22em;
-    text-transform:uppercase; color:var(--soft); }
-  .faq-item.is-inline summary:hover h3{ color:var(--ink); }
-  .faq-item.is-inline[open] summary h3{ color:var(--ink); }
-
-  .faq-item.is-inline .icon{ width:22px; height:22px; border-radius:50%;
-    border:1px solid rgba(31,59,46,.22); }
-  .faq-item.is-inline .icon::before{ left:6px; top:10px; width:10px; }
-  .faq-item.is-inline .icon::after{ left:10px; top:6px; height:10px; }
-  .faq-item.is-inline summary:hover .icon{ border-color:rgba(31,59,46,.40); }
-  .faq-item.is-inline[open] .icon{ border-color:rgba(31,59,46,.40); }
-
-  /* the reading surface */
-  .faq-item.is-inline .faq-a{ background:var(--cream); border:none;
-    border-top:1px solid rgba(31,59,46,.12); border-radius:0;
-    margin:0 0 20px; padding:22px 24px;
-    max-width:68ch; font-size:14.5px; line-height:1.8; color:var(--soft);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
-  .faq-item.is-inline .faq-a strong{ color:var(--ink); font-weight:600; }
-  .faq-item.is-inline .faq-a br{ display:block; content:""; margin-top:.6em; }
-
-  @media (hover:hover) and (pointer:fine){
-    .faq-item.is-inline{ transition:transform .22s ease-out,
-      box-shadow .22s ease-out, border-color .22s ease-out; }
-    .faq-item.is-inline:hover{ transform:translateY(-2px);
-      border-color:rgba(31,59,46,.16);
-      box-shadow:0 2px 4px rgba(31,59,46,.06),
-                 0 16px 26px -18px rgba(31,59,46,.36); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .faq-item.is-inline{ transition:none; }
-    .faq-item.is-inline:hover{ transform:none; }
-  }
-  @media (max-width:720px){
-    .faq-item.is-inline{ padding:0 16px 0 14px; }
-    .faq-item.is-inline .faq-a{ padding:18px 18px; }
-  }
-
-  
-/* ---- EARLY JOURNEY ENTRY. Deliberately subordinate to the closing
-     .pb-preview panel: a bounded band rather than a full 12vh screen, a 22px
-     heading rather than a 40px one, and a STATIC status pill rather than a
-     control. It carries no href and no form, because the Driveway journey
-     does not exist yet. When it does, this panel and the closing panel take
-     the same governed route. ---- */
-  .pb-early{ background:var(--paper); padding:38px 7vw;
-    border-top:1px solid rgba(31,59,46,.10);
-    border-bottom:1px solid rgba(31,59,46,.10); }
-  .pb-early-inner{ max-width:600px; margin:0 auto; text-align:center; }
-  .pb-early h2{ font-family:'Fraunces',serif; font-weight:500;
-    font-size:clamp(18px,2.1vw,22px); line-height:1.32; margin:0 0 10px; }
-  .pb-early p{ font-size:15px; line-height:1.65; color:var(--soft);
-    max-width:44ch; margin:0 auto 18px; }
-  .pb-early-status{ display:inline-block; font-family:'Work Sans',sans-serif;
-    font-size:11px; font-weight:500; letter-spacing:.15em;
-    text-transform:uppercase; color:var(--soft);
-    border:1px solid rgba(31,59,46,.20); border-radius:999px; padding:8px 18px; }
-  .pb-early-more{ margin:18px 0 0; font-size:13.5px; line-height:1.6;
-    color:var(--soft); }
-  @media (max-width:720px){
-    .pb-early{ padding:30px 7vw; }
-  }
-
-  
-  /* ---- RULE 6 (DISC-014), for the annotated plate. This Discovery's
-     annotation is burned into the JPEG rather than drawn over it, so it
-     cannot re-register with a crop. The frame therefore takes its height
-     from the plate at every width and nothing is cropped. ---- */
-  .imagine-photo.pa-frame{ height:auto; min-height:0; }
-  .imagine-photo.pa-frame img{ height:auto; }
-  @media (max-width:820px){
-    .imagine-photo.pa-frame::before,
-    .imagine-photo.pa-frame::after{ height:18px; }
-    .imagine-photo.pa-frame .caption{ padding:26px 8vw 20px; }
-  }
-
-  /* ---- DOMINANT OPPORTUNITY SURFACE (property-revelation pilot).
-
-     THE GRAMMAR IS NOT NEW. The five rules below are lifted VERBATIM at build
-     time from the frozen Open Your Home to Art (d58c1da22e5c99a2), which is
-     itself DISC-014's decision board -- same tokens, same type roles, same
-     elevation. They are extracted by rule head with brace counting and
-     verified character for character in both directions, so this page cannot
-     drift from the donor by transcription.
-
-     TWO RULES ARE NEW, and only two. The donor board is dominant-plus-
-     supporting at 1.62fr / 1fr. This proposition is two-sided and EQUAL --
-     the wall and the work -- so .is-mirror re-grids it to 1fr / auto / 1fr
-     and .dq-mid carries the relationship glyph between them. .is-mirror is
-     (0,2,0) against .dq-opp's (0,1,0), so it is restated in the stack media
-     query rather than relying on order. ---- */
-  .dq-opp{ margin-top:40px; display:grid; grid-template-columns:1.62fr 1fr;
-    gap:1px; background:rgba(31,59,46,.15);
-    border:1px solid rgba(31,59,46,.15);
-    border-top:2px solid rgba(31,59,46,.55); border-radius:2px;
-    box-shadow:0 2px 4px rgba(31,59,46,.07),
-               0 30px 64px -30px rgba(31,59,46,.42); }
-  .dq-earn{ background:var(--paper); padding:40px 42px 44px; }
-  .dq-use{ background:var(--cream); padding:36px 30px 40px;
-    box-shadow:inset 1px 0 0 rgba(255,255,255,.5); }
-  .dq-cat{ display:block; font-family:'Work Sans',sans-serif; font-size:9.5px;
-    font-weight:500; letter-spacing:.24em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:12px; }
-  .dq-earn-lead{ font-family:'Fraunces',Georgia,serif; font-weight:500;
-    font-size:19px; line-height:1.32; color:var(--ink); margin:0; }
-
-  /* the two additions */
-  .dq-opp.is-mirror{ grid-template-columns:1fr auto 1fr; }
-  .dq-mid{ background:var(--paper); display:flex; align-items:center;
-    justify-content:center; padding:0 20px;
-    font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:22px;
-    line-height:1; color:var(--accent); }
-
-  @media (max-width:900px){
-    .dq-opp{ grid-template-columns:1fr; }
-    .dq-opp.is-mirror{ grid-template-columns:1fr; }
-    .dq-use{ box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
-    .dq-earn{ padding:32px 30px 34px; }
-    .dq-mid{ padding:14px 0; }
-  }
-
-  @media (max-width:720px){
-    .dq-earn{ padding:26px 22px 28px; }
-    .dq-use{ padding:26px 22px 28px; }
-  }
-
-/* PLOTNUA LANDMARKS v1 -- skip link. Off-screen until it takes keyboard focus;
-   it is the one affordance a reliable single main landmark makes
-   possible. No other rule on the page is touched. */
 .pn-skip{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;z-index:9999;}
 .pn-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;background:#1F3B2E;color:#F2EFE6;font:500 14px/1.2 sans-serif;border-radius:4px;text-decoration:none;outline:2px solid #8FAF8A;outline-offset:2px;}
-
-/* PLOTNUA A11Y VISUAL v1 · BEGIN · generated by atlas-tools/build-a11y-visual.py */
-
-/* D · the shared footer. The column headings needed no new colour at all --
-   they are brand sage already, held at opacity .85, which dropped them to
-   4.10:1. Full opacity restores the brand colour and clears AA at 5.03:1.
-   The (c) line is a warm grey lightened the minimum distance to 4.51:1. */
 .footer-col h2{ opacity:1; }
 .footer-base{ color:#A39D8E; }
-
-/* D · brand sage on the ivory and paper grounds reads 2.11-2.22:1. One value,
-   the minimum darkening of that same hue, clears every light ground here
-   while staying far lighter than the ink used for primary copy; measured, it
-   lands at 4.76 on the ivory ground and higher on the slightly darker paper.
-   Each selector mirrors the specificity of the declaration it has to beat and
-   wins on source order alone, so no !important is needed and no brand token
-   moves. `.step-num` is genuinely unscoped; the other three are not, and the
-   flat one-class form left all three measurably unchanged. The `.n` override
-   is deliberately scoped to `.pb-step` only: `.atlas-figs .n` and
-   `.platform-beats .n` on the homepage are var(--ink), already pass, and must
-   not be touched. */
-.step-num{ color:#557550; }
-.related-card .related-kicker,
-.related-card .r-kicker,
-.pb-step .n{ color:#557550; }
-
-/* E · reduced motion. This reuses the treatment the homepage already carries,
-   whose author noted the 1.1s scroll-reveal "is a 1.1s fade and lift on every
-   section ... Content is shown outright instead." The same principle is
-   applied to the surfaces that never received it. Content must never depend
-   on an animation finishing. */
+.related-card .r-kicker { color:#557550; }
 @media (prefers-reduced-motion: reduce){
   .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
-  .article-section, .imagine-photo, .pb-preview, .related, .closing-line,
-  .spark, .seam, .brand-mark, .brand-info{
+  .pb-preview, .related, .spark, .brand-mark {
     transition-duration:.01ms !important; animation-duration:.01ms !important;
     transform:none !important; opacity:1 !important;
   }
-  /* The related-card thumbnail zooms on hover over 1s -- movement, so it is
-     stilled. The sibling `.thumb` box-shadow transition is deliberately left
-     alone: a shadow fade is not motion, and removing it would take away a
-     hover affordance for no accessibility gain. */
   .related-card .thumb img{
     transition-duration:.01ms !important; transform:none !important;
   }
   html{ scroll-behavior:auto !important; }
 }
-/* PLOTNUA A11Y VISUAL v1 · END */
 </style>
-<style>/* PLOTNUA-HOME-FOR-ART-MERGE · generated by atlas-tools/build-a-home-for-art-merge.py.
-   EDITORIAL REDESIGN (founder approval to build locally, 17 Oct 2026). Existing PlotNua
-   colours only, each with one job:
-     warm ivory  #F8F5EC  reading surfaces (opening, 01, 03, questions, PlotArt)
-     deep forest #1F3B2E  the two assessment bands ONLY (M12 refuses it anywhere else)
-     muted sage  #EEF2E8  02 Live with art
-     warm stone  #EFE9DA  the ladder band and the practical guide
-     terracotta  #BD6A46  numerals, thin rules and the PlotArt top edge; #A4532F for small
-                          text. Never a background (M12).
-   Photographs: full-bleed (wall, outcome), split (artist, same wall) and inset (evening);
-   full frame on desktop, nothing regenerated or replaced. */
-  .article-section p.hfa-lede{ font-family:'Fraunces',Georgia,serif; font-size:clamp(20px,2.3vw,25px);
-    line-height:1.55; color:var(--ink); max-width:40ch; margin:0 0 30px; }
-  .hfa-opening .dq-opp{ margin-top:34px; }
-  /* FINAL REFINEMENT (founder, 17 Oct 2026): calmer, slightly tighter rhythm between the
-     editorial sections; generous, never cramped. 9.5vh (85px on a 900px screen) -> 72px. */
-  #pn-main > .article:not(.hfa-own) > .article-section{ padding:clamp(56px,8vh,72px) 0; }
-
-  /* ---- colour bands */
-  .hfa-band.is-sage{ background:#EEF2E8; }
-  .hfa-band.is-stone{ background:#EFE9DA; }
-  .hfa-band.is-forest{ background:#1F3B2E; color:#F8F5EC; }
-  .hfa-band .article-section{ border-bottom:none; padding:68px 0; }
-  .hfa-band .article-section + .article-section{ padding-top:48px; border-top:1px solid rgba(31,59,46,.14); }
-  .hfa-band .dq-adv-cols > li, .hfa-band .dq-qual > li{ background:#F8F5EC; }
-  .hfa-band.is-stone .article{ max-width:1240px; }
-  .hfa-band.is-stone .article-section p{ max-width:66ch; }
-
-  /* ---- numerals, branch openings and the pull-quote */
-  .hfa-num{ display:block; font-family:'Fraunces',Georgia,serif; font-weight:300;
-    font-size:clamp(64px,7.4vw,108px); line-height:.86; letter-spacing:-.035em; color:#BD6A46; margin:0 0 16px; }
-  .article-section p.hfa-branch-lead{ font-size:18.5px; line-height:1.65; color:var(--soft); max-width:42ch; }
-  .article-section p.hfa-pull{ font-family:'Fraunces',Georgia,serif; font-size:clamp(18px,1.7vw,20px);
-    line-height:1.6; color:var(--ink); border-left:2px solid #BD6A46; padding:2px 0 2px 22px; margin-top:34px;
-    max-width:36ch; }
-  .hfa-pull strong{ display:block; font-weight:500; font-size:clamp(22px,2.3vw,28px); line-height:1.3; margin-bottom:8px; }
-
-  /* ---- the sticky in-page navigation: a compact pill in the same family as the
-     brand mark, Search and Back. It sits between them, never over them, and
-     scrolls away with the main column before the closing assessment band. */
+<style>
+/* A Home for Art merge CSS (build-a-home-for-art-merge.py), pruned 23 Oct 2026 to the rules still in use. */
   .hfa-nav-wrap{ position:sticky; top:22px; z-index:45; display:flex; justify-content:center;
     margin:22px 0; pointer-events:none; }
   .hfa-nav{ pointer-events:auto; max-width:calc(100% - 444px); background:#F8F5EC;
@@ -873,132 +238,20 @@
   .hfa-nav-n{ font-family:'Fraunces',Georgia,serif; font-size:13px; font-weight:600; color:#A4532F; }
   #open-your-home-to-art, #live-with-art, #discover-and-own, #before-anything-arrives, #discover-your-property,
   #hfa-checks-top{ scroll-margin-top:84px; }
-
-  /* ---- split photograph and text (01 and, mirrored, 03). Full frame on
-     desktop: the picture takes its height from the image, nothing cropped. */
-  .hfa-split{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); align-items:center; }
-  .hfa-split.is-mirror{ grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); }
-  .hfa-split.is-mirror .hfa-photo{ order:-1; }
-  .hfa-split-text.article-section{ padding:60px 60px 60px 7vw; border-bottom:none; max-width:640px; justify-self:end; }
-  .hfa-split.is-mirror .hfa-split-text.article-section{ padding:60px 7vw 60px 60px; justify-self:start; }
-  .hfa-photo{ position:relative; margin:0; overflow:hidden; background:rgba(31,59,46,.08); }
-  .hfa-photo img{ display:block; width:100%; height:auto; aspect-ratio:1408 / 768; }
-  .hfa-cap{ position:absolute; z-index:2; left:0; right:0; bottom:0; padding:44px 6% 22px;
-    background:linear-gradient(180deg, rgba(15,14,10,0) 0%, rgba(15,14,10,.46) 100%); text-align:center; }
-  .hfa-cap p{ font-family:'Fraunces',serif; font-style:italic; font-weight:400; color:#F8F5EC;
-    font-size:clamp(16px,1.6vw,19px); line-height:1.45; max-width:34ch; margin:0 auto;
-    text-shadow:0 1px 16px rgba(0,0,0,.3); }
-
-  /* ---- inset photograph, framed inside the 02 band */
-  .hfa-inset.hfa-photo{ position:relative; left:50%; translate:-50% 0; width:min(1100px, 86vw);
-    margin:40px 0 46px; border-radius:2px; box-shadow:0 34px 64px -34px rgba(31,59,46,.5); }
-
-  /* ---- full-bleed plates: a little shorter than 84vh, still a full screen's worth */
-  #pn-main .imagine-photo:not(.pa-frame){ height:80vh; height:80svh; }
-
-  /* ---- the ladder band: four compact tiles, then three people in one row */
-  .hfa-ladder .dq-adv{ margin-top:0; }
-  .hfa-band .article-section.hfa-ladder{ padding-top:56px; }
-  .hfa-band .dq-adv .dq-rows{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 34px; margin-top:6px; }
-  .hfa-band .dq-adv .dq-rows > li, .hfa-band .dq-adv .dq-rows > li:first-child{ margin:0; padding-top:16px;
-    border-top:1px solid rgba(31,59,46,.16); }
-  .hfa-band .dq-rows .dq-fact{ font-size:17px; line-height:1.45; }
-
-  /* ---- 03: the four routes as cards; the buying detail behind labelled expanders */
-  .hfa-own .article-section{ padding:52px 0; }
-  .hfa-own .article-section:first-child{ padding-top:64px; }
-  #pn-main .article-section p a:not(.hfa-jump){ color:var(--ink); text-decoration:underline;
-    text-decoration-color:rgba(31,59,46,.38); text-underline-offset:3px; }
-  #pn-main .article-section p a:not(.hfa-jump):hover{ text-decoration-color:var(--ink); }
-  #pn-main .article-section p a:not(.hfa-jump):focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-  .hfa-routes .practical-group{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:24px; }
-  .hfa-routes .practical-item, .hfa-routes .practical-item:first-child{ background:#F8F5EC; padding:24px 26px 26px;
-    border:1px solid rgba(31,59,46,.12); border-top:2px solid #BD6A46; border-radius:2px;
-    box-shadow:0 1px 2px rgba(31,59,46,.05), 0 12px 22px -18px rgba(31,59,46,.3); }
-  .hfa-routes .practical-item p{ font-size:15.5px; line-height:1.7; }
-  .hfa-routes .practical-group + p{ margin-top:30px; }
-  .hfa-cost .planning-sub{ margin-top:0; }
-  .hfa-cost .planning-note{ margin-top:22px; padding-top:18px; }
-  .faq-item.hfa-more{ border:1px solid rgba(31,59,46,.12); border-radius:2px; background:#F8F5EC;
-    padding:0 24px; margin-top:10px; box-shadow:0 1px 2px rgba(31,59,46,.05), 0 10px 18px -16px rgba(31,59,46,.3); }
-  .faq-item.hfa-more:last-child{ border-bottom:1px solid rgba(31,59,46,.12); }
-  .faq-item.hfa-more summary{ padding:20px 0; }
-  .faq-item.hfa-more summary h3{ font-family:'Fraunces',Georgia,serif; font-weight:500;
-    font-size:clamp(18px,1.9vw,21px); line-height:1.35; }
-  .hfa-more-k{ display:block; font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500;
-    letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
-  .hfa-more-body{ padding:0 0 28px; }
-  .hfa-more-body > p:first-child{ margin-top:0; }
-  .article-section p.hfa-more-label{ font-family:'Work Sans',sans-serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--accent); margin:0 0 14px; }
-
-  /* ---- readable small type inside the main column (no tiny labels) */
-  #pn-main .dq-cat, #pn-main .dq-adv-label{ font-size:10.5px; }
-  #pn-main span.dq-note{ font-size:13.5px; }
-  #pn-main .dq-use .dq-note{ font-size:13px; }
-  #pn-main .dq-earn-caveat{ font-size:13.5px; }
-  #pn-main .faq-item.is-inline summary h3{ font-size:12px; letter-spacing:.18em; }
-  #pn-main .quiet-section .kicker{ opacity:1; }
-
-  /* ---- assessments: the same two checks, top and bottom, on deep forest */
-  .hfa-assess{ padding:88px 0 92px; text-align:center; }
-  .hfa-assess-h{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(28px,3.6vw,42px);
-    line-height:1.22; letter-spacing:-.01em; color:#F8F5EC; margin:0 auto 12px; max-width:20ch; }
-  .hfa-assess-intro{ font-size:17px; line-height:1.6; color:rgba(248,245,236,.86); margin:0 auto 36px; max-width:42ch; }
-  .hfa-checks{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; width:100%; max-width:880px;
-    margin:6px auto 0; text-align:left; }
-  .hfa-check{ display:flex; flex-direction:column; padding:30px 30px 32px; border-radius:2px;
-    background:rgba(248,245,236,.07); border:1px solid rgba(248,245,236,.18); border-top:3px solid #BD6A46; }
-  .hfa-check .hfa-check-k{ font-family:'Work Sans',sans-serif; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
-    color:#C9D8C2; margin:0 0 12px; line-height:1.4; }
-  .hfa-check h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(23px,2.4vw,28px); line-height:1.26;
-    margin:0 0 10px; color:#F8F5EC; }
-  .hfa-check p{ font-size:16px; line-height:1.6; color:rgba(248,245,236,.84); margin:0 0 26px; }
-  .hfa-check .btn-primary{ margin-top:auto; align-self:flex-start; text-decoration:none; background:#F8F5EC; color:#1F3B2E;
-    font-weight:600; }
-  .hfa-check .btn-primary:hover{ background:#fff; }
-  .hfa-check .btn-primary:focus-visible{ outline:2px solid #F8F5EC; outline-offset:3px; }
-  .hfa-assess-note{ margin:24px auto 0; font-size:15px; line-height:1.6; color:rgba(248,245,236,.82); }
   #discover-your-property{ background:#1F3B2E; border-top:none; padding:96px 7vw 88px; }
-  #discover-your-property .pn-wordmark, #discover-your-property .pb-headline{ color:#F8F5EC; }
-  #discover-your-property .pb-subhead{ color:rgba(248,245,236,.86); }
-  #discover-your-property .cs-exits{ margin-top:40px; }
+  #discover-your-property .pn-wordmark { color:#F8F5EC; }
   #discover-your-property .cs-exit{ color:#F8F5EC; border-bottom-color:rgba(248,245,236,.42); }
   #discover-your-property .cs-exit:hover{ border-bottom-color:#F8F5EC; }
   #discover-your-property .cs-exit.is-home{ color:rgba(248,245,236,.8); border-bottom-color:rgba(248,245,236,.3); }
   #discover-your-property .cs-exit:focus-visible{ outline-color:#F8F5EC; }
-
-  /* ---- LIVE WITH ART · the gallery comes to you */
-  .hfa-live-q{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.4vw,28px); line-height:1.3;
-    color:var(--ink); margin:0 0 14px; max-width:28ch; }
-  #live-with-art .dq-adv + p{ margin-top:30px; }
-
-  /* ---- the one PlotArt section, terracotta-topped */
   .hfa-plotart{ margin:40px 0 0; padding:32px 32px 34px; background:#F8F5EC; border:1px solid rgba(31,59,46,.12);
     border-top:3px solid #BD6A46; border-radius:2px; box-shadow:0 1px 2px rgba(31,59,46,.05), 0 16px 30px -22px rgba(31,59,46,.34); }
   .hfa-plotart h3{ font-family:'Fraunces',Georgia,serif; font-weight:400; font-size:clamp(22px,2.4vw,27px); line-height:1.3;
     margin:0 0 10px; color:var(--ink); }
   .hfa-plotart-actions{ display:flex; flex-wrap:wrap; gap:12px; margin:22px 0 0; }
-  .hfa-plotart .btn-primary{ margin-top:0; text-decoration:none; }
-  .hfa-plotart .btn-primary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  .hfa-plotart .dq-note{ margin-top:18px; font-size:14.5px; line-height:1.65; }
-  .hfa-future .faq-item.hfa-more{ margin-top:26px; }
-  .hfa-future .faq-item.hfa-more + .dq-note{ margin-top:18px; }
   .hfa-jump{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(79,107,74,.35); }
   .hfa-jump:hover{ border-bottom-color:var(--accent); }
   .hfa-jump:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-
-  @media(min-width:1000px){ .hfa-band .dq-adv-cols.is-four{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
-  @media(max-width:900px){
-    .hfa-split, .hfa-split.is-mirror{ grid-template-columns:1fr; }
-    .hfa-split.is-mirror .hfa-photo{ order:0; }
-    .hfa-split-text.article-section, .hfa-split.is-mirror .hfa-split-text.article-section{ padding:52px 7vw 36px;
-      max-width:none; justify-self:stretch; }
-  }
-  @media(max-width:820px){
-    .hfa-checks{ grid-template-columns:1fr; }
-    .hfa-band .dq-adv .dq-rows{ grid-template-columns:1fr; gap:16px; }
-  }
   @media(max-width:720px){
     .hfa-nav-wrap{ top:12px; margin:18px 0; }
     .hfa-nav{ max-width:calc(100% - 112px); }
@@ -1007,27 +260,7 @@
     .hfa-nav a{ min-height:40px; padding:0 11px; font-size:13px; gap:5px; }
     #open-your-home-to-art, #live-with-art, #discover-and-own, #before-anything-arrives, #discover-your-property,
     #hfa-checks-top{ scroll-margin-top:66px; }
-    /* on a phone the split and inset photographs run edge to edge at 4:3 */
-    .hfa-photo img{ aspect-ratio:4 / 3; object-fit:cover; }
-    /* MOBILE CROPS (checked 17 Oct 2026): the 4:3 centre crop keeps the artist and her canvas,
-       the evening family and painting, and the same-wall painting. The outcome plate's centre
-       crop cut the buyers and the painting they hold, and the evening room's cut the father, so
-       both are framed slightly right. */
-    #pn-main .imagine-photo:not(.pa-frame) img{ object-position:60% 50%; }
-    .hfa-inset.hfa-photo img{ object-position:70% 50%; }
-    .hfa-inset.hfa-photo{ width:100vw; margin:40px 0 44px; border-radius:0; box-shadow:none; }
-    #pn-main > .article:not(.hfa-own) > .article-section{ padding:56px 0; }
-    .hfa-band .article-section{ padding:52px 0; }
-    .hfa-band .article-section + .article-section{ padding-top:40px; }
-    .hfa-own .article-section{ padding:44px 0; }
-    .hfa-routes .practical-group{ grid-template-columns:1fr; gap:10px; }
-    .hfa-routes .practical-item, .hfa-routes .practical-item:first-child{ padding:20px 20px 22px; }
-    .faq-item.hfa-more{ padding:0 18px; }
-    .hfa-assess{ padding:64px 0 68px; }
     #discover-your-property{ padding:72px 20px 72px; }
-    .hfa-check{ padding:24px 20px 24px; }
-    .hfa-check .btn-primary, .hfa-plotart-actions .btn-primary{ align-self:stretch; flex:1 1 100%; text-align:center;
-      box-sizing:border-box; }
     .hfa-plotart{ padding:24px 20px 26px; }
   }
   @media(prefers-reduced-motion:reduce){ .hfa-nav a{ transition:none; } }
@@ -1202,7 +435,8 @@
     <div class="pd-card reveal">
       <div class="pd-head">
         <span class="pd-kicker">How it works</span>
-        <h3 class="pd-h3">Four ways in, and you decide how far it goes.</h3>
+        <h3 class="pd-h3">Four ways in.</h3>
+        <p class="pd-lede" style="margin-top:10px">You decide how far it goes.</p>
       </div>
       <ol class="pd-ladder">
         <li><span class="pd-rung" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span>
@@ -1224,12 +458,13 @@
     <div class="pd-grid reveal">
       <div class="pd-card pd-card--note pd-s-5">
         <span class="pd-kicker">If you go further</span>
-        <h3 class="pd-h3">The more involved you choose to become, the greater the potential return may be &mdash; and the more there is to agree.</h3>
-        <p style="margin-top:18px">You could be paid for providing the space. If a work sells, you and the artist could agree that you receive a share. Neither is a rate: every arrangement is settled between two people, in advance.</p>
+        <h3 class="pd-h3">More involvement. More possibilities.</h3>
+        <p style="margin-top:18px">The more involved you choose to become, the greater the potential return may be &mdash; and the more there is to agree.</p>
+        <p>You could be paid for providing the space. If a work sells, you and the artist could agree that you receive a share. Neither is a rate: every arrangement is settled between two people, in advance.</p>
       </div>
       <div class="pd-card pd-s-7">
         <span class="pd-kicker">And afterwards</span>
-        <h3 class="pd-h3">Three people are better off.</h3>
+        <h3 class="pd-h3">Who benefits?</h3>
         <ul class="pd-list" style="margin-top:22px">
           <li><strong>The artist.</strong> Somewhere for the work to be, and somewhere it can be seen. <span class="pd-small">Wall space is the scarcest thing in an artist&rsquo;s year.</span></li>
           <li><strong>You.</strong> A room with something in it worth looking at, and possibly something for the space.</li>
@@ -1337,9 +572,9 @@
         </div>
       </div>
       <div class="pd-card pd-card--note pd-s-5 pd-sticky">
-        <span class="pd-kicker">Does it have to be expensive?</span>
-        <h3 class="pd-h3">No, and this assumption stops most people.</h3>
-        <p style="margin-top:16px">Graduate shows, print editions, smaller works and emerging artists all sit well below what people expect.</p>
+        <span class="pd-kicker">Cost</span>
+        <h3 class="pd-h3">Does it have to be expensive?</h3>
+        <p style="margin-top:16px">No, and this assumption stops most people. Graduate shows, print editions, smaller works and emerging artists all sit well below what people expect.</p>
         <p class="pd-small">PlotNua does not publish price guides. What a work costs depends on the artist, the medium and the size.</p>
       </div>
     </div>
@@ -1347,7 +582,8 @@
     <div class="pd-gapL reveal">
       <div class="pd-head">
         <span class="pd-kicker">Where to look</span>
-        <h3 class="pd-h2">Four routes, and none of them require an introduction.</h3>
+        <h3 class="pd-h2">Four routes to original art.</h3>
+        <p style="margin-top:14px">None of them require an introduction.</p>
       </div>
       <div class="pd-grid is-stretch">
         <div class="pd-card pd-route pd-s-7"><span class="pd-idx">Route 1</span>
@@ -1363,7 +599,7 @@
           <h4 class="pd-h3">Fairs and annual exhibitions</h4>
           <p>Art Source fills the RDS each November. The <a href="https://rhagallery.ie/rha-annual/" target="_blank" rel="noopener">RHA Annual Exhibition</a> runs free from late spring through the summer, with almost everything for sale. The <a href="https://www.rds.ie/rds-foundation/arts/vaa" target="_blank" rel="noopener">RDS Visual Art Awards</a> exhibition opens each November, showing emerging artists chosen from graduate shows.</p></div>
       </div>
-      <p class="pd-small" style="margin:22px 4px 0;max-width:820px">Buying locally keeps the money in the room. Under the Artists&rsquo; Exemption, an Irish artist&rsquo;s income from original painting and sculpture is exempt from income tax up to &euro;50,000 a year.</p>
+      <div class="pd-qual" style="margin-top:var(--pd-gap)"><span class="pd-kicker">A note on tax</span><p>Buying locally keeps the money in the room. Under Revenue&rsquo;s Artists&rsquo; Exemption, an artist&rsquo;s income from original and creative work, including paintings and sculpture, can be exempt from income tax up to &euro;50,000 a year, but only where Revenue has made a determination for that artist&rsquo;s work. It does not cover USC or PRSI.</p></div>
     </div>
 
     <div class="pd-gapL reveal">
@@ -1485,10 +721,10 @@
       <details class="pd-detail">
         <summary><span><span class="pd-kicker">In detail</span><h3 class="pd-h4 pd-sumh">Money, selling and the planning line</h3></span><span class="pd-plus" aria-hidden="true"></span></summary>
         <div class="pd-detail-body">
-          <p><strong>The artist is the seller.</strong> They own the work, set the price, deal with the buyer and receive the payment. Anything you are paid is a separate agreement between you and the artist. Keeping it that way is simpler for everybody, and it is the arrangement this page describes.</p>
+          <p><strong>The artist is the seller.</strong> Anything you are paid is a separate agreement between you and the artist. Keeping it that way is simpler for everybody, and it is the arrangement this page describes.</p>
           <p><strong>What you receive is income.</strong> A fee for the space, or a share when something sells, is income and is taxable in the normal way. Rent-a-Room Relief does not apply &mdash; Revenue&rsquo;s scheme covers letting a room as residential accommodation, with a minimum letting period, and not for commercial purposes. There is no tax-free allowance here. If your net non-PAYE income for the year reaches &euro;5,000, or your gross non-PAYE income reaches &euro;30,000, Revenue treats you as a chargeable person and a different return applies.</p>
           <p><strong>Where the planning line sits.</strong> Planning permission is needed only where a change of use is material, and whether a change is material depends on the facts. Keeping a few pieces is a long way from running a sales business out of a dwelling. The more regular or commercial the activity becomes, the more important it is to check &mdash; and a Section 5 declaration is how you get a formal answer rather than an opinion. Nothing here is legal or tax advice, and the judgement is your local authority&rsquo;s, not ours.</p>
-          <p><strong>One thing worth knowing about the artist&rsquo;s side.</strong> Under Revenue&rsquo;s Artists&rsquo; Exemption, income from the sale of original artistic work &mdash; paintings and sculpture among the qualifying categories &mdash; can be exempt from Income Tax up to &euro;50,000 a year, but only where Revenue has made a determination for that artist&rsquo;s work. It is the artist&rsquo;s relief, never the host&rsquo;s.</p>
+          <p><strong>One thing worth knowing about the artist&rsquo;s side.</strong> Under Revenue&rsquo;s Artists&rsquo; Exemption, income from the sale of original artistic work &mdash; paintings and sculpture among the qualifying categories &mdash; can be exempt from Income Tax up to &euro;50,000 a year, but only where Revenue has made a determination for that artist&rsquo;s work. It does not cover USC or PRSI. It is the artist&rsquo;s relief, never the host&rsquo;s.</p>
         </div>
       </details>
     </div>
@@ -1505,12 +741,8 @@
     </div>
     <div class="pd-s-8 pd-detail-stack">
       <details class="pd-detail">
-        <summary><h3 class="pd-h4 pd-sumh">Can I see how it will look before I buy?</h3><span class="pd-plus" aria-hidden="true"></span></summary>
-        <div class="pd-detail-body"><p>Some galleries and artists will let you take a work home on approval for a few days. It is a courtesy rather than a right, so ask.</p></div>
-      </details>
-      <details class="pd-detail">
         <summary><h3 class="pd-h4 pd-sumh">Can artwork be moved or rotated later?</h3><span class="pd-plus" aria-hidden="true"></span></summary>
-        <div class="pd-detail-body"><p>Yes. A handful of Irish services rent artwork monthly. Most are aimed at film, corporate and design clients, though at least one also rents to homes. Rotating works you already own between rooms costs nothing.</p></div>
+        <div class="pd-detail-body"><p>Yes. Rotating works you already own between rooms costs nothing. Renting by the month is covered under Live with art, above.</p></div>
       </details>
       <details class="pd-detail">
         <summary><h3 class="pd-h4 pd-sumh">Can I spread the cost?</h3><span class="pd-plus" aria-hidden="true"></span></summary>

@@ -1,12 +1,15 @@
 /* =====================================================================
-   PLOTNUA · PREMIUM DISCOVERY SYSTEM · v1 (Stage 2c prototype)
+   PLOTNUA · PREMIUM DISCOVERY SYSTEM · v1 (Stage 2c)
    ---------------------------------------------------------------------
-   Prototype page: discovery-a-home-for-art.html (23 Oct 2026). Awaiting
-   founder approval. Every rule is scoped to body.pn-id.pn-pd, so the file
+   First page: discovery-a-home-for-art.html. Founder approval of the direction
+   and of the seven components as a FLEXIBLE TOOLKIT (no Discovery is required
+   to use every component): 23 Oct 2026. Anthracite closing panel and the raised
+   surface #2E3033 approved the same day.
+   Every rule is scoped to body.pn-id.pn-pd, so the file
    is inert anywhere else. Loaded after pn-identity.css and
    pn-identity-discovery.css; uses their --p4 tokens and never redefines them.
 
-   Seven components (spec: claude/premium-discovery-component-spec):
+   Seven components (spec: claude/premium-discovery-a-home-for-art-final-2026-10-23):
      1 .pd-media      large editorial image card
      2 .pd-card       floating information card (+ --raised, --quiet, --note)
      3 .pd-grid       asymmetric 12-column grid (.pd-s-* spans)
@@ -25,7 +28,7 @@ body.pn-id.pn-pd{
   --pd-canvas:var(--p4-anth);          /* #1B1C1E  page canvas */
   --pd-band:var(--p4-earth);           /* #27282A  alternate band */
   --pd-card:var(--p4-deep);            /* #2C2E30  card surface */
-  --pd-raised:#2E3033;                 /* one step up: a card inside a card (AA for bronze kickers: 4.5:1) */
+  --pd-raised:#2E3033;                 /* one step up: a card inside a card (AA for bronze kickers); approved 23 Oct 2026 */
   --pd-r:24px; --pd-r-sm:16px; --pd-r-img:18px;
   --pd-pad:clamp(26px,3.2vw,48px);
   --pd-gap:clamp(14px,1.8vw,24px);

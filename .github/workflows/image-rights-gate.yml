@@ -338,6 +338,17 @@ jobs:
           python3 atlas-tools/build-identity-stage1.py --check
           python3 atlas-tools/prove-identity-stage1.py
 
+      # Premium Discovery (Stage 2c, founder approval of the direction 23 Oct 2026).
+      # A Home for Art keeps its head, photographs, links, anchors, check entries,
+      # TAKE-PART marker and cautions; every wording change is declared; the
+      # Artists' Exemption is never stated without Revenue's determination
+      # requirement. The BASE is a pinned snapshot, so the shallow checkout suffices.
+      - name: Premium Discovery pages keep their governed content, imagery, links and cautions
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/prove-premium-discovery-a-home-for-art.py
+          python3 atlas-tools/prove-premium-discovery-capability.py
+
       - name: Summary
         if: always()
         run: |

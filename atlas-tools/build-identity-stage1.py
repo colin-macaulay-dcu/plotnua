@@ -61,7 +61,7 @@ GUARDS (any failure stops the build and nothing is written):
   I13 the Premium Discovery layer (pn-premium-discovery.css and the pn-pd
       class) appears on the approved Premium Discovery pages only, exactly
       once each, and only on pages that also carry the Discovery layer
-      (Stage 2c prototype, 23 Oct 2026, awaiting founder approval)
+      (Stage 2c; direction approved 23 Oct 2026)
   I14 SCOPE: every rule in pn-premium-discovery.css is under
       body.pn-id.pn-pd, and it never redefines a --p4 token
 """
@@ -90,7 +90,7 @@ PAGES = {
     "discovery-the-borrowed-garden.html": "dark", "discovery-driveway-income.html": "dark",
     "discovery-hidden-cars.html": "dark", "discovery-home-exchange.html": "dark",
     "discovery-neighbourhood-parcel-house.html": "dark", "discovery-your-home-on-screen.html": "dark",
-    # Stage 2c, Premium Discovery prototype (23 Oct 2026; NOT yet approved)
+    # Stage 2c, Premium Discovery (direction approved 23 Oct 2026; release pending)
     "discovery-a-home-for-art.html": "dark",
 }
 DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",

@@ -46,7 +46,9 @@ if "--base" in sys.argv:
                                 "assets/identity/pn-identity-discovery.css",
                                 # Stage 2c Premium Discovery prototype (23 Oct 2026)
                                 "assets/identity/pn-premium-discovery.css",
-                                "atlas-tools/prove-premium-discovery-a-home-for-art.py"}
+                                "atlas-tools/prove-premium-discovery-a-home-for-art.py",
+                                "atlas-tools/prove-premium-discovery-capability.py",
+                                "atlas-tools/premium-discovery/a-home-for-art-base.json"}
     extra = sorted(set(diff) - allowed)
     (ok if not extra else bad)("only Stage 1 files differ from %s%s" % (base, "" if not extra else ": " + ", ".join(extra)))
     print("  changed files: " + ", ".join(sorted(set(diff))))
