@@ -338,6 +338,18 @@ jobs:
           python3 atlas-tools/build-identity-stage1.py --check
           python3 atlas-tools/prove-identity-stage1.py
 
+      # Global header v2 (founder approval 23 Oct 2026). One renderer
+      # (atlas-tools/pn_header.py), one stylesheet (assets/identity/pn-header.css),
+      # placed by the identity builder and the global builder. Every approved page
+      # must carry exactly the rendered header; Your Plot and the property checks
+      # must not; the WhatsApp link, the homepage (i) and the rail order are fixed.
+      - name: Every approved page carries the one global header, exactly as rendered
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/build-global-header.py --check
+          python3 atlas-tools/prove-global-header.py
+          python3 atlas-tools/prove-global-header-capability.py
+
       # Premium Discovery (Stage 2c, founder approval of the direction 23 Oct 2026).
       # A Home for Art keeps its head, photographs, links, anchors, check entries,
       # TAKE-PART marker and cautions; every wording change is declared; the

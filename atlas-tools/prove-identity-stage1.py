@@ -50,13 +50,17 @@ if "--base" in sys.argv:
                                 "atlas-tools/prove-premium-discovery-capability.py",
                                 "atlas-tools/premium-discovery/a-home-for-art-base.json",
                                 "atlas-tools/build-a-home-for-art-merge.py",
-                                "atlas-tools/prove-a-home-for-art-merge-lock.py"}
+                                "atlas-tools/prove-a-home-for-art-merge-lock.py",
+                                # global header v2 (23 Oct 2026)
+                                "assets/identity/pn-header.css", "atlas-tools/pn_header.py",
+                                "atlas-tools/build-global-header.py", "atlas-tools/prove-global-header.py",
+                                "atlas-tools/prove-global-header-capability.py"}
     extra = sorted(set(diff) - allowed)
     (ok if not extra else bad)("only Stage 1 files differ from %s%s" % (base, "" if not extra else ": " + ", ".join(extra)))
     print("  changed files: " + ", ".join(sorted(set(diff))))
 
 print("\n  B · each guard refuses a planted fault\n")
-NEEDED = list(bid.PAGES) + ["index.html", "assets/identity/pn-identity.css", "assets/identity/pn-identity-discovery.css", "assets/identity/pn-premium-discovery.css"] + [f for f in bid.PROTECTED if (ROOT / f).exists()]
+NEEDED = list(bid.PAGES) + ["index.html", "assets/identity/pn-identity.css", "assets/identity/pn-identity-discovery.css", "assets/identity/pn-premium-discovery.css", "assets/identity/pn-header.css", "atlas-tools/pn_header.py"] + [f for f in bid.PROTECTED if (ROOT / f).exists()]
 def scratch():
     d = Path(tempfile.mkdtemp(prefix="pnid-"))
     for f in NEEDED:
@@ -76,7 +80,7 @@ d = scratch(); rc, line = run(d); shutil.rmtree(d)
 (ok if rc == 0 else bad)("control: the unmodified copy passes (%s)" % line[:60])
 
 MUT = [
- ("I2 nav link text edited by hand", lambda d: sub(d, "contact.html", ">Your Plot</a>", ">Your plot</a>")),
+ ("I2 nav link text edited by hand", lambda d: sub(d, "contact.html", ">Your Plot</span></a>", ">Your plot</span></a>")),
  ("I2 stylesheet link removed from a page", lambda d: sub(d, "privacy.html", '<link rel="stylesheet" href="assets/identity/pn-identity.css">\n', "")),
  ("I2 reading surface switched by hand", lambda d: sub(d, "terms.html", "pn-id--paper", "pn-id--dark")),
  ("I4 token drifts from the homepage", lambda d: sub(d, "assets/identity/pn-identity.css", "--p4-earth:#27282A", "--p4-earth:#28282A")),
@@ -89,20 +93,20 @@ MUT = [
  ("I9 a page left on the previous homepage theme colour", lambda d: sub(d, "terms.html", 'content="#27282A"', 'content="#2A2622"')),
  ("I9 a second theme-color meta added to a page", lambda d: sub(d, "contact.html", '<meta name="theme-color" content="#27282A">', '<meta name="theme-color" content="#27282A">\n<meta name="theme-color" content="#1F3B2E">')),
  ("I10 Discovery stylesheet linked from a page outside the pilot", lambda d: sub(d, "discovery-hidden-cars.html", "</head>", '<link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">\n</head>')),
- ("I10 Discovery class removed from a pilot page", lambda d: sub(d, "discovery-hidden-bins.html", 'class="pn-id pn-id--dark pn-id--disc"', 'class="pn-id pn-id--dark"')),
+ ("I10 Discovery class removed from a pilot page", lambda d: sub(d, "discovery-hidden-bins.html", 'class="pn-id pn-id--dark pn-id--disc pn-hdr-on"', 'class="pn-id pn-id--dark pn-hdr-on"')),
  ("I10 Discovery stylesheet removed from a pilot page", lambda d: sub(d, "discoveries.html", '<link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">\n', "")),
  ("I12 unscoped rule added to the Discovery layer", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", ".lib-card{ border-radius:40px; }\n/* ---- 2 · hero")),
  ("I12 rule scoped to Stage 1 only (body.pn-id) in the Discovery layer", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", "body.pn-id .footer-word{ color:red; }\n/* ---- 2 · hero")),
  ("I12 Discovery layer redefines a homepage token", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", "body.pn-id.pn-id--disc{ --p4-earth:#000000; }\n/* ---- 2 · hero")),
- ("I2 Discovery header edited by hand", lambda d: sub(d, "discovery-living-in-the-garden.html", '<div class="pn-id-header" role="region" aria-label="PlotNua site">', '<div class="pn-id-header">')),
+ ("I2 Discovery header edited by hand", lambda d: sub(d, "discovery-living-in-the-garden.html", '<div class="pn-hdr" role="region" aria-label="PlotNua site">', '<div class="pn-hdr">')),
  ("I13 Premium stylesheet linked from a page outside Stage 2c", lambda d: sub(d, "discovery-hidden-cars.html", "</head>", '<link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">\n</head>')),
- ("I13 Premium class removed from the prototype page", lambda d: sub(d, "discovery-a-home-for-art.html", 'class="pn-id pn-id--dark pn-id--disc pn-pd"', 'class="pn-id pn-id--dark pn-id--disc"')),
- ("I13 Premium class added to a standard Discovery by hand", lambda d: sub(d, "discovery-hidden-cars.html", 'class="pn-id pn-id--dark pn-id--disc"', 'class="pn-id pn-id--dark pn-id--disc pn-pd"')),
+ ("I13 Premium class removed from the prototype page", lambda d: sub(d, "discovery-a-home-for-art.html", 'class="pn-id pn-id--dark pn-id--disc pn-pd pn-hdr-on"', 'class="pn-id pn-id--dark pn-id--disc pn-hdr-on"')),
+ ("I13 Premium class added to a standard Discovery by hand", lambda d: sub(d, "discovery-hidden-cars.html", 'class="pn-id pn-id--dark pn-id--disc pn-hdr-on"', 'class="pn-id pn-id--dark pn-id--disc pn-pd pn-hdr-on"')),
  ("I13 Premium stylesheet removed from the prototype page", lambda d: sub(d, "discovery-a-home-for-art.html", '<link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">\n', "")),
  ("I14 unscoped rule added to the Premium layer", lambda d: sub(d, "assets/identity/pn-premium-discovery.css", "/* ---- canvas, rhythm", ".pd-card{ border-radius:0; }\n/* ---- canvas, rhythm")),
  ("I14 Discovery-scoped (not Premium) rule in the Premium layer", lambda d: sub(d, "assets/identity/pn-premium-discovery.css", "/* ---- canvas, rhythm", "body.pn-id.pn-id--disc .related{ display:none; }\n/* ---- canvas, rhythm")),
  ("I14 Premium layer redefines a homepage token", lambda d: sub(d, "assets/identity/pn-premium-discovery.css", "/* ---- canvas, rhythm", "body.pn-id.pn-pd{ --p4-ivory:#FFFFFF; }\n/* ---- canvas, rhythm")),
- ("I8 skip link target removed", lambda d: sub(d, "about.html", '<span id="pn-id-content" tabindex="-1"></span>\n', "")),
+ ("I8 skip link target removed", lambda d: sub(d, "about.html", '<span id="pn-id-content" tabindex="-1"></span>', "")),
 ]
 for name, f in MUT:
     d = scratch(); f(d); rc, line = run(d); shutil.rmtree(d)

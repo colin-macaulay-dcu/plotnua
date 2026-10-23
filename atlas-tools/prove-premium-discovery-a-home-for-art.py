@@ -121,6 +121,7 @@ def die(m): raise Refused(m)
 def body(t):
     b = t[t.index("<body"):]
     b = re.sub(r"<!-- PLOTNUA IDENTITY v1 · (HEADER|SKIP) · BEGIN.*?<!-- PLOTNUA IDENTITY v1 · \1 · END -->", "", b, flags=re.S)
+    b = re.sub(r"<!-- PLOTNUA HEADER v2 · (BAR|ROW) · BEGIN.*?<!-- PLOTNUA HEADER v2 · \1 · END -->", "", b, flags=re.S)   # the global header (prove-global-header.py)
     b = re.sub(r"<!-- PLOTNUA SEARCH RAIL.*?SEARCH RAIL v1 · END -->", "", b, flags=re.S)
     b = re.sub(r"<!--.*?-->", "", b, flags=re.S)
     return re.sub(r"<(script|style)\b.*?</\1>", "", b, flags=re.S)
@@ -157,7 +158,9 @@ def head(t):
             "canonical": re.findall(r'<link[^>]+rel="canonical"[^>]*>', h),
             "jsonld": re.findall(r'<script[^>]+ld\+json.*?</script>', h, re.S), "scripts": re.findall(r"<script\b[^>]*src=[^>]*>", h)}
 
-def imgs(t): return sorted(re.sub(r"\s+", " ", x) for x in re.findall(r"<img\b[^>]*>", re.sub(r"<!--.*?-->", "", t[t.index("<body"):], flags=re.S)))
+def imgs(t):
+    b = re.sub(r"<!-- PLOTNUA HEADER v2 · (BAR|ROW) · BEGIN.*?<!-- PLOTNUA HEADER v2 · \1 · END -->", "", t[t.index("<body"):], flags=re.S)
+    return sorted(re.sub(r"\s+", " ", x) for x in re.findall(r"<img\b[^>]*>", re.sub(r"<!--.*?-->", "", b, flags=re.S)))
 def hero(t):
     m = re.search(r'<header class="d-hero">.*?</header>', t, re.S)
     if not m: die("P2 the hero is missing")

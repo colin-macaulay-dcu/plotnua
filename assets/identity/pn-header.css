@@ -1,0 +1,160 @@
+/* =====================================================================
+   PLOTNUA · GLOBAL HEADER · v2 (founder approval, 23 Oct 2026)
+   ---------------------------------------------------------------------
+   The one stylesheet for the one header. Markup comes only from
+   atlas-tools/pn_header.py; atlas-tools/prove-global-header.py keeps both
+   in step on every approved page. Every rule is scoped to body.pn-hdr-on
+   (guard G8), so the file is inert anywhere else.
+
+   Search is the generated rail (search.css / search.js, hash-pinned and
+   untouched): this file only seats its pill in the bar and styles it as a
+   member of the family. Its function, panel, keyboard and focus are theirs.
+
+   Height: --pn-hdr-h is the bar's height. Anything sticky inside a page
+   reads it, so nothing ever sits under the bar.
+   ===================================================================== */
+body.pn-hdr-on{
+  --h-bg:rgba(27,28,30,.96); --h-line:rgba(194,189,181,.10);
+  --h-raised:#2E3033; --h-raised-hi:#35373B; --h-edge:rgba(194,189,181,.16);
+  --h-ivory:#F2EBE0; --h-stone:#C2BDB5; --h-terra-text:#CF8566; --h-bronze:#97785A;
+  --h-serif:'Instrument Serif',Georgia,serif; --h-sans:'Hanken Grotesk',system-ui,sans-serif;
+  --pn-hdr-h:68px; --h-pad:clamp(16px,3vw,40px); --h-btn:44px;
+}
+/* the floating PlotNua tile is now inside the bar; the old element stays in the page, unseen */
+body.pn-hdr-on .brand-mark{ display:none !important; }
+
+body.pn-hdr-on .pn-hdr{ position:sticky; top:0; z-index:60; background:var(--h-bg);
+  -webkit-backdrop-filter:saturate(1.2) blur(14px); backdrop-filter:saturate(1.2) blur(14px);
+  border-bottom:1px solid var(--h-line); }
+body.pn-hdr-on .pn-hdr-in{ height:var(--pn-hdr-h); padding:0 var(--h-pad); display:flex; align-items:center; gap:10px; box-sizing:border-box; }
+
+/* 1 · brand: the approved tile and wordmark, a size down */
+body.pn-hdr-on .pn-hdr-brand{ display:inline-flex; align-items:center; gap:11px; min-height:44px; min-width:44px; text-decoration:none; color:var(--h-ivory);
+  padding:0 6px 0 0; border-radius:12px; }
+body.pn-hdr-on .pn-hdr-tile{ width:36px; height:36px; border-radius:10px; background:#F8F5EC; display:grid; place-items:center;
+  box-shadow:0 1px 2px rgba(0,0,0,.3); flex:none; }
+body.pn-hdr-on .pn-hdr-tile img{ width:28px; height:28px; border-radius:7px; display:block; }
+body.pn-hdr-on .pn-hdr-word{ font-family:var(--h-serif); font-size:28px; line-height:1; letter-spacing:-.01em; }
+body.pn-hdr-on .pn-hdr-brand:focus-visible{ outline:2px solid var(--h-terra-text); outline-offset:3px; }
+body.pn-hdr-on .pn-hdr-nav{ display:flex; align-items:center; gap:8px; margin-left:auto; }
+
+/* 2 · the control family: one height, one radius, one type */
+body.pn-hdr-on .pn-hdr-btn, body.pn-hdr-on .pn-hdr-wa{ display:inline-flex; align-items:center; gap:9px; height:var(--h-btn);
+  padding:0 17px 0 13px; border-radius:999px; text-decoration:none; white-space:nowrap; box-sizing:border-box;
+  font-family:var(--h-sans); font-weight:600; font-size:14.5px; line-height:1; letter-spacing:.005em; color:var(--h-ivory);
+  border:1px solid var(--h-edge); background:transparent;
+  transition:background .2s ease, border-color .2s ease, color .2s ease; }
+body.pn-hdr-on .pn-hdr-btn svg{ width:18px; height:18px; flex:none; }
+/* Discovery Library, the primary action: raised surface, terracotta icon */
+body.pn-hdr-on .pn-hdr-btn.is-primary{ background:var(--h-raised);
+  box-shadow:0 1px 2px rgba(0,0,0,.25), 0 10px 22px -16px rgba(0,0,0,.8); }
+body.pn-hdr-on .pn-hdr-btn.is-primary svg{ color:var(--h-terra-text); }
+/* Your Plot, the related secondary action: outline only */
+body.pn-hdr-on .pn-hdr-btn.is-secondary svg{ color:var(--h-stone); }
+/* the active page: terracotta edge and a fine underline inside the pill */
+body.pn-hdr-on .pn-hdr-btn[aria-current]{ position:relative; border-color:rgba(207,133,102,.7); }
+body.pn-hdr-on .pn-hdr-btn[aria-current]::after{ content:""; position:absolute; left:42px; right:17px; bottom:8px; height:1.5px;
+  border-radius:2px; background:var(--h-terra-text); }
+body.pn-hdr-on .pn-hdr-sep{ width:1px; height:24px; background:var(--h-line); margin:0 6px; flex:none; }
+
+/* 3 · WhatsApp: the approved PlotNua bubble and bronze outline */
+body.pn-hdr-on .pn-hdr-wa{ padding:0 17px 0 6px; border-color:var(--h-bronze); }
+body.pn-hdr-on .pn-hdr-wa-ico{ position:relative; display:block; width:32px; height:32px; flex:none; }
+body.pn-hdr-on .pn-hdr-wa-ico svg{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+body.pn-hdr-on .pn-hdr-wa-ico img{ position:absolute; left:10.625%; top:6.25%; width:75%; height:75%; display:block; }
+
+/* hover and focus: quiet, no movement */
+body.pn-hdr-on :is(.pn-hdr-btn,.pn-hdr-wa):hover{ background:var(--h-raised-hi); border-color:rgba(242,235,224,.32); }
+body.pn-hdr-on .pn-hdr-wa:hover{ border-color:var(--h-ivory); }
+body.pn-hdr-on :is(.pn-hdr-btn,.pn-hdr-wa):focus-visible{ outline:2px solid var(--h-terra-text); outline-offset:3px; }
+
+/* 4 · Search: the existing control, seated at the end of the bar */
+body.pn-hdr-on .pn-hdr-search-slot{ width:120px; height:var(--h-btn); flex:none; }
+html body.pn-hdr-on .pns-pill{ position:fixed; top:calc((var(--pn-hdr-h) - var(--h-btn)) / 2); right:var(--h-pad); z-index:61; opacity:1;
+  height:var(--h-btn); width:120px; padding:0 14px 0 6px; gap:8px; border-radius:999px; justify-content:flex-start;
+  background:var(--h-raised); color:var(--h-ivory); border:1px solid var(--h-edge); box-shadow:none; }
+html body.pn-hdr-on .pns-pill::after{ display:none; }
+html body.pn-hdr-on .pns-pill:hover{ background:var(--h-raised-hi); border-color:rgba(242,235,224,.32); box-shadow:none; }
+html body.pn-hdr-on .pns-pill:focus-visible{ outline:2px solid var(--h-terra-text); outline-offset:3px; }
+html body.pn-hdr-on .pns-pill-ico-wrap{ width:32px; height:32px; background:rgba(242,235,224,.08); }
+html body.pn-hdr-on .pns-pill-ico{ width:14px; height:14px; color:var(--h-ivory); }
+/* the visible word is "Search"; the link's accessible name stays "Search PlotNua" (its aria-label) */
+html body.pn-hdr-on .pns-pill-label{ position:static; width:auto; height:auto; margin:0; overflow:visible; clip:auto; clip-path:none; font-size:0; }
+html body.pn-hdr-on .pns-pill-label::before{ content:"Search"; font-family:var(--h-sans); font-weight:600; font-size:14.5px; letter-spacing:.005em; }
+html body.pn-hdr-on .pns-pill-cue{ display:none; }
+html body.pn-hdr-on .pns-pill[data-pns-current="true"]{ border-color:rgba(207,133,102,.7); box-shadow:none; }
+
+/* the homepage (i): seated beside the brand, its panel opens below the bar */
+html body.pn-hdr-on .pn-hdr .brand-info.brand-info{ position:relative; top:auto; left:auto; right:auto; opacity:1; flex:none;
+  margin:0 0 0 -2px; width:24px; height:24px; }
+html body.pn-hdr-on .pn-hdr .brand-info.brand-info::after{ width:44px; height:44px; }
+html body.pn-hdr-on .brand-info-pop.brand-info-pop{ top:calc(var(--pn-hdr-h) + 10px); left:var(--h-pad); }
+
+/* the phone row: hidden above 720px */
+body.pn-hdr-on .pn-hdr-dest{ display:none; }
+
+/* 5 · anchors and sticky elements sit below the bar */
+body.pn-hdr-on [id]{ scroll-margin-top:calc(var(--pn-hdr-h) + 16px); }
+/* Premium sections: the in-page nav now sits below the bar, so a jump keeps the production
+   gap beneath it (the page pins its own section margins by id, hence the weight) */
+html body.pn-hdr-on.pn-pd .pd-section{ scroll-margin-top:calc(var(--pn-hdr-h) + 84px) !important; }
+html body.pn-hdr-on.pn-pd .hfa-nav-wrap{ top:calc(var(--pn-hdr-h) + 12px); }
+html body.pn-hdr-on.pn-pd .pd-sticky{ top:calc(var(--pn-hdr-h) + 36px); }
+/* House as a Power Station: the full-height drawing stays whole beneath the bar */
+html body.pn-hdr-on .lag-canvas{ top:var(--pn-hdr-h); height:calc(100vh - var(--pn-hdr-h)); }
+
+/* ---------------------------------------------------------------- tablet */
+@media (max-width:1080px){
+  body.pn-hdr-on .pn-hdr-wa{ width:var(--h-btn); padding:0; justify-content:center; }
+  body.pn-hdr-on .pn-hdr-wa .pn-hdr-lb{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  body.pn-hdr-on .pn-hdr-sep{ display:none; }
+}
+@media (max-width:880px){
+  html body.pn-hdr-on .lag-canvas{ height:auto; }
+}
+@media (max-width:860px){
+  body.pn-hdr-on .pn-hdr-btn{ padding:0 14px 0 11px; font-size:14px; }
+  body.pn-hdr-on .pn-hdr-btn[aria-current]::after{ left:40px; right:14px; }
+  body.pn-hdr-on .pn-hdr-word{ font-size:25px; }
+}
+/* ----------------------------------------------------------------- phone */
+@media (max-width:720px){
+  body.pn-hdr-on{ --pn-hdr-h:60px; --h-pad:14px; }
+  body.pn-hdr-on .pn-hdr{ transition:transform .28s cubic-bezier(.4,0,.2,1); }
+  body.pn-hdr-on .pn-hdr-nav{ display:none; }
+  body.pn-hdr-on .pn-hdr-wa{ margin-left:auto; }
+  body.pn-hdr-on .pn-hdr-tile{ width:34px; height:34px; }
+  body.pn-hdr-on .pn-hdr-tile img{ width:26px; height:26px; }
+  body.pn-hdr-on .pn-hdr-word{ font-size:24px; }
+  body.pn-hdr-on .pn-hdr-search-slot{ width:106px; }
+  html body.pn-hdr-on .pns-pill{ width:106px; padding:0 12px 0 5px; }
+  /* the existing scroll tuck (search.js) now moves the whole bar, so nothing floats on its own */
+  html.pns-nav-tuck body.pn-hdr-on .pn-hdr{ transform:translateY(-100%); }
+  html.pns-nav-tuck body.pn-hdr-on .pns-pill{ opacity:0 !important; transform:translateY(-72px); pointer-events:none; }
+  /* a keyboard focus inside the bar keeps it in view (search.js only knows the old controls) */
+  html.pns-nav-tuck body.pn-hdr-on .pn-hdr:focus-within{ transform:none; }
+  /* row 2: the two destinations, 44px targets, as compact as that allows */
+  body.pn-hdr-on .pn-hdr-dest{ display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:6px 14px 8px;
+    background:#1B1C1E; border-bottom:1px solid var(--h-line); }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn{ justify-content:center; padding:0 12px; font-size:14px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn[aria-current]::after{ left:22%; right:22%; }
+  /* phones: a jump up brings the bar back with the in-page nav beneath it, so the
+     section lands below both (production's 66px plus the bar) */
+  html body.pn-hdr-on.pn-pd .pd-section{ scroll-margin-top:calc(var(--pn-hdr-h) + 66px) !important; }
+  body.pn-hdr-on.pn-pd .hfa-nav-wrap{ top:10px; }
+  html:not(.pns-nav-tuck) body.pn-hdr-on.pn-pd .hfa-nav-wrap{ top:calc(var(--pn-hdr-h) + 8px); }
+  html.pns-nav-tuck body.pn-hdr-on .lag-canvas{ top:0; }
+}
+@media (max-width:374px){
+  body.pn-hdr-on .pn-hdr-word{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn svg{ display:none; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn[aria-current]::after{ left:18%; right:18%; }
+}
+@media (prefers-reduced-motion:reduce){
+  body.pn-hdr-on :is(.pn-hdr,.pn-hdr-btn,.pn-hdr-wa){ transition:none !important; }
+  /* with reduced motion the bar simply stays: no tuck, and Search and (i) stay with it */
+  html.pns-nav-tuck body.pn-hdr-on .pn-hdr{ transform:none; }
+  html.pns-nav-tuck body.pn-hdr-on :is(.pns-pill,.brand-info){ opacity:1 !important; transform:none !important; pointer-events:auto !important; }
+  html.pns-nav-tuck body.pn-hdr-on.pn-pd .hfa-nav-wrap{ top:calc(var(--pn-hdr-h) + 8px); }
+  html.pns-nav-tuck body.pn-hdr-on .lag-canvas{ top:var(--pn-hdr-h); }
+}
