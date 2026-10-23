@@ -348,6 +348,12 @@ jobs:
           set -euo pipefail
           python3 atlas-tools/prove-premium-discovery-a-home-for-art.py
           python3 atlas-tools/prove-premium-discovery-capability.py
+          # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
+          # regenerate the approved Premium page, and must leave every file as it was.
+          set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e
+          echo "$out"
+          test "$rc" -eq 2 && grep -q "REFUSED: L1" <<<"$out"
+          test -z "$(git status --porcelain)" || { git status --porcelain; echo "merge builder changed files"; exit 1; }
 
       - name: Summary
         if: always()

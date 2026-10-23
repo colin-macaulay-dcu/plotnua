@@ -81,6 +81,10 @@ GUARDS
       cautions stay on view and every moved caution sits in a labelled
       expander; one labelled in-page navigation, in order, to real anchors.
       Mutation proof: atlas-tools/prove-a-home-for-art-redesign.py
+  L1-L3 PREMIUM DISCOVERY SAFETY LOCK (23 Oct 2026): refuses before writing when
+      the target is the approved Premium Discovery page or any source/edit is
+      incompatible; writes are transactional (restored byte-for-byte on refusal).
+      Proof: atlas-tools/prove-a-home-for-art-merge-lock.py
 
 Usage:
   python3 atlas-tools/build-a-home-for-art-merge.py --apply
@@ -114,6 +118,26 @@ from search_rail_layer import with_ask_label  # noqa: E402  (19 Oct 2026 rail la
 def die(msg):
     print("REFUSED: " + msg + " -- nothing written")
     sys.exit(2)
+
+
+# PREMIUM DISCOVERY SAFETY LOCK, L1 (see main()): checked before this module reads
+# anything from git or from its sources, so it also holds in a shallow checkout.
+PREMIUM_CSS = "assets/identity/pn-premium-discovery.css"
+
+
+def premium_lock():
+    p = ROOT / MERGED
+    if not p.exists():
+        return
+    t = p.read_text(encoding="utf-8")
+    if PREMIUM_CSS in t or re.search(r'<body\b[^>]*class="[^"]*\bpn-pd\b', t):
+        die("L1 %s is the approved Premium Discovery page (Stage 2c, 23 Oct 2026); this builder "
+            "regenerates the earlier design and would replace it" % MERGED)
+
+
+if __name__ == "__main__":
+    premium_lock()
+
 
 
 def base(path):
@@ -1468,22 +1492,75 @@ def m12_redesign(page, shown):
             die("M12 the in-page navigation points at a missing anchor: #" + a)
 
 
+# ---------------------------------------------------------------------------
+# PREMIUM DISCOVERY SAFETY LOCK (founder condition, 23 Oct 2026, before the
+# Stage 2c release). This builder regenerates the 17 Oct editorial design from
+# its 13 Oct sources. It previously wrote the page, the redirect and the
+# consolidation edits BEFORE its guards ran, so a refusal (e.g. M9) still left
+# the approved page replaced while printing "nothing written". Now:
+#   L1  the target is checked first: if discovery-a-home-for-art.html is the
+#       approved Premium Discovery page (pn-premium-discovery.css or the pn-pd
+#       body class), the builder refuses before reading or writing anything else;
+#   L2  every source is assembled and every consolidation edit is planned in
+#       memory first; any refusal there happens before the first write;
+#   L3  the writes are one transaction: the bytes of every file the builder may
+#       touch are captured first, and any refusal after a write (guards M1-M12)
+#       restores them all byte-for-byte before exiting.
+# Compatible inputs are unchanged: same page, same redirect, same edits, same
+# messages. Proof: atlas-tools/prove-a-home-for-art-merge-lock.py
+# ---------------------------------------------------------------------------
+def plan_edits():
+    """apply_edits(True) computed in memory: {file: new text}. Refuses exactly as
+    apply_edits does, but before anything is written."""
+    planned = {}
+    def cur(f):
+        return planned[f] if f in planned else (ROOT / f).read_text(encoding="utf-8")
+    t = cur("sitemap.xml")
+    if t.count(SITEMAP_PAGE) != 1:
+        die("M9 the sitemap does not list A Home for Art exactly once")
+    if SITEMAP_PRE_MERGE in t:
+        planned["sitemap.xml"] = t.replace(SITEMAP_PRE_MERGE, SITEMAP_PAGE + "2026-10-13</lastmod>")
+    for f, old, new in CONSOLIDATION:
+        t = cur(f)
+        done = (new != "" and t.count(new) >= 1 and old not in t) or (new == "" and old not in t)
+        if done:
+            continue
+        if t.count(old) != 1:
+            die("M9 consolidation edit not found exactly once in %s: %s" % (f, " ".join(old.split())[:70]))
+        planned[f] = t.replace(old, new)
+    return planned
+
+
 def main(argv):
     if "--apply" not in argv and "--check" not in argv:
         print(__doc__); sys.exit(1)
+    premium_lock()                                                    # L1
     # The merged page is built from BASE, whose search rail predates the 19 Oct
     # 2026 label change; the rail is owned by build-search-rail.py, so the page
     # carries the current label (search_rail_layer.py, exact and reversible).
     page = with_ask_label(merged_page())
     if "--apply" in argv:
-        (ROOT / MERGED).write_text(page, encoding="utf-8")
-        (ROOT / OLD).write_text(REDIRECT, encoding="utf-8")
-        apply_edits(True)
+        planned = plan_edits()                                        # L2
+        writes = [(MERGED, page), (OLD, REDIRECT)] + sorted(planned.items())
+        before = {f: ((ROOT / f).read_bytes() if (ROOT / f).exists() else None) for f, _ in writes}
+        try:                                                          # L3
+            for f, text in writes:
+                (ROOT / f).write_text(text, encoding="utf-8")
+            guards((ROOT / MERGED).read_text(encoding="utf-8"))
+        except BaseException:
+            for f, data in before.items():
+                if data is None:
+                    if (ROOT / f).exists():
+                        (ROOT / f).unlink()
+                else:
+                    (ROOT / f).write_bytes(data)
+            print("L3 every file restored byte-for-byte (%d)" % len(before))
+            raise
     else:
         if (ROOT / MERGED).read_text(encoding="utf-8") != page:
             print("CHECK FAILED: %s is out of date; run --apply" % MERGED); sys.exit(1)
         apply_edits(False)
-    guards((ROOT / MERGED).read_text(encoding="utf-8"))
+        guards((ROOT / MERGED).read_text(encoding="utf-8"))
     print("A Home for Art: merged page, redirect and %d consolidation edits · %s — M1-M12 pass"
           % (len(CONSOLIDATION), "APPLIED" if "--apply" in argv else "CHECK OK"))
 
