@@ -25,6 +25,13 @@ PREMIUM_PAGES = {
     "discovery-living-in-the-garden.html", # Batch 1 · Garden Living (founder direction 23 Oct 2026)
     "discovery-garden-retreat.html",       # Batch 1 · Garden Living
     "triq-cube.html",                      # Batch 1 · Garden Living (product page)
+    "discovery-hidden-bins.html",            # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
+    "discovery-the-borrowed-garden.html",    # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
+    "discovery-driveway-income.html",        # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
+    "discovery-hidden-cars.html",            # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
+    "discovery-home-exchange.html",          # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
+    "discovery-neighbourhood-parcel-house.html",# Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
+    "discovery-your-home-on-screen.html",    # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
 }
 
 

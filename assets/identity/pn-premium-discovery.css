@@ -550,6 +550,9 @@ body.pn-id.pn-pd:has(.article-section) .gr-hero-cap{ max-width:var(--pd-max); ma
   text-align:left; font-family:var(--p4-serif); font-style:italic; font-size:17px; color:var(--p4-stone); background:none; }
 
 /* ---- D · the reading column becomes the Premium width; sections get Premium rhythm */
+/* Batch 2: on some Discoveries <main> itself is the .article container (the Premium base rule
+   zeroes main's padding, so the reading column is restored here) */
+body.pn-id.pn-pd:has(.article-section) main#pn-main.article{ max-width:var(--pd-max); margin:0 auto; padding:0 clamp(16px,3vw,40px) clamp(40px,6vw,96px); box-sizing:border-box; }
 body.pn-id.pn-pd:has(.article-section) #pn-main > .article{ max-width:var(--pd-max); padding:0 clamp(16px,3vw,40px); box-sizing:border-box; }
 body.pn-id.pn-pd:has(.article-section) .article-section{ padding:clamp(56px,8vw,120px) 0 0; border-bottom:0; scroll-margin-top:96px; }
 body.pn-id.pn-pd:has(.article-section) .article-section > :is(p, ul:not([class]), ol:not([class])){ max-width:68ch; }
@@ -559,7 +562,7 @@ body.pn-id.pn-pd:has(.article-section) .article-section h2{ font-family:var(--p4
 body.pn-id.pn-pd:has(.article-section) .article-section h3{ font-family:var(--p4-serif); font-weight:400; letter-spacing:-.01em; color:var(--p4-ivory); }
 
 /* ---- D · "In brief" becomes the rising answer card */
-body.pn-id.pn-pd:has(.article-section) .article-section.pn-brief{ position:relative; z-index:3; margin-top:clamp(-150px,-11vw,-72px);
+body.pn-id.pn-pd:has(.article-section) .article-section.pn-brief{ position:relative; z-index:3; margin-top:clamp(40px,5vw,64px);
   background:var(--pd-raised); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow-hi);
   padding:var(--pd-pad) !important; }
 body.pn-id.pn-pd:has(.article-section) .article-section.pn-brief > p{ font-size:clamp(17px,1.35vw,19px); line-height:1.65; color:var(--p4-lime); }
@@ -581,7 +584,7 @@ body.pn-id.pn-pd:has(.article-section) .related{ background:var(--pd-band); marg
   body.pn-id.pn-pd:has(.article-section) .d-hero-scrim{ background:linear-gradient(0deg, var(--pd-canvas) 0%, rgba(27,28,30,.72) 34%, rgba(27,28,30,.1) 70%, rgba(27,28,30,.25) 100%); }
   body.pn-id.pn-pd:has(.article-section) .d-hero-copy{ padding-bottom:96px; }
   body.pn-id.pn-pd:has(.article-section) .d-hero-copy h1{ font-size:clamp(46px,13vw,64px); }
-  body.pn-id.pn-pd:has(.article-section) .article-section.pn-brief{ margin-top:-56px; }
+  body.pn-id.pn-pd:has(.article-section) .article-section.pn-brief{ margin-top:32px; }
   body.pn-id.pn-pd:has(:is(#gardenCompare, .gr-hero-cap)) .article-section.pn-brief{ margin-top:32px; }
 }
 
