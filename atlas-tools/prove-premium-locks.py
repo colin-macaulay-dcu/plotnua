@@ -24,7 +24,8 @@ LOCKED = {
     "build-garden-retreat-restructure.py": "discovery-garden-retreat.html",
     "build-cluster2-garden-retreat.py": "discovery-garden-retreat.html",
 }
-MODES = ([], ["--apply"], ["--check"])
+MODES = ([], ["--apply"])          # writing modes (a builder's default may write): must refuse
+READ_ONLY = (["--check"],)          # reads and reports only: allowed, and must write nothing
 
 
 def tree():
@@ -48,6 +49,13 @@ def main():
             bad += not ok
             print("%s  %-38s %-10s %s" % ("refused " if ok else "NOT REFUSED", b, " ".join(m) or "(default)",
                                           "" if ok else out[-160:]))
+        for m in READ_ONLY:   # allowed to run its content guards; the tree check below proves it wrote nothing
+            r = subprocess.run([sys.executable, str(TOOLS / b)] + m, cwd=ROOT, capture_output=True, text=True,
+                               env={**os.environ, "PN_PREMIUM_EXTRA": page}, timeout=300)
+            out = (r.stdout + r.stderr).strip()
+            ok = "REFUSED: PREMIUM" not in out
+            bad += not ok
+            print("%s  %-38s %-10s %s" % ("read-only" if ok else "REFUSED --check", b, " ".join(m), ""))
     after = tree()
     changed = sorted(k for k in before if before[k] != after.get(k))
     if changed:

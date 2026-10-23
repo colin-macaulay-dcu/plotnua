@@ -22,6 +22,9 @@ import os, sys
 PREMIUM_PAGES = {
     "discovery-a-home-for-art.html",       # Stage 2c, live 23 Oct 2026
     "garden-room-prices-ireland.html",     # Batch 1 · 1, founder approval 23 Oct 2026
+    "discovery-living-in-the-garden.html", # Batch 1 · Garden Living (founder direction 23 Oct 2026)
+    "discovery-garden-retreat.html",       # Batch 1 · Garden Living
+    "triq-cube.html",                      # Batch 1 · Garden Living (product page)
 }
 
 
@@ -32,6 +35,11 @@ def premium_pages():
 
 def refuse_if_premium(builder, targets):
     """Exit 2, before anything is read or written, if any target page is Premium."""
+    # --check reads and reports only; it never writes, so it may still run its content guards
+    # on a Premium page (the gate runs build-garden-retreat-restructure.py --check). Every
+    # writing mode, including a builder's default, still refuses.
+    if sys.argv[1:] == ["--check"]:
+        return
     hit = sorted(set(targets) & premium_pages())
     if hit:
         print("%s · REFUSED: PREMIUM %s carries the approved Premium design; this legacy builder "
