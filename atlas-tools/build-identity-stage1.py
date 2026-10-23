@@ -58,6 +58,12 @@ GUARDS (any failure stops the build and nothing is written):
       with the base commit)
   I12 SCOPE: every rule in pn-identity-discovery.css is under
       body.pn-id.pn-id--disc, so it is inert on every other page
+  I13 the Premium Discovery layer (pn-premium-discovery.css and the pn-pd
+      class) appears on the approved Premium Discovery pages only, exactly
+      once each, and only on pages that also carry the Discovery layer
+      (Stage 2c prototype, 23 Oct 2026, awaiting founder approval)
+  I14 SCOPE: every rule in pn-premium-discovery.css is under
+      body.pn-id.pn-pd, and it never redefines a --p4 token
 """
 import hashlib, os, re, sys
 from pathlib import Path
@@ -66,6 +72,7 @@ from pathlib import Path
 ROOT = Path(os.environ.get("PN_ROOT") or Path(__file__).resolve().parent.parent)
 CSS = ROOT / "assets" / "identity" / "pn-identity.css"
 CSS_DISC = ROOT / "assets" / "identity" / "pn-identity-discovery.css"
+CSS_PREM = ROOT / "assets" / "identity" / "pn-premium-discovery.css"
 PROTECTED = ["maker-explorer.css", "maker-explorer.js", "provider-explorer.js", "search.css", "search.js", "index.html"]
 CHECK = "--check" in sys.argv
 
@@ -83,10 +90,15 @@ PAGES = {
     "discovery-the-borrowed-garden.html": "dark", "discovery-driveway-income.html": "dark",
     "discovery-hidden-cars.html": "dark", "discovery-home-exchange.html": "dark",
     "discovery-neighbourhood-parcel-house.html": "dark", "discovery-your-home-on-screen.html": "dark",
+    # Stage 2c, Premium Discovery prototype (23 Oct 2026; NOT yet approved)
+    "discovery-a-home-for-art.html": "dark",
 }
 DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",
         "discovery-the-borrowed-garden.html", "discovery-driveway-income.html", "discovery-hidden-cars.html",
-        "discovery-home-exchange.html", "discovery-neighbourhood-parcel-house.html", "discovery-your-home-on-screen.html"}
+        "discovery-home-exchange.html", "discovery-neighbourhood-parcel-house.html", "discovery-your-home-on-screen.html",
+        "discovery-a-home-for-art.html"}
+# Stage 2c: pages that also load the Premium Discovery component layer (I13, I14).
+PREMIUM = {"discovery-a-home-for-art.html"}
 # 404.html is served for ANY missing address, including nested ones, so its
 # additions use root-absolute paths. The site is served at the domain root.
 ROOTABS = {"404.html"}
@@ -108,11 +120,12 @@ def head_block(page):
             '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
-            "%s"
+            "%s%s"
             "<!-- PLOTNUA IDENTITY v1 · HEAD · END -->\n") % (GEN, FONTS, p(page, "assets/identity/pn-identity.css"),
-                ('<link rel="stylesheet" href="%s">\n' % p(page, "assets/identity/pn-identity-discovery.css")) if page in DISC else "")
+                ('<link rel="stylesheet" href="%s">\n' % p(page, "assets/identity/pn-identity-discovery.css")) if page in DISC else "",
+                ('<link rel="stylesheet" href="%s">\n' % p(page, "assets/identity/pn-premium-discovery.css")) if page in PREMIUM else "")
 
-def body_attr(page): return ' class="pn-id pn-id--%s%s"' % (PAGES[page], " pn-id--disc" if page in DISC else "")
+def body_attr(page): return ' class="pn-id pn-id--%s%s%s"' % (PAGES[page], " pn-id--disc" if page in DISC else "", " pn-pd" if page in PREMIUM else "")
 
 SKIP = ("\n<!-- PLOTNUA IDENTITY v1 · SKIP · BEGIN -->"
         '<a class="pn-id-skip" href="#pn-id-content">Skip to main content</a>'
@@ -143,7 +156,7 @@ ROLE = ' role="region" aria-label="PlotNua site"'
 RX = [re.compile(r"<!-- PLOTNUA IDENTITY v1 · HEAD · BEGIN.*?<!-- PLOTNUA IDENTITY v1 · HEAD · END -->\n", re.S),
       re.compile(r"\n<!-- PLOTNUA IDENTITY v1 · SKIP · BEGIN -->.*?<!-- PLOTNUA IDENTITY v1 · SKIP · END -->", re.S),
       re.compile(r"\n<!-- PLOTNUA IDENTITY v1 · HEADER · BEGIN.*?<!-- PLOTNUA IDENTITY v1 · HEADER · END -->", re.S)]
-BODY_RX = re.compile(r'<body class="pn-id pn-id--(?:dark|paper)(?: pn-id--disc)?">')
+BODY_RX = re.compile(r'<body class="pn-id pn-id--(?:dark|paper)(?: pn-id--disc)?(?: pn-pd)?">')
 THEME_LEGACY = '<meta name="theme-color" content="#1F3B2E">'
 def theme_tag(value): return '<meta name="theme-color" content="%s">' % value
 HOME_THEME = None   # read from index.html in main(); I9
@@ -258,6 +271,15 @@ def main():
             s = s.strip()
             if s and not s.startswith("body.pn-id.pn-id--disc"): die("I12 Discovery selector outside body.pn-id.pn-id--disc: %r" % s)
     if re.search(r"--p4-[a-z0-9-]+\s*:", dflat): die("I12 the Discovery layer must not redefine --p4 tokens (they belong to the homepage, I4)")
+    # I14 Premium Discovery layer scope
+    if not PREMIUM <= DISC: die("I13 a Premium Discovery page must also be an approved Discovery page")
+    if not CSS_PREM.exists(): die("assets/identity/pn-premium-discovery.css is missing")
+    pflat = re.sub(r"@media[^{]*\{", "", re.sub(r"/\*.*?\*/", "", CSS_PREM.read_text(encoding="utf-8"), flags=re.S))
+    for sel in re.findall(r"([^{}]+)\{[^{}]*\}", pflat):
+        for s in top_level(sel):
+            s = s.strip()
+            if s and not s.startswith("body.pn-id.pn-pd"): die("I14 Premium selector outside body.pn-id.pn-pd: %r" % s)
+    if re.search(r"--p4-[a-z0-9-]+\s*:", pflat): die("I14 the Premium layer must not redefine --p4 tokens (they belong to the homepage, I4)")
     # I11 protected sources: fingerprint now, re-check after the run
     prot_before = {f: hashlib.sha256((ROOT / f).read_bytes()).hexdigest() for f in PROTECTED if (ROOT / f).exists()}
     # I6 homepage untouched by this layer
@@ -269,6 +291,8 @@ def main():
         txt = f.read_text(encoding="utf-8", errors="replace")
         if f.name not in DISC and ("pn-identity-discovery.css" in txt or "pn-id--disc" in txt):
             die("I10 %s carries the Discovery layer but is not an approved Discovery page" % f.name)
+        if f.name not in PREMIUM and ("pn-premium-discovery.css" in txt or re.search(r'class="[^"]*\bpn-pd\b', txt)):
+            die("I13 %s carries the Premium Discovery layer but is not an approved Premium page" % f.name)
 
     changed = []
     for page in PAGES:
@@ -288,6 +312,10 @@ def main():
         nd = out.count("pn-identity-discovery.css"); nc = out.count("pn-id--disc")
         if page in DISC and (nd != 1 or nc != 1): die("I10 %s: Discovery layer expected once (link %d, class %d)" % (page, nd, nc))
         if page not in DISC and (nd or nc): die("I10 %s: Discovery layer on a non-Discovery page" % page)
+        # I13 Premium layer exactly once on each approved Premium page, never elsewhere
+        npl = out.count("pn-premium-discovery.css"); npc = len(re.findall(r'<body class="[^"]*\bpn-pd\b', out))
+        if page in PREMIUM and (npl != 1 or npc != 1): die("I13 %s: Premium layer expected once (link %d, class %d)" % (page, npl, npc))
+        if page not in PREMIUM and (npl or npc): die("I13 %s: Premium layer on a non-Premium page" % page)
         # I9 theme colour equals the homepage's; it is the only meta that moved
         if out.count(theme_tag(HOME_THEME)) != 1 or out.count('name="theme-color"') != 1:
             die("I9 %s: theme colour is not exactly the homepage's %s" % (page, HOME_THEME))
@@ -311,8 +339,8 @@ def main():
         if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != h: die("I11 protected source %s changed during the run" % f)
     if CHECK and changed:
         die("CHECK: %d page(s) not in the Stage 1 identity state: %s -- nothing written" % (len(changed), ", ".join(changed)))
-    print("IDENTITY STAGE 1+2a+2b · %s — %d pages (%d Discovery), tokens equal the homepage (%d), theme colour %s, scoped, reversible, protected content unchanged%s"
-          % ("CHECK OK" if CHECK else "BUILT", len(PAGES), len(DISC), len(want), HOME_THEME,
+    print("IDENTITY STAGE 1+2a+2b+2c · %s — %d pages (%d Discovery, %d Premium), tokens equal the homepage (%d), theme colour %s, scoped, reversible, protected content unchanged%s"
+          % ("CHECK OK" if CHECK else "BUILT", len(PAGES), len(DISC), len(PREMIUM), len(want), HOME_THEME,
              "" if CHECK else (" · written: " + (", ".join(changed) or "none"))))
 
 if __name__ == "__main__":

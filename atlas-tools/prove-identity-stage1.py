@@ -43,13 +43,17 @@ if "--base" in sys.argv:
     allowed = set(bid.PAGES) | {"assets/identity/pn-identity.css", "atlas-tools/build-identity-stage1.py",
                                 "atlas-tools/prove-identity-stage1.py", ".github/workflows/image-rights-gate.yml",
                                 "atlas-tools/build-triq-cube-public.py",
-                                "assets/identity/pn-identity-discovery.css"}
+                                "assets/identity/pn-identity-discovery.css",
+                                # Stage 2c Premium Discovery prototype (23 Oct 2026)
+                                "assets/identity/pn-premium-discovery.css",
+                                "atlas-tools/prove-premium-discovery-a-home-for-art.py",
+                                "atlas-tools/premium-discovery/a-home-for-art.body.html"}
     extra = sorted(set(diff) - allowed)
     (ok if not extra else bad)("only Stage 1 files differ from %s%s" % (base, "" if not extra else ": " + ", ".join(extra)))
     print("  changed files: " + ", ".join(sorted(set(diff))))
 
 print("\n  B · each guard refuses a planted fault\n")
-NEEDED = list(bid.PAGES) + ["index.html", "assets/identity/pn-identity.css", "assets/identity/pn-identity-discovery.css"] + [f for f in bid.PROTECTED if (ROOT / f).exists()]
+NEEDED = list(bid.PAGES) + ["index.html", "assets/identity/pn-identity.css", "assets/identity/pn-identity-discovery.css", "assets/identity/pn-premium-discovery.css"] + [f for f in bid.PROTECTED if (ROOT / f).exists()]
 def scratch():
     d = Path(tempfile.mkdtemp(prefix="pnid-"))
     for f in NEEDED:
@@ -88,6 +92,13 @@ MUT = [
  ("I12 rule scoped to Stage 1 only (body.pn-id) in the Discovery layer", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", "body.pn-id .footer-word{ color:red; }\n/* ---- 2 · hero")),
  ("I12 Discovery layer redefines a homepage token", lambda d: sub(d, "assets/identity/pn-identity-discovery.css", "/* ---- 2 · hero", "body.pn-id.pn-id--disc{ --p4-earth:#000000; }\n/* ---- 2 · hero")),
  ("I2 Discovery header edited by hand", lambda d: sub(d, "discovery-living-in-the-garden.html", '<div class="pn-id-header" role="region" aria-label="PlotNua site">', '<div class="pn-id-header">')),
+ ("I13 Premium stylesheet linked from a page outside Stage 2c", lambda d: sub(d, "discovery-hidden-cars.html", "</head>", '<link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">\n</head>')),
+ ("I13 Premium class removed from the prototype page", lambda d: sub(d, "discovery-a-home-for-art.html", 'class="pn-id pn-id--dark pn-id--disc pn-pd"', 'class="pn-id pn-id--dark pn-id--disc"')),
+ ("I13 Premium class added to a standard Discovery by hand", lambda d: sub(d, "discovery-hidden-cars.html", 'class="pn-id pn-id--dark pn-id--disc"', 'class="pn-id pn-id--dark pn-id--disc pn-pd"')),
+ ("I13 Premium stylesheet removed from the prototype page", lambda d: sub(d, "discovery-a-home-for-art.html", '<link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">\n', "")),
+ ("I14 unscoped rule added to the Premium layer", lambda d: sub(d, "assets/identity/pn-premium-discovery.css", "/* ---- canvas, rhythm", ".pd-card{ border-radius:0; }\n/* ---- canvas, rhythm")),
+ ("I14 Discovery-scoped (not Premium) rule in the Premium layer", lambda d: sub(d, "assets/identity/pn-premium-discovery.css", "/* ---- canvas, rhythm", "body.pn-id.pn-id--disc .related{ display:none; }\n/* ---- canvas, rhythm")),
+ ("I14 Premium layer redefines a homepage token", lambda d: sub(d, "assets/identity/pn-premium-discovery.css", "/* ---- canvas, rhythm", "body.pn-id.pn-pd{ --p4-ivory:#FFFFFF; }\n/* ---- canvas, rhythm")),
  ("I8 skip link target removed", lambda d: sub(d, "about.html", '<span id="pn-id-content" tabindex="-1"></span>\n', "")),
 ]
 for name, f in MUT:
