@@ -44,6 +44,14 @@ Search cannot drift apart about which information pages are published.
 """
 import pathlib, re, sys, difflib, ast
 
+# PREMIUM LOCK (founder decision, 23 Oct 2026): refuse before reading or writing anything
+# when a page this layout builder rewrites carries the approved Premium design.
+if __name__ == "__main__":
+    import os as _pl_os, sys as _pl_sys
+    _pl_sys.path.insert(0, _pl_os.path.dirname(_pl_os.path.abspath(__file__)))
+    import premium_pages as _pl
+    _pl.refuse_if_premium("build-discovery-makers-section.py", ['discovery-living-in-the-garden.html'])
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGE = ROOT / "discovery-living-in-the-garden.html"
 SEARCH_BUILDER = ROOT / "atlas-tools" / "build-search-index.py"

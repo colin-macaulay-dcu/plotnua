@@ -240,6 +240,26 @@ console.log('='.repeat(74));
   log('-'.repeat(74));
 }
 
+/* ── FOUNDER-ATTESTED ONE-IMAGE EXCEPTION (PN-FDR-2026-10-23-GRP-HERO) ──
+   The real Garden Room Prices hero record (960 px AVIF), added beside the
+   synthetic record with its real bytes, on a page that labels both. The
+   control must PASS; every way of widening or diluting the exception must
+   be refused. */
+const HERO = realReg.records.find(r => /garden-room-prices-hero-2026-10-23-960\.avif$/.test(r.asset)) || null;
+function attOpts(edit = null, bytes = null) {
+  return {
+    regEdit: r => { const h = JSON.parse(JSON.stringify(HERO)); r.records.push(h);
+                    if (bytes) h.sha256 = sha(bytes); if (edit) edit(h, r); },
+    rawPage: `<!doctype html><html><head><title>t</title></head><body>
+<figure><img src="${anAsset.asset}" width="100" height="100" alt="A garden.">
+<figcaption>${AI_LABEL}</figcaption></figure>
+<figure><img src="${HERO.asset}" width="100" height="56" alt="">
+<figcaption>${AI_LABEL}</figcaption></figure></body></html>`,
+    extraFiles: { [HERO.asset]: bytes || readFileSync(join(ROOT, HERO.asset)) },
+  };
+}
+const ATT_KEYS = ['prompt_status', 'creative_direction_reconstructed', 'reference_disclosure', 'resemblance_review'];
+
 const CASES = [
   { id: 'C-P1', expect: ['P1'],
     why: 'a NEW undeclared image appears on a published page',
@@ -296,6 +316,45 @@ const CASES = [
   { id: 'C-P6c', expect: ['P6'],
     why: 'the record admits it depicts a named product',
     opts: { regEdit: r => { r.records[0].depicts_named_product = true; } } },
+
+  { id: 'C-ATT-control', mustPassOpts: () => attOpts(), expect: ['(accepts)'],
+    why: 'the one founder-attested image (PN-FDR-2026-10-23-GRP-HERO) is accepted' },
+  { id: 'C-ATT-other', expect: ['P5'],
+    why: 'the attested form (no prompt, uncertain references) is used for ANY other image',
+    opts: { regEdit: r => { const x = r.records[0]; delete x.prompt; delete x.reference_inputs;
+      for (const k of ATT_KEYS) x[k] = JSON.parse(JSON.stringify(HERO[k]));
+      x.decision_ref = HERO.decision_ref; } } },
+  { id: 'C-ATT-bytes', expect: ['P5'],
+    why: 'the attested image is altered and its record re-hashed to match',
+    optsFn: () => attOpts(null, Buffer.concat([readFileSync(join(ROOT, HERO.asset)), Buffer.from([0])])) },
+  { id: 'C-ATT-plain', expect: ['P5'],
+    why: 'the attested image is rewritten as an ordinary record with an invented prompt and []',
+    optsFn: () => attOpts(h => { for (const k of ATT_KEYS) delete h[k];
+      h.prompt = 'A garden pavilion.'; h.reference_inputs = []; }) },
+  { id: 'C-ATT-prompt', expect: ['P5'],
+    why: 'an invented prompt is added to the attested record',
+    optsFn: () => attOpts(h => { h.prompt = 'A garden pavilion.'; }) },
+  { id: 'C-ATT-refs', expect: ['P5'],
+    why: 'reference_inputs: [] (a false "nothing was fed in") is added',
+    optsFn: () => attOpts(h => { h.reference_inputs = []; }) },
+  { id: 'C-ATT-disclosure', expect: ['P5'],
+    why: 'the reference uncertainty is no longer disclosed as UNCERTAIN',
+    optsFn: () => attOpts(h => { h.reference_disclosure.status = 'NONE'; }) },
+  { id: 'C-ATT-review', expect: ['P5'],
+    why: 'the resemblance review is removed',
+    optsFn: () => attOpts(h => { delete h.resemblance_review; }) },
+  { id: 'C-ATT-surface', expect: ['P5'],
+    why: 'the attested image is permitted beyond the discovery surface',
+    optsFn: () => attOpts(h => { h.permitted_surfaces = ['discovery', 'homepage']; }) },
+  { id: 'C-ATT-decision', expect: ['P5'],
+    why: 'the founder decision reference is missing',
+    optsFn: () => attOpts(h => { h.decision_ref = 'none'; }) },
+  { id: 'C-ATT-named', expect: ['P6'],
+    why: 'the disclosure names the supplier',
+    optsFn: () => attOpts(h => { h.reference_disclosure.statement += ' Photographs by ' + supplier.organisation_name + '.'; }) },
+  { id: 'C-ATT-product', expect: ['P6'],
+    why: 'the attested image is declared to depict a named product',
+    optsFn: () => attOpts(h => { h.depicts_named_product = true; }) },
 
   { id: 'C-P7', expect: ['P7'],
     why: 'an AI illustration is permitted onto a supplier product card',

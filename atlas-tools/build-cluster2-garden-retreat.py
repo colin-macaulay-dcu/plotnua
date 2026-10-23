@@ -40,6 +40,14 @@ exactly once after. Any other count is a refusal.
 """
 import sys, os, hashlib, shutil
 
+# PREMIUM LOCK (founder decision, 23 Oct 2026): refuse before reading or writing anything
+# when a page this layout builder rewrites carries the approved Premium design.
+if __name__ == "__main__":
+    import os as _pl_os, sys as _pl_sys
+    _pl_sys.path.insert(0, _pl_os.path.dirname(_pl_os.path.abspath(__file__)))
+    import premium_pages as _pl
+    _pl.refuse_if_premium("build-cluster2-garden-retreat.py", ['discovery-garden-retreat.html'])
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 PAGE = os.path.join(ROOT, 'discovery-garden-retreat.html')

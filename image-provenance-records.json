@@ -18,7 +18,8 @@
     "Never imply an AI illustration depicts a named supplier's actual product.",
     "An absent term is never an inclusion: an asset with no record is undeclared, not cleared.",
     "AI illustrations do not appear on individual supplier product cards. product-card is not an available permitted surface.",
-    "Provenance is never inferred from appearance."
+    "Provenance is never inferred from appearance.",
+    "One founder-attested exception (PN-FDR-2026-10-23-GRP-HERO): the six Garden Room Prices hero files, whose exact prompt is unavailable, carry prompt_status UNAVAILABLE, a reference_disclosure (UNCERTAIN) and a resemblance_review instead of a prompt and reference_inputs. It is pinned to those files by SHA-256 in validate-image-provenance.js and is not a way to declare images: every new AI illustration records its prompt verbatim at creation."
   ],
   "recovery": {
     "performed": "2026-10-11",
@@ -919,6 +920,306 @@
       },
       "visible_caption": "AI-generated illustration \u00b7 Hot tub: TimberIN \u00b7 Sauna: TimberIN",
       "accessible_disclosure": "This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub and sauna."
+    },
+    {
+      "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.avif",
+      "sha256": "f5ca159b61a95bb129291a693dd1aab37328eadfa076a2b777bb683f5631be7d",
+      "bytes": 123490,
+      "pixels": [
+        960,
+        540
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation (founder's account); web encodings by PlotNua (Pillow: Lanczos resize to 960 px wide where smaller, AVIF/WebP/JPEG; no crop, no other edit)",
+        "date": "2026-10-23",
+        "source_master": {
+          "file": "plotnua-garden-room-prices-hero-2026-10-23.png (founder's Mac, 04 Deploy/chatgpt images)",
+          "sha256": "14f975066345976dee3d0b13af60b37349ec4dd8c4f7bea0152d63aa25a769c3",
+          "pixels": [
+            1672,
+            941
+          ]
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "creative_direction_reconstructed": {
+        "status": "RECONSTRUCTION by the founder of the creative direction, NOT a verified verbatim generation prompt; must not be presented or recorded as the prompt",
+        "direction": ["original contemporary garden pavilion", "black architectural framing and extensive glazing", "mature woodland setting", "lush ferns and natural planting", "warm sunlight and an inviting interior", "premium architectural photography aesthetic", "suitable for the Garden Room Prices hero"]
+      },
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "Supplier architectural photographs had been shared earlier in the same ChatGPT conversation as aesthetic references. No supplier image was explicitly attached to the final generation request. Whether earlier conversation images were used internally as visual references is uncertain. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+        "evidence": "Private: PlotNua project document claude/provenance-exception-proposal-grp-hero-2026-10-23.md"
+      },
+      "resemblance_review": {
+        "date": "2026-10-23",
+        "reviewed_by": "PlotNua build session (side-by-side comparison); accepted by Colin MacAulay (founder)",
+        "compared_against": "All 31 photographs in the supplier's published photo library, as served on PlotNua's private supplier preview",
+        "findings": ["Shared only generic features of the category: a black-framed glass garden building, woodland, a timber deck, outdoor seating", "Building form differs: a wide open pavilion with a deep overhanging flat roof, not a compact monolithic box", "Glazing differs: clear glass with the interior visible, not the supplier's signature mirrored glass", "Setting and composition differ: fern garden, boulders and stone steps at golden hour, a low three-quarter view framed by a tree trunk"],
+        "verdict": "No composition, viewpoint, building form, setting or distinctive design element of any compared photograph is reproduced."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-23",
+        "attests": "Founder commissioned this image for PlotNua on 23 Oct 2026, reviewed it visually, and confirms it is an original AI-generated architectural illustration of a generic garden pavilion, not a supplier photograph and not a representation of an identifiable supplier product. Accepted the documented resemblance review."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+    },
+    {
+      "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.jpg",
+      "sha256": "a92f40549c52b9f73dfdf9611d9aa1f35e163825a9fc18a8e898c847bc1633ff",
+      "bytes": 196418,
+      "pixels": [
+        960,
+        540
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation (founder's account); web encodings by PlotNua (Pillow: Lanczos resize to 960 px wide where smaller, AVIF/WebP/JPEG; no crop, no other edit)",
+        "date": "2026-10-23",
+        "source_master": {
+          "file": "plotnua-garden-room-prices-hero-2026-10-23.png (founder's Mac, 04 Deploy/chatgpt images)",
+          "sha256": "14f975066345976dee3d0b13af60b37349ec4dd8c4f7bea0152d63aa25a769c3",
+          "pixels": [
+            1672,
+            941
+          ]
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "creative_direction_reconstructed": {
+        "status": "RECONSTRUCTION by the founder of the creative direction, NOT a verified verbatim generation prompt; must not be presented or recorded as the prompt",
+        "direction": ["original contemporary garden pavilion", "black architectural framing and extensive glazing", "mature woodland setting", "lush ferns and natural planting", "warm sunlight and an inviting interior", "premium architectural photography aesthetic", "suitable for the Garden Room Prices hero"]
+      },
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "Supplier architectural photographs had been shared earlier in the same ChatGPT conversation as aesthetic references. No supplier image was explicitly attached to the final generation request. Whether earlier conversation images were used internally as visual references is uncertain. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+        "evidence": "Private: PlotNua project document claude/provenance-exception-proposal-grp-hero-2026-10-23.md"
+      },
+      "resemblance_review": {
+        "date": "2026-10-23",
+        "reviewed_by": "PlotNua build session (side-by-side comparison); accepted by Colin MacAulay (founder)",
+        "compared_against": "All 31 photographs in the supplier's published photo library, as served on PlotNua's private supplier preview",
+        "findings": ["Shared only generic features of the category: a black-framed glass garden building, woodland, a timber deck, outdoor seating", "Building form differs: a wide open pavilion with a deep overhanging flat roof, not a compact monolithic box", "Glazing differs: clear glass with the interior visible, not the supplier's signature mirrored glass", "Setting and composition differ: fern garden, boulders and stone steps at golden hour, a low three-quarter view framed by a tree trunk"],
+        "verdict": "No composition, viewpoint, building form, setting or distinctive design element of any compared photograph is reproduced."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-23",
+        "attests": "Founder commissioned this image for PlotNua on 23 Oct 2026, reviewed it visually, and confirms it is an original AI-generated architectural illustration of a generic garden pavilion, not a supplier photograph and not a representation of an identifiable supplier product. Accepted the documented resemblance review."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+    },
+    {
+      "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.webp",
+      "sha256": "a016f563d6f422e42c4f212f8fd929cd28523e304c72171c103064ef27ef97fb",
+      "bytes": 186196,
+      "pixels": [
+        960,
+        540
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation (founder's account); web encodings by PlotNua (Pillow: Lanczos resize to 960 px wide where smaller, AVIF/WebP/JPEG; no crop, no other edit)",
+        "date": "2026-10-23",
+        "source_master": {
+          "file": "plotnua-garden-room-prices-hero-2026-10-23.png (founder's Mac, 04 Deploy/chatgpt images)",
+          "sha256": "14f975066345976dee3d0b13af60b37349ec4dd8c4f7bea0152d63aa25a769c3",
+          "pixels": [
+            1672,
+            941
+          ]
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "creative_direction_reconstructed": {
+        "status": "RECONSTRUCTION by the founder of the creative direction, NOT a verified verbatim generation prompt; must not be presented or recorded as the prompt",
+        "direction": ["original contemporary garden pavilion", "black architectural framing and extensive glazing", "mature woodland setting", "lush ferns and natural planting", "warm sunlight and an inviting interior", "premium architectural photography aesthetic", "suitable for the Garden Room Prices hero"]
+      },
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "Supplier architectural photographs had been shared earlier in the same ChatGPT conversation as aesthetic references. No supplier image was explicitly attached to the final generation request. Whether earlier conversation images were used internally as visual references is uncertain. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+        "evidence": "Private: PlotNua project document claude/provenance-exception-proposal-grp-hero-2026-10-23.md"
+      },
+      "resemblance_review": {
+        "date": "2026-10-23",
+        "reviewed_by": "PlotNua build session (side-by-side comparison); accepted by Colin MacAulay (founder)",
+        "compared_against": "All 31 photographs in the supplier's published photo library, as served on PlotNua's private supplier preview",
+        "findings": ["Shared only generic features of the category: a black-framed glass garden building, woodland, a timber deck, outdoor seating", "Building form differs: a wide open pavilion with a deep overhanging flat roof, not a compact monolithic box", "Glazing differs: clear glass with the interior visible, not the supplier's signature mirrored glass", "Setting and composition differ: fern garden, boulders and stone steps at golden hour, a low three-quarter view framed by a tree trunk"],
+        "verdict": "No composition, viewpoint, building form, setting or distinctive design element of any compared photograph is reproduced."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-23",
+        "attests": "Founder commissioned this image for PlotNua on 23 Oct 2026, reviewed it visually, and confirms it is an original AI-generated architectural illustration of a generic garden pavilion, not a supplier photograph and not a representation of an identifiable supplier product. Accepted the documented resemblance review."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+    },
+    {
+      "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.avif",
+      "sha256": "d6a86a11293346b51d49386472803160e5d23d937202ebcc0fdb562c13de6edc",
+      "bytes": 275996,
+      "pixels": [
+        1672,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation (founder's account); web encodings by PlotNua (Pillow: Lanczos resize to 960 px wide where smaller, AVIF/WebP/JPEG; no crop, no other edit)",
+        "date": "2026-10-23",
+        "source_master": {
+          "file": "plotnua-garden-room-prices-hero-2026-10-23.png (founder's Mac, 04 Deploy/chatgpt images)",
+          "sha256": "14f975066345976dee3d0b13af60b37349ec4dd8c4f7bea0152d63aa25a769c3",
+          "pixels": [
+            1672,
+            941
+          ]
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "creative_direction_reconstructed": {
+        "status": "RECONSTRUCTION by the founder of the creative direction, NOT a verified verbatim generation prompt; must not be presented or recorded as the prompt",
+        "direction": ["original contemporary garden pavilion", "black architectural framing and extensive glazing", "mature woodland setting", "lush ferns and natural planting", "warm sunlight and an inviting interior", "premium architectural photography aesthetic", "suitable for the Garden Room Prices hero"]
+      },
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "Supplier architectural photographs had been shared earlier in the same ChatGPT conversation as aesthetic references. No supplier image was explicitly attached to the final generation request. Whether earlier conversation images were used internally as visual references is uncertain. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+        "evidence": "Private: PlotNua project document claude/provenance-exception-proposal-grp-hero-2026-10-23.md"
+      },
+      "resemblance_review": {
+        "date": "2026-10-23",
+        "reviewed_by": "PlotNua build session (side-by-side comparison); accepted by Colin MacAulay (founder)",
+        "compared_against": "All 31 photographs in the supplier's published photo library, as served on PlotNua's private supplier preview",
+        "findings": ["Shared only generic features of the category: a black-framed glass garden building, woodland, a timber deck, outdoor seating", "Building form differs: a wide open pavilion with a deep overhanging flat roof, not a compact monolithic box", "Glazing differs: clear glass with the interior visible, not the supplier's signature mirrored glass", "Setting and composition differ: fern garden, boulders and stone steps at golden hour, a low three-quarter view framed by a tree trunk"],
+        "verdict": "No composition, viewpoint, building form, setting or distinctive design element of any compared photograph is reproduced."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-23",
+        "attests": "Founder commissioned this image for PlotNua on 23 Oct 2026, reviewed it visually, and confirms it is an original AI-generated architectural illustration of a generic garden pavilion, not a supplier photograph and not a representation of an identifiable supplier product. Accepted the documented resemblance review."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+    },
+    {
+      "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.jpg",
+      "sha256": "feca00626ff061699a55dd8d1882d74efa0eda57097790f0ce059f4be62ac5b5",
+      "bytes": 490594,
+      "pixels": [
+        1672,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation (founder's account); web encodings by PlotNua (Pillow: Lanczos resize to 960 px wide where smaller, AVIF/WebP/JPEG; no crop, no other edit)",
+        "date": "2026-10-23",
+        "source_master": {
+          "file": "plotnua-garden-room-prices-hero-2026-10-23.png (founder's Mac, 04 Deploy/chatgpt images)",
+          "sha256": "14f975066345976dee3d0b13af60b37349ec4dd8c4f7bea0152d63aa25a769c3",
+          "pixels": [
+            1672,
+            941
+          ]
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "creative_direction_reconstructed": {
+        "status": "RECONSTRUCTION by the founder of the creative direction, NOT a verified verbatim generation prompt; must not be presented or recorded as the prompt",
+        "direction": ["original contemporary garden pavilion", "black architectural framing and extensive glazing", "mature woodland setting", "lush ferns and natural planting", "warm sunlight and an inviting interior", "premium architectural photography aesthetic", "suitable for the Garden Room Prices hero"]
+      },
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "Supplier architectural photographs had been shared earlier in the same ChatGPT conversation as aesthetic references. No supplier image was explicitly attached to the final generation request. Whether earlier conversation images were used internally as visual references is uncertain. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+        "evidence": "Private: PlotNua project document claude/provenance-exception-proposal-grp-hero-2026-10-23.md"
+      },
+      "resemblance_review": {
+        "date": "2026-10-23",
+        "reviewed_by": "PlotNua build session (side-by-side comparison); accepted by Colin MacAulay (founder)",
+        "compared_against": "All 31 photographs in the supplier's published photo library, as served on PlotNua's private supplier preview",
+        "findings": ["Shared only generic features of the category: a black-framed glass garden building, woodland, a timber deck, outdoor seating", "Building form differs: a wide open pavilion with a deep overhanging flat roof, not a compact monolithic box", "Glazing differs: clear glass with the interior visible, not the supplier's signature mirrored glass", "Setting and composition differ: fern garden, boulders and stone steps at golden hour, a low three-quarter view framed by a tree trunk"],
+        "verdict": "No composition, viewpoint, building form, setting or distinctive design element of any compared photograph is reproduced."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-23",
+        "attests": "Founder commissioned this image for PlotNua on 23 Oct 2026, reviewed it visually, and confirms it is an original AI-generated architectural illustration of a generic garden pavilion, not a supplier photograph and not a representation of an identifiable supplier product. Accepted the documented resemblance review."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+    },
+    {
+      "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.webp",
+      "sha256": "e0ca487506f2db412ad00daaa6a60cfec3b01ec4d48e1a2308c30e548c56a531",
+      "bytes": 438212,
+      "pixels": [
+        1672,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "generated": {
+        "tool": "OpenAI ChatGPT image generation (founder's account); web encodings by PlotNua (Pillow: Lanczos resize to 960 px wide where smaller, AVIF/WebP/JPEG; no crop, no other edit)",
+        "date": "2026-10-23",
+        "source_master": {
+          "file": "plotnua-garden-room-prices-hero-2026-10-23.png (founder's Mac, 04 Deploy/chatgpt images)",
+          "sha256": "14f975066345976dee3d0b13af60b37349ec4dd8c4f7bea0152d63aa25a769c3",
+          "pixels": [
+            1672,
+            941
+          ]
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "creative_direction_reconstructed": {
+        "status": "RECONSTRUCTION by the founder of the creative direction, NOT a verified verbatim generation prompt; must not be presented or recorded as the prompt",
+        "direction": ["original contemporary garden pavilion", "black architectural framing and extensive glazing", "mature woodland setting", "lush ferns and natural planting", "warm sunlight and an inviting interior", "premium architectural photography aesthetic", "suitable for the Garden Room Prices hero"]
+      },
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "Supplier architectural photographs had been shared earlier in the same ChatGPT conversation as aesthetic references. No supplier image was explicitly attached to the final generation request. Whether earlier conversation images were used internally as visual references is uncertain. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+        "evidence": "Private: PlotNua project document claude/provenance-exception-proposal-grp-hero-2026-10-23.md"
+      },
+      "resemblance_review": {
+        "date": "2026-10-23",
+        "reviewed_by": "PlotNua build session (side-by-side comparison); accepted by Colin MacAulay (founder)",
+        "compared_against": "All 31 photographs in the supplier's published photo library, as served on PlotNua's private supplier preview",
+        "findings": ["Shared only generic features of the category: a black-framed glass garden building, woodland, a timber deck, outdoor seating", "Building form differs: a wide open pavilion with a deep overhanging flat roof, not a compact monolithic box", "Glazing differs: clear glass with the interior visible, not the supplier's signature mirrored glass", "Setting and composition differ: fern garden, boulders and stone steps at golden hour, a low three-quarter view framed by a tree trunk"],
+        "verdict": "No composition, viewpoint, building form, setting or distinctive design element of any compared photograph is reproduced."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-23",
+        "attests": "Founder commissioned this image for PlotNua on 23 Oct 2026, reviewed it visually, and confirms it is an original AI-generated architectural illustration of a generic garden pavilion, not a supplier photograph and not a representation of an identifiable supplier product. Accepted the documented resemblance review."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
     }
   ],
   "legacy_undeclared": [

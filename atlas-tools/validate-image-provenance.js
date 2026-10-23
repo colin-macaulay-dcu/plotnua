@@ -78,6 +78,26 @@ const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION'];
    vocabulary restriction rather than a convention somebody has to remember:
    enabling it is a schema change with its own approval, not an oversight
    away. */
+/* FOUNDER-ATTESTED CONTEXT · ONE IMAGE ONLY (PN-FDR-2026-10-23-GRP-HERO).
+   The Garden Room Prices hero: an original AI illustration whose exact
+   prompt is unavailable and whose reference history is uncertain (supplier
+   photographs were in the generation conversation). Instead of a prompt and
+   reference_inputs -- which cannot be stated truthfully -- its records carry
+   prompt_status UNAVAILABLE, a reference_disclosure with status UNCERTAIN and
+   a resemblance_review. ONLY these six files may use that form, and these six
+   may use no other. This is not a way to declare images: every new AI
+   illustration records its prompt verbatim at creation. */
+const FOUNDER_ATTESTED = {
+  decision: 'PN-FDR-2026-10-23-GRP-HERO',
+  sha256: new Set([
+    'f5ca159b61a95bb129291a693dd1aab37328eadfa076a2b777bb683f5631be7d',
+    'a92f40549c52b9f73dfdf9611d9aa1f35e163825a9fc18a8e898c847bc1633ff',
+    'a016f563d6f422e42c4f212f8fd929cd28523e304c72171c103064ef27ef97fb',
+    'd6a86a11293346b51d49386472803160e5d23d937202ebcc0fdb562c13de6edc',
+    'feca00626ff061699a55dd8d1882d74efa0eda57097790f0ce059f4be62ac5b5',
+    'e0ca487506f2db412ad00daaa6a60cfec3b01ec4d48e1a2308c30e548c56a531',
+  ]),
+};
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
                             'about', 'journey', 'preview'];
 const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg|ico)$/i;
@@ -421,10 +441,24 @@ console.log('-'.repeat(74));
     const g = r.generated || {};
     if (!g.tool) problems.push(`${r.asset}: no tool`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(String(g.date || ''))) problems.push(`${r.asset}: no date`);
-    if (!r.prompt || !String(r.prompt).trim()) problems.push(`${r.asset}: no prompt`);
-    /* An ABSENT reference_inputs is indistinguishable from an unanswered
-       question. An empty array is an assertion that nothing was fed in. */
-    if (!Array.isArray(r.reference_inputs)) problems.push(`${r.asset}: reference_inputs absent, not []`);
+    const pinned = FOUNDER_ATTESTED.sha256.has(String(r.sha256));
+    const attestedForm = 'prompt_status' in r || 'reference_disclosure' in r || 'resemblance_review' in r;
+    if (pinned || attestedForm) {
+      /* The one-image exception: all of it, or none of it. */
+      const rd = r.reference_disclosure || {}, rv = r.resemblance_review || {};
+      if (!pinned) problems.push(`${r.asset}: founder-attested form on an image outside ${FOUNDER_ATTESTED.decision}`);
+      if (!String(r.decision_ref || '').includes(FOUNDER_ATTESTED.decision)) problems.push(`${r.asset}: no ${FOUNDER_ATTESTED.decision}`);
+      if ('prompt' in r || 'reference_inputs' in r) problems.push(`${r.asset}: attested record also claims a prompt or reference_inputs`);
+      if (r.prompt_status !== 'UNAVAILABLE') problems.push(`${r.asset}: prompt_status is not UNAVAILABLE`);
+      if (rd.status !== 'UNCERTAIN' || !rd.statement || !rd.evidence) problems.push(`${r.asset}: reference uncertainty not disclosed`);
+      if (!rv.date || !rv.compared_against || !rv.verdict || !(rv.findings || []).length) problems.push(`${r.asset}: no resemblance review`);
+      if (JSON.stringify(r.permitted_surfaces) !== '["discovery"]') problems.push(`${r.asset}: attested image outside the discovery surface`);
+    } else {
+      if (!r.prompt || !String(r.prompt).trim()) problems.push(`${r.asset}: no prompt`);
+      /* An ABSENT reference_inputs is indistinguishable from an unanswered
+         question. An empty array is an assertion that nothing was fed in. */
+      if (!Array.isArray(r.reference_inputs)) problems.push(`${r.asset}: reference_inputs absent, not []`);
+    }
     const hr = r.human_review || {};
     if (!hr.reviewer || !hr.date || !hr.attests) problems.push(`${r.asset}: no named human review`);
   }
@@ -470,7 +504,9 @@ console.log('-'.repeat(74));
                                      String(b.row.organisation_domain || '').toLowerCase()]) : new Set();
     const boundSrc = b.ok ? b.sources.flatMap(s => [String(s.url || '').toLowerCase(),
                                                     String(s.sha256).toLowerCase()]).filter(Boolean) : [];
-    const prompt = String(r.prompt || '').toLowerCase();
+    /* The attested form's free text is held to the same rule as a prompt. */
+    const prompt = [r.prompt, r.creative_direction_reconstructed, r.reference_disclosure, r.resemblance_review]
+      .filter(Boolean).map(x => typeof x === 'string' ? x : JSON.stringify(x)).join(' ').toLowerCase();
     for (const o of orgs) {
       if (o.length > 3 && prompt.includes(o)) {
         problems.push(`${id}: prompt names ${o}`);          // never excepted

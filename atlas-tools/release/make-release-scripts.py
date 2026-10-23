@@ -22,14 +22,17 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 
 STANDARD = [
-    ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 7 pages", "global header builder"),
-    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 18 pages", "identity layer"),
+    ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 6 pages", "global header builder"),
+    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 19 pages", "identity layer"),
     ("python3 atlas-tools/prove-global-header.py", "GLOBAL HEADER · OK", "global header guard G1-G9"),
     ("python3 atlas-tools/prove-global-header-capability.py", "CAPABILITY · OK — 25 planted faults, 0 not caught", "global header capability 25/25"),
     ("python3 atlas-tools/prove-identity-stage1.py", "PROOF OK · 27 planted faults, 0 not caught", "identity proof 27/27"),
     ("python3 atlas-tools/prove-premium-discovery-a-home-for-art.py", "PREMIUM-HFA · OK", "Premium content guard"),
     ("python3 atlas-tools/prove-premium-discovery-capability.py", "PROOF OK · 20 planted faults, 0 not caught", "Premium capability 20/20"),
     ("python3 atlas-tools/release/prove-gate-result.py", "GATE-RESULT PROOF · OK", "gate reader proof"),
+    ("python3 atlas-tools/prove-premium-locks.py", "PREMIUM LOCKS · OK", "Premium builder locks"),
+    ("python3 atlas-tools/prove-premium-garden-room-prices.py", "PREMIUM-GRP · OK", "Garden Room Prices content guard"),
+    ("python3 atlas-tools/prove-premium-garden-room-prices-capability.py", "0 not caught", "Garden Room Prices guard capability"),
     ("python3 atlas-tools/build-search-rail.py --check", "nothing written", "search rail unchanged"),
     ("node atlas-tools/prove-landmarks.mjs", "133 passed, 0 failed", "landmarks 133/133"),
     ("python3 atlas-tools/prove-landmarks-capability.py", "24 caught / 0 vacuous / 0 BLIND / 0 MISATTRIBUTED", "landmark capability 24/24"),

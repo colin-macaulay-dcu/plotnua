@@ -380,6 +380,17 @@ jobs:
           python3 atlas-tools/release/prove-gate-result.py
           grep -q "branches: \[main, 'release/\*\*'\]" .github/workflows/image-rights-gate.yml
 
+      # Premium pages (Batch 1, founder approval 23 Oct 2026). One registry
+      # (atlas-tools/premium_pages.py); every legacy layout builder that could rewrite
+      # a garden-room family page refuses before writing on a Premium page; each
+      # Premium page keeps its governed wording, links, anchors and figures.
+      - name: Premium pages keep their governed content, and no legacy builder can overwrite one
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/prove-premium-locks.py
+          python3 atlas-tools/prove-premium-garden-room-prices.py
+          python3 atlas-tools/prove-premium-garden-room-prices-capability.py
+
       - name: Summary
         if: always()
         run: |

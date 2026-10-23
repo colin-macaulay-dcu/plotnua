@@ -58,10 +58,11 @@ GUARDS (any failure stops the build and nothing is written):
       with the base commit)
   I12 SCOPE: every rule in pn-identity-discovery.css is under
       body.pn-id.pn-id--disc, so it is inert on every other page
-  I13 the Premium Discovery layer (pn-premium-discovery.css and the pn-pd
-      class) appears on the approved Premium Discovery pages only, exactly
-      once each, and only on pages that also carry the Discovery layer
-      (Stage 2c; direction approved 23 Oct 2026)
+  I13 the Premium layer (pn-premium-discovery.css and the pn-pd class)
+      appears on the approved Premium pages only (atlas-tools/premium_pages.py,
+      the one registry), exactly once each. A Premium page is a Discovery
+      (it then also carries the Discovery layer) or a Discovery's guide page
+      (Batch 1, founder approval 23 Oct 2026: Garden Room Prices Ireland)
   I14 SCOPE: every rule in pn-premium-discovery.css is under
       body.pn-id.pn-pd, and it never redefines a --p4 token
 """
@@ -69,6 +70,7 @@ import hashlib, os, re, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pn_header  # the one canonical header (global header v2, 23 Oct 2026)
+import premium_pages  # the one Premium page registry (23 Oct 2026)
 
 # PN_ROOT lets the capability proof run this exact builder against a scratch copy.
 ROOT = Path(os.environ.get("PN_ROOT") or Path(__file__).resolve().parent.parent)
@@ -94,13 +96,17 @@ PAGES = {
     "discovery-neighbourhood-parcel-house.html": "dark", "discovery-your-home-on-screen.html": "dark",
     # Stage 2c, Premium Discovery (direction approved 23 Oct 2026; release pending)
     "discovery-a-home-for-art.html": "dark",
+    # Batch 1 · 1, Premium guide page (founder approval 23 Oct 2026)
+    "garden-room-prices-ireland.html": "dark",
 }
 DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",
         "discovery-the-borrowed-garden.html", "discovery-driveway-income.html", "discovery-hidden-cars.html",
         "discovery-home-exchange.html", "discovery-neighbourhood-parcel-house.html", "discovery-your-home-on-screen.html",
         "discovery-a-home-for-art.html"}
-# Stage 2c: pages that also load the Premium Discovery component layer (I13, I14).
-PREMIUM = {"discovery-a-home-for-art.html"}
+# Pages that also load the Premium component layer (I13, I14): the registry.
+PREMIUM = set(premium_pages.PREMIUM_PAGES)
+# Premium pages that are a Discovery's guide rather than a Discovery (no Discovery layer).
+GUIDES = {"garden-room-prices-ireland.html"}
 # 404.html is served for ANY missing address, including nested ones, so its
 # additions use root-absolute paths. The site is served at the domain root.
 ROOTABS = {"404.html"}
@@ -262,7 +268,8 @@ def main():
             if s and not s.startswith("body.pn-id.pn-id--disc"): die("I12 Discovery selector outside body.pn-id.pn-id--disc: %r" % s)
     if re.search(r"--p4-[a-z0-9-]+\s*:", dflat): die("I12 the Discovery layer must not redefine --p4 tokens (they belong to the homepage, I4)")
     # I14 Premium Discovery layer scope
-    if not PREMIUM <= DISC: die("I13 a Premium Discovery page must also be an approved Discovery page")
+    if not PREMIUM <= (DISC | GUIDES): die("I13 a Premium page must be an approved Discovery or Discovery guide page")
+    if not PREMIUM <= set(PAGES): die("I13 a Premium page must be on the identity layer")
     if not CSS_PREM.exists(): die("assets/identity/pn-premium-discovery.css is missing")
     pflat = re.sub(r"@media[^{]*\{", "", re.sub(r"/\*.*?\*/", "", CSS_PREM.read_text(encoding="utf-8"), flags=re.S))
     for sel in re.findall(r"([^{}]+)\{[^{}]*\}", pflat):

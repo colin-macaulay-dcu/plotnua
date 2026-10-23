@@ -116,6 +116,21 @@ BUILD_DATE = "2026-10-20"   # the page's dateModified; equals its sitemap lastmo
 # and scope). A size band would combine measurement bases, which R2 forbids in
 # spirit, and only one product passes a strict internal-area test. So the page
 # says plainly why there is no price by size (FAQ) instead of publishing one.
+# HERO_ILLUSTRATION (founder approval, 23 Oct 2026): the only non-brand images this page may
+# show. The hero: PlotNua's own ORIGINAL AI-generated illustration of a generic architectural
+# garden pavilion (ChatGPT, supplied by the founder 23 Oct 2026), declared AI_ILLUSTRATION with
+# no named product or organisation. It replaced the temporary homepage Possibility Reveal
+# illustration, which is no longer permitted here. No identifiable supplier product may appear
+# in this generic guide, and no supplier photograph is used here without additional written
+# permission.
+HERO_ILLUSTRATION = {
+    "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.avif": "f5ca159b61a95bb129291a693dd1aab37328eadfa076a2b777bb683f5631be7d",
+    "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.avif": "d6a86a11293346b51d49386472803160e5d23d937202ebcc0fdb562c13de6edc",
+    "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.jpg": "a92f40549c52b9f73dfdf9611d9aa1f35e163825a9fc18a8e898c847bc1633ff",
+    "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.jpg": "feca00626ff061699a55dd8d1882d74efa0eda57097790f0ce059f4be62ac5b5",
+    "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.webp": "a016f563d6f422e42c4f212f8fd929cd28523e304c72171c103064ef27ef97fb",
+    "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.webp": "e0ca487506f2db412ad00daaa6a60cfec3b01ec4d48e1a2308c30e548c56a531",
+}
 DESCRIPTION = ("How much does a garden room cost in Ireland? Published price ranges from "
                "PlotNua's research, what the advertised price covers, and how to compare quotes.")
 TODAY = dt.date.fromisoformat(
@@ -652,11 +667,34 @@ def page_guards(text, ex_rows):
         die("R4 supplier or product name in a link or title: %s" % lab_hit[:5])
     if 'href="%s#maker-index"' % PARENT_HREF not in text:
         die("C2.2 the link from the prices to the maker index is missing")
-    # no product imagery
+    # no product imagery. ONE exception (founder approval, 23 Oct 2026): the guide
+    # hero may show PlotNua's own original garden-pavilion illustration, exactly the files
+    # pinned in HERO_ILLUSTRATION, only inside the hero, only with its visible
+    # "AI-generated illustration" label, and only while each file's provenance record is an
+    # AI illustration of no named product or organisation that may appear on a Discovery
+    # surface. Anything else is still refused.
     imgs = re.findall(r"<img\b[^>]*\bsrc=\"([^\"]+)\"", text)
     allowed = {"assets/brand/plotnua-mark-master.svg", "assets/brand/plotnua-icon-transparent.svg"}
-    if set(imgs) - allowed:
-        die("an image outside the brand marks appears: %s" % sorted(set(imgs) - allowed))
+    hero = re.search(r'<header class="pr-hero">(.*?)</header>', text, re.S).group(1)
+    srcs = set(re.findall(r"<img\b[^>]*\bsrc=\"([^\"]+)\"", hero))
+    srcs |= {u.split()[0] for ss in re.findall(r'\bsrcset="([^"]+)"', hero) for u in ss.split(",")}
+    rest = text.replace(hero, " ", 1)                       # everything except the hero
+    outside = [i for i in re.findall(r"<img\b[^>]*\bsrc=\"([^\"]+)\"", rest) if i not in allowed]
+    if outside or (srcs - allowed - set(HERO_ILLUSTRATION)):
+        die("an image outside the brand marks appears: %s" % sorted(set(outside) | (srcs - allowed - set(HERO_ILLUSTRATION))))
+    used = srcs & set(HERO_ILLUSTRATION)
+    if used:
+        if "AI-generated illustration" not in html.unescape(re.sub(r"<[^>]+>", " ", hero)):
+            die("HERO the illustration is not labelled 'AI-generated illustration'")
+        prov = json.loads((ROOT / "image-provenance-records.json").read_text(encoding="utf-8"))
+        recs = {r["asset"]: r for r in prov["records"]}
+        for f in sorted(used):
+            if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != HERO_ILLUSTRATION[f]:
+                die("HERO %s is not the pinned file" % f)
+            r = recs.get(f)
+            if not r or r.get("class") != "AI_ILLUSTRATION" or r.get("depicts_named_product") is not False \
+                    or r.get("depicts_named_organisation") is not False or "discovery" not in (r.get("permitted_surfaces") or []):
+                die("HERO %s: its provenance record does not permit it here" % f)
 
 
 def main():

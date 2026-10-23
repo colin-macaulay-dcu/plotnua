@@ -43,11 +43,11 @@ IDENTITY_PAGES = [   # built by build-identity-stage1.py
     "discovery-the-borrowed-garden.html", "discovery-driveway-income.html",
     "discovery-hidden-cars.html", "discovery-home-exchange.html",
     "discovery-neighbourhood-parcel-house.html", "discovery-your-home-on-screen.html",
-    "discovery-a-home-for-art.html",
+    "discovery-a-home-for-art.html", "garden-room-prices-ireland.html",
 ]
 GLOBAL_PAGES = [     # built by build-global-header.py
     "index.html", "discovery-garden-retreat.html", "discovery-house-as-power-station.html",
-    "discovery-above-and-beyond.html", "garden-room-prices-ireland.html", "search.html", "triq-cube.html",
+    "discovery-above-and-beyond.html", "search.html", "triq-cube.html",
 ]
 HEADER_PAGES = IDENTITY_PAGES + GLOBAL_PAGES
 EXCLUDED = ["your-plot.html"]          # plus every disc0NN-* property check / journey

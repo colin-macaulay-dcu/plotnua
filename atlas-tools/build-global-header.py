@@ -6,7 +6,8 @@ the header from build-identity-stage1.py; every other approved page gets it from
 here. Both use atlas-tools/pn_header.py, so the markup is one and the same.
 
 Pages: pn_header.GLOBAL_PAGES (the homepage, Garden Retreat, House as a Power
-Station, Above and Beyond, Garden Room Prices, the search page, Triq Cube).
+Station, Above and Beyond, the search page, Triq Cube; Garden Room Prices moved to
+the identity layer as a Premium guide page, 23 Oct 2026).
 Excluded by decision: Your Plot and the property checks / journeys.
 
 Insertions (fenced, reversible):
