@@ -616,3 +616,29 @@ body.pn-id.pn-pd:has(header.masthead) footer.page-notes a{ color:var(--p4-terra-
    "AI-generated illustration" label: ivory on a dark glass chip */
 body.pn-id.pn-pd:has(.article-section) .gr-card-label{ font-family:var(--p4-sans); font-weight:600; font-size:11px; letter-spacing:.08em;
   color:var(--p4-ivory); background:rgba(27,28,30,.72); padding:6px 10px; border-radius:999px; }
+
+/* ======================================================================
+   BATCH 3 · BRAND AND CONVERSION PAGES (founder direction, 24 Oct 2026)
+   About, Contact, Artist Register: the same toolkit values on their
+   existing markup. Forms, endpoints and field names are untouched.
+   ====================================================================== */
+/* About: the guide-hero composition */
+body.pn-id.pn-pd .about-hero-scrim{ background:
+  linear-gradient(90deg, rgba(27,28,30,.82) 0%, rgba(27,28,30,.5) 36%, rgba(27,28,30,0) 66%),
+  linear-gradient(0deg, var(--pd-canvas) 0%, rgba(27,28,30,.3) 24%, rgba(27,28,30,0) 48%) !important; }
+body.pn-id.pn-pd .about-hero-copy{ text-align:left !important; left:0; right:0; max-width:var(--pd-max); margin:0 auto;
+  padding-left:clamp(16px,3vw,40px) !important; padding-right:clamp(16px,3vw,40px) !important; box-sizing:border-box; }
+body.pn-id.pn-pd .about-hero-copy .eyebrow{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; color:var(--p4-bronze-text); }
+body.pn-id.pn-pd .about-hero-copy h1{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(52px,7vw,112px); line-height:.94; letter-spacing:-.02em; margin-left:0; max-width:11ch; text-shadow:0 2px 28px rgba(20,21,22,.5); }
+body.pn-id.pn-pd .about-hero-copy p{ margin-left:0; max-width:34ch; }
+
+/* Contact and Artist Register: intro headings at the Premium scale */
+body.pn-id.pn-pd :is(.contact-intro, .privacy-intro) h1{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(52px,6.4vw,104px); line-height:.95; letter-spacing:-.02em; color:var(--p4-ivory); }
+body.pn-id.pn-pd :is(.contact-intro, .privacy-intro) :is(.eyebrow, .kicker){ font-family:var(--p4-sans); font-weight:700; letter-spacing:.18em; color:var(--p4-bronze-text); }
+
+/* Forms: a card surface, rounded fields, pill buttons (same controls, same names, same endpoints) */
+body.pn-id.pn-pd :is(.contact-form, .ar-form){ background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); padding:var(--pd-pad); box-sizing:border-box; }
+body.pn-id.pn-pd :is(.contact-form, .ar-form) :is(input[type="text"], input[type="email"], input[type="url"], select, textarea){
+  background:var(--pd-raised); border:1px solid var(--p4-line2); border-radius:12px; color:var(--p4-ivory); min-height:48px; padding:10px 14px; box-sizing:border-box; }
+body.pn-id.pn-pd :is(.contact-form, .ar-form) :is(input, select, textarea):focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:2px; }
+body.pn-id.pn-pd :is(.contact-form .btn-primary, .ar-form button[type="submit"], .ar-cta){ display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 26px; border-radius:999px; font-family:var(--p4-sans); font-weight:600; }

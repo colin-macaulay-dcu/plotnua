@@ -32,6 +32,9 @@ PREMIUM_PAGES = {
     "discovery-home-exchange.html",          # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
     "discovery-neighbourhood-parcel-house.html",# Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
     "discovery-your-home-on-screen.html",    # Batch 2 · standard Discoveries (founder direction 23 Oct 2026)
+    "about.html",                            # Batch 3 · brand and conversion pages (founder direction 24 Oct 2026)
+    "contact.html",                          # Batch 3 · brand and conversion pages (founder direction 24 Oct 2026)
+    "artist-register.html",                  # Batch 3 · brand and conversion pages (founder direction 24 Oct 2026)
 }
 
 

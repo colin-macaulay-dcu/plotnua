@@ -111,6 +111,8 @@ PREMIUM = set(premium_pages.PREMIUM_PAGES)
 GUIDES = {"garden-room-prices-ireland.html"}
 # Premium product pages (Batch 1 · Garden Living): a maker's product page, no Discovery layer.
 PRODUCTS = {"triq-cube.html"}
+# Premium brand and conversion pages (Batch 3): About, Contact, Artist Register. No Discovery layer.
+BRAND = {"about.html", "contact.html", "artist-register.html"}
 # 404.html is served for ANY missing address, including nested ones, so its
 # additions use root-absolute paths. The site is served at the domain root.
 ROOTABS = {"404.html"}
@@ -272,7 +274,7 @@ def main():
             if s and not s.startswith("body.pn-id.pn-id--disc"): die("I12 Discovery selector outside body.pn-id.pn-id--disc: %r" % s)
     if re.search(r"--p4-[a-z0-9-]+\s*:", dflat): die("I12 the Discovery layer must not redefine --p4 tokens (they belong to the homepage, I4)")
     # I14 Premium Discovery layer scope
-    if not PREMIUM <= (DISC | GUIDES | PRODUCTS): die("I13 a Premium page must be an approved Discovery, Discovery guide or product page")
+    if not PREMIUM <= (DISC | GUIDES | PRODUCTS | BRAND): die("I13 a Premium page must be an approved Discovery, Discovery guide, product or brand page")
     if not PREMIUM <= set(PAGES): die("I13 a Premium page must be on the identity layer")
     if not CSS_PREM.exists(): die("assets/identity/pn-premium-discovery.css is missing")
     pflat = re.sub(r"@media[^{]*\{", "", re.sub(r"/\*.*?\*/", "", CSS_PREM.read_text(encoding="utf-8"), flags=re.S))

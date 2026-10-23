@@ -82,6 +82,33 @@
   footer{ border-top:1px solid rgba(31,59,46,.1); padding:30px 20px; }
   .foot-inner{ max-width:720px; margin:0 auto; font-size:13px; color:var(--soft); }
   .foot-inner a{ color:var(--soft); }
+  /* PASS 1 · BATCH 3 (founder direction, 24 Oct 2026): the anthracite palette and Premium type,
+     by the page's own variables only. search.css and search.js are unchanged. */
+  :root{ --ink:#F2EBE0; --soft:#C2BDB5; --paper:#1B1C1E; --brand-ivory:#2C2E30; --brand-sage:#B39272; --accent:#B39272; }
+  body{ font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,sans-serif; font-weight:400; }
+  .pns-static-main{ max-width:880px; }
+  .pns-static-main h1{ font-family:'Instrument Serif',Georgia,serif; font-weight:400; font-size:clamp(48px,7vw,88px); line-height:.98; letter-spacing:-.02em; }
+  .pns-lede{ color:var(--soft); }
+  .pns-start-h{ font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#B39272; }
+  .pns-chip{ border-color:#4A4B4F; border-radius:999px; padding:9px 16px; }
+  .pns-chip:hover{ border-color:#C2BDB5; }
+  footer{ border-top-color:#3A3B3E; }
+  .brand-mark{ box-shadow:0 1px 3px rgba(0,0,0,.4), 0 0 0 1px rgba(242,235,224,.08); }
+  /* search.css loads after this block, so these carry body.pns-static to take precedence */
+  body.pns-static .pns-static-main h1{ font-family:'Instrument Serif',Georgia,serif; font-weight:400; font-size:clamp(48px,7vw,88px); line-height:.98; letter-spacing:-.02em; color:var(--ink); }
+  body.pns-static .pns-start-h{ font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#B39272; }
+  body.pns-static .pns-input{ background:#2E3033; color:var(--ink); border:1px solid #4A4B4F; border-radius:12px; min-height:52px; }
+  body.pns-static .pns-input::placeholder{ color:#C2BDB5; opacity:.8; }
+  body.pns-static .pns-expand{ background:transparent; color:var(--ink); border-color:#4A4B4F; border-radius:999px; min-height:36px; }
+  body.pns-static .pns-expand:hover{ border-color:#C2BDB5; }
+  body.pns-static .pns-chip{ border-color:#4A4B4F; border-radius:999px; padding:9px 16px; }
+  body.pns-static .pns-sec{ border-bottom-color:#3A3B3E; }
+  body.pns-static :is(.pns-ask, .pns-title, .pns-group-h, .pns-zero-lead){ font-family:'Instrument Serif',Georgia,serif; font-weight:400; letter-spacing:-.005em; }
+  body.pns-static .pns-ask{ font-size:clamp(26px,2.6vw,34px); }
+  body.pns-static .pns-title{ font-size:21px; }
+  body.pns-static :is(.pns-note, .pns-more, .pns-zero) a{ color:#CF8566; text-decoration-color:#AE6245; }
+  body.pns-static :is(.pns-note, .pns-more, .pns-zero) a:hover{ color:#F2EBE0; }
+  body.pns-static .pns-sec{ font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#B39272; }
 </style>
 </head>
 <body class="pns-static pn-hdr-on">
