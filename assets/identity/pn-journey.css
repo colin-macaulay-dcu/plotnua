@@ -1,0 +1,435 @@
+/* ==========================================================================
+   PlotNua · journey skin (Pass 1, approved 24 Oct 2026)
+   The anthracite identity applied to the step-by-step journeys and property
+   checks by restyling their EXISTING markup. Scope: <body class="pn-journey">.
+   Presentation only: no content, markup, script, data, route or form changes.
+   The journeys share one palette (17 custom properties) and one cloned
+   template, so remapping the palette and the type carries most of the change;
+   the light-theme colours the pages hard-code are re-expressed below.
+   ========================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
+
+body.pn-journey{
+  /* the identity tokens (as pn-identity.css / pn-premium-discovery.css) */
+  --pj-anth:#1B1C1E; --pj-band:#27282A; --pj-card:#2C2E30; --pj-raised:#2E3033;
+  --pj-ivory:#F2EBE0; --pj-lime:#E7DED0; --pj-stone:#C2BDB5;
+  --pj-terra:#AE6245; --pj-terra-text:#CF8566; --pj-bronze-text:#B39272;
+  --pj-serif:'Instrument Serif',Georgia,serif;
+  --pj-sans:'Hanken Grotesk',system-ui,-apple-system,sans-serif;
+
+  /* the journeys' own palette, remapped. --ink is both the heading colour and
+     the primary-button ground, and --brand-ivory the text on it, so swapping
+     them gives ivory headings and the Premium ivory pill button. */
+  --ink:var(--pj-ivory);
+  --brand-ivory:var(--pj-anth);
+  --brand-green:var(--pj-ivory);
+  --paper:var(--pj-anth);
+  --cream:var(--pj-band);
+  --stone:var(--pj-band);
+  --stone-soft:#202123;
+  --body:var(--pj-lime);
+  --soft:var(--pj-stone);
+  --muted:var(--pj-stone);
+  --accent:var(--pj-terra-text);
+  --brand-sage:var(--pj-bronze-text);
+  --oak:var(--pj-bronze-text);
+  --line:rgba(194,189,181,.14);
+  --line-soft:rgba(194,189,181,.08);
+  --rule:rgba(194,189,181,.2);
+  --rule-soft:rgba(194,189,181,.11);
+
+  background:var(--pj-anth);
+  color:var(--pj-lime);
+  -webkit-font-smoothing:antialiased;
+}
+html:has(body.pn-journey){ background:#1B1C1E; color-scheme:dark; }
+body.pn-journey ::selection{ background:rgba(207,133,102,.35); color:#F2EBE0; }
+
+/* headings: the identity serif reads lighter than Fraunces, so it is set a step larger */
+body.pn-journey :is(h1,h2,h3){ letter-spacing:-.005em; }
+
+/* the property-check machinery shared by every journey (pc-*) */
+body.pn-journey .pc-opt{ background:var(--pj-card); border-color:rgba(194,189,181,.16); border-radius:14px; color:var(--pj-ivory); }
+body.pn-journey .pc-opt:hover{ background:var(--pj-raised); border-color:var(--pj-stone); }
+body.pn-journey .pc-opt.is-chosen{ background:var(--pj-ivory); border-color:var(--pj-ivory); color:var(--pj-anth); }
+body.pn-journey .pc-cta{ border-radius:999px; }
+body.pn-journey .pc-cta:hover{ background:#FFFFFF; color:var(--pj-anth); }
+body.pn-journey .pc-dot{ background:rgba(194,189,181,.24); }
+
+/* result cards: Premium radius, and card headings set large enough for the serif */
+body.pn-journey [class*="-res-item"]{ border-radius:16px; }
+body.pn-journey :is([class$="-res-head"],[class$="-itemh"]){ font-size:clamp(21px,1.7vw,24px); line-height:1.15; }
+
+/* ---- legibility: the small uppercase labels and the back links get a readable floor ---- */
+body.pn-journey .hx-ctx,
+body.pn-journey .hx-advlab,
+body.pn-journey .hx-itemlab,
+body.pn-journey .hx-plab,
+body.pn-journey .hx-evgh,
+body.pn-journey .hx-eyebrow,
+body.pn-journey .hx-res-lab,
+body.pn-journey .hx-res-posture,
+body.pn-journey .hx-next-name,
+body.pn-journey .hx-blocklab,
+body.pn-journey .hx-cat,
+body.pn-journey .hx-found-cat,
+body.pn-journey .hx-market-cat,
+body.pn-journey .dw-ctx,
+body.pn-journey .dw-advlab,
+body.pn-journey .dw-itemlab,
+body.pn-journey .dw-plab,
+body.pn-journey .dw-evgh,
+body.pn-journey .dw-eyebrow,
+body.pn-journey .dw-res-lab,
+body.pn-journey .dw-res-posture,
+body.pn-journey .dw-next-name,
+body.pn-journey .dw-blocklab,
+body.pn-journey .dw-cat,
+body.pn-journey .dw-found-cat,
+body.pn-journey .dw-market-cat,
+body.pn-journey .hc-ctx,
+body.pn-journey .hc-advlab,
+body.pn-journey .hc-itemlab,
+body.pn-journey .hc-plab,
+body.pn-journey .hc-evgh,
+body.pn-journey .hc-eyebrow,
+body.pn-journey .hc-res-lab,
+body.pn-journey .hc-res-posture,
+body.pn-journey .hc-next-name,
+body.pn-journey .hc-blocklab,
+body.pn-journey .hc-cat,
+body.pn-journey .hc-found-cat,
+body.pn-journey .hc-market-cat,
+body.pn-journey .ar-ctx,
+body.pn-journey .ar-advlab,
+body.pn-journey .ar-itemlab,
+body.pn-journey .ar-plab,
+body.pn-journey .ar-evgh,
+body.pn-journey .ar-eyebrow,
+body.pn-journey .ar-res-lab,
+body.pn-journey .ar-res-posture,
+body.pn-journey .ar-next-name,
+body.pn-journey .ar-blocklab,
+body.pn-journey .ar-cat,
+body.pn-journey .ar-found-cat,
+body.pn-journey .ar-market-cat,
+body.pn-journey .rc-ctx,
+body.pn-journey .rc-advlab,
+body.pn-journey .rc-itemlab,
+body.pn-journey .rc-plab,
+body.pn-journey .rc-evgh,
+body.pn-journey .rc-eyebrow,
+body.pn-journey .rc-res-lab,
+body.pn-journey .rc-res-posture,
+body.pn-journey .rc-next-name,
+body.pn-journey .rc-blocklab,
+body.pn-journey .rc-cat,
+body.pn-journey .rc-found-cat,
+body.pn-journey .rc-market-cat,
+body.pn-journey .pa-ctx,
+body.pn-journey .pa-advlab,
+body.pn-journey .pa-itemlab,
+body.pn-journey .pa-plab,
+body.pn-journey .pa-evgh,
+body.pn-journey .pa-eyebrow,
+body.pn-journey .pa-res-lab,
+body.pn-journey .pa-res-posture,
+body.pn-journey .pa-next-name,
+body.pn-journey .pa-blocklab,
+body.pn-journey .pa-cat,
+body.pn-journey .pa-found-cat,
+body.pn-journey .pa-market-cat,
+body.pn-journey .hb-ctx,
+body.pn-journey .hb-advlab,
+body.pn-journey .hb-itemlab,
+body.pn-journey .hb-plab,
+body.pn-journey .hb-evgh,
+body.pn-journey .hb-eyebrow,
+body.pn-journey .hb-res-lab,
+body.pn-journey .hb-res-posture,
+body.pn-journey .hb-next-name,
+body.pn-journey .hb-blocklab,
+body.pn-journey .hb-cat,
+body.pn-journey .hb-found-cat,
+body.pn-journey .hb-market-cat,
+body.pn-journey .pc-qlab,
+body.pn-journey .pc-savelab{ font-size:11.5px; letter-spacing:.12em; }
+body.pn-journey .hx-back,
+body.pn-journey .dw-back,
+body.pn-journey .hc-back,
+body.pn-journey .ar-back,
+body.pn-journey .rc-back,
+body.pn-journey .pa-back,
+body.pn-journey .hb-back{ font-size:13.5px; }
+body.pn-journey .pc-optn{ font-size:14px; }
+@media (max-width:640px){
+  body.pn-journey .rc-chain li{ font-size:10px; letter-spacing:.1em; }
+  body.pn-journey :is(h1,h2){ line-height:1.06; }
+  body.pn-journey p{ font-size:max(1em, 15px); }
+  body.pn-journey .pc-saveh{ font-size:22px; line-height:1.15; }
+}
+
+/* the My Plot access pill the journeys inject at run time (its colours are written by script) */
+body.pn-journey .my-plot-access{ background:var(--pj-card) !important; color:var(--pj-ivory) !important; box-shadow:0 0 0 1px rgba(194,189,181,.14),0 18px 40px -20px rgba(0,0,0,.8) !important; }
+body.pn-journey .my-plot-access-title{ font-family:var(--pj-serif) !important; color:var(--pj-ivory) !important; }
+body.pn-journey .my-plot-access-count{ color:var(--pj-stone) !important; }
+body.pn-journey .my-plot-access-chevron{ color:var(--pj-terra-text) !important; }
+body.pn-journey .pn-plotpill{ background:var(--pj-card) !important; color:var(--pj-ivory) !important; box-shadow:0 0 0 1px rgba(194,189,181,.14) !important; }
+body.pn-journey .pn-plotpill:focus-visible{ outline-color:var(--pj-ivory) !important; }
+
+/* ---- typefaces: the identity pair replaces Fraunces / Work Sans ---- */
+body.pn-journey .ar-advintro,
+body.pn-journey .ar-brand,
+body.pn-journey .ar-conclh,
+body.pn-journey .ar-h,
+body.pn-journey .ar-itemh,
+body.pn-journey .ar-nexth,
+body.pn-journey .ar-ph,
+body.pn-journey .ar-primary-h,
+body.pn-journey .ar-q,
+body.pn-journey .ar-reveal-h,
+body.pn-journey .ar-saveh,
+body.pn-journey .dw-advintro,
+body.pn-journey .dw-brand,
+body.pn-journey .dw-conclh,
+body.pn-journey .dw-h,
+body.pn-journey .dw-itemh,
+body.pn-journey .dw-nexth,
+body.pn-journey .dw-ph,
+body.pn-journey .dw-primary-h,
+body.pn-journey .dw-q,
+body.pn-journey .dw-reveal-h,
+body.pn-journey .dw-saveh,
+body.pn-journey .hb-advintro,
+body.pn-journey .hb-brand,
+body.pn-journey .hb-conclh,
+body.pn-journey .hb-h,
+body.pn-journey .hb-itemh,
+body.pn-journey .hb-nexth,
+body.pn-journey .hb-ph,
+body.pn-journey .hb-primary-h,
+body.pn-journey .hb-q,
+body.pn-journey .hb-res-head,
+body.pn-journey .hb-reveal-h,
+body.pn-journey .hb-saveh,
+body.pn-journey .hc-advintro,
+body.pn-journey .hc-brand,
+body.pn-journey .hc-conclh,
+body.pn-journey .hc-h,
+body.pn-journey .hc-itemh,
+body.pn-journey .hc-next-h,
+body.pn-journey .hc-nexth,
+body.pn-journey .hc-ph,
+body.pn-journey .hc-primary-h,
+body.pn-journey .hc-q,
+body.pn-journey .hc-res-head,
+body.pn-journey .hc-reveal-h,
+body.pn-journey .hc-saveh,
+body.pn-journey .hx-advintro,
+body.pn-journey .hx-brand,
+body.pn-journey .hx-conclh,
+body.pn-journey .hx-h,
+body.pn-journey .hx-itemh,
+body.pn-journey .hx-nexth,
+body.pn-journey .hx-ph,
+body.pn-journey .hx-primary-h,
+body.pn-journey .hx-q,
+body.pn-journey .hx-reveal-h,
+body.pn-journey .hx-saveh,
+body.pn-journey .pa-advintro,
+body.pn-journey .pa-brand,
+body.pn-journey .pa-conclh,
+body.pn-journey .pa-h,
+body.pn-journey .pa-itemh,
+body.pn-journey .pa-nexth,
+body.pn-journey .pa-ph,
+body.pn-journey .pa-primary-h,
+body.pn-journey .pa-q,
+body.pn-journey .pa-reveal-h,
+body.pn-journey .pa-saveh,
+body.pn-journey .pc-crestlab b,
+body.pn-journey .pc-introh,
+body.pn-journey .pc-qh,
+body.pn-journey .pc-saveh,
+body.pn-journey .pnx-h,
+body.pn-journey .rc-advintro,
+body.pn-journey .rc-brand,
+body.pn-journey .rc-conclh,
+body.pn-journey .rc-ctalead,
+body.pn-journey .rc-h,
+body.pn-journey .rc-itemh,
+body.pn-journey .rc-nexth,
+body.pn-journey .rc-ph,
+body.pn-journey .rc-primary-h,
+body.pn-journey .rc-q,
+body.pn-journey .rc-regact-lead,
+body.pn-journey .rc-reveal-h,
+body.pn-journey .rc-saveh,
+body.pn-journey .rc-step-lead{ font-family:var(--pj-serif); font-weight:400; }
+/* small Fraunces settings (labels, card lines under 19px) read better in the sans */
+body.pn-journey .ar-nextl li:before,
+body.pn-journey .ar-pindex,
+body.pn-journey .dw-nextl li:before,
+body.pn-journey .dw-pindex,
+body.pn-journey .hb-nextl li:before,
+body.pn-journey .hb-pindex,
+body.pn-journey .hb-res-phys,
+body.pn-journey .hc-nextl li:before,
+body.pn-journey .hc-pindex,
+body.pn-journey .hc-res-phys,
+body.pn-journey .hx-nextl li:before,
+body.pn-journey .hx-pindex,
+body.pn-journey .pa-nextl li:before,
+body.pn-journey .pa-pindex,
+body.pn-journey .rc-carried-a,
+body.pn-journey .rc-findtext,
+body.pn-journey .rc-market-p,
+body.pn-journey .rc-nextl li:before,
+body.pn-journey .rc-pindex{ font-family:var(--pj-sans); font-weight:500; letter-spacing:0; }
+body.pn-journey,
+body.pn-journey .ar-cta,
+body.pn-journey .ar-savebtn,
+body.pn-journey .dw-cta,
+body.pn-journey .dw-savebtn,
+body.pn-journey .hb-cta,
+body.pn-journey .hb-res-lab,
+body.pn-journey .hb-res-posture,
+body.pn-journey .hb-savebtn,
+body.pn-journey .hc-cta,
+body.pn-journey .hc-res-lab,
+body.pn-journey .hc-res-posture,
+body.pn-journey .hc-savebtn,
+body.pn-journey .hx-cta,
+body.pn-journey .hx-savebtn,
+body.pn-journey .pa-cta,
+body.pn-journey .pa-savebtn,
+body.pn-journey .pc-cta,
+body.pn-journey .pc-ghost,
+body.pn-journey .pc-opt,
+body.pn-journey .pnx,
+body.pn-journey .rc-blocklab,
+body.pn-journey .rc-carried-edit,
+body.pn-journey .rc-cat,
+body.pn-journey .rc-chain li,
+body.pn-journey .rc-conds li,
+body.pn-journey .rc-consent span,
+body.pn-journey .rc-cta,
+body.pn-journey .rc-ctafoot,
+body.pn-journey .rc-ctanote,
+body.pn-journey .rc-field input, body.pn-journey .rc-field select,
+body.pn-journey .rc-field label,
+body.pn-journey .rc-find.is-gap .rc-findtext, body.pn-journey .rc-find.is-absent .rc-findtext,
+body.pn-journey .rc-found-cat,
+body.pn-journey .rc-gapnote,
+body.pn-journey .rc-hint,
+body.pn-journey .rc-mark,
+body.pn-journey .rc-market-cat,
+body.pn-journey .rc-regnotice,
+body.pn-journey .rc-regstatus,
+body.pn-journey .rc-savebtn,
+body.pn-journey .rc-step-cat,
+body.pn-journey .rc-step-n,
+body.pn-journey .rc-step-note,
+body.pn-journey .rc-sub-cat{ font-family:var(--pj-sans); }
+/* ---- hard-coded light-theme colours, re-expressed for the dark ground ---- */
+body.pn-journey .hx-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .hx-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .hx-opt{ background:var(--pj-card); }
+body.pn-journey .pc-cta{ box-shadow:0 10px 26px rgba(0,0,0,0.484); }
+body.pn-journey .pc-cta:hover{ box-shadow:0 16px 34px rgba(0,0,0,0.6); }
+body.pn-journey .pc-dot{ background:rgba(194,189,181,0.225); }
+body.pn-journey .pc-dot.is-on{ box-shadow:0 0 0 4px rgba(207,133,102,0.224); }
+body.pn-journey .pc-opt{ background:var(--pj-card); border:1.5px solid rgba(194,189,181,0.225); box-shadow:0 1px 2px rgba(0,0,0,0.088); }
+body.pn-journey .pc-opt:hover{ box-shadow:0 4px 14px rgba(0,0,0,0.22); }
+body.pn-journey .pc-opts.is-stacked .pc-opt::before{ box-shadow:inset 0 0 0 1.5px rgba(0,0,0,0.572); }
+body.pn-journey .pc-opts.is-stacked .pc-opt:hover::before{ background:rgba(179,146,114,0.32); }
+body.pn-journey .pc-opt.is-chosen .pc-optn{ color:rgba(27,28,30,0.72); }
+body.pn-journey .pc-savehead .pc-mark{ box-shadow:0 8px 22px rgba(0,0,0,0.396); }
+body.pn-journey .pc-cta[data-saved]{ box-shadow:inset 0 0 0 1px rgba(0,0,0,0.396); }
+body.pn-journey .pc-cta[data-saved]:hover{ box-shadow:inset 0 0 0 1px rgba(0,0,0,0.396); }
+body.pn-journey .hx-part.is-lead{ border-left:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .pnx-go{ border-bottom:1px solid rgba(207,133,102,0.532); }
+body.pn-journey .dw-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .dw-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .dw-opt{ background:var(--pj-card); }
+body.pn-journey .hc-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .hc-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .hc-opt{ background:var(--pj-card); }
+body.pn-journey .hc-next-item{ border:1px solid rgba(194,189,181,0.15); border-left:2px solid rgba(194,189,181,0.325); }
+body.pn-journey .hc-brief-grp li{ border-bottom:1px solid rgba(194,189,181,0.088); }
+body.pn-journey .hc-res-item{ border:1px solid rgba(194,189,181,0.138); border-top:1px solid rgba(194,189,181,0.325); }
+body.pn-journey .hc-res-item.is-lead{ border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .hc-res-why li::before{ background:rgba(194,189,181,0.5); }
+body.pn-journey .hc-ctx-item{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .hc-sep{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .ar-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .ar-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .ar-opt{ background:var(--pj-card); }
+body.pn-journey .ar-caution{ border-left:2px solid rgba(194,189,181,0.375); }
+body.pn-journey .rc-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .rc-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .rc-opt{ background:var(--pj-card); }
+body.pn-journey .rc-carried{ border:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .rc-carried-list li{ border-top:1px solid rgba(194,189,181,0.112); }
+body.pn-journey .rc-plate-scrim{ background:linear-gradient(180deg,rgba(194,189,181,0.0) 46%,rgba(194,189,181,0.375) 100%); }
+body.pn-journey .rc-chain li:not(:last-child)::after{ background:rgba(194,189,181,0.375); }
+body.pn-journey .rc-found{ border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .rc-group{ border:1px solid rgba(194,189,181,0.138); border-top:1px solid rgba(194,189,181,0.325); box-shadow:0 1px 2px rgba(0,0,0,0.132),
+               0 14px 26px -16px rgba(0,0,0,0.6); }
+body.pn-journey .rc-find + .rc-find{ border-top:1px solid rgba(194,189,181,0.112); }
+body.pn-journey .rc-block{ border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .rc-conds li + li{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .rc-market{ border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .rc-market-p{ border:1px solid rgba(194,189,181,0.138); border-top:1px solid rgba(194,189,181,0.425); box-shadow:0 1px 2px rgba(0,0,0,0.11),
+               0 10px 20px -14px rgba(0,0,0,0.6); }
+body.pn-journey .rc-regnotice{ border:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .rc-step{ border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .rc-sub-cat{ border-top:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .rc-field input, body.pn-journey .rc-field select{ border:1px solid rgba(194,189,181,0.25); border-bottom:1.5px solid rgba(194,189,181,0.425); }
+body.pn-journey .rc-field input:hover, body.pn-journey .rc-field select:hover{ border-color:rgba(194,189,181,0.425); }
+body.pn-journey .rc-field input:focus-visible, body.pn-journey .rc-field select:focus-visible{ background:var(--pj-card); }
+body.pn-journey .rc-consent{ border:1px solid rgba(194,189,181,0.138); border-top:1px solid rgba(194,189,181,0.325); }
+body.pn-journey .rc-regact{ border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .rc-regstatus{ border:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .pa-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .pa-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .pa-opt{ background:var(--pj-card); }
+body.pn-journey .pa-part.is-lead{ border-left:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .hb-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .hb-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .hb-opt{ background:var(--pj-card); }
+body.pn-journey .hb-res-item{ border:1px solid rgba(194,189,181,0.138); border-top:1px solid rgba(194,189,181,0.325); }
+body.pn-journey .hb-res-item.is-lead{ border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .hb-res-why li::before{ background:rgba(194,189,181,0.5); }
+body.pn-journey .hb-sep{ border-top:1px solid rgba(194,189,181,0.15); }
+
+/* ---- result cards: each reads as its own card; the lead result carries the terra edge ---- */
+body.pn-journey .hx-res-item,
+body.pn-journey .dw-res-item,
+body.pn-journey .hc-res-item,
+body.pn-journey .ar-res-item,
+body.pn-journey .rc-res-item,
+body.pn-journey .pa-res-item,
+body.pn-journey .hb-res-item{ background:var(--pj-card); border:1px solid rgba(194,189,181,.12); border-top:2px solid rgba(194,189,181,.28); box-shadow:0 1px 2px rgba(0,0,0,.18),0 24px 48px -30px rgba(0,0,0,.75); }
+body.pn-journey .hx-res-item.is-lead,
+body.pn-journey .dw-res-item.is-lead,
+body.pn-journey .hc-res-item.is-lead,
+body.pn-journey .ar-res-item.is-lead,
+body.pn-journey .rc-res-item.is-lead,
+body.pn-journey .pa-res-item.is-lead,
+body.pn-journey .hb-res-item.is-lead{ background:var(--pj-raised); border-top:3px solid var(--pj-terra-text); }
+body.pn-journey .hx-res-lab,
+body.pn-journey .dw-res-lab,
+body.pn-journey .hc-res-lab,
+body.pn-journey .ar-res-lab,
+body.pn-journey .rc-res-lab,
+body.pn-journey .pa-res-lab,
+body.pn-journey .hb-res-lab{ color:var(--pj-terra-text); }
+body.pn-journey .hx-res-posture,
+body.pn-journey .dw-res-posture,
+body.pn-journey .hc-res-posture,
+body.pn-journey .ar-res-posture,
+body.pn-journey .rc-res-posture,
+body.pn-journey .pa-res-posture,
+body.pn-journey .hb-res-posture{ display:inline-block; margin-top:4px; padding:5px 10px; border-radius:999px; background:rgba(194,189,181,.08); border:1px solid rgba(194,189,181,.16); color:var(--pj-lime); }
+
