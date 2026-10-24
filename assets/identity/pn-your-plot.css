@@ -1,0 +1,707 @@
+/* ==========================================================================
+   PlotNua · Your Plot skin (Pass 1 · Batch 5C, approved 24 Oct 2026)
+   The anthracite identity of the journeys (pn-journey.css) applied to Your Plot
+   by restyling its EXISTING markup. Scope: <html data-pn-skin="your-plot">
+   (Your Plot's scripts rewrite the <body> class list, so the hook lives on
+   <html>, which no script touches). Presentation only: no content, markup,
+   script, data, route, form, endpoint or storage change. The two :not(#…)
+   clauses only raise specificity above the page's own id-based rules.
+   Not restyled: the Cesium viewer, governed photographs and credits, the
+   Atlas A mark and the PlotNua brand marks.
+   ========================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
+
+html[data-pn-skin="your-plot"]{ background:#1B1C1E; color-scheme:dark; }
+html[data-pn-skin="your-plot"] body{
+  --pj-anth:#1B1C1E; --pj-band:#27282A; --pj-card:#2C2E30; --pj-raised:#2E3033;
+  --pj-ivory:#F2EBE0; --pj-lime:#E7DED0; --pj-stone:#C2BDB5; --pj-meta:#ABA59C;
+  --pj-terra:#AE6245; --pj-terra-text:#CF8566; --pj-bronze-text:#B39272;
+  --pj-serif:'Instrument Serif',Georgia,serif;
+  --pj-sans:'Hanken Grotesk',system-ui,-apple-system,sans-serif;
+
+  /* brand palette: --ink is heading colour AND primary-button ground; --brand-ivory the text on it */
+  --ink:var(--pj-ivory); --brand-green:var(--pj-ivory); --brand-ivory:var(--pj-anth);
+  --paper:var(--pj-anth); --cream:var(--pj-band);
+  --soft:var(--pj-stone); --accent:var(--pj-terra-text); --brand-sage:var(--pj-bronze-text);
+  --oak:var(--pj-bronze-text); --terracotta:var(--pj-terra-text);
+  /* the "voice" palette of the editorial and Atlas sections (same inversion: voice <-> on-dark) */
+  --pn-ground:var(--pj-anth); --pn-voice:var(--pj-ivory); --pn-fact:var(--pj-ivory);
+  --pn-body:var(--pj-lime); --pn-stone:var(--pj-stone); --pn-meta:var(--pj-meta);
+  --pn-hair:rgba(194,189,181,.16); --pn-wash:rgba(194,189,181,.05); --pn-on-dark:var(--pj-anth);
+  --pn-edge:rgba(194,189,181,.28); --pn-panel:rgba(194,189,181,.06); --pn-surface:var(--pj-card);
+  --pn-wild:var(--pj-bronze-text); --pn-ink:var(--pj-ivory); --pn-ivory:var(--pj-anth);
+  --pn-plate:var(--pj-card);
+
+  background:var(--pj-anth);
+  color:var(--pj-lime);
+  -webkit-font-smoothing:antialiased;
+}
+html[data-pn-skin="your-plot"] ::selection{ background:rgba(207,133,102,.35); color:#F2EBE0; }
+
+/* element-scoped palettes the page declares below :root */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa{
+  --aa-voice:var(--pj-ivory); --aa-fact:var(--pj-ivory); --aa-body:var(--pj-lime);
+  --aa-label:var(--pj-stone); --aa-meta:var(--pj-meta); --aa-rule:rgba(194,189,181,.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results{
+  --pn-plate:var(--pj-card);
+  --pn-plate-lift:0 1px 2px rgba(0,0,0,.2), 0 24px 48px -26px rgba(0,0,0,.7); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results gmp-place-details{
+  --gmp-mat-color-secondary-container:var(--pj-raised); --gmp-mat-color-on-secondary-container:var(--pj-stone); }
+
+/* ---- typefaces ---- */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-figure,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-headline,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-product,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-word,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .compare-screen-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results #altResults .match-bring-your-own .match-bring-your-own-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens-say,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-myplot .pick2-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail .pd-checks-head,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail .pd-next-head,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-entity-line,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-headline,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-headline,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-hero-copy .rsv-headline,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-input,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-item-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-item-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-lane-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-lane-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-stop-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa-fig,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa-lede,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa-principle,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-fact,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-done-lead,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byd-close-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byd-lede,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byd-q,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .dh-journey h3.dh-big,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-h1,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-card-finding,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-count-line,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-disclosure-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-lede,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-stars-score,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-card-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-eyebrow,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-atlas-popover-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-bring-your-own-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-next-step-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jh,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-byo-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-compare-heading,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-identity-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .origin-view-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-centrepiece-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-heading,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-headline,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-editorial,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-price,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-narrative,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-why-heading,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-why-verdict,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-empty-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-panel-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .sec-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .supplier-card-value,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .time-current-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .tp-open-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .tp-pillar-head,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .tp-statement,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .your-property-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) h1,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) h2,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) h3{ font-family:var(--pj-serif); font-weight:400; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #resultsAtlasEvidenceLine,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #resultsAtlasEvidenceLine .match-trust-trigger,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-agrees,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-deck,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-delta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-eyebrow,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-foot p,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-lens,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-lens-say,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-next .cmp-next-go,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-note,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-open,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-org,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-prose,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-save,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-compare .cmp-status,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .aa-evd > summary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .aa-evd > summary.aa-evd-sum.is-button,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa-evd-sum.is-button,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens .alt-lens-compare,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens-foot .alt-meta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens-foot .alt-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens-go,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens-state,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens.is-wildcard .alt-wild-fact,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .evid-card-mark,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .match-bring-your-own .match-bring-your-own-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .pn-gx-more > summary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .pn-view-option,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-myplot .pick2-count,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-myplot .pick2-deck,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-myplot .pick2-go,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-myplot .pick2-item .pick2-meta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-myplot .pick2-item .pick2-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-myplot .pick2-item .pick2-why,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail .pd-next-cta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-boundary-line,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-boundary-line,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-btn,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-consequence,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-entity-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-field-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-hero-copy .rsv-product,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-input,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-item-checked,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-item-checked,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-item-detail,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-item-detail,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-item-note,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-item-value,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-item-value,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-kicker,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-kicker,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-lane-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-lane-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-position,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-product,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-product,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-situation,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-progress .rsv-situation,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-stop-detail,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-storage-note,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-compare,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-meta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-why,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-eyebrow,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-fact-cap,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-tease,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-again,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-field,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-toggle,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .atlas-load-failure-retry,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-field-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-intro,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-note,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-select,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-status,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-term,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-value,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .btn-secondary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byd-act,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byd-close-cta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byd-num,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .compare-card-evidence-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .compare-card-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .compare-card-save,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .compare-card-saved,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .compare-card-why,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .corroboration-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .dh-qlab,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-consent,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-error,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-eyebrow,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-field,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-hint,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-ident-org,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-ident-product,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-intro,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-opt,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-pending,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-review,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-secondary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-section-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-testflag,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .entry-discovery-back,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-part-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-tile-value,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-tile[data-state="not-reviewed"] .evid-tile-value,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .fork-card-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-card-go,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-add-own-form input,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-added-check-btn,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-open-myplot-link,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-save-btn,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-save-primary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-next-step-open,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-next-step-saved,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-option,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-trust-trigger,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jtitle,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-info-trigger,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-via,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-clear-ask,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-clear-yes,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-clear-no,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-empty-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-storage-note,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .origin-view-eyebrow,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pd-reasons-toggle,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist-eyebrow,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist-intro,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist-observation,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist.wildcard .plot-twist-intro,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist.wildcard .plot-twist-observation,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist.wildcard .pt-why,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist.wildcard .plot-twist-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-eircode-field input,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-return,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-undo-toast-btn,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-wordmark,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prop-confirm-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prop-confirm-line,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prop-confirm-link,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prop-confirm-place,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pt-explore,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-end,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .readiness-toggle,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-name,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-reassurance-link,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-scope,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-why-compromise,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-why-evidence,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-empty-btn,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-reset,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-select,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rn-next-cta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-btn-inline,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-choice,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-cta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-pending-main,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-pending-sub,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-secondary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-panel-lede,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-price-guide,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qitem,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qitem::before,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow-ask,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow-mine,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow-said,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ruled-out-group,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ruled-out-label,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ruled-out-lede,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ruled-out-list li,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ruled-out-note,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .your-property-lede,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) body,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) details.hm-evd > summary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) details.hm-evd > summary::after,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) ol.dh-res li b{ font-family:var(--pj-sans); }
+/* ---- hard-coded light-theme colours, re-expressed by role for the dark ground ---- */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-select{ border-bottom:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-select:hover{ border-bottom-color:rgba(194,189,181,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-reset{ border-bottom:1px solid rgba(194,189,181,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-status{ border-top:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rf-empty-btn:hover{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b).pn-deeplink #pnDeepLinkHold{ background:var(--paper,rgba(46,48,51,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #pnDeepLinkHold .pn-dl-dot{ background:var(--brand-sage,rgba(207,133,102,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-return{ border:1px solid rgba(194,189,181,0.169); box-shadow:0 1px 6px rgba(0,0,0,0.198); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-return:hover,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-return:focus-visible{ border-color:rgba(194,189,181,0.364); box-shadow:0 3px 12px rgba(0,0,0,0.308); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-eircode-field input{ border:1px solid rgba(194,189,181,0.325); background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #statusPill{ background:rgba(46,48,51,0.82); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #interactionHint{ background:rgba(46,48,51,0.78); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-reveal .reveal-card{ background:rgba(44,46,48,0.9); box-shadow:0 10px 32px rgba(0,0,0,0.44); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-fallback-note{ box-shadow:0 -2px 14px rgba(0,0,0,0.396); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-undo-toast{ background:rgba(46,48,51,0.92); box-shadow:0 8px 24px rgba(0,0,0,0.484); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-panel-embed .plot-kicker{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .intel-row.is-active{ background:rgba(179,146,114,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .time-track-line{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .time-track-progress{ box-shadow:0 0 0 4px rgba(0,0,0,0.396); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .time-range-slider::-webkit-slider-thumb{ box-shadow:0 0 0 4px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.484); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .time-range-slider::-moz-range-thumb{ box-shadow:0 0 0 4px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.484); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .planning-history{ border-top:1px dashed rgba(194,189,181,0.195); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .readiness-item{ border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .readiness-item:hover{ box-shadow:0 4px 14px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .readiness-toggle::before{ background:rgba(179,146,114,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-panel{ background:rgba(44,46,48,0.92); box-shadow:0 10px 32px rgba(0,0,0,0.44); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .atlas-search-field::before{ background:radial-gradient(circle, rgba(194,189,181,0.117) 0%, rgba(194,189,181,0.0) 68%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .atlas-search-field::after{ background:radial-gradient(circle at 50% 50%, rgba(179,146,114,0.2) 0%, rgba(179,146,114,0.0) 55%),
+      radial-gradient(circle at 50% 50%, rgba(179,146,114,0.143) 0%, rgba(179,146,114,0.0) 60%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-dot{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-dot.is-active{ box-shadow:0 0 0 4px rgba(0,0,0,0.352); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-option{ background:rgba(46,48,51,1.0); border:1.5px solid rgba(194,189,181,0.234); box-shadow:0 1px 2px rgba(0,0,0,0.088); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-option:hover{ box-shadow:0 4px 14px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .design-lean-card.is-selected{ box-shadow:0 0 0 3px var(--accent), 0 10px 26px rgba(0,0,0,0.396); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .design-lean-card.is-selected .design-lean-caption-title,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .design-lean-card.is-selected .design-lean-caption-sub{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results{ background:rgba(44,46,48,0.97); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #resultsAtlasEvidenceLine{ border-top:1px solid rgba(194,189,181,0.182); border-bottom:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-atlas-popover{ background:rgba(46,48,51,1.0); box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-atlas-popover-confidence{ border-top:1px dashed rgba(194,189,181,0.195); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-bring-your-own{ border:1px solid rgba(194,189,181,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ruled-out{ border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-next-step-saved{ border-top:1px solid rgba(194,189,181,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card:hover{ box-shadow:0 10px 24px rgba(0,0,0,0.264); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .am-intel{ border-top:1px dashed rgba(194,189,181,0.195); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .compare-card{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .compare-card:hover{ box-shadow:0 8px 20px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-save-primary{ border:1.5px solid rgba(194,189,181,0.364); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-open-myplot-link{ background:rgba(179,146,114,0.13); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-open-myplot-link:hover{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-primary .match-card{ box-shadow:0 8px 28px rgba(0,0,0,0.176); border-color:rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-alternatives .match-card{ border-color:rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-alternatives .match-card:hover{ box-shadow:0 6px 14px rgba(0,0,0,0.176); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-found .match-card-image{ background:linear-gradient(135deg, var(--brand-green) 0%, rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-found:not(.is-atlas-found) .match-card-image{ background:linear-gradient(135deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-found .match-added-kicker{ background:rgba(194,189,181,0.117); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-found:not(.is-atlas-found) .match-added-kicker{ background:rgba(207,133,102,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-add-own-form input{ border:1px solid rgba(194,189,181,0.325); background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-card-found .match-added-item-swatch{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-added-tag.is-check{ background:rgba(207,133,102,0.195); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-added-tag.is-atlas{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-added-item.is-atlas-found{ border:1px solid rgba(179,146,114,0.455); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access{ box-shadow:0 14px 36px rgba(0,0,0,0.6), 0 3px 10px rgba(0,0,0,0.396), inset 0 1px 0 rgba(0,0,0,0.22); border:1px solid rgba(194,189,181,0.208); box-shadow:0 1px 2px rgba(0,0,0,0.11), 0 10px 28px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access:hover{ box-shadow:0 20px 46px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.44), inset 0 1px 0 rgba(0,0,0,0.308); border-color:rgba(179,146,114,0.442); box-shadow:0 2px 4px rgba(0,0,0,0.132), 0 16px 38px rgba(0,0,0,0.33); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-info-trigger{ background:rgba(44,46,48,0.9); box-shadow:0 4px 14px rgba(0,0,0,0.55); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-info-trigger:hover{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-panel{ box-shadow:0 18px 46px rgba(0,0,0,0.6); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-p-badge{ background:linear-gradient(150deg, rgba(179,146,114,0.182), rgba(207,133,102,0.156)); border:1px solid rgba(194,189,181,0.156); box-shadow:inset 0 1px 0 rgba(0,0,0,0.6); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-chip.is-confirmed{ background:rgba(179,146,114,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-chip.is-caution{ background:rgba(207,133,102,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-chip.is-neutral{ background:rgba(194,189,181,0.078); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-chip-row.is-interactive .pn-chip:hover{ box-shadow:0 2px 6px rgba(0,0,0,0.176); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.156); box-shadow:0 2px 10px rgba(0,0,0,0.132); border:1px solid rgba(194,189,181,0.143); box-shadow:0 1px 2px rgba(0,0,0,0.088), 0 8px 22px rgba(0,0,0,0.154); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card:hover{ box-shadow:0 10px 26px rgba(0,0,0,0.286); border-color:rgba(179,146,114,0.455); box-shadow:0 14px 32px rgba(0,0,0,0.286); border-color:rgba(179,146,114,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-media{ background:rgba(46,48,51,1.0); background:linear-gradient(148deg,rgba(46,48,51,1.0) 0%,rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-fallback{ background:linear-gradient(135deg, rgba(179,146,114,0.2), rgba(207,133,102,0.182)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-actions{ border-top:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .btn-secondary{ border:1px solid rgba(194,189,181,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .btn-secondary:hover{ background:rgba(194,189,181,0.065); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .your-property{ border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief{ border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-current{ background:rgba(179,146,114,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .brief-select{ border:1px solid rgba(194,189,181,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card{ border:1px solid rgba(194,189,181,0.208); background:linear-gradient(168deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 100%); border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-compare{ border-bottom:1px solid rgba(179,146,114,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-clear-confirm{ border:1px solid rgba(194,189,181,0.234); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-compare-frame{ border-top:1px solid rgba(194,189,181,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-profile-fallback{ background:rgba(207,133,102,0.13); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-item{ border-top:1px solid rgba(194,189,181,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-item:hover{ background:rgba(194,189,181,0.046); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-item-img{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-section-label{ border-top:1px solid rgba(194,189,181,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-badge{ background:rgba(179,146,114,0.117); border:1px solid rgba(179,146,114,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-empty{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.143); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-compare-hint{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-byo{ border:2px solid rgba(194,189,181,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-byo-form input{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.26); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-byo-form input:focus{ box-shadow:0 0 0 3px rgba(0,0,0,0.308); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .atlas-load-failure{ background:rgba(207,133,102,0.091); border:1px solid rgba(207,133,102,0.442); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .atlas-runtime-panel{ box-shadow:0 8px 26px rgba(0,0,0,0.6); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-added-tag.is-recognised{ background:rgba(179,146,114,0.13); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-added-tag.is-recognised.is-neutral{ background:rgba(194,189,181,0.065); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-bring-your-own .results-byo-form input{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.26); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .match-bring-your-own .results-byo-form input:focus{ box-shadow:0 0 0 3px rgba(0,0,0,0.308); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pd-panel{ box-shadow:0 18px 46px rgba(0,0,0,0.6); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pd-image-wrap{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) img.pn-image-fallback{ background:rgba(46,48,51,1.0); background:linear-gradient(148deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 52%, rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pd-discovery-tag{ background:rgba(179,146,114,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #pdIntelligence .am-intel{ border-top:1px solid rgba(194,189,181,0.195); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-plot-topic.is-sunlight-topic .pd-panel{ background:rgba(44,46,48,0.93); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-inner.is-fieldonly{ background:radial-gradient(120% 90% at 12% 4%, rgba(44,46,48,0.92) 0%, rgba(194,189,181,0.0) 58%),
+      
+      radial-gradient(88% 76% at 82% 34%, rgba(44,46,48,0.46) 0%, rgba(194,189,181,0.0) 66%),
+      linear-gradient(178deg, rgba(194,189,181,0.0) 62%, rgba(194,189,181,0.072) 100%),
+      linear-gradient(160deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 58%, rgba(46,48,51,1.0) 100%); box-shadow:inset 0 1px 0 rgba(0,0,0,0.6); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card:hover{ border-color:rgba(194,189,181,0.39); box-shadow:0 4px 14px rgba(0,0,0,0.154); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard:hover{ box-shadow:0 6px 18px rgba(0,0,0,0.44); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .tp-pillar{ background:rgba(46,48,51,1.0); box-shadow:0 1px 2px rgba(0,0,0,0.055), 0 10px 30px rgba(0,0,0,0.099); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .tp-open-panel{ background:rgba(46,48,51,1.0); box-shadow:0 1px 2px rgba(0,0,0,0.044), 0 10px 30px rgba(0,0,0,0.084); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .tp-open-list li{ color:rgba(207,133,102,1.0); background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .tp-detail-link{ border-bottom:1px solid rgba(194,189,181,0.338); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-conf-head{ border-bottom:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard .alt-verdict{ color:rgba(242,235,224,0.9); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-tease{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-why-evidence{ border-left:2px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .decide-head{ border-bottom:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-gaps-sum{ border-top:1px solid rgba(194,189,181,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-fact{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-fact-cap{ color:rgba(242,235,224,0.9); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard{ background:linear-gradient(165deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard .alt-name{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard .alt-meta{ color:rgba(242,235,224,0.68); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard .alt-why{ color:rgba(242,235,224,0.86); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-eyebrow{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-wild-note{ color:rgba(242,235,224,0.58); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard .alt-compare{ color:rgba(242,235,224,1.0); border-bottom-color:rgba(179,146,114,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-card.is-wildcard .alt-compare:hover{ color:rgba(242,235,224,1.0); border-bottom-color:rgba(194,189,181,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist.wildcard{ background:linear-gradient(160deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist.wildcard .plot-twist-observation{ color:rgba(242,235,224,0.72); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-visit-link{ border-bottom:1px solid rgba(194,189,181,0.364); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hero-trust{ border-top:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hero-trust-more{ border-bottom:1px solid rgba(194,189,181,0.364); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hero-secondary-link:hover{ border-bottom-color:rgba(194,189,181,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid.chapter{ border:1px solid rgba(194,189,181,0.169); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-signals{ background:rgba(194,189,181,0.169); border:1px solid rgba(194,189,181,0.169); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-card{ border:1px solid rgba(194,189,181,0.169); border-bottom:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-card-meta{ border-top:1px solid rgba(194,189,181,0.143); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-card-link{ border-bottom:1px solid rgba(194,189,181,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-card.has-link:hover{ box-shadow:0 8px 22px rgba(0,0,0,0.198); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-rows .evid-row{ border-top:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-rows{ border-top:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-row{ border-bottom:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-count{ border-top:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-toggle{ border-bottom:1px solid var(--pn-edge, rgba(194,189,181,0.5)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-field{ border:1px solid var(--pn-hair, rgba(194,189,181,0.208)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-state.is-warn{ color:var(--terracotta, rgba(207,133,102,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-done-lead{ color:var(--pn-voice, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .ask-own-again{ border-bottom:1px solid var(--pn-edge, rgba(194,189,181,0.5)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-tile[data-state="evidence"]{ box-shadow:0 1px 2px rgba(0,0,0,0.11), 0 6px 18px rgba(0,0,0,0.132),
+               inset 0 0 0 1px rgba(0,0,0,0.198); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-asks .evid-open{ border:1.5px solid rgba(194,189,181,0.364); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-count::before{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-centrepiece-intro{ color:rgba(242,235,224,0.88); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-centrepiece-panel{ background:rgba(194,189,181,0.078); border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-map-viewport{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-centrepiece-panel .season-tab{ color:rgba(242,235,224,0.7); border-color:rgba(194,189,181,0.312); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-centrepiece-panel .time-track-line{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-centrepiece-panel .time-tick{ color:rgba(242,235,224,0.6); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-centrepiece-panel .sunlight-caption{ color:rgba(242,235,224,0.6); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-reassurance{ border:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-card{ background:rgba(46,48,51,1.0); border:1px solid rgba(194,189,181,0.14); box-shadow:0 1px 2px rgba(0,0,0,0.132), 0 8px 20px rgba(0,0,0,0.132); box-shadow:0 1px 2px rgba(0,0,0,0.11), 0 6px 18px rgba(0,0,0,0.154); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-card:hover{ box-shadow:0 12px 30px rgba(0,0,0,0.308); border-color:rgba(179,146,114,0.39); box-shadow:0 10px 28px rgba(0,0,0,0.286), 0 2px 6px rgba(0,0,0,0.154); border-color:rgba(179,146,114,0.364); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-media{ background:rgba(46,48,51,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-image-credit{ color:rgba(242,235,224,1.0); background:rgba(46,48,51,0.62); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-media,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-media{ background:linear-gradient(148deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-media::after{ box-shadow:inset 0 0 0 1px rgba(0,0,0,0.132); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-media:has(img.pn-image-fallback){ box-shadow:inset 0 0 0 1px rgba(0,0,0,0.154); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-body .match-card-save-primary,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-body .match-card-save-primary{ box-shadow:0 1px 2px rgba(0,0,0,0.11); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-body .match-card-save-primary:hover,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-body .match-card-save-primary:hover{ box-shadow:0 6px 16px rgba(0,0,0,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-hero-body .match-card-save-primary.is-saved,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery-body .match-card-save-primary.is-saved{ box-shadow:0 4px 14px rgba(0,0,0,0.44); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery::-webkit-scrollbar-thumb{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-gallery:hover::-webkit-scrollbar-thumb{ background:rgba(46,48,51,0.32); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist{ border-top:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist-footnote{ border-left:2px solid rgba(179,146,114,0.5); border-top:1px solid rgba(194,189,181,0.208); color:rgba(242,235,224,0.58); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .origin-view{ border-top:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .origin-view-tradeoff{ border-left:2px solid rgba(179,146,114,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .corroboration{ border-top:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prop-confirm{ border-bottom:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prop-confirm-link{ border-bottom:1px solid rgba(194,189,181,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .results-compare{ border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .refined-compare{ border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-card{ border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-card.is-refined{ background:rgba(179,146,114,0.169); border-color:rgba(179,146,114,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-temp{ border:1px solid rgba(194,189,181,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rc-end{ border:1px solid rgba(194,189,181,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .decide-list li.is-ask .decide-mark{ color:rgba(242,235,224,0.42); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .decide-list li.is-ask{ color:rgba(242,235,224,0.8); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .supplier-row{ border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .supplier-card{ border-right:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-disclosure{ border-top:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .evid-disclosure-label{ border-bottom:1px solid rgba(194,189,181,0.364); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .fork-card{ border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .fork-card:hover{ box-shadow:0 3px 10px rgba(0,0,0,0.154); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist .chapter-rule{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist-intro{ color:rgba(242,235,224,0.8); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pt-figure img{ background:rgba(194,189,181,0.091); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-figure-note{ color:rgba(242,235,224,0.62); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .plot-twist-idea{ color:rgba(242,235,224,0.94); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pt-why{ color:rgba(242,235,224,0.72); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pt-explore{ border-bottom:1px solid rgba(194,189,181,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hidden-potential.chapter{ border:1px solid rgba(194,189,181,0.169); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hidden-potential .chapter-rule{ background:rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hidden-potential.chapter .hp-card{ border:1px solid rgba(194,189,181,0.169); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hidden-potential.chapter .hp-shot{ border-bottom:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-shot.is-awaiting{ background:radial-gradient(120% 100% at 22% 8%, rgba(44,46,48,0.85) 0%, rgba(194,189,181,0.0) 62%),
+      linear-gradient(158deg, rgba(46,48,51,1.0) 0%, rgba(46,48,51,1.0) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-eyebrow::after{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-card{ border:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-card:hover{ border-color:rgba(194,189,181,0.442); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hp-card-status{ border:1px solid rgba(194,189,181,0.26); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-rail-fade{ background:linear-gradient(90deg, rgba(194,189,181,0.0) 0%, rgba(44,46,48,0.72) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .alt-rail-edge{ box-shadow:0 5px 16px rgba(0,0,0,0.484); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens.is-wildcard .alt-lens-label{ color:rgba(242,235,224,0.78); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens.is-wildcard .alt-lens-foot{ border-top-color:rgba(194,189,181,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens.is-wildcard .alt-lens-foot .alt-meta{ color:rgba(242,235,224,0.8); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens.is-wildcard .alt-why{ color:rgba(242,235,224,0.82); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens.is-wildcard .alt-wild-fact{ color:rgba(242,235,224,0.82); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-lens.is-wildcard .alt-wild-fact-cap{ color:rgba(242,235,224,0.52); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-rail-fade{ background:linear-gradient(90deg,rgba(194,189,181,0.0) 0%,rgba(44,46,48,0.92) 100%); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-card.is-wildcard .alt-why,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .plot-twist-intro,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-intro{ color:rgba(242,235,224,0.86); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-card.is-wildcard .alt-meta,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .pt-why,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .plot-twist.wildcard .plot-twist-observation{ color:rgba(242,235,224,0.8); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-wild-eyebrow,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-wild-fact-cap,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-wild-note,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .plot-twist-footnote{ color:rgba(242,235,224,0.58); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .match-next-step-saved,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .plot-twist-footnote,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .pt-explore,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel .season-tab{ border-color:rgba(194,189,181,0.26); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-howto{ color:rgba(242,235,224,0.78); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .pn-gx-card{ background:rgba(46,48,51,1.0); box-shadow:0 1px 2px rgba(0,0,0,0.11), 0 12px 30px -16px rgba(0,0,0,0.352); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-wild-tease{ color:rgba(242,235,224,0.86); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .pt-figure img{ background:rgba(194,189,181,0.091); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel .season-tab,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel .time-tick,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel .sunlight-caption{ color:rgba(242,235,224,0.62); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel{ background:rgba(194,189,181,0.078); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel .time-track-line{ background:rgba(194,189,181,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel .season-tab{ border-color:rgba(194,189,181,0.312); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .match-atlas-popover{ box-shadow:0 24px 64px rgba(0,0,0,0.484), 0 3px 12px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-card.alt-lens.is-wildcard .alt-lens-foot{ border-top-color:rgba(194,189,181,0.312); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .match-bring-your-own .results-byo-form input:focus{ box-shadow:0 0 0 3px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-ident{ border:1px solid var(--pn-hair, rgba(194,189,181,0.182)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-testflag{ background:rgba(207,133,102,0.156); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-field{ border:1px solid var(--pn-hair, rgba(194,189,181,0.182)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .dh-q{ border-bottom:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .dh-journey input[type=number]{ border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .dh-opt button{ border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .dh-bldg{ border:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .dh-btn.dh-ghost{ border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) ul.hm-finds li.hm-ask .hm-find-lab{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) ul.hm-finds li.hm-no .hm-find-lab{ color:rgba(207,133,102,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) details.hm-evd{ border-top:1px solid rgba(194,189,181,0.208); border-bottom:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hm-calc .hm-cr.hm-tot{ border-top:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) ol.dh-res li::before{ border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .hm-ev li.hm-open::before{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) details.hm-open-ev{ border-top:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jh{ color:var(--ink,rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jlist{ border-top:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jitem{ border-bottom:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jitem:last-child{ border-bottom:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jtitle{ color:var(--ink,rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jsum{ color:rgba(242,235,224,0.72); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jwhen{ color:rgba(242,235,224,0.45); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jopen{ color:var(--ink,rgba(242,235,224,1.0)); border-bottom:1px solid rgba(194,189,181,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jopen:hover{ border-bottom-color:rgba(194,189,181,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jopen.is-quiet{ color:rgba(242,235,224,0.62); border-bottom-color:rgba(194,189,181,0.234); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jopen.is-quiet:hover{ color:var(--ink,rgba(242,235,224,1.0)); border-bottom-color:rgba(194,189,181,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .mp-jremove{ color:var(--terracotta,rgba(207,133,102,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-hero-media{ box-shadow:0 2px 4px rgba(0,0,0,0.11),
+      0 14px 28px -14px rgba(0,0,0,0.396),
+      0 40px 80px -30px rgba(0,0,0,0.6),
+      inset 0 0 0 1px rgba(0,0,0,0.132); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .pn-image-credit{ background:linear-gradient(0deg, rgba(46,48,51,0.62) 0%, rgba(46,48,51,0.26) 55%, rgba(194,189,181,0.0) 100%); color:rgba(242,235,224,0.93); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results #altResults .results-gallery-card:hover{ border-color:rgba(194,189,181,0.286); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .rh-split .pn-gal-thumb{ box-shadow:inset 0 0 0 1px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-hero-body .match-card-open-myplot-link{ border-bottom:1px solid rgba(194,189,181,0.39); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-gal-thumb{ box-shadow:inset 0 0 0 1px rgba(0,0,0,0.308); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-gal-thumb.is-on{ box-shadow:inset 0 0 0 2px var(--pn-voice, rgba(0,0,0,0.6)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-gal-thumb:focus-visible{ outline:2px solid var(--pn-voice, rgba(194,189,181,0.5)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byo-choice{ background:var(--pn-ivory, rgba(46,48,51,1.0)); border:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byo-choice:hover{ border-color:rgba(194,189,181,0.442); box-shadow:0 2px 10px rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byo-choice:focus-visible{ outline:2px solid var(--pn-voice, rgba(194,189,181,0.5)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byo-choice-name{ color:var(--ink, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byo-choice-org{ color:var(--soft, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byo-notice.is-found{ color:var(--pn-voice, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .byo-notice.is-asking{ color:var(--ink, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-hero-media{ box-shadow:0 2px 4px rgba(0,0,0,0.11),
+      0 22px 44px -26px rgba(0,0,0,0.6),
+      inset 0 0 0 1px rgba(0,0,0,0.132); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-resolve .rsv-hero-copy .rsv-headline{ color:var(--brand-green, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-panel-title{ color:var(--brand-green, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-panel-property .rsv-panel-head{ border-bottom:1px solid rgba(194,189,181,0.208); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow{ border-top:1px solid rgba(194,189,181,0.14); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow-label{ color:var(--brand-green, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow-mine{ color:var(--brand-sage, rgba(207,133,102,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qrow-said{ color:var(--brand-green, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-panel-enquiry{ background:rgba(179,146,114,0.143); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-panel-enquiry .rsv-panel-lede{ color:rgba(242,235,224,0.62); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-price-guide{ color:rgba(242,235,224,0.62); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-price-guide a{ color:var(--brand-green, rgba(242,235,224,1.0)); text-decoration-color:rgba(179,146,114,0.5); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qitem{ border-top:1px solid rgba(194,189,181,0.14); color:var(--brand-green, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-qitem::before{ color:rgba(207,133,102,0.95); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close{ background:var(--brand-green, rgba(46,48,51,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-cta{ background:var(--brand-sage, rgba(207,133,102,1.0)); color:var(--brand-green, rgba(242,235,224,1.0)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-pending-main{ color:rgba(242,235,224,0.94); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-pending-sub{ color:rgba(242,235,224,0.58); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-cta:focus-visible,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-secondary:focus-visible{ outline:2px solid var(--brand-sage, rgba(207,133,102,0.5)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-secondary{ color:rgba(242,235,224,0.8); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-close-secondary:hover{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-choices{ box-shadow:inset 0 0 0 1px rgba(0,0,0,0.286); background:rgba(44,46,48,0.42); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-choice{ box-shadow:inset 1px 0 0 rgba(0,0,0,0.22); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-choice:hover{ background:rgba(179,146,114,0.2); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-choice:active{ background:rgba(179,146,114,0.34); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rsv-choice:focus-visible{ outline:2px solid var(--brand-sage, rgba(207,133,102,0.5)); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rn-next{ border-top:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .rn-next-cta{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .aa-evd > summary.aa-evd-sum.is-button,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa-evd-sum.is-button{ border:2px solid rgba(194,189,181,0.5); background:rgba(194,189,181,0.058); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .aa-evd > summary.aa-evd-sum.is-button:hover,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .aa-evd-sum.is-button:hover{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .aa-evd[open] > summary.aa-evd-sum.is-button,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) details[open] > .aa-evd-sum.is-button{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prg-supplier{ border-top:1px solid rgba(194,189,181,0.182); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .prg-supplier-cta{ color:rgba(242,235,224,1.0); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail .pn-image-credit{ background:linear-gradient(0deg,rgba(46,48,51,0.62) 0%,rgba(46,48,51,0.26) 55%,rgba(194,189,181,0.0) 100%); color:rgba(242,235,224,0.93); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-skip:focus{ background:rgba(46,48,51,1.0); color:rgba(242,235,224,1.0); outline:2px solid rgba(207,133,102,0.5); }
+
+/* ==========================================================================
+   Hand-tuned components (what the role-based re-expression cannot judge)
+   ========================================================================== */
+/* Panels that were dark green with light text stay dark: the raised card
+   surface, with their light-text tokens restored inside them. */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) :is(#screen-enquiry, .pn-fallback-note, .results-centrepiece, .plot-twist.chapter, .match-next-step, .match-card-found .match-card-image, #screen-match-results .alt-card.is-wildcard, #screen-match-results .plot-twist, section.rsv-close){
+  --brand-ivory:var(--pj-lime); --pn-on-dark:var(--pj-ivory); --pn-ground:var(--pj-lime); --cream:var(--pj-lime);
+  --paper:var(--pj-card); --ink:var(--pj-ivory); --brand-green:var(--pj-raised);
+  background:var(--pj-raised); color:var(--pj-lime); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-enquiry{ background:var(--pj-anth); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-fallback-note{ background:var(--pj-card); border-top:1px solid rgba(194,189,181,.14); color:var(--pj-stone); }
+
+/* the floating My Plot access pill and the pill the journeys inject (colours written by script) */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access{ background:var(--pj-card) !important; color:var(--pj-ivory) !important; box-shadow:0 0 0 1px rgba(194,189,181,.14),0 18px 40px -20px rgba(0,0,0,.8) !important; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access-title{ font-family:var(--pj-serif) !important; color:var(--pj-ivory) !important; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access-count{ color:var(--pj-stone) !important; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access-chevron{ color:var(--pj-terra-text) !important; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-plotpill{ background:var(--pj-card) !important; color:var(--pj-ivory) !important; box-shadow:0 0 0 1px rgba(194,189,181,.14) !important; }
+
+/* full-screen overlays sit on the page ground, not on a card */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) :is(.screen.is-overlay, #screen-match-results){ background:rgba(27,28,30,.985); }
+
+/* primary actions: the ivory pill with anthracite text (several rules set their
+   text colour separately from their ground, so it is stated once here) */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) :is(.rn-next-cta, .prg-supplier-cta, .btn-primary, .rf-empty-btn, .match-option.is-selected, .match-card-save-primary.is-saved, .atlas-load-failure-retry, .compare-card-save, .alt-rail-edge, .dh-btn, .dh-opt button[aria-pressed="true"], #screen-resolve .rsv-btn, #screen-compare .cmp-next .cmp-next-go, #screen-product-detail .pd-next-cta, #screen-match-results .pn-view-option, #screen-match-results .results-hero-body .match-card-save-primary, #screen-match-results .match-bring-your-own .results-byo-form button[type="submit"], #screen-match-results .aa-evd[open] > summary.aa-evd-sum.is-button){
+  background:var(--pj-ivory); color:var(--pj-anth); -webkit-text-fill-color:var(--pj-anth); border-color:var(--pj-ivory); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) :is(.rn-next-cta, .prg-supplier-cta, .btn-primary, .rf-empty-btn, .atlas-load-failure-retry, .compare-card-save, .dh-btn, #screen-resolve .rsv-btn, #screen-compare .cmp-next .cmp-next-go, #screen-product-detail .pd-next-cta, #screen-match-results .pn-view-option, #screen-match-results .results-hero-body .match-card-save-primary):hover{
+  background:#FFFFFF; color:var(--pj-anth); -webkit-text-fill-color:var(--pj-anth); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) :is(.rn-next-cta, .prg-supplier-cta, .btn-primary, .rf-empty-btn, .atlas-load-failure-retry, .compare-card-save, .dh-btn, #screen-resolve .rsv-btn, #screen-compare .cmp-next .cmp-next-go, #screen-product-detail .pd-next-cta) *{ color:inherit; -webkit-text-fill-color:inherit; }
+
+/* the "wildcard" alternative and the Resolve closing strip: raised dark cards with the terra lead edge */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .alt-card.is-wildcard{ background:var(--pj-raised); background-image:none; border:1px solid rgba(194,189,181,.14); border-top:3px solid var(--pj-terra-text); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) section.rsv-close{ border:1px solid rgba(194,189,181,.14); border-top:3px solid var(--pj-terra-text); }
+/* the 3D sun-and-light season tabs: the active tab is the ivory chip */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results .results-centrepiece-panel .season-tab.is-active,
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .season-tab.is-active{ background:var(--pj-ivory); color:var(--pj-anth); border-color:var(--pj-ivory); }
+/* My Plot "Saved" badge: readable label on the dark tint */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-badge{ background:rgba(194,189,181,.08); border-color:rgba(194,189,181,.2); color:var(--pj-lime); }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .myplot-card-badge span{ color:var(--pj-lime); }
+/* the enquiry heading receives focus when the screen opens: an intentional terra focus ring */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .enq-h1:focus{ outline:2px solid var(--pj-terra-text); outline-offset:6px; border-radius:6px; }
