@@ -433,3 +433,204 @@ body.pn-journey .rc-res-posture,
 body.pn-journey .pa-res-posture,
 body.pn-journey .hb-res-posture{ display:inline-block; margin-top:4px; padding:5px 10px; border-radius:999px; background:rgba(194,189,181,.08); border:1px solid rgba(194,189,181,.16); color:var(--pj-lime); }
 
+/* ==========================================================================
+   BATCH 5B · the four journeys with forms or a map (Open Your Home to Art,
+   Borrowed Garden check, Borrowed Garden grower check, House as a Power
+   Station journey). Their own hard-coded colours and type, re-expressed the
+   same way. Selectors are page-specific (ho-, asr-, bg-, ps-), so the seven
+   live journeys are unaffected. Form fields, actions and scripts unchanged.
+   ========================================================================== */
+/* tokens the Open Your Home to Art page adds in a second :root */
+body.pn-journey{ --card:var(--pj-card); --sage-wash:var(--pj-raised); --oak-wash:var(--pj-raised); }
+/* Open Your Home to Art: its result "bold card" (green ground, ivory text) becomes the raised dark
+   card with the terra lead edge used by the other journeys' lead results */
+body.pn-journey .ho-revealband{ background:var(--pj-raised); color:var(--pj-ivory); border-top:3px solid var(--pj-terra-text); box-shadow:0 1px 2px rgba(0,0,0,.18),0 24px 48px -30px rgba(0,0,0,.75); }
+body.pn-journey .ho-revealband .ho-eyebrow{ color:var(--pj-terra-text); }
+body.pn-journey .ho-revealband .ho-reveal-h{ color:var(--pj-ivory); }
+body.pn-journey .ho-revealband .ho-reveal-sub{ color:var(--pj-lime); }
+/* Power Station journey: the pressed answer is the ivory chosen state, as in the other journeys */
+body.pn-journey :is(.ps-cta,.ps-savebtn){ border-radius:999px; }
+body.pn-journey .ps-opt{ border-radius:999px; }
+body.pn-journey .ps-opt[aria-pressed="true"]{ background:var(--pj-ivory); border-color:var(--pj-ivory); color:var(--pj-anth); }
+body.pn-journey .asr-done-h,
+body.pn-journey .asr-h,
+body.pn-journey .bg-advintro,
+body.pn-journey .bg-brand,
+body.pn-journey .bg-conclh,
+body.pn-journey .bg-h,
+body.pn-journey .bg-int-done-h,
+body.pn-journey .bg-int-h,
+body.pn-journey .bg-itemh,
+body.pn-journey .bg-next-h,
+body.pn-journey .bg-nexth,
+body.pn-journey .bg-ph,
+body.pn-journey .bg-primary-h,
+body.pn-journey .bg-q,
+body.pn-journey .bg-res-phys,
+body.pn-journey .bg-reveal-h,
+body.pn-journey .bg-saveh,
+body.pn-journey .ho-advintro,
+body.pn-journey .ho-brand,
+body.pn-journey .ho-conclh,
+body.pn-journey .ho-h,
+body.pn-journey .ho-itemh,
+body.pn-journey .ho-nexth,
+body.pn-journey .ho-ph,
+body.pn-journey .ho-primary-h,
+body.pn-journey .ho-q,
+body.pn-journey .ho-reveal-h,
+body.pn-journey .ho-saveh,
+body.pn-journey .ps-card-verb,
+body.pn-journey .ps-nextcheck-h,
+body.pn-journey .ps-q legend,
+body.pn-journey .ps-qlabel,
+body.pn-journey .ps-set-verb,
+body.pn-journey .ps-verb b,
+body.pn-journey .ps-word,
+body.pn-journey h1,
+body.pn-journey h2,
+body.pn-journey h3{ font-family:var(--pj-serif); font-weight:400; }
+body.pn-journey .bg-nextl li:before,
+body.pn-journey .bg-pindex,
+body.pn-journey .ho-nextl li:before,
+body.pn-journey .ho-pindex,
+body.pn-journey .ps-degraded b{ font-family:var(--pj-sans); font-weight:500; letter-spacing:0; }
+body.pn-journey .asr-cancel,
+body.pn-journey .asr-explore,
+body.pn-journey .asr-f > label,
+body.pn-journey .asr-ways legend,
+body.pn-journey .asr-f input[type=text],
+body.pn-journey .asr-f input[type=email],
+body.pn-journey .asr-f select,
+body.pn-journey .asr-f textarea,
+body.pn-journey .asr-more summary,
+body.pn-journey .asr-notice summary,
+body.pn-journey .asr-prev,
+body.pn-journey .bg-cta,
+body.pn-journey .bg-int-cancel,
+body.pn-journey .bg-int-f > label,
+body.pn-journey .bg-int-f input[type=text],
+body.pn-journey .bg-int-f input[type=email],
+body.pn-journey .bg-int-f select,
+body.pn-journey .bg-int-f textarea,
+body.pn-journey .bg-int-lab,
+body.pn-journey .bg-int-notice summary,
+body.pn-journey .bg-int-prev,
+body.pn-journey .bg-more summary,
+body.pn-journey .bg-next-lab,
+body.pn-journey .bg-next-n,
+body.pn-journey .bg-next-status,
+body.pn-journey .bg-next-t,
+body.pn-journey .bg-res-lab,
+body.pn-journey .bg-res-posture,
+body.pn-journey .bg-savebtn,
+body.pn-journey .ho-cta,
+body.pn-journey .ho-savebtn,
+body.pn-journey .ps-act,
+body.pn-journey .ps-nextcheck-a,
+body.pn-journey .ps-nextcheck-lab,
+body.pn-journey .ps-savebtn{ font-family:var(--pj-sans); }
+body.pn-journey .ho-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .ho-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .ho-opt{ background:var(--pj-card); }
+body.pn-journey .ho-caution{ border-left:2px solid rgba(194,189,181,0.375); }
+body.pn-journey .ho-part.is-lead{ border-left:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .ho-top{ background:rgba(44,46,48,0.9); }
+body.pn-journey .ho-back{ box-shadow:0 1px 2px rgba(0,0,0,0.132); }
+body.pn-journey .ho-back:hover{ background:var(--pj-card); }
+body.pn-journey .ho-reveal-sub{ color:rgba(27,28,30,0.84); }
+body.pn-journey .asr{ border-top:2px solid rgba(207,133,102,0.476); }
+body.pn-journey .asr-assure{ border-top:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .asr-more{ border-top:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .asr-prev{ color:var(--pj-bronze-text); border:1px solid rgba(179,146,114,0.44); }
+body.pn-journey .asr-f [aria-invalid=true]{ border-color:#E59A84; }
+body.pn-journey .asr-notice{ border-top:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .asr-msg.is-bad{ color:#E59A84; }
+body.pn-journey .asr-note{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .asr-f input[type=text],
+body.pn-journey .asr-f input[type=email],
+body.pn-journey .asr-f select,
+body.pn-journey .asr-f textarea{ background:var(--pj-card); }
+body.pn-journey .asr-ways .asr-tick{ background:var(--pj-card); }
+body.pn-journey #asrForm > .asr-tick{ background:var(--pj-card); }
+body.pn-journey .asr-explore:hover{ background:rgba(194,189,181,0.075); }
+body.pn-journey .bg-mark{ box-shadow:0 1px 3px rgba(0,0,0,0.352), 0 0 0 1px rgba(0,0,0,0.154); }
+body.pn-journey .bg-mark:hover{ box-shadow:0 5px 16px rgba(0,0,0,0.44), 0 0 0 1px rgba(0,0,0,0.198); }
+body.pn-journey .bg-opt{ background:var(--pj-card); }
+body.pn-journey .bg-res-item{ border:1px solid rgba(194,189,181,0.138); border-top:2px solid rgba(194,189,181,0.5); }
+body.pn-journey .bg-res-bound{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .bg-res-why li::before{ background:rgba(194,189,181,0.5); }
+body.pn-journey .bg-ctx-item{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .bg-sep{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .bg-next{ border-top:2px solid rgba(207,133,102,0.476); }
+body.pn-journey .bg-next-status{ border:1px solid rgba(194,189,181,0.275); }
+body.pn-journey .bg-next-note{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .bg-more{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .bg-int{ border-top:2px solid rgba(207,133,102,0.476); }
+body.pn-journey .bg-int-notice{ border-top:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .bg-int-cond{ border-top:1px solid rgba(194,189,181,0.175); }
+body.pn-journey .bg-int-msg.is-bad{ color:#E59A84; }
+body.pn-journey .bg-int-note{ border-top:1px solid rgba(194,189,181,0.15); }
+body.pn-journey .bg-int-prev{ border:1px solid rgba(179,146,114,0.44); }
+body.pn-journey .ps-opt{ background:var(--pj-card); }
+body.pn-journey .ps-view{ box-shadow:0 1px 2px rgba(0,0,0,0.088), 0 18px 44px -28px rgba(0,0,0,0.6); }
+body.pn-journey .ps-input{ background:var(--pj-card); }
+body.pn-journey .ps-set-state.is-unknown i{ background:rgba(194,189,181,0.45); }
+body.pn-journey .ps-card{ background:var(--pj-card); box-shadow:0 1px 2px rgba(0,0,0,0.088), 0 12px 32px -20px rgba(0,0,0,0.396); }
+body.pn-journey .ps-state.is-unknown i{ background:rgba(194,189,181,0.45); }
+body.pn-journey .ps-savebtn{ background:var(--ink,var(--ink)); color:var(--cream); }
+body.pn-journey .ps-savebtn[data-saved]{ color:var(--ink,var(--ink)); box-shadow:inset 0 0 0 1px rgba(0,0,0,0.6); }
+body.pn-journey .ps-savelink{ color:var(--ink,var(--ink)); border-bottom:1px solid rgba(194,189,181,0.35); }
+body.pn-journey .ps-savelink:hover{ border-bottom-color:rgba(194,189,181,0.5); }
+body.pn-journey .ps-nextcheck{ background:rgba(194,189,181,0.037); border:1px solid rgba(194,189,181,0.15); border-top:2px solid rgba(194,189,181,0.425); }
+body.pn-journey .ps-nextcheck-lab{ color:var(--accent,var(--accent)); }
+body.pn-journey .ps-nextcheck-a{ color:var(--ink,var(--ink)); border-bottom:1px solid rgba(194,189,181,0.35); }
+body.pn-journey .ps-nextcheck-a:hover{ border-bottom-color:rgba(194,189,181,0.5); }
+body.pn-journey .ho-ctx,
+body.pn-journey .ho-advlab,
+body.pn-journey .ho-itemlab,
+body.pn-journey .ho-plab,
+body.pn-journey .ho-evgh,
+body.pn-journey .ho-eyebrow,
+body.pn-journey .ho-res-lab,
+body.pn-journey .ho-res-posture,
+body.pn-journey .ho-next-name,
+body.pn-journey .ho-blocklab,
+body.pn-journey .ho-cat,
+body.pn-journey .asr-ctx,
+body.pn-journey .asr-advlab,
+body.pn-journey .asr-itemlab,
+body.pn-journey .asr-plab,
+body.pn-journey .asr-evgh,
+body.pn-journey .asr-eyebrow,
+body.pn-journey .asr-res-lab,
+body.pn-journey .asr-res-posture,
+body.pn-journey .asr-next-name,
+body.pn-journey .asr-blocklab,
+body.pn-journey .asr-cat,
+body.pn-journey .bg-ctx,
+body.pn-journey .bg-advlab,
+body.pn-journey .bg-itemlab,
+body.pn-journey .bg-plab,
+body.pn-journey .bg-evgh,
+body.pn-journey .bg-eyebrow,
+body.pn-journey .bg-res-lab,
+body.pn-journey .bg-res-posture,
+body.pn-journey .bg-next-name,
+body.pn-journey .bg-blocklab,
+body.pn-journey .bg-cat,
+body.pn-journey .ps-ctx,
+body.pn-journey .ps-advlab,
+body.pn-journey .ps-itemlab,
+body.pn-journey .ps-plab,
+body.pn-journey .ps-evgh,
+body.pn-journey .ps-eyebrow,
+body.pn-journey .ps-res-lab,
+body.pn-journey .ps-res-posture,
+body.pn-journey .ps-next-name,
+body.pn-journey .ps-blocklab,
+body.pn-journey .ps-cat{ font-size:11.5px; letter-spacing:.12em; }
+body.pn-journey .ho-back,
+body.pn-journey .asr-back,
+body.pn-journey .bg-back,
+body.pn-journey .ps-back{ font-size:13.5px; }
