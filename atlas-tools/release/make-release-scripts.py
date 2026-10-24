@@ -22,8 +22,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 
 STANDARD = [
-    ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 4 pages", "global header builder"),
-    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 21 pages", "identity layer"),
+    ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 2 pages", "global header builder"),
+    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 23 pages", "identity layer"),
     ("python3 atlas-tools/prove-global-header.py", "GLOBAL HEADER · OK", "global header guard G1-G9"),
     ("python3 atlas-tools/prove-global-header-capability.py", "CAPABILITY · OK — 25 planted faults, 0 not caught", "global header capability 25/25"),
     ("python3 atlas-tools/prove-identity-stage1.py", "PROOF OK · 27 planted faults, 0 not caught", "identity proof 27/27"),

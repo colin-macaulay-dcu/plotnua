@@ -642,3 +642,81 @@ body.pn-id.pn-pd :is(.contact-form, .ar-form) :is(input[type="text"], input[type
   background:var(--pd-raised); border:1px solid var(--p4-line2); border-radius:12px; color:var(--p4-ivory); min-height:48px; padding:10px 14px; box-sizing:border-box; }
 body.pn-id.pn-pd :is(.contact-form, .ar-form) :is(input, select, textarea):focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:2px; }
 body.pn-id.pn-pd :is(.contact-form .btn-primary, .ar-form button[type="submit"], .ar-cta){ display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 26px; border-radius:999px; font-family:var(--p4-sans); font-weight:600; }
+
+/* ======================================================================
+   BATCH 4 CORRECTION · signature Discoveries (founder review, 24 Oct 2026)
+   House as a Power Station (#look-again) and Above and Beyond (#look-up):
+   the toolkit's editorial composition on their EXISTING markup. Desktop:
+   kicker and heading in a left column, body text in a wide right column at
+   reading size; card grids, diagrams, figures and tables span the full width.
+   Phones: one column. Content, diagrams and scripts unchanged.
+   ====================================================================== */
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > :is(p, h3, h4, ol, ul, blockquote, details){ font-size:18px; line-height:1.7; }
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > p{ max-width:68ch; color:var(--p4-lime); }
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > h3{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(24px,2vw,30px); line-height:1.15; color:var(--p4-ivory); margin-top:34px; }
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > :is(div, figure, table):not(.kicker){ max-width:none; }
+@media (min-width:1024px){
+  body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section{ display:flow-root; }
+  /* left column: kicker and heading */
+  body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > :is(.kicker, h2){ float:left; clear:left; width:34%; box-sizing:border-box; padding-right:clamp(24px,3vw,56px); }
+  body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > h2{ font-size:clamp(40px,3.6vw,60px); line-height:1.02; max-width:none; }
+  /* right column: the reading text */
+  body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > :is(p, h3, h4, ol, ul, blockquote, details){ margin-left:34%; max-width:720px; }
+  /* full width: components (cards, diagrams, figures, tables, explorers) */
+  body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > :is(div, figure, table, section, aside):not(.kicker){ clear:both; margin-left:0; margin-right:0; width:auto; }
+  body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .article-section > :is(div, figure, table, section, aside):not(.kicker) + :is(p, h3, ol, ul, details){ clear:both; }
+}
+/* Power Station: the "honest part" band and other --ink surfaces stay dark, like the opening */
+body.pn-id.pn-pd:has(#look-again) .seam{ background:var(--pd-band); color:var(--p4-lime); }
+body.pn-id.pn-pd:has(#look-again) .seam-inner{ max-width:var(--pd-max); padding:0 clamp(16px,3vw,40px); box-sizing:border-box; }
+body.pn-id.pn-pd:has(#look-again) .seam .kicker{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; color:var(--p4-bronze-text); }
+body.pn-id.pn-pd:has(#look-again) .seam h2{ font-family:var(--p4-serif); font-size:clamp(40px,4.4vw,64px); line-height:1.02; color:var(--p4-ivory); max-width:20ch; }
+body.pn-id.pn-pd:has(#look-again) .seam p{ font-family:var(--p4-sans); font-size:18px; color:var(--p4-lime); max-width:68ch; }
+body.pn-id.pn-pd:has(#look-again) .seam blockquote{ font-family:var(--p4-serif); font-size:clamp(20px,1.6vw,24px); color:var(--p4-ivory); background:var(--pd-card); border-left:3px solid var(--p4-terra); border-radius:0 var(--pd-r-sm) var(--pd-r-sm) 0; max-width:900px; }
+/* Above and Beyond: the garden-brief quiz on the card surfaces (its hard-coded white made pale text unreadable) */
+body.pn-id.pn-pd:has(#look-up) .gb{ background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); padding:var(--pd-pad); }
+body.pn-id.pn-pd:has(#look-up) .jq-opt{ background:var(--pd-raised); border:1px solid var(--p4-line2); border-radius:12px; }
+body.pn-id.pn-pd:has(#look-up) .jq-opt span{ color:var(--p4-ivory); font-size:16px; }
+body.pn-id.pn-pd:has(#look-up) .jq-opt:hover{ border-color:var(--p4-stone); }
+body.pn-id.pn-pd:has(#look-up) .jq-opt:has(input:checked){ background:#36383B; border-color:var(--p4-bronze-text); }
+body.pn-id.pn-pd:has(#look-up) .jq-opt input, body.pn-id.pn-pd:has(#look-up) .gb-opt input{ accent-color:var(--p4-terra); }
+body.pn-id.pn-pd:has(#look-up) :is(.gb-n, .gb-t, .gb-out){ background:var(--pd-raised); color:var(--p4-ivory); border:1px solid var(--p4-line2); border-radius:12px; }
+body.pn-id.pn-pd:has(#look-up) :is(.gb-state, .gb-next){ background:var(--pd-raised); }
+body.pn-id.pn-pd:has(#look-up) :is(.gb h3, .gb h4, .gb-q, .gb-opt label, .gb-state-label){ color:var(--p4-ivory); }
+body.pn-id.pn-pd:has(#look-up) .gb-btn{ border-radius:999px; min-height:48px; }
+/* lists of options (.practical-group) become a grid of cards */
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .practical-group{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:var(--pd-gap); margin:32px 0 8px; }
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .practical-item{ background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); padding:26px 26px 22px; margin:0; }
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .practical-item h3{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(24px,1.9vw,28px); line-height:1.1; color:var(--p4-ivory); margin:0 0 12px; }
+body.pn-id.pn-pd:is(:has(#look-again), :has(#look-up)) .practical-item p{ font-size:16px; line-height:1.65; color:var(--p4-lime); margin:0; max-width:none; }
+/* Statistics and diagram type scale: the identity layer's dark-prose rule set every paragraph
+   to 18px, flattening each page's own figure hierarchy (e.g. the 3 m height figure). Restore it. */
+body.pn-id.pn-pd:has(#look-up) .article-section .pn-hero-fig .pn-fig-n{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(72px,9vw,128px); line-height:.9; color:var(--p4-ivory); margin:0 0 10px; }
+body.pn-id.pn-pd:has(#look-up) .article-section :is(.pn-stack, .pn-exception) .pn-fig-n{ font-family:var(--p4-serif); font-size:clamp(28px,2.8vw,38px); line-height:1.05; color:var(--p4-ivory); margin:0 0 4px; }
+body.pn-id.pn-pd:has(#look-up) .article-section .pn-exception .pn-fig-n{ color:var(--p4-stone); }
+body.pn-id.pn-pd:has(#look-up) .article-section .pn-fig-l{ font-size:14px; line-height:1.55; color:var(--p4-stone); margin:0; }
+body.pn-id.pn-pd:has(#look-up) .article-section .pn-hero-fig .pn-fig-l{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--p4-terra-text); max-width:34ch; }
+body.pn-id.pn-pd:has(#look-up) .article-section :is(.pn-op, .pn-aop){ font-family:var(--p4-serif); font-size:26px; line-height:1; color:var(--p4-terra-text); margin:10px 0 2px; }
+body.pn-id.pn-pd:has(#look-up) .article-section .pn-op-l{ font-size:15px; line-height:1.6; color:var(--p4-lime); margin:0 0 4px; }
+body.pn-id.pn-pd:has(#look-up) .article-section .pn-afig-n{ font-family:var(--p4-serif); font-size:clamp(30px,3vw,42px); line-height:1.05; color:var(--p4-ivory); margin:0 0 6px; }
+body.pn-id.pn-pd:has(#look-up) .article-section .pn-afig-l{ font-size:14px; line-height:1.6; color:var(--p4-stone); }
+body.pn-id.pn-pd:has(#look-up) .article-section :is(.pn-conclusion, .pn-thesis){ font-family:var(--p4-serif); font-size:clamp(26px,2.4vw,34px); line-height:1.2; color:var(--p4-ivory); }
+body.pn-id.pn-pd:has(#look-up) .article-section :is(.pn-dia-c, .pn-dia p, .pn-stand, .step, .ev-bul, .ev-limits, .pn-p-key), body.pn-id.pn-pd:has(#look-up) .article-section :is(.pn-p-key, .ev-bul, .ev-limits) :is(p, li){ font-size:15px; line-height:1.7; }
+body.pn-id.pn-pd:has(#look-up) .article-section :is(.jr, .jr-label, .jr-visit, .jr-check, .jr-check-after, .jr-back), body.pn-id.pn-pd:has(#look-up) .article-section :is(.jr, .jr-check) :is(p, li){ font-size:15px; line-height:1.6; }
+body.pn-id.pn-pd:has(#look-up) .article-section :is(.pn-attrib, .pn-area-l){ font-size:13.5px; line-height:1.65; color:var(--p4-stone); }
+body.pn-id.pn-pd:has(#look-again) .article-section :is(.mx-legend, .mx-foot), body.pn-id.pn-pd:has(#look-again) .article-section :is(.mx-legend, .mx-foot) :is(p, li){ font-size:13px; line-height:1.6; color:var(--p4-stone); }
+body.pn-id.pn-pd:has(#look-again) .article-section :is(.pos, .handoff, .chain, .dq-figs, .dq-rows, .mx-grid, .dq-adv-cols) :is(p, li){ font-size:16px; line-height:1.65; }
+/* Power Station diagrams on dark (founder note 24 Oct): the heat-path strip and the
+   development-scale energy-centre section were drawn in deep green for a cream page.
+   Recolour their existing strokes, fills and labels to a brighter desaturated sage and
+   lift faint lines. Drawing, layout and animation unchanged. */
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]){ --ps-line:#A9C2A1; --ps-label:#D3DECC; --ps-sub:#9DB894; }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) [stroke="#1F3B2E"]{ stroke:var(--ps-line); }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) [stroke="#4F6B4A"]{ stroke:var(--ps-sub); }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) [fill="#1F3B2E"]{ fill:var(--ps-label); }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) [fill="#4F6B4A"]{ fill:var(--ps-sub); }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) [fill="#8FAF8A"]{ fill:var(--ps-line); }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) [opacity=".22"]{ opacity:.36; }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) [opacity=".30"]{ opacity:.55; }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) :is([opacity=".4"], [opacity=".45"], [opacity=".5"]){ opacity:.75; }
+body.pn-id.pn-pd:has(#look-again) :is(.fig-strip svg, svg[viewBox="0 0 900 420"]) :is([opacity=".55"], [opacity=".6"], [opacity=".65"]){ opacity:.85; }

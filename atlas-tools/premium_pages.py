@@ -35,6 +35,8 @@ PREMIUM_PAGES = {
     "about.html",                            # Batch 3 · brand and conversion pages (founder direction 24 Oct 2026)
     "contact.html",                          # Batch 3 · brand and conversion pages (founder direction 24 Oct 2026)
     "artist-register.html",                  # Batch 3 · brand and conversion pages (founder direction 24 Oct 2026)
+    "discovery-house-as-power-station.html", # Batch 4 · signature Discoveries (Pass 1, 24 Oct 2026)
+    "discovery-above-and-beyond.html",       # Batch 4 · signature Discoveries (Pass 1, 24 Oct 2026)
 }
 
 

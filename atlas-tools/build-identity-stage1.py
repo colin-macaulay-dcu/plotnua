@@ -100,11 +100,14 @@ PAGES = {
     "garden-room-prices-ireland.html": "dark",
     # Batch 1 · Garden Living (founder direction 23 Oct 2026)
     "discovery-garden-retreat.html": "dark", "triq-cube.html": "dark",
+    # Pass 1 · Batch 4 (24 Oct 2026)
+    "discovery-house-as-power-station.html": "dark", "discovery-above-and-beyond.html": "dark",
 }
 DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",
         "discovery-the-borrowed-garden.html", "discovery-driveway-income.html", "discovery-hidden-cars.html",
         "discovery-home-exchange.html", "discovery-neighbourhood-parcel-house.html", "discovery-your-home-on-screen.html",
-        "discovery-a-home-for-art.html", "discovery-garden-retreat.html"}
+        "discovery-a-home-for-art.html", "discovery-garden-retreat.html",
+        "discovery-house-as-power-station.html", "discovery-above-and-beyond.html"}
 # Pages that also load the Premium component layer (I13, I14): the registry.
 PREMIUM = set(premium_pages.PREMIUM_PAGES)
 # Premium pages that are a Discovery's guide rather than a Discovery (no Discovery layer).

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#27282A">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="referrer" content="no-referrer">
 <!-- CONTENT SECURITY POLICY. There was none before; this is a tightening, not a
@@ -106,6 +107,37 @@ details.scope ul{margin:.7rem 0}
 details.scope ul.yes li::before{content:"\2713";color:var(--pn-yes)}
 details.scope ul.no li::before{content:"\2715";color:#9ca3af}
 @media (max-width:420px){h1.prop{font-size:1.38rem}}
+
+/* PASS 1 · BATCH 4 (24 Oct 2026): the anthracite palette, by this page's own variables only.
+   Colour only: no font fetch, no external file, no change to the form, the button or any script. */
+:root{
+  --pn-ground:#1B1C1E; --pn-voice:#F2EBE0; --pn-fact:#F2EBE0; --pn-body:#E7DED0;
+  --pn-stone:#C2BDB5; --pn-hair:#3A3B3E; --pn-paper:#2C2E30; --pn-on-dark:#1B1C1E;
+  --pn-yes:#9CC3A4; --pn-no:#E0A48E;
+}
+header.bar{background:#27282A;color:#F2EBE0;border-bottom:1px solid #3A3B3E}
+.card{border-radius:16px}
+.own{background:rgba(242,235,224,.06)}
+button.go{border-radius:999px;min-height:52px}
+button.go:hover{background:#E7DED0}
+a{color:#CF8566}
+/* typography, spacing and the message card (system fonts only: this page fetches nothing) */
+.wrap{max-width:680px;padding-left:24px;padding-right:24px}
+header.bar{padding:18px 0}
+header.bar strong{font-size:12px;letter-spacing:.24em;color:#F2EBE0}
+main.wrap{padding-top:clamp(48px,9vw,96px);padding-bottom:72px}
+h1.prop{font-size:clamp(32px,5vw,46px);line-height:1.1;margin:8px 0 18px}
+.reassure{font-size:18px;line-height:1.6;color:#E7DED0;margin:0 0 28px}
+.pair{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#B39272;margin:0 0 14px}
+details.scope summary{cursor:pointer;color:#E7DED0;margin:22px 0 14px}
+h1{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,'Times New Roman',serif;font-size:clamp(32px,5vw,44px);line-height:1.08;letter-spacing:-.01em;margin:0 0 12px}
+.org{font-size:16px;margin:0 0 32px}
+.card{padding:clamp(24px,4vw,36px);border-radius:20px;border-color:#3A3B3E;box-shadow:0 1px 2px rgba(0,0,0,.18),0 30px 60px -34px rgba(0,0,0,.7);margin:0 0 28px}
+.lead{font-size:18px;line-height:1.6}
+.col h2{color:#B39272}
+li{font-size:15.5px;line-height:1.6;padding-bottom:9px}
+.withdraw,.authority,.aside,.ref{line-height:1.65}
+button.go{font-size:15px;letter-spacing:.04em}
 </style>
 </head>
 <body>
