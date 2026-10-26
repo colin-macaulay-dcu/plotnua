@@ -42,7 +42,7 @@ SIZE_GUARD = 180 * 1024
 # its boundary check has proved every record outside the update byte-
 # identical; each such re-freeze is logged in governance/SEARCH-V1-CONTRACT.md
 # (TARGETED-UPDATE RE-FREEZES) with the update's report.
-BASE_UNIVERSE_SHA = "3da2c97699ba18cf38ca6eb1285c8157cd264c19bca6c4db294cd16d6f25ca83"
+BASE_UNIVERSE_SHA = "7f70a52b0650966f929bee3d54f91be6a5f42f2d63bd69b25182024109c8f0ba"
 
 ALLOWED_FIELDS = {
     "possibility": {"id", "type", "title", "standfirst", "topics", "route"},

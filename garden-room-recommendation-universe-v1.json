@@ -32,7 +32,7 @@
  "quoteOnlyPriceCount": 20,
  "organisationCount": 64,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "1c612c2ca3153eb4a4938345853e120743cd62cff9308c04cb2633a7162e4755",
+ "governedDigest": "e1ea1dfb4b3957ee2bef4950baab4ebcff68d895680e3a911343ca16f98c8c44",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -23976,7 +23976,7 @@
     }
    },
    "priceEvidence": {
-    "base": 7189,
+    "base": 7306,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -23989,7 +23989,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 7189,
+   "price": 7306,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24033,7 +24033,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24087,7 +24087,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8052,
+    "base": 8183,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24100,7 +24100,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8052,
+   "price": 8183,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24144,7 +24144,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24198,7 +24198,7 @@
     }
    },
    "priceEvidence": {
-    "base": 9245,
+    "base": 9826,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24211,7 +24211,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 9245,
+   "price": 9826,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24255,7 +24255,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24309,7 +24309,7 @@
     }
    },
    "priceEvidence": {
-    "base": 7267,
+    "base": 7385,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24322,7 +24322,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 7267,
+   "price": 7385,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24366,7 +24366,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24420,7 +24420,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8213,
+    "base": 8347,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24433,7 +24433,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8213,
+   "price": 8347,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24477,7 +24477,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24531,7 +24531,7 @@
     }
    },
    "priceEvidence": {
-    "base": 9102,
+    "base": 9250,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24544,7 +24544,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 9102,
+   "price": 9250,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24588,7 +24588,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24642,7 +24642,7 @@
     }
    },
    "priceEvidence": {
-    "base": 7572,
+    "base": 7695,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24655,7 +24655,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 7572,
+   "price": 7695,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24699,7 +24699,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24753,7 +24753,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8443,
+    "base": 8580,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24766,7 +24766,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8443,
+   "price": 8580,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24810,7 +24810,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24864,7 +24864,7 @@
     }
    },
    "priceEvidence": {
-    "base": 9470,
+    "base": 9614,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24877,7 +24877,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 9470,
+   "price": 9614,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -24921,7 +24921,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -24975,7 +24975,7 @@
     }
    },
    "priceEvidence": {
-    "base": 6689,
+    "base": 6798,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -24988,7 +24988,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 6689,
+   "price": 6798,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25032,7 +25032,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25086,7 +25086,7 @@
     }
    },
    "priceEvidence": {
-    "base": 7527,
+    "base": 7649,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -25099,7 +25099,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 7527,
+   "price": 7649,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25143,7 +25143,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25197,7 +25197,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8362,
+    "base": 8498,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -25210,7 +25210,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8362,
+   "price": 8498,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25254,7 +25254,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25308,7 +25308,7 @@
     }
    },
    "priceEvidence": {
-    "base": 6830,
+    "base": 6941,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -25321,7 +25321,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 6830,
+   "price": 6941,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25365,7 +25365,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25419,7 +25419,7 @@
     }
    },
    "priceEvidence": {
-    "base": 7497,
+    "base": 7619,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -25432,7 +25432,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 7497,
+   "price": 7619,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25476,7 +25476,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25530,7 +25530,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8543,
+    "base": 8682,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -25543,7 +25543,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8543,
+   "price": 8682,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25587,7 +25587,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25768,7 +25768,7 @@
     }
    },
    "priceEvidence": {
-    "base": 11974,
+    "base": 12222,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -25781,7 +25781,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 11974,
+   "price": 12222,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25825,7 +25825,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25879,7 +25879,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13000,
+    "base": 13265,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -25892,7 +25892,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13000,
+   "price": 13265,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -25936,7 +25936,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -25990,7 +25990,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13489,
+    "base": 13763,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -26003,7 +26003,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13489,
+   "price": 13763,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -26047,7 +26047,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -26101,7 +26101,7 @@
     }
    },
    "priceEvidence": {
-    "base": 16199,
+    "base": 16893,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -26114,7 +26114,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 16199,
+   "price": 16893,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -26158,7 +26158,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -26420,7 +26420,7 @@
     }
    },
    "priceEvidence": {
-    "base": 5130,
+    "base": 5213,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -26433,7 +26433,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 5130,
+   "price": 5213,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -26477,7 +26477,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -26531,7 +26531,7 @@
     }
    },
    "priceEvidence": {
-    "base": 5942,
+    "base": 6039,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -26544,7 +26544,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 5942,
+   "price": 6039,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -26588,7 +26588,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -26642,7 +26642,7 @@
     }
    },
    "priceEvidence": {
-    "base": 4713,
+    "base": 4789,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -26655,7 +26655,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 4713,
+   "price": 4789,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -26699,7 +26699,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -27669,7 +27669,7 @@
     }
    },
    "priceEvidence": {
-    "base": 14813,
+    "base": 15484,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -27682,7 +27682,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 14813,
+   "price": 15484,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -27726,7 +27726,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -27907,7 +27907,7 @@
     }
    },
    "priceEvidence": {
-    "base": 14034,
+    "base": 13611,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -27920,7 +27920,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 14034,
+   "price": 13611,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -27964,7 +27964,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -29609,7 +29609,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8619,
+    "base": 8382,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -29622,7 +29622,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8619,
+   "price": 8382,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -29666,7 +29666,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -29899,7 +29899,7 @@
     }
    },
    "priceEvidence": {
-    "base": 6591,
+    "base": 6698,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -29912,7 +29912,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 6591,
+   "price": 6698,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -29956,7 +29956,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -30010,7 +30010,7 @@
     }
    },
    "priceEvidence": {
-    "base": 7888,
+    "base": 7640,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -30023,7 +30023,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 7888,
+   "price": 7640,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -30067,7 +30067,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -30121,7 +30121,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13136,
+    "base": 13403,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -30134,7 +30134,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13136,
+   "price": 13403,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -30178,7 +30178,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -30232,7 +30232,7 @@
     }
    },
    "priceEvidence": {
-    "base": 6360,
+    "base": 6463,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -30245,7 +30245,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 6360,
+   "price": 6463,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -30289,7 +30289,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -30342,7 +30342,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13817,
+    "base": 13665,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -30355,17 +30355,23 @@
     "candidateCount": 1
    },
    "features": {
+    "insulation": {
+     "text": "INSULATED — YEAR-ROUND. Pineca insulated specification: 34mm timber core wall plus insulation layer plus exterior cladding; insulation included in kit price. Product name designates the insulated variant. NO thickness or U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level"
+    },
+    "floorArea": {
+     "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. No size or area held in Atlas for the EVELIN PLUS and no Product URL; nothing estimated. The model did not appear on the first page of the pineca.ie garden-rooms listing read on 2026-08-28, so no published figure could be attributed to it. Position: one product carries a VERIFIED EXTERNAL FOOTPRINT (Garden Studio MAJA, 30.00 m2); two carry a VERIFIED NOMINAL SIZE (OAK Garden Office 6 x 3 m 44 mm, and High-Quality Insulation Office 5 x 3 m); one carries CONFLICTING MEASUREMENTS (Garden Room OAK 34 mm, published as both 18 m2 and 16 m2); one is a range-level record spanning three published sizes (LAYLA Insulated); this EVELIN PLUS record is unmatched; and the OAK Insulated 6 x 3 m was assessed in an earlier run. NOT ONE Pineca product is currently SAFE TO RANK on internal floor area. THE CENTRAL FINDING, and it is a supplier-level one: Pineca's published area figure has NO CONSISTENT BASIS. On the insulated LAYLA models the area is clearly internal, sitting 2-3 m2 below the external dimensions. On the Garden Studio MAJA the published 30 m2 is exactly 7.5 x 4 m, i.e. the external footprint. On the 34 mm OAK the supplier publishes two different figures for the same product. A single Pineca number therefore cannot be interpreted without checking it against the model's own dimensions, and Pineca figures must never be compared against each other or against other suppliers' internal areas. HIGH-VALUE REMEDY: the LAYLA record split into its three published sizes would yield three products with verified internal areas immediately, at no research cost beyond the evidence already recorded here.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
     "insulationRating": {
      "text": "YEAR-ROUND INSULATED. Carries Pineca's explicit INSULATED designation. The supplier's insulated models are built with insulation integrated into the wall, roof and floor construction from the outset — 'At pineca.ie, insulation is not an afterthought' — and the insulation materials are included in the kit price. Four insulated specifications exist: 34 mm + Cladding, Twin Skin (44+44 or 34+34 mm), SIPS and High-quality insulation. Nothing inferred. IMPORTANT PURCHASING POINT published by the supplier: 'Standard garden rooms are not designed for post-assembly structural insulation upgrades... it is significantly more cost-effective to specify it at the time of ordering. The price difference is modest; the cost of retrofitting insulation after assembly is much higher and the result less satisfactory.' HOMEOWNER IMPLICATION: winter-capable as designated, and the specification must be chosen at order — there is no retrofit path.",
      "number": null,
      "unit": null,
      "evidenceScope": "Range-Level"
-    },
-    "warranty": {
-     "text": "ANTI-ROT WARRANTY. DURATION: 10 years at wall thicknesses of 34 mm or more; 5 years at 28 mm. Conditional on the timber being treated yearly with wood preserver and maintained after construction. Money-back guarantee separately published. Nothing inferred. HOMEOWNER IMPLICATION: on an insulated model the timber is only the outer skin of the assembly, and the published guarantee covers rot in that timber — not the insulation, the glazing or the internal lining. Confirm what else, if anything, is covered.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
     },
     "installationModel": {
      "text": "DIY OR INSTALLED. Supplied as a kit with instructions and all fixing hardware; self-installation supported by published videos; professional installation available from the supplier's own team of builders at extra cost; nationwide delivery and installation published for Ireland. Nothing inferred. HOMEOWNER IMPLICATION: the insulated specification means the wall build-up is more involved than a plain log kit, so the case for buying the installation line is stronger here than on the uninsulated models. The installation charge is not published and must be quoted.",
@@ -30373,26 +30379,20 @@
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
-    "insulation": {
-     "text": "INSULATED — YEAR-ROUND. Pineca insulated specification: 34mm timber core wall plus insulation layer plus exterior cladding; insulation included in kit price. Product name designates the insulated variant. NO thickness or U-value published.",
+    "warranty": {
+     "text": "ANTI-ROT WARRANTY. DURATION: 10 years at wall thicknesses of 34 mm or more; 5 years at 28 mm. Conditional on the timber being treated yearly with wood preserver and maintained after construction. Money-back guarantee separately published. Nothing inferred. HOMEOWNER IMPLICATION: on an insulated model the timber is only the outer skin of the assembly, and the published guarantee covers rot in that timber — not the insulation, the glazing or the internal lining. Confirm what else, if anything, is covered.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Range-Level"
+     "evidenceScope": "Organisation-Wide"
     },
     "irishAvailability": {
      "text": "AVAILABLE ACROSS IRELAND. Dublin 2 office; whole-of-Ireland delivery and installation including Belfast, delivery included in the listed price. Nothing inferred. HOMEOWNER IMPLICATION: all-island reach with delivery in the price.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
-    },
-    "floorArea": {
-     "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. No size or area held in Atlas for the EVELIN PLUS and no Product URL; nothing estimated. The model did not appear on the first page of the pineca.ie garden-rooms listing read on 2026-08-28, so no published figure could be attributed to it. Position: one product carries a VERIFIED EXTERNAL FOOTPRINT (Garden Studio MAJA, 30.00 m2); two carry a VERIFIED NOMINAL SIZE (OAK Garden Office 6 x 3 m 44 mm, and High-Quality Insulation Office 5 x 3 m); one carries CONFLICTING MEASUREMENTS (Garden Room OAK 34 mm, published as both 18 m2 and 16 m2); one is a range-level record spanning three published sizes (LAYLA Insulated); this EVELIN PLUS record is unmatched; and the OAK Insulated 6 x 3 m was assessed in an earlier run. NOT ONE Pineca product is currently SAFE TO RANK on internal floor area. THE CENTRAL FINDING, and it is a supplier-level one: Pineca's published area figure has NO CONSISTENT BASIS. On the insulated LAYLA models the area is clearly internal, sitting 2-3 m2 below the external dimensions. On the Garden Studio MAJA the published 30 m2 is exactly 7.5 x 4 m, i.e. the external footprint. On the 34 mm OAK the supplier publishes two different figures for the same product. A single Pineca number therefore cannot be interpreted without checking it against the model's own dimensions, and Pineca figures must never be compared against each other or against other suppliers' internal areas. HIGH-VALUE REMEDY: the LAYLA record split into its three published sizes would yield three products with verified internal areas immediately, at no research cost beyond the evidence already recorded here.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
     }
    },
-   "price": 13817,
+   "price": 13665,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -30434,7 +30434,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -33969,7 +33969,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8995,
+    "base": 8765,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -33988,17 +33988,17 @@
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
-    "warranty": {
-     "text": "ANTI-ROT WARRANTY. DURATION: 10 years for wall thicknesses of at least 34 mm (1.3 inches); 5 years for 28 mm (1.1 inch) walls. Recorded exactly as published: Pineca gives a 10-year anti-rot guarantee on wood garden buildings with a wall thickness of at least 1.3 inches, and a corresponding 5-year anti-rot guarantee on 1.1 inch walls. A money-back guarantee is separately published for dissatisfied customers. Nothing inferred. THE CONDITION IS EXPLICIT AND RECURRING, not a one-off obligation: the cabin MUST BE TREATED YEARLY WITH WOOD PRESERVER, and the anti-rot cover is stated to hold on condition that the wood is maintained after construction. That is materially different from a one-time treatment condition — it is an annual duty for the whole life of the guarantee. THE TERM IS TIED TO WALL THICKNESS, which makes this the only supplier in the catalogue whose warranty length is a function of a published specification rather than a flat policy. A buyer choosing between wall thicknesses is also choosing between five and ten years of cover. HOMEOWNER IMPLICATION: confirm this model's wall thickness before assuming the ten-year term, budget for annual preserver, and keep receipts — an unmaintained cabin is an uncovered cabin under the published condition.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
     "floorArea": {
      "text": "VERIFIED EXTERNAL FOOTPRINT — DO NOT RANK ON INTERNAL AREA. Published exactly as given: 'Garden Studio MAJA (66 mm), 7.5x4 m (25'x13'), 30 m2'. The stated 30 m2 is precisely 7.5 x 4 m, so the figure Pineca publishes for this model is the EXTERNAL footprint, not the usable floor. On the supplier's own 66 mm wall thickness the internal area would be smaller, but Pineca publishes no internal figure and none has been calculated here. This is the opposite convention to Pineca's insulated LAYLA models, where the published area is clearly reduced below the external dimensions — so the basis of Pineca's area figures is NOT consistent across the range and figures must not be compared between models. PLANNING — DECISIVE AND EXACT: at 30.00 m2 external this product sits precisely ON the 30 m2 combined back-garden allowance with zero headroom. Any existing shed, garage or other garden structure on the plot puts the total over the limit, and it would have exceeded the previous 25 m2 threshold outright. It is exempt on area only in the case of an otherwise completely empty back garden. CATEGORY NOTE: Pineca lists this as a Garden STUDIO while Atlas holds it as a Garden Room.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
+    },
+    "insulationRating": {
+     "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. No wall specification and no insulation designation held; Pineca publishes both uninsulated and insulated builds under the same model names, so an unqualified record could be either. Nothing inferred. MEASUREMENT-LAYER NOTE carried forward: the MAJA was recorded at exactly 30.00 m2, sitting precisely at the back-garden exempted-development allowance — recorded as intelligence, no planning determination made. Four are YEAR-ROUND INSULATED (High-Quality Insulation Office, OAK Insulated, EVELIN PLUS Insulated, LAYLA Insulated); one is UNINSULATED (OAK 44 mm); two REQUIRE PRODUCT-SPECIFIC VERIFICATION (this MAJA and the unqualified OAK). THE SUPPLIER-LEVEL FINDING, and it is the most consequential single discovery of this decision layer: PINECA IS THE ONLY SUPPLIER IN THE ENTIRE CATALOGUE THAT PUBLISHES U-VALUES. Its Building Reg Friendly package states them element by element — 44 mm + 44 mm double wall with 120 mm polyurethane insulation at 0.156 W/(m2K); roof with 175 mm insulation at 0.108 W/(m2K); 200 mm floor insulation at 0.105 W/(m2K); Winkhaus PVC windows and doors at 1.4 W/(m2K) — with the caveat that these are stated against general UK building-regulation requirements and local authorities should be checked. Every other supplier reached in this layer, including the strongest ones, names materials and thicknesses at best and stops short of performance. Those three numbers give this Atlas a reference point it did not previously have: 0.156 W/(m2K) is a habitable-standard wall, against the 0.7 W/(m2K) Dunster House publishes for multifoil, and against silence everywhere else. PINECA ALSO PUBLISHES A FOUR-TIER INSULATION LADDER and tells buyers which tier suits which use: 34 mm + Cladding Insulated for most home offices; Twin Skin Insulated (44+44 or 34+34 mm) for traditional-style rooms in regular year-round use; SIPS for 'intensive daily professional use' and the highest thermal performance in the range; and High-quality insulation for permanent workspace or residential use. Insulation is included in the kit price with no hidden extras. THE ONE HARD CONSTRAINT, published by the supplier: insulation cannot be retrofitted. 'Standard garden rooms are not designed for post-assembly structural insulation upgrades... the cost of retrofitting insulation after assembly is much higher and the result less satisfactory.' Unlike Hansa24, Gardenhouse24 and Lugarde, where a summer shell can be upgraded later at a price, a Pineca buyer must choose correctly at the point of order. CORPORATE NOTE: Pineca Ireland Retail Ltd operates quick-garden.co.uk as its UK site, so the eleven-class wall taxonomy recorded against Quick-Garden and the four-tier ladder recorded here are the same commercial system in two markets.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
     },
     "installationModel": {
      "text": "DIY OR INSTALLED. Recorded as published: buildings are supplied as kits and 'you can also install it by yourself as all products come with instructions'; the kit contains all hardware necessary for installation — nails, screws, door locks and handles — excluding basic tools, and installation videos are published. Alongside that, the supplier states it has 'a skilled team of professional builders who will complete installation for you at extra costs in a very professional and timely manner'. The Irish site publishes nationwide delivery and installation for garden offices. Nothing inferred. THE SELF-BUILD CLAIM IS QUANTIFIED, which is rare: the supplier states that on its own experience a single-room 20 ft x 20 ft wooden shed takes around one day for two people. A published time estimate is a more useful disclosure than the usual 'easy to assemble' and it lets a buyer price a tradesperson's day rate against the supplier's installation quotation. HOMEOWNER IMPLICATION: the advertised price is a kit price. Both routes are real — build it yourself with the supplied hardware and instructions, or buy the supplier's installation at extra cost — but the installation charge is not published and must be requested. Over 20 years manufacturing kits.",
@@ -34006,8 +34006,8 @@
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
-    "insulationRating": {
-     "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. No wall specification and no insulation designation held; Pineca publishes both uninsulated and insulated builds under the same model names, so an unqualified record could be either. Nothing inferred. MEASUREMENT-LAYER NOTE carried forward: the MAJA was recorded at exactly 30.00 m2, sitting precisely at the back-garden exempted-development allowance — recorded as intelligence, no planning determination made. Four are YEAR-ROUND INSULATED (High-Quality Insulation Office, OAK Insulated, EVELIN PLUS Insulated, LAYLA Insulated); one is UNINSULATED (OAK 44 mm); two REQUIRE PRODUCT-SPECIFIC VERIFICATION (this MAJA and the unqualified OAK). THE SUPPLIER-LEVEL FINDING, and it is the most consequential single discovery of this decision layer: PINECA IS THE ONLY SUPPLIER IN THE ENTIRE CATALOGUE THAT PUBLISHES U-VALUES. Its Building Reg Friendly package states them element by element — 44 mm + 44 mm double wall with 120 mm polyurethane insulation at 0.156 W/(m2K); roof with 175 mm insulation at 0.108 W/(m2K); 200 mm floor insulation at 0.105 W/(m2K); Winkhaus PVC windows and doors at 1.4 W/(m2K) — with the caveat that these are stated against general UK building-regulation requirements and local authorities should be checked. Every other supplier reached in this layer, including the strongest ones, names materials and thicknesses at best and stops short of performance. Those three numbers give this Atlas a reference point it did not previously have: 0.156 W/(m2K) is a habitable-standard wall, against the 0.7 W/(m2K) Dunster House publishes for multifoil, and against silence everywhere else. PINECA ALSO PUBLISHES A FOUR-TIER INSULATION LADDER and tells buyers which tier suits which use: 34 mm + Cladding Insulated for most home offices; Twin Skin Insulated (44+44 or 34+34 mm) for traditional-style rooms in regular year-round use; SIPS for 'intensive daily professional use' and the highest thermal performance in the range; and High-quality insulation for permanent workspace or residential use. Insulation is included in the kit price with no hidden extras. THE ONE HARD CONSTRAINT, published by the supplier: insulation cannot be retrofitted. 'Standard garden rooms are not designed for post-assembly structural insulation upgrades... the cost of retrofitting insulation after assembly is much higher and the result less satisfactory.' Unlike Hansa24, Gardenhouse24 and Lugarde, where a summer shell can be upgraded later at a price, a Pineca buyer must choose correctly at the point of order. CORPORATE NOTE: Pineca Ireland Retail Ltd operates quick-garden.co.uk as its UK site, so the eleven-class wall taxonomy recorded against Quick-Garden and the four-tier ladder recorded here are the same commercial system in two markets.",
+    "warranty": {
+     "text": "ANTI-ROT WARRANTY. DURATION: 10 years for wall thicknesses of at least 34 mm (1.3 inches); 5 years for 28 mm (1.1 inch) walls. Recorded exactly as published: Pineca gives a 10-year anti-rot guarantee on wood garden buildings with a wall thickness of at least 1.3 inches, and a corresponding 5-year anti-rot guarantee on 1.1 inch walls. A money-back guarantee is separately published for dissatisfied customers. Nothing inferred. THE CONDITION IS EXPLICIT AND RECURRING, not a one-off obligation: the cabin MUST BE TREATED YEARLY WITH WOOD PRESERVER, and the anti-rot cover is stated to hold on condition that the wood is maintained after construction. That is materially different from a one-time treatment condition — it is an annual duty for the whole life of the guarantee. THE TERM IS TIED TO WALL THICKNESS, which makes this the only supplier in the catalogue whose warranty length is a function of a published specification rather than a flat policy. A buyer choosing between wall thicknesses is also choosing between five and ten years of cover. HOMEOWNER IMPLICATION: confirm this model's wall thickness before assuming the ten-year term, budget for annual preserver, and keep receipts — an unmaintained cabin is an uncovered cabin under the published condition.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -34019,7 +34019,7 @@
      "evidenceScope": "Organisation-Wide"
     }
    },
-   "price": 8995,
+   "price": 8765,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -34061,7 +34061,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -34115,7 +34115,7 @@
     }
    },
    "priceEvidence": {
-    "base": 9801,
+    "base": 9584,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -34128,7 +34128,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 9801,
+   "price": 9584,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -34172,7 +34172,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -35129,7 +35129,7 @@
     }
    },
    "priceEvidence": {
-    "base": 5860,
+    "base": 5956,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -35142,6 +35142,24 @@
     "candidateCount": 1
    },
    "features": {
+    "insulation": {
+     "text": "NOT DETERMINED — REQUIRES PRODUCT-SPECIFIC VERIFICATION. No insulated designation in the product name, unlike Pineca's explicitly labelled insulated variants. Pineca sells both insulated and uninsulated specifications of the same buildings. Not assumed either way.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
+    "floorArea": {
+     "text": "CONFLICTING MEASUREMENTS — DO NOT RANK. Pineca publishes this model as 'Garden Room OAK (34 mm), 6x3 m (20'x10'), 18 m2', but the product's own URL slug reads 'garden-room-oak-34-mm-6x3-m-20x10-16-m2', i.e. 16 m2. The supplier therefore states two different areas for the same product in the same link. Both figures are recorded exactly as published and neither has been chosen, corrected or averaged. The arithmetic resolves neither: 6 x 3 m is 18.00 m2 externally and, deducting the published 34 mm wall from each side, 17.39 m2 internally — so 18 m2 matches the external envelope while 16 m2 matches nothing. Until Pineca confirms which figure is correct and on what basis, this product cannot be ranked on any area measure. PLANNING: on the 18 m2 external reading the unit sits inside the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); the conflict does not change the exemption position at this size, but it would matter on a larger model. SPECIFICATION: 34 mm walls are a summerhouse-grade profile, not a year-round insulated build — Pineca sells a separate insulated OAK variant.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific"
+    },
+    "insulationRating": {
+     "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. This record holds no wall specification and no insulation designation. Pineca sells the OAK in both forms — two sibling Atlas records exist, one designated '44 mm' and one designated 'Insulated' — and the supplier's own catalogue treats those as different products at different prices, not as a base model and an upgrade. Nothing has been inferred and no classification assigned. ATLAS NOTE: this record may be a duplicate of one of the two specified OAK records rather than a distinct product. HOMEOWNER IMPLICATION: within this supplier the same model name spans a summer shell and a year-round room, so an unspecified record cannot be ranked or compared.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific"
+    },
     "installationModel": {
      "text": "DIY OR INSTALLED. Supplied as a kit with instructions and all fixing hardware; professional installation available at extra cost; nationwide delivery and installation published for Ireland. Nothing inferred. All 7 DIY OR INSTALLED, all Tier B, recorded organisation-wide because one installation policy is published across the whole product catalogue. THE SUPPLIER-LEVEL FINDING: Pineca sells kits and will build them for you. Both routes are properly resourced. The kit contains all the hardware needed — nails, screws, door locks, handles — excluding basic tools; instructions are supplied; installation videos are published. Separately, 'a skilled team of professional builders' will complete the installation at extra cost, and the Irish site publishes nationwide delivery and installation for garden offices. WHAT SETS THIS SUPPLIER APART ON THE DIY SIDE: it quantifies the effort. Around one day for two people on a single-room 20 ft x 20 ft shed, stated from the manufacturer's own experience. Nothing else in this catalogue publishes a labour estimate, and it converts an unanswerable question — could I build this? — into an arithmetic one. WHAT IS STILL NOT PUBLISHED: the installation price. 'At extra costs' is the whole of the disclosure, so the installed total remains unobtainable from the website. Compare Gardenhouse24, which puts installation in the cart as a selectable line, and Dunster House, which does not offer installation at all. Pineca sits between them. THE THERMAL CROSS-REFERENCE THAT MATTERS HERE: Pineca is the only supplier in this entire catalogue that publishes U-values — wall 0.156, roof 0.108, floor 0.105, glazing 1.4 W/m2K on its insulated office. Those figures are properties of the designed assembly. A self-built envelope that departs from the design does not carry them, which makes the choice between the two routes a thermal decision as much as a cost one. RECORD NOTES, restated once and not re-raised: three OAK records exist in Atlas (Garden Room OAK, OAK Garden Office 6 x 3 m 44 mm, OAK Garden Office 6 x 3 m Insulated) with the first previously flagged as a suspected range entry rather than a distinct product; LAYLA was likewise recorded as a range entry. Neither affects the installation classification, which is uniform. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: treat every published figure as a kit price, request the installation quotation explicitly, and weigh it against the supplier's own one-day two-person benchmark. On the insulated models, buying the installation also buys the published thermal performance.",
      "number": null,
@@ -35154,32 +35172,14 @@
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
-    "insulationRating": {
-     "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. This record holds no wall specification and no insulation designation. Pineca sells the OAK in both forms — two sibling Atlas records exist, one designated '44 mm' and one designated 'Insulated' — and the supplier's own catalogue treats those as different products at different prices, not as a base model and an upgrade. Nothing has been inferred and no classification assigned. ATLAS NOTE: this record may be a duplicate of one of the two specified OAK records rather than a distinct product. HOMEOWNER IMPLICATION: within this supplier the same model name spans a summer shell and a year-round room, so an unspecified record cannot be ranked or compared.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Product-Specific"
-    },
     "irishAvailability": {
      "text": "AVAILABLE ACROSS IRELAND. Pineca Ireland, Dublin 2 (D02 A339); whole-of-Ireland delivery and installation including Belfast, delivery included in the listed price. Nothing inferred. HOMEOWNER IMPLICATION: all-island reach with delivery in the price.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
-    },
-    "insulation": {
-     "text": "NOT DETERMINED — REQUIRES PRODUCT-SPECIFIC VERIFICATION. No insulated designation in the product name, unlike Pineca's explicitly labelled insulated variants. Pineca sells both insulated and uninsulated specifications of the same buildings. Not assumed either way.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "floorArea": {
-     "text": "CONFLICTING MEASUREMENTS — DO NOT RANK. Pineca publishes this model as 'Garden Room OAK (34 mm), 6x3 m (20'x10'), 18 m2', but the product's own URL slug reads 'garden-room-oak-34-mm-6x3-m-20x10-16-m2', i.e. 16 m2. The supplier therefore states two different areas for the same product in the same link. Both figures are recorded exactly as published and neither has been chosen, corrected or averaged. The arithmetic resolves neither: 6 x 3 m is 18.00 m2 externally and, deducting the published 34 mm wall from each side, 17.39 m2 internally — so 18 m2 matches the external envelope while 16 m2 matches nothing. Until Pineca confirms which figure is correct and on what basis, this product cannot be ranked on any area measure. PLANNING: on the 18 m2 external reading the unit sits inside the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); the conflict does not change the exemption position at this size, but it would matter on a larger model. SPECIFICATION: 34 mm walls are a summerhouse-grade profile, not a year-round insulated build — Pineca sells a separate insulated OAK variant.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Product-Specific"
     }
    },
-   "price": 5860,
+   "price": 5956,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -35221,7 +35221,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -35636,7 +35636,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13434,
+    "base": 13276,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -35649,7 +35649,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13434,
+   "price": 13276,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -35693,7 +35693,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -35747,7 +35747,7 @@
     }
    },
    "priceEvidence": {
-    "base": 5026,
+    "base": 5107,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -35760,7 +35760,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 5026,
+   "price": 5107,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -35804,7 +35804,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -35858,7 +35858,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8822,
+    "base": 8966,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -35871,7 +35871,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8822,
+   "price": 8966,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -35915,7 +35915,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -35969,7 +35969,7 @@
     }
    },
    "priceEvidence": {
-    "base": 9827,
+    "base": 10451,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -35982,7 +35982,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 9827,
+   "price": 10451,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -36026,7 +36026,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -36080,7 +36080,7 @@
     }
    },
    "priceEvidence": {
-    "base": 12044,
+    "base": 11863,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -36093,7 +36093,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 12044,
+   "price": 11863,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -36137,7 +36137,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -36191,7 +36191,7 @@
     }
    },
    "priceEvidence": {
-    "base": 12506,
+    "base": 12616,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -36204,7 +36204,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 12506,
+   "price": 12616,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -36248,7 +36248,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -36302,7 +36302,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13483,
+    "base": 13756,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -36315,7 +36315,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13483,
+   "price": 13756,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -36359,7 +36359,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -36413,7 +36413,7 @@
     }
    },
    "priceEvidence": {
-    "base": 14283,
+    "base": 14851,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -36426,7 +36426,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 14283,
+   "price": 14851,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -36470,7 +36470,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -37210,7 +37210,7 @@
     }
    },
    "priceEvidence": {
-    "base": 22995,
+    "base": 23423,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -37223,7 +37223,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 22995,
+   "price": 23423,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -37267,7 +37267,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -37321,7 +37321,7 @@
     }
    },
    "priceEvidence": {
-    "base": 25054,
+    "base": 25891,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -37334,7 +37334,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 25054,
+   "price": 25891,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -37378,7 +37378,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -37432,7 +37432,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13239,
+    "base": 13078,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -37445,7 +37445,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13239,
+   "price": 13078,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -37489,7 +37489,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -41266,7 +41266,7 @@
     }
    },
    "priceEvidence": {
-    "base": 10080,
+    "base": 9867,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -41279,7 +41279,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 10080,
+   "price": 9867,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -41323,7 +41323,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -41377,7 +41377,7 @@
     }
    },
    "priceEvidence": {
-    "base": 10741,
+    "base": 10915,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -41390,7 +41390,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 10741,
+   "price": 10915,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -41434,7 +41434,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -41488,7 +41488,7 @@
     }
    },
    "priceEvidence": {
-    "base": 11956,
+    "base": 12151,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -41501,7 +41501,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 11956,
+   "price": 12151,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -41545,7 +41545,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -41599,7 +41599,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13439,
+    "base": 13658,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -41612,7 +41612,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13439,
+   "price": 13658,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -41656,7 +41656,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -41710,7 +41710,7 @@
     }
    },
    "priceEvidence": {
-    "base": 17514,
+    "base": 17799,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -41723,7 +41723,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 17514,
+   "price": 17799,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -41767,7 +41767,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -41821,7 +41821,7 @@
     }
    },
    "priceEvidence": {
-    "base": 6693,
+    "base": 6801,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -41834,7 +41834,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 6693,
+   "price": 6801,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -41878,7 +41878,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -41932,7 +41932,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8444,
+    "base": 8205,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -41945,7 +41945,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8444,
+   "price": 8205,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -41989,7 +41989,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -46420,7 +46420,7 @@
     }
    },
    "priceEvidence": {
-    "base": 23130,
+    "base": 23506,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -46433,7 +46433,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 23130,
+   "price": 23506,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -46477,7 +46477,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -46498,6 +46498,228 @@
     }
    ],
    "productUrl": "https://www.pineca.ie/granny-annexe-premium-34mm-cladding-plus-6x5m-20x16-30-m-2.html",
+   "verificationStatus": null,
+   "qualification": {
+    "status": "ELIGIBLE — WITH CAVEAT",
+    "confidenceTier": "WITH_CAVEAT",
+    "priceEvidence": "verified",
+    "reasons": [
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Pineca Ireland."
+    ],
+    "caveats": [
+     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "unknown",
+     "irishAvailabilityBasis": "no irish-availability evidence recorded",
+     "irishAvailabilityScope": null,
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 0,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 0
+    }
+   },
+   "priceEvidence": {
+    "base": 17750,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "    Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {},
+   "price": 17750,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": null,
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": null,
+   "irishAvailability": null,
+   "availabilityStatus": null,
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "WITH_CAVEAT",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [
+    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
+   ],
+   "priceRecordIds": [
+    "recM2v82bNjKcCxPi"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NO_BASIS_STATED",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recM2v82bNjKcCxPi"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-26",
+    "basisSource": null,
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "recEbONDLwU5yM5VO",
+   "name": "Granny Annexe PREMIUM 6.5 × 4.5 m — 30 m²",
+   "organisation": "Pineca Ireland",
+   "productId": "recEbONDLwU5yM5VO",
+   "productCode": "PROD-000710",
+   "productName": "Granny Annexe PREMIUM 6.5 × 4.5 m — 30 m²",
+   "productType": "",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recAbCMI3LkwWO3Z6",
+     "name": "Pineca Ireland"
+    }
+   ],
+   "productUrl": "https://www.pineca.ie/granny-annexe-premium-insulated-plus-34mm-cladding-6-5x4-5m-20x16-30m-2.html",
+   "verificationStatus": null,
+   "qualification": {
+    "status": "ELIGIBLE — WITH CAVEAT",
+    "confidenceTier": "WITH_CAVEAT",
+    "priceEvidence": "verified",
+    "reasons": [
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: Pineca Ireland."
+    ],
+    "caveats": [
+     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
+    ],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "unknown",
+     "irishAvailabilityBasis": "no irish-availability evidence recorded",
+     "irishAvailabilityScope": null,
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
+     "featureValueCount": 0,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 0
+    }
+   },
+   "priceEvidence": {
+    "base": 17208,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "    Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1
+   },
+   "features": {},
+   "price": 17208,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": null,
+   "insulation": null,
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": null,
+   "irishAvailability": null,
+   "availabilityStatus": null,
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "WITH_CAVEAT",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [
+    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
+   ],
+   "priceRecordIds": [
+    "recmwrHDYO11SHCpf"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "UNKNOWN",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "NO_BASIS_STATED",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": true,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recmwrHDYO11SHCpf"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-26",
+    "basisSource": null,
+    "basisLeadPhrase": null
+   }
+  },
+  {
+   "id": "rec074zfl5rheSI3y",
+   "name": "Granny Annexe PREMIUM 7.5 × 4 m — 30 m²",
+   "organisation": "Pineca Ireland",
+   "productId": "rec074zfl5rheSI3y",
+   "productCode": "PROD-000711",
+   "productName": "Granny Annexe PREMIUM 7.5 × 4 m — 30 m²",
+   "productType": "",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "recAbCMI3LkwWO3Z6",
+     "name": "Pineca Ireland"
+    }
+   ],
+   "productUrl": "https://www.pineca.ie/granny-annexe-premium-insulated-plus-34-mm-cladding-7-5x4-m-25x13-30m-2.html",
    "verificationStatus": null,
    "qualification": {
     "status": "ELIGIBLE — WITH CAVEAT",
@@ -46562,228 +46784,6 @@
     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
    ],
    "priceRecordIds": [
-    "recM2v82bNjKcCxPi"
-   ],
-   "priceRecordIdsAvailable": 1,
-   "priceStatus": "Verified",
-   "priceType": "Standard Price",
-   "priceScope": "Product-Specific",
-   "vatStatus": "Yes",
-   "vatRate": null,
-   "priceBasisAxes": {
-    "erection": "UNKNOWN",
-    "siteWorks": "UNKNOWN",
-    "delivery": "UNKNOWN"
-   },
-   "priceBasisClass": "UNKNOWN",
-   "priceBasisConfidence": "NO_BASIS_STATED",
-   "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceEvidenceRef": {
-    "recordIds": [
-     "recM2v82bNjKcCxPi"
-    ],
-    "adjudication": "adjudicated",
-    "candidateCount": 1,
-    "status": "Verified",
-    "priceType": "Standard Price",
-    "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
-    "basisSource": null,
-    "basisLeadPhrase": null
-   }
-  },
-  {
-   "id": "recEbONDLwU5yM5VO",
-   "name": "Granny Annexe PREMIUM 6.5 × 4.5 m — 30 m²",
-   "organisation": "Pineca Ireland",
-   "productId": "recEbONDLwU5yM5VO",
-   "productCode": "PROD-000710",
-   "productName": "Granny Annexe PREMIUM 6.5 × 4.5 m — 30 m²",
-   "productType": "",
-   "productCategory": "Garden Rooms",
-   "organisationEvidence": [
-    {
-     "id": "recAbCMI3LkwWO3Z6",
-     "name": "Pineca Ireland"
-    }
-   ],
-   "productUrl": "https://www.pineca.ie/granny-annexe-premium-insulated-plus-34mm-cladding-6-5x4-5m-20x16-30m-2.html",
-   "verificationStatus": null,
-   "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "verified",
-    "reasons": [
-     "A verified price is recorded.",
-     "A product-level source is recorded.",
-     "Supplier attribution is confirmed: Pineca Ireland."
-    ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
-    "hardBlockers": [],
-    "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "no irish-availability evidence recorded",
-     "irishAvailabilityScope": null,
-     "irishAvailabilityClassified": true,
-     "noPublishedIrishRoute": false,
-     "price": "verified",
-     "source": "product-level",
-     "supplierAttribution": "confirmed",
-     "manufacturerAttribution": "unknown",
-     "productUrl": "present",
-     "contradiction": "none",
-     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 0,
-     "pricingRecordCount": 1,
-     "availabilityRecordCount": 0
-    }
-   },
-   "priceEvidence": {
-    "base": 17131,
-    "from": null,
-    "to": null,
-    "currency": "EUR",
-    "priceType": "    Standard Price",
-    "status": "Verified",
-    "includesVat": "Yes",
-    "evidenceScope": "Product-Specific",
-    "adjudication": "adjudicated",
-    "quoteOnly": false,
-    "candidateCount": 1
-   },
-   "features": {},
-   "price": 17131,
-   "currency": "EUR",
-   "priceBasis": "Verified",
-   "floorAreaM2": null,
-   "glazing": null,
-   "insulation": null,
-   "manufactureCountry": null,
-   "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
-   "availabilityStatus": null,
-   "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
-   "priceRecordIds": [
-    "recmwrHDYO11SHCpf"
-   ],
-   "priceRecordIdsAvailable": 1,
-   "priceStatus": "Verified",
-   "priceType": "Standard Price",
-   "priceScope": "Product-Specific",
-   "vatStatus": "Yes",
-   "vatRate": null,
-   "priceBasisAxes": {
-    "erection": "UNKNOWN",
-    "siteWorks": "UNKNOWN",
-    "delivery": "UNKNOWN"
-   },
-   "priceBasisClass": "UNKNOWN",
-   "priceBasisConfidence": "NO_BASIS_STATED",
-   "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceEvidenceRef": {
-    "recordIds": [
-     "recmwrHDYO11SHCpf"
-    ],
-    "adjudication": "adjudicated",
-    "candidateCount": 1,
-    "status": "Verified",
-    "priceType": "Standard Price",
-    "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
-    "basisSource": null,
-    "basisLeadPhrase": null
-   }
-  },
-  {
-   "id": "rec074zfl5rheSI3y",
-   "name": "Granny Annexe PREMIUM 7.5 × 4 m — 30 m²",
-   "organisation": "Pineca Ireland",
-   "productId": "rec074zfl5rheSI3y",
-   "productCode": "PROD-000711",
-   "productName": "Granny Annexe PREMIUM 7.5 × 4 m — 30 m²",
-   "productType": "",
-   "productCategory": "Garden Rooms",
-   "organisationEvidence": [
-    {
-     "id": "recAbCMI3LkwWO3Z6",
-     "name": "Pineca Ireland"
-    }
-   ],
-   "productUrl": "https://www.pineca.ie/granny-annexe-premium-insulated-plus-34-mm-cladding-7-5x4-m-25x13-30m-2.html",
-   "verificationStatus": null,
-   "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "verified",
-    "reasons": [
-     "A verified price is recorded.",
-     "A product-level source is recorded.",
-     "Supplier attribution is confirmed: Pineca Ireland."
-    ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
-    "hardBlockers": [],
-    "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "no irish-availability evidence recorded",
-     "irishAvailabilityScope": null,
-     "irishAvailabilityClassified": true,
-     "noPublishedIrishRoute": false,
-     "price": "verified",
-     "source": "product-level",
-     "supplierAttribution": "confirmed",
-     "manufacturerAttribution": "unknown",
-     "productUrl": "present",
-     "contradiction": "none",
-     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 0,
-     "pricingRecordCount": 1,
-     "availabilityRecordCount": 0
-    }
-   },
-   "priceEvidence": {
-    "base": 16565,
-    "from": null,
-    "to": null,
-    "currency": "EUR",
-    "priceType": "    Standard Price",
-    "status": "Verified",
-    "includesVat": "Yes",
-    "evidenceScope": "Product-Specific",
-    "adjudication": "adjudicated",
-    "quoteOnly": false,
-    "candidateCount": 1
-   },
-   "features": {},
-   "price": 16565,
-   "currency": "EUR",
-   "priceBasis": "Verified",
-   "floorAreaM2": null,
-   "glazing": null,
-   "insulation": null,
-   "manufactureCountry": null,
-   "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
-   "availabilityStatus": null,
-   "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
-   "priceRecordIds": [
     "recUx0VyaBsxjShLc"
    ],
    "priceRecordIdsAvailable": 1,
@@ -46810,7 +46810,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -60780,7 +60780,7 @@
     }
    },
    "priceEvidence": {
-    "base": 6244,
+    "base": 6346,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -60799,14 +60799,26 @@
      "unit": null,
      "evidenceScope": "Range-Level"
     },
-    "warranty": {
-     "text": "ANTI-ROT WARRANTY. DURATION: 10 years. At 44 mm this model sits above the published 34 mm threshold, so the ten-year band applies rather than the five-year band. Conditional on annual treatment with wood preserver and maintenance after construction. Nothing inferred. HOMEOWNER IMPLICATION: the wall thickness printed in the product name is also the number that sets the warranty term — 44 mm buys the full ten years.",
+    "floorArea": {
+     "text": "VERIFIED NOMINAL SIZE — DO NOT RANK ON INTERNAL AREA. The Atlas record states a 6 x 3 m size and a 44 mm wall profile, recorded exactly as held; 18.00 m2 nominal plan area. Pineca publishes no internal figure for this variant and no conversion rule, so nothing has been deducted. MATERIAL: Atlas holds three separate OAK 6 x 3 m records — this 44 mm version, an Insulated version assessed in an earlier run, and a 34 mm version whose published area is self-contradictory (18 m2 in the title, 16 m2 in the URL). All three share the same 6 x 3 m envelope but will have different usable floors because the wall build-ups differ, and the thicker and insulated versions lose the most. They must not be treated as interchangeable, and the 34 mm version's disputed figure must not be carried across to this one. PLANNING: 18.00 m2 nominal is inside the 30 m2 combined allowance, leaving about 12 m2 for other structures on the plot.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
     },
-    "floorArea": {
-     "text": "VERIFIED NOMINAL SIZE — DO NOT RANK ON INTERNAL AREA. The Atlas record states a 6 x 3 m size and a 44 mm wall profile, recorded exactly as held; 18.00 m2 nominal plan area. Pineca publishes no internal figure for this variant and no conversion rule, so nothing has been deducted. MATERIAL: Atlas holds three separate OAK 6 x 3 m records — this 44 mm version, an Insulated version assessed in an earlier run, and a 34 mm version whose published area is self-contradictory (18 m2 in the title, 16 m2 in the URL). All three share the same 6 x 3 m envelope but will have different usable floors because the wall build-ups differ, and the thicker and insulated versions lose the most. They must not be treated as interchangeable, and the 34 mm version's disputed figure must not be carried across to this one. PLANNING: 18.00 m2 nominal is inside the 30 m2 combined allowance, leaving about 12 m2 for other structures on the plot.",
+    "insulationRating": {
+     "text": "UNINSULATED. This record carries the plain 44 mm log-wall designation, not one of Pineca's four insulated specifications. The supplier's Wall Thickness taxonomy lists insulated builds separately and by name, and its own guidance is explicit about what an uninsulated building means in Ireland: 'Without proper insulation, a garden room will be cold and potentially damp for four to five months of the year – pleasant in summer but uncomfortable in autumn and winter.' Nothing inferred. THE RETROFIT WARNING, published by the supplier and decisive for this record: 'Standard garden rooms are not designed for post-assembly structural insulation upgrades, as the insulation is integrated into the wall construction... the cost of retrofitting insulation after assembly is much higher and the result less satisfactory.' HOMEOWNER IMPLICATION: this is a summer and shoulder-season building, and unlike the Hansa24 and Gardenhouse24 log ranges there is no insulation kit to add later. The insulated OAK is a different product bought at order, not an upgrade. A buyer comparing the two OAK records is comparing a summer room against a winter one.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific"
+    },
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Supplied as a kit with instructions and all fixing hardware; self-installation supported by published videos; professional installation available at extra cost; nationwide delivery and installation published for Ireland. Nothing inferred. HOMEOWNER IMPLICATION: 44 mm solid log walls are heavy to handle but straightforward to stack, which is the configuration the supplier's one-day two-person estimate is drawn from. Self-build is realistic here; on the insulated variants it is less so.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
+    "warranty": {
+     "text": "ANTI-ROT WARRANTY. DURATION: 10 years. At 44 mm this model sits above the published 34 mm threshold, so the ten-year band applies rather than the five-year band. Conditional on annual treatment with wood preserver and maintenance after construction. Nothing inferred. HOMEOWNER IMPLICATION: the wall thickness printed in the product name is also the number that sets the warranty term — 44 mm buys the full ten years.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
@@ -60816,21 +60828,9 @@
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
-    },
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Supplied as a kit with instructions and all fixing hardware; self-installation supported by published videos; professional installation available at extra cost; nationwide delivery and installation published for Ireland. Nothing inferred. HOMEOWNER IMPLICATION: 44 mm solid log walls are heavy to handle but straightforward to stack, which is the configuration the supplier's one-day two-person estimate is drawn from. Self-build is realistic here; on the insulated variants it is less so.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "insulationRating": {
-     "text": "UNINSULATED. This record carries the plain 44 mm log-wall designation, not one of Pineca's four insulated specifications. The supplier's Wall Thickness taxonomy lists insulated builds separately and by name, and its own guidance is explicit about what an uninsulated building means in Ireland: 'Without proper insulation, a garden room will be cold and potentially damp for four to five months of the year – pleasant in summer but uncomfortable in autumn and winter.' Nothing inferred. THE RETROFIT WARNING, published by the supplier and decisive for this record: 'Standard garden rooms are not designed for post-assembly structural insulation upgrades, as the insulation is integrated into the wall construction... the cost of retrofitting insulation after assembly is much higher and the result less satisfactory.' HOMEOWNER IMPLICATION: this is a summer and shoulder-season building, and unlike the Hansa24 and Gardenhouse24 log ranges there is no insulation kit to add later. The insulated OAK is a different product bought at order, not an upgrade. A buyer comparing the two OAK records is comparing a summer room against a winter one.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Product-Specific"
     }
    },
-   "price": 6244,
+   "price": 6346,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -60872,7 +60872,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -61203,7 +61203,7 @@
     }
    },
    "priceEvidence": {
-    "base": 6555,
+    "base": 6583,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -61216,7 +61216,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 6555,
+   "price": 6583,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -61260,7 +61260,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -61314,7 +61314,7 @@
     }
    },
    "priceEvidence": {
-    "base": 7921,
+    "base": 7807,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -61327,7 +61327,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 7921,
+   "price": 7807,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -61371,7 +61371,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -61425,7 +61425,7 @@
     }
    },
    "priceEvidence": {
-    "base": 9067,
+    "base": 9281,
     "from": null,
     "to": null,
     "currency": "EUR",
@@ -61438,7 +61438,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 9067,
+   "price": 9281,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -61482,7 +61482,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": null,
     "basisLeadPhrase": null
    }
