@@ -149,7 +149,7 @@ def render(page, profile, evidence, identity, published=False):
 {rail}
 <main id="pn-main">
   <div class="mp-hero">
-    <a class="mp-parent" href="{PARENT}">← Explore Living in the Garden</a>
+    <a class="mp-parent" href="{PARENT}">← Compare garden rooms in Ireland</a>
     <div class="pd-kicker">A PlotNua Maker Guide · Part of Living in the Garden</div>
     <h1>{escape(profile['h1'])}</h1>
     <p class="mp-lead">{escape(profile['lead'])}</p>
@@ -162,7 +162,7 @@ def render(page, profile, evidence, identity, published=False):
       <div class="pd-card pd-card--raised mp-copy">
         <div class="pd-kicker">Keep exploring</div>
         <h2 class="pd-h3">What could work in your garden?</h2>
-        <p>Return to <a href="{PARENT}">Living in the Garden</a> for the wider picture,
+        <p>Return to <a href="{PARENT}">PlotNua’s guide to garden rooms in Ireland</a> for the wider picture,
           <a href="{PARENT}#explore-makers">explore the researched makers</a>, or use the
           <a href="garden-room-prices-ireland.html#quote-checklist">garden room quote checklist</a>
           to compare what different prices cover.</p>

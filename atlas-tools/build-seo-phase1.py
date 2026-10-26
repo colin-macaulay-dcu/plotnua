@@ -145,8 +145,8 @@ H6_PRELOAD = ('<link rel="preload" as="image" type="image/avif" '
 # it replaces; the transition edits below move a page that still carries it.
 LITG_DESC_V1 = ("Since July 2026 an Irish garden room can be up to 30 m&sup2; and a garden "
                 "home 32&ndash;45 m&sup2; without a planning application. The conditions, explained.")
-LITG_DESC = ("Garden rooms, garden offices and garden homes in Ireland: the makers PlotNua has "
-             "researched, what advertised prices cover, and the 2026 planning rules.")
+LITG_DESC = ("Compare garden rooms and garden offices in Ireland. Explore researched makers, "
+             "understand advertised prices, and check installation, specifications and planning.")
 # The same words in the WebPage structured data (plain ASCII, so no JSON escaping).
 LITG_DESC_LD = LITG_DESC
 assert "&" not in LITG_DESC_LD and '"' not in LITG_DESC_LD
@@ -168,7 +168,7 @@ EDITS = {
          'home 32\\u201345 m\\u00b2 without a planning application. The conditions, explained.",\n',
          '      "description": "%s",\n' % LITG_DESC_LD),
         ("<title>Garden Rooms &amp; Garden Homes in Ireland: 2026 Planning Rules | PlotNua</title>",
-         "<title>Garden Rooms &amp; Garden Homes in Ireland | PlotNua</title>"),
+         "<title>Garden Rooms in Ireland: Compare Makers &amp; Prices | PlotNua</title>"),
         ('<meta name="description" content="What the July 2026 regulations changed: the 30 m² garden room, '
          'the new 32–45 m² garden home, what counts towards the limit — and the separate 25 m² Building '
          'Regulations threshold almost nobody mentions.">',
@@ -181,7 +181,7 @@ EDITS = {
          '32\\u201345 m\\u00b2 garden home, and what counts towards the limit.",\n'
          '      "inLanguage": "en-IE",\n'
          '      "dateModified": "2026-10-11",\n',
-         '"name": "Garden Rooms & Garden Homes in Ireland",\n'
+         '"name": "Garden Rooms in Ireland: Compare Makers & Prices",\n'
          '      "description": "%s",\n'
          '      "inLanguage": "en-IE",\n'
          '      "dateModified": "%s",\n'
