@@ -24,6 +24,10 @@ on:
       - 'atlas-tools/build-garden-room-prices.py'
       - 'atlas-tools/garden-room-price-page-evidence.json'
       - 'atlas-tools/cluster1-cost-evidence.json'
+      - 'atlas-tools/cost-evidence-corrections.json'
+      - 'atlas-tools/refresh-garden-cost-figures.py'
+      - 'atlas-tools/prove-cluster1-garden-authority.mjs'
+      - 'discovery-living-in-the-garden.html'
       - '.github/workflows/garden-room-prices-freshness.yml'
   push:
     branches: [main]
@@ -33,6 +37,10 @@ on:
       - 'atlas-tools/build-garden-room-prices.py'
       - 'atlas-tools/garden-room-price-page-evidence.json'
       - 'atlas-tools/cluster1-cost-evidence.json'
+      - 'atlas-tools/cost-evidence-corrections.json'
+      - 'atlas-tools/refresh-garden-cost-figures.py'
+      - 'atlas-tools/prove-cluster1-garden-authority.mjs'
+      - 'discovery-living-in-the-garden.html'
       - '.github/workflows/garden-room-prices-freshness.yml'
   schedule:
     - cron: '17 6 * * *'   # daily, 06:17 UTC
@@ -83,3 +91,11 @@ jobs:
       - name: Frozen extract reproduces from the pinned snapshot
         if: github.event_name != 'schedule'
         run: python atlas-tools/build-garden-room-prices.py --freeze --check
+
+      - name: Cost evidence reproduces from approved deployed corrections
+        run: python atlas-tools/build-cluster1-cost-evidence.py --check
+
+      - name: Main garden page carries the same evidence
+        run: |
+          python atlas-tools/refresh-garden-cost-figures.py --check
+          node atlas-tools/prove-cluster1-garden-authority.mjs

@@ -19,6 +19,71 @@
      "recSYgE1Y3I11JIsr",
      "recOu5xXheu2POoIa"
     ]
+   },
+   {
+    "id": "pineca-prices-2026-10-26",
+    "deployedCommit": "310f45366eb7a6635ee0af0ec4b13724f83bf9af",
+    "products": [
+     "rec074zfl5rheSI3y",
+     "rec2HcpQC2XLbXB6u",
+     "rec3kF9a2ilxfDwdK",
+     "rec4mZnfwNaZY3Cct",
+     "rec5WMRAy3Vmvvt5i",
+     "rec5peu653lMb8Mwr",
+     "rec5sm0JPQlW12IhM",
+     "rec6xZihu22JTKLHa",
+     "rec7XxofruouZ8Ky0",
+     "rec7j3UAWh2YlI5yY",
+     "rec7lCEgSoUMphJOK",
+     "recAKghANvktTh5th",
+     "recAw3tJ6Tbv2NApd",
+     "recBe8RNLA9PMLnKn",
+     "recDhG3uyGgWDOaRc",
+     "recDnzOilx5J3gZkq",
+     "recEEE6kGA3EH47QV",
+     "recEbONDLwU5yM5VO",
+     "recG8ZURqipnYxkPv",
+     "recGfh1sJT5PoGlPy",
+     "recHIPdYOuXrB58Ja",
+     "recJ7l2wnNtqA81Di",
+     "recKNc0MiKQsCBxPp",
+     "recKdqQuuzZJq5HsA",
+     "recLJUSuiWceOIhB2",
+     "recLZzmBaX7HTUL64",
+     "recM97JxF5ApSVDEN",
+     "recMRt5v3NinVqVZA",
+     "recMa9xyEmfP70YFw",
+     "recN9D3RTtuasOQZf",
+     "recNaU2YoNF4hwr81",
+     "recP9G0xFJ6R0ic4W",
+     "recSWydkgzSMz5B7j",
+     "recSZs9cj2ied4PUZ",
+     "recSmHx380ErbPKqR",
+     "recY2qfKsFU8AiRF7",
+     "recYEbdh609RbWrDm",
+     "recacexFxPvge0zmd",
+     "recc9X2WIaSTIDdpM",
+     "recdpqAF9uwvrY8SE",
+     "recdsv9K7rmPYi8UU",
+     "recgzLoJn6ZqFrRQa",
+     "reci2mq7Tol26wCfU",
+     "reckQ8q0LG5kn3SzA",
+     "reclhiSZzZ8Z1o8Vr",
+     "recmBwEjSR1XciA4e",
+     "recmLjSRTqGnWo2HH",
+     "recmVHWJUDvgVkhir",
+     "recmXWkxGMIFCScnQ",
+     "recmfx280vF18ZMio",
+     "recmjltdnxHrLHFGY",
+     "recmmfGslZeE7icQG",
+     "reconmJKlMWJ5pyMP",
+     "recqDgZWzbf4ZBCjV",
+     "recqztqIHLNw0oxiC",
+     "recuZ2uhqaZ7vTHXn",
+     "recvzbW2TrkQJ2Jri",
+     "recyhf1UYBH0UyQCZ",
+     "reczxS9ObYqm25Ylb"
+    ]
    }
   ]
  },
@@ -27,9 +92,9 @@
    "productId": "rec074zfl5rheSI3y",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 16565,
+   "price": 17466,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -99,9 +164,9 @@
    "productId": "rec2HcpQC2XLbXB6u",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 11974,
+   "price": 12222,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -135,9 +200,9 @@
    "productId": "rec3kF9a2ilxfDwdK",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 4713,
+   "price": 4789,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -171,9 +236,9 @@
    "productId": "rec4mZnfwNaZY3Cct",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 9827,
+   "price": 10451,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -198,9 +263,9 @@
    "productId": "rec5WMRAy3Vmvvt5i",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 17466,
+   "price": 17750,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -216,18 +281,18 @@
    "productId": "rec5peu653lMb8Mwr",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 9801,
+   "price": 9584,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "rec5sm0JPQlW12IhM",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 9102,
+   "price": 9250,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -288,36 +353,36 @@
    "productId": "rec6xZihu22JTKLHa",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13439,
+   "price": 13658,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "rec7XxofruouZ8Ky0",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 7527,
+   "price": 7649,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "rec7j3UAWh2YlI5yY",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 5130,
+   "price": 5213,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "rec7lCEgSoUMphJOK",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 14283,
+   "price": 14851,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -387,9 +452,9 @@
    "productId": "recAKghANvktTh5th",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 9245,
+   "price": 9826,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -414,9 +479,9 @@
    "productId": "recAw3tJ6Tbv2NApd",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 11956,
+   "price": 12151,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -441,9 +506,9 @@
    "productId": "recBe8RNLA9PMLnKn",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 6555,
+   "price": 6583,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -522,18 +587,18 @@
    "productId": "recDhG3uyGgWDOaRc",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8213,
+   "price": 8347,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recDnzOilx5J3gZkq",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 12044,
+   "price": 11863,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -558,9 +623,9 @@
    "productId": "recEEE6kGA3EH47QV",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 14034,
+   "price": 13611,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -576,9 +641,9 @@
    "productId": "recEbONDLwU5yM5VO",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 17131,
+   "price": 17208,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -603,9 +668,9 @@
    "productId": "recG8ZURqipnYxkPv",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 5026,
+   "price": 5107,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -630,18 +695,18 @@
    "productId": "recGfh1sJT5PoGlPy",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8543,
+   "price": 8682,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recHIPdYOuXrB58Ja",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8619,
+   "price": 8382,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -675,9 +740,9 @@
    "productId": "recJ7l2wnNtqA81Di",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 22995,
+   "price": 23423,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -702,18 +767,18 @@
    "productId": "recKNc0MiKQsCBxPp",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8362,
+   "price": 8498,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recKdqQuuzZJq5HsA",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8822,
+   "price": 8966,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -729,9 +794,9 @@
    "productId": "recLJUSuiWceOIhB2",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13483,
+   "price": 13756,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -747,9 +812,9 @@
    "productId": "recLZzmBaX7HTUL64",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 7497,
+   "price": 7619,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -783,9 +848,9 @@
    "productId": "recM97JxF5ApSVDEN",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 5942,
+   "price": 6039,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -801,36 +866,36 @@
    "productId": "recMRt5v3NinVqVZA",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 7572,
+   "price": 7695,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recMa9xyEmfP70YFw",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
-   "price": 13817,
+   "price": 13665,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recN9D3RTtuasOQZf",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 9067,
+   "price": 9281,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recNaU2YoNF4hwr81",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 7888,
+   "price": 7640,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -855,9 +920,9 @@
    "productId": "recP9G0xFJ6R0ic4W",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
-   "price": 6244,
+   "price": 6346,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -981,27 +1046,27 @@
    "productId": "recSWydkgzSMz5B7j",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8052,
+   "price": 8183,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recSZs9cj2ied4PUZ",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 6591,
+   "price": 6698,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recSmHx380ErbPKqR",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 12506,
+   "price": 12616,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1197,18 +1262,18 @@
    "productId": "recY2qfKsFU8AiRF7",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8444,
+   "price": 8205,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recYEbdh609RbWrDm",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 23130,
+   "price": 23506,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1278,9 +1343,9 @@
    "productId": "recacexFxPvge0zmd",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13239,
+   "price": 13078,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1323,9 +1388,9 @@
    "productId": "recc9X2WIaSTIDdpM",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 10080,
+   "price": 9867,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1404,18 +1469,18 @@
    "productId": "recdpqAF9uwvrY8SE",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13136,
+   "price": 13403,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recdsv9K7rmPYi8UU",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
-   "price": 8995,
+   "price": 8765,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1530,9 +1595,9 @@
    "productId": "recgzLoJn6ZqFrRQa",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13489,
+   "price": 13763,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1575,9 +1640,9 @@
    "productId": "reci2mq7Tol26wCfU",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 7921,
+   "price": 7807,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1629,9 +1694,9 @@
    "productId": "reckQ8q0LG5kn3SzA",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 7267,
+   "price": 7385,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1683,9 +1748,9 @@
    "productId": "reclhiSZzZ8Z1o8Vr",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8443,
+   "price": 8580,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1719,18 +1784,18 @@
    "productId": "recmBwEjSR1XciA4e",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 6693,
+   "price": 6801,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recmLjSRTqGnWo2HH",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 6689,
+   "price": 6798,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1746,36 +1811,36 @@
    "productId": "recmVHWJUDvgVkhir",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 9470,
+   "price": 9614,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recmXWkxGMIFCScnQ",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 17514,
+   "price": 17799,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recmfx280vF18ZMio",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13434,
+   "price": 13276,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recmjltdnxHrLHFGY",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 6830,
+   "price": 6941,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1791,9 +1856,9 @@
    "productId": "recmmfGslZeE7icQG",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 14813,
+   "price": 15484,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1863,9 +1928,9 @@
    "productId": "reconmJKlMWJ5pyMP",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13000,
+   "price": 13265,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1908,18 +1973,18 @@
    "productId": "recqDgZWzbf4ZBCjV",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 7189,
+   "price": 7306,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
    "productId": "recqztqIHLNw0oxiC",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 25054,
+   "price": 25891,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -2043,9 +2108,9 @@
    "productId": "recuZ2uhqaZ7vTHXn",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 6360,
+   "price": 6463,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -2106,9 +2171,9 @@
    "productId": "recvzbW2TrkQJ2Jri",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 10741,
+   "price": 10915,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -2187,9 +2252,9 @@
    "productId": "recyhf1UYBH0UyQCZ",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 16199,
+   "price": 16893,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -2223,9 +2288,9 @@
    "productId": "reczxS9ObYqm25Ylb",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
-   "price": 5860,
+   "price": 5956,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   }
  ]
