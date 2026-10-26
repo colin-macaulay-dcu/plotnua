@@ -327,3 +327,4 @@ The universe pin above is moved only by a targeted publication whose boundary ch
 
 Shomera guide publication, 26 October 2026: one informational possibility record (`poss-shomera-garden-rooms`), title/description from its indexable sitemap-listed page. No supplier/product eligibility or Search ranking change. Public-page count deliberately moves from 24 to 25.
 - 2026-10-26 · re-frozen to `7f70a52b0650966f929bee3d54f91be6a5f42f2d63bd69b25182024109c8f0ba` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261026-202742-pineca-ireland.md); only the targeted records differ.
+- 2026-10-26 · re-frozen to `6d003a920ce6cbbaf67b51f5980112319555c87f4ea3f331d72bd3e67ddadbd5` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261026-205704-gardenhouse24-ireland.md); only the targeted records differ.

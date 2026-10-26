@@ -2728,24 +2728,11 @@
     "candidateCount": 1
    },
    "features": {
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation. All 8 AVAILABLE IN REPUBLIC OF IRELAND, all Tier A for the company evidence and Tier B for site content, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: an Irish REGISTERED COMPANY — ABC Gardenhouse IRL Ltd, company number 691098, VAT IE3750783CH — with FREE DELIVERY AND INSTALLATION included across Ireland and TWO SHOWROOMS, at Limerick and Wexford. Registration number, VAT number, included installation and physical showrooms together make this one of the best-evidenced Irish positions in the layer. WHY NOT AN ALL-ISLAND VALUE: no Northern Ireland terms are published. GROUP NOTE, recorded once: the UK Organisation Gardenhouse24 is separately held and its UK company was dissolved in October 2024; the Irish entity is distinct and active. Organisations NOT merged. BLOCKED-SITE LIMITATION: gardenhouse24.ie is client-rendered. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: an Irish company you can visit, with delivery and installation in the price. AUDIT REPAIR, AM-005 Layer Completion Audit: this supplier-level status was absent at audit and has been added here. No product classification, Evidence Tier or Evidence Scope has been changed.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "warranty": {
-     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "electricalIncluded": {
-     "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
+    "externalDimensions": {
+     "text": "530 x 410 cm (page title/URL state \"5.6 x 4.4 m\" but technical spec table, on-page description and images are for a differently-named \"Davos 44 A\" product — see Source notes)",
      "number": null,
      "unit": null,
      "evidenceScope": null,
-     "confirmationState": "No",
      "status": "Verified"
     },
     "floorArea": {
@@ -2773,18 +2760,27 @@
       }
      ]
     },
+    "glazing": {
+     "text": "Double glazing",
+     "number": null,
+     "unit": null,
+     "evidenceScope": null,
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": null,
+     "confirmationState": "No",
+     "status": "Verified"
+    },
     "countryOfManufacture": {
      "text": "Estonia",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide",
      "status": "Verified"
-    },
-    "insulation": {
-     "text": "NOT INSULATED AS STANDARD — THREE-SEASON. Solid single-skin 44mm Nordic spruce wall planks with four-fold corner millings (thickness taken from the supplier's own product naming convention). Wall, roof and floor insulation are sold by Gardenhouse24 as optional extras; the supplier states additional insulation is required for year-round use in colder weather. Double glazed doors and windows as standard. No U-values published. HOMEOWNER IMPLICATION: seasonal use as supplied. Additional insulation required for year-round occupation, at additional cost.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
     },
     "designLanguage": {
      "text": "Classic",
@@ -2793,8 +2789,20 @@
      "evidenceScope": "Product-Specific",
      "status": "Verified"
     },
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation available as a purchasable add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. HOMEOWNER IMPLICATION: a 44 mm log cabin of this size is a substantial self-build. The kit price understates the delivered-and-standing cost by whatever installation and base come to, and both must be quoted.",
+    "insulation": {
+     "text": "NOT INSULATED AS STANDARD — THREE-SEASON. Solid single-skin 44mm Nordic spruce wall planks with four-fold corner millings (thickness taken from the supplier's own product naming convention). Wall, roof and floor insulation are sold by Gardenhouse24 as optional extras; the supplier states additional insulation is required for year-round use in colder weather. Double glazed doors and windows as standard. No U-values published. HOMEOWNER IMPLICATION: seasonal use as supplied. Additional insulation required for year-round occupation, at additional cost.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level"
+    },
+    "warranty": {
+     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation. All 8 AVAILABLE IN REPUBLIC OF IRELAND, all Tier A for the company evidence and Tier B for site content, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: an Irish REGISTERED COMPANY — ABC Gardenhouse IRL Ltd, company number 691098, VAT IE3750783CH — with FREE DELIVERY AND INSTALLATION included across Ireland and TWO SHOWROOMS, at Limerick and Wexford. Registration number, VAT number, included installation and physical showrooms together make this one of the best-evidenced Irish positions in the layer. WHY NOT AN ALL-ISLAND VALUE: no Northern Ireland terms are published. GROUP NOTE, recorded once: the UK Organisation Gardenhouse24 is separately held and its UK company was dissolved in October 2024; the Irish entity is distinct and active. Organisations NOT merged. BLOCKED-SITE LIMITATION: gardenhouse24.ie is client-rendered. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: an Irish company you can visit, with delivery and installation in the price. AUDIT REPAIR, AM-005 Layer Completion Audit: this supplier-level status was absent at audit and has been added here. No product classification, Evidence Tier or Evidence Scope has been changed.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -2805,19 +2813,11 @@
      "unit": null,
      "evidenceScope": "Product-Specific"
     },
-    "externalDimensions": {
-     "text": "530 x 410 cm (page title/URL state \"5.6 x 4.4 m\" but technical spec table, on-page description and images are for a differently-named \"Davos 44 A\" product — see Source notes)",
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation available as a purchasable add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. HOMEOWNER IMPLICATION: a 44 mm log cabin of this size is a substantial self-build. The kit price understates the delivered-and-standing cost by whatever installation and base come to, and both must be quoted.",
      "number": null,
      "unit": null,
-     "evidenceScope": null,
-     "status": "Verified"
-    },
-    "glazing": {
-     "text": "Double glazing",
-     "number": null,
-     "unit": null,
-     "evidenceScope": null,
-     "status": "Verified"
+     "evidenceScope": "Organisation-Wide"
     }
    },
    "price": 6171,
@@ -2865,7 +2865,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -5264,50 +5264,12 @@
     "candidateCount": 1
    },
    "features": {
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "electricalIncluded": {
-     "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
+    "externalDimensions": {
+     "text": "5.4 x 2.5 m",
      "number": null,
      "unit": null,
      "evidenceScope": null,
-     "confirmationState": "No",
      "status": "Verified"
-    },
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation purchasable as an add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. HOMEOWNER IMPLICATION: storage section and terrace both add assembly work beyond the cabin shell, which widens the gap between the kit price and the installed price on this model specifically.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "floorArea": {
-     "text": null,
-     "number": 8.35,
-     "unit": "m²",
-     "evidenceScope": null,
-     "status": "Verified",
-     "feature": "Internal Floor Area",
-     "records": [
-      {
-       "text": null,
-       "number": 8.35,
-       "unit": "m²",
-       "evidenceScope": null,
-       "status": "Verified",
-       "feature": "Internal Floor Area"
-      },
-      {
-       "text": "VERIFIED INTERNAL FLOOR AREA — SAFE TO RANK ON INTERNAL AREA. Gardenhouse24 publishes a structured technical specification table carrying an explicit 'Indoor area' field. For this product it reads, exactly as published: Indoor area 8.35; Base dimensions 470 x 220 cm; Terrace m2 2.52; Roof area 18.0; Log profile 44 mm. Nothing estimated, converted or deducted by Atlas. This is a supplier-stated internal figure, not a nominal size, so the product is rankable on usable floor. CONFLICTING EXTERNAL MEASUREMENTS — recorded, not corrected: the same page presents three mutually inconsistent envelope figures. The product title says 5.4m x 2.5m (13.5 m2); the technical field says base dimensions 470 x 220 cm (10.34 m2); and a marketing badge says '8m2 + 3m2 (terrace)', which also disagrees with the technical terrace figure of 2.52 m2. The INTERNAL area is therefore reliable but the EXTERNAL footprint is not: DO NOT RANK on external footprint, and do not run the planning area test from the title dimension. PLANNING: on any of these readings the unit sits inside the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026), but a homeowner close to the limit must obtain a confirmed external footprint from the supplier before relying on exemption, because the published figures differ by more than 3 m2. VALUE: listed at EUR 4,870; the site is an Irish VAT-registered entity (ABC Gardenhouse IRL Ltd, VAT IE3750783CH) but the price display does not state the VAT basis, so no EUR/m2 has been computed.",
-       "number": null,
-       "unit": null,
-       "evidenceScope": "Product-Specific",
-       "feature": "Internal Floor Area"
-      }
-     ]
     },
     "insulation": {
      "text": "Insulated",
@@ -5334,6 +5296,39 @@
       }
      ]
     },
+    "electricalIncluded": {
+     "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": null,
+     "confirmationState": "No",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": null,
+     "number": 8.35,
+     "unit": "m²",
+     "evidenceScope": null,
+     "status": "Verified",
+     "feature": "Internal Floor Area",
+     "records": [
+      {
+       "text": null,
+       "number": 8.35,
+       "unit": "m²",
+       "evidenceScope": null,
+       "status": "Verified",
+       "feature": "Internal Floor Area"
+      },
+      {
+       "text": "VERIFIED INTERNAL FLOOR AREA — SAFE TO RANK ON INTERNAL AREA. Gardenhouse24 publishes a structured technical specification table carrying an explicit 'Indoor area' field. For this product it reads, exactly as published: Indoor area 8.35; Base dimensions 470 x 220 cm; Terrace m2 2.52; Roof area 18.0; Log profile 44 mm. Nothing estimated, converted or deducted by Atlas. This is a supplier-stated internal figure, not a nominal size, so the product is rankable on usable floor. CONFLICTING EXTERNAL MEASUREMENTS — recorded, not corrected: the same page presents three mutually inconsistent envelope figures. The product title says 5.4m x 2.5m (13.5 m2); the technical field says base dimensions 470 x 220 cm (10.34 m2); and a marketing badge says '8m2 + 3m2 (terrace)', which also disagrees with the technical terrace figure of 2.52 m2. The INTERNAL area is therefore reliable but the EXTERNAL footprint is not: DO NOT RANK on external footprint, and do not run the planning area test from the title dimension. PLANNING: on any of these readings the unit sits inside the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026), but a homeowner close to the limit must obtain a confirmed external footprint from the supplier before relying on exemption, because the published figures differ by more than 3 m2. VALUE: listed at EUR 4,870; the site is an Irish VAT-registered entity (ABC Gardenhouse IRL Ltd, VAT IE3750783CH) but the price display does not state the VAT basis, so no EUR/m2 has been computed.",
+       "number": null,
+       "unit": null,
+       "evidenceScope": "Product-Specific",
+       "feature": "Internal Floor Area"
+      }
+     ]
+    },
     "countryOfManufacture": {
      "text": "Estonia",
      "number": null,
@@ -5341,12 +5336,17 @@
      "evidenceScope": "Organisation-Wide",
      "status": "Verified"
     },
-    "externalDimensions": {
-     "text": "5.4 x 2.5 m",
+    "warranty": {
+     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model.",
      "number": null,
      "unit": null,
-     "evidenceScope": null,
-     "status": "Verified"
+     "evidenceScope": "Organisation-Wide"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
     },
     "insulationRating": {
      "text": "UNINSULATED. Recorded exactly as published: 44mm Nordic spruce massive logs; 18mm floor boards; 18mm roof boards; natural untreated finish; no roof covering included as standard. Gardenhouse24 offers insulation only as a paid extra — floor and roof 50mm PIR at EUR 800, floor and roof 100mm Rockwool at EUR 1,980, or wall insulation 50mm PIR at EUR 2,750 — which confirms that the product as sold contains none. Nothing inferred. HOMEOWNER IMPLICATION: a three-season building at best as supplied and realistically a summer room, since even the roof is delivered without a covering. Reaching year-round use requires buying the insulation packages separately, which on this model would add EUR 800 to EUR 4,730 to the EUR 4,870 headline price — a doubling in the worst case. Any comparison of this product's price against an insulated garden room is therefore not like-for-like.",
@@ -5354,8 +5354,8 @@
      "unit": null,
      "evidenceScope": "Product-Specific"
     },
-    "warranty": {
-     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model.",
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation purchasable as an add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. HOMEOWNER IMPLICATION: storage section and terrace both add assembly work beyond the cabin shell, which widens the gap between the kit price and the installed price on this model specifically.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -5406,7 +5406,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -10364,18 +10364,6 @@
       }
      ]
     },
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation purchasable as an add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. 7 classified in this run as DIY OR INSTALLED; 1 product (Mayo Garden Office Box M) already held an Installation Model value from earlier work and was not revisited — to be checked for consistency at audit. THE SUPPLIER-LEVEL FINDING: Gardenhouse24 operates the unbundled model in its purest form. The cabin is a kit. The manual is supplied and support specialists are on the phone during the build. Installation is a separate purchasable line, added to the cart, after which the supplier makes contact to schedule and price it. The base is a third line, laid by the supplier's own construction crew and quoted after discussion. Three decisions, three prices, and only the first is advertised. WHY THIS SUPPLIER IS NOT SIMPLY A KIT IMPORTER: the installation is performed by a qualified Ireland-based installation provider. That distinction matters on an Irish platform — the buyer is not being asked to source a carpenter themselves, as Dunster House explicitly suggests, nor waiting on a crew from the Baltic. The capability exists locally. THE PRICING CONSEQUENCE, recorded as observed: installation has been promoted at a discount (an August offer of 50% off professional installation with free delivery was published), which establishes that the installation charge is a variable commercial figure rather than a fixed schedule. A buyer comparing quotations should date-stamp whatever installation price they are given. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: read every Gardenhouse24 price as a kit price and demand the other two figures before comparing against Cabin Master, Green Retreats or Adman. Against a genuinely turnkey Irish supplier the three-line total is the only fair comparison. RECORDED LIMITATION: gardenhouse24.ie returned no readable page body on direct fetch during this run — /faq, /assembly-service and /delivery-and-payment all came back empty — so all terms are Tier B, attributed to the supplier's own named URL via search index. Recorded once per the standing blocked-website rule; not re-raised.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
     "externalDimensions": {
      "text": "5.9 x 4.9 m",
      "number": null,
@@ -10391,17 +10379,12 @@
      "confirmationState": "No",
      "status": "Verified"
     },
-    "warranty": {
-     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products, subject to assembly and maintenance per supplier guidelines. Nothing inferred. All 8 CONDITIONAL WARRANTY, all Tier B, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: cover is rot-only, the term varies by product between 5 and 10 years, and it is conditional on the building being ASSEMBLED AND MAINTAINED IN ACCORDANCE WITH THE SUPPLIER'S GUIDELINES. TWO CONDITIONS, NOT ONE, AND THE FIRST IS THE SHARPER: assembly. This is a kit product the buyer or their contractor erects, so the supplier's guidelines govern work the supplier never sees. Waltons, Pineca and Ballyfree all condition cover on MAINTENANCE the owner performs after delivery; Gardenhouse24 additionally conditions it on the ASSEMBLY itself. A buyer who deviates from the instructions during a weekend build has compromised the guarantee before the building is finished. THE SCOPE IS NARROW AND THE PRODUCT IS NOT: cover is rot-only, while the range includes bi-fold doors, ALU-framed contemporary models and glazed offices. Door hardware, glazing units and aluminium framing are the components most likely to fail on these products and are the components an anti-rot term does not reach. WHY THE CLASSIFICATION IS CONDITIONAL RATHER THAN ANTI-ROT: the assembly-and-maintenance precondition governs whether any cover exists at all, which the vocabulary treats as the defining feature. Compare Iglucraft, forfeited by a three-day paperwork deadline, and Booths, forfeited by paying in instalments. BLOCKED-SITE LIMITATION, carried forward: gardenhouse24.ie is client-rendered and on the Atlas permanently-unreadable list; the guidelines document was not retrievable. LIMITATIONS: which products carry 5 and which carry 10 is not published; exclusions and transferability are not published. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: obtain the assembly and maintenance guidelines BEFORE building, follow them exactly, photograph the build, and confirm which term applies to your model.",
+    "countryOfManufacture": {
+     "text": "Estonia",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "insulation": {
-     "text": "NOT INSULATED AS STANDARD — THREE-SEASON, though at the thicker end of the range. Solid single-skin 70mm Nordic spruce wall planks. Supplier states thicker 70mm logs give better thermal insulation than thinner options, but insulation itself remains an optional extra across wall, roof and floor. Double glazed bi-fold doors. No U-values published. HOMEOWNER IMPLICATION: better thermal performance than the 28mm and 44mm products in the same range, but still requires added insulation for reliable year-round use on the supplier's own account.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
     },
     "designLanguage": {
      "text": "Contemporary",
@@ -10410,18 +10393,35 @@
      "evidenceScope": "Product-Specific",
      "status": "Verified"
     },
+    "insulation": {
+     "text": "NOT INSULATED AS STANDARD — THREE-SEASON, though at the thicker end of the range. Solid single-skin 70mm Nordic spruce wall planks. Supplier states thicker 70mm logs give better thermal insulation than thinner options, but insulation itself remains an optional extra across wall, roof and floor. Double glazed bi-fold doors. No U-values published. HOMEOWNER IMPLICATION: better thermal performance than the 28mm and 44mm products in the same range, but still requires added insulation for reliable year-round use on the supplier's own account.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level"
+    },
+    "warranty": {
+     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products, subject to assembly and maintenance per supplier guidelines. Nothing inferred. All 8 CONDITIONAL WARRANTY, all Tier B, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: cover is rot-only, the term varies by product between 5 and 10 years, and it is conditional on the building being ASSEMBLED AND MAINTAINED IN ACCORDANCE WITH THE SUPPLIER'S GUIDELINES. TWO CONDITIONS, NOT ONE, AND THE FIRST IS THE SHARPER: assembly. This is a kit product the buyer or their contractor erects, so the supplier's guidelines govern work the supplier never sees. Waltons, Pineca and Ballyfree all condition cover on MAINTENANCE the owner performs after delivery; Gardenhouse24 additionally conditions it on the ASSEMBLY itself. A buyer who deviates from the instructions during a weekend build has compromised the guarantee before the building is finished. THE SCOPE IS NARROW AND THE PRODUCT IS NOT: cover is rot-only, while the range includes bi-fold doors, ALU-framed contemporary models and glazed offices. Door hardware, glazing units and aluminium framing are the components most likely to fail on these products and are the components an anti-rot term does not reach. WHY THE CLASSIFICATION IS CONDITIONAL RATHER THAN ANTI-ROT: the assembly-and-maintenance precondition governs whether any cover exists at all, which the vocabulary treats as the defining feature. Compare Iglucraft, forfeited by a three-day paperwork deadline, and Booths, forfeited by paying in instalments. BLOCKED-SITE LIMITATION, carried forward: gardenhouse24.ie is client-rendered and on the Atlas permanently-unreadable list; the guidelines document was not retrievable. LIMITATIONS: which products carry 5 and which carry 10 is not published; exclusions and transferability are not published. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: obtain the assembly and maintenance guidelines BEFORE building, follow them exactly, photograph the build, and confirm which term applies to your model.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
     "insulationRating": {
      "text": "UNINSULATED. Recorded exactly as published: 70mm Nordic spruce log profile; premium double-glazed bi-fold doors; flat roof; terrace. No insulation is included in the standard specification — Gardenhouse24 sells floor, roof and wall insulation as separately priced packages. Nothing inferred. NOTE ON WALL THICKNESS: at 70mm the log wall is substantially thicker than the 28mm and 44mm profiles elsewhere in this range, and thicker solid timber does reduce heat loss, but a solid log wall of any thickness is not an insulated assembly and Gardenhouse24 does not publish a U-value for it. The distinction matters because a buyer may read '70mm' as meaning insulated. HOMEOWNER IMPLICATION: better than the thinner models in the range but still a three-season building as supplied; year-round use requires the paid insulation packages, and the large bi-fold glazed area will remain the dominant heat-loss path whatever is done to the walls.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
     },
-    "countryOfManufacture": {
-     "text": "Estonia",
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation purchasable as an add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. 7 classified in this run as DIY OR INSTALLED; 1 product (Mayo Garden Office Box M) already held an Installation Model value from earlier work and was not revisited — to be checked for consistency at audit. THE SUPPLIER-LEVEL FINDING: Gardenhouse24 operates the unbundled model in its purest form. The cabin is a kit. The manual is supplied and support specialists are on the phone during the build. Installation is a separate purchasable line, added to the cart, after which the supplier makes contact to schedule and price it. The base is a third line, laid by the supplier's own construction crew and quoted after discussion. Three decisions, three prices, and only the first is advertised. WHY THIS SUPPLIER IS NOT SIMPLY A KIT IMPORTER: the installation is performed by a qualified Ireland-based installation provider. That distinction matters on an Irish platform — the buyer is not being asked to source a carpenter themselves, as Dunster House explicitly suggests, nor waiting on a crew from the Baltic. The capability exists locally. THE PRICING CONSEQUENCE, recorded as observed: installation has been promoted at a discount (an August offer of 50% off professional installation with free delivery was published), which establishes that the installation charge is a variable commercial figure rather than a fixed schedule. A buyer comparing quotations should date-stamp whatever installation price they are given. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: read every Gardenhouse24 price as a kit price and demand the other two figures before comparing against Cabin Master, Green Retreats or Adman. Against a genuinely turnkey Irish supplier the three-line total is the only fair comparison. RECORDED LIMITATION: gardenhouse24.ie returned no readable page body on direct fetch during this run — /faq, /assembly-service and /delivery-and-payment all came back empty — so all terms are Tier B, attributed to the supplier's own named URL via search index. Recorded once per the standing blocked-website rule; not re-raised.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide",
-     "status": "Verified"
+     "evidenceScope": "Organisation-Wide"
     }
    },
    "price": 13474,
@@ -10469,7 +10469,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -54402,21 +54402,15 @@
       }
      ]
     },
-    "warranty": {
-     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot cover, extending to 10 years on some products. Gardenhouse24 publishes a rot-only term of 5 years depending on product, with some products carrying 10 years ONLY IF the building is assembled and maintained according to the supplier's guidelines. Two conditions therefore apply: the term varies by product, and cover depends on documented assembly and ongoing maintenance. This is a conditional warranty, not an unconditional one, and the condition is the supplier's own stated wording rather than an inference. Homeowner implication: keep assembly and treatment records — the cover is against rot only, and it can be lost through inadequate maintenance.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "countryOfManufacture": {
-     "text": "Estonia",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide",
-     "status": "Verified"
-    },
     "externalDimensions": {
      "text": "2.8 x 2.5 m",
+     "number": null,
+     "unit": null,
+     "evidenceScope": null,
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "Double glazing",
      "number": null,
      "unit": null,
      "evidenceScope": null,
@@ -54430,11 +54424,12 @@
      "confirmationState": "No",
      "status": "Verified"
     },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Sold by ABC Gardenhouse IRL Ltd, Irish company no. 691098, VAT IE3750783CH, with free delivery and installation across Ireland and showrooms at Clondrinagh, Ennis Road, Limerick V94 4A66 and RJs World of Sheds, Sinnottsmill Business Park, Wexford. Contact info@gardenhouse24.ie / +353 61 260 581. This is the reference standard for Irish purchasability in Atlas. Both showrooms are in the Republic and no Northern Ireland terms are published, so the classification is Republic of Ireland. Homeowner implication: a registered Irish company with Irish VAT, Irish showrooms, and delivery and installation included.",
+    "countryOfManufacture": {
+     "text": "Estonia",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
     },
     "insulation": {
      "text": "NOT DETERMINED — REQUIRES PRODUCT-SPECIFIC VERIFICATION. Unlike the rest of the Gardenhouse24 range, this product's name carries no wall-thickness figure, so the supplier's naming convention cannot be used to establish its construction. It is described as an 'Office Box', which may indicate a framed or panel construction distinct from the solid-log ranges. Gardenhouse24's organisation-wide position is that insulation is an optional extra, so the likelihood is that this product is also uninsulated as standard — but that has NOT been confirmed for this product and is not asserted here. HOMEOWNER IMPLICATION: thermal performance unknown.",
@@ -54442,21 +54437,26 @@
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
-    "glazing": {
-     "text": "Double glazing",
+    "warranty": {
+     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot cover, extending to 10 years on some products. Gardenhouse24 publishes a rot-only term of 5 years depending on product, with some products carrying 10 years ONLY IF the building is assembled and maintained according to the supplier's guidelines. Two conditions therefore apply: the term varies by product, and cover depends on documented assembly and ongoing maintenance. This is a conditional warranty, not an unconditional one, and the condition is the supplier's own stated wording rather than an inference. Homeowner implication: keep assembly and treatment records — the cover is against rot only, and it can be lost through inadequate maintenance.",
      "number": null,
      "unit": null,
-     "evidenceScope": null,
-     "status": "Verified"
+     "evidenceScope": "Organisation-Wide"
     },
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Recorded as published: products ship as self-assembly kits with an illustrated installation manual described as aimed at anyone with some experience of construction or building assembly, and the supplier's support specialists will talk a buyer through problems that arise during the build. Alongside that, a professional installation service is offered as a purchasable option — the buyer adds installation to the cart and the supplier makes contact to schedule and price it — and the work is carried out by a qualified Ireland-based installation provider rather than a crew shipped from abroad. A foundation service is separately available on the same add-to-cart basis, with the supplier's construction crew laying the base and quoting after discussion. Nothing inferred. THE MECHANISM MATTERS: installation here is a line item, not a default. The published price of the cabin is a kit price, and both the labour and the base are bolt-ons the buyer must actively select. HOMEOWNER IMPLICATION: this is the most flexible arrangement in the catalogue — build it yourself, or buy the labour, or buy the labour and the base — but it also means the advertised figure is the least complete. Price all three lines before comparing against a turnkey supplier. Note also that promotional installation discounts appear from time to time, so the installation cost is not a fixed quantity.",
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Sold by ABC Gardenhouse IRL Ltd, Irish company no. 691098, VAT IE3750783CH, with free delivery and installation across Ireland and showrooms at Clondrinagh, Ennis Road, Limerick V94 4A66 and RJs World of Sheds, Sinnottsmill Business Park, Wexford. Contact info@gardenhouse24.ie / +353 61 260 581. This is the reference standard for Irish purchasability in Atlas. Both showrooms are in the Republic and no Northern Ireland terms are published, so the classification is Republic of Ireland. Homeowner implication: a registered Irish company with Irish VAT, Irish showrooms, and delivery and installation included.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
     "insulationRating": {
      "text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION. No thermal specification held and none inferred. Blocking issue carried from the measurement layer: Gardenhouse24 publishes the Mayo Black Office Box in XS, M and L sizes with no 'S' variant, so this Atlas record cannot be matched to a live product and no specification can be attributed. Six are UNINSULATED as supplied — Carin 44 A, CARLOW 44 A, DUBLIN 70, RAMSAY 70 A ALU, Monaco 28 and Mayo Garden Office Box M — and two require product-specific verification because their Atlas names do not resolve to supplier listings (this record and Lasse 44 C ALU). NOT ONE product in the range is insulated as standard. THE SUPPLIER-LEVEL FINDING, and it is the most consequential in this layer so far: Gardenhouse24 sells insulation exclusively as a paid extra, at EUR 800 to EUR 4,400 depending on model and package, and several models also ship without any roof covering. Products named and marketed as garden OFFICES — the Mayo Office Box M at EUR 7,769, the RAMSAY at EUR 15,664 — arrive as uninsulated timber shells. Any price comparison between this range and a supplier whose product is insulated as standard is not like-for-like, and the gap can exceed EUR 4,000 per unit. Log profile ranges from 28mm to 70mm across the range but thicker logs do not make an insulated assembly, and no U-value is published for any model.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Recorded as published: products ship as self-assembly kits with an illustrated installation manual described as aimed at anyone with some experience of construction or building assembly, and the supplier's support specialists will talk a buyer through problems that arise during the build. Alongside that, a professional installation service is offered as a purchasable option — the buyer adds installation to the cart and the supplier makes contact to schedule and price it — and the work is carried out by a qualified Ireland-based installation provider rather than a crew shipped from abroad. A foundation service is separately available on the same add-to-cart basis, with the supplier's construction crew laying the base and quoting after discussion. Nothing inferred. THE MECHANISM MATTERS: installation here is a line item, not a default. The published price of the cabin is a kit price, and both the labour and the base are bolt-ons the buyer must actively select. HOMEOWNER IMPLICATION: this is the most flexible arrangement in the catalogue — build it yourself, or buy the labour, or buy the labour and the base — but it also means the advertised figure is the least complete. Price all three lines before comparing against a turnkey supplier. Note also that promotional installation discounts appear from time to time, so the installation cost is not a fixed quantity.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -54507,7 +54507,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -54575,26 +54575,6 @@
     "candidateCount": 1
    },
    "features": {
-    "externalDimensions": {
-     "text": "2.5 x 4.5 m",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Product-Specific",
-     "status": "Verified"
-    },
-    "insulation": {
-     "text": "NOT DETERMINED — REQUIRES PRODUCT-SPECIFIC VERIFICATION. This product's name carries no wall-thickness figure, so the supplier's naming convention cannot establish its construction. Described as an 'Office Box', which may indicate framed or panel construction distinct from the solid-log ranges. Gardenhouse24's organisation-wide position is that insulation is an optional extra, but that has not been confirmed for this product and is not asserted here. HOMEOWNER IMPLICATION: thermal performance unknown.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "countryOfManufacture": {
-     "text": "Estonia",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide",
-     "status": "Verified"
-    },
     "floorArea": {
      "text": null,
      "number": 8.2,
@@ -54620,18 +54600,19 @@
       }
      ]
     },
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Repaired at audit: this record previously held a free-text classification outside the approved vocabulary and carried no Evidence Tier or Source URL. Evidence retained from the original record: installation is NOT included in the standard price. Supplier evidence establishing the second route: Gardenhouse24 publishes a professional installation service as a purchasable option — the buyer adds installation to the cart and the supplier makes contact to schedule and price it — carried out by a qualified Ireland-based installation provider. Products otherwise ship as self-assembly kits with an illustrated manual and telephone support during the build, and a foundation service is separately available on the same add-to-cart basis. Nothing inferred. HOMEOWNER IMPLICATION: the advertised figure is a kit price. Installation and base are two further purchasable lines and must both be quoted before the total is known.",
+    "externalDimensions": {
+     "text": "2.5 x 4.5 m",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide",
+     "evidenceScope": "Product-Specific",
      "status": "Verified"
     },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
+    "glazing": {
+     "text": "Double glazing",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
     },
     "electricalIncluded": {
      "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
@@ -54648,18 +54629,37 @@
      "evidenceScope": "Product-Specific",
      "status": "Verified"
     },
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Repaired at audit: this record previously held a free-text classification outside the approved vocabulary and carried no Evidence Tier or Source URL. Evidence retained from the original record: installation is NOT included in the standard price. Supplier evidence establishing the second route: Gardenhouse24 publishes a professional installation service as a purchasable option — the buyer adds installation to the cart and the supplier makes contact to schedule and price it — carried out by a qualified Ireland-based installation provider. Products otherwise ship as self-assembly kits with an illustrated manual and telephone support during the build, and a foundation service is separately available on the same add-to-cart basis. Nothing inferred. HOMEOWNER IMPLICATION: the advertised figure is a kit price. Installation and base are two further purchasable lines and must both be quoted before the total is known.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "countryOfManufacture": {
+     "text": "Estonia",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "NOT DETERMINED — REQUIRES PRODUCT-SPECIFIC VERIFICATION. This product's name carries no wall-thickness figure, so the supplier's naming convention cannot establish its construction. Described as an 'Office Box', which may indicate framed or panel construction distinct from the solid-log ranges. Gardenhouse24's organisation-wide position is that insulation is an optional extra, but that has not been confirmed for this product and is not asserted here. HOMEOWNER IMPLICATION: thermal performance unknown.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
     "warranty": {
      "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
-    "glazing": {
-     "text": "Double glazing",
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
      "number": null,
      "unit": null,
-     "evidenceScope": "Product-Specific",
-     "status": "Verified"
+     "evidenceScope": "Organisation-Wide"
     },
     "insulationRating": {
      "text": "UNINSULATED. Recorded exactly as published: 70mm Nordic spruce log profile; double glazing in tempered glass; premium internal and external doors; flat roof; two rooms; terrace and floor included. No insulation in the standard specification; the only insulation offered is a paid Wall Insulation Package (50mm PIR) at EUR 2,420, plus floor and roof options at EUR 1,320 to EUR 1,400. Nothing inferred. HOMEOWNER IMPLICATION: sold under the 'Astel Garden R-line' sub-brand and marketed as a garden OFFICE at EUR 7,769, yet supplied without insulation — the product name implies year-round working that the specification does not support. Reaching that use adds roughly EUR 3,700 to EUR 3,800. The two-room layout also means more internal wall and less open floor, which matters once insulation is added inside the shell.",
@@ -54713,7 +54713,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -57997,17 +57997,12 @@
     "candidateCount": 1
    },
    "features": {
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and telephone support during the build; professional installation available as a purchasable add-on carried out by a qualified Ireland-based installation provider; foundation service separately available on the same basis. Nothing inferred. HOMEOWNER IMPLICATION: the published figure is a kit price. Add installation and base as separate lines before any comparison.",
+    "externalDimensions": {
+     "text": "298 x 378 cm",
      "number": null,
      "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "insulationRating": {
-     "text": "UNINSULATED. Recorded exactly as published: 28mm log profile as standard, with an upgrade to 44mm and double glazing offered at EUR 1,117; flat roof; no roof covering as standard; natural untreated finish; terrace included. Gardenhouse24's own quality panel states its profiles 'start from 28 mm (for garden sheds)', and the product description repeatedly calls this a garden SHED that 'can be a small home office WHEN INSULATED PROPERLY'. Nothing inferred — the supplier itself makes the point. HOMEOWNER IMPLICATION: this is a shed as supplied. At 28mm with single glazing it is the thinnest and least thermally capable specification in the range, and the supplier's own wording conditions office use on insulation the buyer must add. It should not appear alongside insulated garden rooms in a workspace comparison without that condition attached.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Product-Specific"
+     "evidenceScope": null,
+     "status": "Verified"
     },
     "floorArea": {
      "text": "VERIFIED INTERNAL FLOOR AREA — SAFE TO RANK ON INTERNAL AREA. Recorded exactly as published: Indoor area 8.55; Room dimensions 292 x 292 cm; Base dimensions 298 x 378 cm; Terrace m2 2.38 (terrace included); Roof area 14 m2; Log profile 28 mm (44 mm and double glazing offered as a EUR 1,117 upgrade); Flat roof; Ridge height 234.5 cm; Eaves 209.5 cm. Nothing estimated or converted. All three area statements reconcile: 292 x 292 cm is 8.53 m2 against a stated 8.55; and the 378 cm base depth less the 292 cm room depth leaves an 86 cm terrace strip, which is 2.51 m2 against a stated 2.38 — so the enclosed room is only about 8.5 m2 of the 11.26 m2 base. A buyer reading the headline '2.98 x 3.78m' would over-estimate the usable room by roughly a third. PLANNING: total base 11.26 m2 including terrace, well inside the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026). Flat roof at 234.5 cm is inside the 3 m Class 3 limit. SPECIFICATION CAVEAT — MATERIAL TO CATEGORY: the standard build is a 28 mm log profile, and Gardenhouse24's own quality panel states its profiles 'start from 28 mm (for garden sheds)'. The page body repeatedly calls this a garden SHED and says it 'can be a small home office WHEN INSULATED PROPERLY'. At 28 mm with single glazing it is not a year-round garden room as standard; it becomes one only with the 44 mm and double-glazing upgrade plus an insulation package. It should not be ranked against insulated garden rooms on price without that distinction being carried. NAMING INTEGRITY recorded, not corrected: the page's own image asset and product description refer to 'Monaco 44', and the meta keywords describe a '3x3m' unit, neither of which matches the 2.98 x 3.78 m product being sold. A separate 'Monaco 28 B | 3.38 x 3.98m' also exists. This record is matched to the 2.98 x 3.78 m Monaco 28.",
@@ -58033,18 +58028,6 @@
       }
      ]
     },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "insulation": {
-     "text": "NOT INSULATED AS STANDARD — THREE-SEASON, AND THE THINNEST GARDENHOUSE24 PRODUCT IN ATLAS. Solid single-skin 28mm Nordic spruce wall planks. Insulation sold separately. Double glazed as standard. No U-values published. HOMEOWNER IMPLICATION: at 28mm this is a summer-use building as supplied — thinner than every other Gardenhouse24 Garden Room in Atlas and comparable to the Bertilo cohort reclassified out of Garden Rooms in Session 6. Substantial additional insulation would be required for year-round occupation. Should not be presented alongside insulated garden rooms without that distinction.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
-    },
     "electricalIncluded": {
      "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
      "number": null,
@@ -58060,18 +58043,35 @@
      "evidenceScope": "Organisation-Wide",
      "status": "Verified"
     },
+    "insulation": {
+     "text": "NOT INSULATED AS STANDARD — THREE-SEASON, AND THE THINNEST GARDENHOUSE24 PRODUCT IN ATLAS. Solid single-skin 28mm Nordic spruce wall planks. Insulation sold separately. Double glazed as standard. No U-values published. HOMEOWNER IMPLICATION: at 28mm this is a summer-use building as supplied — thinner than every other Gardenhouse24 Garden Room in Atlas and comparable to the Bertilo cohort reclassified out of Garden Rooms in Session 6. Substantial additional insulation would be required for year-round occupation. Should not be presented alongside insulated garden rooms without that distinction.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level"
+    },
     "warranty": {
      "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model — particularly relevant on a 28mm single-skin building.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
-    "externalDimensions": {
-     "text": "298 x 378 cm",
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
      "number": null,
      "unit": null,
-     "evidenceScope": null,
-     "status": "Verified"
+     "evidenceScope": "Organisation-Wide"
+    },
+    "insulationRating": {
+     "text": "UNINSULATED. Recorded exactly as published: 28mm log profile as standard, with an upgrade to 44mm and double glazing offered at EUR 1,117; flat roof; no roof covering as standard; natural untreated finish; terrace included. Gardenhouse24's own quality panel states its profiles 'start from 28 mm (for garden sheds)', and the product description repeatedly calls this a garden SHED that 'can be a small home office WHEN INSULATED PROPERLY'. Nothing inferred — the supplier itself makes the point. HOMEOWNER IMPLICATION: this is a shed as supplied. At 28mm with single glazing it is the thinnest and least thermally capable specification in the range, and the supplier's own wording conditions office use on insulation the buyer must add. It should not appear alongside insulated garden rooms in a workspace comparison without that condition attached.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific"
+    },
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and telephone support during the build; professional installation available as a purchasable add-on carried out by a qualified Ireland-based installation provider; foundation service separately available on the same basis. Nothing inferred. HOMEOWNER IMPLICATION: the published figure is a kit price. Add installation and base as separate lines before any comparison.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
     }
    },
    "price": 3624,
@@ -58119,7 +58119,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -67394,60 +67394,6 @@
     "candidateCount": 1
    },
    "features": {
-    "insulation": {
-     "text": "NOT INSULATED AS STANDARD — THREE-SEASON, at the thicker end of the range. Solid single-skin 70mm Nordic spruce wall planks, ALU-clad. Insulation optional across wall, roof and floor. Double glazed as standard. No U-values published. NOTE: ALU refers to aluminium external cladding — a maintenance and appearance feature, not a thermal one. HOMEOWNER IMPLICATION: among the better-performing Gardenhouse24 products, but still requires added insulation for reliable year-round use.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level"
-    },
-    "externalDimensions": {
-     "text": "4 x 6 m",
-     "number": null,
-     "unit": null,
-     "evidenceScope": null,
-     "status": "Verified"
-    },
-    "designLanguage": {
-     "text": "Contemporary",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Product-Specific",
-     "status": "Verified"
-    },
-    "glazing": {
-     "text": "Double glazing",
-     "number": null,
-     "unit": null,
-     "evidenceScope": null,
-     "status": "Verified"
-    },
-    "installationModel": {
-     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation purchasable as an add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. HOMEOWNER IMPLICATION: 70 mm logs are heavy and this is a large building. Self-assembly is offered and documented, but the practical case for buying the installation add-on is strongest at this end of the range.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide"
-    },
-    "countryOfManufacture": {
-     "text": "Estonia",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Organisation-Wide",
-     "status": "Verified"
-    },
-    "electricalIncluded": {
-     "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
-     "number": null,
-     "unit": null,
-     "evidenceScope": null,
-     "confirmationState": "No",
-     "status": "Verified"
-    },
     "floorArea": {
      "text": null,
      "number": 23,
@@ -67473,14 +67419,68 @@
       }
      ]
     },
+    "externalDimensions": {
+     "text": "4 x 6 m",
+     "number": null,
+     "unit": null,
+     "evidenceScope": null,
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "Double glazing",
+     "number": null,
+     "unit": null,
+     "evidenceScope": null,
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Not included as standard; optional paid extra (Electrical Package, €3000)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": null,
+     "confirmationState": "No",
+     "status": "Verified"
+    },
+    "countryOfManufacture": {
+     "text": "Estonia",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "designLanguage": {
+     "text": "Contemporary",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "NOT INSULATED AS STANDARD — THREE-SEASON, at the thicker end of the range. Solid single-skin 70mm Nordic spruce wall planks, ALU-clad. Insulation optional across wall, roof and floor. Double glazed as standard. No U-values published. NOTE: ALU refers to aluminium external cladding — a maintenance and appearance feature, not a thermal one. HOMEOWNER IMPLICATION: among the better-performing Gardenhouse24 products, but still requires added insulation for reliable year-round use.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level"
+    },
+    "warranty": {
+     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND. ABC Gardenhouse IRL Ltd (Irish company no. 691098, VAT IE3750783CH); free delivery and installation across Ireland; showrooms Limerick and Wexford. No Northern Ireland terms published. Homeowner implication: registered Irish company with Irish VAT and included delivery and installation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide"
+    },
     "insulationRating": {
      "text": "UNINSULATED. Recorded exactly as published: 70mm Nordic spruce log profile; flat roof; aluminium sliding doors; double glazing; floor included. No insulation in the standard specification; Gardenhouse24 sells it as a paid package. Nothing inferred. HOMEOWNER IMPLICATION: at EUR 15,664 this is among the most expensive products in the Gardenhouse24 range yet arrives without insulation, which a buyer at that price point would reasonably assume was included. The aluminium sliding door system is a further consideration: aluminium conducts heat far more readily than timber, so unless the frames are thermally broken — which the supplier does not state — the doors will be a significant cold bridge. Year-round use requires the insulation packages and confirmation of the door specification.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
     },
-    "warranty": {
-     "text": "CONDITIONAL WARRANTY. DURATION: 5 years anti-rot, up to 10 years on some products subject to assembly and maintenance per supplier guidelines. Term varies by product; cover is rot-only and conditional. Homeowner implication: keep assembly and treatment records; confirm which term applies to this model.",
+    "installationModel": {
+     "text": "DIY OR INSTALLED. Self-assembly kit with illustrated manual and build support; professional installation purchasable as an add-on via a qualified Ireland-based provider; foundation service available separately. Nothing inferred. HOMEOWNER IMPLICATION: 70 mm logs are heavy and this is a large building. Self-assembly is offered and documented, but the practical case for buying the installation add-on is strongest at this end of the range.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -67531,7 +67531,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-10-26",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
