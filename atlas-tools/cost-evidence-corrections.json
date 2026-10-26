@@ -355,6 +355,52 @@
         }
       ],
       "pageNote": "corrected on 26 October 2026 for 59 supplier records"
+    },
+    {
+      "id": "gardenhouse24-base-price-recheck-2026-10-26",
+      "date": "2026-10-26",
+      "approved": "Founder approved seven price-verification date/source-note updates and the reviewed catalogue/public-evidence publication package on 26 October 2026. All base amounts matched supplier pages. Catalogue deployment verified before this registration. No price amount, VAT, scope, feature, eligibility or image-rights change is authorised by this batch.",
+      "deployedCommit": "844a24bb1a2e72307d40c2bdbf22e4a5b7fb5a37",
+      "deployedUniverseSha256": "6d003a920ce6cbbaf67b51f5980112319555c87f4ea3f331d72bd3e67ddadbd5",
+      "rule": "Each enumerated product takes its record from the verified deployed universe; this batch changes only last-price-check dates. Original snapshot identity, existing corrections, non-target records and founder-held groups remain unchanged.",
+      "products": [
+        {
+          "id": "rec6OyJEU3y05Dbfd",
+          "name": "Mayo Garden Black Office Box S",
+          "expect": "replaced"
+        },
+        {
+          "id": "recBvytzYaY6cAK7I",
+          "name": "Mayo Garden Office Box M",
+          "expect": "replaced"
+        },
+        {
+          "id": "recM5CIL0367YeB8B",
+          "name": "CARLOW 44 A",
+          "expect": "replaced"
+        },
+        {
+          "id": "recQmO34TajMZh10v",
+          "name": "Monaco 28",
+          "expect": "replaced"
+        },
+        {
+          "id": "recdEm5Wh8AynGOhK",
+          "name": "DUBLIN 70 with Bi-fold Doors",
+          "expect": "replaced"
+        },
+        {
+          "id": "recjywa2b7bICYBuT",
+          "name": "Carin 44 A with Storage and Terrace",
+          "expect": "replaced"
+        },
+        {
+          "id": "rect9ZuAtfSmjfNuE",
+          "name": "RAMSAY 70 A ALU",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "seven base prices rechecked on 26 October 2026"
     }
   ]
 }

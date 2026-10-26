@@ -220,6 +220,21 @@
         "reczxS9ObYqm25Ylb"
       ],
       "pageNote": "corrected on 26 October 2026 for 59 supplier records"
+    },
+    {
+      "id": "gardenhouse24-base-price-recheck-2026-10-26",
+      "date": "2026-10-26",
+      "deployedCommit": "844a24bb1a2e72307d40c2bdbf22e4a5b7fb5a37",
+      "products": [
+        "rec6OyJEU3y05Dbfd",
+        "recBvytzYaY6cAK7I",
+        "recM5CIL0367YeB8B",
+        "recQmO34TajMZh10v",
+        "recdEm5Wh8AynGOhK",
+        "recjywa2b7bICYBuT",
+        "rect9ZuAtfSmjfNuE"
+      ],
+      "pageNote": "seven base prices rechecked on 26 October 2026"
     }
   ]
 }

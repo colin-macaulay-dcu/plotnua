@@ -84,6 +84,19 @@
      "recyhf1UYBH0UyQCZ",
      "reczxS9ObYqm25Ylb"
     ]
+   },
+   {
+    "id": "gardenhouse24-base-price-recheck-2026-10-26",
+    "deployedCommit": "844a24bb1a2e72307d40c2bdbf22e4a5b7fb5a37",
+    "products": [
+     "rec6OyJEU3y05Dbfd",
+     "recBvytzYaY6cAK7I",
+     "recM5CIL0367YeB8B",
+     "recQmO34TajMZh10v",
+     "recdEm5Wh8AynGOhK",
+     "recjywa2b7bICYBuT",
+     "rect9ZuAtfSmjfNuE"
+    ]
    }
   ]
  },
@@ -319,7 +332,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7110,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-08-08",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -517,7 +530,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7769,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-08-08",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -841,7 +854,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 6171,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-08-08",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -985,7 +998,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 3624,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-08-08",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1444,7 +1457,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 13474,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-08-08",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -1687,7 +1700,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 4870,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-08-08",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
@@ -2074,7 +2087,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 15664,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-08-08",
+   "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
   },
   {
