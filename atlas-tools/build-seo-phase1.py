@@ -51,7 +51,8 @@ GR_MODIFIED = "2026-10-22"
 # 17 Oct 2026: two factual corrections (commencement date; An Coimisiun Pleanala).
 # 19 Oct 2026: the safety hold removed the five Premium Log House products from the Maker Explorer
 # 20 Oct 2026: the Outdoor Living correction moved the Maker Explorer counts
-LITG_MODIFIED = "2026-10-20"
+# 26 Oct 2026: buying guidance and contextual links, with research figures unchanged.
+LITG_MODIFIED = "2026-10-26"
 
 
 def die(msg):

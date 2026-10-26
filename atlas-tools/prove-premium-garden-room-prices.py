@@ -46,8 +46,11 @@ SNAP = TOOLS / "premium-discovery" / "garden-room-prices-ireland-base.json"
 BASE_SNAPSHOT_SHA256 = "31d2e27e6ddf2a551230b2c01ec1a2fb4dc4f1292910e7c6202b164d5cf75607"
 REGIONS = ["JSONLD", "ASOF", "UPDATED", "LEAD", "SPECIALISED", "TABLE", "HELD", "NOAVG", "COMPARE", "FAQ", "METHOD"]
 
-# Declared additions (presentation only). Founder-reviewable.
+# Declared additions. The 26 Oct SEO draft adds only the two scope sentences;
+# the original presentation baseline and its fingerprint remain unchanged.
 ADDED_TEXT = {
+    "This guide covers detached garden rooms and garden offices.": "26 Oct SEO draft: clarify the guide's existing subject",
+    "It does not price extensions or attached sunrooms.": "26 Oct SEO draft: distinguish the guide from attached-building queries",
     "AI-generated illustration": "the required visible label of the hero illustration (PN-FDR-2026-10-19-01)",
     "Chat on WhatsApp": "the approved WhatsApp control, as a secondary action in the closing panel (founder decision 4, 23 Oct 2026)",
     "Why It Is Hard": "in-page navigation label: the section's own kicker",
@@ -145,6 +148,11 @@ def main():
     if hashlib.sha256(raw).hexdigest() != BASE_SNAPSHOT_SHA256:
         bad("G0 the BASE snapshot no longer matches its pinned fingerprint")
     base = json.loads(raw)
+    # Bounded content revision: only dateModified moves in the frozen head.
+    # A different date or any other structured-data change still fails G1.
+    base["head"]["jsonld"] = [x.replace('"dateModified": "2026-10-20"',
+                                        '"dateModified": "2026-10-26"')
+                                for x in base["head"]["jsonld"]]
     t = (ROOT / PAGE).read_text(encoding="utf-8")
     # G1
     now = head(t)

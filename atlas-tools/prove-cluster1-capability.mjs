@@ -50,8 +50,8 @@ const CASES = [
   ['C-P3', 'P3', ['and we are\n      certainly not going to tell you what a garden home costs: the market has not\n      published enough for anyone to say honestly.', 'The market has not published enough for anyone to say honestly.'], null],
   ['C-P4', 'P4', ['Is VAT included?', 'Is delivery included?'], null],
   ['C-S1', 'S1', ['    {\n      "@type": "BreadcrumbList",', '    { "@type": "FAQPage", "@id": "https://plotnua.ie/x#faq" },\n    {\n      "@type": "BreadcrumbList",'], null],
-  // C-S2 anchor re-dated 2026-10-20: 20 Oct 2026: the Outdoor Living correction moved the Maker Explorer counts (was 2026-10-19).
-  ['C-S2', 'S2', null, ['discovery-living-in-the-garden.html</loc><lastmod>2026-10-20', 'discovery-living-in-the-garden.html</loc><lastmod>2026-09-01']],
+  // C-S2 anchor re-dated for the 26 Oct buying-guidance revision.
+  ['C-S2', 'S2', null, ['discovery-living-in-the-garden.html</loc><lastmod>2026-10-26', 'discovery-living-in-the-garden.html</loc><lastmod>2026-09-01']],
   ['C-J1', 'J1', ["'garden_discovery_assessment_click'", "'garden_assessment_click'"], null],
   ['C-J2', 'J2', ['<p>Exempted development means no planning application. For a garden home, it does\n      not mean nothing to file.</p>',
                   '<p>Exempted development means no planning application. A garden room files nothing. For a garden home, it does\n      not mean nothing to file.</p>'], null],
