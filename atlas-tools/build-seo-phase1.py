@@ -134,6 +134,10 @@ DI_IMG = "assets/img/b5cbac3fff9072d4.jpg"
 HOME_IMG = "assets/img/9785fd991d2488e9.jpg"
 PHASE4_REVEAL_PRELOAD = ('<link rel="preload" as="image" type="image/avif" '
                          'imagesrcset="assets/possibility-reveal/img/house-L1-L2A-1376.avif 1376w, ')
+# H6 (26 Oct 2026) replaces the Possibility Reveal: the homepage LCP is the H6 empty
+# garden, preloaded as AVIF from the component's own encodings (build-h6-homepage.py).
+H6_PRELOAD = ('<link rel="preload" as="image" type="image/avif" '
+              'imagesrcset="assets/h6/img/H6-garden-base-v6-960.avif 960w, ')
 
 # SEO-C1.3 (20 Oct 2026): the description serves the page's commercial role as
 # well as planning (founder-approved wording). LITG_DESC_V1 is the 16 Oct text
@@ -313,7 +317,7 @@ def apply_file(fname, edits):
         # component's own encodings. That later state satisfies this edit on
         # index.html ONLY, and only when exactly one such preload is present.
         if fname == "index.html" and new == old + preload(HOME_IMG) and \
-                out.count(PHASE4_REVEAL_PRELOAD) == 1:
+                (out.count(PHASE4_REVEAL_PRELOAD) == 1 or out.count(H6_PRELOAD) == 1):
             continue
         if new and new in out and (old not in out or old in new):
             # already applied (for insertions old is contained in new)

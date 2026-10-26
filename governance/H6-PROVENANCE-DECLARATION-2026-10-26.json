@@ -1,0 +1,1768 @@
+{
+ "schema": "plotnua.h6-provenance-declaration.v1",
+ "status": "SIGNED by founder decision PN-FDR-2026-10-26-H6-HOME (26 Oct 2026). Applied to image-provenance-records.json by atlas-tools/declare-h6-provenance.py.",
+ "prepared": "2026-10-26",
+ "retire": {
+  "note": "Withdrawn with the old Possibility Reveal component. P9 requires a withdrawn image's record to go with it. The files stay in git history for rollback. The TimberIN licensed composite (garden-L6-retreat) moves to staged_composites, so its licences and containment proofs stay intact and it can be restored.",
+  "records": [
+   "assets/possibility-reveal/img/house-L1-L2A-1376.avif",
+   "assets/possibility-reveal/img/house-L1-L2A-1376.jpg",
+   "assets/possibility-reveal/img/house-L1-L2A-1376.webp",
+   "assets/possibility-reveal/img/house-L1-L2A-2064.avif",
+   "assets/possibility-reveal/img/house-L1-L2A-2064.jpg",
+   "assets/possibility-reveal/img/house-L1-L2A-2064.webp",
+   "assets/possibility-reveal/img/house-L1-L2A-2752.avif",
+   "assets/possibility-reveal/img/house-L1-L2A-2752.jpg",
+   "assets/possibility-reveal/img/house-L1-L2A-2752.webp",
+   "assets/possibility-reveal/layers/garden-L3-pavilion.webp",
+   "assets/possibility-reveal/layers/garden-L4-kitchen-garden.webp",
+   "assets/possibility-reveal/layers/garden-L5-pod.webp",
+   "assets/possibility-reveal/layers/garden-L6-retreat.webp"
+  ]
+ },
+ "lettering": [
+  {
+   "asset": "assets/h6/img/H6-lettering-letters-960.webp",
+   "sha256": "1db25248b3655a4cc1a0415d2634321b863d42a17e76adb9c3e3c003d75dadb6",
+   "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+   "proposed_class": "ILLUSTRATION_VERIFIED_NOT_AI (pending C3)"
+  },
+  {
+   "asset": "assets/h6/img/H6-lettering-letters-1677.webp",
+   "sha256": "ca7efcd670c86afab14694fa2680b13eb5dcc9984755b20a32e71eacb09b287c",
+   "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+   "proposed_class": "ILLUSTRATION_VERIFIED_NOT_AI (pending C3)"
+  },
+  {
+   "asset": "assets/h6/img/H6-lettering-shadows-960.webp",
+   "sha256": "3bf6c48bc80dd60c4101a7cc95ec8dc28386436cf039cc11261f7c3bea37cf0d",
+   "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+   "proposed_class": "ILLUSTRATION_VERIFIED_NOT_AI (pending C3)"
+  },
+  {
+   "asset": "assets/h6/img/H6-lettering-shadows-1677.webp",
+   "sha256": "c188b69dcecbd5b412f98da059b753f213009c04804afceba57cf9f83bc16e4c",
+   "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+   "proposed_class": "ILLUSTRATION_VERIFIED_NOT_AI (pending C3)"
+  }
+ ],
+ "records": [
+  {
+   "asset": "assets/h6/img/H6-garden-base-v6-960.avif",
+   "sha256": "5ddc50bcddafb2c4d6600a19f00ad47249017f10e625d781529b3638e39dd5f0",
+   "bytes": 183220,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "The empty garden (the homepage photograph-like illustration, all states)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-garden-base-v6-960.webp",
+   "sha256": "731420977c1cf58cd67d3de66d6eb923d7e865d93246f4d869c58f3e7ab63317",
+   "bytes": 221042,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "The empty garden (the homepage photograph-like illustration, all states)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-garden-base-v6-1677.avif",
+   "sha256": "fa3eb93ad06f6f4e4fd348e986ee9c9d9615c4c49a9dcc99da1b441ed88c84e9",
+   "bytes": 469242,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "The empty garden (the homepage photograph-like illustration, all states)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-garden-base-v6-1677.webp",
+   "sha256": "dbda9eb6e02e06ff55ba4e5b244002891694d0ab3a4edb336318b35be78e230e",
+   "bytes": 572298,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "The empty garden (the homepage photograph-like illustration, all states)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-garden-room-960.webp",
+   "sha256": "9e4d8ac4abbab1a505e9965aacda10930e9a4af7a718a50d1282dd2067785463",
+   "bytes": 15228,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Garden Room discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-garden-room-1677.webp",
+   "sha256": "5157222f9debe404a47eb4caddefa8748222bd053d2acc3b189a5056ca3783c5",
+   "bytes": 25924,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Garden Room discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-garden-retreat-960.webp",
+   "sha256": "ed6018b5810f2acf685f31ee484fb86d1d57986446c5c3a85d6cacfbaf678789",
+   "bytes": 11862,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Garden Retreat discovery layer (generic sauna and hot tub)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-garden-retreat-1677.webp",
+   "sha256": "80c09c8b62d1fc1fde341076bdbb0e444fbb00b42aec956c14b325693cd8f1fa",
+   "bytes": 21280,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Garden Retreat discovery layer (generic sauna and hot tub)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-garden-retreat-lawn-patch-960.webp",
+   "sha256": "dce97ce3c290507b1f67511b4aec7c84a6bbd3973ef616b34984e446b39dd0c1",
+   "bytes": 3520,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Garden Retreat discovery layer (generic sauna and hot tub)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-garden-retreat-lawn-patch-1677.webp",
+   "sha256": "f8f38fcfe84eac6c132b137236fcf7ca8ba52cbae8931260011f03f003ca4e4b",
+   "bytes": 4740,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Garden Retreat discovery layer (generic sauna and hot tub)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-borrowed-garden-960.webp",
+   "sha256": "ba69c8276bf45f0203463d8e2a2647d1fbeb7ab58365789ace3aa41008120f47",
+   "bytes": 20632,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Borrowed Garden discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-borrowed-garden-1677.webp",
+   "sha256": "c779c33d5c7b29ebebf6bda8c94b974dff6d2675d80595814ec433158def4ab7",
+   "bytes": 43080,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Borrowed Garden discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-treehouse-960.webp",
+   "sha256": "d69a16405a572c7de4a569412a2da006191f8c220f54f2a4fee23a0d2ca3f4fa",
+   "bytes": 10608,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Treehouse discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-treehouse-1677.webp",
+   "sha256": "325c8358507a412108563c7a0b7eba51bd0d2b75e12f0f044dab4e523d4b6eb0",
+   "bytes": 19224,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Treehouse discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-wildlife-pond-960.webp",
+   "sha256": "b95f0f7c7d97acecdb79aa7fec2b1b7aac1c702d06e4e5d56978443f943b1818",
+   "bytes": 74278,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Wildlife Pond discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-wildlife-pond-1677.webp",
+   "sha256": "e1ba51f825285d4615266dd6965078512e6991a1ca9d1db8dfac66d2cf82fb68",
+   "bytes": 164608,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "Wildlife Pond discovery layer",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-power-station-960.webp",
+   "sha256": "4b5662dabf1b39d70f61fcdffbfdb9ce9448fd1a6a172b473bc7cad6019110ab",
+   "bytes": 4634,
+   "pixels": [
+    960,
+    537
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "House as a Power Station layer (solar panels, battery, EV charger)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Power Station layer: solar Option D (one row of six portrait panels) reconstructed on the measured roof plane; battery and charger",
+      "tool": "deterministic 3D/perspective build (no AI) for the panels; battery and charger per the Power Station records",
+      "record": "claude/h6-solar-v3-reference-led-2026-10-25.md; claude/h6-power-station-proposal-2026-10-25.md"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  },
+  {
+   "asset": "assets/h6/img/H6-layer-power-station-1677.webp",
+   "sha256": "125dfb49ed899409a60154700e227ab9d07b96bc9b62be74ba4263b5428318fa",
+   "bytes": 7228,
+   "pixels": [
+    1677,
+    938
+   ],
+   "class": "AI_ILLUSTRATION",
+   "what": "House as a Power Station layer (solar panels, battery, EV charger)",
+   "generated": {
+    "tool": "OpenAI ChatGPT image generation, then FLUX Fill Pro (mask-only corrections), locally run open-source inpainting and restoration tools, and PlotNua deterministic build tools",
+    "date": "2026-10-25",
+    "source_master": {
+     "file": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png (founder's Mac)",
+     "sha256": "d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47",
+     "bytes": 3287068
+    },
+    "processing_chain": [
+     {
+      "step": "H6 master: the founder's ChatGPT image generation (24 Oct 2026)",
+      "source": "PlotNua-H6-FINAL-APPROVED-2026-10-24.png, sha256 d6fe3a9aba8a11b4c084a64f1689067b7c53408e9983fd7104320412c20aed47, 3,287,068 bytes (verified on the founder's Mac, 25 Oct 2026)",
+      "prompt": "UNAVAILABLE (see prompt_status)"
+     },
+     {
+      "step": "Master v2 corrections (25 Oct 2026): two neighbouring roofs, people removed from the patio, side access B2",
+      "tool": "black-forest-labs/flux-fill-pro on Replicate, mask-only paste-back (every pixel outside each correction mask proven unchanged)",
+      "record": "claude/h6-correction-candidates-2026-10-25.md; run/candidates/predictions.json (prediction IDs, seeds, model version)"
+     },
+     {
+      "step": "Right-hand fence correction",
+      "tool": "deterministic perspective rebuild from the fence's own pixels (no AI)"
+     },
+     {
+      "step": "Empty garden (discovery areas removed)",
+      "tool": "Segment Anything (SAM, Apache-2.0), LaMa (Apache-2.0) and Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M), all run locally; tree A in the Garden Room area by FLUX Fill Pro",
+      "record": "H6-provenance.json (v3 FINAL-APPROVED package: every prompt, seed, mask and output hash)"
+     },
+     {
+      "step": "Empty-garden lawn (v4, approved 25 Oct 2026)",
+      "source": "lawn pixels transferred from the founder's ChatGPT image H6-new-lawn-NO-TEXT.png, aligned to the master (about 0.6 px); the transfer itself used no AI. That image's generation prompt is not recorded either.",
+      "record": "claude/h6-v4-lawn-prototype-2026-10-25.md"
+     },
+     {
+      "step": "Patio correction to six chairs (image set v6, 25 Oct 2026): 2,469 px inside the dining area",
+      "tool": "Real-ESRGAN x4 (BSD-3-Clause) for working resolution, MobileSAM (Apache-2.0) masks, LaMa (Apache-2.0) removal; all local, no paid generation, no generation of new furniture",
+      "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
+     },
+     {
+      "step": "Power Station layer: solar Option D (one row of six portrait panels) reconstructed on the measured roof plane; battery and charger",
+      "tool": "deterministic 3D/perspective build (no AI) for the panels; battery and charger per the Power Station records",
+      "record": "claude/h6-solar-v3-reference-led-2026-10-25.md; claude/h6-power-station-proposal-2026-10-25.md"
+     },
+     {
+      "step": "Web encodings",
+      "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
+     }
+    ]
+   },
+   "depicts_named_product": false,
+   "depicts_named_organisation": false,
+   "human_review": {
+    "reviewer": "Colin MacAulay (founder)",
+    "date": "2026-10-26",
+    "attests": "Founder approved the H6 design for production on 26 Oct 2026 and is satisfied with the Garden Retreat, including the sauna and hot tub. This is an AI-generated illustration, labelled as such, derived from his ChatGPT image and the corrections recorded here; it is not presented as a photograph of a real property or as any supplier's product. The original ChatGPT prompt is unavailable and is recorded under the founder-attested historical exception PN-FDR-2026-10-26-H6-HOME, without inventing facts about the original reference images. Accepted the documented resemblance review as a review, not as a claim that a conventional hot tub design is proprietary."
+   },
+   "permitted_surfaces": [
+    "homepage"
+   ],
+   "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
+   },
+   "service_terms": {
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide.",
+    "replicate_flux_fill_pro": "Run on Replicate (founder's account). BFL's API service terms (https://bfl.ai/legal/flux-api-service-terms) are reported to include commercial use of API outputs; this was checked at a secondary source only and Replicate's own model terms were not read in this release. Follow-up: keep a copy of both with the account records.",
+    "local_open_source": "SAM, MobileSAM, LaMa (Apache-2.0); Real-ESRGAN (BSD-3-Clause); Stable Diffusion 1.5 inpainting (CreativeML OpenRAIL-M)"
+   },
+   "prompt_status": "UNAVAILABLE",
+   "reference_disclosure": {
+    "status": "UNCERTAIN",
+    "statement": "The master is the founder's ChatGPT image PlotNua-H6-FINAL-APPROVED-2026-10-24.png. Its generation prompt is unavailable, and which images were present in that ChatGPT conversation is not recorded. A working brief of 24 Oct 2026 proposed uploading an earlier approved ChatGPT visual (PlotNua_H6_Retreat_Visual_Reference.jpg) as the base; whether that or any other image was used is not established. The same applies to the ChatGPT lawn image used for the empty garden. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
+    "evidence": "PlotNua project documents claude/h6-image-state-proposal-2026-10-24.md, claude/h6-assets-final-approved-2026-10-25.md, claude/h6-v4-lawn-prototype-2026-10-25.md; founder decision PN-FDR-2026-10-26-H6-HOME"
+   },
+   "resemblance_review": {
+    "date": "2026-10-26",
+    "reviewed_by": "PlotNua build session (side-by-side comparison, board h6-retreat-resemblance-board-2026-10-26.png, kept with the founder release folder PlotNua-H6-Release-2026-10-26, not in this repository); accepted by Colin MacAulay (founder) on 26 Oct 2026 as a review, not as a claim that a conventional hot tub design is proprietary",
+    "compared_against": "The licensed supplier photographs carried in the live Garden Retreat composite (possibility-reveal-L6: the supplier's cube sauna with a lit full-height glass front, and its wood-fired hot tub with an internal snorkel stove); board: retreat-resemblance-board.png",
+    "findings": [
+     "Shares only generic features of the category: a timber sauna cabin, a round timber hot tub, a stove chimney with steam",
+     "Sauna form differs: a tall, narrow, light vertical-board cabin with one narrow upright window, not a wide dark-clad cube with a full-height glass front",
+     "Hot tub differs: an external free-standing black stove beside the tub, not the supplier's internal snorkel stove in the water; plain vertical staves with no visible bands",
+     "Setting and composition differ: evening planting bed and fence corner at the far right of a lawn, not a paved terrace with stepping stones and a red maple"
+    ],
+    "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
+   },
+   "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026"
+  }
+ ],
+ "decision": {
+  "id": "PN-FDR-2026-10-26-H6-HOME",
+  "date": "2026-10-26",
+  "by": "Colin MacAulay (founder)",
+  "founder_instruction": "Approve the current H6 design for production; satisfied with the Garden Retreat, including the sauna and hot tub. The original ChatGPT prompt is unavailable: record this using the founder-attested historical exception. Accept the completed Garden Retreat resemblance review as a review, not as a claim that a conventional hot tub design is proprietary. Do not invent facts about original reference images. Register the Blender lettering correctly.",
+  "scope": "The 18 H6 image files listed in records, on the homepage only. Not a way to declare future images: every new AI illustration records its prompt verbatim at creation.",
+  "lettering": "Registered as ILLUSTRATION_VERIFIED_NOT_AI, a class added to the provenance guard for images made without any generative model (its label, 'Illustration', has been reserved in the register since 11 Oct 2026)."
+ },
+ "answers": {
+  "C1": "not-recorded",
+  "C2": "accept",
+  "C3": "ILLUSTRATION_VERIFIED_NOT_AI",
+  "signed_by": "Colin MacAulay (founder)",
+  "date": "2026-10-26"
+ }
+}

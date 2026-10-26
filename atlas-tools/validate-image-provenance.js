@@ -73,12 +73,16 @@ if (!records || !legacy) {
   refuse('the register has no records array and/or no legacy_undeclared array');
 }
 
-const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION'];
+/* ILLUSTRATION_VERIFIED_NOT_AI (founder decision PN-FDR-2026-10-26-H6-HOME, 26 Oct 2026): an image
+   made without any generative model (e.g. a 3D render of typeset lettering).
+   The register has reserved its label, 'Illustration', since 11 Oct 2026.
+   Checked by P5b: tool, date, method and a named human review. */
+const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI'];
 /* product-card is DELIBERATELY ABSENT. The founder's rule becomes a
    vocabulary restriction rather than a convention somebody has to remember:
    enabling it is a schema change with its own approval, not an oversight
    away. */
-/* FOUNDER-ATTESTED CONTEXT · ONE IMAGE ONLY (PN-FDR-2026-10-23-GRP-HERO).
+/* FOUNDER-ATTESTED CONTEXT · THE GARDEN ROOM PRICES HERO (PN-FDR-2026-10-23-GRP-HERO).
    The Garden Room Prices hero: an original AI illustration whose exact
    prompt is unavailable and whose reference history is uncertain (supplier
    photographs were in the generation conversation). Instead of a prompt and
@@ -87,7 +91,7 @@ const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION'];
    a resemblance_review. ONLY these six files may use that form, and these six
    may use no other. This is not a way to declare images: every new AI
    illustration records its prompt verbatim at creation. */
-const FOUNDER_ATTESTED = {
+const FOUNDER_ATTESTED_GRP = {
   decision: 'PN-FDR-2026-10-23-GRP-HERO',
   sha256: new Set([
     'f5ca159b61a95bb129291a693dd1aab37328eadfa076a2b777bb683f5631be7d',
@@ -97,7 +101,39 @@ const FOUNDER_ATTESTED = {
     'feca00626ff061699a55dd8d1882d74efa0eda57097790f0ce059f4be62ac5b5',
     'e0ca487506f2db412ad00daaa6a60cfec3b01ec4d48e1a2308c30e548c56a531',
   ]),
+  surfaces: ['discovery'],
 };
+/* FOUNDER-ATTESTED CONTEXT · THE H6 HOMEPAGE GARDEN (PN-FDR-2026-10-26-H6-HOME,
+   founder approval 26 Oct 2026). Its master is the founder's ChatGPT image, whose
+   prompt is unavailable and whose reference inputs are not recorded, so the same
+   founder-attested form is the only truthful record. ONLY these eighteen files,
+   and ONLY on the homepage. Not a way to declare future images. */
+const FOUNDER_ATTESTED_H6 = {
+  decision: 'PN-FDR-2026-10-26-H6-HOME',
+  sha256: new Set([
+    '5ddc50bcddafb2c4d6600a19f00ad47249017f10e625d781529b3638e39dd5f0',
+    '731420977c1cf58cd67d3de66d6eb923d7e865d93246f4d869c58f3e7ab63317',
+    'fa3eb93ad06f6f4e4fd348e986ee9c9d9615c4c49a9dcc99da1b441ed88c84e9',
+    'dbda9eb6e02e06ff55ba4e5b244002891694d0ab3a4edb336318b35be78e230e',
+    '9e4d8ac4abbab1a505e9965aacda10930e9a4af7a718a50d1282dd2067785463',
+    '5157222f9debe404a47eb4caddefa8748222bd053d2acc3b189a5056ca3783c5',
+    'ed6018b5810f2acf685f31ee484fb86d1d57986446c5c3a85d6cacfbaf678789',
+    '80c09c8b62d1fc1fde341076bdbb0e444fbb00b42aec956c14b325693cd8f1fa',
+    'dce97ce3c290507b1f67511b4aec7c84a6bbd3973ef616b34984e446b39dd0c1',
+    'f8f38fcfe84eac6c132b137236fcf7ca8ba52cbae8931260011f03f003ca4e4b',
+    'ba69c8276bf45f0203463d8e2a2647d1fbeb7ab58365789ace3aa41008120f47',
+    'c779c33d5c7b29ebebf6bda8c94b974dff6d2675d80595814ec433158def4ab7',
+    'd69a16405a572c7de4a569412a2da006191f8c220f54f2a4fee23a0d2ca3f4fa',
+    '325c8358507a412108563c7a0b7eba51bd0d2b75e12f0f044dab4e523d4b6eb0',
+    'b95f0f7c7d97acecdb79aa7fec2b1b7aac1c702d06e4e5d56978443f943b1818',
+    'e1ba51f825285d4615266dd6965078512e6991a1ca9d1db8dfac66d2cf82fb68',
+    '4b5662dabf1b39d70f61fcdffbfdb9ce9448fd1a6a172b473bc7cad6019110ab',
+    '125dfb49ed899409a60154700e227ab9d07b96bc9b62be74ba4263b5428318fa',
+  ]),
+  surfaces: ['homepage'],
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6];
+const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
                             'about', 'journey', 'preview'];
 const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg|ico)$/i;
@@ -441,18 +477,19 @@ console.log('-'.repeat(74));
     const g = r.generated || {};
     if (!g.tool) problems.push(`${r.asset}: no tool`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(String(g.date || ''))) problems.push(`${r.asset}: no date`);
-    const pinned = FOUNDER_ATTESTED.sha256.has(String(r.sha256));
+    const FA = attestedFor(r.sha256);
+    const pinned = !!FA;
     const attestedForm = 'prompt_status' in r || 'reference_disclosure' in r || 'resemblance_review' in r;
     if (pinned || attestedForm) {
       /* The one-image exception: all of it, or none of it. */
       const rd = r.reference_disclosure || {}, rv = r.resemblance_review || {};
-      if (!pinned) problems.push(`${r.asset}: founder-attested form on an image outside ${FOUNDER_ATTESTED.decision}`);
-      if (!String(r.decision_ref || '').includes(FOUNDER_ATTESTED.decision)) problems.push(`${r.asset}: no ${FOUNDER_ATTESTED.decision}`);
+      if (!pinned) problems.push(`${r.asset}: founder-attested form on an image outside ${FOUNDER_ATTESTED_ALL.map(x => x.decision).join(' / ')}`);
+      if (pinned && !String(r.decision_ref || '').includes(FA.decision)) problems.push(`${r.asset}: no ${FA.decision}`);
       if ('prompt' in r || 'reference_inputs' in r) problems.push(`${r.asset}: attested record also claims a prompt or reference_inputs`);
       if (r.prompt_status !== 'UNAVAILABLE') problems.push(`${r.asset}: prompt_status is not UNAVAILABLE`);
       if (rd.status !== 'UNCERTAIN' || !rd.statement || !rd.evidence) problems.push(`${r.asset}: reference uncertainty not disclosed`);
       if (!rv.date || !rv.compared_against || !rv.verdict || !(rv.findings || []).length) problems.push(`${r.asset}: no resemblance review`);
-      if (JSON.stringify(r.permitted_surfaces) !== '["discovery"]') problems.push(`${r.asset}: attested image outside the discovery surface`);
+      if (pinned && JSON.stringify(r.permitted_surfaces) !== JSON.stringify(FA.surfaces)) problems.push(`${r.asset}: attested image outside its decision's surface (${FA.surfaces.join(', ')})`);
     } else {
       if (!r.prompt || !String(r.prompt).trim()) problems.push(`${r.asset}: no prompt`);
       /* An ABSENT reference_inputs is indistinguishable from an unanswered
@@ -467,6 +504,23 @@ console.log('-'.repeat(74));
                             `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
     : ok('P5 every AI_ILLUSTRATION is fully declared',
          'no AI_ILLUSTRATION rows yet; the check is live and has nothing to test');
+}
+
+/* ── P5b · an ILLUSTRATION_VERIFIED_NOT_AI is fully declared (26 Oct 2026) ── */
+{
+  const na = records.filter(r => r.class === 'ILLUSTRATION_VERIFIED_NOT_AI');
+  const problems = [];
+  for (const r of na) {
+    const g = r.generated || {};
+    if (!g.tool || /chatgpt|dall|midjourney|gemini|imagen|flux|stable diffusion|firefly|sora/i.test(g.tool)) problems.push(`${r.asset}: no tool, or a generative tool`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(g.date || ''))) problems.push(`${r.asset}: no date`);
+    if (!g.method) problems.push(`${r.asset}: no method record`);
+    if ('prompt' in r || 'reference_inputs' in r) problems.push(`${r.asset}: a non-AI record claims a prompt`);
+    const hr = r.human_review || {};
+    if (!hr.reviewer || !hr.date || !hr.attests) problems.push(`${r.asset}: no named human review`);
+  }
+  problems.length ? bad('P5b every ILLUSTRATION_VERIFIED_NOT_AI is fully declared', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
+    : ok('P5b every ILLUSTRATION_VERIFIED_NOT_AI is fully declared', na.length ? `${na.length} checked` : 'none recorded; the check is live');
 }
 
 /* ── P6 · anti-laundering ─────────────────────────────────────────────── */

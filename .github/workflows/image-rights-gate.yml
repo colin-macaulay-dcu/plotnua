@@ -328,14 +328,15 @@ jobs:
       # the locked L1+L2A master. These refuse a hand-edited or unscoped
       # component, a second H1, enabled commerce, or an image that differs from
       # its recorded encoding. Provenance itself stays with the guard above.
-      - name: The Possibility Reveal component and its images match their records
+      - name: The H6 garden component and its images match their records
         run: |
           set -euo pipefail
-          python3 atlas-tools/build-possibility-reveal-component.py --check
-          python3 atlas-tools/build-possibility-reveal-images.py --check
-          # H3: the lazily loaded garden-layer tiles (L3 v2.1c, L4, L5, L6) match
-          # their record and were built from the authoritative lock chain.
-          python3 atlas-tools/build-possibility-reveal-layers.py --check
+          # H6 (26 Oct 2026) replaces the Possibility Reveal component on the homepage.
+          # The guard checks: the generated snippet is mounted verbatim in the hero slot,
+          # every file and image matches h6-record.json, one H1, scoped ids and CSS, lazy
+          # layers, the AI label, no supplier name, and the Atlas figures, analytics and
+          # consent blocks unchanged from the recorded homepage baseline.
+          python3 atlas-tools/build-h6-homepage.py --check
 
       - name: The shared identity layer stays reversible, scoped and equal to the homepage
         run: |

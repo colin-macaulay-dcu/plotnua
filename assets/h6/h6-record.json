@@ -1,0 +1,39 @@
+{
+ "schema": "plotnua.h6-component.v1",
+ "what_this_is": "H6 \u00b7 HOMEPAGE GARDEN COMPONENT (\"Discover What's Possible\"), staging candidate, 25 Oct 2026.",
+ "files": {
+  "assets/h6/h6.css": "e104c06ce4e082365c41b1406b223872251bf5d8e22f404920bba156e8806577",
+  "assets/h6/h6.js": "c32e52ea0be2a0044a60c23437f4f09634b6b21d02a14ecb3a45faffb465aa41",
+  "assets/h6/stage-snippet.part": "3e5be3bc334e09ad85daa8f447370ab10a896f7e6c4caa3759b0744b162da42d"
+ },
+ "images": {
+  "assets/h6/img/H6-garden-base-v6-1677.avif": "fa3eb93ad06f6f4e4fd348e986ee9c9d9615c4c49a9dcc99da1b441ed88c84e9",
+  "assets/h6/img/H6-garden-base-v6-1677.webp": "dbda9eb6e02e06ff55ba4e5b244002891694d0ab3a4edb336318b35be78e230e",
+  "assets/h6/img/H6-garden-base-v6-960.avif": "5ddc50bcddafb2c4d6600a19f00ad47249017f10e625d781529b3638e39dd5f0",
+  "assets/h6/img/H6-garden-base-v6-960.webp": "731420977c1cf58cd67d3de66d6eb923d7e865d93246f4d869c58f3e7ab63317",
+  "assets/h6/img/H6-layer-borrowed-garden-1677.webp": "c779c33d5c7b29ebebf6bda8c94b974dff6d2675d80595814ec433158def4ab7",
+  "assets/h6/img/H6-layer-borrowed-garden-960.webp": "ba69c8276bf45f0203463d8e2a2647d1fbeb7ab58365789ace3aa41008120f47",
+  "assets/h6/img/H6-layer-garden-retreat-1677.webp": "80c09c8b62d1fc1fde341076bdbb0e444fbb00b42aec956c14b325693cd8f1fa",
+  "assets/h6/img/H6-layer-garden-retreat-960.webp": "ed6018b5810f2acf685f31ee484fb86d1d57986446c5c3a85d6cacfbaf678789",
+  "assets/h6/img/H6-layer-garden-retreat-lawn-patch-1677.webp": "f8f38fcfe84eac6c132b137236fcf7ca8ba52cbae8931260011f03f003ca4e4b",
+  "assets/h6/img/H6-layer-garden-retreat-lawn-patch-960.webp": "dce97ce3c290507b1f67511b4aec7c84a6bbd3973ef616b34984e446b39dd0c1",
+  "assets/h6/img/H6-layer-garden-room-1677.webp": "5157222f9debe404a47eb4caddefa8748222bd053d2acc3b189a5056ca3783c5",
+  "assets/h6/img/H6-layer-garden-room-960.webp": "9e4d8ac4abbab1a505e9965aacda10930e9a4af7a718a50d1282dd2067785463",
+  "assets/h6/img/H6-layer-power-station-1677.webp": "125dfb49ed899409a60154700e227ab9d07b96bc9b62be74ba4263b5428318fa",
+  "assets/h6/img/H6-layer-power-station-960.webp": "4b5662dabf1b39d70f61fcdffbfdb9ce9448fd1a6a172b473bc7cad6019110ab",
+  "assets/h6/img/H6-layer-treehouse-1677.webp": "325c8358507a412108563c7a0b7eba51bd0d2b75e12f0f044dab4e523d4b6eb0",
+  "assets/h6/img/H6-layer-treehouse-960.webp": "d69a16405a572c7de4a569412a2da006191f8c220f54f2a4fee23a0d2ca3f4fa",
+  "assets/h6/img/H6-layer-wildlife-pond-1677.webp": "e1ba51f825285d4615266dd6965078512e6991a1ca9d1db8dfac66d2cf82fb68",
+  "assets/h6/img/H6-layer-wildlife-pond-960.webp": "b95f0f7c7d97acecdb79aa7fec2b1b7aac1c702d06e4e5d56978443f943b1818",
+  "assets/h6/img/H6-lettering-letters-1677.webp": "ca7efcd670c86afab14694fa2680b13eb5dcc9984755b20a32e71eacb09b287c",
+  "assets/h6/img/H6-lettering-letters-960.webp": "1db25248b3655a4cc1a0415d2634321b863d42a17e76adb9c3e3c003d75dadb6",
+  "assets/h6/img/H6-lettering-shadows-1677.webp": "c188b69dcecbd5b412f98da059b753f213009c04804afceba57cf9f83bc16e4c",
+  "assets/h6/img/H6-lettering-shadows-960.webp": "3bf6c48bc80dd60c4101a7cc95ec8dc28386436cf039cc11261f7c3bea37cf0d"
+ },
+ "homepage_baseline": {
+  "atlas_figures_block": "28a221f418c2265c612275e8b953affbe148d057aa6cad7d537a499d38d0dc20",
+  "analytics_and_consent": "bd78489476b51bfb2c53e9d3cc642890f082deebfc1255a0eb9e289648193f82",
+  "analytics_and_consent_count": 3
+ },
+ "baseline_note": "Atlas figures block and analytics/consent tags as they stood when H6 was mounted. The daily Atlas workflow changes the figures: re-run --mount (which re-records the baseline) only after reviewing that diff."
+}
