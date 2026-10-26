@@ -245,7 +245,10 @@ if (PRICE) {
     // the snapshot date's day and year, traced to the evidence stamp (14 Oct 2026)
     ...EV.source.generated.slice(0, 10).split('-').map(x => String(Number(x))),
     // and each recorded correction's date (SEO-C1, 20 Oct 2026)
-    ...((EV.corrections || []).flatMap(c => c.date.split('-').map(x => String(Number(x)))))]);
+    ...((EV.corrections || []).flatMap(c => c.date.split('-').map(x => String(Number(x))))),
+    // A correction note may name its record count; trace it to the verified
+    // correction's enumerated products rather than allow a hand-entered count.
+    ...((EV.corrections || []).map(c => String(c.products.length)))]);
   const rogue = [...new Set([...v.matchAll(/\b(\d{2,})\b/g)].map(m => m[1]))].filter(n => !allowed.has(n));
   if (missing.length) bad('P2', `artefact figure(s) absent from the page: ${missing.join(', ')}`);
   else if (rogue.length) bad('P2', `untraced figure(s) in the price section: ${rogue.join(', ')}`);

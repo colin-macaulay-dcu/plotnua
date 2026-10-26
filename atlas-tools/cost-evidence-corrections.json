@@ -22,13 +22,339 @@
       "deployedUniverseSha256": "3da2c97699ba18cf38ca6eb1285c8157cd264c19bca6c4db294cd16d6f25ca83",
       "rule": "Each product below takes its record from the universe at deployedCommit; a product that universe does not carry leaves the snapshot.",
       "products": [
-        {"id": "recBVDyal8VGGVEZM", "name": "The Nova 21.5m Pavillion Sun Room", "expect": "replaced"},
-        {"id": "recyMjzPUzBOvXD7Q", "name": "The Nova 17.8m Pavillion Sun Room", "expect": "replaced"},
-        {"id": "recspYM9bd9APNCOO", "name": "ModPod Nova", "expect": "removed"},
-        {"id": "recSYgE1Y3I11JIsr", "name": "ModPod Vaya", "expect": "removed"},
-        {"id": "recOu5xXheu2POoIa", "name": "ModPod Lira", "expect": "removed"}
+        {
+          "id": "recBVDyal8VGGVEZM",
+          "name": "The Nova 21.5m Pavillion Sun Room",
+          "expect": "replaced"
+        },
+        {
+          "id": "recyMjzPUzBOvXD7Q",
+          "name": "The Nova 17.8m Pavillion Sun Room",
+          "expect": "replaced"
+        },
+        {
+          "id": "recspYM9bd9APNCOO",
+          "name": "ModPod Nova",
+          "expect": "removed"
+        },
+        {
+          "id": "recSYgE1Y3I11JIsr",
+          "name": "ModPod Vaya",
+          "expect": "removed"
+        },
+        {
+          "id": "recOu5xXheu2POoIa",
+          "name": "ModPod Lira",
+          "expect": "removed"
+        }
       ],
       "pageNote": "corrected on 20 October 2026 for five supplier records"
+    },
+    {
+      "id": "pineca-prices-2026-10-26",
+      "date": "2026-10-26",
+      "approved": "Founder approved the 59 price/check-date corrections and approved publication of the reviewed catalogue and aggregate correction package on 26 October 2026. Catalogue deployment verified before registering this correction. No VAT, price scope, eligibility or image-rights change authorised by this batch.",
+      "deployedCommit": "310f45366eb7a6635ee0af0ec4b13724f83bf9af",
+      "deployedUniverseSha256": "7f70a52b0650966f929bee3d54f91be6a5f42f2d63bd69b25182024109c8f0ba",
+      "rule": "Each listed product takes its record from the verified deployed universe. Original snapshot identity, other records and existing founder-held groups are preserved.",
+      "products": [
+        {
+          "id": "rec074zfl5rheSI3y",
+          "name": "Granny Annexe PREMIUM 7.5 × 4 m — 30 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec2HcpQC2XLbXB6u",
+          "name": "Garden Office Room TINA Insulated — 12 m² (4 × 4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec3kF9a2ilxfDwdK",
+          "name": "Garden Office Shed POOLHOUSE 34 mm — 4 × 3 m, 12 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec4mZnfwNaZY3Cct",
+          "name": "Garden Room PREMIUM Insulated — 15 m² (5 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec5WMRAy3Vmvvt5i",
+          "name": "Granny Annexe PREMIUM 6 × 5 m — 30 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec5peu653lMb8Mwr",
+          "name": "Garden Room MAJA 44 mm — 30 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec5sm0JPQlW12IhM",
+          "name": "Garden Office Pod EVELIN Insulated — 9 m² (3 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec6xZihu22JTKLHa",
+          "name": "Garden Studio MARINA 44 mm — 48 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec7XxofruouZ8Ky0",
+          "name": "Garden Office Pod PREMIUM Insulated — 6 m² (3 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec7j3UAWh2YlI5yY",
+          "name": "Garden Office Shed CLOCKHOUSE 34 mm — 4 × 3 m, 12 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec7lCEgSoUMphJOK",
+          "name": "Garden Room PREMIUM Insulated — 28 m² (7 × 4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recAKghANvktTh5th",
+          "name": "Garden Office Pod EMMY Insulated — 9 m² (3 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recAw3tJ6Tbv2NApd",
+          "name": "Garden Studio MAJA 66 mm — 30 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recBe8RNLA9PMLnKn",
+          "name": "Office Pod PREMIUM L Insulated — 4 m² (2 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recDhG3uyGgWDOaRc",
+          "name": "Garden Office Pod EVELIN Insulated — 6 m² (3 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recDnzOilx5J3gZkq",
+          "name": "Garden Room PREMIUM Insulated — 18 m² (6 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recEEE6kGA3EH47QV",
+          "name": "Garden Room + Terrace PREMIUM Insulated — 15 m² + 9 m² (5 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recEbONDLwU5yM5VO",
+          "name": "Granny Annexe PREMIUM 6.5 × 4.5 m — 30 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recG8ZURqipnYxkPv",
+          "name": "Garden Room POOLHOUSE 44 mm — 4 × 3 m, 12 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recGfh1sJT5PoGlPy",
+          "name": "Garden Office Pod TONIA Insulated — 9 m² (3 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recHIPdYOuXrB58Ja",
+          "name": "Garden Room CLOCKHOUSE 44 mm — 5.5 × 4 m, 22 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recJ7l2wnNtqA81Di",
+          "name": "Garden Room Studio MARINA Modern 34 mm Insulated — 48 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recKNc0MiKQsCBxPp",
+          "name": "Garden Office Pod PREMIUM Insulated — 9 m² (3 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recKdqQuuzZJq5HsA",
+          "name": "Garden Room PREMIUM Insulated — 10 m² (4.1 × 2.4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recLJUSuiWceOIhB2",
+          "name": "Garden Room PREMIUM Insulated — 24 m² (6 × 4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recLZzmBaX7HTUL64",
+          "name": "Garden Office Pod TONIA Insulated — 6 m² (3 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recM97JxF5ApSVDEN",
+          "name": "Garden Office Shed ESSEX 34 mm — 5 × 4 m, 20 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recMRt5v3NinVqVZA",
+          "name": "Garden Office Pod PIA Insulated — 4 m² (2 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recMa9xyEmfP70YFw",
+          "name": "Garden Room EVELIN PLUS Insulated",
+          "expect": "replaced"
+        },
+        {
+          "id": "recN9D3RTtuasOQZf",
+          "name": "Office Pod PREMIUM L Insulated — 9 m² (3 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recNaU2YoNF4hwr81",
+          "name": "Garden Room DEVON 44 mm — 6 × 4 m, 24 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recP9G0xFJ6R0ic4W",
+          "name": "OAK Garden Office 6 × 3 m — 44 mm",
+          "expect": "replaced"
+        },
+        {
+          "id": "recSWydkgzSMz5B7j",
+          "name": "Garden Office Pod EMMY Insulated — 6 m² (3 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recSZs9cj2ied4PUZ",
+          "name": "Garden Room DEVON 34 mm — 6 × 4 m, 24 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recSmHx380ErbPKqR",
+          "name": "Garden Room PREMIUM Insulated — 20 m² (5 × 4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recY2qfKsFU8AiRF7",
+          "name": "Garden Studio MARTA 66 mm — 5 × 4 m, 20 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recYEbdh609RbWrDm",
+          "name": "Granny Annexe PREMIUM 10.5 × 4.5 m — 47 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recacexFxPvge0zmd",
+          "name": "Garden Room TONIA PLUS Insulated — 15 m² (5 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recc9X2WIaSTIDdpM",
+          "name": "Garden Studio ANNA 34 mm — 20 m² + 16 m² terrace",
+          "expect": "replaced"
+        },
+        {
+          "id": "recdpqAF9uwvrY8SE",
+          "name": "Garden Room EMMY PLUS — 18 m² (6 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recdsv9K7rmPYi8UU",
+          "name": "Garden Room MAJA",
+          "expect": "replaced"
+        },
+        {
+          "id": "recgzLoJn6ZqFrRQa",
+          "name": "Garden Office Room TINA Insulated — 16.5 m² (5.5 × 4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "reci2mq7Tol26wCfU",
+          "name": "Office Pod PREMIUM L Insulated — 6 m² (3 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "reckQ8q0LG5kn3SzA",
+          "name": "Garden Office Pod EVELIN Insulated — 4 m² (2 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "reclhiSZzZ8Z1o8Vr",
+          "name": "Garden Office Pod PIA Insulated — 6 m² (3 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recmBwEjSR1XciA4e",
+          "name": "Garden Studio MARTA 44 mm — 5 × 4 m, 20 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recmLjSRTqGnWo2HH",
+          "name": "Garden Office Pod PREMIUM Insulated — 4 m² (2 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recmVHWJUDvgVkhir",
+          "name": "Garden Office Pod PIA Insulated — 9 m² (3 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recmXWkxGMIFCScnQ",
+          "name": "Garden Studio MARINA 66 mm — 48 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recmfx280vF18ZMio",
+          "name": "Garden Room PIA PLUS Insulated — 15 m² (5 × 3 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recmjltdnxHrLHFGY",
+          "name": "Garden Office Pod TONIA Insulated — 4 m² (2 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recmmfGslZeE7icQG",
+          "name": "Garden Office TINA Insulated — 22 m² (5.5 × 5 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "reconmJKlMWJ5pyMP",
+          "name": "Garden Office Room TINA Insulated — 15 m² (5 × 4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recqDgZWzbf4ZBCjV",
+          "name": "Garden Office Pod EMMY Insulated — 4 m² (2 × 2 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recqztqIHLNw0oxiC",
+          "name": "Garden Room Studio MARINA Modern 44 mm Insulated — 48 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recuZ2uhqaZ7vTHXn",
+          "name": "Garden Room ESSEX 44 mm — 20 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recvzbW2TrkQJ2Jri",
+          "name": "Garden Studio ANNA 44 mm — 20 m² + 16 m² terrace",
+          "expect": "replaced"
+        },
+        {
+          "id": "recyhf1UYBH0UyQCZ",
+          "name": "Garden Office Room TINA Insulated — 20 m² (7 × 4 m)",
+          "expect": "replaced"
+        },
+        {
+          "id": "reczxS9ObYqm25Ylb",
+          "name": "Garden Room OAK",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "corrected on 26 October 2026 for 59 supplier records"
     }
   ]
 }
