@@ -2221,6 +2221,1302 @@
       "permitted_surfaces": [
         "homepage"
       ]
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-before-1536.jpg",
+      "sha256": "dadf65fbd5032ab99b8eaaa7958a3dfc70fcf2ad22470e4edac4805b0219dc01",
+      "bytes": 381916,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The garden before: an ordinary Irish back garden with a stone patio, a long open lawn, mature trees and a hedge (Rule 6 plate and the BEFORE side of the comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-BEFORE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "ae2c81e35334648132e304f6ae22aadae9db4cc66e7fcd188ce901595a097468",
+          "bytes": 3272216
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T09:51:55.394193+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-before-1536.webp",
+      "sha256": "bd4c5d5f9cb9793d8fd17e5d6018f07167a2cfee1612bad044cadd1ca46aea03",
+      "bytes": 347052,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The garden before: an ordinary Irish back garden with a stone patio, a long open lawn, mature trees and a hedge (Rule 6 plate and the BEFORE side of the comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-BEFORE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "ae2c81e35334648132e304f6ae22aadae9db4cc66e7fcd188ce901595a097468",
+          "bytes": 3272216
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T09:51:55.394193+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-before-960.webp",
+      "sha256": "9435a1ddcdde1b7b85e9153d1f0cd079959a040a067875c994a46b5c030cee50",
+      "bytes": 152962,
+      "pixels": [
+        960,
+        640
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The garden before: an ordinary Irish back garden with a stone patio, a long open lawn, mature trees and a hedge (Rule 6 plate and the BEFORE side of the comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-BEFORE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "ae2c81e35334648132e304f6ae22aadae9db4cc66e7fcd188ce901595a097468",
+          "bytes": 3272216
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 960 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T09:51:55.394193+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-experience-1536.jpg",
+      "sha256": "529cc02add7b357e909ca8159165d962996e72fa1855cba8e5850929ff809311",
+      "bytes": 469460,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "6d7f4e120ab1b4e7eac6479316e0c1e0209ececa44cd2b5b0b6571bf84ee054d",
+          "bytes": 3498715
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:16:31.955322+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-experience-1536.webp",
+      "sha256": "6ea8a0cbee36991b4e495ec84cb83af8ef7d4406c6415d9eb837410c8a79a0eb",
+      "bytes": 450278,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "6d7f4e120ab1b4e7eac6479316e0c1e0209ececa44cd2b5b0b6571bf84ee054d",
+          "bytes": 3498715
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:16:31.955322+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-experience-960.jpg",
+      "sha256": "15bb786bc4f073984929f4f6df0dcdf257ae89af7cbff7de5cbb09829d10b182",
+      "bytes": 209835,
+      "pixels": [
+        960,
+        640
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "6d7f4e120ab1b4e7eac6479316e0c1e0209ececa44cd2b5b0b6571bf84ee054d",
+          "bytes": 3498715
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 960 px wide (Lanczos), JPEG; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:16:31.955322+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-experience-960.webp",
+      "sha256": "28f4a0a4a338fe373d7b2baff83f530109c10e46f19e78811d5f4c75fa21ad91",
+      "bytes": 210986,
+      "pixels": [
+        960,
+        640
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "6d7f4e120ab1b4e7eac6479316e0c1e0209ececa44cd2b5b0b6571bf84ee054d",
+          "bytes": 3498715
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 960 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:16:31.955322+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-how-it-works-1536.jpg",
+      "sha256": "4188e1e7120e57041801d010c99308cea318bffcd42ebd3a331728c3200851e3",
+      "bytes": 632630,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Infographic, version 2: how a natural swimming garden works, and three approaches (the earlier version is superseded and not used)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-HOW-IT-WORKS-V2.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "44e9246c5083b1950ecf8739f9bdd26ca94d14f76e89cf34a1841bc85e6230e4",
+          "bytes": 3074585
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:23:12.859799+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded) and flagged by the local validator as missing a required extended key usage"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-og-1200x630.jpg",
+      "sha256": "e7ccd4f36d4d4718f459ede823a65fbff02f77446e350fbee90130674db8b3fa",
+      "bytes": 276073,
+      "pixels": [
+        1200,
+        630
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Social preview: a 1200 x 630 crop of the REVEAL illustration",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "f9be42f736c51ec6073254ef90f1f43f23453565b854c32453811d14eacc7957",
+          "bytes": 3289284
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; crop to 1200 x 630 (scaled to 1200 wide, rows 110-740), JPEG quality 85; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T09:55:52.360168+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-reveal-1536.jpg",
+      "sha256": "89599340a81d344d6cb894df9905ac26d653934bcd565eb99fba7e12e31e851e",
+      "bytes": 406778,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same garden with a natural swimming pond where the lawn was (hero, the POSSIBLE side of the comparison, social preview)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "f9be42f736c51ec6073254ef90f1f43f23453565b854c32453811d14eacc7957",
+          "bytes": 3289284
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T09:55:52.360168+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-reveal-1536.webp",
+      "sha256": "521a6d3d372047b700b88b3fc9956b55da751e14a280bf76005fd8c87f691e6d",
+      "bytes": 366538,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same garden with a natural swimming pond where the lawn was (hero, the POSSIBLE side of the comparison, social preview)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "f9be42f736c51ec6073254ef90f1f43f23453565b854c32453811d14eacc7957",
+          "bytes": 3289284
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T09:55:52.360168+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-reveal-960.webp",
+      "sha256": "85b9df7bf4bfca819a39523b5beb869637c12e94b515f6cf8a52f05062911102",
+      "bytes": 172054,
+      "pixels": [
+        960,
+        640
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same garden with a natural swimming pond where the lawn was (hero, the POSSIBLE side of the comparison, social preview)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "f9be42f736c51ec6073254ef90f1f43f23453565b854c32453811d14eacc7957",
+          "bytes": 3289284
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 960 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T09:55:52.360168+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-how-it-works-top-1536.webp",
+      "sha256": "001dcae58abd79f20c41ba30ebaf3b77d3da71c6507523f87d590885b80023d9",
+      "bytes": 350078,
+      "pixels": [
+        1536,
+        548
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Infographic, version 2, upper panel (how it works): an exact crop of the approved V2 diagram, so its two panels can be shown with a gap between them (founder request, 26 Oct 2026)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-HOW-IT-WORKS-V2.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "44e9246c5083b1950ecf8739f9bdd26ca94d14f76e89cf34a1841bc85e6230e4",
+          "bytes": 3074585
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; exact crop of master rows 0-547 (full 1536 px width; no resampling, no pixel changed), WebP quality 90, method 6"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:23:12.859799+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded) and flagged by the local validator as missing a required extended key usage"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-how-it-works-top-1536.jpg",
+      "sha256": "2efb18a0ab94104ff1908d8e60ffdd58f2c854866908984bb6371c91ff605300",
+      "bytes": 375176,
+      "pixels": [
+        1536,
+        548
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Infographic, version 2, upper panel (how it works): an exact crop of the approved V2 diagram, so its two panels can be shown with a gap between them (founder request, 26 Oct 2026)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-HOW-IT-WORKS-V2.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "44e9246c5083b1950ecf8739f9bdd26ca94d14f76e89cf34a1841bc85e6230e4",
+          "bytes": 3074585
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; exact crop of master rows 0-547 (full 1536 px width; no resampling, no pixel changed), JPEG quality 90, optimised, progressive"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:23:12.859799+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded) and flagged by the local validator as missing a required extended key usage"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-how-it-works-bottom-1536.webp",
+      "sha256": "5daf8859e62ff93b7613b84e940e3b87d66361a88402691cd0183fbbfe2bad6f",
+      "bytes": 217348,
+      "pixels": [
+        1536,
+        476
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Infographic, version 2, lower panel (three approaches): an exact crop of the approved V2 diagram, so its two panels can be shown with a gap between them (founder request, 26 Oct 2026)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-HOW-IT-WORKS-V2.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "44e9246c5083b1950ecf8739f9bdd26ca94d14f76e89cf34a1841bc85e6230e4",
+          "bytes": 3074585
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; exact crop of master rows 548-1023 (full 1536 px width; no resampling, no pixel changed), WebP quality 90, method 6"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:23:12.859799+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded) and flagged by the local validator as missing a required extended key usage"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
+    },
+    {
+      "asset": "assets/disc031/img/DISC-031-how-it-works-bottom-1536.jpg",
+      "sha256": "42d48d0de2446df8b57524d84441196cf56417d66738daa6fbcfbbbd959a2081",
+      "bytes": 257182,
+      "pixels": [
+        1536,
+        476
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Infographic, version 2, lower panel (three approaches): an exact crop of the approved V2 diagram, so its two panels can be shown with a gap between them (founder request, 26 Oct 2026)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-26",
+        "source_master": {
+          "file": "DISC-031-HOW-IT-WORKS-V2.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
+          "sha256": "44e9246c5083b1950ecf8739f9bdd26ca94d14f76e89cf34a1841bc85e6230e4",
+          "bytes": 3074585
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
+            "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; exact crop of master rows 548-1023 (full 1536 px width; no resampling, no pixel changed), JPEG quality 90, optimised, progressive"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-26T10:23:12.859799+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded) and flagged by the local validator as missing a required extended key usage"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-26",
+        "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
+      },
+      "resemblance_review": {
+        "date": "2026-10-26",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
+        "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
+        "findings": [
+          "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
+          "The houses are generic Irish/British detached houses with no address, number or distinctive landmark",
+          "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
+          "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
+        ],
+        "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-26-DISC031 (founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
+      }
     }
   ],
   "legacy_undeclared": [

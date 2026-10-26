@@ -95,3 +95,33 @@ Every image on the page is labelled **"AI-generated illustration"**, which is th
 - no €, £, partner or banned phrases.
 
 **Not linked: DISC-015 Underground Swimming Pool.** It has no published page, so it isn't linked.
+
+## Founder review and signature (26 Oct 2026, late evening)
+
+**Diagram wording**
+- **Caption added** under the diagram: "A simplified illustration: clear water still needs regular water-quality testing, and maintenance varies with the design."
+- **The approved image is unchanged.**
+
+**Diagram spacing**
+- **The V2 diagram is now shown as two exact crops of the master** (rows 0–547 and 548–1023; no pixel changed).
+- **The gap between the panels:** 28 px on phones, 32 px on tablet and desktop.
+- **The full-size view** still shows the whole diagram (JPEG).
+- **The unused full WebP** was removed. **16 encodings.**
+
+**Provenance**
+- **Completed from the OpenAI C2PA content credentials in the four masters:**
+  - ChatGPT, `gpt-image`, *trainedAlgorithmicMedia*;
+  - no ingredients recorded;
+  - content hashes match.
+- **Signed by the founder, Colin MacAulay, on 26 Oct 2026, with his statement:**
+  - no real photographs, supplier images or third-party web images were used;
+  - all four masters were created with ChatGPT image generation;
+  - the Before illustration was the reference for the Reveal.
+- **Reference disclosure stays UNCERTAIN.** The credentials don't record conversation inputs, so the founder's statement can't be independently verified.
+- **Resemblance review:** accepted.
+- **Register:** 16 records applied under `PN-FDR-2026-10-26-DISC031`; provenance guard **15/15**.
+
+**Release checks**
+- The standard list now expects **27 identity pages**.
+- **The historical SEO Phase 1 builder check is retired.** It refuses on production main since `bac3ab8`.
+- **The page is proved by `atlas-tools/prove-disc031-page.py`** (S1–S10).

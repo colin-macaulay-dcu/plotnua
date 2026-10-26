@@ -1,14 +1,15 @@
 {
  "schema": "plotnua.disc031-provenance-declaration.v1",
- "status": "UNSIGNED: completed from the C2PA content credentials on 26 Oct 2026 (late evening). Awaiting the founder's reference-input statement, acceptance of the resemblance review (C2), and signature (answers.signed_by, answers.date, each record's human_review.reviewer and .date). Apply with atlas-tools/declare-disc031-provenance.py once signed.",
- "why_this_form": "Every new AI illustration records its prompt verbatim at creation. The build instruction supplied the four masters but not the tool, the prompts or the reference history, so the only truthful records are either (a) the normal form, if the founder supplies the tool and the prompts, or (b) the founder-attested form below. Nothing here is invented: every FOUNDER TO CONFIRM must be replaced with the founder's own wording.",
+ "status": "SIGNED by the founder, Colin MacAulay, on 26 October 2026 (founder message, 23:42 Irish time). Completed from the C2PA content credentials in the four masters and the founder's own statement. Applied to image-provenance-records.json with atlas-tools/declare-disc031-provenance.py. (The file keeps its original DRAFT name so that existing references stay valid.)",
+ "why_this_form": "Every new AI illustration records its prompt verbatim at creation. The build instruction supplied the four masters but not the tool, the prompts or the reference history, so the only truthful records are either (a) the normal form, if the founder supplies the tool and the prompts, or (b) the founder-attested form below. Nothing here is invented: every founder-confirmed must be replaced with the founder's own wording.",
  "answers": {
   "C1": "not-recorded",
-  "C2": "",
-  "signed_by": "",
-  "date": "",
+  "C2": "accept",
+  "signed_by": "Colin MacAulay",
+  "date": "2026-10-26",
   "tool": "ChatGPT image generation (OpenAI, gpt-image), established from the C2PA content credentials signed by OpenAI OpCo, LLC embedded in each of the four masters",
-  "prompts_available": "no"
+  "prompts_available": "no",
+  "founder_statement": "No real photographs, supplier images or third-party web images were used. All four master illustrations were created using ChatGPT image generation. The Before illustration was used as the reference for developing the Reveal illustration."
  },
  "answers_help": {
   "C1": "'no' (no real photograph or supplier image was supplied to the generator) or 'not-recorded'",
@@ -62,8 +63,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -73,13 +74,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -87,7 +88,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -143,8 +144,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -154,13 +155,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -168,7 +169,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -224,8 +225,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -235,13 +236,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -249,7 +250,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -305,8 +306,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -316,13 +317,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -330,7 +331,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -386,8 +387,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -397,13 +398,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -411,7 +412,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -467,8 +468,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -478,13 +479,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -492,7 +493,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -548,8 +549,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -559,13 +560,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -573,7 +574,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -629,8 +630,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -640,13 +641,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -654,7 +655,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -710,8 +711,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -721,13 +722,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -735,7 +736,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -791,8 +792,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -802,13 +803,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -816,7 +817,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -872,8 +873,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -883,13 +884,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -897,7 +898,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -953,8 +954,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -964,13 +965,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing and confirmed by the founder, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation. The Before illustration (DISC-031-BEFORE.png, itself generated in ChatGPT) was used as the reference for developing this illustration."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -978,7 +979,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -1034,8 +1035,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -1045,13 +1046,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -1059,7 +1060,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -1115,8 +1116,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -1126,13 +1127,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -1140,7 +1141,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -1196,8 +1197,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -1207,13 +1208,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -1221,7 +1222,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
@@ -1277,8 +1278,8 @@
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
-    "reviewer": "",
-    "date": "",
+    "reviewer": "Colin MacAulay",
+    "date": "2026-10-26",
     "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
@@ -1288,13 +1289,13 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. The founder's statement is recorded alongside; it is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
     "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
-    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
+    "founder_statement": "Founder statement (Colin MacAulay, 26 Oct 2026): no real photographs, supplier images or third-party web images were used; all four master illustrations were created using ChatGPT image generation."
    },
    "resemblance_review": {
     "date": "2026-10-26",
-    "reviewed_by": "PlotNua build session; DRAFT until accepted by the founder",
+    "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 26 Oct 2026",
     "compared_against": "The page's own subject matter (the documented Irish projects are described in words only; no photograph of them is used or was available to the build session) and identifiable third-party content in general: supplier products, brand marks, signage, text, recognisable real addresses",
     "findings": [
      "No logo, brand name, signage or legible third-party text appears; the infographic's text is PlotNua explanatory copy",
@@ -1302,7 +1303,7 @@
      "No identifiable supplier product: the jetty, decking, furniture and pool edging are generic",
      "Not presented as, and not used to depict, the Co. Louth, north Cork or Co. Laois projects described on the page"
     ],
-    "verdict": "DRAFT: no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
+    "verdict": "no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any real photograph was used as a reference in generation is not established (see reference_disclosure)."
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
