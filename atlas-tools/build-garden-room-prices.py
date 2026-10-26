@@ -106,7 +106,7 @@ PARENT_HREF = "discovery-living-in-the-garden.html"
 PARENT_TEXT = "Explore Living in the Garden"
 PARENT_NAME = "Living in the Garden"
 PARENT_MAX_WORDS = 40   # visible words allowed before the parent link
-BUILD_DATE = "2026-10-20"   # the page's dateModified; equals its sitemap lastmod
+BUILD_DATE = "2026-10-26"   # the page's dateModified; equals its sitemap lastmod
 # 20 Oct 2026 (SEO-C1 Release 1): the figures were corrected for five Outdoor Living
 # records through atlas-tools/build-cluster1-cost-evidence.py and its register.
 # PRICE BY SIZE: NOT PUBLISHED (founder SEO directive, 19 Oct 2026, "price by
