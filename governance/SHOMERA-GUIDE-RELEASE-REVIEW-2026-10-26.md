@@ -1,12 +1,12 @@
 # Shomera maker guide: release review
 
-Status: draft PR; production publication pending founder approval.
+Status: founder approved publication on 26 October 2026; release checks in progress.
 
 ## Result and purpose
 
 The prepared Shomera editorial draft is integrated with the existing maker-guide renderer. It compares six Classic and Contemporary examples, their advertised starting prices, published dimensions and the scope of building/installation. It links back to Garden Rooms in Ireland and the quotation checklist. The proposed third comparison row is atlas-tools/maker-pages/shomera-parent-entry.html.
 
-The page is noindex/nofollow, carries a visible review label, and is absent from the parent page, sitemap and Search index. Do not merge this draft as a publication release. The proposed row is a source fragment, not an active navigation link. The original two-guide publication approval is preserved exactly; the separate Shomera decision is PENDING with no named approval or decision date.
+The founder approved the exact guide and comparison entry on 26 October 2026. The separate Shomera decision now records that approval. The generated page is index/follow with no draft label, one main-page comparison link, one sitemap URL and one informational Search record. The original two-guide approval remains unchanged. This does not assert supplier image permission.
 
 This work supports the main garden-room comparison. It does not claim an improvement for “garden rooms Ireland” or a supplier endorsement. No supplier imagery is used.
 
@@ -27,8 +27,8 @@ No Airtable, analytics or supplier-contact writes are part of this branch. The s
 - Search index and Search rail checks pass. Public sitemap remains 24 URLs; Search bytes are unchanged.
 - Premium builder locks and Premium pricing preservation pass.
 - Negative checks refuse invented draft approval, VAT relabelling and exposure of the draft through the main page.
-- Browser checks at widths 320, 390 and 1440: one H1, labelled scrollable table, no horizontal document overflow, no duplicate IDs, valid JSON-LD and noindex/nofollow. Source and navigation links have visible text.
-- Main garden-room page, the two published maker pages, sitemap, Search index and recommendation universe are byte-identical to production base 7e37ca697d1d0a3c6a5265482a31f4e8fcbef23d.
+- Browser checks at widths 320, 390 and 1440: one H1, labelled scrollable table, no horizontal document overflow, no duplicate IDs, valid JSON-LD and index/follow after approval (the draft previously passed noindex checks). Source and navigation links have visible text.
+- Both existing maker pages and the recommendation universe remain byte-identical. Every existing Search record remains identical; only poss-shomera-garden-rooms is added. The main-page change is the approved third comparison row and the two/three and either/each wording adjustments. Sitemap and expected public-page count move from 24 to 25.
 
 ## Exact publication steps after approval
 
@@ -43,3 +43,7 @@ No Airtable, analytics or supplier-contact writes are part of this branch. The s
 The founder’s Search Console screenshot on 26 October confirms the main garden-room URL is indexed, crawl/indexing allowed, successful fetch and the inspected URL selected as canonical. The last recorded crawl is 20 October 2026 at 16:56:49, before the 26 October changes. The founder reports requesting indexing for the updated page. A later crawl and processing of the revised content have not yet been confirmed. The live sitemap returns HTTP 200, parses, and lists the main page with lastmod 2026-10-26. The screenshot’s sitemap processing warning is not treated as proof of a malformed live sitemap.
 
 Next research task after the Shomera release: resolve the differing Garden Office Solutions guide and shop prices before using them in another comparison. Outreach candidates remain research only; no messages are authorised or sent.
+
+## Approved release validation
+
+The published-state builder, the unchanged two-guide builder, identity/header, 18 main-page claim guards, Search index, Search rail and Premium pricing preservation all pass locally. The Search index is 179,357 bytes, below the 180 KiB limit. The canonical rights-first publication derivation approves the bounded public-information basis; no rights hold is overridden. Publication and live-byte verification will be recorded on PR #5 after the deployment completes.

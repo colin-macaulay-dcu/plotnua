@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.shomera-editorial-publication.v1",
   "decision": {
-    "state": "PENDING",
-    "authorised_by": null,
-    "decision_date": null,
+    "state": "APPROVED",
+    "authorised_by": "Colin MacAulay",
+    "decision_date": "2026-10-26",
     "scope": "Garden Rooms",
     "pages": [
       "shomera-garden-rooms.html"
     ],
-    "basis": "Draft requested for founder review. Does not extend the two existing approved guides or authorise production publication."
+    "basis": "Founder approved the reviewed Shomera guide and comparison entry for publication on 26 October 2026. This is a factual text-only editorial scope for this exact guide; no supplier permission, imagery or recommendation expansion is asserted."
   },
   "organisations": [
     {

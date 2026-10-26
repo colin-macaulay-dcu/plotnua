@@ -188,7 +188,7 @@ pages = sorted(set(pages + ["index.html"]))
 # Prices in Ireland guide (SEO Phase 2, founder approval to build), entered the
 # sitemap. It carries the standard stub like every other public page.
 # 24 since 26 October 2026: the two founder-approved text-only maker guides.
-EXPECTED_PAGES = 24
+EXPECTED_PAGES = 25
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "
