@@ -8,7 +8,7 @@ Checks the published page and its integration, and the wording limits the founde
   S2  JSON-LD parses; no Product, Offer, price or supplier structured data
   S3  exactly one H1
   S4  every local href/src/srcset on the page resolves to a file
-  S5  the four illustrations (13 encodings) are on disk; HOW-IT-WORKS is V2
+  S5  the four illustrations (16 encodings; the diagram as two exact panel crops) are on disk; HOW-IT-WORKS is V2
   S6  every image placement carries "AI-generated illustration"
   S7  sitemap entry, Discovery Library card, search-index entry
   S8  "wild" appears once in the visible text (the question); no euro or sterling figure;
@@ -68,8 +68,10 @@ for ref in set(re.findall(r'(?:href|src)="([^"#?]+)', s)) | {
 
 # S5
 imgs = sorted(os.listdir(os.path.join(ROOT, "assets/disc031/img")))
-need(len(imgs) == 13, "S5 expected 13 encodings, found %d" % len(imgs))
-need("DISC-031-how-it-works-1536.webp" in imgs, "S5 diagram encoding missing")
+need(len(imgs) == 16, "S5 expected 16 encodings, found %d" % len(imgs))
+need("DISC-031-how-it-works-1536.jpg" in imgs, "S5 full diagram (full-size view) missing")
+for half in ("top", "bottom"):
+    need(("DISC-031-how-it-works-%s-1536.webp" % half) in s, "S5 diagram %s panel not on the page" % half)
 
 # S6
 need(s.count("AI-generated illustration") >= 7, "S6 fewer than 7 illustration labels")

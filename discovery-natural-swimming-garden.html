@@ -330,12 +330,18 @@ body.pn-id.pn-pd .ns-examples .pd-card{ height:100%; }
 body.pn-id.pn-pd .ns-diagram{ margin:0; border-radius:var(--pd-r); overflow:hidden; background:var(--pd-card); box-shadow:var(--pd-shadow-hi); }
 body.pn-id.pn-pd .ns-diagram-scroll{ position:relative; overflow-x:auto; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; line-height:0; }
 body.pn-id.pn-pd .ns-diagram-scroll img{ display:block; width:100%; height:auto; aspect-ratio:1536/1024; }
+/* The diagram's two panels, as exact crops of the one approved image, set apart. */
+body.pn-id.pn-pd .ns-diagram-part{ display:block; }
+body.pn-id.pn-pd .ns-diagram-part + .ns-diagram-part{ margin-top:32px; }
+body.pn-id.pn-pd .ns-diagram-scroll img.ns-diagram-top{ aspect-ratio:1536/548; }
+body.pn-id.pn-pd .ns-diagram-scroll img.ns-diagram-bottom{ aspect-ratio:1536/476; }
 body.pn-id.pn-pd .ns-diagram-bar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; padding:16px 22px 18px; }
 body.pn-id.pn-pd .ns-diagram-bar p{ margin:0; font-size:14.5px !important; color:var(--p4-stone) !important; }
 body.pn-id.pn-pd .ns-diagram-hint{ display:none; }
 @media (max-width:759px){
   body.pn-id.pn-pd .ns-diagram-scroll img{ width:1200px; max-width:none; }
   body.pn-id.pn-pd .ns-diagram-hint{ display:block; }
+  body.pn-id.pn-pd .ns-diagram-part + .ns-diagram-part{ margin-top:28px; }
 }
 body.pn-id.pn-pd dialog.ns-lightbox{ width:100vw; height:100vh; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:rgba(15,14,10,.96); color:var(--p4-ivory); }
 body.pn-id.pn-pd dialog.ns-lightbox::backdrop{ background:rgba(15,14,10,.9); }
@@ -750,9 +756,15 @@ body.pn-id.pn-pd ol.ns-sources a{ word-break:break-word; }
 
     <figure class="ns-diagram reveal" aria-labelledby="nsDiagramCap">
       <div class="ns-diagram-scroll" tabindex="0" role="region" aria-label="Diagram: how a natural swimming garden works (scrolls sideways on small screens)">
-        <picture>
-          <source type="image/webp" srcset="assets/disc031/img/DISC-031-how-it-works-1536.webp 1536w" sizes="(max-width:759px) 1200px, (min-width:1280px) 1200px, 100vw">
-          <img src="assets/disc031/img/DISC-031-how-it-works-1536.jpg" width="1536" height="1024" loading="lazy" decoding="async" alt="Diagram: how a natural swimming garden works. Water moves between a deeper swimming zone and a shallow planted regeneration zone, plants and microorganisms clean it, and below, three approaches: a plant-led natural swimming pond, a hybrid natural swimming pond, and a compact biologically filtered swimming pool. The full text is given below the diagram.">
+        <!-- The approved V2 diagram, shown as two exact crops of the same master (rows 0-547 and 548-1023,
+             no pixel changed) so its two panels can sit apart; "Open full size" still shows it whole. -->
+        <picture class="ns-diagram-part">
+          <source type="image/webp" srcset="assets/disc031/img/DISC-031-how-it-works-top-1536.webp 1536w" sizes="(max-width:759px) 1200px, (min-width:1280px) 1200px, 100vw">
+          <img class="ns-diagram-top" src="assets/disc031/img/DISC-031-how-it-works-top-1536.jpg" width="1536" height="548" loading="lazy" decoding="async" alt="Diagram, part 1: how a natural swimming garden works. Water moves between a deeper swimming zone and a shallow planted regeneration zone, either naturally or with a small pump; plants and microorganisms clean it; the result is clear water in the swimming zone. The full text is given below the diagram.">
+        </picture>
+        <picture class="ns-diagram-part">
+          <source type="image/webp" srcset="assets/disc031/img/DISC-031-how-it-works-bottom-1536.webp 1536w" sizes="(max-width:759px) 1200px, (min-width:1280px) 1200px, 100vw">
+          <img class="ns-diagram-bottom" src="assets/disc031/img/DISC-031-how-it-works-bottom-1536.jpg" width="1536" height="476" loading="lazy" decoding="async" alt="Diagram, part 2: three ways to bring natural swimming into your garden: a plant-led natural swimming pond, a hybrid natural swimming pond, and a compact biologically filtered swimming pool. The three approaches are described in section 04.">
         </picture>
       </div>
       <div class="ns-diagram-bar">
