@@ -9,6 +9,8 @@ on:
       - 'search-index-v1.json'
       - 'discovery-living-in-the-garden.html'
       - 'atlas-tools/build-garden-maker-pages.py'
+      - 'atlas-tools/build-shomera-guide.py'
+      - 'shomera-garden-rooms.html'
       - 'atlas-tools/build-identity-stage1.py'
       - 'atlas-tools/pn_header.py'
       - 'atlas-tools/premium_pages.py'
@@ -26,6 +28,8 @@ on:
       - 'search-index-v1.json'
       - 'discovery-living-in-the-garden.html'
       - 'atlas-tools/build-garden-maker-pages.py'
+      - 'atlas-tools/build-shomera-guide.py'
+      - 'shomera-garden-rooms.html'
       - 'concept-modular-garden-offices.html'
       - 'all-in-one-cabins-garden-rooms.html'
       - '.github/workflows/garden-maker-pages.yml'
@@ -40,5 +44,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 atlas-tools/build-garden-maker-pages.py --check
+      - run: python3 atlas-tools/build-shomera-guide.py --check
       - run: python3 atlas-tools/build-identity-stage1.py --check
       - run: python3 atlas-tools/prove-global-header.py

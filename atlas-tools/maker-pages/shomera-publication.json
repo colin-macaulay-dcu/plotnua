@@ -1,0 +1,22 @@
+{
+  "schema": "plotnua.shomera-editorial-publication.v1",
+  "decision": {
+    "state": "PENDING",
+    "authorised_by": null,
+    "decision_date": null,
+    "scope": "Garden Rooms",
+    "pages": [
+      "shomera-garden-rooms.html"
+    ],
+    "basis": "Draft requested for founder review. Does not extend the two existing approved guides or authorise production publication."
+  },
+  "organisations": [
+    {
+      "name": "Shomera",
+      "basis": "PUBLIC_INFORMATION",
+      "supplier_permission": false,
+      "imagery": "none",
+      "objection": "none recorded"
+    }
+  ]
+}
