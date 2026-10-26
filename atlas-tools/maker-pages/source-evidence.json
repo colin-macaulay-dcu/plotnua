@@ -1,0 +1,57 @@
+{
+  "schema": "plotnua.garden-maker-editorial-pilot.v1",
+  "checked": "2026-10-26",
+  "publication_status": "PUBLISHED",
+  "listing_basis": "PUBLIC_INFORMATION_TEXT_ONLY",
+  "supplier_permission_asserted": false,
+  "imagery": "none",
+  "note": "Two factual text-only editorial guides approved by the founder on 26 October 2026. Existing publication and image-rights gates remain unchanged; approval is not supplier permission.",
+  "sources": {
+    "concept-standard": {
+      "url": "https://www.conceptmodular.ie/showcase/standard-office",
+      "verification": "DIRECT_PRIMARY_HTTP_200",
+      "sha256": "8fd5203cc95507964c94cf007c71b3fdaf9cbdb8ff8f32b6ef7be5302faac0f6"
+    },
+    "concept-signature": {
+      "url": "https://www.conceptmodular.ie/showcase/signature-office",
+      "verification": "DIRECT_PRIMARY_HTTP_200",
+      "sha256": "95c6e46371b03aa37fa9c0fae207784d608467d7810701a0eadcfd744de4195b"
+    },
+    "concept-collection": {
+      "url": "https://www.conceptmodular.ie/solutions",
+      "verification": "DIRECT_PRIMARY_HTTP_200",
+      "sha256": "82213478b91d7ec6eb660474fcc9b86e701abd9eff622357fac281d7ca4447d9"
+    },
+    "all-in-one-single": {
+      "url": "https://allinonecabins.ie/single-room-cabins/",
+      "verification": "DIRECT_PRIMARY_HTTP_200",
+      "sha256": "c57fa08c9770c91829936d8b87b80057f0ecd49a366252a959156ea37222f55f"
+    }
+  },
+  "facts": {
+    "concept-standard": {
+      "price_eur": 17800,
+      "vat": "EXCLUDED",
+      "published_area_m2": 7.5
+    },
+    "concept-signature": {
+      "price_eur": 19900,
+      "vat": "EXCLUDED",
+      "published_area_m2": 7.5
+    },
+    "concept-site-works": {
+      "from_eur": 3000,
+      "to_eur": 4000,
+      "vat": "EXCLUDED",
+      "site_dependent": true
+    },
+    "all-in-one-single": {
+      "price_type": "FROM",
+      "vat": "UNCONFIRMED",
+      "boderg_eur": 10047,
+      "corry_eur": 11205,
+      "kilglass_eur": 12335,
+      "corry_area_conflict_unresolved": true
+    }
+  }
+}

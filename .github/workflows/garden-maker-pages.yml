@@ -1,0 +1,44 @@
+name: Garden maker editorial guides
+on:
+  pull_request:
+    paths:
+      - 'atlas-tools/maker-pages/**'
+      - 'atlas-tools/publication-gate.mjs'
+      - 'image-rights-records.json'
+      - 'sitemap.xml'
+      - 'search-index-v1.json'
+      - 'discovery-living-in-the-garden.html'
+      - 'atlas-tools/build-garden-maker-pages.py'
+      - 'atlas-tools/build-identity-stage1.py'
+      - 'atlas-tools/pn_header.py'
+      - 'atlas-tools/premium_pages.py'
+      - 'assets/identity/pn-maker-guide.css'
+      - 'concept-modular-garden-offices.html'
+      - 'all-in-one-cabins-garden-rooms.html'
+      - '.github/workflows/garden-maker-pages.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'atlas-tools/maker-pages/**'
+      - 'atlas-tools/publication-gate.mjs'
+      - 'image-rights-records.json'
+      - 'sitemap.xml'
+      - 'search-index-v1.json'
+      - 'discovery-living-in-the-garden.html'
+      - 'atlas-tools/build-garden-maker-pages.py'
+      - 'concept-modular-garden-offices.html'
+      - 'all-in-one-cabins-garden-rooms.html'
+      - '.github/workflows/garden-maker-pages.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 atlas-tools/build-garden-maker-pages.py --check
+      - run: python3 atlas-tools/build-identity-stage1.py --check
+      - run: python3 atlas-tools/prove-global-header.py

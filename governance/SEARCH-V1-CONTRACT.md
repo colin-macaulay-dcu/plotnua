@@ -201,7 +201,7 @@ architecture is reconsidered. The corpus is never silently reduced.
 | G11 | No term in URL, history, storage or any network call |
 | G11b | No term reaches `dataLayer`, GTM or any analytics call |
 | G12 | Every route resolves to a file that exists |
-| G16 | Published guide pages (17 Oct 2026, SEO Phase 2): an explicit allowlist (`GUIDE_PAGES`, today only `garden-room-prices-ireland.html`) enters as a **possibility-shape record, no new type**, title and standfirst from the page's own `<title>` and meta description only. Refuses a guide not in `sitemap.xml` or marked noindex. Same precedent as the G15 supplier information pages |
+| G16 | Published guide pages (17 Oct 2026, SEO Phase 2): an explicit allowlist (`GUIDE_PAGES`: market pricing guide plus the two founder-approved text-only maker guides of 26 Oct 2026) enters as a **possibility-shape record, no new type**, title and standfirst from the page's own `<title>` and meta description only. Refuses a guide not in `sitemap.xml` or marked noindex. Same precedent as the G15 supplier information pages |
 | G13 | Catch-all: nothing outside the four declared types and their declared fields. **RUNS LAST**, so every specific guard stays independently fireable |
 
 ### Hostile leak tests — knowing the hidden name must not reveal it
