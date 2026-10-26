@@ -23,7 +23,8 @@ ROOT = HERE.parent.parent
 
 STANDARD = [
     ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 2 pages", "global header builder"),
-    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 23 pages", "identity layer"),
+    # 27 since DISC-031 The Natural Swimming Garden (26 Oct 2026); production had 26 after the maker guides.
+    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 27 pages", "identity layer"),
     ("python3 atlas-tools/prove-global-header.py", "GLOBAL HEADER · OK", "global header guard G1-G9"),
     ("python3 atlas-tools/prove-global-header-capability.py", "CAPABILITY · OK — 25 planted faults, 0 not caught", "global header capability 25/25"),
     ("python3 atlas-tools/prove-identity-stage1.py", "PROOF OK · 27 planted faults, 0 not caught", "identity proof 27/27"),
@@ -44,7 +45,10 @@ STANDARD = [
     ("node atlas-tools/prove-price-presentation-unchanged.mjs", "710 price comparisons", "price presentation 710/710 unchanged"),
     ("node atlas-tools/prove-discovery-library-images.mjs", "GOVERNED", "Discovery Library images"),
     ("python3 atlas-tools/prove-search-page-runtime.py", "16 passed, 0 failed", "search runtime 16/16"),
-    ("python3 atlas-tools/build-seo-phase1.py --check", "CHECK OK", "SEO phase 1"),
+    # SEO phase 1 builder retired as a release check (26 Oct 2026): since the garden-room landing
+    # release (bac3ab8) removed its In Brief block, the historical builder refuses on production main
+    # itself (recorded in governance/GARDEN-ROOMS-IRELAND-SEARCH-FOCUS-2026-10-26.md). Page-level SEO
+    # is proved by each release's own --check (for DISC-031: atlas-tools/prove-disc031-page.py).
     ("python3 .github/scripts/check_atlas_figures.py", "index.html agrees with atlas-stats.json", "Atlas figures"),
     ("node atlas-tools/validate-journey-contract.js", "HELD", "journey contract"),
 ]
