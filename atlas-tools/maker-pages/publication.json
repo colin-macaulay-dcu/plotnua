@@ -1,0 +1,20 @@
+{
+  "schema": "plotnua.garden-maker-editorial-publication.v1",
+  "decision": {
+    "state": "APPROVED",
+    "authorised_by": "Colin MacAulay",
+    "decision_date": "2026-10-26",
+    "scope": "Garden Rooms",
+    "pages": ["all-in-one-cabins-garden-rooms.html", "concept-modular-garden-offices.html"],
+    "basis": "Founder approved both reviewed guides and their factual text-only garden-room editorial publication scope. This approval covers these two pages only; it is not supplier permission or a general catalogue expansion."
+  },
+  "organisations": [
+    {"name": "All In One Cabins", "basis": "PUBLIC_INFORMATION", "supplier_permission": false, "imagery": "none", "objection": "none recorded"},
+    {"name": "Concept Modular", "basis": "PUBLIC_INFORMATION", "supplier_permission": false, "imagery": "none", "objection": "none recorded"}
+  ],
+  "constraints": [
+    "Any applicable supplier objection, decline or review hold takes precedence through the existing rights-first derivation.",
+    "No supplier photographs, permission assertions, endorsements or commercial relationships are authorised by this decision.",
+    "Existing recommendation universes, product eligibility and ranking logic are unchanged."
+  ]
+}

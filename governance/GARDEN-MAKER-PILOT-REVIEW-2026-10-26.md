@@ -1,136 +1,107 @@
-# Garden maker editorial pilot: review
+# Garden maker guides: approved publication
 
-Status: two completed review drafts; publication not yet approved.
-Base: `ce17c813efa2705ee46868e0e2c2a0c14e0ad16a`.
+Colin MacAulay approved both reviewed guides and their factual, text-only
+publication scope on 26 October 2026. Deployment and live-verification evidence
+are recorded in PR #3. This record supersedes the earlier draft review status.
 
-## Pages prepared
+## Released content
 
-| Page | What it helps a homeowner decide |
+| Page | Homeowner purpose |
 | --- | --- |
-| `concept-modular-garden-offices.html` | Whether to furnish an office themselves or choose a fitted interior, and what remains outside the published building price. |
-| `all-in-one-cabins-garden-rooms.html` | What the single-room cabin starting prices cover, what to ask about assembly and VAT, and why the Corry's published size needs clarification. |
+| `all-in-one-cabins-garden-rooms.html` | Compare three starting-price kits, identify what needs a written quotation, and retain the unresolved Corry size discrepancy. |
+| `concept-modular-garden-offices.html` | Compare furnishing choices and distinguish building prices from VAT, site works and electrical connection. |
 
-These are two maker comparisons, rather than five nearly identical product pages.
-Each has original buying guidance, a comparison table, a clear price basis,
-source links, unresolved questions and routes back to the parent Discovery.
-The intended search role is maker/model research and related price/specification
-questions. The existing Discovery remains the broad garden-rooms landing page;
-the market pricing guide retains its separate comparison role. No search volume
-or ranking opportunity is asserted for a maker without query evidence.
+These are two original maker comparisons. Each includes a table, price basis,
+primary-source links, practical questions and routes back to Living in the Garden.
+The broad Discovery remains the garden-room landing page; the market pricing
+comparison retains its separate role. No maker search volume or ranking gain
+has been inferred without query evidence.
 
-## Primary-source verification
+## Narrow editorial approval
 
-Four primary pages were retrieved directly with HTTP 200 on 26 October 2026:
+`atlas-tools/maker-pages/publication.json` records approval for these two exact
+pages only. It is a separate garden-room editorial decision; the existing
+Wellness / Sauna register remains unchanged. No supplier permission, image
+licence, partnership, endorsement or general catalogue expansion is asserted.
+
+The builder imports the existing `derivePublicInformationListing` implementation.
+Any applicable rights record is decided first: an objection, decline or review
+hold cannot be overridden by the editorial register. Current authorised
+organisation and outreach records were checked read-only on 26 October; private
+contents and internal identifiers are not included in public artefacts.
+
+No supplier photographs, product records, eligibility rules, recommendation
+ordering or commercial relationships change. Existing analytics and consent
+configuration are reused without settings changes.
+
+## Discovery and indexing
+
+- Both guides carry `index, follow`, self-canonicals, descriptive titles and
+  descriptions, and WebPage/BreadcrumbList structured data. No Product, Offer,
+  ratings or review claims are introduced.
+- Both are listed once in the sitemap with 26 October modification dates.
+- An early Maker Guides section links to them alphabetically from the Discovery,
+  without altering the Maker Explorer.
+- Two explicit informational Search records are added through `GUIDE_PAGES`.
+  All previous records remain identical. Search runtime and topic expansion are
+  unchanged; the 180 KiB size guard is unchanged.
+- The Search rail scope assertion is deliberately updated from 22 to 24 public
+  pages. Each new page carries the normal, hidden legacy mark anchor required
+  by that builder, alongside the visible shared header.
+
+## Evidence
+
+Four maker-owned pages were retrieved directly with HTTP 200 on 26 October:
 
 - https://www.conceptmodular.ie/showcase/standard-office
 - https://www.conceptmodular.ie/showcase/signature-office
 - https://www.conceptmodular.ie/solutions
 - https://allinonecabins.ie/single-room-cabins/
 
-The source register records their URLs, check date and hashes. Raw source copies
-were retained only for internal QA; supplier HTML and photographs are not copied
-into the release. Prices, material dimensions and fit-out details were compared
-with those copies. Search snippets initially returned older Concept Modular
-figures; the drafts use the directly retrieved pages. No catalogue price
-correction is justified by those stale snippets.
+The source register records URLs, dates and hashes. Material prices, dimensions
+and fit-out details were checked against those retrieved pages. Stale search
+snippets were rejected. Raw supplier HTML and photographs are not included.
+The Corry discrepancy remains unresolved; no internal floor area or planning
+compliance is calculated from marketing dimensions. Published information,
+PlotNua's interpretation and questions for the maker remain distinct.
 
-The Corry area discrepancy remains unresolved and visible. No floor area is
-calculated from dimensions, and no supplier marketing description is promoted
-to a PlotNua finding about planning compliance, thermal performance or suitability
-for sleeping. The two pages distinguish published information from PlotNua's
-interpretation and from questions that still need a site-specific answer.
+This check does not refresh the market pricing guide's older snapshot or extend
+its existing freshness deadline. Its wider evidence refresh remains separate.
 
-The new checks do not refresh the market pricing guide's older research snapshot
-or extend its existing freshness deadline. A market-wide pricing refresh remains
-a separate piece of work.
+## Validation
 
-## Publication basis: decision required
+The builder is reproducible and requires current evidence, the exact founder
+approval, no supplier permission assertion, no imagery, and the canonical
+rights-first gate. In check mode, each published guide must have exactly one
+sitemap entry, parent link and informational Search record.
 
-This pilot proposes **factual, text-only editorial comparisons of public product
-information**. It claims no supplier permission, partnership, endorsement,
-commission, recommendation or photographic rights. No private correspondence,
-contact history or internal record identifier appears in either page or its
-public source register.
+Passed: builder check; shared identity/header; all 12 Search rail guards; Premium
+locks; pricing preservation; all 18 garden-authority checks; Search corpus guards;
+image-rights scan; and whitespace validation. New guide queries return the intended
+records, and every pre-existing Search record remains identical. The generated
+index is 178,995 bytes, below its existing 180 KiB limit.
 
-The existing text-only listing decision is explicitly scoped in
-`atlas-tools/public-information-listings.json`:
+Chromium checks at 320, 390 and 1440 px verify indexable metadata, valid JSON-LD,
+one H1, no duplicate IDs or page overflow, and labelled keyboard-focusable table
+scrolling. Editorial links resolve. Desktop/mobile renders were inspected.
+External requests, including analytics, were blocked during local browser QA.
+These checks are not Core Web Vitals measurements.
 
-> Wellness / Sauna only (DISC-001 Garden Retreat). Garden rooms and garden homes are untouched.
+Known pre-existing test issue: `prove-search-acceptance.mjs` expects a historical
+artist product and crashes when reading the absent first result. It fails in the
+same way with the untouched base index. This test and the underlying catalogue
+are unchanged. Dedicated release checks verify existing record preservation and
+the new maker/model search routes; the baseline failure is not presented as a pass.
 
-That decision is not silently extended here. Nor is the legacy publication
-baseline treated as approval for new pages. Existing supplier permission,
-objection, review and imagery gates remain in force and unchanged.
+## Verification after deployment
 
-The founder's next publication decision should cover the two exact page drafts
-and the proposed text-only garden-room editorial scope. Current authorised
-organisation and outreach records were checked read-only on 26 October 2026;
-their private contents are not reproduced here. Before switching to public/indexable
-status, check for any intervening objection or review hold. Do not add a permission
-record merely because a page has been approved by PlotNua.
+Check both live guides, the parent section, sitemap and Search index against the
+approved repository bytes. Confirm HTTP 200, canonical URLs, index/follow metadata,
+working links and absence of review labels. Retain the deployment result in PR #3.
+Indexability is a technical state; Google indexing and ranking are not established
+by a successful deployment. No Search Console indexing request is claimed here.
 
-The pages currently carry `noindex, nofollow` and a visible review label. Neither
-is included in the sitemap, Search corpus or links on the public Discovery. The
-builder refuses publication states and refuses exposure through those surfaces.
-No production deployment is part of this PR.
-
-## Exact proposed publication changes
-
-Following approval and the current-hold check:
-
-1. Record the narrow editorial publication decision separately from supplier
-   permissions. Preserve all actual supplier holds and objections.
-2. Remove the review labels and change the two pages to `index, follow`, through
-   a reviewed release-mode change to their builder.
-3. Add both canonical URLs to the sitemap with their actual modification dates.
-4. Add a short **Maker guides** section on Living in the Garden, listing the two
-   links alphabetically, with neutral descriptions and no change to Maker Explorer
-   eligibility, order, imagery or recommendation logic.
-5. Add the two pages to the site's approved informational Search corpus and update
-   the sitemap page-count assertion in the Search rail builder. Re-run the existing
-   corpus guards rather than changing their size limit speculatively.
-6. Merge the approved release, verify exact live HTML and links, then inspect
-   indexing through Search Console where available.
-
-No country, town or model doorway pages, review scores, invented testimonials,
-Offer/Product rich-result claims or availability guarantees are proposed.
-
-## Validation completed
-
-- Draft builder reproducibility and freshness checks pass.
-- Identity, shared header and legacy Premium-builder locks pass.
-- Existing garden authority checks pass (18/18).
-- Existing pricing preservation proof and Search corpus checks pass.
-- The image-rights HTML scan passes: no unpermitted supplier image introduced.
-- Six deliberate faults are refused: publication state, invented permission,
-  stale evidence, a substituted source domain, altered VAT and concealed size conflict.
-- Chromium checks at 320, 390 and 1440 px pass: no page overflow, duplicate IDs or
-  missing H1; JSON-LD parses, robots remain noindex, and all editorial internal
-  links resolve. Comparison tables scroll within a labelled keyboard-focusable
-  region on small screens.
-- Desktop and mobile screenshots were inspected. The draft uses the existing
-  Premium palette/components; its small stylesheet is scoped to these components.
-- Browser checks block external requests, including analytics. These are local
-  rendering checks, not a Core Web Vitals assessment.
-- Editorial pass: plain homeowner language, short paragraphs, practical next
-  questions, original comparison structure and qualifications beside the facts.
-- `git diff --check` passes. Existing public page content, universes, rights records,
-  sitemap and Search index remain byte-identical to the base.
-
-Reproduce the principal checks:
-
-```bash
-python3 atlas-tools/build-garden-maker-pages.py --check
-python3 atlas-tools/build-identity-stage1.py --check
-python3 atlas-tools/prove-global-header.py
-python3 atlas-tools/prove-premium-locks.py
-python3 atlas-tools/prove-premium-garden-room-prices.py
-node atlas-tools/prove-cluster1-garden-authority.mjs
-python3 atlas-tools/build-search-index.py --check
-node atlas-tools/validate-image-rights.js --scan-html . --permissions image-rights-manifest.json --max-age-days 30
-git diff --check
-```
-
-## Local review
+## Local preview
 
 From the repository root:
 
@@ -138,10 +109,11 @@ From the repository root:
 python3 -m http.server 8000
 ```
 
-- http://localhost:8000/concept-modular-garden-offices.html
 - http://localhost:8000/all-in-one-cabins-garden-rooms.html
+- http://localhost:8000/concept-modular-garden-offices.html
 
-After publication, monitor each page's indexing and maker/model query impressions,
-and its organic landings and engagement. Also track whether the linked Discovery
-and market guide gain qualified visits. Two pages are a controlled pilot, not
-evidence of a ranking improvement before Google has crawled and evaluated them.
+## Rollback
+
+Revert the merged release as a unit: guides, source/approval configuration,
+parent links, sitemap, Search allowlist/index and header/identity registrations.
+No database migration or analytics-settings rollback is required.

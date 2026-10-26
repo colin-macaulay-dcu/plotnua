@@ -187,7 +187,8 @@ pages = sorted(set(pages + ["index.html"]))
 # 22 since 17 October 2026: garden-room-prices-ireland.html, the Garden Room
 # Prices in Ireland guide (SEO Phase 2, founder approval to build), entered the
 # sitemap. It carries the standard stub like every other public page.
-EXPECTED_PAGES = 22
+# 24 since 26 October 2026: the two founder-approved text-only maker guides.
+EXPECTED_PAGES = 24
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "

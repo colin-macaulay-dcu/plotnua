@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Build two bounded, text-only maker review drafts; --check writes nothing.
+"""Build two bounded, text-only maker guides; --check writes nothing.
 
 Public primary-source facts are frozen in maker-pages/source-evidence.json.
 No network, Airtable, matching, supplier eligibility or image-rights write.
-Publication is a separate release: this builder deliberately refuses any state
-except DRAFT. Drafts are noindex/nofollow and absent from the live sitemap,
-Search corpus and parent Discovery. Existing identity/header renderers are reused.
+Drafts are noindex/nofollow and absent from discovery surfaces. Published pages
+require the founder's narrow approval and the existing rights-first publication
+derivation. Existing identity/header renderers are reused. No permission is invented.
 """
 import datetime as dt
 import importlib.util
 import json
 import re
 import sys
+import subprocess
 from html import escape
 from pathlib import Path
 from string import Template
@@ -45,6 +46,38 @@ PAGES = {
 }
 
 
+def publication_approved(evidence):
+    state = evidence["publication_status"]
+    if state == "DRAFT":
+        return False
+    if state != "PUBLISHED" or evidence["listing_basis"] != "PUBLIC_INFORMATION_TEXT_ONLY":
+        raise ValueError("unknown publication state or editorial basis")
+    register = json.loads((DATA / "publication.json").read_text())
+    decision = register["decision"]
+    if (decision["state"] != "APPROVED" or decision["scope"] != "Garden Rooms"
+            or decision["authorised_by"] != "Colin MacAulay"
+            or decision["decision_date"] != "2026-10-26"
+            or set(decision["pages"]) != set(PAGES)):
+        raise ValueError("the two exact maker guides require their narrow founder approval")
+    expected = {"All In One Cabins", "Concept Modular"}
+    if {o["name"] for o in register["organisations"]} != expected:
+        raise ValueError("publication scope must contain exactly the two approved makers")
+    # Import the canonical rights-first derivation. A new objection, decline or
+    # review hold in a rights record wins over the editorial register.
+    js = '''import fs from 'node:fs';
+import {derivePublicInformationListing} from './atlas-tools/publication-gate.mjs';
+const reg=JSON.parse(fs.readFileSync(0,'utf8'));
+const rows=JSON.parse(fs.readFileSync('image-rights-records.json','utf8')).records;
+const results=reg.organisations.map(o=>({name:o.name,...derivePublicInformationListing(o.name,rows,reg,'Garden Rooms')}));
+console.log(JSON.stringify(results));'''
+    result = subprocess.run(["node", "--input-type=module", "-e", js], cwd=ROOT,
+                            input=json.dumps(register), text=True, capture_output=True, check=True)
+    results = json.loads(result.stdout)
+    if any(r["visibility"] != "PUBLISHABLE" or r["basis"] != "PUBLIC_INFORMATION" for r in results):
+        raise ValueError("editorial publication refused by the rights-first gate: "+result.stdout.strip())
+    return True
+
+
 def load_identity():
     spec = importlib.util.spec_from_file_location("maker_identity", ROOT / "atlas-tools/build-identity-stage1.py")
     module = importlib.util.module_from_spec(spec)
@@ -54,7 +87,7 @@ def load_identity():
     return module
 
 
-def render(page, profile, evidence, identity):
+def render(page, profile, evidence, identity, published=False):
     checked = dt.date.fromisoformat(evidence["checked"])
     checked_long = f"{checked.day} {checked:%B %Y}"
     facts, sources = evidence["facts"], evidence["sources"]
@@ -77,6 +110,8 @@ def render(page, profile, evidence, identity):
     consent = released.split("<head>\n", 1)[1].split('<meta charset="UTF-8">', 1)[0]
     rail = re.search(r"<!-- PLOTNUA SEARCH RAIL v1 · BEGIN.*?<!-- PLOTNUA SEARCH RAIL v1 · END -->", released, re.S).group()
     url = "https://plotnua.ie/" + page
+    robots = "index, follow" if published else "noindex, nofollow"
+    review = "" if published else '<p class="mp-review"><strong>Review draft.</strong> This page has not been approved for publication.</p>'
     graph = {"@context": "https://schema.org", "@graph": [
         {"@type": "WebPage", "@id": url+"#webpage", "url": url,
          "name": profile["h1"], "description": profile["description"],
@@ -96,7 +131,7 @@ def render(page, profile, evidence, identity):
 {consent}<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{escape(profile['title'])}</title>
 <meta name="description" content="{escape(profile['description'], quote=True)}">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="{robots}">
 <link rel="canonical" href="{url}">
 <meta name="theme-color" content="#1F3B2E">
 <link rel="icon" href="/favicon.ico">
@@ -110,6 +145,7 @@ def render(page, profile, evidence, identity):
 <script type="application/ld+json">{json.dumps(graph, ensure_ascii=False, indent=2)}</script>
 </head>
 <body>
+<a href="index.html" class="brand-mark" aria-label="PlotNua home"><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="34" height="34"></a>
 {rail}
 <main id="pn-main">
   <div class="mp-hero">
@@ -118,7 +154,7 @@ def render(page, profile, evidence, identity):
     <h1>{escape(profile['h1'])}</h1>
     <p class="mp-lead">{escape(profile['lead'])}</p>
     <p class="mp-meta">Published sources checked <time datetime="{evidence['checked']}">{checked_long}</time></p>
-    <p class="mp-review"><strong>Review draft.</strong> This page has not been approved for publication.</p>
+{review}
   </div>
 {body}
   <section class="pd-section mp-section" id="explore-the-discovery">
@@ -147,10 +183,11 @@ def render(page, profile, evidence, identity):
 
 def main():
     if set(sys.argv[1:]) - {"--check"}:
-        raise ValueError("only --check is supported; this draft builder cannot publish")
+        raise ValueError("only --check is supported")
     evidence = json.loads((DATA / "source-evidence.json").read_text())
-    if evidence["publication_status"] != "DRAFT" or evidence["supplier_permission_asserted"] is not False or evidence["imagery"] != "none":
-        raise ValueError("draft-only state, no permission assertion and no supplier imagery are required")
+    if evidence["supplier_permission_asserted"] is not False or evidence["imagery"] != "none":
+        raise ValueError("no permission assertion and no supplier imagery are required")
+    published = publication_approved(evidence)
     age = (dt.date.today() - dt.date.fromisoformat(evidence["checked"])).days
     if not 0 <= age <= 30:
         raise ValueError("recheck the primary pages: evidence is future-dated or more than 30 days old")
@@ -172,15 +209,21 @@ def main():
     search = (ROOT / "search-index-v1.json").read_text()
     outputs = {}
     for page, profile in PAGES.items():
-        if any(page in text for text in [sitemap, parent, search]):
+        if not published and any(page in text for text in [sitemap, parent, search]):
             raise ValueError(f"draft is exposed through a public discovery surface: {page}")
-        outputs[page] = render(page, profile, evidence, identity)
+        if published and "--check" in sys.argv:
+            routes = [r for r in json.loads(search)["records"] if r.get("route") == page]
+            if (sitemap.count("<loc>https://plotnua.ie/"+page+"</loc>") != 1
+                    or parent.count('href="'+page+'"') != 1
+                    or len(routes) != 1 or routes[0]["type"] != "possibility"):
+                raise ValueError("published guide needs exactly one sitemap entry, parent link and informational Search record: "+page)
+        outputs[page] = render(page, profile, evidence, identity, published)
     changed = [p for p, text in outputs.items() if not (ROOT / p).exists() or (ROOT / p).read_text() != text]
     if "--check" in sys.argv:
-        if changed: raise ValueError("generated draft differs: "+", ".join(changed))
+        if changed: raise ValueError("generated guide differs: "+", ".join(changed))
     else:
         for page in changed: (ROOT / page).write_text(outputs[page])
-    print(f"MAKER PILOT · {'CHECK OK' if '--check' in sys.argv else 'BUILT'}: two noindex review drafts; no public discovery surface changed")
+    print(f"MAKER PILOT · {'CHECK OK' if '--check' in sys.argv else 'BUILT'}: two {'published text-only guides' if published else 'noindex review drafts'}; rights-first gate preserved")
 
 
 if __name__ == "__main__":

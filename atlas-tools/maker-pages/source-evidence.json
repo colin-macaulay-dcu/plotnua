@@ -1,11 +1,11 @@
 {
   "schema": "plotnua.garden-maker-editorial-pilot.v1",
   "checked": "2026-10-26",
-  "publication_status": "DRAFT",
-  "listing_basis": "PROPOSED_PUBLIC_INFORMATION_TEXT_ONLY",
+  "publication_status": "PUBLISHED",
+  "listing_basis": "PUBLIC_INFORMATION_TEXT_ONLY",
   "supplier_permission_asserted": false,
   "imagery": "none",
-  "note": "Draft editorial pages only. Existing publication and image-rights gates remain unchanged. The Wellness / Sauna text-only approval does not authorise this garden-room pilot.",
+  "note": "Two factual text-only editorial guides approved by the founder on 26 October 2026. Existing publication and image-rights gates remain unchanged; approval is not supplier permission.",
   "sources": {
     "concept-standard": {
       "url": "https://www.conceptmodular.ie/showcase/standard-office",

@@ -20,8 +20,8 @@ run (atlas-tools/prove-premium-locks.py uses it to prove every lock refuses).
 import os, sys
 
 PREMIUM_PAGES = {
-    "concept-modular-garden-offices.html",   # Maker pilot: local review draft, 26 Oct 2026
-    "all-in-one-cabins-garden-rooms.html",   # Maker pilot: local review draft, 26 Oct 2026
+    "concept-modular-garden-offices.html",   # Maker guide: founder-approved, 26 Oct 2026
+    "all-in-one-cabins-garden-rooms.html",   # Maker guide: founder-approved, 26 Oct 2026
     "discovery-a-home-for-art.html",       # Stage 2c, live 23 Oct 2026
     "garden-room-prices-ireland.html",     # Batch 1 · 1, founder approval 23 Oct 2026
     "discovery-living-in-the-garden.html", # Batch 1 · Garden Living (founder direction 23 Oct 2026)

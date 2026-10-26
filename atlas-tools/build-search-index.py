@@ -448,7 +448,13 @@ print("  possibilities     %d" % len(possibility_route_by_file))
 # supplier information pages below: SAME RECORD SHAPE (possibility), NO NEW
 # TYPE, title and standfirst from the page's own curated <title> and meta
 # description only, and the page must be in the sitemap and indexable.
-GUIDE_PAGES = {"garden-room-prices-ireland.html": "poss-garden-room-prices-ireland"}
+GUIDE_PAGES = {
+    "garden-room-prices-ireland.html": "poss-garden-room-prices-ireland",
+    # Two factual maker guides, founder-approved 26 Oct 2026. Informational
+    # records only: no supplier ranking, product fields or eligibility change.
+    "all-in-one-cabins-garden-rooms.html": "poss-all-in-one-cabins-garden-rooms",
+    "concept-modular-garden-offices.html": "poss-concept-modular-garden-offices",
+}
 for fname, rid in sorted(GUIDE_PAGES.items()):
     if fname not in ALLOW:
         die("G16 guide page %r is not in sitemap.xml" % fname)
