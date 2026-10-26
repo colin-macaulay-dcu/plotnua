@@ -454,6 +454,8 @@ GUIDE_PAGES = {
     # records only: no supplier ranking, product fields or eligibility change.
     "all-in-one-cabins-garden-rooms.html": "poss-all-in-one-cabins-garden-rooms",
     "concept-modular-garden-offices.html": "poss-concept-modular-garden-offices",
+    # Shomera text-only editorial guide, founder approved 26 Oct 2026.
+    "shomera-garden-rooms.html": "poss-shomera-garden-rooms",
 }
 for fname, rid in sorted(GUIDE_PAGES.items()):
     if fname not in ALLOW:

@@ -37,6 +37,7 @@ WHATSAPP_LABEL = "Chat with PlotNua on WhatsApp (opens in a new tab)"
 # The approved page families (founder decision 4, 23 Oct 2026). Your Plot and the
 # property checks / journeys keep their own focused interfaces and are excluded.
 IDENTITY_PAGES = [   # built by build-identity-stage1.py
+    "shomera-garden-rooms.html", # noindex review draft
     "concept-modular-garden-offices.html", "all-in-one-cabins-garden-rooms.html",
     "about.html", "contact.html", "privacy.html", "terms.html", "cookie-policy.html",
     "artist-register.html", "404.html", "thanks.html", "discoveries.html",

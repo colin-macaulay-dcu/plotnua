@@ -1,0 +1,149 @@
+{
+  "checked": "2026-10-26",
+  "sources": [
+    {
+      "url": "https://www.shomera.ie/garden-rooms",
+      "final_url": "https://www.shomera.ie/garden-rooms",
+      "http_status": 200,
+      "sha256": "61645e0186005649bae0c13bd4879cece8081fcb500004f1fa567c7128557812",
+      "title": "Garden Rooms & Garden Studios Ireland | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/classic-range",
+      "final_url": "https://www.shomera.ie/garden-rooms/classic-range",
+      "http_status": 200,
+      "sha256": "6de7039ebe597823ef12e8364fda54573d6b24cb21db571ea84344262f3d054c",
+      "title": "Classic Range Garden Studios | Timber Frame Studios | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/contemporary-range",
+      "final_url": "https://www.shomera.ie/garden-rooms/contemporary-range",
+      "http_status": 200,
+      "sha256": "b0a1414a5c71d334cf8e389fa7f8869086476014be22de6f6eff631ac77829db",
+      "title": "Contemporary Range Garden Studios | Modern Studios | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-12",
+      "final_url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-12",
+      "http_status": 200,
+      "sha256": "4ad920f2e1cbb13588191bd8b75cf1443fa55fc49567643dd9cbc1200c118d17",
+      "title": "Shomera 12 | 3.0m x 3.6m Classic Garden Studio | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-21",
+      "final_url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-21",
+      "http_status": 200,
+      "sha256": "d6541a5f9ae731f52ab575c86d02b3956cac4655ac54cecd6eb64d8a7da4a654",
+      "title": "Shomera 21 | 3.6m x 5.4m Classic Garden Studio | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-25",
+      "final_url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-25",
+      "http_status": 200,
+      "sha256": "3050749ef3660ac7e1bcf38b7b5a932ed6503316b096fcafa9ec15a5b8d67ec5",
+      "title": "Shomera 25 | 3.6m x 6.6m Classic Garden Studio, No Planning | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-14",
+      "final_url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-14",
+      "http_status": 200,
+      "sha256": "af8c82b11ffd395c35681fb5defe00a0132a769af2c296871ccebf24fc843431",
+      "title": "Shomera 14 | 3.0m x 4.2m Contemporary Garden Studio | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-18",
+      "final_url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-18",
+      "http_status": 200,
+      "sha256": "8f2b8fc5bb73822a1c94887fbd7533858e086513857cd88d0dd4986a089ab966",
+      "title": "Shomera 18 | 3.6m x 4.8m Contemporary Garden Studio | Shomera",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-23",
+      "final_url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-23",
+      "http_status": 200,
+      "sha256": "7490b96ad9bb71de5e10da6e39fd70aabe47247904b2954d8a88edc13a891891",
+      "title": "Shomera 23 | 3.6m x 6.0m Contemporary Garden Studio | Shomera",
+      "checked": "2026-10-26"
+    }
+  ],
+  "models": [
+    {
+      "range": "Classic",
+      "model": "Shomera 12",
+      "published_dimensions": "3.0 \u00d7 3.6 m",
+      "starting_price_eur": 28450,
+      "build_and_installation": "explicitly included in product headline",
+      "vat": "not established on reviewed pages",
+      "source_url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-12",
+      "checked": "2026-10-26",
+      "source_sha256": "4ad920f2e1cbb13588191bd8b75cf1443fa55fc49567643dd9cbc1200c118d17"
+    },
+    {
+      "range": "Classic",
+      "model": "Shomera 21",
+      "published_dimensions": "3.6 \u00d7 5.4 m",
+      "starting_price_eur": 38950,
+      "build_and_installation": "explicitly included in product headline",
+      "vat": "not established on reviewed pages",
+      "source_url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-21",
+      "checked": "2026-10-26",
+      "source_sha256": "d6541a5f9ae731f52ab575c86d02b3956cac4655ac54cecd6eb64d8a7da4a654"
+    },
+    {
+      "range": "Classic",
+      "model": "Shomera 25",
+      "published_dimensions": "3.6 \u00d7 6.6 m",
+      "starting_price_eur": 44450,
+      "build_and_installation": "explicitly included in product headline",
+      "vat": "not established on reviewed pages",
+      "source_url": "https://www.shomera.ie/garden-rooms/classic-range/shomera-25",
+      "checked": "2026-10-26",
+      "source_sha256": "3050749ef3660ac7e1bcf38b7b5a932ed6503316b096fcafa9ec15a5b8d67ec5"
+    },
+    {
+      "range": "Contemporary",
+      "model": "Shomera 14",
+      "published_dimensions": "3.0 \u00d7 4.2 m",
+      "starting_price_eur": 35950,
+      "build_and_installation": "explicitly included in product headline",
+      "vat": "not established on reviewed pages",
+      "source_url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-14",
+      "checked": "2026-10-26",
+      "source_sha256": "af8c82b11ffd395c35681fb5defe00a0132a769af2c296871ccebf24fc843431"
+    },
+    {
+      "range": "Contemporary",
+      "model": "Shomera 18",
+      "published_dimensions": "3.6 \u00d7 4.8 m",
+      "starting_price_eur": 41450,
+      "build_and_installation": "explicitly included in product headline",
+      "vat": "not established on reviewed pages",
+      "source_url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-18",
+      "checked": "2026-10-26",
+      "source_sha256": "8f2b8fc5bb73822a1c94887fbd7533858e086513857cd88d0dd4986a089ab966"
+    },
+    {
+      "range": "Contemporary",
+      "model": "Shomera 23",
+      "published_dimensions": "3.6 \u00d7 6.0 m",
+      "starting_price_eur": 46450,
+      "build_and_installation": "explicitly included in product headline",
+      "vat": "not established on reviewed pages",
+      "source_url": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-23",
+      "checked": "2026-10-26",
+      "source_sha256": "7490b96ad9bb71de5e10da6e39fd70aabe47247904b2954d8a88edc13a891891"
+    }
+  ],
+  "schema": "plotnua.shomera-editorial-evidence.v1",
+  "publication_status": "PUBLISHED",
+  "supplier_permission_asserted": false,
+  "imagery": "none"
+}

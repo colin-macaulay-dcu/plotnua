@@ -201,7 +201,7 @@ architecture is reconsidered. The corpus is never silently reduced.
 | G11 | No term in URL, history, storage or any network call |
 | G11b | No term reaches `dataLayer`, GTM or any analytics call |
 | G12 | Every route resolves to a file that exists |
-| G16 | Published guide pages (17 Oct 2026, SEO Phase 2): an explicit allowlist (`GUIDE_PAGES`: market pricing guide plus the two founder-approved text-only maker guides of 26 Oct 2026) enters as a **possibility-shape record, no new type**, title and standfirst from the page's own `<title>` and meta description only. Refuses a guide not in `sitemap.xml` or marked noindex. Same precedent as the G15 supplier information pages |
+| G16 | Published guide pages (17 Oct 2026, SEO Phase 2): an explicit allowlist (`GUIDE_PAGES`: market pricing guide plus the three founder-approved text-only maker guides of 26 Oct 2026) enters as a **possibility-shape record, no new type**, title and standfirst from the page's own `<title>` and meta description only. Refuses a guide not in `sitemap.xml` or marked noindex. Same precedent as the G15 supplier information pages |
 | G13 | Catch-all: nothing outside the four declared types and their declared fields. **RUNS LAST**, so every specific guard stays independently fireable |
 
 ### Hostile leak tests — knowing the hidden name must not reveal it
@@ -324,3 +324,5 @@ The universe pin above is moved only by a targeted publication whose boundary ch
 - 2026-10-16 · re-frozen to `dcabb199b183b01d2763ab3d2f6db61d9e488300fe1726a0922c6279b23cae10` for the Authorised Imagery Integration (founder approval to build, 16 Oct 2026). Boundary check: the universe differs from GitHub main only in the `imagery`/`imagerySet` keys of two products (Garden Room Ireland QC6, Don Modular Garden Room), written by .github/scripts/apply_authorised_imagery.py; ids, order, header and every matching field are byte-identical. The search index carries no imagery (contract §2) and is unchanged.
 - 2026-10-19 · re-frozen to `b45a9a84990384308332e40110bbdb55135b3b907d920a9f4d3933a17c1a4bcf` for the founder-approved SAFETY HOLD of five Premium Log House products (atlas-tools/safety-hold-products.json, applied by atlas-tools/apply-safety-hold.py; Blocker G). Not a supplier update: the five held records leave the universe and their search records go with them; every other record is byte-identical (checked in the same change).
 - 2026-10-20 · re-frozen to `3da2c97699ba18cf38ca6eb1285c8157cd264c19bca6c4db294cd16d6f25ca83` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261020-091711-outdoor-living-modpod.md); only the targeted records differ.
+
+Shomera guide publication, 26 October 2026: one informational possibility record (`poss-shomera-garden-rooms`), title/description from its indexable sitemap-listed page. No supplier/product eligibility or Search ranking change. Public-page count deliberately moves from 24 to 25.

@@ -87,7 +87,7 @@ def load_identity():
     return module
 
 
-def render(page, profile, evidence, identity, published=False):
+def render(page, profile, evidence, identity, published=False, extra_values=None):
     checked = dt.date.fromisoformat(evidence["checked"])
     checked_long = f"{checked.day} {checked:%B %Y}"
     facts, sources = evidence["facts"], evidence["sources"]
@@ -104,6 +104,7 @@ def render(page, profile, evidence, identity, published=False):
         signature_url=escape(sources["concept-signature"]["url"], quote=True),
         collection_url=escape(sources["concept-collection"]["url"], quote=True),
         single_room_url=escape(sources["all-in-one-single"]["url"], quote=True),
+        **(extra_values or {}),
     )
     # Reuse the released consent/GA configuration and canonical search component.
     released = (ROOT / "garden-room-prices-ireland.html").read_text()
